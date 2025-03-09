@@ -8,39 +8,33 @@ title: useDebouncedValue
 # Function: useDebouncedValue()
 
 ```ts
-function useDebouncedValue<T>(value, options): readonly [T, {
+function useDebouncedValue<TValue>(value, options): readonly [TValue, {
   cancel: () => void;
+  debounce: (...args) => void;
   getExecutionCount: () => number;
  }]
 ```
 
-Defined in: react-bouncer/src/useDebouncedValue.ts:12
-
-Returns a debounced value that is updated with a wait.
+Defined in: [react-bouncer/src/useDebouncedValue.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-bouncer/src/useDebouncedValue.ts#L5)
 
 ## Type Parameters
 
-• **T**
+• **TValue**
 
 ## Parameters
 
 ### value
 
-`T`
-
-The value to debounce.
+`TValue`
 
 ### options
 
 `DebouncerOptions`
 
-The options for the debouncer.
-
 ## Returns
 
-readonly \[`T`, \{
+readonly \[`TValue`, \{
   `cancel`: () => `void`;
+  `debounce`: (...`args`) => `void`;
   `getExecutionCount`: () => `number`;
  \}\]
-
-A tuple containing the debounced value and other debouncer methods.

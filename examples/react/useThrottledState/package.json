@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/bouncer-example-react-use-debounced-state",
+  "name": "@tanstack/bouncer-example-react-use-throttled-state",
   "private": true,
   "type": "module",
   "scripts": {

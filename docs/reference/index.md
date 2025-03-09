@@ -10,7 +10,9 @@ title: "@tanstack/bouncer"
 ## Classes
 
 - [Debouncer](classes/debouncer.md)
+- [Throttler](classes/throttler.md)
 
 ## Interfaces
 
 - [DebouncerOptions](interfaces/debounceroptions.md)
+- [ThrottlerOptions](interfaces/throttleroptions.md)

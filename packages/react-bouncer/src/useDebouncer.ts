@@ -2,11 +2,11 @@ import { Debouncer } from '@tanstack/bouncer'
 import { useRef } from 'react'
 import type { DebouncerOptions } from '@tanstack/bouncer'
 
-export function useDebouncer(
-  fn: (...args: Array<any>) => void,
-  options: DebouncerOptions,
-) {
-  const debouncerRef = useRef<Debouncer<typeof fn>>(null)
+export function useDebouncer<
+  TFn extends (...args: Array<any>) => any,
+  TArgs extends Parameters<TFn>,
+>(fn: TFn, options: DebouncerOptions) {
+  const debouncerRef = useRef<Debouncer<TFn, TArgs>>(null)
 
   if (!debouncerRef.current) {
     debouncerRef.current = new Debouncer(fn, options)

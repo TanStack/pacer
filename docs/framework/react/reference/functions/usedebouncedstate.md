@@ -8,23 +8,24 @@ title: useDebouncedState
 # Function: useDebouncedState()
 
 ```ts
-function useDebouncedState<T>(value, options): readonly [T, (...args) => void, {
+function useDebouncedState<TValue>(value, options): readonly [TValue, (...args) => void, {
   cancel: () => void;
+  debounce: (...args) => void;
   getExecutionCount: () => number;
  }]
 ```
 
-Defined in: react-bouncer/src/useDebouncedState.ts:5
+Defined in: [react-bouncer/src/useDebouncedState.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-bouncer/src/useDebouncedState.ts#L5)
 
 ## Type Parameters
 
-• **T**
+• **TValue**
 
 ## Parameters
 
 ### value
 
-`T`
+`TValue`
 
 ### options
 
@@ -32,7 +33,8 @@ Defined in: react-bouncer/src/useDebouncedState.ts:5
 
 ## Returns
 
-readonly \[`T`, (...`args`) => `void`, \{
+readonly \[`TValue`, (...`args`) => `void`, \{
   `cancel`: () => `void`;
+  `debounce`: (...`args`) => `void`;
   `getExecutionCount`: () => `number`;
  \}\]

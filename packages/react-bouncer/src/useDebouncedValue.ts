@@ -1,28 +1,22 @@
-import { useEffect, useState } from 'react'
-import { useDebouncer } from './useDebouncer'
+import { useEffect } from 'react'
+import { useDebouncedState } from './useDebouncedState'
 import type { DebouncerOptions } from '@tanstack/bouncer'
 
-/**
- * Returns a debounced value that is updated with a wait.
- *
- * @param value - The value to debounce.
- * @param options - The options for the debouncer.
- * @returns A tuple containing the debounced value and other debouncer methods.
- */
-export function useDebouncedValue<T>(value: T, options: DebouncerOptions) {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value)
-
-  const { debounce, cancel, getExecutionCount } = useDebouncer(
-    setDebouncedValue,
+export function useDebouncedValue<TValue>(
+  value: TValue,
+  options: DebouncerOptions,
+) {
+  const [debouncedValue, setDebouncedValue, debouncer] = useDebouncedState(
+    value,
     options,
   )
 
   useEffect(() => {
-    debounce(value)
+    setDebouncedValue(value)
     return () => {
-      cancel()
+      debouncer.cancel()
     }
-  }, [value, options, debounce, cancel])
+  }, [value, setDebouncedValue, debouncer])
 
-  return [debouncedValue, { cancel, getExecutionCount }] as const
+  return [debouncedValue, debouncer] as const
 }

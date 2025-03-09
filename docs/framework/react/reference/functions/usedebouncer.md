@@ -8,16 +8,22 @@ title: useDebouncer
 # Function: useDebouncer()
 
 ```ts
-function useDebouncer(fn, options): object
+function useDebouncer<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: react-bouncer/src/useDebouncer.ts:5
+Defined in: [react-bouncer/src/useDebouncer.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-bouncer/src/useDebouncer.ts#L5)
+
+## Type Parameters
+
+• **TFn** *extends* (...`args`) => `any`
+
+• **TArgs** *extends* `any`[]
 
 ## Parameters
 
 ### fn
 
-(...`args`) => `void`
+`TFn`
 
 ### options
 
@@ -51,7 +57,7 @@ Executes the debounced function
 
 ##### args
 
-...`any`[]
+...`TArgs`
 
 #### Returns
 

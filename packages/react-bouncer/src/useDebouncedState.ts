@@ -2,18 +2,13 @@ import { useState } from 'react'
 import { useDebouncer } from './useDebouncer'
 import type { DebouncerOptions } from '@tanstack/bouncer'
 
-export function useDebouncedState<T>(value: T, options: DebouncerOptions) {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+export function useDebouncedState<TValue>(
+  value: TValue,
+  options: DebouncerOptions,
+) {
+  const [debouncedValue, setDebouncedValue] = useState<TValue>(value)
 
-  const {
-    debounce: debouncedSetValue,
-    cancel,
-    getExecutionCount,
-  } = useDebouncer(setDebouncedValue, options)
+  const debouncer = useDebouncer(setDebouncedValue, options)
 
-  return [
-    debouncedValue,
-    debouncedSetValue,
-    { cancel, getExecutionCount },
-  ] as const
+  return [debouncedValue, debouncer.debounce, debouncer] as const
 }

@@ -1,4 +1,5 @@
 export * from './debouncer'
+export * from './throttler'
 
 // /**
 //  * Throttles a function, ensuring it's called at most once per specified interval.

@@ -1,14 +1,13 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useDebouncer } from '@tanstack/react-bouncer'
+import { useThrottledState } from '@tanstack/react-bouncer'
 
 function App() {
   const [instantCount, setInstantCount] = useState(0)
-  const [debouncedCount, setDebouncedCount] = useState(0)
 
-  // Lower-level useDebouncer hook - requires you to manage your own state
-  const { debounce: debouncedSetCount } = useDebouncer(setDebouncedCount, {
+  // wrapper around useThrottler and useState
+  const [throttledCount, setThrottledCount] = useThrottledState(instantCount, {
     wait: 500,
   })
 
@@ -16,16 +15,16 @@ function App() {
     // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => {
       const newInstantCount = c + 1 // common new value for both
-      debouncedSetCount(newInstantCount) // debounced state update
+      setThrottledCount(newInstantCount) // throttled state update
       return newInstantCount // instant state update
     })
   }
 
   return (
     <div>
-      <h1>TanStack Bouncer useDebouncer Example</h1>
+      <h1>TanStack Bouncer useThrottledState Example</h1>
       <div>Instant Count: {instantCount}</div>
-      <div>Debounced Count: {debouncedCount}</div>
+      <div>Throttled Count: {throttledCount}</div>
       <div>
         <button onClick={increment}>Increment</button>
       </div>
@@ -36,4 +35,4 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(<App />)
 
-scan()
+scan() // dev-tools for demo

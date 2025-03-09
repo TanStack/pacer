@@ -12,3 +12,6 @@ title: "@tanstack/react-bouncer"
 - [useDebouncedState](functions/usedebouncedstate.md)
 - [useDebouncedValue](functions/usedebouncedvalue.md)
 - [useDebouncer](functions/usedebouncer.md)
+- [useThrottledState](functions/usethrottledstate.md)
+- [useThrottledValue](functions/usethrottledvalue.md)
+- [useThrottler](functions/usethrottler.md)

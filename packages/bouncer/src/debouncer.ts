@@ -21,14 +21,17 @@ export interface DebouncerOptions {
 /**
  * A class that creates a debounced function.
  */
-export class Debouncer<T extends (...args: Array<any>) => any> {
+export class Debouncer<
+  TFn extends (...args: Array<any>) => any,
+  TArgs extends Parameters<TFn>,
+> {
   private canLeadingExecute = true
   private executionCount = 0
   private options: DebouncerOptions
   private timeoutId: NodeJS.Timeout | undefined
 
   constructor(
-    private fn: T,
+    private fn: TFn,
     options: DebouncerOptions,
   ) {
     this.options = {
@@ -48,7 +51,7 @@ export class Debouncer<T extends (...args: Array<any>) => any> {
   /**
    * Executes the debounced function
    */
-  execute(...args: Parameters<T>): void {
+  execute(...args: TArgs): void {
     // Handle leading execution
     if (this.options.leading && this.canLeadingExecute) {
       this.executeFunction(...args)
@@ -67,7 +70,7 @@ export class Debouncer<T extends (...args: Array<any>) => any> {
     }, this.options.wait)
   }
 
-  private executeFunction(...args: Parameters<T>): void {
+  private executeFunction(...args: TArgs): void {
     this.executionCount++
     this.fn(...args)
   }
