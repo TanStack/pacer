@@ -24,7 +24,7 @@ export const packages = [
  */
 export const branchConfigs = {
   main: {
-    prerelease: false,
+    prerelease: true, // TODO: remove this
   },
   alpha: {
     prerelease: true,
