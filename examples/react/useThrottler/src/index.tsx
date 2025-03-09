@@ -8,7 +8,7 @@ function App() {
   const [throttledCount, setThrottledCount] = useState(0)
 
   // Lower-level useThrottler hook - requires you to manage your own state
-  const { throttle: throttledSetCount } = useThrottler(setThrottledCount, {
+  const throttler = useThrottler(setThrottledCount, {
     wait: 1000,
   })
 
@@ -16,7 +16,7 @@ function App() {
     // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => {
       const newInstantCount = c + 1 // common new value for both
-      throttledSetCount(newInstantCount) // throttled state update
+      throttler.throttle(newInstantCount) // throttled state update
       return newInstantCount // instant state update
     })
   }
@@ -36,4 +36,4 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(<App />)
 
-scan()
+scan() // dev-tools for demo

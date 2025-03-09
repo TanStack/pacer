@@ -14,7 +14,7 @@ describe('Debouncer', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
-    debouncer.execute()
+    debouncer.debounce()
     expect(mockFn).not.toBeCalled()
   })
 
@@ -22,7 +22,7 @@ describe('Debouncer', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
-    debouncer.execute()
+    debouncer.debounce()
     expect(mockFn).not.toBeCalled()
 
     vi.advanceTimersByTime(1000)
@@ -33,9 +33,9 @@ describe('Debouncer', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
-    debouncer.execute()
-    debouncer.execute()
-    debouncer.execute()
+    debouncer.debounce()
+    debouncer.debounce()
+    debouncer.debounce()
     expect(mockFn).not.toBeCalled()
 
     vi.advanceTimersByTime(1000)
@@ -46,7 +46,7 @@ describe('Debouncer', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
-    debouncer.execute('test', 123)
+    debouncer.debounce('test', 123)
     vi.advanceTimersByTime(1000)
 
     expect(mockFn).toBeCalledWith('test', 123)
@@ -56,7 +56,7 @@ describe('Debouncer', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
-    debouncer.execute()
+    debouncer.debounce()
     debouncer.cancel()
 
     vi.advanceTimersByTime(1000)
@@ -71,7 +71,7 @@ describe('Debouncer', () => {
       trailing: false,
     })
 
-    debouncer.execute('test')
+    debouncer.debounce('test')
     expect(mockFn).toBeCalledTimes(1)
     expect(mockFn).toBeCalledWith('test')
 
@@ -88,12 +88,12 @@ describe('Debouncer', () => {
     })
 
     // First call - executes immediately
-    debouncer.execute('first')
+    debouncer.debounce('first')
     expect(mockFn).toBeCalledTimes(1)
 
     // Call again before wait expires - should not execute
     vi.advanceTimersByTime(500)
-    debouncer.execute('second')
+    debouncer.debounce('second')
     expect(mockFn).toBeCalledTimes(1)
 
     // Advance to end of second call's wait period - should not execute
@@ -101,7 +101,7 @@ describe('Debouncer', () => {
     expect(mockFn).toBeCalledTimes(1)
 
     // Now that the full wait has passed since last call, this should execute
-    debouncer.execute('third')
+    debouncer.debounce('third')
     expect(mockFn).toBeCalledTimes(2)
     expect(mockFn).toHaveBeenLastCalledWith('third')
   })
@@ -114,7 +114,7 @@ describe('Debouncer', () => {
       trailing: true,
     })
 
-    debouncer.execute('test')
+    debouncer.debounce('test')
     expect(mockFn).toBeCalledTimes(1) // Leading call
 
     vi.advanceTimersByTime(1000)
@@ -125,7 +125,7 @@ describe('Debouncer', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
-    debouncer.execute('test')
+    debouncer.debounce('test')
     expect(mockFn).not.toBeCalled()
 
     vi.advanceTimersByTime(1000)
@@ -139,11 +139,11 @@ describe('Debouncer', () => {
 
     expect(debouncer.getExecutionCount()).toBe(0)
 
-    debouncer.execute('test')
+    debouncer.debounce('test')
     vi.advanceTimersByTime(1000)
     expect(debouncer.getExecutionCount()).toBe(1)
 
-    debouncer.execute('test')
+    debouncer.debounce('test')
     vi.advanceTimersByTime(1000)
     expect(debouncer.getExecutionCount()).toBe(2)
   })
@@ -158,7 +158,7 @@ describe('Debouncer', () => {
 
     expect(debouncer.getExecutionCount()).toBe(0)
 
-    debouncer.execute('test')
+    debouncer.debounce('test')
     expect(debouncer.getExecutionCount()).toBe(1) // Leading execution
 
     vi.advanceTimersByTime(1000)
@@ -169,7 +169,7 @@ describe('Debouncer', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
-    debouncer.execute('test')
+    debouncer.debounce('test')
     debouncer.cancel()
     vi.advanceTimersByTime(1000)
 

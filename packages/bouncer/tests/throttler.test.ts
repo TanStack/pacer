@@ -10,7 +10,7 @@ describe('Throttler', () => {
     const mockFn = vi.fn()
     const throttler = new Throttler(mockFn, { wait: 100 })
 
-    throttler.execute()
+    throttler.throttle()
     expect(mockFn).toHaveBeenCalledTimes(1)
   })
 
@@ -18,9 +18,9 @@ describe('Throttler', () => {
     const mockFn = vi.fn()
     const throttler = new Throttler(mockFn, { wait: 100 })
 
-    throttler.execute()
-    throttler.execute()
-    throttler.execute()
+    throttler.throttle()
+    throttler.throttle()
+    throttler.throttle()
 
     expect(mockFn).toHaveBeenCalledTimes(1)
   })
@@ -29,9 +29,9 @@ describe('Throttler', () => {
     const mockFn = vi.fn()
     const throttler = new Throttler(mockFn, { wait: 100 })
 
-    throttler.execute('first')
-    throttler.execute('second')
-    throttler.execute('third')
+    throttler.throttle('first')
+    throttler.throttle('second')
+    throttler.throttle('third')
 
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenLastCalledWith('first')
@@ -50,7 +50,7 @@ describe('Throttler', () => {
       trailing: false,
     })
 
-    throttler.execute()
+    throttler.throttle()
     expect(mockFn).not.toHaveBeenCalled()
 
     vi.advanceTimersByTime(100)
@@ -61,8 +61,8 @@ describe('Throttler', () => {
     const mockFn = vi.fn()
     const throttler = new Throttler(mockFn, { wait: 100, trailing: false })
 
-    throttler.execute('first')
-    throttler.execute('second')
+    throttler.throttle('first')
+    throttler.throttle('second')
 
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenCalledWith('first')
@@ -75,11 +75,11 @@ describe('Throttler', () => {
     const mockFn = vi.fn()
     const throttler = new Throttler(mockFn, { wait: 100 })
 
-    throttler.execute('first')
+    throttler.throttle('first')
     expect(mockFn).toHaveBeenCalledTimes(1)
 
     vi.advanceTimersByTime(100)
-    throttler.execute('second')
+    throttler.throttle('second')
     expect(mockFn).toHaveBeenCalledTimes(2)
     expect(mockFn).toHaveBeenLastCalledWith('second')
   })
@@ -88,10 +88,10 @@ describe('Throttler', () => {
     const mockFn = vi.fn()
     const throttler = new Throttler(mockFn, { wait: 100 })
 
-    throttler.execute()
+    throttler.throttle()
     expect(throttler.getExecutionCount()).toBe(1)
 
-    throttler.execute()
+    throttler.throttle()
     expect(throttler.getExecutionCount()).toBe(1)
 
     vi.advanceTimersByTime(100)
@@ -102,8 +102,8 @@ describe('Throttler', () => {
     const mockFn = vi.fn()
     const throttler = new Throttler(mockFn, { wait: 100 })
 
-    throttler.execute('first')
-    throttler.execute('second')
+    throttler.throttle('first')
+    throttler.throttle('second')
 
     expect(mockFn).toHaveBeenCalledTimes(1)
 
@@ -119,14 +119,14 @@ describe('Throttler', () => {
     const throttler = new Throttler(mockFn, { wait: 100 })
 
     // First burst
-    throttler.execute('a')
-    throttler.execute('b')
+    throttler.throttle('a')
+    throttler.throttle('b')
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenLastCalledWith('a')
 
     // Advance halfway
     vi.advanceTimersByTime(50)
-    throttler.execute('c')
+    throttler.throttle('c')
     expect(mockFn).toHaveBeenCalledTimes(1)
 
     // Complete first wait period
@@ -136,7 +136,7 @@ describe('Throttler', () => {
 
     // New execution after wait period
     vi.advanceTimersByTime(100)
-    throttler.execute('d')
+    throttler.throttle('d')
     expect(mockFn).toHaveBeenCalledTimes(3)
     expect(mockFn).toHaveBeenLastCalledWith('d')
   })

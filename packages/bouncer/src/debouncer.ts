@@ -3,10 +3,6 @@
  */
 export interface DebouncerOptions {
   /**
-   * Delay in milliseconds before executing the function
-   */
-  wait: number
-  /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to false.
    */
@@ -16,6 +12,10 @@ export interface DebouncerOptions {
    * Defaults to true. Setting to false will only let functions execute on the leading edge if `leading` is also set to true.
    */
   trailing?: boolean
+  /**
+   * Delay in milliseconds before executing the function
+   */
+  wait?: number
 }
 
 /**
@@ -37,6 +37,7 @@ export class Debouncer<
     this.options = {
       leading: false,
       trailing: true,
+      wait: 500,
       ...options,
     }
   }
@@ -51,7 +52,7 @@ export class Debouncer<
   /**
    * Executes the debounced function
    */
-  execute(...args: TArgs): void {
+  debounce(...args: TArgs): void {
     // Handle leading execution
     if (this.options.leading && this.canLeadingExecute) {
       this.executeFunction(...args)

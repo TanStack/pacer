@@ -13,7 +13,7 @@ export function useThrottler<
   }
 
   return {
-    throttle: throttlerRef.current.execute.bind(throttlerRef.current),
+    throttle: throttlerRef.current.throttle.bind(throttlerRef.current),
     cancel: throttlerRef.current.cancel.bind(throttlerRef.current),
     getExecutionCount: throttlerRef.current.getExecutionCount.bind(
       throttlerRef.current,

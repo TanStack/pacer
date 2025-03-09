@@ -8,7 +8,7 @@ function App() {
   const [debouncedCount, setDebouncedCount] = useState(0)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
-  const { debounce: debouncedSetCount } = useDebouncer(setDebouncedCount, {
+  const debouncer = useDebouncer(setDebouncedCount, {
     wait: 500,
   })
 
@@ -16,7 +16,7 @@ function App() {
     // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => {
       const newInstantCount = c + 1 // common new value for both
-      debouncedSetCount(newInstantCount) // debounced state update
+      debouncer.debounce(newInstantCount) // debounced state update
       return newInstantCount // instant state update
     })
   }
@@ -36,4 +36,4 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(<App />)
 
-scan()
+scan() // dev-tools for demo
