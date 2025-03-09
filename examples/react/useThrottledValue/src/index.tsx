@@ -12,7 +12,7 @@ function App() {
 
   // wrapper around useThrottler, useState, and useEffect that watches instantCount and throttles it
   const [throttledCount] = useThrottledValue(instantCount, {
-    wait: 500,
+    wait: 1000,
   })
 
   return (

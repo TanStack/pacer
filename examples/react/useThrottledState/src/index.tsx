@@ -8,7 +8,7 @@ function App() {
 
   // wrapper around useThrottler and useState
   const [throttledCount, setThrottledCount] = useThrottledState(instantCount, {
-    wait: 500,
+    wait: 1000,
   })
 
   function increment() {
