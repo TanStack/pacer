@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignoreDependencies": ["@size-limit/preset-small-lib", "@faker-js/faker"],
+  "ignoreWorkspaces": ["examples/**", "packages/bouncer/tests/**"],
+  "workspaces": {
+    "packages/match-sorter-utils": {
+      "ignoreDependencies": ["remove-accents"]
+    },
+    "packages/react-bouncer": {
+      "ignore": ["**/*.notest.*", "**/makeTestData.ts"]
+    }
+  }
+}

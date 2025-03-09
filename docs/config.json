@@ -1,0 +1,90 @@
+{
+  "$schema": "https://raw.githubusercontent.com/TanStack/tanstack.com/main/tanstack-docs-config.schema.json",
+  "docSearch": {
+    "appId": "",
+    "apiKey": "",
+    "indexName": "tanstack-bouncer"
+  },
+  "sections": [
+    {
+      "label": "Getting Started",
+      "children": [
+        {
+          "label": "Overview",
+          "to": "overview"
+        },
+        {
+          "label": "Installation",
+          "to": "installation"
+        },
+        {
+          "label": "Quick Start",
+          "to": "quick-start"
+        }
+      ],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "Quick Start",
+              "to": "framework/react/quick-start"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "API Reference",
+      "children": [
+
+      ],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "React Reference",
+              "to": "framework/react/reference/index"
+            },
+            {
+              "label": "Functions / useDebouncer",
+              "to": "framework/react/reference/functions/usedebouncer"
+            },
+            {
+              "label": "Functions / useDebouncedState",
+              "to": "framework/react/reference/functions/usedebouncedstate"
+            },
+            {
+              "label": "Functions / useDebouncedValue",
+              "to": "framework/react/reference/functions/usedebouncedvalue"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Examples",
+      "children": [],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "useDebouncer",
+              "to": "framework/react/examples/useDebouncer"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/react/examples/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/react/examples/useDebouncedValue"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

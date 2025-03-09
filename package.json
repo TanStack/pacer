@@ -1,0 +1,73 @@
+{
+  "name": "bouncer",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tanstack/query.git"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "type": "module",
+  "scripts": {
+    "build": "nx affected --targets=build --exclude=examples/** && size-limit",
+    "build:all": "nx run-many --targets=build --exclude=examples/** && size-limit",
+    "build:core": "nx build @tanstack/bouncer && size-limit",
+    "cipublish": "node scripts/publish.js",
+    "clean": "find . -name 'dist' -type d -prune -exec rm -rf {} +",
+    "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf {} +",
+    "dev": "pnpm run watch",
+    "docs:generate": "node scripts/generateDocs.js",
+    "format": "pnpm run prettier:write",
+    "lint:fix:all": "pnpm run format && nx run-many --targets=lint --fix",
+    "lint:fix": "nx affected --target=lint:fix --exclude=examples/**",
+    "preinstall": "node -e \"if(process.env.CI == 'true') {console.log('Skipping preinstall...'); process.exit(1)}\" || npx -y only-allow pnpm",
+    "prettier": "prettier --ignore-unknown '**/*'",
+    "prettier:write": "pnpm run prettier --write",
+    "size": "size-limit",
+    "test": "pnpm run test:ci",
+    "test:build": "nx affected --target=test:build --exclude=examples/**",
+    "test:ci": "nx run-many --targets=test:format,test:eslint,test:sherif,test:knip,test:lib,test:types,test:build,build",
+    "test:eslint": "nx affected --target=test:eslint --exclude=examples/**",
+    "test:format": "pnpm run prettier --check",
+    "test:knip": "knip",
+    "test:lib": "nx affected --targets=test:lib --exclude=examples/**",
+    "test:lib:dev": "pnpm test:lib && nx watch --all -- pnpm test:lib",
+    "test:pr": "nx affected --targets=test:format,test:eslint,test:sherif,test:knip,test:lib,test:types,test:build,build",
+    "test:sherif": "sherif",
+    "test:types": "nx affected --targets=test:types --exclude=examples/**",
+    "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all"
+  },
+  "nx": {
+    "includedScripts": [
+      "test:format",
+      "test:knip",
+      "test:sherif"
+    ]
+  },
+  "size-limit": [
+    {
+      "path": "packages/bouncer/dist/esm/index.js",
+      "limit": "4 KB"
+    }
+  ],
+  "devDependencies": {
+    "@faker-js/faker": "^9.6.0",
+    "@size-limit/preset-small-lib": "^11.2.0",
+    "@tanstack/config": "0.17.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@types/node": "^22.13.10",
+    "eslint": "^9.22.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "jsdom": "^26.0.0",
+    "knip": "^5.45.0",
+    "nx": "^20.5.0",
+    "prettier": "^3.5.3",
+    "prettier-plugin-svelte": "^3.3.3",
+    "publint": "^0.3.8",
+    "rimraf": "^6.0.1",
+    "sherif": "^1.4.0",
+    "size-limit": "^11.2.0",
+    "typescript": "5.8.2",
+    "vite": "^6.2.1",
+    "vitest": "^3.0.8"
+  }
+}
