@@ -14,6 +14,7 @@ export interface DebouncerOptions {
   trailing?: boolean
   /**
    * Delay in milliseconds before executing the function
+   * Defaults to 500ms
    */
   wait?: number
 }

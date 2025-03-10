@@ -14,7 +14,7 @@ export interface ThrottlerOptions {
   trailing?: boolean
   /**
    * Time window in milliseconds during which the function can only be executed once
-   * Defaults to 1000
+   * Defaults to 1000ms
    */
   wait?: number
 }
