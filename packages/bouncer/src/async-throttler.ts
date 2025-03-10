@@ -20,6 +20,7 @@ export class AsyncThrottler<
   TFn extends (...args: Array<any>) => Promise<any>,
   TArgs extends Parameters<TFn>,
 > {
+  private abortController: AbortController | null = null
   private executionCount = 0
   private isExecuting = false
   private isScheduled = false
@@ -53,6 +54,18 @@ export class AsyncThrottler<
   }
 
   /**
+   * Cancels any pending execution
+   */
+  cancel(): void {
+    if (this.abortController) {
+      this.abortController.abort()
+      this.abortController = null
+    }
+    this.isScheduled = false
+    this.lastArgs = undefined
+  }
+
+  /**
    * Executes the throttled async function
    */
   async throttle(...args: TArgs): Promise<void> {
@@ -60,31 +73,50 @@ export class AsyncThrottler<
     if (this.isScheduled) return
     this.isScheduled = true
 
-    while (this.isExecuting) {
-      await new Promise((resolve) => setTimeout(resolve, this.options.wait))
-    }
-
-    while (Date.now() < this.nextExecutionTime) {
-      await new Promise((resolve) =>
-        setTimeout(resolve, this.nextExecutionTime - Date.now()),
-      )
-    }
-
-    this.isScheduled = false
-    this.isExecuting = true
+    this.abortController = new AbortController()
+    const signal = this.abortController.signal
 
     try {
+      while (this.isExecuting) {
+        await this.delay(this.options.wait, signal)
+      }
+
+      while (Date.now() < this.nextExecutionTime) {
+        await this.delay(this.nextExecutionTime - Date.now(), signal)
+      }
+
+      this.isScheduled = false
+      this.isExecuting = true
+
       await this.executeFunction(...this.lastArgs)
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        return // Silent return on cancellation
+      }
       try {
         this.options.onError(error)
       } catch {
         // Ignore errors from error handler
       }
+    } finally {
+      this.nextExecutionTime = Date.now() + this.options.wait
+      this.isExecuting = false
+      this.abortController = null
     }
+  }
 
-    this.nextExecutionTime = Date.now() + this.options.wait
-    this.isExecuting = false
+  private delay(ms: number, signal: AbortSignal): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(resolve, ms)
+      signal.addEventListener(
+        'abort',
+        () => {
+          clearTimeout(timeout)
+          reject(new Error('AbortError'))
+        },
+        { once: true },
+      )
+    })
   }
 
   private async executeFunction(...args: TArgs): Promise<void> {

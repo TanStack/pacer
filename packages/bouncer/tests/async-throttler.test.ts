@@ -238,4 +238,108 @@ describe('AsyncThrottler', () => {
 
     expect(throttler.getNextExecutionTime()).toBe(now + 200)
   })
+
+  it('should cancel pending execution', async () => {
+    const mockFn = vi.fn().mockResolvedValue(undefined)
+    const throttler = new AsyncThrottler(mockFn, { wait: 100 })
+
+    // First call executes immediately
+    await throttler.throttle('first')
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenLastCalledWith('first')
+
+    // Start a throttled call
+    const promise = throttler.throttle('second')
+    // Cancel it immediately
+    throttler.cancel()
+
+    // Wait for the promise to settle
+    await expect(promise).resolves.toBeUndefined()
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenLastCalledWith('first')
+  })
+
+  it('should allow new executions after cancel', async () => {
+    const mockFn = vi.fn().mockResolvedValue(undefined)
+    const throttler = new AsyncThrottler(mockFn, { wait: 100 })
+
+    await throttler.throttle('first')
+    const promise = throttler.throttle('second')
+    throttler.cancel()
+    await promise
+
+    vi.advanceTimersByTime(100)
+    await throttler.throttle('third')
+
+    expect(mockFn).toHaveBeenCalledTimes(2)
+    expect(mockFn).toHaveBeenNthCalledWith(1, 'first')
+    expect(mockFn).toHaveBeenNthCalledWith(2, 'third')
+  })
+
+  it('should handle multiple cancel calls safely', async () => {
+    const mockFn = vi.fn().mockResolvedValue(undefined)
+    const throttler = new AsyncThrottler(mockFn, { wait: 100 })
+
+    // First call should execute
+    await throttler.throttle('first')
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenLastCalledWith('first')
+
+    // Second call should be cancelled
+    const promise = throttler.throttle('second')
+    throttler.cancel()
+    await promise
+
+    // Multiple cancels should not throw
+    throttler.cancel()
+
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenLastCalledWith('first')
+  })
+
+  it('should cancel while waiting for executing function to complete', async () => {
+    let resolveFirst: (value: unknown) => void
+    const firstCall = new Promise((resolve) => {
+      resolveFirst = resolve
+    })
+
+    const mockFn = vi.fn().mockImplementation(() => firstCall)
+    const throttler = new AsyncThrottler(mockFn, { wait: 100 })
+
+    // Start first long-running call
+    const promise1 = throttler.throttle('first')
+    const promise2 = throttler.throttle('second')
+    throttler.cancel()
+
+    resolveFirst!({})
+    await promise1
+    await promise2
+
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenLastCalledWith('first')
+  })
+
+  it('should let first call through but cancel subsequent calls', async () => {
+    const mockFn = vi.fn().mockResolvedValue(undefined)
+    const throttler = new AsyncThrottler(mockFn, { wait: 100 })
+
+    // First call should go through
+    await throttler.throttle('first')
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenLastCalledWith('first')
+
+    // Second call should be cancelled
+    const promise1 = throttler.throttle('second')
+    throttler.cancel()
+    await promise1
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenLastCalledWith('first')
+
+    // Third call should also be cancelled
+    const promise2 = throttler.throttle('third')
+    throttler.cancel()
+    await promise2
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenLastCalledWith('first')
+  })
 })
