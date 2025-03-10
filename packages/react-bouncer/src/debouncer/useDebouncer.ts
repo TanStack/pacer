@@ -1,6 +1,6 @@
-import { Debouncer } from '@tanstack/bouncer'
 import { useRef } from 'react'
-import type { DebouncerOptions } from '@tanstack/bouncer'
+import { Debouncer } from '@tanstack/bouncer/debouncer'
+import type { DebouncerOptions } from '@tanstack/bouncer/debouncer'
 
 export function useDebouncer<
   TFn extends (...args: Array<any>) => any,

@@ -36,6 +36,36 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./async-throttler": {
+      "import": {
+        "types": "./dist/esm/async-throttler.d.ts",
+        "default": "./dist/esm/async-throttler.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-throttler.d.cts",
+        "default": "./dist/cjs/async-throttler.cjs"
+      }
+    },
+    "./debouncer": {
+      "import": {
+        "types": "./dist/esm/debouncer.d.ts",
+        "default": "./dist/esm/debouncer.js"
+      },
+      "require": {
+        "types": "./dist/cjs/debouncer.d.cts",
+        "default": "./dist/cjs/debouncer.cjs"
+      }
+    },
+    "./throttler": {
+      "import": {
+        "types": "./dist/esm/throttler.d.ts",
+        "default": "./dist/esm/throttler.js"
+      },
+      "require": {
+        "types": "./dist/cjs/throttler.d.cts",
+        "default": "./dist/cjs/throttler.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,

@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useDebouncedState } from '@tanstack/react-bouncer'
+import { useDebouncedState } from '@tanstack/react-bouncer/debouncer'
 
 function App() {
   const [instantCount, setInstantCount] = useState(0)

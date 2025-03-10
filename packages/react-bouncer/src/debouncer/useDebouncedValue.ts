@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDebouncedState } from './useDebouncedState'
-import type { DebouncerOptions } from '@tanstack/bouncer'
+import type { DebouncerOptions } from '@tanstack/bouncer/debouncer'
 
 export function useDebouncedValue<TValue>(
   value: TValue,

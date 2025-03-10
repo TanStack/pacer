@@ -19,7 +19,8 @@
     "debounce",
     "throttle",
     "debouncer",
-    "throttler"
+    "throttler",
+    "async"
   ],
   "type": "module",
   "types": "dist/esm/index.d.ts",
@@ -34,6 +35,26 @@
       "require": {
         "types": "./dist/cjs/index.d.cts",
         "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./debouncer": {
+      "import": {
+        "types": "./dist/esm/debouncer/index.d.ts",
+        "default": "./dist/esm/debouncer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/debouncer/index.d.cts",
+        "default": "./dist/cjs/debouncer/index.cjs"
+      }
+    },
+    "./throttler": {
+      "import": {
+        "types": "./dist/esm/throttler/index.d.ts",
+        "default": "./dist/esm/throttler/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/throttler/index.d.cts",
+        "default": "./dist/cjs/throttler/index.cjs"
       }
     },
     "./package.json": "./package.json"

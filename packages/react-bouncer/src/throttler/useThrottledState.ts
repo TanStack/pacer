@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useThrottler } from './useThrottler'
-import type { ThrottlerOptions } from '@tanstack/bouncer'
+import type { ThrottlerOptions } from '@tanstack/bouncer/throttler'
 
 export function useThrottledState<TValue>(
   value: TValue,

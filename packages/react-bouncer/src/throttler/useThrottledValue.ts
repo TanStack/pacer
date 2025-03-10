@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useThrottledState } from './throttler/useThrottledState'
+import { useThrottledState } from './useThrottledState'
 import type { ThrottlerOptions } from '@tanstack/bouncer/throttler'
 
 export function useThrottledValue<TValue>(

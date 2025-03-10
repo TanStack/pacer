@@ -1,6 +1,6 @@
-import { Throttler } from '@tanstack/bouncer'
 import { useRef } from 'react'
-import type { ThrottlerOptions } from '@tanstack/bouncer'
+import { Throttler } from '@tanstack/bouncer/throttler'
+import type { ThrottlerOptions } from '@tanstack/bouncer/throttler'
 
 export function useThrottler<
   TFn extends (...args: Array<any>) => any,

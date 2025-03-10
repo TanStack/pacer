@@ -1,8 +1,10 @@
+// re-export everything from the core bouncer package
 export * from '@tanstack/bouncer'
 
-export * from './useDebouncedState'
-export * from './useDebouncedValue'
-export * from './useDebouncer'
-export * from './useThrottledState'
-export * from './useThrottledValue'
-export * from './useThrottler'
+// export every hook individually - DON'T export from barrel files
+export * from './debouncer/useDebouncedState'
+export * from './debouncer/useDebouncedValue'
+export * from './debouncer/useDebouncer'
+export * from './throttler/useThrottledState'
+export * from './throttler/useThrottledValue'
+export * from './throttler/useThrottler'
