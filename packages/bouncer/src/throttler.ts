@@ -14,9 +14,8 @@ export interface ThrottlerOptions {
   trailing?: boolean
   /**
    * Time window in milliseconds during which the function can only be executed once
-   * Defaults to 1000ms
    */
-  wait?: number
+  wait: number
 }
 
 /**
@@ -39,7 +38,6 @@ export class Throttler<
     this.options = {
       leading: true,
       trailing: true,
-      wait: 1000,
       ...options,
     }
   }
@@ -66,7 +64,7 @@ export class Throttler<
     const timeSinceLastExecution = now - this.lastExecutionTime
 
     // Handle leading execution
-    if (timeSinceLastExecution >= this.options.wait!) {
+    if (timeSinceLastExecution >= this.options.wait) {
       if (this.options.leading) {
         this.executeFunction(...args)
       }
@@ -84,7 +82,7 @@ export class Throttler<
           }
           this.lastExecutionTime = Date.now()
           this.timeoutId = undefined
-        }, this.options.wait! - timeSinceLastExecution)
+        }, this.options.wait - timeSinceLastExecution)
       }
     }
   }

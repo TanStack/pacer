@@ -16,7 +16,7 @@ export interface DebouncerOptions {
    * Delay in milliseconds before executing the function
    * Defaults to 500ms
    */
-  wait?: number
+  wait: number
 }
 
 /**
@@ -38,7 +38,6 @@ export class Debouncer<
     this.options = {
       leading: false,
       trailing: true,
-      wait: 500,
       ...options,
     }
   }

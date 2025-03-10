@@ -6,7 +6,7 @@ export interface AsyncThrottlerOptions {
    * Time window in milliseconds during which the function can only be executed once
    * Defaults to 1000ms
    */
-  wait?: number
+  wait: number
   /**
    * Optional error handler for when the throttled function throws
    */
@@ -30,10 +30,9 @@ export class AsyncThrottler<
 
   constructor(
     private fn: TFn,
-    options: AsyncThrottlerOptions = {},
+    options: AsyncThrottlerOptions,
   ) {
     this.options = {
-      wait: 1000,
       onError: () => {},
       ...options,
     }
