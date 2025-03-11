@@ -2,6 +2,7 @@
 export * from '@tanstack/bouncer'
 
 // export every hook individually - DON'T export from barrel files
+export * from './async-throttler/useAsyncThrottler'
 export * from './debouncer/useDebouncedState'
 export * from './debouncer/useDebouncedValue'
 export * from './debouncer/useDebouncer'
