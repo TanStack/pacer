@@ -42,20 +42,20 @@ function App() {
     } finally {
       setIsLoading(false)
     }
-    console.log(asyncThrottler.getExecutionCount())
+    console.log(setSearchAsyncThrottler.getExecutionCount())
   }
 
-  const asyncThrottler = useAsyncThrottler(handleSearch, {
+  const setSearchAsyncThrottler = useAsyncThrottler(handleSearch, {
     wait: 1000, // Wait 1 second between API calls
   })
 
-  const handleSearchThrottled = asyncThrottler.asyncThrottle
+  const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute
 
   useEffect(() => {
     console.log('mount')
     return () => {
       console.log('unmount')
-      asyncThrottler.cancel() // cancel any pending async calls when the component unmounts
+      setSearchAsyncThrottler.cancel() // cancel any pending async calls when the component unmounts
     }
   }, [])
 
@@ -79,7 +79,7 @@ function App() {
         />
       </div>
       <div>
-        <p>API calls made: {asyncThrottler.getExecutionCount()}</p>
+        <p>API calls made: {setSearchAsyncThrottler.getExecutionCount()}</p>
         {isLoading ? (
           <p>Loading...</p>
         ) : (

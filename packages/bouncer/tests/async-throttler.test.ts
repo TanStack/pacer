@@ -10,7 +10,7 @@ describe('AsyncThrottler', () => {
     const mockFn = vi.fn().mockResolvedValue(undefined)
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
-    await throttler.asyncThrottle()
+    await throttler.maybeExecute()
     expect(mockFn).toHaveBeenCalledTimes(1)
   })
 
@@ -19,14 +19,14 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
     // First call executes immediately
-    const promise1 = throttler.asyncThrottle('first')
+    const promise1 = throttler.maybeExecute('first')
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenLastCalledWith('first')
     await promise1
 
     // Make multiple calls within the wait period
-    throttler.asyncThrottle('second')
-    throttler.asyncThrottle('third')
+    throttler.maybeExecute('second')
+    throttler.maybeExecute('third')
 
     // Verify no additional executions occurred
     expect(mockFn).toHaveBeenCalledTimes(1)
@@ -52,9 +52,9 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait })
 
     // Start first long-running call
-    const promise1 = throttler.asyncThrottle(1)
-    throttler.asyncThrottle(2)
-    const promise3 = throttler.asyncThrottle(3)
+    const promise1 = throttler.maybeExecute(1)
+    throttler.maybeExecute(2)
+    const promise3 = throttler.maybeExecute(3)
 
     // First call should be executing
     expect(mockFn).toHaveBeenCalledTimes(1)
@@ -78,8 +78,8 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
     // Initial call
-    const promise1 = throttler.asyncThrottle(1)
-    throttler.asyncThrottle(2)
+    const promise1 = throttler.maybeExecute(1)
+    throttler.maybeExecute(2)
 
     // First call should execute immediately
     expect(mockFn).toHaveBeenCalledTimes(1)
@@ -88,11 +88,11 @@ describe('AsyncThrottler', () => {
 
     // Small delay then another call
     vi.advanceTimersByTime(35)
-    throttler.asyncThrottle(3)
+    throttler.maybeExecute(3)
 
     // Another small delay and final call
     vi.advanceTimersByTime(35)
-    const finalPromise = throttler.asyncThrottle(4)
+    const finalPromise = throttler.maybeExecute(4)
 
     // Advance to complete the throttle period
     vi.advanceTimersByTime(100)
@@ -106,11 +106,11 @@ describe('AsyncThrottler', () => {
     const mockFn = vi.fn().mockResolvedValue(undefined)
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
-    await throttler.asyncThrottle('first')
+    await throttler.maybeExecute('first')
     expect(mockFn).toHaveBeenCalledWith('first')
 
     // These calls should be throttled
-    const promise = throttler.asyncThrottle('second')
+    const promise = throttler.maybeExecute('second')
 
     vi.advanceTimersByTime(100)
     await promise
@@ -123,10 +123,10 @@ describe('AsyncThrottler', () => {
     const mockFn = vi.fn().mockResolvedValue(undefined)
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
-    await throttler.asyncThrottle()
+    await throttler.maybeExecute()
     expect(throttler.getExecutionCount()).toBe(1)
 
-    const promise = throttler.asyncThrottle()
+    const promise = throttler.maybeExecute()
     expect(throttler.getExecutionCount()).toBe(1)
 
     vi.advanceTimersByTime(100)
@@ -140,7 +140,7 @@ describe('AsyncThrottler', () => {
     const onError = vi.fn()
     const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
 
-    await throttler.asyncThrottle()
+    await throttler.maybeExecute()
     expect(onError).toHaveBeenCalledWith(error)
   })
 
@@ -153,7 +153,7 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
 
     // Should not throw
-    await expect(throttler.asyncThrottle()).resolves.not.toThrow()
+    await expect(throttler.maybeExecute()).resolves.not.toThrow()
   })
 
   it('should continue processing after function throws error', async () => {
@@ -164,10 +164,10 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
     // First call throws
-    await throttler.asyncThrottle(1)
+    await throttler.maybeExecute(1)
 
     // Second call should still execute after wait period
-    const promise = throttler.asyncThrottle(2)
+    const promise = throttler.maybeExecute(2)
     vi.advanceTimersByTime(100)
     await promise
 
@@ -184,8 +184,8 @@ describe('AsyncThrottler', () => {
     const mockFn = vi.fn().mockImplementation(() => firstCall)
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
-    const promise1 = throttler.asyncThrottle('first')
-    const promise2 = throttler.asyncThrottle('second')
+    const promise1 = throttler.maybeExecute('first')
+    const promise2 = throttler.maybeExecute('second')
 
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenCalledWith('first')
@@ -204,12 +204,12 @@ describe('AsyncThrottler', () => {
     const mockFn = vi.fn().mockResolvedValue(undefined)
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
-    await throttler.asyncThrottle('a')
+    await throttler.maybeExecute('a')
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenLastCalledWith('a')
 
     // Should be throttled
-    const promise = throttler.asyncThrottle('b')
+    const promise = throttler.maybeExecute('b')
     expect(mockFn).toHaveBeenCalledTimes(1)
 
     vi.advanceTimersByTime(100)
@@ -219,7 +219,7 @@ describe('AsyncThrottler', () => {
 
     // Should execute immediately after wait period
     vi.advanceTimersByTime(100)
-    await throttler.asyncThrottle('c')
+    await throttler.maybeExecute('c')
     expect(mockFn).toHaveBeenCalledTimes(3)
     expect(mockFn).toHaveBeenLastCalledWith('c')
   })
@@ -229,12 +229,12 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
     const now = Date.now()
-    await throttler.asyncThrottle()
+    await throttler.maybeExecute()
 
     expect(throttler.getNextExecutionTime()).toBe(now + 100)
 
     vi.advanceTimersByTime(100)
-    await throttler.asyncThrottle()
+    await throttler.maybeExecute()
 
     expect(throttler.getNextExecutionTime()).toBe(now + 200)
   })
@@ -244,12 +244,12 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
     // First call executes immediately
-    await throttler.asyncThrottle('first')
+    await throttler.maybeExecute('first')
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenLastCalledWith('first')
 
     // Start a throttled call
-    const promise = throttler.asyncThrottle('second')
+    const promise = throttler.maybeExecute('second')
     // Cancel it immediately
     throttler.cancel()
 
@@ -263,13 +263,13 @@ describe('AsyncThrottler', () => {
     const mockFn = vi.fn().mockResolvedValue(undefined)
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
-    await throttler.asyncThrottle('first')
-    const promise = throttler.asyncThrottle('second')
+    await throttler.maybeExecute('first')
+    const promise = throttler.maybeExecute('second')
     throttler.cancel()
     await promise
 
     vi.advanceTimersByTime(100)
-    await throttler.asyncThrottle('third')
+    await throttler.maybeExecute('third')
 
     expect(mockFn).toHaveBeenCalledTimes(2)
     expect(mockFn).toHaveBeenNthCalledWith(1, 'first')
@@ -281,12 +281,12 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
     // First call should execute
-    await throttler.asyncThrottle('first')
+    await throttler.maybeExecute('first')
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenLastCalledWith('first')
 
     // Second call should be cancelled
-    const promise = throttler.asyncThrottle('second')
+    const promise = throttler.maybeExecute('second')
     throttler.cancel()
     await promise
 
@@ -307,8 +307,8 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
     // Start first long-running call
-    const promise1 = throttler.asyncThrottle('first')
-    const promise2 = throttler.asyncThrottle('second')
+    const promise1 = throttler.maybeExecute('first')
+    const promise2 = throttler.maybeExecute('second')
     throttler.cancel()
 
     resolveFirst!({})
@@ -324,19 +324,19 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100 })
 
     // First call should go through
-    await throttler.asyncThrottle('first')
+    await throttler.maybeExecute('first')
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenLastCalledWith('first')
 
     // Second call should be cancelled
-    const promise1 = throttler.asyncThrottle('second')
+    const promise1 = throttler.maybeExecute('second')
     throttler.cancel()
     await promise1
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenLastCalledWith('first')
 
     // Third call should also be cancelled
-    const promise2 = throttler.asyncThrottle('third')
+    const promise2 = throttler.maybeExecute('third')
     throttler.cancel()
     await promise2
     expect(mockFn).toHaveBeenCalledTimes(1)

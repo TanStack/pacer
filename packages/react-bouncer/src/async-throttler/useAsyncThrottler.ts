@@ -13,7 +13,7 @@ export function useAsyncThrottler<
   }
 
   return {
-    asyncThrottle: asyncThrottlerRef.current.asyncThrottle.bind(
+    maybeExecute: asyncThrottlerRef.current.maybeExecute.bind(
       asyncThrottlerRef.current,
     ),
     cancel: asyncThrottlerRef.current.cancel.bind(asyncThrottlerRef.current),

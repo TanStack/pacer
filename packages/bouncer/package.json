@@ -1,7 +1,7 @@
 {
   "name": "@tanstack/bouncer",
   "version": "0.0.1-alpha.0",
-  "description": "Utilities for debouncing, throttling, scheduling, queuing, and more.",
+  "description": "Utilities for debouncing, throttling, rate-limiting, queuing, and more.",
   "author": "Tanner Linsley",
   "license": "MIT",
   "repository": {
@@ -17,7 +17,7 @@
   "keywords": [
     "debounce",
     "throttle",
-    "schedule",
+    "rate-limit",
     "queue",
     "bouncer"
   ],
@@ -54,6 +54,46 @@
       "require": {
         "types": "./dist/cjs/debouncer.d.cts",
         "default": "./dist/cjs/debouncer.cjs"
+      }
+    },
+    "./queue": {
+      "import": {
+        "types": "./dist/esm/queue.d.ts",
+        "default": "./dist/esm/queue.js"
+      },
+      "require": {
+        "types": "./dist/cjs/queue.d.cts",
+        "default": "./dist/cjs/queue.cjs"
+      }
+    },
+    "./rate-limited-queue": {
+      "import": {
+        "types": "./dist/esm/rate-limited-queue.d.ts",
+        "default": "./dist/esm/rate-limited-queue.js"
+      },
+      "require": {
+        "types": "./dist/cjs/rate-limited-queue.d.cts",
+        "default": "./dist/cjs/rate-limited-queue.cjs"
+      }
+    },
+    "./rate-limiter": {
+      "import": {
+        "types": "./dist/esm/rate-limiter.d.ts",
+        "default": "./dist/esm/rate-limiter.js"
+      },
+      "require": {
+        "types": "./dist/cjs/rate-limiter.d.cts",
+        "default": "./dist/cjs/rate-limiter.cjs"
+      }
+    },
+    "./stack": {
+      "import": {
+        "types": "./dist/esm/stack.d.ts",
+        "default": "./dist/esm/stack.js"
+      },
+      "require": {
+        "types": "./dist/cjs/stack.d.cts",
+        "default": "./dist/cjs/stack.cjs"
       }
     },
     "./throttler": {

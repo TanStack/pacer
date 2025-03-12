@@ -67,7 +67,7 @@ export class AsyncThrottler<
   /**
    * Executes the throttled async function
    */
-  async asyncThrottle(...args: TArgs): Promise<void> {
+  async maybeExecute(...args: TArgs): Promise<void> {
     this.lastArgs = args
     if (this.isScheduled) return
     this.isScheduled = true

@@ -10,5 +10,5 @@ export function useThrottledState<TValue>(
 
   const throttler = useThrottler(setThrottledValue, options)
 
-  return [throttledValue, throttler.throttle, throttler] as const
+  return [throttledValue, throttler.maybeExecute, throttler] as const
 }

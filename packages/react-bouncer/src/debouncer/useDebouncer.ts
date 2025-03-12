@@ -13,7 +13,7 @@ export function useDebouncer<
   }
 
   return {
-    debounce: debouncerRef.current.debounce.bind(debouncerRef.current),
+    maybeExecute: debouncerRef.current.maybeExecute.bind(debouncerRef.current),
     cancel: debouncerRef.current.cancel.bind(debouncerRef.current),
     getExecutionCount: debouncerRef.current.getExecutionCount.bind(
       debouncerRef.current,

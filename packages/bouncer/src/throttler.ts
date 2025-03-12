@@ -59,7 +59,7 @@ export class Throttler<
   /**
    * Executes the throttled function
    */
-  throttle(...args: TArgs): void {
+  maybeExecute(...args: TArgs): void {
     const now = Date.now()
     const timeSinceLastExecution = now - this.lastExecutionTime
 

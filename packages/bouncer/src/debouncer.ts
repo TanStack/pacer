@@ -52,7 +52,7 @@ export class Debouncer<
   /**
    * Executes the debounced function
    */
-  debounce(...args: TArgs): void {
+  maybeExecute(...args: TArgs): void {
     // Handle leading execution
     if (this.options.leading && this.canLeadingExecute) {
       this.executeFunction(...args)

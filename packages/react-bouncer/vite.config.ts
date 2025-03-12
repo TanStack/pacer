@@ -20,6 +20,7 @@ export default mergeConfig(
   tanstackViteConfig({
     entry: [
       './src/index.ts',
+      './src/async-throttler/index.ts',
       './src/debouncer/index.ts',
       './src/throttler/index.ts',
     ],

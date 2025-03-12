@@ -10,5 +10,5 @@ export function useDebouncedState<TValue>(
 
   const debouncer = useDebouncer(setDebouncedValue, options)
 
-  return [debouncedValue, debouncer.debounce, debouncer] as const
+  return [debouncedValue, debouncer.maybeExecute, debouncer] as const
 }
