@@ -10,7 +10,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer useQueuer Example</h1>
+      <h1>TanStack Bouncer useQueuedState Example</h1>
       <div>Queue Size: {queuer.size()}</div>
       <div>Queue Max Size: {10}</div>
       <div>Queue Full: {queuer.isFull() ? 'Yes' : 'No'}</div>

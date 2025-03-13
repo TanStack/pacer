@@ -67,6 +67,16 @@
         "default": "./dist/cjs/queuer/index.cjs"
       }
     },
+    "./stacker": {
+      "import": {
+        "types": "./dist/esm/stacker/index.d.ts",
+        "default": "./dist/esm/stacker/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/stacker/index.d.cts",
+        "default": "./dist/cjs/stacker/index.cjs"
+      }
+    },
     "./throttler": {
       "import": {
         "types": "./dist/esm/throttler/index.d.ts",

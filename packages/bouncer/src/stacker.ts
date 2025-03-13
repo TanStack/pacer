@@ -1,5 +1,7 @@
-export interface StackOptions {
+export interface StackOptions<TValue> {
   maxSize?: number
+  initialItems?: Array<TValue>
+  onUpdate?: (stacker: Stacker<TValue>) => void
 }
 
 /**
@@ -7,12 +9,18 @@ export interface StackOptions {
  */
 export class Stacker<TValue> {
   private items: Array<TValue> = []
-  private options: Required<StackOptions>
+  private options: Required<StackOptions<TValue>>
 
-  constructor(options: StackOptions = {}) {
+  constructor(options: StackOptions<TValue> = {}) {
     this.options = {
+      initialItems: [],
       maxSize: Infinity,
+      onUpdate: () => {},
       ...options,
+    }
+
+    if (this.options.initialItems.length) {
+      this.items = [...this.options.initialItems]
     }
   }
 
@@ -25,6 +33,7 @@ export class Stacker<TValue> {
       return false
     }
     this.items.push(item)
+    this.options.onUpdate(this)
     return true
   }
 
@@ -33,7 +42,11 @@ export class Stacker<TValue> {
    * @returns the top item or undefined if stack is empty
    */
   pop(): TValue | undefined {
-    return this.items.pop()
+    const item = this.items.pop()
+    if (item !== undefined) {
+      this.options.onUpdate(this)
+    }
+    return item
   }
 
   /**
@@ -69,5 +82,13 @@ export class Stacker<TValue> {
    */
   clear(): void {
     this.items = []
+    this.options.onUpdate(this)
+  }
+
+  /**
+   * Returns a copy of all items in the stack
+   */
+  getItems(): Array<TValue> {
+    return [...this.items]
   }
 }

@@ -1,14 +1,14 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { Stacker } from '../src/stacker'
 
 describe('Stacker', () => {
-  test('should create an empty stack', () => {
+  it('should create an empty stack', () => {
     const stack = new Stacker()
     expect(stack.isEmpty()).toBe(true)
     expect(stack.size()).toBe(0)
   })
 
-  test('should respect maxSize option', () => {
+  it('should respect maxSize option', () => {
     const stack = new Stacker({ maxSize: 2 })
     expect(stack.push(1)).toBe(true)
     expect(stack.push(2)).toBe(true)
@@ -17,7 +17,7 @@ describe('Stacker', () => {
   })
 
   describe('push', () => {
-    test('should add items to the stack', () => {
+    it('should add items to the stack', () => {
       const stack = new Stacker<number>()
       expect(stack.push(1)).toBe(true)
       expect(stack.size()).toBe(1)
@@ -26,7 +26,7 @@ describe('Stacker', () => {
   })
 
   describe('pop', () => {
-    test('should remove and return items in LIFO order', () => {
+    it('should remove and return items in LIFO order', () => {
       const stack = new Stacker<number>()
       stack.push(1)
       stack.push(2)
@@ -38,14 +38,14 @@ describe('Stacker', () => {
       expect(stack.pop()).toBeUndefined()
     })
 
-    test('should return undefined when stack is empty', () => {
+    it('should return undefined when stack is empty', () => {
       const stack = new Stacker<number>()
       expect(stack.pop()).toBeUndefined()
     })
   })
 
   describe('peek', () => {
-    test('should return top item without removing it', () => {
+    it('should return top item without removing it', () => {
       const stack = new Stacker<number>()
       stack.push(1)
       stack.push(2)
@@ -54,19 +54,19 @@ describe('Stacker', () => {
       expect(stack.size()).toBe(2)
     })
 
-    test('should return undefined when stack is empty', () => {
+    it('should return undefined when stack is empty', () => {
       const stack = new Stacker<number>()
       expect(stack.peek()).toBeUndefined()
     })
   })
 
   describe('isEmpty', () => {
-    test('should return true when stack is empty', () => {
+    it('should return true when stack is empty', () => {
       const stack = new Stacker<number>()
       expect(stack.isEmpty()).toBe(true)
     })
 
-    test('should return false when stack has items', () => {
+    it('should return false when stack has items', () => {
       const stack = new Stacker<number>()
       stack.push(1)
       expect(stack.isEmpty()).toBe(false)
@@ -74,14 +74,14 @@ describe('Stacker', () => {
   })
 
   describe('isFull', () => {
-    test('should return true when stack reaches maxSize', () => {
+    it('should return true when stack reaches maxSize', () => {
       const stack = new Stacker<number>({ maxSize: 2 })
       stack.push(1)
       stack.push(2)
       expect(stack.isFull()).toBe(true)
     })
 
-    test('should return false when stack is not full', () => {
+    it('should return false when stack is not full', () => {
       const stack = new Stacker<number>({ maxSize: 2 })
       stack.push(1)
       expect(stack.isFull()).toBe(false)
@@ -89,7 +89,7 @@ describe('Stacker', () => {
   })
 
   describe('clear', () => {
-    test('should remove all items from the stack', () => {
+    it('should remove all items from the stack', () => {
       const stack = new Stacker<number>()
       stack.push(1)
       stack.push(2)
@@ -98,6 +98,64 @@ describe('Stacker', () => {
       expect(stack.isEmpty()).toBe(true)
       expect(stack.size()).toBe(0)
       expect(stack.peek()).toBeUndefined()
+    })
+  })
+
+  describe('options', () => {
+    describe('initialItems', () => {
+      it('should initialize stack with provided items', () => {
+        const stack = new Stacker<number>({ initialItems: [1, 2, 3] })
+        expect(stack.size()).toBe(3)
+        expect(stack.getItems()).toEqual([1, 2, 3])
+      })
+
+      it('should handle empty initialItems array', () => {
+        const stack = new Stacker<number>({ initialItems: [] })
+        expect(stack.isEmpty()).toBe(true)
+      })
+    })
+
+    describe('onUpdate', () => {
+      it('should call onUpdate when items are added', () => {
+        const onUpdate = vi.fn()
+        const stack = new Stacker<number>({ onUpdate })
+
+        stack.push(1)
+        expect(onUpdate).toHaveBeenCalledTimes(1)
+        expect(onUpdate).toHaveBeenCalledWith(stack)
+      })
+
+      it('should call onUpdate when items are removed', () => {
+        const onUpdate = vi.fn()
+        const stack = new Stacker<number>({ onUpdate })
+
+        stack.push(1)
+        onUpdate.mockClear()
+
+        stack.pop()
+        expect(onUpdate).toHaveBeenCalledTimes(1)
+        expect(onUpdate).toHaveBeenCalledWith(stack)
+      })
+
+      it('should call onUpdate when stack is cleared', () => {
+        const onUpdate = vi.fn()
+        const stack = new Stacker<number>({ onUpdate })
+
+        stack.push(1)
+        onUpdate.mockClear()
+
+        stack.clear()
+        expect(onUpdate).toHaveBeenCalledTimes(1)
+        expect(onUpdate).toHaveBeenCalledWith(stack)
+      })
+
+      it('should not call onUpdate when popping from empty stack', () => {
+        const onUpdate = vi.fn()
+        const stack = new Stacker<number>({ onUpdate })
+
+        stack.pop()
+        expect(onUpdate).not.toHaveBeenCalled()
+      })
     })
   })
 })
