@@ -57,6 +57,16 @@
         "default": "./dist/cjs/debouncer/index.cjs"
       }
     },
+    "./queuer": {
+      "import": {
+        "types": "./dist/esm/queuer/index.d.ts",
+        "default": "./dist/esm/queuer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/queuer/index.d.cts",
+        "default": "./dist/cjs/queuer/index.cjs"
+      }
+    },
     "./throttler": {
       "import": {
         "types": "./dist/esm/throttler/index.d.ts",

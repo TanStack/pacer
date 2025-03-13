@@ -5,7 +5,7 @@ export interface StackOptions {
 /**
  * A basic LIFO (Last In First Out) stack implementation
  */
-export class Stack<TValue> {
+export class Stacker<TValue> {
   private items: Array<TValue> = []
   private options: Required<StackOptions>
 

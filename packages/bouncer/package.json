@@ -56,24 +56,24 @@
         "default": "./dist/cjs/debouncer.cjs"
       }
     },
-    "./queue": {
+    "./queuer": {
       "import": {
-        "types": "./dist/esm/queue.d.ts",
-        "default": "./dist/esm/queue.js"
+        "types": "./dist/esm/queuer.d.ts",
+        "default": "./dist/esm/queuer.js"
       },
       "require": {
-        "types": "./dist/cjs/queue.d.cts",
-        "default": "./dist/cjs/queue.cjs"
+        "types": "./dist/cjs/queuer.d.cts",
+        "default": "./dist/cjs/queuer.cjs"
       }
     },
-    "./rate-limited-queue": {
+    "./rate-limited-queuer": {
       "import": {
-        "types": "./dist/esm/rate-limited-queue.d.ts",
-        "default": "./dist/esm/rate-limited-queue.js"
+        "types": "./dist/esm/rate-limited-queuer.d.ts",
+        "default": "./dist/esm/rate-limited-queuer.js"
       },
       "require": {
-        "types": "./dist/cjs/rate-limited-queue.d.cts",
-        "default": "./dist/cjs/rate-limited-queue.cjs"
+        "types": "./dist/cjs/rate-limited-queuer.d.cts",
+        "default": "./dist/cjs/rate-limited-queuer.cjs"
       }
     },
     "./rate-limiter": {
@@ -86,14 +86,14 @@
         "default": "./dist/cjs/rate-limiter.cjs"
       }
     },
-    "./stack": {
+    "./stacker": {
       "import": {
-        "types": "./dist/esm/stack.d.ts",
-        "default": "./dist/esm/stack.js"
+        "types": "./dist/esm/stacker.d.ts",
+        "default": "./dist/esm/stacker.js"
       },
       "require": {
-        "types": "./dist/cjs/stack.d.cts",
-        "default": "./dist/cjs/stack.cjs"
+        "types": "./dist/cjs/stacker.d.cts",
+        "default": "./dist/cjs/stacker.cjs"
       }
     },
     "./throttler": {

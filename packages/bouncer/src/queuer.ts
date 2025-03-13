@@ -1,18 +1,26 @@
-export interface QueueOptions {
+export interface QueueOptions<TValue> {
+  initialItems?: Array<TValue>
   maxSize?: number
+  onUpdate?: (queuer: Queuer<TValue>) => void
 }
 
 /**
- * A basic FIFO (First In First Out) queue implementation
+ * A FIFO (First In First Out) queue implementation
  */
-export class Queue<TValue> {
+export class Queuer<TValue> {
   private items: Array<TValue> = []
-  private options: Required<QueueOptions>
+  private options: Required<QueueOptions<TValue>>
 
-  constructor(options: QueueOptions = {}) {
+  constructor(options: QueueOptions<TValue> = {}) {
     this.options = {
+      initialItems: [],
       maxSize: Infinity,
+      onUpdate: () => {},
       ...options,
+    }
+
+    if (this.options.initialItems.length) {
+      this.items = [...this.options.initialItems]
     }
   }
 
@@ -25,6 +33,7 @@ export class Queue<TValue> {
       return false
     }
     this.items.push(item)
+    this.options.onUpdate(this)
     return true
   }
 
@@ -33,7 +42,11 @@ export class Queue<TValue> {
    * @returns the first item or undefined if queue is empty
    */
   dequeue(): TValue | undefined {
-    return this.items.shift()
+    const item = this.items.shift()
+    if (item) {
+      this.options.onUpdate(this)
+    }
+    return item
   }
 
   /**
@@ -69,5 +82,13 @@ export class Queue<TValue> {
    */
   clear(): void {
     this.items = []
+    this.options.onUpdate(this)
+  }
+
+  /**
+   * Returns a copy of all items in the queue
+   */
+  getItems(): Array<TValue> {
+    return [...this.items]
   }
 }

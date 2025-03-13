@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client'
 import { useThrottler } from '@tanstack/react-bouncer/throttler'
 
 function App() {
+  // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
   const [throttledCount, setThrottledCount] = useState(0)
 

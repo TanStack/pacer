@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client'
 import { useDebouncer } from '@tanstack/react-bouncer/debouncer'
 
 function App() {
+  // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
   const [debouncedCount, setDebouncedCount] = useState(0)
 

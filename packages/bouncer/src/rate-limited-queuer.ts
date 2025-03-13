@@ -1,26 +1,26 @@
-import { Queue } from './queue'
+import { Queuer } from './queuer'
 import { RateLimiter } from './rate-limiter'
-import type { QueueOptions } from './queue'
+import type { QueueOptions } from './queuer'
 import type { RateLimiterOptions } from './rate-limiter'
 
-export interface RateLimitedQueueOptions
-  extends QueueOptions,
+export interface RateLimitedQueueOptions<TValue>
+  extends QueueOptions<TValue>,
     RateLimiterOptions {}
 
 /**
  * A queue that processes items at a controlled rate
  */
-export class RateLimitedQueue<TValue> {
-  private queue: Queue<TValue>
+export class RateLimitedQueuer<TValue> {
+  private queue: Queuer<TValue>
   private rateLimiter: RateLimiter<(item: TValue) => void, [TValue]>
   private processingInterval: NodeJS.Timeout | undefined
   private isProcessing = false
 
   constructor(
     private processor: (item: TValue) => void,
-    options: RateLimitedQueueOptions,
+    options: RateLimitedQueueOptions<TValue>,
   ) {
-    this.queue = new Queue<TValue>(options)
+    this.queue = new Queuer<TValue>(options)
     this.rateLimiter = new RateLimiter(
       (item: TValue) => this.processor(item),
       options,

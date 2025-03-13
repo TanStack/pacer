@@ -23,6 +23,7 @@ export default mergeConfig(
       './src/async-throttler/index.ts',
       './src/debouncer/index.ts',
       './src/throttler/index.ts',
+      './src/queuer/index.ts',
     ],
     srcDir: './src',
   }),
