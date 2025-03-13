@@ -36,6 +36,16 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./async-debouncer": {
+      "import": {
+        "types": "./dist/esm/async-debouncer.d.ts",
+        "default": "./dist/esm/async-debouncer.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-debouncer.d.cts",
+        "default": "./dist/cjs/async-debouncer.cjs"
+      }
+    },
     "./async-throttler": {
       "import": {
         "types": "./dist/esm/async-throttler.d.ts",

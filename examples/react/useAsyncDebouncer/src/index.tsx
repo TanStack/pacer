@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useAsyncThrottler } from '@tanstack/react-bouncer/async-throttler'
+import { useAsyncDebouncer } from '@tanstack/react-bouncer/async-debouncer'
 
 interface SearchResult {
   id: number
@@ -42,32 +42,32 @@ function App() {
     } finally {
       setIsLoading(false)
     }
-    console.log(setSearchAsyncThrottler.getExecutionCount())
+    console.log(setSearchAsyncDebouncer.getExecutionCount())
   }
 
-  const setSearchAsyncThrottler = useAsyncThrottler(handleSearch, {
-    wait: 1000, // Wait 1 second between API calls
+  const setSearchAsyncDebouncer = useAsyncDebouncer(handleSearch, {
+    wait: 500, // Wait 500ms between API calls
   })
 
-  const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute
+  const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute
 
   useEffect(() => {
     console.log('mount')
     return () => {
       console.log('unmount')
-      setSearchAsyncThrottler.cancel() // cancel any pending async calls when the component unmounts
+      setSearchAsyncDebouncer.cancel() // cancel any pending async calls when the component unmounts
     }
   }, [])
 
   function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newTerm = e.target.value
     setSearchTerm(newTerm)
-    handleSearchThrottled(newTerm)
+    handleSearchDebounced(newTerm)
   }
 
   return (
     <div>
-      <h1>TanStack Bouncer useAsyncThrottler Example</h1>
+      <h1>TanStack Bouncer useAsyncDebouncer Example</h1>
       <div>
         <input
           type="text"
@@ -79,7 +79,7 @@ function App() {
         />
       </div>
       <div>
-        <p>API calls made: {setSearchAsyncThrottler.getExecutionCount()}</p>
+        <p>API calls made: {setSearchAsyncDebouncer.getExecutionCount()}</p>
         {isLoading ? (
           <p>Loading...</p>
         ) : (
