@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/react-bouncer",
-  "version": "0.0.1-alpha.0",
+  "version": "0.1.0",
   "description": "Utilities for debouncing and throttling functions in React.",
   "author": "Tanner Linsley",
   "license": "MIT",
