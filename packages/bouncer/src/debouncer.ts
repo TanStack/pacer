@@ -86,3 +86,18 @@ export class Debouncer<
     }
   }
 }
+
+/**
+ * Creates a debounced function that will execute the provided function after the specified delay.
+ * The debounced function will execute at most once per delay period.
+ *
+ * @param fn - The function to debounce.
+ * @param options - The options for the debounced function.
+ */
+export function debounce<TFn extends (...args: Array<any>) => any>(
+  fn: TFn,
+  options: DebouncerOptions,
+) {
+  const debouncer = new Debouncer(fn, options)
+  return debouncer.maybeExecute.bind(debouncer)
+}

@@ -103,3 +103,18 @@ export class Throttler<
     }
   }
 }
+
+/**
+ * Creates a throttled function that will execute the provided function after the specified delay.
+ * The throttled function will execute at most once per delay period.
+ *
+ * @param fn - The function to throttle.
+ * @param options - The options for the throttled function.
+ */
+export function throttle<TFn extends (...args: Array<any>) => any>(
+  fn: TFn,
+  options: ThrottlerOptions,
+) {
+  const throttler = new Throttler(fn, options)
+  return throttler.maybeExecute.bind(throttler)
+}

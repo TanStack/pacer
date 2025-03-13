@@ -1,4 +1,5 @@
 export * from './async-throttler'
+export * from './compare'
 export * from './debouncer'
 export * from './queuer'
 export * from './rate-limited-queuer'
