@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
+import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useQueue } from '@tanstack/react-bouncer/queue'
-import { useState } from 'react'
 
 function App() {
   // Use your state management library of choice
@@ -30,7 +30,7 @@ function App() {
             const nextNumber = queueItems.length
               ? queueItems[queueItems.length - 1] + 1
               : 1
-            queue.enqueue(nextNumber)
+            queue.enqueue(nextNumber) // adds an item to the back of the queue, passing 'front' will add to the front
           }}
           disabled={queue.isFull()}
         >
@@ -39,7 +39,7 @@ function App() {
         <button
           disabled={queue.isEmpty()}
           onClick={() => {
-            const item = queue.dequeue()
+            const item = queue.dequeue() // gets the first item from the queue, passing 'back' will get the last item (stack-like behavior)
             console.log('dequeue item', item)
           }}
         >

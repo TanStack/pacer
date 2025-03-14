@@ -77,16 +77,6 @@
         "default": "./dist/cjs/queue/index.cjs"
       }
     },
-    "./stack": {
-      "import": {
-        "types": "./dist/esm/stack/index.d.ts",
-        "default": "./dist/esm/stack/index.js"
-      },
-      "require": {
-        "types": "./dist/cjs/stack/index.d.cts",
-        "default": "./dist/cjs/stack/index.cjs"
-      }
-    },
     "./throttler": {
       "import": {
         "types": "./dist/esm/throttler/index.d.ts",

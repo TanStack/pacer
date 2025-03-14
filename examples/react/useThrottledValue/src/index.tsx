@@ -10,7 +10,7 @@ function App() {
     setInstantCount((c) => c + 1)
   }
 
-  // wrapper around useThrottler, useState, and useEffect that watches instantCount and throttles it
+  // highest-level hook that watches an instant local state value and returns a throttled value
   const [throttledCount] = useThrottledValue(instantCount, {
     wait: 1000,
   })

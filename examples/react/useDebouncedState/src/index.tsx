@@ -6,7 +6,7 @@ import { useDebouncedState } from '@tanstack/react-bouncer/debouncer'
 function App() {
   const [instantCount, setInstantCount] = useState(0)
 
-  // wrapper around useDebouncer and useState
+  // higher-level hook that uses React.useState with the state setter automatically debounced
   const [debouncedCount, setDebouncedCount] = useDebouncedState(instantCount, {
     wait: 500,
   })

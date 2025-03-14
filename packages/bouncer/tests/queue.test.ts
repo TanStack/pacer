@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Queue } from '../../src/data-structures/queue'
+import { Queue } from '../src/queue'
 
 describe('Queue', () => {
   it('should create an empty queue', () => {
@@ -157,5 +157,36 @@ describe('Queue', () => {
         expect(onUpdate).not.toHaveBeenCalled()
       })
     })
+  })
+
+  it('should support stack-like (LIFO) operations', () => {
+    const queue = new Queue<number>()
+    expect(queue.enqueue(1, 'back')).toBe(true)
+    expect(queue.enqueue(2, 'back')).toBe(true)
+    expect(queue.enqueue(3, 'back')).toBe(true)
+
+    // Should behave like a stack when using 'back' position
+    expect(queue.dequeue('back')).toBe(3)
+    expect(queue.dequeue('back')).toBe(2)
+    expect(queue.dequeue('back')).toBe(1)
+    expect(queue.dequeue('back')).toBeUndefined()
+  })
+
+  it('should support double-ended operations', () => {
+    const queue = new Queue<number>()
+
+    // Add items from both ends
+    queue.enqueue(1, 'back') // [1]
+    queue.enqueue(2, 'front') // [2,1]
+    queue.enqueue(3, 'back') // [2,1,3]
+
+    expect(queue.peek('front')).toBe(2)
+    expect(queue.peek('back')).toBe(3)
+    expect(queue.size()).toBe(3)
+
+    // Remove from both ends
+    expect(queue.dequeue('front')).toBe(2)
+    expect(queue.dequeue('back')).toBe(3)
+    expect(queue.dequeue('front')).toBe(1)
   })
 })

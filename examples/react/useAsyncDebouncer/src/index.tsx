@@ -22,33 +22,41 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [results, setResults] = useState<Array<SearchResult>>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
 
+  // The function that will become debounced
   const handleSearch = async (term: string) => {
     if (!term) {
       setResults([])
       return
     }
 
+    // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
+
     if (!results.length) {
       setIsLoading(true)
     }
 
-    try {
-      const data = await fakeApi(term)
-      setResults(data)
-    } catch (error) {
-      console.error('Search failed:', error)
-      setResults([])
-    } finally {
-      setIsLoading(false)
-    }
+    const data = await fakeApi(term)
+    setResults(data)
+    setIsLoading(false)
+    setError(null)
+
     console.log(setSearchAsyncDebouncer.getExecutionCount())
   }
 
+  // hook that gives you an async debouncer instance
   const setSearchAsyncDebouncer = useAsyncDebouncer(handleSearch, {
     wait: 500, // Wait 500ms between API calls
+    onError: (error) => {
+      // optional error handler
+      console.error('Search failed:', error)
+      setError(error as Error)
+      setResults([])
+    },
   })
 
+  // get and name our debounced function
   const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute
 
   useEffect(() => {
@@ -59,10 +67,11 @@ function App() {
     }
   }, [])
 
-  function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
+  // instant event handler that calls both the instant local state setter and the debounced function
+  async function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newTerm = e.target.value
     setSearchTerm(newTerm)
-    handleSearchDebounced(newTerm)
+    await handleSearchDebounced(newTerm) // optionally await if you need to
   }
 
   return (
@@ -78,17 +87,17 @@ function App() {
           autoComplete="new-password"
         />
       </div>
+      {error && <div>Error: {error.message}</div>}
       <div>
         <p>API calls made: {setSearchAsyncDebouncer.getExecutionCount()}</p>
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
+        {results.length > 0 && (
           <ul>
             {results.map((item) => (
               <li key={item.id}>{item.title}</li>
             ))}
           </ul>
         )}
+        {isLoading && <p>Loading...</p>}
       </div>
     </div>
   )
@@ -99,6 +108,7 @@ const root = ReactDOM.createRoot(document.getElementById('root')!)
 let mounted = true
 root.render(<App />)
 
+// demo unmounting and cancellation
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     mounted = !mounted

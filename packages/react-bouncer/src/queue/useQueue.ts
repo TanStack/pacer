@@ -1,6 +1,6 @@
 import { useRef } from 'react'
-import { Queue } from '@tanstack/bouncer/data-structures/queue'
-import type { QueueOptions } from '@tanstack/bouncer/data-structures/queue'
+import { Queue } from '@tanstack/bouncer/queue'
+import type { QueueOptions } from '@tanstack/bouncer/queue'
 
 export function useQueue<TValue>(options: QueueOptions<TValue> = {}) {
   const queueRef = useRef<Queue<TValue>>(null)

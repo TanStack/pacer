@@ -24,7 +24,6 @@ export default mergeConfig(
       './src/async-debouncer/index.ts',
       './src/debouncer/index.ts',
       './src/queue/index.ts',
-      './src/stack/index.ts',
       './src/throttler/index.ts',
     ],
     srcDir: './src',

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQueue } from './useQueue'
-import type { QueueOptions } from '@tanstack/bouncer/data-structures/queue'
+import type { QueueOptions } from '@tanstack/bouncer/queue'
 
 export function useQueueState<TValue>(options: QueueOptions<TValue> = {}) {
   const [state, setState] = useState<Array<TValue>>(options.initialItems || [])

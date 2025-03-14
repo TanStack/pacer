@@ -10,7 +10,7 @@ function App() {
     setInstantCount((c) => c + 1)
   }
 
-  // wrapper around useDebouncer, useState, and useEffect that watches instantCount and debounces it
+  // highest-level hook that watches an instant local state value and returns a debounced value
   const [debouncedCount] = useDebouncedValue(instantCount, {
     wait: 500,
   })

@@ -6,7 +6,7 @@ import { useThrottledState } from '@tanstack/react-bouncer/throttler'
 function App() {
   const [instantCount, setInstantCount] = useState(0)
 
-  // wrapper around useThrottler and useState
+  // higher-level hook that uses React.useState with the state setter automatically throttled
   const [throttledCount, setThrottledCount] = useThrottledState(instantCount, {
     wait: 1000,
   })
