@@ -1,13 +1,13 @@
 export interface StackOptions<TValue> {
   maxSize?: number
   initialItems?: Array<TValue>
-  onUpdate?: (stacker: Stacker<TValue>) => void
+  onUpdate?: (stack: Stack<TValue>) => void
 }
 
 /**
  * A basic LIFO (Last In First Out) stack implementation
  */
-export class Stacker<TValue> {
+export class Stack<TValue> {
   private items: Array<TValue> = []
   private options: Required<StackOptions<TValue>>
 

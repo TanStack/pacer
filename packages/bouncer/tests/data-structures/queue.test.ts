@@ -1,15 +1,15 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Queuer } from '../src/queuer'
+import { Queue } from '../../src/data-structures/queue'
 
-describe('Queuer', () => {
+describe('Queue', () => {
   it('should create an empty queue', () => {
-    const queue = new Queuer()
+    const queue = new Queue()
     expect(queue.isEmpty()).toBe(true)
     expect(queue.size()).toBe(0)
   })
 
   it('should respect maxSize option', () => {
-    const queue = new Queuer({ maxSize: 2 })
+    const queue = new Queue({ maxSize: 2 })
     expect(queue.enqueue(1)).toBe(true)
     expect(queue.enqueue(2)).toBe(true)
     expect(queue.enqueue(3)).toBe(false)
@@ -18,7 +18,7 @@ describe('Queuer', () => {
 
   describe('enqueue', () => {
     it('should add items to the queue', () => {
-      const queue = new Queuer<number>()
+      const queue = new Queue<number>()
       expect(queue.enqueue(1)).toBe(true)
       expect(queue.size()).toBe(1)
       expect(queue.peek()).toBe(1)
@@ -27,7 +27,7 @@ describe('Queuer', () => {
 
   describe('dequeue', () => {
     it('should remove and return items in FIFO order', () => {
-      const queue = new Queuer<number>()
+      const queue = new Queue<number>()
       queue.enqueue(1)
       queue.enqueue(2)
       queue.enqueue(3)
@@ -39,14 +39,14 @@ describe('Queuer', () => {
     })
 
     it('should return undefined when queue is empty', () => {
-      const queue = new Queuer<number>()
+      const queue = new Queue<number>()
       expect(queue.dequeue()).toBeUndefined()
     })
   })
 
   describe('peek', () => {
     it('should return first item without removing it', () => {
-      const queue = new Queuer<number>()
+      const queue = new Queue<number>()
       queue.enqueue(1)
       queue.enqueue(2)
 
@@ -55,19 +55,19 @@ describe('Queuer', () => {
     })
 
     it('should return undefined when queue is empty', () => {
-      const queue = new Queuer<number>()
+      const queue = new Queue<number>()
       expect(queue.peek()).toBeUndefined()
     })
   })
 
   describe('isEmpty', () => {
     it('should return true when queue is empty', () => {
-      const queue = new Queuer<number>()
+      const queue = new Queue<number>()
       expect(queue.isEmpty()).toBe(true)
     })
 
     it('should return false when queue has items', () => {
-      const queue = new Queuer<number>()
+      const queue = new Queue<number>()
       queue.enqueue(1)
       expect(queue.isEmpty()).toBe(false)
     })
@@ -75,14 +75,14 @@ describe('Queuer', () => {
 
   describe('isFull', () => {
     it('should return true when queue reaches maxSize', () => {
-      const queue = new Queuer<number>({ maxSize: 2 })
+      const queue = new Queue<number>({ maxSize: 2 })
       queue.enqueue(1)
       queue.enqueue(2)
       expect(queue.isFull()).toBe(true)
     })
 
     it('should return false when queue is not full', () => {
-      const queue = new Queuer<number>({ maxSize: 2 })
+      const queue = new Queue<number>({ maxSize: 2 })
       queue.enqueue(1)
       expect(queue.isFull()).toBe(false)
     })
@@ -90,7 +90,7 @@ describe('Queuer', () => {
 
   describe('clear', () => {
     it('should remove all items from the queue', () => {
-      const queue = new Queuer<number>()
+      const queue = new Queue<number>()
       queue.enqueue(1)
       queue.enqueue(2)
       queue.clear()
@@ -104,13 +104,13 @@ describe('Queuer', () => {
   describe('options', () => {
     describe('initialItems', () => {
       it('should initialize queue with provided items', () => {
-        const queue = new Queuer<number>({ initialItems: [1, 2, 3] })
+        const queue = new Queue<number>({ initialItems: [1, 2, 3] })
         expect(queue.size()).toBe(3)
         expect(queue.getItems()).toEqual([1, 2, 3])
       })
 
       it('should handle empty initialItems array', () => {
-        const queue = new Queuer<number>({ initialItems: [] })
+        const queue = new Queue<number>({ initialItems: [] })
         expect(queue.isEmpty()).toBe(true)
       })
     })
@@ -118,7 +118,7 @@ describe('Queuer', () => {
     describe('onUpdate', () => {
       it('should call onUpdate when items are added', () => {
         const onUpdate = vi.fn()
-        const queue = new Queuer<number>({ onUpdate })
+        const queue = new Queue<number>({ onUpdate })
 
         queue.enqueue(1)
         expect(onUpdate).toHaveBeenCalledTimes(1)
@@ -127,7 +127,7 @@ describe('Queuer', () => {
 
       it('should call onUpdate when items are removed', () => {
         const onUpdate = vi.fn()
-        const queue = new Queuer<number>({ onUpdate })
+        const queue = new Queue<number>({ onUpdate })
 
         queue.enqueue(1)
         onUpdate.mockClear()
@@ -139,7 +139,7 @@ describe('Queuer', () => {
 
       it('should call onUpdate when queue is cleared', () => {
         const onUpdate = vi.fn()
-        const queue = new Queuer<number>({ onUpdate })
+        const queue = new Queue<number>({ onUpdate })
 
         queue.enqueue(1)
         onUpdate.mockClear()
@@ -151,7 +151,7 @@ describe('Queuer', () => {
 
       it('should not call onUpdate when dequeuing from empty queue', () => {
         const onUpdate = vi.fn()
-        const queue = new Queuer<number>({ onUpdate })
+        const queue = new Queue<number>({ onUpdate })
 
         queue.dequeue()
         expect(onUpdate).not.toHaveBeenCalled()

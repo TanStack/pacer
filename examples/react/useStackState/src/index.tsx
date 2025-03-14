@@ -1,23 +1,16 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import ReactDOM from 'react-dom/client'
-import { useStack } from '@tanstack/react-bouncer/stack'
-import { useState } from 'react'
+import { useStackState } from '@tanstack/react-bouncer/stack'
 
 function App() {
-  // Use your state management library of choice
-  const [stackItems, setStackItems] = useState([1, 2, 3, 4, 5])
-
-  const stack = useStack({
+  const [stackItems, stack] = useStackState({
     maxSize: 10,
-    initialItems: stackItems,
-    onUpdate: (stack) => {
-      setStackItems(stack.getItems())
-    },
+    initialItems: [1, 2, 3, 4, 5],
   })
 
   return (
     <div>
-      <h1>TanStack Bouncer useStack Example</h1>
+      <h1>TanStack Bouncer useStackState Example</h1>
       <div>Stack Size: {stack.size()}</div>
       <div>Stack Max Size: {10}</div>
       <div>Stack Full: {stack.isFull() ? 'Yes' : 'No'}</div>

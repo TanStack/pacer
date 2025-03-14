@@ -36,6 +36,26 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./data-structures/queue": {
+      "import": {
+        "types": "./dist/esm/data-structures/queue.d.ts",
+        "default": "./dist/esm/data-structures/queue.js"
+      },
+      "require": {
+        "types": "./dist/cjs/data-structures/queue.d.cts",
+        "default": "./dist/cjs/data-structures/queue.cjs"
+      }
+    },
+    "./data-structures/stack": {
+      "import": {
+        "types": "./dist/esm/data-structures/stack.d.ts",
+        "default": "./dist/esm/data-structures/stack.js"
+      },
+      "require": {
+        "types": "./dist/cjs/data-structures/stack.d.cts",
+        "default": "./dist/cjs/data-structures/stack.cjs"
+      }
+    },
     "./async-debouncer": {
       "import": {
         "types": "./dist/esm/async-debouncer.d.ts",
@@ -66,24 +86,14 @@
         "default": "./dist/cjs/debouncer.cjs"
       }
     },
-    "./queuer": {
+    "./rate-limited-queue": {
       "import": {
-        "types": "./dist/esm/queuer.d.ts",
-        "default": "./dist/esm/queuer.js"
+        "types": "./dist/esm/rate-limited-queue.d.ts",
+        "default": "./dist/esm/rate-limited-queue.js"
       },
       "require": {
-        "types": "./dist/cjs/queuer.d.cts",
-        "default": "./dist/cjs/queuer.cjs"
-      }
-    },
-    "./rate-limited-queuer": {
-      "import": {
-        "types": "./dist/esm/rate-limited-queuer.d.ts",
-        "default": "./dist/esm/rate-limited-queuer.js"
-      },
-      "require": {
-        "types": "./dist/cjs/rate-limited-queuer.d.cts",
-        "default": "./dist/cjs/rate-limited-queuer.cjs"
+        "types": "./dist/cjs/rate-limited-queue.d.cts",
+        "default": "./dist/cjs/rate-limited-queue.cjs"
       }
     },
     "./rate-limiter": {
@@ -94,16 +104,6 @@
       "require": {
         "types": "./dist/cjs/rate-limiter.d.cts",
         "default": "./dist/cjs/rate-limiter.cjs"
-      }
-    },
-    "./stacker": {
-      "import": {
-        "types": "./dist/esm/stacker.d.ts",
-        "default": "./dist/esm/stacker.js"
-      },
-      "require": {
-        "types": "./dist/cjs/stacker.d.cts",
-        "default": "./dist/cjs/stacker.cjs"
       }
     },
     "./throttler": {

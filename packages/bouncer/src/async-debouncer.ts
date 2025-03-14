@@ -99,3 +99,13 @@ export class AsyncDebouncer<
     await this.fn(...args)
   }
 }
+
+/**
+ * Creates an async debounced function
+ */
+export function asyncDebounce<
+  TFn extends (...args: Array<any>) => Promise<any>,
+>(fn: TFn, options: AsyncDebouncerOptions) {
+  const asyncDebouncer = new AsyncDebouncer(fn, options)
+  return asyncDebouncer.maybeExecute.bind(asyncDebouncer)
+}

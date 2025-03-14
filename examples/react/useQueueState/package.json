@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/bouncer-example-react-use-queuer",
+  "name": "@tanstack/bouncer-example-react-use-queue-state",
   "private": true,
   "type": "module",
   "scripts": {

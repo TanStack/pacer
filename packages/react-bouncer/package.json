@@ -67,24 +67,24 @@
         "default": "./dist/cjs/debouncer/index.cjs"
       }
     },
-    "./queuer": {
+    "./queue": {
       "import": {
-        "types": "./dist/esm/queuer/index.d.ts",
-        "default": "./dist/esm/queuer/index.js"
+        "types": "./dist/esm/queue/index.d.ts",
+        "default": "./dist/esm/queue/index.js"
       },
       "require": {
-        "types": "./dist/cjs/queuer/index.d.cts",
-        "default": "./dist/cjs/queuer/index.cjs"
+        "types": "./dist/cjs/queue/index.d.cts",
+        "default": "./dist/cjs/queue/index.cjs"
       }
     },
-    "./stacker": {
+    "./stack": {
       "import": {
-        "types": "./dist/esm/stacker/index.d.ts",
-        "default": "./dist/esm/stacker/index.js"
+        "types": "./dist/esm/stack/index.d.ts",
+        "default": "./dist/esm/stack/index.js"
       },
       "require": {
-        "types": "./dist/cjs/stacker/index.d.cts",
-        "default": "./dist/cjs/stacker/index.cjs"
+        "types": "./dist/cjs/stack/index.d.cts",
+        "default": "./dist/cjs/stack/index.cjs"
       }
     },
     "./throttler": {

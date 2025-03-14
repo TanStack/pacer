@@ -123,3 +123,13 @@ export class AsyncThrottler<
     await this.fn(...args)
   }
 }
+
+/**
+ * Creates an async throttled function
+ */
+export function asyncThrottle<
+  TFn extends (...args: Array<any>) => Promise<any>,
+>(fn: TFn, options: AsyncThrottlerOptions) {
+  const asyncThrottler = new AsyncThrottler(fn, options)
+  return asyncThrottler.maybeExecute.bind(asyncThrottler)
+}

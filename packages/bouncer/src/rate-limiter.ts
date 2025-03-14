@@ -82,3 +82,11 @@ export class RateLimiter<
     this.executionTimes = []
   }
 }
+
+export function rateLimit<TFn extends (...args: Array<any>) => any>(
+  fn: TFn,
+  options: RateLimiterOptions,
+) {
+  const rateLimiter = new RateLimiter(fn, options)
+  return rateLimiter.maybeExecute.bind(rateLimiter)
+}

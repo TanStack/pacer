@@ -1,13 +1,13 @@
 export interface QueueOptions<TValue> {
   initialItems?: Array<TValue>
   maxSize?: number
-  onUpdate?: (queuer: Queuer<TValue>) => void
+  onUpdate?: (queue: Queue<TValue>) => void
 }
 
 /**
  * A FIFO (First In First Out) queue implementation
  */
-export class Queuer<TValue> {
+export class Queue<TValue> {
   private items: Array<TValue> = []
   private options: Required<QueueOptions<TValue>>
 

@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/bouncer-example-react-use-queued-state",
+  "name": "@tanstack/bouncer-example-react-use-stack-state",
   "private": true,
   "type": "module",
   "scripts": {
