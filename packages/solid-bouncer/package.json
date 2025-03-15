@@ -1,0 +1,139 @@
+{
+  "name": "@tanstack/solid-bouncer",
+  "version": "0.1.0",
+  "description": "Utilities for debouncing and throttling functions in Solid.",
+  "author": "Tanner Linsley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TanStack/bouncer.git",
+    "directory": "packages/solid-bouncer"
+  },
+  "homepage": "https://tanstack.com/bouncer",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/tannerlinsley"
+  },
+  "keywords": [
+    "solid",
+    "debounce",
+    "throttle",
+    "debouncer",
+    "throttler",
+    "async"
+  ],
+  "type": "module",
+  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./async-debouncer": {
+      "import": {
+        "types": "./dist/esm/async-debouncer/index.d.ts",
+        "default": "./dist/esm/async-debouncer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-debouncer/index.d.cts",
+        "default": "./dist/cjs/async-debouncer/index.cjs"
+      }
+    },
+    "./async-queuer": {
+      "import": {
+        "types": "./dist/esm/async-queuer/index.d.ts",
+        "default": "./dist/esm/async-queuer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-queuer/index.d.cts",
+        "default": "./dist/cjs/async-queuer/index.cjs"
+      }
+    },
+    "./async-throttler": {
+      "import": {
+        "types": "./dist/esm/async-throttler/index.d.ts",
+        "default": "./dist/esm/async-throttler/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-throttler/index.d.cts",
+        "default": "./dist/cjs/async-throttler/index.cjs"
+      }
+    },
+    "./debouncer": {
+      "import": {
+        "types": "./dist/esm/debouncer/index.d.ts",
+        "default": "./dist/esm/debouncer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/debouncer/index.d.cts",
+        "default": "./dist/cjs/debouncer/index.cjs"
+      }
+    },
+    "./queue": {
+      "import": {
+        "types": "./dist/esm/queue/index.d.ts",
+        "default": "./dist/esm/queue/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/queue/index.d.cts",
+        "default": "./dist/cjs/queue/index.cjs"
+      }
+    },
+    "./rate-limiter": {
+      "import": {
+        "types": "./dist/esm/rate-limiter/index.d.ts",
+        "default": "./dist/esm/rate-limiter/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/rate-limiter/index.d.cts",
+        "default": "./dist/cjs/rate-limiter/index.cjs"
+      }
+    },
+    "./throttler": {
+      "import": {
+        "types": "./dist/esm/throttler/index.d.ts",
+        "default": "./dist/esm/throttler/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/throttler/index.d.cts",
+        "default": "./dist/cjs/throttler/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "clean": "rimraf ./build && rimraf ./dist",
+    "test:eslint": "eslint ./src",
+    "test:lib": "vitest --passWithNoTests",
+    "test:lib:dev": "pnpm test:lib --watch",
+    "test:types": "tsc",
+    "test:build": "publint --strict",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@tanstack/bouncer": "workspace:*"
+  },
+  "devDependencies": {
+    "solid-js": "^1.9.5",
+    "vite-plugin-solid": "^2.11.6"
+  },
+  "peerDependencies": {
+    "solid-js": ">=1.3"
+  }
+}
