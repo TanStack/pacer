@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Debouncer } from '../src/debouncer'
+import { Debouncer, debounce } from '../src/debouncer'
 
 describe('Debouncer', () => {
   beforeEach(() => {
@@ -174,5 +174,98 @@ describe('Debouncer', () => {
     vi.advanceTimersByTime(1000)
 
     expect(debouncer.getExecutionCount()).toBe(0)
+  })
+})
+
+describe('debounce helper function', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should create a debounced function with default options', () => {
+    const mockFn = vi.fn()
+    const debouncedFn = debounce(mockFn, { wait: 1000 })
+
+    debouncedFn('test')
+    expect(mockFn).not.toBeCalled()
+
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('test')
+  })
+
+  it('should pass arguments correctly', () => {
+    const mockFn = vi.fn()
+    const debouncedFn = debounce(mockFn, { wait: 1000 })
+
+    debouncedFn(42, 'test', { foo: 'bar' })
+    vi.advanceTimersByTime(1000)
+
+    expect(mockFn).toBeCalledWith(42, 'test', { foo: 'bar' })
+  })
+
+  it('should respect leading option', () => {
+    const mockFn = vi.fn()
+    const debouncedFn = debounce(mockFn, {
+      wait: 1000,
+      leading: true,
+      trailing: false,
+    })
+
+    debouncedFn('first')
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('first')
+
+    debouncedFn('second')
+    expect(mockFn).toBeCalledTimes(1)
+
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).toBeCalledTimes(1)
+
+    debouncedFn('third')
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('third')
+  })
+
+  it('should handle multiple calls with trailing edge', () => {
+    const mockFn = vi.fn()
+    const debouncedFn = debounce(mockFn, { wait: 1000 })
+
+    debouncedFn('a')
+    debouncedFn('b')
+    debouncedFn('c')
+    expect(mockFn).not.toBeCalled()
+
+    vi.advanceTimersByTime(500)
+    debouncedFn('d')
+    expect(mockFn).not.toBeCalled()
+
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('d')
+  })
+
+  it('should support both leading and trailing execution', () => {
+    const mockFn = vi.fn()
+    const debouncedFn = debounce(mockFn, {
+      wait: 1000,
+      leading: true,
+      trailing: true,
+    })
+
+    debouncedFn('first')
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('first')
+
+    debouncedFn('second')
+    expect(mockFn).toBeCalledTimes(1)
+
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('second')
   })
 })

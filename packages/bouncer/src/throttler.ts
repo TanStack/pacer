@@ -18,6 +18,11 @@ export interface ThrottlerOptions {
   wait: number
 }
 
+const defaultOptions: Partial<ThrottlerOptions> = {
+  leading: true,
+  trailing: true,
+}
+
 /**
  * A class that creates a throttled function.
  */
@@ -36,8 +41,7 @@ export class Throttler<
     options: ThrottlerOptions,
   ) {
     this.options = {
-      leading: true,
-      trailing: true,
+      ...defaultOptions,
       ...options,
     }
   }

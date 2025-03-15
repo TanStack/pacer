@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Throttler } from '../src/throttler'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { Throttler, throttle } from '../src/throttler'
 
 describe('Throttler', () => {
   beforeEach(() => {
@@ -139,5 +139,134 @@ describe('Throttler', () => {
     throttler.maybeExecute('d')
     expect(mockFn).toHaveBeenCalledTimes(3)
     expect(mockFn).toHaveBeenLastCalledWith('d')
+  })
+})
+
+describe('throttle helper function', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should create a throttled function with default options', () => {
+    const mockFn = vi.fn()
+    const throttledFn = throttle(mockFn, { wait: 100 })
+
+    throttledFn('test')
+    expect(mockFn).toBeCalledTimes(1) // Leading edge
+    expect(mockFn).toBeCalledWith('test')
+
+    throttledFn('ignored')
+    expect(mockFn).toBeCalledTimes(1)
+
+    vi.advanceTimersByTime(100)
+    expect(mockFn).toBeCalledTimes(2) // Trailing edge
+    expect(mockFn).toHaveBeenLastCalledWith('ignored')
+  })
+
+  it('should pass arguments correctly', () => {
+    const mockFn = vi.fn()
+    const throttledFn = throttle(mockFn, { wait: 100 })
+
+    throttledFn(42, 'test', { foo: 'bar' })
+    expect(mockFn).toBeCalledWith(42, 'test', { foo: 'bar' })
+  })
+
+  it('should respect leading: false option', () => {
+    const mockFn = vi.fn()
+    const throttledFn = throttle(mockFn, {
+      wait: 100,
+      leading: false,
+      trailing: true,
+    })
+
+    throttledFn('first')
+    expect(mockFn).not.toBeCalled() // No leading edge execution
+
+    throttledFn('second') // Add another call to ensure trailing edge triggers
+
+    // Need to advance time by wait period to trigger trailing edge
+    vi.advanceTimersByTime(100)
+    expect(mockFn).toHaveBeenCalledTimes(1) // Trailing edge only
+    expect(mockFn).toHaveBeenCalledWith('second') // Should get last call
+  })
+
+  it('should respect trailing: false option', () => {
+    const mockFn = vi.fn()
+    const throttledFn = throttle(mockFn, {
+      wait: 100,
+      leading: true,
+      trailing: false,
+    })
+
+    throttledFn('first')
+    expect(mockFn).toBeCalledTimes(1) // Leading edge
+
+    throttledFn('second')
+    vi.advanceTimersByTime(100)
+    expect(mockFn).toBeCalledTimes(1) // No trailing edge
+    expect(mockFn).toHaveBeenCalledWith('first')
+  })
+
+  it('should handle multiple calls with proper timing', () => {
+    const mockFn = vi.fn()
+    const throttledFn = throttle(mockFn, { wait: 100 })
+
+    // First burst
+    throttledFn('a')
+    throttledFn('b')
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('a')
+
+    // Advance halfway and make another call
+    vi.advanceTimersByTime(50)
+    throttledFn('c')
+    expect(mockFn).toBeCalledTimes(1)
+
+    // Complete first wait period
+    vi.advanceTimersByTime(50)
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('c')
+
+    // Wait another period and make new call
+    vi.advanceTimersByTime(100)
+    throttledFn('d')
+    expect(mockFn).toBeCalledTimes(3)
+    expect(mockFn).toHaveBeenLastCalledWith('d')
+  })
+
+  it('should handle rapid successive calls', () => {
+    const mockFn = vi.fn()
+    const throttledFn = throttle(mockFn, { wait: 100 })
+
+    // Rapid succession of calls
+    for (let i = 0; i < 5; i++) {
+      throttledFn(`call-${i}`)
+    }
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('call-0')
+
+    // Should execute the last call after wait
+    vi.advanceTimersByTime(100)
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('call-4')
+  })
+
+  it('should work with both leading and trailing disabled', () => {
+    const mockFn = vi.fn()
+    const throttledFn = throttle(mockFn, {
+      wait: 100,
+      leading: false,
+      trailing: false,
+    })
+
+    throttledFn('test')
+    expect(mockFn).not.toBeCalled()
+
+    vi.advanceTimersByTime(100)
+    expect(mockFn).not.toBeCalled()
   })
 })

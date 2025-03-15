@@ -19,6 +19,11 @@ export interface DebouncerOptions {
   wait: number
 }
 
+const defaultOptions: Partial<DebouncerOptions> = {
+  leading: false,
+  trailing: true,
+}
+
 /**
  * A class that creates a debounced function.
  */
@@ -36,8 +41,7 @@ export class Debouncer<
     options: DebouncerOptions,
   ) {
     this.options = {
-      leading: false,
-      trailing: true,
+      ...defaultOptions,
       ...options,
     }
   }
