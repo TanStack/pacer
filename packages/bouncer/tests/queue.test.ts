@@ -109,9 +109,93 @@ describe('Queue', () => {
         expect(queue.getItems()).toEqual([1, 2, 3])
       })
 
+      it('should sort initial items by priority if getPriority is provided', () => {
+        const queue = new Queue<{ value: string; priority: number }>({
+          initialItems: [
+            { value: 'low', priority: 1 },
+            { value: 'high', priority: 3 },
+            { value: 'medium', priority: 2 },
+          ],
+          getPriority: (item) => item.priority,
+        })
+
+        expect(queue.getItems()).toEqual([
+          { value: 'low', priority: 1 },
+          { value: 'medium', priority: 2 },
+          { value: 'high', priority: 3 },
+        ])
+      })
+
       it('should handle empty initialItems array', () => {
         const queue = new Queue<number>({ initialItems: [] })
         expect(queue.isEmpty()).toBe(true)
+      })
+    })
+
+    describe('getPriority', () => {
+      it('should maintain priority order when enqueueing items', () => {
+        const queue = new Queue<{ value: string; priority: number }>({
+          getPriority: (item) => item.priority,
+        })
+
+        queue.enqueue({ value: 'medium', priority: 2 })
+        queue.enqueue({ value: 'high', priority: 3 })
+        queue.enqueue({ value: 'low', priority: 1 })
+
+        expect(queue.getItems()).toEqual([
+          { value: 'low', priority: 1 },
+          { value: 'medium', priority: 2 },
+          { value: 'high', priority: 3 },
+        ])
+      })
+
+      it('should insert items in correct position based on priority', () => {
+        const queue = new Queue<{ value: string; priority: number }>({
+          getPriority: (item) => item.priority,
+        })
+
+        queue.enqueue({ value: 'lowest', priority: 0 })
+        queue.enqueue({ value: 'highest', priority: 4 })
+        queue.enqueue({ value: 'medium', priority: 2 }) // Should go between lowest and highest
+
+        expect(queue.getItems()).toEqual([
+          { value: 'lowest', priority: 0 },
+          { value: 'medium', priority: 2 },
+          { value: 'highest', priority: 4 },
+        ])
+      })
+
+      it('should handle items with equal priorities', () => {
+        const queue = new Queue<{ value: string; priority: number }>({
+          getPriority: (item) => item.priority,
+        })
+
+        queue.enqueue({ value: 'first', priority: 1 })
+        queue.enqueue({ value: 'second', priority: 1 })
+        queue.enqueue({ value: 'third', priority: 1 })
+
+        // Items with equal priority should maintain FIFO order
+        expect(queue.getItems()).toEqual([
+          { value: 'first', priority: 1 },
+          { value: 'second', priority: 1 },
+          { value: 'third', priority: 1 },
+        ])
+      })
+
+      it('should ignore position parameter when priority is enabled', () => {
+        const queue = new Queue<{ value: string; priority: number }>({
+          getPriority: (item) => item.priority,
+        })
+
+        queue.enqueue({ value: 'medium', priority: 2 })
+        queue.enqueue({ value: 'high', priority: 3 }, 'front') // front position should be ignored
+        queue.enqueue({ value: 'low', priority: 1 }, 'back') // back position should be ignored
+
+        expect(queue.getItems()).toEqual([
+          { value: 'low', priority: 1 },
+          { value: 'medium', priority: 2 },
+          { value: 'high', priority: 3 },
+        ])
       })
     })
 

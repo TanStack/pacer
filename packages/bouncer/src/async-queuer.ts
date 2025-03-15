@@ -1,7 +1,8 @@
 import { Queue } from './queue'
 import type { QueueOptions } from './queue'
 
-export interface AsyncQueuerOptions extends QueueOptions<() => Promise<any>> {
+export interface AsyncQueuerOptions<TValue>
+  extends QueueOptions<() => Promise<TValue>> {
   /**
    * Maximum number of concurrent tasks that can run at once
    * @default 5
@@ -14,21 +15,22 @@ export interface AsyncQueuerOptions extends QueueOptions<() => Promise<any>> {
   started?: boolean
 }
 
-const defaultOptions: Required<AsyncQueuerOptions> = {
+const defaultOptions: Required<AsyncQueuerOptions<any>> = {
   concurrency: 5,
-  started: false,
+  getPriority: () => 0,
   initialItems: [],
   maxSize: Infinity,
   onUpdate: () => {},
+  started: false,
 }
 
 /**
  * A flexible async queuer that supports priority tasks, concurrency control, and task callbacks
  * Can be used as a FIFO or LIFO queue by specifying the position of the task
  * Also known as a task pool or task queue
- * @template T The type of the task result
+ * @template TValue The type of the task result
  */
-export class AsyncQueuer<T> {
+export class AsyncQueuer<TValue> {
   private onSettles: Array<(res: any, error: any) => void> = []
   private onErrors: Array<(error: any, task: () => Promise<any>) => void> = []
   private onSuccesses: Array<(result: any, task: () => Promise<any>) => void> =
@@ -38,7 +40,7 @@ export class AsyncQueuer<T> {
   private queue: Queue<() => Promise<any>>
   private currentConcurrency: number
 
-  constructor(options: AsyncQueuerOptions = defaultOptions) {
+  constructor(options: AsyncQueuerOptions<TValue> = defaultOptions) {
     const { concurrency, started, ...queueOptions } = {
       ...defaultOptions,
       ...options,
@@ -63,7 +65,7 @@ export class AsyncQueuer<T> {
       this.active.push(nextFn)
       ;(async () => {
         let success = false
-        let res!: T
+        let res!: TValue
         let error: any
         try {
           res = await nextFn()
@@ -89,10 +91,7 @@ export class AsyncQueuer<T> {
    * @param position The position to add the task to (defaults to back for FIFO behavior)
    * @returns A promise that resolves when the task is settled
    */
-  enqueue(
-    fn: () => Promise<T> | T,
-    { position }: { position?: 'front' | 'back' } = {},
-  ) {
+  enqueue(fn: () => Promise<TValue> | TValue, position?: 'front' | 'back') {
     return new Promise<any>((resolve, reject) => {
       const task = () =>
         Promise.resolve(fn())
@@ -109,15 +108,6 @@ export class AsyncQueuer<T> {
       this.queue.enqueue(task, position)
       this.tick()
     })
-  }
-
-  /**
-   * Removes and returns a task from the queue
-   * @param position The position to remove the task from (defaults to front for FIFO behavior)
-   * @returns The removed task or undefined if the queue is empty
-   */
-  dequeue(position?: 'front' | 'back') {
-    return this.queue.dequeue(position)
   }
 
   /**

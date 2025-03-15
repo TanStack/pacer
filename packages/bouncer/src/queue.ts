@@ -2,12 +2,14 @@ export interface QueueOptions<TValue> {
   initialItems?: Array<TValue>
   maxSize?: number
   onUpdate?: (queue: Queue<TValue>) => void
+  getPriority?: (item: TValue) => number
 }
 
 const defaultOptions: Required<QueueOptions<any>> = {
   initialItems: [],
   maxSize: Infinity,
   onUpdate: () => {},
+  getPriority: () => 0,
 }
 
 /**
@@ -34,7 +36,7 @@ export class Queue<TValue> {
   private items: Array<TValue> = []
   private options: Required<QueueOptions<TValue>>
 
-  constructor(options: QueueOptions<TValue> = {}) {
+  constructor(options: QueueOptions<TValue> = defaultOptions) {
     this.options = {
       ...defaultOptions,
       ...options,
@@ -42,6 +44,13 @@ export class Queue<TValue> {
 
     if (this.options.initialItems.length) {
       this.items = [...this.options.initialItems]
+
+      // Sort initial items if custom priority function is provided
+      if (this.options.getPriority !== defaultOptions.getPriority) {
+        this.items.sort(
+          (a, b) => this.options.getPriority(a) - this.options.getPriority(b),
+        )
+      }
     }
   }
 
@@ -64,10 +73,25 @@ export class Queue<TValue> {
       return false
     }
 
-    if (position === 'front') {
-      this.items.unshift(item)
+    if (this.options.getPriority !== defaultOptions.getPriority) {
+      // If custom priority function is provided, insert based on priority
+      const priority = this.options.getPriority(item)
+      const insertIndex = this.items.findIndex(
+        (existing) => this.options.getPriority(existing) > priority,
+      )
+
+      if (insertIndex === -1) {
+        this.items.push(item)
+      } else {
+        this.items.splice(insertIndex, 0, item)
+      }
     } else {
-      this.items.push(item)
+      // Default FIFO/LIFO behavior
+      if (position === 'front') {
+        this.items.unshift(item)
+      } else {
+        this.items.push(item)
+      }
     }
 
     this.options.onUpdate(this)

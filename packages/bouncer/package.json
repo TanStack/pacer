@@ -36,16 +36,6 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
-    "./queue": {
-      "import": {
-        "types": "./dist/esm/queue.d.ts",
-        "default": "./dist/esm/queue.js"
-      },
-      "require": {
-        "types": "./dist/cjs/queue.d.cts",
-        "default": "./dist/cjs/queue.cjs"
-      }
-    },
     "./async-debouncer": {
       "import": {
         "types": "./dist/esm/async-debouncer.d.ts",
@@ -74,6 +64,16 @@
       "require": {
         "types": "./dist/cjs/debouncer.d.cts",
         "default": "./dist/cjs/debouncer.cjs"
+      }
+    },
+    "./queue": {
+      "import": {
+        "types": "./dist/esm/queue.d.ts",
+        "default": "./dist/esm/queue.js"
+      },
+      "require": {
+        "types": "./dist/cjs/queue.d.cts",
+        "default": "./dist/cjs/queue.cjs"
       }
     },
     "./rate-limiter": {
