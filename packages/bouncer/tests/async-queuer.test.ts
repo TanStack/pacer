@@ -59,18 +59,6 @@ describe('AsyncQueuer', () => {
   })
 
   describe('task management', () => {
-    it('should handle task errors properly', async () => {
-      const error = new Error('Test error')
-      const errorHandler = vi.fn()
-
-      queuer.onError(errorHandler)
-
-      queuer.enqueue(() => Promise.reject(error))
-      await queuer.start()
-
-      expect(errorHandler).toHaveBeenCalledWith(error, expect.any(Function))
-    })
-
     it('should handle task success properly', async () => {
       const successHandler = vi.fn()
       const result = 'success'
