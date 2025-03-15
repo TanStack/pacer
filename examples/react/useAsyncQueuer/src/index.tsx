@@ -71,7 +71,7 @@ function App() {
     setIsLoading(true)
 
     // Queue the search task (will be processed based on concurrency settings)
-    searchQueuer.enqueue(
+    searchQueuer.addItem(
       async () => {
         // Simulate high-priority searches for terms starting with "!"
         if (newTerm.startsWith('!')) {

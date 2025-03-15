@@ -8,7 +8,7 @@ export function useQueueState<TValue>(options: QueueOptions<TValue> = {}) {
   const queue = useQueue<TValue>({
     ...options,
     onUpdate: (queue) => {
-      setState(queue.getItems())
+      setState(queue.getAllItems())
     },
   })
 

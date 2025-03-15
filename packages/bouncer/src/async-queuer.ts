@@ -58,7 +58,7 @@ export class AsyncQueuer<TValue> {
       this.active.length < this.currentConcurrency &&
       !this.queue.isEmpty()
     ) {
-      const nextFn = this.queue.dequeue()
+      const nextFn = this.queue.getNextItem()
       if (!nextFn) {
         throw new Error('Found task that is not a function')
       }
@@ -91,7 +91,7 @@ export class AsyncQueuer<TValue> {
    * @param position The position to add the task to (defaults to back for FIFO behavior)
    * @returns A promise that resolves when the task is settled
    */
-  enqueue(fn: () => Promise<TValue> | TValue, position?: 'front' | 'back') {
+  addItem(fn: () => Promise<TValue> | TValue, position?: 'front' | 'back') {
     return new Promise<any>((resolve, reject) => {
       const task = () =>
         Promise.resolve(fn())
@@ -105,7 +105,7 @@ export class AsyncQueuer<TValue> {
           })
 
       // Use specified position or default to 'back' for FIFO behavior
-      this.queue.enqueue(task, position)
+      this.queue.addItem(task, position)
       this.tick()
     })
   }
@@ -206,7 +206,7 @@ export class AsyncQueuer<TValue> {
    * @returns The pending tasks
    */
   getPending() {
-    return this.queue.getItems()
+    return this.queue.getAllItems()
   }
 
   /**

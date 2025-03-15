@@ -13,7 +13,7 @@ const defaultOptions: Required<QueueOptions<any>> = {
 }
 
 /**
- * Position type for queue/dequeue operations
+ * Position type for addItem and getNextItem operations
  */
 export type QueuePosition = 'front' | 'back'
 
@@ -22,15 +22,16 @@ export type QueuePosition = 'front' | 'back'
  * with optional position overrides for stack-like or double-ended operations.
  *
  * Default queue behavior:
- * - queue(item): adds to back
- * - dequeue(): removes from front
+ * - addItem(item): adds to back
+ * - getNextItem(): removes from front
  *
  * Stack behavior (using position override):
- * - queue(item) / dequeue('back'): LIFO (Last In First Out)
+ * - addItem(item, 'back'): LIFO (Last In First Out)
+ * - getNextItem('back'): LIFO (Last In First Out)
  *
  * Double-ended behavior:
- * - queue(item, 'front' | 'back')
- * - dequeue('front' | 'back')
+ * - addItem(item, 'front' | 'back')
+ * - getNextItem('front' | 'back')
  */
 export class Queue<TValue> {
   private items: Array<TValue> = []
@@ -63,12 +64,12 @@ export class Queue<TValue> {
    * Examples:
    * ```ts
    * // Standard FIFO queue
-   * queue.queue(item)
+   * queue.addItem(item)
    * // Add to front (like unshift)
-   * queue.queue(item, 'front')
+   * queue.addItem(item, 'front')
    * ```
    */
-  enqueue(item: TValue, position: QueuePosition = 'back'): boolean {
+  addItem(item: TValue, position: QueuePosition = 'back'): boolean {
     if (this.isFull()) {
       return false
     }
@@ -99,19 +100,19 @@ export class Queue<TValue> {
   }
 
   /**
-   * Removes and returns an item from the queue
+   * Removes and returns an item from the queue using shift (default) or pop
    * @param position Where to remove the item from (defaults to front for standard FIFO behavior)
    * @returns the removed item or undefined if empty
    *
    * Examples:
    * ```ts
    * // Standard FIFO queue
-   * queue.dequeue()
+   * queue.getNextItem()
    * // Stack-like behavior (LIFO)
-   * queue.dequeue('back')
+   * queue.getNextItem('back')
    * ```
    */
-  dequeue(position: QueuePosition = 'front'): TValue | undefined {
+  getNextItem(position: QueuePosition = 'front'): TValue | undefined {
     let item: TValue | undefined
 
     if (position === 'front') {
@@ -132,7 +133,7 @@ export class Queue<TValue> {
    *
    * Examples:
    * ```ts
-   * // Look at next item to dequeue
+   * // Look at next item to getNextItem
    * queue.peek()
    * // Look at last item (like stack top)
    * queue.peek('back')
@@ -177,7 +178,7 @@ export class Queue<TValue> {
   /**
    * Returns a copy of all items in the queue
    */
-  getItems(): Array<TValue> {
+  getAllItems(): Array<TValue> {
     return [...this.items]
   }
 }

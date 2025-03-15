@@ -134,6 +134,12 @@ export class RateLimiter<
   }
 }
 
+/**
+ * Creates a rate-limited function that will execute the provided function at most once per time window.
+ *
+ * @param fn - The function to rate-limit.
+ * @param options - The options for the rate-limited function.
+ */
 export function rateLimit<TFn extends (...args: Array<any>) => any>(
   fn: TFn,
   options: RateLimiterOptions,

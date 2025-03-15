@@ -11,7 +11,7 @@ function App() {
     maxSize: 10,
     initialItems: queueItems,
     onUpdate: (queue) => {
-      setQueueItems(queue.getItems())
+      setQueueItems(queue.getAllItems())
     },
   })
 
@@ -30,7 +30,7 @@ function App() {
             const nextNumber = queueItems.length
               ? queueItems[queueItems.length - 1] + 1
               : 1
-            queue.enqueue(nextNumber) // adds an item to the back of the queue, passing 'front' will add to the front
+            queue.addItem(nextNumber) // adds an item to the back of the queue, passing 'front' will add to the front
           }}
           disabled={queue.isFull()}
         >
@@ -39,8 +39,8 @@ function App() {
         <button
           disabled={queue.isEmpty()}
           onClick={() => {
-            const item = queue.dequeue() // gets the first item from the queue, passing 'back' will get the last item (stack-like behavior)
-            console.log('dequeue item', item)
+            const item = queue.getNextItem() // gets the first item from the queue, passing 'back' will get the last item (stack-like behavior)
+            console.log('getNextItem item', item)
           }}
         >
           Process Next

@@ -21,9 +21,9 @@ describe('AsyncQueuer', () => {
       const task2 = () => Promise.resolve(results.push(2))
       const task3 = () => Promise.resolve(results.push(3))
 
-      queuer.enqueue(task1)
-      queuer.enqueue(task2)
-      queuer.enqueue(task3)
+      queuer.addItem(task1)
+      queuer.addItem(task2)
+      queuer.addItem(task3)
 
       await queuer.start()
 
@@ -49,7 +49,7 @@ describe('AsyncQueuer', () => {
 
       // Queue 5 tasks
       for (let i = 0; i < 5; i++) {
-        queuer.enqueue(createTask(i))
+        queuer.addItem(createTask(i))
       }
 
       await queuer.start()
@@ -65,7 +65,7 @@ describe('AsyncQueuer', () => {
 
       queuer.onSuccess(successHandler)
 
-      queuer.enqueue(() => Promise.resolve(result))
+      queuer.addItem(() => Promise.resolve(result))
       await queuer.start()
 
       expect(successHandler).toHaveBeenCalledWith(result, expect.any(Function))
@@ -77,7 +77,7 @@ describe('AsyncQueuer', () => {
 
       queuer.onSettled(settledHandler)
 
-      queuer.enqueue(() => Promise.resolve(result))
+      queuer.addItem(() => Promise.resolve(result))
       await queuer.start()
 
       expect(settledHandler).toHaveBeenCalled()
@@ -85,9 +85,9 @@ describe('AsyncQueuer', () => {
   })
 
   describe('queue control', () => {
-    it('should clear the queue', async () => {
-      queuer.enqueue(() => Promise.resolve(1))
-      queuer.enqueue(() => Promise.resolve(2))
+    it('should clear the queue', () => {
+      queuer.addItem(() => Promise.resolve(1))
+      queuer.addItem(() => Promise.resolve(2))
 
       expect(queuer.getPending()).toHaveLength(2)
 
@@ -114,7 +114,7 @@ describe('AsyncQueuer', () => {
 
       // Queue 10 tasks
       for (let i = 0; i < 10; i++) {
-        queuer.enqueue(createTask(i))
+        queuer.addItem(createTask(i))
       }
 
       queuer.start()
@@ -131,8 +131,8 @@ describe('AsyncQueuer', () => {
       const task1 = () => Promise.resolve(1)
       const task2 = () => Promise.resolve(2)
 
-      queuer.enqueue(task1)
-      queuer.enqueue(task2)
+      queuer.addItem(task1)
+      queuer.addItem(task2)
 
       const frontTask = queuer.peek()
       const backTask = queuer.peek('back')
@@ -168,7 +168,7 @@ describe('AsyncQueuer', () => {
 
       // Queue 6 tasks
       for (let i = 0; i < 6; i++) {
-        queuer.enqueue(createTask(i))
+        queuer.addItem(createTask(i))
       }
 
       await queuer.start()

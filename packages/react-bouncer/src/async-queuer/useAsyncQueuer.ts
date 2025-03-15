@@ -11,7 +11,7 @@ export function useAsyncQueuer<TValue>(options: AsyncQueuerOptions<TValue>) {
 
   return {
     clear: asyncQueuerRef.current.clear.bind(asyncQueuerRef.current),
-    enqueue: asyncQueuerRef.current.enqueue.bind(asyncQueuerRef.current),
+    addItem: asyncQueuerRef.current.addItem.bind(asyncQueuerRef.current),
     getActive: asyncQueuerRef.current.getActive.bind(asyncQueuerRef.current),
     getAll: asyncQueuerRef.current.getAll.bind(asyncQueuerRef.current),
     getPending: asyncQueuerRef.current.getPending.bind(asyncQueuerRef.current),

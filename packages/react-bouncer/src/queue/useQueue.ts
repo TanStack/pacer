@@ -11,9 +11,9 @@ export function useQueue<TValue>(options: QueueOptions<TValue> = {}) {
 
   return {
     clear: queueRef.current.clear.bind(queueRef.current),
-    dequeue: queueRef.current.dequeue.bind(queueRef.current),
-    enqueue: queueRef.current.enqueue.bind(queueRef.current),
-    getItems: queueRef.current.getItems.bind(queueRef.current),
+    getNextItem: queueRef.current.getNextItem.bind(queueRef.current),
+    addItem: queueRef.current.addItem.bind(queueRef.current),
+    getAllItems: queueRef.current.getAllItems.bind(queueRef.current),
     isEmpty: queueRef.current.isEmpty.bind(queueRef.current),
     isFull: queueRef.current.isFull.bind(queueRef.current),
     peek: queueRef.current.peek.bind(queueRef.current),
