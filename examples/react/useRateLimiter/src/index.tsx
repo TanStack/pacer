@@ -26,6 +26,9 @@ function App() {
   return (
     <div>
       <h1>TanStack Bouncer useRateLimiter Example</h1>
+      <div>Execution Count: {setCountLimiter.getExecutionCount()}</div>
+      <div>Rejection Count: {setCountLimiter.getRejectionCount()}</div>
+      <hr />
       <div>Instant Count: {instantCount}</div>
       <div>Rate Limited Count: {limitedCount}</div>
       <div>

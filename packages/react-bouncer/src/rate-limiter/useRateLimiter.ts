@@ -19,6 +19,9 @@ export function useRateLimiter<
     getExecutionCount: rateLimiterRef.current.getExecutionCount.bind(
       rateLimiterRef.current,
     ),
+    getRejectionCount: rateLimiterRef.current.getRejectionCount.bind(
+      rateLimiterRef.current,
+    ),
     getRemainingExecutions: rateLimiterRef.current.getRemainingExecutions.bind(
       rateLimiterRef.current,
     ),
