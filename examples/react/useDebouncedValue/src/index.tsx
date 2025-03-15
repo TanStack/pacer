@@ -11,13 +11,16 @@ function App() {
   }
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const [debouncedCount] = useDebouncedValue(instantCount, {
+  // optionally, grab the debouncer from the last index of the returned array
+  const [debouncedCount, debouncer] = useDebouncedValue(instantCount, {
     wait: 500,
   })
 
   return (
     <div>
       <h1>TanStack Bouncer useDebouncedValue Example</h1>
+      <div>Execution Count: {debouncer.getExecutionCount()}</div>
+      <hr />
       <div>Instant Count: {instantCount}</div>
       <div>Debounced Count: {debouncedCount}</div>
       <div>

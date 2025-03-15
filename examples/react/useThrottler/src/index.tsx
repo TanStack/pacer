@@ -25,6 +25,8 @@ function App() {
   return (
     <div>
       <h1>TanStack Bouncer useThrottler Example</h1>
+      <div>Execution Count: {setCountThrottler.getExecutionCount()}</div>
+      <hr />
       <div>Instant Count: {instantCount}</div>
       <div>Throttled Count: {throttledCount}</div>
       <div>

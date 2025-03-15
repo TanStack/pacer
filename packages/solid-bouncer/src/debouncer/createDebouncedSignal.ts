@@ -8,7 +8,16 @@ export function createDebouncedSignal<TValue>(
 ) {
   const [debouncedValue, setDebouncedValue] = createSignal<TValue>(value)
 
-  const debouncer = createDebouncer(setDebouncedValue, options)
+  const debouncer = createDebouncer(
+    (value: TValue | ((prev: TValue) => TValue)) => {
+      if (typeof value === 'function') {
+        setDebouncedValue(value as (prev: TValue) => TValue)
+      } else {
+        setDebouncedValue(() => value)
+      }
+    },
+    options,
+  )
 
   return [debouncedValue, debouncer.maybeExecute, debouncer] as const
 }

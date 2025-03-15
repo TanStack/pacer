@@ -11,13 +11,16 @@ function App() {
   }
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledCount] = useThrottledValue(instantCount, {
+  // optionally, grab the throttler from the last index of the returned array
+  const [throttledCount, throttler] = useThrottledValue(instantCount, {
     wait: 1000,
   })
 
   return (
     <div>
       <h1>TanStack Bouncer useThrottledValue Example</h1>
+      <div>Execution Count: {throttler.getExecutionCount()}</div>
+      <hr />
       <div>Instant Count: {instantCount}</div>
       <div>Throttled Count: {throttledCount}</div>
       <div>

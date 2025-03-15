@@ -8,7 +8,16 @@ export function createThrottledSignal<TValue>(
 ) {
   const [throttledValue, setThrottledValue] = createSignal<TValue>(value)
 
-  const throttler = createThrottler(setThrottledValue, options)
+  const throttler = createThrottler(
+    (value: TValue | ((prev: TValue) => TValue)) => {
+      if (typeof value === 'function') {
+        setThrottledValue(value as (prev: TValue) => TValue)
+      } else {
+        setThrottledValue(() => value)
+      }
+    },
+    options,
+  )
 
   return [throttledValue, throttler.maybeExecute, throttler] as const
 }

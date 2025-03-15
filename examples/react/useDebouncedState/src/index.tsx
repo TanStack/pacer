@@ -7,9 +7,13 @@ function App() {
   const [instantCount, setInstantCount] = useState(0)
 
   // higher-level hook that uses React.useState with the state setter automatically debounced
-  const [debouncedCount, setDebouncedCount] = useDebouncedState(instantCount, {
-    wait: 500,
-  })
+  // optionally, grab the debouncer from the last index of the returned array
+  const [debouncedCount, setDebouncedCount, debouncer] = useDebouncedState(
+    instantCount,
+    {
+      wait: 500,
+    },
+  )
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -23,6 +27,8 @@ function App() {
   return (
     <div>
       <h1>TanStack Bouncer useDebouncedState Example</h1>
+      <div>Execution Count: {debouncer.getExecutionCount()}</div>
+      <hr />
       <div>Instant Count: {instantCount}</div>
       <div>Debounced Count: {debouncedCount}</div>
       <div>

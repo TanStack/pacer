@@ -8,11 +8,6 @@ export interface DebouncerOptions {
    */
   leading?: boolean
   /**
-   * Whether to execute on the trailing edge of the timeout.
-   * Defaults to true. Setting to false will only let functions execute on the leading edge if `leading` is also set to true.
-   */
-  trailing?: boolean
-  /**
    * Delay in milliseconds before executing the function
    * Defaults to 500ms
    */
@@ -21,7 +16,6 @@ export interface DebouncerOptions {
 
 const defaultOptions: Partial<DebouncerOptions> = {
   leading: false,
-  trailing: true,
 }
 
 /**
@@ -69,9 +63,7 @@ export class Debouncer<
     // Set new timeout that will reset canLeadingExecute
     this.timeoutId = setTimeout(() => {
       this.canLeadingExecute = true
-      if (this.options.trailing) {
-        this.executeFunction(...args)
-      }
+      this.executeFunction(...args)
     }, this.options.wait)
   }
 

@@ -25,6 +25,8 @@ function App() {
   return (
     <div>
       <h1>TanStack Bouncer useDebouncer Example</h1>
+      <div>Execution Count: {setCountDebouncer.getExecutionCount()}</div>
+      <hr />
       <div>Instant Count: {instantCount}</div>
       <div>Debounced Count: {debouncedCount}</div>
       <div>

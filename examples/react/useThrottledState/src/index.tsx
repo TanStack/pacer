@@ -7,9 +7,13 @@ function App() {
   const [instantCount, setInstantCount] = useState(0)
 
   // higher-level hook that uses React.useState with the state setter automatically throttled
-  const [throttledCount, setThrottledCount] = useThrottledState(instantCount, {
-    wait: 1000,
-  })
+  // optionally, grab the throttler from the last index of the returned array
+  const [throttledCount, setThrottledCount, throttler] = useThrottledState(
+    instantCount,
+    {
+      wait: 1000,
+    },
+  )
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -23,6 +27,8 @@ function App() {
   return (
     <div>
       <h1>TanStack Bouncer useThrottledState Example</h1>
+      <div>Execution Count: {throttler.getExecutionCount()}</div>
+      <hr />
       <div>Instant Count: {instantCount}</div>
       <div>Throttled Count: {throttledCount}</div>
       <div>
