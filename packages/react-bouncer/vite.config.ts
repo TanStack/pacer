@@ -19,12 +19,13 @@ export default mergeConfig(
   config,
   tanstackViteConfig({
     entry: [
-      './src/index.ts',
-      './src/async-throttler/index.ts',
-      './src/async-queuer/index.ts',
       './src/async-debouncer/index.ts',
+      './src/async-queuer/index.ts',
+      './src/async-throttler/index.ts',
       './src/debouncer/index.ts',
+      './src/index.ts',
       './src/queue/index.ts',
+      './src/rate-limiter/index.ts',
       './src/throttler/index.ts',
     ],
     srcDir: './src',
