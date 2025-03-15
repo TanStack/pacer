@@ -11,6 +11,7 @@ export function createAsyncThrottler<
   return {
     maybeExecute: asyncThrottler().maybeExecute.bind(asyncThrottler()),
     cancel: asyncThrottler().cancel.bind(asyncThrottler()),
-    getExecutionCount: asyncThrottler().getExecutionCount.bind(asyncThrottler()),
+    getExecutionCount:
+      asyncThrottler().getExecutionCount.bind(asyncThrottler()),
   } as const
 }

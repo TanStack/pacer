@@ -11,6 +11,7 @@ export function createAsyncDebouncer<
   return {
     maybeExecute: asyncDebouncer().maybeExecute.bind(asyncDebouncer()),
     cancel: asyncDebouncer().cancel.bind(asyncDebouncer()),
-    getExecutionCount: asyncDebouncer().getExecutionCount.bind(asyncDebouncer()),
+    getExecutionCount:
+      asyncDebouncer().getExecutionCount.bind(asyncDebouncer()),
   } as const
 }

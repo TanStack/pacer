@@ -3,7 +3,9 @@ import { createQueue } from './createQueue'
 import type { QueueOptions } from '@tanstack/bouncer/queue'
 
 export function createQueueSignal<TValue>(options: QueueOptions<TValue> = {}) {
-  const [state, setState] = createSignal<Array<TValue>>(options.initialItems || [])
+  const [state, setState] = createSignal<Array<TValue>>(
+    options.initialItems || [],
+  )
 
   const queue = createQueue<TValue>({
     ...options,
