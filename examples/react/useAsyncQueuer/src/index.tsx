@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useAsyncQueuer } from '@tanstack/react-bouncer/async-queuer'
+import { useAsyncQueuer } from '@tanstack/react-pacer/async-queuer'
 
 interface SearchResult {
   id: number
@@ -91,7 +91,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer useAsyncQueuer Example</h1>
+      <h1>TanStack Pacer useAsyncQueuer Example</h1>
       <div>
         <input
           type="text"

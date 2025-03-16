@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "paths": {
-      "@tanstack/bouncer": ["../bouncer/src"]
-    }
-  },
-  "include": ["src"]
-}

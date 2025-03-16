@@ -68,9 +68,9 @@ importers:
 
   examples/react/debounce:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -96,9 +96,9 @@ importers:
 
   examples/react/throttle:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -124,9 +124,9 @@ importers:
 
   examples/react/useAsyncDebouncer:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -152,9 +152,9 @@ importers:
 
   examples/react/useAsyncQueuer:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -180,9 +180,9 @@ importers:
 
   examples/react/useAsyncThrottler:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -208,9 +208,9 @@ importers:
 
   examples/react/useDebouncedState:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -236,9 +236,9 @@ importers:
 
   examples/react/useDebouncedValue:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -264,9 +264,9 @@ importers:
 
   examples/react/useDebouncer:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -292,9 +292,9 @@ importers:
 
   examples/react/useQueue:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -320,9 +320,9 @@ importers:
 
   examples/react/useQueueState:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -348,9 +348,9 @@ importers:
 
   examples/react/useRateLimiter:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -376,9 +376,9 @@ importers:
 
   examples/react/useThrottledState:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -404,9 +404,9 @@ importers:
 
   examples/react/useThrottledValue:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -432,9 +432,9 @@ importers:
 
   examples/react/useThrottler:
     dependencies:
-      '@tanstack/react-bouncer':
+      '@tanstack/react-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/react-bouncer
+        version: link:../../../packages/react-pacer
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -458,11 +458,43 @@ importers:
         specifier: ^6.2.2
         version: 6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
 
+  examples/solid/createDebouncedSignal:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.2
+        version: 6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createDebouncer:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.2
+        version: 6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
   examples/solid/debounce:
     dependencies:
-      '@tanstack/solid-bouncer':
+      '@tanstack/solid-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/solid-bouncer
+        version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
         version: 1.9.5
@@ -476,9 +508,9 @@ importers:
 
   examples/solid/throttle:
     dependencies:
-      '@tanstack/solid-bouncer':
+      '@tanstack/solid-pacer':
         specifier: ^0.1.0
-        version: link:../../../packages/solid-bouncer
+        version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
         version: 1.9.5
@@ -490,13 +522,13 @@ importers:
         specifier: ^2.11.6
         version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
 
-  packages/bouncer: {}
+  packages/pacer: {}
 
-  packages/react-bouncer:
+  packages/react-pacer:
     dependencies:
-      '@tanstack/bouncer':
+      '@tanstack/pacer':
         specifier: workspace:*
-        version: link:../bouncer
+        version: link:../pacer
       react-dom:
         specifier: '>=16.8'
         version: 19.0.0(react@19.0.0)
@@ -517,11 +549,11 @@ importers:
         specifier: ^19.0.0
         version: 19.0.0
 
-  packages/solid-bouncer:
+  packages/solid-pacer:
     dependencies:
-      '@tanstack/bouncer':
+      '@tanstack/pacer':
         specifier: workspace:*
-        version: link:../bouncer
+        version: link:../pacer
     devDependencies:
       solid-js:
         specifier: ^1.9.5

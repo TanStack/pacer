@@ -1,6 +1,6 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import ReactDOM from 'react-dom/client'
-import { useQueueState } from '@tanstack/react-bouncer/queue'
+import { useQueueState } from '@tanstack/react-pacer/queue'
 
 function App() {
   const [queueItems, queue] = useQueueState({
@@ -10,7 +10,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer useQueueState Example</h1>
+      <h1>TanStack Pacer useQueueState Example</h1>
       <div>Queue Size: {queue.size()}</div>
       <div>Queue Max Size: {10}</div>
       <div>Queue Full: {queue.isFull() ? 'Yes' : 'No'}</div>

@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/bouncer-example-react-use-debounced-value",
+  "name": "@tanstack/pacer-example-react-use-debounced-value",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/react-bouncer": "^0.1.0",
+    "@tanstack/react-pacer": "^0.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

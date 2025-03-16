@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useAsyncDebouncer } from '@tanstack/react-bouncer/async-debouncer'
+import { useAsyncDebouncer } from '@tanstack/react-pacer/async-debouncer'
 
 interface SearchResult {
   id: number
@@ -76,7 +76,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer useAsyncDebouncer Example</h1>
+      <h1>TanStack Pacer useAsyncDebouncer Example</h1>
       <div>
         <input
           type="text"

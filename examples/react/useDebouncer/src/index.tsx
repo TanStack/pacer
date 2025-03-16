@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useDebouncer } from '@tanstack/react-bouncer/debouncer'
+import { useDebouncer } from '@tanstack/react-pacer/debouncer'
 
 function App() {
   // Use your state management library of choice
@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer useDebouncer Example</h1>
+      <h1>TanStack Pacer useDebouncer Example</h1>
       <div>Execution Count: {setCountDebouncer.getExecutionCount()}</div>
       <hr />
       <div>Instant Count: {instantCount}</div>

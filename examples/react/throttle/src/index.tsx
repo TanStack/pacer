@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { throttle } from '@tanstack/react-bouncer/throttler'
+import { throttle } from '@tanstack/react-pacer/throttler'
 
 function App() {
   // Use your state management library of choice
@@ -27,7 +27,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer throttle Example</h1>
+      <h1>TanStack Pacer throttle Example</h1>
       <div>Instant Count: {instantCount}</div>
       <div>Throttled Count: {throttledCount}</div>
       <div>

@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { createDebouncedSignal } from '@tanstack/solid-bouncer/debouncer'
+import { createDebouncedSignal } from '@tanstack/solid-pacer/debouncer'
 
 function App() {
   // Use your state management library of choice
@@ -25,7 +25,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer createDebouncedSignal Example</h1>
+      <h1>TanStack Pacer createDebouncedSignal Example</h1>
       <div>Execution Count: {debouncer.getExecutionCount()}</div>
       <hr />
       <div>Instant Count: {instantCount()}</div>

@@ -15,7 +15,7 @@ function useDebouncedState<TValue>(value, options): readonly [TValue, (...args) 
  }]
 ```
 
-Defined in: [react-bouncer/src/useDebouncedState.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-bouncer/src/useDebouncedState.ts#L5)
+Defined in: [react-pacer/src/useDebouncedState.ts:5](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/useDebouncedState.ts#L5)
 
 ## Type Parameters
 

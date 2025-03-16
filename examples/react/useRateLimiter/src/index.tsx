@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useRateLimiter } from '@tanstack/react-bouncer/rate-limiter'
+import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
 
 function App() {
   // Use your state management library of choice
@@ -25,7 +25,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer useRateLimiter Example</h1>
+      <h1>TanStack Pacer useRateLimiter Example</h1>
       <div>Execution Count: {setCountLimiter.getExecutionCount()}</div>
       <div>Rejection Count: {setCountLimiter.getRejectionCount()}</div>
       <hr />

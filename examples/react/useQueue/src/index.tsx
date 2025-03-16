@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useQueue } from '@tanstack/react-bouncer/queue'
+import { useQueue } from '@tanstack/react-pacer/queue'
 
 function App() {
   // Use your state management library of choice
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer useQueue Example</h1>
+      <h1>TanStack Pacer useQueue Example</h1>
       <div>Queue Size: {queue.size()}</div>
       <div>Queue Max Size: {10}</div>
       <div>Queue Full: {queue.isFull() ? 'Yes' : 'No'}</div>

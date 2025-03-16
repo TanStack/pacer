@@ -15,7 +15,7 @@ function useThrottledValue<TValue>(value, options): readonly [TValue, {
  }]
 ```
 
-Defined in: react-bouncer/src/useThrottledValue.ts:5
+Defined in: react-pacer/src/useThrottledValue.ts:5
 
 ## Type Parameters
 

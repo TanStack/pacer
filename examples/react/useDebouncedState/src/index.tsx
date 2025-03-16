@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useDebouncedState } from '@tanstack/react-bouncer/debouncer'
+import { useDebouncedState } from '@tanstack/react-pacer/debouncer'
 
 function App() {
   const [instantCount, setInstantCount] = useState(0)
@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer useDebouncedState Example</h1>
+      <h1>TanStack Pacer useDebouncedState Example</h1>
       <div>Execution Count: {debouncer.getExecutionCount()}</div>
       <hr />
       <div>Instant Count: {instantCount}</div>

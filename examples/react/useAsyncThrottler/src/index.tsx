@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useAsyncThrottler } from '@tanstack/react-bouncer/async-throttler'
+import { useAsyncThrottler } from '@tanstack/react-pacer/async-throttler'
 
 interface SearchResult {
   id: number
@@ -76,7 +76,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Bouncer useAsyncThrottler Example</h1>
+      <h1>TanStack Pacer useAsyncThrottler Example</h1>
       <div>
         <input
           type="text"

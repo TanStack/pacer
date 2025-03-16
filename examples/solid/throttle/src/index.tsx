@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { throttle } from '@tanstack/solid-bouncer/throttler'
+import { throttle } from '@tanstack/solid-pacer/throttler'
 
 function App() {
   const [instantCount, setInstantCount] = createSignal(0)
@@ -25,7 +25,7 @@ function App() {
 
   return (
     <div>
-      <h1>Solid Bouncer throttle Example</h1>
+      <h1>Solid Pacer throttle Example</h1>
       <div>Instant Count: {instantCount()}</div>
       <div>Throttled Count: {throttledCount()}</div>
       <div>

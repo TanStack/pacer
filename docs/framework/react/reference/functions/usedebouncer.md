@@ -11,7 +11,7 @@ title: useDebouncer
 function useDebouncer<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-bouncer/src/useDebouncer.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-bouncer/src/useDebouncer.ts#L5)
+Defined in: [react-pacer/src/useDebouncer.ts:5](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/useDebouncer.ts#L5)
 
 ## Type Parameters
 

@@ -7,20 +7,17 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 /** @type {import('@tanstack/config/typedoc').Package[]} */
 const packages = [
   {
-    name: 'bouncer',
-    entryPoints: [resolve(__dirname, '../packages/bouncer/src/index.ts')],
-    tsconfig: resolve(__dirname, '../packages/bouncer/tsconfig.docs.json'),
+    name: 'pacer',
+    entryPoints: [resolve(__dirname, '../packages/pacer/src/index.ts')],
+    tsconfig: resolve(__dirname, '../packages/pacer/tsconfig.docs.json'),
     outputDir: resolve(__dirname, '../docs/reference'),
   },
   {
-    name: 'react-bouncer',
-    entryPoints: [resolve(__dirname, '../packages/react-bouncer/src/index.ts')],
-    tsconfig: resolve(
-      __dirname,
-      '../packages/react-bouncer/tsconfig.docs.json',
-    ),
+    name: 'react-pacer',
+    entryPoints: [resolve(__dirname, '../packages/react-pacer/src/index.ts')],
+    tsconfig: resolve(__dirname, '../packages/react-pacer/tsconfig.docs.json'),
     outputDir: resolve(__dirname, '../docs/framework/react/reference'),
-    exclude: ['packages/bouncer/**/*'],
+    exclude: ['packages/pacer/**/*'],
   },
 ]
 

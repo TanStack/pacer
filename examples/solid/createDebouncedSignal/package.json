@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/bouncer-example-solid-create-debounced-signal",
+  "name": "@tanstack/pacer-example-solid-create-debounced-signal",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/solid-bouncer": "^0.1.0",
+    "@tanstack/solid-pacer": "^0.1.0",
     "solid-js": "^1.9.5"
   },
   "devDependencies": {
