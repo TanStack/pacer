@@ -1,5 +1,5 @@
-import { AsyncQueuer } from '../../../pacer/dist/esm/async-queuer'
-import type { AsyncQueuerOptions } from '../../../pacer/dist/esm/async-queuer'
+import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
+import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 
 export function createAsyncQueuer<TValue>(options: AsyncQueuerOptions<TValue>) {
   return new AsyncQueuer(options)

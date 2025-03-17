@@ -1,5 +1,5 @@
-import { AsyncDebouncer } from '../../../pacer/dist/esm/async-debouncer'
-import type { AsyncDebouncerOptions } from '../../../pacer/dist/esm/async-debouncer'
+import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
+import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 
 export function createAsyncDebouncer<
   TFn extends (...args: Array<any>) => any,

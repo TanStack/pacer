@@ -1,5 +1,5 @@
-import { AsyncThrottler } from '../../../pacer/dist/esm/async-throttler'
-import type { AsyncThrottlerOptions } from '../../../pacer/dist/esm/async-throttler'
+import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
+import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 
 export function createAsyncThrottler<
   TFn extends (...args: Array<any>) => any,

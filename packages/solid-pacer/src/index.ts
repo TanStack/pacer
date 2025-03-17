@@ -1,5 +1,5 @@
 // re-export everything from the core pacer package
-export * from '../../pacer/dist/esm'
+export * from '@tanstack/pacer'
 
 // export every hook individually - DON'T export from barrel files
 export * from './async-debouncer/createAsyncDebouncer'

@@ -1,6 +1,6 @@
 import { createEffect } from 'solid-js'
 import { createDebouncedSignal } from './createDebouncedSignal'
-import type { DebouncerOptions } from '../../../pacer/dist/esm/debouncer'
+import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 export function createDebouncedValue<TValue>(
   value: TValue,
