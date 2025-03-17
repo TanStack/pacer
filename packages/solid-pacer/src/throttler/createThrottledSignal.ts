@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js'
 import { createThrottler } from './createThrottler'
-import type { ThrottlerOptions } from '../../../pacer/dist/esm/throttler'
+import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 export function createThrottledSignal<TValue>(
   value: TValue,

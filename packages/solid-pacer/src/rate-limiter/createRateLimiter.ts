@@ -1,5 +1,5 @@
-import { RateLimiter } from '../../../pacer/dist/esm/rate-limiter'
-import type { RateLimiterOptions } from '../../../pacer/dist/esm/rate-limiter'
+import { RateLimiter } from '@tanstack/pacer/rate-limiter'
+import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 export function createRateLimiter<
   TFn extends (...args: Array<any>) => any,

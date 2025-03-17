@@ -1,5 +1,5 @@
-import { Throttler } from '../../../pacer/dist/esm/throttler'
-import type { ThrottlerOptions } from '../../../pacer/dist/esm/throttler'
+import { Throttler } from '@tanstack/pacer/throttler'
+import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 export function createThrottler<
   TFn extends (...args: Array<any>) => any,

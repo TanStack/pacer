@@ -1,5 +1,5 @@
-import { Debouncer } from '../../../pacer/dist/esm/debouncer'
-import type { DebouncerOptions } from '../../../pacer/dist/esm/debouncer'
+import { Debouncer } from '@tanstack/pacer/debouncer'
+import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 export function createDebouncer<
   TFn extends (...args: Array<any>) => any,

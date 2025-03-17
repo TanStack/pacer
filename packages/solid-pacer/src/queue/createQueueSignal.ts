@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js'
 import { createQueue } from './createQueue'
-import type { QueueOptions } from '../../../pacer/dist/esm/queue'
+import type { QueueOptions } from '@tanstack/pacer/queue'
 
 export function createQueueSignal<TValue>(options: QueueOptions<TValue> = {}) {
   const [state, setState] = createSignal<Array<TValue>>(
