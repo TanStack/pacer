@@ -117,7 +117,7 @@
     "src"
   ],
   "scripts": {
-    "clean": "rimraf ./build && rimraf ./dist",
+    "clean": "premove ./build ./dist",
     "lint:fix": "eslint ./src --fix",
     "test:eslint": "eslint ./src",
     "test:lib": "vitest",
