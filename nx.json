@@ -15,53 +15,46 @@
       "{projectRoot}/**/*",
       "!{projectRoot}/**/*.md"
     ],
-    "public": [
+    "production": [
       "default",
-      "{projectRoot}/build",
-      "{projectRoot}/dist",
-      "!{projectRoot}/.eslintrc.cjs",
-      "!{projectRoot}/tsconfig.eslint.json"
+      "!{projectRoot}/tests/**/*",
+      "!{projectRoot}/eslint.config.js"
     ]
   },
   "targetDefaults": {
     "test:lib": {
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^public"],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true
+      "cache": true,
+      "dependsOn": ["^compile"],
+      "inputs": ["default", "^production"],
+      "outputs": ["{projectRoot}/coverage"]
     },
     "test:eslint": {
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^public"],
-      "cache": true
+      "cache": true,
+      "dependsOn": ["^compile"],
+      "inputs": ["default", "^production", "{workspaceRoot}/eslint.config.js"]
     },
     "test:types": {
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^public"],
-      "cache": true
+      "cache": true,
+      "inputs": ["default", "^production"]
     },
     "test:build": {
+      "cache": true,
       "dependsOn": ["build"],
-      "inputs": ["default", "^public"],
-      "cache": true
+      "inputs": ["production"]
     },
     "build": {
+      "cache": true,
       "dependsOn": ["^build"],
-      "inputs": ["default", "^public"],
-      "outputs": ["{projectRoot}/build", "{projectRoot}/dist"],
-      "cache": true
+      "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/build", "{projectRoot}/dist"]
     },
     "test:knip": {
       "cache": true,
       "inputs": ["{workspaceRoot}/**/*"]
     },
-    "test:format": {
-      "cache": true,
-      "inputs": ["{workspaceRoot}/**/*"]
-    },
     "test:sherif": {
       "cache": true,
-      "inputs": ["{workspaceRoot}/**/*"]
+      "inputs": ["{workspaceRoot}/**/package.json"]
     }
   }
 }
