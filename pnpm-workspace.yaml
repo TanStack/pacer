@@ -1,4 +1,3 @@
 packages:
+  - 'examples/**'
   - 'packages/*'
-  - 'examples/react/*'
-  - 'examples/vanilla/*'

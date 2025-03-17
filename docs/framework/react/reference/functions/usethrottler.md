@@ -11,7 +11,7 @@ title: useThrottler
 function useThrottler<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: react-bouncer/src/useThrottler.ts:5
+Defined in: react-pacer/src/useThrottler.ts:5
 
 ## Type Parameters
 

@@ -3,7 +3,7 @@
   "ignoreDependencies": ["@size-limit/preset-small-lib", "@faker-js/faker"],
   "ignoreWorkspaces": ["examples/**"],
   "workspaces": {
-    "packages/react-bouncer": {
+    "packages/react-pacer": {
       "ignore": []
     }
   }

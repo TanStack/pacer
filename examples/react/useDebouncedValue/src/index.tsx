@@ -1,7 +1,7 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useDebouncedValue } from '@tanstack/react-bouncer/debouncer'
+import { useDebouncedValue } from '@tanstack/react-pacer/debouncer'
 
 function App() {
   const [instantCount, setInstantCount] = useState(0)
@@ -10,14 +10,17 @@ function App() {
     setInstantCount((c) => c + 1)
   }
 
-  // wrapper around useDebouncer, useState, and useEffect that watches instantCount and debounces it
-  const [debouncedCount] = useDebouncedValue(instantCount, {
+  // highest-level hook that watches an instant local state value and returns a debounced value
+  // optionally, grab the debouncer from the last index of the returned array
+  const [debouncedCount, debouncer] = useDebouncedValue(instantCount, {
     wait: 500,
   })
 
   return (
     <div>
-      <h1>TanStack Bouncer useDebouncedValue Example</h1>
+      <h1>TanStack Pacer useDebouncedValue Example</h1>
+      <div>Execution Count: {debouncer.getExecutionCount()}</div>
+      <hr />
       <div>Instant Count: {instantCount}</div>
       <div>Debounced Count: {debouncedCount}</div>
       <div>

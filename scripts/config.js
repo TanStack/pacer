@@ -9,12 +9,12 @@ import { fileURLToPath } from 'node:url'
  */
 export const packages = [
   {
-    name: '@tanstack/bouncer',
-    packageDir: 'packages/bouncer',
+    name: '@tanstack/pacer',
+    packageDir: 'packages/pacer',
   },
   {
-    name: '@tanstack/react-bouncer',
-    packageDir: 'packages/react-bouncer',
+    name: '@tanstack/react-pacer',
+    packageDir: 'packages/react-pacer',
   },
 ]
 

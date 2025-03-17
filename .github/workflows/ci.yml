@@ -23,7 +23,7 @@ permissions:
 jobs:
   test-and-publish:
     name: Test & Publish
-    if: github.repository == 'TanStack/bouncer'
+    if: github.repository == 'TanStack/pacer'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

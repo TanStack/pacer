@@ -1,16 +1,16 @@
 {
-  "name": "bouncer",
+  "name": "pacer",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/tanstack/query.git"
+    "url": "https://github.com/tanstack/pacer.git"
   },
   "packageManager": "pnpm@9.15.0",
   "type": "module",
   "scripts": {
     "build": "nx affected --targets=build --exclude=examples/** && size-limit",
     "build:all": "nx run-many --targets=build --exclude=examples/** && size-limit",
-    "build:core": "nx build @tanstack/bouncer && size-limit",
+    "build:core": "nx build @tanstack/pacer && size-limit",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
     "changeset:version": "changeset version && pnpm install --no-frozen-lockfile && pnpm prettier:write",
@@ -48,7 +48,7 @@
   },
   "size-limit": [
     {
-      "path": "packages/bouncer/dist/esm/index.js",
+      "path": "packages/pacer/dist/esm/index.js",
       "limit": "4 KB"
     }
   ],
@@ -63,8 +63,8 @@
     "eslint": "^9.22.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "jsdom": "^26.0.0",
-    "knip": "^5.45.0",
-    "nx": "^20.5.0",
+    "knip": "^5.46.0",
+    "nx": "^20.6.0",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
     "publint": "^0.3.9",
@@ -72,7 +72,7 @@
     "sherif": "^1.4.0",
     "size-limit": "^11.2.0",
     "typescript": "5.8.2",
-    "vite": "^6.2.1",
+    "vite": "^6.2.2",
     "vitest": "^3.0.8"
   }
 }
