@@ -2662,6 +2662,10 @@ packages:
     resolution: {integrity: sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==}
     engines: {node: '>=12.13'}
 
+  is-windows@1.0.2:
+    resolution: {integrity: sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==}
+    engines: {node: '>=0.10.0'}
+
   is-wsl@2.2.0:
     resolution: {integrity: sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==}
     engines: {node: '>=8'}
@@ -4848,6 +4852,13 @@ snapshots:
     dependencies:
       acorn: 8.14.1
 
+  '@svitejs/changesets-changelog-github-compact@1.2.0':
+    dependencies:
+      '@changesets/get-github-info': 0.6.0
+      dotenv: 16.4.7
+    transitivePeerDependencies:
+      - encoding
+
   '@tanstack/config@0.17.1(@types/node@22.13.10)(eslint@9.22.0(jiti@2.4.2))(rollup@4.35.0)(typescript@5.8.2)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))':
     dependencies:
       '@tanstack/eslint-config': 0.1.0(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2)
@@ -6197,6 +6208,8 @@ snapshots:
   is-unicode-supported@0.1.0: {}
 
   is-what@4.1.16: {}
+
+  is-windows@1.0.2: {}
 
   is-wsl@2.2.0:
     dependencies:

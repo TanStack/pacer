@@ -1,11 +1,11 @@
 {
-  "name": "pacer",
+  "name": "root",
   "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/tanstack/pacer.git"
   },
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "pnpm@10.2.1",
   "type": "module",
   "scripts": {
     "build": "nx affected --targets=build --exclude=examples/** && size-limit",
@@ -14,7 +14,6 @@
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
     "changeset:version": "changeset version && pnpm install --no-frozen-lockfile && pnpm prettier:write",
-    "cipublish": "node scripts/publish.js",
     "clean": "find . -name 'dist' -type d -prune -exec rm -rf {} +",
     "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf {} +",
     "dev": "pnpm run watch",
@@ -41,7 +40,6 @@
   },
   "nx": {
     "includedScripts": [
-      "test:format",
       "test:knip",
       "test:sherif"
     ]
