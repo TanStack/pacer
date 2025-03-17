@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Utilities for debouncing, throttling, rate-limiting, queuing, and more.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -117,7 +117,7 @@
     "src"
   ],
   "scripts": {
-    "clean": "rimraf ./build && rimraf ./dist",
+    "clean": "premove ./build ./dist",
     "lint:fix": "eslint ./src --fix",
     "test:eslint": "eslint ./src",
     "test:lib": "vitest",
