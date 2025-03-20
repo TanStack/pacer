@@ -25,6 +25,7 @@ export default mergeConfig(
       './src/debouncer/index.ts',
       './src/index.ts',
       './src/queue/index.ts',
+      './src/queuer/index.ts',
       './src/rate-limiter/index.ts',
       './src/throttler/index.ts',
     ],

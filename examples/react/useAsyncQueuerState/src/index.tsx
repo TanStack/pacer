@@ -29,7 +29,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Pacer useAsyncQueuer Example</h1>
+      <h1>TanStack Pacer useAsyncQueuerState Example</h1>
       <div></div>
       <div>Queue Size: {queuer.size()}</div>
       <div>Queue Max Size: {25}</div>
