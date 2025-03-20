@@ -18,9 +18,10 @@ export interface ThrottlerOptions {
   wait: number
 }
 
-const defaultOptions: Partial<ThrottlerOptions> = {
+const defaultOptions: Required<ThrottlerOptions> = {
   leading: true,
   trailing: true,
+  wait: 0,
 }
 
 /**
@@ -38,7 +39,7 @@ export class Throttler<
 
   constructor(
     private fn: TFn,
-    options: ThrottlerOptions,
+    options: ThrottlerOptions = defaultOptions,
   ) {
     this.options = {
       ...defaultOptions,

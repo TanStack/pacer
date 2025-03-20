@@ -6,17 +6,17 @@ export function useThrottler<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: ThrottlerOptions) {
-  const throttlerRef = useRef<Throttler<TFn, TArgs>>(null)
+  const throttler = useRef<Throttler<TFn, TArgs>>(null)
 
-  if (!throttlerRef.current) {
-    throttlerRef.current = new Throttler(fn, options)
+  if (!throttler.current) {
+    throttler.current = new Throttler(fn, options)
   }
 
   return {
-    maybeExecute: throttlerRef.current.maybeExecute.bind(throttlerRef.current),
-    cancel: throttlerRef.current.cancel.bind(throttlerRef.current),
-    getExecutionCount: throttlerRef.current.getExecutionCount.bind(
-      throttlerRef.current,
+    maybeExecute: throttler.current.maybeExecute.bind(throttler.current),
+    cancel: throttler.current.cancel.bind(throttler.current),
+    getExecutionCount: throttler.current.getExecutionCount.bind(
+      throttler.current,
     ),
   } as const
 }

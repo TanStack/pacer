@@ -13,6 +13,11 @@ export interface AsyncDebouncerOptions {
   onError?: (error: unknown) => void
 }
 
+const defaultOptions: Required<AsyncDebouncerOptions> = {
+  onError: () => {},
+  wait: 0,
+}
+
 /**
  * A class that creates an async debounced function.
  */
@@ -29,10 +34,10 @@ export class AsyncDebouncer<
 
   constructor(
     private fn: TFn,
-    options: AsyncDebouncerOptions,
+    options: AsyncDebouncerOptions = defaultOptions,
   ) {
     this.options = {
-      onError: () => {},
+      ...defaultOptions,
       ...options,
     }
   }

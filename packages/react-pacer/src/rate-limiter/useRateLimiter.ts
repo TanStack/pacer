@@ -6,25 +6,23 @@ export function useRateLimiter<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: RateLimiterOptions) {
-  const rateLimiterRef = useRef<RateLimiter<TFn, TArgs>>(null)
+  const rateLimiter = useRef<RateLimiter<TFn, TArgs>>(null)
 
-  if (!rateLimiterRef.current) {
-    rateLimiterRef.current = new RateLimiter(fn, options)
+  if (!rateLimiter.current) {
+    rateLimiter.current = new RateLimiter(fn, options)
   }
 
   return {
-    maybeExecute: rateLimiterRef.current.maybeExecute.bind(
-      rateLimiterRef.current,
+    maybeExecute: rateLimiter.current.maybeExecute.bind(rateLimiter.current),
+    getExecutionCount: rateLimiter.current.getExecutionCount.bind(
+      rateLimiter.current,
     ),
-    getExecutionCount: rateLimiterRef.current.getExecutionCount.bind(
-      rateLimiterRef.current,
+    getRejectionCount: rateLimiter.current.getRejectionCount.bind(
+      rateLimiter.current,
     ),
-    getRejectionCount: rateLimiterRef.current.getRejectionCount.bind(
-      rateLimiterRef.current,
+    getRemainingExecutions: rateLimiter.current.getRemainingExecutions.bind(
+      rateLimiter.current,
     ),
-    getRemainingExecutions: rateLimiterRef.current.getRemainingExecutions.bind(
-      rateLimiterRef.current,
-    ),
-    reset: rateLimiterRef.current.reset.bind(rateLimiterRef.current),
+    reset: rateLimiter.current.reset.bind(rateLimiter.current),
   } as const
 }

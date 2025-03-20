@@ -7,7 +7,7 @@ title: DebouncerOptions
 
 # Interface: DebouncerOptions
 
-Defined in: [debouncer.ts:4](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L4)
+Defined in: [debouncer.ts:4](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L4)
 
 Options for configuring a debounced function
 
@@ -19,23 +19,10 @@ Options for configuring a debounced function
 optional leading: boolean;
 ```
 
-Defined in: [debouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L13)
+Defined in: [debouncer.ts:9](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L9)
 
 Whether to execute on the leading edge of the timeout.
 Defaults to false.
-
-***
-
-### trailing?
-
-```ts
-optional trailing: boolean;
-```
-
-Defined in: [debouncer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L18)
-
-Whether to execute on the trailing edge of the timeout.
-Defaults to true. Setting to false will only let functions execute on the leading edge if `leading` is also set to true.
 
 ***
 
@@ -45,6 +32,7 @@ Defaults to true. Setting to false will only let functions execute on the leadin
 wait: number;
 ```
 
-Defined in: [debouncer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L8)
+Defined in: [debouncer.ts:14](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L14)
 
 Delay in milliseconds before executing the function
+Defaults to 500ms

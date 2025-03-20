@@ -10,12 +10,12 @@ title: useDebouncedState
 ```ts
 function useDebouncedState<TValue>(value, options): readonly [TValue, (...args) => void, {
   cancel: () => void;
-  debounce: (...args) => void;
   getExecutionCount: () => number;
+  maybeExecute: (...args) => void;
  }]
 ```
 
-Defined in: [react-pacer/src/useDebouncedState.ts:5](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/useDebouncedState.ts#L5)
+Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L5)
 
 ## Type Parameters
 
@@ -35,6 +35,6 @@ Defined in: [react-pacer/src/useDebouncedState.ts:5](https://github.com/TanStack
 
 readonly \[`TValue`, (...`args`) => `void`, \{
   `cancel`: () => `void`;
-  `debounce`: (...`args`) => `void`;
   `getExecutionCount`: () => `number`;
+  `maybeExecute`: (...`args`) => `void`;
  \}\]

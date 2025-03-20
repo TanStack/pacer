@@ -7,7 +7,7 @@ title: ThrottlerOptions
 
 # Interface: ThrottlerOptions
 
-Defined in: throttler.ts:4
+Defined in: [throttler.ts:4](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L4)
 
 Options for configuring a throttled function
 
@@ -19,7 +19,7 @@ Options for configuring a throttled function
 optional leading: boolean;
 ```
 
-Defined in: throttler.ts:13
+Defined in: [throttler.ts:9](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L9)
 
 Whether to execute on the leading edge of the timeout.
 Defaults to true.
@@ -32,7 +32,7 @@ Defaults to true.
 optional trailing: boolean;
 ```
 
-Defined in: throttler.ts:18
+Defined in: [throttler.ts:14](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L14)
 
 Whether to execute on the trailing edge of the timeout.
 Defaults to true.
@@ -45,6 +45,6 @@ Defaults to true.
 wait: number;
 ```
 
-Defined in: throttler.ts:8
+Defined in: [throttler.ts:18](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L18)
 
 Time window in milliseconds during which the function can only be executed once

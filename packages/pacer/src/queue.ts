@@ -34,14 +34,12 @@ export type QueuePosition = 'front' | 'back'
  * - getNextItem('front' | 'back')
  */
 export class Queue<TValue> {
+  protected options: Required<QueueOptions<TValue>> = defaultOptions
   private items: Array<TValue> = []
-  private options: Required<QueueOptions<TValue>>
+  private executionCount = 0
 
   constructor(options: QueueOptions<TValue> = defaultOptions) {
-    this.options = {
-      ...defaultOptions,
-      ...options,
-    }
+    this.options = { ...defaultOptions, ...options }
 
     if (this.options.initialItems.length) {
       this.items = [...this.options.initialItems]
@@ -122,6 +120,7 @@ export class Queue<TValue> {
     }
 
     if (item !== undefined) {
+      this.executionCount++
       this.options.onUpdate(this)
     }
     return item
@@ -176,9 +175,27 @@ export class Queue<TValue> {
   }
 
   /**
+   * Resets the queue to its initial state
+   */
+  reset(withInitialItems?: boolean): void {
+    this.clear()
+    this.executionCount = 0
+    if (withInitialItems) {
+      this.items = [...this.options.initialItems]
+    }
+  }
+
+  /**
    * Returns a copy of all items in the queue
    */
   getAllItems(): Array<TValue> {
     return [...this.items]
+  }
+
+  /**
+   * Returns the number of items that have been removed from the queue
+   */
+  getExecutionCount(): number {
+    return this.executionCount
   }
 }

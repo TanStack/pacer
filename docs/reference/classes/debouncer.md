@@ -7,7 +7,7 @@ title: Debouncer
 
 # Class: Debouncer\<TFn, TArgs\>
 
-Defined in: [debouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L24)
+Defined in: [debouncer.ts:25](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L25)
 
 A class that creates a debounced function.
 
@@ -25,7 +25,7 @@ A class that creates a debounced function.
 new Debouncer<TFn, TArgs>(fn, options): Debouncer<TFn, TArgs>
 ```
 
-Defined in: [debouncer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L33)
+Defined in: [debouncer.ts:34](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L34)
 
 #### Parameters
 
@@ -35,7 +35,7 @@ Defined in: [debouncer.ts:33](https://github.com/TanStack/pacer/blob/main/packag
 
 ##### options
 
-[`DebouncerOptions`](../interfaces/debounceroptions.md)
+[`DebouncerOptions`](../interfaces/debounceroptions.md) = `defaultOptions`
 
 #### Returns
 
@@ -49,31 +49,9 @@ Defined in: [debouncer.ts:33](https://github.com/TanStack/pacer/blob/main/packag
 cancel(): void
 ```
 
-Defined in: [debouncer.ts:81](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L81)
+Defined in: [debouncer.ts:79](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L79)
 
 Cancels any pending execution
-
-#### Returns
-
-`void`
-
-***
-
-### execute()
-
-```ts
-execute(...args): void
-```
-
-Defined in: [debouncer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L54)
-
-Executes the debounced function
-
-#### Parameters
-
-##### args
-
-...`TArgs`
 
 #### Returns
 
@@ -87,10 +65,32 @@ Executes the debounced function
 getExecutionCount(): number
 ```
 
-Defined in: [debouncer.ts:47](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L47)
+Defined in: [debouncer.ts:47](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L47)
 
 Returns the number of times the function has been executed
 
 #### Returns
 
 `number`
+
+***
+
+### maybeExecute()
+
+```ts
+maybeExecute(...args): void
+```
+
+Defined in: [debouncer.ts:54](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L54)
+
+Executes the debounced function
+
+#### Parameters
+
+##### args
+
+...`TArgs`
+
+#### Returns
+
+`void`

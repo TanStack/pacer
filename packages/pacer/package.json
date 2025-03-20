@@ -86,6 +86,16 @@
         "default": "./dist/cjs/queue.cjs"
       }
     },
+    "./queuer": {
+      "import": {
+        "types": "./dist/esm/queuer.d.ts",
+        "default": "./dist/esm/queuer.js"
+      },
+      "require": {
+        "types": "./dist/cjs/queuer.d.cts",
+        "default": "./dist/cjs/queuer.cjs"
+      }
+    },
     "./rate-limiter": {
       "import": {
         "types": "./dist/esm/rate-limiter.d.ts",

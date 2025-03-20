@@ -11,7 +11,7 @@ title: useThrottler
 function useThrottler<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: react-pacer/src/useThrottler.ts:5
+Defined in: [react-pacer/src/throttler/useThrottler.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L5)
 
 ## Type Parameters
 
@@ -57,10 +57,10 @@ Returns the number of times the function has been executed
 
 `number`
 
-### throttle()
+### maybeExecute()
 
 ```ts
-readonly throttle: (...args) => void;
+readonly maybeExecute: (...args) => void;
 ```
 
 Executes the throttled function

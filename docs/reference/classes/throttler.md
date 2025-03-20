@@ -7,7 +7,7 @@ title: Throttler
 
 # Class: Throttler\<TFn, TArgs\>
 
-Defined in: throttler.ts:24
+Defined in: [throttler.ts:30](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L30)
 
 A class that creates a throttled function.
 
@@ -25,7 +25,7 @@ A class that creates a throttled function.
 new Throttler<TFn, TArgs>(fn, options): Throttler<TFn, TArgs>
 ```
 
-Defined in: throttler.ts:34
+Defined in: [throttler.ts:40](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L40)
 
 #### Parameters
 
@@ -35,7 +35,7 @@ Defined in: throttler.ts:34
 
 ##### options
 
-[`ThrottlerOptions`](../interfaces/throttleroptions.md)
+[`ThrottlerOptions`](../interfaces/throttleroptions.md) = `defaultOptions`
 
 #### Returns
 
@@ -49,31 +49,9 @@ Defined in: throttler.ts:34
 cancel(): void
 ```
 
-Defined in: throttler.ts:91
+Defined in: [throttler.ts:103](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L103)
 
 Cancels any pending execution
-
-#### Returns
-
-`void`
-
-***
-
-### execute()
-
-```ts
-execute(...args): void
-```
-
-Defined in: throttler.ts:55
-
-Executes the throttled function
-
-#### Parameters
-
-##### args
-
-...`TArgs`
 
 #### Returns
 
@@ -87,10 +65,48 @@ Executes the throttled function
 getExecutionCount(): number
 ```
 
-Defined in: throttler.ts:48
+Defined in: [throttler.ts:53](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L53)
 
 Returns the number of times the function has been executed
 
 #### Returns
 
 `number`
+
+***
+
+### getLastExecutionTime()
+
+```ts
+getLastExecutionTime(): number
+```
+
+Defined in: [throttler.ts:60](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L60)
+
+Returns the last execution time
+
+#### Returns
+
+`number`
+
+***
+
+### maybeExecute()
+
+```ts
+maybeExecute(...args): void
+```
+
+Defined in: [throttler.ts:67](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L67)
+
+Executes the throttled function
+
+#### Parameters
+
+##### args
+
+...`TArgs`
+
+#### Returns
+
+`void`

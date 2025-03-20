@@ -3,20 +3,20 @@ import { Queue } from '@tanstack/pacer/queue'
 import type { QueueOptions } from '@tanstack/pacer/queue'
 
 export function useQueue<TValue>(options: QueueOptions<TValue> = {}) {
-  const queueRef = useRef<Queue<TValue>>(null)
+  const queue = useRef<Queue<TValue>>(null)
 
-  if (!queueRef.current) {
-    queueRef.current = new Queue(options)
+  if (!queue.current) {
+    queue.current = new Queue(options)
   }
 
   return {
-    clear: queueRef.current.clear.bind(queueRef.current),
-    getNextItem: queueRef.current.getNextItem.bind(queueRef.current),
-    addItem: queueRef.current.addItem.bind(queueRef.current),
-    getAllItems: queueRef.current.getAllItems.bind(queueRef.current),
-    isEmpty: queueRef.current.isEmpty.bind(queueRef.current),
-    isFull: queueRef.current.isFull.bind(queueRef.current),
-    peek: queueRef.current.peek.bind(queueRef.current),
-    size: queueRef.current.size.bind(queueRef.current),
+    clear: queue.current.clear.bind(queue.current),
+    getNextItem: queue.current.getNextItem.bind(queue.current),
+    addItem: queue.current.addItem.bind(queue.current),
+    getAllItems: queue.current.getAllItems.bind(queue.current),
+    isEmpty: queue.current.isEmpty.bind(queue.current),
+    isFull: queue.current.isFull.bind(queue.current),
+    peek: queue.current.peek.bind(queue.current),
+    size: queue.current.size.bind(queue.current),
   } as const
 }

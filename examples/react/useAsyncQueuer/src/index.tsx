@@ -1,142 +1,111 @@
 import { scan } from 'react-scan' // dev-tools for demo
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncQueuer } from '@tanstack/react-pacer/async-queuer'
 
-interface SearchResult {
-  id: number
-  title: string
-}
+type AsyncTask = () => Promise<string>
 
-// Simulate API call with fake data
-const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate network delay
-  return [
-    { id: 1, title: `${term} result ${Math.floor(Math.random() * 100)}` },
-    { id: 2, title: `${term} result ${Math.floor(Math.random() * 100)}` },
-    { id: 3, title: `${term} result ${Math.floor(Math.random() * 100)}` },
-  ]
-}
+const fakeWaitTime = 2000
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [results, setResults] = useState<Array<SearchResult>>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
-  const [activeSearches, setActiveSearches] = useState(0)
-  const [pendingSearches, setPendingSearches] = useState(0)
+  // Use your state management library of choice
+  const [queueItems, setQueueItems] = useState<Array<AsyncTask>>([])
 
-  // Initialize the async queuer with concurrency control and callbacks
-  const searchQueuer = useAsyncQueuer<Array<SearchResult>>({
-    concurrency: 2, // Only allow 2 concurrent searches
-    started: true, // Start processing tasks immediately
-    onUpdate: () => {
-      setActiveSearches(searchQueuer.getActive().length)
-      setPendingSearches(searchQueuer.getPending().length)
+  const queuer = useAsyncQueuer<string>({
+    maxSize: 25,
+    initialItems: Array.from({ length: 10 }, (_, i) => async () => {
+      await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
+      return `Initial Task ${i + 1}`
+    }),
+    concurrency: 2, // Process 2 items concurrently
+    wait: 100, // for demo purposes - usually you would not want extra wait time unless you are throttling
+    onUpdate: (queue) => {
+      setQueueItems(queue.getAllItems())
     },
   })
 
-  // Set up error and success handlers
-  useEffect(() => {
-    const removeErrorHandler = searchQueuer.onError((error) => {
-      console.error('Search failed:', error)
-      setError(error as Error)
-      setResults([])
-      setIsLoading(false)
-    })
-
-    const removeSuccessHandler = searchQueuer.onSuccess((results) => {
-      setResults(results)
-      setIsLoading(false)
-      setError(null)
-    })
-
-    return () => {
-      removeErrorHandler()
-      removeSuccessHandler()
-      searchQueuer.clear() // Clear any pending tasks on unmount
+  // Simulated async task
+  const createAsyncTask =
+    (num: number): AsyncTask =>
+    async () => {
+      // Simulate some async work
+      await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
+      return `Processed ${num}`
     }
-  }, [])
-
-  // Queue a new search task
-  function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const newTerm = e.target.value
-    setSearchTerm(newTerm)
-
-    if (!newTerm) {
-      setResults([])
-      return
-    }
-
-    setIsLoading(true)
-
-    // Queue the search task (will be processed based on concurrency settings)
-    searchQueuer.addItem(
-      async () => {
-        // Simulate high-priority searches for terms starting with "!"
-        if (newTerm.startsWith('!')) {
-          return await fakeApi(newTerm.slice(1))
-        }
-        return await fakeApi(newTerm)
-      },
-      // Add urgent searches to the front of the queue
-      newTerm.startsWith('!') ? 'front' : 'back',
-    )
-  }
-
-  // Add ability to control concurrency for demo purposes
-  function updateConcurrency(n: number) {
-    searchQueuer.throttle(n)
-  }
 
   return (
     <div>
       <h1>TanStack Pacer useAsyncQueuer Example</h1>
+      <div></div>
+      <div>Queue Size: {queuer.size()}</div>
+      <div>Queue Max Size: {25}</div>
+      <div>Queue Full: {queuer.isFull() ? 'Yes' : 'No'}</div>
+      <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
+      <div>Items Processed: {queuer.getExecutionCount()}</div>
+      <div>Active Tasks: {queuer.getActive().length}</div>
+      <div>Pending Tasks: {queuer.getPending().length}</div>
       <div>
+        Concurrency:{' '}
         <input
-          type="text"
-          value={searchTerm}
-          onChange={onSearchChange}
-          placeholder="Type to search... (prefix with ! for high priority)"
-          style={{ width: '100%' }}
-          autoComplete="new-password"
+          type="number"
+          min={1}
+          defaultValue={2}
+          onChange={(e) =>
+            queuer.throttle(Math.max(1, parseInt(e.target.value) || 1))
+          }
+          style={{ width: '60px' }}
         />
       </div>
-      <div>
-        <button onClick={() => updateConcurrency(1)}>Single Task</button>
-        <button onClick={() => updateConcurrency(2)}>Two Tasks</button>
-        <button onClick={() => updateConcurrency(3)}>Three Tasks</button>
+      <div style={{ minHeight: '250px' }}>
+        Queue Items:
+        {queueItems.map((task, index) => (
+          <div
+            // bad to use index as key, but these are arrow functions
+            key={index}
+          >
+            {task.toString()}
+          </div>
+        ))}
       </div>
-      <div>
-        <p>Active searches: {activeSearches}</p>
-        <p>Pending searches: {pendingSearches}</p>
-      </div>
-      {error && <div>Error: {error.message}</div>}
-      <div>
-        {results.length > 0 && (
-          <ul>
-            {results.map((item) => (
-              <li key={item.id}>{item.title}</li>
-            ))}
-          </ul>
-        )}
-        {isLoading && <p>Loading...</p>}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '8px',
+          maxWidth: '600px',
+          margin: '16px 0',
+        }}
+      >
+        <button
+          onClick={() => {
+            const nextNumber = queueItems.length
+              ? Math.max(...queueItems.map((task) => parseInt(task.toString())))
+              : 1
+            queuer.addItem(createAsyncTask(nextNumber))
+          }}
+          disabled={queuer.isFull()}
+        >
+          Add Async Task
+        </button>
+        <button onClick={() => queuer.getNextItem()}>Get Next Item</button>
+        <button onClick={() => queuer.clear()} disabled={queuer.isEmpty()}>
+          Clear Queue
+        </button>
+        <button onClick={() => queuer.reset()}>Reset Queue</button>
+        <button onClick={() => queuer.start()} disabled={queuer.isRunning()}>
+          Start Processing
+        </button>
+        <button onClick={() => queuer.stop()} disabled={!queuer.isRunning()}>
+          Stop Processing
+        </button>
       </div>
     </div>
   )
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
-
-let mounted = true
 root.render(<App />)
-
-// demo unmounting and cancellation
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    mounted = !mounted
-    root.render(mounted ? <App /> : null)
-  }
-})
 
 scan() // dev-tools for demo

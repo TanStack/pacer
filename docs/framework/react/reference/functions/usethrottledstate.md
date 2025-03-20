@@ -11,11 +11,11 @@ title: useThrottledState
 function useThrottledState<TValue>(value, options): readonly [TValue, (...args) => void, {
   cancel: () => void;
   getExecutionCount: () => number;
-  throttle: (...args) => void;
+  maybeExecute: (...args) => void;
  }]
 ```
 
-Defined in: react-pacer/src/useThrottledState.ts:5
+Defined in: [react-pacer/src/throttler/useThrottledState.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/throttler/useThrottledState.ts#L5)
 
 ## Type Parameters
 
@@ -36,5 +36,5 @@ Defined in: react-pacer/src/useThrottledState.ts:5
 readonly \[`TValue`, (...`args`) => `void`, \{
   `cancel`: () => `void`;
   `getExecutionCount`: () => `number`;
-  `throttle`: (...`args`) => `void`;
+  `maybeExecute`: (...`args`) => `void`;
  \}\]

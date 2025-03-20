@@ -1,64 +1,60 @@
-import { Queue } from './queue'
-import type { QueueOptions } from './queue'
+import { Queuer } from './queuer'
+import type { QueuerOptions } from './queuer'
 
 export interface AsyncQueuerOptions<TValue>
-  extends QueueOptions<() => Promise<TValue>> {
+  extends QueuerOptions<() => Promise<TValue>> {
   /**
    * Maximum number of concurrent tasks that can run at once
-   * @default 5
+   * @default 2
    */
   concurrency?: number
-  /**
-   * Whether the queuer should start processing tasks immediately
-   * @default false
-   */
-  started?: boolean
 }
 
 const defaultOptions: Required<AsyncQueuerOptions<any>> = {
-  concurrency: 5,
+  concurrency: 2,
   getPriority: () => 0,
   initialItems: [],
   maxSize: Infinity,
   onUpdate: () => {},
   started: false,
+  wait: 0,
 }
 
 /**
- * A flexible async queuer that supports priority tasks, concurrency control, and task callbacks
- * Can be used as a FIFO or LIFO queue by specifying the position of the task
+ * A flexible async queuer that supports priority tasks, concurrency control, and task callbacks.
+ *
+ * Can be used as a FIFO or LIFO queue by specifying the position of the task.
+ *
  * Also known as a task pool or task queue
  * @template TValue The type of the task result
  */
-export class AsyncQueuer<TValue> {
+export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
+  protected options: Required<AsyncQueuerOptions<TValue>> = defaultOptions
   private onSettles: Array<(res: any, error: any) => void> = []
   private onErrors: Array<(error: any, task: () => Promise<any>) => void> = []
   private onSuccesses: Array<(result: any, task: () => Promise<any>) => void> =
     []
-  private running: boolean
   private active: Array<() => Promise<any>> = []
-  private queue: Queue<() => Promise<any>>
   private currentConcurrency: number
 
-  constructor(options: AsyncQueuerOptions<TValue> = defaultOptions) {
-    const { concurrency, started, ...queueOptions } = {
-      ...defaultOptions,
-      ...options,
+  constructor({
+    initialItems,
+    ...options
+  }: AsyncQueuerOptions<TValue> = defaultOptions) {
+    super(options)
+    this.options = { ...defaultOptions, ...options }
+    for (const item of initialItems ?? []) {
+      this.addItem(item)
     }
-    this.currentConcurrency = concurrency
-    this.queue = new Queue(queueOptions)
-    this.running = started
+    this.currentConcurrency = this.options.concurrency
   }
 
-  private tick() {
-    if (!this.running) {
+  protected tick() {
+    if (!this.isRunning()) {
       return
     }
-    while (
-      this.active.length < this.currentConcurrency &&
-      !this.queue.isEmpty()
-    ) {
-      const nextFn = this.queue.getNextItem()
+    while (this.active.length < this.currentConcurrency && !this.isEmpty()) {
+      const nextFn = this.getNextItem()
       if (!nextFn) {
         throw new Error('Found task that is not a function')
       }
@@ -72,6 +68,8 @@ export class AsyncQueuer<TValue> {
           success = true
         } catch (e) {
           error = e
+        } finally {
+          this.options.onUpdate(this as any)
         }
         this.active = this.active.filter((d) => d !== nextFn)
         if (success) {
@@ -80,6 +78,15 @@ export class AsyncQueuer<TValue> {
           this.onErrors.forEach((d) => d(error, nextFn))
         }
         this.onSettles.forEach((d) => d(res, error))
+
+        if (this.options.wait > 0) {
+          // Use setTimeout to wait before processing next item
+          setTimeout(() => {
+            this.tick()
+          }, this.options.wait)
+          return
+        }
+
         this.tick()
       })()
     }
@@ -91,7 +98,12 @@ export class AsyncQueuer<TValue> {
    * @param position The position to add the task to (defaults to back for FIFO behavior)
    * @returns A promise that resolves when the task is settled
    */
-  addItem(fn: () => Promise<TValue> | TValue, position?: 'front' | 'back') {
+  // @ts-ignore - This is a workaround to allow the addItem method to return a promise
+  addItem(
+    fn: () => Promise<TValue> | TValue,
+    position?: 'front' | 'back',
+  ): Promise<TValue> {
+    this.options.onUpdate(this as any)
     return new Promise<any>((resolve, reject) => {
       const task = () =>
         Promise.resolve(fn())
@@ -104,19 +116,9 @@ export class AsyncQueuer<TValue> {
             throw err
           })
 
-      // Use specified position or default to 'back' for FIFO behavior
-      this.queue.addItem(task, position)
+      super.addItem(task, position)
       this.tick()
     })
-  }
-
-  /**
-   * Returns the next task in the queue without removing it
-   * @param position The position to peek at (defaults to front for FIFO behavior)
-   * @returns The next task or undefined if the queue is empty
-   */
-  peek(position?: 'front' | 'back') {
-    return this.queue.peek(position)
   }
 
   /**
@@ -164,19 +166,11 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Stops the queuer from processing tasks
-   */
-  stop() {
-    this.running = false
-  }
-
-  /**
    * Starts the queuer and processes tasks
    * @returns A promise that resolves when the queuer is settled
    */
   start() {
-    this.running = true
-    this.tick()
+    super.start()
     return new Promise<void>((resolve) => {
       this.onSettled(() => {
         if (this.isSettled()) {
@@ -184,13 +178,6 @@ export class AsyncQueuer<TValue> {
         }
       })
     })
-  }
-
-  /**
-   * Clears the queue
-   */
-  clear() {
-    this.queue.clear()
   }
 
   /**
@@ -206,7 +193,7 @@ export class AsyncQueuer<TValue> {
    * @returns The pending tasks
    */
   getPending() {
-    return this.queue.getAllItems()
+    return this.getAllItems()
   }
 
   /**
@@ -217,11 +204,10 @@ export class AsyncQueuer<TValue> {
     return [...this.active, ...this.getPending()]
   }
 
-  isRunning() {
-    return this.running
-  }
-
+  /**
+   * Returns true if all tasks are settled
+   */
   isSettled() {
-    return !this.active.length && this.queue.isEmpty()
+    return !this.active.length && this.isEmpty()
   }
 }

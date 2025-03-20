@@ -14,8 +14,9 @@ export interface DebouncerOptions {
   wait: number
 }
 
-const defaultOptions: Partial<DebouncerOptions> = {
+const defaultOptions: Required<DebouncerOptions> = {
   leading: false,
+  wait: 0,
 }
 
 /**
@@ -32,7 +33,7 @@ export class Debouncer<
 
   constructor(
     private fn: TFn,
-    options: DebouncerOptions,
+    options: DebouncerOptions = defaultOptions,
   ) {
     this.options = {
       ...defaultOptions,

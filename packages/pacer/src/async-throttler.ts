@@ -13,6 +13,11 @@ export interface AsyncThrottlerOptions {
   onError?: (error: unknown) => void
 }
 
+const defaultOptions: Required<AsyncThrottlerOptions> = {
+  onError: () => {},
+  wait: 0,
+}
+
 /**
  * A class that creates an async throttled function.
  */
@@ -30,10 +35,10 @@ export class AsyncThrottler<
 
   constructor(
     private fn: TFn,
-    options: AsyncThrottlerOptions,
+    options: AsyncThrottlerOptions = defaultOptions,
   ) {
     this.options = {
-      onError: () => {},
+      ...defaultOptions,
       ...options,
     }
   }

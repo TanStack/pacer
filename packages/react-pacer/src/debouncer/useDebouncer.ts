@@ -6,17 +6,17 @@ export function useDebouncer<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: DebouncerOptions) {
-  const debouncerRef = useRef<Debouncer<TFn, TArgs>>(null)
+  const debouncer = useRef<Debouncer<TFn, TArgs>>(null)
 
-  if (!debouncerRef.current) {
-    debouncerRef.current = new Debouncer(fn, options)
+  if (!debouncer.current) {
+    debouncer.current = new Debouncer(fn, options)
   }
 
   return {
-    maybeExecute: debouncerRef.current.maybeExecute.bind(debouncerRef.current),
-    cancel: debouncerRef.current.cancel.bind(debouncerRef.current),
-    getExecutionCount: debouncerRef.current.getExecutionCount.bind(
-      debouncerRef.current,
+    maybeExecute: debouncer.current.maybeExecute.bind(debouncer.current),
+    cancel: debouncer.current.cancel.bind(debouncer.current),
+    getExecutionCount: debouncer.current.getExecutionCount.bind(
+      debouncer.current,
     ),
   } as const
 }

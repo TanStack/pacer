@@ -6,19 +6,19 @@ export function useAsyncThrottler<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: AsyncThrottlerOptions) {
-  const asyncThrottlerRef = useRef<AsyncThrottler<TFn, TArgs>>(null)
+  const asyncThrottler = useRef<AsyncThrottler<TFn, TArgs>>(null)
 
-  if (!asyncThrottlerRef.current) {
-    asyncThrottlerRef.current = new AsyncThrottler(fn, options)
+  if (!asyncThrottler.current) {
+    asyncThrottler.current = new AsyncThrottler(fn, options)
   }
 
   return {
-    maybeExecute: asyncThrottlerRef.current.maybeExecute.bind(
-      asyncThrottlerRef.current,
+    maybeExecute: asyncThrottler.current.maybeExecute.bind(
+      asyncThrottler.current,
     ),
-    cancel: asyncThrottlerRef.current.cancel.bind(asyncThrottlerRef.current),
-    getExecutionCount: asyncThrottlerRef.current.getExecutionCount.bind(
-      asyncThrottlerRef.current,
+    cancel: asyncThrottler.current.cancel.bind(asyncThrottler.current),
+    getExecutionCount: asyncThrottler.current.getExecutionCount.bind(
+      asyncThrottler.current,
     ),
   } as const
 }
