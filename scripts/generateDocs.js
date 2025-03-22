@@ -19,13 +19,6 @@ const packages = [
     outputDir: resolve(__dirname, '../docs/framework/react/reference'),
     exclude: ['packages/pacer/**/*'],
   },
-  {
-    name: 'solid-pacer',
-    entryPoints: [resolve(__dirname, '../packages/solid-pacer/src/index.ts')],
-    tsconfig: resolve(__dirname, '../packages/solid-pacer/tsconfig.docs.json'),
-    outputDir: resolve(__dirname, '../docs/framework/solid/reference'),
-    exclude: ['packages/pacer/**/*'],
-  },
 ]
 
 await generateReferenceDocs({ packages })

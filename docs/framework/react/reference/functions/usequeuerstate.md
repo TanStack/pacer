@@ -27,7 +27,7 @@ function useQueuerState<TValue>(options): readonly [TValue[], {
  }]
 ```
 
-Defined in: react-pacer/src/queuer/useQueuerState.ts:5
+Defined in: [react-pacer/src/queuer/useQueuerState.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queuer/useQueuerState.ts#L5)
 
 ## Type Parameters
 

@@ -184,7 +184,7 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
    * Returns the active tasks
    * @returns The active tasks
    */
-  getActive() {
+  getActiveItems() {
     return this.active
   }
 
@@ -192,16 +192,16 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
    * Returns the pending tasks
    * @returns The pending tasks
    */
-  getPending() {
-    return this.getAllItems()
+  getPendingItems() {
+    return super.getAllItems()
   }
 
   /**
    * Returns all tasks
    * @returns All tasks
    */
-  getAll() {
-    return [...this.active, ...this.getPending()]
+  getAllItems() {
+    return [...this.active, ...this.getPendingItems()]
   }
 
   /**

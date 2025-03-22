@@ -12,14 +12,17 @@ export function useAsyncQueuer<TValue>(options: AsyncQueuerOptions<TValue>) {
   return {
     addItem: asyncQueuer.current.addItem.bind(asyncQueuer.current),
     clear: asyncQueuer.current.clear.bind(asyncQueuer.current),
-    getActive: asyncQueuer.current.getActive.bind(asyncQueuer.current),
-    getAll: asyncQueuer.current.getAll.bind(asyncQueuer.current),
+    getActiveItems: asyncQueuer.current.getActiveItems.bind(
+      asyncQueuer.current,
+    ),
     getAllItems: asyncQueuer.current.getAllItems.bind(asyncQueuer.current),
     getExecutionCount: asyncQueuer.current.getExecutionCount.bind(
       asyncQueuer.current,
     ),
     getNextItem: asyncQueuer.current.getNextItem.bind(asyncQueuer.current),
-    getPending: asyncQueuer.current.getPending.bind(asyncQueuer.current),
+    getPendingItems: asyncQueuer.current.getPendingItems.bind(
+      asyncQueuer.current,
+    ),
     isEmpty: asyncQueuer.current.isEmpty.bind(asyncQueuer.current),
     isFull: asyncQueuer.current.isFull.bind(asyncQueuer.current),
     isIdle: asyncQueuer.current.isIdle.bind(asyncQueuer.current),

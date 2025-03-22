@@ -44,8 +44,8 @@ function App() {
       <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
       <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
       <div>Items Processed: {queuer.getExecutionCount()}</div>
-      <div>Active Tasks: {queuer.getActive().length}</div>
-      <div>Pending Tasks: {queuer.getPending().length}</div>
+      <div>Active Tasks: {queuer.getActiveItems().length}</div>
+      <div>Pending Tasks: {queuer.getPendingItems().length}</div>
       <div>
         Concurrency:{' '}
         <input

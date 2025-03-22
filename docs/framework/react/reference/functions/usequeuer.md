@@ -11,7 +11,7 @@ title: useQueuer
 function useQueuer<TValue>(options): object
 ```
 
-Defined in: react-pacer/src/queuer/useQueuer.ts:5
+Defined in: [react-pacer/src/queuer/useQueuer.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L5)
 
 ## Type Parameters
 

@@ -121,10 +121,10 @@ Removes all items from the queue
 
 ***
 
-### getActive()
+### getActiveItems()
 
 ```ts
-getActive(): () => Promise<any>[]
+getActiveItems(): () => Promise<any>[]
 ```
 
 Defined in: [async-queuer.ts:187](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L187)
@@ -139,10 +139,10 @@ The active tasks
 
 ***
 
-### getAll()
+### getAllItems()
 
 ```ts
-getAll(): () => Promise<any>[]
+getAllItems(): () => Promise<any>[]
 ```
 
 Defined in: [async-queuer.ts:203](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L203)
@@ -155,23 +155,7 @@ Returns all tasks
 
 All tasks
 
-***
-
-### getAllItems()
-
-```ts
-getAllItems(): () => Promise<TValue>[]
-```
-
-Defined in: [queue.ts:191](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L191)
-
-Returns a copy of all items in the queue
-
-#### Returns
-
-() => `Promise`\<`TValue`\>[]
-
-#### Inherited from
+#### Overrides
 
 [`Queuer`](queuer.md).[`getAllItems`](Queuer.md#getallitems)
 
@@ -235,10 +219,10 @@ queue.getNextItem('back')
 
 ***
 
-### getPending()
+### getPendingItems()
 
 ```ts
-getPending(): () => Promise<TValue>[]
+getPendingItems(): () => Promise<TValue>[]
 ```
 
 Defined in: [async-queuer.ts:195](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L195)

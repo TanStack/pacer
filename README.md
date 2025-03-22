@@ -46,7 +46,6 @@ Try other [TanStack](https://tanstack.com) libraries:
 You may know **TanSack Pacer** by our adapter names, too!
 
 - [**React Pacer**](https://tanstack.com/pacer/v1/docs/framework/react/react-pacer)
-- [**Solid Pacer**](https://tanstack.com/pacer/v1/docs/framework/solid/solid-pacer)
 
 ## Summary
 
@@ -66,7 +65,6 @@ Install one of the following packages based on your framework of choice:
 ```bash
 # Npm
 npm install @tanstack/react-pacer
-npm install @tanstack/solid-pacer
 npm install @tanstack/pacer # no framework, just vanilla js
 ```
 

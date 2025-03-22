@@ -10,7 +10,7 @@ describe('AsyncQueuer', () => {
 
   describe('basic functionality', () => {
     it('should create an empty queuer', () => {
-      expect(queuer.getAll()).toHaveLength(0)
+      expect(queuer.getAllItems()).toHaveLength(0)
       expect(queuer.isSettled()).toBe(true)
       expect(queuer.isRunning()).toBe(false)
     })
@@ -89,11 +89,11 @@ describe('AsyncQueuer', () => {
       queuer.addItem(() => Promise.resolve(1))
       queuer.addItem(() => Promise.resolve(2))
 
-      expect(queuer.getPending()).toHaveLength(2)
+      expect(queuer.getPendingItems()).toHaveLength(2)
 
       queuer.clear()
 
-      expect(queuer.getPending()).toHaveLength(0)
+      expect(queuer.getPendingItems()).toHaveLength(0)
       expect(queuer.isSettled()).toBe(true)
     })
 
