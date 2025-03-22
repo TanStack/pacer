@@ -11,7 +11,7 @@ title: useQueuer
 function useQueuer<TValue>(options): object
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:48](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L48)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:43](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L43)
 
 A React hook that creates and manages a Queuer instance.
 
@@ -33,22 +33,15 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 • **TValue**
 
-The type of items stored and processed by the queue
-
 ## Parameters
 
 ### options
 
 `QueuerOptions`\<`TValue`\>
 
-Configuration options including started (whether to begin processing immediately),
-               wait time between processing items, getPriority for ordering items, and more.
-
 ## Returns
 
 `object`
-
-An object containing queue control methods
 
 ### addItem()
 

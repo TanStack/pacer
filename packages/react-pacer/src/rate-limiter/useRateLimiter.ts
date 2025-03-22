@@ -24,12 +24,6 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * - getRemainingInWindow: Returns how many more executions are allowed in the current window
  * - reset: Resets the execution counts and window timing
  *
- * @template TFn The type of function to rate limit
- * @template TArgs The type of the function's parameters
- * @param fn The function to rate limit
- * @param options Configuration options including maximum executions and window duration
- * @returns An object containing the rate-limited function and control methods
- *
  * @example
  * ```tsx
  * // Basic rate limiting - max 5 calls per minute

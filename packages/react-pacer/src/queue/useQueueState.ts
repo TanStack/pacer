@@ -16,12 +16,6 @@ import type { QueueOptions } from '@tanstack/pacer/queue'
  * - The current queue state as an array
  * - The queue instance with methods for queue manipulation
  *
- * @template TValue The type of items stored in the queue
- * @param options Configuration options for the queue including initialItems to populate the queue,
- *                maxSize to limit queue capacity, getPriority for ordering items,
- *                and onUpdate callback for state changes
- * @returns A tuple containing the queue state array and queue instance
- *
  * @example
  * ```tsx
  * // Basic FIFO queue with state management

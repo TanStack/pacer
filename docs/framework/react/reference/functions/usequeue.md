@@ -11,7 +11,7 @@ title: useQueue
 function useQueue<TValue>(options): object
 ```
 
-Defined in: [react-pacer/src/queue/useQueue.ts:41](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queue/useQueue.ts#L41)
+Defined in: [react-pacer/src/queue/useQueue.ts:35](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queue/useQueue.ts#L35)
 
 A React hook that creates and manages a Queue instance.
 
@@ -29,23 +29,15 @@ Items with higher priority values will be processed first.
 
 • **TValue**
 
-The type of items stored in the queue
-
 ## Parameters
 
 ### options
 
 `QueueOptions`\<`TValue`\> = `{}`
 
-Configuration options including initialItems to populate the queue,
-               maxSize to limit queue capacity, getPriority for ordering items,
-               and onUpdate callback for state changes
-
 ## Returns
 
 `object`
-
-An object containing queue control methods
 
 ### addItem()
 

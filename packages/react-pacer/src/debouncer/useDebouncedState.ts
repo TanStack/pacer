@@ -16,11 +16,6 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * - A function to update the debounced value
  * - The debouncer instance with additional control methods
  *
- * @template TValue The type of value being debounced
- * @param value The initial value
- * @param options Configuration options including wait time and maxWait
- * @returns A tuple containing the debounced value, update function, and debouncer instance
- *
  * @example
  * ```tsx
  * // Debounced search input

@@ -21,10 +21,6 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
  * - Register event handlers
  * - Control execution throttling
  *
- * @template TValue The type of items managed by the queue
- * @param options Configuration options for the async queue
- * @returns An object containing queue management methods
- *
  * @example
  * ```tsx
  * // Basic async queuer for API requests

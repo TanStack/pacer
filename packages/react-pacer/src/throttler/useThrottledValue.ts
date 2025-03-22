@@ -15,11 +15,6 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * For more direct control over throttling behavior without React state management,
  * consider using the lower-level useThrottler hook instead.
  *
- * @template TValue The type of the value to throttle
- * @param value The value to throttle
- * @param options Configuration options including wait time and execution behavior
- * @returns A tuple containing the throttled value and the throttler instance
- *
  * @example
  * ```tsx
  * // Basic throttling - update at most once per second

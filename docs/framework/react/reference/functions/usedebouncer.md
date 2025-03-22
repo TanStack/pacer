@@ -11,7 +11,7 @@ title: useDebouncer
 function useDebouncer<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:43](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L43)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:37](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L37)
 
 A React hook that creates and manages a Debouncer instance.
 
@@ -31,11 +31,7 @@ timer resets and starts waiting again.
 
 • **TFn** *extends* (...`args`) => `any`
 
-The type of function to be debounced
-
 • **TArgs** *extends* `any`[]
-
-The type of arguments the function accepts
 
 ## Parameters
 
@@ -43,19 +39,13 @@ The type of arguments the function accepts
 
 `TFn`
 
-The function to debounce
-
 ### options
 
 `DebouncerOptions`
 
-Configuration options including wait time and maxWait
-
 ## Returns
 
 `object`
-
-An object containing debouncer control methods
 
 ### cancel()
 

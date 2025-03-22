@@ -15,12 +15,6 @@ import type { QueueOptions } from '@tanstack/pacer/queue'
  * Supports priority-based ordering when a getPriority function is provided.
  * Items with higher priority values will be processed first.
  *
- * @template TValue The type of items stored in the queue
- * @param options Configuration options including initialItems to populate the queue,
- *                maxSize to limit queue capacity, getPriority for ordering items,
- *                and onUpdate callback for state changes
- * @returns An object containing queue control methods
- *
  * @example
  * ```tsx
  * // Basic FIFO queue

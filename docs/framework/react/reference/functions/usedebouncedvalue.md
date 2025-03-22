@@ -15,7 +15,7 @@ function useDebouncedValue<TValue>(value, options): readonly [TValue, {
  }]
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:46](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L46)
+Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:41](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L41)
 
 A React hook that creates a debounced value that updates only after a specified delay.
 Unlike useDebouncedState, this hook automatically tracks changes to the input value
@@ -37,21 +37,15 @@ The hook returns a tuple containing:
 
 • **TValue**
 
-The type of value being debounced
-
 ## Parameters
 
 ### value
 
 `TValue`
 
-The value to debounce
-
 ### options
 
 `DebouncerOptions`
-
-Configuration options including wait time and maxWait
 
 ## Returns
 
@@ -60,8 +54,6 @@ readonly \[`TValue`, \{
   `getExecutionCount`: () => `number`;
   `maybeExecute`: (...`args`) => `void`;
  \}\]
-
-A tuple containing the debounced value and debouncer instance
 
 ## Example
 

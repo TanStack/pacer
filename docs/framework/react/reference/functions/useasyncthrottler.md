@@ -11,7 +11,7 @@ title: useAsyncThrottler
 function useAsyncThrottler<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:53](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L53)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:47](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L47)
 
 A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -31,11 +31,7 @@ The hook returns an object containing:
 
 • **TFn** *extends* (...`args`) => `any`
 
-The type of async function to throttle
-
 • **TArgs** *extends* `any`[]
-
-The type of the function's parameters
 
 ## Parameters
 
@@ -43,19 +39,13 @@ The type of the function's parameters
 
 `TFn`
 
-The async function to throttle
-
 ### options
 
 `AsyncThrottlerOptions`
 
-Configuration options including wait time and execution behavior
-
 ## Returns
 
 `object`
-
-An object containing the throttled async function and control methods
 
 ### cancel()
 

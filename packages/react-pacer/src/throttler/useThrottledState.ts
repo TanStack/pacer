@@ -17,11 +17,6 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * For more direct control over throttling without state management,
  * consider using the lower-level useThrottler hook instead.
  *
- * @template TValue The type of the state value
- * @param value The initial state value
- * @param options Configuration options including wait time and execution behavior
- * @returns A tuple containing the throttled state, setter function, and throttler instance
- *
  * @example
  * ```tsx
  * // Basic throttling - update state at most once per second

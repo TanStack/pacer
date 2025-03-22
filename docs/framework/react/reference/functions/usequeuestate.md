@@ -20,7 +20,7 @@ function useQueueState<TValue>(options): readonly [TValue[], {
  }]
 ```
 
-Defined in: [react-pacer/src/queue/useQueueState.ts:49](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queue/useQueueState.ts#L49)
+Defined in: [react-pacer/src/queue/useQueueState.ts:43](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queue/useQueueState.ts#L43)
 
 A React hook that creates a queue with managed state, combining React's useState with queuing functionality.
 This hook provides both the current queue state and queue control methods.
@@ -39,17 +39,11 @@ The hook returns a tuple containing:
 
 • **TValue**
 
-The type of items stored in the queue
-
 ## Parameters
 
 ### options
 
 `QueueOptions`\<`TValue`\> = `{}`
-
-Configuration options for the queue including initialItems to populate the queue,
-               maxSize to limit queue capacity, getPriority for ordering items,
-               and onUpdate callback for state changes
 
 ## Returns
 
@@ -63,8 +57,6 @@ readonly \[`TValue`[], \{
   `peek`: (`position`?) => `undefined` \| `TValue`;
   `size`: () => `number`;
  \}\]
-
-A tuple containing the queue state array and queue instance
 
 ## Example
 

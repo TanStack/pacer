@@ -60,7 +60,7 @@ If a call is already in progress, it will be queued
 
 ```ts
 const debounced = debounce(() => {
-  saveChanges(); 
+  saveChanges();
 }, { wait: 1000 });
 
 // Called repeatedly but executes at most once per second

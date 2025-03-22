@@ -17,12 +17,6 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * since the last call. If the function is called again before the wait time expires, the
  * timer resets and starts waiting again.
  *
- * @template TFn The type of function to be debounced
- * @template TArgs The type of arguments the function accepts
- * @param fn The function to debounce
- * @param options Configuration options including wait time and maxWait
- * @returns An object containing debouncer control methods
- *
  * @example
  * ```tsx
  * // Debounce a search function to limit API calls

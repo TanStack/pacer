@@ -17,12 +17,6 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * - The current queue state as an array
  * - The queue instance with methods for queue manipulation
  *
- * @template TValue The type of items stored in the queue
- * @param options Configuration options for the queue including initialItems to populate the queue,
- *                wait time between processing items, whether to start processing immediately (started),
- *                and getPriority function for ordering items
- * @returns A tuple containing the queue state array and queue instance
- *
  * @example
  * ```tsx
  * // Basic queue with initial items and priority

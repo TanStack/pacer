@@ -14,7 +14,7 @@ A synchronous queue processor that executes items one at a time in sequence.
 The Queuer extends the base Queue class to add processing capabilities. Items are processed
 synchronously in order, with optional delays between processing each item.
 
-By default uses FIFO (First In First Out) behavior, but can be configured for LIFO 
+By default uses FIFO (First In First Out) behavior, but can be configured for LIFO
 (Last In First Out) by specifying 'front' position when adding items.
 
 For asynchronous operations or concurrent processing, use AsyncQueuer instead.

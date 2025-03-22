@@ -12,7 +12,7 @@ Defined in: [throttler.ts:58](https://github.com/TanStack/bouncer/blob/main/pack
 A class that creates a throttled function.
 
 Throttling ensures a function is called at most once within a specified time window.
-Unlike debouncing which waits for a pause in calls, throttling guarantees consistent 
+Unlike debouncing which waits for a pause in calls, throttling guarantees consistent
 execution timing regardless of call frequency.
 
 Supports both leading and trailing edge execution:
@@ -26,7 +26,7 @@ For collapsing rapid-fire events, consider using Debouncer.
 
 ```ts
 const throttler = new Throttler(
-  (id: string) => api.getData(id), 
+  (id: string) => api.getData(id),
   { wait: 1000 } // Execute at most once per second
 );
 
@@ -83,8 +83,8 @@ Defined in: [throttler.ts:158](https://github.com/TanStack/bouncer/blob/main/pac
 
 Cancels any pending trailing execution and clears internal state.
 
-If a trailing execution is scheduled (due to throttling with trailing=true), 
-this will prevent that execution from occurring. The internal timeout and 
+If a trailing execution is scheduled (due to throttling with trailing=true),
+this will prevent that execution from occurring. The internal timeout and
 stored arguments will be cleared.
 
 Has no effect if there is no pending execution.
@@ -166,5 +166,5 @@ const throttled = new Throttler(fn, { wait: 1000 });
 throttled.maybeExecute('a', 'b');
 
 // Call during wait period - gets throttled
-throttled.maybeExecute('c', 'd'); 
+throttled.maybeExecute('c', 'd');
 ```

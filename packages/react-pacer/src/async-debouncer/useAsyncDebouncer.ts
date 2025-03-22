@@ -17,12 +17,6 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
  * - cancel: A function to cancel any pending delayed execution
  * - getExecutionCount: A function that returns the number of times the debounced function has executed
  *
- * @template TFn The type of async function to debounce
- * @template TArgs The type of the function's parameters
- * @param fn The async function to debounce
- * @param options Configuration options including delay time and execution behavior
- * @returns An object containing the debounced async function and control methods
- *
  * @example
  * ```tsx
  * // Basic API call debouncing

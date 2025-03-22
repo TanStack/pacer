@@ -19,11 +19,6 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * By default uses FIFO (First In First Out) behavior, but can be configured for LIFO
  * (Last In First Out) by specifying 'front' position when adding items.
  *
- * @template TValue The type of items stored and processed by the queue
- * @param options Configuration options including started (whether to begin processing immediately),
- *                wait time between processing items, getPriority for ordering items, and more.
- * @returns An object containing queue control methods
- *
  * @example
  * ```tsx
  * // Example with custom state management and scheduling

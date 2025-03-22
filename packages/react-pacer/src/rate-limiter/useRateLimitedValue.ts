@@ -21,11 +21,6 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * For more direct control over rate limiting behavior without React state management,
  * consider using the lower-level useRateLimiter hook instead.
  *
- * @template TValue The type of the value to rate limit
- * @param value The value to rate limit
- * @param options Configuration options including limit and window duration
- * @returns A tuple containing the rate-limited value and the rateLimiter instance
- *
  * @example
  * ```tsx
  * // Basic rate limiting - update at most 5 times per minute

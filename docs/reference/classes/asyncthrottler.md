@@ -12,7 +12,7 @@ Defined in: [async-throttler.ts:46](https://github.com/TanStack/bouncer/blob/mai
 A class that creates an async throttled function.
 
 Throttling limits how often a function can be executed, allowing only one execution within a specified time window.
-Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a 
+Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a
 regular interval regardless of how often it's called.
 
 This is useful for rate-limiting API calls, handling scroll/resize events, or any scenario where you want to

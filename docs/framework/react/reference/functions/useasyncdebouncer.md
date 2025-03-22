@@ -11,7 +11,7 @@ title: useAsyncDebouncer
 function useAsyncDebouncer<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:51](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L51)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:45](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L45)
 
 A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -31,11 +31,7 @@ The hook returns an object containing:
 
 • **TFn** *extends* (...`args`) => `any`
 
-The type of async function to debounce
-
 • **TArgs** *extends* `any`[]
-
-The type of the function's parameters
 
 ## Parameters
 
@@ -43,19 +39,13 @@ The type of the function's parameters
 
 `TFn`
 
-The async function to debounce
-
 ### options
 
 `AsyncDebouncerOptions`
 
-Configuration options including delay time and execution behavior
-
 ## Returns
 
 `object`
-
-An object containing the debounced async function and control methods
 
 ### cancel()
 
@@ -119,7 +109,7 @@ const { maybeExecute } = useAsyncDebouncer(
     const data = await searchAPI(searchTerm);
     setResults(data);
   },
-  { 
+  {
     wait: 300,
   }
 );

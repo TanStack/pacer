@@ -22,10 +22,6 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
  * - Started processing
  * - Completed processing
  *
- * @template TValue The type of items managed by the queue
- * @param options Configuration options for the async queue
- * @returns A tuple containing [queueState, queuerInstance]
- *
  * @example
  * ```tsx
  * // Create a queue with state management

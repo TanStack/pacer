@@ -17,7 +17,7 @@ function useRateLimitedValue<TValue>(value, options): readonly [TValue, {
  }]
 ```
 
-Defined in: react-pacer/src/rate-limiter/useRateLimitedValue.ts:57
+Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:57](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L57)
 
 A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses React's useState internally to manage the rate-limited state.

@@ -27,7 +27,7 @@ function useQueuerState<TValue>(options): readonly [TValue[], {
  }]
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuerState.ts:60](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queuer/useQueuerState.ts#L60)
+Defined in: [react-pacer/src/queuer/useQueuerState.ts:54](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queuer/useQueuerState.ts#L54)
 
 A React hook that creates a queuer with managed state, combining React's useState with queuing functionality.
 This hook provides both the current queue state and queue control methods.
@@ -36,7 +36,7 @@ The queue state is automatically updated whenever items are added, removed, or r
 All queue operations are reflected in the state array returned by the hook.
 
 The queue can be started and stopped to automatically process items at a specified interval,
-making it useful as a scheduler. When started, it will process one item per tick, with an 
+making it useful as a scheduler. When started, it will process one item per tick, with an
 optional wait time between ticks.
 
 The hook returns a tuple containing:
@@ -47,17 +47,11 @@ The hook returns a tuple containing:
 
 • **TValue**
 
-The type of items stored in the queue
-
 ## Parameters
 
 ### options
 
 `QueuerOptions`\<`TValue`\> = `{}`
-
-Configuration options for the queue including initialItems to populate the queue,
-               wait time between processing items, whether to start processing immediately (started),
-               and getPriority function for ordering items
 
 ## Returns
 
@@ -78,8 +72,6 @@ readonly \[`TValue`[], \{
   `start`: () => `void`;
   `stop`: () => `void`;
  \}\]
-
-A tuple containing the queue state array and queue instance
 
 ## Example
 

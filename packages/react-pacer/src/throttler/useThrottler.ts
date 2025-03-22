@@ -18,12 +18,6 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * - cancel: A function to cancel any pending trailing execution
  * - getExecutionCount: A function that returns the number of times the throttled function has executed
  *
- * @template TFn The type of function to throttle
- * @template TArgs The type of the function's parameters
- * @param fn The function to throttle
- * @param options Configuration options including wait time and execution behavior
- * @returns An object containing the throttled function and control methods
- *
  * @example
  * ```tsx
  * // Basic throttling with custom state

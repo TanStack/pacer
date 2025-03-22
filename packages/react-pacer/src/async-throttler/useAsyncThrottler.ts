@@ -17,12 +17,6 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
  * - cancel: A function to cancel any pending trailing execution
  * - getExecutionCount: A function that returns the number of times the throttled function has executed
  *
- * @template TFn The type of async function to throttle
- * @template TArgs The type of the function's parameters
- * @param fn The async function to throttle
- * @param options Configuration options including wait time and execution behavior
- * @returns An object containing the throttled async function and control methods
- *
  * @example
  * ```tsx
  * // Basic API call throttling

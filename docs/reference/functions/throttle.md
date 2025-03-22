@@ -16,7 +16,7 @@ Defined in: [throttler.ts:198](https://github.com/TanStack/bouncer/blob/main/pac
 Creates a throttled function that limits how often the provided function can execute.
 
 Throttling ensures a function executes at most once within a specified time window,
-regardless of how many times it is called. This is useful for rate-limiting 
+regardless of how many times it is called. This is useful for rate-limiting
 expensive operations or UI updates.
 
 The throttled function can be configured to execute on the leading and/or trailing
@@ -82,7 +82,7 @@ const throttled = new Throttler(fn, { wait: 1000 });
 throttled.maybeExecute('a', 'b');
 
 // Call during wait period - gets throttled
-throttled.maybeExecute('c', 'd'); 
+throttled.maybeExecute('c', 'd');
 ```
 
 ## Example
