@@ -20,7 +20,7 @@ export function useRateLimiter<
     getRejectionCount: rateLimiter.current.getRejectionCount.bind(
       rateLimiter.current,
     ),
-    getRemainingExecutions: rateLimiter.current.getRemainingExecutions.bind(
+    getRemainingInWindow: rateLimiter.current.getRemainingInWindow.bind(
       rateLimiter.current,
     ),
     reset: rateLimiter.current.reset.bind(rateLimiter.current),

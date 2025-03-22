@@ -75,10 +75,10 @@ Returns the number of times the function has been rejected
 
 ***
 
-### getRemainingExecutions()
+### getRemainingInWindow()
 
 ```ts
-getRemainingExecutions(): number
+getRemainingInWindow(): number
 ```
 
 Defined in: [rate-limiter.ts:74](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L74)

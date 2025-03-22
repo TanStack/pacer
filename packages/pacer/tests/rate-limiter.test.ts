@@ -59,16 +59,16 @@ describe('RateLimiter', () => {
       const mockFn = vi.fn()
       const rateLimiter = new RateLimiter(mockFn, { limit: 3, window: 1000 })
 
-      expect(rateLimiter.getRemainingExecutions()).toBe(3)
+      expect(rateLimiter.getRemainingInWindow()).toBe(3)
 
       rateLimiter.maybeExecute()
-      expect(rateLimiter.getRemainingExecutions()).toBe(2)
+      expect(rateLimiter.getRemainingInWindow()).toBe(2)
 
       rateLimiter.maybeExecute()
-      expect(rateLimiter.getRemainingExecutions()).toBe(1)
+      expect(rateLimiter.getRemainingInWindow()).toBe(1)
 
       rateLimiter.maybeExecute()
-      expect(rateLimiter.getRemainingExecutions()).toBe(0)
+      expect(rateLimiter.getRemainingInWindow()).toBe(0)
     })
   })
 
@@ -79,10 +79,10 @@ describe('RateLimiter', () => {
 
       rateLimiter.maybeExecute()
       rateLimiter.maybeExecute()
-      expect(rateLimiter.getRemainingExecutions()).toBe(0)
+      expect(rateLimiter.getRemainingInWindow()).toBe(0)
 
       rateLimiter.reset()
-      expect(rateLimiter.getRemainingExecutions()).toBe(2)
+      expect(rateLimiter.getRemainingInWindow()).toBe(2)
       expect(rateLimiter.maybeExecute()).toBe(true)
     })
   })

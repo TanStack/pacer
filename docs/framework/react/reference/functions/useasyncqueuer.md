@@ -67,10 +67,10 @@ Removes all items from the queue
 
 `void`
 
-### getActive()
+### getActiveItems()
 
 ```ts
-getActive: () => () => Promise<any>[];
+getActiveItems: () => () => Promise<any>[];
 ```
 
 Returns the active tasks
@@ -81,10 +81,10 @@ Returns the active tasks
 
 The active tasks
 
-### getAll()
+### getAllItems()
 
 ```ts
-getAll: () => () => Promise<any>[];
+getAllItems: () => () => Promise<any>[];
 ```
 
 Returns all tasks
@@ -94,18 +94,6 @@ Returns all tasks
 () => `Promise`\<`any`\>[]
 
 All tasks
-
-### getAllItems()
-
-```ts
-getAllItems: () => () => Promise<TValue>[];
-```
-
-Returns a copy of all items in the queue
-
-#### Returns
-
-() => `Promise`\<`TValue`\>[]
 
 ### getExecutionCount()
 
@@ -149,10 +137,10 @@ queue.getNextItem()
 queue.getNextItem('back')
 ```
 
-### getPending()
+### getPendingItems()
 
 ```ts
-getPending: () => () => Promise<TValue>[];
+getPendingItems: () => () => Promise<TValue>[];
 ```
 
 Returns the pending tasks

@@ -57,10 +57,10 @@ Returns the number of times the function has been rejected
 
 `number`
 
-### getRemainingExecutions()
+### getRemainingInWindow()
 
 ```ts
-readonly getRemainingExecutions: () => number;
+readonly getRemainingInWindow: () => number;
 ```
 
 Returns the number of remaining executions in the current window

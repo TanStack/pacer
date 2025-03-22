@@ -71,7 +71,7 @@ export class RateLimiter<
   /**
    * Returns the number of remaining executions in the current window
    */
-  getRemainingExecutions(): number {
+  getRemainingInWindow(): number {
     this.cleanupOldExecutions()
     return Math.max(0, this.options.limit - this.executionTimes.length)
   }
