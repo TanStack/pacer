@@ -23,7 +23,7 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  *
  * For more direct control over rate limiting without state management,
  * consider using the lower-level useRateLimiter hook instead.
- * 
+ *
  * @example
  * ```tsx
  * // Basic rate limiting - update state at most 5 times per minute
