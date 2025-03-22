@@ -4,7 +4,7 @@
 export interface AsyncThrottlerOptions {
   /**
    * Time window in milliseconds during which the function can only be executed once
-   * Defaults to 1000ms
+   * Defaults to 0ms
    */
   wait: number
   /**
@@ -20,6 +20,28 @@ const defaultOptions: Required<AsyncThrottlerOptions> = {
 
 /**
  * A class that creates an async throttled function.
+ *
+ * Throttling limits how often a function can be executed, allowing only one execution within a specified time window.
+ * Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a
+ * regular interval regardless of how often it's called.
+ *
+ * This is useful for rate-limiting API calls, handling scroll/resize events, or any scenario where you want to
+ * ensure a maximum execution frequency.
+ *
+ * @template TFn The type of the async function to throttle
+ * @template TArgs The type of the function's parameters
+ *
+ * @example
+ * ```ts
+ * const throttler = new AsyncThrottler(async (value: string) => {
+ *   await saveToAPI(value);
+ * }, { wait: 1000 });
+ *
+ * // Will only execute once per second no matter how often called
+ * inputElement.addEventListener('input', () => {
+ *   throttler.maybeExecute(inputElement.value);
+ * });
+ * ```
  */
 export class AsyncThrottler<
   TFn extends (...args: Array<any>) => Promise<any>,
@@ -70,7 +92,8 @@ export class AsyncThrottler<
   }
 
   /**
-   * Executes the throttled async function
+   * Attempts to execute the throttled function
+   * If a call is already in progress, it may be blocked or queued depending on the `wait` option
    */
   async maybeExecute(...args: TArgs): Promise<void> {
     this.lastArgs = args
@@ -130,7 +153,24 @@ export class AsyncThrottler<
 }
 
 /**
- * Creates an async throttled function
+ * Creates an async throttled function that limits how often the function can execute.
+ * The throttled function will execute at most once per wait period, even if called multiple times.
+ * If called while executing, it will wait until execution completes before scheduling the next call.
+ *
+ * @param fn The async function to throttle
+ * @param options Configuration options for throttling behavior
+ * @returns A throttled version of the input function that returns a Promise
+ *
+ * @example
+ * ```ts
+ * const throttled = asyncThrottle(async () => {
+ *   await someAsyncOperation();
+ * }, { wait: 1000 });
+ *
+ * // This will execute at most once per second
+ * await throttled();
+ * await throttled(); // Waits 1 second before executing
+ * ```
  */
 export function asyncThrottle<
   TFn extends (...args: Array<any>) => Promise<any>,

@@ -9,6 +9,8 @@ title: AsyncQueuerOptions
 
 Defined in: [async-queuer.ts:4](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L4)
 
+Options for configuring a Queue instance
+
 ## Extends
 
 - [`QueuerOptions`](queueroptions.md)\<() => `Promise`\<`TValue`\>\>
@@ -27,7 +29,7 @@ optional concurrency: number;
 
 Defined in: [async-queuer.ts:10](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L10)
 
-Maximum number of concurrent tasks that can run at once
+Maximum number of concurrent items that can run at once
 
 #### Default
 
@@ -43,7 +45,10 @@ Maximum number of concurrent tasks that can run at once
 optional getPriority: (item) => number;
 ```
 
-Defined in: [queue.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L5)
+Defined in: [queue.ts:21](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L21)
+
+Function to determine priority of items in the queue
+Higher priority items will be processed first
 
 #### Parameters
 
@@ -67,7 +72,9 @@ Defined in: [queue.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/
 optional initialItems: () => Promise<TValue>[];
 ```
 
-Defined in: [queue.ts:2](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L2)
+Defined in: [queue.ts:8](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L8)
+
+Initial items to populate the queue with
 
 #### Returns
 
@@ -85,7 +92,9 @@ Defined in: [queue.ts:2](https://github.com/TanStack/bouncer/blob/main/packages/
 optional maxSize: number;
 ```
 
-Defined in: [queue.ts:3](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L3)
+Defined in: [queue.ts:12](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L12)
+
+Maximum number of items allowed in the queue
 
 #### Inherited from
 
@@ -99,7 +108,9 @@ Defined in: [queue.ts:3](https://github.com/TanStack/bouncer/blob/main/packages/
 optional onUpdate: (queue) => void;
 ```
 
-Defined in: [queue.ts:4](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L4)
+Defined in: [queue.ts:16](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L16)
+
+Callback fired whenever an item is added or removed from the queue
 
 #### Parameters
 

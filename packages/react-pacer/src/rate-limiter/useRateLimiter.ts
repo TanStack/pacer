@@ -2,6 +2,60 @@ import { useRef } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
+/**
+ * A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
+ *
+ * This hook is designed to be flexible and state-management agnostic - it simply returns a rate limiter instance that
+ * you can integrate with any state management solution (useState, Redux, Zustand, Jotai, etc).
+ *
+ * Rate limiting is a simple "hard limit" approach that allows executions until a maximum count is reached within
+ * a time window, then blocks all subsequent calls until the window resets. Unlike throttling or debouncing,
+ * it does not attempt to space out or collapse executions intelligently.
+ *
+ * For smoother execution patterns:
+ * - Use throttling when you want consistent spacing between executions (e.g. UI updates)
+ * - Use debouncing when you want to collapse rapid-fire events (e.g. search input)
+ * - Use rate limiting only when you need to enforce hard limits (e.g. API rate limits)
+ *
+ * The hook returns an object containing:
+ * - maybeExecute: The rate-limited function that respects the configured limits
+ * - getExecutionCount: Returns the number of successful executions
+ * - getRejectionCount: Returns the number of rejected executions due to rate limiting
+ * - getRemainingInWindow: Returns how many more executions are allowed in the current window
+ * - reset: Resets the execution counts and window timing
+ *
+ * @template TFn The type of function to rate limit
+ * @template TArgs The type of the function's parameters
+ * @param fn The function to rate limit
+ * @param options Configuration options including maximum executions and window duration
+ * @returns An object containing the rate-limited function and control methods
+ *
+ * @example
+ * ```tsx
+ * // Basic rate limiting - max 5 calls per minute
+ * const { maybeExecute } = useRateLimiter(apiCall, {
+ *   maxExecutions: 5,
+ *   windowMs: 60000
+ * });
+ *
+ * // With Redux
+ * const dispatch = useDispatch();
+ * const { maybeExecute, getRemainingInWindow } = useRateLimiter(
+ *   (value) => dispatch(updateAction(value)),
+ *   { maxExecutions: 10, windowMs: 30000 }
+ * );
+ *
+ * // Monitor rate limit status
+ * const handleClick = () => {
+ *   const remaining = getRemainingInWindow();
+ *   if (remaining > 0) {
+ *     maybeExecute(data);
+ *   } else {
+ *     showRateLimitWarning();
+ *   }
+ * };
+ * ```
+ */
 export function useRateLimiter<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,

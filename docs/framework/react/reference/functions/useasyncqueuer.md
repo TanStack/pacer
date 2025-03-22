@@ -11,11 +11,31 @@ title: useAsyncQueuer
 function useAsyncQueuer<TValue>(options): object
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L5)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:58](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L58)
+
+A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
+
+This hook provides a flexible, state-management agnostic way to handle queued async operations.
+It returns a queuer instance with methods to add items, control queue execution, and monitor queue state.
+
+The queue can be configured with:
+- Maximum concurrent operations
+- Maximum queue size
+- Processing function for queue items
+- Various lifecycle callbacks
+
+The hook returns an object containing methods to:
+- Add/remove items from the queue
+- Start/stop queue processing
+- Get queue status and items
+- Register event handlers
+- Control execution throttling
 
 ## Type Parameters
 
 • **TValue**
+
+The type of items managed by the queue
 
 ## Parameters
 
@@ -23,9 +43,13 @@ Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:5](https://github.co
 
 `AsyncQueuerOptions`\<`TValue`\>
 
+Configuration options for the async queue
+
 ## Returns
 
 `object`
+
+An object containing queue management methods
 
 ### addItem()
 
@@ -73,13 +97,13 @@ Removes all items from the queue
 getActiveItems: () => () => Promise<any>[];
 ```
 
-Returns the active tasks
+Returns the active items
 
 #### Returns
 
 () => `Promise`\<`any`\>[]
 
-The active tasks
+The active items
 
 ### getAllItems()
 
@@ -87,13 +111,13 @@ The active tasks
 getAllItems: () => () => Promise<any>[];
 ```
 
-Returns all tasks
+Returns all items (active and pending)
 
 #### Returns
 
 () => `Promise`\<`any`\>[]
 
-All tasks
+All items
 
 ### getExecutionCount()
 
@@ -143,13 +167,13 @@ queue.getNextItem('back')
 getPendingItems: () => () => Promise<TValue>[];
 ```
 
-Returns the pending tasks
+Returns the pending items
 
 #### Returns
 
 () => `Promise`\<`TValue`\>[]
 
-The pending tasks
+The pending items
 
 ### isEmpty()
 
@@ -181,7 +205,7 @@ Returns true if the queue is full
 isIdle: () => boolean;
 ```
 
-Returns true if the queuer is running but has no items to process
+Returns true if all items are settled
 
 #### Returns
 
@@ -194,18 +218,6 @@ isRunning: () => boolean;
 ```
 
 Returns true if the queuer is running
-
-#### Returns
-
-`boolean`
-
-### isSettled()
-
-```ts
-isSettled: () => boolean;
-```
-
-Returns true if all tasks are settled
 
 #### Returns
 
@@ -379,7 +391,7 @@ Returns the current size of the queue
 start: () => Promise<void>;
 ```
 
-Starts the queuer and processes tasks
+Starts the queuer and processes items
 
 #### Returns
 
@@ -405,7 +417,7 @@ Stops the queuer from processing items
 throttle: (n) => void;
 ```
 
-Throttles the number of concurrent tasks that can run at once
+Throttles the number of concurrent items that can run at once
 
 #### Parameters
 
@@ -418,3 +430,34 @@ The new concurrency limit
 #### Returns
 
 `void`
+
+## Example
+
+```tsx
+// Basic async queuer for API requests
+const asyncQueuer = useAsyncQueuer({
+  initialItems: [],
+  concurrency: 2,
+  maxSize: 100,
+  started: false,
+});
+
+// Add items to queue
+asyncQueuer.addItem(newItem);
+
+// Start processing
+asyncQueuer.start();
+
+// Monitor queue state
+const isPending = !asyncQueuer.isIdle();
+const itemCount = asyncQueuer.size();
+
+// Handle results
+asyncQueuer.onSuccess((result) => {
+  console.log('Item processed:', result);
+});
+
+asyncQueuer.onError((error) => {
+  console.error('Processing failed:', error);
+});
+```

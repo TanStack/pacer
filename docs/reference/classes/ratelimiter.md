@@ -7,15 +7,42 @@ title: RateLimiter
 
 # Class: RateLimiter\<TFn, TArgs\>
 
-Defined in: [rate-limiter.ts:41](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L41)
+Defined in: [rate-limiter.ts:69](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L69)
 
 A class that creates a rate-limited function.
+
+Rate limiting is a simple approach that allows a function to execute up to a limit within a time window,
+then blocks all subsequent calls until the window passes. This can lead to "bursty" behavior where
+all executions happen immediately, followed by a complete block.
+
+For smoother execution patterns, consider using:
+- Throttling: Ensures consistent spacing between executions (e.g. max once per 200ms)
+- Debouncing: Waits for a pause in calls before executing (e.g. after 500ms of no calls)
+
+Rate limiting is best used for hard API limits or resource constraints. For UI updates or
+smoothing out frequent events, throttling or debouncing usually provide better user experience.
+
+## Example
+
+```ts
+const rateLimiter = new RateLimiter(
+  (id: string) => api.getData(id),
+  { limit: 5, window: 1000 } // 5 calls per second
+);
+
+// Will execute immediately until limit reached, then block
+rateLimiter.maybeExecute('123');
+```
 
 ## Type Parameters
 
 • **TFn** *extends* (...`args`) => `any`
 
+The type of function to rate limit
+
 • **TArgs** *extends* `Parameters`\<`TFn`\>
+
+The type of the function's parameters
 
 ## Constructors
 
@@ -25,7 +52,7 @@ A class that creates a rate-limited function.
 new RateLimiter<TFn, TArgs>(fn, options): RateLimiter<TFn, TArgs>
 ```
 
-Defined in: [rate-limiter.ts:50](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L50)
+Defined in: [rate-limiter.ts:78](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L78)
 
 #### Parameters
 
@@ -49,7 +76,7 @@ Defined in: [rate-limiter.ts:50](https://github.com/TanStack/bouncer/blob/main/p
 getExecutionCount(): number
 ```
 
-Defined in: [rate-limiter.ts:60](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L60)
+Defined in: [rate-limiter.ts:88](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L88)
 
 Returns the number of times the function has been executed
 
@@ -65,7 +92,7 @@ Returns the number of times the function has been executed
 getRejectionCount(): number
 ```
 
-Defined in: [rate-limiter.ts:67](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L67)
+Defined in: [rate-limiter.ts:95](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L95)
 
 Returns the number of times the function has been rejected
 
@@ -81,9 +108,9 @@ Returns the number of times the function has been rejected
 getRemainingInWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:74](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L74)
+Defined in: [rate-limiter.ts:102](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L102)
 
-Returns the number of remaining executions in the current window
+Returns the number of remaining executions allowed in the current window
 
 #### Returns
 
@@ -97,9 +124,10 @@ Returns the number of remaining executions in the current window
 maybeExecute(...args): boolean
 ```
 
-Defined in: [rate-limiter.ts:83](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L83)
+Defined in: [rate-limiter.ts:125](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L125)
 
-Executes the rate-limited function if within limits
+Attempts to execute the rate-limited function if within the configured limits.
+Will reject execution if the number of calls in the current window exceeds the limit.
 
 #### Parameters
 
@@ -107,11 +135,25 @@ Executes the rate-limited function if within limits
 
 ...`TArgs`
 
+The arguments to pass to the rate-limited function
+
 #### Returns
 
 `boolean`
 
-boolean indicating whether the function was executed
+true if the function was executed, false if it was rejected due to rate limiting
+
+#### Example
+
+```ts
+const rateLimiter = new RateLimiter(fn, { limit: 5, window: 1000 });
+
+// First 5 calls will return true
+rateLimiter.maybeExecute('arg1', 'arg2'); // true
+
+// Additional calls within the window will return false
+rateLimiter.maybeExecute('arg1', 'arg2'); // false
+```
 
 ***
 
@@ -121,7 +163,7 @@ boolean indicating whether the function was executed
 reset(): void
 ```
 
-Defined in: [rate-limiter.ts:130](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L130)
+Defined in: [rate-limiter.ts:172](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L172)
 
 Resets the rate limiter state
 

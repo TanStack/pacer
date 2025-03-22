@@ -11,9 +11,11 @@ title: asyncThrottle
 function asyncThrottle<TFn>(fn, options): (...args) => Promise<void>
 ```
 
-Defined in: [async-throttler.ts:135](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L135)
+Defined in: [async-throttler.ts:175](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L175)
 
-Creates an async throttled function
+Creates an async throttled function that limits how often the function can execute.
+The throttled function will execute at most once per wait period, even if called multiple times.
+If called while executing, it will wait until execution completes before scheduling the next call.
 
 ## Type Parameters
 
@@ -25,15 +27,22 @@ Creates an async throttled function
 
 `TFn`
 
+The async function to throttle
+
 ### options
 
 [`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)
+
+Configuration options for throttling behavior
 
 ## Returns
 
 `Function`
 
-Executes the throttled async function
+A throttled version of the input function that returns a Promise
+
+Attempts to execute the throttled function
+If a call is already in progress, it may be blocked or queued depending on the `wait` option
 
 ### Parameters
 
@@ -44,3 +53,15 @@ Executes the throttled async function
 ### Returns
 
 `Promise`\<`void`\>
+
+## Example
+
+```ts
+const throttled = asyncThrottle(async () => {
+  await someAsyncOperation();
+}, { wait: 1000 });
+
+// This will execute at most once per second
+await throttled();
+await throttled(); // Waits 1 second before executing
+```

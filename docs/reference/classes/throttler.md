@@ -7,15 +7,45 @@ title: Throttler
 
 # Class: Throttler\<TFn, TArgs\>
 
-Defined in: [throttler.ts:30](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L30)
+Defined in: [throttler.ts:58](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L58)
 
 A class that creates a throttled function.
+
+Throttling ensures a function is called at most once within a specified time window.
+Unlike debouncing which waits for a pause in calls, throttling guarantees consistent 
+execution timing regardless of call frequency.
+
+Supports both leading and trailing edge execution:
+- Leading: Execute immediately on first call (default: true)
+- Trailing: Execute after wait period if called during throttle (default: true)
+
+For rate limiting or hard API limits, consider using RateLimiter instead.
+For collapsing rapid-fire events, consider using Debouncer.
+
+## Example
+
+```ts
+const throttler = new Throttler(
+  (id: string) => api.getData(id), 
+  { wait: 1000 } // Execute at most once per second
+);
+
+// First call executes immediately
+throttler.maybeExecute('123');
+
+// Subsequent calls within 1000ms are throttled
+throttler.maybeExecute('123'); // Throttled
+```
 
 ## Type Parameters
 
 • **TFn** *extends* (...`args`) => `any`
 
+The type of function to throttle
+
 • **TArgs** *extends* `Parameters`\<`TFn`\>
+
+The type of the function's parameters
 
 ## Constructors
 
@@ -25,7 +55,7 @@ A class that creates a throttled function.
 new Throttler<TFn, TArgs>(fn, options): Throttler<TFn, TArgs>
 ```
 
-Defined in: [throttler.ts:40](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L40)
+Defined in: [throttler.ts:68](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L68)
 
 #### Parameters
 
@@ -49,9 +79,15 @@ Defined in: [throttler.ts:40](https://github.com/TanStack/bouncer/blob/main/pack
 cancel(): void
 ```
 
-Defined in: [throttler.ts:103](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L103)
+Defined in: [throttler.ts:158](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L158)
 
-Cancels any pending execution
+Cancels any pending trailing execution and clears internal state.
+
+If a trailing execution is scheduled (due to throttling with trailing=true), 
+this will prevent that execution from occurring. The internal timeout and 
+stored arguments will be cleared.
+
+Has no effect if there is no pending execution.
 
 #### Returns
 
@@ -65,7 +101,7 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [throttler.ts:53](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L53)
+Defined in: [throttler.ts:81](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L81)
 
 Returns the number of times the function has been executed
 
@@ -81,7 +117,7 @@ Returns the number of times the function has been executed
 getLastExecutionTime(): number
 ```
 
-Defined in: [throttler.ts:60](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L60)
+Defined in: [throttler.ts:88](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L88)
 
 Returns the last execution time
 
@@ -97,9 +133,17 @@ Returns the last execution time
 maybeExecute(...args): void
 ```
 
-Defined in: [throttler.ts:67](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L67)
+Defined in: [throttler.ts:116](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L116)
 
-Executes the throttled function
+Attempts to execute the throttled function. The execution behavior depends on the throttler options:
+
+- If enough time has passed since the last execution (>= wait period):
+  - With leading=true: Executes immediately
+  - With leading=false: Waits for the next trailing execution
+
+- If within the wait period:
+  - With trailing=true: Schedules execution for end of wait period
+  - With trailing=false: Drops the execution
 
 #### Parameters
 
@@ -107,6 +151,20 @@ Executes the throttled function
 
 ...`TArgs`
 
+The arguments to pass to the throttled function
+
 #### Returns
 
 `void`
+
+#### Example
+
+```ts
+const throttled = new Throttler(fn, { wait: 1000 });
+
+// First call executes immediately
+throttled.maybeExecute('a', 'b');
+
+// Call during wait period - gets throttled
+throttled.maybeExecute('c', 'd'); 
+```

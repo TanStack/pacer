@@ -44,4 +44,4 @@ wait: number;
 Defined in: [async-throttler.ts:9](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L9)
 
 Time window in milliseconds during which the function can only be executed once
-Defaults to 1000ms
+Defaults to 0ms

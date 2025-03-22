@@ -7,7 +7,9 @@ title: RateLimiterOptions
 
 # Interface: RateLimiterOptions
 
-Defined in: [rate-limiter.ts:23](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L23)
+Defined in: [rate-limiter.ts:26](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L26)
+
+Options for configuring a rate-limited function
 
 ## Properties
 
@@ -17,7 +19,7 @@ Defined in: [rate-limiter.ts:23](https://github.com/TanStack/bouncer/blob/main/p
 limit: number;
 ```
 
-Defined in: [rate-limiter.ts:27](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L27)
+Defined in: [rate-limiter.ts:30](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L30)
 
 Maximum number of executions allowed within the time window
 
@@ -29,7 +31,7 @@ Maximum number of executions allowed within the time window
 optional onReject: (info) => void;
 ```
 
-Defined in: [rate-limiter.ts:35](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L35)
+Defined in: [rate-limiter.ts:38](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L38)
 
 Optional callback function that is called when an execution is rejected due to rate limiting
 
@@ -51,6 +53,6 @@ Optional callback function that is called when an execution is rejected due to r
 window: number;
 ```
 
-Defined in: [rate-limiter.ts:31](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L31)
+Defined in: [rate-limiter.ts:34](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L34)
 
 Time window in milliseconds within which the limit applies

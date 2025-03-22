@@ -11,13 +11,38 @@ title: useRateLimiter
 function useRateLimiter<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L5)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:59](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L59)
+
+A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
+
+This hook is designed to be flexible and state-management agnostic - it simply returns a rate limiter instance that
+you can integrate with any state management solution (useState, Redux, Zustand, Jotai, etc).
+
+Rate limiting is a simple "hard limit" approach that allows executions until a maximum count is reached within
+a time window, then blocks all subsequent calls until the window resets. Unlike throttling or debouncing,
+it does not attempt to space out or collapse executions intelligently.
+
+For smoother execution patterns:
+- Use throttling when you want consistent spacing between executions (e.g. UI updates)
+- Use debouncing when you want to collapse rapid-fire events (e.g. search input)
+- Use rate limiting only when you need to enforce hard limits (e.g. API rate limits)
+
+The hook returns an object containing:
+- maybeExecute: The rate-limited function that respects the configured limits
+- getExecutionCount: Returns the number of successful executions
+- getRejectionCount: Returns the number of rejected executions due to rate limiting
+- getRemainingInWindow: Returns how many more executions are allowed in the current window
+- reset: Resets the execution counts and window timing
 
 ## Type Parameters
 
 • **TFn** *extends* (...`args`) => `any`
 
+The type of function to rate limit
+
 • **TArgs** *extends* `any`[]
+
+The type of the function's parameters
 
 ## Parameters
 
@@ -25,13 +50,19 @@ Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:5](https://github.co
 
 `TFn`
 
+The function to rate limit
+
 ### options
 
 `RateLimiterOptions`
 
+Configuration options including maximum executions and window duration
+
 ## Returns
 
 `object`
+
+An object containing the rate-limited function and control methods
 
 ### getExecutionCount()
 
@@ -63,7 +94,7 @@ Returns the number of times the function has been rejected
 readonly getRemainingInWindow: () => number;
 ```
 
-Returns the number of remaining executions in the current window
+Returns the number of remaining executions allowed in the current window
 
 #### Returns
 
@@ -75,7 +106,8 @@ Returns the number of remaining executions in the current window
 readonly maybeExecute: (...args) => boolean;
 ```
 
-Executes the rate-limited function if within limits
+Attempts to execute the rate-limited function if within the configured limits.
+Will reject execution if the number of calls in the current window exceeds the limit.
 
 #### Parameters
 
@@ -83,11 +115,25 @@ Executes the rate-limited function if within limits
 
 ...`TArgs`
 
+The arguments to pass to the rate-limited function
+
 #### Returns
 
 `boolean`
 
-boolean indicating whether the function was executed
+true if the function was executed, false if it was rejected due to rate limiting
+
+#### Example
+
+```ts
+const rateLimiter = new RateLimiter(fn, { limit: 5, window: 1000 });
+
+// First 5 calls will return true
+rateLimiter.maybeExecute('arg1', 'arg2'); // true
+
+// Additional calls within the window will return false
+rateLimiter.maybeExecute('arg1', 'arg2'); // false
+```
 
 ### reset()
 
@@ -100,3 +146,30 @@ Resets the rate limiter state
 #### Returns
 
 `void`
+
+## Example
+
+```tsx
+// Basic rate limiting - max 5 calls per minute
+const { maybeExecute } = useRateLimiter(apiCall, {
+  maxExecutions: 5,
+  windowMs: 60000
+});
+
+// With Redux
+const dispatch = useDispatch();
+const { maybeExecute, getRemainingInWindow } = useRateLimiter(
+  (value) => dispatch(updateAction(value)),
+  { maxExecutions: 10, windowMs: 30000 }
+);
+
+// Monitor rate limit status
+const handleClick = () => {
+  const remaining = getRemainingInWindow();
+  if (remaining > 0) {
+    maybeExecute(data);
+  } else {
+    showRateLimitWarning();
+  }
+};
+```

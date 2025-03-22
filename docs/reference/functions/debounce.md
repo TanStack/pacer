@@ -11,10 +11,13 @@ title: debounce
 function debounce<TFn>(fn, options): (...args) => void
 ```
 
-Defined in: [debouncer.ts:94](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L94)
+Defined in: [debouncer.ts:132](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L132)
 
-Creates a debounced function that will execute the provided function after the specified delay.
-The debounced function will execute at most once per delay period.
+Creates a debounced function that delays invoking the provided function until after a specified wait time.
+Multiple calls during the wait period will cancel previous pending invocations and reset the timer.
+
+If leading option is true, the function will execute immediately on the first call, then wait the delay
+before allowing another execution.
 
 ## Type Parameters
 
@@ -26,19 +29,22 @@ The debounced function will execute at most once per delay period.
 
 `TFn`
 
-The function to debounce.
+The function to debounce
 
 ### options
 
 [`DebouncerOptions`](../interfaces/debounceroptions.md)
 
-The options for the debounced function.
+Configuration options for debouncing behavior
 
 ## Returns
 
 `Function`
 
-Executes the debounced function
+A debounced version of the input function
+
+Attempts to execute the debounced function
+If a call is already in progress, it will be queued
 
 ### Parameters
 
@@ -49,3 +55,14 @@ Executes the debounced function
 ### Returns
 
 `void`
+
+## Example
+
+```ts
+const debounced = debounce(() => {
+  saveChanges(); 
+}, { wait: 1000 });
+
+// Called repeatedly but executes at most once per second
+inputElement.addEventListener('input', debounced);
+```

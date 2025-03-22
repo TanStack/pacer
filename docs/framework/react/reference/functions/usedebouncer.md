@@ -11,13 +11,31 @@ title: useDebouncer
 function useDebouncer<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L5)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:43](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L43)
+
+A React hook that creates and manages a Debouncer instance.
+
+This is a lower-level hook that provides direct access to the Debouncer's functionality without
+any built-in state management. This allows you to integrate it with any state management solution
+you prefer (useState, Redux, Zustand, etc.).
+
+This hook provides debouncing functionality to limit how often a function can be called,
+waiting for a specified delay before executing the latest call. This is useful for handling
+frequent events like window resizing, scroll events, or real-time search inputs.
+
+The debouncer will only execute the function after the specified wait time has elapsed
+since the last call. If the function is called again before the wait time expires, the
+timer resets and starts waiting again.
 
 ## Type Parameters
 
 • **TFn** *extends* (...`args`) => `any`
 
+The type of function to be debounced
+
 • **TArgs** *extends* `any`[]
+
+The type of arguments the function accepts
 
 ## Parameters
 
@@ -25,13 +43,19 @@ Defined in: [react-pacer/src/debouncer/useDebouncer.ts:5](https://github.com/Tan
 
 `TFn`
 
+The function to debounce
+
 ### options
 
 `DebouncerOptions`
 
+Configuration options including wait time and maxWait
+
 ## Returns
 
 `object`
+
+An object containing debouncer control methods
 
 ### cancel()
 
@@ -63,7 +87,8 @@ Returns the number of times the function has been executed
 readonly maybeExecute: (...args) => void;
 ```
 
-Executes the debounced function
+Attempts to execute the debounced function
+If a call is already in progress, it will be queued
 
 #### Parameters
 
@@ -74,3 +99,21 @@ Executes the debounced function
 #### Returns
 
 `void`
+
+## Example
+
+```tsx
+// Debounce a search function to limit API calls
+const searchDebouncer = useDebouncer(
+  (query: string) => fetchSearchResults(query),
+  { wait: 500 } // Wait 500ms after last keystroke
+);
+
+// In an event handler
+const handleChange = (e) => {
+  searchDebouncer.maybeExecute(e.target.value);
+};
+
+// Get number of times the debounced function has executed
+const executionCount = searchDebouncer.getExecutionCount();
+```

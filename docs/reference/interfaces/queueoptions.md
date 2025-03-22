@@ -7,7 +7,9 @@ title: QueueOptions
 
 # Interface: QueueOptions\<TValue\>
 
-Defined in: [queue.ts:1](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L1)
+Defined in: [queue.ts:4](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L4)
+
+Options for configuring a Queue instance
 
 ## Extended by
 
@@ -25,7 +27,10 @@ Defined in: [queue.ts:1](https://github.com/TanStack/bouncer/blob/main/packages/
 optional getPriority: (item) => number;
 ```
 
-Defined in: [queue.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L5)
+Defined in: [queue.ts:21](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L21)
+
+Function to determine priority of items in the queue
+Higher priority items will be processed first
 
 #### Parameters
 
@@ -45,7 +50,9 @@ Defined in: [queue.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/
 optional initialItems: TValue[];
 ```
 
-Defined in: [queue.ts:2](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L2)
+Defined in: [queue.ts:8](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L8)
+
+Initial items to populate the queue with
 
 ***
 
@@ -55,7 +62,9 @@ Defined in: [queue.ts:2](https://github.com/TanStack/bouncer/blob/main/packages/
 optional maxSize: number;
 ```
 
-Defined in: [queue.ts:3](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L3)
+Defined in: [queue.ts:12](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L12)
+
+Maximum number of items allowed in the queue
 
 ***
 
@@ -65,7 +74,9 @@ Defined in: [queue.ts:3](https://github.com/TanStack/bouncer/blob/main/packages/
 optional onUpdate: (queue) => void;
 ```
 
-Defined in: [queue.ts:4](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L4)
+Defined in: [queue.ts:16](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L16)
+
+Callback fired whenever an item is added or removed from the queue
 
 #### Parameters
 

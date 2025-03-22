@@ -44,4 +44,4 @@ wait: number;
 Defined in: [async-debouncer.ts:9](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L9)
 
 Delay in milliseconds to wait after the last call before executing
-Defaults to 1000ms
+Defaults to 0ms

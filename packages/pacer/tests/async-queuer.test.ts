@@ -11,7 +11,7 @@ describe('AsyncQueuer', () => {
   describe('basic functionality', () => {
     it('should create an empty queuer', () => {
       expect(queuer.getAllItems()).toHaveLength(0)
-      expect(queuer.isSettled()).toBe(true)
+      expect(queuer.isIdle()).toBe(true)
       expect(queuer.isRunning()).toBe(false)
     })
 
@@ -28,7 +28,7 @@ describe('AsyncQueuer', () => {
       await queuer.start()
 
       expect(results).toEqual([1, 2, 3])
-      expect(queuer.isSettled()).toBe(true)
+      expect(queuer.isIdle()).toBe(true)
     })
 
     it('should respect concurrency limit', async () => {
@@ -94,7 +94,7 @@ describe('AsyncQueuer', () => {
       queuer.clear()
 
       expect(queuer.getPendingItems()).toHaveLength(0)
-      expect(queuer.isSettled()).toBe(true)
+      expect(queuer.isIdle()).toBe(true)
     })
 
     it('should throttle concurrency', async () => {

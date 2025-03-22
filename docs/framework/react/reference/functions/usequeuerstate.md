@@ -27,17 +27,37 @@ function useQueuerState<TValue>(options): readonly [TValue[], {
  }]
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuerState.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queuer/useQueuerState.ts#L5)
+Defined in: [react-pacer/src/queuer/useQueuerState.ts:60](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/queuer/useQueuerState.ts#L60)
+
+A React hook that creates a queuer with managed state, combining React's useState with queuing functionality.
+This hook provides both the current queue state and queue control methods.
+
+The queue state is automatically updated whenever items are added, removed, or reordered in the queue.
+All queue operations are reflected in the state array returned by the hook.
+
+The queue can be started and stopped to automatically process items at a specified interval,
+making it useful as a scheduler. When started, it will process one item per tick, with an 
+optional wait time between ticks.
+
+The hook returns a tuple containing:
+- The current queue state as an array
+- The queue instance with methods for queue manipulation
 
 ## Type Parameters
 
 • **TValue**
+
+The type of items stored in the queue
 
 ## Parameters
 
 ### options
 
 `QueuerOptions`\<`TValue`\> = `{}`
+
+Configuration options for the queue including initialItems to populate the queue,
+               wait time between processing items, whether to start processing immediately (started),
+               and getPriority function for ordering items
 
 ## Returns
 
@@ -58,3 +78,40 @@ readonly \[`TValue`[], \{
   `start`: () => `void`;
   `stop`: () => `void`;
  \}\]
+
+A tuple containing the queue state array and queue instance
+
+## Example
+
+```tsx
+// Basic queue with initial items and priority
+const [items, queue] = useQueuerState({
+  initialItems: ['item1', 'item2'],
+  started: true,
+  wait: 1000,
+  getPriority: (item) => item.priority
+});
+
+// Add items to queue
+const handleAdd = (item) => {
+  queue.addItem(item);
+};
+
+// Start automatic processing
+const startProcessing = () => {
+  queue.start();
+};
+
+// Stop automatic processing
+const stopProcessing = () => {
+  queue.stop();
+};
+
+// Manual processing still available
+const handleProcess = () => {
+  const nextItem = queue.getNextItem();
+  if (nextItem) {
+    processItem(nextItem);
+  }
+};
+```

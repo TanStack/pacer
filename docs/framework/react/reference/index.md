@@ -19,6 +19,8 @@ title: "@tanstack/react-pacer"
 - [useQueuer](functions/usequeuer.md)
 - [useQueuerState](functions/usequeuerstate.md)
 - [useQueueState](functions/usequeuestate.md)
+- [useRateLimitedState](functions/useratelimitedstate.md)
+- [useRateLimitedValue](functions/useratelimitedvalue.md)
 - [useRateLimiter](functions/useratelimiter.md)
 - [useThrottledState](functions/usethrottledstate.md)
 - [useThrottledValue](functions/usethrottledvalue.md)

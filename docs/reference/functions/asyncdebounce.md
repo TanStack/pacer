@@ -11,9 +11,11 @@ title: asyncDebounce
 function asyncDebounce<TFn>(fn, options): (...args) => Promise<void>
 ```
 
-Defined in: [async-debouncer.ts:111](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L111)
+Defined in: [async-debouncer.ts:152](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L152)
 
-Creates an async debounced function
+Creates an async debounced function that delays execution until after a specified wait time.
+The debounced function will only execute once the wait period has elapsed without any new calls.
+If called again during the wait period, the timer resets and a new wait period begins.
 
 ## Type Parameters
 
@@ -25,15 +27,22 @@ Creates an async debounced function
 
 `TFn`
 
+The async function to debounce
+
 ### options
 
 [`AsyncDebouncerOptions`](../interfaces/asyncdebounceroptions.md)
+
+Configuration options for debouncing behavior
 
 ## Returns
 
 `Function`
 
-Executes the debounced async function
+A debounced version of the input function that returns a Promise
+
+Attempts to execute the debounced function
+If a call is already in progress, it will be queued
 
 ### Parameters
 
@@ -44,3 +53,16 @@ Executes the debounced async function
 ### Returns
 
 `Promise`\<`void`\>
+
+## Example
+
+```ts
+const debounced = asyncDebounce(async (value: string) => {
+  await saveToAPI(value);
+}, { wait: 1000 });
+
+// Will only execute once, 1 second after the last call
+await debounced("first");  // Cancelled
+await debounced("second"); // Cancelled
+await debounced("third");  // Executes after 1s
+```

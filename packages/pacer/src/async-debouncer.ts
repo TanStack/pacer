@@ -4,7 +4,7 @@
 export interface AsyncDebouncerOptions {
   /**
    * Delay in milliseconds to wait after the last call before executing
-   * Defaults to 1000ms
+   * Defaults to 0ms
    */
   wait: number
   /**
@@ -20,6 +20,28 @@ const defaultOptions: Required<AsyncDebouncerOptions> = {
 
 /**
  * A class that creates an async debounced function.
+ *
+ * Debouncing ensures that a function is only executed after a specified delay has passed since its last invocation.
+ * Each new invocation resets the delay timer. This is useful for handling frequent events like window resizing
+ * or input changes where you only want to execute the handler after the events have stopped occurring.
+ *
+ * Unlike throttling which allows execution at regular intervals, debouncing prevents any execution until
+ * the function stops being called for the specified delay period.
+ *
+ * @template TFn The type of the async function to debounce
+ * @template TArgs The type of the function's parameters
+ *
+ * @example
+ * ```ts
+ * const debouncer = new AsyncDebouncer(async (value: string) => {
+ *   await searchAPI(value);
+ * }, { wait: 500 });
+ *
+ * // Called on each keystroke but only executes after 500ms of no typing
+ * inputElement.addEventListener('input', () => {
+ *   debouncer.maybeExecute(inputElement.value);
+ * });
+ * ```
  */
 export class AsyncDebouncer<
   TFn extends (...args: Array<any>) => Promise<any>,
@@ -65,7 +87,8 @@ export class AsyncDebouncer<
   }
 
   /**
-   * Executes the debounced async function
+   * Attempts to execute the debounced function
+   * If a call is already in progress, it will be queued
    */
   async maybeExecute(...args: TArgs): Promise<void> {
     this.cancel()
@@ -106,7 +129,25 @@ export class AsyncDebouncer<
 }
 
 /**
- * Creates an async debounced function
+ * Creates an async debounced function that delays execution until after a specified wait time.
+ * The debounced function will only execute once the wait period has elapsed without any new calls.
+ * If called again during the wait period, the timer resets and a new wait period begins.
+ *
+ * @param fn The async function to debounce
+ * @param options Configuration options for debouncing behavior
+ * @returns A debounced version of the input function that returns a Promise
+ *
+ * @example
+ * ```ts
+ * const debounced = asyncDebounce(async (value: string) => {
+ *   await saveToAPI(value);
+ * }, { wait: 1000 });
+ *
+ * // Will only execute once, 1 second after the last call
+ * await debounced("first");  // Cancelled
+ * await debounced("second"); // Cancelled
+ * await debounced("third");  // Executes after 1s
+ * ```
  */
 export function asyncDebounce<
   TFn extends (...args: Array<any>) => Promise<any>,

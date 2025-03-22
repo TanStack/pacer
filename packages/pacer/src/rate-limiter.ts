@@ -1,5 +1,5 @@
 /**
- * Options for configuring a rate-limited function
+ * Information about a rate limit rejection
  */
 export interface RateLimitRejectionInfo {
   /**
@@ -20,6 +20,9 @@ export interface RateLimitRejectionInfo {
   rejectionCount: number
 }
 
+/**
+ * Options for configuring a rate-limited function
+ */
 export interface RateLimiterOptions {
   /**
    * Maximum number of executions allowed within the time window
@@ -37,6 +40,31 @@ export interface RateLimiterOptions {
 
 /**
  * A class that creates a rate-limited function.
+ *
+ * Rate limiting is a simple approach that allows a function to execute up to a limit within a time window,
+ * then blocks all subsequent calls until the window passes. This can lead to "bursty" behavior where
+ * all executions happen immediately, followed by a complete block.
+ *
+ * For smoother execution patterns, consider using:
+ * - Throttling: Ensures consistent spacing between executions (e.g. max once per 200ms)
+ * - Debouncing: Waits for a pause in calls before executing (e.g. after 500ms of no calls)
+ *
+ * Rate limiting is best used for hard API limits or resource constraints. For UI updates or
+ * smoothing out frequent events, throttling or debouncing usually provide better user experience.
+ *
+ * @template TFn The type of function to rate limit
+ * @template TArgs The type of the function's parameters
+ *
+ * @example
+ * ```ts
+ * const rateLimiter = new RateLimiter(
+ *   (id: string) => api.getData(id),
+ *   { limit: 5, window: 1000 } // 5 calls per second
+ * );
+ *
+ * // Will execute immediately until limit reached, then block
+ * rateLimiter.maybeExecute('123');
+ * ```
  */
 export class RateLimiter<
   TFn extends (...args: Array<any>) => any,
@@ -69,7 +97,7 @@ export class RateLimiter<
   }
 
   /**
-   * Returns the number of remaining executions in the current window
+   * Returns the number of remaining executions allowed in the current window
    */
   getRemainingInWindow(): number {
     this.cleanupOldExecutions()
@@ -77,8 +105,22 @@ export class RateLimiter<
   }
 
   /**
-   * Executes the rate-limited function if within limits
-   * @returns boolean indicating whether the function was executed
+   * Attempts to execute the rate-limited function if within the configured limits.
+   * Will reject execution if the number of calls in the current window exceeds the limit.
+   *
+   * @param args - The arguments to pass to the rate-limited function
+   * @returns true if the function was executed, false if it was rejected due to rate limiting
+   *
+   * @example
+   * ```ts
+   * const rateLimiter = new RateLimiter(fn, { limit: 5, window: 1000 });
+   *
+   * // First 5 calls will return true
+   * rateLimiter.maybeExecute('arg1', 'arg2'); // true
+   *
+   * // Additional calls within the window will return false
+   * rateLimiter.maybeExecute('arg1', 'arg2'); // false
+   * ```
    */
   maybeExecute(...args: TArgs): boolean {
     this.cleanupOldExecutions()
@@ -135,10 +177,38 @@ export class RateLimiter<
 }
 
 /**
- * Creates a rate-limited function that will execute the provided function at most once per time window.
+ * Creates a rate-limited function that will execute the provided function up to a maximum number of times within a time window.
  *
- * @param fn - The function to rate-limit.
- * @param options - The options for the rate-limited function.
+ * Note that rate limiting is a simpler form of execution control compared to throttling or debouncing:
+ * - A rate limiter will allow all executions until the limit is reached, then block all subsequent calls until the window resets
+ * - A throttler ensures even spacing between executions, which can be better for consistent performance
+ * - A debouncer collapses multiple calls into one, which is better for handling bursts of events
+ *
+ * Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
+ * need to enforce a hard limit on the number of executions within a time period.
+ *
+ * @param fn - The function to rate-limit
+ * @param options - Configuration options including the maximum executions allowed and time window
+ * @returns A rate-limited version of the input function that will reject calls once the limit is reached
+ *
+ * @example
+ * ```ts
+ * // Rate limit to 5 calls per minute
+ * const rateLimited = rateLimit(makeApiCall, {
+ *   limit: 5,
+ *   window: 60000,
+ *   onReject: ({ msUntilNextWindow }) => {
+ *     console.log(`Rate limit exceeded. Try again in ${msUntilNextWindow}ms`);
+ *   }
+ * });
+ *
+ * // First 5 calls will execute immediately
+ * // Additional calls will be rejected until the minute window resets
+ * rateLimited();
+ *
+ * // For more even execution, consider using throttle instead:
+ * const throttled = throttle(makeApiCall, { wait: 12000 }); // One call every 12 seconds
+ * ```
  */
 export function rateLimit<TFn extends (...args: Array<any>) => any>(
   fn: TFn,

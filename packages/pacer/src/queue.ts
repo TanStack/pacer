@@ -1,7 +1,23 @@
+/**
+ * Options for configuring a Queue instance
+ */
 export interface QueueOptions<TValue> {
+  /**
+   * Initial items to populate the queue with
+   */
   initialItems?: Array<TValue>
+  /**
+   * Maximum number of items allowed in the queue
+   */
   maxSize?: number
+  /**
+   * Callback fired whenever an item is added or removed from the queue
+   */
   onUpdate?: (queue: Queue<TValue>) => void
+  /**
+   * Function to determine priority of items in the queue
+   * Higher priority items will be processed first
+   */
   getPriority?: (item: TValue) => number
 }
 
@@ -21,17 +37,42 @@ export type QueuePosition = 'front' | 'back'
  * A flexible queue data structure that defaults to FIFO (First In First Out) behavior
  * with optional position overrides for stack-like or double-ended operations.
  *
+ * Supports priority-based ordering when a getPriority function is provided.
+ * Items with higher priority values will be processed first.
+ *
+ * A queue does not have automatic queueing of items. This expects you to hook up the `addItem` and `getNextItem` events.
+ * For automatic queueing with start and stop, use the `Queuer` class.
+ *
+ * @template TValue The type of items stored in the queue
+ *
  * Default queue behavior:
- * - addItem(item): adds to back
- * - getNextItem(): removes from front
+ * - addItem(item): adds to back of queue
+ * - getNextItem(): removes and returns from front of queue
  *
- * Stack behavior (using position override):
- * - addItem(item, 'back'): LIFO (Last In First Out)
- * - getNextItem('back'): LIFO (Last In First Out)
+ * Stack (LIFO) behavior:
+ * - addItem(item, 'back'): adds to back
+ * - getNextItem('back'): removes and returns from back
  *
- * Double-ended behavior:
- * - addItem(item, 'front' | 'back')
- * - getNextItem('front' | 'back')
+ * Double-ended queue behavior:
+ * - addItem(item, position): adds to specified position ('front' or 'back')
+ * - getNextItem(position): removes and returns from specified position
+ *
+ * @example
+ * ```ts
+ * // FIFO queue
+ * const queue = new Queue<number>();
+ * queue.addItem(1); // [1]
+ * queue.addItem(2); // [1, 2]
+ * queue.getNextItem(); // returns 1, queue is [2]
+ *
+ * // Priority queue
+ * const priorityQueue = new Queue<number>({
+ *   getPriority: (n) => n // Higher numbers have priority
+ * });
+ * priorityQueue.addItem(1); // [1]
+ * priorityQueue.addItem(3); // [3, 1]
+ * priorityQueue.addItem(2); // [3, 2, 1]
+ * ```
  */
 export class Queue<TValue> {
   protected options: Required<QueueOptions<TValue>> = defaultOptions

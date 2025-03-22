@@ -9,7 +9,7 @@ export interface DebouncerOptions {
   leading?: boolean
   /**
    * Delay in milliseconds before executing the function
-   * Defaults to 500ms
+   * Defaults to 0ms
    */
   wait: number
 }
@@ -21,6 +21,29 @@ const defaultOptions: Required<DebouncerOptions> = {
 
 /**
  * A class that creates a debounced function.
+ *
+ * Debouncing ensures that a function is only executed after a certain amount of time has passed
+ * since its last invocation. This is useful for handling frequent events like window resizing,
+ * scroll events, or input changes where you want to limit the rate of execution.
+ *
+ * The debounced function can be configured to execute either at the start of the delay period
+ * (leading edge) or at the end (trailing edge, default). Each new call during the wait period
+ * will reset the timer.
+ *
+ * @template TFn The type of function to debounce
+ * @template TArgs The type of the function's parameters
+ *
+ * @example
+ * ```ts
+ * const debouncer = new Debouncer((value: string) => {
+ *   saveToDatabase(value);
+ * }, { wait: 500 });
+ *
+ * // Will only save after 500ms of no new input
+ * inputElement.addEventListener('input', () => {
+ *   debouncer.maybeExecute(inputElement.value);
+ * });
+ * ```
  */
 export class Debouncer<
   TFn extends (...args: Array<any>) => any,
@@ -49,7 +72,8 @@ export class Debouncer<
   }
 
   /**
-   * Executes the debounced function
+   * Attempts to execute the debounced function
+   * If a call is already in progress, it will be queued
    */
   maybeExecute(...args: TArgs): void {
     // Handle leading execution
@@ -85,11 +109,25 @@ export class Debouncer<
 }
 
 /**
- * Creates a debounced function that will execute the provided function after the specified delay.
- * The debounced function will execute at most once per delay period.
+ * Creates a debounced function that delays invoking the provided function until after a specified wait time.
+ * Multiple calls during the wait period will cancel previous pending invocations and reset the timer.
  *
- * @param fn - The function to debounce.
- * @param options - The options for the debounced function.
+ * If leading option is true, the function will execute immediately on the first call, then wait the delay
+ * before allowing another execution.
+ *
+ * @param fn The function to debounce
+ * @param options Configuration options for debouncing behavior
+ * @returns A debounced version of the input function
+ *
+ * @example
+ * ```ts
+ * const debounced = debounce(() => {
+ *   saveChanges();
+ * }, { wait: 1000 });
+ *
+ * // Called repeatedly but executes at most once per second
+ * inputElement.addEventListener('input', debounced);
+ * ```
  */
 export function debounce<TFn extends (...args: Array<any>) => any>(
   fn: TFn,

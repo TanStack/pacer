@@ -9,7 +9,7 @@ title: RateLimitRejectionInfo
 
 Defined in: [rate-limiter.ts:4](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L4)
 
-Options for configuring a rate-limited function
+Information about a rate limit rejection
 
 ## Properties
 

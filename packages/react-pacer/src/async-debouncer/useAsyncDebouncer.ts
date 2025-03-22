@@ -2,6 +2,52 @@ import { useRef } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 
+/**
+ * A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
+ *
+ * This hook is designed to be flexible and state-management agnostic - it simply returns a debouncer instance that
+ * you can integrate with any state management solution (useState, Redux, Zustand, Jotai, etc).
+ *
+ * Async debouncing ensures that an async function only executes after a specified delay has passed since its last invocation.
+ * This is useful for handling fast-changing inputs like search fields, form validation, or any scenario where you want to
+ * wait for user input to settle before making expensive async calls.
+ *
+ * The hook returns an object containing:
+ * - maybeExecute: The debounced async function that respects the configured delay
+ * - cancel: A function to cancel any pending delayed execution
+ * - getExecutionCount: A function that returns the number of times the debounced function has executed
+ *
+ * @template TFn The type of async function to debounce
+ * @template TArgs The type of the function's parameters
+ * @param fn The async function to debounce
+ * @param options Configuration options including delay time and execution behavior
+ * @returns An object containing the debounced async function and control methods
+ *
+ * @example
+ * ```tsx
+ * // Basic API call debouncing
+ * const { maybeExecute } = useAsyncDebouncer(
+ *   async (query: string) => {
+ *     const results = await api.search(query);
+ *     return results;
+ *   },
+ *   { wait: 500 }
+ * );
+ *
+ * // With state management
+ * const [results, setResults] = useState([]);
+ * const { maybeExecute } = useAsyncDebouncer(
+ *   async (searchTerm) => {
+ *     const data = await searchAPI(searchTerm);
+ *     setResults(data);
+ *   },
+ *   {
+ *     wait: 300,
+ *   }
+ * );
+ * ```
+ */
+
 export function useAsyncDebouncer<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,

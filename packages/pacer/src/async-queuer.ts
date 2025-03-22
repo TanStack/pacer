@@ -4,7 +4,7 @@ import type { QueuerOptions } from './queuer'
 export interface AsyncQueuerOptions<TValue>
   extends QueuerOptions<() => Promise<TValue>> {
   /**
-   * Maximum number of concurrent tasks that can run at once
+   * Maximum number of concurrent items that can run at once
    * @default 2
    */
   concurrency?: number
@@ -21,12 +21,42 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
 }
 
 /**
- * A flexible async queuer that supports priority tasks, concurrency control, and task callbacks.
+ * A flexible async queuer that processes asynchronous tasks with configurable concurrency control.
  *
- * Can be used as a FIFO or LIFO queue by specifying the position of the task.
+ * Features:
+ * - Priority queue support via getPriority option
+ * - Configurable concurrency limit
+ * - Task success/error/completion callbacks
+ * - FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
+ * - Pause/resume task processing
+ * - Task cancellation
  *
- * Also known as a task pool or task queue
- * @template TValue The type of the task result
+ * Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
+ * the next pending task is processed if below the concurrency limit.
+ *
+ * The queue can be used in FIFO mode (default) where tasks are processed in order of addition,
+ * or LIFO mode where the most recently added tasks are processed first.
+ *
+ * @template TValue The type of value that the queued tasks resolve to
+ *
+ * @example
+ * ```ts
+ * const queuer = new AsyncQueuer<string>({ concurrency: 2 });
+ *
+ * // Add tasks to the queue
+ * queuer.addItem(async () => {
+ *   const result = await someAsyncOperation();
+ *   return result;
+ * });
+ *
+ * // Start processing
+ * queuer.start();
+ *
+ * // Listen for task completion
+ * queuer.onSuccess((result) => {
+ *   console.log('Task completed:', result);
+ * });
+ * ```
  */
 export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
   protected options: Required<AsyncQueuerOptions<TValue>> = defaultOptions
@@ -49,6 +79,10 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
     this.currentConcurrency = this.options.concurrency
   }
 
+  /**
+   * Processes the next item in the queue
+   * @returns A promise that resolves when the item is processed
+   */
   protected tick() {
     if (!this.isRunning()) {
       return
@@ -122,7 +156,7 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
   }
 
   /**
-   * Throttles the number of concurrent tasks that can run at once
+   * Throttles the number of concurrent items that can run at once
    * @param n The new concurrency limit
    */
   throttle(n: number) {
@@ -166,14 +200,14 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
   }
 
   /**
-   * Starts the queuer and processes tasks
+   * Starts the queuer and processes items
    * @returns A promise that resolves when the queuer is settled
    */
   start() {
     super.start()
     return new Promise<void>((resolve) => {
       this.onSettled(() => {
-        if (this.isSettled()) {
+        if (this.isIdle()) {
           resolve()
         }
       })
@@ -181,33 +215,33 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
   }
 
   /**
-   * Returns the active tasks
-   * @returns The active tasks
+   * Returns the active items
+   * @returns The active items
    */
   getActiveItems() {
     return this.active
   }
 
   /**
-   * Returns the pending tasks
-   * @returns The pending tasks
+   * Returns the pending items
+   * @returns The pending items
    */
   getPendingItems() {
     return super.getAllItems()
   }
 
   /**
-   * Returns all tasks
-   * @returns All tasks
+   * Returns all items (active and pending)
+   * @returns All items
    */
   getAllItems() {
     return [...this.active, ...this.getPendingItems()]
   }
 
   /**
-   * Returns true if all tasks are settled
+   * Returns true if all items are settled
    */
-  isSettled() {
+  isIdle() {
     return !this.active.length && this.isEmpty()
   }
 }

@@ -7,13 +7,43 @@ title: AsyncQueuer
 
 # Class: AsyncQueuer\<TValue\>
 
-Defined in: [async-queuer.ts:31](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L31)
+Defined in: [async-queuer.ts:61](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L61)
 
-A flexible async queuer that supports priority tasks, concurrency control, and task callbacks.
+A flexible async queuer that processes asynchronous tasks with configurable concurrency control.
 
-Can be used as a FIFO or LIFO queue by specifying the position of the task.
+Features:
+- Priority queue support via getPriority option
+- Configurable concurrency limit
+- Task success/error/completion callbacks
+- FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
+- Pause/resume task processing
+- Task cancellation
 
-Also known as a task pool or task queue
+Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
+the next pending task is processed if below the concurrency limit.
+
+The queue can be used in FIFO mode (default) where tasks are processed in order of addition,
+or LIFO mode where the most recently added tasks are processed first.
+
+## Example
+
+```ts
+const queuer = new AsyncQueuer<string>({ concurrency: 2 });
+
+// Add tasks to the queue
+queuer.addItem(async () => {
+  const result = await someAsyncOperation();
+  return result;
+});
+
+// Start processing
+queuer.start();
+
+// Listen for task completion
+queuer.onSuccess((result) => {
+  console.log('Task completed:', result);
+});
+```
 
 ## Extends
 
@@ -23,7 +53,7 @@ Also known as a task pool or task queue
 
 • **TValue**
 
-The type of the task result
+The type of value that the queued tasks resolve to
 
 ## Constructors
 
@@ -33,7 +63,7 @@ The type of the task result
 new AsyncQueuer<TValue>(__namedParameters): AsyncQueuer<TValue>
 ```
 
-Defined in: [async-queuer.ts:40](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L40)
+Defined in: [async-queuer.ts:70](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L70)
 
 #### Parameters
 
@@ -57,7 +87,7 @@ Defined in: [async-queuer.ts:40](https://github.com/TanStack/bouncer/blob/main/p
 protected options: Required<AsyncQueuerOptions<TValue>> = defaultOptions;
 ```
 
-Defined in: [async-queuer.ts:32](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L32)
+Defined in: [async-queuer.ts:62](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L62)
 
 #### Overrides
 
@@ -71,7 +101,7 @@ Defined in: [async-queuer.ts:32](https://github.com/TanStack/bouncer/blob/main/p
 addItem(fn, position?): Promise<TValue>
 ```
 
-Defined in: [async-queuer.ts:102](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L102)
+Defined in: [async-queuer.ts:136](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L136)
 
 Adds a task to the queue
 
@@ -107,7 +137,7 @@ A promise that resolves when the task is settled
 clear(): void
 ```
 
-Defined in: [queue.ts:172](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L172)
+Defined in: [queue.ts:213](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L213)
 
 Removes all items from the queue
 
@@ -127,15 +157,15 @@ Removes all items from the queue
 getActiveItems(): () => Promise<any>[]
 ```
 
-Defined in: [async-queuer.ts:187](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L187)
+Defined in: [async-queuer.ts:221](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L221)
 
-Returns the active tasks
+Returns the active items
 
 #### Returns
 
 () => `Promise`\<`any`\>[]
 
-The active tasks
+The active items
 
 ***
 
@@ -145,15 +175,15 @@ The active tasks
 getAllItems(): () => Promise<any>[]
 ```
 
-Defined in: [async-queuer.ts:203](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L203)
+Defined in: [async-queuer.ts:237](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L237)
 
-Returns all tasks
+Returns all items (active and pending)
 
 #### Returns
 
 () => `Promise`\<`any`\>[]
 
-All tasks
+All items
 
 #### Overrides
 
@@ -167,7 +197,7 @@ All tasks
 getExecutionCount(): number
 ```
 
-Defined in: [queue.ts:198](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L198)
+Defined in: [queue.ts:239](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L239)
 
 Returns the number of items that have been removed from the queue
 
@@ -187,7 +217,7 @@ Returns the number of items that have been removed from the queue
 getNextItem(position): undefined | () => Promise<TValue>
 ```
 
-Defined in: [queue.ts:113](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L113)
+Defined in: [queue.ts:154](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L154)
 
 Removes and returns an item from the queue using shift (default) or pop
 
@@ -225,15 +255,15 @@ queue.getNextItem('back')
 getPendingItems(): () => Promise<TValue>[]
 ```
 
-Defined in: [async-queuer.ts:195](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L195)
+Defined in: [async-queuer.ts:229](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L229)
 
-Returns the pending tasks
+Returns the pending items
 
 #### Returns
 
 () => `Promise`\<`TValue`\>[]
 
-The pending tasks
+The pending items
 
 ***
 
@@ -243,7 +273,7 @@ The pending tasks
 isEmpty(): boolean
 ```
 
-Defined in: [queue.ts:151](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L151)
+Defined in: [queue.ts:192](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L192)
 
 Returns true if the queue is empty
 
@@ -263,7 +293,7 @@ Returns true if the queue is empty
 isFull(): boolean
 ```
 
-Defined in: [queue.ts:158](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L158)
+Defined in: [queue.ts:199](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L199)
 
 Returns true if the queue is full
 
@@ -283,15 +313,15 @@ Returns true if the queue is full
 isIdle(): boolean
 ```
 
-Defined in: [queuer.ts:133](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queuer.ts#L133)
+Defined in: [async-queuer.ts:244](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L244)
 
-Returns true if the queuer is running but has no items to process
+Returns true if all items are settled
 
 #### Returns
 
 `boolean`
 
-#### Inherited from
+#### Overrides
 
 [`Queuer`](queuer.md).[`isIdle`](Queuer.md#isidle)
 
@@ -303,7 +333,7 @@ Returns true if the queuer is running but has no items to process
 isRunning(): boolean
 ```
 
-Defined in: [queuer.ts:126](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queuer.ts#L126)
+Defined in: [queuer.ts:142](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queuer.ts#L142)
 
 Returns true if the queuer is running
 
@@ -317,29 +347,13 @@ Returns true if the queuer is running
 
 ***
 
-### isSettled()
-
-```ts
-isSettled(): boolean
-```
-
-Defined in: [async-queuer.ts:210](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L210)
-
-Returns true if all tasks are settled
-
-#### Returns
-
-`boolean`
-
-***
-
 ### onError()
 
 ```ts
 onError(cb): () => void
 ```
 
-Defined in: [async-queuer.ts:149](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L149)
+Defined in: [async-queuer.ts:183](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L183)
 
 Adds a callback to be called when a task errors
 
@@ -369,7 +383,7 @@ A function to remove the callback
 onSettled(cb): () => void
 ```
 
-Defined in: [async-queuer.ts:137](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L137)
+Defined in: [async-queuer.ts:171](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L171)
 
 Adds a callback to be called when a task is settled
 
@@ -399,7 +413,7 @@ A function to remove the callback
 onSuccess(cb): () => void
 ```
 
-Defined in: [async-queuer.ts:161](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L161)
+Defined in: [async-queuer.ts:195](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L195)
 
 Adds a callback to be called when a task succeeds
 
@@ -429,7 +443,7 @@ A function to remove the callback
 onUpdate(cb): () => void
 ```
 
-Defined in: [queuer.ts:90](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queuer.ts#L90)
+Defined in: [queuer.ts:106](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queuer.ts#L106)
 
 Adds a callback to be called when an item is processed
 
@@ -463,7 +477,7 @@ A function to remove the callback
 peek(position): undefined | () => Promise<TValue>
 ```
 
-Defined in: [queue.ts:141](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L141)
+Defined in: [queue.ts:182](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L182)
 
 Returns an item without removing it
 
@@ -499,7 +513,7 @@ queue.peek('back')
 reset(withInitialItems?): void
 ```
 
-Defined in: [queuer.ts:118](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queuer.ts#L118)
+Defined in: [queuer.ts:134](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queuer.ts#L134)
 
 Resets the queue to its initial state
 
@@ -525,7 +539,7 @@ Resets the queue to its initial state
 size(): number
 ```
 
-Defined in: [queue.ts:165](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L165)
+Defined in: [queue.ts:206](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queue.ts#L206)
 
 Returns the current size of the queue
 
@@ -545,9 +559,9 @@ Returns the current size of the queue
 start(): Promise<void>
 ```
 
-Defined in: [async-queuer.ts:172](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L172)
+Defined in: [async-queuer.ts:206](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L206)
 
-Starts the queuer and processes tasks
+Starts the queuer and processes items
 
 #### Returns
 
@@ -567,7 +581,7 @@ A promise that resolves when the queuer is settled
 stop(): void
 ```
 
-Defined in: [queuer.ts:100](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queuer.ts#L100)
+Defined in: [queuer.ts:116](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/queuer.ts#L116)
 
 Stops the queuer from processing items
 
@@ -587,9 +601,9 @@ Stops the queuer from processing items
 throttle(n): void
 ```
 
-Defined in: [async-queuer.ts:128](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L128)
+Defined in: [async-queuer.ts:162](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L162)
 
-Throttles the number of concurrent tasks that can run at once
+Throttles the number of concurrent items that can run at once
 
 #### Parameters
 
@@ -611,13 +625,15 @@ The new concurrency limit
 protected tick(): void
 ```
 
-Defined in: [async-queuer.ts:52](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L52)
+Defined in: [async-queuer.ts:86](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-queuer.ts#L86)
 
-Processes items in the queue
+Processes the next item in the queue
 
 #### Returns
 
 `void`
+
+A promise that resolves when the item is processed
 
 #### Overrides
 

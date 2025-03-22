@@ -11,13 +11,31 @@ title: useAsyncThrottler
 function useAsyncThrottler<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L5)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:53](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L53)
+
+A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
+
+This hook is designed to be flexible and state-management agnostic - it simply returns a throttler instance that
+you can integrate with any state management solution (useState, Redux, Zustand, Jotai, etc).
+
+Async throttling ensures an async function executes at most once within a specified time window,
+regardless of how many times it is called. This is useful for rate-limiting expensive API calls,
+database operations, or other async tasks.
+
+The hook returns an object containing:
+- maybeExecute: The throttled async function that respects the configured wait time
+- cancel: A function to cancel any pending trailing execution
+- getExecutionCount: A function that returns the number of times the throttled function has executed
 
 ## Type Parameters
 
 • **TFn** *extends* (...`args`) => `any`
 
+The type of async function to throttle
+
 • **TArgs** *extends* `any`[]
+
+The type of the function's parameters
 
 ## Parameters
 
@@ -25,13 +43,19 @@ Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:5](https://git
 
 `TFn`
 
+The async function to throttle
+
 ### options
 
 `AsyncThrottlerOptions`
 
+Configuration options including wait time and execution behavior
+
 ## Returns
 
 `object`
+
+An object containing the throttled async function and control methods
 
 ### cancel()
 
@@ -63,7 +87,8 @@ Returns the number of times the function has been executed
 readonly maybeExecute: (...args) => Promise<void>;
 ```
 
-Executes the throttled async function
+Attempts to execute the throttled function
+If a call is already in progress, it may be blocked or queued depending on the `wait` option
 
 #### Parameters
 
@@ -74,3 +99,30 @@ Executes the throttled async function
 #### Returns
 
 `Promise`\<`void`\>
+
+## Example
+
+```tsx
+// Basic API call throttling
+const { maybeExecute } = useAsyncThrottler(
+  async (id: string) => {
+    const data = await api.fetchData(id);
+    return data;
+  },
+  { wait: 1000 }
+);
+
+// With state management
+const [data, setData] = useState(null);
+const { maybeExecute } = useAsyncThrottler(
+  async (query) => {
+    const result = await searchAPI(query);
+    setData(result);
+  },
+  {
+    wait: 2000,
+    leading: true,   // Execute immediately on first call
+    trailing: false  // Skip trailing edge updates
+  }
+);
+```

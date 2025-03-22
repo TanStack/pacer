@@ -15,11 +15,26 @@ function useDebouncedState<TValue>(value, options): readonly [TValue, (...args) 
  }]
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L5)
+Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:40](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L40)
+
+A React hook that creates a debounced state value, combining React's useState with debouncing functionality.
+This hook provides both the current debounced value and methods to update it.
+
+The state value is only updated after the specified wait time has elapsed since the last update attempt.
+If another update is attempted before the wait time expires, the timer resets and starts waiting again.
+This is useful for handling frequent state updates that should be throttled, like search input values
+or window resize dimensions.
+
+The hook returns a tuple containing:
+- The current debounced value
+- A function to update the debounced value
+- The debouncer instance with additional control methods
 
 ## Type Parameters
 
 • **TValue**
+
+The type of value being debounced
 
 ## Parameters
 
@@ -27,9 +42,13 @@ Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:5](https://github.co
 
 `TValue`
 
+The initial value
+
 ### options
 
 `DebouncerOptions`
+
+Configuration options including wait time and maxWait
 
 ## Returns
 
@@ -38,3 +57,22 @@ readonly \[`TValue`, (...`args`) => `void`, \{
   `getExecutionCount`: () => `number`;
   `maybeExecute`: (...`args`) => `void`;
  \}\]
+
+A tuple containing the debounced value, update function, and debouncer instance
+
+## Example
+
+```tsx
+// Debounced search input
+const [searchTerm, setSearchTerm, debouncer] = useDebouncedState('', {
+  wait: 500 // Wait 500ms after last keystroke
+});
+
+// Update value - will be debounced
+const handleChange = (e) => {
+  setSearchTerm(e.target.value);
+};
+
+// Get number of times the debounced function has executed
+const executionCount = debouncer.getExecutionCount();
+```

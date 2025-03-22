@@ -35,4 +35,4 @@ wait: number;
 Defined in: [debouncer.ts:14](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L14)
 
 Delay in milliseconds before executing the function
-Defaults to 500ms
+Defaults to 0ms

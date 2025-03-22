@@ -7,15 +7,39 @@ title: AsyncDebouncer
 
 # Class: AsyncDebouncer\<TFn, TArgs\>
 
-Defined in: [async-debouncer.ts:24](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L24)
+Defined in: [async-debouncer.ts:46](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L46)
 
 A class that creates an async debounced function.
+
+Debouncing ensures that a function is only executed after a specified delay has passed since its last invocation.
+Each new invocation resets the delay timer. This is useful for handling frequent events like window resizing
+or input changes where you only want to execute the handler after the events have stopped occurring.
+
+Unlike throttling which allows execution at regular intervals, debouncing prevents any execution until
+the function stops being called for the specified delay period.
+
+## Example
+
+```ts
+const debouncer = new AsyncDebouncer(async (value: string) => {
+  await searchAPI(value);
+}, { wait: 500 });
+
+// Called on each keystroke but only executes after 500ms of no typing
+inputElement.addEventListener('input', () => {
+  debouncer.maybeExecute(inputElement.value);
+});
+```
 
 ## Type Parameters
 
 • **TFn** *extends* (...`args`) => `Promise`\<`any`\>
 
+The type of the async function to debounce
+
 • **TArgs** *extends* `Parameters`\<`TFn`\>
+
+The type of the function's parameters
 
 ## Constructors
 
@@ -25,7 +49,7 @@ A class that creates an async debounced function.
 new AsyncDebouncer<TFn, TArgs>(fn, options): AsyncDebouncer<TFn, TArgs>
 ```
 
-Defined in: [async-debouncer.ts:35](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L35)
+Defined in: [async-debouncer.ts:57](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L57)
 
 #### Parameters
 
@@ -49,7 +73,7 @@ Defined in: [async-debouncer.ts:35](https://github.com/TanStack/bouncer/blob/mai
 cancel(): void
 ```
 
-Defined in: [async-debouncer.ts:55](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L55)
+Defined in: [async-debouncer.ts:77](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L77)
 
 Cancels any pending execution
 
@@ -65,7 +89,7 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [async-debouncer.ts:48](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L48)
+Defined in: [async-debouncer.ts:70](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L70)
 
 Returns the number of times the function has been executed
 
@@ -81,9 +105,10 @@ Returns the number of times the function has been executed
 maybeExecute(...args): Promise<void>
 ```
 
-Defined in: [async-debouncer.ts:70](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L70)
+Defined in: [async-debouncer.ts:93](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L93)
 
-Executes the debounced async function
+Attempts to execute the debounced function
+If a call is already in progress, it will be queued
 
 #### Parameters
 

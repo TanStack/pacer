@@ -26,6 +26,34 @@ const defaultOptions: Required<ThrottlerOptions> = {
 
 /**
  * A class that creates a throttled function.
+ *
+ * Throttling ensures a function is called at most once within a specified time window.
+ * Unlike debouncing which waits for a pause in calls, throttling guarantees consistent
+ * execution timing regardless of call frequency.
+ *
+ * Supports both leading and trailing edge execution:
+ * - Leading: Execute immediately on first call (default: true)
+ * - Trailing: Execute after wait period if called during throttle (default: true)
+ *
+ * For rate limiting or hard API limits, consider using RateLimiter instead.
+ * For collapsing rapid-fire events, consider using Debouncer.
+ *
+ * @template TFn The type of function to throttle
+ * @template TArgs The type of the function's parameters
+ *
+ * @example
+ * ```ts
+ * const throttler = new Throttler(
+ *   (id: string) => api.getData(id),
+ *   { wait: 1000 } // Execute at most once per second
+ * );
+ *
+ * // First call executes immediately
+ * throttler.maybeExecute('123');
+ *
+ * // Subsequent calls within 1000ms are throttled
+ * throttler.maybeExecute('123'); // Throttled
+ * ```
  */
 export class Throttler<
   TFn extends (...args: Array<any>) => any,
@@ -62,7 +90,28 @@ export class Throttler<
   }
 
   /**
-   * Executes the throttled function
+   * Attempts to execute the throttled function. The execution behavior depends on the throttler options:
+   *
+   * - If enough time has passed since the last execution (>= wait period):
+   *   - With leading=true: Executes immediately
+   *   - With leading=false: Waits for the next trailing execution
+   *
+   * - If within the wait period:
+   *   - With trailing=true: Schedules execution for end of wait period
+   *   - With trailing=false: Drops the execution
+   *
+   * @param args - The arguments to pass to the throttled function
+   *
+   * @example
+   * ```ts
+   * const throttled = new Throttler(fn, { wait: 1000 });
+   *
+   * // First call executes immediately
+   * throttled.maybeExecute('a', 'b');
+   *
+   * // Call during wait period - gets throttled
+   * throttled.maybeExecute('c', 'd');
+   * ```
    */
   maybeExecute(...args: TArgs): void {
     const now = Date.now()
@@ -98,7 +147,13 @@ export class Throttler<
   }
 
   /**
-   * Cancels any pending execution
+   * Cancels any pending trailing execution and clears internal state.
+   *
+   * If a trailing execution is scheduled (due to throttling with trailing=true),
+   * this will prevent that execution from occurring. The internal timeout and
+   * stored arguments will be cleared.
+   *
+   * Has no effect if there is no pending execution.
    */
   cancel(): void {
     if (this.timeoutId) {
@@ -110,11 +165,35 @@ export class Throttler<
 }
 
 /**
- * Creates a throttled function that will execute the provided function after the specified delay.
- * The throttled function will execute at most once per delay period.
+ * Creates a throttled function that limits how often the provided function can execute.
  *
- * @param fn - The function to throttle.
- * @param options - The options for the throttled function.
+ * Throttling ensures a function executes at most once within a specified time window,
+ * regardless of how many times it is called. This is useful for rate-limiting
+ * expensive operations or UI updates.
+ *
+ * The throttled function can be configured to execute on the leading and/or trailing
+ * edge of the throttle window via options.
+ *
+ * For handling bursts of events, consider using debounce() instead. For hard execution
+ * limits, consider using rateLimit().
+ *
+ * @template TFn The type of function to throttle
+ * @param fn The function to throttle
+ * @param options Configuration options including wait time and execution behavior
+ * @returns A throttled version of the input function
+ *
+ * @example
+ * ```ts
+ * // Basic throttling - max once per second
+ * const throttled = throttle(updateUI, { wait: 1000 });
+ *
+ * // Configure leading/trailing execution
+ * const throttled = throttle(saveData, {
+ *   wait: 2000,
+ *   leading: true,  // Execute immediately on first call
+ *   trailing: true  // Execute again after delay if called during wait
+ * });
+ * ```
  */
 export function throttle<TFn extends (...args: Array<any>) => any>(
   fn: TFn,

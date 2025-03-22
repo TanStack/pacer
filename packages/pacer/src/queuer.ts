@@ -24,10 +24,26 @@ const defaultOptions: Required<QueuerOptions<any>> = {
 }
 
 /**
- * A simpler synchronous queuer that processes items synchronously without async/concurrency features
- * Can be used as a FIFO or LIFO queue by specifying the position of the item
- * Not recommended for use with async operations that require concurrency
- * @template TValue The type of the item
+ * A synchronous queue processor that executes items one at a time in sequence.
+ *
+ * The Queuer extends the base Queue class to add processing capabilities. Items are processed
+ * synchronously in order, with optional delays between processing each item.
+ *
+ * By default uses FIFO (First In First Out) behavior, but can be configured for LIFO
+ * (Last In First Out) by specifying 'front' position when adding items.
+ *
+ * For asynchronous operations or concurrent processing, use AsyncQueuer instead.
+ *
+ * @template TValue The type of items stored and processed by the queue
+ *
+ * @example
+ * ```ts
+ * const queuer = new Queuer<number>();
+ * queuer.onUpdate(num => console.log(num));
+ * queuer.start();
+ * queuer.addItem(1); // Logs: 1
+ * queuer.addItem(2); // Logs: 2
+ * ```
  */
 export class Queuer<TValue> extends Queue<TValue> {
   protected options: Required<QueuerOptions<TValue>> = defaultOptions

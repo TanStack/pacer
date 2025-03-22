@@ -11,13 +11,31 @@ title: useAsyncDebouncer
 function useAsyncDebouncer<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L5)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:51](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L51)
+
+A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
+
+This hook is designed to be flexible and state-management agnostic - it simply returns a debouncer instance that
+you can integrate with any state management solution (useState, Redux, Zustand, Jotai, etc).
+
+Async debouncing ensures that an async function only executes after a specified delay has passed since its last invocation.
+This is useful for handling fast-changing inputs like search fields, form validation, or any scenario where you want to
+wait for user input to settle before making expensive async calls.
+
+The hook returns an object containing:
+- maybeExecute: The debounced async function that respects the configured delay
+- cancel: A function to cancel any pending delayed execution
+- getExecutionCount: A function that returns the number of times the debounced function has executed
 
 ## Type Parameters
 
 • **TFn** *extends* (...`args`) => `any`
 
+The type of async function to debounce
+
 • **TArgs** *extends* `any`[]
+
+The type of the function's parameters
 
 ## Parameters
 
@@ -25,13 +43,19 @@ Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:5](https://git
 
 `TFn`
 
+The async function to debounce
+
 ### options
 
 `AsyncDebouncerOptions`
 
+Configuration options including delay time and execution behavior
+
 ## Returns
 
 `object`
+
+An object containing the debounced async function and control methods
 
 ### cancel()
 
@@ -63,7 +87,8 @@ Returns the number of times the function has been executed
 readonly maybeExecute: (...args) => Promise<void>;
 ```
 
-Executes the debounced async function
+Attempts to execute the debounced function
+If a call is already in progress, it will be queued
 
 #### Parameters
 
@@ -74,3 +99,28 @@ Executes the debounced async function
 #### Returns
 
 `Promise`\<`void`\>
+
+## Example
+
+```tsx
+// Basic API call debouncing
+const { maybeExecute } = useAsyncDebouncer(
+  async (query: string) => {
+    const results = await api.search(query);
+    return results;
+  },
+  { wait: 500 }
+);
+
+// With state management
+const [results, setResults] = useState([]);
+const { maybeExecute } = useAsyncDebouncer(
+  async (searchTerm) => {
+    const data = await searchAPI(searchTerm);
+    setResults(data);
+  },
+  { 
+    wait: 300,
+  }
+);
+```

@@ -15,11 +15,25 @@ function useThrottledValue<TValue>(value, options): readonly [TValue, {
  }]
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottledValue.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/throttler/useThrottledValue.ts#L5)
+Defined in: [react-pacer/src/throttler/useThrottledValue.ts:41](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/throttler/useThrottledValue.ts#L41)
+
+A high-level React hook that creates a throttled version of a value that updates at most once within a specified time window.
+This hook uses React's useState internally to manage the throttled state.
+
+Throttling ensures the value updates occur at a controlled rate regardless of how frequently the input value changes.
+This is useful for rate-limiting expensive re-renders or API calls that depend on rapidly changing values.
+
+The hook returns both the throttled value and the underlying throttler instance for additional control.
+The throttled value will update according to the leading/trailing edge behavior specified in the options.
+
+For more direct control over throttling behavior without React state management,
+consider using the lower-level useThrottler hook instead.
 
 ## Type Parameters
 
 • **TValue**
+
+The type of the value to throttle
 
 ## Parameters
 
@@ -27,9 +41,13 @@ Defined in: [react-pacer/src/throttler/useThrottledValue.ts:5](https://github.co
 
 `TValue`
 
+The value to throttle
+
 ### options
 
 `ThrottlerOptions`
+
+Configuration options including wait time and execution behavior
 
 ## Returns
 
@@ -38,3 +56,24 @@ readonly \[`TValue`, \{
   `getExecutionCount`: () => `number`;
   `maybeExecute`: (...`args`) => `void`;
  \}\]
+
+A tuple containing the throttled value and the throttler instance
+
+## Example
+
+```tsx
+// Basic throttling - update at most once per second
+const [throttledValue] = useThrottledValue(rawValue, { wait: 1000 });
+
+// With custom leading/trailing behavior
+const [throttledValue, throttler] = useThrottledValue(rawValue, {
+  wait: 1000,
+  leading: true,   // Update immediately on first change
+  trailing: false  // Skip trailing edge updates
+});
+
+// Optionally access throttler methods
+const handleExecutionCount = () => {
+  console.log('Executions:', throttler.getExecutionCount());
+};
+```

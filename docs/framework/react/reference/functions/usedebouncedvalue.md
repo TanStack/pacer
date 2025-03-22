@@ -15,11 +15,29 @@ function useDebouncedValue<TValue>(value, options): readonly [TValue, {
  }]
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:5](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L5)
+Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:46](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L46)
+
+A React hook that creates a debounced value that updates only after a specified delay.
+Unlike useDebouncedState, this hook automatically tracks changes to the input value
+and updates the debounced value accordingly.
+
+The debounced value will only update after the specified wait time has elapsed since
+the last change to the input value. If the input value changes again before the wait
+time expires, the timer resets and starts waiting again.
+
+This is useful for deriving debounced values from props or state that change frequently,
+like search queries or form inputs, where you want to limit how often downstream effects
+or calculations occur.
+
+The hook returns a tuple containing:
+- The current debounced value
+- The debouncer instance with control methods
 
 ## Type Parameters
 
 • **TValue**
+
+The type of value being debounced
 
 ## Parameters
 
@@ -27,9 +45,13 @@ Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:5](https://github.co
 
 `TValue`
 
+The value to debounce
+
 ### options
 
 `DebouncerOptions`
+
+Configuration options including wait time and maxWait
 
 ## Returns
 
@@ -38,3 +60,25 @@ readonly \[`TValue`, \{
   `getExecutionCount`: () => `number`;
   `maybeExecute`: (...`args`) => `void`;
  \}\]
+
+A tuple containing the debounced value and debouncer instance
+
+## Example
+
+```tsx
+// Debounce a search query
+const [searchQuery, setSearchQuery] = useState('');
+const [debouncedQuery, debouncer] = useDebouncedValue(searchQuery, {
+  wait: 500 // Wait 500ms after last change
+});
+
+// debouncedQuery will update 500ms after searchQuery stops changing
+useEffect(() => {
+  fetchSearchResults(debouncedQuery);
+}, [debouncedQuery]);
+
+// Handle input changes
+const handleChange = (e) => {
+  setSearchQuery(e.target.value);
+};
+```
