@@ -7,7 +7,7 @@ title: AsyncThrottler
 
 # Class: AsyncThrottler\<TFn, TArgs\>
 
-Defined in: [async-throttler.ts:46](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L46)
+Defined in: [async-throttler.ts:43](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L43)
 
 A class that creates an async throttled function.
 
@@ -35,11 +35,7 @@ inputElement.addEventListener('input', () => {
 
 • **TFn** *extends* (...`args`) => `Promise`\<`any`\>
 
-The type of the async function to throttle
-
 • **TArgs** *extends* `Parameters`\<`TFn`\>
-
-The type of the function's parameters
 
 ## Constructors
 
@@ -49,7 +45,7 @@ The type of the function's parameters
 new AsyncThrottler<TFn, TArgs>(fn, options): AsyncThrottler<TFn, TArgs>
 ```
 
-Defined in: [async-throttler.ts:58](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L58)
+Defined in: [async-throttler.ts:55](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L55)
 
 #### Parameters
 
@@ -73,7 +69,7 @@ Defined in: [async-throttler.ts:58](https://github.com/TanStack/bouncer/blob/mai
 cancel(): void
 ```
 
-Defined in: [async-throttler.ts:85](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L85)
+Defined in: [async-throttler.ts:82](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L82)
 
 Cancels any pending execution
 
@@ -89,7 +85,7 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [async-throttler.ts:71](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L71)
+Defined in: [async-throttler.ts:68](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L68)
 
 Returns the number of times the function has been executed
 
@@ -105,7 +101,7 @@ Returns the number of times the function has been executed
 getNextExecutionTime(): number
 ```
 
-Defined in: [async-throttler.ts:78](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L78)
+Defined in: [async-throttler.ts:75](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L75)
 
 Returns the next execution time
 
@@ -121,7 +117,7 @@ Returns the next execution time
 maybeExecute(...args): Promise<void>
 ```
 
-Defined in: [async-throttler.ts:98](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L98)
+Defined in: [async-throttler.ts:95](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L95)
 
 Attempts to execute the throttled function
 If a call is already in progress, it may be blocked or queued depending on the `wait` option

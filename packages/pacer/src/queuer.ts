@@ -34,8 +34,6 @@ const defaultOptions: Required<QueuerOptions<any>> = {
  *
  * For asynchronous operations or concurrent processing, use AsyncQueuer instead.
  *
- * @template TValue The type of items stored and processed by the queue
- *
  * @example
  * ```ts
  * const queuer = new Queuer<number>();
@@ -85,8 +83,6 @@ export class Queuer<TValue> extends Queue<TValue> {
 
   /**
    * Adds an item to the queue and starts processing if not already running
-   * @param item The item to add
-   * @param position The position to add the item to (defaults to back for FIFO behavior)
    * @returns true if item was added, false if queue is full
    */
   addItem(item: TValue, position?: 'front' | 'back'): boolean {
@@ -100,8 +96,6 @@ export class Queuer<TValue> extends Queue<TValue> {
 
   /**
    * Adds a callback to be called when an item is processed
-   * @param cb The callback to add
-   * @returns A function to remove the callback
    */
   onUpdate(cb: (item: TValue) => void) {
     this.onUpdates.push(cb)

@@ -52,9 +52,6 @@ export interface RateLimiterOptions {
  * Rate limiting is best used for hard API limits or resource constraints. For UI updates or
  * smoothing out frequent events, throttling or debouncing usually provide better user experience.
  *
- * @template TFn The type of function to rate limit
- * @template TArgs The type of the function's parameters
- *
  * @example
  * ```ts
  * const rateLimiter = new RateLimiter(
@@ -107,9 +104,6 @@ export class RateLimiter<
   /**
    * Attempts to execute the rate-limited function if within the configured limits.
    * Will reject execution if the number of calls in the current window exceeds the limit.
-   *
-   * @param args - The arguments to pass to the rate-limited function
-   * @returns true if the function was executed, false if it was rejected due to rate limiting
    *
    * @example
    * ```ts
@@ -186,10 +180,6 @@ export class RateLimiter<
  *
  * Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
  * need to enforce a hard limit on the number of executions within a time period.
- *
- * @param fn - The function to rate-limit
- * @param options - Configuration options including the maximum executions allowed and time window
- * @returns A rate-limited version of the input function that will reject calls once the limit is reached
  *
  * @example
  * ```ts

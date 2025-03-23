@@ -30,9 +30,6 @@ const defaultOptions: Required<DebouncerOptions> = {
  * (leading edge) or at the end (trailing edge, default). Each new call during the wait period
  * will reset the timer.
  *
- * @template TFn The type of function to debounce
- * @template TArgs The type of the function's parameters
- *
  * @example
  * ```ts
  * const debouncer = new Debouncer((value: string) => {
@@ -114,10 +111,6 @@ export class Debouncer<
  *
  * If leading option is true, the function will execute immediately on the first call, then wait the delay
  * before allowing another execution.
- *
- * @param fn The function to debounce
- * @param options Configuration options for debouncing behavior
- * @returns A debounced version of the input function
  *
  * @example
  * ```ts

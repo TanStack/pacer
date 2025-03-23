@@ -28,9 +28,6 @@ const defaultOptions: Required<AsyncThrottlerOptions> = {
  * This is useful for rate-limiting API calls, handling scroll/resize events, or any scenario where you want to
  * ensure a maximum execution frequency.
  *
- * @template TFn The type of the async function to throttle
- * @template TArgs The type of the function's parameters
- *
  * @example
  * ```ts
  * const throttler = new AsyncThrottler(async (value: string) => {
@@ -156,10 +153,6 @@ export class AsyncThrottler<
  * Creates an async throttled function that limits how often the function can execute.
  * The throttled function will execute at most once per wait period, even if called multiple times.
  * If called while executing, it will wait until execution completes before scheduling the next call.
- *
- * @param fn The async function to throttle
- * @param options Configuration options for throttling behavior
- * @returns A throttled version of the input function that returns a Promise
  *
  * @example
  * ```ts

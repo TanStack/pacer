@@ -37,8 +37,6 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
  * The queue can be used in FIFO mode (default) where tasks are processed in order of addition,
  * or LIFO mode where the most recently added tasks are processed first.
  *
- * @template TValue The type of value that the queued tasks resolve to
- *
  * @example
  * ```ts
  * const queuer = new AsyncQueuer<string>({ concurrency: 2 });
@@ -128,9 +126,6 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
 
   /**
    * Adds a task to the queue
-   * @param fn The task to add
-   * @param position The position to add the task to (defaults to back for FIFO behavior)
-   * @returns A promise that resolves when the task is settled
    */
   // @ts-ignore - This is a workaround to allow the addItem method to return a promise
   addItem(
@@ -157,7 +152,6 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
 
   /**
    * Throttles the number of concurrent items that can run at once
-   * @param n The new concurrency limit
    */
   throttle(n: number) {
     this.currentConcurrency = n
@@ -165,8 +159,6 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
 
   /**
    * Adds a callback to be called when a task is settled
-   * @param cb The callback to add
-   * @returns A function to remove the callback
    */
   onSettled(cb: () => void) {
     this.onSettles.push(cb)
@@ -177,8 +169,6 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
 
   /**
    * Adds a callback to be called when a task errors
-   * @param cb The callback to add
-   * @returns A function to remove the callback
    */
   onError(cb: (error: any, task: () => Promise<any>) => void) {
     this.onErrors.push(cb)
@@ -189,8 +179,6 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
 
   /**
    * Adds a callback to be called when a task succeeds
-   * @param cb The callback to add
-   * @returns A function to remove the callback
    */
   onSuccess(cb: (result: any, task: () => Promise<any>) => void) {
     this.onSuccesses.push(cb)

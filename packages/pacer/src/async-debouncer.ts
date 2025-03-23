@@ -27,10 +27,7 @@ const defaultOptions: Required<AsyncDebouncerOptions> = {
  *
  * Unlike throttling which allows execution at regular intervals, debouncing prevents any execution until
  * the function stops being called for the specified delay period.
- *
- * @template TFn The type of the async function to debounce
- * @template TArgs The type of the function's parameters
- *
+ * 
  * @example
  * ```ts
  * const debouncer = new AsyncDebouncer(async (value: string) => {
@@ -132,10 +129,6 @@ export class AsyncDebouncer<
  * Creates an async debounced function that delays execution until after a specified wait time.
  * The debounced function will only execute once the wait period has elapsed without any new calls.
  * If called again during the wait period, the timer resets and a new wait period begins.
- *
- * @param fn The async function to debounce
- * @param options Configuration options for debouncing behavior
- * @returns A debounced version of the input function that returns a Promise
  *
  * @example
  * ```ts

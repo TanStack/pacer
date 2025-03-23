@@ -43,8 +43,6 @@ export type QueuePosition = 'front' | 'back'
  * A queue does not have automatic queueing of items. This expects you to hook up the `addItem` and `getNextItem` events.
  * For automatic queueing with start and stop, use the `Queuer` class.
  *
- * @template TValue The type of items stored in the queue
- *
  * Default queue behavior:
  * - addItem(item): adds to back of queue
  * - getNextItem(): removes and returns from front of queue
@@ -96,11 +94,8 @@ export class Queue<TValue> {
 
   /**
    * Adds an item to the queue
-   * @param item The item to add
-   * @param position Where to add the item (defaults to back for standard FIFO behavior). Don't use this argument unless you want to use a stack or double-ended queue.
-   * @returns false if queue is full, true if item was added
    *
-   * Examples:
+   * @example
    * ```ts
    * // Standard FIFO queue
    * queue.addItem(item)
@@ -140,10 +135,8 @@ export class Queue<TValue> {
 
   /**
    * Removes and returns an item from the queue using shift (default) or pop
-   * @param position Where to remove the item from (defaults to front for standard FIFO behavior)
-   * @returns the removed item or undefined if empty
    *
-   * Examples:
+   * @example
    * ```ts
    * // Standard FIFO queue
    * queue.getNextItem()
@@ -169,9 +162,8 @@ export class Queue<TValue> {
 
   /**
    * Returns an item without removing it
-   * @param position Which item to peek at (defaults to front for standard FIFO behavior)
    *
-   * Examples:
+   * @example
    * ```ts
    * // Look at next item to getNextItem
    * queue.peek()

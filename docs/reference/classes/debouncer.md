@@ -7,7 +7,7 @@ title: Debouncer
 
 # Class: Debouncer\<TFn, TArgs\>
 
-Defined in: [debouncer.ts:48](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L48)
+Defined in: [debouncer.ts:45](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L45)
 
 A class that creates a debounced function.
 
@@ -36,11 +36,7 @@ inputElement.addEventListener('input', () => {
 
 • **TFn** *extends* (...`args`) => `any`
 
-The type of function to debounce
-
 • **TArgs** *extends* `Parameters`\<`TFn`\>
-
-The type of the function's parameters
 
 ## Constructors
 
@@ -50,7 +46,7 @@ The type of the function's parameters
 new Debouncer<TFn, TArgs>(fn, options): Debouncer<TFn, TArgs>
 ```
 
-Defined in: [debouncer.ts:57](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L57)
+Defined in: [debouncer.ts:54](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L54)
 
 #### Parameters
 
@@ -74,7 +70,7 @@ Defined in: [debouncer.ts:57](https://github.com/TanStack/bouncer/blob/main/pack
 cancel(): void
 ```
 
-Defined in: [debouncer.ts:103](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L103)
+Defined in: [debouncer.ts:100](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L100)
 
 Cancels any pending execution
 
@@ -90,7 +86,7 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [debouncer.ts:70](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L70)
+Defined in: [debouncer.ts:67](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L67)
 
 Returns the number of times the function has been executed
 
@@ -106,7 +102,7 @@ Returns the number of times the function has been executed
 maybeExecute(...args): void
 ```
 
-Defined in: [debouncer.ts:78](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L78)
+Defined in: [debouncer.ts:75](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L75)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued

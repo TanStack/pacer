@@ -38,9 +38,6 @@ const defaultOptions: Required<ThrottlerOptions> = {
  * For rate limiting or hard API limits, consider using RateLimiter instead.
  * For collapsing rapid-fire events, consider using Debouncer.
  *
- * @template TFn The type of function to throttle
- * @template TArgs The type of the function's parameters
- *
  * @example
  * ```ts
  * const throttler = new Throttler(
@@ -99,8 +96,6 @@ export class Throttler<
    * - If within the wait period:
    *   - With trailing=true: Schedules execution for end of wait period
    *   - With trailing=false: Drops the execution
-   *
-   * @param args - The arguments to pass to the throttled function
    *
    * @example
    * ```ts
@@ -176,11 +171,6 @@ export class Throttler<
  *
  * For handling bursts of events, consider using debounce() instead. For hard execution
  * limits, consider using rateLimit().
- *
- * @template TFn The type of function to throttle
- * @param fn The function to throttle
- * @param options Configuration options including wait time and execution behavior
- * @returns A throttled version of the input function
  *
  * @example
  * ```ts

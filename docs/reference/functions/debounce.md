@@ -11,7 +11,7 @@ title: debounce
 function debounce<TFn>(fn, options): (...args) => void
 ```
 
-Defined in: [debouncer.ts:132](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L132)
+Defined in: [debouncer.ts:125](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L125)
 
 Creates a debounced function that delays invoking the provided function until after a specified wait time.
 Multiple calls during the wait period will cancel previous pending invocations and reset the timer.
@@ -29,19 +29,13 @@ before allowing another execution.
 
 `TFn`
 
-The function to debounce
-
 ### options
 
 [`DebouncerOptions`](../interfaces/debounceroptions.md)
 
-Configuration options for debouncing behavior
-
 ## Returns
 
 `Function`
-
-A debounced version of the input function
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued
