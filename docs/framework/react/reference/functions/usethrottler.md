@@ -11,7 +11,7 @@ title: useThrottler
 function useThrottler<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:51](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L51)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:45](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L45)
 
 A low-level React hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
@@ -32,11 +32,7 @@ The hook returns an object containing:
 
 • **TFn** *extends* (...`args`) => `any`
 
-The type of function to throttle
-
 • **TArgs** *extends* `any`[]
-
-The type of the function's parameters
 
 ## Parameters
 
@@ -44,19 +40,13 @@ The type of the function's parameters
 
 `TFn`
 
-The function to throttle
-
 ### options
 
 `ThrottlerOptions`
 
-Configuration options including wait time and execution behavior
-
 ## Returns
 
 `object`
-
-An object containing the throttled function and control methods
 
 ### cancel()
 

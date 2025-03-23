@@ -1,15 +1,14 @@
 import { scan } from 'react-scan' // dev-tools for demo
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
+import { useRateLimitedValue } from '@tanstack/react-pacer/rate-limiter'
 
 function App() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
-  const [limitedCount, setLimitedCount] = useState(0)
 
-  // Using useRateLimiter with a rate limit of 3 executions per 5 seconds
-  const rateLimiter = useRateLimiter(setLimitedCount, {
+  // Using useRateLimitedValue with a rate limit of 3 executions per 5 seconds
+  const [limitedCount, rateLimiter] = useRateLimitedValue(instantCount, {
     limit: 3,
     window: 5000,
     onReject: (rejectionInfo) =>
@@ -18,16 +17,12 @@ function App() {
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newCount = c + 1 // common new value for both
-      rateLimiter.maybeExecute(newCount) // rate-limited state update
-      return newCount // instant state update
-    })
+    setInstantCount((c) => c + 1)
   }
 
   return (
     <div>
-      <h1>TanStack Pacer useRateLimiter Example</h1>
+      <h1>TanStack Pacer useRateLimitedValue Example</h1>
       <div>Execution Count: {rateLimiter.getExecutionCount()}</div>
       <div>Rejection Count: {rateLimiter.getRejectionCount()}</div>
       <hr />
