@@ -27,7 +27,7 @@ const defaultOptions: Required<AsyncDebouncerOptions> = {
  *
  * Unlike throttling which allows execution at regular intervals, debouncing prevents any execution until
  * the function stops being called for the specified delay period.
- * 
+ *
  * @example
  * ```ts
  * const debouncer = new AsyncDebouncer(async (value: string) => {
