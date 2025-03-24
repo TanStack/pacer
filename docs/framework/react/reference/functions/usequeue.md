@@ -53,21 +53,16 @@ Adds an item to the queue
 
 `TValue`
 
-The item to add
-
 ##### position?
 
 `QueuePosition`
-
-Where to add the item (defaults to back for standard FIFO behavior). Don't use this argument unless you want to use a stack or double-ended queue.
 
 #### Returns
 
 `boolean`
 
-false if queue is full, true if item was added
+#### Example
 
-Examples:
 ```ts
 // Standard FIFO queue
 queue.addItem(item)
@@ -113,15 +108,12 @@ Removes and returns an item from the queue using shift (default) or pop
 
 `QueuePosition`
 
-Where to remove the item from (defaults to front for standard FIFO behavior)
-
 #### Returns
 
 `undefined` \| `TValue`
 
-the removed item or undefined if empty
+#### Example
 
-Examples:
 ```ts
 // Standard FIFO queue
 queue.getNextItem()
@@ -167,19 +159,18 @@ Returns an item without removing it
 
 `QueuePosition`
 
-Which item to peek at (defaults to front for standard FIFO behavior)
+#### Returns
 
-Examples:
+`undefined` \| `TValue`
+
+#### Example
+
 ```ts
 // Look at next item to getNextItem
 queue.peek()
 // Look at last item (like stack top)
 queue.peek('back')
 ```
-
-#### Returns
-
-`undefined` \| `TValue`
 
 ### size()
 
