@@ -22,7 +22,7 @@ export interface DebouncerOptions {
 const defaultOptions: Required<DebouncerOptions> = {
   leading: false,
   wait: 0,
-  trailing: true, // Add trailing option with default
+  trailing: true,
 }
 
 /**
