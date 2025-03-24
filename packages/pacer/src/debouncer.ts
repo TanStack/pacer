@@ -12,11 +12,17 @@ export interface DebouncerOptions {
    * Defaults to 0ms
    */
   wait: number
+  /**
+   * Whether to execute on the trailing edge of the timeout.
+   * Defaults to true.
+   */
+  trailing?: boolean
 }
 
 const defaultOptions: Required<DebouncerOptions> = {
   leading: false,
   wait: 0,
+  trailing: true, // Add trailing option with default
 }
 
 /**
@@ -85,7 +91,10 @@ export class Debouncer<
     // Set new timeout that will reset canLeadingExecute
     this.timeoutId = setTimeout(() => {
       this.canLeadingExecute = true
-      this.executeFunction(...args)
+      // Execute trailing only if enabled
+      if (this.options.trailing) {
+        this.executeFunction(...args)
+      }
     }, this.options.wait)
   }
 
