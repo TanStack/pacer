@@ -45,7 +45,7 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 export function useAsyncDebouncer<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncDebouncerOptions) {
+>(fn: TFn, options: AsyncDebouncerOptions): AsyncDebouncer<TFn, TArgs> {
   const asyncDebouncerRef = useRef<AsyncDebouncer<TFn, TArgs>>(null)
 
   if (!asyncDebouncerRef.current) {
@@ -60,5 +60,5 @@ export function useAsyncDebouncer<
     getExecutionCount: asyncDebouncerRef.current.getExecutionCount.bind(
       asyncDebouncerRef.current,
     ),
-  } as const
+  } as AsyncDebouncer<TFn, TArgs>
 }

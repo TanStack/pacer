@@ -105,13 +105,9 @@ Will reject execution if the number of calls in the current window exceeds the l
 
 ...`TArgs`
 
-The arguments to pass to the rate-limited function
-
 #### Returns
 
 `boolean`
-
-true if the function was executed, false if it was rejected due to rate limiting
 
 #### Example
 

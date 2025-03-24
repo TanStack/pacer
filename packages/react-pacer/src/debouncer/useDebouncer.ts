@@ -37,7 +37,7 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 export function useDebouncer<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions) {
+>(fn: TFn, options: DebouncerOptions): Debouncer<TFn, TArgs> {
   const debouncer = useRef<Debouncer<TFn, TArgs>>(null)
 
   if (!debouncer.current) {
@@ -50,5 +50,5 @@ export function useDebouncer<
     getExecutionCount: debouncer.current.getExecutionCount.bind(
       debouncer.current,
     ),
-  } as const
+  } as Debouncer<TFn, TArgs>
 }

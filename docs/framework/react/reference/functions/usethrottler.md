@@ -100,8 +100,6 @@ Attempts to execute the throttled function. The execution behavior depends on th
 
 ...`TArgs`
 
-The arguments to pass to the throttled function
-
 #### Returns
 
 `void`

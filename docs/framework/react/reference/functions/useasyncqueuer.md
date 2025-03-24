@@ -59,19 +59,13 @@ Adds a task to the queue
 
 () => `TValue` \| `Promise`\<`TValue`\>
 
-The task to add
-
 ##### position?
-
-The position to add the task to (defaults to back for FIFO behavior)
 
 `"front"` | `"back"`
 
 #### Returns
 
 `Promise`\<`TValue`\>
-
-A promise that resolves when the task is settled
 
 ### clear()
 
@@ -139,15 +133,12 @@ Removes and returns an item from the queue using shift (default) or pop
 
 `QueuePosition`
 
-Where to remove the item from (defaults to front for standard FIFO behavior)
-
 #### Returns
 
 `undefined` \| () => `Promise`\<`TValue`\>
 
-the removed item or undefined if empty
+#### Example
 
-Examples:
 ```ts
 // Standard FIFO queue
 queue.getNextItem()
@@ -231,13 +222,9 @@ Adds a callback to be called when a task errors
 
 (`error`, `task`) => `void`
 
-The callback to add
-
 #### Returns
 
 `Function`
-
-A function to remove the callback
 
 ##### Returns
 
@@ -257,13 +244,9 @@ Adds a callback to be called when a task is settled
 
 () => `void`
 
-The callback to add
-
 #### Returns
 
 `Function`
-
-A function to remove the callback
 
 ##### Returns
 
@@ -283,13 +266,9 @@ Adds a callback to be called when a task succeeds
 
 (`result`, `task`) => `void`
 
-The callback to add
-
 #### Returns
 
 `Function`
-
-A function to remove the callback
 
 ##### Returns
 
@@ -309,13 +288,9 @@ Adds a callback to be called when an item is processed
 
 (`item`) => `void`
 
-The callback to add
-
 #### Returns
 
 `Function`
-
-A function to remove the callback
 
 ##### Returns
 
@@ -335,19 +310,18 @@ Returns an item without removing it
 
 `QueuePosition`
 
-Which item to peek at (defaults to front for standard FIFO behavior)
+#### Returns
 
-Examples:
+`undefined` \| () => `Promise`\<`TValue`\>
+
+#### Example
+
 ```ts
 // Look at next item to getNextItem
 queue.peek()
 // Look at last item (like stack top)
 queue.peek('back')
 ```
-
-#### Returns
-
-`undefined` \| () => `Promise`\<`TValue`\>
 
 ### reset()
 
@@ -418,8 +392,6 @@ Throttles the number of concurrent items that can run at once
 ##### n
 
 `number`
-
-The new concurrency limit
 
 #### Returns
 

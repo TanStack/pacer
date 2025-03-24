@@ -57,11 +57,7 @@ Adds an item to the queue and starts processing if not already running
 
 `TValue`
 
-The item to add
-
 ##### position?
-
-The position to add the item to (defaults to back for FIFO behavior)
 
 `"front"` | `"back"`
 
@@ -121,15 +117,12 @@ Removes and returns an item from the queue using shift (default) or pop
 
 `QueuePosition`
 
-Where to remove the item from (defaults to front for standard FIFO behavior)
-
 #### Returns
 
 `undefined` \| `TValue`
 
-the removed item or undefined if empty
+#### Example
 
-Examples:
 ```ts
 // Standard FIFO queue
 queue.getNextItem()
@@ -199,13 +192,9 @@ Adds a callback to be called when an item is processed
 
 (`item`) => `void`
 
-The callback to add
-
 #### Returns
 
 `Function`
-
-A function to remove the callback
 
 ##### Returns
 
@@ -225,19 +214,18 @@ Returns an item without removing it
 
 `QueuePosition`
 
-Which item to peek at (defaults to front for standard FIFO behavior)
+#### Returns
 
-Examples:
+`undefined` \| `TValue`
+
+#### Example
+
 ```ts
 // Look at next item to getNextItem
 queue.peek()
 // Look at last item (like stack top)
 queue.peek('back')
 ```
-
-#### Returns
-
-`undefined` \| `TValue`
 
 ### reset()
 
