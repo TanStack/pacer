@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { throttle } from '@tanstack/react-pacer/throttler'
 
-function App() {
+function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
   const [throttledCount, setThrottledCount] = useState(0)
@@ -27,9 +27,19 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Pacer throttle Example</h1>
-      <div>Instant Count: {instantCount}</div>
-      <div>Throttled Count: {throttledCount}</div>
+      <h1>TanStack Pacer throttle Example 1</h1>
+      <table>
+        <tbody>
+          <tr>
+            <td>Instant Count:</td>
+            <td>{instantCount}</td>
+          </tr>
+          <tr>
+            <td>Throttled Count:</td>
+            <td>{throttledCount}</td>
+          </tr>
+        </tbody>
+      </table>
       <div>
         <button onClick={increment}>Increment</button>
       </div>
@@ -37,7 +47,59 @@ function App() {
   )
 }
 
+function App2() {
+  const [text, setText] = useState('')
+  const [throttledText, setThrottledText] = useState('')
+
+  // Create throttled setter function - Stable reference required!
+  const throttledSetText = useCallback(
+    throttle(setThrottledText, {
+      wait: 1000,
+    }),
+    [],
+  )
+
+  function handleTextChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = e.target.value
+    setText(newValue)
+    throttledSetText(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer throttle Example 2</h1>
+      <div>
+        <input
+          type="text"
+          value={text}
+          onChange={handleTextChange}
+          placeholder="Type text (throttled to 1 update per second)..."
+          style={{ width: '100%' }}
+        />
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Instant Text:</td>
+            <td>{text}</td>
+          </tr>
+          <tr>
+            <td>Throttled Text:</td>
+            <td>{throttledText}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
-root.render(<App />)
+root.render(
+  <div>
+    <App1 />
+    <hr />
+    <App2 />
+  </div>,
+)
 
 scan() // dev-tools for demo
