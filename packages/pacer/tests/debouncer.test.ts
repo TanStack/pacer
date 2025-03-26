@@ -68,6 +68,7 @@ describe('Debouncer', () => {
     const debouncer = new Debouncer(mockFn, {
       wait: 1000,
       leading: true,
+      trailing: false,
     })
 
     debouncer.maybeExecute('test')
@@ -83,6 +84,7 @@ describe('Debouncer', () => {
     const debouncer = new Debouncer(mockFn, {
       wait: 1000,
       leading: true,
+      trailing: false,
     })
 
     // First call - executes immediately
@@ -209,6 +211,7 @@ describe('debounce helper function', () => {
     const debouncedFn = debounce(mockFn, {
       wait: 1000,
       leading: true,
+      trailing: false,
     })
 
     debouncedFn('first')
