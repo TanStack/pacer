@@ -173,6 +173,86 @@ describe('Debouncer', () => {
 
     expect(debouncer.getExecutionCount()).toBe(0)
   })
+
+  it('should use default options when none provided', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn)
+
+    debouncer.maybeExecute('test')
+    expect(mockFn).not.toBeCalled() // Default leading: false
+
+    vi.advanceTimersByTime(0) // Default wait: 0
+    expect(mockFn).toBeCalledTimes(1) // Default trailing: true
+    expect(mockFn).toBeCalledWith('test')
+  })
+
+  it('should handle case where both leading and trailing are false', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      leading: false,
+      trailing: false,
+    })
+
+    debouncer.maybeExecute('test')
+    expect(mockFn).not.toBeCalled()
+
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).not.toBeCalled()
+
+    // Should still reset canLeadingExecute flag
+    debouncer.maybeExecute('test2')
+    expect(mockFn).not.toBeCalled()
+  })
+
+  it('should properly handle canLeadingExecute flag after cancellation', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      leading: true,
+      trailing: false,
+    })
+
+    // First call - executes immediately
+    debouncer.maybeExecute('first')
+    expect(mockFn).toBeCalledTimes(1)
+
+    // Cancel before wait expires
+    vi.advanceTimersByTime(500)
+    debouncer.cancel()
+
+    // Should be able to execute immediately again after cancellation
+    debouncer.maybeExecute('second')
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('second')
+  })
+
+  it('should handle rapid calls with leading edge execution', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      leading: true,
+      trailing: false,
+    })
+
+    // Make rapid calls
+    debouncer.maybeExecute('first')
+    debouncer.maybeExecute('second')
+    debouncer.maybeExecute('third')
+    debouncer.maybeExecute('fourth')
+
+    // Only first call should execute immediately
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('first')
+
+    // Wait for timeout
+    vi.advanceTimersByTime(1000)
+
+    // Next call should execute immediately
+    debouncer.maybeExecute('fifth')
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('fifth')
+  })
 })
 
 describe('debounce helper function', () => {

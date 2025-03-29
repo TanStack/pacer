@@ -140,6 +140,124 @@ describe('Throttler', () => {
     expect(mockFn).toHaveBeenCalledTimes(3)
     expect(mockFn).toHaveBeenLastCalledWith('d')
   })
+
+  it('should track last execution time correctly', () => {
+    const mockFn = vi.fn()
+    const throttler = new Throttler(mockFn, { wait: 100 })
+
+    // Initial state
+    expect(throttler.getLastExecutionTime()).toBe(0)
+
+    // First execution
+    throttler.maybeExecute('first')
+    const firstExecutionTime = throttler.getLastExecutionTime()
+    expect(firstExecutionTime).toBeGreaterThan(0)
+
+    // Wait and execute again
+    vi.advanceTimersByTime(100)
+    throttler.maybeExecute('second')
+    const secondExecutionTime = throttler.getLastExecutionTime()
+    expect(secondExecutionTime).toBeGreaterThan(firstExecutionTime)
+  })
+
+  it('should use default options when none provided', () => {
+    const mockFn = vi.fn()
+    const throttler = new Throttler(mockFn)
+
+    // Default leading: true
+    throttler.maybeExecute('test')
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('test')
+
+    // Default trailing: true
+    throttler.maybeExecute('test2')
+    vi.advanceTimersByTime(0) // Default wait: 0
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('test2')
+  })
+
+  it('should handle zero wait time correctly', () => {
+    const mockFn = vi.fn()
+    const throttler = new Throttler(mockFn, { wait: 0 })
+
+    // Should execute immediately due to leading: true
+    throttler.maybeExecute('first')
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('first')
+
+    // Should execute immediately again since wait is 0
+    throttler.maybeExecute('second')
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('second')
+  })
+
+  it('should handle very large wait times', () => {
+    const mockFn = vi.fn()
+    const throttler = new Throttler(mockFn, { wait: 1000000 }) // 1000 seconds
+
+    // First call should execute immediately
+    throttler.maybeExecute('first')
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('first')
+
+    // Subsequent calls should be throttled
+    throttler.maybeExecute('second')
+    throttler.maybeExecute('third')
+    expect(mockFn).toBeCalledTimes(1)
+
+    // Advance time by half the wait period
+    vi.advanceTimersByTime(500000)
+    expect(mockFn).toBeCalledTimes(1)
+
+    // Complete the wait period
+    vi.advanceTimersByTime(500000)
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('third')
+  })
+
+  it('should handle cancellation with pending trailing execution', () => {
+    const mockFn = vi.fn()
+    const throttler = new Throttler(mockFn, { wait: 100 })
+
+    // First call executes immediately
+    throttler.maybeExecute('first')
+    expect(mockFn).toBeCalledTimes(1)
+
+    // Second call during wait period
+    throttler.maybeExecute('second')
+    expect(mockFn).toBeCalledTimes(1)
+
+    // Cancel before trailing execution
+    throttler.cancel()
+
+    // Advance time - trailing execution should not occur
+    vi.advanceTimersByTime(100)
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('first')
+  })
+
+  it('should handle multiple cancellations', () => {
+    const mockFn = vi.fn()
+    const throttler = new Throttler(mockFn, { wait: 100 })
+
+    // First call
+    throttler.maybeExecute('first')
+    expect(mockFn).toBeCalledTimes(1)
+
+    // Cancel before trailing execution
+    throttler.cancel()
+    vi.advanceTimersByTime(100)
+    expect(mockFn).toBeCalledTimes(1)
+
+    // Second call
+    throttler.maybeExecute('second')
+    expect(mockFn).toBeCalledTimes(2)
+
+    // Cancel again
+    throttler.cancel()
+    vi.advanceTimersByTime(100)
+    expect(mockFn).toBeCalledTimes(2)
+  })
 })
 
 describe('throttle helper function', () => {

@@ -8,21 +8,21 @@ export interface DebouncerOptions {
    */
   leading?: boolean
   /**
-   * Delay in milliseconds before executing the function
-   * Defaults to 0ms
-   */
-  wait: number
-  /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
    */
   trailing?: boolean
+  /**
+   * Delay in milliseconds before executing the function
+   * Defaults to 0ms
+   */
+  wait: number
 }
 
 const defaultOptions: Required<DebouncerOptions> = {
   leading: false,
-  wait: 0,
   trailing: true,
+  wait: 0,
 }
 
 /**
@@ -117,6 +117,9 @@ export class Debouncer<
 /**
  * Creates a debounced function that delays invoking the provided function until after a specified wait time.
  * Multiple calls during the wait period will cancel previous pending invocations and reset the timer.
+ *
+ * This the the simple function wrapper implementation pulled from the Debouncer class. If you need
+ * more control over the debouncing behavior, use the Debouncer class directly.
  *
  * If leading option is true, the function will execute immediately on the first call, then wait the delay
  * before allowing another execution.
