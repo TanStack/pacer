@@ -8,7 +8,7 @@ title: useAsyncDebouncer
 # Function: useAsyncDebouncer()
 
 ```ts
-function useAsyncDebouncer<TFn, TArgs>(fn, options): object
+function useAsyncDebouncer<TFn, TArgs>(fn, options): AsyncDebouncer<TFn, TArgs>
 ```
 
 Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:45](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L45)
@@ -45,50 +45,7 @@ The hook returns an object containing:
 
 ## Returns
 
-`object`
-
-### cancel()
-
-```ts
-readonly cancel: () => void;
-```
-
-Cancels any pending execution
-
-#### Returns
-
-`void`
-
-### getExecutionCount()
-
-```ts
-readonly getExecutionCount: () => number;
-```
-
-Returns the number of times the function has been executed
-
-#### Returns
-
-`number`
-
-### maybeExecute()
-
-```ts
-readonly maybeExecute: (...args) => Promise<void>;
-```
-
-Attempts to execute the debounced function
-If a call is already in progress, it will be queued
-
-#### Parameters
-
-##### args
-
-...`TArgs`
-
-#### Returns
-
-`Promise`\<`void`\>
+`AsyncDebouncer`\<`TFn`, `TArgs`\>
 
 ## Example
 

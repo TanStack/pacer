@@ -1,5 +1,6 @@
 export * from './async-debouncer'
 export * from './async-queuer'
+export * from './async-rate-limiter'
 export * from './async-throttler'
 export * from './compare'
 export * from './debouncer'

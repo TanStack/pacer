@@ -8,7 +8,11 @@ title: useDebouncedValue
 # Function: useDebouncedValue()
 
 ```ts
-function useDebouncedValue<TValue>(value, options): readonly [TValue, Debouncer<Dispatch<SetStateAction<TValue>>, [SetStateAction<TValue>]>]
+function useDebouncedValue<TValue>(value, options): readonly [TValue, {
+  cancel: () => void;
+  getExecutionCount: () => number;
+  maybeExecute: (...args) => void;
+ }]
 ```
 
 Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:41](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L41)
@@ -45,7 +49,11 @@ The hook returns a tuple containing:
 
 ## Returns
 
-readonly \[`TValue`, `Debouncer`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>\]
+readonly \[`TValue`, \{
+  `cancel`: () => `void`;
+  `getExecutionCount`: () => `number`;
+  `maybeExecute`: (...`args`) => `void`;
+ \}\]
 
 ## Example
 

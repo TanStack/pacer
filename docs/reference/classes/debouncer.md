@@ -7,7 +7,7 @@ title: Debouncer
 
 # Class: Debouncer\<TFn, TArgs\>
 
-Defined in: [debouncer.ts:45](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L45)
+Defined in: [debouncer.ts:51](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L51)
 
 A class that creates a debounced function.
 
@@ -46,7 +46,7 @@ inputElement.addEventListener('input', () => {
 new Debouncer<TFn, TArgs>(fn, options): Debouncer<TFn, TArgs>
 ```
 
-Defined in: [debouncer.ts:54](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L54)
+Defined in: [debouncer.ts:60](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L60)
 
 #### Parameters
 
@@ -70,7 +70,7 @@ Defined in: [debouncer.ts:54](https://github.com/TanStack/bouncer/blob/main/pack
 cancel(): void
 ```
 
-Defined in: [debouncer.ts:100](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L100)
+Defined in: [debouncer.ts:109](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L109)
 
 Cancels any pending execution
 
@@ -86,7 +86,7 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [debouncer.ts:67](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L67)
+Defined in: [debouncer.ts:73](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L73)
 
 Returns the number of times the function has been executed
 
@@ -102,7 +102,7 @@ Returns the number of times the function has been executed
 maybeExecute(...args): void
 ```
 
-Defined in: [debouncer.ts:75](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L75)
+Defined in: [debouncer.ts:81](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L81)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued

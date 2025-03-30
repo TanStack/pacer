@@ -3,15 +3,13 @@ title: Overview
 id: overview
 ---
 
-# TanStack Pacer
-
-TanStack Pacer is a powerful, lightweight utility library designed to help developers control the timing and execution of functions across any JavaScript environment. It provides a suite of carefully designed tools for managing the pace of operations in applications, whether you're working with vanilla JavaScript or using frameworks like React, Solid, Vue, Angular, or Svelte.
+TanStack Pacer is a powerful, lightweight utility library designed to help developers control the timing and execution of functions across any JavaScript environment. It provides a suite of carefully designed tools for managing the pace of operations in applications, whether you're working with vanilla JavaScript or a reactive framework like React.
 
 ## Key Features
 
-- **Debouncing**: Prevent function executions until after a specified delay, with control over leading and trailing edge execution.
-- **Throttling**: Limit function executions to occur at most once per specified time window.
 - **Rate Limiting**: Control how frequently functions can be called over time.
+- **Throttling**: Limit function executions to occur at most once per specified time window.
+- **Debouncing**: Prevent function executions until after a specified delay, with control over leading and trailing edge execution.
 - **Queuing**: Manage the execution order of operations with priority support, FIFO/LIFO ordering, and concurrency control.
 - **Async Support**: Special implementations for async functions with comprehensive TypeScript support.
 - **Framework Adapters**: Framework-specific hooks and utilities for React, Solid, and more.

@@ -11,6 +11,7 @@ title: "@tanstack/pacer"
 
 - [AsyncDebouncer](classes/asyncdebouncer.md)
 - [AsyncQueuer](classes/asyncqueuer.md)
+- [AsyncRateLimiter](classes/asyncratelimiter.md)
 - [AsyncThrottler](classes/asyncthrottler.md)
 - [Debouncer](classes/debouncer.md)
 - [Queue](classes/queue.md)
@@ -22,6 +23,7 @@ title: "@tanstack/pacer"
 
 - [AsyncDebouncerOptions](interfaces/asyncdebounceroptions.md)
 - [AsyncQueuerOptions](interfaces/asyncqueueroptions.md)
+- [AsyncRateLimiterOptions](interfaces/asyncratelimiteroptions.md)
 - [AsyncThrottlerOptions](interfaces/asyncthrottleroptions.md)
 - [DebouncerOptions](interfaces/debounceroptions.md)
 - [QueueOptions](interfaces/queueoptions.md)
@@ -37,6 +39,7 @@ title: "@tanstack/pacer"
 ## Functions
 
 - [asyncDebounce](functions/asyncdebounce.md)
+- [asyncRateLimit](functions/asyncratelimit.md)
 - [asyncThrottle](functions/asyncthrottle.md)
 - [debounce](functions/debounce.md)
 - [isPlainArray](functions/isplainarray.md)

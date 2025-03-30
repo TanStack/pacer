@@ -8,7 +8,7 @@ title: useDebouncer
 # Function: useDebouncer()
 
 ```ts
-function useDebouncer<TFn, TArgs>(fn, options): Debouncer<TFn, TArgs>
+function useDebouncer<TFn, TArgs>(fn, options): object
 ```
 
 Defined in: [react-pacer/src/debouncer/useDebouncer.ts:37](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L37)
@@ -45,7 +45,50 @@ timer resets and starts waiting again.
 
 ## Returns
 
-`Debouncer`\<`TFn`, `TArgs`\>
+`object`
+
+### cancel()
+
+```ts
+readonly cancel: () => void;
+```
+
+Cancels any pending execution
+
+#### Returns
+
+`void`
+
+### getExecutionCount()
+
+```ts
+readonly getExecutionCount: () => number;
+```
+
+Returns the number of times the function has been executed
+
+#### Returns
+
+`number`
+
+### maybeExecute()
+
+```ts
+readonly maybeExecute: (...args) => void;
+```
+
+Attempts to execute the debounced function
+If a call is already in progress, it will be queued
+
+#### Parameters
+
+##### args
+
+...`TArgs`
+
+#### Returns
+
+`void`
 
 ## Example
 

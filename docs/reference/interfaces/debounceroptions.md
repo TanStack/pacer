@@ -26,13 +26,26 @@ Defaults to false.
 
 ***
 
+### trailing?
+
+```ts
+optional trailing: boolean;
+```
+
+Defined in: [debouncer.ts:14](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L14)
+
+Whether to execute on the trailing edge of the timeout.
+Defaults to true.
+
+***
+
 ### wait
 
 ```ts
 wait: number;
 ```
 
-Defined in: [debouncer.ts:14](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L14)
+Defined in: [debouncer.ts:19](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L19)
 
 Delay in milliseconds before executing the function
 Defaults to 0ms
