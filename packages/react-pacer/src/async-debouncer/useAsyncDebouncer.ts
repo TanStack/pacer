@@ -12,11 +12,6 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
  * This is useful for handling fast-changing inputs like search fields, form validation, or any scenario where you want to
  * wait for user input to settle before making expensive async calls.
  *
- * The hook returns an object containing:
- * - maybeExecute: The debounced async function that respects the configured delay
- * - cancel: A function to cancel any pending delayed execution
- * - getExecutionCount: A function that returns the number of times the debounced function has executed
- *
  * @example
  * ```tsx
  * // Basic API call debouncing

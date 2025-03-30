@@ -11,7 +11,7 @@ title: useAsyncDebouncer
 function useAsyncDebouncer<TFn, TArgs>(fn, options): AsyncDebouncer<TFn, TArgs>
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:45](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L45)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:40](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L40)
 
 A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -21,11 +21,6 @@ you can integrate with any state management solution (useState, Redux, Zustand, 
 Async debouncing ensures that an async function only executes after a specified delay has passed since its last invocation.
 This is useful for handling fast-changing inputs like search fields, form validation, or any scenario where you want to
 wait for user input to settle before making expensive async calls.
-
-The hook returns an object containing:
-- maybeExecute: The debounced async function that respects the configured delay
-- cancel: A function to cancel any pending delayed execution
-- getExecutionCount: A function that returns the number of times the debounced function has executed
 
 ## Type Parameters
 

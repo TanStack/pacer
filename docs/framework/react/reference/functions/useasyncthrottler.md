@@ -11,7 +11,7 @@ title: useAsyncThrottler
 function useAsyncThrottler<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:47](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L47)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:42](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L42)
 
 A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -21,11 +21,6 @@ you can integrate with any state management solution (useState, Redux, Zustand, 
 Async throttling ensures an async function executes at most once within a specified time window,
 regardless of how many times it is called. This is useful for rate-limiting expensive API calls,
 database operations, or other async tasks.
-
-The hook returns an object containing:
-- maybeExecute: The throttled async function that respects the configured wait time
-- cancel: A function to cancel any pending trailing execution
-- getExecutionCount: A function that returns the number of times the throttled function has executed
 
 ## Type Parameters
 
@@ -66,6 +61,18 @@ readonly getExecutionCount: () => number;
 ```
 
 Returns the number of times the function has been executed
+
+#### Returns
+
+`number`
+
+### getNextExecutionTime()
+
+```ts
+readonly getNextExecutionTime: () => number;
+```
+
+Returns the next execution time
 
 #### Returns
 

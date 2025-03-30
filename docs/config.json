@@ -241,7 +241,7 @@
         {
           "label": "asyncRateLimit",
           "to": "reference/functions/asyncratelimit"
-        },  
+        },
         {
           "label": "RateLimiter",
           "to": "reference/classes/ratelimiter"
@@ -266,6 +266,10 @@
             {
               "label": "useRateLimitedValue",
               "to": "framework/react/reference/functions/useratelimitedvalue"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/react/reference/functions/useasyncratelimiter"
             }
           ]
         }
@@ -297,6 +301,10 @@
             {
               "label": "useRateLimitedValue",
               "to": "framework/react/examples/useRateLimitedValue"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/react/examples/useAsyncRateLimiter"
             }
           ]
         }

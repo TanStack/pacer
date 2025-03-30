@@ -21,6 +21,7 @@ export default mergeConfig(
     entry: [
       './src/async-debouncer/index.ts',
       './src/async-queuer/index.ts',
+      './src/async-rate-limiter/index.ts',
       './src/async-throttler/index.ts',
       './src/debouncer/index.ts',
       './src/index.ts',

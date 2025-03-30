@@ -12,11 +12,6 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
  * regardless of how many times it is called. This is useful for rate-limiting expensive API calls,
  * database operations, or other async tasks.
  *
- * The hook returns an object containing:
- * - maybeExecute: The throttled async function that respects the configured wait time
- * - cancel: A function to cancel any pending trailing execution
- * - getExecutionCount: A function that returns the number of times the throttled function has executed
- *
  * @example
  * ```tsx
  * // Basic API call throttling
@@ -60,6 +55,9 @@ export function useAsyncThrottler<
     ),
     cancel: asyncThrottler.current.cancel.bind(asyncThrottler.current),
     getExecutionCount: asyncThrottler.current.getExecutionCount.bind(
+      asyncThrottler.current,
+    ),
+    getNextExecutionTime: asyncThrottler.current.getNextExecutionTime.bind(
       asyncThrottler.current,
     ),
   } as const
