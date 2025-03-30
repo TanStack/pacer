@@ -121,6 +121,10 @@
               "to": "framework/react/examples/debounce"
             },
             {
+              "label": "asyncDebounce",
+              "to": "framework/react/examples/asyncDebounce"
+            },
+            {
               "label": "useDebouncer",
               "to": "framework/react/examples/useDebouncer"
             },
@@ -200,6 +204,10 @@
             {
               "label": "throttle",
               "to": "framework/react/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/react/examples/asyncThrottle"
             },
             {
               "label": "useThrottler",
