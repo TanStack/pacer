@@ -8,10 +8,10 @@ title: rateLimit
 # Function: rateLimit()
 
 ```ts
-function rateLimit<TFn>(fn, options): (...args) => boolean
+function rateLimit<TFn>(fn, initialOptions): (...args) => boolean
 ```
 
-Defined in: [rate-limiter.ts:203](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L203)
+Defined in: [rate-limiter.ts:232](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L232)
 
 Creates a rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -33,9 +33,9 @@ need to enforce a hard limit on the number of executions within a time period.
 
 `TFn`
 
-### options
+### initialOptions
 
-[`RateLimiterOptions`](../interfaces/ratelimiteroptions.md)
+`Omit`\<[`RateLimiterOptions`](../interfaces/ratelimiteroptions.md), `"enabled"`\>
 
 ## Returns
 

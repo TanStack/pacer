@@ -11,7 +11,7 @@ title: useDebouncer
 function useDebouncer<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:37](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L37)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:38](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L38)
 
 A React hook that creates and manages a Debouncer instance.
 
@@ -89,6 +89,25 @@ If a call is already in progress, it will be queued
 #### Returns
 
 `void`
+
+### setOptions()
+
+```ts
+setOptions: (newOptions) => Required<DebouncerOptions>;
+```
+
+Updates the debouncer options
+Returns the new options state
+
+#### Parameters
+
+##### newOptions
+
+`Partial`\<`DebouncerOptions`\>
+
+#### Returns
+
+`Required`\<`DebouncerOptions`\>
 
 ## Example
 

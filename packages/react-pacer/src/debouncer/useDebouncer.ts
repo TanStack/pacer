@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
+import { useSetOptions } from '../utils'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 /**
@@ -44,11 +45,15 @@ export function useDebouncer<
     debouncer.current = new Debouncer(fn, options)
   }
 
+  const setOptions = debouncer.current.setOptions.bind(debouncer.current)
+  useSetOptions(options, setOptions)
+
   return {
     maybeExecute: debouncer.current.maybeExecute.bind(debouncer.current),
     cancel: debouncer.current.cancel.bind(debouncer.current),
     getExecutionCount: debouncer.current.getExecutionCount.bind(
       debouncer.current,
     ),
+    setOptions,
   } as const
 }

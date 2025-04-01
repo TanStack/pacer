@@ -174,18 +174,6 @@ describe('Debouncer', () => {
     expect(debouncer.getExecutionCount()).toBe(0)
   })
 
-  it('should use default options when none provided', () => {
-    const mockFn = vi.fn()
-    const debouncer = new Debouncer(mockFn)
-
-    debouncer.maybeExecute('test')
-    expect(mockFn).not.toBeCalled() // Default leading: false
-
-    vi.advanceTimersByTime(0) // Default wait: 0
-    expect(mockFn).toBeCalledTimes(1) // Default trailing: true
-    expect(mockFn).toBeCalledWith('test')
-  })
-
   it('should handle case where both leading and trailing are false', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, {
@@ -252,6 +240,95 @@ describe('Debouncer', () => {
     debouncer.maybeExecute('fifth')
     expect(mockFn).toBeCalledTimes(2)
     expect(mockFn).toHaveBeenLastCalledWith('fifth')
+  })
+
+  it('should not execute when enabled is false', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      enabled: false,
+    })
+
+    debouncer.maybeExecute('test')
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).not.toBeCalled()
+  })
+
+  it('should not execute leading edge when disabled', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      leading: true,
+      enabled: false,
+    })
+
+    debouncer.maybeExecute('test')
+    expect(mockFn).not.toBeCalled()
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).not.toBeCalled()
+  })
+
+  it('should default to enabled', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+    })
+
+    debouncer.maybeExecute('test')
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('test')
+  })
+
+  it('should allow enabling/disabling after construction', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+    // Start enabled by default
+    debouncer.maybeExecute('first')
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toBeCalledWith('first')
+
+    // Disable and verify no execution
+    debouncer.setOptions({ enabled: false })
+    debouncer.maybeExecute('second')
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).toBeCalledTimes(1) // Still only called once
+
+    // Re-enable and verify execution resumes
+    debouncer.setOptions({ enabled: true })
+    debouncer.maybeExecute('third')
+    vi.advanceTimersByTime(1000)
+    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenLastCalledWith('third')
+  })
+
+  it('should allow disabling mid-wait', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+    debouncer.maybeExecute('test')
+    vi.advanceTimersByTime(500) // Half-way through wait
+    debouncer.setOptions({ enabled: false })
+    vi.advanceTimersByTime(500) // Complete wait
+    expect(mockFn).not.toBeCalled()
+  })
+
+  it('should allow updating multiple options at once', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+    // Update both wait time and leading option
+    debouncer.setOptions({ wait: 500, leading: true })
+
+    // Verify new leading behavior
+    debouncer.maybeExecute('test')
+    expect(mockFn).toBeCalledTimes(1) // Immediate execution due to leading: true
+
+    // Verify new wait time
+    vi.advanceTimersByTime(500) // Only need to wait 500ms now
+    expect(mockFn).toBeCalledTimes(2) // Trailing execution after shorter wait
   })
 })
 

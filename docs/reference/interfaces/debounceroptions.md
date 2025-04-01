@@ -13,13 +13,26 @@ Options for configuring a debounced function
 
 ## Properties
 
+### enabled?
+
+```ts
+optional enabled: boolean;
+```
+
+Defined in: [debouncer.ts:9](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L9)
+
+Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
+Defaults to true.
+
+***
+
 ### leading?
 
 ```ts
 optional leading: boolean;
 ```
 
-Defined in: [debouncer.ts:9](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L9)
+Defined in: [debouncer.ts:14](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L14)
 
 Whether to execute on the leading edge of the timeout.
 Defaults to false.
@@ -32,7 +45,7 @@ Defaults to false.
 optional trailing: boolean;
 ```
 
-Defined in: [debouncer.ts:14](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L14)
+Defined in: [debouncer.ts:19](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L19)
 
 Whether to execute on the trailing edge of the timeout.
 Defaults to true.
@@ -45,7 +58,7 @@ Defaults to true.
 wait: number;
 ```
 
-Defined in: [debouncer.ts:19](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L19)
+Defined in: [debouncer.ts:24](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L24)
 
 Delay in milliseconds before executing the function
 Defaults to 0ms

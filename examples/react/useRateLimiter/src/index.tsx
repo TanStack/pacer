@@ -8,9 +8,10 @@ function App() {
   const [instantCount, setInstantCount] = useState(0)
   const [limitedCount, setLimitedCount] = useState(0)
 
-  // Using useRateLimiter with a rate limit of 3 executions per 5 seconds
+  // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const rateLimiter = useRateLimiter(setLimitedCount, {
-    limit: 3,
+    enabled: instantCount > 2,
+    limit: 5,
     window: 5000,
     onReject: (rejectionInfo) =>
       console.log('Rejected by rate limiter', rejectionInfo),

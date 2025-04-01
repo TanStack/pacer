@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { Throttler } from '@tanstack/pacer/throttler'
+import { useSetOptions } from '../utils'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 /**
@@ -52,11 +53,15 @@ export function useThrottler<
     throttler.current = new Throttler(fn, options)
   }
 
+  const setOptions = throttler.current.setOptions.bind(throttler.current)
+  useSetOptions(options, setOptions)
+
   return {
     maybeExecute: throttler.current.maybeExecute.bind(throttler.current),
     cancel: throttler.current.cancel.bind(throttler.current),
     getExecutionCount: throttler.current.getExecutionCount.bind(
       throttler.current,
     ),
+    setOptions,
   } as const
 }

@@ -11,6 +11,7 @@ function App() {
   // Lower-level useDebouncer hook - requires you to manage your own state
   const setCountDebouncer = useDebouncer(setDebouncedCount, {
     wait: 500,
+    enabled: instantCount > 2,
   })
 
   function increment() {

@@ -13,13 +13,26 @@ Options for configuring a throttled function
 
 ## Properties
 
+### enabled?
+
+```ts
+optional enabled: boolean;
+```
+
+Defined in: [throttler.ts:9](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L9)
+
+Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
+Defaults to true.
+
+***
+
 ### leading?
 
 ```ts
 optional leading: boolean;
 ```
 
-Defined in: [throttler.ts:9](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L9)
+Defined in: [throttler.ts:14](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L14)
 
 Whether to execute on the leading edge of the timeout.
 Defaults to true.
@@ -32,7 +45,7 @@ Defaults to true.
 optional trailing: boolean;
 ```
 
-Defined in: [throttler.ts:14](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L14)
+Defined in: [throttler.ts:19](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L19)
 
 Whether to execute on the trailing edge of the timeout.
 Defaults to true.
@@ -45,6 +58,6 @@ Defaults to true.
 wait: number;
 ```
 
-Defined in: [throttler.ts:18](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L18)
+Defined in: [throttler.ts:23](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L23)
 
 Time window in milliseconds during which the function can only be executed once

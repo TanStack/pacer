@@ -3,6 +3,11 @@
  */
 export interface DebouncerOptions {
   /**
+   * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Defaults to true.
+   */
+  enabled?: boolean
+  /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to false.
    */
@@ -20,6 +25,7 @@ export interface DebouncerOptions {
 }
 
 const defaultOptions: Required<DebouncerOptions> = {
+  enabled: true,
   leading: false,
   trailing: true,
   wait: 0,
@@ -54,17 +60,31 @@ export class Debouncer<
 > {
   private canLeadingExecute = true
   private executionCount = 0
-  private options: DebouncerOptions
+  private options: Required<DebouncerOptions>
   private timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
-    options: DebouncerOptions = defaultOptions,
+    initialOptions: DebouncerOptions,
   ) {
     this.options = {
       ...defaultOptions,
-      ...options,
+      ...initialOptions,
     }
+  }
+
+  /**
+   * Updates the debouncer options
+   * Returns the new options state
+   */
+  setOptions(
+    newOptions: Partial<DebouncerOptions>,
+  ): Required<DebouncerOptions> {
+    this.options = {
+      ...this.options,
+      ...newOptions,
+    }
+    return this.options
   }
 
   /**
@@ -79,6 +99,9 @@ export class Debouncer<
    * If a call is already in progress, it will be queued
    */
   maybeExecute(...args: TArgs): void {
+    // Skip execution if debouncer is disabled
+    if (!this.options.enabled) return
+
     // Handle leading execution
     if (this.options.leading && this.canLeadingExecute) {
       this.executeFunction(...args)
@@ -99,6 +122,7 @@ export class Debouncer<
   }
 
   private executeFunction(...args: TArgs): void {
+    if (!this.options.enabled) return
     this.executionCount++
     this.fn(...args)
   }
@@ -136,8 +160,8 @@ export class Debouncer<
  */
 export function debounce<TFn extends (...args: Array<any>) => any>(
   fn: TFn,
-  options: DebouncerOptions,
+  initialOptions: Omit<DebouncerOptions, 'enabled'>,
 ) {
-  const debouncer = new Debouncer(fn, options)
+  const debouncer = new Debouncer(fn, initialOptions)
   return debouncer.maybeExecute.bind(debouncer)
 }

@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
+import { useSetOptions } from '../utils'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 /**
@@ -60,6 +61,9 @@ export function useRateLimiter<
     rateLimiter.current = new RateLimiter(fn, options)
   }
 
+  const setOptions = rateLimiter.current.setOptions.bind(rateLimiter.current)
+  useSetOptions(options, setOptions)
+
   return {
     maybeExecute: rateLimiter.current.maybeExecute.bind(rateLimiter.current),
     getExecutionCount: rateLimiter.current.getExecutionCount.bind(
@@ -72,5 +76,6 @@ export function useRateLimiter<
       rateLimiter.current,
     ),
     reset: rateLimiter.current.reset.bind(rateLimiter.current),
+    setOptions,
   } as const
 }

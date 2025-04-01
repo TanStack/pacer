@@ -3,6 +3,11 @@
  */
 export interface ThrottlerOptions {
   /**
+   * Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Defaults to true.
+   */
+  enabled?: boolean
+  /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to true.
    */
@@ -19,6 +24,7 @@ export interface ThrottlerOptions {
 }
 
 const defaultOptions: Required<ThrottlerOptions> = {
+  enabled: true,
   leading: true,
   trailing: true,
   wait: 0,
@@ -59,17 +65,31 @@ export class Throttler<
   private executionCount = 0
   private lastArgs: TArgs | undefined
   private lastExecutionTime = 0
-  private options: ThrottlerOptions
+  private options: Required<ThrottlerOptions>
   private timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
-    options: ThrottlerOptions = defaultOptions,
+    initialOptions: ThrottlerOptions,
   ) {
     this.options = {
       ...defaultOptions,
-      ...options,
+      ...initialOptions,
     }
+  }
+
+  /**
+   * Updates the throttler options
+   * Returns the new options state
+   */
+  setOptions(
+    newOptions: Partial<ThrottlerOptions>,
+  ): Required<ThrottlerOptions> {
+    this.options = {
+      ...this.options,
+      ...newOptions,
+    }
+    return this.options
   }
 
   /**
@@ -109,6 +129,8 @@ export class Throttler<
    * ```
    */
   maybeExecute(...args: TArgs): void {
+    if (!this.options.enabled) return
+
     const now = Date.now()
     const timeSinceLastExecution = now - this.lastExecutionTime
 
@@ -137,6 +159,7 @@ export class Throttler<
   }
 
   private executeFunction(...args: TArgs): void {
+    if (!this.options.enabled) return
     this.executionCount++
     this.fn(...args)
   }
@@ -187,8 +210,8 @@ export class Throttler<
  */
 export function throttle<TFn extends (...args: Array<any>) => any>(
   fn: TFn,
-  options: ThrottlerOptions,
+  initialOptions: Omit<ThrottlerOptions, 'enabled'>,
 ) {
-  const throttler = new Throttler(fn, options)
+  const throttler = new Throttler(fn, initialOptions)
   return throttler.maybeExecute.bind(throttler)
 }

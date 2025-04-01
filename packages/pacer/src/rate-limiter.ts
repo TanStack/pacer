@@ -25,6 +25,11 @@ export interface RateLimitRejectionInfo {
  */
 export interface RateLimiterOptions {
   /**
+   * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Defaults to true.
+   */
+  enabled?: boolean
+  /**
    * Maximum number of executions allowed within the time window
    */
   limit: number
@@ -36,6 +41,12 @@ export interface RateLimiterOptions {
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
   onReject?: (info: RateLimitRejectionInfo) => void
+}
+
+const defaultOptions: Required<Omit<RateLimiterOptions, 'onReject'>> = {
+  enabled: true,
+  limit: 1,
+  window: 0,
 }
 
 /**
@@ -74,9 +85,24 @@ export class RateLimiter<
 
   constructor(
     private fn: TFn,
-    options: RateLimiterOptions,
+    initialOptions: RateLimiterOptions,
   ) {
-    this.options = options
+    this.options = {
+      ...defaultOptions,
+      ...initialOptions,
+    }
+  }
+
+  /**
+   * Updates the rate limiter options
+   * Returns the new options state
+   */
+  setOptions(newOptions: Partial<RateLimiterOptions>): RateLimiterOptions {
+    this.options = {
+      ...this.options,
+      ...newOptions,
+    }
+    return this.options
   }
 
   /**
@@ -117,6 +143,8 @@ export class RateLimiter<
    * ```
    */
   maybeExecute(...args: TArgs): boolean {
+    if (!this.options.enabled) return false
+
     this.cleanupOldExecutions()
 
     if (this.executionTimes.length < this.options.limit) {
@@ -130,6 +158,7 @@ export class RateLimiter<
   }
 
   private executeFunction(...args: TArgs): void {
+    if (!this.options.enabled) return
     const now = Date.now()
     this.executionCount++
     this.executionTimes.push(now)
@@ -202,8 +231,8 @@ export class RateLimiter<
  */
 export function rateLimit<TFn extends (...args: Array<any>) => any>(
   fn: TFn,
-  options: RateLimiterOptions,
+  initialOptions: Omit<RateLimiterOptions, 'enabled'>,
 ) {
-  const rateLimiter = new RateLimiter(fn, options)
+  const rateLimiter = new RateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)
 }

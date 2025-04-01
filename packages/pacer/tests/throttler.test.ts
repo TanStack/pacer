@@ -160,22 +160,6 @@ describe('Throttler', () => {
     expect(secondExecutionTime).toBeGreaterThan(firstExecutionTime)
   })
 
-  it('should use default options when none provided', () => {
-    const mockFn = vi.fn()
-    const throttler = new Throttler(mockFn)
-
-    // Default leading: true
-    throttler.maybeExecute('test')
-    expect(mockFn).toBeCalledTimes(1)
-    expect(mockFn).toBeCalledWith('test')
-
-    // Default trailing: true
-    throttler.maybeExecute('test2')
-    vi.advanceTimersByTime(0) // Default wait: 0
-    expect(mockFn).toBeCalledTimes(2)
-    expect(mockFn).toHaveBeenLastCalledWith('test2')
-  })
-
   it('should handle zero wait time correctly', () => {
     const mockFn = vi.fn()
     const throttler = new Throttler(mockFn, { wait: 0 })
