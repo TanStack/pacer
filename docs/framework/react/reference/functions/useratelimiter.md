@@ -11,7 +11,7 @@ title: useRateLimiter
 function useRateLimiter<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:54](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L54)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:53](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L53)
 
 A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 

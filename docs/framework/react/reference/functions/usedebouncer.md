@@ -11,7 +11,7 @@ title: useDebouncer
 function useDebouncer<TFn, TArgs>(fn, options): object
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:38](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L38)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:37](https://github.com/TanStack/bouncer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L37)
 
 A React hook that creates and manages a Debouncer instance.
 

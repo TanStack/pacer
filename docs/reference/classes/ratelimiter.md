@@ -155,7 +155,7 @@ rateLimiter.maybeExecute('arg1', 'arg2'); // false
 reset(): void
 ```
 
-Defined in: [rate-limiter.ts:195](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L195)
+Defined in: [rate-limiter.ts:193](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L193)
 
 Resets the rate limiter state
 

@@ -70,7 +70,7 @@ Defined in: [debouncer.ts:66](https://github.com/TanStack/bouncer/blob/main/pack
 cancel(): void
 ```
 
-Defined in: [debouncer.ts:133](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L133)
+Defined in: [debouncer.ts:130](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L130)
 
 Cancels any pending execution
 

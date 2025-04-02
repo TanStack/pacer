@@ -75,7 +75,7 @@ Defined in: [throttler.ts:71](https://github.com/TanStack/bouncer/blob/main/pack
 cancel(): void
 ```
 
-Defined in: [throttler.ts:176](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L176)
+Defined in: [throttler.ts:174](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/throttler.ts#L174)
 
 Cancels any pending trailing execution and clears internal state.
 
