@@ -7,7 +7,7 @@ title: Debouncer
 
 # Class: Debouncer\<TFn, TArgs\>
 
-Defined in: [debouncer.ts:57](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L57)
+Defined in: [debouncer.ts:57](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L57)
 
 A class that creates a debounced function.
 
@@ -46,7 +46,7 @@ inputElement.addEventListener('input', () => {
 new Debouncer<TFn, TArgs>(fn, initialOptions): Debouncer<TFn, TArgs>
 ```
 
-Defined in: [debouncer.ts:66](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L66)
+Defined in: [debouncer.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L66)
 
 #### Parameters
 
@@ -70,7 +70,7 @@ Defined in: [debouncer.ts:66](https://github.com/TanStack/bouncer/blob/main/pack
 cancel(): void
 ```
 
-Defined in: [debouncer.ts:130](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L130)
+Defined in: [debouncer.ts:130](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L130)
 
 Cancels any pending execution
 
@@ -86,7 +86,7 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [debouncer.ts:93](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L93)
+Defined in: [debouncer.ts:93](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L93)
 
 Returns the number of times the function has been executed
 
@@ -102,7 +102,7 @@ Returns the number of times the function has been executed
 maybeExecute(...args): void
 ```
 
-Defined in: [debouncer.ts:101](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L101)
+Defined in: [debouncer.ts:101](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L101)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued
@@ -125,7 +125,7 @@ If a call is already in progress, it will be queued
 setOptions(newOptions): Required<DebouncerOptions>
 ```
 
-Defined in: [debouncer.ts:80](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/debouncer.ts#L80)
+Defined in: [debouncer.ts:80](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L80)
 
 Updates the debouncer options
 Returns the new options state

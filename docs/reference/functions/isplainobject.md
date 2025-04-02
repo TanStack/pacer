@@ -11,7 +11,7 @@ title: isPlainObject
 function isPlainObject(o): o is Object
 ```
 
-Defined in: [compare.ts:72](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/compare.ts#L72)
+Defined in: [compare.ts:72](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/compare.ts#L72)
 
 ## Parameters
 

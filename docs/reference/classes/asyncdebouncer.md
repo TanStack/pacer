@@ -7,7 +7,7 @@ title: AsyncDebouncer
 
 # Class: AsyncDebouncer\<TFn, TArgs\>
 
-Defined in: [async-debouncer.ts:43](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L43)
+Defined in: [async-debouncer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L43)
 
 A class that creates an async debounced function.
 
@@ -45,7 +45,7 @@ inputElement.addEventListener('input', () => {
 new AsyncDebouncer<TFn, TArgs>(fn, options): AsyncDebouncer<TFn, TArgs>
 ```
 
-Defined in: [async-debouncer.ts:54](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L54)
+Defined in: [async-debouncer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L54)
 
 #### Parameters
 
@@ -69,7 +69,7 @@ Defined in: [async-debouncer.ts:54](https://github.com/TanStack/bouncer/blob/mai
 cancel(): void
 ```
 
-Defined in: [async-debouncer.ts:74](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L74)
+Defined in: [async-debouncer.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L74)
 
 Cancels any pending execution
 
@@ -85,7 +85,7 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [async-debouncer.ts:67](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L67)
+Defined in: [async-debouncer.ts:67](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L67)
 
 Returns the number of times the function has been executed
 
@@ -101,7 +101,7 @@ Returns the number of times the function has been executed
 maybeExecute(...args): Promise<void>
 ```
 
-Defined in: [async-debouncer.ts:90](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-debouncer.ts#L90)
+Defined in: [async-debouncer.ts:90](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L90)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued

@@ -7,7 +7,7 @@ title: RateLimiterOptions
 
 # Interface: RateLimiterOptions
 
-Defined in: [rate-limiter.ts:26](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L26)
+Defined in: [rate-limiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L26)
 
 Options for configuring a rate-limited function
 
@@ -19,7 +19,7 @@ Options for configuring a rate-limited function
 optional enabled: boolean;
 ```
 
-Defined in: [rate-limiter.ts:31](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L31)
+Defined in: [rate-limiter.ts:31](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L31)
 
 Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
 Defaults to true.
@@ -32,7 +32,7 @@ Defaults to true.
 limit: number;
 ```
 
-Defined in: [rate-limiter.ts:35](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L35)
+Defined in: [rate-limiter.ts:35](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L35)
 
 Maximum number of executions allowed within the time window
 
@@ -44,7 +44,7 @@ Maximum number of executions allowed within the time window
 optional onReject: (info) => void;
 ```
 
-Defined in: [rate-limiter.ts:43](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L43)
+Defined in: [rate-limiter.ts:43](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L43)
 
 Optional callback function that is called when an execution is rejected due to rate limiting
 
@@ -66,6 +66,6 @@ Optional callback function that is called when an execution is rejected due to r
 window: number;
 ```
 
-Defined in: [rate-limiter.ts:39](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/rate-limiter.ts#L39)
+Defined in: [rate-limiter.ts:39](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L39)
 
 Time window in milliseconds within which the limit applies

@@ -7,7 +7,7 @@ title: AsyncThrottlerOptions
 
 # Interface: AsyncThrottlerOptions
 
-Defined in: [async-throttler.ts:4](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L4)
+Defined in: [async-throttler.ts:4](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L4)
 
 Options for configuring an async throttled function
 
@@ -19,7 +19,7 @@ Options for configuring an async throttled function
 optional onError: (error) => void;
 ```
 
-Defined in: [async-throttler.ts:13](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L13)
+Defined in: [async-throttler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L13)
 
 Optional error handler for when the throttled function throws
 
@@ -41,7 +41,7 @@ Optional error handler for when the throttled function throws
 wait: number;
 ```
 
-Defined in: [async-throttler.ts:9](https://github.com/TanStack/bouncer/blob/main/packages/pacer/src/async-throttler.ts#L9)
+Defined in: [async-throttler.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L9)
 
 Time window in milliseconds during which the function can only be executed once
 Defaults to 0ms
