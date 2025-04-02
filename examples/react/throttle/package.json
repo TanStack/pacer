@@ -10,15 +10,15 @@
   },
   "dependencies": {
     "@tanstack/react-pacer": "^0.0.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
-    "react-scan": "^0.3.2",
-    "vite": "^6.2.2"
+    "react-scan": "^0.3.3",
+    "vite": "^6.2.4"
   },
   "browserslist": {
     "production": [

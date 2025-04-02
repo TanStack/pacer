@@ -55,14 +55,14 @@
     "@faker-js/faker": "^9.6.0",
     "@size-limit/preset-small-lib": "^11.2.0",
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
-    "@tanstack/config": "0.17.1",
+    "@tanstack/config": "0.18.0",
     "@testing-library/jest-dom": "^6.6.3",
-    "@types/node": "^22.13.10",
-    "eslint": "^9.22.0",
+    "@types/node": "^22.13.17",
+    "eslint": "^9.23.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "jsdom": "^26.0.0",
-    "knip": "^5.46.0",
-    "nx": "^20.6.2",
+    "knip": "^5.46.4",
+    "nx": "^20.7.0",
     "premove": "^4.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
@@ -70,7 +70,7 @@
     "sherif": "^1.4.0",
     "size-limit": "^11.2.0",
     "typescript": "5.8.2",
-    "vite": "^6.2.2",
-    "vitest": "^3.0.9"
+    "vite": "^6.2.4",
+    "vitest": "^3.1.1"
   }
 }
