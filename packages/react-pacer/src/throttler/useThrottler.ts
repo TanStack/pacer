@@ -61,6 +61,6 @@ export function useThrottler<
     getExecutionCount: throttler.current.getExecutionCount.bind(
       throttler.current,
     ),
-    setOptions,
+    // setOptions
   } as const
 }

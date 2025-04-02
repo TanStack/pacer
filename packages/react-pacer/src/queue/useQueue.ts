@@ -51,6 +51,6 @@ export function useQueue<TValue>(options: QueueOptions<TValue> = {}) {
     isFull: queue.current.isFull.bind(queue.current),
     peek: queue.current.peek.bind(queue.current),
     size: queue.current.size.bind(queue.current),
-    setOptions,
+    // setOptions
   } as const
 }

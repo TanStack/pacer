@@ -172,25 +172,6 @@ queue.peek()
 queue.peek('back')
 ```
 
-### setOptions()
-
-```ts
-setOptions: (newOptions) => QueueOptions<TValue>;
-```
-
-Updates the queue options
-Returns the new options state
-
-#### Parameters
-
-##### newOptions
-
-`Partial`\<`QueueOptions`\<`TValue`\>\>
-
-#### Returns
-
-`QueueOptions`\<`TValue`\>
-
 ### size()
 
 ```ts

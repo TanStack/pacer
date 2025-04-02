@@ -14,7 +14,6 @@ function useRateLimitedState<TValue>(value, options): readonly [TValue, (...args
   getRemainingInWindow: () => number;
   maybeExecute: (...args) => boolean;
   reset: () => void;
-  setOptions: (newOptions) => RateLimiterOptions;
  }]
 ```
 
@@ -63,7 +62,6 @@ readonly \[`TValue`, (...`args`) => `boolean`, \{
   `getRemainingInWindow`: () => `number`;
   `maybeExecute`: (...`args`) => `boolean`;
   `reset`: () => `void`;
-  `setOptions`: (`newOptions`) => `RateLimiterOptions`;
  \}\]
 
 ## Example

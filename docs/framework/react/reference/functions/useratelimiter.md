@@ -133,25 +133,6 @@ Resets the rate limiter state
 
 `void`
 
-### setOptions()
-
-```ts
-setOptions: (newOptions) => RateLimiterOptions;
-```
-
-Updates the rate limiter options
-Returns the new options state
-
-#### Parameters
-
-##### newOptions
-
-`Partial`\<`RateLimiterOptions`\>
-
-#### Returns
-
-`RateLimiterOptions`
-
 ## Example
 
 ```tsx

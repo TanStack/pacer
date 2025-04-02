@@ -341,25 +341,6 @@ Resets the queue to its initial state
 
 `void`
 
-### setOptions()
-
-```ts
-setOptions: (newOptions) => QueueOptions<() => Promise<TValue>>;
-```
-
-Updates the queue options
-Returns the new options state
-
-#### Parameters
-
-##### newOptions
-
-`Partial`\<`QueueOptions`\<() => `Promise`\<`TValue`\>\>\>
-
-#### Returns
-
-`QueueOptions`\<() => `Promise`\<`TValue`\>\>
-
 ### size()
 
 ```ts

@@ -245,25 +245,6 @@ Resets the queue to its initial state
 
 `void`
 
-### setOptions()
-
-```ts
-setOptions: (newOptions) => QueueOptions<TValue>;
-```
-
-Updates the queue options
-Returns the new options state
-
-#### Parameters
-
-##### newOptions
-
-`Partial`\<`QueueOptions`\<`TValue`\>\>
-
-#### Returns
-
-`QueueOptions`\<`TValue`\>
-
 ### size()
 
 ```ts

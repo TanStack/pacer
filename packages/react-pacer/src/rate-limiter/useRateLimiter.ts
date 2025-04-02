@@ -75,6 +75,6 @@ export function useRateLimiter<
       rateLimiter.current,
     ),
     reset: rateLimiter.current.reset.bind(rateLimiter.current),
-    setOptions,
+    // setOptions
   } as const
 }

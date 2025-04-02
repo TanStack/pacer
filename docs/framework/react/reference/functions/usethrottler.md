@@ -116,25 +116,6 @@ throttled.maybeExecute('a', 'b');
 throttled.maybeExecute('c', 'd');
 ```
 
-### setOptions()
-
-```ts
-setOptions: (newOptions) => Required<ThrottlerOptions>;
-```
-
-Updates the throttler options
-Returns the new options state
-
-#### Parameters
-
-##### newOptions
-
-`Partial`\<`ThrottlerOptions`\>
-
-#### Returns
-
-`Required`\<`ThrottlerOptions`\>
-
 ## Example
 
 ```tsx

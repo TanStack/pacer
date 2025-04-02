@@ -91,6 +91,6 @@ export function useAsyncQueuer<TValue>(
     start: asyncQueuer.current.start.bind(asyncQueuer.current),
     stop: asyncQueuer.current.stop.bind(asyncQueuer.current),
     throttle: asyncQueuer.current.throttle.bind(asyncQueuer.current),
-    setOptions,
+    // setOptions
   }
 }

@@ -60,6 +60,6 @@ export function useAsyncDebouncer<
     getExecutionCount: asyncDebouncerRef.current.getExecutionCount.bind(
       asyncDebouncerRef.current,
     ),
-    setOptions,
+    // setOptions
   } as AsyncDebouncer<TFn, TArgs>
 }

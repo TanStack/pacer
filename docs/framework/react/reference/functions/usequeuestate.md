@@ -16,7 +16,6 @@ function useQueueState<TValue>(options): readonly [TValue[], {
   isEmpty: () => boolean;
   isFull: () => boolean;
   peek: (position?) => undefined | TValue;
-  setOptions: (newOptions) => QueueOptions<TValue>;
   size: () => number;
  }]
 ```
@@ -56,7 +55,6 @@ readonly \[`TValue`[], \{
   `isEmpty`: () => `boolean`;
   `isFull`: () => `boolean`;
   `peek`: (`position`?) => `undefined` \| `TValue`;
-  `setOptions`: (`newOptions`) => `QueueOptions`\<`TValue`\>;
   `size`: () => `number`;
  \}\]
 

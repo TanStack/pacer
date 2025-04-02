@@ -12,7 +12,6 @@ function useDebouncedValue<TValue>(value, options): readonly [TValue, {
   cancel: () => void;
   getExecutionCount: () => number;
   maybeExecute: (...args) => void;
-  setOptions: (newOptions) => Required<DebouncerOptions>;
  }]
 ```
 
@@ -54,7 +53,6 @@ readonly \[`TValue`, \{
   `cancel`: () => `void`;
   `getExecutionCount`: () => `number`;
   `maybeExecute`: (...`args`) => `void`;
-  `setOptions`: (`newOptions`) => `Required`\<`DebouncerOptions`\>;
  \}\]
 
 ## Example

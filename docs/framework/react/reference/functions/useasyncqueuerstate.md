@@ -26,7 +26,6 @@ function useAsyncQueuerState<TValue>(options): readonly [() => Promise<TValue>[]
   onUpdate: (cb) => () => void;
   peek: (position?) => undefined | () => Promise<TValue>;
   reset: (withInitialItems?) => void;
-  setOptions: (newOptions) => QueueOptions<() => Promise<TValue>>;
   size: () => number;
   start: () => Promise<void>;
   stop: () => void;
@@ -85,7 +84,6 @@ readonly \[() => `Promise`\<`TValue`\>[], \{
   `onUpdate`: (`cb`) => () => `void`;
   `peek`: (`position`?) => `undefined` \| () => `Promise`\<`TValue`\>;
   `reset`: (`withInitialItems`?) => `void`;
-  `setOptions`: (`newOptions`) => `QueueOptions`\<() => `Promise`\<`TValue`\>\>;
   `size`: () => `number`;
   `start`: () => `Promise`\<`void`\>;
   `stop`: () => `void`;

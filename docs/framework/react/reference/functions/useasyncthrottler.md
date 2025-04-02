@@ -97,25 +97,6 @@ If a call is already in progress, it may be blocked or queued depending on the `
 
 `Promise`\<`void`\>
 
-### setOptions()
-
-```ts
-setOptions: (newOptions) => Required<AsyncThrottlerOptions>;
-```
-
-Updates the throttler options
-Returns the new options state
-
-#### Parameters
-
-##### newOptions
-
-`Partial`\<`AsyncThrottlerOptions`\>
-
-#### Returns
-
-`Required`\<`AsyncThrottlerOptions`\>
-
 ## Example
 
 ```tsx

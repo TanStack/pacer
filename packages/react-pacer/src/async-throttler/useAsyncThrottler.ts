@@ -65,6 +65,6 @@ export function useAsyncThrottler<
     getNextExecutionTime: asyncThrottler.current.getNextExecutionTime.bind(
       asyncThrottler.current,
     ),
-    setOptions,
+    // setOptions
   } as const
 }

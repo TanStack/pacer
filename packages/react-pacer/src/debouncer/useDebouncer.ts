@@ -53,6 +53,6 @@ export function useDebouncer<
     getExecutionCount: debouncer.current.getExecutionCount.bind(
       debouncer.current,
     ),
-    setOptions,
+    // setOptions
   } as const
 }

@@ -12,7 +12,6 @@ function useThrottledValue<TValue>(value, options): readonly [TValue, {
   cancel: () => void;
   getExecutionCount: () => number;
   maybeExecute: (...args) => void;
-  setOptions: (newOptions) => Required<ThrottlerOptions>;
  }]
 ```
 
@@ -50,7 +49,6 @@ readonly \[`TValue`, \{
   `cancel`: () => `void`;
   `getExecutionCount`: () => `number`;
   `maybeExecute`: (...`args`) => `void`;
-  `setOptions`: (`newOptions`) => `Required`\<`ThrottlerOptions`\>;
  \}\]
 
 ## Example

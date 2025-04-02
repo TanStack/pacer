@@ -21,7 +21,6 @@ function useQueuerState<TValue>(options): readonly [TValue[], {
   onUpdate: (cb) => () => void;
   peek: (position?) => undefined | TValue;
   reset: (withInitialItems?) => void;
-  setOptions: (newOptions) => QueueOptions<TValue>;
   size: () => number;
   start: () => void;
   stop: () => void;
@@ -69,7 +68,6 @@ readonly \[`TValue`[], \{
   `onUpdate`: (`cb`) => () => `void`;
   `peek`: (`position`?) => `undefined` \| `TValue`;
   `reset`: (`withInitialItems`?) => `void`;
-  `setOptions`: (`newOptions`) => `QueueOptions`\<`TValue`\>;
   `size`: () => `number`;
   `start`: () => `void`;
   `stop`: () => `void`;

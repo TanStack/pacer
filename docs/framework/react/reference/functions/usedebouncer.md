@@ -90,25 +90,6 @@ If a call is already in progress, it will be queued
 
 `void`
 
-### setOptions()
-
-```ts
-setOptions: (newOptions) => Required<DebouncerOptions>;
-```
-
-Updates the debouncer options
-Returns the new options state
-
-#### Parameters
-
-##### newOptions
-
-`Partial`\<`DebouncerOptions`\>
-
-#### Returns
-
-`Required`\<`DebouncerOptions`\>
-
 ## Example
 
 ```tsx

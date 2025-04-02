@@ -68,6 +68,6 @@ export function useAsyncRateLimiter<
     getRemainingInWindow: asyncRateLimiter.current.getRemainingInWindow.bind(
       asyncRateLimiter.current,
     ),
-    setOptions,
+    // setOptions
   } as const
 }

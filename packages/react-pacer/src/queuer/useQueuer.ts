@@ -66,6 +66,6 @@ export function useQueuer<TValue>(options: QueuerOptions<TValue> = {}) {
     size: queuer.current.size.bind(queuer.current),
     start: queuer.current.start.bind(queuer.current),
     stop: queuer.current.stop.bind(queuer.current),
-    setOptions,
+    // setOptions
   }
 }
