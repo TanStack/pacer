@@ -3,6 +3,11 @@
  */
 export interface AsyncThrottlerOptions {
   /**
+   * Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Defaults to true.
+   */
+  enabled?: boolean
+  /**
    * Time window in milliseconds during which the function can only be executed once
    * Defaults to 0ms
    */
@@ -14,6 +19,7 @@ export interface AsyncThrottlerOptions {
 }
 
 const defaultOptions: Required<AsyncThrottlerOptions> = {
+  enabled: true,
   onError: () => {},
   wait: 0,
 }
@@ -54,12 +60,26 @@ export class AsyncThrottler<
 
   constructor(
     private fn: TFn,
-    options: AsyncThrottlerOptions = defaultOptions,
+    initialOptions: AsyncThrottlerOptions,
   ) {
     this.options = {
       ...defaultOptions,
-      ...options,
+      ...initialOptions,
     }
+  }
+
+  /**
+   * Updates the throttler options
+   * Returns the new options state
+   */
+  setOptions(
+    newOptions: Partial<AsyncThrottlerOptions>,
+  ): Required<AsyncThrottlerOptions> {
+    this.options = {
+      ...this.options,
+      ...newOptions,
+    }
+    return this.options
   }
 
   /**
@@ -144,6 +164,7 @@ export class AsyncThrottler<
   }
 
   private async executeFunction(...args: TArgs): Promise<void> {
+    if (!this.options.enabled) return
     this.executionCount++
     await this.fn(...args)
   }
@@ -167,7 +188,7 @@ export class AsyncThrottler<
  */
 export function asyncThrottle<
   TFn extends (...args: Array<any>) => Promise<any>,
->(fn: TFn, options: AsyncThrottlerOptions) {
-  const asyncThrottler = new AsyncThrottler(fn, options)
+>(fn: TFn, initialOptions: Omit<AsyncThrottlerOptions, 'enabled'>) {
+  const asyncThrottler = new AsyncThrottler(fn, initialOptions)
   return asyncThrottler.maybeExecute.bind(asyncThrottler)
 }

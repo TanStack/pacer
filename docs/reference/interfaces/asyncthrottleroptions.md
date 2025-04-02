@@ -13,13 +13,26 @@ Options for configuring an async throttled function
 
 ## Properties
 
+### enabled?
+
+```ts
+optional enabled: boolean;
+```
+
+Defined in: [async-throttler.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L9)
+
+Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
+Defaults to true.
+
+***
+
 ### onError()?
 
 ```ts
 optional onError: (error) => void;
 ```
 
-Defined in: [async-throttler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L13)
+Defined in: [async-throttler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L18)
 
 Optional error handler for when the throttled function throws
 
@@ -41,7 +54,7 @@ Optional error handler for when the throttled function throws
 wait: number;
 ```
 
-Defined in: [async-throttler.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L9)
+Defined in: [async-throttler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L14)
 
 Time window in milliseconds during which the function can only be executed once
 Defaults to 0ms

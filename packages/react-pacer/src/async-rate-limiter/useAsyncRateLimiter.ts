@@ -49,6 +49,11 @@ export function useAsyncRateLimiter<
     asyncRateLimiter.current = new AsyncRateLimiter(fn, options)
   }
 
+  const setOptions = asyncRateLimiter.current.setOptions.bind(
+    asyncRateLimiter.current,
+  )
+  setOptions(options)
+
   return {
     maybeExecute: asyncRateLimiter.current.maybeExecute.bind(
       asyncRateLimiter.current,
@@ -63,5 +68,6 @@ export function useAsyncRateLimiter<
     getRemainingInWindow: asyncRateLimiter.current.getRemainingInWindow.bind(
       asyncRateLimiter.current,
     ),
+    setOptions,
   } as const
 }

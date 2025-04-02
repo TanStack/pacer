@@ -49,6 +49,11 @@ export function useAsyncThrottler<
     asyncThrottler.current = new AsyncThrottler(fn, options)
   }
 
+  const setOptions = asyncThrottler.current.setOptions.bind(
+    asyncThrottler.current,
+  )
+  setOptions(options)
+
   return {
     maybeExecute: asyncThrottler.current.maybeExecute.bind(
       asyncThrottler.current,
@@ -60,5 +65,6 @@ export function useAsyncThrottler<
     getNextExecutionTime: asyncThrottler.current.getNextExecutionTime.bind(
       asyncThrottler.current,
     ),
+    setOptions,
   } as const
 }

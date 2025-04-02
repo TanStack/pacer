@@ -51,12 +51,17 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
  * });
  * ```
  */
-export function useAsyncQueuer<TValue>(options: AsyncQueuerOptions<TValue>) {
+export function useAsyncQueuer<TValue>(options: AsyncQueuerOptions<TValue> = {}) {
   const asyncQueuer = useRef<AsyncQueuer<TValue> | null>(null)
 
   if (!asyncQueuer.current) {
     asyncQueuer.current = new AsyncQueuer(options)
   }
+
+  const setOptions = asyncQueuer.current.setOptions.bind(
+    asyncQueuer.current,
+  )
+  setOptions(options)
 
   return {
     addItem: asyncQueuer.current.addItem.bind(asyncQueuer.current),
@@ -86,5 +91,6 @@ export function useAsyncQueuer<TValue>(options: AsyncQueuerOptions<TValue>) {
     start: asyncQueuer.current.start.bind(asyncQueuer.current),
     stop: asyncQueuer.current.stop.bind(asyncQueuer.current),
     throttle: asyncQueuer.current.throttle.bind(asyncQueuer.current),
+    setOptions,
   }
 }

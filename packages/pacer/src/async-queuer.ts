@@ -57,7 +57,7 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
  * ```
  */
 export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
-  protected options: Required<AsyncQueuerOptions<TValue>> = defaultOptions
+  protected options: Required<AsyncQueuerOptions<TValue>>
   private onSettles: Array<(res: any, error: any) => void> = []
   private onErrors: Array<(error: any, task: () => Promise<any>) => void> = []
   private onSuccesses: Array<(result: any, task: () => Promise<any>) => void> =
@@ -67,10 +67,10 @@ export class AsyncQueuer<TValue> extends Queuer<() => Promise<TValue>> {
 
   constructor({
     initialItems,
-    ...options
+    ...initialOptions
   }: AsyncQueuerOptions<TValue> = defaultOptions) {
-    super(options)
-    this.options = { ...defaultOptions, ...options }
+    super(initialOptions)
+    this.options = { ...defaultOptions, ...initialOptions }
     for (const item of initialItems ?? []) {
       this.addItem(item)
     }

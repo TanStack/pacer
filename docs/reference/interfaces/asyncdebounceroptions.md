@@ -13,13 +13,26 @@ Options for configuring an async debounced function
 
 ## Properties
 
+### enabled?
+
+```ts
+optional enabled: boolean;
+```
+
+Defined in: [async-debouncer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L9)
+
+Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
+Defaults to true.
+
+***
+
 ### onError()?
 
 ```ts
 optional onError: (error) => void;
 ```
 
-Defined in: [async-debouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L13)
+Defined in: [async-debouncer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L18)
 
 Optional error handler for when the debounced function throws
 
@@ -41,7 +54,7 @@ Optional error handler for when the debounced function throws
 wait: number;
 ```
 
-Defined in: [async-debouncer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L9)
+Defined in: [async-debouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L14)
 
 Delay in milliseconds to wait after the last call before executing
 Defaults to 0ms

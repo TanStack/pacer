@@ -82,14 +82,14 @@ Defined in: [async-queuer.ts:68](https://github.com/TanStack/pacer/blob/main/pac
 ### options
 
 ```ts
-protected options: Required<AsyncQueuerOptions<TValue>> = defaultOptions;
+protected options: Required<AsyncQueuerOptions<TValue>>;
 ```
 
 Defined in: [async-queuer.ts:60](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L60)
 
 #### Overrides
 
-[`Queuer`](queuer.md).[`options`](Queuer.md#options-1)
+[`Queuer`](queuer.md).[`options`](Queuer.md#options)
 
 ## Methods
 
@@ -129,7 +129,7 @@ Adds a task to the queue
 clear(): void
 ```
 
-Defined in: [queue.ts:205](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L205)
+Defined in: [queue.ts:214](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L214)
 
 Removes all items from the queue
 
@@ -189,7 +189,7 @@ All items
 getExecutionCount(): number
 ```
 
-Defined in: [queue.ts:231](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L231)
+Defined in: [queue.ts:240](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L240)
 
 Returns the number of items that have been removed from the queue
 
@@ -209,7 +209,7 @@ Returns the number of items that have been removed from the queue
 getNextItem(position): undefined | () => Promise<TValue>
 ```
 
-Defined in: [queue.ts:147](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L147)
+Defined in: [queue.ts:156](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L156)
 
 Removes and returns an item from the queue using shift (default) or pop
 
@@ -262,7 +262,7 @@ The pending items
 isEmpty(): boolean
 ```
 
-Defined in: [queue.ts:184](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L184)
+Defined in: [queue.ts:193](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L193)
 
 Returns true if the queue is empty
 
@@ -282,7 +282,7 @@ Returns true if the queue is empty
 isFull(): boolean
 ```
 
-Defined in: [queue.ts:191](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L191)
+Defined in: [queue.ts:200](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L200)
 
 Returns true if the queue is full
 
@@ -450,7 +450,7 @@ Adds a callback to be called when an item is processed
 peek(position): undefined | () => Promise<TValue>
 ```
 
-Defined in: [queue.ts:174](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L174)
+Defined in: [queue.ts:183](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L183)
 
 Returns an item without removing it
 
@@ -505,13 +505,40 @@ Resets the queue to its initial state
 
 ***
 
+### setOptions()
+
+```ts
+setOptions(newOptions): QueueOptions<() => Promise<TValue>>
+```
+
+Defined in: [queue.ts:99](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L99)
+
+Updates the queue options
+Returns the new options state
+
+#### Parameters
+
+##### newOptions
+
+`Partial`\<[`QueueOptions`](../interfaces/queueoptions.md)\<() => `Promise`\<`TValue`\>\>\>
+
+#### Returns
+
+[`QueueOptions`](../interfaces/queueoptions.md)\<() => `Promise`\<`TValue`\>\>
+
+#### Inherited from
+
+[`Queuer`](queuer.md).[`setOptions`](Queuer.md#setoptions)
+
+***
+
 ### size()
 
 ```ts
 size(): number
 ```
 
-Defined in: [queue.ts:198](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L198)
+Defined in: [queue.ts:207](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L207)
 
 Returns the current size of the queue
 

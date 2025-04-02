@@ -44,14 +44,14 @@ const defaultOptions: Required<QueuerOptions<any>> = {
  * ```
  */
 export class Queuer<TValue> extends Queue<TValue> {
-  protected options: Required<QueuerOptions<TValue>> = defaultOptions
+  protected options: Required<QueuerOptions<TValue>>
   private onUpdates: Array<(item: TValue) => void> = []
   private running: boolean
   private pendingTick = false
 
-  constructor(options: QueuerOptions<TValue> = defaultOptions) {
-    super(options)
-    this.options = { ...defaultOptions, ...options }
+  constructor(initialOptions: QueuerOptions<TValue> = defaultOptions) {
+    super(initialOptions)
+    this.options = { ...defaultOptions, ...initialOptions }
     this.running = this.options.started
   }
 

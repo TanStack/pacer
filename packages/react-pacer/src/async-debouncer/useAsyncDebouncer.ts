@@ -47,6 +47,11 @@ export function useAsyncDebouncer<
     asyncDebouncerRef.current = new AsyncDebouncer(fn, options)
   }
 
+  const setOptions = asyncDebouncerRef.current.setOptions.bind(
+    asyncDebouncerRef.current,
+  )
+  setOptions(options)
+
   return {
     maybeExecute: asyncDebouncerRef.current.maybeExecute.bind(
       asyncDebouncerRef.current,
@@ -55,5 +60,6 @@ export function useAsyncDebouncer<
     getExecutionCount: asyncDebouncerRef.current.getExecutionCount.bind(
       asyncDebouncerRef.current,
     ),
+    setOptions,
   } as AsyncDebouncer<TFn, TArgs>
 }

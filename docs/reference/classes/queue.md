@@ -61,14 +61,14 @@ priorityQueue.addItem(2); // [3, 2, 1]
 ### new Queue()
 
 ```ts
-new Queue<TValue>(options): Queue<TValue>
+new Queue<TValue>(initialOptions): Queue<TValue>
 ```
 
 Defined in: [queue.ts:80](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L80)
 
 #### Parameters
 
-##### options
+##### initialOptions
 
 [`QueueOptions`](../interfaces/queueoptions.md)\<`TValue`\> = `defaultOptions`
 
@@ -81,7 +81,7 @@ Defined in: [queue.ts:80](https://github.com/TanStack/pacer/blob/main/packages/p
 ### options
 
 ```ts
-protected options: Required<QueueOptions<TValue>> = defaultOptions;
+protected options: Required<QueueOptions<TValue>>;
 ```
 
 Defined in: [queue.ts:76](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L76)
@@ -94,7 +94,7 @@ Defined in: [queue.ts:76](https://github.com/TanStack/pacer/blob/main/packages/p
 addItem(item, position): boolean
 ```
 
-Defined in: [queue.ts:106](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L106)
+Defined in: [queue.ts:115](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L115)
 
 Adds an item to the queue
 
@@ -129,7 +129,7 @@ queue.addItem(item, 'front')
 clear(): void
 ```
 
-Defined in: [queue.ts:205](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L205)
+Defined in: [queue.ts:214](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L214)
 
 Removes all items from the queue
 
@@ -145,7 +145,7 @@ Removes all items from the queue
 getAllItems(): TValue[]
 ```
 
-Defined in: [queue.ts:224](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L224)
+Defined in: [queue.ts:233](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L233)
 
 Returns a copy of all items in the queue
 
@@ -161,7 +161,7 @@ Returns a copy of all items in the queue
 getExecutionCount(): number
 ```
 
-Defined in: [queue.ts:231](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L231)
+Defined in: [queue.ts:240](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L240)
 
 Returns the number of items that have been removed from the queue
 
@@ -177,7 +177,7 @@ Returns the number of items that have been removed from the queue
 getNextItem(position): undefined | TValue
 ```
 
-Defined in: [queue.ts:147](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L147)
+Defined in: [queue.ts:156](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L156)
 
 Removes and returns an item from the queue using shift (default) or pop
 
@@ -208,7 +208,7 @@ queue.getNextItem('back')
 isEmpty(): boolean
 ```
 
-Defined in: [queue.ts:184](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L184)
+Defined in: [queue.ts:193](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L193)
 
 Returns true if the queue is empty
 
@@ -224,7 +224,7 @@ Returns true if the queue is empty
 isFull(): boolean
 ```
 
-Defined in: [queue.ts:191](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L191)
+Defined in: [queue.ts:200](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L200)
 
 Returns true if the queue is full
 
@@ -240,7 +240,7 @@ Returns true if the queue is full
 peek(position): undefined | TValue
 ```
 
-Defined in: [queue.ts:174](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L174)
+Defined in: [queue.ts:183](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L183)
 
 Returns an item without removing it
 
@@ -271,7 +271,7 @@ queue.peek('back')
 reset(withInitialItems?): void
 ```
 
-Defined in: [queue.ts:213](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L213)
+Defined in: [queue.ts:222](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L222)
 
 Resets the queue to its initial state
 
@@ -287,13 +287,36 @@ Resets the queue to its initial state
 
 ***
 
+### setOptions()
+
+```ts
+setOptions(newOptions): QueueOptions<TValue>
+```
+
+Defined in: [queue.ts:99](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L99)
+
+Updates the queue options
+Returns the new options state
+
+#### Parameters
+
+##### newOptions
+
+`Partial`\<[`QueueOptions`](../interfaces/queueoptions.md)\<`TValue`\>\>
+
+#### Returns
+
+[`QueueOptions`](../interfaces/queueoptions.md)\<`TValue`\>
+
+***
+
 ### size()
 
 ```ts
 size(): number
 ```
 
-Defined in: [queue.ts:198](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L198)
+Defined in: [queue.ts:207](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L207)
 
 Returns the current size of the queue
 

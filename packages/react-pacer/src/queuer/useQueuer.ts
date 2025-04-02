@@ -40,12 +40,15 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * queue.start(); // Resume processing
  * ```
  */
-export function useQueuer<TValue>(options: QueuerOptions<TValue>) {
+export function useQueuer<TValue>(options: QueuerOptions<TValue> = {}) {
   const queuer = useRef<Queuer<TValue>>(null)
 
   if (!queuer.current) {
     queuer.current = new Queuer(options)
   }
+
+  const setOptions = queuer.current.setOptions.bind(queuer.current)
+  setOptions(options)
 
   return {
     addItem: queuer.current.addItem.bind(queuer.current),
@@ -63,5 +66,6 @@ export function useQueuer<TValue>(options: QueuerOptions<TValue>) {
     size: queuer.current.size.bind(queuer.current),
     start: queuer.current.start.bind(queuer.current),
     stop: queuer.current.stop.bind(queuer.current),
+    setOptions,
   }
 }

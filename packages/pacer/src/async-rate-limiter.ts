@@ -5,6 +5,11 @@ import type { RateLimitRejectionInfo } from './rate-limiter'
  */
 export interface AsyncRateLimiterOptions {
   /**
+   * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Defaults to true.
+   */
+  enabled?: boolean
+  /**
    * Maximum number of executions allowed within the time window
    */
   limit: number
@@ -58,9 +63,26 @@ export class AsyncRateLimiter<
 
   constructor(
     private fn: TFn,
-    options: AsyncRateLimiterOptions,
+    initialOptions: AsyncRateLimiterOptions,
   ) {
-    this.options = options
+    this.options = {
+      enabled: true,
+      ...initialOptions,
+    }
+  }
+
+  /**
+   * Updates the rate limiter options
+   * Returns the new options state
+   */
+  setOptions(
+    newOptions: Partial<AsyncRateLimiterOptions>,
+  ): AsyncRateLimiterOptions {
+    this.options = {
+      ...this.options,
+      ...newOptions,
+    }
+    return this.options
   }
 
   /**
@@ -114,6 +136,7 @@ export class AsyncRateLimiter<
   }
 
   private async executeFunction(...args: TArgs): Promise<void> {
+    if (!this.options.enabled) return
     const now = Date.now()
     this.executionCount++
     this.executionTimes.push(now)
@@ -199,7 +222,7 @@ export class AsyncRateLimiter<
  */
 export function asyncRateLimit<
   TFn extends (...args: Array<any>) => Promise<any>,
->(fn: TFn, options: AsyncRateLimiterOptions) {
-  const rateLimiter = new AsyncRateLimiter(fn, options)
+>(fn: TFn, initialOptions: Omit<AsyncRateLimiterOptions, 'enabled'>) {
+  const rateLimiter = new AsyncRateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)
 }

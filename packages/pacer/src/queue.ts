@@ -73,12 +73,12 @@ export type QueuePosition = 'front' | 'back'
  * ```
  */
 export class Queue<TValue> {
-  protected options: Required<QueueOptions<TValue>> = defaultOptions
+  protected options: Required<QueueOptions<TValue>>
   private items: Array<TValue> = []
   private executionCount = 0
 
-  constructor(options: QueueOptions<TValue> = defaultOptions) {
-    this.options = { ...defaultOptions, ...options }
+  constructor(initialOptions: QueueOptions<TValue> = defaultOptions) {
+    this.options = { ...defaultOptions, ...initialOptions }
 
     if (this.options.initialItems.length) {
       this.items = [...this.options.initialItems]
@@ -90,6 +90,15 @@ export class Queue<TValue> {
         )
       }
     }
+  }
+
+  /**
+   * Updates the queue options
+   * Returns the new options state
+   */
+  setOptions(newOptions: Partial<QueueOptions<TValue>>): QueueOptions<TValue> {
+    this.options = { ...this.options, ...newOptions }
+    return this.options
   }
 
   /**
