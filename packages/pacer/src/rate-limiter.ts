@@ -143,8 +143,6 @@ export class RateLimiter<
    * ```
    */
   maybeExecute(...args: TArgs): boolean {
-    if (!this.options.enabled) return false
-
     this.cleanupOldExecutions()
 
     if (this.executionTimes.length < this.options.limit) {

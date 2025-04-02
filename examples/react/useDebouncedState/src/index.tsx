@@ -3,7 +3,7 @@ import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useDebouncedState } from '@tanstack/react-pacer/debouncer'
 
-function App() {
+function App1() {
   const [instantCount, setInstantCount] = useState(0)
 
   // higher-level hook that uses React.useState with the state setter automatically debounced
@@ -12,6 +12,7 @@ function App() {
     instantCount,
     {
       wait: 500,
+      // enabled: instantCount > 2, // optional, defaults to true
     },
   )
 
@@ -26,11 +27,23 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Pacer useDebouncedState Example</h1>
-      <div>Execution Count: {debouncer.getExecutionCount()}</div>
-      <hr />
-      <div>Instant Count: {instantCount}</div>
-      <div>Debounced Count: {debouncedCount}</div>
+      <h1>TanStack Pacer useDebouncedState Example 1</h1>
+      <table>
+        <tbody>
+          <tr>
+            <td>Execution Count:</td>
+            <td>{debouncer.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Instant Count:</td>
+            <td>{instantCount}</td>
+          </tr>
+          <tr>
+            <td>Debounced Count:</td>
+            <td>{debouncedCount}</td>
+          </tr>
+        </tbody>
+      </table>
       <div>
         <button onClick={increment}>Increment</button>
       </div>
@@ -38,7 +51,63 @@ function App() {
   )
 }
 
+function App2() {
+  const [instantSearch, setInstantSearch] = useState('')
+
+  // higher-level hook that uses React.useState with the state setter automatically debounced
+  const [debouncedSearch, setDebouncedSearch, debouncer] = useDebouncedState(
+    instantSearch,
+    {
+      wait: 500,
+      // enabled: instantSearch.length > 2, // optional, defaults to true
+    },
+  )
+
+  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = e.target.value
+    setInstantSearch(newValue)
+    setDebouncedSearch(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer useDebouncedState Example 2</h1>
+      <div>
+        <input
+          type="text"
+          value={instantSearch}
+          onChange={handleSearchChange}
+          placeholder="Type to search..."
+          style={{ width: '100%' }}
+        />
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Execution Count:</td>
+            <td>{debouncer.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Instant Search:</td>
+            <td>{instantSearch}</td>
+          </tr>
+          <tr>
+            <td>Debounced Search:</td>
+            <td>{debouncedSearch}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
-root.render(<App />)
+root.render(
+  <div>
+    <App1 />
+    <hr />
+    <App2 />
+  </div>,
+)
 
 scan() // dev-tools for demo

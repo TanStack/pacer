@@ -99,9 +99,6 @@ export class Debouncer<
    * If a call is already in progress, it will be queued
    */
   maybeExecute(...args: TArgs): void {
-    // Skip execution if debouncer is disabled
-    if (!this.options.enabled) return
-
     // Handle leading execution
     if (this.options.leading && this.canLeadingExecute) {
       this.executeFunction(...args)

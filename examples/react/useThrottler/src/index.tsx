@@ -3,7 +3,7 @@ import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useThrottler } from '@tanstack/react-pacer/throttler'
 
-function App() {
+function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
   const [throttledCount, setThrottledCount] = useState(0)
@@ -25,11 +25,23 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Pacer useThrottler Example</h1>
-      <div>Execution Count: {setCountThrottler.getExecutionCount()}</div>
-      <hr />
-      <div>Instant Count: {instantCount}</div>
-      <div>Throttled Count: {throttledCount}</div>
+      <h1>TanStack Pacer useThrottler Example 1</h1>
+      <table>
+        <tbody>
+          <tr>
+            <td>Execution Count:</td>
+            <td>{setCountThrottler.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Instant Count:</td>
+            <td>{instantCount}</td>
+          </tr>
+          <tr>
+            <td>Throttled Count:</td>
+            <td>{throttledCount}</td>
+          </tr>
+        </tbody>
+      </table>
       <div>
         <button onClick={increment}>Increment</button>
       </div>
@@ -37,7 +49,61 @@ function App() {
   )
 }
 
+function App2() {
+  const [instantSearch, setInstantSearch] = useState('')
+  const [throttledSearch, setThrottledSearch] = useState('')
+
+  // Lower-level useThrottler hook - requires you to manage your own state
+  const setSearchThrottler = useThrottler(setThrottledSearch, {
+    wait: 1000,
+    enabled: instantSearch.length > 2,
+  })
+
+  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = e.target.value
+    setInstantSearch(newValue)
+    setSearchThrottler.maybeExecute(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer useThrottler Example 2</h1>
+      <div>
+        <input
+          type="text"
+          value={instantSearch}
+          onChange={handleSearchChange}
+          placeholder="Type to search..."
+          style={{ width: '100%' }}
+        />
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Execution Count:</td>
+            <td>{setSearchThrottler.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Instant Search:</td>
+            <td>{instantSearch}</td>
+          </tr>
+          <tr>
+            <td>Throttled Search:</td>
+            <td>{throttledSearch}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
-root.render(<App />)
+root.render(
+  <div>
+    <App1 />
+    <hr />
+    <App2 />
+  </div>,
+)
 
 scan() // dev-tools for demo

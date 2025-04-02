@@ -129,8 +129,6 @@ export class Throttler<
    * ```
    */
   maybeExecute(...args: TArgs): void {
-    if (!this.options.enabled) return
-
     const now = Date.now()
     const timeSinceLastExecution = now - this.lastExecutionTime
 
