@@ -384,6 +384,10 @@
           "label": "react",
           "children": [
             {
+              "label": "queue",
+              "to": "framework/react/examples/queue"
+            },
+            {
               "label": "useQueue",
               "to": "framework/react/examples/useQueue"
             },

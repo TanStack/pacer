@@ -4,12 +4,10 @@ import type { QueueOptions } from './queue'
 export interface QueuerOptions<TValue> extends QueueOptions<TValue> {
   /**
    * Whether the queuer should start processing tasks immediately
-   * @default false
    */
   started?: boolean
   /**
    * Time in milliseconds to wait between processing items
-   * @default 0
    */
   wait?: number
 }
@@ -18,6 +16,7 @@ const defaultOptions: Required<QueuerOptions<any>> = {
   getPriority: () => 0,
   initialItems: [],
   maxSize: Infinity,
+  onGetNextItem: () => {},
   onUpdate: () => {},
   started: false,
   wait: 0,
@@ -91,6 +90,7 @@ export class Queuer<TValue> extends Queue<TValue> {
       this.pendingTick = true
       this.tick()
     }
+    this.options.onUpdate(this)
     return added
   }
 
@@ -143,4 +143,36 @@ export class Queuer<TValue> extends Queue<TValue> {
   isIdle() {
     return this.running && this.isEmpty()
   }
+}
+
+/**
+ * Creates a queuer that processes items in a queue immediately upon addition.
+ * Items are processed sequentially in FIFO order by default.
+ *
+ * This is a simplified wrapper around the Queuer class that only exposes the
+ * `addItem` method. For more control over queue processing, use the Queuer class
+ * directly which provides methods like `start`, `stop`, `reset`, and more.
+ *
+ * @example
+ * ```ts
+ * // Basic sequential processing
+ * const processItems = queuer<number>({
+ *   wait: 1000,
+ *   onUpdate: (queuer) => console.log(queuer.getAllItems())
+ * })
+ * processItems(1) // Logs: 1
+ * processItems(2) // Logs: 2 after 1 completes
+ *
+ * // Priority queue
+ * const processPriority = queuer<number>({
+ *   process: async (n) => console.log(n),
+ *   getPriority: n => n // Higher numbers processed first
+ * })
+ * processPriority(1)
+ * processPriority(3) // Processed before 1
+ * ```
+ */
+export function queue<TValue>(options: QueuerOptions<TValue> = {}) {
+  const queue = new Queuer<TValue>({ ...options, started: true })
+  return queue.addItem.bind(queue)
 }

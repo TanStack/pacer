@@ -15,6 +15,7 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
   getPriority: () => 0,
   initialItems: [],
   maxSize: Infinity,
+  onGetNextItem: () => {},
   onUpdate: () => {},
   started: false,
   wait: 0,

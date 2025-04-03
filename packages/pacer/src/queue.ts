@@ -3,6 +3,11 @@
  */
 export interface QueueOptions<TValue> {
   /**
+   * Function to determine priority of items in the queue
+   * Higher priority items will be processed first
+   */
+  getPriority?: (item: TValue) => number
+  /**
    * Initial items to populate the queue with
    */
   initialItems?: Array<TValue>
@@ -11,19 +16,19 @@ export interface QueueOptions<TValue> {
    */
   maxSize?: number
   /**
+   * Callback fired whenever an item is removed from the queue
+   */
+  onGetNextItem?: (item: TValue, queue: Queue<TValue>) => void
+  /**
    * Callback fired whenever an item is added or removed from the queue
    */
   onUpdate?: (queue: Queue<TValue>) => void
-  /**
-   * Function to determine priority of items in the queue
-   * Higher priority items will be processed first
-   */
-  getPriority?: (item: TValue) => number
 }
 
 const defaultOptions: Required<QueueOptions<any>> = {
   initialItems: [],
   maxSize: Infinity,
+  onGetNextItem: () => {},
   onUpdate: () => {},
   getPriority: () => 0,
 }
@@ -165,6 +170,7 @@ export class Queue<TValue> {
     if (item !== undefined) {
       this.executionCount++
       this.options.onUpdate(this)
+      this.options.onGetNextItem(item, this)
     }
     return item
   }
