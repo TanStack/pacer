@@ -43,19 +43,27 @@
       ]
     },
     {
-      "label": "Conceptual Guides",
+      "label": "Guides",
       "children": [
         {
-          "label": "Rate Limiting Concepts",
-          "to": "guides/rate-limiting-concepts"
+          "label": "Rate Limiting Guide",
+          "to": "guides/rate-limiting"
         },
         {
-          "label": "Queueing Concepts",
-          "to": "guides/queueing-concepts"
+          "label": "Throttling Guide",
+          "to": "guides/throttling"
         },
         {
-          "label": "Scheduling Concepts",
-          "to": "guides/scheduling-concepts"
+          "label": "Debouncing Guide",
+          "to": "guides/debouncing"
+        },
+        {
+          "label": "Queueing Guide",
+          "to": "guides/queueing"
+        },
+        {
+          "label": "Asynchronous Queueing Guide",
+          "to": "guides/async-queueing"
         }
       ]
     },
