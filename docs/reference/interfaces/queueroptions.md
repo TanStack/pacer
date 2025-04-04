@@ -9,15 +9,7 @@ title: QueuerOptions
 
 Defined in: [queuer.ts:4](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L4)
 
-Options for configuring a Queue instance
-
-## Extends
-
-- [`QueueOptions`](queueoptions.md)\<`TValue`\>
-
-## Extended by
-
-- [`AsyncQueuerOptions`](asyncqueueroptions.md)
+Options for configuring a Queuer instance
 
 ## Type Parameters
 
@@ -31,9 +23,9 @@ Options for configuring a Queue instance
 optional getPriority: (item) => number;
 ```
 
-Defined in: [queue.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L21)
+Defined in: [queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L9)
 
-Function to determine priority of items in the queue
+Function to determine priority of items in the queuer
 Higher priority items will be processed first
 
 #### Parameters
@@ -46,10 +38,6 @@ Higher priority items will be processed first
 
 `number`
 
-#### Inherited from
-
-[`QueueOptions`](queueoptions.md).[`getPriority`](QueueOptions.md#getpriority)
-
 ***
 
 ### initialItems?
@@ -58,13 +46,9 @@ Higher priority items will be processed first
 optional initialItems: TValue[];
 ```
 
-Defined in: [queue.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L8)
+Defined in: [queuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L13)
 
-Initial items to populate the queue with
-
-#### Inherited from
-
-[`QueueOptions`](queueoptions.md).[`initialItems`](QueueOptions.md#initialitems)
+Initial items to populate the queuer with
 
 ***
 
@@ -74,39 +58,57 @@ Initial items to populate the queue with
 optional maxSize: number;
 ```
 
-Defined in: [queue.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L12)
+Defined in: [queuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L17)
 
-Maximum number of items allowed in the queue
+Maximum number of items allowed in the queuer
 
-#### Inherited from
+***
 
-[`QueueOptions`](queueoptions.md).[`maxSize`](QueueOptions.md#maxsize)
+### onGetNextItem()?
+
+```ts
+optional onGetNextItem: (item, queuer) => void;
+```
+
+Defined in: [queuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L21)
+
+Callback fired whenever an item is removed from the queuer
+
+#### Parameters
+
+##### item
+
+`TValue`
+
+##### queuer
+
+[`Queuer`](../classes/queuer.md)\<`TValue`\>
+
+#### Returns
+
+`void`
 
 ***
 
 ### onUpdate()?
 
 ```ts
-optional onUpdate: (queue) => void;
+optional onUpdate: (queuer) => void;
 ```
 
-Defined in: [queue.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queue.ts#L16)
+Defined in: [queuer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L25)
 
-Callback fired whenever an item is added or removed from the queue
+Callback fired whenever an item is added or removed from the queuer
 
 #### Parameters
 
-##### queue
+##### queuer
 
-[`Queue`](../classes/queue.md)\<`TValue`\>
+[`Queuer`](../classes/queuer.md)\<`TValue`\>
 
 #### Returns
 
 `void`
-
-#### Inherited from
-
-[`QueueOptions`](queueoptions.md).[`onUpdate`](QueueOptions.md#onupdate)
 
 ***
 
@@ -116,15 +118,9 @@ Callback fired whenever an item is added or removed from the queue
 optional started: boolean;
 ```
 
-Defined in: [queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L9)
+Defined in: [queuer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L29)
 
 Whether the queuer should start processing tasks immediately
-
-#### Default
-
-```ts
-false
-```
 
 ***
 
@@ -134,12 +130,6 @@ false
 optional wait: number;
 ```
 
-Defined in: [queuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L14)
+Defined in: [queuer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L33)
 
 Time in milliseconds to wait between processing items
-
-#### Default
-
-```ts
-0
-```

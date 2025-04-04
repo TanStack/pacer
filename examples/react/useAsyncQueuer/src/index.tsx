@@ -18,9 +18,9 @@ function App() {
       return `Initial Task ${i + 1}`
     }),
     concurrency: 2, // Process 2 items concurrently
-    wait: 100, // for demo purposes - usually you would not want extra wait time unless you are throttling
-    onUpdate: (queue) => {
-      setQueueItems(queue.getAllItems())
+    wait: 100, // for demo purposes - usually you would not want extra wait time unless you are throttling with concurrency
+    onUpdate: (asyncQueuer) => {
+      setQueueItems(asyncQueuer.getAllItems())
     },
   })
 

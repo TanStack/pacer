@@ -2,17 +2,20 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AsyncQueuer } from '../src/async-queuer'
 
 describe('AsyncQueuer', () => {
-  let queuer: AsyncQueuer<any>
+  let asyncQueuer: AsyncQueuer<any>
 
   beforeEach(() => {
-    queuer = new AsyncQueuer()
+    asyncQueuer = new AsyncQueuer()
   })
 
   describe('basic functionality', () => {
-    it('should create an empty queuer', () => {
-      expect(queuer.getAllItems()).toHaveLength(0)
-      expect(queuer.isIdle()).toBe(true)
-      expect(queuer.isRunning()).toBe(false)
+    it('should create an empty queue', () => {
+      expect(asyncQueuer.getAllItems()).toHaveLength(0)
+      expect(asyncQueuer.isIdle()).toBe(false)
+      expect(asyncQueuer.isRunning()).toBe(false)
+      asyncQueuer.start()
+      expect(asyncQueuer.isRunning()).toBe(true)
+      expect(asyncQueuer.isRunning()).toBe(true)
     })
 
     it('should process tasks in FIFO order when started', async () => {
@@ -21,14 +24,14 @@ describe('AsyncQueuer', () => {
       const task2 = () => Promise.resolve(results.push(2))
       const task3 = () => Promise.resolve(results.push(3))
 
-      queuer.addItem(task1)
-      queuer.addItem(task2)
-      queuer.addItem(task3)
+      asyncQueuer.addItem(task1)
+      asyncQueuer.addItem(task2)
+      asyncQueuer.addItem(task3)
 
-      await queuer.start()
+      await asyncQueuer.start()
 
       expect(results).toEqual([1, 2, 3])
-      expect(queuer.isIdle()).toBe(true)
+      expect(asyncQueuer.isIdle()).toBe(true)
     })
 
     it('should respect concurrency limit', async () => {
@@ -45,14 +48,14 @@ describe('AsyncQueuer', () => {
         return id
       }
 
-      queuer = new AsyncQueuer({ concurrency: 2 })
+      asyncQueuer = new AsyncQueuer({ concurrency: 2 })
 
       // Queue 5 tasks
       for (let i = 0; i < 5; i++) {
-        queuer.addItem(createTask(i))
+        asyncQueuer.addItem(createTask(i))
       }
 
-      await queuer.start()
+      await asyncQueuer.start()
 
       expect(maxConcurrent.count).toBe(2) // Should never exceed 2 concurrent tasks
     })
@@ -63,22 +66,22 @@ describe('AsyncQueuer', () => {
       const successHandler = vi.fn()
       const result = 'success'
 
-      queuer.onSuccess(successHandler)
+      asyncQueuer.onSuccess(successHandler)
 
-      queuer.addItem(() => Promise.resolve(result))
-      await queuer.start()
+      asyncQueuer.addItem(() => Promise.resolve(result))
+      await asyncQueuer.start()
 
-      expect(successHandler).toHaveBeenCalledWith(result, expect.any(Function))
+      expect(successHandler).toHaveBeenCalledWith(result)
     })
 
     it('should handle settled callback', async () => {
       const settledHandler = vi.fn()
       const result = 'test'
 
-      queuer.onSettled(settledHandler)
+      asyncQueuer.onSettled(settledHandler)
 
-      queuer.addItem(() => Promise.resolve(result))
-      await queuer.start()
+      asyncQueuer.addItem(() => Promise.resolve(result))
+      await asyncQueuer.start()
 
       expect(settledHandler).toHaveBeenCalled()
     })
@@ -86,19 +89,18 @@ describe('AsyncQueuer', () => {
 
   describe('queue control', () => {
     it('should clear the queue', () => {
-      queuer.addItem(() => Promise.resolve(1))
-      queuer.addItem(() => Promise.resolve(2))
+      asyncQueuer.addItem(() => Promise.resolve(1))
+      asyncQueuer.addItem(() => Promise.resolve(2))
 
-      expect(queuer.getPendingItems()).toHaveLength(2)
+      expect(asyncQueuer.getPendingItems()).toHaveLength(2)
 
-      queuer.clear()
+      asyncQueuer.clear()
 
-      expect(queuer.getPendingItems()).toHaveLength(0)
-      expect(queuer.isIdle()).toBe(true)
+      expect(asyncQueuer.getPendingItems()).toHaveLength(0)
     })
 
     it('should throttle concurrency', async () => {
-      queuer = new AsyncQueuer({ concurrency: 5 })
+      asyncQueuer = new AsyncQueuer({ concurrency: 5 })
       const running: Array<number> = []
       const maxConcurrent = { count: 0 }
       const delay = (ms: number) =>
@@ -114,13 +116,13 @@ describe('AsyncQueuer', () => {
 
       // Queue 10 tasks
       for (let i = 0; i < 10; i++) {
-        queuer.addItem(createTask(i))
+        asyncQueuer.addItem(createTask(i))
       }
 
-      queuer.start()
+      asyncQueuer.start()
       await delay(10)
-      queuer.throttle(2) // Reduce concurrency to 2
-      await queuer.start()
+      asyncQueuer.throttle(2) // Reduce concurrency to 2
+      await asyncQueuer.start()
 
       expect(maxConcurrent.count).toBeLessThanOrEqual(5)
     })
@@ -131,11 +133,11 @@ describe('AsyncQueuer', () => {
       const task1 = () => Promise.resolve(1)
       const task2 = () => Promise.resolve(2)
 
-      queuer.addItem(task1)
-      queuer.addItem(task2)
+      asyncQueuer.addItem(task1)
+      asyncQueuer.addItem(task2)
 
-      const frontTask = queuer.peek()
-      const backTask = queuer.peek('back')
+      const frontTask = asyncQueuer.peek()
+      const backTask = asyncQueuer.peek('back')
 
       // We can't compare the wrapped task functions directly
       // Instead verify the resolved values
@@ -146,8 +148,8 @@ describe('AsyncQueuer', () => {
 
   describe('constructor options', () => {
     it('should respect started option', () => {
-      const queuer = new AsyncQueuer({ started: true })
-      expect(queuer.isRunning()).toBe(true)
+      const queue = new AsyncQueuer({ started: true })
+      expect(queue.isRunning()).toBe(true)
     })
 
     it('should respect initial concurrency', async () => {
@@ -164,14 +166,14 @@ describe('AsyncQueuer', () => {
         return id
       }
 
-      const queuer = new AsyncQueuer({ concurrency: 3, started: true })
+      const queue = new AsyncQueuer({ concurrency: 3, started: true })
 
       // Queue 6 tasks
       for (let i = 0; i < 6; i++) {
-        queuer.addItem(createTask(i))
+        queue.addItem(createTask(i))
       }
 
-      await queuer.start()
+      await queue.start()
 
       expect(maxConcurrent.count).toBe(3)
     })

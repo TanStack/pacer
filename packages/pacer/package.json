@@ -18,6 +18,7 @@
     "debounce",
     "throttle",
     "rate-limit",
+    "queuer",
     "queue",
     "pacer"
   ],
@@ -94,16 +95,6 @@
       "require": {
         "types": "./dist/cjs/debouncer.d.cts",
         "default": "./dist/cjs/debouncer.cjs"
-      }
-    },
-    "./queue": {
-      "import": {
-        "types": "./dist/esm/queue.d.ts",
-        "default": "./dist/esm/queue.js"
-      },
-      "require": {
-        "types": "./dist/cjs/queue.d.cts",
-        "default": "./dist/cjs/queue.cjs"
       }
     },
     "./queuer": {

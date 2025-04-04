@@ -49,7 +49,7 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 addItem: (item, position?) => boolean;
 ```
 
-Adds an item to the queue and starts processing if not already running
+Adds an item to the queuer and starts processing if not already running
 
 #### Parameters
 
@@ -59,13 +59,13 @@ Adds an item to the queue and starts processing if not already running
 
 ##### position?
 
-`"front"` | `"back"`
+`QueuePosition`
 
 #### Returns
 
 `boolean`
 
-true if item was added, false if queue is full
+true if item was added, false if queuer is full
 
 ### clear()
 
@@ -73,7 +73,7 @@ true if item was added, false if queue is full
 clear: () => void;
 ```
 
-Removes all items from the queue
+Removes all items from the queuer
 
 #### Returns
 
@@ -85,7 +85,7 @@ Removes all items from the queue
 getAllItems: () => TValue[];
 ```
 
-Returns a copy of all items in the queue
+Returns a copy of all items in the queuer
 
 #### Returns
 
@@ -97,7 +97,7 @@ Returns a copy of all items in the queue
 getExecutionCount: () => number;
 ```
 
-Returns the number of items that have been removed from the queue
+Returns the number of items that have been removed from the queuer
 
 #### Returns
 
@@ -109,7 +109,7 @@ Returns the number of items that have been removed from the queue
 getNextItem: (position?) => undefined | TValue;
 ```
 
-Removes and returns an item from the queue using shift (default) or pop
+Removes and returns an item from the queuer using shift (default) or pop
 
 #### Parameters
 
@@ -124,10 +124,10 @@ Removes and returns an item from the queue using shift (default) or pop
 #### Example
 
 ```ts
-// Standard FIFO queue
-queue.getNextItem()
+// Standard FIFO queuer
+queuer.getNextItem()
 // Stack-like behavior (LIFO)
-queue.getNextItem('back')
+queuer.getNextItem('back')
 ```
 
 ### isEmpty()
@@ -136,7 +136,7 @@ queue.getNextItem('back')
 isEmpty: () => boolean;
 ```
 
-Returns true if the queue is empty
+Returns true if the queuer is empty
 
 #### Returns
 
@@ -148,7 +148,7 @@ Returns true if the queue is empty
 isFull: () => boolean;
 ```
 
-Returns true if the queue is full
+Returns true if the queuer is full
 
 #### Returns
 
@@ -222,9 +222,9 @@ Returns an item without removing it
 
 ```ts
 // Look at next item to getNextItem
-queue.peek()
+queuer.peek()
 // Look at last item (like stack top)
-queue.peek('back')
+queuer.peek('back')
 ```
 
 ### reset()
@@ -233,7 +233,7 @@ queue.peek('back')
 reset: (withInitialItems?) => void;
 ```
 
-Resets the queue to its initial state
+Resets the queuer to its initial state
 
 #### Parameters
 
@@ -251,7 +251,7 @@ Resets the queue to its initial state
 size: () => number;
 ```
 
-Returns the current size of the queue
+Returns the current size of the queuer
 
 #### Returns
 

@@ -51,13 +51,13 @@ The hook returns an object containing methods to:
 addItem: (fn, position?) => Promise<TValue>;
 ```
 
-Adds a task to the queue
+Adds a task to the queuer
 
 #### Parameters
 
 ##### fn
 
-() => `TValue` \| `Promise`\<`TValue`\>
+() => `Promise`\<`TValue`\>
 
 ##### position?
 
@@ -73,7 +73,7 @@ Adds a task to the queue
 clear: () => void;
 ```
 
-Removes all items from the queue
+Removes all items from the queuer
 
 #### Returns
 
@@ -82,30 +82,26 @@ Removes all items from the queue
 ### getActiveItems()
 
 ```ts
-getActiveItems: () => () => Promise<any>[];
+getActiveItems: () => () => Promise<TValue>[];
 ```
 
 Returns the active items
 
 #### Returns
 
-() => `Promise`\<`any`\>[]
-
-The active items
+() => `Promise`\<`TValue`\>[]
 
 ### getAllItems()
 
 ```ts
-getAllItems: () => () => Promise<any>[];
+getAllItems: () => () => Promise<TValue>[];
 ```
 
-Returns all items (active and pending)
+Returns a copy of all items in the queuer
 
 #### Returns
 
-() => `Promise`\<`any`\>[]
-
-All items
+() => `Promise`\<`TValue`\>[]
 
 ### getExecutionCount()
 
@@ -113,7 +109,7 @@ All items
 getExecutionCount: () => number;
 ```
 
-Returns the number of items that have been removed from the queue
+Returns the number of items that have been removed from the queuer
 
 #### Returns
 
@@ -125,26 +121,17 @@ Returns the number of items that have been removed from the queue
 getNextItem: (position?) => undefined | () => Promise<TValue>;
 ```
 
-Removes and returns an item from the queue using shift (default) or pop
+Removes and returns an item from the queuer
 
 #### Parameters
 
 ##### position?
 
-`QueuePosition`
+`"front"` | `"back"`
 
 #### Returns
 
 `undefined` \| () => `Promise`\<`TValue`\>
-
-#### Example
-
-```ts
-// Standard FIFO queue
-queue.getNextItem()
-// Stack-like behavior (LIFO)
-queue.getNextItem('back')
-```
 
 ### getPendingItems()
 
@@ -158,15 +145,13 @@ Returns the pending items
 
 () => `Promise`\<`TValue`\>[]
 
-The pending items
-
 ### isEmpty()
 
 ```ts
 isEmpty: () => boolean;
 ```
 
-Returns true if the queue is empty
+Returns true if the queuer is empty
 
 #### Returns
 
@@ -178,7 +163,7 @@ Returns true if the queue is empty
 isFull: () => boolean;
 ```
 
-Returns true if the queue is full
+Returns true if the queuer is full
 
 #### Returns
 
@@ -190,7 +175,7 @@ Returns true if the queue is full
 isIdle: () => boolean;
 ```
 
-Returns true if all items are settled
+Returns true if the queuer is running but has no items to process
 
 #### Returns
 
@@ -220,7 +205,7 @@ Adds a callback to be called when a task errors
 
 ##### cb
 
-(`error`, `task`) => `void`
+(`error`) => `void`
 
 #### Returns
 
@@ -242,7 +227,7 @@ Adds a callback to be called when a task is settled
 
 ##### cb
 
-() => `void`
+(`result`) => `void`
 
 #### Returns
 
@@ -264,29 +249,7 @@ Adds a callback to be called when a task succeeds
 
 ##### cb
 
-(`result`, `task`) => `void`
-
-#### Returns
-
-`Function`
-
-##### Returns
-
-`void`
-
-### onUpdate()
-
-```ts
-onUpdate: (cb) => () => void;
-```
-
-Adds a callback to be called when an item is processed
-
-#### Parameters
-
-##### cb
-
-(`item`) => `void`
+(`result`) => `void`
 
 #### Returns
 
@@ -308,20 +271,11 @@ Returns an item without removing it
 
 ##### position?
 
-`QueuePosition`
+`"front"` | `"back"`
 
 #### Returns
 
 `undefined` \| () => `Promise`\<`TValue`\>
-
-#### Example
-
-```ts
-// Look at next item to getNextItem
-queue.peek()
-// Look at last item (like stack top)
-queue.peek('back')
-```
 
 ### reset()
 
@@ -329,7 +283,7 @@ queue.peek('back')
 reset: (withInitialItems?) => void;
 ```
 
-Resets the queue to its initial state
+Resets the queuer to its initial state
 
 #### Parameters
 
@@ -347,7 +301,7 @@ Resets the queue to its initial state
 size: () => number;
 ```
 
-Returns the current size of the queue
+Returns the current size of the queuer
 
 #### Returns
 
@@ -364,8 +318,6 @@ Starts the queuer and processes items
 #### Returns
 
 `Promise`\<`void`\>
-
-A promise that resolves when the queuer is settled
 
 ### stop()
 

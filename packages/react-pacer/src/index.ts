@@ -23,13 +23,10 @@ export * from './debouncer/useDebouncedState'
 export * from './debouncer/useDebouncedValue'
 export * from './debouncer/useDebouncer'
 
-// queue
-export * from './queue/useQueue'
-export * from './queue/useQueueState'
-
 // queuer
 export * from './queuer/useQueuer'
 export * from './queuer/useQueuerState'
+
 // rate-limiter
 export * from './rate-limiter/useRateLimiter'
 export * from './rate-limiter/useRateLimitedState'

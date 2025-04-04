@@ -11,8 +11,8 @@ title: useAsyncQueuerState
 function useAsyncQueuerState<TValue>(options): readonly [() => Promise<TValue>[], {
   addItem: (fn, position?) => Promise<TValue>;
   clear: () => void;
-  getActiveItems: () => () => Promise<any>[];
-  getAllItems: () => () => Promise<any>[];
+  getActiveItems: () => () => Promise<TValue>[];
+  getAllItems: () => () => Promise<TValue>[];
   getExecutionCount: () => number;
   getNextItem: (position?) => undefined | () => Promise<TValue>;
   getPendingItems: () => () => Promise<TValue>[];
@@ -23,7 +23,6 @@ function useAsyncQueuerState<TValue>(options): readonly [() => Promise<TValue>[]
   onError: (cb) => () => void;
   onSettled: (cb) => () => void;
   onSuccess: (cb) => () => void;
-  onUpdate: (cb) => () => void;
   peek: (position?) => undefined | () => Promise<TValue>;
   reset: (withInitialItems?) => void;
   size: () => number;
@@ -69,8 +68,8 @@ The state will automatically update whenever items are:
 readonly \[() => `Promise`\<`TValue`\>[], \{
   `addItem`: (`fn`, `position`?) => `Promise`\<`TValue`\>;
   `clear`: () => `void`;
-  `getActiveItems`: () => () => `Promise`\<`any`\>[];
-  `getAllItems`: () => () => `Promise`\<`any`\>[];
+  `getActiveItems`: () => () => `Promise`\<`TValue`\>[];
+  `getAllItems`: () => () => `Promise`\<`TValue`\>[];
   `getExecutionCount`: () => `number`;
   `getNextItem`: (`position`?) => `undefined` \| () => `Promise`\<`TValue`\>;
   `getPendingItems`: () => () => `Promise`\<`TValue`\>[];
@@ -81,7 +80,6 @@ readonly \[() => `Promise`\<`TValue`\>[], \{
   `onError`: (`cb`) => () => `void`;
   `onSettled`: (`cb`) => () => `void`;
   `onSuccess`: (`cb`) => () => `void`;
-  `onUpdate`: (`cb`) => () => `void`;
   `peek`: (`position`?) => `undefined` \| () => `Promise`\<`TValue`\>;
   `reset`: (`withInitialItems`?) => `void`;
   `size`: () => `number`;

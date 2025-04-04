@@ -87,16 +87,6 @@
         "default": "./dist/cjs/debouncer/index.cjs"
       }
     },
-    "./queue": {
-      "import": {
-        "types": "./dist/esm/queue/index.d.ts",
-        "default": "./dist/esm/queue/index.js"
-      },
-      "require": {
-        "types": "./dist/cjs/queue/index.d.cts",
-        "default": "./dist/cjs/queue/index.cjs"
-      }
-    },
     "./queuer": {
       "import": {
         "types": "./dist/esm/queuer/index.d.ts",

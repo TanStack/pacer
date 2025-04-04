@@ -84,7 +84,6 @@ export function useAsyncQueuer<TValue>(
     onError: asyncQueuer.current.onError.bind(asyncQueuer.current),
     onSettled: asyncQueuer.current.onSettled.bind(asyncQueuer.current),
     onSuccess: asyncQueuer.current.onSuccess.bind(asyncQueuer.current),
-    onUpdate: asyncQueuer.current.onUpdate.bind(asyncQueuer.current),
     peek: asyncQueuer.current.peek.bind(asyncQueuer.current),
     reset: asyncQueuer.current.reset.bind(asyncQueuer.current),
     size: asyncQueuer.current.size.bind(asyncQueuer.current),
