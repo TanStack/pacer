@@ -17,13 +17,49 @@ Options for configuring a Queuer instance
 
 ## Properties
 
+### addNewItemTo?
+
+```ts
+optional addNewItemTo: QueuePosition;
+```
+
+Defined in: [queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L9)
+
+Default position to add items to the queuer
+
+#### Default
+
+```ts
+'back'
+```
+
+***
+
+### getNextItemFrom?
+
+```ts
+optional getNextItemFrom: QueuePosition;
+```
+
+Defined in: [queuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L14)
+
+Default position to get items from during processing
+
+#### Default
+
+```ts
+'front'
+```
+
+***
+
 ### getPriority()?
 
 ```ts
 optional getPriority: (item) => number;
 ```
 
-Defined in: [queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L9)
+Defined in: [queuer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L19)
 
 Function to determine priority of items in the queuer
 Higher priority items will be processed first
@@ -46,7 +82,7 @@ Higher priority items will be processed first
 optional initialItems: TValue[];
 ```
 
-Defined in: [queuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L13)
+Defined in: [queuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L23)
 
 Initial items to populate the queuer with
 
@@ -58,7 +94,7 @@ Initial items to populate the queuer with
 optional maxSize: number;
 ```
 
-Defined in: [queuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L17)
+Defined in: [queuer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L27)
 
 Maximum number of items allowed in the queuer
 
@@ -70,7 +106,7 @@ Maximum number of items allowed in the queuer
 optional onGetNextItem: (item, queuer) => void;
 ```
 
-Defined in: [queuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L21)
+Defined in: [queuer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L31)
 
 Callback fired whenever an item is removed from the queuer
 
@@ -96,7 +132,7 @@ Callback fired whenever an item is removed from the queuer
 optional onUpdate: (queuer) => void;
 ```
 
-Defined in: [queuer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L25)
+Defined in: [queuer.ts:35](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L35)
 
 Callback fired whenever an item is added or removed from the queuer
 
@@ -118,7 +154,7 @@ Callback fired whenever an item is added or removed from the queuer
 optional started: boolean;
 ```
 
-Defined in: [queuer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L29)
+Defined in: [queuer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L39)
 
 Whether the queuer should start processing tasks immediately
 
@@ -130,6 +166,6 @@ Whether the queuer should start processing tasks immediately
 optional wait: number;
 ```
 
-Defined in: [queuer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L33)
+Defined in: [queuer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L43)
 
 Time in milliseconds to wait between processing items

@@ -3,59 +3,98 @@ title: Queueing Guide
 id: queueing
 ---
 
-Unlike [Rate Limiting](../guides/rate-limiting), [Throttling](../guides/throttling), and [Debouncing](../guides/debouncing) which drop executions when they occur too frequently, queuers ensure that every operation is processed. They provide a way to manage and control the flow of operations without losing any requests. This makes them ideal for scenarios where data loss is unacceptable.
+Unlike [Rate Limiting](../guides/rate-limiting), [Throttling](../guides/throttling), and [Debouncing](../guides/debouncing) which drop executions when they occur too frequently, queuers ensure that every operation is processed. They provide a way to manage and control the flow of operations without losing any requests. This makes them ideal for scenarios where data loss is unacceptable. This guide will cover the Queueing concepts of TanStack Pacer.
 
 ## Queueing Concept
+
+Queueing ensures that every operation is eventually processed, even if they come in faster than they can be handled. Unlike the other execution control techniques that drop excess operations, queueing buffers operations in an ordered list and processes them according to specific rules. This makes queueing the only "lossless" execution control technique in TanStack Pacer.
+
+### Queueing Visualization
 
 ```text
 Queueing (processing one item every 2 ticks)
 Timeline: [1 second per tick]
-Calls:     ↓↓↓  ↓↓    ↓↓↓↓      ↓
-Queue:    [ABC][BC]  [BCDEF]   [F]    []
-Executed:   A   B      C        D     E     F
-           [===|===|===|===|===|===|===|===]
-           ^ Unlike rate limiting/throttling/debouncing,
-             ALL calls are eventually processed in order
+Calls:        ⬇️  ⬇️  ⬇️     ⬇️  ⬇️     ⬇️  ⬇️  ⬇️
+Queue:       [ABC]   [BC]    [BCDE]    [DE]    [E]    []
+Executed:     ✅     ✅       ✅        ✅      ✅     ✅
+             [=================================================================]
+             ^ Unlike rate limiting/throttling/debouncing,
+               ALL calls are eventually processed in order
 
-           [Items queue up] [Process steadily] [Empty]
-            when busy        one by one         queue
+             [Items queue up]   [Process steadily]   [Empty]
+              when busy          one by one           queue
 ```
 
-When operations come in faster than they can be processed, a queue acts as a buffer, storing the operations in an ordered list until they can be handled. This is particularly useful in scenarios like:
+### When to Use Queueing
+
+Queueing is particularly important when you need to ensure that every operation is processed, even if it means introducing some delay. This makes it ideal for scenarios where data consistency and completeness are more important than immediate execution.
+
+Common use cases include:
 - Processing user interactions in a UI where every action must be recorded
 - Handling database operations that need to maintain data consistency
 - Managing API requests that must all complete successfully
 - Coordinating background tasks that can't be dropped
+- Animation sequences where every frame matters
+- Form submissions where every entry needs to be saved
 
-## Queuer
+### When Not to Use Queueing
 
-The `Queuer` class provides a flexible implementation that can operate in multiple modes with built-in timing controls. It automatically processes items with configurable delays between operations, making it perfect for scenarios where you need to control the rate of processing without dropping any operations.
+Queueing might not be the best choice when:
+- Immediate feedback is more important than processing every operation
+- You only care about the most recent value (use [debouncing](../guides/debouncing) instead)
 
-### Controlled Timing
+> [!TIP]
+> If you're currently using rate limiting, throttling, or debouncing but finding that dropped operations are causing problems, queueing is likely the solution you need.
 
-The Queuer introduces timing control through its `wait` option, allowing you to throttle how quickly items are processed. This feature is particularly useful for:
-- Rate limiting operations without dropping them
-- Creating smooth animations or transitions
-- Implementing progressive loading of data
-- Controlling resource usage by spacing out operations
+## Queueing in TanStack Pacer
+
+TanStack Pacer provides queueing through the simple `queue` function and the more powerful `Queuer` class. While other execution control techniques typically favor their function-based APIs, queueing often benefits from the additional control provided by the class-based API.
+
+### Basic Usage with `queue`
+
+The `queue` function provides a simple way to create an always-running queue that processes items as they're added:
+
+```ts
+import { queue } from '@tanstack/pacer'
+
+// Create a queue that processes items every second
+const processItems = queue<number>({
+  wait: 1000,
+  onUpdate: (queuer) => {
+    console.log('Current queue:', queuer.getAllItems())
+  }
+})
+
+// Add items to be processed
+processItems(1) // Processed immediately
+processItems(2) // Processed after 1 second
+processItems(3) // Processed after 2 seconds
+```
+
+While the `queue` function is simple to use, it only provides a basic always-running queue through the `addItem` method. For most use cases, you'll want the additional control and features provided by the `Queuer` class.
+
+### Advanced Usage with `Queuer` Class
+
+The `Queuer` class provides complete control over queue behavior and processing:
 
 ```ts
 import { Queuer } from '@tanstack/pacer'
 
-const queuer = new Queuer<number>({
+// Create a queue that processes items every second
+const queue = new Queuer<number>({
   wait: 1000, // Wait 1 second between processing items
+  onUpdate: (queuer) => {
+    console.log('Current queue:', queuer.getAllItems())
+  }
 })
 
-// Add callback for when items are processed
-queuer.onUpdate(num => console.log(`Processing: ${num}`))
-
 // Start processing
-queuer.start()
+queue.start()
 
 // Add items to be processed
-queuer.addItem(1)
-queuer.addItem(2)
-queuer.addItem(3)
+queue.addItem(1)
+queue.addItem(2)
+queue.addItem(3)
 
 // Items will be processed one at a time with 1 second delay between each
 // Output:
@@ -64,20 +103,26 @@ queuer.addItem(3)
 // Processing: 3 (after 2 seconds)
 ```
 
-### Queue Ordering Options
+### Queue Types and Ordering
 
 What makes TanStack Pacer's Queuer unique is its ability to adapt to different use cases through its position-based API. The same Queuer can behave as a traditional queue, a stack, or a double-ended queue, all through the same consistent interface.
 
 #### FIFO Queue (First In, First Out)
+
 The default behavior where items are processed in the order they were added. This is the most common queue type and follows the principle that the first item added should be the first one processed.
 
-```
+```text
 FIFO Queue Visualization:
 
 Entry →  [A][B][C][D] → Exit
-         ↑           ↑
-      New items    Items are
-      added here   removed here
+         ⬇️         ⬆️
+      New items   Items are
+      added here  processed here
+
+Timeline: [1 second per tick]
+Calls:        ⬇️  ⬇️  ⬇️     ⬇️
+Queue:       [ABC]   [BC]    [C]    []
+Processed:    A       B       C
 ```
 
 FIFO queues are ideal for:
@@ -87,24 +132,33 @@ FIFO queues are ideal for:
 - Event handling systems where events must be processed in chronological order
 
 ```ts
-const queue = new Queuer<number>()
+const queue = new Queuer<number>({
+  addNewItemTo: 'back', // default
+  getNextItemFrom: 'front', // default
+})
 queue.addItem(1) // [1]
 queue.addItem(2) // [1, 2]
-// Items will process in order: 1, then 2
+// Processes: 1, then 2
 ```
 
 #### LIFO Stack (Last In, First Out)
+
 By specifying 'back' as the position for both adding and retrieving items, the queuer behaves like a stack. In a stack, the most recently added item is the first one to be processed.
 
-```
+```text
 LIFO Stack Visualization:
 
-     ↑ Exit
-    [D]  ← Most recently added
+     ⬆️ Process
+    [D] ← Most recently added
     [C]
     [B]
-    [A]  ← First added
-     ↓ Entry
+    [A] ← First added
+     ⬇️ Entry
+
+Timeline: [1 second per tick]
+Calls:        ⬇️  ⬇️  ⬇️     ⬇️
+Queue:       [ABC]   [AB]    [A]    []
+Processed:    C       B       A
 ```
 
 Stack behavior is particularly useful for:
@@ -114,25 +168,33 @@ Stack behavior is particularly useful for:
 - Depth-first traversal algorithms
 
 ```ts
-const stack = new Queuer<number>()
+const stack = new Queuer<number>({
+  addNewItemTo: 'back', // default
+  getNextItemFrom: 'back', // override default for stack behavior
+})
 stack.addItem(1) // [1]
 stack.addItem(2) // [1, 2]
 // Items will process in order: 2, then 1
+
+stack.getNextItem('back') // get next item from back of queue instead of front
 ```
 
 #### Priority Queue
+
 Priority queues add another dimension to queue ordering by allowing items to be sorted based on their priority rather than just their insertion order. Each item is assigned a priority value, and the queue automatically maintains the items in priority order.
 
-```
+```text
 Priority Queue Visualization:
 
 Entry →  [P:5][P:3][P:2][P:1] → Exit
-          High         Low
-         Priority    Priority
-         
-Items are automatically sorted by priority
-P:5 = Priority level 5 (highest)
-P:1 = Priority level 1 (lowest)
+          ⬇️           ⬆️
+     High Priority   Low Priority
+     items here      processed last
+
+Timeline: [1 second per tick]
+Calls:        ⬇️(P:2)  ⬇️(P:5)  ⬇️(P:1)     ⬇️(P:3)
+Queue:       [2]      [5,2]    [5,2,1]    [3,2,1]    [2,1]    [1]    []
+Processed:              5         -          3         2        1
 ```
 
 Priority queues are essential for:
@@ -148,7 +210,67 @@ const priorityQueue = new Queuer<number>({
 priorityQueue.addItem(1) // [1]
 priorityQueue.addItem(3) // [3, 1]
 priorityQueue.addItem(2) // [3, 2, 1]
-// Items will process in order: 3, 2, then 1
+// Processes: 3, 2, then 1
 ```
 
-For handling concurrent asynchronous operations with multiple workers, see [Async Queueing](./async-queueing) which covers the `AsyncQueuer` class. 
+### Starting and Stopping
+
+The `Queuer` class supports starting and stopping processing through the `start()` and `stop()` methods, and can be configured to start automatically with the `started` option:
+
+```ts
+const queue = new Queuer<number>({ 
+  wait: 1000,
+  started: false // Start paused
+})
+
+// Control processing
+queue.start() // Begin processing items
+queue.stop()  // Pause processing
+
+// Check processing state
+console.log(queue.isRunning()) // Whether the queue is currently processing
+console.log(queue.isIdle())    // Whether the queue is running but empty
+```
+
+If you are using a framework adapter where the queuer options are reactive, you can set the `started` option to a conditional value:
+
+```ts
+const queue = useQueuer(
+  processItem, 
+  { 
+    wait: 1000,
+    started: isOnline // Start/stop based on connection status IF using a framework adapter that supports reactive options
+  }
+)
+```
+
+### Additional Features
+
+The Queuer provides several helpful methods for queue management:
+
+```ts
+// Queue inspection
+queue.peek()           // View next item without removing it
+queue.size()          // Get current queue size
+queue.isEmpty()       // Check if queue is empty
+queue.isFull()        // Check if queue has reached maxSize
+queue.getAllItems()   // Get copy of all queued items
+
+// Queue manipulation
+queue.clear()         // Remove all items
+queue.reset()         // Reset to initial state
+queue.getExecutionCount() // Get number of processed items
+
+// Event handling
+queue.onUpdate((item) => {
+  console.log('Processed:', item)
+})
+```
+
+### Asynchronous Queueing
+
+For handling asynchronous operations with multiple workers, see the [Async Queueing Guide](../guides/async-queueing) which covers the `AsyncQueuer` class.
+
+### Framework Adapters
+
+Each framework adapter builds convenient hooks and functions around the queuer classes. Hooks like `useQueuer` or `useQueueState` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.

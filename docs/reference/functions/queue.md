@@ -11,13 +11,14 @@ title: queue
 function queue<TValue>(options): (item, position) => boolean
 ```
 
-Defined in: [queuer.ts:373](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L373)
+Defined in: [queuer.ts:393](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L393)
 
-Creates a queuer that processes items in a queuer immediately upon addition.
+Creates a queue that processes items in a queuer immediately upon addition.
 Items are processed sequentially in FIFO order by default.
 
 This is a simplified wrapper around the Queuer class that only exposes the
-`addItem` method. For more control over queuer processing, use the Queuer class
+`addItem` method. This queue is always running and will process items as they are added.
+For more control over queuer processing, use the Queuer class
 directly which provides methods like `start`, `stop`, `reset`, and more.
 
 ## Type Parameters
@@ -44,7 +45,7 @@ Adds an item to the queuer and starts processing if not already running
 
 #### position
 
-[`QueuePosition`](../type-aliases/queueposition.md) = `'back'`
+[`QueuePosition`](../type-aliases/queueposition.md) = `...`
 
 ### Returns
 

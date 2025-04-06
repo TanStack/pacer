@@ -11,7 +11,7 @@ title: useRateLimitedCallback
 function useRateLimitedCallback<TFn, TArgs>(fn, options): (...args) => boolean
 ```
 
-Defined in: react-pacer/src/rate-limiter/useRateLimitedCallback.ts:51
+Defined in: [react-pacer/src/rate-limiter/useRateLimitedCallback.ts:51](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedCallback.ts#L51)
 
 A React hook that creates a rate-limited version of a callback function.
 This hook is essentially a wrapper around the basic `rateLimiter` function

@@ -3,6 +3,16 @@
  */
 export interface QueuerOptions<TValue> {
   /**
+   * Default position to add items to the queuer
+   * @default 'back'
+   */
+  addNewItemTo?: QueuePosition
+  /**
+   * Default position to get items from during processing
+   * @default 'front'
+   */
+  getNextItemFrom?: QueuePosition
+  /**
    * Function to determine priority of items in the queuer
    * Higher priority items will be processed first
    */
@@ -34,11 +44,13 @@ export interface QueuerOptions<TValue> {
 }
 
 const defaultOptions: Required<QueuerOptions<any>> = {
+  addNewItemTo: 'back',
+  getNextItemFrom: 'front',
+  getPriority: () => 0,
   initialItems: [],
   maxSize: Infinity,
   onGetNextItem: () => {},
   onUpdate: () => {},
-  getPriority: () => 0,
   started: false,
   wait: 0,
 }
@@ -130,7 +142,7 @@ export class Queuer<TValue> {
       return
     }
     while (!this.isEmpty()) {
-      const nextItem = this.getNextItem()
+      const nextItem = this.getNextItem(this.options.getNextItemFrom)
       if (nextItem === undefined) {
         break
       }
@@ -162,7 +174,10 @@ export class Queuer<TValue> {
    * Adds an item to the queuer and starts processing if not already running
    * @returns true if item was added, false if queuer is full
    */
-  addItem(item: TValue, position: QueuePosition = 'back'): boolean {
+  addItem(
+    item: TValue,
+    position: QueuePosition = this.options.addNewItemTo,
+  ): boolean {
     if (this.isFull()) {
       return false
     }
@@ -207,7 +222,9 @@ export class Queuer<TValue> {
    * queuer.getNextItem('back')
    * ```
    */
-  getNextItem(position: QueuePosition = 'front'): TValue | undefined {
+  getNextItem(
+    position: QueuePosition = this.options.getNextItemFrom,
+  ): TValue | undefined {
     let item: TValue | undefined
 
     if (position === 'front') {
@@ -235,7 +252,9 @@ export class Queuer<TValue> {
    * queuer.peek('back')
    * ```
    */
-  peek(position: QueuePosition = 'front'): TValue | undefined {
+  peek(
+    position: QueuePosition = this.options.getNextItemFrom,
+  ): TValue | undefined {
     if (position === 'front') {
       return this.items[0]
     }
@@ -344,11 +363,12 @@ export class Queuer<TValue> {
 }
 
 /**
- * Creates a queuer that processes items in a queuer immediately upon addition.
+ * Creates a queue that processes items in a queuer immediately upon addition.
  * Items are processed sequentially in FIFO order by default.
  *
  * This is a simplified wrapper around the Queuer class that only exposes the
- * `addItem` method. For more control over queuer processing, use the Queuer class
+ * `addItem` method. This queue is always running and will process items as they are added.
+ * For more control over queuer processing, use the Queuer class
  * directly which provides methods like `start`, `stop`, `reset`, and more.
  *
  * @example

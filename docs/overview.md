@@ -3,24 +3,43 @@ title: Overview
 id: overview
 ---
 
-TanStack Pacer is a comprehensive utility library designed to help developers manage the execution timing of functions across any JavaScript environment. It offers a robust suite of tools for controlling the pace of operations, whether you're working with vanilla JavaScript or a reactive framework like React.
+TanStack Pacer is a library focused on providing high-quality utilities for controlling function execution timing in your applications. While similar utilities exist elsewhere, we aim to get all the important details right - including ***type-safety***, ***tree-shaking***, and a consistent and ***intuitive API***. By focusing on these fundamentals and making them available in a ***framework agnostic*** way, we hope to make these utilities and patterns more commonplace in your applications. Proper execution control is often an afterthought in application development, leading to performance issues, race conditions, and poor user experiences that could have been prevented. TanStack Pacer helps you implement these critical patterns correctly from the start!
+
+> [!IMPORTANT]
+> TanStack Pacer is currently in **alpha** and its API is subject to change.
+>
+> The scope of this library may grow, but we hope to keep the bundle size of each individual utility lean and focused.
+
+## Origin
+
+Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of these utilities have been living in other TanStack libraries for quite some time. We extracted code from TanStack Query, Router, Form, and even Tanner's original [Swimmer](https://github.com/tannerlinsley/swimmer) library. Then we cleaned up these utilities, filled in some gaps, and shipped them as a standalone library.
 
 ## Key Features
 
-- **Rate Limiting**: Enforce strict limits on how frequently functions can be called within a specified time window, ideal for managing API requests and preventing abuse.
-- **Throttling**: Ensure function executions are evenly spaced over time, providing smooth and predictable execution patterns for UI updates and event handling.
-- **Debouncing**: Delay function execution until a specified period of inactivity, perfect for optimizing user input handling and reducing unnecessary operations.
-- **Queueing**: Guarantee that every operation is processed in order, with support for FIFO, LIFO, and priority-based execution, ensuring no data loss in critical applications.
-- **Async Support**: Seamlessly handle asynchronous functions with built-in support for promises and async/await, ensuring smooth integration with modern JavaScript workflows.
-- **Framework Adapters**: Leverage framework-specific hooks and utilities for React, Solid, and more, enabling easy integration into existing projects.
-- **TypeScript-First**: Benefit from full type safety and detailed generics support, ensuring robust and maintainable code.
-
-## Why Use TanStack Pacer?
-
-- **Performance Optimization**: Prevent expensive operations from executing too frequently, enhancing application performance.
-- **UI Responsiveness**: Improve user experience by smoothing out interactions like typing, scrolling, and resizing.
-- **API Rate Control**: Manage API call frequency to comply with rate limits and avoid service disruptions.
-- **Resource Management**: Control the execution of resource-intensive operations to maintain application stability.
-- **Batch Processing**: Efficiently group and process operations, reducing overhead and improving throughput.
-
-TanStack Pacer is designed to integrate seamlessly with other TanStack libraries and can be used in any modern JavaScript application. Its modular architecture allows you to import only the components you need, keeping your bundle size minimal and your application efficient.
+- **Debouncing**
+  - Delay functions execution until after a period of inactivity
+  - Synchronous or Asynchronous Debounce utilities with promise support and error handling
+- **Throttling**
+  - Limit the rate at which a function can fire
+  - Synchronous or Asynchronous Throttle utilities with promise support and error handling
+- **Rate Limiting**
+  - Limit the rate at which a function can fire
+  - Synchronous or Asynchronous Rate Limiting utilities with promise support and error handling
+- **Queuing**
+  - Queue functions to be executed in a specific order
+  - Choose from FIFO, LIFO, and Priority queue implementations
+  - Control processing with configurable wait times or concurrency limits
+  - Manage queue execution with start/stop capabilities
+  - Synchronous or Asynchronous Queue utilities with promise support and success, settled, and error, handling
+- **Comparison Utilities**
+  - Perform deep equality checks between values
+  - Create custom comparison logic for specific needs
+- **Convenient Hooks**
+  - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuerState`, and more.
+- **Type Safety**
+  - Full type safety with TypeScript that makes sure that your functions will always be called with the correct arguments
+  - Generics for flexible and reusable utilities
+- **Framework Adapters**
+  - React, Solid, and more
+- **Tree Shaking**
+  - We, of course, get tree-shaking right for your applications by default, but we also provide extra deep imports for each utility, making it easier to embed these utilities into your libraries without increasing the bundle-phobia reports of your library.
