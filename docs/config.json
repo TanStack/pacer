@@ -46,16 +46,16 @@
       "label": "Guides",
       "children": [
         {
-          "label": "Rate Limiting Guide",
-          "to": "guides/rate-limiting"
+          "label": "Debouncing Guide",
+          "to": "guides/debouncing"
         },
         {
           "label": "Throttling Guide",
           "to": "guides/throttling"
         },
         {
-          "label": "Debouncing Guide",
-          "to": "guides/debouncing"
+          "label": "Rate Limiting Guide",
+          "to": "guides/rate-limiting"
         },
         {
           "label": "Queueing Guide",

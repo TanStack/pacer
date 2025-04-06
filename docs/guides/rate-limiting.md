@@ -106,9 +106,33 @@ limiter.setOptions({ limit: 10 }) // Increase the limit
 limiter.reset()
 ```
 
-### Framework Adapters
+### Enabling/Disabling
 
-Each framework adapter further builds convenient hooks and functions around the `RateLimiter` class. Hooks like `useRateLimitedCallback`, `useRateLimitedState`, or `useRateLimitedValue` are small wrappers around the `RateLimiter` class that can cut down on the boilerplate needed in your own code for some common use cases.
+The `RateLimiter` class supports enabling/disabling via the `enabled` option. Using the `setOptions` method, you can enable/disable the rate limiter at any time:
+
+```ts
+const limiter = new RateLimiter(fn, { 
+  limit: 5, 
+  window: 1000,
+  enabled: false // Disable by default
+})
+limiter.setOptions({ enabled: true }) // Enable at any time
+```
+
+If you are using a framework adapter where the rate limiter options are reactive, you can set the `enabled` option to a conditional value to enable/disable the rate limiter on the fly:
+
+```ts
+const limiter = useRateLimiter(
+  makeApiCall, 
+  { 
+    limit: 5,
+    window: 1000,
+    enabled: isUserPremium // Enable/disable based on user status IF using a framework adapter that supports reactive options
+  }
+)
+```
+
+However, if you are using the `rateLimit` function or the `RateLimiter` class directly, you must use the `setOptions` method to change the `enabled` option, since the options that are passed are actually passed to the constructor of the `RateLimiter` class.
 
 ## Synchronous vs Asynchronous Rate Limiting
 
@@ -169,22 +193,8 @@ The `AsyncRateLimiter` provides additional features specific to async functions:
 - Proper async execution tracking
 - Returns Promises that resolve to boolean values indicating execution success
 
-### Key Differences
-
-1. **Return Type**:
-   - Sync: Returns `boolean` immediately
-   - Async: Returns `Promise<boolean>`
-
-2. **Error Handling**:
-   - Sync: No built-in error handling
-   - Async: Supports `onError` callback for handling rejected promises
-
-3. **Execution Timing**:
-   - Sync: Counted as executed immediately
-   - Async: Counted as executed when the Promise resolves
-
-4. **Usage Pattern**:
-   - Sync: Good for CPU-bound operations or synchronous API calls
-   - Async: Better for I/O operations, network requests, or any Promise-based operations
-
 For most use cases, the normal non-async `RateLimiter` can be sufficient, but when you need extra error handling, or you want to make sure that each execution finishes before the next one starts, then the async `AsyncRateLimiter` is for you.
+
+### Framework Adapters
+
+Each framework adapter further builds convenient hooks and functions around the `RateLimiter` class. Hooks like `useRateLimitedCallback`, `useRateLimitedState`, or `useRateLimitedValue` are small wrappers around the `RateLimiter` class that can cut down on the boilerplate needed in your own code for some common use cases.
