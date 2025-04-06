@@ -48,7 +48,7 @@ The hook returns an object containing methods to:
 ### addItem()
 
 ```ts
-addItem: (fn, position?) => Promise<TValue>;
+readonly addItem: (fn, position?) => Promise<TValue>;
 ```
 
 Adds a task to the queuer
@@ -70,7 +70,7 @@ Adds a task to the queuer
 ### clear()
 
 ```ts
-clear: () => void;
+readonly clear: () => void;
 ```
 
 Removes all items from the queuer
@@ -82,7 +82,7 @@ Removes all items from the queuer
 ### getActiveItems()
 
 ```ts
-getActiveItems: () => () => Promise<TValue>[];
+readonly getActiveItems: () => () => Promise<TValue>[];
 ```
 
 Returns the active items
@@ -94,7 +94,7 @@ Returns the active items
 ### getAllItems()
 
 ```ts
-getAllItems: () => () => Promise<TValue>[];
+readonly getAllItems: () => () => Promise<TValue>[];
 ```
 
 Returns a copy of all items in the queuer
@@ -106,7 +106,7 @@ Returns a copy of all items in the queuer
 ### getExecutionCount()
 
 ```ts
-getExecutionCount: () => number;
+readonly getExecutionCount: () => number;
 ```
 
 Returns the number of items that have been removed from the queuer
@@ -118,7 +118,7 @@ Returns the number of items that have been removed from the queuer
 ### getNextItem()
 
 ```ts
-getNextItem: (position?) => undefined | () => Promise<TValue>;
+readonly getNextItem: (position?) => undefined | () => Promise<TValue>;
 ```
 
 Removes and returns an item from the queuer
@@ -136,7 +136,7 @@ Removes and returns an item from the queuer
 ### getPendingItems()
 
 ```ts
-getPendingItems: () => () => Promise<TValue>[];
+readonly getPendingItems: () => () => Promise<TValue>[];
 ```
 
 Returns the pending items
@@ -148,7 +148,7 @@ Returns the pending items
 ### isEmpty()
 
 ```ts
-isEmpty: () => boolean;
+readonly isEmpty: () => boolean;
 ```
 
 Returns true if the queuer is empty
@@ -160,7 +160,7 @@ Returns true if the queuer is empty
 ### isFull()
 
 ```ts
-isFull: () => boolean;
+readonly isFull: () => boolean;
 ```
 
 Returns true if the queuer is full
@@ -172,7 +172,7 @@ Returns true if the queuer is full
 ### isIdle()
 
 ```ts
-isIdle: () => boolean;
+readonly isIdle: () => boolean;
 ```
 
 Returns true if the queuer is running but has no items to process
@@ -184,7 +184,7 @@ Returns true if the queuer is running but has no items to process
 ### isRunning()
 
 ```ts
-isRunning: () => boolean;
+readonly isRunning: () => boolean;
 ```
 
 Returns true if the queuer is running
@@ -196,7 +196,7 @@ Returns true if the queuer is running
 ### onError()
 
 ```ts
-onError: (cb) => () => void;
+readonly onError: (cb) => () => void;
 ```
 
 Adds a callback to be called when a task errors
@@ -218,7 +218,7 @@ Adds a callback to be called when a task errors
 ### onSettled()
 
 ```ts
-onSettled: (cb) => () => void;
+readonly onSettled: (cb) => () => void;
 ```
 
 Adds a callback to be called when a task is settled
@@ -240,7 +240,7 @@ Adds a callback to be called when a task is settled
 ### onSuccess()
 
 ```ts
-onSuccess: (cb) => () => void;
+readonly onSuccess: (cb) => () => void;
 ```
 
 Adds a callback to be called when a task succeeds
@@ -262,7 +262,7 @@ Adds a callback to be called when a task succeeds
 ### peek()
 
 ```ts
-peek: (position?) => undefined | () => Promise<TValue>;
+readonly peek: (position?) => undefined | () => Promise<TValue>;
 ```
 
 Returns an item without removing it
@@ -280,7 +280,7 @@ Returns an item without removing it
 ### reset()
 
 ```ts
-reset: (withInitialItems?) => void;
+readonly reset: (withInitialItems?) => void;
 ```
 
 Resets the queuer to its initial state
@@ -298,7 +298,7 @@ Resets the queuer to its initial state
 ### size()
 
 ```ts
-size: () => number;
+readonly size: () => number;
 ```
 
 Returns the current size of the queuer
@@ -310,7 +310,7 @@ Returns the current size of the queuer
 ### start()
 
 ```ts
-start: () => Promise<void>;
+readonly start: () => Promise<void>;
 ```
 
 Starts the queuer and processes items
@@ -322,7 +322,7 @@ Starts the queuer and processes items
 ### stop()
 
 ```ts
-stop: () => void;
+readonly stop: () => void;
 ```
 
 Stops the queuer from processing items
@@ -334,7 +334,7 @@ Stops the queuer from processing items
 ### throttle()
 
 ```ts
-throttle: (n) => void;
+readonly throttle: (n) => void;
 ```
 
 Throttles the number of concurrent items that can run at once

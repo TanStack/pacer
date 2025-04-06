@@ -1,4 +1,3 @@
-import { scan } from 'react-scan' // dev-tools for demo
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { queue } from '@tanstack/react-pacer/queuer'
@@ -125,5 +124,3 @@ root.render(
     <App2 />
   </div>,
 )
-
-scan() // dev-tools for demo

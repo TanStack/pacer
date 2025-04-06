@@ -1,0 +1,34 @@
+{
+  "name": "@tanstack/pacer-example-react-use-throttled-callback",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port=3005",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:types": "tsc"
+  },
+  "dependencies": {
+    "@tanstack/react-pacer": "^0.0.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.2.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

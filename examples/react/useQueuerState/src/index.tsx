@@ -1,4 +1,3 @@
-import { scan } from 'react-scan' // dev-tools for demo
 import ReactDOM from 'react-dom/client'
 import { useQueuerState } from '@tanstack/react-pacer/queuer'
 
@@ -70,5 +69,3 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(<App />)
-
-scan() // dev-tools for demo

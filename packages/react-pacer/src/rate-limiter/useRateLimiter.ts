@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useMemo, useState } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
@@ -54,27 +54,25 @@ export function useRateLimiter<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: RateLimiterOptions) {
-  const rateLimiter = useRef<RateLimiter<TFn, TArgs>>(null)
+  const [rateLimiter] = useState(() => new RateLimiter<TFn, TArgs>(fn, options))
 
-  if (!rateLimiter.current) {
-    rateLimiter.current = new RateLimiter(fn, options)
-  }
+  const setOptions = useMemo(
+    () => rateLimiter.setOptions.bind(rateLimiter),
+    [rateLimiter],
+  )
 
-  const setOptions = rateLimiter.current.setOptions.bind(rateLimiter.current)
   setOptions(options)
 
-  return {
-    maybeExecute: rateLimiter.current.maybeExecute.bind(rateLimiter.current),
-    getExecutionCount: rateLimiter.current.getExecutionCount.bind(
-      rateLimiter.current,
-    ),
-    getRejectionCount: rateLimiter.current.getRejectionCount.bind(
-      rateLimiter.current,
-    ),
-    getRemainingInWindow: rateLimiter.current.getRemainingInWindow.bind(
-      rateLimiter.current,
-    ),
-    reset: rateLimiter.current.reset.bind(rateLimiter.current),
-    // setOptions
-  } as const
+  return useMemo(
+    () =>
+      ({
+        maybeExecute: rateLimiter.maybeExecute.bind(rateLimiter),
+        getExecutionCount: rateLimiter.getExecutionCount.bind(rateLimiter),
+        getRejectionCount: rateLimiter.getRejectionCount.bind(rateLimiter),
+        getRemainingInWindow:
+          rateLimiter.getRemainingInWindow.bind(rateLimiter),
+        reset: rateLimiter.reset.bind(rateLimiter),
+      }) as const,
+    [rateLimiter],
+  )
 }

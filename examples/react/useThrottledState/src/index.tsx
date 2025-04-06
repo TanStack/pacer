@@ -1,4 +1,3 @@
-import { scan } from 'react-scan' // dev-tools for demo
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useThrottledState } from '@tanstack/react-pacer/throttler'
@@ -109,5 +108,3 @@ root.render(
     <App2 />
   </div>,
 )
-
-scan() // dev-tools for demo

@@ -1,4 +1,3 @@
-import { scan } from 'react-scan' // dev-tools for demo
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { rateLimit } from '@tanstack/react-pacer/rate-limiter'
@@ -107,5 +106,3 @@ root.render(
     <App2 />
   </div>,
 )
-
-scan() // dev-tools for demo

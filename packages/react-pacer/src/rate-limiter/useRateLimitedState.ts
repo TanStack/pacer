@@ -58,8 +58,6 @@ export function useRateLimitedState<TValue>(
   options: RateLimiterOptions,
 ) {
   const [rateLimitedValue, setRateLimitedValue] = useState<TValue>(value)
-
   const rateLimiter = useRateLimiter(setRateLimitedValue, options)
-
   return [rateLimitedValue, rateLimiter.maybeExecute, rateLimiter] as const
 }

@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 
@@ -54,42 +54,39 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 export function useAsyncQueuer<TValue>(
   options: AsyncQueuerOptions<TValue> = {},
 ) {
-  const asyncQueuer = useRef<AsyncQueuer<TValue> | null>(null)
+  const [asyncQueuer] = useState(() => new AsyncQueuer<TValue>(options))
 
-  if (!asyncQueuer.current) {
-    asyncQueuer.current = new AsyncQueuer(options)
-  }
+  const setOptions = useMemo(
+    () => asyncQueuer.setOptions.bind(asyncQueuer),
+    [asyncQueuer],
+  )
 
-  const setOptions = asyncQueuer.current.setOptions.bind(asyncQueuer.current)
   setOptions(options)
 
-  return {
-    addItem: asyncQueuer.current.addItem.bind(asyncQueuer.current),
-    clear: asyncQueuer.current.clear.bind(asyncQueuer.current),
-    getActiveItems: asyncQueuer.current.getActiveItems.bind(
-      asyncQueuer.current,
-    ),
-    getAllItems: asyncQueuer.current.getAllItems.bind(asyncQueuer.current),
-    getExecutionCount: asyncQueuer.current.getExecutionCount.bind(
-      asyncQueuer.current,
-    ),
-    getNextItem: asyncQueuer.current.getNextItem.bind(asyncQueuer.current),
-    getPendingItems: asyncQueuer.current.getPendingItems.bind(
-      asyncQueuer.current,
-    ),
-    isEmpty: asyncQueuer.current.isEmpty.bind(asyncQueuer.current),
-    isFull: asyncQueuer.current.isFull.bind(asyncQueuer.current),
-    isIdle: asyncQueuer.current.isIdle.bind(asyncQueuer.current),
-    isRunning: asyncQueuer.current.isRunning.bind(asyncQueuer.current),
-    onError: asyncQueuer.current.onError.bind(asyncQueuer.current),
-    onSettled: asyncQueuer.current.onSettled.bind(asyncQueuer.current),
-    onSuccess: asyncQueuer.current.onSuccess.bind(asyncQueuer.current),
-    peek: asyncQueuer.current.peek.bind(asyncQueuer.current),
-    reset: asyncQueuer.current.reset.bind(asyncQueuer.current),
-    size: asyncQueuer.current.size.bind(asyncQueuer.current),
-    start: asyncQueuer.current.start.bind(asyncQueuer.current),
-    stop: asyncQueuer.current.stop.bind(asyncQueuer.current),
-    throttle: asyncQueuer.current.throttle.bind(asyncQueuer.current),
-    // setOptions
-  }
+  return useMemo(
+    () =>
+      ({
+        addItem: asyncQueuer.addItem.bind(asyncQueuer),
+        clear: asyncQueuer.clear.bind(asyncQueuer),
+        getActiveItems: asyncQueuer.getActiveItems.bind(asyncQueuer),
+        getAllItems: asyncQueuer.getAllItems.bind(asyncQueuer),
+        getExecutionCount: asyncQueuer.getExecutionCount.bind(asyncQueuer),
+        getNextItem: asyncQueuer.getNextItem.bind(asyncQueuer),
+        getPendingItems: asyncQueuer.getPendingItems.bind(asyncQueuer),
+        isEmpty: asyncQueuer.isEmpty.bind(asyncQueuer),
+        isFull: asyncQueuer.isFull.bind(asyncQueuer),
+        isIdle: asyncQueuer.isIdle.bind(asyncQueuer),
+        isRunning: asyncQueuer.isRunning.bind(asyncQueuer),
+        onError: asyncQueuer.onError.bind(asyncQueuer),
+        onSettled: asyncQueuer.onSettled.bind(asyncQueuer),
+        onSuccess: asyncQueuer.onSuccess.bind(asyncQueuer),
+        peek: asyncQueuer.peek.bind(asyncQueuer),
+        reset: asyncQueuer.reset.bind(asyncQueuer),
+        size: asyncQueuer.size.bind(asyncQueuer),
+        start: asyncQueuer.start.bind(asyncQueuer),
+        stop: asyncQueuer.stop.bind(asyncQueuer),
+        throttle: asyncQueuer.throttle.bind(asyncQueuer),
+      }) as const,
+    [asyncQueuer],
+  )
 }

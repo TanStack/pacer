@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useMemo, useState } from 'react'
 import { Queuer } from '@tanstack/pacer/queuer'
 import type { QueuerOptions } from '@tanstack/pacer/queuer'
 
@@ -41,31 +41,31 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * ```
  */
 export function useQueuer<TValue>(options: QueuerOptions<TValue> = {}) {
-  const queuer = useRef<Queuer<TValue>>(null)
+  const [queuer] = useState(() => new Queuer<TValue>(options))
 
-  if (!queuer.current) {
-    queuer.current = new Queuer(options)
-  }
+  const setOptions = useMemo(() => queuer.setOptions.bind(queuer), [queuer])
 
-  const setOptions = queuer.current.setOptions.bind(queuer.current)
   setOptions(options)
 
-  return {
-    addItem: queuer.current.addItem.bind(queuer.current),
-    clear: queuer.current.clear.bind(queuer.current),
-    getAllItems: queuer.current.getAllItems.bind(queuer.current),
-    getExecutionCount: queuer.current.getExecutionCount.bind(queuer.current),
-    getNextItem: queuer.current.getNextItem.bind(queuer.current),
-    isEmpty: queuer.current.isEmpty.bind(queuer.current),
-    isFull: queuer.current.isFull.bind(queuer.current),
-    isRunning: queuer.current.isRunning.bind(queuer.current),
-    isIdle: queuer.current.isIdle.bind(queuer.current),
-    onUpdate: queuer.current.onUpdate.bind(queuer.current),
-    peek: queuer.current.peek.bind(queuer.current),
-    reset: queuer.current.reset.bind(queuer.current),
-    size: queuer.current.size.bind(queuer.current),
-    start: queuer.current.start.bind(queuer.current),
-    stop: queuer.current.stop.bind(queuer.current),
-    // setOptions
-  }
+  return useMemo(
+    () =>
+      ({
+        addItem: queuer.addItem.bind(queuer),
+        clear: queuer.clear.bind(queuer),
+        getAllItems: queuer.getAllItems.bind(queuer),
+        getExecutionCount: queuer.getExecutionCount.bind(queuer),
+        getNextItem: queuer.getNextItem.bind(queuer),
+        isEmpty: queuer.isEmpty.bind(queuer),
+        isFull: queuer.isFull.bind(queuer),
+        isRunning: queuer.isRunning.bind(queuer),
+        isIdle: queuer.isIdle.bind(queuer),
+        onUpdate: queuer.onUpdate.bind(queuer),
+        peek: queuer.peek.bind(queuer),
+        reset: queuer.reset.bind(queuer),
+        size: queuer.size.bind(queuer),
+        start: queuer.start.bind(queuer),
+        stop: queuer.stop.bind(queuer),
+      }) as const,
+    [queuer],
+  )
 }

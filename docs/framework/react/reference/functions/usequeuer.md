@@ -46,7 +46,7 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 ### addItem()
 
 ```ts
-addItem: (item, position?) => boolean;
+readonly addItem: (item, position?) => boolean;
 ```
 
 Adds an item to the queuer and starts processing if not already running
@@ -70,7 +70,7 @@ true if item was added, false if queuer is full
 ### clear()
 
 ```ts
-clear: () => void;
+readonly clear: () => void;
 ```
 
 Removes all items from the queuer
@@ -82,7 +82,7 @@ Removes all items from the queuer
 ### getAllItems()
 
 ```ts
-getAllItems: () => TValue[];
+readonly getAllItems: () => TValue[];
 ```
 
 Returns a copy of all items in the queuer
@@ -94,7 +94,7 @@ Returns a copy of all items in the queuer
 ### getExecutionCount()
 
 ```ts
-getExecutionCount: () => number;
+readonly getExecutionCount: () => number;
 ```
 
 Returns the number of items that have been removed from the queuer
@@ -106,7 +106,7 @@ Returns the number of items that have been removed from the queuer
 ### getNextItem()
 
 ```ts
-getNextItem: (position?) => undefined | TValue;
+readonly getNextItem: (position?) => undefined | TValue;
 ```
 
 Removes and returns an item from the queuer using shift (default) or pop
@@ -133,7 +133,7 @@ queuer.getNextItem('back')
 ### isEmpty()
 
 ```ts
-isEmpty: () => boolean;
+readonly isEmpty: () => boolean;
 ```
 
 Returns true if the queuer is empty
@@ -145,7 +145,7 @@ Returns true if the queuer is empty
 ### isFull()
 
 ```ts
-isFull: () => boolean;
+readonly isFull: () => boolean;
 ```
 
 Returns true if the queuer is full
@@ -157,7 +157,7 @@ Returns true if the queuer is full
 ### isIdle()
 
 ```ts
-isIdle: () => boolean;
+readonly isIdle: () => boolean;
 ```
 
 Returns true if the queuer is running but has no items to process
@@ -169,7 +169,7 @@ Returns true if the queuer is running but has no items to process
 ### isRunning()
 
 ```ts
-isRunning: () => boolean;
+readonly isRunning: () => boolean;
 ```
 
 Returns true if the queuer is running
@@ -181,7 +181,7 @@ Returns true if the queuer is running
 ### onUpdate()
 
 ```ts
-onUpdate: (cb) => () => void;
+readonly onUpdate: (cb) => () => void;
 ```
 
 Adds a callback to be called when an item is processed
@@ -203,7 +203,7 @@ Adds a callback to be called when an item is processed
 ### peek()
 
 ```ts
-peek: (position?) => undefined | TValue;
+readonly peek: (position?) => undefined | TValue;
 ```
 
 Returns an item without removing it
@@ -230,7 +230,7 @@ queuer.peek('back')
 ### reset()
 
 ```ts
-reset: (withInitialItems?) => void;
+readonly reset: (withInitialItems?) => void;
 ```
 
 Resets the queuer to its initial state
@@ -248,7 +248,7 @@ Resets the queuer to its initial state
 ### size()
 
 ```ts
-size: () => number;
+readonly size: () => number;
 ```
 
 Returns the current size of the queuer
@@ -260,7 +260,7 @@ Returns the current size of the queuer
 ### start()
 
 ```ts
-start: () => void;
+readonly start: () => void;
 ```
 
 Starts the queuer and processes items
@@ -272,7 +272,7 @@ Starts the queuer and processes items
 ### stop()
 
 ```ts
-stop: () => void;
+readonly stop: () => void;
 ```
 
 Stops the queuer from processing items

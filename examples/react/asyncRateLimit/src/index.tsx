@@ -1,4 +1,3 @@
-import { scan } from 'react-scan' // dev-tools for demo
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { asyncRateLimit } from '@tanstack/react-pacer/async-rate-limiter'
@@ -88,5 +87,3 @@ function SearchApp() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(<SearchApp />)
-
-scan() // dev-tools for demo

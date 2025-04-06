@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useMemo, useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 
@@ -38,36 +38,33 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
  * );
  * ```
  */
-
 export function useAsyncRateLimiter<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: AsyncRateLimiterOptions) {
-  const asyncRateLimiter = useRef<AsyncRateLimiter<TFn, TArgs>>(null)
-
-  if (!asyncRateLimiter.current) {
-    asyncRateLimiter.current = new AsyncRateLimiter(fn, options)
-  }
-
-  const setOptions = asyncRateLimiter.current.setOptions.bind(
-    asyncRateLimiter.current,
+  const [asyncRateLimiter] = useState(
+    () => new AsyncRateLimiter<TFn, TArgs>(fn, options),
   )
+
+  const setOptions = useMemo(
+    () => asyncRateLimiter.setOptions.bind(asyncRateLimiter),
+    [asyncRateLimiter],
+  )
+
   setOptions(options)
 
-  return {
-    maybeExecute: asyncRateLimiter.current.maybeExecute.bind(
-      asyncRateLimiter.current,
-    ),
-    getExecutionCount: asyncRateLimiter.current.getExecutionCount.bind(
-      asyncRateLimiter.current,
-    ),
-    getRejectionCount: asyncRateLimiter.current.getRejectionCount.bind(
-      asyncRateLimiter.current,
-    ),
-    reset: asyncRateLimiter.current.reset.bind(asyncRateLimiter.current),
-    getRemainingInWindow: asyncRateLimiter.current.getRemainingInWindow.bind(
-      asyncRateLimiter.current,
-    ),
-    // setOptions
-  } as const
+  return useMemo(
+    () =>
+      ({
+        maybeExecute: asyncRateLimiter.maybeExecute.bind(asyncRateLimiter),
+        getExecutionCount:
+          asyncRateLimiter.getExecutionCount.bind(asyncRateLimiter),
+        getRejectionCount:
+          asyncRateLimiter.getRejectionCount.bind(asyncRateLimiter),
+        reset: asyncRateLimiter.reset.bind(asyncRateLimiter),
+        getRemainingInWindow:
+          asyncRateLimiter.getRemainingInWindow.bind(asyncRateLimiter),
+      }) as const,
+    [asyncRateLimiter],
+  )
 }

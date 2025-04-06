@@ -1,4 +1,3 @@
-import { scan } from 'react-scan' // dev-tools for demo
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncThrottler } from '@tanstack/react-pacer/async-throttler'
@@ -115,5 +114,3 @@ document.addEventListener('keydown', (e) => {
     root.render(mounted ? <App /> : null)
   }
 })
-
-scan() // dev-tools for demo
