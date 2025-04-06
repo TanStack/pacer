@@ -3,29 +3,50 @@ title: Rate Limiting Guide
 id: rate-limiting
 ---
 
-Rate Limiting, Throttling, and Debouncing are three distinct approaches to controlling function execution frequency. Each technique blocks executions differently, making them "lossy" - meaning some function calls will not execute when they are requested to run too frequently. Understanding when to use each approach is crucial for building performant and reliable applications.
+Rate Limiting, Throttling, and Debouncing are three distinct approaches to controlling function execution frequency. Each technique blocks executions differently, making them "lossy" - meaning some function calls will not execute when they are requested to run too frequently. Understanding when to use each approach is crucial for building performant and reliable applications. This guide will cover the Rate Limiting concepts of TanStack Pacer.
 
 ## Rate Limiting Concept
 
-Rate Limiting is a technique that limits the rate at which a function can execute. It is particularly useful for scenarios where you want to prevent a function from being called too frequently, such as when handling API requests or other external service calls. It is the most *naive* approach, as it allows executions to happen in bursts until the quota is met.
+Rate Limiting is a technique that limits the rate at which a function can execute over a specific time window. It is particularly useful for scenarios where you want to prevent a function from being called too frequently, such as when handling API requests or other external service calls. It is the most *naive* approach, as it allows executions to happen in bursts until the quota is met.
+
+### Rate Limiting Visualization
 
 ```text
 Rate Limiting (limit: 3 calls per window)
 Timeline: [1 second per tick]
-                                    Window 1                    |        Window 2        
-Calls:     ↓   ↓   ↓   ↓   ↓                                  ↓   ↓
-Executed:   ✓   ✓   ✓   ✕   ✕                                  ✓   ✓
-           [=== 3 allowed ===][=== blocked until window ends ===][=== new window ===]
+                                        Window 1                  |    Window 2            
+Calls:        ⬇️     ⬇️     ⬇️     ⬇️     ⬇️                             ⬇️     ⬇️
+Executed:     ✅     ✅     ✅     ❌     ❌                             ✅     ✅
+             [=== 3 allowed ===][=== blocked until window ends ===][=== new window =======]
 ```
+
+### When to Use Rate Limiting
+
+Rate Limiting is particularly important when dealing with external services, API quotas, or resource-intensive operations where you need to prevent overload.
+
+Common use cases include:
+- Enforcing hard API rate limits (e.g., limiting users to 100 requests per hour)
+- Managing resource constraints (e.g., database connections or external service calls)
+- Scenarios where bursty behavior is acceptable
+- Protection against DoS attacks or abuse
+- Implementing fair usage policies in multi-tenant systems
+
+### When Not to Use Rate Limiting
+
+Rate Limiting is the most naive approach to controlling function execution frequency. It is the least flexible and most restrictive of the three techniques. Consider using [throttling](../guides/throttling) or [debouncing](../guides/debouncing) instead for more spaced out executions.
+
+> [!TIP]
+> You most likely don't want to use "rate limiting" for most use cases. Consider using [throttling](../guides/throttling) or [debouncing](../guides/debouncing) instead. 
+
+Rate Limiting's "lossy" nature also means that some executions will be rejected and lost. This can be a problem if you need to ensure that all executions are always successful. Consider using [queueing](../guides/queueing) if you need to ensure that all executions are queued up to be executed, but with a throttled delay to slow down the rate of execution.
 
 ## Rate Limiting in TanStack Pacer
 
-TanStack Pacer's `rateLimit` function is a simple implementation that limits the rate at which a function can execute. It is particularly useful for scenarios where you want to prevent a function from being called too frequently, such as when handling API requests or other external service calls.
+TanStack Pacer provides a few ways to implement rate limiting. There is the simple `rateLimit` function for basic usage, the `RateLimiter` class for more advanced control, and each framework adapter further builds convenient hooks and functions around the `RateLimiter` class.
 
-For example, if you set a limit of 5 calls per minute:
-- The first 5 calls within the minute will execute immediately
-- Any subsequent calls within that same minute window will be blocked
-- Once the minute window resets, 5 more calls can be made
+### Basic Usage with `rateLimit`
+
+The `rateLimit` function is the simplest way to add rate limiting to any function. It's perfect for most use cases where you just need to enforce a simple limit.
 
 ```ts
 import { rateLimit } from '@tanstack/pacer'
@@ -51,11 +72,119 @@ rateLimitedApi('user-5') // ✅ Executes
 rateLimitedApi('user-6') // ❌ Rejected until window resets
 ```
 
-Rate Limiting is best suited for:
-- Enforcing hard API rate limits (e.g., limiting users to 100 requests per hour)
-- Managing resource constraints (e.g., database connections or external service calls)
-- Scenarios where bursty behavior is acceptable
-- Protection against DoS attacks or abuse
+### Advanced Usage with `RateLimiter` Class
 
-> [!TIP]
-> You most likely don't want to use "rate limiting". Consider using [throttling](../guides/throttling) or [debouncing](../guides/debouncing) instead. 
+For more complex scenarios where you need additional control over the rate limiting behavior, you can use the `RateLimiter` class directly. This gives you access to additional methods and state information.
+
+```ts
+import { RateLimiter } from '@tanstack/pacer'
+
+// Create a rate limiter instance
+const limiter = new RateLimiter(
+  (id: string) => fetchUserData(id),
+  {
+    limit: 5,
+    window: 60 * 1000,
+    onReject: ({ msUntilNextWindow }) => {
+      console.log(`Rate limit exceeded. Try again in ${msUntilNextWindow}ms`)
+    }
+  }
+)
+
+// Get information about current state
+console.log(limiter.getRemainingInWindow()) // Number of calls remaining in current window
+console.log(limiter.getExecutionCount()) // Total number of successful executions
+console.log(limiter.getRejectionCount()) // Total number of rejected executions
+
+// Attempt to execute (returns boolean indicating success)
+limiter.maybeExecute('user-1')
+
+// Update options dynamically
+limiter.setOptions({ limit: 10 }) // Increase the limit
+
+// Reset all counters and state
+limiter.reset()
+```
+
+### Framework Adapters
+
+Each framework adapter further builds convenient hooks and functions around the `RateLimiter` class. Hooks like `useRateLimitedCallback`, `useRateLimitedState`, or `useRateLimitedValue` are small wrappers around the `RateLimiter` class that can cut down on the boilerplate needed in your own code for some common use cases.
+
+## Synchronous vs Asynchronous Rate Limiting
+
+TanStack Pacer provides both synchronous and asynchronous rate limiting through the `RateLimiter` and `AsyncRateLimiter` classes respectively (and their corresponding `rateLimit` and `asyncRateLimit` functions). Understanding when to use each is important for proper rate limiting behavior.
+
+### Synchronous Rate Limiting
+
+Use the synchronous `RateLimiter` when:
+- Your rate-limited function is synchronous (doesn't return a Promise)
+- You don't need to wait for the function to complete before counting it as executed
+- You want immediate feedback on whether the execution was allowed or rejected
+
+```ts
+import { rateLimit } from '@tanstack/pacer'
+
+const rateLimited = rateLimit(
+  (data: string) => processData(data),
+  {
+    limit: 5,
+    window: 1000, // 1 second
+  }
+)
+
+// Returns true if executed, false if rejected
+const wasExecuted = rateLimited('some data')
+```
+
+### Asynchronous Rate Limiting
+
+Use the `AsyncRateLimiter` when:
+- Your rate-limited function returns a Promise
+- You need to handle errors from the async function
+- You want to ensure proper rate limiting even if the async function takes time to complete
+
+```ts
+import { asyncRateLimit } from '@tanstack/pacer'
+
+const rateLimited = asyncRateLimit(
+  async (id: string) => {
+    const response = await fetch(`/api/data/${id}`)
+    return response.json()
+  },
+  {
+    limit: 5,
+    window: 1000,
+    onError: (error) => {
+      console.error('API call failed:', error)
+    }
+  }
+)
+
+// Returns a Promise<boolean> - resolves to true if executed, false if rejected
+const wasExecuted = await rateLimited('123')
+```
+
+The `AsyncRateLimiter` provides additional features specific to async functions:
+- Error handling through the `onError` callback
+- Proper async execution tracking
+- Returns Promises that resolve to boolean values indicating execution success
+
+### Key Differences
+
+1. **Return Type**:
+   - Sync: Returns `boolean` immediately
+   - Async: Returns `Promise<boolean>`
+
+2. **Error Handling**:
+   - Sync: No built-in error handling
+   - Async: Supports `onError` callback for handling rejected promises
+
+3. **Execution Timing**:
+   - Sync: Counted as executed immediately
+   - Async: Counted as executed when the Promise resolves
+
+4. **Usage Pattern**:
+   - Sync: Good for CPU-bound operations or synchronous API calls
+   - Async: Better for I/O operations, network requests, or any Promise-based operations
+
+For most use cases, the normal non-async `RateLimiter` can be sufficient, but when you need extra error handling, or you want to make sure that each execution finishes before the next one starts, then the async `AsyncRateLimiter` is for you.
