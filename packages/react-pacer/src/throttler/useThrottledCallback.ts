@@ -20,7 +20,7 @@ import type { ThrottlerOptions } from '@tanstack/pacer'
  * - Manual cancellation
  * - Access to execution counts
  * - Custom useCallback dependencies
- * 
+ *
  * Consider using the `useThrottler` hook instead.
  *
  * @example
