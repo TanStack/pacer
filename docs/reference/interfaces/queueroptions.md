@@ -17,10 +17,10 @@ Options for configuring a Queuer instance
 
 ## Properties
 
-### addNewItemTo?
+### addItemsTo?
 
 ```ts
-optional addNewItemTo: QueuePosition;
+optional addItemsTo: QueuePosition;
 ```
 
 Defined in: [queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L9)
@@ -35,10 +35,10 @@ Default position to add items to the queuer
 
 ***
 
-### getNextItemFrom?
+### getItemsFrom?
 
 ```ts
-optional getNextItemFrom: QueuePosition;
+optional getItemsFrom: QueuePosition;
 ```
 
 Defined in: [queuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L14)

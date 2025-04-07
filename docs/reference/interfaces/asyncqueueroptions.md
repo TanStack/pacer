@@ -7,7 +7,7 @@ title: AsyncQueuerOptions
 
 # Interface: AsyncQueuerOptions\<TValue\>
 
-Defined in: [async-queuer.ts:1](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L1)
+Defined in: [async-queuer.ts:3](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L3)
 
 ## Type Parameters
 
@@ -15,15 +15,51 @@ Defined in: [async-queuer.ts:1](https://github.com/TanStack/pacer/blob/main/pack
 
 ## Properties
 
+### addItemsTo?
+
+```ts
+optional addItemsTo: QueuePosition;
+```
+
+Defined in: [async-queuer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L8)
+
+Default position to add items to the queuer
+
+#### Default
+
+```ts
+'back'
+```
+
+***
+
 ### concurrency?
 
 ```ts
 optional concurrency: number;
 ```
 
-Defined in: [async-queuer.ts:5](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L5)
+Defined in: [async-queuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L12)
 
 Maximum number of concurrent tasks to process
+
+***
+
+### getItemsFrom?
+
+```ts
+optional getItemsFrom: QueuePosition;
+```
+
+Defined in: [async-queuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L17)
+
+Default position to get items from during processing
+
+#### Default
+
+```ts
+'front'
+```
 
 ***
 
@@ -33,7 +69,7 @@ Maximum number of concurrent tasks to process
 optional getPriority: (item) => number;
 ```
 
-Defined in: [async-queuer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L10)
+Defined in: [async-queuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L22)
 
 Function to determine priority of items in the queuer
 Higher priority items will be processed first
@@ -56,7 +92,7 @@ Higher priority items will be processed first
 optional initialItems: () => Promise<TValue>[];
 ```
 
-Defined in: [async-queuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L14)
+Defined in: [async-queuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L26)
 
 Initial items to populate the queuer with
 
@@ -72,7 +108,7 @@ Initial items to populate the queuer with
 optional maxSize: number;
 ```
 
-Defined in: [async-queuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L18)
+Defined in: [async-queuer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L30)
 
 Maximum number of items allowed in the queuer
 
@@ -84,7 +120,7 @@ Maximum number of items allowed in the queuer
 optional onGetNextItem: (item, queuer) => void;
 ```
 
-Defined in: [async-queuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L22)
+Defined in: [async-queuer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L34)
 
 Callback fired whenever an item is removed from the queuer
 
@@ -110,7 +146,7 @@ Callback fired whenever an item is removed from the queuer
 optional onUpdate: (queuer) => void;
 ```
 
-Defined in: [async-queuer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L29)
+Defined in: [async-queuer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L41)
 
 Callback fired whenever an item is added or removed from the queuer
 
@@ -132,7 +168,7 @@ Callback fired whenever an item is added or removed from the queuer
 optional started: boolean;
 ```
 
-Defined in: [async-queuer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L33)
+Defined in: [async-queuer.ts:45](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L45)
 
 Whether the queuer should start processing tasks immediately
 
@@ -144,6 +180,6 @@ Whether the queuer should start processing tasks immediately
 optional wait: number;
 ```
 
-Defined in: [async-queuer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L37)
+Defined in: [async-queuer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L49)
 
 Time in milliseconds to wait between processing items

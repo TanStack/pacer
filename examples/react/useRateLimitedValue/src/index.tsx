@@ -15,7 +15,6 @@ function App1() {
   })
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => c + 1)
   }
 

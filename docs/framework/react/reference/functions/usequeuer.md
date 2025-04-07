@@ -46,7 +46,7 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 ### addItem()
 
 ```ts
-readonly addItem: (item, position?) => boolean;
+readonly addItem: (item, position?, runOnUpdate?) => boolean;
 ```
 
 Adds an item to the queuer and starts processing if not already running
@@ -60,6 +60,10 @@ Adds an item to the queuer and starts processing if not already running
 ##### position?
 
 `QueuePosition`
+
+##### runOnUpdate?
+
+`boolean`
 
 #### Returns
 

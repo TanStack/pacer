@@ -1,11 +1,14 @@
 import ReactDOM from 'react-dom/client'
 import { useAsyncQueuerState } from '@tanstack/react-pacer/async-queuer'
+import { useState } from 'react'
 
 type AsyncTask = () => Promise<string>
 
 const fakeWaitTime = 2000
 
 function App() {
+  const [concurrency, setConcurrency] = useState(2)
+
   // Queuer that uses React.useState under the hood
   const [queueItems, queuer] = useAsyncQueuerState<string>({
     maxSize: 25,
@@ -13,7 +16,7 @@ function App() {
       await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
       return `Initial Task ${i + 1}`
     }),
-    concurrency: 2, // Process 2 items concurrently
+    concurrency: concurrency, // Process 2 items concurrently
     wait: 100, // for demo purposes - usually you would not want extra wait time unless you are throttling
   })
 
@@ -44,9 +47,9 @@ function App() {
         <input
           type="number"
           min={1}
-          defaultValue={2}
+          value={concurrency}
           onChange={(e) =>
-            queuer.throttle(Math.max(1, parseInt(e.target.value) || 1))
+            setConcurrency(Math.max(1, parseInt(e.target.value) || 1))
           }
           style={{ width: '60px' }}
         />

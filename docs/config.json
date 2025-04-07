@@ -122,45 +122,6 @@
       ]
     },
     {
-      "label": "Debouncer Examples",
-      "children": [],
-      "frameworks": [
-        {
-          "label": "react",
-          "children": [
-            {
-              "label": "debounce",
-              "to": "framework/react/examples/debounce"
-            },
-            {
-              "label": "asyncDebounce",
-              "to": "framework/react/examples/asyncDebounce"
-            },
-            {
-              "label": "useDebouncer",
-              "to": "framework/react/examples/useDebouncer"
-            },
-            {
-              "label": "useDebouncedCallback",
-              "to": "framework/react/examples/useDebouncedCallback"
-            },
-            {
-              "label": "useDebouncedState",
-              "to": "framework/react/examples/useDebouncedState"
-            },
-            {
-              "label": "useDebouncedValue",
-              "to": "framework/react/examples/useDebouncedValue"
-            },
-            {
-              "label": "useAsyncDebouncer",
-              "to": "framework/react/examples/useAsyncDebouncer"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "collapsible": true,
       "defaultCollapsed": true,
       "label": "Throttler API Reference",
@@ -209,45 +170,6 @@
             {
               "label": "useAsyncThrottler",
               "to": "framework/react/reference/functions/useasyncthrottler"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Throttler Examples",
-      "children": [],
-      "frameworks": [
-        {
-          "label": "react",
-          "children": [
-            {
-              "label": "throttle",
-              "to": "framework/react/examples/throttle"
-            },
-            {
-              "label": "asyncThrottle",
-              "to": "framework/react/examples/asyncThrottle"
-            },
-            {
-              "label": "useThrottler",
-              "to": "framework/react/examples/useThrottler"
-            },
-            {
-              "label": "useThrottledCallback",
-              "to": "framework/react/examples/useThrottledCallback"
-            },
-            {
-              "label": "useThrottledState",
-              "to": "framework/react/examples/useThrottledState"
-            },
-            {
-              "label": "useThrottledValue",
-              "to": "framework/react/examples/useThrottledValue"
-            },
-            {
-              "label": "useAsyncThrottler",
-              "to": "framework/react/examples/useAsyncThrottler"
             }
           ]
         }
@@ -312,45 +234,6 @@
       ]
     },
     {
-      "label": "Rate Limiter Examples",
-      "children": [],
-      "frameworks": [
-        {
-          "label": "react",
-          "children": [
-            {
-              "label": "rateLimit",
-              "to": "framework/react/examples/rateLimit"
-            },
-            {
-              "label": "asyncRateLimit",
-              "to": "framework/react/examples/asyncRateLimit"
-            },
-            {
-              "label": "useRateLimiter",
-              "to": "framework/react/examples/useRateLimiter"
-            },
-            {
-              "label": "useRateLimitedCallback",
-              "to": "framework/react/examples/useRateLimitedCallback"
-            },
-            {
-              "label": "useRateLimitedState",
-              "to": "framework/react/examples/useRateLimitedState"
-            },
-            {
-              "label": "useRateLimitedValue",
-              "to": "framework/react/examples/useRateLimitedValue"
-            },
-            {
-              "label": "useAsyncRateLimiter",
-              "to": "framework/react/examples/useAsyncRateLimiter"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "collapsible": true,
       "defaultCollapsed": true,
       "label": "Queue API Reference",
@@ -387,6 +270,123 @@
             {
               "label": "useAsyncQueuer",
               "to": "framework/react/reference/functions/useasyncqueuer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Debouncer Examples",
+      "children": [],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "debounce",
+              "to": "framework/react/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/react/examples/asyncDebounce"
+            },
+            {
+              "label": "useDebouncer",
+              "to": "framework/react/examples/useDebouncer"
+            },
+            {
+              "label": "useDebouncedCallback",
+              "to": "framework/react/examples/useDebouncedCallback"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/react/examples/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/react/examples/useDebouncedValue"
+            },
+            {
+              "label": "useAsyncDebouncer",
+              "to": "framework/react/examples/useAsyncDebouncer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Throttler Examples",
+      "children": [],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "throttle",
+              "to": "framework/react/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/react/examples/asyncThrottle"
+            },
+            {
+              "label": "useThrottler",
+              "to": "framework/react/examples/useThrottler"
+            },
+            {
+              "label": "useThrottledCallback",
+              "to": "framework/react/examples/useThrottledCallback"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/react/examples/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/react/examples/useThrottledValue"
+            },
+            {
+              "label": "useAsyncThrottler",
+              "to": "framework/react/examples/useAsyncThrottler"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Rate Limiter Examples",
+      "children": [],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "rateLimit",
+              "to": "framework/react/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/react/examples/asyncRateLimit"
+            },
+            {
+              "label": "useRateLimiter",
+              "to": "framework/react/examples/useRateLimiter"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/react/examples/useRateLimitedCallback"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/react/examples/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/react/examples/useRateLimitedValue"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/react/examples/useAsyncRateLimiter"
             }
           ]
         }

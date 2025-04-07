@@ -107,6 +107,13 @@ export class Throttler<
   }
 
   /**
+   * Returns the next execution time
+   */
+  getNextExecutionTime(): number {
+    return this.lastExecutionTime + this.options.wait
+  }
+
+  /**
    * Attempts to execute the throttled function. The execution behavior depends on the throttler options:
    *
    * - If enough time has passed since the last execution (>= wait period):

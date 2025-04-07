@@ -133,8 +133,8 @@ FIFO queues are ideal for:
 
 ```ts
 const queue = new Queuer<number>({
-  addNewItemTo: 'back', // default
-  getNextItemFrom: 'front', // default
+  addItemsTo: 'back', // default
+  getItemsFrom: 'front', // default
 })
 queue.addItem(1) // [1]
 queue.addItem(2) // [1, 2]
@@ -169,8 +169,8 @@ Stack behavior is particularly useful for:
 
 ```ts
 const stack = new Queuer<number>({
-  addNewItemTo: 'back', // default
-  getNextItemFrom: 'back', // override default for stack behavior
+  addItemsTo: 'back', // default
+  getItemsFrom: 'back', // override default for stack behavior
 })
 stack.addItem(1) // [1]
 stack.addItem(2) // [1, 2]

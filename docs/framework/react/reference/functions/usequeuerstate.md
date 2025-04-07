@@ -9,7 +9,7 @@ title: useQueuerState
 
 ```ts
 function useQueuerState<TValue>(options): readonly [TValue[], {
-  addItem: (item, position?) => boolean;
+  addItem: (item, position?, runOnUpdate?) => boolean;
   clear: () => void;
   getAllItems: () => TValue[];
   getExecutionCount: () => number;
@@ -56,7 +56,7 @@ The hook returns a tuple containing:
 ## Returns
 
 readonly \[`TValue`[], \{
-  `addItem`: (`item`, `position`?) => `boolean`;
+  `addItem`: (`item`, `position`?, `runOnUpdate`?) => `boolean`;
   `clear`: () => `void`;
   `getAllItems`: () => `TValue`[];
   `getExecutionCount`: () => `number`;

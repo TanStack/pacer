@@ -1,8 +1,20 @@
+import type { QueuePosition } from './queuer'
+
 export interface AsyncQueuerOptions<TValue> {
+  /**
+   * Default position to add items to the queuer
+   * @default 'back'
+   */
+  addItemsTo?: QueuePosition
   /**
    * Maximum number of concurrent tasks to process
    */
   concurrency?: number
+  /**
+   * Default position to get items from during processing
+   * @default 'front'
+   */
+  getItemsFrom?: QueuePosition
   /**
    * Function to determine priority of items in the queuer
    * Higher priority items will be processed first
@@ -38,7 +50,9 @@ export interface AsyncQueuerOptions<TValue> {
 }
 
 const defaultOptions: Required<AsyncQueuerOptions<any>> = {
+  addItemsTo: 'back',
   concurrency: 1,
+  getItemsFrom: 'front',
   getPriority: () => 0,
   initialItems: [],
   maxSize: Infinity,
@@ -92,15 +106,10 @@ export class AsyncQueuer<TValue> {
     this.options = { ...defaultOptions, ...initialOptions }
     this.running = this.options.started
 
-    if (this.options.initialItems.length) {
-      this.items = [...this.options.initialItems]
-
-      // Sort initial items if custom priority function is provided
-      if (this.options.getPriority !== defaultOptions.getPriority) {
-        this.items.sort(
-          (a, b) => this.options.getPriority(a) - this.options.getPriority(b),
-        )
-      }
+    for (let i = 0; i < this.options.initialItems.length; i++) {
+      const item = this.options.initialItems[i]!
+      const isLast = i === this.options.initialItems.length - 1
+      this.addItem(item, this.options.addItemsTo, isLast)
     }
   }
 
@@ -173,7 +182,8 @@ export class AsyncQueuer<TValue> {
    */
   addItem(
     fn: () => Promise<TValue>,
-    position: 'front' | 'back' = 'back',
+    position: QueuePosition = this.options.addItemsTo,
+    runOnUpdate: boolean = true,
   ): Promise<TValue> {
     if (this.isFull()) {
       return Promise.reject(new Error('Queuer is full'))
@@ -212,7 +222,9 @@ export class AsyncQueuer<TValue> {
         }
       }
 
-      this.options.onUpdate(this)
+      if (runOnUpdate) {
+        this.options.onUpdate(this)
+      }
 
       if (this.running && !this.pendingTick) {
         this.pendingTick = true
@@ -225,7 +237,7 @@ export class AsyncQueuer<TValue> {
    * Removes and returns an item from the queuer
    */
   getNextItem(
-    position: 'front' | 'back' = 'front',
+    position: QueuePosition = this.options.getItemsFrom,
   ): (() => Promise<TValue>) | undefined {
     let item: (() => Promise<TValue>) | undefined
 
@@ -398,13 +410,6 @@ export class AsyncQueuer<TValue> {
    */
   isIdle(): boolean {
     return this.running && this.isEmpty() && this.activeItems.size === 0
-  }
-
-  /**
-   * Throttles the number of concurrent items that can run at once
-   */
-  throttle(n: number): void {
-    this.options.concurrency = n
   }
 }
 

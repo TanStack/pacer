@@ -85,7 +85,6 @@ export function useAsyncQueuer<TValue>(
         size: asyncQueuer.size.bind(asyncQueuer),
         start: asyncQueuer.start.bind(asyncQueuer),
         stop: asyncQueuer.stop.bind(asyncQueuer),
-        throttle: asyncQueuer.throttle.bind(asyncQueuer),
       }) as const,
     [asyncQueuer],
   )

@@ -6,12 +6,12 @@ export interface QueuerOptions<TValue> {
    * Default position to add items to the queuer
    * @default 'back'
    */
-  addNewItemTo?: QueuePosition
+  addItemsTo?: QueuePosition
   /**
    * Default position to get items from during processing
    * @default 'front'
    */
-  getNextItemFrom?: QueuePosition
+  getItemsFrom?: QueuePosition
   /**
    * Function to determine priority of items in the queuer
    * Higher priority items will be processed first
@@ -44,8 +44,8 @@ export interface QueuerOptions<TValue> {
 }
 
 const defaultOptions: Required<QueuerOptions<any>> = {
-  addNewItemTo: 'back',
-  getNextItemFrom: 'front',
+  addItemsTo: 'back',
+  getItemsFrom: 'front',
   getPriority: () => 0,
   initialItems: [],
   maxSize: Infinity,
@@ -121,15 +121,10 @@ export class Queuer<TValue> {
     this.options = { ...defaultOptions, ...initialOptions }
     this.running = this.options.started
 
-    if (this.options.initialItems.length) {
-      this.items = [...this.options.initialItems]
-
-      // Sort initial items if custom priority function is provided
-      if (this.options.getPriority !== defaultOptions.getPriority) {
-        this.items.sort(
-          (a, b) => this.options.getPriority(a) - this.options.getPriority(b),
-        )
-      }
+    for (let i = 0; i < this.options.initialItems.length; i++) {
+      const item = this.options.initialItems[i]!
+      const isLast = i === this.options.initialItems.length - 1
+      this.addItem(item, this.options.addItemsTo, isLast)
     }
   }
 
@@ -142,7 +137,7 @@ export class Queuer<TValue> {
       return
     }
     while (!this.isEmpty()) {
-      const nextItem = this.getNextItem(this.options.getNextItemFrom)
+      const nextItem = this.getNextItem(this.options.getItemsFrom)
       if (nextItem === undefined) {
         break
       }
@@ -176,7 +171,8 @@ export class Queuer<TValue> {
    */
   addItem(
     item: TValue,
-    position: QueuePosition = this.options.addNewItemTo,
+    position: QueuePosition = this.options.addItemsTo,
+    runOnUpdate: boolean = true,
   ): boolean {
     if (this.isFull()) {
       return false
@@ -207,7 +203,9 @@ export class Queuer<TValue> {
       this.pendingTick = true
       this.tick()
     }
-    this.options.onUpdate(this)
+    if (runOnUpdate) {
+      this.options.onUpdate(this)
+    }
     return true
   }
 
@@ -223,7 +221,7 @@ export class Queuer<TValue> {
    * ```
    */
   getNextItem(
-    position: QueuePosition = this.options.getNextItemFrom,
+    position: QueuePosition = this.options.getItemsFrom,
   ): TValue | undefined {
     let item: TValue | undefined
 
@@ -253,7 +251,7 @@ export class Queuer<TValue> {
    * ```
    */
   peek(
-    position: QueuePosition = this.options.getNextItemFrom,
+    position: QueuePosition = this.options.getItemsFrom,
   ): TValue | undefined {
     if (position === 'front') {
       return this.items[0]

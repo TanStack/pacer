@@ -121,7 +121,7 @@ describe('AsyncQueuer', () => {
 
       asyncQueuer.start()
       await delay(10)
-      asyncQueuer.throttle(2) // Reduce concurrency to 2
+      asyncQueuer.setOptions({ concurrency: 2 })
       await asyncQueuer.start()
 
       expect(maxConcurrent.count).toBeLessThanOrEqual(5)

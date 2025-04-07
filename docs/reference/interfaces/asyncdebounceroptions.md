@@ -26,13 +26,26 @@ Defaults to true.
 
 ***
 
+### leading?
+
+```ts
+optional leading: boolean;
+```
+
+Defined in: [async-debouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L14)
+
+Whether to execute on the leading edge of the timeout.
+Defaults to false.
+
+***
+
 ### onError()?
 
 ```ts
 optional onError: (error) => void;
 ```
 
-Defined in: [async-debouncer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L18)
+Defined in: [async-debouncer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L28)
 
 Optional error handler for when the debounced function throws
 
@@ -48,13 +61,26 @@ Optional error handler for when the debounced function throws
 
 ***
 
+### trailing?
+
+```ts
+optional trailing: boolean;
+```
+
+Defined in: [async-debouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L19)
+
+Whether to execute on the trailing edge of the timeout.
+Defaults to true.
+
+***
+
 ### wait
 
 ```ts
 wait: number;
 ```
 
-Defined in: [async-debouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L14)
+Defined in: [async-debouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L24)
 
 Delay in milliseconds to wait after the last call before executing
 Defaults to 0ms

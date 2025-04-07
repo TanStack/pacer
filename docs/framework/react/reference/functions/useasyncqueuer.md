@@ -48,7 +48,7 @@ The hook returns an object containing methods to:
 ### addItem()
 
 ```ts
-readonly addItem: (fn, position?) => Promise<TValue>;
+readonly addItem: (fn, position?, runOnUpdate?) => Promise<TValue>;
 ```
 
 Adds a task to the queuer
@@ -61,7 +61,11 @@ Adds a task to the queuer
 
 ##### position?
 
-`"front"` | `"back"`
+`QueuePosition`
+
+##### runOnUpdate?
+
+`boolean`
 
 #### Returns
 
@@ -127,7 +131,7 @@ Removes and returns an item from the queuer
 
 ##### position?
 
-`"front"` | `"back"`
+`QueuePosition`
 
 #### Returns
 
@@ -326,24 +330,6 @@ readonly stop: () => void;
 ```
 
 Stops the queuer from processing items
-
-#### Returns
-
-`void`
-
-### throttle()
-
-```ts
-readonly throttle: (n) => void;
-```
-
-Throttles the number of concurrent items that can run at once
-
-#### Parameters
-
-##### n
-
-`number`
 
 #### Returns
 

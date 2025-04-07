@@ -9,7 +9,7 @@ title: useAsyncQueuerState
 
 ```ts
 function useAsyncQueuerState<TValue>(options): readonly [() => Promise<TValue>[], {
-  addItem: (fn, position?) => Promise<TValue>;
+  addItem: (fn, position?, runOnUpdate?) => Promise<TValue>;
   clear: () => void;
   getActiveItems: () => () => Promise<TValue>[];
   getAllItems: () => () => Promise<TValue>[];
@@ -28,7 +28,6 @@ function useAsyncQueuerState<TValue>(options): readonly [() => Promise<TValue>[]
   size: () => number;
   start: () => Promise<void>;
   stop: () => void;
-  throttle: (n) => void;
  }]
 ```
 
@@ -66,7 +65,7 @@ The state will automatically update whenever items are:
 ## Returns
 
 readonly \[() => `Promise`\<`TValue`\>[], \{
-  `addItem`: (`fn`, `position`?) => `Promise`\<`TValue`\>;
+  `addItem`: (`fn`, `position`?, `runOnUpdate`?) => `Promise`\<`TValue`\>;
   `clear`: () => `void`;
   `getActiveItems`: () => () => `Promise`\<`TValue`\>[];
   `getAllItems`: () => () => `Promise`\<`TValue`\>[];
@@ -85,7 +84,6 @@ readonly \[() => `Promise`\<`TValue`\>[], \{
   `size`: () => `number`;
   `start`: () => `Promise`\<`void`\>;
   `stop`: () => `void`;
-  `throttle`: (`n`) => `void`;
  \}\]
 
 ## Example

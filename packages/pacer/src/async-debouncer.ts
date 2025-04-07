@@ -8,6 +8,16 @@ export interface AsyncDebouncerOptions {
    */
   enabled?: boolean
   /**
+   * Whether to execute on the leading edge of the timeout.
+   * Defaults to false.
+   */
+  leading?: boolean
+  /**
+   * Whether to execute on the trailing edge of the timeout.
+   * Defaults to true.
+   */
+  trailing?: boolean
+  /**
    * Delay in milliseconds to wait after the last call before executing
    * Defaults to 0ms
    */
@@ -20,6 +30,8 @@ export interface AsyncDebouncerOptions {
 
 const defaultOptions: Required<AsyncDebouncerOptions> = {
   enabled: true,
+  leading: false,
+  trailing: true,
   onError: () => {},
   wait: 0,
 }
@@ -56,6 +68,7 @@ export class AsyncDebouncer<
   private lastArgs: TArgs | undefined
   private options: Required<AsyncDebouncerOptions>
   private timeoutId: ReturnType<typeof setTimeout> | null = null
+  private canLeadingExecute = true
 
   constructor(
     private fn: TFn,
@@ -101,6 +114,7 @@ export class AsyncDebouncer<
       this.abortController = null
     }
     this.lastArgs = undefined
+    this.canLeadingExecute = true
   }
 
   /**
@@ -111,6 +125,12 @@ export class AsyncDebouncer<
     this.cancel()
     this.lastArgs = args
 
+    // Handle leading execution
+    if (this.options.leading && this.canLeadingExecute) {
+      this.canLeadingExecute = false
+      await this.executeFunction(...args)
+    }
+
     return new Promise((resolve) => {
       this.timeoutId = setTimeout(async () => {
         if (this.isExecuting) {
@@ -118,21 +138,27 @@ export class AsyncDebouncer<
           return
         }
 
-        this.abortController = new AbortController()
-        try {
-          this.isExecuting = true
-          if (this.lastArgs) {
-            await this.executeFunction(...this.lastArgs)
-          }
-        } catch (error) {
+        this.canLeadingExecute = true
+        // Execute trailing only if enabled
+        if (this.options.trailing) {
+          this.abortController = new AbortController()
           try {
-            this.options.onError(error)
-          } catch {
-            // Ignore errors from error handler
+            this.isExecuting = true
+            if (this.lastArgs) {
+              await this.executeFunction(...this.lastArgs)
+            }
+          } catch (error) {
+            try {
+              this.options.onError(error)
+            } catch {
+              // Ignore errors from error handler
+            }
+          } finally {
+            this.isExecuting = false
+            this.abortController = null
+            resolve()
           }
-        } finally {
-          this.isExecuting = false
-          this.abortController = null
+        } else {
           resolve()
         }
       }, this.options.wait)
