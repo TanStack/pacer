@@ -5,116 +5,241 @@ id: async-queueing
 
 While the [Queuer](./queueing) provides synchronous queueing with timing controls, the `AsyncQueuer` is designed specifically for handling concurrent asynchronous operations. It implements what is traditionally known as a "task pool" or "worker pool" pattern, allowing multiple operations to be processed simultaneously while maintaining control over concurrency and timing. The implementation is mostly copied from [Swimmer](https://github.com/tannerlinsley/swimmer), Tanner's original task pooling utility that has been serving the JavaScript community since 2017.
 
-## Key Features
+## Async Queueing Concept
 
-### 1. Concurrent Processing (Task Pooling)
-The AsyncQueuer can process multiple operations simultaneously through its task pooling mechanism. This capability is crucial for:
-- Making efficient use of system resources
-- Handling I/O-bound operations that spend most of their time waiting
-- Maximizing throughput while maintaining control
-- Processing independent operations in parallel
+Async queueing extends the basic queueing concept by adding concurrent processing capabilities. Instead of processing one item at a time, an async queuer can process multiple items simultaneously while still maintaining order and control over the execution. This is particularly useful when dealing with I/O operations, network requests, or any tasks that spend most of their time waiting rather than consuming CPU.
 
-### 2. Promise Integration
-AsyncQueuer is designed to work seamlessly with Promises and async/await:
-- Each queued operation returns a Promise that resolves with the operation's result
-- Operations can be awaited individually or as a group
-- The queue itself can be awaited to determine when all operations complete
-- Error handling follows standard Promise patterns
+### Async Queueing Visualization
 
-### 3. Dynamic Concurrency Control
-The concurrency limit can be adjusted at runtime using the `throttle` method. This allows the system to:
-- Respond to system load changes
-- Implement adaptive rate limiting
-- Handle varying resource availability
-- Implement sophisticated backpressure mechanisms
+```text
+Async Queueing (concurrency: 2, wait: 2 ticks)
+Timeline: [1 second per tick]
+Calls:        ⬇️  ⬇️  ⬇️  ⬇️     ⬇️  ⬇️     ⬇️
+Queue:       [ABC]   [C]    [CDE]    [E]    []
+Active:      [A,B]   [B,C]  [C,D]    [D,E]  [E]
+Completed:    -       A      B        C      D,E
+             [=================================================================]
+             ^ Unlike regular queueing, multiple items
+               can be processed concurrently
 
-## Basic Usage
+             [Items queue up]   [Process 2 at once]   [Complete]
+              when busy         with wait between      all items
+```
+
+### When to Use Async Queueing
+
+Async queueing is particularly effective when you need to:
+- Process multiple asynchronous operations concurrently
+- Control the number of simultaneous operations
+- Handle Promise-based tasks with proper error handling
+- Maintain order while maximizing throughput
+- Process background tasks that can run in parallel
+
+Common use cases include:
+- Making concurrent API requests with rate limiting
+- Processing multiple file uploads simultaneously
+- Running parallel database operations
+- Handling multiple websocket connections
+- Processing data streams with backpressure
+- Managing resource-intensive background tasks
+
+### When Not to Use Async Queueing
+
+The AsyncQueuer is very versatile and can be used in many situations. Really, it's just not a good fit only when you don't plan to take advantage of all of its features. If you don't need all executions that are queued to go through, use [Throttling][../guides/throttling] instead. If you don't need concurrent processing, use [Queueing][../guides/queueing] instead.
+
+## Async Queueing in TanStack Pacer
+
+TanStack Pacer provides async queueing through the simple `asyncQueue` function and the more powerful `AsyncQueuer` class.
+
+### Basic Usage with `asyncQueue`
+
+The `asyncQueue` function provides a simple way to create an always-running async queue:
 
 ```ts
-import { AsyncQueuer } from '@tanstack/pacer'
+import { asyncQueue } from '@tanstack/pacer'
 
-const asyncQueuer = new AsyncQueuer<string>({
-  concurrency: 2, // Process 2 items at once
-  wait: 1000,     // Wait 1 second between starting new items
+// Create a queue that processes up to 2 items concurrently
+const processItems = asyncQueue<string>({
+  concurrency: 2,
+  onUpdate: (queuer) => {
+    console.log('Active tasks:', queuer.getActiveItems().length)
+  }
 })
 
-// Add error and success handlers
-asyncQueuer.onError((error, task) => {
-  console.error('Task failed:', error)
-})
-
-asyncQueuer.onSuccess((result, task) => {
-  console.log('Task completed:', result)
-})
-
-// Start processing
-asyncQueuer.start()
-
-// Add async tasks
-asyncQueuer.addItem(async () => {
+// Add async tasks to be processed
+processItems(async () => {
   const result = await fetchData(1)
   return result
 })
 
-asyncQueuer.addItem(async () => {
+processItems(async () => {
   const result = await fetchData(2)
   return result
 })
 ```
 
-## Error Handling
+The usage of the `asyncQueue` function is a bit limited, as it is just a wrapper around the `AsyncQueuer` class that only exposes the `addItem` method. For more control over the queue, use the `AsyncQueuer` class directly.
 
-AsyncQueuer's error handling system is comprehensive and flexible, providing multiple ways to handle failures:
+### Advanced Usage with `AsyncQueuer` Class
 
-### 1. Per-Operation Error Handling
-Each operation can handle its own errors through the Promise chain:
+The `AsyncQueuer` class provides complete control over async queue behavior:
+
 ```ts
-asyncQueuer
-  .addItem(async () => await riskyOperation())
-  .catch(error => handleError(error))
-```
+import { AsyncQueuer } from '@tanstack/pacer'
 
-### 2. Queue-Level Error Handlers
-Global handlers can catch errors from any operation:
-```ts
-const asyncQueuer = new AsyncQueuer<string>()
+const queue = new AsyncQueuer<string>({
+  concurrency: 2, // Process 2 items at once
+  wait: 1000,     // Wait 1 second between starting new items
+  started: true   // Start processing immediately
+})
 
-// Handle task errors
-asyncQueuer.onError((error, task) => {
+// Add error and success handlers
+queue.onError((error) => {
   console.error('Task failed:', error)
-  // Optionally retry the task or notify monitoring systems
 })
 
-// Handle successful completions
-asyncQueuer.onSuccess((result, task) => {
+queue.onSuccess((result) => {
   console.log('Task completed:', result)
-  // Update UI or trigger dependent operations
 })
 
-// Handle all task completions (success or error)
-asyncQueuer.onSettled((result, error) => {
-  if (error) {
-    console.log('Task failed:', error)
-  } else {
-    console.log('Task succeeded:', result)
-  }
-  // Update progress indicators or clean up resources
+// Add async tasks
+queue.addItem(async () => {
+  const result = await fetchData(1)
+  return result
+})
+
+queue.addItem(async () => {
+  const result = await fetchData(2)
+  return result
 })
 ```
 
-### 3. Error Recovery Strategies
-The error handling system enables sophisticated recovery strategies:
-- Automatic retries with exponential backoff
-- Fallback to alternative operations
-- Dead-letter queues for failed operations
-- Circuit breakers for failing dependencies
+### Queue Types and Ordering
 
-## Common Use Cases
+The AsyncQueuer supports different queueing strategies to handle various processing requirements. Each strategy determines how tasks are added and processed from the queue.
 
-AsyncQueuer is particularly well-suited for:
-- Parallel API requests with rate limiting
-- Batch processing of data with concurrency control
-- Background task processing with error recovery
-- Resource-intensive operations that benefit from parallelization
-- Long-running operations that need to be monitored and managed
-- Systems requiring graceful degradation under load
+#### FIFO Queue (First In, First Out)
+
+FIFO queues process tasks in the exact order they were added, making them ideal for maintaining sequence:
+
+```ts
+const queue = new AsyncQueuer<string>({
+  addItemsTo: 'back',  // default
+  getItemsFrom: 'front', // default
+  concurrency: 2
+})
+
+queue.addItem(async () => 'first')  // [first]
+queue.addItem(async () => 'second') // [first, second]
+// Processes: first and second concurrently
+```
+
+#### LIFO Stack (Last In, First Out)
+
+LIFO stacks process the most recently added tasks first, useful for prioritizing newer tasks:
+
+```ts
+const stack = new AsyncQueuer<string>({
+  addItemsTo: 'back',
+  getItemsFrom: 'back', // Process newest items first
+  concurrency: 2
+})
+
+stack.addItem(async () => 'first')  // [first]
+stack.addItem(async () => 'second') // [first, second]
+// Processes: second first, then first
+```
+
+#### Priority Queue
+
+Priority queues process tasks based on their assigned priority values, ensuring important tasks are handled first:
+
+```ts
+const priorityQueue = new AsyncQueuer<string>({
+  concurrency: 2
+})
+
+// Create tasks with static priority values
+const lowPriorityTask = Object.assign(
+  async () => 'low priority result',
+  { priority: 1 }
+)
+
+const highPriorityTask = Object.assign(
+  async () => 'high priority result',
+  { priority: 3 }
+)
+
+const mediumPriorityTask = Object.assign(
+  async () => 'medium priority result',
+  { priority: 2 }
+)
+
+// Add tasks in any order - they'll be processed by priority (higher numbers first)
+priorityQueue.addItem(lowPriorityTask)
+priorityQueue.addItem(highPriorityTask)
+priorityQueue.addItem(mediumPriorityTask)
+// Processes: high and medium concurrently, then low
+```
+
+### Error Handling
+
+The AsyncQueuer provides comprehensive error handling capabilities to ensure robust task processing. You can handle errors at both the queue level and individual task level:
+
+```ts
+const queue = new AsyncQueuer<string>()
+
+// Handle errors globally
+const queue = new AsyncQueuer<string>({
+  onError: (error) => {
+    console.error('Task failed:', error)
+  },
+  onSuccess: (result) => {
+    console.log('Task succeeded:', result)
+  },
+  onSettled: (result) => {
+    if (result instanceof Error) {
+      console.log('Task failed:', result)
+    } else {
+      console.log('Task succeeded:', result)
+    }
+  }
+})
+
+// Handle errors per task
+queue.addItem(async () => {
+  throw new Error('Task failed')
+}).catch(error => {
+  console.error('Individual task error:', error)
+})
+```
+
+### Queue Management
+
+The AsyncQueuer provides several methods for monitoring and controlling queue state:
+
+```ts
+// Queue inspection
+queue.peek()           // View next item without removing it
+queue.size()          // Get current queue size
+queue.isEmpty()       // Check if queue is empty
+queue.isFull()        // Check if queue has reached maxSize
+queue.getAllItems()   // Get copy of all queued items
+queue.getActiveItems() // Get currently processing items
+queue.getPendingItems() // Get items waiting to be processed
+
+// Queue manipulation
+queue.clear()         // Remove all items
+queue.reset()         // Reset to initial state
+queue.getExecutionCount() // Get number of processed items
+
+// Processing control
+queue.start()         // Begin processing items
+queue.stop()          // Pause processing
+queue.isRunning()     // Check if queue is processing
+queue.isIdle()        // Check if queue is empty and not processing
+```
+
+### Framework Adapters
+
+Each framework adapter builds convenient hooks and functions around the async queuer classes. Hooks like `useAsyncQueuer` or `useAsyncQueuerState` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.

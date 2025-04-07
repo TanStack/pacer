@@ -62,7 +62,7 @@
           "to": "guides/queueing"
         },
         {
-          "label": "Asynchronous Queueing Guide",
+          "label": "Async Queueing Guide",
           "to": "guides/async-queueing"
         }
       ]

@@ -16,14 +16,9 @@ export interface AsyncQueuerOptions<TValue> {
    */
   getItemsFrom?: QueuePosition
   /**
-   * Function to determine priority of items in the queuer
-   * Higher priority items will be processed first
-   */
-  getPriority?: (item: () => Promise<TValue>) => number
-  /**
    * Initial items to populate the queuer with
    */
-  initialItems?: Array<() => Promise<TValue>>
+  initialItems?: Array<(() => Promise<TValue>) & { priority?: number }>
   /**
    * Maximum number of items allowed in the queuer
    */
@@ -53,7 +48,6 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
   addItemsTo: 'back',
   concurrency: 1,
   getItemsFrom: 'front',
-  getPriority: () => 0,
   initialItems: [],
   maxSize: Infinity,
   onGetNextItem: () => {},
@@ -181,7 +175,7 @@ export class AsyncQueuer<TValue> {
    * Adds a task to the queuer
    */
   addItem(
-    fn: () => Promise<TValue>,
+    fn: (() => Promise<TValue>) & { priority?: number },
     position: QueuePosition = this.options.addItemsTo,
     runOnUpdate: boolean = true,
   ): Promise<TValue> {
@@ -190,22 +184,24 @@ export class AsyncQueuer<TValue> {
     }
 
     return new Promise<TValue>((resolve, reject) => {
-      const task = async () => {
-        try {
-          const result = await fn()
-          resolve(result)
-          return result
-        } catch (error) {
-          reject(error)
-          throw error
-        }
-      }
+      const task = Object.assign(
+        async () => {
+          try {
+            const result = await fn()
+            resolve(result)
+            return result
+          } catch (error) {
+            reject(error)
+            throw error
+          }
+        },
+        { priority: fn.priority ?? 0 },
+      )
 
-      if (this.options.getPriority !== defaultOptions.getPriority) {
-        // If custom priority function is provided, insert based on priority
-        const priority = this.options.getPriority(task)
+      if (fn.priority !== undefined) {
+        // If task has priority, insert based on priority
         const insertIndex = this.items.findIndex(
-          (existing) => this.options.getPriority(existing) > priority,
+          (existing) => (existing as any).priority > task.priority,
         )
 
         if (insertIndex === -1) {
@@ -258,9 +254,7 @@ export class AsyncQueuer<TValue> {
   /**
    * Returns an item without removing it
    */
-  peek(
-    position: 'front' | 'back' = 'front',
-  ): (() => Promise<TValue>) | undefined {
+  peek(position: QueuePosition = 'front'): (() => Promise<TValue>) | undefined {
     if (position === 'front') {
       return this.items[0]
     }

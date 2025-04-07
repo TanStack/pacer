@@ -36,6 +36,7 @@ Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of th
   - Create custom comparison logic for specific needs
 - **Convenient Hooks**
   - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuerState`, and more.
+  - Multiple layers of abstraction to choose from depending on your use case.
 - **Type Safety**
   - Full type safety with TypeScript that makes sure that your functions will always be called with the correct arguments
   - Generics for flexible and reusable utilities
