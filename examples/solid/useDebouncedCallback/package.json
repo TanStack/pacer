@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-use-debounced-callback",
+  "name": "@tanstack/pacer-example-solid-use-debounced-callback",
   "private": true,
   "type": "module",
   "scripts": {

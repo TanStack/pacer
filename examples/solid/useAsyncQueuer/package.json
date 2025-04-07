@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-use-async-queuer",
+  "name": "@tanstack/pacer-example-solid-use-async-queuer",
   "private": true,
   "type": "module",
   "scripts": {

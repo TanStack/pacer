@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-async-rate-limit",
+  "name": "@tanstack/pacer-example-solid-async-rate-limit",
   "private": true,
   "type": "module",
   "scripts": {

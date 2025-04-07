@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-async-throttle",
+  "name": "@tanstack/pacer-example-solid-async-throttle",
   "private": true,
   "type": "module",
   "scripts": {

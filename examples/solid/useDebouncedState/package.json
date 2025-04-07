@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-use-debounced-state",
+  "name": "@tanstack/pacer-example-solid-use-debounced-state",
   "private": true,
   "type": "module",
   "scripts": {

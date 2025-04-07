@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-use-throttled-value",
+  "name": "@tanstack/pacer-example-solid-use-throttled-value",
   "private": true,
   "type": "module",
   "scripts": {

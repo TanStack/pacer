@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-use-throttled-state",
+  "name": "@tanstack/pacer-example-solid-use-throttled-state",
   "private": true,
   "type": "module",
   "scripts": {

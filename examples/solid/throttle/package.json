@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-throttle",
+  "name": "@tanstack/pacer-example-solid-throttle",
   "private": true,
   "type": "module",
   "scripts": {

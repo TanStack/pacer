@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-use-rate-limited-state",
+  "name": "@tanstack/pacer-example-solid-use-rate-limited-state",
   "private": true,
   "type": "module",
   "scripts": {
