@@ -152,8 +152,9 @@ stack.addItem(async () => 'second') // [first, second]
 
 #### Priority Queue
 
-Priority queues process tasks based on their assigned priority values, ensuring important tasks are handled first:
+Priority queues process tasks based on their assigned priority values, ensuring important tasks are handled first. There are two ways to specify priorities:
 
+1. Static priority values attached to tasks:
 ```ts
 const priorityQueue = new AsyncQueuer<string>({
   concurrency: 2
@@ -181,6 +182,36 @@ priorityQueue.addItem(highPriorityTask)
 priorityQueue.addItem(mediumPriorityTask)
 // Processes: high and medium concurrently, then low
 ```
+
+2. Dynamic priority calculation using `getPriority` option:
+```ts
+const dynamicPriorityQueue = new AsyncQueuer<string>({
+  concurrency: 2,
+  getPriority: (task) => {
+    // Calculate priority based on task properties or other factors
+    // Higher numbers have priority
+    return calculateTaskPriority(task)
+  }
+})
+
+// Add tasks - priority will be calculated dynamically
+dynamicPriorityQueue.addItem(async () => {
+  const result = await processTask('low')
+  return result
+})
+
+dynamicPriorityQueue.addItem(async () => {
+  const result = await processTask('high')
+  return result
+})
+```
+
+Priority queues are essential when:
+- Tasks have different importance levels
+- Critical operations need to run first
+- You need flexible task ordering based on priority
+- Resource allocation should favor important tasks
+- Priority needs to be determined dynamically based on task properties or external factors
 
 ### Error Handling
 

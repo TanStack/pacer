@@ -61,7 +61,7 @@ function App() {
             // bad to use index as key, but these are arrow functions
             key={index}
           >
-            {task.toString()}
+            {index}: {task.toString()}
           </div>
         ))}
       </div>

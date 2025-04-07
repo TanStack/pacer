@@ -57,7 +57,7 @@ Adds a task to the queuer
 
 ##### fn
 
-() => `Promise`\<`TValue`\>
+() => `Promise`\<`TValue`\> & `object`
 
 ##### position?
 
@@ -275,7 +275,7 @@ Returns an item without removing it
 
 ##### position?
 
-`"front"` | `"back"`
+`QueuePosition`
 
 #### Returns
 

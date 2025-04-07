@@ -16,6 +16,12 @@ export interface AsyncQueuerOptions<TValue> {
    */
   getItemsFrom?: QueuePosition
   /**
+   * Function to determine priority of items in the queuer
+   * Higher priority items will be processed first
+   * If not provided, will use static priority values attached to tasks
+   */
+  getPriority?: (item: () => Promise<TValue>) => number
+  /**
    * Initial items to populate the queuer with
    */
   initialItems?: Array<(() => Promise<TValue>) & { priority?: number }>
@@ -48,6 +54,7 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
   addItemsTo: 'back',
   concurrency: 1,
   getItemsFrom: 'front',
+  getPriority: (item) => (item as any).priority ?? 0,
   initialItems: [],
   maxSize: Infinity,
   onGetNextItem: () => {},
@@ -195,14 +202,24 @@ export class AsyncQueuer<TValue> {
             throw error
           }
         },
-        { priority: fn.priority ?? 0 },
+        { priority: fn.priority ?? undefined },
       )
 
-      if (fn.priority !== undefined) {
-        // If task has priority, insert based on priority
-        const insertIndex = this.items.findIndex(
-          (existing) => (existing as any).priority > task.priority,
-        )
+      // Get priority either from the function or from getPriority option
+      const priority =
+        this.options.getPriority !== defaultOptions.getPriority
+          ? this.options.getPriority(task)
+          : task.priority
+
+      if (priority !== undefined) {
+        // Insert based on priority
+        const insertIndex = this.items.findIndex((existing) => {
+          const existingPriority =
+            this.options.getPriority !== defaultOptions.getPriority
+              ? this.options.getPriority(existing)
+              : (existing as any).priority
+          return existingPriority > priority
+        })
 
         if (insertIndex === -1) {
           this.items.push(task)
