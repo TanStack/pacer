@@ -32,6 +32,10 @@ function App1() {
             <td>{setCountDebouncer.getExecutionCount()}</td>
           </tr>
           <tr>
+            <td>Is Debouncing:</td>
+            <td>{setCountDebouncer.getIsDebouncing() ? 'true' : 'false'}</td>
+          </tr>
+          <tr>
             <td>Instant Count:</td>
             <td>{instantCount}</td>
           </tr>
@@ -81,6 +85,10 @@ function App2() {
           <tr>
             <td>Execution Count:</td>
             <td>{setSearchDebouncer.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Is Debouncing:</td>
+            <td>{setSearchDebouncer.getIsDebouncing() ? 'true' : 'false'}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>

@@ -59,6 +59,7 @@ export class Debouncer<
   TArgs extends Parameters<TFn>,
 > {
   private canLeadingExecute = true
+  private isDebouncing = false
   private executionCount = 0
   private options: Required<DebouncerOptions>
   private timeoutId: NodeJS.Timeout | undefined
@@ -80,6 +81,10 @@ export class Debouncer<
   setOptions(
     newOptions: Partial<DebouncerOptions>,
   ): Required<DebouncerOptions> {
+    if (!newOptions.enabled) {
+      this.isDebouncing = false
+    }
+
     this.options = {
       ...this.options,
       ...newOptions,
@@ -98,7 +103,7 @@ export class Debouncer<
    * Returns wether the debouncer is debouncing
    */
   getIsDebouncing(): boolean {
-    return !!this.timeoutId
+    return this.isDebouncing
   }
 
   /**
@@ -106,6 +111,8 @@ export class Debouncer<
    * If a call is already in progress, it will be queued
    */
   maybeExecute(...args: TArgs): void {
+    this.isDebouncing = true
+
     // Handle leading execution
     if (this.options.leading && this.canLeadingExecute) {
       this.executeFunction(...args)
@@ -128,6 +135,7 @@ export class Debouncer<
   private executeFunction(...args: TArgs): void {
     if (!this.options.enabled) return
     this.executionCount++
+    this.isDebouncing = false
     this.fn(...args)
   }
 
@@ -138,6 +146,7 @@ export class Debouncer<
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
       this.canLeadingExecute = true
+      this.isDebouncing = false
     }
   }
 }
