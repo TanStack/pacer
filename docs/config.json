@@ -14,10 +14,6 @@
           "to": "overview"
         },
         {
-          "label": "Installation",
-          "to": "installation"
-        },
-        {
           "label": "Quick Start",
           "to": "quick-start"
         },
@@ -31,6 +27,10 @@
           "label": "react",
           "children": [
             {
+              "label": "Installation",
+              "to": "framework/react/installation"
+            },
+            {
               "label": "React Adapter",
               "to": "framework/react/adapter"
             },
@@ -43,6 +43,10 @@
         {
           "label": "solid",
           "children": [
+            {
+              "label": "Installation",
+              "to": "framework/solid/installation"
+            },
             {
               "label": "Solid Adapter",
               "to": "framework/solid/adapter"
