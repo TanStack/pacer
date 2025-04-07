@@ -17,7 +17,7 @@ function App() {
       await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
       return `Initial Task ${i + 1}`
     }),
-    concurrency: concurrency, // Process 2 items concurrently
+    concurrency: concurrency(), // Process 2 items concurrently
     wait: 100, // for demo purposes - usually you would not want extra wait time unless you are throttling with concurrency
     onUpdate: (asyncQueuer) => {
       setQueueItems(asyncQueuer.getAllItems())
@@ -37,34 +37,31 @@ function App() {
     <div>
       <h1>TanStack Pacer useAsyncQueuer Example</h1>
       <div></div>
-      <div>Queue Size: {queuer.size()}</div>
+      <div>Queue Size: {queuer().size()}</div>
       <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {queuer.isFull() ? 'Yes' : 'No'}</div>
-      <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.getExecutionCount()}</div>
-      <div>Active Tasks: {queuer.getActiveItems().length}</div>
-      <div>Pending Tasks: {queuer.getPendingItems().length}</div>
+      <div>Queue Full: {queuer().isFull() ? 'Yes' : 'No'}</div>
+      <div>Queue Empty: {queuer().isEmpty() ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {queuer().isIdle() ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {queuer().isRunning() ? 'Running' : 'Stopped'}</div>
+      <div>Items Processed: {queuer().getExecutionCount()}</div>
+      <div>Active Tasks: {queuer().getActiveItems().length}</div>
+      <div>Pending Tasks: {queuer().getPendingItems().length}</div>
       <div>
         Concurrency:{' '}
         <input
           type="number"
           min={1}
-          value={concurrency}
+          value={concurrency()}
           onChange={(e) =>
             setConcurrency(Math.max(1, parseInt(e.target.value) || 1))
           }
           style={{ width: '60px' }}
         />
       </div>
-      <div style={{ minHeight: '250px' }}>
+      <div style={{ 'min-height': '250px' }}>
         Queue Items:
         {queueItems().map((task, index) => (
-          <div
-            // bad to use index as key, but these are arrow functions
-            key={index}
-          >
+          <div>
             {index}: {task.toString()}
           </div>
         ))}
@@ -72,9 +69,9 @@ function App() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          'grid-template-columns': 'repeat(2, 1fr)',
           gap: '8px',
-          maxWidth: '600px',
+          'max-width': '600px',
           margin: '16px 0',
         }}
       >
@@ -85,21 +82,27 @@ function App() {
                   ...queueItems().map((task) => parseInt(task.toString())),
                 )
               : 1
-            queuer.addItem(createAsyncTask(nextNumber))
+            queuer().addItem(createAsyncTask(nextNumber))
           }}
-          disabled={queuer.isFull()}
+          disabled={queuer().isFull()}
         >
           Add Async Task
         </button>
-        <button onClick={() => queuer.getNextItem()}>Get Next Item</button>
-        <button onClick={() => queuer.clear()} disabled={queuer.isEmpty()}>
+        <button onClick={() => queuer().getNextItem()}>Get Next Item</button>
+        <button onClick={() => queuer().clear()} disabled={queuer().isEmpty()}>
           Clear Queue
         </button>
-        <button onClick={() => queuer.reset()}>Reset Queue</button>
-        <button onClick={() => queuer.start()} disabled={queuer.isRunning()}>
+        <button onClick={() => queuer().reset()}>Reset Queue</button>
+        <button
+          onClick={() => queuer().start()}
+          disabled={queuer().isRunning()}
+        >
           Start Processing
         </button>
-        <button onClick={() => queuer.stop()} disabled={!queuer.isRunning()}>
+        <button
+          onClick={() => queuer().stop()}
+          disabled={!queuer().isRunning()}
+        >
           Stop Processing
         </button>
       </div>
@@ -107,4 +110,4 @@ function App() {
   )
 }
 
-render(() => <App />)
+render(() => <App />, document.getElementById('root')!)
