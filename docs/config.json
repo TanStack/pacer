@@ -39,6 +39,19 @@
               "to": "framework/react/reference/index"
             }
           ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "Solid Adapter",
+              "to": "framework/solid/adapter"
+            },
+            {
+              "label": "Solid Hooks",
+              "to": "framework/solid/reference/index"
+            }
+          ]
         }
       ]
     },
@@ -89,7 +102,7 @@
           "to": "reference/classes/debouncer"
         },
         {
-          "label": "AsyncDebouncer", 
+          "label": "AsyncDebouncer",
           "to": "reference/classes/asyncdebouncer"
         }
       ],
@@ -116,6 +129,31 @@
             {
               "label": "useAsyncDebouncer",
               "to": "framework/react/reference/functions/useasyncdebouncer"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "useDebouncer",
+              "to": "framework/solid/reference/functions/usedebouncer"
+            },
+            {
+              "label": "useDebouncedCallback",
+              "to": "framework/solid/reference/functions/usedebouncedcallback"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/solid/reference/functions/usedebouncedstate"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/solid/reference/functions/usedebouncedvalue"
+            },
+            {
+              "label": "useAsyncDebouncer",
+              "to": "framework/solid/reference/functions/useasyncdebouncer"
             }
           ]
         }
@@ -149,7 +187,7 @@
       ],
       "frameworks": [
         {
-          "label": "react", 
+          "label": "react",
           "children": [
             {
               "label": "useThrottler",
@@ -170,6 +208,31 @@
             {
               "label": "useAsyncThrottler",
               "to": "framework/react/reference/functions/useasyncthrottler"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "useThrottler",
+              "to": "framework/solid/reference/functions/usethrottler"
+            },
+            {
+              "label": "useThrottledCallback",
+              "to": "framework/solid/reference/functions/usethrottledcallback"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/solid/reference/functions/usethrottledstate"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/solid/reference/functions/usethrottledvalue"
+            },
+            {
+              "label": "useAsyncThrottler",
+              "to": "framework/solid/reference/functions/useasyncthrottler"
             }
           ]
         }
@@ -230,6 +293,31 @@
               "to": "framework/react/reference/functions/useasyncratelimiter"
             }
           ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "useRateLimiter",
+              "to": "framework/solid/reference/functions/useratelimiter"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/solid/reference/functions/useratelimitedcallback"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/solid/reference/functions/useratelimitedstate"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/solid/reference/functions/useratelimitedvalue"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/solid/reference/functions/useasyncratelimiter"
+            }
+          ]
         }
       ]
     },
@@ -272,6 +360,23 @@
               "to": "framework/react/reference/functions/useasyncqueuer"
             }
           ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "useQueuer",
+              "to": "framework/solid/reference/functions/usequeuer"
+            },
+            {
+              "label": "useQueuerState",
+              "to": "framework/solid/reference/functions/usequeuerstate"
+            },
+            {
+              "label": "useAsyncQueuer",
+              "to": "framework/solid/reference/functions/useasyncqueuer"
+            }
+          ]
         }
       ]
     },
@@ -309,6 +414,39 @@
             {
               "label": "useAsyncDebouncer",
               "to": "framework/react/examples/useAsyncDebouncer"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "debounce",
+              "to": "framework/solid/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/solid/examples/asyncDebounce"
+            },
+            {
+              "label": "useDebouncer",
+              "to": "framework/solid/examples/useDebouncer"
+            },
+            {
+              "label": "useDebouncedCallback",
+              "to": "framework/solid/examples/useDebouncedCallback"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/solid/examples/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/solid/examples/useDebouncedValue"
+            },
+            {
+              "label": "useAsyncDebouncer",
+              "to": "framework/solid/examples/useAsyncDebouncer"
             }
           ]
         }
@@ -350,6 +488,39 @@
               "to": "framework/react/examples/useAsyncThrottler"
             }
           ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "throttle",
+              "to": "framework/solid/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/solid/examples/asyncThrottle"
+            },
+            {
+              "label": "useThrottler",
+              "to": "framework/solid/examples/useThrottler"
+            },
+            {
+              "label": "useThrottledCallback",
+              "to": "framework/solid/examples/useThrottledCallback"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/solid/examples/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/solid/examples/useThrottledValue"
+            },
+            {
+              "label": "useAsyncThrottler",
+              "to": "framework/solid/examples/useAsyncThrottler"
+            }
+          ]
         }
       ]
     },
@@ -389,6 +560,39 @@
               "to": "framework/react/examples/useAsyncRateLimiter"
             }
           ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "rateLimit",
+              "to": "framework/solid/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/solid/examples/asyncRateLimit"
+            },
+            {
+              "label": "useRateLimiter",
+              "to": "framework/solid/examples/useRateLimiter"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/solid/examples/useRateLimitedCallback"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/solid/examples/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/solid/examples/useRateLimitedValue"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/solid/examples/useAsyncRateLimiter"
+            }
+          ]
         }
       ]
     },
@@ -418,6 +622,31 @@
             {
               "label": "useAsyncQueuerState",
               "to": "framework/react/examples/useAsyncQueuerState"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "queue",
+              "to": "framework/solid/examples/queue"
+            },
+            {
+              "label": "useQueuer",
+              "to": "framework/solid/examples/useQueuer"
+            },
+            {
+              "label": "useQueuerState",
+              "to": "framework/solid/examples/useQueuerState"
+            },
+            {
+              "label": "useAsyncQueuer",
+              "to": "framework/solid/examples/useAsyncQueuer"
+            },
+            {
+              "label": "useAsyncQueuerState",
+              "to": "framework/solid/examples/useAsyncQueuerState"
             }
           ]
         }
