@@ -140,8 +140,8 @@
     "@tanstack/pacer": "workspace:*"
   },
   "devDependencies": {
-    "vite-plugin-solid": "^2.11.6",
-    "solid-js": "^1.9.5"
+    "solid-js": "^1.9.5",
+    "vite-plugin-solid": "^2.11.6"
   },
   "peerDependencies": {
     "solid-js": ">=1.9.5"
