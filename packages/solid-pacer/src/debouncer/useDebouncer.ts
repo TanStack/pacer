@@ -40,10 +40,7 @@ export function useDebouncer<
 >(fn: TFn, options: DebouncerOptions) {
   const [debouncer] = createSignal(() => new Debouncer<TFn, TArgs>(fn, options))
 
-  const setOptions = createMemo(
-    () => debouncer()().setOptions.bind(debouncer),
-    [debouncer],
-  )
+  const setOptions = createMemo(() => debouncer()().setOptions.bind(debouncer))
 
   setOptions()(options)
 
@@ -54,6 +51,5 @@ export function useDebouncer<
         cancel: debouncer()().cancel.bind(debouncer),
         getExecutionCount: debouncer()().getExecutionCount.bind(debouncer),
       }) as const,
-    [debouncer],
   )
 }

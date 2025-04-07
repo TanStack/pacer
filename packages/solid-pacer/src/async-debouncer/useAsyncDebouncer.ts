@@ -45,9 +45,8 @@ export function useAsyncDebouncer<
     () => new AsyncDebouncer<TFn, TArgs>(fn, options),
   )
 
-  const setOptions = createMemo(
-    () => asyncDebouncer()().setOptions.bind(asyncDebouncer),
-    [asyncDebouncer],
+  const setOptions = createMemo(() =>
+    asyncDebouncer()().setOptions.bind(asyncDebouncer),
   )
 
   setOptions()(options)
@@ -60,6 +59,5 @@ export function useAsyncDebouncer<
         getExecutionCount:
           asyncDebouncer()().getExecutionCount.bind(asyncDebouncer),
       }) as const,
-    [asyncDebouncer],
   )
 }

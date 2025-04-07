@@ -56,9 +56,8 @@ export function useAsyncQueuer<TValue>(
 ) {
   const [asyncQueuer] = createSignal(() => new AsyncQueuer<TValue>(options))
 
-  const setOptions = createMemo(
-    () => asyncQueuer()().setOptions.bind(asyncQueuer),
-    [asyncQueuer],
+  const setOptions = createMemo(() =>
+    asyncQueuer()().setOptions.bind(asyncQueuer),
   )
 
   setOptions()(options)
@@ -87,6 +86,5 @@ export function useAsyncQueuer<TValue>(
         start: asyncQueuer()().start.bind(asyncQueuer()),
         stop: asyncQueuer()().stop.bind(asyncQueuer()),
       }) as const,
-    [asyncQueuer],
   )
 }

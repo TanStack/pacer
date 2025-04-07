@@ -46,9 +46,8 @@ export function useAsyncRateLimiter<
     () => new AsyncRateLimiter<TFn, TArgs>(fn, options),
   )
 
-  const setOptions = createMemo(
-    () => asyncRateLimiter()().setOptions.bind(asyncRateLimiter),
-    [asyncRateLimiter],
+  const setOptions = createMemo(() =>
+    asyncRateLimiter()().setOptions.bind(asyncRateLimiter),
   )
 
   setOptions()(options)
@@ -65,6 +64,5 @@ export function useAsyncRateLimiter<
         getRemainingInWindow:
           asyncRateLimiter()().getRemainingInWindow.bind(asyncRateLimiter),
       }) as const,
-    [asyncRateLimiter],
   )
 }

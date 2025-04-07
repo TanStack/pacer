@@ -35,7 +35,7 @@ import type { ThrottlerOptions } from '@tanstack/pacer'
  * createEffect(() => {
  *   window.addEventListener('resize', handleResize);
  *   return () => window.removeEventListener('resize', handleResize);
- * }, [handleResize]);
+ * });
  * ```
  */
 export function useThrottledCallback<

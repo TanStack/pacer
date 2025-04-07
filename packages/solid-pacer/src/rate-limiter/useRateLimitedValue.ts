@@ -58,7 +58,7 @@ export function useRateLimitedValue<TValue>(
 
   createEffect(() => {
     setRateLimitedValue(value as any)
-  }, [value, setRateLimitedValue])
+  })
 
   return [rateLimitedValue, rateLimiter] as const
 }

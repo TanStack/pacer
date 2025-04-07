@@ -47,9 +47,8 @@ export function useAsyncThrottler<
     () => new AsyncThrottler<TFn, TArgs>(fn, options),
   )
 
-  const setOptions = createMemo(
-    () => asyncThrottler()().setOptions.bind(asyncThrottler),
-    [asyncThrottler],
+  const setOptions = createMemo(() =>
+    asyncThrottler()().setOptions.bind(asyncThrottler),
   )
 
   setOptions()(options)
@@ -64,6 +63,5 @@ export function useAsyncThrottler<
         getNextExecutionTime:
           asyncThrottler()().getNextExecutionTime.bind(asyncThrottler),
       }) as const,
-    [asyncThrottler],
   )
 }

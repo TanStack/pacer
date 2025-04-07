@@ -43,10 +43,7 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
 export function useQueuer<TValue>(options: QueuerOptions<TValue> = {}) {
   const [queuer] = createSignal(() => new Queuer<TValue>(options))
 
-  const setOptions = createMemo(
-    () => queuer()().setOptions.bind(queuer),
-    [queuer],
-  )
+  const setOptions = createMemo(() => queuer()().setOptions.bind(queuer))
 
   setOptions()(options)
 
@@ -69,6 +66,5 @@ export function useQueuer<TValue>(options: QueuerOptions<TValue> = {}) {
         start: queuer()().start.bind(queuer),
         stop: queuer()().stop.bind(queuer),
       }) as const,
-    [queuer],
   )
 }

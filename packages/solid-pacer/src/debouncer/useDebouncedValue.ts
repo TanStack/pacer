@@ -52,7 +52,7 @@ export function useDebouncedValue<TValue>(
     return () => {
       debouncer().cancel()
     }
-  }, [value, setDebouncedValue, debouncer])
+  })
 
   return [debouncedValue, debouncer] as const
 }

@@ -58,9 +58,8 @@ export function useRateLimiter<
     () => new RateLimiter<TFn, TArgs>(fn, options),
   )
 
-  const setOptions = createMemo(
-    () => rateLimiter()().setOptions.bind(rateLimiter),
-    [rateLimiter],
+  const setOptions = createMemo(() =>
+    rateLimiter()().setOptions.bind(rateLimiter),
   )
 
   setOptions()(options)
@@ -75,6 +74,5 @@ export function useRateLimiter<
           rateLimiter()().getRemainingInWindow.bind(rateLimiter),
         reset: rateLimiter()().reset.bind(rateLimiter),
       }) as const,
-    [rateLimiter],
   )
 }

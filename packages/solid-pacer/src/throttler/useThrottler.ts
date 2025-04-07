@@ -48,10 +48,7 @@ export function useThrottler<
 >(fn: TFn, options: ThrottlerOptions) {
   const [throttler] = createSignal(() => new Throttler<TFn, TArgs>(fn, options))
 
-  const setOptions = createMemo(
-    () => throttler()().setOptions.bind(throttler),
-    [throttler],
-  )
+  const setOptions = createMemo(() => throttler()().setOptions.bind(throttler))
 
   setOptions()(options)
 
@@ -62,6 +59,5 @@ export function useThrottler<
         cancel: throttler()().cancel.bind(throttler),
         getExecutionCount: throttler()().getExecutionCount.bind(throttler),
       }) as const,
-    [throttler],
   )
 }

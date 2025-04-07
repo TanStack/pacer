@@ -47,7 +47,7 @@ export function useThrottledValue<TValue>(
     return () => {
       throttler().cancel()
     }
-  }, [value, setThrottledValue, throttler])
+  })
 
   return [throttledValue, throttler] as const
 }
