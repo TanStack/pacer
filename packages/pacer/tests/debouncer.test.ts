@@ -330,6 +330,69 @@ describe('Debouncer', () => {
     vi.advanceTimersByTime(500) // Only need to wait 500ms now
     expect(mockFn).toBeCalledTimes(2) // Trailing execution after shorter wait
   })
+
+  it('should be isDebouncing when there is a pending trailing execution', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsDebouncing()).toBe(true)
+
+    vi.advanceTimersByTime(1000)
+    expect(debouncer.getIsDebouncing()).toBe(false)
+  })
+
+  it('should not be isDebouncing when leading option is true', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      leading: true,
+    })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsDebouncing()).toBe(false)
+
+    vi.advanceTimersByTime(1000)
+    expect(debouncer.getIsDebouncing()).toBe(false)
+  })
+
+  it('should not be isDebouncing when disabled', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000, enabled: false })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsDebouncing()).toBe(false)
+
+    vi.advanceTimersByTime(1000)
+    expect(debouncer.getIsDebouncing()).toBe(false)
+  })
+
+  it('should update isDebouncing properly when enabling/disabling', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsDebouncing()).toBe(true)
+
+    // Disable while debouncing
+    debouncer.setOptions({ enabled: false })
+    expect(debouncer.getIsDebouncing()).toBe(false)
+
+    // Re-enable
+    debouncer.setOptions({ enabled: true })
+    expect(debouncer.getIsDebouncing()).toBe(false) // Should still be false
+  })
+
+  it('should set isDebouncing to false when canceled', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsDebouncing()).toBe(true)
+
+    debouncer.cancel()
+    expect(debouncer.getIsDebouncing()).toBe(false)
+  })
 })
 
 describe('debounce helper function', () => {
