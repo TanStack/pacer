@@ -95,6 +95,13 @@ export class Debouncer<
   }
 
   /**
+   * Returns wether the debouncer is debouncing
+   */
+  getIsDebouncing(): boolean {
+    return !!this.timeoutId
+  }
+
+  /**
    * Attempts to execute the debounced function
    * If a call is already in progress, it will be queued
    */
