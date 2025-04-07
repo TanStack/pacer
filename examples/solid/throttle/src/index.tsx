@@ -8,10 +8,9 @@ function App1() {
   const [throttledCount, setThrottledCount] = createSignal(0)
 
   // Create throttled setter function - Stable reference required!
-  const throttledSetCount =
-    throttle(setThrottledCount, {
-      wait: 1000,
-    })
+  const throttledSetCount = throttle(setThrottledCount, {
+    wait: 1000,
+  })
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -49,14 +48,13 @@ function App2() {
   const [throttledText, setThrottledText] = createSignal('')
 
   // Create throttled setter function - Stable reference required!
-  const throttledSetText =
-    throttle(setThrottledText, {
-      wait: 1000,
-    })
+  const throttledSetText = throttle(setThrottledText, {
+    wait: 1000,
+  })
 
   function handleTextChange(e: Event) {
-    const target = e.target as HTMLInputElement;
-  const newValue = target.value
+    const target = e.target as HTMLInputElement
+    const newValue = target.value
     setText(newValue)
     throttledSetText(newValue)
   }
@@ -89,10 +87,13 @@ function App2() {
   )
 }
 
-render(() => (
-  <div>
-    <App1 />
-    <hr />
-    <App2 />
-  </div>
-, document.getElementById('root')!)
+render(
+  () => (
+    <div>
+      <App1 />
+      <hr />
+      <App2 />
+    </div>
+  ),
+  document.getElementById('root')!,
+)

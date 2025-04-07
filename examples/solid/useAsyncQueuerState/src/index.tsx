@@ -77,7 +77,9 @@ function App() {
         <button
           onClick={() => {
             const nextNumber = queueItems().length
-              ? Math.max(...queueItems().map((task) => parseInt(task.toString())))
+              ? Math.max(
+                  ...queueItems().map((task) => parseInt(task.toString())),
+                )
               : 1
             queuer.addItem(createAsyncTask(nextNumber))
           }}

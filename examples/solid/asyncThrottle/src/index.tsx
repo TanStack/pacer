@@ -44,8 +44,8 @@ function SearchApp() {
           type="text"
           value={searchText()}
           onChange={(e) => {
-            const target = e.target as HTMLInputElement;
-  const newValue = target.value
+            const target = e.target as HTMLInputElement
+            const newValue = target.value
             setSearchText(newValue)
             throttledSetSearch(newValue)
           }}

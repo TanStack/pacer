@@ -55,8 +55,8 @@ function App2() {
   })
 
   function handleSearchChange(e: Event) {
-    const target = e.target as HTMLInputElement;
-  const newValue = target.value
+    const target = e.target as HTMLInputElement
+    const newValue = target.value
     setSearchText(newValue)
     debouncedSetSearch(newValue)
   }
