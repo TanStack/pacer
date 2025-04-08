@@ -87,6 +87,10 @@ function App2() {
             <td>{debouncer.getExecutionCount()}</td>
           </tr>
           <tr>
+            <td>Is Pending:</td>
+            <td>{debouncer.getIsPending().toString()}</td>
+          </tr>
+          <tr>
             <td>Instant Search:</td>
             <td>{instantSearch}</td>
           </tr>
