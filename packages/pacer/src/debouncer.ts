@@ -121,6 +121,7 @@ export class Debouncer<
     if (this.options.leading && this.canLeadingExecute) {
       this.executeFunction(...args)
       this.canLeadingExecute = false
+      this.isDebouncing = false
     }
 
     // Clear any existing timeout
@@ -140,7 +141,6 @@ export class Debouncer<
   private executeFunction(...args: TArgs): void {
     if (!this.options.enabled) return
     this.executionCount++
-    this.isDebouncing = false
     this.fn(...args)
   }
 
