@@ -1,4 +1,4 @@
 export * from '@tanstack/pacer/queuer'
 
-export * from './useQueuer'
-export * from './useQueuerState'
+export * from './createQueuer'
+export * from './createQueuerSignal'

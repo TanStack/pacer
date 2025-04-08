@@ -1,5 +1,5 @@
 export * from '@tanstack/pacer/rate-limiter'
 
-export * from './useRateLimiter'
-export * from './useRateLimitedState'
-export * from './useRateLimitedValue'
+export * from './createRateLimiter'
+export * from './createRateLimitedSignal'
+export * from './createRateLimitedValue'

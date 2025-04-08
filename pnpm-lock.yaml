@@ -770,6 +770,262 @@ importers:
         specifier: ^2.11.6
         version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
 
+  examples/solid/createAsyncDebouncer:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createAsyncQueuer:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createAsyncQueuerState:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createAsyncRateLimiter:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createAsyncThrottler:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createDebouncedState:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createDebouncedValue:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createDebouncer:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createQueuer:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createQueuerState:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createRateLimitedState:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createRateLimitedValue:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createRateLimiter:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createThrottledState:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createThrottledValue:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
+  examples/solid/createThrottler:
+    dependencies:
+      '@tanstack/solid-pacer':
+        specifier: ^0.1.0
+        version: link:../../../packages/solid-pacer
+      solid-js:
+        specifier: ^1.9.5
+        version: 1.9.5
+    devDependencies:
+      vite:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+
   examples/solid/debounce:
     dependencies:
       '@tanstack/solid-pacer':
@@ -819,310 +1075,6 @@ importers:
         version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
 
   examples/solid/throttle:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useAsyncDebouncer:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useAsyncQueuer:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useAsyncQueuerState:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useAsyncRateLimiter:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useAsyncThrottler:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useDebouncedCallback:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useDebouncedState:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useDebouncedValue:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useDebouncer:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useQueuer:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useQueuerState:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useRateLimitedCallback:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useRateLimitedState:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useRateLimitedValue:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useRateLimiter:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useThrottledCallback:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useThrottledState:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useThrottledValue:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.1.0
-        version: link:../../../packages/solid-pacer
-      solid-js:
-        specifier: ^1.9.5
-        version: 1.9.5
-    devDependencies:
-      vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
-  examples/solid/useThrottler:
     dependencies:
       '@tanstack/solid-pacer':
         specifier: ^0.1.0
