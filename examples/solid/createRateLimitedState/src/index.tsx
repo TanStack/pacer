@@ -64,16 +64,14 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
-  const [limitedSearch, setLimitedSearch, rateLimiter] = createRateLimitedSignal(
-    instantSearch,
-    {
+  const [limitedSearch, setLimitedSearch, rateLimiter] =
+    createRateLimitedSignal(instantSearch, {
       // enabled: instantSearch.length > 2, // optional, defaults to true
       limit: 5,
       window: 5000,
       onReject: (rejectionInfo) =>
         console.log('Rejected by rate limiter', rejectionInfo),
-    },
-  )
+    })
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement

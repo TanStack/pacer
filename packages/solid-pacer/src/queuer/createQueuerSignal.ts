@@ -51,7 +51,9 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * };
  * ```
  */
-export function createQueuerSignal<TValue>(options: QueuerOptions<TValue> = {}) {
+export function createQueuerSignal<TValue>(
+  options: QueuerOptions<TValue> = {},
+) {
   const [state, setState] = createSignal<Array<TValue>>(
     options.initialItems || [],
   )

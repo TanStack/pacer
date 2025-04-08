@@ -54,13 +54,11 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // higher-level hook that uses React.createSignal with the state setter automatically throttled
-  const [throttledSearch, setThrottledSearch, throttler] = createThrottledSignal(
-    instantSearch,
-    {
+  const [throttledSearch, setThrottledSearch, throttler] =
+    createThrottledSignal(instantSearch, {
       wait: 1000,
       // enabled: instantSearch.length > 2, // optional, defaults to true
-    },
-  )
+    })
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
