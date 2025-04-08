@@ -331,7 +331,7 @@ describe('Debouncer', () => {
     expect(mockFn).toBeCalledTimes(2) // Trailing execution after shorter wait
   })
 
-  it('should update pending properly when trailing-only', () => {
+  it('should update pending when trailing-only', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, {
       wait: 1000,
@@ -354,7 +354,7 @@ describe('Debouncer', () => {
     expect(debouncer.getIsPending()).toBe(false) // Now it's done
   })
 
-  it('should update pending properly when leading-only', () => {
+  it('should update pending when leading-only', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, {
       wait: 1000,
@@ -377,6 +377,21 @@ describe('Debouncer', () => {
     expect(debouncer.getIsPending()).toBe(false) // Now it's done
   })
 
+  it('should not be pending when leading and trailing are both false', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      leading: false,
+      trailing: false,
+    })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsPending()).toBe(false)
+    
+    vi.advanceTimersByTime(1000)
+    expect(debouncer.getIsPending()).toBe(false)
+  })
+
   it('should not be pending when disabled', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000, enabled: false })
@@ -388,7 +403,7 @@ describe('Debouncer', () => {
     expect(debouncer.getIsPending()).toBe(false)
   })
 
-  it('should update pending properly when enabling/disabling', () => {
+  it('should update pending when enabling/disabling', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
