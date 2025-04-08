@@ -1,14 +1,14 @@
 import { createEffect, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { createThrottler } from '@tanstack/solid-pacer/throttler'
+import { useThrottler } from '@tanstack/solid-pacer/throttler'
 
 function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = createSignal(0)
   const [throttledCount, setThrottledCount] = createSignal(0)
 
-  // Lower-level createThrottler hook - requires you to manage your own state
-  const setCountThrottler = createThrottler(setThrottledCount, {
+  // Lower-level useThrottler hook - requires you to manage your own state
+  const setCountThrottler = useThrottler(setThrottledCount, {
     wait: 1000,
     enabled: false,
   })
@@ -31,7 +31,7 @@ function App1() {
 
   return (
     <div>
-      <h1>TanStack Pacer createThrottler Example 1</h1>
+      <h1>TanStack Pacer useThrottler Example 1</h1>
       <table>
         <tbody>
           <tr>
@@ -59,8 +59,8 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
   const [throttledSearch, setThrottledSearch] = createSignal('')
 
-  // Lower-level createThrottler hook - requires you to manage your own state
-  const setSearchThrottler = createThrottler(setThrottledSearch, {
+  // Lower-level useThrottler hook - requires you to manage your own state
+  const setSearchThrottler = useThrottler(setThrottledSearch, {
     wait: 1000,
     enabled: false,
   })
@@ -81,7 +81,7 @@ function App2() {
 
   return (
     <div>
-      <h1>TanStack Pacer createThrottler Example 2</h1>
+      <h1>TanStack Pacer useThrottler Example 2</h1>
       <div>
         <input
           type="text"
