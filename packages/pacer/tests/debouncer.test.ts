@@ -362,13 +362,12 @@ describe('Debouncer', () => {
       trailing: false,
     })
 
-    // Firs call executes immediately
     debouncer.maybeExecute('test')
-    expect(debouncer.getIsPending()).toBe(false)
+    expect(debouncer.getIsPending()).toBe(true)
 
     // Call again before wait expires
-    debouncer.maybeExecute('test')
-    expect(debouncer.getIsPending()).toBe(true) // Should be pending now
+    vi.advanceTimersByTime(500)
+    debouncer.maybeExecute('test') // Should reset pending
 
     // Time is almost up
     vi.advanceTimersByTime(900)

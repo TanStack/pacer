@@ -86,7 +86,7 @@ export class Debouncer<
       ...newOptions,
     }
 
-    // Handle disabling the debouncer
+    // End the pending state if the debouncer is disabled
     if (!this.options.enabled) {
       this.isPending = false
     }
@@ -102,7 +102,7 @@ export class Debouncer<
   }
 
   /**
-   * Returns if there is a pending execution
+   * Returns `true` if debouncing 
    */
   getIsPending(): boolean {
     return this.options.enabled && this.isPending
@@ -113,15 +113,15 @@ export class Debouncer<
    * If a call is already in progress, it will be queued
    */
   maybeExecute(...args: TArgs): void {
-    if (this.options.leading || this.options.trailing) {
-      this.isPending = true
-    }
-
     // Handle leading execution
     if (this.options.leading && this.canLeadingExecute) {
       this.executeFunction(...args)
       this.canLeadingExecute = false
-      this.isPending = false
+    }
+
+    // Start pending state
+    if (this.options.leading || this.options.trailing) {
+      this.isPending = true
     }
 
     // Clear any existing timeout
