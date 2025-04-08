@@ -105,7 +105,7 @@ export class Debouncer<
    * Returns wether the debouncer is debouncing
    */
   getIsDebouncing(): boolean {
-    return this.isDebouncing
+    return this.options.enabled && this.isDebouncing
   }
 
   /**
