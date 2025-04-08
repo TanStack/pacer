@@ -31,7 +31,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{throttler().getExecutionCount()}</td>
+            <td>{throttler.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -85,7 +85,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{throttler().getExecutionCount()}</td>
+            <td>{throttler.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
