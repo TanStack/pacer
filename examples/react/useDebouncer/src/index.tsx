@@ -33,7 +33,7 @@ function App1() {
           </tr>
           <tr>
             <td>Is Debouncing:</td>
-            <td>{setCountDebouncer.getIsDebouncing() ? 'true' : 'false'}</td>
+            <td>{setCountDebouncer.getIsDebouncing().toString()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -88,7 +88,7 @@ function App2() {
           </tr>
           <tr>
             <td>Is Debouncing:</td>
-            <td>{setSearchDebouncer.getIsDebouncing() ? 'true' : 'false'}</td>
+            <td>{setSearchDebouncer.getIsDebouncing().toString()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
