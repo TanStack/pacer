@@ -113,7 +113,9 @@ export class Debouncer<
    * If a call is already in progress, it will be queued
    */
   maybeExecute(...args: TArgs): void {
-    this.isDebouncing = true
+    if (this.options.leading || this.options.trailing) {
+      this.isDebouncing = true
+    }
 
     // Handle leading execution
     if (this.options.leading && this.canLeadingExecute) {
