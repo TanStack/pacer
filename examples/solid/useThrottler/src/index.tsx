@@ -1,35 +1,42 @@
-import { createSignal } from 'solid-js'
+import { createEffect, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { useThrottler } from '@tanstack/solid-pacer/throttler'
+import { createThrottler } from '@tanstack/solid-pacer/throttler'
 
 function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = createSignal(0)
   const [throttledCount, setThrottledCount] = createSignal(0)
 
-  // Lower-level useThrottler hook - requires you to manage your own state
-  const setCountThrottler = useThrottler(setThrottledCount, {
+  // Lower-level createThrottler hook - requires you to manage your own state
+  const setCountThrottler = createThrottler(setThrottledCount, {
     wait: 1000,
-    enabled: instantCount() > 2,
+    enabled: false,
+  })
+
+  // enable the throttler when the instant count is greater than 2
+  createEffect(() => {
+    setCountThrottler.setOptions({
+      enabled: instantCount() > 2,
+    })
   })
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => {
       const newInstantCount = c + 1 // common new value for both
-      setCountThrottler().maybeExecute(newInstantCount) // throttled state update
+      setCountThrottler.maybeExecute(newInstantCount) // throttled state update
       return newInstantCount // instant state update
     })
   }
 
   return (
     <div>
-      <h1>TanStack Pacer useThrottler Example 1</h1>
+      <h1>TanStack Pacer createThrottler Example 1</h1>
       <table>
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setCountThrottler().getExecutionCount()}</td>
+            <td>{setCountThrottler.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -52,22 +59,29 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
   const [throttledSearch, setThrottledSearch] = createSignal('')
 
-  // Lower-level useThrottler hook - requires you to manage your own state
-  const setSearchThrottler = useThrottler(setThrottledSearch, {
+  // Lower-level createThrottler hook - requires you to manage your own state
+  const setSearchThrottler = createThrottler(setThrottledSearch, {
     wait: 1000,
-    enabled: instantSearch.length > 2,
+    enabled: false,
+  })
+
+  // enable the throttler when the instant search value is longer than 2 characters
+  createEffect(() => {
+    setSearchThrottler.setOptions({
+      enabled: instantSearch().length > 2,
+    })
   })
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
     const newValue = target.value
     setInstantSearch(newValue)
-    setSearchThrottler().maybeExecute(newValue)
+    setSearchThrottler.maybeExecute(newValue)
   }
 
   return (
     <div>
-      <h1>TanStack Pacer useThrottler Example 2</h1>
+      <h1>TanStack Pacer createThrottler Example 2</h1>
       <div>
         <input
           type="text"
@@ -81,7 +95,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setSearchThrottler().getExecutionCount()}</td>
+            <td>{setSearchThrottler.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>

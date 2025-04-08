@@ -1,5 +1,5 @@
 import { createEffect } from 'solid-js'
-import { useThrottledState } from './useThrottledState'
+import { createThrottledSignal } from './createThrottledSignal'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 /**
@@ -33,11 +33,11 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * };
  * ```
  */
-export function useThrottledValue<TValue>(
+export function createThrottledValue<TValue>(
   value: TValue,
   options: ThrottlerOptions,
 ) {
-  const [throttledValue, setThrottledValue, throttler] = useThrottledState(
+  const [throttledValue, setThrottledValue, throttler] = createThrottledSignal(
     value,
     options,
   )
@@ -45,7 +45,7 @@ export function useThrottledValue<TValue>(
   createEffect(() => {
     setThrottledValue(value as any)
     return () => {
-      throttler().cancel()
+      throttler.cancel()
     }
   })
 

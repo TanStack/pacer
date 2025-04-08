@@ -18,8 +18,8 @@
     "react",
     "debounce",
     "throttle",
-    "debouncer",
-    "throttler",
+    "rate-limit",
+    "queue",
     "async"
   ],
   "type": "module",

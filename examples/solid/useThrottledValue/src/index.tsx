@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { useThrottledValue } from '@tanstack/solid-pacer/throttler'
+import { createThrottledValue } from '@tanstack/solid-pacer/throttler'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
@@ -11,19 +11,19 @@ function App1() {
 
   // highest-level hook that watches an instant local state value and returns a throttled value
   // optionally, grab the throttler from the last index of the returned array
-  const [throttledCount, throttler] = useThrottledValue(instantCount, {
+  const [throttledCount, throttler] = createThrottledValue(instantCount, {
     wait: 1000,
     // enabled: instantCount() > 2, // optional, defaults to true
   })
 
   return (
     <div>
-      <h1>TanStack Pacer useThrottledValue Example 1</h1>
+      <h1>TanStack Pacer createThrottledValue Example 1</h1>
       <table>
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{throttler().getExecutionCount()}</td>
+            <td>{throttler.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -46,7 +46,7 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledSearch, throttler] = useThrottledValue(instantSearch, {
+  const [throttledSearch, throttler] = createThrottledValue(instantSearch, {
     wait: 1000,
     // enabled: instantSearch.length > 2, // optional, defaults to true
   })
@@ -57,7 +57,7 @@ function App2() {
 
   return (
     <div>
-      <h1>TanStack Pacer useThrottledValue Example 2</h1>
+      <h1>TanStack Pacer createThrottledValue Example 2</h1>
       <div>
         <input
           type="text"
@@ -71,7 +71,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{throttler().getExecutionCount()}</td>
+            <td>{throttler.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>

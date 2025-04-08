@@ -1,4 +1,3 @@
-import { createMemo, createSignal } from 'solid-js'
 import { Throttler } from '@tanstack/pacer/throttler'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
@@ -24,13 +23,6 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * const [value, setValue] = createSignal(0);
  * const { maybeExecute } = useThrottler(setValue, { wait: 1000 });
  *
- * // With Redux
- * const dispatch = useDispatch();
- * const { maybeExecute } = useThrottler(
- *   (value) => dispatch(updateAction(value)),
- *   { wait: 1000 }
- * );
- *
  * // With any state manager
  * const { maybeExecute, cancel } = useThrottler(
  *   (value) => stateManager.setState(value),
@@ -42,22 +34,9 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * );
  * ```
  */
-export function useThrottler<
+export function createThrottler<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: ThrottlerOptions) {
-  const [throttler] = createSignal(() => new Throttler<TFn, TArgs>(fn, options))
-
-  const setOptions = createMemo(() => throttler()().setOptions.bind(throttler))
-
-  setOptions()(options)
-
-  return createMemo(
-    () =>
-      ({
-        maybeExecute: throttler()().maybeExecute.bind(throttler),
-        cancel: throttler()().cancel.bind(throttler),
-        getExecutionCount: throttler()().getExecutionCount.bind(throttler),
-      }) as const,
-  )
+  return new Throttler<TFn, TArgs>(fn, options)
 }
