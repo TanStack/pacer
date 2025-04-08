@@ -17,7 +17,7 @@ function useDebouncer<TFn, TArgs>(fn, options): Accessor<{
 
 Defined in: [packages/solid-pacer/src/debouncer/useDebouncer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/useDebouncer.ts#L37)
 
-A React hook that creates and manages a Debouncer instance.
+A Solid hook that creates and manages a Debouncer instance.
 
 This is a lower-level hook that provides direct access to the Debouncer's functionality without
 any built-in state management. This allows you to integrate it with any state management solution

@@ -19,7 +19,7 @@ function useRateLimiter<TFn, TArgs>(fn, options): Accessor<{
 
 Defined in: [packages/solid-pacer/src/rate-limiter/useRateLimiter.ts:53](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/useRateLimiter.ts#L53)
 
-A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
+A low-level Solid hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
 This hook is designed to be flexible and state-management agnostic - it simply returns a rate limiter instance that
 you can integrate with any state management solution (useState, Redux, Zustand, Jotai, etc).

@@ -18,7 +18,7 @@ function useAsyncThrottler<TFn, TArgs>(fn, options): Accessor<{
 
 Defined in: [packages/solid-pacer/src/async-throttler/useAsyncThrottler.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/useAsyncThrottler.ts#L42)
 
-A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
+A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
 This hook is designed to be flexible and state-management agnostic - it simply returns a throttler instance that
 you can integrate with any state management solution (createSignal, Redux, Zustand, Jotai, etc).

@@ -17,7 +17,7 @@ function useDebouncedState<TValue>(value, options): readonly [Accessor<TValue>, 
 
 Defined in: [packages/solid-pacer/src/debouncer/useDebouncedState.ts:35](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/useDebouncedState.ts#L35)
 
-A React hook that creates a debounced state value, combining React's createSignal with debouncing functionality.
+A Solid hook that creates a debounced state value, combining Solid's createSignal with debouncing functionality.
 This hook provides both the current debounced value and methods to update it.
 
 The state value is only updated after the specified wait time has elapsed since the last update attempt.

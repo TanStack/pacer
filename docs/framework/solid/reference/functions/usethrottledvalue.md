@@ -8,17 +8,13 @@ title: useThrottledValue
 # Function: useThrottledValue()
 
 ```ts
-function useThrottledValue<TValue>(value, options): readonly [Accessor<TValue>, Accessor<{
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => void;
- }>]
+function useThrottledValue<TValue>(value, options): readonly [Accessor<TValue>, Throttler<Setter<TValue>, [Exclude<TValue, Function> | (prev) => TValue]>]
 ```
 
 Defined in: [packages/solid-pacer/src/throttler/useThrottledValue.ts:36](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/useThrottledValue.ts#L36)
 
-A high-level React hook that creates a throttled version of a value that updates at most once within a specified time window.
-This hook uses React's createSignal internally to manage the throttled state.
+A high-level Solid hook that creates a throttled version of a value that updates at most once within a specified time window.
+This hook uses Solid's createSignal internally to manage the throttled state.
 
 Throttling ensures the value updates occur at a controlled rate regardless of how frequently the input value changes.
 This is useful for rate-limiting expensive re-renders or API calls that depend on rapidly changing values.
@@ -26,7 +22,7 @@ This is useful for rate-limiting expensive re-renders or API calls that depend o
 The hook returns both the throttled value and the underlying throttler instance for additional control.
 The throttled value will update according to the leading/trailing edge behavior specified in the options.
 
-For more direct control over throttling behavior without React state management,
+For more direct control over throttling behavior without Solid state management,
 consider using the lower-level useThrottler hook instead.
 
 ## Type Parameters
@@ -45,11 +41,7 @@ consider using the lower-level useThrottler hook instead.
 
 ## Returns
 
-readonly \[`Accessor`\<`TValue`\>, `Accessor`\<\{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `void`;
- \}\>\]
+readonly \[`Accessor`\<`TValue`\>, `Throttler`\<`Setter`\<`TValue`\>, \[`Exclude`\<`TValue`, `Function`\> \| (`prev`) => `TValue`\]\>\]
 
 ## Example
 

@@ -19,7 +19,7 @@ function useAsyncRateLimiter<TFn, TArgs>(fn, options): Accessor<{
 
 Defined in: [packages/solid-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L41)
 
-A low-level React hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
+A low-level Solid hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
 This hook is designed to be flexible and state-management agnostic - it simply returns a rate limiter instance that
 you can integrate with any state management solution (createSignal, Redux, Zustand, Jotai, etc).

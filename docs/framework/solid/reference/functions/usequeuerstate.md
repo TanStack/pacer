@@ -29,7 +29,7 @@ function useQueuerState<TValue>(options): readonly [Accessor<TValue[]>, Accessor
 
 Defined in: [packages/solid-pacer/src/queuer/useQueuerState.ts:54](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/useQueuerState.ts#L54)
 
-A React hook that creates a queuer with managed state, combining React's createSignal with queuing functionality.
+A Solid hook that creates a queuer with managed state, combining React's createSignal with queuing functionality.
 This hook provides both the current queue state and queue control methods.
 
 The queue state is automatically updated whenever items are added, removed, or reordered in the queue.

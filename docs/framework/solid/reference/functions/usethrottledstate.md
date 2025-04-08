@@ -8,17 +8,13 @@ title: useThrottledState
 # Function: useThrottledState()
 
 ```ts
-function useThrottledState<TValue>(value, options): readonly [Accessor<TValue>, (...args) => void, Accessor<{
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => void;
- }>]
+function useThrottledState<TValue>(value, initialOptions): readonly [Accessor<TValue>, (...args) => void, Throttler<Setter<TValue>, [Exclude<TValue, Function> | (prev) => TValue]>]
 ```
 
 Defined in: [packages/solid-pacer/src/throttler/useThrottledState.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/useThrottledState.ts#L40)
 
-A React hook that creates a throttled state value that updates at most once within a specified time window.
-This hook combines React's createSignal with throttling functionality to provide controlled state updates.
+A Solid hook that creates a throttled state value that updates at most once within a specified time window.
+This hook combines Solid's createSignal with throttling functionality to provide controlled state updates.
 
 Throttling ensures state updates occur at a controlled rate regardless of how frequently the setter is called.
 This is useful for rate-limiting expensive re-renders or operations that depend on rapidly changing state.
@@ -41,17 +37,13 @@ consider using the lower-level useThrottler hook instead.
 
 `TValue`
 
-### options
+### initialOptions
 
 `ThrottlerOptions`
 
 ## Returns
 
-readonly \[`Accessor`\<`TValue`\>, (...`args`) => `void`, `Accessor`\<\{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `void`;
- \}\>\]
+readonly \[`Accessor`\<`TValue`\>, (...`args`) => `void`, `Throttler`\<`Setter`\<`TValue`\>, \[`Exclude`\<`TValue`, `Function`\> \| (`prev`) => `TValue`\]\>\]
 
 ## Example
 

@@ -8,20 +8,16 @@ title: useThrottler
 # Function: useThrottler()
 
 ```ts
-function useThrottler<TFn, TArgs>(fn, options): Accessor<{
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => void;
-}>
+function useThrottler<TFn, TArgs>(fn, options): Throttler<TFn, TArgs>
 ```
 
-Defined in: [packages/solid-pacer/src/throttler/useThrottler.ts:45](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/useThrottler.ts#L45)
+Defined in: [packages/solid-pacer/src/throttler/useThrottler.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/useThrottler.ts#L37)
 
-A low-level React hook that creates a `Throttler` instance that limits how often the provided function can execute.
+A low-level Solid hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
 This hook is designed to be flexible and state-management agnostic - it simply returns a throttler instance that
 you can integrate with any state management solution (createSignal, Redux, Zustand, Jotai, etc). For a simpler and higher-level hook that
-integrates directly with React's createSignal, see useThrottledState.
+integrates directly with Solid's createSignal, see useThrottledState.
 
 Throttling ensures a function executes at most once within a specified time window,
 regardless of how many times it is called. This is useful for rate-limiting
@@ -50,11 +46,7 @@ The hook returns an object containing:
 
 ## Returns
 
-`Accessor`\<\{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `void`;
- \}\>
+`Throttler`\<`TFn`, `TArgs`\>
 
 ## Example
 
@@ -62,13 +54,6 @@ The hook returns an object containing:
 // Basic throttling with custom state
 const [value, setValue] = createSignal(0);
 const { maybeExecute } = useThrottler(setValue, { wait: 1000 });
-
-// With Redux
-const dispatch = useDispatch();
-const { maybeExecute } = useThrottler(
-  (value) => dispatch(updateAction(value)),
-  { wait: 1000 }
-);
 
 // With any state manager
 const { maybeExecute, cancel } = useThrottler(

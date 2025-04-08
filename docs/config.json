@@ -144,10 +144,6 @@
               "to": "framework/solid/reference/functions/usedebouncer"
             },
             {
-              "label": "useDebouncedCallback",
-              "to": "framework/solid/reference/functions/usedebouncedcallback"
-            },
-            {
               "label": "useDebouncedState",
               "to": "framework/solid/reference/functions/usedebouncedstate"
             },
@@ -223,10 +219,6 @@
               "to": "framework/solid/reference/functions/usethrottler"
             },
             {
-              "label": "useThrottledCallback",
-              "to": "framework/solid/reference/functions/usethrottledcallback"
-            },
-            {
               "label": "useThrottledState",
               "to": "framework/solid/reference/functions/usethrottledstate"
             },
@@ -279,10 +271,6 @@
             {
               "label": "useRateLimiter",
               "to": "framework/react/reference/functions/useratelimiter"
-            },
-            {
-              "label": "useRateLimitedCallback",
-              "to": "framework/react/reference/functions/useratelimitedcallback"
             },
             {
               "label": "useRateLimitedState",
@@ -437,10 +425,6 @@
               "to": "framework/solid/examples/useDebouncer"
             },
             {
-              "label": "useDebouncedCallback",
-              "to": "framework/solid/examples/useDebouncedCallback"
-            },
-            {
               "label": "useDebouncedState",
               "to": "framework/solid/examples/useDebouncedState"
             },
@@ -509,10 +493,6 @@
               "to": "framework/solid/examples/useThrottler"
             },
             {
-              "label": "useThrottledCallback",
-              "to": "framework/solid/examples/useThrottledCallback"
-            },
-            {
               "label": "useThrottledState",
               "to": "framework/solid/examples/useThrottledState"
             },
@@ -579,10 +559,6 @@
             {
               "label": "useRateLimiter",
               "to": "framework/solid/examples/useRateLimiter"
-            },
-            {
-              "label": "useRateLimitedCallback",
-              "to": "framework/solid/examples/useRateLimitedCallback"
             },
             {
               "label": "useRateLimitedState",

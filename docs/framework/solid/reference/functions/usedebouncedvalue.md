@@ -17,7 +17,7 @@ function useDebouncedValue<TValue>(value, options): readonly [Accessor<TValue>, 
 
 Defined in: [packages/solid-pacer/src/debouncer/useDebouncedValue.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/useDebouncedValue.ts#L41)
 
-A React hook that creates a debounced value that updates only after a specified delay.
+A Solid hook that creates a debounced value that updates only after a specified delay.
 Unlike useDebouncedState, this hook automatically tracks changes to the input value
 and updates the debounced value accordingly.
 

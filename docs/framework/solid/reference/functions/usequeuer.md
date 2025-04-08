@@ -29,7 +29,7 @@ function useQueuer<TValue>(options): Accessor<{
 
 Defined in: [packages/solid-pacer/src/queuer/useQueuer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/useQueuer.ts#L43)
 
-A React hook that creates and manages a Queuer instance.
+A Solid hook that creates and manages a Queuer instance.
 
 This is a lower-level hook that provides direct access to the Queuer's functionality without
 any built-in state management. This allows you to integrate it with any state management solution
