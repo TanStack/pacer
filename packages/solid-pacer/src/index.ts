@@ -19,7 +19,6 @@ export * from './async-rate-limiter/useAsyncRateLimiter'
 export * from './async-throttler/useAsyncThrottler'
 
 // debouncer
-export * from './debouncer/useDebouncedCallback'
 export * from './debouncer/useDebouncedState'
 export * from './debouncer/useDebouncedValue'
 export * from './debouncer/useDebouncer'
@@ -29,7 +28,6 @@ export * from './queuer/useQueuer'
 export * from './queuer/useQueuerState'
 
 // rate-limiter
-export * from './rate-limiter/useRateLimitedCallback'
 export * from './rate-limiter/useRateLimiter'
 export * from './rate-limiter/useRateLimitedState'
 export * from './rate-limiter/useRateLimitedValue'
