@@ -3,7 +3,7 @@ import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 
 /**
- * A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
+ * A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
  *
  * This hook is designed to be flexible and state-management agnostic - it simply returns a throttler instance that
  * you can integrate with any state management solution (createSignal, Redux, Zustand, Jotai, etc).

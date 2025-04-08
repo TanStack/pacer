@@ -3,7 +3,7 @@ import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 /**
- * A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
+ * A low-level Solid hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
  *
  * This hook is designed to be flexible and state-management agnostic - it simply returns a rate limiter instance that
  * you can integrate with any state management solution (useState, Redux, Zustand, Jotai, etc).

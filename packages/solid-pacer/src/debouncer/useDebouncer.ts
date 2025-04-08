@@ -3,7 +3,7 @@ import { Debouncer } from '@tanstack/pacer/debouncer'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 /**
- * A React hook that creates and manages a Debouncer instance.
+ * A Solid hook that creates and manages a Debouncer instance.
  *
  * This is a lower-level hook that provides direct access to the Debouncer's functionality without
  * any built-in state management. This allows you to integrate it with any state management solution

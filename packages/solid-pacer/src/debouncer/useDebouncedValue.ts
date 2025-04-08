@@ -3,7 +3,7 @@ import { useDebouncedState } from './useDebouncedState'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 /**
- * A React hook that creates a debounced value that updates only after a specified delay.
+ * A Solid hook that creates a debounced value that updates only after a specified delay.
  * Unlike useDebouncedState, this hook automatically tracks changes to the input value
  * and updates the debounced value accordingly.
  *

@@ -35,6 +35,6 @@ export * from './rate-limiter/useRateLimitedState'
 export * from './rate-limiter/useRateLimitedValue'
 
 // throttler
-export * from './throttler/createThrottledSignal'
-export * from './throttler/createThrottledValue'
-export * from './throttler/createThrottler'
+export * from './throttler/useThrottledState'
+export * from './throttler/useThrottledValue'
+export * from './throttler/useThrottler'

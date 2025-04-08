@@ -3,7 +3,7 @@ import { Queuer } from '@tanstack/pacer/queuer'
 import type { QueuerOptions } from '@tanstack/pacer/queuer'
 
 /**
- * A React hook that creates and manages a Queuer instance.
+ * A Solid hook that creates and manages a Queuer instance.
  *
  * This is a lower-level hook that provides direct access to the Queuer's functionality without
  * any built-in state management. This allows you to integrate it with any state management solution

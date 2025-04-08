@@ -3,7 +3,7 @@ import { useDebouncer } from './useDebouncer'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 /**
- * A React hook that creates a debounced state value, combining React's createSignal with debouncing functionality.
+ * A Solid hook that creates a debounced state value, combining Solid's createSignal with debouncing functionality.
  * This hook provides both the current debounced value and methods to update it.
  *
  * The state value is only updated after the specified wait time has elapsed since the last update attempt.

@@ -1,10 +1,10 @@
 import { createSignal } from 'solid-js'
-import { createThrottler } from './createThrottler'
+import { useThrottler } from './useThrottler'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 /**
- * A React hook that creates a throttled state value that updates at most once within a specified time window.
- * This hook combines React's createSignal with throttling functionality to provide controlled state updates.
+ * A Solid hook that creates a throttled state value that updates at most once within a specified time window.
+ * This hook combines Solid's createSignal with throttling functionality to provide controlled state updates.
  *
  * Throttling ensures state updates occur at a controlled rate regardless of how frequently the setter is called.
  * This is useful for rate-limiting expensive re-renders or operations that depend on rapidly changing state.
@@ -37,11 +37,11 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * ```
  */
 
-export function createThrottledSignal<TValue>(
+export function useThrottledState<TValue>(
   value: TValue,
   initialOptions: ThrottlerOptions,
 ) {
   const [throttledValue, setThrottledValue] = createSignal<TValue>(value)
-  const throttler = createThrottler(setThrottledValue, initialOptions)
+  const throttler = useThrottler(setThrottledValue, initialOptions)
   return [throttledValue, throttler.maybeExecute, throttler] as const
 }

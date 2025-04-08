@@ -2,11 +2,11 @@ import { Throttler } from '@tanstack/pacer/throttler'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 /**
- * A low-level React hook that creates a `Throttler` instance that limits how often the provided function can execute.
+ * A low-level Solid hook that creates a `Throttler` instance that limits how often the provided function can execute.
  *
  * This hook is designed to be flexible and state-management agnostic - it simply returns a throttler instance that
  * you can integrate with any state management solution (createSignal, Redux, Zustand, Jotai, etc). For a simpler and higher-level hook that
- * integrates directly with React's createSignal, see useThrottledState.
+ * integrates directly with Solid's createSignal, see useThrottledState.
  *
  * Throttling ensures a function executes at most once within a specified time window,
  * regardless of how many times it is called. This is useful for rate-limiting
@@ -34,7 +34,7 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * );
  * ```
  */
-export function createThrottler<
+export function useThrottler<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: ThrottlerOptions) {

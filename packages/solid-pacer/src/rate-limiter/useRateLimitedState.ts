@@ -3,8 +3,8 @@ import { useRateLimiter } from './useRateLimiter'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 /**
- * A React hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
- * This hook combines React's createSignal with rate limiting functionality to provide controlled state updates.
+ * A Solid hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
+ * This hook combines Solid's createSignal with rate limiting functionality to provide controlled state updates.
  *
  * Rate limiting is a simple "hard limit" approach - it allows all updates until the limit is reached, then blocks
  * subsequent updates until the window resets. Unlike throttling or debouncing, it does not attempt to space out

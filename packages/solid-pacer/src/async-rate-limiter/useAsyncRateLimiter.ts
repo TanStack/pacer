@@ -3,7 +3,7 @@ import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 
 /**
- * A low-level React hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
+ * A low-level Solid hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
  *
  * This hook is designed to be flexible and state-management agnostic - it simply returns a rate limiter instance that
  * you can integrate with any state management solution (createSignal, Redux, Zustand, Jotai, etc).

@@ -3,7 +3,7 @@ import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 
 /**
- * A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
+ * A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
  *
  * This hook is designed to be flexible and state-management agnostic - it simply returns a debouncer instance that
  * you can integrate with any state management solution (createSignal, Redux, Zustand, Jotai, etc).
