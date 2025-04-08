@@ -331,15 +331,27 @@ describe('Debouncer', () => {
     expect(mockFn).toBeCalledTimes(2) // Trailing execution after shorter wait
   })
 
-  it('should be isDebouncing when there is a pending trailing execution', () => {
+  it('should update isDebouncing properly when trailing-only', () => {
     const mockFn = vi.fn()
-    const debouncer = new Debouncer(mockFn, { wait: 1000 })
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      trailing: true,
+      leading: false,
+    })
 
     debouncer.maybeExecute('test')
     expect(debouncer.getIsDebouncing()).toBe(true)
 
-    vi.advanceTimersByTime(1000)
-    expect(debouncer.getIsDebouncing()).toBe(false)
+    // Call again before wait expires
+    vi.advanceTimersByTime(500)
+    debouncer.maybeExecute('test') // Should reset isDebouncing
+
+    // Time is almost up
+    vi.advanceTimersByTime(900)
+    expect(debouncer.getIsDebouncing()).toBe(true) // Still debouncing
+
+    vi.advanceTimersByTime(100)
+    expect(debouncer.getIsDebouncing()).toBe(false) // Now it's done
   })
 
   it('should update isDebouncing properly when leading-only', () => {
@@ -350,14 +362,20 @@ describe('Debouncer', () => {
       trailing: false,
     })
 
+    // Firs call executes immediately
     debouncer.maybeExecute('test')
     expect(debouncer.getIsDebouncing()).toBe(false)
-    
-    debouncer.maybeExecute('test')
-    expect(debouncer.getIsDebouncing()).toBe(true)
 
-    vi.advanceTimersByTime(1000)
-    expect(debouncer.getIsDebouncing()).toBe(false)
+    // Call again before wait expires
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsDebouncing()).toBe(true) // Should be debouncing now
+
+    // Time is almost up
+    vi.advanceTimersByTime(900)
+    expect(debouncer.getIsDebouncing()).toBe(true) // Still debouncing
+
+    vi.advanceTimersByTime(100)
+    expect(debouncer.getIsDebouncing()).toBe(false) // Now it's done
   })
 
   it('should not be isDebouncing when disabled', () => {
@@ -378,9 +396,9 @@ describe('Debouncer', () => {
     debouncer.maybeExecute('test')
     expect(debouncer.getIsDebouncing()).toBe(true)
 
-    // Disable while debouncing
+    // Disable while there is a pending execution
     debouncer.setOptions({ enabled: false })
-    expect(debouncer.getIsDebouncing()).toBe(false)
+    expect(debouncer.getIsDebouncing()).toBe(false) // Should be false now
 
     // Re-enable
     debouncer.setOptions({ enabled: true })

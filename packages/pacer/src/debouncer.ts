@@ -81,14 +81,16 @@ export class Debouncer<
   setOptions(
     newOptions: Partial<DebouncerOptions>,
   ): Required<DebouncerOptions> {
-    if (!newOptions.enabled) {
-      this.isDebouncing = false
-    }
-
     this.options = {
       ...this.options,
       ...newOptions,
     }
+
+    // Handle disabling the debouncer
+    if (!this.options.enabled) {
+      this.isDebouncing = false
+    }
+
     return this.options
   }
 
