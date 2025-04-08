@@ -140,20 +140,20 @@
           "label": "solid",
           "children": [
             {
-              "label": "useDebouncer",
-              "to": "framework/solid/reference/functions/usedebouncer"
+              "label": "createDebouncer",
+              "to": "framework/solid/reference/functions/createdebouncer"
             },
             {
-              "label": "useDebouncedState",
-              "to": "framework/solid/reference/functions/usedebouncedstate"
+              "label": "createDebouncedState",
+              "to": "framework/solid/reference/functions/createdebouncedstate"
             },
             {
-              "label": "useDebouncedValue",
-              "to": "framework/solid/reference/functions/usedebouncedvalue"
+              "label": "createDebouncedValue",
+              "to": "framework/solid/reference/functions/createdebouncedvalue"
             },
             {
-              "label": "useAsyncDebouncer",
-              "to": "framework/solid/reference/functions/useasyncdebouncer"
+              "label": "createAsyncDebouncer",
+              "to": "framework/solid/reference/functions/createasyncdebouncer"
             }
           ]
         }
@@ -215,20 +215,20 @@
           "label": "solid",
           "children": [
             {
-              "label": "useThrottler",
-              "to": "framework/solid/reference/functions/usethrottler"
+              "label": "createThrottler",
+              "to": "framework/solid/reference/functions/createthrottler"
             },
             {
-              "label": "useThrottledState",
-              "to": "framework/solid/reference/functions/usethrottledstate"
+              "label": "createThrottledState",
+              "to": "framework/solid/reference/functions/createthrottledstate"
             },
             {
-              "label": "useThrottledValue",
-              "to": "framework/solid/reference/functions/usethrottledvalue"
+              "label": "createThrottledValue",
+              "to": "framework/solid/reference/functions/createthrottledvalue"
             },
             {
-              "label": "useAsyncThrottler",
-              "to": "framework/solid/reference/functions/useasyncthrottler"
+              "label": "createAsyncThrottler",
+              "to": "framework/solid/reference/functions/createasyncthrottler"
             }
           ]
         }
@@ -290,24 +290,24 @@
           "label": "solid",
           "children": [
             {
-              "label": "useRateLimiter",
-              "to": "framework/solid/reference/functions/useratelimiter"
+              "label": "createRateLimiter",
+              "to": "framework/solid/reference/functions/createratelimiter"
             },
             {
-              "label": "useRateLimitedCallback",
-              "to": "framework/solid/reference/functions/useratelimitedcallback"
+              "label": "createRateLimitedCallback",
+              "to": "framework/solid/reference/functions/createratelimitedcallback"
             },
             {
-              "label": "useRateLimitedState",
-              "to": "framework/solid/reference/functions/useratelimitedstate"
+              "label": "createRateLimitedState",
+              "to": "framework/solid/reference/functions/createratelimitedstate"
             },
             {
-              "label": "useRateLimitedValue",
-              "to": "framework/solid/reference/functions/useratelimitedvalue"
+              "label": "createRateLimitedValue",
+              "to": "framework/solid/reference/functions/createratelimitedvalue"
             },
             {
-              "label": "useAsyncRateLimiter",
-              "to": "framework/solid/reference/functions/useasyncratelimiter"
+              "label": "createAsyncRateLimiter",
+              "to": "framework/solid/reference/functions/createasyncratelimiter"
             }
           ]
         }
@@ -357,16 +357,16 @@
           "label": "solid",
           "children": [
             {
-              "label": "useQueuer",
-              "to": "framework/solid/reference/functions/usequeuer"
+              "label": "createQueuer",
+              "to": "framework/solid/reference/functions/createqueuer"
             },
             {
-              "label": "useQueuerState",
-              "to": "framework/solid/reference/functions/usequeuerstate"
+              "label": "createQueuerState",
+              "to": "framework/solid/reference/functions/createqueuerstate"
             },
             {
-              "label": "useAsyncQueuer",
-              "to": "framework/solid/reference/functions/useasyncqueuer"
+              "label": "createAsyncQueuer",
+              "to": "framework/solid/reference/functions/createasyncqueuer"
             }
           ]
         }
@@ -421,20 +421,20 @@
               "to": "framework/solid/examples/asyncDebounce"
             },
             {
-              "label": "useDebouncer",
-              "to": "framework/solid/examples/useDebouncer"
+              "label": "createDebouncer",
+              "to": "framework/solid/examples/createDebouncer"
             },
             {
-              "label": "useDebouncedState",
-              "to": "framework/solid/examples/useDebouncedState"
+              "label": "createDebouncedState",
+              "to": "framework/solid/examples/createDebouncedState"
             },
             {
-              "label": "useDebouncedValue",
-              "to": "framework/solid/examples/useDebouncedValue"
+              "label": "createDebouncedValue",
+              "to": "framework/solid/examples/createDebouncedValue"
             },
             {
-              "label": "useAsyncDebouncer",
-              "to": "framework/solid/examples/useAsyncDebouncer"
+              "label": "createAsyncDebouncer",
+              "to": "framework/solid/examples/createAsyncDebouncer"
             }
           ]
         }
@@ -489,20 +489,20 @@
               "to": "framework/solid/examples/asyncThrottle"
             },
             {
-              "label": "useThrottler",
-              "to": "framework/solid/examples/useThrottler"
+              "label": "createThrottler",
+              "to": "framework/solid/examples/createThrottler"
             },
             {
-              "label": "useThrottledState",
-              "to": "framework/solid/examples/useThrottledState"
+              "label": "createThrottledState",
+              "to": "framework/solid/examples/createThrottledState"
             },
             {
-              "label": "useThrottledValue",
-              "to": "framework/solid/examples/useThrottledValue"
+              "label": "createThrottledValue",
+              "to": "framework/solid/examples/createThrottledValue"
             },
             {
-              "label": "useAsyncThrottler",
-              "to": "framework/solid/examples/useAsyncThrottler"
+              "label": "createAsyncThrottler",
+              "to": "framework/solid/examples/createAsyncThrottler"
             }
           ]
         }
@@ -557,20 +557,20 @@
               "to": "framework/solid/examples/asyncRateLimit"
             },
             {
-              "label": "useRateLimiter",
-              "to": "framework/solid/examples/useRateLimiter"
+              "label": "createRateLimiter",
+              "to": "framework/solid/examples/createcreateeLimiter"
             },
             {
-              "label": "useRateLimitedState",
-              "to": "framework/solid/examples/useRateLimitedState"
+              "label": "createRateLimitedState",
+              "to": "framework/solid/examples/createcreateeLimitedState"
             },
             {
-              "label": "useRateLimitedValue",
-              "to": "framework/solid/examples/useRateLimitedValue"
+              "label": "createRateLimitedValue",
+              "to": "framework/solid/examples/createcreateeLimitedValue"
             },
             {
-              "label": "useAsyncRateLimiter",
-              "to": "framework/solid/examples/useAsyncRateLimiter"
+              "label": "createAsyncRateLimiter",
+              "to": "framework/solid/examples/createcreatencRateLimiter"
             }
           ]
         }
@@ -613,20 +613,20 @@
               "to": "framework/solid/examples/queue"
             },
             {
-              "label": "useQueuer",
-              "to": "framework/solid/examples/useQueuer"
+              "label": "createQueuer",
+              "to": "framework/solid/examples/createQueuer"
             },
             {
-              "label": "useQueuerState",
-              "to": "framework/solid/examples/useQueuerState"
+              "label": "createQueuerState",
+              "to": "framework/solid/examples/createQueuerState"
             },
             {
-              "label": "useAsyncQueuer",
-              "to": "framework/solid/examples/useAsyncQueuer"
+              "label": "createAsyncQueuer",
+              "to": "framework/solid/examples/createAsyncQueuer"
             },
             {
-              "label": "useAsyncQueuerState",
-              "to": "framework/solid/examples/useAsyncQueuerState"
+              "label": "createAsyncQueuerState",
+              "to": "framework/solid/examples/createAsyncQueuerState"
             }
           ]
         }
