@@ -342,15 +342,19 @@ describe('Debouncer', () => {
     expect(debouncer.getIsDebouncing()).toBe(false)
   })
 
-  it('should not be isDebouncing when leading option is true', () => {
+  it('should update isDebouncing properly when leading-only', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, {
       wait: 1000,
       leading: true,
+      trailing: false,
     })
 
     debouncer.maybeExecute('test')
     expect(debouncer.getIsDebouncing()).toBe(false)
+    
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsDebouncing()).toBe(true)
 
     vi.advanceTimersByTime(1000)
     expect(debouncer.getIsDebouncing()).toBe(false)

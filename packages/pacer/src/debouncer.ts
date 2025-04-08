@@ -125,6 +125,7 @@ export class Debouncer<
     // Set new timeout that will reset canLeadingExecute
     this.timeoutId = setTimeout(() => {
       this.canLeadingExecute = true
+      this.isDebouncing = false
       // Execute trailing only if enabled
       if (this.options.trailing) {
         this.executeFunction(...args)
