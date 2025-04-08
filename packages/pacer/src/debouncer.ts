@@ -59,7 +59,7 @@ export class Debouncer<
   TArgs extends Parameters<TFn>,
 > {
   private canLeadingExecute = true
-  private isDebouncing = false
+  private isPending = false
   private executionCount = 0
   private options: Required<DebouncerOptions>
   private timeoutId: NodeJS.Timeout | undefined
@@ -88,7 +88,7 @@ export class Debouncer<
 
     // Handle disabling the debouncer
     if (!this.options.enabled) {
-      this.isDebouncing = false
+      this.isPending = false
     }
 
     return this.options
@@ -102,10 +102,10 @@ export class Debouncer<
   }
 
   /**
-   * Returns wether the debouncer is debouncing
+   * Returns if there is a pending execution
    */
-  getIsDebouncing(): boolean {
-    return this.options.enabled && this.isDebouncing
+  getIsPending(): boolean {
+    return this.options.enabled && this.isPending
   }
 
   /**
@@ -114,14 +114,14 @@ export class Debouncer<
    */
   maybeExecute(...args: TArgs): void {
     if (this.options.leading || this.options.trailing) {
-      this.isDebouncing = true
+      this.isPending = true
     }
 
     // Handle leading execution
     if (this.options.leading && this.canLeadingExecute) {
       this.executeFunction(...args)
       this.canLeadingExecute = false
-      this.isDebouncing = false
+      this.isPending = false
     }
 
     // Clear any existing timeout
@@ -130,7 +130,7 @@ export class Debouncer<
     // Set new timeout that will reset canLeadingExecute
     this.timeoutId = setTimeout(() => {
       this.canLeadingExecute = true
-      this.isDebouncing = false
+      this.isPending = false
       // Execute trailing only if enabled
       if (this.options.trailing) {
         this.executeFunction(...args)
@@ -151,7 +151,7 @@ export class Debouncer<
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
       this.canLeadingExecute = true
-      this.isDebouncing = false
+      this.isPending = false
     }
   }
 }

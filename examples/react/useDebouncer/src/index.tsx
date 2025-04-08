@@ -55,11 +55,15 @@ function App1() {
 function App2() {
   const [searchText, setSearchText] = useState('')
   const [debouncedSearchText, setDebouncedSearchText] = useState('')
+  const [leading, setLeading] = useState(false)
+  const [trailing, setTrailing] = useState(true)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
   const setSearchDebouncer = useDebouncer(setDebouncedSearchText, {
     wait: 500,
     enabled: searchText.length > 2, // optional, defaults to true
+    leading,
+    trailing,
   })
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -71,6 +75,24 @@ function App2() {
   return (
     <div>
       <h1>TanStack Pacer useDebouncer Example 2</h1>
+      <div>
+        <input
+          type="checkbox"
+          name="leading"
+          id="leading"
+          checked={leading}
+          onChange={() => setLeading((t) => !t)}
+        />
+        <label htmlFor="leading">Leading</label>
+        <input
+          type="checkbox"
+          name="trailing"
+          id="trailing"
+          checked={trailing}
+          onChange={() => setTrailing((t) => !t)}
+        />
+        <label htmlFor="trailing">Trailing</label>
+      </div>
       <div>
         <input
           type="text"
