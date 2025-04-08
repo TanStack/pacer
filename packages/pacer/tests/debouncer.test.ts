@@ -331,7 +331,7 @@ describe('Debouncer', () => {
     expect(mockFn).toBeCalledTimes(2) // Trailing execution after shorter wait
   })
 
-  it('should update isDebouncing properly when trailing-only', () => {
+  it('should update pending properly when trailing-only', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, {
       wait: 1000,
@@ -344,17 +344,17 @@ describe('Debouncer', () => {
 
     // Call again before wait expires
     vi.advanceTimersByTime(500)
-    debouncer.maybeExecute('test') // Should reset isDebouncing
+    debouncer.maybeExecute('test') // Should reset pending
 
     // Time is almost up
     vi.advanceTimersByTime(900)
-    expect(debouncer.getIsPending()).toBe(true) // Still debouncing
+    expect(debouncer.getIsPending()).toBe(true) // Still pending
 
     vi.advanceTimersByTime(100)
     expect(debouncer.getIsPending()).toBe(false) // Now it's done
   })
 
-  it('should update isDebouncing properly when leading-only', () => {
+  it('should update pending properly when leading-only', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, {
       wait: 1000,
@@ -368,17 +368,17 @@ describe('Debouncer', () => {
 
     // Call again before wait expires
     debouncer.maybeExecute('test')
-    expect(debouncer.getIsPending()).toBe(true) // Should be debouncing now
+    expect(debouncer.getIsPending()).toBe(true) // Should be pending now
 
     // Time is almost up
     vi.advanceTimersByTime(900)
-    expect(debouncer.getIsPending()).toBe(true) // Still debouncing
+    expect(debouncer.getIsPending()).toBe(true) // Still pending
 
     vi.advanceTimersByTime(100)
     expect(debouncer.getIsPending()).toBe(false) // Now it's done
   })
 
-  it('should not be isDebouncing when disabled', () => {
+  it('should not be pending when disabled', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000, enabled: false })
 
@@ -389,7 +389,7 @@ describe('Debouncer', () => {
     expect(debouncer.getIsPending()).toBe(false)
   })
 
-  it('should update isDebouncing properly when enabling/disabling', () => {
+  it('should update pending properly when enabling/disabling', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
@@ -405,7 +405,7 @@ describe('Debouncer', () => {
     expect(debouncer.getIsPending()).toBe(false) // Should still be false
   })
 
-  it('should set isDebouncing to false when canceled', () => {
+  it('should set pending to false when canceled', () => {
     const mockFn = vi.fn()
     const debouncer = new Debouncer(mockFn, { wait: 1000 })
 

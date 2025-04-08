@@ -53,7 +53,7 @@ export function useDebouncer<
         maybeExecute: debouncer.maybeExecute.bind(debouncer),
         cancel: debouncer.cancel.bind(debouncer),
         getExecutionCount: debouncer.getExecutionCount.bind(debouncer),
-        getIsDebouncing: debouncer.getIsDebouncing.bind(debouncer),
+        getIsPending: debouncer.getIsPending.bind(debouncer),
       }) as const,
     [debouncer],
   )
