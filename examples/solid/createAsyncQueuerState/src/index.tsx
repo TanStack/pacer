@@ -10,7 +10,7 @@ function App() {
   const [concurrency, setConcurrency] = createSignal(2)
 
   // Queuer that uses React.createSignal under the hood
-  const [queueItems, queuer] = createAsyncQueuerState<string>({
+  const [queueItems, queuer] = createAsyncQueuerSignal<string>({
     maxSize: 25,
     initialItems: Array.from({ length: 10 }, (_, i) => async () => {
       await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
