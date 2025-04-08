@@ -27,7 +27,7 @@ function App1() {
           </tr>
           <tr>
             <td>Is Pending:</td>
-            <td>{debouncer.getExecutionCount()}</td>
+            <td>{debouncer.getIsPending().toString()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
