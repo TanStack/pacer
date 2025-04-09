@@ -34,6 +34,10 @@ function App1() {
             <td>{debouncer.getExecutionCount()}</td>
           </tr>
           <tr>
+            <td>Is Pending:</td>
+            <td>{debouncer.getIsPending().toString()}</td>
+          </tr>
+          <tr>
             <td>Instant Count:</td>
             <td>{instantCount}</td>
           </tr>
@@ -85,6 +89,10 @@ function App2() {
           <tr>
             <td>Execution Count:</td>
             <td>{debouncer.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Is Pending:</td>
+            <td>{debouncer.getIsPending().toString()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
