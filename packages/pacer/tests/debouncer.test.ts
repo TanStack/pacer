@@ -387,7 +387,7 @@ describe('Debouncer', () => {
 
     debouncer.maybeExecute('test')
     expect(debouncer.getIsPending()).toBe(false)
-    
+
     vi.advanceTimersByTime(1000)
     expect(debouncer.getIsPending()).toBe(false)
   })

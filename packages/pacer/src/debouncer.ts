@@ -102,7 +102,7 @@ export class Debouncer<
   }
 
   /**
-   * Returns `true` if debouncing 
+   * Returns `true` if debouncing
    */
   getIsPending(): boolean {
     return this.options.enabled && this.isPending
