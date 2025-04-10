@@ -57,9 +57,9 @@ export function createRateLimitedValue<TValue>(
   const [rateLimitedValue, setRateLimitedValue, rateLimiter] =
     createRateLimitedSignal(value(), options)
 
-  createEffect(() => {
-    setRateLimitedValue(value() as any)
-  })
+    createEffect(() => {
+      setRateLimitedValue(value() as any)
+    })
 
   return [rateLimitedValue, rateLimiter] as const
 }

@@ -4,14 +4,19 @@ import { createRateLimitedValue } from '@tanstack/solid-pacer/rate-limiter'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
+  const [rejectionCount, setRejectionCount] = createSignal(0)
+  const [executionCount, setExecutionCount] = createSignal(0)
 
   // Using createRateLimitedValue with a rate limit of 5 executions per 5 seconds
   const [limitedCount, rateLimiter] = createRateLimitedValue(instantCount, {
-    // enabled: instantCount() > 2, // optional, defaults to true
     limit: 5,
     window: 5000,
-    onReject: (rejectionInfo) =>
-      console.log('Rejected by rate limiter', rejectionInfo),
+    onExecute: () => {
+      setExecutionCount(c=>c+1)
+    },
+    onReject: () => {
+      setRejectionCount(c=>c+1)
+    }
   })
 
   function increment() {
@@ -25,11 +30,11 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.getExecutionCount()}</td>
+            <td>{executionCount()}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.getRejectionCount()}</td>
+            <td>{rejectionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -54,14 +59,19 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
+  const [rejectionCount, setRejectionCount] = createSignal(0)
+  const [executionCount, setExecutionCount] = createSignal(0)
 
   // Using createRateLimitedValue with a rate limit of 5 executions per 5 seconds
   const [limitedSearch, rateLimiter] = createRateLimitedValue(instantSearch, {
-    // enabled: instantSearch.length > 2, // optional, defaults to true
     limit: 5,
     window: 5000,
-    onReject: (rejectionInfo) =>
-      console.log('Rejected by rate limiter', rejectionInfo),
+    onExecute: () => {
+      setExecutionCount(rateLimiter.getExecutionCount())
+    },
+    onReject: () => {
+      setRejectionCount(rateLimiter.getRejectionCount())
+    },
   })
 
   function handleSearchChange(e: Event) {
@@ -84,11 +94,11 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.getExecutionCount()}</td>
+            <td>{executionCount()}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.getRejectionCount()}</td>
+            <td>{rejectionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
