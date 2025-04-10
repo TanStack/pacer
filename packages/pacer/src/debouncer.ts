@@ -67,6 +67,7 @@ export class Debouncer<
   TArgs extends Parameters<TFn>,
 > {
   private canLeadingExecute = true
+  private isPending = false
   private executionCount = 0
   private options: Required<DebouncerOptions<TFn, TArgs>>
   private timeoutId: NodeJS.Timeout | undefined
@@ -92,6 +93,12 @@ export class Debouncer<
       ...this.options,
       ...newOptions,
     }
+
+    // End the pending state if the debouncer is disabled
+    if (!this.options.enabled) {
+      this.isPending = false
+    }
+
     return this.options
   }
 
@@ -100,6 +107,13 @@ export class Debouncer<
    */
   getExecutionCount(): number {
     return this.executionCount
+  }
+
+  /**
+   * Returns `true` if debouncing
+   */
+  getIsPending(): boolean {
+    return this.options.enabled && this.isPending
   }
 
   /**
@@ -113,12 +127,18 @@ export class Debouncer<
       this.canLeadingExecute = false
     }
 
+    // Start pending state
+    if (this.options.leading || this.options.trailing) {
+      this.isPending = true
+    }
+
     // Clear any existing timeout
     if (this.timeoutId) clearTimeout(this.timeoutId)
 
     // Set new timeout that will reset canLeadingExecute
     this.timeoutId = setTimeout(() => {
       this.canLeadingExecute = true
+      this.isPending = false
       // Execute trailing only if enabled
       if (this.options.trailing) {
         this.executeFunction(...args)
@@ -140,6 +160,7 @@ export class Debouncer<
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
       this.canLeadingExecute = true
+      this.isPending = false
     }
   }
 }

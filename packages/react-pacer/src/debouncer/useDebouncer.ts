@@ -32,6 +32,9 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  *
  * // Get number of times the debounced function has executed
  * const executionCount = searchDebouncer.getExecutionCount();
+ *
+ * // Get the pending state
+ * const isPending = searchDebouncer.getIsPending();
  * ```
  */
 export function useDebouncer<
@@ -53,6 +56,7 @@ export function useDebouncer<
         maybeExecute: debouncer.maybeExecute.bind(debouncer),
         cancel: debouncer.cancel.bind(debouncer),
         getExecutionCount: debouncer.getExecutionCount.bind(debouncer),
+        getIsPending: debouncer.getIsPending.bind(debouncer),
       }) as const,
     [debouncer],
   )

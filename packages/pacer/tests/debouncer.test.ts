@@ -330,6 +330,105 @@ describe('Debouncer', () => {
     vi.advanceTimersByTime(500) // Only need to wait 500ms now
     expect(mockFn).toBeCalledTimes(2) // Trailing execution after shorter wait
   })
+
+  it('should update pending when trailing-only', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      trailing: true,
+      leading: false,
+    })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsPending()).toBe(true)
+
+    // Call again before wait expires
+    vi.advanceTimersByTime(500)
+    debouncer.maybeExecute('test') // Should reset pending
+
+    // Time is almost up
+    vi.advanceTimersByTime(900)
+    expect(debouncer.getIsPending()).toBe(true) // Still pending
+
+    vi.advanceTimersByTime(100)
+    expect(debouncer.getIsPending()).toBe(false) // Now it's done
+  })
+
+  it('should update pending when leading-only', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      leading: true,
+      trailing: false,
+    })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsPending()).toBe(true)
+
+    // Call again before wait expires
+    vi.advanceTimersByTime(500)
+    debouncer.maybeExecute('test') // Should reset pending
+
+    // Time is almost up
+    vi.advanceTimersByTime(900)
+    expect(debouncer.getIsPending()).toBe(true) // Still pending
+
+    vi.advanceTimersByTime(100)
+    expect(debouncer.getIsPending()).toBe(false) // Now it's done
+  })
+
+  it('should not be pending when leading and trailing are both false', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, {
+      wait: 1000,
+      leading: false,
+      trailing: false,
+    })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsPending()).toBe(false)
+
+    vi.advanceTimersByTime(1000)
+    expect(debouncer.getIsPending()).toBe(false)
+  })
+
+  it('should not be pending when disabled', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000, enabled: false })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsPending()).toBe(false)
+
+    vi.advanceTimersByTime(1000)
+    expect(debouncer.getIsPending()).toBe(false)
+  })
+
+  it('should update pending when enabling/disabling', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsPending()).toBe(true)
+
+    // Disable while there is a pending execution
+    debouncer.setOptions({ enabled: false })
+    expect(debouncer.getIsPending()).toBe(false) // Should be false now
+
+    // Re-enable
+    debouncer.setOptions({ enabled: true })
+    expect(debouncer.getIsPending()).toBe(false) // Should still be false
+  })
+
+  it('should set pending to false when canceled', () => {
+    const mockFn = vi.fn()
+    const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+    debouncer.maybeExecute('test')
+    expect(debouncer.getIsPending()).toBe(true)
+
+    debouncer.cancel()
+    expect(debouncer.getIsPending()).toBe(false)
+  })
 })
 
 describe('debounce helper function', () => {
