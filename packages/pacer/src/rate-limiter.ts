@@ -172,6 +172,7 @@ export class RateLimiter<
     this.executionCount++
     this.executionTimes.push(now)
     this.fn(...args)
+    this.options.onExecute?.(this)
   }
 
   private rejectFunction(): void {
