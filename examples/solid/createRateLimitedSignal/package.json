@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-solid-create-rate-limited-state",
+  "name": "@tanstack/pacer-example-solid-create-rate-limited-signal",
   "private": true,
   "type": "module",
   "scripts": {

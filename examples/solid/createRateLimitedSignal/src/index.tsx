@@ -33,11 +33,11 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter().getExecutionCount()}</td>
+            <td>{rateLimiter.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter().getRejectionCount()}</td>
+            <td>{rateLimiter.getRejectionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -51,10 +51,10 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
-        <button onClick={() => alert(rateLimiter().getRemainingInWindow())}>
+        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
           Remaining in Window
         </button>
-        <button onClick={() => alert(rateLimiter().reset())}>Reset</button>
+        <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
       </div>
     </div>
   )
@@ -96,11 +96,11 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter().getExecutionCount()}</td>
+            <td>{rateLimiter.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter().getRejectionCount()}</td>
+            <td>{rateLimiter.getRejectionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -113,10 +113,10 @@ function App2() {
         </tbody>
       </table>
       <div>
-        <button onClick={() => alert(rateLimiter().getRemainingInWindow())}>
+        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
           Remaining in Window
         </button>
-        <button onClick={() => alert(rateLimiter().reset())}>Reset</button>
+        <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
       </div>
     </div>
   )

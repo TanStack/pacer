@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-solid-create-queuer-state",
+  "name": "@tanstack/pacer-example-solid-create-async-queuer-signal",
   "private": true,
   "type": "module",
   "scripts": {
