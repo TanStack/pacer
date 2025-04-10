@@ -32,13 +32,6 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  *   windowMs: 60000
  * });
  *
- * // With Redux
- * const dispatch = useDispatch();
- * const { maybeExecute, getRemainingInWindow } = useRateLimiter(
- *   (value) => dispatch(updateAction(value)),
- *   { maxExecutions: 10, windowMs: 30000 }
- * );
- *
  * // Monitor rate limit status
  * const handleClick = () => {
  *   const remaining = getRemainingInWindow();
@@ -53,7 +46,7 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 export function useRateLimiter<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: RateLimiterOptions) {
+>(fn: TFn, options: RateLimiterOptions<TFn, TArgs>) {
   const [rateLimiter] = useState(() => new RateLimiter<TFn, TArgs>(fn, options))
 
   const setOptions = useMemo(

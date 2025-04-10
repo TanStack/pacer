@@ -35,7 +35,10 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  */
 export function useThrottledValue<TValue>(
   value: TValue,
-  options: ThrottlerOptions,
+  options: ThrottlerOptions<
+    React.Dispatch<React.SetStateAction<TValue>>,
+    [value: React.SetStateAction<TValue>]
+  >,
 ) {
   const [throttledValue, setThrottledValue, throttler] = useThrottledState(
     value,

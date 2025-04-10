@@ -1,7 +1,10 @@
 /**
  * Options for configuring a debounced function
  */
-export interface DebouncerOptions {
+export interface DebouncerOptions<
+  TFn extends (...args: Array<any>) => any,
+  TArgs extends Parameters<TFn>,
+> {
   /**
    * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -12,6 +15,10 @@ export interface DebouncerOptions {
    * Defaults to false.
    */
   leading?: boolean
+  /**
+   * Callback function that is called after the function is executed
+   */
+  onExecute?: (debouncer: Debouncer<TFn, TArgs>) => void
   /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
@@ -24,11 +31,12 @@ export interface DebouncerOptions {
   wait: number
 }
 
-const defaultOptions: Required<DebouncerOptions> = {
+const defaultOptions: Required<DebouncerOptions<any, any>> = {
   enabled: true,
   leading: false,
   trailing: true,
   wait: 0,
+  onExecute: () => {},
 }
 
 /**
@@ -61,12 +69,12 @@ export class Debouncer<
   private canLeadingExecute = true
   private isPending = false
   private executionCount = 0
-  private options: Required<DebouncerOptions>
+  private options: Required<DebouncerOptions<TFn, TArgs>>
   private timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
-    initialOptions: DebouncerOptions,
+    initialOptions: DebouncerOptions<TFn, TArgs>,
   ) {
     this.options = {
       ...defaultOptions,
@@ -79,8 +87,8 @@ export class Debouncer<
    * Returns the new options state
    */
   setOptions(
-    newOptions: Partial<DebouncerOptions>,
-  ): Required<DebouncerOptions> {
+    newOptions: Partial<DebouncerOptions<TFn, TArgs>>,
+  ): Required<DebouncerOptions<TFn, TArgs>> {
     this.options = {
       ...this.options,
       ...newOptions,
@@ -140,8 +148,9 @@ export class Debouncer<
 
   private executeFunction(...args: TArgs): void {
     if (!this.options.enabled) return
+    this.fn(...args) // EXECUTE!
     this.executionCount++
-    this.fn(...args)
+    this.options.onExecute(this)
   }
 
   /**
@@ -178,7 +187,7 @@ export class Debouncer<
  */
 export function debounce<TFn extends (...args: Array<any>) => any>(
   fn: TFn,
-  initialOptions: Omit<DebouncerOptions, 'enabled'>,
+  initialOptions: Omit<DebouncerOptions<TFn, Parameters<TFn>>, 'enabled'>,
 ) {
   const debouncer = new Debouncer(fn, initialOptions)
   return debouncer.maybeExecute.bind(debouncer)
