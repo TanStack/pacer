@@ -14,10 +14,10 @@ function App1() {
     limit: 5,
     window: 5000,
     onExecute() {
-      setExecutionCount(c => c+1)
+      setExecutionCount((c) => c + 1)
     },
     onReject: () => {
-      setRejectionCount(c => c+1)
+      setRejectionCount((c) => c + 1)
     },
   })
 
@@ -75,10 +75,10 @@ function App2() {
     limit: 5,
     window: 5000,
     onExecute() {
-      setExecutionCount(c => c+1)
+      setExecutionCount((c) => c + 1)
     },
     onReject: () => {
-      setRejectionCount(c => c+1)
+      setRejectionCount((c) => c + 1)
     },
   })
 

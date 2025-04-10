@@ -17,7 +17,7 @@ function App1() {
         setExecutionCount(rateLimiter.getExecutionCount())
       },
       onReject: () => {
-          setRejectionCount(rateLimiter.getRejectionCount())
+        setRejectionCount(rateLimiter.getRejectionCount())
       },
     },
   )
@@ -80,7 +80,7 @@ function App2() {
         setExecutionCount(rateLimiter.getExecutionCount())
       },
       onReject: () => {
-          setRejectionCount(rateLimiter.getRejectionCount())
+        setRejectionCount(rateLimiter.getRejectionCount())
       },
     })
 
