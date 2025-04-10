@@ -41,7 +41,7 @@ import type { DebouncerOptions } from '@tanstack/pacer'
 export function useDebouncedCallback<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions) {
+>(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
   const debouncedFn = useDebouncer<TFn, TArgs>(fn, options).maybeExecute
   return useCallback((...args: TArgs) => debouncedFn(...args), [debouncedFn])
 }

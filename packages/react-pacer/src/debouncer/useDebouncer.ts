@@ -37,7 +37,7 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 export function useDebouncer<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions) {
+>(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
   const [debouncer] = useState(() => new Debouncer<TFn, TArgs>(fn, options))
 
   const setOptions = useMemo(

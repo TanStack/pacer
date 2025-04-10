@@ -1,5 +1,6 @@
 import { createSignal } from 'solid-js'
 import { createRateLimiter } from './createRateLimiter'
+import type { Accessor, Setter } from 'solid-js'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 /**
@@ -17,7 +18,7 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * Rate limiting should primarily be used when you need to enforce strict limits, like API rate limits.
  *
  * The hook returns a tuple containing:
- * - The rate-limited state value
+ * - The rate-limited state value accessor
  * - A rate-limited setter function that respects the configured limits
  * - The rateLimiter instance for additional control
  *
@@ -55,9 +56,13 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 export function createRateLimitedSignal<TValue>(
   value: TValue,
-  options: RateLimiterOptions,
+  options: RateLimiterOptions<Setter<TValue>, [Accessor<TValue>]>,
 ) {
   const [rateLimitedValue, setRateLimitedValue] = createSignal<TValue>(value)
   const rateLimiter = createRateLimiter(setRateLimitedValue, options)
-  return [rateLimitedValue, rateLimiter().maybeExecute, rateLimiter] as const
+  return [
+    rateLimitedValue,
+    rateLimiter.maybeExecute.bind(rateLimiter) as Setter<TValue>,
+    rateLimiter,
+  ] as const
 }

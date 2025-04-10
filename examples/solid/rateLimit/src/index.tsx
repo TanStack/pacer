@@ -72,7 +72,7 @@ function App2() {
         <input
           type="text"
           value={text()}
-          onChange={handleTextChange}
+          onInput={handleTextChange}
           placeholder="Type text (rate limited to 3 updates per 5 seconds)..."
           style={{ width: '100%' }}
         />

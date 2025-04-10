@@ -1,7 +1,10 @@
 /**
  * Options for configuring a throttled function
  */
-export interface ThrottlerOptions {
+export interface ThrottlerOptions<
+  TFn extends (...args: Array<any>) => any,
+  TArgs extends Parameters<TFn>,
+> {
   /**
    * Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -13,6 +16,10 @@ export interface ThrottlerOptions {
    */
   leading?: boolean
   /**
+   * Callback function that is called after the function is executed
+   */
+  onExecute?: (throttler: Throttler<TFn, TArgs>) => void
+  /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
    */
@@ -23,11 +30,12 @@ export interface ThrottlerOptions {
   wait: number
 }
 
-const defaultOptions: Required<ThrottlerOptions> = {
+const defaultOptions: Required<ThrottlerOptions<any, any>> = {
   enabled: true,
   leading: true,
   trailing: true,
   wait: 0,
+  onExecute: () => {},
 }
 
 /**
@@ -41,8 +49,7 @@ const defaultOptions: Required<ThrottlerOptions> = {
  * - Leading: Execute immediately on first call (default: true)
  * - Trailing: Execute after wait period if called during throttle (default: true)
  *
- * For rate limiting or hard API limits, consider using RateLimiter instead.
- * For collapsing rapid-fire events, consider using Debouncer.
+ * For collapsing rapid-fire events where you only care about the last call, consider using Debouncer.
  *
  * @example
  * ```ts
@@ -65,12 +72,12 @@ export class Throttler<
   private executionCount = 0
   private lastArgs: TArgs | undefined
   private lastExecutionTime = 0
-  private options: Required<ThrottlerOptions>
+  private options: Required<ThrottlerOptions<TFn, TArgs>>
   private timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
-    initialOptions: ThrottlerOptions,
+    initialOptions: ThrottlerOptions<TFn, TArgs>,
   ) {
     this.options = {
       ...defaultOptions,
@@ -83,8 +90,8 @@ export class Throttler<
    * Returns the new options state
    */
   setOptions(
-    newOptions: Partial<ThrottlerOptions>,
-  ): Required<ThrottlerOptions> {
+    newOptions: Partial<ThrottlerOptions<TFn, TArgs>>,
+  ): Required<ThrottlerOptions<TFn, TArgs>> {
     this.options = {
       ...this.options,
       ...newOptions,
@@ -165,8 +172,9 @@ export class Throttler<
 
   private executeFunction(...args: TArgs): void {
     if (!this.options.enabled) return
+    this.fn(...args) // EXECUTE!
     this.executionCount++
-    this.fn(...args)
+    this.options.onExecute(this)
   }
 
   /**
@@ -213,10 +221,10 @@ export class Throttler<
  * });
  * ```
  */
-export function throttle<TFn extends (...args: Array<any>) => any>(
-  fn: TFn,
-  initialOptions: Omit<ThrottlerOptions, 'enabled'>,
-) {
+export function throttle<
+  TFn extends (...args: Array<any>) => any,
+  TArgs extends Parameters<TFn>,
+>(fn: TFn, initialOptions: Omit<ThrottlerOptions<TFn, TArgs>, 'enabled'>) {
   const throttler = new Throttler(fn, initialOptions)
   return throttler.maybeExecute.bind(throttler)
 }

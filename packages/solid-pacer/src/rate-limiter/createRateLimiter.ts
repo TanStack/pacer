@@ -1,4 +1,3 @@
-import { createMemo, createSignal } from 'solid-js'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
@@ -53,26 +52,6 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 export function createRateLimiter<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: RateLimiterOptions) {
-  const [rateLimiter] = createSignal(
-    () => new RateLimiter<TFn, TArgs>(fn, options),
-  )
-
-  const setOptions = createMemo(() =>
-    rateLimiter()().setOptions.bind(rateLimiter),
-  )
-
-  setOptions()(options)
-
-  return createMemo(
-    () =>
-      ({
-        maybeExecute: rateLimiter()().maybeExecute.bind(rateLimiter),
-        getExecutionCount: rateLimiter()().getExecutionCount.bind(rateLimiter),
-        getRejectionCount: rateLimiter()().getRejectionCount.bind(rateLimiter),
-        getRemainingInWindow:
-          rateLimiter()().getRemainingInWindow.bind(rateLimiter),
-        reset: rateLimiter()().reset.bind(rateLimiter),
-      }) as const,
-  )
+>(fn: TFn, options: RateLimiterOptions<TFn, TArgs>) {
+  return new RateLimiter<TFn, TArgs>(fn, options)
 }

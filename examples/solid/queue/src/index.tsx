@@ -81,7 +81,7 @@ function App2() {
         <input
           type="text"
           value={inputText()}
-          onChange={handleInputChange}
+          onInput={handleInputChange}
           placeholder="Type to add to queue..."
           style={{ width: '100%' }}
         />

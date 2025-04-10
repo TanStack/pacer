@@ -51,7 +51,10 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  */
 export function useRateLimitedValue<TValue>(
   value: TValue,
-  options: RateLimiterOptions,
+  options: RateLimiterOptions<
+    React.Dispatch<React.SetStateAction<TValue>>,
+    [value: React.SetStateAction<TValue>]
+  >,
 ) {
   const [rateLimitedValue, setRateLimitedValue, rateLimiter] =
     useRateLimitedState(value, options)

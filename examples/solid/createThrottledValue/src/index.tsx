@@ -13,7 +13,6 @@ function App1() {
   // optionally, grab the throttler from the last index of the returned array
   const [throttledCount, throttler] = createThrottledValue(instantCount, {
     wait: 1000,
-    // enabled: instantCount() > 2, // optional, defaults to true
   })
 
   return (
@@ -31,7 +30,7 @@ function App1() {
           </tr>
           <tr>
             <td>Throttled Count:</td>
-            <td>{throttledCount()()}</td>
+            <td>{throttledCount()}</td>
           </tr>
         </tbody>
       </table>
@@ -48,7 +47,6 @@ function App2() {
   // highest-level hook that watches an instant local state value and returns a throttled value
   const [throttledSearch, throttler] = createThrottledValue(instantSearch, {
     wait: 1000,
-    // enabled: instantSearch.length > 2, // optional, defaults to true
   })
 
   function handleSearchChange(e: Event) {
@@ -62,7 +60,7 @@ function App2() {
         <input
           type="text"
           value={instantSearch()}
-          onChange={handleSearchChange}
+          onInput={handleSearchChange}
           placeholder="Type to search..."
           style={{ width: '100%' }}
         />
@@ -79,7 +77,7 @@ function App2() {
           </tr>
           <tr>
             <td>Throttled Search:</td>
-            <td>{throttledSearch()()}</td>
+            <td>{throttledSearch()}</td>
           </tr>
         </tbody>
       </table>

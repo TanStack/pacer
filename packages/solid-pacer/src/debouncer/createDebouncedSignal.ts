@@ -1,5 +1,6 @@
 import { createSignal } from 'solid-js'
 import { createDebouncer } from './createDebouncer'
+import type { Accessor, Setter } from 'solid-js'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 /**
@@ -12,7 +13,7 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * or window resize dimensions.
  *
  * The hook returns a tuple containing:
- * - The current debounced value
+ * - The current debounced value accessor
  * - A function to update the debounced value
  * - The debouncer instance with additional control methods
  *
@@ -34,9 +35,15 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  */
 export function createDebouncedSignal<TValue>(
   value: TValue,
-  options: DebouncerOptions,
+  options: DebouncerOptions<Setter<TValue>, [Accessor<TValue>]>,
 ) {
   const [debouncedValue, setDebouncedValue] = createSignal<TValue>(value)
+
   const debouncer = createDebouncer(setDebouncedValue, options)
-  return [debouncedValue, debouncer().maybeExecute, debouncer] as const
+
+  return [
+    debouncedValue,
+    debouncer.maybeExecute.bind(debouncer) as Setter<TValue>,
+    debouncer,
+  ] as const
 }

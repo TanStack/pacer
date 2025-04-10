@@ -3,10 +3,6 @@
  */
 export interface RateLimitRejectionInfo {
   /**
-   * Number of milliseconds until the next execution will be possible
-   */
-  msUntilNextWindow: number
-  /**
    * Current number of executions in the window
    */
   currentExecutions: number
@@ -14,6 +10,10 @@ export interface RateLimitRejectionInfo {
    * Maximum allowed executions per window
    */
   limit: number
+  /**
+   * Number of milliseconds until the next execution will be possible
+   */
+  msUntilNextWindow: number
   /**
    * Total number of rejections that have occurred
    */
@@ -23,7 +23,10 @@ export interface RateLimitRejectionInfo {
 /**
  * Options for configuring a rate-limited function
  */
-export interface RateLimiterOptions {
+export interface RateLimiterOptions<
+  TFn extends (...args: Array<any>) => any,
+  TArgs extends Parameters<TFn>,
+> {
   /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -34,18 +37,24 @@ export interface RateLimiterOptions {
    */
   limit: number
   /**
-   * Time window in milliseconds within which the limit applies
+   * Callback function that is called after the function is executed
    */
-  window: number
+  onExecute?: (rateLimiter: RateLimiter<TFn, TArgs>) => void
   /**
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
   onReject?: (info: RateLimitRejectionInfo) => void
+  /**
+   * Time window in milliseconds within which the limit applies
+   */
+  window: number
 }
 
-const defaultOptions: Required<Omit<RateLimiterOptions, 'onReject'>> = {
+const defaultOptions: Required<RateLimiterOptions<any, any>> = {
   enabled: true,
   limit: 1,
+  onExecute: () => {},
+  onReject: () => {},
   window: 0,
 }
 
@@ -81,11 +90,11 @@ export class RateLimiter<
   private executionCount = 0
   private rejectionCount = 0
   private executionTimes: Array<number> = []
-  private options: RateLimiterOptions
+  private options: RateLimiterOptions<TFn, TArgs>
 
   constructor(
     private fn: TFn,
-    initialOptions: RateLimiterOptions,
+    initialOptions: RateLimiterOptions<TFn, TArgs>,
   ) {
     this.options = {
       ...defaultOptions,
@@ -97,7 +106,9 @@ export class RateLimiter<
    * Updates the rate limiter options
    * Returns the new options state
    */
-  setOptions(newOptions: Partial<RateLimiterOptions>): RateLimiterOptions {
+  setOptions(
+    newOptions: Partial<RateLimiterOptions<TFn, TArgs>>,
+  ): RateLimiterOptions<TFn, TArgs> {
     this.options = {
       ...this.options,
       ...newOptions,
@@ -229,7 +240,7 @@ export class RateLimiter<
  */
 export function rateLimit<TFn extends (...args: Array<any>) => any>(
   fn: TFn,
-  initialOptions: Omit<RateLimiterOptions, 'enabled'>,
+  initialOptions: Omit<RateLimiterOptions<TFn, Parameters<TFn>>, 'enabled'>,
 ) {
   const rateLimiter = new RateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)

@@ -52,7 +52,7 @@ function App() {
           type="number"
           min={1}
           value={concurrency()}
-          onChange={(e) =>
+          onInput={(e) =>
             setConcurrency(Math.max(1, parseInt(e.target.value) || 1))
           }
           style={{ width: '60px' }}

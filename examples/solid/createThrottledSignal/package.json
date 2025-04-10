@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-solid-create-debounced-state",
+  "name": "@tanstack/pacer-example-solid-create-throttled-signal",
   "private": true,
   "type": "module",
   "scripts": {

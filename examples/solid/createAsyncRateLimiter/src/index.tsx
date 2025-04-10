@@ -81,7 +81,7 @@ function App() {
         <input
           type="text"
           value={searchTerm()}
-          onChange={onSearchChange}
+          onInput={onSearchChange}
           placeholder="Type to search..."
           style={{ width: '100%' }}
           autocomplete="new-password"

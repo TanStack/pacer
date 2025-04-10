@@ -75,7 +75,7 @@ function App2() {
         <input
           type="text"
           value={instantSearch()}
-          onChange={handleSearchChange}
+          onInput={handleSearchChange}
           placeholder="Type to search..."
           style={{ width: '100%' }}
         />

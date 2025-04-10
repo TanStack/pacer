@@ -34,7 +34,10 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  */
 export function useDebouncedState<TValue>(
   value: TValue,
-  options: DebouncerOptions,
+  options: DebouncerOptions<
+    React.Dispatch<React.SetStateAction<TValue>>,
+    [value: React.SetStateAction<TValue>]
+  >,
 ) {
   const [debouncedValue, setDebouncedValue] = useState<TValue>(value)
   const debouncer = useDebouncer(setDebouncedValue, options)

@@ -20,7 +20,7 @@ function App1() {
     // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => {
       const newCount = c + 1 // common new value for both
-      rateLimiter().maybeExecute(newCount) // rate-limited state update
+      rateLimiter.maybeExecute(newCount) // rate-limited state update
       return newCount // instant state update
     })
   }
@@ -32,11 +32,11 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter().getExecutionCount()}</td>
+            <td>{rateLimiter.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter().getRejectionCount()}</td>
+            <td>{rateLimiter.getRejectionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -50,10 +50,10 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
-        <button onClick={() => alert(rateLimiter().getRemainingInWindow())}>
+        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
           Remaining in Window
         </button>
-        <button onClick={() => alert(rateLimiter().reset())}>Reset</button>
+        <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
       </div>
     </div>
   )
@@ -76,7 +76,7 @@ function App2() {
     const target = e.target as HTMLInputElement
     const newValue = target.value
     setInstantSearch(newValue)
-    rateLimiter().maybeExecute(newValue)
+    rateLimiter.maybeExecute(newValue)
   }
 
   return (
@@ -86,7 +86,7 @@ function App2() {
         <input
           type="text"
           value={instantSearch()}
-          onChange={handleSearchChange}
+          onInput={handleSearchChange}
           placeholder="Type to search..."
           style={{ width: '100%' }}
         />
@@ -95,11 +95,11 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter().getExecutionCount()}</td>
+            <td>{rateLimiter.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter().getRejectionCount()}</td>
+            <td>{rateLimiter.getRejectionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -112,10 +112,10 @@ function App2() {
         </tbody>
       </table>
       <div>
-        <button onClick={() => alert(rateLimiter().getRemainingInWindow())}>
+        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
           Remaining in Window
         </button>
-        <button onClick={() => alert(rateLimiter().reset())}>Reset</button>
+        <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
       </div>
     </div>
   )

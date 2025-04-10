@@ -1,5 +1,6 @@
 import { createSignal } from 'solid-js'
 import { createThrottler } from './createThrottler'
+import type { Accessor, Setter } from 'solid-js'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 /**
@@ -10,7 +11,7 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * This is useful for rate-limiting expensive re-renders or operations that depend on rapidly changing state.
  *
  * The hook returns a tuple containing:
- * - The throttled state value
+ * - The throttled state value accessor
  * - A throttled setter function that respects the configured wait time
  * - The throttler instance for additional control
  *
@@ -39,9 +40,13 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 export function createThrottledSignal<TValue>(
   value: TValue,
-  initialOptions: ThrottlerOptions,
+  initialOptions: ThrottlerOptions<Setter<TValue>, [Accessor<TValue>]>,
 ) {
   const [throttledValue, setThrottledValue] = createSignal<TValue>(value)
   const throttler = createThrottler(setThrottledValue, initialOptions)
-  return [throttledValue, throttler.maybeExecute, throttler] as const
+  return [
+    throttledValue,
+    throttler.maybeExecute.bind(throttler) as Setter<TValue>,
+    throttler,
+  ] as const
 }

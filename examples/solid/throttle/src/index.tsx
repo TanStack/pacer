@@ -66,7 +66,7 @@ function App2() {
         <input
           type="text"
           value={text()}
-          onChange={handleTextChange}
+          onInput={handleTextChange}
           placeholder="Type text (throttled to 1 update per second)..."
           style={{ width: '100%' }}
         />

@@ -6,11 +6,13 @@ function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = createSignal(0)
   const [throttledCount, setThrottledCount] = createSignal(0)
+  const [executionCount, setExecutionCount] = createSignal(0)
 
   // Lower-level createThrottler hook - requires you to manage your own state
   const setCountThrottler = createThrottler(setThrottledCount, {
     wait: 1000,
     enabled: false,
+    onExecute: (throttler) => setExecutionCount(throttler.getExecutionCount()),
   })
 
   // enable the throttler when the instant count is greater than 2
@@ -36,7 +38,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setCountThrottler.getExecutionCount()}</td>
+            <td>{executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -58,11 +60,13 @@ function App1() {
 function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
   const [throttledSearch, setThrottledSearch] = createSignal('')
+  const [executionCount, setExecutionCount] = createSignal(0)
 
   // Lower-level createThrottler hook - requires you to manage your own state
   const setSearchThrottler = createThrottler(setThrottledSearch, {
     wait: 1000,
     enabled: false,
+    onExecute: (throttler) => setExecutionCount(throttler.getExecutionCount()),
   })
 
   // enable the throttler when the instant search value is longer than 2 characters
@@ -86,7 +90,7 @@ function App2() {
         <input
           type="text"
           value={instantSearch()}
-          onChange={handleSearchChange}
+          onInput={handleSearchChange}
           placeholder="Type to search..."
           style={{ width: '100%' }}
         />
@@ -95,7 +99,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setSearchThrottler.getExecutionCount()}</td>
+            <td>{executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>

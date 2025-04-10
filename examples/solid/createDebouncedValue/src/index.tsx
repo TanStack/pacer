@@ -4,6 +4,7 @@ import { createDebouncedValue } from '@tanstack/solid-pacer/debouncer'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
+  const [executionCount, setExecutionCount] = createSignal(0)
 
   function increment() {
     setInstantCount((c) => c + 1)
@@ -11,9 +12,11 @@ function App1() {
 
   // highest-level hook that watches an instant local state value and returns a debounced value
   // optionally, grab the debouncer from the last index of the returned array
-  const [debouncedCount, debouncer] = createDebouncedValue(instantCount, {
+  const [debouncedCount, _debouncer] = createDebouncedValue(instantCount, {
     wait: 500,
-    // enabled: instantCount() > 2, // optional, defaults to true
+    onExecute: (debouncer) => {
+      setExecutionCount(debouncer.getExecutionCount()) // optionally, read internal state after execution
+    },
   })
 
   return (
@@ -23,7 +26,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{debouncer().getExecutionCount()}</td>
+            <td>{executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -31,7 +34,7 @@ function App1() {
           </tr>
           <tr>
             <td>Debounced Count:</td>
-            <td>{debouncedCount()()}</td>
+            <td>{debouncedCount()}</td>
           </tr>
         </tbody>
       </table>
@@ -44,11 +47,14 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
+  const [executionCount, setExecutionCount] = createSignal(0)
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const [debouncedSearch, debouncer] = createDebouncedValue(instantSearch, {
+  const [debouncedSearch, _debouncer] = createDebouncedValue(instantSearch, {
     wait: 500,
-    // enabled: instantSearch.length > 2, // optional, defaults to true
+    onExecute: (debouncer) => {
+      setExecutionCount(debouncer.getExecutionCount()) // optionally, read internal state after execution
+    },
   })
 
   function handleSearchChange(e: Event) {
@@ -62,7 +68,7 @@ function App2() {
         <input
           type="text"
           value={instantSearch()}
-          onChange={handleSearchChange}
+          onInput={handleSearchChange}
           placeholder="Type to search..."
           style={{ width: '100%' }}
         />
@@ -71,7 +77,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{debouncer().getExecutionCount()}</td>
+            <td>{executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -79,7 +85,7 @@ function App2() {
           </tr>
           <tr>
             <td>Debounced Search:</td>
-            <td>{debouncedSearch()()}</td>
+            <td>{debouncedSearch()}</td>
           </tr>
         </tbody>
       </table>

@@ -4,14 +4,17 @@ import { createThrottledSignal } from '@tanstack/solid-pacer/throttler'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
+  const [executionCount, setExecutionCount] = createSignal(0)
 
-  // higher-level hook that uses React.createSignal with the state setter automatically throttled
+  // higher-level hook that uses Solid.createSignal with the state setter automatically throttled
   // optionally, grab the throttler from the last index of the returned array
-  const [throttledCount, setThrottledCount, throttler] = createThrottledSignal(
-    instantCount,
+  const [throttledCount, setThrottledCount, _throttler] = createThrottledSignal(
+    instantCount(),
     {
       wait: 1000,
-      // enabled: instantCount() > 2, // optional, defaults to true
+      onExecute: (throttler) => {
+        setExecutionCount(throttler.getExecutionCount())
+      },
     },
   )
 
@@ -19,19 +22,19 @@ function App1() {
     // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => {
       const newInstantCount = c + 1 // common new value for both
-      setThrottledCount(() => () => newInstantCount) // throttled state update
+      setThrottledCount(newInstantCount) // throttled state update
       return newInstantCount // instant state update
     })
   }
 
   return (
     <div>
-      <h1>TanStack Pacer createThrottledState Example 1</h1>
+      <h1>TanStack Pacer createThrottledSignal Example 1</h1>
       <table>
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{throttler.getExecutionCount()}</td>
+            <td>{executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -39,7 +42,7 @@ function App1() {
           </tr>
           <tr>
             <td>Throttled Count:</td>
-            <td>{throttledCount()()}</td>
+            <td>{throttledCount()}</td>
           </tr>
         </tbody>
       </table>
@@ -52,29 +55,34 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
+  const [executionCount, setExecutionCount] = createSignal(0)
 
   // higher-level hook that uses React.createSignal with the state setter automatically throttled
-  const [throttledSearch, setThrottledSearch, throttler] =
-    createThrottledSignal(instantSearch, {
+  const [throttledSearch, setThrottledSearch] = createThrottledSignal(
+    instantSearch(),
+    {
       wait: 1000,
-      // enabled: instantSearch.length > 2, // optional, defaults to true
-    })
+      onExecute: (throttler) => {
+        setExecutionCount(throttler.getExecutionCount())
+      },
+    },
+  )
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
     const newValue = target.value
-    setInstantSearch(() => newValue)
-    setThrottledSearch(() => () => newValue)
+    setInstantSearch(newValue)
+    setThrottledSearch(newValue)
   }
 
   return (
     <div>
-      <h1>TanStack Pacer createThrottledState Example 2</h1>
+      <h1>TanStack Pacer createThrottledSignal Example 2</h1>
       <div>
         <input
           type="text"
           value={instantSearch()}
-          onChange={handleSearchChange}
+          onInput={handleSearchChange}
           placeholder="Type to search..."
           style={{ width: '100%' }}
         />
@@ -83,7 +91,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{throttler.getExecutionCount()}</td>
+            <td>{executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -91,7 +99,7 @@ function App2() {
           </tr>
           <tr>
             <td>Throttled Search:</td>
-            <td>{throttledSearch()()}</td>
+            <td>{throttledSearch()}</td>
           </tr>
         </tbody>
       </table>

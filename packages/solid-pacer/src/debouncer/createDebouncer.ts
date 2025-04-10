@@ -1,4 +1,3 @@
-import { createMemo, createSignal } from 'solid-js'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
@@ -37,19 +36,6 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 export function createDebouncer<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions) {
-  const [debouncer] = createSignal(() => new Debouncer<TFn, TArgs>(fn, options))
-
-  const setOptions = createMemo(() => debouncer()().setOptions.bind(debouncer))
-
-  setOptions()(options)
-
-  return createMemo(
-    () =>
-      ({
-        maybeExecute: debouncer()().maybeExecute.bind(debouncer),
-        cancel: debouncer()().cancel.bind(debouncer),
-        getExecutionCount: debouncer()().getExecutionCount.bind(debouncer),
-      }) as const,
-  )
+>(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
+  return new Debouncer<TFn, TArgs>(fn, options)
 }

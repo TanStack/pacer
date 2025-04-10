@@ -43,7 +43,7 @@ function SearchApp() {
         <input
           type="text"
           value={searchText()}
-          onChange={(e) => {
+          onInput={(e) => {
             const target = e.target as HTMLInputElement
             const newValue = target.value
             setSearchText(newValue)
