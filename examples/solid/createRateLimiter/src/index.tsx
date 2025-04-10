@@ -13,11 +13,11 @@ function App1() {
   const rateLimiter = createRateLimiter(setLimitedCount, {
     limit: 5,
     window: 5000,
-    onExecute() {
-      setExecutionCount((c) => c + 1)
+    onExecute: () => {
+      setExecutionCount(rateLimiter.getExecutionCount())
     },
     onReject: () => {
-      setRejectionCount((c) => c + 1)
+      setRejectionCount(rateLimiter.getRejectionCount())
     },
   })
 
@@ -74,11 +74,11 @@ function App2() {
   const rateLimiter = createRateLimiter(setLimitedSearch, {
     limit: 5,
     window: 5000,
-    onExecute() {
-      setExecutionCount((c) => c + 1)
+    onExecute: () => {
+      setExecutionCount(rateLimiter.getExecutionCount())
     },
     onReject: () => {
-      setRejectionCount((c) => c + 1)
+      setRejectionCount(rateLimiter.getRejectionCount())
     },
   })
 
