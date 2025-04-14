@@ -26,6 +26,10 @@ coverage
 .next
 .svelte-kit
 
+# developer-specific VS Code config files
+.vscode/tasks.json
+.vscode/launch.json
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
