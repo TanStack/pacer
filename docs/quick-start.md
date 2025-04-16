@@ -10,4 +10,4 @@ This page contains links to the the highest-level example for each of Tanstack P
  * [Rate-limiting](./guides/rate-limiting.md): [`useRateLimitedValue`](../examples/react/useRateLimitedValue/)
  * [Queueing](./guides/queueing.md): [`useQueuerState`](../examples/react/useQueuerState/)
 
-If you're looking lower-level examples or `async` examples, take a look at our catalog of [examples](../examples/).
+If you're looking lower-level examples or `async` examples, take a look at our catalog of examples.
