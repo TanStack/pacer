@@ -39,6 +39,8 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * queue.start(); // Resume processing
  * ```
  */
-export function createQueuer<TValue>(initialOptions: QueuerOptions<TValue> = {}) {
+export function createQueuer<TValue>(
+  initialOptions: QueuerOptions<TValue> = {},
+) {
   return new Queuer<TValue>(initialOptions)
 }
