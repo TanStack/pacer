@@ -9,7 +9,7 @@ function App1() {
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
   const [limitedCount, setLimitedCount, rateLimiter] = createRateLimitedSignal(
-    instantCount,
+    instantCount(),
     {
       limit: 5,
       window: 5000,
@@ -26,7 +26,7 @@ function App1() {
     // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => {
       const newInstantCount = c + 1 // common new value for both
-      setLimitedCount(() => () => newInstantCount) // rate-limited state update
+      setLimitedCount(() => newInstantCount) // rate-limited state update
       return newInstantCount // instant state update
     })
   }
@@ -50,7 +50,7 @@ function App1() {
           </tr>
           <tr>
             <td>Rate Limited Count:</td>
-            <td>{limitedCount()()}</td>
+            <td>{limitedCount()}</td>
           </tr>
         </tbody>
       </table>
@@ -72,7 +72,7 @@ function App2() {
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
   const [limitedSearch, setLimitedSearch, rateLimiter] =
-    createRateLimitedSignal(instantSearch, {
+    createRateLimitedSignal(instantSearch(), {
       // enabled: instantSearch.length > 2, // optional, defaults to true
       limit: 5,
       window: 5000,
@@ -88,7 +88,7 @@ function App2() {
     const target = e.target as HTMLInputElement
     const newValue = target.value
     setInstantSearch(() => newValue)
-    setLimitedSearch(() => () => newValue)
+    setLimitedSearch(() => newValue)
   }
 
   return (
@@ -119,7 +119,7 @@ function App2() {
           </tr>
           <tr>
             <td>Rate Limited Search:</td>
-            <td>{limitedSearch()()}</td>
+            <td>{limitedSearch()}</td>
           </tr>
         </tbody>
       </table>

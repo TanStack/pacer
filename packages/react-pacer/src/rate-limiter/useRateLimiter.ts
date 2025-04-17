@@ -28,8 +28,8 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * ```tsx
  * // Basic rate limiting - max 5 calls per minute
  * const { maybeExecute } = useRateLimiter(apiCall, {
- *   maxExecutions: 5,
- *   windowMs: 60000
+ *   limit: 5,
+ *   window: 60000,
  * });
  *
  * // Monitor rate limit status

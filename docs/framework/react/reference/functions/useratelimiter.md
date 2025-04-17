@@ -139,14 +139,14 @@ Resets the rate limiter state
 // Basic rate limiting - max 5 calls per minute
 const { maybeExecute } = useRateLimiter(apiCall, {
   maxExecutions: 5,
-  windowMs: 60000
+  wait: 60000
 });
 
 // With Redux
 const dispatch = useDispatch();
 const { maybeExecute, getRemainingInWindow } = useRateLimiter(
   (value) => dispatch(updateAction(value)),
-  { maxExecutions: 10, windowMs: 30000 }
+  { maxExecutions: 10, wait: 30000 }
 );
 
 // Monitor rate limit status
