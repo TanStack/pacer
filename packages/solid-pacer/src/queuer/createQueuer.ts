@@ -1,4 +1,3 @@
-import { createMemo, createSignal } from 'solid-js'
 import { Queuer } from '@tanstack/pacer/queuer'
 import type { QueuerOptions } from '@tanstack/pacer/queuer'
 
@@ -40,31 +39,6 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * queue.start(); // Resume processing
  * ```
  */
-export function createQueuer<TValue>(options: QueuerOptions<TValue> = {}) {
-  const [queuer] = createSignal(() => new Queuer<TValue>(options))
-
-  const setOptions = createMemo(() => queuer()().setOptions.bind(queuer))
-
-  setOptions()(options)
-
-  return createMemo(
-    () =>
-      ({
-        addItem: queuer()().addItem.bind(queuer),
-        clear: queuer()().clear.bind(queuer),
-        getAllItems: queuer()().getAllItems.bind(queuer),
-        getExecutionCount: queuer()().getExecutionCount.bind(queuer),
-        getNextItem: queuer()().getNextItem.bind(queuer),
-        isEmpty: queuer()().isEmpty.bind(queuer),
-        isFull: queuer()().isFull.bind(queuer),
-        isRunning: queuer()().isRunning.bind(queuer),
-        isIdle: queuer()().isIdle.bind(queuer),
-        onUpdate: queuer()().onUpdate.bind(queuer),
-        peek: queuer()().peek.bind(queuer),
-        reset: queuer()().reset.bind(queuer),
-        size: queuer()().size.bind(queuer),
-        start: queuer()().start.bind(queuer),
-        stop: queuer()().stop.bind(queuer),
-      }) as const,
-  )
+export function createQueuer<TValue>(initialOptions: QueuerOptions<TValue> = {}) {
+  return new Queuer<TValue>(initialOptions)
 }

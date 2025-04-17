@@ -145,7 +145,7 @@
             },
             {
               "label": "createDebouncedState",
-              "to": "framework/solid/reference/functions/createdebouncedstate"
+              "to": "framework/solid/reference/functions/createdebouncedsignal"
             },
             {
               "label": "createDebouncedValue",
@@ -220,7 +220,7 @@
             },
             {
               "label": "createThrottledState",
-              "to": "framework/solid/reference/functions/createthrottledstate"
+              "to": "framework/solid/reference/functions/createthrottledsignal"
             },
             {
               "label": "createThrottledValue",
@@ -294,12 +294,8 @@
               "to": "framework/solid/reference/functions/createratelimiter"
             },
             {
-              "label": "createRateLimitedCallback",
-              "to": "framework/solid/reference/functions/createratelimitedcallback"
-            },
-            {
               "label": "createRateLimitedState",
-              "to": "framework/solid/reference/functions/createratelimitedstate"
+              "to": "framework/solid/reference/functions/createratelimitedsignal"
             },
             {
               "label": "createRateLimitedValue",
@@ -359,10 +355,6 @@
             {
               "label": "createQueuer",
               "to": "framework/solid/reference/functions/createqueuer"
-            },
-            {
-              "label": "createQueuerState",
-              "to": "framework/solid/reference/functions/createqueuerstate"
             },
             {
               "label": "createAsyncQueuer",
@@ -426,7 +418,7 @@
             },
             {
               "label": "createDebouncedState",
-              "to": "framework/solid/examples/createDebouncedState"
+              "to": "framework/solid/examples/createDebouncedSignal"
             },
             {
               "label": "createDebouncedValue",
@@ -494,7 +486,7 @@
             },
             {
               "label": "createThrottledState",
-              "to": "framework/solid/examples/createThrottledState"
+              "to": "framework/solid/examples/createThrottledSignal"
             },
             {
               "label": "createThrottledValue",
@@ -558,19 +550,19 @@
             },
             {
               "label": "createRateLimiter",
-              "to": "framework/solid/examples/createcreateeLimiter"
+              "to": "framework/solid/examples/createRateLimiter"
             },
             {
-              "label": "createRateLimitedState",
-              "to": "framework/solid/examples/createcreateeLimitedState"
+              "label": "createRateLimitedSignal",
+              "to": "framework/solid/examples/createRateLimitedSignal"
             },
             {
               "label": "createRateLimitedValue",
-              "to": "framework/solid/examples/createcreateeLimitedValue"
+              "to": "framework/solid/examples/createRateLimitedValue"
             },
             {
               "label": "createAsyncRateLimiter",
-              "to": "framework/solid/examples/createcreatencRateLimiter"
+              "to": "framework/solid/examples/createAsyncRateLimiter"
             }
           ]
         }
@@ -617,16 +609,8 @@
               "to": "framework/solid/examples/createQueuer"
             },
             {
-              "label": "createQueuerState",
-              "to": "framework/solid/examples/createQueuerState"
-            },
-            {
               "label": "createAsyncQueuer",
               "to": "framework/solid/examples/createAsyncQueuer"
-            },
-            {
-              "label": "createAsyncQueuerState",
-              "to": "framework/solid/examples/createAsyncQueuerState"
             }
           ]
         }

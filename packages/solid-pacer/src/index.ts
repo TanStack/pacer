@@ -25,7 +25,6 @@ export * from './debouncer/createDebouncer'
 
 // queuer
 export * from './queuer/createQueuer'
-export * from './queuer/createQueuerSignal'
 
 // rate-limiter
 export * from './rate-limiter/createRateLimiter'

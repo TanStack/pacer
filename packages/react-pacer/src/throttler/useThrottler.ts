@@ -61,6 +61,8 @@ export function useThrottler<
         maybeExecute: throttler.maybeExecute.bind(throttler),
         cancel: throttler.cancel.bind(throttler),
         getExecutionCount: throttler.getExecutionCount.bind(throttler),
+        getLastExecutionTime: throttler.getLastExecutionTime.bind(throttler),
+        getNextExecutionTime: throttler.getNextExecutionTime.bind(throttler),
       }) as const,
     [throttler],
   )

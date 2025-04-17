@@ -7,27 +7,30 @@ function App() {
   const [queueItems, setQueueItems] = createSignal([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
   ])
+  const [isRunning, setIsRunning] = createSignal(false)
 
   const queuer = createQueuer({
-    maxSize: 25,
     initialItems: queueItems(),
+    maxSize: 25,
+    started: isRunning(),
     wait: 1000, // wait 1 second between processing items - wait is optional!
     onUpdate: (queue) => {
       setQueueItems(queue.getAllItems())
+      setIsRunning(queue.isRunning())
     },
   })
 
   return (
     <div>
       <h1>TanStack Pacer createQueuer Example</h1>
-      <div>Queue Size: {queuer().size()}</div>
+      <div>Queue Size: {queuer.size()}</div>
       <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {queuer().isFull() ? 'Yes' : 'No'}</div>
-      <div>Queue Peek: {queuer().peek()}</div>
-      <div>Queue Empty: {queuer().isEmpty() ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer().isIdle() ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer().isRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer().getExecutionCount()}</div>
+      <div>Queue Full: {queuer.isFull() ? 'Yes' : 'No'}</div>
+      <div>Queue Peek: {queuer.peek()}</div>
+      <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
+      <div>Items Processed: {queuer.getExecutionCount()}</div>
       <div>Queue Items: {queueItems().join(', ')}</div>
       <div
         style={{
@@ -43,37 +46,31 @@ function App() {
             const nextNumber = queueItems().length
               ? queueItems()[queueItems().length - 1] + 1
               : 1
-            queuer().addItem(nextNumber)
+            queuer.addItem(nextNumber)
           }}
-          disabled={queuer().isFull()}
+          disabled={queuer.isFull()}
         >
           Add Number
         </button>
         <button
-          disabled={queuer().isEmpty()}
+          disabled={queuer.isEmpty()}
           onClick={() => {
-            const item = queuer().getNextItem()
+            const item = queuer.getNextItem()
             console.log('getNextItem item', item)
           }}
         >
           Process Next
         </button>
-        <button onClick={() => queuer().clear()} disabled={queuer().isEmpty()}>
+        <button onClick={() => queuer.clear()} disabled={queuer.isEmpty()}>
           Clear Queue
         </button>
-        <button onClick={() => queuer().reset()} disabled={queuer().isEmpty()}>
+        <button onClick={() => queuer.reset()} disabled={queuer.isEmpty()}>
           Reset Queue
         </button>
-        <button
-          onClick={() => queuer().start()}
-          disabled={queuer().isRunning()}
-        >
+        <button onClick={() => queuer.start()} disabled={queuer.isRunning()}>
           Start Processing
         </button>
-        <button
-          onClick={() => queuer().stop()}
-          disabled={!queuer().isRunning()}
-        >
+        <button onClick={() => queuer.stop()} disabled={!queuer.isRunning()}>
           Stop Processing
         </button>
       </div>
