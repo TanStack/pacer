@@ -126,15 +126,41 @@ Callback fired whenever an item is removed from the queuer
 
 ***
 
+### onReject()?
+
+```ts
+optional onReject: (item, queuer) => void;
+```
+
+Defined in: [queuer.ts:35](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L35)
+
+Callback fired whenever an item is rejected from being added to the queuer
+
+#### Parameters
+
+##### item
+
+`TValue`
+
+##### queuer
+
+[`Queuer`](../classes/queuer.md)\<`TValue`\>
+
+#### Returns
+
+`void`
+
+***
+
 ### onUpdate()?
 
 ```ts
 optional onUpdate: (queuer) => void;
 ```
 
-Defined in: [queuer.ts:35](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L35)
+Defined in: [queuer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L39)
 
-Callback fired whenever an item is added or removed from the queuer
+Callback fired whenever an item is added or removed from the queuer, or when the queuer starts and stops.
 
 #### Parameters
 
@@ -154,7 +180,7 @@ Callback fired whenever an item is added or removed from the queuer
 optional started: boolean;
 ```
 
-Defined in: [queuer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L39)
+Defined in: [queuer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L43)
 
 Whether the queuer should start processing tasks immediately
 
@@ -166,6 +192,6 @@ Whether the queuer should start processing tasks immediately
 optional wait: number;
 ```
 
-Defined in: [queuer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L43)
+Defined in: [queuer.ts:47](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L47)
 
 Time in milliseconds to wait between processing items

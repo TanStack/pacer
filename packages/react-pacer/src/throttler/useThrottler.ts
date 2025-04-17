@@ -45,7 +45,7 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 export function useThrottler<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: ThrottlerOptions) {
+>(fn: TFn, options: ThrottlerOptions<TFn, TArgs>) {
   const [throttler] = useState(() => new Throttler<TFn, TArgs>(fn, options))
 
   const setOptions = useMemo(
@@ -61,6 +61,8 @@ export function useThrottler<
         maybeExecute: throttler.maybeExecute.bind(throttler),
         cancel: throttler.cancel.bind(throttler),
         getExecutionCount: throttler.getExecutionCount.bind(throttler),
+        getLastExecutionTime: throttler.getLastExecutionTime.bind(throttler),
+        getNextExecutionTime: throttler.getNextExecutionTime.bind(throttler),
       }) as const,
     [throttler],
   )

@@ -19,7 +19,7 @@ Information about a rate limit rejection
 currentExecutions: number;
 ```
 
-Defined in: [rate-limiter.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L12)
+Defined in: [rate-limiter.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L8)
 
 Current number of executions in the window
 
@@ -31,7 +31,7 @@ Current number of executions in the window
 limit: number;
 ```
 
-Defined in: [rate-limiter.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L16)
+Defined in: [rate-limiter.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L12)
 
 Maximum allowed executions per window
 
@@ -43,7 +43,7 @@ Maximum allowed executions per window
 msUntilNextWindow: number;
 ```
 
-Defined in: [rate-limiter.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L8)
+Defined in: [rate-limiter.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L16)
 
 Number of milliseconds until the next execution will be possible
 

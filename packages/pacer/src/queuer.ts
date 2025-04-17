@@ -30,7 +30,11 @@ export interface QueuerOptions<TValue> {
    */
   onGetNextItem?: (item: TValue, queuer: Queuer<TValue>) => void
   /**
-   * Callback fired whenever an item is added or removed from the queuer
+   * Callback fired whenever an item is rejected from being added to the queuer
+   */
+  onReject?: (item: TValue, queuer: Queuer<TValue>) => void
+  /**
+   * Callback fired whenever an item is added or removed from the queuer, or when the queuer starts and stops.
    */
   onUpdate?: (queuer: Queuer<TValue>) => void
   /**
@@ -50,6 +54,7 @@ const defaultOptions: Required<QueuerOptions<any>> = {
   initialItems: [],
   maxSize: Infinity,
   onGetNextItem: () => {},
+  onReject: () => {},
   onUpdate: () => {},
   started: false,
   wait: 0,
@@ -175,6 +180,7 @@ export class Queuer<TValue> {
     runOnUpdate: boolean = true,
   ): boolean {
     if (this.isFull()) {
+      this.options.onReject(item, this)
       return false
     }
 
