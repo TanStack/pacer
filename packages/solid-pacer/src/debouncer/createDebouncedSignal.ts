@@ -43,7 +43,7 @@ export function createDebouncedSignal<TValue>(
 
   return [
     debouncedValue,
-    debouncer.maybeExecute.bind(debouncer) as Setter<TValue>,
+    debouncer.maybeExecute as Setter<TValue>,
     debouncer,
   ] as const
 }

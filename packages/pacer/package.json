@@ -128,8 +128,7 @@
       }
     },
     "./types": {
-      "types": "./dist/esm/types.d.ts",
-      "default": "./dist/esm/types.js"
+      "types": "./dist/esm/types.d.ts"
     },
     "./package.json": "./package.json"
   },

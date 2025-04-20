@@ -65,17 +65,17 @@ const defaultOptions: Required<DebouncerOptions<any, any>> = {
  * ```
  */
 export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
-  private canLeadingExecute = true
-  private isPending = false
-  private executionCount = 0
-  private options: Required<DebouncerOptions<TFn, TArgs>>
-  private timeoutId: NodeJS.Timeout | undefined
+  private _canLeadingExecute = true
+  private _isPending = false
+  private _executionCount = 0
+  private _options: Required<DebouncerOptions<TFn, TArgs>>
+  private _timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
     initialOptions: DebouncerOptions<TFn, TArgs>,
   ) {
-    this.options = {
+    this._options = {
       ...defaultOptions,
       ...initialOptions,
     }
@@ -88,31 +88,31 @@ export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
   setOptions(
     newOptions: Partial<DebouncerOptions<TFn, TArgs>>,
   ): Required<DebouncerOptions<TFn, TArgs>> {
-    this.options = {
-      ...this.options,
+    this._options = {
+      ...this._options,
       ...newOptions,
     }
 
     // End the pending state if the debouncer is disabled
-    if (!this.options.enabled) {
-      this.isPending = false
+    if (!this._options.enabled) {
+      this._isPending = false
     }
 
-    return this.options
+    return this._options
   }
 
   /**
    * Returns the number of times the function has been executed
    */
   getExecutionCount(): number {
-    return this.executionCount
+    return this._executionCount
   }
 
   /**
    * Returns `true` if debouncing
    */
   getIsPending(): boolean {
-    return this.options.enabled && this.isPending
+    return this._options.enabled && this._isPending
   }
 
   /**
@@ -121,45 +121,45 @@ export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
    */
   maybeExecute(...args: TArgs): void {
     // Handle leading execution
-    if (this.options.leading && this.canLeadingExecute) {
+    if (this._options.leading && this._canLeadingExecute) {
       this.executeFunction(...args)
-      this.canLeadingExecute = false
+      this._canLeadingExecute = false
     }
 
     // Start pending state
-    if (this.options.leading || this.options.trailing) {
-      this.isPending = true
+    if (this._options.leading || this._options.trailing) {
+      this._isPending = true
     }
 
     // Clear any existing timeout
-    if (this.timeoutId) clearTimeout(this.timeoutId)
+    if (this._timeoutId) clearTimeout(this._timeoutId)
 
     // Set new timeout that will reset canLeadingExecute
-    this.timeoutId = setTimeout(() => {
-      this.canLeadingExecute = true
-      this.isPending = false
+    this._timeoutId = setTimeout(() => {
+      this._canLeadingExecute = true
+      this._isPending = false
       // Execute trailing only if enabled
-      if (this.options.trailing) {
+      if (this._options.trailing) {
         this.executeFunction(...args)
       }
-    }, this.options.wait)
+    }, this._options.wait)
   }
 
   private executeFunction(...args: TArgs): void {
-    if (!this.options.enabled) return
+    if (!this._options.enabled) return
     this.fn(...args) // EXECUTE!
-    this.executionCount++
-    this.options.onExecute(this)
+    this._executionCount++
+    this._options.onExecute(this)
   }
 
   /**
    * Cancels any pending execution
    */
   cancel(): void {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
-      this.canLeadingExecute = true
-      this.isPending = false
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId)
+      this._canLeadingExecute = true
+      this._isPending = false
     }
   }
 }

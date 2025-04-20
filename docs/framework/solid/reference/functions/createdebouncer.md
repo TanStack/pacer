@@ -8,10 +8,10 @@ title: createDebouncer
 # Function: createDebouncer()
 
 ```ts
-function createDebouncer<TFn, TArgs>(fn, options): Debouncer<TFn, TArgs>
+function createDebouncer<TFn, TArgs>(fn, options): SolidDebouncer<TFn, TArgs>
 ```
 
-Defined in: [debouncer/createDebouncer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L37)
+Defined in: [debouncer/createDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L50)
 
 A Solid hook that creates and manages a Debouncer instance.
 
@@ -45,22 +45,23 @@ timer resets and starts waiting again.
 
 ## Returns
 
-`Debouncer`\<`TFn`, `TArgs`\>
+[`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`TFn`, `TArgs`\>
 
 ## Example
 
 ```tsx
 // Debounce a search function to limit API calls
-const searchDebouncer = createDebouncer(
+const { maybeExecute, executionCount, isPending } = createDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 } // Wait 500ms after last keystroke
 );
 
 // In an event handler
 const handleChange = (e) => {
-  searchDebouncer.maybeExecute(e.target.value);
+  maybeExecute(e.target.value);
 };
 
 // Get number of times the debounced function has executed
-const executionCount = searchDebouncer.getExecutionCount();
+console.log('Executions:', executionCount());
+console.log('Is pending:', isPending());
 ```

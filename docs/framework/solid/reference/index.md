@@ -7,6 +7,10 @@ title: "@tanstack/solid-pacer"
 
 # @tanstack/solid-pacer
 
+## Interfaces
+
+- [SolidDebouncer](interfaces/soliddebouncer.md)
+
 ## Functions
 
 - [createAsyncDebouncer](functions/createasyncdebouncer.md)

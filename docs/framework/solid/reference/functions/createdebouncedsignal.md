@@ -8,7 +8,7 @@ title: createDebouncedSignal
 # Function: createDebouncedSignal()
 
 ```ts
-function createDebouncedSignal<TValue>(value, options): readonly [Accessor<TValue>, Setter<TValue>, Debouncer<Setter<TValue>, [Accessor<TValue>]>]
+function createDebouncedSignal<TValue>(value, options): readonly [Accessor<TValue>, Setter<TValue>, SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
 Defined in: [debouncer/createDebouncedSignal.ts:36](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedSignal.ts#L36)
@@ -42,7 +42,7 @@ The hook returns a tuple containing:
 
 ## Returns
 
-readonly \[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, `Debouncer`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
+readonly \[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, [`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
 
 ## Example
 

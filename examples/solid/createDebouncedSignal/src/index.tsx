@@ -4,17 +4,13 @@ import { createDebouncedSignal } from '@tanstack/solid-pacer/debouncer'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
   // optionally, grab the debouncer from the last index of the returned array
-  const [debouncedCount, setDebouncedCount, _debouncer] = createDebouncedSignal(
+  const [debouncedCount, setDebouncedCount, debouncer] = createDebouncedSignal(
     instantCount(),
     {
       wait: 500,
-      onExecute: (debouncer) => {
-        setExecutionCount(debouncer.getExecutionCount()) // optionally, read internal state after execution
-      },
     },
   )
 
@@ -34,7 +30,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{executionCount()}</td>
+            <td>{debouncer.executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -55,15 +51,11 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
-  const [debouncedSearch, setDebouncedSearch, _debouncer] =
+  const [debouncedSearch, setDebouncedSearch, debouncer] =
     createDebouncedSignal(instantSearch(), {
       wait: 500,
-      onExecute: (debouncer) => {
-        setExecutionCount(debouncer.getExecutionCount()) // optionally, read internal state after execution
-      },
     })
 
   function handleSearchChange(e: Event) {
@@ -89,7 +81,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{executionCount()}</td>
+            <td>{debouncer.executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
