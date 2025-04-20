@@ -10,7 +10,6 @@ export * from './async-debouncer/createAsyncDebouncer'
 
 // async-queuer
 export * from './async-queuer/createAsyncQueuer'
-export * from './async-queuer/createAsyncQueuerSignal'
 
 // async-rate-limiter
 export * from './async-rate-limiter/createAsyncRateLimiter'
