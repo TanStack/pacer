@@ -3,7 +3,10 @@ import type { RateLimitRejectionInfo } from './rate-limiter'
 /**
  * Options for configuring an async rate-limited function
  */
-export interface AsyncRateLimiterOptions {
+export interface AsyncRateLimiterOptions<
+  TFn extends (...args: Array<any>) => Promise<any>,
+  TArgs extends Parameters<TFn>,
+> {
   /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -14,19 +17,31 @@ export interface AsyncRateLimiterOptions {
    */
   limit: number
   /**
-   * Time window in milliseconds within which the limit applies
+   * Optional error handler for when the rate-limited function throws
    */
-  window: number
+  onError?: (error: unknown) => void
+  /**
+   * Optional function to call when the rate-limited function is executed
+   */
+  onExecute?: (rateLimiter: AsyncRateLimiter<TFn, TArgs>) => void
   /**
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
   onReject?: (info: RateLimitRejectionInfo) => void
   /**
-   * Optional error handler for when the rate-limited function throws
+   * Time window in milliseconds within which the limit applies
    */
-  onError?: (error: unknown) => void
+  window: number
 }
 
+const defaultOptions: Required<
+  Omit<AsyncRateLimiterOptions<any, any>, 'limit' | 'window'>
+> = {
+  enabled: true,
+  onReject: () => {},
+  onError: () => {},
+  onExecute: () => {},
+}
 /**
  * A class that creates an async rate-limited function.
  *
@@ -59,14 +74,14 @@ export class AsyncRateLimiter<
   private executionCount = 0
   private rejectionCount = 0
   private executionTimes: Array<number> = []
-  private options: AsyncRateLimiterOptions
+  private options: AsyncRateLimiterOptions<TFn, TArgs>
 
   constructor(
     private fn: TFn,
-    initialOptions: AsyncRateLimiterOptions,
+    initialOptions: AsyncRateLimiterOptions<TFn, TArgs>,
   ) {
     this.options = {
-      enabled: true,
+      ...defaultOptions,
       ...initialOptions,
     }
   }
@@ -76,8 +91,8 @@ export class AsyncRateLimiter<
    * Returns the new options state
    */
   setOptions(
-    newOptions: Partial<AsyncRateLimiterOptions>,
-  ): AsyncRateLimiterOptions {
+    newOptions: Partial<AsyncRateLimiterOptions<TFn, TArgs>>,
+  ): AsyncRateLimiterOptions<TFn, TArgs> {
     this.options = {
       ...this.options,
       ...newOptions,
@@ -153,6 +168,7 @@ export class AsyncRateLimiter<
       }
       throw error
     } finally {
+      this.options.onExecute?.(this)
     }
   }
 
@@ -222,7 +238,11 @@ export class AsyncRateLimiter<
  */
 export function asyncRateLimit<
   TFn extends (...args: Array<any>) => Promise<any>,
->(fn: TFn, initialOptions: Omit<AsyncRateLimiterOptions, 'enabled'>) {
+  TArgs extends Parameters<TFn>,
+>(
+  fn: TFn,
+  initialOptions: Omit<AsyncRateLimiterOptions<TFn, TArgs>, 'enabled'>,
+) {
   const rateLimiter = new AsyncRateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)
 }

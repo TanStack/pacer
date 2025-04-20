@@ -1,4 +1,3 @@
-import { createMemo, createSignal } from 'solid-js'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 
@@ -40,24 +39,6 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 export function createAsyncDebouncer<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncDebouncerOptions) {
-  const [asyncDebouncer] = createSignal(
-    () => new AsyncDebouncer<TFn, TArgs>(fn, options),
-  )
-
-  const setOptions = createMemo(() =>
-    asyncDebouncer()().setOptions.bind(asyncDebouncer),
-  )
-
-  setOptions()(options)
-
-  return createMemo(
-    () =>
-      ({
-        maybeExecute: asyncDebouncer()().maybeExecute.bind(asyncDebouncer),
-        cancel: asyncDebouncer()().cancel.bind(asyncDebouncer),
-        getExecutionCount:
-          asyncDebouncer()().getExecutionCount.bind(asyncDebouncer),
-      }) as const,
-  )
+>(fn: TFn, options: AsyncDebouncerOptions<TFn, TArgs>) {
+  return new AsyncDebouncer<TFn, TArgs>(fn, options)
 }

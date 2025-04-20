@@ -42,7 +42,7 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 export function useAsyncThrottler<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncThrottlerOptions) {
+>(fn: TFn, options: AsyncThrottlerOptions<TFn, TArgs>) {
   const [asyncThrottler] = useState(
     () => new AsyncThrottler<TFn, TArgs>(fn, options),
   )
@@ -63,6 +63,8 @@ export function useAsyncThrottler<
           asyncThrottler.getExecutionCount.bind(asyncThrottler),
         getNextExecutionTime:
           asyncThrottler.getNextExecutionTime.bind(asyncThrottler),
+        getLastExecutionTime:
+          asyncThrottler.getLastExecutionTime.bind(asyncThrottler),
       }) as const,
     [asyncThrottler],
   )

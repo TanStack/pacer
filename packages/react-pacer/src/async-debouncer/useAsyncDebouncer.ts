@@ -40,7 +40,7 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 export function useAsyncDebouncer<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncDebouncerOptions) {
+>(fn: TFn, options: AsyncDebouncerOptions<TFn, TArgs>) {
   const [asyncDebouncer] = useState(
     () => new AsyncDebouncer<TFn, TArgs>(fn, options),
   )

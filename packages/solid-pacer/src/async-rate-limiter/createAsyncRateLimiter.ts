@@ -1,4 +1,3 @@
-import { createMemo, createSignal } from 'solid-js'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 
@@ -41,28 +40,6 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
 export function createAsyncRateLimiter<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncRateLimiterOptions) {
-  const [asyncRateLimiter] = createSignal(
-    () => new AsyncRateLimiter<TFn, TArgs>(fn, options),
-  )
-
-  const setOptions = createMemo(() =>
-    asyncRateLimiter()().setOptions.bind(asyncRateLimiter),
-  )
-
-  setOptions()(options)
-
-  return createMemo(
-    () =>
-      ({
-        maybeExecute: asyncRateLimiter()().maybeExecute.bind(asyncRateLimiter),
-        getExecutionCount:
-          asyncRateLimiter()().getExecutionCount.bind(asyncRateLimiter),
-        getRejectionCount:
-          asyncRateLimiter()().getRejectionCount.bind(asyncRateLimiter),
-        reset: asyncRateLimiter()().reset.bind(asyncRateLimiter),
-        getRemainingInWindow:
-          asyncRateLimiter()().getRemainingInWindow.bind(asyncRateLimiter),
-      }) as const,
-  )
+>(fn: TFn, options: AsyncRateLimiterOptions<TFn, TArgs>) {
+  return new AsyncRateLimiter<TFn, TArgs>(fn, options)
 }

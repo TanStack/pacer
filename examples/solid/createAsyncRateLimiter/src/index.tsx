@@ -22,6 +22,7 @@ function App() {
   const [results, setResults] = createSignal<Array<SearchResult>>([])
   const [isLoading, setIsLoading] = createSignal(false)
   const [error, setError] = createSignal<Error | null>(null)
+  const [executionCount, setExecutionCount] = createSignal(0)
 
   // The function that will become rate limited
   const handleSearch = async (term: string) => {
@@ -41,7 +42,7 @@ function App() {
     setIsLoading(false)
     setError(null)
 
-    console.log(setSearchAsyncRateLimiter().getExecutionCount())
+    console.log(setSearchAsyncRateLimiter.getExecutionCount())
   }
 
   // hook that gives you an async rate limiter instance
@@ -54,16 +55,21 @@ function App() {
       setError(error as Error)
       setResults([])
     },
+    onExecute: (asyncRateLimiter) => {
+      setExecutionCount(asyncRateLimiter.getExecutionCount())
+    },
   })
 
   // get and name our rate limited function
-  const handleSearchRateLimited = setSearchAsyncRateLimiter().maybeExecute
+  const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute.bind(
+    setSearchAsyncRateLimiter,
+  )
 
   createEffect(() => {
     console.log('mount')
     return () => {
       console.log('unmount')
-      setSearchAsyncRateLimiter().reset() // cancel any pending async calls when the component unmounts
+      setSearchAsyncRateLimiter.reset() // cancel any pending async calls when the component unmounts
     }
   }, [])
 
@@ -87,9 +93,9 @@ function App() {
           autocomplete="new-password"
         />
       </div>
-      {error && <div>Error: {error()?.message}</div>}
+      {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncRateLimiter().getExecutionCount()}</p>
+        <p>API calls made: {executionCount()}</p>
         {results().length > 0 && (
           <ul>
             {results().map((item) => (

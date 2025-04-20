@@ -1,4 +1,3 @@
-import { createMemo, createSignal } from 'solid-js'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 
@@ -42,26 +41,6 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 export function createAsyncThrottler<
   TFn extends (...args: Array<any>) => any,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncThrottlerOptions) {
-  const [asyncThrottler] = createSignal(
-    () => new AsyncThrottler<TFn, TArgs>(fn, options),
-  )
-
-  const setOptions = createMemo(() =>
-    asyncThrottler()().setOptions.bind(asyncThrottler),
-  )
-
-  setOptions()(options)
-
-  return createMemo(
-    () =>
-      ({
-        maybeExecute: asyncThrottler()().maybeExecute.bind(asyncThrottler),
-        cancel: asyncThrottler()().cancel.bind(asyncThrottler),
-        getExecutionCount:
-          asyncThrottler()().getExecutionCount.bind(asyncThrottler),
-        getNextExecutionTime:
-          asyncThrottler()().getNextExecutionTime.bind(asyncThrottler),
-      }) as const,
-  )
+>(fn: TFn, options: AsyncThrottlerOptions<TFn, TArgs>) {
+  return new AsyncThrottler<TFn, TArgs>(fn, options)
 }
