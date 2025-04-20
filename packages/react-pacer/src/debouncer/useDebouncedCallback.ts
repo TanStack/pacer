@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useDebouncer } from './useDebouncer'
-import type { DebouncerOptions } from '@tanstack/pacer'
+import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**

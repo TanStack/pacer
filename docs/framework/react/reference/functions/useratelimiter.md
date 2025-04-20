@@ -8,10 +8,10 @@ title: useRateLimiter
 # Function: useRateLimiter()
 
 ```ts
-function useRateLimiter<TFn, TArgs>(fn, options): object
+function useRateLimiter<TFn, TArgs>(fn, options): RateLimiter<TFn, TArgs>
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:53](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L53)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:47](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L47)
 
 A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
@@ -36,7 +36,7 @@ The hook returns an object containing:
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -48,106 +48,20 @@ The hook returns an object containing:
 
 ### options
 
-`RateLimiterOptions`
+`RateLimiterOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`object`
-
-### getExecutionCount()
-
-```ts
-readonly getExecutionCount: () => number;
-```
-
-Returns the number of times the function has been executed
-
-#### Returns
-
-`number`
-
-### getRejectionCount()
-
-```ts
-readonly getRejectionCount: () => number;
-```
-
-Returns the number of times the function has been rejected
-
-#### Returns
-
-`number`
-
-### getRemainingInWindow()
-
-```ts
-readonly getRemainingInWindow: () => number;
-```
-
-Returns the number of remaining executions allowed in the current window
-
-#### Returns
-
-`number`
-
-### maybeExecute()
-
-```ts
-readonly maybeExecute: (...args) => boolean;
-```
-
-Attempts to execute the rate-limited function if within the configured limits.
-Will reject execution if the number of calls in the current window exceeds the limit.
-
-#### Parameters
-
-##### args
-
-...`TArgs`
-
-#### Returns
-
-`boolean`
-
-#### Example
-
-```ts
-const rateLimiter = new RateLimiter(fn, { limit: 5, window: 1000 });
-
-// First 5 calls will return true
-rateLimiter.maybeExecute('arg1', 'arg2'); // true
-
-// Additional calls within the window will return false
-rateLimiter.maybeExecute('arg1', 'arg2'); // false
-```
-
-### reset()
-
-```ts
-readonly reset: () => void;
-```
-
-Resets the rate limiter state
-
-#### Returns
-
-`void`
+`RateLimiter`\<`TFn`, `TArgs`\>
 
 ## Example
 
 ```tsx
 // Basic rate limiting - max 5 calls per minute
 const { maybeExecute } = useRateLimiter(apiCall, {
-  maxExecutions: 5,
-  wait: 60000
+  limit: 5,
+  window: 60000,
 });
-
-// With Redux
-const dispatch = useDispatch();
-const { maybeExecute, getRemainingInWindow } = useRateLimiter(
-  (value) => dispatch(updateAction(value)),
-  { maxExecutions: 10, wait: 30000 }
-);
 
 // Monitor rate limit status
 const handleClick = () => {

@@ -8,10 +8,10 @@ title: useDebouncer
 # Function: useDebouncer()
 
 ```ts
-function useDebouncer<TFn, TArgs>(fn, options): object
+function useDebouncer<TFn, TArgs>(fn, options): Debouncer<TFn, TArgs>
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L37)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L41)
 
 A React hook that creates and manages a Debouncer instance.
 
@@ -29,7 +29,7 @@ timer resets and starts waiting again.
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -41,54 +41,11 @@ timer resets and starts waiting again.
 
 ### options
 
-`DebouncerOptions`
+`DebouncerOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`object`
-
-### cancel()
-
-```ts
-readonly cancel: () => void;
-```
-
-Cancels any pending execution
-
-#### Returns
-
-`void`
-
-### getExecutionCount()
-
-```ts
-readonly getExecutionCount: () => number;
-```
-
-Returns the number of times the function has been executed
-
-#### Returns
-
-`number`
-
-### maybeExecute()
-
-```ts
-readonly maybeExecute: (...args) => void;
-```
-
-Attempts to execute the debounced function
-If a call is already in progress, it will be queued
-
-#### Parameters
-
-##### args
-
-...`TArgs`
-
-#### Returns
-
-`void`
+`Debouncer`\<`TFn`, `TArgs`\>
 
 ## Example
 
@@ -106,4 +63,7 @@ const handleChange = (e) => {
 
 // Get number of times the debounced function has executed
 const executionCount = searchDebouncer.getExecutionCount();
+
+// Get the pending state
+const isPending = searchDebouncer.getIsPending();
 ```

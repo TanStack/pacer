@@ -8,23 +8,7 @@ title: useQueuerState
 # Function: useQueuerState()
 
 ```ts
-function useQueuerState<TValue>(options): readonly [TValue[], {
-  addItem: (item, position?, runOnUpdate?) => boolean;
-  clear: () => void;
-  getAllItems: () => TValue[];
-  getExecutionCount: () => number;
-  getNextItem: (position?) => undefined | TValue;
-  isEmpty: () => boolean;
-  isFull: () => boolean;
-  isIdle: () => boolean;
-  isRunning: () => boolean;
-  onUpdate: (cb) => () => void;
-  peek: (position?) => undefined | TValue;
-  reset: (withInitialItems?) => void;
-  size: () => number;
-  start: () => void;
-  stop: () => void;
- }]
+function useQueuerState<TValue>(options): readonly [TValue[], Queuer<TValue>]
 ```
 
 Defined in: [react-pacer/src/queuer/useQueuerState.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuerState.ts#L54)
@@ -55,23 +39,7 @@ The hook returns a tuple containing:
 
 ## Returns
 
-readonly \[`TValue`[], \{
-  `addItem`: (`item`, `position`?, `runOnUpdate`?) => `boolean`;
-  `clear`: () => `void`;
-  `getAllItems`: () => `TValue`[];
-  `getExecutionCount`: () => `number`;
-  `getNextItem`: (`position`?) => `undefined` \| `TValue`;
-  `isEmpty`: () => `boolean`;
-  `isFull`: () => `boolean`;
-  `isIdle`: () => `boolean`;
-  `isRunning`: () => `boolean`;
-  `onUpdate`: (`cb`) => () => `void`;
-  `peek`: (`position`?) => `undefined` \| `TValue`;
-  `reset`: (`withInitialItems`?) => `void`;
-  `size`: () => `number`;
-  `start`: () => `void`;
-  `stop`: () => `void`;
- \}\]
+readonly \[`TValue`[], `Queuer`\<`TValue`\>\]
 
 ## Example
 

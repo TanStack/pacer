@@ -8,10 +8,10 @@ title: useThrottler
 # Function: useThrottler()
 
 ```ts
-function useThrottler<TFn, TArgs>(fn, options): object
+function useThrottler<TFn, TArgs>(fn, options): Throttler<TFn, TArgs>
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L45)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L46)
 
 A low-level React hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
@@ -30,7 +30,7 @@ The hook returns an object containing:
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -42,79 +42,11 @@ The hook returns an object containing:
 
 ### options
 
-`ThrottlerOptions`
+`ThrottlerOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`object`
-
-### cancel()
-
-```ts
-readonly cancel: () => void;
-```
-
-Cancels any pending trailing execution and clears internal state.
-
-If a trailing execution is scheduled (due to throttling with trailing=true),
-this will prevent that execution from occurring. The internal timeout and
-stored arguments will be cleared.
-
-Has no effect if there is no pending execution.
-
-#### Returns
-
-`void`
-
-### getExecutionCount()
-
-```ts
-readonly getExecutionCount: () => number;
-```
-
-Returns the number of times the function has been executed
-
-#### Returns
-
-`number`
-
-### maybeExecute()
-
-```ts
-readonly maybeExecute: (...args) => void;
-```
-
-Attempts to execute the throttled function. The execution behavior depends on the throttler options:
-
-- If enough time has passed since the last execution (>= wait period):
-  - With leading=true: Executes immediately
-  - With leading=false: Waits for the next trailing execution
-
-- If within the wait period:
-  - With trailing=true: Schedules execution for end of wait period
-  - With trailing=false: Drops the execution
-
-#### Parameters
-
-##### args
-
-...`TArgs`
-
-#### Returns
-
-`void`
-
-#### Example
-
-```ts
-const throttled = new Throttler(fn, { wait: 1000 });
-
-// First call executes immediately
-throttled.maybeExecute('a', 'b');
-
-// Call during wait period - gets throttled
-throttled.maybeExecute('c', 'd');
-```
+`Throttler`\<`TFn`, `TArgs`\>
 
 ## Example
 

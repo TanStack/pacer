@@ -8,10 +8,10 @@ title: useAsyncDebouncer
 # Function: useAsyncDebouncer()
 
 ```ts
-function useAsyncDebouncer<TFn, TArgs>(fn, options): object
+function useAsyncDebouncer<TFn, TArgs>(fn, options): AsyncDebouncer<TFn, TArgs>
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L40)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L41)
 
 A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -24,7 +24,7 @@ wait for user input to settle before making expensive async calls.
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyAsyncFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -36,54 +36,11 @@ wait for user input to settle before making expensive async calls.
 
 ### options
 
-`AsyncDebouncerOptions`
+`AsyncDebouncerOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`object`
-
-### cancel()
-
-```ts
-readonly cancel: () => void;
-```
-
-Cancels any pending execution
-
-#### Returns
-
-`void`
-
-### getExecutionCount()
-
-```ts
-readonly getExecutionCount: () => number;
-```
-
-Returns the number of times the function has been executed
-
-#### Returns
-
-`number`
-
-### maybeExecute()
-
-```ts
-readonly maybeExecute: (...args) => Promise<void>;
-```
-
-Attempts to execute the debounced function
-If a call is already in progress, it will be queued
-
-#### Parameters
-
-##### args
-
-...`TArgs`
-
-#### Returns
-
-`Promise`\<`void`\>
+`AsyncDebouncer`\<`TFn`, `TArgs`\>
 
 ## Example
 

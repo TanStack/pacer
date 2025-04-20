@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useRateLimiter } from './useRateLimiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
-import type { RateLimiterOptions } from '@tanstack/pacer'
+import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 /**
  * A React hook that creates a rate-limited version of a callback function.

@@ -8,11 +8,7 @@ title: useThrottledState
 # Function: useThrottledState()
 
 ```ts
-function useThrottledState<TValue>(value, options): readonly [TValue, (...args) => void, {
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => void;
- }]
+function useThrottledState<TValue>(value, options): readonly [TValue, (...args) => void, Throttler<Dispatch<SetStateAction<TValue>>, [SetStateAction<TValue>]>]
 ```
 
 Defined in: [react-pacer/src/throttler/useThrottledState.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledState.ts#L40)
@@ -43,15 +39,11 @@ consider using the lower-level useThrottler hook instead.
 
 ### options
 
-`ThrottlerOptions`
+`ThrottlerOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>
 
 ## Returns
 
-readonly \[`TValue`, (...`args`) => `void`, \{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `void`;
- \}\]
+readonly \[`TValue`, (...`args`) => `void`, `Throttler`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>\]
 
 ## Example
 

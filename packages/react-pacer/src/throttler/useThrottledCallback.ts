@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useThrottler } from './useThrottler'
-import type { ThrottlerOptions } from '@tanstack/pacer'
+import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**

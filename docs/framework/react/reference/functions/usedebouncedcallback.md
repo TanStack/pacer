@@ -11,7 +11,7 @@ title: useDebouncedCallback
 function useDebouncedCallback<TFn, TArgs>(fn, options): (...args) => void
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedCallback.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L41)
+Defined in: [react-pacer/src/debouncer/useDebouncedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L42)
 
 A React hook that creates a debounced version of a callback function.
 This hook is essentially a wrapper around the basic `debounce` function
@@ -34,7 +34,7 @@ Consider using the `useDebouncer` hook instead.
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -46,7 +46,7 @@ Consider using the `useDebouncer` hook instead.
 
 ### options
 
-`DebouncerOptions`
+`DebouncerOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 

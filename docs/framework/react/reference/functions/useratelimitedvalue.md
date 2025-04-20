@@ -8,13 +8,7 @@ title: useRateLimitedValue
 # Function: useRateLimitedValue()
 
 ```ts
-function useRateLimitedValue<TValue>(value, options): readonly [TValue, {
-  getExecutionCount: () => number;
-  getRejectionCount: () => number;
-  getRemainingInWindow: () => number;
-  maybeExecute: (...args) => boolean;
-  reset: () => void;
- }]
+function useRateLimitedValue<TValue>(value, options): readonly [TValue, RateLimiter<Dispatch<SetStateAction<TValue>>, [SetStateAction<TValue>]>]
 ```
 
 Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:52](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L52)
@@ -49,17 +43,11 @@ consider using the lower-level useRateLimiter hook instead.
 
 ### options
 
-`RateLimiterOptions`
+`RateLimiterOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>
 
 ## Returns
 
-readonly \[`TValue`, \{
-  `getExecutionCount`: () => `number`;
-  `getRejectionCount`: () => `number`;
-  `getRemainingInWindow`: () => `number`;
-  `maybeExecute`: (...`args`) => `boolean`;
-  `reset`: () => `void`;
- \}\]
+readonly \[`TValue`, `RateLimiter`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>\]
 
 ## Example
 
