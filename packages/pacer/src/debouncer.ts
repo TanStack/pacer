@@ -1,8 +1,10 @@
+import type { AnyFunction } from './types'
+
 /**
  * Options for configuring a debounced function
  */
 export interface DebouncerOptions<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 > {
   /**
@@ -62,10 +64,7 @@ const defaultOptions: Required<DebouncerOptions<any, any>> = {
  * });
  * ```
  */
-export class Debouncer<
-  TFn extends (...args: Array<any>) => any,
-  TArgs extends Parameters<TFn>,
-> {
+export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
   private canLeadingExecute = true
   private isPending = false
   private executionCount = 0
@@ -185,7 +184,7 @@ export class Debouncer<
  * inputElement.addEventListener('input', debounced);
  * ```
  */
-export function debounce<TFn extends (...args: Array<any>) => any>(
+export function debounce<TFn extends AnyFunction>(
   fn: TFn,
   initialOptions: Omit<DebouncerOptions<TFn, Parameters<TFn>>, 'enabled'>,
 ) {

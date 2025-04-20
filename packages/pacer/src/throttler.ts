@@ -1,8 +1,10 @@
+import type { AnyFunction } from './types'
+
 /**
  * Options for configuring a throttled function
  */
 export interface ThrottlerOptions<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 > {
   /**
@@ -65,10 +67,7 @@ const defaultOptions: Required<ThrottlerOptions<any, any>> = {
  * throttler.maybeExecute('123'); // Throttled
  * ```
  */
-export class Throttler<
-  TFn extends (...args: Array<any>) => any,
-  TArgs extends Parameters<TFn>,
-> {
+export class Throttler<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
   private executionCount = 0
   private lastArgs: TArgs | undefined
   private lastExecutionTime = 0
@@ -222,7 +221,7 @@ export class Throttler<
  * ```
  */
 export function throttle<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, initialOptions: Omit<ThrottlerOptions<TFn, TArgs>, 'enabled'>) {
   const throttler = new Throttler(fn, initialOptions)

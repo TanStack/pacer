@@ -1,4 +1,5 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
+import type { AnyFunction } from '@tanstack/pacer/types'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 /**
@@ -34,7 +35,7 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * ```
  */
 export function createDebouncer<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
   return new Debouncer<TFn, TArgs>(fn, options)

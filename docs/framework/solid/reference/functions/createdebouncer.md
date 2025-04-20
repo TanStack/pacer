@@ -8,14 +8,10 @@ title: createDebouncer
 # Function: createDebouncer()
 
 ```ts
-function createDebouncer<TFn, TArgs>(fn, options): Accessor<{
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => void;
-}>
+function createDebouncer<TFn, TArgs>(fn, options): Debouncer<TFn, TArgs>
 ```
 
-Defined in: [packages/solid-pacer/src/debouncer/createDebouncer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L37)
+Defined in: [debouncer/createDebouncer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L37)
 
 A Solid hook that creates and manages a Debouncer instance.
 
@@ -33,7 +29,7 @@ timer resets and starts waiting again.
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -45,15 +41,11 @@ timer resets and starts waiting again.
 
 ### options
 
-`DebouncerOptions`
+`DebouncerOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`Accessor`\<\{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `void`;
- \}\>
+`Debouncer`\<`TFn`, `TArgs`\>
 
 ## Example
 

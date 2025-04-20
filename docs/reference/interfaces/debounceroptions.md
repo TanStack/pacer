@@ -7,13 +7,13 @@ title: DebouncerOptions
 
 # Interface: DebouncerOptions\<TFn, TArgs\>
 
-Defined in: [debouncer.ts:4](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L4)
+Defined in: [debouncer.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L6)
 
 Options for configuring a debounced function
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyFunction`
 
 • **TArgs** *extends* `Parameters`\<`TFn`\>
 
@@ -25,7 +25,7 @@ Options for configuring a debounced function
 optional enabled: boolean;
 ```
 
-Defined in: [debouncer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L12)
+Defined in: [debouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L14)
 
 Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
 Defaults to true.
@@ -38,7 +38,7 @@ Defaults to true.
 optional leading: boolean;
 ```
 
-Defined in: [debouncer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L17)
+Defined in: [debouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L19)
 
 Whether to execute on the leading edge of the timeout.
 Defaults to false.
@@ -51,7 +51,7 @@ Defaults to false.
 optional onExecute: (debouncer) => void;
 ```
 
-Defined in: [debouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L21)
+Defined in: [debouncer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L23)
 
 Callback function that is called after the function is executed
 
@@ -73,7 +73,7 @@ Callback function that is called after the function is executed
 optional trailing: boolean;
 ```
 
-Defined in: [debouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L26)
+Defined in: [debouncer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L28)
 
 Whether to execute on the trailing edge of the timeout.
 Defaults to true.
@@ -86,7 +86,7 @@ Defaults to true.
 wait: number;
 ```
 
-Defined in: [debouncer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L31)
+Defined in: [debouncer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L33)
 
 Delay in milliseconds before executing the function
 Defaults to 0ms

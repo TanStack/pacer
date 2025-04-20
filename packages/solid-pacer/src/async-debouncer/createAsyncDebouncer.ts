@@ -1,5 +1,6 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
 /**
  * A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
@@ -37,7 +38,7 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
  */
 
 export function createAsyncDebouncer<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: AsyncDebouncerOptions<TFn, TArgs>) {
   return new AsyncDebouncer<TFn, TArgs>(fn, options)

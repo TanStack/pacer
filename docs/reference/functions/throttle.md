@@ -11,7 +11,7 @@ title: throttle
 function throttle<TFn, TArgs>(fn, initialOptions): (...args) => void
 ```
 
-Defined in: [throttler.ts:224](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L224)
+Defined in: [throttler.ts:223](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L223)
 
 Creates a throttled function that limits how often the provided function can execute.
 
@@ -27,7 +27,7 @@ limits, consider using rateLimit().
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyFunction`
 
 • **TArgs** *extends* `any`[]
 

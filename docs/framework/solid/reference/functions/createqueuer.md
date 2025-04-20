@@ -8,26 +8,10 @@ title: createQueuer
 # Function: createQueuer()
 
 ```ts
-function createQueuer<TValue>(options): Accessor<{
-  addItem: (item, position?, runOnUpdate?) => boolean;
-  clear: () => void;
-  getAllItems: () => TValue[];
-  getExecutionCount: () => number;
-  getNextItem: (position?) => undefined | TValue;
-  isEmpty: () => boolean;
-  isFull: () => boolean;
-  isIdle: () => boolean;
-  isRunning: () => boolean;
-  onUpdate: (cb) => () => void;
-  peek: (position?) => undefined | TValue;
-  reset: (withInitialItems?) => void;
-  size: () => number;
-  start: () => void;
-  stop: () => void;
-}>
+function createQueuer<TValue>(initialOptions): Queuer<TValue>
 ```
 
-Defined in: [packages/solid-pacer/src/queuer/createQueuer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L43)
+Defined in: [queuer/createQueuer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L42)
 
 A Solid hook that creates and manages a Queuer instance.
 
@@ -51,29 +35,13 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 ## Parameters
 
-### options
+### initialOptions
 
 `QueuerOptions`\<`TValue`\> = `{}`
 
 ## Returns
 
-`Accessor`\<\{
-  `addItem`: (`item`, `position`?, `runOnUpdate`?) => `boolean`;
-  `clear`: () => `void`;
-  `getAllItems`: () => `TValue`[];
-  `getExecutionCount`: () => `number`;
-  `getNextItem`: (`position`?) => `undefined` \| `TValue`;
-  `isEmpty`: () => `boolean`;
-  `isFull`: () => `boolean`;
-  `isIdle`: () => `boolean`;
-  `isRunning`: () => `boolean`;
-  `onUpdate`: (`cb`) => () => `void`;
-  `peek`: (`position`?) => `undefined` \| `TValue`;
-  `reset`: (`withInitialItems`?) => `void`;
-  `size`: () => `number`;
-  `start`: () => `void`;
-  `stop`: () => `void`;
- \}\>
+`Queuer`\<`TValue`\>
 
 ## Example
 

@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { useRateLimiter } from './useRateLimiter'
+import type { AnyFunction } from '@tanstack/pacer/types'
 import type { RateLimiterOptions } from '@tanstack/pacer'
 
 /**
@@ -49,7 +50,7 @@ import type { RateLimiterOptions } from '@tanstack/pacer'
  * ```
  */
 export function useRateLimitedCallback<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: RateLimiterOptions<TFn, TArgs>) {
   const rateLimitedFn = useRateLimiter<TFn, TArgs>(fn, options).maybeExecute

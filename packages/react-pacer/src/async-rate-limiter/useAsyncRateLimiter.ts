@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 
 /**
@@ -39,7 +40,7 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
  * ```
  */
 export function useAsyncRateLimiter<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: AsyncRateLimiterOptions<TFn, TArgs>) {
   const [asyncRateLimiter] = useState(

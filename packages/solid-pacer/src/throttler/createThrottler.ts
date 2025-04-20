@@ -1,4 +1,5 @@
 import { Throttler } from '@tanstack/pacer/throttler'
+import type { AnyFunction } from '@tanstack/pacer/types'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 /**
@@ -35,7 +36,7 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * ```
  */
 export function createThrottler<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: ThrottlerOptions<TFn, TArgs>) {
   return new Throttler<TFn, TArgs>(fn, options)

@@ -1,3 +1,5 @@
+import type { AnyFunction } from './types'
+
 /**
  * Information about a rate limit rejection
  */
@@ -24,7 +26,7 @@ export interface RateLimitRejectionInfo {
  * Options for configuring a rate-limited function
  */
 export interface RateLimiterOptions<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 > {
   /**
@@ -84,7 +86,7 @@ const defaultOptions: Required<RateLimiterOptions<any, any>> = {
  * ```
  */
 export class RateLimiter<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 > {
   private executionCount = 0
@@ -239,7 +241,7 @@ export class RateLimiter<
  * const throttled = throttle(makeApiCall, { wait: 12000 }); // One call every 12 seconds
  * ```
  */
-export function rateLimit<TFn extends (...args: Array<any>) => any>(
+export function rateLimit<TFn extends AnyFunction>(
   fn: TFn,
   initialOptions: Omit<RateLimiterOptions<TFn, Parameters<TFn>>, 'enabled'>,
 ) {

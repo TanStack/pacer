@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 
 /**
@@ -38,7 +39,7 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
  */
 
 export function useAsyncDebouncer<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: AsyncDebouncerOptions<TFn, TArgs>) {
   const [asyncDebouncer] = useState(

@@ -8,14 +8,10 @@ title: createAsyncDebouncer
 # Function: createAsyncDebouncer()
 
 ```ts
-function createAsyncDebouncer<TFn, TArgs>(fn, options): Accessor<{
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => Promise<void>;
-}>
+function createAsyncDebouncer<TFn, TArgs>(fn, options): AsyncDebouncer<TFn, TArgs>
 ```
 
-Defined in: [packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L40)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L40)
 
 A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -28,7 +24,7 @@ wait for user input to settle before making expensive async calls.
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyAsyncFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -40,15 +36,11 @@ wait for user input to settle before making expensive async calls.
 
 ### options
 
-`AsyncDebouncerOptions`
+`AsyncDebouncerOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`Accessor`\<\{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `Promise`\<`void`\>;
- \}\>
+`AsyncDebouncer`\<`TFn`, `TArgs`\>
 
 ## Example
 

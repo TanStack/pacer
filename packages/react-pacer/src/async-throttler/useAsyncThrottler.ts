@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 
 /**
@@ -40,7 +41,7 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
  */
 
 export function useAsyncThrottler<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: AsyncThrottlerOptions<TFn, TArgs>) {
   const [asyncThrottler] = useState(

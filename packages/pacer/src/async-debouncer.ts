@@ -1,8 +1,10 @@
+import type { AnyAsyncFunction } from './types'
+
 /**
  * Options for configuring an async debounced function
  */
 export interface AsyncDebouncerOptions<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
   /**
@@ -67,7 +69,7 @@ const defaultOptions: Required<AsyncDebouncerOptions<any, any>> = {
  * ```
  */
 export class AsyncDebouncer<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
   private abortController: AbortController | null = null
@@ -199,7 +201,7 @@ export class AsyncDebouncer<
  * ```
  */
 export function asyncDebounce<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, initialOptions: Omit<AsyncDebouncerOptions<TFn, TArgs>, 'enabled'>) {
   const asyncDebouncer = new AsyncDebouncer(fn, initialOptions)

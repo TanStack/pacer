@@ -8,14 +8,10 @@ title: createDebouncedSignal
 # Function: createDebouncedSignal()
 
 ```ts
-function createDebouncedSignal<TValue>(value, options): readonly [Accessor<TValue>, (...args) => void, Accessor<{
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => void;
- }>]
+function createDebouncedSignal<TValue>(value, options): readonly [Accessor<TValue>, Setter<TValue>, Debouncer<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
-Defined in: [packages/solid-pacer/src/debouncer/createDebouncedSignal.ts:35](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedSignal.ts#L35)
+Defined in: [debouncer/createDebouncedSignal.ts:36](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedSignal.ts#L36)
 
 A Solid hook that creates a debounced state value, combining Solid's createSignal with debouncing functionality.
 This hook provides both the current debounced value and methods to update it.
@@ -26,7 +22,7 @@ This is useful for handling frequent state updates that should be throttled, lik
 or window resize dimensions.
 
 The hook returns a tuple containing:
-- The current debounced value
+- The current debounced value accessor
 - A function to update the debounced value
 - The debouncer instance with additional control methods
 
@@ -42,15 +38,11 @@ The hook returns a tuple containing:
 
 ### options
 
-`DebouncerOptions`
+`DebouncerOptions`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>
 
 ## Returns
 
-readonly \[`Accessor`\<`TValue`\>, (...`args`) => `void`, `Accessor`\<\{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `void`;
- \}\>\]
+readonly \[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, `Debouncer`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
 
 ## Example
 

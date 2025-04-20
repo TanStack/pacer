@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { useThrottler } from './useThrottler'
 import type { ThrottlerOptions } from '@tanstack/pacer'
+import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
  * A React hook that creates a throttled version of a callback function.
@@ -40,7 +41,7 @@ import type { ThrottlerOptions } from '@tanstack/pacer'
  * ```
  */
 export function useThrottledCallback<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: ThrottlerOptions<TFn, TArgs>) {
   const throttledFn = useThrottler<TFn, TArgs>(fn, options).maybeExecute

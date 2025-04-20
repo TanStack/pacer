@@ -8,15 +8,10 @@ title: createAsyncThrottler
 # Function: createAsyncThrottler()
 
 ```ts
-function createAsyncThrottler<TFn, TArgs>(fn, options): Accessor<{
-  cancel: () => void;
-  getExecutionCount: () => number;
-  getNextExecutionTime: () => number;
-  maybeExecute: (...args) => Promise<void>;
-}>
+function createAsyncThrottler<TFn, TArgs>(fn, options): AsyncThrottler<TFn, TArgs>
 ```
 
-Defined in: [packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L42)
+Defined in: [async-throttler/createAsyncThrottler.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L42)
 
 A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -29,7 +24,7 @@ database operations, or other async tasks.
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyAsyncFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -41,16 +36,11 @@ database operations, or other async tasks.
 
 ### options
 
-`AsyncThrottlerOptions`
+`AsyncThrottlerOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`Accessor`\<\{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `getNextExecutionTime`: () => `number`;
-  `maybeExecute`: (...`args`) => `Promise`\<`void`\>;
- \}\>
+`AsyncThrottler`\<`TFn`, `TArgs`\>
 
 ## Example
 

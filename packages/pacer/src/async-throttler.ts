@@ -1,8 +1,10 @@
+import type { AnyAsyncFunction } from './types'
+
 /**
  * Options for configuring an async throttled function
  */
 export interface AsyncThrottlerOptions<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
   /**
@@ -55,7 +57,7 @@ const defaultOptions: Required<AsyncThrottlerOptions<any, any>> = {
  * ```
  */
 export class AsyncThrottler<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
   private abortController: AbortController | null = null
@@ -205,7 +207,7 @@ export class AsyncThrottler<
  * ```
  */
 export function asyncThrottle<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, initialOptions: Omit<AsyncThrottlerOptions<TFn, TArgs>, 'enabled'>) {
   const asyncThrottler = new AsyncThrottler(fn, initialOptions)

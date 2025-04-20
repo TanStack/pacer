@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { useDebouncer } from './useDebouncer'
 import type { DebouncerOptions } from '@tanstack/pacer'
+import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
  * A React hook that creates a debounced version of a callback function.
@@ -39,7 +40,7 @@ import type { DebouncerOptions } from '@tanstack/pacer'
  * ```
  */
 export function useDebouncedCallback<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
   const debouncedFn = useDebouncer<TFn, TArgs>(fn, options).maybeExecute

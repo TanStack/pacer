@@ -8,16 +8,10 @@ title: createRateLimitedSignal
 # Function: createRateLimitedSignal()
 
 ```ts
-function createRateLimitedSignal<TValue>(value, options): readonly [Accessor<TValue>, (...args) => boolean, Accessor<{
-  getExecutionCount: () => number;
-  getRejectionCount: () => number;
-  getRemainingInWindow: () => number;
-  maybeExecute: (...args) => boolean;
-  reset: () => void;
- }>]
+function createRateLimitedSignal<TValue>(value, options): readonly [Accessor<TValue>, Setter<TValue>, RateLimiter<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
-Defined in: [packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts:56](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L56)
+Defined in: [rate-limiter/createRateLimitedSignal.ts:57](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L57)
 
 A Solid hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
 This hook combines Solid's createSignal with rate limiting functionality to provide controlled state updates.
@@ -33,7 +27,7 @@ For smoother update patterns, consider:
 Rate limiting should primarily be used when you need to enforce strict limits, like API rate limits.
 
 The hook returns a tuple containing:
-- The rate-limited state value
+- The rate-limited state value accessor
 - A rate-limited setter function that respects the configured limits
 - The rateLimiter instance for additional control
 
@@ -52,17 +46,11 @@ consider using the lower-level createRateLimiter hook instead.
 
 ### options
 
-`RateLimiterOptions`
+`RateLimiterOptions`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>
 
 ## Returns
 
-readonly \[`Accessor`\<`TValue`\>, (...`args`) => `boolean`, `Accessor`\<\{
-  `getExecutionCount`: () => `number`;
-  `getRejectionCount`: () => `number`;
-  `getRemainingInWindow`: () => `number`;
-  `maybeExecute`: (...`args`) => `boolean`;
-  `reset`: () => `void`;
- \}\>\]
+readonly \[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, `RateLimiter`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
 
 ## Example
 

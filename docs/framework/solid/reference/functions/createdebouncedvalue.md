@@ -8,14 +8,10 @@ title: createDebouncedValue
 # Function: createDebouncedValue()
 
 ```ts
-function createDebouncedValue<TValue>(value, options): readonly [Accessor<TValue>, Accessor<{
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => void;
- }>]
+function createDebouncedValue<TValue>(value, options): readonly [Accessor<TValue>, Debouncer<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
-Defined in: [packages/solid-pacer/src/debouncer/createDebouncedValue.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L41)
+Defined in: [debouncer/createDebouncedValue.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L42)
 
 A Solid hook that creates a debounced value that updates only after a specified delay.
 Unlike createDebouncedSignal, this hook automatically tracks changes to the input value
@@ -41,19 +37,15 @@ The hook returns a tuple containing:
 
 ### value
 
-`TValue`
+`Accessor`\<`TValue`\>
 
 ### options
 
-`DebouncerOptions`
+`DebouncerOptions`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>
 
 ## Returns
 
-readonly \[`Accessor`\<`TValue`\>, `Accessor`\<\{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `void`;
- \}\>\]
+readonly \[`Accessor`\<`TValue`\>, `Debouncer`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
 
 ## Example
 

@@ -8,16 +8,10 @@ title: createRateLimiter
 # Function: createRateLimiter()
 
 ```ts
-function createRateLimiter<TFn, TArgs>(fn, options): Accessor<{
-  getExecutionCount: () => number;
-  getRejectionCount: () => number;
-  getRemainingInWindow: () => number;
-  maybeExecute: (...args) => boolean;
-  reset: () => void;
-}>
+function createRateLimiter<TFn, TArgs>(fn, options): RateLimiter<TFn, TArgs>
 ```
 
-Defined in: [packages/solid-pacer/src/rate-limiter/createRateLimiter.ts:53](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L53)
+Defined in: [rate-limiter/createRateLimiter.ts:46](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L46)
 
 A low-level Solid hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
@@ -42,7 +36,7 @@ The hook returns an object containing:
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -54,33 +48,20 @@ The hook returns an object containing:
 
 ### options
 
-`RateLimiterOptions`
+`RateLimiterOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`Accessor`\<\{
-  `getExecutionCount`: () => `number`;
-  `getRejectionCount`: () => `number`;
-  `getRemainingInWindow`: () => `number`;
-  `maybeExecute`: (...`args`) => `boolean`;
-  `reset`: () => `void`;
- \}\>
+`RateLimiter`\<`TFn`, `TArgs`\>
 
 ## Example
 
 ```tsx
 // Basic rate limiting - max 5 calls per minute
 const { maybeExecute } = createRateLimiter(apiCall, {
-  maxExecutions: 5,
-  wait: 60000
+  limit: 5,
+  window: 60000,
 });
-
-// With Redux
-const dispatch = createDispatch();
-const { maybeExecute, getRemainingInWindow } = createRateLimiter(
-  (value) => dispatch(updateAction(value)),
-  { maxExecutions: 10, wait: 30000 }
-);
 
 // Monitor rate limit status
 const handleClick = () => {

@@ -1,4 +1,5 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
+import type { AnyFunction } from '@tanstack/pacer/types'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 /**
@@ -43,7 +44,7 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * ```
  */
 export function createRateLimiter<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: RateLimiterOptions<TFn, TArgs>) {
   return new RateLimiter<TFn, TArgs>(fn, options)

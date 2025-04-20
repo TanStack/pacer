@@ -8,30 +8,10 @@ title: createAsyncQueuer
 # Function: createAsyncQueuer()
 
 ```ts
-function createAsyncQueuer<TValue>(options): Accessor<{
-  addItem: (fn, position?, runOnUpdate?) => Promise<TValue>;
-  clear: () => void;
-  getActiveItems: () => () => Promise<TValue>[];
-  getAllItems: () => () => Promise<TValue>[];
-  getExecutionCount: () => number;
-  getNextItem: (position?) => undefined | () => Promise<TValue>;
-  getPendingItems: () => () => Promise<TValue>[];
-  isEmpty: () => boolean;
-  isFull: () => boolean;
-  isIdle: () => boolean;
-  isRunning: () => boolean;
-  onError: (cb) => () => void;
-  onSettled: (cb) => () => void;
-  onSuccess: (cb) => () => void;
-  peek: (position?) => undefined | () => Promise<TValue>;
-  reset: (withInitialItems?) => void;
-  size: () => number;
-  start: () => Promise<void>;
-  stop: () => void;
-}>
+function createAsyncQueuer<TValue>(options): AsyncQueuer<TValue>
 ```
 
-Defined in: [packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L54)
+Defined in: [async-queuer/createAsyncQueuer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L53)
 
 A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
@@ -63,27 +43,7 @@ The hook returns an object containing methods to:
 
 ## Returns
 
-`Accessor`\<\{
-  `addItem`: (`fn`, `position`?, `runOnUpdate`?) => `Promise`\<`TValue`\>;
-  `clear`: () => `void`;
-  `getActiveItems`: () => () => `Promise`\<`TValue`\>[];
-  `getAllItems`: () => () => `Promise`\<`TValue`\>[];
-  `getExecutionCount`: () => `number`;
-  `getNextItem`: (`position`?) => `undefined` \| () => `Promise`\<`TValue`\>;
-  `getPendingItems`: () => () => `Promise`\<`TValue`\>[];
-  `isEmpty`: () => `boolean`;
-  `isFull`: () => `boolean`;
-  `isIdle`: () => `boolean`;
-  `isRunning`: () => `boolean`;
-  `onError`: (`cb`) => () => `void`;
-  `onSettled`: (`cb`) => () => `void`;
-  `onSuccess`: (`cb`) => () => `void`;
-  `peek`: (`position`?) => `undefined` \| () => `Promise`\<`TValue`\>;
-  `reset`: (`withInitialItems`?) => `void`;
-  `size`: () => `number`;
-  `start`: () => `Promise`\<`void`\>;
-  `stop`: () => `void`;
- \}\>
+`AsyncQueuer`\<`TValue`\>
 
 ## Example
 

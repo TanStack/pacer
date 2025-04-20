@@ -1,10 +1,11 @@
+import type { AnyAsyncFunction } from './types'
 import type { RateLimitRejectionInfo } from './rate-limiter'
 
 /**
  * Options for configuring an async rate-limited function
  */
 export interface AsyncRateLimiterOptions<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
   /**
@@ -68,7 +69,7 @@ const defaultOptions: Required<
  * ```
  */
 export class AsyncRateLimiter<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
   private executionCount = 0
@@ -237,7 +238,7 @@ export class AsyncRateLimiter<
  * ```
  */
 export function asyncRateLimit<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 >(
   fn: TFn,
