@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
@@ -43,21 +43,7 @@ export function useDebouncer<
 >(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
   const [debouncer] = useState(() => new Debouncer<TFn, TArgs>(fn, options))
 
-  const setOptions = useMemo(
-    () => debouncer.setOptions.bind(debouncer),
-    [debouncer],
-  )
+  debouncer.setOptions(options)
 
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: debouncer.maybeExecute.bind(debouncer),
-        cancel: debouncer.cancel.bind(debouncer),
-        getExecutionCount: debouncer.getExecutionCount.bind(debouncer),
-        getIsPending: debouncer.getIsPending.bind(debouncer),
-      }) as const,
-    [debouncer],
-  )
+  return debouncer
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 
@@ -56,36 +56,7 @@ export function useAsyncQueuer<TValue>(
 ) {
   const [asyncQueuer] = useState(() => new AsyncQueuer<TValue>(options))
 
-  const setOptions = useMemo(
-    () => asyncQueuer.setOptions.bind(asyncQueuer),
-    [asyncQueuer],
-  )
+  asyncQueuer.setOptions(options)
 
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        addItem: asyncQueuer.addItem.bind(asyncQueuer),
-        clear: asyncQueuer.clear.bind(asyncQueuer),
-        getActiveItems: asyncQueuer.getActiveItems.bind(asyncQueuer),
-        getAllItems: asyncQueuer.getAllItems.bind(asyncQueuer),
-        getExecutionCount: asyncQueuer.getExecutionCount.bind(asyncQueuer),
-        getNextItem: asyncQueuer.getNextItem.bind(asyncQueuer),
-        getPendingItems: asyncQueuer.getPendingItems.bind(asyncQueuer),
-        isEmpty: asyncQueuer.isEmpty.bind(asyncQueuer),
-        isFull: asyncQueuer.isFull.bind(asyncQueuer),
-        isIdle: asyncQueuer.isIdle.bind(asyncQueuer),
-        isRunning: asyncQueuer.isRunning.bind(asyncQueuer),
-        onError: asyncQueuer.onError.bind(asyncQueuer),
-        onSettled: asyncQueuer.onSettled.bind(asyncQueuer),
-        onSuccess: asyncQueuer.onSuccess.bind(asyncQueuer),
-        peek: asyncQueuer.peek.bind(asyncQueuer),
-        reset: asyncQueuer.reset.bind(asyncQueuer),
-        size: asyncQueuer.size.bind(asyncQueuer),
-        start: asyncQueuer.start.bind(asyncQueuer),
-        stop: asyncQueuer.stop.bind(asyncQueuer),
-      }) as const,
-    [asyncQueuer],
-  )
+  return asyncQueuer
 }

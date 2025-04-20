@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 
@@ -47,25 +47,7 @@ export function useAsyncThrottler<
     () => new AsyncThrottler<TFn, TArgs>(fn, options),
   )
 
-  const setOptions = useMemo(
-    () => asyncThrottler.setOptions.bind(asyncThrottler),
-    [asyncThrottler],
-  )
+  asyncThrottler.setOptions(options)
 
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: asyncThrottler.maybeExecute.bind(asyncThrottler),
-        cancel: asyncThrottler.cancel.bind(asyncThrottler),
-        getExecutionCount:
-          asyncThrottler.getExecutionCount.bind(asyncThrottler),
-        getNextExecutionTime:
-          asyncThrottler.getNextExecutionTime.bind(asyncThrottler),
-        getLastExecutionTime:
-          asyncThrottler.getLastExecutionTime.bind(asyncThrottler),
-      }) as const,
-    [asyncThrottler],
-  )
+  return asyncThrottler
 }

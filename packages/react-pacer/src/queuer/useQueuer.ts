@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Queuer } from '@tanstack/pacer/queuer'
 import type { QueuerOptions } from '@tanstack/pacer/queuer'
 
@@ -43,29 +43,7 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
 export function useQueuer<TValue>(options: QueuerOptions<TValue> = {}) {
   const [queuer] = useState(() => new Queuer<TValue>(options))
 
-  const setOptions = useMemo(() => queuer.setOptions.bind(queuer), [queuer])
+  queuer.setOptions(options)
 
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        addItem: queuer.addItem.bind(queuer),
-        clear: queuer.clear.bind(queuer),
-        getAllItems: queuer.getAllItems.bind(queuer),
-        getExecutionCount: queuer.getExecutionCount.bind(queuer),
-        getNextItem: queuer.getNextItem.bind(queuer),
-        isEmpty: queuer.isEmpty.bind(queuer),
-        isFull: queuer.isFull.bind(queuer),
-        isRunning: queuer.isRunning.bind(queuer),
-        isIdle: queuer.isIdle.bind(queuer),
-        onUpdate: queuer.onUpdate.bind(queuer),
-        peek: queuer.peek.bind(queuer),
-        reset: queuer.reset.bind(queuer),
-        size: queuer.size.bind(queuer),
-        start: queuer.start.bind(queuer),
-        stop: queuer.stop.bind(queuer),
-      }) as const,
-    [queuer],
-  )
+  return queuer
 }

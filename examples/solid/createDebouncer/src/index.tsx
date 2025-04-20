@@ -6,16 +6,17 @@ function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = createSignal(0)
   const [debouncedCount, setDebouncedCount] = createSignal(0)
-  const [executionCount, setExecutionCount] = createSignal(0)
+  // const [executionCount, setExecutionCount] = createSignal(0)
 
   // Lower-level createDebouncer hook - requires you to manage your own state
   const setCountDebouncer = createDebouncer(setDebouncedCount, {
     wait: 500,
-    enabled: false,
-    onExecute: (debouncer) => {
-      setExecutionCount(debouncer.getExecutionCount()) // optionally, read internal state after execution
-    },
+    // onExecute: (debouncer) => {
+    //   setExecutionCount(debouncer.getExecutionCount()) // optionally, read internal state after execution
+    // },
   })
+
+  console.log(setCountDebouncer)
 
   // enable the debouncer when the instant count is greater than 2
   createEffect(() => {
@@ -38,7 +39,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{executionCount()}</td>
+            <td>{setCountDebouncer.getExecutionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>

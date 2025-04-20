@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 
@@ -46,25 +46,7 @@ export function useAsyncRateLimiter<
     () => new AsyncRateLimiter<TFn, TArgs>(fn, options),
   )
 
-  const setOptions = useMemo(
-    () => asyncRateLimiter.setOptions.bind(asyncRateLimiter),
-    [asyncRateLimiter],
-  )
+  asyncRateLimiter.setOptions(options)
 
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: asyncRateLimiter.maybeExecute.bind(asyncRateLimiter),
-        getExecutionCount:
-          asyncRateLimiter.getExecutionCount.bind(asyncRateLimiter),
-        getRejectionCount:
-          asyncRateLimiter.getRejectionCount.bind(asyncRateLimiter),
-        reset: asyncRateLimiter.reset.bind(asyncRateLimiter),
-        getRemainingInWindow:
-          asyncRateLimiter.getRemainingInWindow.bind(asyncRateLimiter),
-      }) as const,
-    [asyncRateLimiter],
-  )
+  return asyncRateLimiter
 }

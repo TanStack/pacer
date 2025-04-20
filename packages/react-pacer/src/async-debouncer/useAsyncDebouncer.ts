@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 
@@ -45,21 +45,7 @@ export function useAsyncDebouncer<
     () => new AsyncDebouncer<TFn, TArgs>(fn, options),
   )
 
-  const setOptions = useMemo(
-    () => asyncDebouncer.setOptions.bind(asyncDebouncer),
-    [asyncDebouncer],
-  )
+  asyncDebouncer.setOptions(options)
 
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: asyncDebouncer.maybeExecute.bind(asyncDebouncer),
-        cancel: asyncDebouncer.cancel.bind(asyncDebouncer),
-        getExecutionCount:
-          asyncDebouncer.getExecutionCount.bind(asyncDebouncer),
-      }) as const,
-    [asyncDebouncer],
-  )
+  return asyncDebouncer
 }
