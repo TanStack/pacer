@@ -1,6 +1,25 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
+import { createSignal } from 'solid-js'
+import { bindInstanceMethods } from '../utils'
+import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
+
+interface SolidRateLimiter<
+  TFn extends AnyFunction,
+  TArgs extends Parameters<TFn>,
+> extends Omit<
+    RateLimiter<TFn, TArgs>,
+    | 'getExecutionCount'
+    | 'getRejectionCount'
+    | 'getRemainingInWindow'
+    | 'getMsUntilNextWindow'
+  > {
+  executionCount: Accessor<number>
+  rejectionCount: Accessor<number>
+  remainingInWindow: Accessor<number>
+  msUntilNextWindow: Accessor<number>
+}
 
 /**
  * A low-level Solid hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
@@ -47,5 +66,42 @@ export function createRateLimiter<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: RateLimiterOptions<TFn, TArgs>) {
-  return new RateLimiter<TFn, TArgs>(fn, options)
+  const rateLimiter = new RateLimiter<TFn, TArgs>(fn, options)
+
+  const [executionCount, setExecutionCount] = createSignal(
+    rateLimiter.getExecutionCount(),
+  )
+  const [rejectionCount, setRejectionCount] = createSignal(
+    rateLimiter.getRejectionCount(),
+  )
+  const [remainingInWindow, setRemainingInWindow] = createSignal(
+    rateLimiter.getRemainingInWindow(),
+  )
+  const [msUntilNextWindow, setMsUntilNextWindow] = createSignal(
+    rateLimiter.getMsUntilNextWindow(),
+  )
+
+  rateLimiter.setOptions({
+    ...options,
+    onExecute: (rateLimiter) => {
+      setExecutionCount(rateLimiter.getExecutionCount())
+      setRemainingInWindow(rateLimiter.getRemainingInWindow())
+      setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+      options.onExecute?.(rateLimiter)
+    },
+    onReject: (rateLimiter) => {
+      setRejectionCount(rateLimiter.getRejectionCount())
+      setRemainingInWindow(rateLimiter.getRemainingInWindow())
+      setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+      options.onReject?.(rateLimiter)
+    },
+  })
+
+  return {
+    ...bindInstanceMethods(rateLimiter),
+    executionCount,
+    rejectionCount,
+    remainingInWindow,
+    msUntilNextWindow,
+  } as SolidRateLimiter<TFn, TArgs>
 }

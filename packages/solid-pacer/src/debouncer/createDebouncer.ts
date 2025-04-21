@@ -5,10 +5,13 @@ import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
+/**
+ * An extension of the Debouncer class that adds Solid signals to access the internal state of the debouncer
+ */
 export interface SolidDebouncer<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
-> extends Debouncer<TFn, TArgs> {
+> extends Omit<Debouncer<TFn, TArgs>, 'getExecutionCount' | 'getIsPending'> {
   executionCount: Accessor<number>
   isPending: Accessor<boolean>
 }
@@ -71,5 +74,5 @@ export function createDebouncer<
     ...bindInstanceMethods(debouncer),
     executionCount,
     isPending,
-  } as unknown as SolidDebouncer<TFn, TArgs>
+  } as SolidDebouncer<TFn, TArgs>
 }

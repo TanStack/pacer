@@ -4,17 +4,13 @@ import { createThrottledSignal } from '@tanstack/solid-pacer/throttler'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // higher-level hook that uses Solid.createSignal with the state setter automatically throttled
   // optionally, grab the throttler from the last index of the returned array
-  const [throttledCount, setThrottledCount, _throttler] = createThrottledSignal(
+  const [throttledCount, setThrottledCount, throttler] = createThrottledSignal(
     instantCount(),
     {
       wait: 1000,
-      onExecute: (throttler) => {
-        setExecutionCount(throttler.getExecutionCount())
-      },
     },
   )
 
@@ -34,7 +30,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{executionCount()}</td>
+            <td>{throttler.executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -55,18 +51,12 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // higher-level hook that uses React.createSignal with the state setter automatically throttled
-  const [throttledSearch, setThrottledSearch] = createThrottledSignal(
-    instantSearch(),
-    {
+  const [throttledSearch, setThrottledSearch, throttler] =
+    createThrottledSignal(instantSearch(), {
       wait: 1000,
-      onExecute: (throttler) => {
-        setExecutionCount(throttler.getExecutionCount())
-      },
-    },
-  )
+    })
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
@@ -91,7 +81,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{executionCount()}</td>
+            <td>{throttler.executionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>

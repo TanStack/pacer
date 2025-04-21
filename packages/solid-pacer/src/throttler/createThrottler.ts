@@ -1,6 +1,20 @@
 import { Throttler } from '@tanstack/pacer/throttler'
+import { createSignal } from 'solid-js'
+import { bindInstanceMethods } from '../utils'
+import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
+
+/**
+ * An extension of the Throttler class that adds Solid signals to access the internal state of the throttler
+ */
+export interface SolidThrottler<
+  TFn extends AnyFunction,
+  TArgs extends Parameters<TFn>,
+> extends Omit<Throttler<TFn, TArgs>, 'getExecutionCount' | 'getIsPending'> {
+  executionCount: Accessor<number>
+  isPending: Accessor<boolean>
+}
 
 /**
  * A low-level Solid hook that creates a `Throttler` instance that limits how often the provided function can execute.
@@ -39,5 +53,35 @@ export function createThrottler<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: ThrottlerOptions<TFn, TArgs>) {
-  return new Throttler<TFn, TArgs>(fn, options)
+  const throttler = new Throttler<TFn, TArgs>(fn, options)
+
+  const [executionCount, setExecutionCount] = createSignal(
+    throttler.getExecutionCount(),
+  )
+  const [isPending, setIsPending] = createSignal(throttler.getIsPending())
+  const [lastExecutionTime, setLastExecutionTime] = createSignal(
+    throttler.getLastExecutionTime(),
+  )
+  const [nextExecutionTime, setNextExecutionTime] = createSignal(
+    throttler.getNextExecutionTime(),
+  )
+
+  throttler.setOptions({
+    ...options,
+    onExecute: (throttler) => {
+      setExecutionCount(throttler.getExecutionCount())
+      setIsPending(throttler.getIsPending())
+      setLastExecutionTime(throttler.getLastExecutionTime())
+      setNextExecutionTime(throttler.getNextExecutionTime())
+      options.onExecute?.(throttler)
+    },
+  })
+
+  return {
+    ...bindInstanceMethods(throttler),
+    executionCount,
+    isPending,
+    lastExecutionTime,
+    nextExecutionTime,
+  } as SolidThrottler<TFn, TArgs>
 }

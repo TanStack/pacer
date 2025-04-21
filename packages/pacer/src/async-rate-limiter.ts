@@ -1,5 +1,4 @@
 import type { AnyAsyncFunction } from './types'
-import type { RateLimitRejectionInfo } from './rate-limiter'
 
 /**
  * Options for configuring an async rate-limited function
@@ -28,7 +27,7 @@ export interface AsyncRateLimiterOptions<
   /**
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
-  onReject?: (info: RateLimitRejectionInfo) => void
+  onReject?: (rateLimiter: AsyncRateLimiter<TFn, TArgs>) => void
   /**
    * Time window in milliseconds within which the limit applies
    */
@@ -72,16 +71,16 @@ export class AsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
-  private executionCount = 0
-  private rejectionCount = 0
-  private executionTimes: Array<number> = []
-  private options: AsyncRateLimiterOptions<TFn, TArgs>
+  private _executionCount = 0
+  private _executionTimes: Array<number> = []
+  private _options: AsyncRateLimiterOptions<TFn, TArgs>
+  private _rejectionCount = 0
 
   constructor(
     private fn: TFn,
     initialOptions: AsyncRateLimiterOptions<TFn, TArgs>,
   ) {
-    this.options = {
+    this._options = {
       ...defaultOptions,
       ...initialOptions,
     }
@@ -94,25 +93,25 @@ export class AsyncRateLimiter<
   setOptions(
     newOptions: Partial<AsyncRateLimiterOptions<TFn, TArgs>>,
   ): AsyncRateLimiterOptions<TFn, TArgs> {
-    this.options = {
-      ...this.options,
+    this._options = {
+      ...this._options,
       ...newOptions,
     }
-    return this.options
+    return this._options
   }
 
   /**
    * Returns the number of times the function has been executed
    */
   getExecutionCount(): number {
-    return this.executionCount
+    return this._executionCount
   }
 
   /**
    * Returns the number of times the function has been rejected
    */
   getRejectionCount(): number {
-    return this.rejectionCount
+    return this._rejectionCount
   }
 
   /**
@@ -120,7 +119,14 @@ export class AsyncRateLimiter<
    */
   getRemainingInWindow(): number {
     this.cleanupOldExecutions()
-    return Math.max(0, this.options.limit - this.executionTimes.length)
+    return Math.max(0, this._options.limit - this._executionTimes.length)
+  }
+
+  /**
+   * Returns the number of milliseconds until the next execution will be possible
+   */
+  getMsUntilNextWindow(): number {
+    return this.getRemainingInWindow() * this._options.window
   }
 
   /**
@@ -142,7 +148,7 @@ export class AsyncRateLimiter<
   async maybeExecute(...args: TArgs): Promise<boolean> {
     this.cleanupOldExecutions()
 
-    if (this.executionTimes.length < this.options.limit) {
+    if (this._executionTimes.length < this._options.limit) {
       await this.executeFunction(...args)
       return true
     }
@@ -152,47 +158,38 @@ export class AsyncRateLimiter<
   }
 
   private async executeFunction(...args: TArgs): Promise<void> {
-    if (!this.options.enabled) return
+    if (!this._options.enabled) return
     const now = Date.now()
-    this.executionCount++
-    this.executionTimes.push(now)
+    this._executionCount++
+    this._executionTimes.push(now)
 
     try {
       await this.fn(...args)
     } catch (error) {
-      if (this.options.onError) {
+      if (this._options.onError) {
         try {
-          this.options.onError(error)
-        } catch {
-          // Ignore errors from error handler
+          this._options.onError(error)
+        } catch (error) {
+          console.error('Error in onError handler', error)
         }
       }
       throw error
     } finally {
-      this.options.onExecute?.(this)
+      this._options.onExecute?.(this)
     }
   }
 
   private rejectFunction(): void {
-    this.rejectionCount++
-    if (this.options.onReject) {
-      const oldestExecution = Math.min(...this.executionTimes)
-      const msUntilNextWindow =
-        oldestExecution + this.options.window - Date.now()
-
-      this.options.onReject({
-        msUntilNextWindow,
-        currentExecutions: this.executionTimes.length,
-        limit: this.options.limit,
-        rejectionCount: this.rejectionCount,
-      })
+    this._rejectionCount++
+    if (this._options.onReject) {
+      this._options.onReject(this)
     }
   }
 
   private cleanupOldExecutions(): void {
     const now = Date.now()
-    const windowStart = now - this.options.window
-    this.executionTimes = this.executionTimes.filter(
+    const windowStart = now - this._options.window
+    this._executionTimes = this._executionTimes.filter(
       (time) => time > windowStart,
     )
   }
@@ -201,9 +198,9 @@ export class AsyncRateLimiter<
    * Resets the rate limiter state
    */
   reset(): void {
-    this.executionTimes = []
-    this.executionCount = 0
-    this.rejectionCount = 0
+    this._executionTimes = []
+    this._executionCount = 0
+    this._rejectionCount = 0
   }
 }
 

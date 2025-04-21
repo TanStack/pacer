@@ -1,28 +1,6 @@
 import type { AnyFunction } from './types'
 
 /**
- * Information about a rate limit rejection
- */
-export interface RateLimitRejectionInfo {
-  /**
-   * Current number of executions in the window
-   */
-  currentExecutions: number
-  /**
-   * Maximum allowed executions per window
-   */
-  limit: number
-  /**
-   * Number of milliseconds until the next execution will be possible
-   */
-  msUntilNextWindow: number
-  /**
-   * Total number of rejections that have occurred
-   */
-  rejectionCount: number
-}
-
-/**
  * Options for configuring a rate-limited function
  */
 export interface RateLimiterOptions<
@@ -45,7 +23,7 @@ export interface RateLimiterOptions<
   /**
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
-  onReject?: (info: RateLimitRejectionInfo) => void
+  onReject?: (rateLimiter: RateLimiter<TFn, TArgs>) => void
   /**
    * Time window in milliseconds within which the limit applies
    */
@@ -89,16 +67,16 @@ export class RateLimiter<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 > {
-  private executionCount = 0
-  private rejectionCount = 0
-  private executionTimes: Array<number> = []
-  private options: RateLimiterOptions<TFn, TArgs>
+  private _executionCount = 0
+  private _rejectionCount = 0
+  private _executionTimes: Array<number> = []
+  private _options: RateLimiterOptions<TFn, TArgs>
 
   constructor(
     private fn: TFn,
     initialOptions: RateLimiterOptions<TFn, TArgs>,
   ) {
-    this.options = {
+    this._options = {
       ...defaultOptions,
       ...initialOptions,
     }
@@ -111,25 +89,25 @@ export class RateLimiter<
   setOptions(
     newOptions: Partial<RateLimiterOptions<TFn, TArgs>>,
   ): RateLimiterOptions<TFn, TArgs> {
-    this.options = {
-      ...this.options,
+    this._options = {
+      ...this._options,
       ...newOptions,
     }
-    return this.options
+    return this._options
   }
 
   /**
    * Returns the number of times the function has been executed
    */
   getExecutionCount(): number {
-    return this.executionCount
+    return this._executionCount
   }
 
   /**
    * Returns the number of times the function has been rejected
    */
   getRejectionCount(): number {
-    return this.rejectionCount
+    return this._rejectionCount
   }
 
   /**
@@ -137,7 +115,15 @@ export class RateLimiter<
    */
   getRemainingInWindow(): number {
     this.cleanupOldExecutions()
-    return Math.max(0, this.options.limit - this.executionTimes.length)
+    return Math.max(0, this._options.limit - this._executionTimes.length)
+  }
+
+  /**
+   * Returns the number of milliseconds until the next execution will be possible
+   */
+  getMsUntilNextWindow(): number {
+    const oldestExecution = Math.min(...this._executionTimes)
+    return oldestExecution + this._options.window - Date.now()
   }
 
   /**
@@ -158,7 +144,7 @@ export class RateLimiter<
   maybeExecute(...args: TArgs): boolean {
     this.cleanupOldExecutions()
 
-    if (this.executionTimes.length < this.options.limit) {
+    if (this._executionTimes.length < this._options.limit) {
       this.executeFunction(...args)
       return true
     }
@@ -169,34 +155,25 @@ export class RateLimiter<
   }
 
   private executeFunction(...args: TArgs): void {
-    if (!this.options.enabled) return
+    if (!this._options.enabled) return
     const now = Date.now()
-    this.executionCount++
-    this.executionTimes.push(now)
-    this.fn(...args)
-    this.options.onExecute?.(this)
+    this._executionCount++
+    this._executionTimes.push(now)
+    this.fn(...args) // execute the function
+    this._options.onExecute?.(this)
   }
 
   private rejectFunction(): void {
-    this.rejectionCount++
-    if (this.options.onReject) {
-      const oldestExecution = Math.min(...this.executionTimes)
-      const msUntilNextWindow =
-        oldestExecution + this.options.window - Date.now()
-
-      this.options.onReject({
-        msUntilNextWindow,
-        currentExecutions: this.executionTimes.length,
-        limit: this.options.limit,
-        rejectionCount: this.rejectionCount,
-      })
+    this._rejectionCount++
+    if (this._options.onReject) {
+      this._options.onReject(this)
     }
   }
 
   private cleanupOldExecutions(): void {
     const now = Date.now()
-    const windowStart = now - this.options.window
-    this.executionTimes = this.executionTimes.filter(
+    const windowStart = now - this._options.window
+    this._executionTimes = this._executionTimes.filter(
       (time) => time > windowStart,
     )
   }
@@ -205,9 +182,9 @@ export class RateLimiter<
    * Resets the rate limiter state
    */
   reset(): void {
-    this.executionTimes = []
-    this.executionCount = 0
-    this.rejectionCount = 0
+    this._executionTimes = []
+    this._executionCount = 0
+    this._rejectionCount = 0
   }
 }
 

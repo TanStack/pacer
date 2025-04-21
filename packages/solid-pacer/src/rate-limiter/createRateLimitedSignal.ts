@@ -59,7 +59,9 @@ export function createRateLimitedSignal<TValue>(
   options: RateLimiterOptions<Setter<TValue>, [Accessor<TValue>]>,
 ) {
   const [rateLimitedValue, setRateLimitedValue] = createSignal<TValue>(value)
+
   const rateLimiter = createRateLimiter(setRateLimitedValue, options)
+  
   return [
     rateLimitedValue,
     rateLimiter.maybeExecute.bind(rateLimiter) as Setter<TValue>,

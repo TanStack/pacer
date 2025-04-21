@@ -68,17 +68,18 @@ const defaultOptions: Required<ThrottlerOptions<any, any>> = {
  * ```
  */
 export class Throttler<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
-  private executionCount = 0
-  private lastArgs: TArgs | undefined
-  private lastExecutionTime = 0
-  private options: Required<ThrottlerOptions<TFn, TArgs>>
-  private timeoutId: NodeJS.Timeout | undefined
+  private _executionCount = 0
+  private _lastArgs: TArgs | undefined
+  private _lastExecutionTime = 0
+  private _options: Required<ThrottlerOptions<TFn, TArgs>>
+  private _timeoutId: NodeJS.Timeout | undefined
+  private _isPending = false
 
   constructor(
     private fn: TFn,
     initialOptions: ThrottlerOptions<TFn, TArgs>,
   ) {
-    this.options = {
+    this._options = {
       ...defaultOptions,
       ...initialOptions,
     }
@@ -91,32 +92,39 @@ export class Throttler<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
   setOptions(
     newOptions: Partial<ThrottlerOptions<TFn, TArgs>>,
   ): Required<ThrottlerOptions<TFn, TArgs>> {
-    this.options = {
-      ...this.options,
+    this._options = {
+      ...this._options,
       ...newOptions,
     }
-    return this.options
+    return this._options
   }
 
   /**
    * Returns the number of times the function has been executed
    */
   getExecutionCount(): number {
-    return this.executionCount
+    return this._executionCount
   }
 
   /**
    * Returns the last execution time
    */
   getLastExecutionTime(): number {
-    return this.lastExecutionTime
+    return this._lastExecutionTime
   }
 
   /**
    * Returns the next execution time
    */
   getNextExecutionTime(): number {
-    return this.lastExecutionTime + this.options.wait
+    return this._lastExecutionTime + this._options.wait
+  }
+
+  /**
+   * Returns `true` if there is a pending execution
+   */
+  getIsPending(): boolean {
+    return this._options.enabled && this._isPending
   }
 
   /**
@@ -143,37 +151,40 @@ export class Throttler<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
    */
   maybeExecute(...args: TArgs): void {
     const now = Date.now()
-    const timeSinceLastExecution = now - this.lastExecutionTime
+    const timeSinceLastExecution = now - this._lastExecutionTime
 
     // Handle leading execution
-    if (timeSinceLastExecution >= this.options.wait) {
-      if (this.options.leading) {
+    if (timeSinceLastExecution >= this._options.wait) {
+      if (this._options.leading) {
         this.executeFunction(...args)
       }
-      this.lastExecutionTime = now
+      this._lastExecutionTime = now
+      this._isPending = false
     } else {
       // Store the most recent arguments for potential trailing execution
-      this.lastArgs = args
+      this._lastArgs = args
 
       // Set up trailing execution if not already scheduled
-      if (!this.timeoutId && this.options.trailing) {
-        this.timeoutId = setTimeout(() => {
-          if (this.lastArgs) {
-            this.executeFunction(...this.lastArgs)
-            this.lastArgs = undefined
+      if (!this._timeoutId && this._options.trailing) {
+        this._isPending = true
+        this._timeoutId = setTimeout(() => {
+          if (this._lastArgs) {
+            this.executeFunction(...this._lastArgs)
+            this._lastArgs = undefined
           }
-          this.lastExecutionTime = Date.now()
-          this.timeoutId = undefined
-        }, this.options.wait - timeSinceLastExecution)
+          this._lastExecutionTime = Date.now()
+          this._timeoutId = undefined
+          this._isPending = false
+        }, this._options.wait - timeSinceLastExecution)
       }
     }
   }
 
   private executeFunction(...args: TArgs): void {
-    if (!this.options.enabled) return
+    if (!this._options.enabled) return
     this.fn(...args) // EXECUTE!
-    this.executionCount++
-    this.options.onExecute(this)
+    this._executionCount++
+    this._options.onExecute(this)
   }
 
   /**
@@ -186,10 +197,11 @@ export class Throttler<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
    * Has no effect if there is no pending execution.
    */
   cancel(): void {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
-      this.timeoutId = undefined
-      this.lastArgs = undefined
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId)
+      this._timeoutId = undefined
+      this._lastArgs = undefined
+      this._isPending = false
     }
   }
 }

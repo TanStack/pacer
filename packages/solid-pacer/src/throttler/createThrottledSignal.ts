@@ -46,7 +46,7 @@ export function createThrottledSignal<TValue>(
   const throttler = createThrottler(setThrottledValue, initialOptions)
   return [
     throttledValue,
-    throttler.maybeExecute.bind(throttler) as Setter<TValue>,
+    throttler.maybeExecute as Setter<TValue>,
     throttler,
   ] as const
 }
