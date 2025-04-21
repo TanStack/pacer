@@ -8,10 +8,10 @@ title: createRateLimiter
 # Function: createRateLimiter()
 
 ```ts
-function createRateLimiter<TFn, TArgs>(fn, options): RateLimiter<TFn, TArgs>
+function createRateLimiter<TFn, TArgs>(fn, options): SolidRateLimiter<TFn, TArgs>
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:46](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L46)
+Defined in: [rate-limiter/createRateLimiter.ts:65](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L65)
 
 A low-level Solid hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
@@ -52,7 +52,7 @@ The hook returns an object containing:
 
 ## Returns
 
-`RateLimiter`\<`TFn`, `TArgs`\>
+[`SolidRateLimiter`](../interfaces/solidratelimiter.md)\<`TFn`, `TArgs`\>
 
 ## Example
 

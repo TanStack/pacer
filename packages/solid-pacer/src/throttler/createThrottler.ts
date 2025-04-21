@@ -52,7 +52,7 @@ export interface SolidThrottler<
 export function createThrottler<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: ThrottlerOptions<TFn, TArgs>) {
+>(fn: TFn, options: ThrottlerOptions<TFn, TArgs>): SolidThrottler<TFn, TArgs> {
   const throttler = new Throttler<TFn, TArgs>(fn, options)
 
   const [executionCount, setExecutionCount] = createSignal(
@@ -83,5 +83,5 @@ export function createThrottler<
     isPending,
     lastExecutionTime,
     nextExecutionTime,
-  } as SolidThrottler<TFn, TArgs>
+  }
 }

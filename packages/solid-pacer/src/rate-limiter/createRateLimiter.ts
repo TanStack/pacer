@@ -5,7 +5,7 @@ import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
-interface SolidRateLimiter<
+export interface SolidRateLimiter<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 > extends Omit<
@@ -65,7 +65,10 @@ interface SolidRateLimiter<
 export function createRateLimiter<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: RateLimiterOptions<TFn, TArgs>) {
+>(
+  fn: TFn,
+  options: RateLimiterOptions<TFn, TArgs>,
+): SolidRateLimiter<TFn, TArgs> {
   const rateLimiter = new RateLimiter<TFn, TArgs>(fn, options)
 
   const [executionCount, setExecutionCount] = createSignal(
@@ -103,5 +106,5 @@ export function createRateLimiter<
     rejectionCount,
     remainingInWindow,
     msUntilNextWindow,
-  } as SolidRateLimiter<TFn, TArgs>
+  }
 }

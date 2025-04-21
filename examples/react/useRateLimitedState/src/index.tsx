@@ -12,8 +12,11 @@ function App1() {
       // enabled: instantCount > 2, // optional, defaults to true
       limit: 5,
       window: 5000,
-      onReject: (rejectionInfo) =>
-        console.log('Rejected by rate limiter', rejectionInfo),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     },
   )
 
@@ -70,8 +73,11 @@ function App2() {
       // enabled: instantSearch.length > 2, // optional, defaults to true
       limit: 5,
       window: 5000,
-      onReject: (rejectionInfo) =>
-        console.log('Rejected by rate limiter', rejectionInfo),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     },
   )
 

@@ -34,9 +34,9 @@ function SearchApp() {
     {
       limit: 5,
       window: 5000,
-      onReject: (info) =>
+      onReject: (rateLimiter) =>
         console.log(
-          `Rate limit exceeded: ${info.msUntilNextWindow}ms until next window`,
+          `Rate limit exceeded: ${rateLimiter.getMsUntilNextWindow()}ms until next window`,
         ),
     },
   )

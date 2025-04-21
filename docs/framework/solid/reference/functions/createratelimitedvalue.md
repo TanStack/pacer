@@ -8,10 +8,10 @@ title: createRateLimitedValue
 # Function: createRateLimitedValue()
 
 ```ts
-function createRateLimitedValue<TValue>(value, options): readonly [Accessor<TValue>, RateLimiter<Setter<TValue>, [Accessor<TValue>]>]
+function createRateLimitedValue<TValue>(value, options): [Accessor<TValue>, SolidRateLimiter<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
-Defined in: [rate-limiter/createRateLimitedValue.ts:53](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedValue.ts#L53)
+Defined in: [rate-limiter/createRateLimitedValue.ts:54](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedValue.ts#L54)
 
 A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses React's createSignal internally to manage the rate-limited state.
@@ -47,7 +47,7 @@ consider using the lower-level createRateLimiter hook instead.
 
 ## Returns
 
-readonly \[`Accessor`\<`TValue`\>, `RateLimiter`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
+\[`Accessor`\<`TValue`\>, [`SolidRateLimiter`](../interfaces/solidratelimiter.md)\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
 
 ## Example
 
@@ -62,8 +62,8 @@ const [rateLimitedValue] = createRateLimitedValue(rawValue, {
 const [rateLimitedValue, rateLimiter] = createRateLimitedValue(rawValue, {
   limit: 3,
   window: 5000,
-  onReject: ({ msUntilNextWindow }) => {
-    console.log(`Update rejected. Try again in ${msUntilNextWindow}ms`);
+  onReject: (rateLimiter) => {
+    console.log(`Update rejected. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }
 });
 

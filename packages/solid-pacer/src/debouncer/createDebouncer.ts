@@ -53,7 +53,7 @@ export interface SolidDebouncer<
 export function createDebouncer<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
+>(fn: TFn, options: DebouncerOptions<TFn, TArgs>): SolidDebouncer<TFn, TArgs> {
   const debouncer = new Debouncer<TFn, TArgs>(fn, options)
 
   const [executionCount, setExecutionCount] = createSignal(
@@ -74,5 +74,5 @@ export function createDebouncer<
     ...bindInstanceMethods(debouncer),
     executionCount,
     isPending,
-  } as SolidDebouncer<TFn, TArgs>
+  }
 }

@@ -62,8 +62,8 @@ const [rateLimitedValue] = useRateLimitedValue(rawValue, {
 const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
   limit: 3,
   window: 5000,
-  onReject: ({ msUntilNextWindow }) => {
-    console.log(`Update rejected. Try again in ${msUntilNextWindow}ms`);
+  onReject: (rateLimiter) => {
+    console.log(`Update rejected. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }
 });
 

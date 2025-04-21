@@ -11,8 +11,11 @@ function App1() {
   const rateLimitedSetCount = rateLimit(setRateLimitedCount, {
     limit: 5,
     window: 5000,
-    onReject: (rejectionInfo) =>
-      console.log('Rejected by rate limiter', rejectionInfo),
+    onReject: (rateLimiter) =>
+      console.log(
+        'Rejected by rate limiter',
+        rateLimiter.getMsUntilNextWindow(),
+      ),
   })
 
   function increment() {
@@ -54,8 +57,11 @@ function App2() {
   const rateLimitedSetText = rateLimit(setRateLimitedText, {
     limit: 5,
     window: 5000,
-    onReject: (rejectionInfo) =>
-      console.log('Rejected by rate limiter', rejectionInfo),
+    onReject: (rateLimiter) =>
+      console.log(
+        'Rejected by rate limiter',
+        rateLimiter.getMsUntilNextWindow(),
+      ),
   })
 
   function handleTextChange(e: Event) {

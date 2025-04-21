@@ -1,5 +1,6 @@
 import { createEffect, onCleanup } from 'solid-js'
 import { createDebouncedSignal } from './createDebouncedSignal'
+import type { SolidDebouncer } from './createDebouncer'
 import type { Accessor, Setter } from 'solid-js'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
@@ -42,7 +43,7 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 export function createDebouncedValue<TValue>(
   value: Accessor<TValue>,
   options: DebouncerOptions<Setter<TValue>, [Accessor<TValue>]>,
-) {
+): [Accessor<TValue>, SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>] {
   const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
     value(),
     options,
@@ -55,5 +56,5 @@ export function createDebouncedValue<TValue>(
     })
   })
 
-  return [debouncedValue, debouncer] as const
+  return [debouncedValue, debouncer]
 }

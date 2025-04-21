@@ -27,7 +27,6 @@ title: "@tanstack/pacer"
 - [DebouncerOptions](interfaces/debounceroptions.md)
 - [QueuerOptions](interfaces/queueroptions.md)
 - [RateLimiterOptions](interfaces/ratelimiteroptions.md)
-- [RateLimitRejectionInfo](interfaces/ratelimitrejectioninfo.md)
 - [ThrottlerOptions](interfaces/throttleroptions.md)
 
 ## Type Aliases

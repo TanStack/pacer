@@ -1,5 +1,6 @@
 import { createEffect, onCleanup } from 'solid-js'
 import { createThrottledSignal } from './createThrottledSignal'
+import type { SolidThrottler } from './createThrottler'
 import type { Accessor, Setter } from 'solid-js'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
@@ -37,7 +38,7 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 export function createThrottledValue<TValue>(
   value: Accessor<TValue>,
   options: ThrottlerOptions<Setter<TValue>, [Accessor<TValue>]>,
-) {
+): [Accessor<TValue>, SolidThrottler<Setter<TValue>, [Accessor<TValue>]>] {
   const [throttledValue, setThrottledValue, throttler] = createThrottledSignal(
     value(),
     options,

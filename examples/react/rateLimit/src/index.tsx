@@ -12,8 +12,11 @@ function App1() {
     rateLimit(setRateLimitedCount, {
       limit: 5,
       window: 5000,
-      onReject: (rejectionInfo) =>
-        console.log('Rejected by rate limiter', rejectionInfo),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     }),
     [],
   )
@@ -58,8 +61,11 @@ function App2() {
     rateLimit(setRateLimitedText, {
       limit: 5,
       window: 5000,
-      onReject: (rejectionInfo) =>
-        console.log('Rejected by rate limiter', rejectionInfo),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     }),
     [],
   )

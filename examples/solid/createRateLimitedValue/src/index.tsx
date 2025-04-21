@@ -4,19 +4,11 @@ import { createRateLimitedValue } from '@tanstack/solid-pacer/rate-limiter'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
-  const [rejectionCount, setRejectionCount] = createSignal(0)
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // Using createRateLimitedValue with a rate limit of 5 executions per 5 seconds
   const [limitedCount, rateLimiter] = createRateLimitedValue(instantCount, {
     limit: 5,
     window: 5000,
-    onExecute: () => {
-      setExecutionCount(rateLimiter.getExecutionCount())
-    },
-    onReject: () => {
-      setRejectionCount(rateLimiter.getRejectionCount())
-    },
   })
 
   function increment() {
@@ -30,11 +22,11 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{executionCount()}</td>
+            <td>{rateLimiter.executionCount()}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rejectionCount()}</td>
+            <td>{rateLimiter.rejectionCount()}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -48,7 +40,7 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
-        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
+        <button onClick={() => alert(rateLimiter.remainingInWindow())}>
           Remaining in Window
         </button>
         <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
@@ -59,19 +51,11 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
-  const [rejectionCount, setRejectionCount] = createSignal(0)
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // Using createRateLimitedValue with a rate limit of 5 executions per 5 seconds
   const [limitedSearch, rateLimiter] = createRateLimitedValue(instantSearch, {
     limit: 5,
     window: 5000,
-    onExecute: () => {
-      setExecutionCount(rateLimiter.getExecutionCount())
-    },
-    onReject: () => {
-      setRejectionCount(rateLimiter.getRejectionCount())
-    },
   })
 
   function handleSearchChange(e: Event) {
@@ -94,11 +78,11 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{executionCount()}</td>
+            <td>{rateLimiter.executionCount()}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rejectionCount()}</td>
+            <td>{rateLimiter.rejectionCount()}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -111,7 +95,7 @@ function App2() {
         </tbody>
       </table>
       <div>
-        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
+        <button onClick={() => alert(rateLimiter.remainingInWindow())}>
           Remaining in Window
         </button>
         <button onClick={() => alert(rateLimiter.reset())}>Reset</button>

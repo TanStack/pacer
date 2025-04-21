@@ -1,5 +1,6 @@
 import { createSignal } from 'solid-js'
 import { createRateLimiter } from './createRateLimiter'
+import type { SolidRateLimiter } from './createRateLimiter'
 import type { Accessor, Setter } from 'solid-js'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
@@ -37,8 +38,8 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * const [value, setValue] = createRateLimitedSignal(0, {
  *   limit: 3,
  *   window: 5000,
- *   onReject: ({ msUntilNextWindow }) => {
- *     alert(`Rate limit reached. Try again in ${msUntilNextWindow}ms`);
+ *   onReject: (rateLimiter) => {
+ *     alert(`Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }
  * });
  *
@@ -57,7 +58,11 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 export function createRateLimitedSignal<TValue>(
   value: TValue,
   options: RateLimiterOptions<Setter<TValue>, [Accessor<TValue>]>,
-) {
+): [
+  Accessor<TValue>,
+  Setter<TValue>,
+  SolidRateLimiter<Setter<TValue>, [Accessor<TValue>]>,
+] {
   const [rateLimitedValue, setRateLimitedValue] = createSignal<TValue>(value)
 
   const rateLimiter = createRateLimiter(setRateLimitedValue, options)
@@ -66,5 +71,5 @@ export function createRateLimitedSignal<TValue>(
     rateLimitedValue,
     rateLimiter.maybeExecute.bind(rateLimiter) as Setter<TValue>,
     rateLimiter,
-  ] as const
+  ]
 }

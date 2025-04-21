@@ -65,8 +65,8 @@ const [value, setValue, rateLimiter] = useRateLimitedState(0, {
 const [value, setValue] = useRateLimitedState(0, {
   limit: 3,
   window: 5000,
-  onReject: ({ msUntilNextWindow }) => {
-    alert(`Rate limit reached. Try again in ${msUntilNextWindow}ms`);
+  onReject: (rateLimiter) => {
+    alert(`Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }
 });
 

@@ -36,8 +36,8 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * const [value, setValue] = useRateLimitedState(0, {
  *   limit: 3,
  *   window: 5000,
- *   onReject: ({ msUntilNextWindow }) => {
- *     alert(`Rate limit reached. Try again in ${msUntilNextWindow}ms`);
+ *   onReject: (rateLimiter) => {
+ *     alert(`Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }
  * });
  *

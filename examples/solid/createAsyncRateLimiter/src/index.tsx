@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from 'solid-js'
+import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncRateLimiter } from '@tanstack/solid-pacer/async-rate-limiter'
 
@@ -22,7 +22,6 @@ function App() {
   const [results, setResults] = createSignal<Array<SearchResult>>([])
   const [isLoading, setIsLoading] = createSignal(false)
   const [error, setError] = createSignal<Error | null>(null)
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // The function that will become rate limited
   const handleSearch = async (term: string) => {
@@ -55,23 +54,12 @@ function App() {
       setError(error as Error)
       setResults([])
     },
-    onExecute: (asyncRateLimiter) => {
-      setExecutionCount(asyncRateLimiter.getExecutionCount())
-    },
   })
 
   // get and name our rate limited function
   const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute.bind(
     setSearchAsyncRateLimiter,
   )
-
-  createEffect(() => {
-    console.log('mount')
-    return () => {
-      console.log('unmount')
-      setSearchAsyncRateLimiter.reset() // cancel any pending async calls when the component unmounts
-    }
-  }, [])
 
   // instant event handler that calls both the instant local state setter and the rate limited function
   async function onSearchChange(e: Event) {
@@ -95,7 +83,7 @@ function App() {
       </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {executionCount()}</p>
+        <p>API calls made: {setSearchAsyncRateLimiter.executionCount()}</p>
         {results().length > 0 && (
           <ul>
             {results().map((item) => (

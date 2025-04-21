@@ -11,7 +11,7 @@ title: rateLimit
 function rateLimit<TFn>(fn, initialOptions): (...args) => boolean
 ```
 
-Defined in: [rate-limiter.ts:244](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L244)
+Defined in: [rate-limiter.ts:221](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L221)
 
 Creates a rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -73,8 +73,8 @@ rateLimiter.maybeExecute('arg1', 'arg2'); // false
 const rateLimited = rateLimit(makeApiCall, {
   limit: 5,
   window: 60000,
-  onReject: ({ msUntilNextWindow }) => {
-    console.log(`Rate limit exceeded. Try again in ${msUntilNextWindow}ms`);
+  onReject: (rateLimiter) => {
+    console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }
 });
 

@@ -11,7 +11,7 @@ title: createDebouncer
 function createDebouncer<TFn, TArgs>(fn, options): SolidDebouncer<TFn, TArgs>
 ```
 
-Defined in: [debouncer/createDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L50)
+Defined in: [debouncer/createDebouncer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L53)
 
 A Solid hook that creates and manages a Debouncer instance.
 

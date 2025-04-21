@@ -8,10 +8,10 @@ title: createThrottler
 # Function: createThrottler()
 
 ```ts
-function createThrottler<TFn, TArgs>(fn, options): Throttler<TFn, TArgs>
+function createThrottler<TFn, TArgs>(fn, options): SolidThrottler<TFn, TArgs>
 ```
 
-Defined in: [throttler/createThrottler.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L38)
+Defined in: [throttler/createThrottler.ts:52](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L52)
 
 A low-level Solid hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
@@ -46,7 +46,7 @@ The hook returns an object containing:
 
 ## Returns
 
-`Throttler`\<`TFn`, `TArgs`\>
+[`SolidThrottler`](../interfaces/solidthrottler.md)\<`TFn`, `TArgs`\>
 
 ## Example
 

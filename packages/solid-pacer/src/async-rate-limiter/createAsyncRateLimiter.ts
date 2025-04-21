@@ -1,6 +1,25 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
+import { createSignal } from 'solid-js'
+import { bindInstanceMethods } from '../utils'
+import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
+
+export interface SolidAsyncRateLimiter<
+  TFn extends AnyAsyncFunction,
+  TArgs extends Parameters<TFn>,
+> extends Omit<
+    AsyncRateLimiter<TFn, TArgs>,
+    | 'getExecutionCount'
+    | 'getRejectionCount'
+    | 'getRemainingInWindow'
+    | 'getMsUntilNextWindow'
+  > {
+  executionCount: Accessor<number>
+  rejectionCount: Accessor<number>
+  remainingInWindow: Accessor<number>
+  msUntilNextWindow: Accessor<number>
+}
 
 /**
  * A low-level Solid hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
@@ -42,5 +61,42 @@ export function createAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: AsyncRateLimiterOptions<TFn, TArgs>) {
-  return new AsyncRateLimiter<TFn, TArgs>(fn, options)
+  const asyncRateLimiter = new AsyncRateLimiter<TFn, TArgs>(fn, options)
+
+  const [executionCount, setExecutionCount] = createSignal(
+    asyncRateLimiter.getExecutionCount(),
+  )
+  const [rejectionCount, setRejectionCount] = createSignal(
+    asyncRateLimiter.getRejectionCount(),
+  )
+  const [remainingInWindow, setRemainingInWindow] = createSignal(
+    asyncRateLimiter.getRemainingInWindow(),
+  )
+  const [msUntilNextWindow, setMsUntilNextWindow] = createSignal(
+    asyncRateLimiter.getMsUntilNextWindow(),
+  )
+
+  asyncRateLimiter.setOptions({
+    ...options,
+    onExecute: (rateLimiter) => {
+      setExecutionCount(rateLimiter.getExecutionCount())
+      setRemainingInWindow(rateLimiter.getRemainingInWindow())
+      setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+      options.onExecute?.(rateLimiter)
+    },
+    onReject: (rateLimiter) => {
+      setRejectionCount(rateLimiter.getRejectionCount())
+      setRemainingInWindow(rateLimiter.getRemainingInWindow())
+      setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+      options.onReject?.(rateLimiter)
+    },
+  })
+
+  return {
+    ...bindInstanceMethods(asyncRateLimiter),
+    executionCount,
+    rejectionCount,
+    remainingInWindow,
+    msUntilNextWindow,
+  }
 }

@@ -205,8 +205,8 @@ export class RateLimiter<
  * const rateLimited = rateLimit(makeApiCall, {
  *   limit: 5,
  *   window: 60000,
- *   onReject: ({ msUntilNextWindow }) => {
- *     console.log(`Rate limit exceeded. Try again in ${msUntilNextWindow}ms`);
+ *   onReject: (rateLimiter) => {
+ *     console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }
  * });
  *
