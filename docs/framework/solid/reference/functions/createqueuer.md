@@ -8,10 +8,10 @@ title: createQueuer
 # Function: createQueuer()
 
 ```ts
-function createQueuer<TValue>(initialOptions): Queuer<TValue>
+function createQueuer<TValue>(initialOptions): SolidQueuer<TValue>
 ```
 
-Defined in: [queuer/createQueuer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L42)
+Defined in: [queuer/createQueuer.ts:91](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L91)
 
 A Solid hook that creates and manages a Queuer instance.
 
@@ -41,7 +41,7 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 ## Returns
 
-`Queuer`\<`TValue`\>
+[`SolidQueuer`](../interfaces/solidqueuer.md)\<`TValue`\>
 
 ## Example
 

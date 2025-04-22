@@ -93,7 +93,7 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
  * ```
  */
 export class AsyncQueuer<TValue> {
-  protected options: Required<AsyncQueuerOptions<TValue>>
+  private options: Required<AsyncQueuerOptions<TValue>>
   private items: Array<() => Promise<TValue>> = []
   private activeItems: Set<() => Promise<TValue>> = new Set()
   private onSuccessCallbacks: Array<(result: TValue) => void> = []
@@ -128,7 +128,7 @@ export class AsyncQueuer<TValue> {
   /**
    * Processes items in the queuer
    */
-  protected tick() {
+  private tick() {
     if (!this.running) {
       this.pendingTick = false
       return

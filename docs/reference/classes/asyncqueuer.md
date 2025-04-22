@@ -62,16 +62,6 @@ Defined in: [async-queuer.ts:106](https://github.com/TanStack/pacer/blob/main/pa
 
 [`AsyncQueuer`](asyncqueuer.md)\<`TValue`\>
 
-## Properties
-
-### options
-
-```ts
-protected options: Required<AsyncQueuerOptions<TValue>>;
-```
-
-Defined in: [async-queuer.ts:96](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L96)
-
 ## Methods
 
 ### addItem()
@@ -459,22 +449,6 @@ stop(): void
 Defined in: [async-queuer.ts:406](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L406)
 
 Stops the queuer from processing items
-
-#### Returns
-
-`void`
-
-***
-
-### tick()
-
-```ts
-protected tick(): void
-```
-
-Defined in: [async-queuer.ts:131](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L131)
-
-Processes items in the queuer
 
 #### Returns
 

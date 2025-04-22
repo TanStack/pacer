@@ -1,5 +1,54 @@
 import { Queuer } from '@tanstack/pacer/queuer'
+import { createSignal } from 'solid-js'
+import { bindInstanceMethods } from '../utils'
+import type { Accessor } from 'solid-js'
 import type { QueuerOptions } from '@tanstack/pacer/queuer'
+
+export interface SolidQueuer<TValue>
+  extends Omit<
+    Queuer<TValue>,
+    | 'getExecutionCount'
+    | 'getIsEmpty'
+    | 'getIsFull'
+    | 'getIsIdle'
+    | 'getIsRunning'
+    | 'getAllItems'
+    | 'getPeek'
+    | 'getSize'
+  > {
+  /**
+   * Signal version of `getExecutionCount`
+   */
+  executionCount: Accessor<number>
+  /**
+   * Signal version of `getIsEmpty`
+   */
+  isEmpty: Accessor<boolean>
+  /**
+   * Signal version of `getIsFull`
+   */
+  isFull: Accessor<boolean>
+  /**
+   * Signal version of `getIsIdle`
+   */
+  isIdle: Accessor<boolean>
+  /**
+   * Signal version of `getIsRunning`
+   */
+  isRunning: Accessor<boolean>
+  /**
+   * Signal version of `getAllItems`
+   */
+  items: Accessor<Array<TValue>>
+  /**
+   * Signal version of `getPeek`
+   */
+  peek: Accessor<TValue | undefined>
+  /**
+   * Signal version of `getSize`
+   */
+  size: Accessor<number>
+}
 
 /**
  * A Solid hook that creates and manages a Queuer instance.
@@ -41,6 +90,47 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  */
 export function createQueuer<TValue>(
   initialOptions: QueuerOptions<TValue> = {},
-) {
-  return new Queuer<TValue>(initialOptions)
+): SolidQueuer<TValue> {
+  const queuer = new Queuer<TValue>(initialOptions)
+
+  const [executionCount, setExecutionCount] = createSignal(
+    queuer.getExecutionCount(),
+  )
+  const [isEmpty, setIsEmpty] = createSignal(queuer.getIsEmpty())
+  const [isFull, setIsFull] = createSignal(queuer.getIsFull())
+  const [isIdle, setIsIdle] = createSignal(queuer.getIsIdle())
+  const [isRunning, setIsRunning] = createSignal(queuer.getIsRunning())
+  const [items, setItems] = createSignal<Array<TValue>>(queuer.getAllItems())
+  const [peek, setPeek] = createSignal<TValue | undefined>(queuer.getPeek())
+  const [size, setSize] = createSignal(queuer.getSize())
+
+  queuer.setOptions({
+    onUpdate: (queuer) => {
+      setExecutionCount(queuer.getExecutionCount())
+      setIsEmpty(queuer.getIsEmpty())
+      setIsFull(queuer.getIsFull())
+      setIsIdle(queuer.getIsIdle())
+      setItems(queuer.getAllItems())
+      setPeek(() => queuer.getPeek())
+      setSize(queuer.getSize())
+      initialOptions.onUpdate?.(queuer)
+    },
+    onIsRunningChange: (queuer) => {
+      setIsRunning(queuer.getIsRunning())
+      setIsIdle(queuer.getIsIdle())
+      initialOptions.onIsRunningChange?.(queuer)
+    },
+  })
+
+  return {
+    ...bindInstanceMethods(queuer),
+    executionCount,
+    isEmpty,
+    isFull,
+    isIdle,
+    isRunning,
+    items,
+    peek,
+    size,
+  }
 }

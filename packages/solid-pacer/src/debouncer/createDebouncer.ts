@@ -53,8 +53,11 @@ export interface SolidDebouncer<
 export function createDebouncer<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions<TFn, TArgs>): SolidDebouncer<TFn, TArgs> {
-  const debouncer = new Debouncer<TFn, TArgs>(fn, options)
+>(
+  fn: TFn,
+  initialOptions: DebouncerOptions<TFn, TArgs>,
+): SolidDebouncer<TFn, TArgs> {
+  const debouncer = new Debouncer<TFn, TArgs>(fn, initialOptions)
 
   const [executionCount, setExecutionCount] = createSignal(
     debouncer.getExecutionCount(),
@@ -62,11 +65,11 @@ export function createDebouncer<
   const [isPending, setIsPending] = createSignal(debouncer.getIsPending())
 
   debouncer.setOptions({
-    ...options,
+    ...initialOptions,
     onExecute: (debouncer) => {
       setExecutionCount(debouncer.getExecutionCount())
       setIsPending(debouncer.getIsPending())
-      options.onExecute?.(debouncer)
+      initialOptions.onExecute?.(debouncer)
     },
   })
 

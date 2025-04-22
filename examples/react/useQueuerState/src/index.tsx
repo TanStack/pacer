@@ -12,13 +12,13 @@ function App() {
   return (
     <div>
       <h1>TanStack Pacer useQueuerState Example</h1>
-      <div>Queue Size: {queuer.size()}</div>
+      <div>Queue Size: {queuer.getSize()}</div>
       <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {queuer.isFull() ? 'Yes' : 'No'}</div>
-      <div>Queue Peek: {queuer.peek()}</div>
-      <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
+      <div>Queue Full: {queuer.getIsFull() ? 'Yes' : 'No'}</div>
+      <div>Queue Peek: {queuer.getPeek()}</div>
+      <div>Queue Empty: {queuer.getIsEmpty() ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {queuer.getIsIdle() ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {queuer.getIsRunning() ? 'Running' : 'Stopped'}</div>
       <div>Items Processed: {queuer.getExecutionCount()}</div>
       <div>Queue Items: {queueItems.join(', ')}</div>
       <div
@@ -37,12 +37,12 @@ function App() {
               : 1
             queuer.addItem(nextNumber)
           }}
-          disabled={queuer.isFull()}
+          disabled={queuer.getIsFull()}
         >
           Add Number
         </button>
         <button
-          disabled={queuer.isEmpty()}
+          disabled={queuer.getIsEmpty()}
           onClick={() => {
             const item = queuer.getNextItem()
             console.log('getNextItem item', item)
@@ -50,16 +50,16 @@ function App() {
         >
           Process Next
         </button>
-        <button onClick={() => queuer.clear()} disabled={queuer.isEmpty()}>
+        <button onClick={() => queuer.clear()} disabled={queuer.getIsEmpty()}>
           Clear Queue
         </button>
-        <button onClick={() => queuer.reset()} disabled={queuer.isEmpty()}>
+        <button onClick={() => queuer.reset()} disabled={queuer.getIsEmpty()}>
           Reset Queue
         </button>
-        <button onClick={() => queuer.start()} disabled={queuer.isRunning()}>
+        <button onClick={() => queuer.start()} disabled={queuer.getIsRunning()}>
           Start Processing
         </button>
-        <button onClick={() => queuer.stop()} disabled={!queuer.isRunning()}>
+        <button onClick={() => queuer.stop()} disabled={!queuer.getIsRunning()}>
           Stop Processing
         </button>
       </div>

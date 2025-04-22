@@ -8,7 +8,7 @@ title: createDebouncer
 # Function: createDebouncer()
 
 ```ts
-function createDebouncer<TFn, TArgs>(fn, options): SolidDebouncer<TFn, TArgs>
+function createDebouncer<TFn, TArgs>(fn, initialOptions): SolidDebouncer<TFn, TArgs>
 ```
 
 Defined in: [debouncer/createDebouncer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L53)
@@ -39,7 +39,7 @@ timer resets and starts waiting again.
 
 `TFn`
 
-### options
+### initialOptions
 
 `DebouncerOptions`\<`TFn`, `TArgs`\>
 

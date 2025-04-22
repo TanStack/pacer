@@ -1,23 +1,12 @@
-import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createQueuer } from '@tanstack/solid-pacer/queuer'
 
 function App() {
-  // Use your state management library of choice
-  const [queueItems, setQueueItems] = createSignal([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  ])
-  const [isRunning, setIsRunning] = createSignal(false)
-
   const queuer = createQueuer({
-    initialItems: queueItems(),
+    initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     maxSize: 25,
-    started: isRunning(),
+    started: false,
     wait: 1000, // wait 1 second between processing items - wait is optional!
-    onUpdate: (queue) => {
-      setQueueItems(queue.getAllItems())
-      setIsRunning(queue.isRunning())
-    },
   })
 
   return (
@@ -30,8 +19,8 @@ function App() {
       <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
       <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
       <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.getExecutionCount()}</div>
-      <div>Queue Items: {queueItems().join(', ')}</div>
+      <div>Items Processed: {queuer.executionCount()}</div>
+      <div>Queue Items: {queuer.items().join(', ')}</div>
       <div
         style={{
           display: 'grid',
@@ -43,8 +32,8 @@ function App() {
       >
         <button
           onClick={() => {
-            const nextNumber = queueItems().length
-              ? queueItems()[queueItems().length - 1] + 1
+            const nextNumber = queuer.items().length
+              ? queuer.items()[queuer.items().length - 1] + 1
               : 1
             queuer.addItem(nextNumber)
           }}
