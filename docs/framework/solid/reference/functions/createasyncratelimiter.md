@@ -8,7 +8,7 @@ title: createAsyncRateLimiter
 # Function: createAsyncRateLimiter()
 
 ```ts
-function createAsyncRateLimiter<TFn, TArgs>(fn, options): any
+function createAsyncRateLimiter<TFn, TArgs>(fn, initialOptions): SolidAsyncRateLimiter<TFn, TArgs>
 ```
 
 Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:60](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L60)
@@ -34,13 +34,13 @@ managing resource constraints, or controlling bursts of async operations.
 
 `TFn`
 
-### options
+### initialOptions
 
 `AsyncRateLimiterOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`any`
+[`SolidAsyncRateLimiter`](../interfaces/solidasyncratelimiter.md)\<`TFn`, `TArgs`\>
 
 ## Example
 

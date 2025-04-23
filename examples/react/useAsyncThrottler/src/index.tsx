@@ -56,7 +56,9 @@ function App() {
   })
 
   // get and name our throttled function
-  const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute //
+  const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute.bind(
+    setSearchAsyncThrottler,
+  )
 
   useEffect(() => {
     console.log('mount')

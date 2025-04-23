@@ -57,7 +57,9 @@ function App() {
   })
 
   // get and name our rate limited function
-  const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute
+  const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute.bind(
+    setSearchAsyncRateLimiter,
+  )
 
   useEffect(() => {
     console.log('mount')

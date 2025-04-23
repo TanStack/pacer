@@ -41,7 +41,7 @@ function App() {
     setIsLoading(false)
     setError(null)
 
-    console.log(setSearchAsyncRateLimiter.getExecutionCount())
+    console.log(setSearchAsyncRateLimiter.executionCount())
   }
 
   // hook that gives you an async rate limiter instance

@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from 'solid-js'
+import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncThrottler } from '@tanstack/solid-pacer/async-throttler'
 
@@ -22,7 +22,6 @@ function App() {
   const [results, setResults] = createSignal<Array<SearchResult>>([])
   const [isLoading, setIsLoading] = createSignal(false)
   const [error, setError] = createSignal<Error | null>(null)
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // The function that will become throttled
   const handleSearch = async (term: string) => {
@@ -42,7 +41,7 @@ function App() {
     setIsLoading(false)
     setError(null)
 
-    console.log(setSearchAsyncThrottler.getExecutionCount())
+    console.log(setSearchAsyncThrottler.executionCount())
   }
 
   // hook that gives you an async throttler instance
@@ -54,23 +53,12 @@ function App() {
       setError(error as Error)
       setResults([])
     },
-    onExecute: (asyncThrottler) => {
-      setExecutionCount(asyncThrottler.getExecutionCount())
-    },
   })
 
   // get and name our throttled function
   const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute.bind(
     setSearchAsyncThrottler,
   )
-
-  createEffect(() => {
-    console.log('mount')
-    return () => {
-      console.log('unmount')
-      setSearchAsyncThrottler.cancel() // cancel any pending async calls when the component unmounts
-    }
-  }, [])
 
   // instant event handler that calls both the instant local state setter and the throttled function
   async function onSearchChange(e: Event) {
@@ -94,7 +82,7 @@ function App() {
       </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {executionCount()}</p>
+        <p>API calls made: {setSearchAsyncThrottler.executionCount()}</p>
         {results().length > 0 && (
           <ul>
             {results().map((item) => (

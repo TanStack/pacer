@@ -11,14 +11,14 @@ export interface SolidRateLimiter<
 > extends Omit<
     RateLimiter<TFn, TArgs>,
     | 'getExecutionCount'
+    | 'getMsUntilNextWindow'
     | 'getRejectionCount'
     | 'getRemainingInWindow'
-    | 'getMsUntilNextWindow'
   > {
   executionCount: Accessor<number>
+  msUntilNextWindow: Accessor<number>
   rejectionCount: Accessor<number>
   remainingInWindow: Accessor<number>
-  msUntilNextWindow: Accessor<number>
 }
 
 /**
@@ -67,9 +67,9 @@ export function createRateLimiter<
   TArgs extends Parameters<TFn>,
 >(
   fn: TFn,
-  options: RateLimiterOptions<TFn, TArgs>,
+  initialOptions: RateLimiterOptions<TFn, TArgs>,
 ): SolidRateLimiter<TFn, TArgs> {
-  const rateLimiter = new RateLimiter<TFn, TArgs>(fn, options)
+  const rateLimiter = new RateLimiter<TFn, TArgs>(fn, initialOptions)
 
   const [executionCount, setExecutionCount] = createSignal(
     rateLimiter.getExecutionCount(),
@@ -84,21 +84,27 @@ export function createRateLimiter<
     rateLimiter.getMsUntilNextWindow(),
   )
 
-  rateLimiter.setOptions({
-    ...options,
-    onExecute: (rateLimiter) => {
-      setExecutionCount(rateLimiter.getExecutionCount())
-      setRemainingInWindow(rateLimiter.getRemainingInWindow())
-      setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
-      options.onExecute?.(rateLimiter)
-    },
-    onReject: (rateLimiter) => {
-      setRejectionCount(rateLimiter.getRejectionCount())
-      setRemainingInWindow(rateLimiter.getRemainingInWindow())
-      setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
-      options.onReject?.(rateLimiter)
-    },
-  })
+  function setOptions(newOptions: Partial<RateLimiterOptions<TFn, TArgs>>) {
+    rateLimiter.setOptions({
+      ...newOptions,
+      onExecute: (rateLimiter) => {
+        setExecutionCount(rateLimiter.getExecutionCount())
+        setRemainingInWindow(rateLimiter.getRemainingInWindow())
+        setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
+        onExecute?.(rateLimiter)
+      },
+      onReject: (rateLimiter) => {
+        setRejectionCount(rateLimiter.getRejectionCount())
+        setRemainingInWindow(rateLimiter.getRemainingInWindow())
+        setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+        const onReject = newOptions.onReject ?? initialOptions.onReject
+        onReject?.(rateLimiter)
+      },
+    })
+  }
+
+  setOptions(initialOptions)
 
   return {
     ...bindInstanceMethods(rateLimiter),
@@ -106,5 +112,6 @@ export function createRateLimiter<
     rejectionCount,
     remainingInWindow,
     msUntilNextWindow,
+    setOptions,
   }
 }

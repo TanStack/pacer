@@ -13,7 +13,11 @@ An extension of the Throttler class that adds Solid signals to access the intern
 
 ## Extends
 
-- `Omit`\<`Throttler`\<`TFn`, `TArgs`\>, `"getExecutionCount"` \| `"getIsPending"`\>
+- `Omit`\<`Throttler`\<`TFn`, `TArgs`\>, 
+  \| `"getExecutionCount"`
+  \| `"getIsPending"`
+  \| `"getLastExecutionTime"`
+  \| `"getNextExecutionTime"`\>
 
 ## Type Parameters
 
@@ -29,7 +33,7 @@ An extension of the Throttler class that adds Solid signals to access the intern
 executionCount: Accessor<number>;
 ```
 
-Defined in: [throttler/createThrottler.ts:15](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L15)
+Defined in: [throttler/createThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L21)
 
 ***
 
@@ -39,4 +43,24 @@ Defined in: [throttler/createThrottler.ts:15](https://github.com/TanStack/pacer/
 isPending: Accessor<boolean>;
 ```
 
-Defined in: [throttler/createThrottler.ts:16](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L16)
+Defined in: [throttler/createThrottler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L22)
+
+***
+
+### lastExecutionTime
+
+```ts
+lastExecutionTime: Accessor<number>;
+```
+
+Defined in: [throttler/createThrottler.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L23)
+
+***
+
+### nextExecutionTime
+
+```ts
+nextExecutionTime: Accessor<number>;
+```
+
+Defined in: [throttler/createThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L24)

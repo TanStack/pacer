@@ -8,7 +8,7 @@ title: createThrottledValue
 # Function: createThrottledValue()
 
 ```ts
-function createThrottledValue<TValue>(value, options): [Accessor<TValue>, SolidThrottler<Setter<TValue>, [Accessor<TValue>]>]
+function createThrottledValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidThrottler<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
 Defined in: [throttler/createThrottledValue.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottledValue.ts#L38)
@@ -35,7 +35,7 @@ consider using the lower-level createThrottler hook instead.
 
 `Accessor`\<`TValue`\>
 
-### options
+### initialOptions
 
 `ThrottlerOptions`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>
 

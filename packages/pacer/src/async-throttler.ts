@@ -60,20 +60,20 @@ export class AsyncThrottler<
   TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
-  private abortController: AbortController | null = null
-  private executionCount = 0
-  private isExecuting = false
-  private isScheduled = false
-  private lastArgs: TArgs | undefined
-  private lastExecutionTime = 0
-  private nextExecutionTime = 0
-  private options: Required<AsyncThrottlerOptions<TFn, TArgs>>
+  private _options: Required<AsyncThrottlerOptions<TFn, TArgs>>
+  private _abortController: AbortController | null = null
+  private _executionCount = 0
+  private _isExecuting = false
+  private _isPending = false
+  private _lastArgs: TArgs | undefined
+  private _lastExecutionTime = 0
+  private _nextExecutionTime = 0
 
   constructor(
     private fn: TFn,
     initialOptions: AsyncThrottlerOptions<TFn, TArgs>,
   ) {
-    this.options = {
+    this._options = {
       ...defaultOptions,
       ...initialOptions,
     }
@@ -86,44 +86,18 @@ export class AsyncThrottler<
   setOptions(
     newOptions: Partial<AsyncThrottlerOptions<TFn, TArgs>>,
   ): Required<AsyncThrottlerOptions<TFn, TArgs>> {
-    this.options = {
-      ...this.options,
+    this._options = {
+      ...this._options,
       ...newOptions,
     }
-    return this.options
+    return this._options
   }
 
   /**
-   * Returns the number of times the function has been executed
+   * Returns the current options
    */
-  getExecutionCount(): number {
-    return this.executionCount
-  }
-
-  /**
-   * Returns the last execution time
-   */
-  getLastExecutionTime(): number {
-    return this.lastExecutionTime
-  }
-
-  /**
-   * Returns the next execution time
-   */
-  getNextExecutionTime(): number {
-    return this.nextExecutionTime
-  }
-
-  /**
-   * Cancels any pending execution
-   */
-  cancel(): void {
-    if (this.abortController) {
-      this.abortController.abort()
-      this.abortController = null
-    }
-    this.isScheduled = false
-    this.lastArgs = undefined
+  getOptions(): Required<AsyncThrottlerOptions<TFn, TArgs>> {
+    return this._options
   }
 
   /**
@@ -131,40 +105,40 @@ export class AsyncThrottler<
    * If a call is already in progress, it may be blocked or queued depending on the `wait` option
    */
   async maybeExecute(...args: TArgs): Promise<void> {
-    this.lastArgs = args
-    if (this.isScheduled) return
-    this.isScheduled = true
+    this._lastArgs = args
+    if (this._isPending) return
+    this._isPending = true
 
-    this.abortController = new AbortController()
-    const signal = this.abortController.signal
+    this._abortController = new AbortController()
+    const signal = this._abortController.signal
 
     try {
-      while (this.isExecuting) {
-        await this.delay(this.options.wait, signal)
+      while (this._isExecuting) {
+        await this.delay(this._options.wait, signal)
       }
 
-      while (Date.now() < this.nextExecutionTime) {
-        await this.delay(this.nextExecutionTime - Date.now(), signal)
+      while (Date.now() < this._nextExecutionTime) {
+        await this.delay(this._nextExecutionTime - Date.now(), signal)
       }
 
-      this.isScheduled = false
-      this.isExecuting = true
+      this._isPending = false
+      this._isExecuting = true
 
-      await this.executeFunction(...this.lastArgs)
+      await this.executeFunction(...this._lastArgs)
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
         return // Silent return on cancellation
       }
       try {
-        this.options.onError(error)
+        this._options.onError(error)
       } catch {
         // Ignore errors from error handler
       }
     } finally {
-      this.lastExecutionTime = Date.now()
-      this.nextExecutionTime = this.lastExecutionTime + this.options.wait
-      this.isExecuting = false
-      this.abortController = null
+      this._lastExecutionTime = Date.now()
+      this._nextExecutionTime = this._lastExecutionTime + this._options.wait
+      this._isExecuting = false
+      this._abortController = null
     }
   }
 
@@ -183,10 +157,50 @@ export class AsyncThrottler<
   }
 
   private async executeFunction(...args: TArgs): Promise<void> {
-    if (!this.options.enabled) return
-    this.executionCount++
+    if (!this._options.enabled) return
+    this._executionCount++
     await this.fn(...args)
-    this.options.onExecute(this)
+    this._options.onExecute(this)
+  }
+
+  /**
+   * Cancels any pending execution
+   */
+  cancel(): void {
+    if (this._abortController) {
+      this._abortController.abort()
+      this._abortController = null
+    }
+    this._isPending = false
+    this._lastArgs = undefined
+  }
+
+  /**
+   * Returns the number of times the function has been executed
+   */
+  getExecutionCount(): number {
+    return this._executionCount
+  }
+
+  /**
+   * Returns the last execution time
+   */
+  getLastExecutionTime(): number {
+    return this._lastExecutionTime
+  }
+
+  /**
+   * Returns the next execution time
+   */
+  getNextExecutionTime(): number {
+    return this._nextExecutionTime
+  }
+
+  /**
+   * Returns the current pending state
+   */
+  getIsPending(): boolean {
+    return this._isPending
   }
 }
 

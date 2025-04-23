@@ -151,6 +151,13 @@ export class Queuer<TValue> {
   }
 
   /**
+   * Returns the current queuer options
+   */
+  getOptions(): Required<QueuerOptions<TValue>> {
+    return this._options
+  }
+
+  /**
    * Processes items in the queuer
    */
   private tick() {

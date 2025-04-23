@@ -60,8 +60,11 @@ export interface SolidAsyncRateLimiter<
 export function createAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncRateLimiterOptions<TFn, TArgs>) {
-  const asyncRateLimiter = new AsyncRateLimiter<TFn, TArgs>(fn, options)
+>(
+  fn: TFn,
+  initialOptions: AsyncRateLimiterOptions<TFn, TArgs>,
+): SolidAsyncRateLimiter<TFn, TArgs> {
+  const asyncRateLimiter = new AsyncRateLimiter<TFn, TArgs>(fn, initialOptions)
 
   const [executionCount, setExecutionCount] = createSignal(
     asyncRateLimiter.getExecutionCount(),
@@ -76,21 +79,31 @@ export function createAsyncRateLimiter<
     asyncRateLimiter.getMsUntilNextWindow(),
   )
 
-  asyncRateLimiter.setOptions({
-    ...options,
-    onExecute: (rateLimiter) => {
-      setExecutionCount(rateLimiter.getExecutionCount())
-      setRemainingInWindow(rateLimiter.getRemainingInWindow())
-      setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
-      options.onExecute?.(rateLimiter)
-    },
-    onReject: (rateLimiter) => {
-      setRejectionCount(rateLimiter.getRejectionCount())
-      setRemainingInWindow(rateLimiter.getRemainingInWindow())
-      setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
-      options.onReject?.(rateLimiter)
-    },
-  })
+  function setOptions(
+    newOptions: Partial<AsyncRateLimiterOptions<TFn, TArgs>>,
+  ) {
+    asyncRateLimiter.setOptions({
+      ...newOptions,
+      onExecute: (rateLimiter) => {
+        setExecutionCount(rateLimiter.getExecutionCount())
+        setRemainingInWindow(rateLimiter.getRemainingInWindow())
+        setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+
+        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
+        onExecute?.(rateLimiter)
+      },
+      onReject: (rateLimiter) => {
+        setRejectionCount(rateLimiter.getRejectionCount())
+        setRemainingInWindow(rateLimiter.getRemainingInWindow())
+        setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+
+        const onReject = newOptions.onReject ?? initialOptions.onReject
+        onReject?.(rateLimiter)
+      },
+    })
+  }
+
+  setOptions(initialOptions)
 
   return {
     ...bindInstanceMethods(asyncRateLimiter),
@@ -98,5 +111,6 @@ export function createAsyncRateLimiter<
     rejectionCount,
     remainingInWindow,
     msUntilNextWindow,
+    setOptions,
   }
 }

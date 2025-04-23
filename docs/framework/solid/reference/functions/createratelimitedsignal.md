@@ -8,7 +8,7 @@ title: createRateLimitedSignal
 # Function: createRateLimitedSignal()
 
 ```ts
-function createRateLimitedSignal<TValue>(value, options): [Accessor<TValue>, Setter<TValue>, SolidRateLimiter<Setter<TValue>, [Accessor<TValue>]>]
+function createRateLimitedSignal<TValue>(value, initialOptions): [Accessor<TValue>, Setter<TValue>, SolidRateLimiter<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
 Defined in: [rate-limiter/createRateLimitedSignal.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L58)
@@ -44,7 +44,7 @@ consider using the lower-level createRateLimiter hook instead.
 
 `TValue`
 
-### options
+### initialOptions
 
 `RateLimiterOptions`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>
 

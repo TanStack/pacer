@@ -97,33 +97,10 @@ export class RateLimiter<
   }
 
   /**
-   * Returns the number of times the function has been executed
+   * Returns the current rate limiter options
    */
-  getExecutionCount(): number {
-    return this._executionCount
-  }
-
-  /**
-   * Returns the number of times the function has been rejected
-   */
-  getRejectionCount(): number {
-    return this._rejectionCount
-  }
-
-  /**
-   * Returns the number of remaining executions allowed in the current window
-   */
-  getRemainingInWindow(): number {
-    this.cleanupOldExecutions()
-    return Math.max(0, this._options.limit - this._executionTimes.length)
-  }
-
-  /**
-   * Returns the number of milliseconds until the next execution will be possible
-   */
-  getMsUntilNextWindow(): number {
-    const oldestExecution = Math.min(...this._executionTimes)
-    return oldestExecution + this._options.window - Date.now()
+  getOptions(): Required<RateLimiterOptions<TFn, TArgs>> {
+    return this._options as Required<RateLimiterOptions<TFn, TArgs>>
   }
 
   /**
@@ -176,6 +153,36 @@ export class RateLimiter<
     this._executionTimes = this._executionTimes.filter(
       (time) => time > windowStart,
     )
+  }
+
+  /**
+   * Returns the number of times the function has been executed
+   */
+  getExecutionCount(): number {
+    return this._executionCount
+  }
+
+  /**
+   * Returns the number of times the function has been rejected
+   */
+  getRejectionCount(): number {
+    return this._rejectionCount
+  }
+
+  /**
+   * Returns the number of remaining executions allowed in the current window
+   */
+  getRemainingInWindow(): number {
+    this.cleanupOldExecutions()
+    return Math.max(0, this._options.limit - this._executionTimes.length)
+  }
+
+  /**
+   * Returns the number of milliseconds until the next execution will be possible
+   */
+  getMsUntilNextWindow(): number {
+    const oldestExecution = Math.min(...this._executionTimes)
+    return oldestExecution + this._options.window - Date.now()
   }
 
   /**

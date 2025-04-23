@@ -13,9 +13,9 @@ Defined in: [rate-limiter/createRateLimiter.ts:8](https://github.com/TanStack/pa
 
 - `Omit`\<`RateLimiter`\<`TFn`, `TArgs`\>, 
   \| `"getExecutionCount"`
+  \| `"getMsUntilNextWindow"`
   \| `"getRejectionCount"`
-  \| `"getRemainingInWindow"`
-  \| `"getMsUntilNextWindow"`\>
+  \| `"getRemainingInWindow"`\>
 
 ## Type Parameters
 
@@ -41,7 +41,7 @@ Defined in: [rate-limiter/createRateLimiter.ts:18](https://github.com/TanStack/p
 msUntilNextWindow: Accessor<number>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L21)
+Defined in: [rate-limiter/createRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L19)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [rate-limiter/createRateLimiter.ts:21](https://github.com/TanStack/p
 rejectionCount: Accessor<number>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L19)
+Defined in: [rate-limiter/createRateLimiter.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L20)
 
 ***
 
@@ -61,4 +61,4 @@ Defined in: [rate-limiter/createRateLimiter.ts:19](https://github.com/TanStack/p
 remainingInWindow: Accessor<number>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L20)
+Defined in: [rate-limiter/createRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L21)

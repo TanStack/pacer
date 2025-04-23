@@ -93,6 +93,9 @@ export function createQueuer<TValue>(
 ): SolidQueuer<TValue> {
   const queuer = new Queuer<TValue>(initialOptions)
 
+  const [allItems, setAllItems] = createSignal<Array<TValue>>(
+    queuer.getAllItems(),
+  )
   const [executionCount, setExecutionCount] = createSignal(
     queuer.getExecutionCount(),
   )
@@ -103,33 +106,43 @@ export function createQueuer<TValue>(
   const [isFull, setIsFull] = createSignal(queuer.getIsFull())
   const [isIdle, setIsIdle] = createSignal(queuer.getIsIdle())
   const [isRunning, setIsRunning] = createSignal(queuer.getIsRunning())
-  const [allItems, setAllItems] = createSignal<Array<TValue>>(
-    queuer.getAllItems(),
-  )
   const [peek, setPeek] = createSignal<TValue | undefined>(queuer.getPeek())
   const [size, setSize] = createSignal(queuer.getSize())
 
-  queuer.setOptions({
-    onItemsChange: (queuer) => {
-      setAllItems(queuer.getAllItems())
-      setExecutionCount(queuer.getExecutionCount())
-      setIsEmpty(queuer.getIsEmpty())
-      setIsFull(queuer.getIsFull())
-      setIsIdle(queuer.getIsIdle())
-      setPeek(() => queuer.getPeek())
-      setSize(queuer.getSize())
-      initialOptions.onItemsChange?.(queuer)
-    },
-    onIsRunningChange: (queuer) => {
-      setIsRunning(queuer.getIsRunning())
-      setIsIdle(queuer.getIsIdle())
-      initialOptions.onIsRunningChange?.(queuer)
-    },
-    onReject: (item, queuer) => {
-      setRejectionCount(queuer.getRejectionCount())
-      initialOptions.onReject?.(item, queuer)
-    },
-  })
+  function setOptions(newOptions: Partial<QueuerOptions<TValue>>) {
+    queuer.setOptions({
+      ...newOptions,
+      onItemsChange: (queuer) => {
+        setAllItems(queuer.getAllItems())
+        setExecutionCount(queuer.getExecutionCount())
+        setIsEmpty(queuer.getIsEmpty())
+        setIsFull(queuer.getIsFull())
+        setIsIdle(queuer.getIsIdle())
+        setPeek(() => queuer.getPeek())
+        setSize(queuer.getSize())
+
+        const onItemsChange =
+          newOptions.onItemsChange ?? initialOptions.onItemsChange
+        onItemsChange?.(queuer)
+      },
+      onIsRunningChange: (queuer) => {
+        setIsRunning(queuer.getIsRunning())
+        setIsIdle(queuer.getIsIdle())
+
+        const onIsRunningChange =
+          newOptions.onIsRunningChange ?? initialOptions.onIsRunningChange
+        onIsRunningChange?.(queuer)
+      },
+      onReject: (item, queuer) => {
+        setRejectionCount(queuer.getRejectionCount())
+
+        const onReject = newOptions.onReject ?? initialOptions.onReject
+        onReject?.(item, queuer)
+      },
+    })
+  }
+
+  setOptions(initialOptions)
 
   return {
     ...bindInstanceMethods(queuer),
@@ -142,5 +155,6 @@ export function createQueuer<TValue>(
     peek,
     rejectionCount,
     size,
+    setOptions,
   }
 }

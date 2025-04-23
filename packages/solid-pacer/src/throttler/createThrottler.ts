@@ -11,9 +11,17 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 export interface SolidThrottler<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
-> extends Omit<Throttler<TFn, TArgs>, 'getExecutionCount' | 'getIsPending'> {
+> extends Omit<
+    Throttler<TFn, TArgs>,
+    | 'getExecutionCount'
+    | 'getIsPending'
+    | 'getLastExecutionTime'
+    | 'getNextExecutionTime'
+  > {
   executionCount: Accessor<number>
   isPending: Accessor<boolean>
+  lastExecutionTime: Accessor<number>
+  nextExecutionTime: Accessor<number>
 }
 
 /**
@@ -52,8 +60,11 @@ export interface SolidThrottler<
 export function createThrottler<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: ThrottlerOptions<TFn, TArgs>): SolidThrottler<TFn, TArgs> {
-  const throttler = new Throttler<TFn, TArgs>(fn, options)
+>(
+  fn: TFn,
+  initialOptions: ThrottlerOptions<TFn, TArgs>,
+): SolidThrottler<TFn, TArgs> {
+  const throttler = new Throttler<TFn, TArgs>(fn, initialOptions)
 
   const [executionCount, setExecutionCount] = createSignal(
     throttler.getExecutionCount(),
@@ -66,16 +77,22 @@ export function createThrottler<
     throttler.getNextExecutionTime(),
   )
 
-  throttler.setOptions({
-    ...options,
-    onExecute: (throttler) => {
-      setExecutionCount(throttler.getExecutionCount())
-      setIsPending(throttler.getIsPending())
-      setLastExecutionTime(throttler.getLastExecutionTime())
-      setNextExecutionTime(throttler.getNextExecutionTime())
-      options.onExecute?.(throttler)
-    },
-  })
+  function setOptions(newOptions: Partial<ThrottlerOptions<TFn, TArgs>>) {
+    throttler.setOptions({
+      ...newOptions,
+      onExecute: (throttler) => {
+        setExecutionCount(throttler.getExecutionCount())
+        setIsPending(throttler.getIsPending())
+        setLastExecutionTime(throttler.getLastExecutionTime())
+        setNextExecutionTime(throttler.getNextExecutionTime())
+
+        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
+        onExecute?.(throttler)
+      },
+    })
+  }
+
+  setOptions(initialOptions)
 
   return {
     ...bindInstanceMethods(throttler),
@@ -83,5 +100,6 @@ export function createThrottler<
     isPending,
     lastExecutionTime,
     nextExecutionTime,
+    setOptions,
   }
 }

@@ -1,6 +1,25 @@
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
+import { createSignal } from 'solid-js'
+import { bindInstanceMethods } from '../utils'
+import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
+
+export interface SolidAsyncThrottler<
+  TFn extends AnyAsyncFunction,
+  TArgs extends Parameters<TFn>,
+> extends Omit<
+    AsyncThrottler<TFn, TArgs>,
+    | 'getExecutionCount'
+    | 'getIsPending'
+    | 'getLastExecutionTime'
+    | 'getNextExecutionTime'
+  > {
+  executionCount: Accessor<number>
+  isPending: Accessor<boolean>
+  lastExecutionTime: Accessor<number>
+  nextExecutionTime: Accessor<number>
+}
 
 /**
  * A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
@@ -42,6 +61,46 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 export function createAsyncThrottler<
   TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncThrottlerOptions<TFn, TArgs>) {
-  return new AsyncThrottler<TFn, TArgs>(fn, options)
+>(
+  fn: TFn,
+  initialOptions: AsyncThrottlerOptions<TFn, TArgs>,
+): SolidAsyncThrottler<TFn, TArgs> {
+  const asyncThrottler = new AsyncThrottler<TFn, TArgs>(fn, initialOptions)
+
+  const [executionCount, setExecutionCount] = createSignal(
+    asyncThrottler.getExecutionCount(),
+  )
+  const [isPending, setIsPending] = createSignal(asyncThrottler.getIsPending())
+  const [lastExecutionTime, setLastExecutionTime] = createSignal(
+    asyncThrottler.getLastExecutionTime(),
+  )
+  const [nextExecutionTime, setNextExecutionTime] = createSignal(
+    asyncThrottler.getNextExecutionTime(),
+  )
+
+  function setOptions(newOptions: Partial<AsyncThrottlerOptions<TFn, TArgs>>) {
+    asyncThrottler.setOptions({
+      ...newOptions,
+      onExecute: (throttler) => {
+        setExecutionCount(throttler.getExecutionCount())
+        setIsPending(throttler.getIsPending())
+        setLastExecutionTime(throttler.getLastExecutionTime())
+        setNextExecutionTime(throttler.getNextExecutionTime())
+
+        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
+        onExecute?.(throttler)
+      },
+    })
+  }
+
+  setOptions(initialOptions)
+
+  return {
+    ...bindInstanceMethods(asyncThrottler),
+    executionCount,
+    isPending,
+    lastExecutionTime,
+    nextExecutionTime,
+    setOptions,
+  }
 }

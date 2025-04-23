@@ -1,6 +1,20 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
+import { createSignal } from 'solid-js'
+import { bindInstanceMethods } from '../utils'
 import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { Accessor } from 'solid-js'
+
+export interface SolidAsyncDebouncer<
+  TFn extends AnyAsyncFunction,
+  TArgs extends Parameters<TFn>,
+> extends Omit<
+    AsyncDebouncer<TFn, TArgs>,
+    'getExecutionCount' | 'getIsPending'
+  > {
+  executionCount: Accessor<number>
+  isPending: Accessor<boolean>
+}
 
 /**
  * A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
@@ -40,6 +54,36 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 export function createAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncDebouncerOptions<TFn, TArgs>) {
-  return new AsyncDebouncer<TFn, TArgs>(fn, options)
+>(
+  fn: TFn,
+  initialOptions: AsyncDebouncerOptions<TFn, TArgs>,
+): SolidAsyncDebouncer<TFn, TArgs> {
+  const asyncDebouncer = new AsyncDebouncer<TFn, TArgs>(fn, initialOptions)
+
+  const [executionCount, setExecutionCount] = createSignal(
+    asyncDebouncer.getExecutionCount(),
+  )
+  const [isPending, setIsPending] = createSignal(asyncDebouncer.getIsPending())
+
+  function setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn, TArgs>>) {
+    asyncDebouncer.setOptions({
+      ...newOptions,
+      onExecute: (asyncDebouncer) => {
+        setExecutionCount(asyncDebouncer.getExecutionCount())
+        setIsPending(asyncDebouncer.getIsPending())
+
+        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
+        onExecute?.(asyncDebouncer)
+      },
+    })
+  }
+
+  setOptions(initialOptions)
+
+  return {
+    ...bindInstanceMethods(asyncDebouncer),
+    executionCount,
+    isPending,
+    setOptions,
+  }
 }

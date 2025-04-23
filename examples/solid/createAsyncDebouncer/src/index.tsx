@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from 'solid-js'
+import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncDebouncer } from '@tanstack/solid-pacer/async-debouncer'
 
@@ -42,7 +42,7 @@ function App() {
     setIsLoading(false)
     setError(null)
 
-    console.log(setSearchAsyncDebouncer.getExecutionCount())
+    console.log(setSearchAsyncDebouncer.executionCount())
   }
 
   // hook that gives you an async debouncer instance
@@ -64,17 +64,8 @@ function App() {
     setSearchAsyncDebouncer,
   )
 
-  createEffect(() => {
-    console.log('mount')
-    return () => {
-      console.log('unmount')
-      setSearchAsyncDebouncer.cancel() // cancel any pending async calls when the component unmounts
-    }
-  }, [])
-
   // instant event handler that calls both the instant local state setter and the debounced function
   async function onSearchChange(e: Event) {
-    console.log('onSearchChange')
     const newTerm = (e.target as HTMLInputElement).value
     setSearchTerm(newTerm)
     await handleSearchDebounced(newTerm) // optionally await if you need to

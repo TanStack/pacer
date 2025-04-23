@@ -9,8 +9,10 @@ title: "@tanstack/solid-pacer"
 
 ## Interfaces
 
+- [SolidAsyncDebouncer](interfaces/solidasyncdebouncer.md)
 - [SolidAsyncQueuer](interfaces/solidasyncqueuer.md)
 - [SolidAsyncRateLimiter](interfaces/solidasyncratelimiter.md)
+- [SolidAsyncThrottler](interfaces/solidasyncthrottler.md)
 - [SolidDebouncer](interfaces/soliddebouncer.md)
 - [SolidQueuer](interfaces/solidqueuer.md)
 - [SolidRateLimiter](interfaces/solidratelimiter.md)

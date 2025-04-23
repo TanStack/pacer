@@ -56,7 +56,9 @@ function App() {
   })
 
   // get and name our debounced function
-  const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute
+  const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute.bind(
+    setSearchAsyncDebouncer,
+  )
 
   useEffect(() => {
     console.log('mount')

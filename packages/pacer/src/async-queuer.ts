@@ -137,6 +137,13 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
+   * Returns the current queuer options
+   */
+  getOptions(): Required<AsyncQueuerOptions<TValue>> {
+    return this._options
+  }
+
+  /**
    * Processes items in the queuer
    */
   private tick() {

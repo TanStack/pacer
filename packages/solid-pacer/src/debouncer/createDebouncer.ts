@@ -64,18 +64,25 @@ export function createDebouncer<
   )
   const [isPending, setIsPending] = createSignal(debouncer.getIsPending())
 
-  debouncer.setOptions({
-    ...initialOptions,
-    onExecute: (debouncer) => {
-      setExecutionCount(debouncer.getExecutionCount())
-      setIsPending(debouncer.getIsPending())
-      initialOptions.onExecute?.(debouncer)
-    },
-  })
+  function setOptions(newOptions: Partial<DebouncerOptions<TFn, TArgs>>) {
+    debouncer.setOptions({
+      ...newOptions,
+      onExecute: (debouncer) => {
+        setExecutionCount(debouncer.getExecutionCount())
+        setIsPending(debouncer.getIsPending())
+
+        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
+        onExecute?.(debouncer)
+      },
+    })
+  }
+
+  setOptions(initialOptions)
 
   return {
     ...bindInstanceMethods(debouncer),
     executionCount,
     isPending,
+    setOptions,
   }
 }

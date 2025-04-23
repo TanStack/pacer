@@ -102,17 +102,10 @@ export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
   }
 
   /**
-   * Returns the number of times the function has been executed
+   * Returns the current debouncer options
    */
-  getExecutionCount(): number {
-    return this._executionCount
-  }
-
-  /**
-   * Returns `true` if debouncing
-   */
-  getIsPending(): boolean {
-    return this._options.enabled && this._isPending
+  getOptions(): Required<DebouncerOptions<TFn, TArgs>> {
+    return this._options
   }
 
   /**
@@ -161,6 +154,20 @@ export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
       this._canLeadingExecute = true
       this._isPending = false
     }
+  }
+
+  /**
+   * Returns the number of times the function has been executed
+   */
+  getExecutionCount(): number {
+    return this._executionCount
+  }
+
+  /**
+   * Returns `true` if debouncing
+   */
+  getIsPending(): boolean {
+    return this._options.enabled && this._isPending
   }
 }
 

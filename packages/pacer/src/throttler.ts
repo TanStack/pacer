@@ -100,31 +100,10 @@ export class Throttler<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
   }
 
   /**
-   * Returns the number of times the function has been executed
+   * Returns the current throttler options
    */
-  getExecutionCount(): number {
-    return this._executionCount
-  }
-
-  /**
-   * Returns the last execution time
-   */
-  getLastExecutionTime(): number {
-    return this._lastExecutionTime
-  }
-
-  /**
-   * Returns the next execution time
-   */
-  getNextExecutionTime(): number {
-    return this._lastExecutionTime + this._options.wait
-  }
-
-  /**
-   * Returns `true` if there is a pending execution
-   */
-  getIsPending(): boolean {
-    return this._options.enabled && this._isPending
+  getOptions(): Required<ThrottlerOptions<TFn, TArgs>> {
+    return this._options
   }
 
   /**
@@ -175,6 +154,7 @@ export class Throttler<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
           this._lastExecutionTime = Date.now()
           this._timeoutId = undefined
           this._isPending = false
+          this._options.onExecute(this)
         }, this._options.wait - timeSinceLastExecution)
       }
     }
@@ -184,7 +164,6 @@ export class Throttler<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
     if (!this._options.enabled) return
     this.fn(...args) // EXECUTE!
     this._executionCount++
-    this._options.onExecute(this)
   }
 
   /**
@@ -203,6 +182,34 @@ export class Throttler<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
       this._lastArgs = undefined
       this._isPending = false
     }
+  }
+
+  /**
+   * Returns the number of times the function has been executed
+   */
+  getExecutionCount(): number {
+    return this._executionCount
+  }
+
+  /**
+   * Returns `true` if there is a pending execution
+   */
+  getIsPending(): boolean {
+    return this._options.enabled && this._isPending
+  }
+
+  /**
+   * Returns the last execution time
+   */
+  getLastExecutionTime(): number {
+    return this._lastExecutionTime
+  }
+
+  /**
+   * Returns the next execution time
+   */
+  getNextExecutionTime(): number {
+    return this._lastExecutionTime + this._options.wait
   }
 }
 
