@@ -8,10 +8,10 @@ title: useDebouncer
 # Function: useDebouncer()
 
 ```ts
-function useDebouncer<TFn, TArgs>(fn, options): Debouncer<TFn, TArgs>
+function useDebouncer<TFn, TArgs>(fn, options): any
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L41)
+Defined in: [debouncer/useDebouncer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L42)
 
 A React hook that creates and manages a Debouncer instance.
 
@@ -45,7 +45,7 @@ timer resets and starts waiting again.
 
 ## Returns
 
-`Debouncer`\<`TFn`, `TArgs`\>
+`any`
 
 ## Example
 

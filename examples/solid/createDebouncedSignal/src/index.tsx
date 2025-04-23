@@ -70,7 +70,7 @@ function App2() {
       <h1>TanStack Pacer createDebouncedSignal Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={instantSearch()}
           onInput={handleSearchChange}
           placeholder="Type to search..."

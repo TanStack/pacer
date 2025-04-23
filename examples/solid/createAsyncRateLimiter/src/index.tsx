@@ -57,9 +57,7 @@ function App() {
   })
 
   // get and name our rate limited function
-  const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute.bind(
-    setSearchAsyncRateLimiter,
-  )
+  const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute
 
   // instant event handler that calls both the instant local state setter and the rate limited function
   async function onSearchChange(e: Event) {
@@ -73,7 +71,7 @@ function App() {
       <h1>TanStack Pacer createAsyncRateLimiter Example</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={searchTerm()}
           onInput={onSearchChange}
           placeholder="Type to search..."

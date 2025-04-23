@@ -8,10 +8,10 @@ title: useDebouncedCallback
 # Function: useDebouncedCallback()
 
 ```ts
-function useDebouncedCallback<TFn, TArgs>(fn, options): (...args) => void
+function useDebouncedCallback<TFn, TArgs>(fn, options): (...args) => any
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L42)
+Defined in: [debouncer/useDebouncedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L42)
 
 A React hook that creates a debounced version of a callback function.
 This hook is essentially a wrapper around the basic `debounce` function
@@ -60,7 +60,7 @@ Consider using the `useDebouncer` hook instead.
 
 ### Returns
 
-`void`
+`any`
 
 ## Example
 
@@ -74,7 +74,7 @@ const handleSearch = useDebouncedCallback((query: string) => {
 
 // Use in an input
 <input
-  type="text"
+  type="search"
   onChange={(e) => handleSearch(e.target.value)}
 />
 ```

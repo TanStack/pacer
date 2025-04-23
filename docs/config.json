@@ -16,10 +16,6 @@
         {
           "label": "Quick Start",
           "to": "quick-start"
-        },
-        {
-          "label": "API Reference TOC",
-          "to": "reference/index"
         }
       ],
       "frameworks": [
@@ -33,10 +29,6 @@
             {
               "label": "React Adapter",
               "to": "framework/react/adapter"
-            },
-            {
-              "label": "React Hooks",
-              "to": "framework/react/reference/index"
             }
           ]
         },
@@ -50,10 +42,6 @@
             {
               "label": "Solid Adapter",
               "to": "framework/solid/adapter"
-            },
-            {
-              "label": "Solid Hooks",
-              "to": "framework/solid/reference/index"
             }
           ]
         }
@@ -81,6 +69,35 @@
         {
           "label": "Async Queueing Guide",
           "to": "guides/async-queueing"
+        }
+      ]
+    },
+    {
+      "label": "API Reference",
+      "children": [
+        {
+          "label": "Core API Reference",
+          "to": "reference/index"
+        }
+      ],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "React Hooks",
+              "to": "framework/react/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "Solid Hooks",
+              "to": "framework/solid/reference/index"
+            }
+          ]
         }
       ]
     },

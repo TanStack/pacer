@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 
 /**
@@ -54,7 +55,9 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 export function useAsyncQueuer<TValue>(
   options: AsyncQueuerOptions<TValue> = {},
 ) {
-  const [asyncQueuer] = useState(() => new AsyncQueuer<TValue>(options))
+  const [asyncQueuer] = useState(() =>
+    bindInstanceMethods(new AsyncQueuer<TValue>(options)),
+  )
 
   asyncQueuer.setOptions(options)
 

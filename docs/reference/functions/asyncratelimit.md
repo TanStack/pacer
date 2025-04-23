@@ -11,7 +11,7 @@ title: asyncRateLimit
 function asyncRateLimit<TFn, TArgs>(fn, initialOptions): (...args) => Promise<boolean>
 ```
 
-Defined in: [async-rate-limiter.ts:244](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L244)
+Defined in: [async-rate-limiter.ts:245](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L245)
 
 Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -25,7 +25,7 @@ need to enforce a hard limit on the number of executions within a time period.
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyAsyncFunction`
+• **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
 
 • **TArgs** *extends* `any`[]
 

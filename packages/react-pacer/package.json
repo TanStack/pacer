@@ -121,6 +121,16 @@
       "types": "./dist/esm/types/index.d.ts",
       "default": "./dist/esm/types/index.js"
     },
+    "./utils": {
+      "import": {
+        "types": "./dist/esm/utils/index.d.ts",
+        "default": "./dist/esm/utils/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/utils/index.d.cts",
+        "default": "./dist/cjs/utils/index.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,

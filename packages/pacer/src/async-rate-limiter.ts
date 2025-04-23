@@ -42,6 +42,7 @@ const defaultOptions: Required<
   onError: () => {},
   onExecute: () => {},
 }
+
 /**
  * A class that creates an async rate-limited function.
  *

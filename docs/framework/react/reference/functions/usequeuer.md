@@ -8,10 +8,10 @@ title: useQueuer
 # Function: useQueuer()
 
 ```ts
-function useQueuer<TValue>(options): Queuer<TValue>
+function useQueuer<TValue>(options): any
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L43)
+Defined in: [queuer/useQueuer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L44)
 
 A React hook that creates and manages a Queuer instance.
 
@@ -41,7 +41,7 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 ## Returns
 
-`Queuer`\<`TValue`\>
+`any`
 
 ## Example
 

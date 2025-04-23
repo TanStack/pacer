@@ -8,10 +8,10 @@ title: useThrottledState
 # Function: useThrottledState()
 
 ```ts
-function useThrottledState<TValue>(value, options): readonly [TValue, (...args) => void, Throttler<Dispatch<SetStateAction<TValue>>, [SetStateAction<TValue>]>]
+function useThrottledState<TValue>(value, options): readonly [TValue, any, any]
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottledState.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledState.ts#L40)
+Defined in: [throttler/useThrottledState.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledState.ts#L40)
 
 A React hook that creates a throttled state value that updates at most once within a specified time window.
 This hook combines React's useState with throttling functionality to provide controlled state updates.
@@ -43,7 +43,7 @@ consider using the lower-level useThrottler hook instead.
 
 ## Returns
 
-readonly \[`TValue`, (...`args`) => `void`, `Throttler`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>\]
+readonly \[`TValue`, `any`, `any`\]
 
 ## Example
 

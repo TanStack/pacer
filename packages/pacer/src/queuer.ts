@@ -112,7 +112,7 @@ export type QueuePosition = 'front' | 'back'
  *   getPriority: (n) => n, // Higher numbers have priority
  *   started: true, // Begin processing immediately
  *   wait: 1000, // Wait 1s between items
- *   onGetNextItem: (item) => console.log(item)
+ *   onGetNextItem: (item, queuer) => console.log(item)
  * });
  * priorityQueue.addItem(1); // [1]
  * priorityQueue.addItem(3); // [3, 1] - 3 processed first

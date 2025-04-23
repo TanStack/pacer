@@ -38,7 +38,7 @@ throttler.maybeExecute('123'); // Throttled
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyFunction`
+• **TFn** *extends* [`AnyFunction`](../type-aliases/anyfunction.md)
 
 • **TArgs** *extends* `Parameters`\<`TFn`\>
 

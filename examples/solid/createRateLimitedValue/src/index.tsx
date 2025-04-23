@@ -67,7 +67,7 @@ function App2() {
       <h1>TanStack Pacer createRateLimitedValue Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={instantSearch()}
           onInput={handleSearchChange}
           placeholder="Type to search..."

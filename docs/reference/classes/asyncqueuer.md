@@ -9,13 +9,13 @@ title: AsyncQueuer
 
 Defined in: [async-queuer.ts:105](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L105)
 
-A flexible asynchronous queuer that processes tasks with configurable concurrency control.
+A flexible asynchronous queue that processes tasks with configurable concurrency control.
 
 Features:
-- Priority queuer support via getPriority option
+- Priority queue support via getPriority option
 - Configurable concurrency limit
 - Task success/error/completion callbacks
-- FIFO (First In First Out) or LIFO (Last In First Out) queuer behavior
+- FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
 - Pause/resume task processing
 - Task cancellation
 
@@ -25,15 +25,15 @@ the next pending task is processed if below the concurrency limit.
 ## Example
 
 ```ts
-const queuer = new AsyncQueuer<string>({ concurrency: 2 });
+const asyncQueuer = new AsyncQueuer<string>({ concurrency: 2 });
 
-queuer.addItem(async () => {
+asyncQueuer.addItem(async () => {
   return 'Hello';
 });
 
-queuer.start();
+asyncQueuer.start();
 
-queuer.onSuccess((result) => {
+asyncQueuer.onSuccess((result) => {
   console.log(result); // 'Hello'
 });
 ```

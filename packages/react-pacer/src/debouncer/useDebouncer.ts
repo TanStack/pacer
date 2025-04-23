@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
@@ -42,7 +43,9 @@ export function useDebouncer<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
 >(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
-  const [debouncer] = useState(() => new Debouncer<TFn, TArgs>(fn, options))
+  const [debouncer] = useState(() =>
+    bindInstanceMethods(new Debouncer<TFn, TArgs>(fn, options)),
+  )
 
   debouncer.setOptions(options)
 

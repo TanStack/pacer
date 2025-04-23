@@ -1,6 +1,6 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '../utils'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { Accessor } from 'solid-js'

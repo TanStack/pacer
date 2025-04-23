@@ -21,19 +21,19 @@ the function stops being called for the specified delay period.
 ## Example
 
 ```ts
-const debouncer = new AsyncDebouncer(async (value: string) => {
+const asyncDebouncer = new AsyncDebouncer(async (value: string) => {
   await searchAPI(value);
 }, { wait: 500 });
 
 // Called on each keystroke but only executes after 500ms of no typing
 inputElement.addEventListener('input', () => {
-  debouncer.maybeExecute(inputElement.value);
+  asyncDebouncer.maybeExecute(inputElement.value);
 });
 ```
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyAsyncFunction`
+• **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
 
 • **TArgs** *extends* `Parameters`\<`TFn`\>
 

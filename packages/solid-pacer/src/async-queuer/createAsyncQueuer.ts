@@ -1,6 +1,6 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '../utils'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
 import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 

@@ -8,10 +8,10 @@ title: useQueuerState
 # Function: useQueuerState()
 
 ```ts
-function useQueuerState<TValue>(options): readonly [TValue[], Queuer<TValue>]
+function useQueuerState<TValue>(options): readonly [TValue[], any]
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuerState.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuerState.ts#L54)
+Defined in: [queuer/useQueuerState.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuerState.ts#L54)
 
 A React hook that creates a queuer with managed state, combining React's useState with queuing functionality.
 This hook provides both the current queue state and queue control methods.
@@ -39,7 +39,7 @@ The hook returns a tuple containing:
 
 ## Returns
 
-readonly \[`TValue`[], `Queuer`\<`TValue`\>\]
+readonly \[`TValue`[], `any`\]
 
 ## Example
 

@@ -8,10 +8,10 @@ title: useThrottler
 # Function: useThrottler()
 
 ```ts
-function useThrottler<TFn, TArgs>(fn, options): Throttler<TFn, TArgs>
+function useThrottler<TFn, TArgs>(fn, options): any
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L46)
+Defined in: [throttler/useThrottler.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L42)
 
 A low-level React hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
@@ -22,11 +22,6 @@ integrates directly with React's useState, see useThrottledState.
 Throttling ensures a function executes at most once within a specified time window,
 regardless of how many times it is called. This is useful for rate-limiting
 expensive operations or UI updates.
-
-The hook returns an object containing:
-- maybeExecute: The throttled function that respects the configured wait time
-- cancel: A function to cancel any pending trailing execution
-- getExecutionCount: A function that returns the number of times the throttled function has executed
 
 ## Type Parameters
 
@@ -46,24 +41,24 @@ The hook returns an object containing:
 
 ## Returns
 
-`Throttler`\<`TFn`, `TArgs`\>
+`any`
 
 ## Example
 
 ```tsx
 // Basic throttling with custom state
 const [value, setValue] = useState(0);
-const { maybeExecute } = useThrottler(setValue, { wait: 1000 });
+const throttler = useThrottler(setValue, { wait: 1000 });
 
 // With Redux
 const dispatch = useDispatch();
-const { maybeExecute } = useThrottler(
+const throttler = useThrottler(
   (value) => dispatch(updateAction(value)),
   { wait: 1000 }
 );
 
 // With any state manager
-const { maybeExecute, cancel } = useThrottler(
+const throttler = useThrottler(
   (value) => stateManager.setState(value),
   {
     wait: 2000,

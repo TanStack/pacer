@@ -81,7 +81,7 @@ function App2() {
       <h1>TanStack Pacer rateLimit Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={text}
           onChange={handleTextChange}
           placeholder="Type text (rate limited to 3 updates per 5 seconds)..."

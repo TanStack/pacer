@@ -56,9 +56,7 @@ function App() {
   })
 
   // get and name our throttled function
-  const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute.bind(
-    setSearchAsyncThrottler,
-  )
+  const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute
 
   // instant event handler that calls both the instant local state setter and the throttled function
   async function onSearchChange(e: Event) {
@@ -72,7 +70,7 @@ function App() {
       <h1>TanStack Pacer createAsyncThrottler Example</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={searchTerm()}
           onInput={onSearchChange}
           placeholder="Type to search..."

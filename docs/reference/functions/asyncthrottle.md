@@ -19,7 +19,7 @@ If called while executing, it will wait until execution completes before schedul
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyAsyncFunction`
+• **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
 
 • **TArgs** *extends* `any`[]
 

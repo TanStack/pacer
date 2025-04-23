@@ -1,6 +1,6 @@
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '../utils'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'

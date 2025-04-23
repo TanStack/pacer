@@ -19,7 +19,7 @@ If called again during the wait period, the timer resets and a new wait period b
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyAsyncFunction`
+• **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
 
 • **TArgs** *extends* `any`[]
 

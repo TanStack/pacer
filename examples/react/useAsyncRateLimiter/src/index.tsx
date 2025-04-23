@@ -57,9 +57,7 @@ function App() {
   })
 
   // get and name our rate limited function
-  const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute.bind(
-    setSearchAsyncRateLimiter,
-  )
+  const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute
 
   useEffect(() => {
     console.log('mount')
@@ -81,7 +79,7 @@ function App() {
       <h1>TanStack Pacer useAsyncRateLimiter Example</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={searchTerm}
           onChange={onSearchChange}
           placeholder="Type to search..."

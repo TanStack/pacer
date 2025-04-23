@@ -1,6 +1,6 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '../utils'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'

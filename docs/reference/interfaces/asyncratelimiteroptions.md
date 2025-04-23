@@ -13,7 +13,7 @@ Options for configuring an async rate-limited function
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyAsyncFunction`
+• **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
 
 • **TArgs** *extends* `Parameters`\<`TFn`\>
 

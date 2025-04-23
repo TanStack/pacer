@@ -13,7 +13,7 @@ Options for configuring a rate-limited function
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyFunction`
+• **TFn** *extends* [`AnyFunction`](../type-aliases/anyfunction.md)
 
 • **TArgs** *extends* `Parameters`\<`TFn`\>
 

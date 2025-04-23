@@ -8,10 +8,10 @@ title: useAsyncQueuerState
 # Function: useAsyncQueuerState()
 
 ```ts
-function useAsyncQueuerState<TValue>(options): readonly [() => Promise<TValue>[], AsyncQueuer<TValue>]
+function useAsyncQueuerState<TValue>(options): readonly [() => Promise<TValue>[], any]
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuerState.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuerState.ts#L50)
+Defined in: [async-queuer/useAsyncQueuerState.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuerState.ts#L50)
 
 A higher-level React hook that creates an `AsyncQueuer` instance with built-in state management.
 
@@ -44,7 +44,7 @@ The state will automatically update whenever items are:
 
 ## Returns
 
-readonly \[() => `Promise`\<`TValue`\>[], `AsyncQueuer`\<`TValue`\>\]
+readonly \[() => `Promise`\<`TValue`\>[], `any`\]
 
 ## Example
 

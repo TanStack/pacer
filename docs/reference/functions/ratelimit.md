@@ -25,7 +25,7 @@ need to enforce a hard limit on the number of executions within a time period.
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyFunction`
+• **TFn** *extends* [`AnyFunction`](../type-aliases/anyfunction.md)
 
 ## Parameters
 

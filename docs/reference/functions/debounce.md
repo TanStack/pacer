@@ -24,7 +24,7 @@ before allowing another execution.
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyFunction`
+• **TFn** *extends* [`AnyFunction`](../type-aliases/anyfunction.md)
 
 ## Parameters
 

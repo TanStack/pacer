@@ -60,9 +60,7 @@ function App() {
   })
 
   // get and name our debounced function
-  const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute.bind(
-    setSearchAsyncDebouncer,
-  )
+  const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute
 
   // instant event handler that calls both the instant local state setter and the debounced function
   async function onSearchChange(e: Event) {
@@ -76,7 +74,7 @@ function App() {
       <h1>TanStack Pacer createAsyncDebouncer Example</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={searchTerm()}
           onInput={onSearchChange}
           placeholder="Type to search..."

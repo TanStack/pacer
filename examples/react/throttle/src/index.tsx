@@ -69,7 +69,7 @@ function App2() {
       <h1>TanStack Pacer throttle Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={text}
           onChange={handleTextChange}
           placeholder="Type text (throttled to 1 update per second)..."

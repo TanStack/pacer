@@ -34,7 +34,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  *
  * // Use in an input
  * <input
- *   type="text"
+ *   type="search"
  *   onChange={(e) => handleSearch(e.target.value)}
  * />
  * ```

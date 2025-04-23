@@ -60,7 +60,7 @@ function App2() {
       <h1>TanStack Pacer useThrottledValue Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={instantSearch}
           onChange={handleSearchChange}
           placeholder="Type to search..."

@@ -79,7 +79,7 @@ function App2() {
       <h1>TanStack Pacer queue Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={inputText()}
           onInput={handleInputChange}
           placeholder="Type to add to queue..."
