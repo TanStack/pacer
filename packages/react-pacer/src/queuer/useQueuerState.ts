@@ -52,14 +52,21 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * ```
  */
 export function useQueuerState<TValue>(options: QueuerOptions<TValue> = {}) {
-  const [state, setState] = useState<Array<TValue>>(options.initialItems || [])
+  const [allItems, setAllItems] = useState<Array<TValue>>(
+    options.initialItems || [],
+  )
 
   const queue = useQueuer<TValue>({
     ...options,
-    onUpdate: (queue) => {
-      setState(queue.getAllItems())
+    onItemsChange: (queue) => {
+      setAllItems(queue.getAllItems())
+      options.onItemsChange?.(queue)
+    },
+    onIsRunningChange: (queue) => {
+      setAllItems((prev) => [...prev]) // rerender
+      options.onIsRunningChange?.(queue)
     },
   })
 
-  return [state, queue] as const
+  return [allItems, queue] as const
 }

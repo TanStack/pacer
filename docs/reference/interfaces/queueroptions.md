@@ -148,21 +148,17 @@ Callback fired whenever the queuer's running state changes
 
 ***
 
-### onReject()?
+### onItemsChange()?
 
 ```ts
-optional onReject: (item, queuer) => void;
+optional onItemsChange: (queuer) => void;
 ```
 
 Defined in: [queuer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L39)
 
-Callback fired whenever an item is rejected from being added to the queuer
+Callback fired whenever an item is added or removed from the queuer
 
 #### Parameters
-
-##### item
-
-`TValue`
 
 ##### queuer
 
@@ -174,17 +170,21 @@ Callback fired whenever an item is rejected from being added to the queuer
 
 ***
 
-### onUpdate()?
+### onReject()?
 
 ```ts
-optional onUpdate: (queuer) => void;
+optional onReject: (item, queuer) => void;
 ```
 
 Defined in: [queuer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L43)
 
-Callback fired whenever an item is added or removed from the queuer, or when the queuer starts and stops.
+Callback fired whenever an item is rejected from being added to the queuer
 
 #### Parameters
+
+##### item
+
+`TValue`
 
 ##### queuer
 

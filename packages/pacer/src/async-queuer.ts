@@ -37,9 +37,17 @@ export interface AsyncQueuerOptions<TValue> {
     queuer: AsyncQueuer<TValue>,
   ) => void
   /**
+   * Callback fired whenever the queuer's running state changes
+   */
+  onIsRunningChange?: (queuer: AsyncQueuer<TValue>) => void
+  /**
    * Callback fired whenever an item is added or removed from the queuer
    */
-  onUpdate?: (queuer: AsyncQueuer<TValue>) => void
+  onItemsChange?: (queuer: AsyncQueuer<TValue>) => void
+  /**
+   * Callback fired whenever an item is rejected from being added to the queuer
+   */
+  onReject?: (item: () => Promise<TValue>, queuer: AsyncQueuer<TValue>) => void
   /**
    * Whether the queuer should start processing tasks immediately
    */
@@ -54,11 +62,13 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
   addItemsTo: 'back',
   concurrency: 1,
   getItemsFrom: 'front',
-  getPriority: (item) => (item as any).priority ?? 0,
+  getPriority: (item) => (item as any)?.priority ?? 0,
   initialItems: [],
   maxSize: Infinity,
   onGetNextItem: () => {},
-  onUpdate: () => {},
+  onIsRunningChange: () => {},
+  onItemsChange: () => {},
+  onReject: () => {},
   started: false,
   wait: 0,
 }
@@ -93,24 +103,25 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
  * ```
  */
 export class AsyncQueuer<TValue> {
-  private options: Required<AsyncQueuerOptions<TValue>>
-  private items: Array<() => Promise<TValue>> = []
-  private activeItems: Set<() => Promise<TValue>> = new Set()
-  private onSuccessCallbacks: Array<(result: TValue) => void> = []
-  private onErrorCallbacks: Array<(error: Error) => void> = []
-  private onSettledCallbacks: Array<(result: TValue | Error) => void> = []
-  private running: boolean
-  private pendingTick = false
-  private executionCount = 0
+  private _options: Required<AsyncQueuerOptions<TValue>>
+  private _activeItems: Set<() => Promise<TValue>> = new Set()
+  private _executionCount = 0
+  private _rejectionCount = 0
+  private _items: Array<() => Promise<TValue>> = []
+  private _onErrorCallbacks: Array<(error: Error) => void> = []
+  private _onSettledCallbacks: Array<(result: TValue | Error) => void> = []
+  private _onSuccessCallbacks: Array<(result: TValue) => void> = []
+  private _pendingTick = false
+  private _running: boolean
 
   constructor(initialOptions: AsyncQueuerOptions<TValue> = defaultOptions) {
-    this.options = { ...defaultOptions, ...initialOptions }
-    this.running = this.options.started
+    this._options = { ...defaultOptions, ...initialOptions }
+    this._running = this._options.started
 
-    for (let i = 0; i < this.options.initialItems.length; i++) {
-      const item = this.options.initialItems[i]!
-      const isLast = i === this.options.initialItems.length - 1
-      this.addItem(item, this.options.addItemsTo, isLast)
+    for (let i = 0; i < this._options.initialItems.length; i++) {
+      const item = this._options.initialItems[i]!
+      const isLast = i === this._options.initialItems.length - 1
+      this.addItem(item, this._options.addItemsTo, isLast)
     }
   }
 
@@ -121,29 +132,29 @@ export class AsyncQueuer<TValue> {
   setOptions(
     newOptions: Partial<AsyncQueuerOptions<TValue>>,
   ): AsyncQueuerOptions<TValue> {
-    this.options = { ...this.options, ...newOptions }
-    return this.options
+    this._options = { ...this._options, ...newOptions }
+    return this._options
   }
 
   /**
    * Processes items in the queuer
    */
   private tick() {
-    if (!this.running) {
-      this.pendingTick = false
+    if (!this._running) {
+      this._pendingTick = false
       return
     }
 
     while (
-      this.activeItems.size < this.options.concurrency &&
-      !this.isEmpty()
+      this._activeItems.size < this._options.concurrency &&
+      !this.getIsEmpty()
     ) {
       const nextFn = this.getNextItem()
       if (!nextFn) {
         break
       }
-
-      this.activeItems.add(nextFn)
+      this._activeItems.add(nextFn)
+      this._options.onItemsChange(this)
       ;(async () => {
         let success = false
         let res!: TValue
@@ -155,19 +166,19 @@ export class AsyncQueuer<TValue> {
         } catch (e) {
           error = e as Error
         } finally {
-          this.options.onUpdate(this)
+          this._activeItems.delete(nextFn)
+          this._options.onItemsChange(this)
         }
 
-        this.activeItems.delete(nextFn)
         if (success) {
-          this.onSuccessCallbacks.forEach((cb) => cb(res))
+          this._onSuccessCallbacks.forEach((cb) => cb(res))
         } else {
-          this.onErrorCallbacks.forEach((cb) => cb(error!))
+          this._onErrorCallbacks.forEach((cb) => cb(error!))
         }
-        this.onSettledCallbacks.forEach((cb) => cb(success ? res : error!))
+        this._onSettledCallbacks.forEach((cb) => cb(success ? res : error!))
 
-        if (this.options.wait > 0) {
-          setTimeout(() => this.tick(), this.options.wait)
+        if (this._options.wait > 0) {
+          setTimeout(() => this.tick(), this._options.wait)
           return
         }
 
@@ -175,7 +186,59 @@ export class AsyncQueuer<TValue> {
       })()
     }
 
-    this.pendingTick = false
+    this._pendingTick = false
+  }
+
+  /**
+   * Starts the queuer and processes items
+   */
+  start(): Promise<void> {
+    this._running = true
+    if (!this._pendingTick && !this.getIsEmpty()) {
+      this._pendingTick = true
+      this.tick()
+    }
+    this._options.onIsRunningChange(this)
+
+    return new Promise<void>((resolve) => {
+      const checkIdle = () => {
+        if (this.getIsIdle()) {
+          resolve()
+        } else {
+          setTimeout(checkIdle, 100)
+        }
+      }
+      checkIdle()
+    })
+  }
+
+  /**
+   * Stops the queuer from processing items
+   */
+  stop(): void {
+    this._running = false
+    this._pendingTick = false
+    this._options.onIsRunningChange(this)
+  }
+
+  /**
+   * Removes all items from the queuer
+   */
+  clear(): void {
+    this._items = []
+    this._options.onItemsChange(this)
+  }
+
+  /**
+   * Resets the queuer to its initial state
+   */
+  reset(withInitialItems?: boolean): void {
+    this.clear()
+    this._executionCount = 0
+    if (withInitialItems) {
+      this._items = [...this._options.initialItems]
+    }
+    this._running = this._options.started
   }
 
   /**
@@ -183,10 +246,12 @@ export class AsyncQueuer<TValue> {
    */
   addItem(
     fn: (() => Promise<TValue>) & { priority?: number },
-    position: QueuePosition = this.options.addItemsTo,
+    position: QueuePosition = this._options.addItemsTo,
     runOnUpdate: boolean = true,
   ): Promise<TValue> {
-    if (this.isFull()) {
+    if (this.getIsFull()) {
+      this._rejectionCount++
+      this._options.onReject(fn, this)
       return Promise.reject(new Error('Queuer is full'))
     }
 
@@ -207,40 +272,40 @@ export class AsyncQueuer<TValue> {
 
       // Get priority either from the function or from getPriority option
       const priority =
-        this.options.getPriority !== defaultOptions.getPriority
-          ? this.options.getPriority(task)
+        this._options.getPriority !== defaultOptions.getPriority
+          ? this._options.getPriority(task)
           : task.priority
 
       if (priority !== undefined) {
         // Insert based on priority
-        const insertIndex = this.items.findIndex((existing) => {
+        const insertIndex = this._items.findIndex((existing) => {
           const existingPriority =
-            this.options.getPriority !== defaultOptions.getPriority
-              ? this.options.getPriority(existing)
+            this._options.getPriority !== defaultOptions.getPriority
+              ? this._options.getPriority(existing)
               : (existing as any).priority
           return existingPriority > priority
         })
 
         if (insertIndex === -1) {
-          this.items.push(task)
+          this._items.push(task)
         } else {
-          this.items.splice(insertIndex, 0, task)
+          this._items.splice(insertIndex, 0, task)
         }
       } else {
         // Default FIFO/LIFO behavior
         if (position === 'front') {
-          this.items.unshift(task)
+          this._items.unshift(task)
         } else {
-          this.items.push(task)
+          this._items.push(task)
         }
       }
 
       if (runOnUpdate) {
-        this.options.onUpdate(this)
+        this._options.onItemsChange(this)
       }
 
-      if (this.running && !this.pendingTick) {
-        this.pendingTick = true
+      if (this._running && !this._pendingTick) {
+        this._pendingTick = true
         this.tick()
       }
     })
@@ -250,20 +315,20 @@ export class AsyncQueuer<TValue> {
    * Removes and returns an item from the queuer
    */
   getNextItem(
-    position: QueuePosition = this.options.getItemsFrom,
+    position: QueuePosition = this._options.getItemsFrom,
   ): (() => Promise<TValue>) | undefined {
     let item: (() => Promise<TValue>) | undefined
 
     if (position === 'front') {
-      item = this.items.shift()
+      item = this._items.shift()
     } else {
-      item = this.items.pop()
+      item = this._items.pop()
     }
 
     if (item !== undefined) {
-      this.executionCount++
-      this.options.onUpdate(this)
-      this.options.onGetNextItem(item, this)
+      this._executionCount++
+      this._options.onItemsChange(this)
+      this._options.onGetNextItem(item, this)
     }
     return item
   }
@@ -271,89 +336,94 @@ export class AsyncQueuer<TValue> {
   /**
    * Returns an item without removing it
    */
-  peek(position: QueuePosition = 'front'): (() => Promise<TValue>) | undefined {
+  getPeek(
+    position: QueuePosition = 'front',
+  ): (() => Promise<TValue>) | undefined {
     if (position === 'front') {
-      return this.items[0]
+      return this._items[0]
     }
-    return this.items[this.items.length - 1]
+    return this._items[this._items.length - 1]
   }
 
   /**
    * Returns true if the queuer is empty
    */
-  isEmpty(): boolean {
-    return this.items.length === 0
+  getIsEmpty(): boolean {
+    return this._items.length === 0
   }
 
   /**
    * Returns true if the queuer is full
    */
-  isFull(): boolean {
-    return this.items.length >= this.options.maxSize
+  getIsFull(): boolean {
+    return this._items.length >= this._options.maxSize
   }
 
   /**
    * Returns the current size of the queuer
    */
-  size(): number {
-    return this.items.length
-  }
-
-  /**
-   * Removes all items from the queuer
-   */
-  clear(): void {
-    this.items = []
-    this.options.onUpdate(this)
-  }
-
-  /**
-   * Resets the queuer to its initial state
-   */
-  reset(withInitialItems?: boolean): void {
-    this.clear()
-    this.executionCount = 0
-    if (withInitialItems) {
-      this.items = [...this.options.initialItems]
-    }
-    this.running = this.options.started
+  getSize(): number {
+    return this._items.length
   }
 
   /**
    * Returns a copy of all items in the queuer
    */
   getAllItems(): Array<() => Promise<TValue>> {
-    return [...this.items]
-  }
-
-  /**
-   * Returns the number of items that have been removed from the queuer
-   */
-  getExecutionCount(): number {
-    return this.executionCount
+    return [...this.getActiveItems(), ...this.getPendingItems()]
   }
 
   /**
    * Returns the active items
    */
   getActiveItems(): Array<() => Promise<TValue>> {
-    return Array.from(this.activeItems)
+    return Array.from(this._activeItems)
   }
 
   /**
    * Returns the pending items
    */
   getPendingItems(): Array<() => Promise<TValue>> {
-    return this.getAllItems()
+    return [...this._items]
+  }
+
+  /**
+   * Returns the number of items that have been removed from the queuer
+   */
+  getExecutionCount(): number {
+    return this._executionCount
+  }
+
+  /**
+   * Returns the number of items that have been rejected from the queuer
+   */
+  getRejectionCount(): number {
+    return this._rejectionCount
+  }
+
+  /**
+   * Returns true if the queuer is running
+   */
+  getIsRunning(): boolean {
+    return this._running
+  }
+
+  /**
+   * Returns true if the queuer is running but has no items to process
+   */
+  getIsIdle(): boolean {
+    return this._running && this.getIsEmpty() && this._activeItems.size === 0
   }
 
   /**
    * Adds a callback to be called when a task succeeds
    */
   onSuccess(cb: (result: TValue) => void) {
-    this.onSuccessCallbacks.push(cb)
+    this._onSuccessCallbacks.push(cb)
     return () => {
-      this.onSuccessCallbacks = this.onSuccessCallbacks.filter((d) => d !== cb)
+      this._onSuccessCallbacks = this._onSuccessCallbacks.filter(
+        (d) => d !== cb,
+      )
     }
   }
 
@@ -361,9 +431,9 @@ export class AsyncQueuer<TValue> {
    * Adds a callback to be called when a task errors
    */
   onError(cb: (error: Error) => void) {
-    this.onErrorCallbacks.push(cb)
+    this._onErrorCallbacks.push(cb)
     return () => {
-      this.onErrorCallbacks = this.onErrorCallbacks.filter((d) => d !== cb)
+      this._onErrorCallbacks = this._onErrorCallbacks.filter((d) => d !== cb)
     }
   }
 
@@ -371,56 +441,12 @@ export class AsyncQueuer<TValue> {
    * Adds a callback to be called when a task is settled
    */
   onSettled(cb: (result: TValue | Error) => void) {
-    this.onSettledCallbacks.push(cb)
+    this._onSettledCallbacks.push(cb)
     return () => {
-      this.onSettledCallbacks = this.onSettledCallbacks.filter((d) => d !== cb)
+      this._onSettledCallbacks = this._onSettledCallbacks.filter(
+        (d) => d !== cb,
+      )
     }
-  }
-
-  /**
-   * Starts the queuer and processes items
-   */
-  start(): Promise<void> {
-    this.running = true
-    if (!this.pendingTick && !this.isEmpty()) {
-      this.pendingTick = true
-      this.tick()
-    }
-    this.options.onUpdate(this)
-
-    return new Promise<void>((resolve) => {
-      const checkIdle = () => {
-        if (this.isIdle()) {
-          resolve()
-        } else {
-          setTimeout(checkIdle, 100)
-        }
-      }
-      checkIdle()
-    })
-  }
-
-  /**
-   * Stops the queuer from processing items
-   */
-  stop(): void {
-    this.running = false
-    this.pendingTick = false
-    this.options.onUpdate(this)
-  }
-
-  /**
-   * Returns true if the queuer is running
-   */
-  isRunning(): boolean {
-    return this.running
-  }
-
-  /**
-   * Returns true if the queuer is running but has no items to process
-   */
-  isIdle(): boolean {
-    return this.running && this.isEmpty() && this.activeItems.size === 0
   }
 }
 

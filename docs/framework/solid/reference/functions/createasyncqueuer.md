@@ -8,10 +8,10 @@ title: createAsyncQueuer
 # Function: createAsyncQueuer()
 
 ```ts
-function createAsyncQueuer<TValue>(options): AsyncQueuer<TValue>
+function createAsyncQueuer<TValue>(initialOptions): SolidAsyncQueuer<TValue>
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L53)
+Defined in: [async-queuer/createAsyncQueuer.ts:112](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L112)
 
 A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
@@ -37,13 +37,13 @@ The hook returns an object containing methods to:
 
 ## Parameters
 
-### options
+### initialOptions
 
 `AsyncQueuerOptions`\<`TValue`\> = `{}`
 
 ## Returns
 
-`AsyncQueuer`\<`TValue`\>
+[`SolidAsyncQueuer`](../interfaces/solidasyncqueuer.md)\<`TValue`\>
 
 ## Example
 

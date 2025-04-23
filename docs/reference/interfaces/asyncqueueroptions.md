@@ -137,17 +137,65 @@ Callback fired whenever an item is removed from the queuer
 
 ***
 
-### onUpdate()?
+### onIsRunningChange()?
 
 ```ts
-optional onUpdate: (queuer) => void;
+optional onIsRunningChange: (queuer) => void;
 ```
 
 Defined in: [async-queuer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L42)
 
+Callback fired whenever the queuer's running state changes
+
+#### Parameters
+
+##### queuer
+
+[`AsyncQueuer`](../classes/asyncqueuer.md)\<`TValue`\>
+
+#### Returns
+
+`void`
+
+***
+
+### onItemsChange()?
+
+```ts
+optional onItemsChange: (queuer) => void;
+```
+
+Defined in: [async-queuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L46)
+
 Callback fired whenever an item is added or removed from the queuer
 
 #### Parameters
+
+##### queuer
+
+[`AsyncQueuer`](../classes/asyncqueuer.md)\<`TValue`\>
+
+#### Returns
+
+`void`
+
+***
+
+### onReject()?
+
+```ts
+optional onReject: (item, queuer) => void;
+```
+
+Defined in: [async-queuer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L50)
+
+Callback fired whenever an item is rejected from being added to the queuer
+
+#### Parameters
+
+##### item
+
+() => `Promise`\<`TValue`\>
 
 ##### queuer
 
@@ -165,7 +213,7 @@ Callback fired whenever an item is added or removed from the queuer
 optional started: boolean;
 ```
 
-Defined in: [async-queuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L46)
+Defined in: [async-queuer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L54)
 
 Whether the queuer should start processing tasks immediately
 
@@ -177,6 +225,6 @@ Whether the queuer should start processing tasks immediately
 optional wait: number;
 ```
 
-Defined in: [async-queuer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L50)
+Defined in: [async-queuer.ts:58](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L58)
 
 Time in milliseconds to wait between processing items

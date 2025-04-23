@@ -20,7 +20,7 @@ function App() {
       <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
       <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
       <div>Items Processed: {queuer.executionCount()}</div>
-      <div>Queue Items: {queuer.items().join(', ')}</div>
+      <div>Queue Items: {queuer.allItems().join(', ')}</div>
       <div
         style={{
           display: 'grid',
@@ -32,8 +32,8 @@ function App() {
       >
         <button
           onClick={() => {
-            const nextNumber = queuer.items().length
-              ? queuer.items()[queuer.items().length - 1] + 1
+            const nextNumber = queuer.allItems().length
+              ? queuer.allItems()[queuer.allItems().length - 1] + 1
               : 1
             queuer.addItem(nextNumber)
           }}

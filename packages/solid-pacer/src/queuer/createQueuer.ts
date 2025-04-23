@@ -7,15 +7,19 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
 export interface SolidQueuer<TValue>
   extends Omit<
     Queuer<TValue>,
+    | 'getAllItems'
     | 'getExecutionCount'
     | 'getIsEmpty'
     | 'getIsFull'
     | 'getIsIdle'
     | 'getIsRunning'
-    | 'getAllItems'
     | 'getPeek'
     | 'getSize'
   > {
+  /**
+   * Signal version of `getAllItems`
+   */
+  allItems: Accessor<Array<TValue>>
   /**
    * Signal version of `getExecutionCount`
    */
@@ -37,10 +41,6 @@ export interface SolidQueuer<TValue>
    */
   isRunning: Accessor<boolean>
   /**
-   * Signal version of `getAllItems`
-   */
-  items: Accessor<Array<TValue>>
-  /**
    * Signal version of `getPeek`
    */
   peek: Accessor<TValue | undefined>
@@ -55,7 +55,7 @@ export interface SolidQueuer<TValue>
  *
  * This is a lower-level hook that provides direct access to the Queuer's functionality without
  * any built-in state management. This allows you to integrate it with any state management solution
- * you prefer (createSignal, Redux, Zustand, etc.) by utilizing the onUpdate callback.
+ * you prefer (createSignal, Redux, Zustand, etc.) by utilizing the onItemsChange callback.
  *
  * For a hook with built-in state management, see createQueuerSignal.
  *
@@ -75,7 +75,7 @@ export interface SolidQueuer<TValue>
  * const queue = createQueuer({
  *   started: true, // Start processing immediately
  *   wait: 1000,    // Process one item every second
- *   onUpdate: (queue) => setItems(queue.getAllItems()),
+ *   onItemsChange: (queue) => setItems(queue.getAllItems()),
  *   getPriority: (item) => item.priority // Process higher priority items first
  * });
  *
@@ -96,41 +96,51 @@ export function createQueuer<TValue>(
   const [executionCount, setExecutionCount] = createSignal(
     queuer.getExecutionCount(),
   )
+  const [rejectionCount, setRejectionCount] = createSignal(
+    queuer.getRejectionCount(),
+  )
   const [isEmpty, setIsEmpty] = createSignal(queuer.getIsEmpty())
   const [isFull, setIsFull] = createSignal(queuer.getIsFull())
   const [isIdle, setIsIdle] = createSignal(queuer.getIsIdle())
   const [isRunning, setIsRunning] = createSignal(queuer.getIsRunning())
-  const [items, setItems] = createSignal<Array<TValue>>(queuer.getAllItems())
+  const [allItems, setAllItems] = createSignal<Array<TValue>>(
+    queuer.getAllItems(),
+  )
   const [peek, setPeek] = createSignal<TValue | undefined>(queuer.getPeek())
   const [size, setSize] = createSignal(queuer.getSize())
 
   queuer.setOptions({
-    onUpdate: (queuer) => {
+    onItemsChange: (queuer) => {
+      setAllItems(queuer.getAllItems())
       setExecutionCount(queuer.getExecutionCount())
       setIsEmpty(queuer.getIsEmpty())
       setIsFull(queuer.getIsFull())
       setIsIdle(queuer.getIsIdle())
-      setItems(queuer.getAllItems())
       setPeek(() => queuer.getPeek())
       setSize(queuer.getSize())
-      initialOptions.onUpdate?.(queuer)
+      initialOptions.onItemsChange?.(queuer)
     },
     onIsRunningChange: (queuer) => {
       setIsRunning(queuer.getIsRunning())
       setIsIdle(queuer.getIsIdle())
       initialOptions.onIsRunningChange?.(queuer)
     },
+    onReject: (item, queuer) => {
+      setRejectionCount(queuer.getRejectionCount())
+      initialOptions.onReject?.(item, queuer)
+    },
   })
 
   return {
     ...bindInstanceMethods(queuer),
+    allItems,
     executionCount,
     isEmpty,
     isFull,
     isIdle,
     isRunning,
-    items,
     peek,
+    rejectionCount,
     size,
   }
 }

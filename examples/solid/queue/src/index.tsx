@@ -10,7 +10,7 @@ function App1() {
   const queueItem = queue<number>({
     maxSize: 25,
     wait: 1000,
-    onUpdate: (queue) => {
+    onItemsChange: (queue) => {
       setQueueItems(queue.getAllItems())
       setProcessedCount(queue.getExecutionCount())
     },
@@ -63,7 +63,7 @@ function App2() {
     onGetNextItem: (item, _queue) => {
       setQueuedText(item)
     },
-    onUpdate: (queue) => {
+    onItemsChange: (queue) => {
       setQueueItems(queue.getAllItems())
       setProcessedCount(queue.getExecutionCount())
     },

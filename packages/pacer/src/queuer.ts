@@ -34,13 +34,13 @@ export interface QueuerOptions<TValue> {
    */
   onIsRunningChange?: (queuer: Queuer<TValue>) => void
   /**
+   * Callback fired whenever an item is added or removed from the queuer
+   */
+  onItemsChange?: (queuer: Queuer<TValue>) => void
+  /**
    * Callback fired whenever an item is rejected from being added to the queuer
    */
   onReject?: (item: TValue, queuer: Queuer<TValue>) => void
-  /**
-   * Callback fired whenever an item is added or removed from the queuer, or when the queuer starts and stops.
-   */
-  onUpdate?: (queuer: Queuer<TValue>) => void
   /**
    * Whether the queuer should start processing tasks immediately
    */
@@ -54,13 +54,13 @@ export interface QueuerOptions<TValue> {
 const defaultOptions: Required<QueuerOptions<any>> = {
   addItemsTo: 'back',
   getItemsFrom: 'front',
-  getPriority: () => 0,
+  getPriority: (item) => item?.priority ?? 0,
   initialItems: [],
   maxSize: Infinity,
   onGetNextItem: () => {},
   onIsRunningChange: () => {},
+  onItemsChange: () => {},
   onReject: () => {},
-  onUpdate: () => {},
   started: false,
   wait: 0,
 }
@@ -97,7 +97,7 @@ export type QueuePosition = 'front' | 'back'
  * - start(): begins processing items in the queuer
  * - stop(): pauses processing
  * - wait: configurable delay between processing items
- * - onUpdate/onGetNextItem: callbacks for monitoring queuer state
+ * - onItemsChange/onGetNextItem: callbacks for monitoring queuer state
  *
  * @example
  * ```ts
@@ -123,7 +123,8 @@ export class Queuer<TValue> {
   private _options: Required<QueuerOptions<TValue>>
   private _items: Array<TValue> = []
   private _executionCount = 0
-  private _onUpdates: Array<(item: TValue) => void> = []
+  private _rejectionCount = 0
+  private _onItemsChanges: Array<(item: TValue) => void> = []
   private _running: boolean
   private _pendingTick = false
 
@@ -139,6 +140,17 @@ export class Queuer<TValue> {
   }
 
   /**
+   * Updates the queuer options
+   * Returns the new options state
+   */
+  setOptions(
+    newOptions: Partial<QueuerOptions<TValue>>,
+  ): QueuerOptions<TValue> {
+    this._options = { ...this._options, ...newOptions }
+    return this._options
+  }
+
+  /**
    * Processes items in the queuer
    */
   private tick() {
@@ -151,7 +163,7 @@ export class Queuer<TValue> {
       if (nextItem === undefined) {
         break
       }
-      this._onUpdates.forEach((cb) => cb(nextItem))
+      this._onItemsChanges.forEach((cb) => cb(nextItem))
 
       if (this._options.wait > 0) {
         // Use setTimeout to wait before processing next item
@@ -162,17 +174,6 @@ export class Queuer<TValue> {
       this.tick()
     }
     this._pendingTick = false
-  }
-
-  /**
-   * Updates the queuer options
-   * Returns the new options state
-   */
-  setOptions(
-    newOptions: Partial<QueuerOptions<TValue>>,
-  ): QueuerOptions<TValue> {
-    this._options = { ...this._options, ...newOptions }
-    return this._options
   }
 
   /**
@@ -201,7 +202,7 @@ export class Queuer<TValue> {
    */
   clear(): void {
     this._items = []
-    this._options.onUpdate(this)
+    this._options.onItemsChange(this)
   }
 
   /**
@@ -226,6 +227,7 @@ export class Queuer<TValue> {
     runOnUpdate: boolean = true,
   ): boolean {
     if (this.getIsFull()) {
+      this._rejectionCount++
       this._options.onReject(item, this)
       return false
     }
@@ -256,7 +258,7 @@ export class Queuer<TValue> {
       this.tick()
     }
     if (runOnUpdate) {
-      this._options.onUpdate(this)
+      this._options.onItemsChange(this)
     }
     return true
   }
@@ -285,7 +287,7 @@ export class Queuer<TValue> {
 
     if (item !== undefined) {
       this._executionCount++
-      this._options.onUpdate(this)
+      this._options.onItemsChange(this)
       this._options.onGetNextItem(item, this)
     }
     return item
@@ -347,6 +349,13 @@ export class Queuer<TValue> {
   }
 
   /**
+   * Returns the number of items that have been rejected from the queuer
+   */
+  getRejectionCount(): number {
+    return this._rejectionCount
+  }
+
+  /**
    * Returns true if the queuer is running
    */
   getIsRunning() {
@@ -375,7 +384,7 @@ export class Queuer<TValue> {
  * // Basic sequential processing
  * const processItems = queuer<number>({
  *   wait: 1000,
- *   onUpdate: (queuer) => console.log(queuer.getAllItems())
+ *   onItemsChange: (queuer) => console.log(queuer.getAllItems())
  * })
  * processItems(1) // Logs: 1
  * processItems(2) // Logs: 2 after 1 completes

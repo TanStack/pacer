@@ -10,7 +10,7 @@ function App() {
     maxSize: 25,
     initialItems: queueItems,
     wait: 1000, // wait 1 second between processing items - wait is optional!
-    onUpdate: (queue) => {
+    onItemsChange: (queue) => {
       setQueueItems(queue.getAllItems())
     },
   })

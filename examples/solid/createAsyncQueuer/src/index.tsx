@@ -8,7 +8,6 @@ const fakeWaitTime = 2000
 
 function App() {
   // Use your state management library of choice
-  const [queueItems, setQueueItems] = createSignal<Array<AsyncTask>>([])
   const [concurrency, setConcurrency] = createSignal(2)
 
   const queuer = createAsyncQueuer<string>({
@@ -18,10 +17,7 @@ function App() {
       return `Initial Task ${i + 1}`
     }),
     concurrency: concurrency(), // Process 2 items concurrently
-    wait: 100, // for demo purposes - usually you would not want extra wait time unless you are throttling with concurrency
-    onUpdate: (asyncQueuer) => {
-      setQueueItems(asyncQueuer.getAllItems())
-    },
+    wait: 500, // for demo purposes - usually you would not want extra wait time unless you are throttling with concurrency
   })
 
   // Simulated async task
@@ -43,9 +39,9 @@ function App() {
       <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
       <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
       <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.getExecutionCount()}</div>
-      <div>Active Tasks: {queuer.getActiveItems().length}</div>
-      <div>Pending Tasks: {queuer.getPendingItems().length}</div>
+      <div>Items Processed: {queuer.executionCount()}</div>
+      <div>Active Tasks: {queuer.activeItems().length}</div>
+      <div>Pending Tasks: {queuer.pendingItems().length}</div>
       <div>
         Concurrency:{' '}
         <input
@@ -60,7 +56,7 @@ function App() {
       </div>
       <div style={{ 'min-height': '250px' }}>
         Queue Items:
-        {queueItems().map((task, index) => (
+        {queuer.allItems().map((task, index) => (
           <div>
             {index}: {task.toString()}
           </div>
@@ -77,9 +73,9 @@ function App() {
       >
         <button
           onClick={() => {
-            const nextNumber = queueItems().length
+            const nextNumber = queuer.allItems().length
               ? Math.max(
-                  ...queueItems().map((task) => parseInt(task.toString())),
+                  ...queuer.allItems().map((task) => parseInt(task.toString())),
                 )
               : 1
             queuer.addItem(createAsyncTask(nextNumber))

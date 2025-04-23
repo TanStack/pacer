@@ -7,7 +7,7 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  *
  * This is a lower-level hook that provides direct access to the Queuer's functionality without
  * any built-in state management. This allows you to integrate it with any state management solution
- * you prefer (useState, Redux, Zustand, etc.) by utilizing the onUpdate callback.
+ * you prefer (useState, Redux, Zustand, etc.) by utilizing the onItemsChange callback.
  *
  * For a hook with built-in state management, see useQueuerState.
  *
@@ -27,7 +27,7 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * const queue = useQueuer({
  *   started: true, // Start processing immediately
  *   wait: 1000,    // Process one item every second
- *   onUpdate: (queue) => setItems(queue.getAllItems()),
+ *   onItemsChange: (queue) => setItems(queue.getAllItems()),
  *   getPriority: (item) => item.priority // Process higher priority items first
  * });
  *

@@ -60,7 +60,7 @@ import { queue } from '@tanstack/pacer'
 // Create a queue that processes items every second
 const processItems = queue<number>({
   wait: 1000,
-  onUpdate: (queuer) => {
+  onItemsChange: (queuer) => {
     console.log('Current queue:', queuer.getAllItems())
   }
 })
@@ -83,7 +83,7 @@ import { Queuer } from '@tanstack/pacer'
 // Create a queue that processes items every second
 const queue = new Queuer<number>({
   wait: 1000, // Wait 1 second between processing items
-  onUpdate: (queuer) => {
+  onItemsChange: (queuer) => {
     console.log('Current queue:', queuer.getAllItems())
   }
 })
@@ -262,7 +262,7 @@ queue.reset()         // Reset to initial state
 queue.getExecutionCount() // Get number of processed items
 
 // Event handling
-queue.onUpdate((item) => {
+queue.onItemsChange((item) => {
   console.log('Processed:', item)
 })
 ```

@@ -50,16 +50,21 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 export function useAsyncQueuerState<TValue>(
   options: AsyncQueuerOptions<TValue> = {},
 ) {
-  const [state, setState] = useState<Array<() => Promise<TValue>>>(
+  const [items, setItems] = useState<Array<() => Promise<TValue>>>(
     options.initialItems ?? [],
   )
 
   const queue = useAsyncQueuer<TValue>({
     ...options,
-    onUpdate: (queue) => {
-      setState(queue.getAllItems())
+    onItemsChange: (queue) => {
+      setItems(queue.getAllItems())
+      options.onItemsChange?.(queue)
+    },
+    onIsRunningChange: (queue) => {
+      setItems((prev) => [...prev]) // rerender
+      options.onIsRunningChange?.(queue)
     },
   })
 
-  return [state, queue] as const
+  return [items, queue] as const
 }

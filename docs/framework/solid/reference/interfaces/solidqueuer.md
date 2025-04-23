@@ -12,12 +12,12 @@ Defined in: [queuer/createQueuer.ts:7](https://github.com/TanStack/pacer/blob/ma
 ## Extends
 
 - `Omit`\<`Queuer`\<`TValue`\>, 
+  \| `"getAllItems"`
   \| `"getExecutionCount"`
   \| `"getIsEmpty"`
   \| `"getIsFull"`
   \| `"getIsIdle"`
   \| `"getIsRunning"`
-  \| `"getAllItems"`
   \| `"getPeek"`
   \| `"getSize"`\>
 
@@ -27,13 +27,25 @@ Defined in: [queuer/createQueuer.ts:7](https://github.com/TanStack/pacer/blob/ma
 
 ## Properties
 
+### allItems
+
+```ts
+allItems: Accessor<TValue[]>;
+```
+
+Defined in: [queuer/createQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L22)
+
+Signal version of `getAllItems`
+
+***
+
 ### executionCount
 
 ```ts
 executionCount: Accessor<number>;
 ```
 
-Defined in: [queuer/createQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L22)
+Defined in: [queuer/createQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L26)
 
 Signal version of `getExecutionCount`
 
@@ -45,7 +57,7 @@ Signal version of `getExecutionCount`
 isEmpty: Accessor<boolean>;
 ```
 
-Defined in: [queuer/createQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L26)
+Defined in: [queuer/createQueuer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L30)
 
 Signal version of `getIsEmpty`
 
@@ -57,7 +69,7 @@ Signal version of `getIsEmpty`
 isFull: Accessor<boolean>;
 ```
 
-Defined in: [queuer/createQueuer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L30)
+Defined in: [queuer/createQueuer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L34)
 
 Signal version of `getIsFull`
 
@@ -69,7 +81,7 @@ Signal version of `getIsFull`
 isIdle: Accessor<boolean>;
 ```
 
-Defined in: [queuer/createQueuer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L34)
+Defined in: [queuer/createQueuer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L38)
 
 Signal version of `getIsIdle`
 
@@ -81,21 +93,9 @@ Signal version of `getIsIdle`
 isRunning: Accessor<boolean>;
 ```
 
-Defined in: [queuer/createQueuer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L38)
-
-Signal version of `getIsRunning`
-
-***
-
-### items
-
-```ts
-items: Accessor<TValue[]>;
-```
-
 Defined in: [queuer/createQueuer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L42)
 
-Signal version of `getAllItems`
+Signal version of `getIsRunning`
 
 ***
 

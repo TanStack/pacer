@@ -199,46 +199,46 @@ describe('Queuer', () => {
       })
     })
 
-    describe('onUpdate', () => {
-      it('should call onUpdate when items are added', () => {
-        const onUpdate = vi.fn()
-        const queuer = new Queuer<number>({ onUpdate })
+    describe('onItemsChange', () => {
+      it('should call onItemsChange when items are added', () => {
+        const onItemsChange = vi.fn()
+        const queuer = new Queuer<number>({ onItemsChange })
 
         queuer.addItem(1)
-        expect(onUpdate).toHaveBeenCalledTimes(1)
-        expect(onUpdate).toHaveBeenCalledWith(queuer)
+        expect(onItemsChange).toHaveBeenCalledTimes(1)
+        expect(onItemsChange).toHaveBeenCalledWith(queuer)
       })
 
-      it('should call onUpdate when items are removed', () => {
-        const onUpdate = vi.fn()
-        const queuer = new Queuer<number>({ onUpdate })
+      it('should call onItemsChange when items are removed', () => {
+        const onItemsChange = vi.fn()
+        const queuer = new Queuer<number>({ onItemsChange })
 
         queuer.addItem(1)
-        onUpdate.mockClear()
+        onItemsChange.mockClear()
 
         queuer.getNextItem()
-        expect(onUpdate).toHaveBeenCalledTimes(1)
-        expect(onUpdate).toHaveBeenCalledWith(queuer)
+        expect(onItemsChange).toHaveBeenCalledTimes(1)
+        expect(onItemsChange).toHaveBeenCalledWith(queuer)
       })
 
-      it('should call onUpdate when queuer is cleared', () => {
-        const onUpdate = vi.fn()
-        const queuer = new Queuer<number>({ onUpdate })
+      it('should call onItemsChange when queuer is cleared', () => {
+        const onItemsChange = vi.fn()
+        const queuer = new Queuer<number>({ onItemsChange })
 
         queuer.addItem(1)
-        onUpdate.mockClear()
+        onItemsChange.mockClear()
 
         queuer.clear()
-        expect(onUpdate).toHaveBeenCalledTimes(1)
-        expect(onUpdate).toHaveBeenCalledWith(queuer)
+        expect(onItemsChange).toHaveBeenCalledTimes(1)
+        expect(onItemsChange).toHaveBeenCalledWith(queuer)
       })
 
-      it('should not call onUpdate when dequeuing from empty queuer', () => {
-        const onUpdate = vi.fn()
-        const queuer = new Queuer<number>({ onUpdate })
+      it('should not call onItemsChange when dequeuing from empty queuer', () => {
+        const onItemsChange = vi.fn()
+        const queuer = new Queuer<number>({ onItemsChange })
 
         queuer.getNextItem()
-        expect(onUpdate).not.toHaveBeenCalled()
+        expect(onItemsChange).not.toHaveBeenCalled()
       })
     })
   })
