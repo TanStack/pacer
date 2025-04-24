@@ -240,7 +240,7 @@
               "to": "framework/solid/reference/functions/createthrottler"
             },
             {
-              "label": "createThrottledState",
+              "label": "createThrottledSignal",
               "to": "framework/solid/reference/functions/createthrottledsignal"
             },
             {
@@ -446,7 +446,7 @@
               "to": "framework/solid/examples/createDebouncer"
             },
             {
-              "label": "createDebouncedState",
+              "label": "createDebouncedSignal",
               "to": "framework/solid/examples/createDebouncedSignal"
             },
             {
