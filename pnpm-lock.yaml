@@ -75,7 +75,7 @@ importers:
   examples/react/asyncDebounce:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -100,7 +100,7 @@ importers:
   examples/react/asyncRateLimit:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -125,7 +125,7 @@ importers:
   examples/react/asyncThrottle:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -150,7 +150,7 @@ importers:
   examples/react/debounce:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -175,7 +175,7 @@ importers:
   examples/react/queue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -200,7 +200,7 @@ importers:
   examples/react/rateLimit:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -225,7 +225,7 @@ importers:
   examples/react/throttle:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -250,7 +250,7 @@ importers:
   examples/react/useAsyncDebouncer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -275,7 +275,7 @@ importers:
   examples/react/useAsyncQueuer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -300,7 +300,7 @@ importers:
   examples/react/useAsyncQueuerState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -325,7 +325,7 @@ importers:
   examples/react/useAsyncRateLimiter:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -350,7 +350,7 @@ importers:
   examples/react/useAsyncThrottler:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -375,7 +375,7 @@ importers:
   examples/react/useDebouncedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -400,7 +400,7 @@ importers:
   examples/react/useDebouncedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -425,7 +425,7 @@ importers:
   examples/react/useDebouncedValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -450,7 +450,7 @@ importers:
   examples/react/useDebouncer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -475,7 +475,7 @@ importers:
   examples/react/useQueuer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -500,7 +500,7 @@ importers:
   examples/react/useQueuerState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -525,7 +525,7 @@ importers:
   examples/react/useRateLimitedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -550,7 +550,7 @@ importers:
   examples/react/useRateLimitedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -575,7 +575,7 @@ importers:
   examples/react/useRateLimitedValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -600,7 +600,7 @@ importers:
   examples/react/useRateLimiter:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -625,7 +625,7 @@ importers:
   examples/react/useThrottledCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -650,7 +650,7 @@ importers:
   examples/react/useThrottledState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -675,7 +675,7 @@ importers:
   examples/react/useThrottledValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -700,7 +700,7 @@ importers:
   examples/react/useThrottler:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -725,7 +725,7 @@ importers:
   examples/solid/asyncDebounce:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -741,7 +741,7 @@ importers:
   examples/solid/asyncRateLimit:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -757,7 +757,7 @@ importers:
   examples/solid/asyncThrottle:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -773,7 +773,7 @@ importers:
   examples/solid/createAsyncDebouncer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -789,7 +789,7 @@ importers:
   examples/solid/createAsyncQueuer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -805,7 +805,7 @@ importers:
   examples/solid/createAsyncRateLimiter:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -821,7 +821,7 @@ importers:
   examples/solid/createAsyncThrottler:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -837,7 +837,7 @@ importers:
   examples/solid/createDebouncedSignal:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -853,7 +853,7 @@ importers:
   examples/solid/createDebouncedValue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -869,7 +869,7 @@ importers:
   examples/solid/createDebouncer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -885,7 +885,7 @@ importers:
   examples/solid/createQueuer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -901,7 +901,7 @@ importers:
   examples/solid/createRateLimitedSignal:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -917,7 +917,7 @@ importers:
   examples/solid/createRateLimitedValue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -933,7 +933,7 @@ importers:
   examples/solid/createRateLimiter:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -949,7 +949,7 @@ importers:
   examples/solid/createThrottledSignal:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -965,7 +965,7 @@ importers:
   examples/solid/createThrottledValue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -981,7 +981,7 @@ importers:
   examples/solid/createThrottler:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -997,7 +997,7 @@ importers:
   examples/solid/debounce:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -1013,7 +1013,7 @@ importers:
   examples/solid/queue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -1029,7 +1029,7 @@ importers:
   examples/solid/rateLimit:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5
@@ -1045,7 +1045,7 @@ importers:
   examples/solid/throttle:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.5

@@ -1,5 +1,16 @@
 # @tanstack/solid-pacer
 
+## 0.2.0
+
+### Minor Changes
+
+- - feat: Add Solid JS Adapter ([`19cee99`](https://github.com/TanStack/pacer/commit/19cee995d79bc16077c9a28fc5f6ab251d626e16))
+
+### Patch Changes
+
+- Updated dependencies [[`19cee99`](https://github.com/TanStack/pacer/commit/19cee995d79bc16077c9a28fc5f6ab251d626e16)]:
+  - @tanstack/pacer@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes
