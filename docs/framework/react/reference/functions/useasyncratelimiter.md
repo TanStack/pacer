@@ -8,7 +8,7 @@ title: useAsyncRateLimiter
 # Function: useAsyncRateLimiter()
 
 ```ts
-function useAsyncRateLimiter<TFn, TArgs>(fn, options): any
+function useAsyncRateLimiter<TFn, TArgs>(fn, options): AsyncRateLimiter<TFn, TArgs>
 ```
 
 Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L43)
@@ -40,7 +40,7 @@ managing resource constraints, or controlling bursts of async operations.
 
 ## Returns
 
-`any`
+`AsyncRateLimiter`\<`TFn`, `TArgs`\>
 
 ## Example
 

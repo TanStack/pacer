@@ -8,7 +8,7 @@ title: useDebouncedState
 # Function: useDebouncedState()
 
 ```ts
-function useDebouncedState<TValue>(value, options): readonly [TValue, any, any]
+function useDebouncedState<TValue>(value, options): [TValue, Dispatch<SetStateAction<TValue>>, Debouncer<Dispatch<SetStateAction<TValue>>, [TValue]>]
 ```
 
 Defined in: [debouncer/useDebouncedState.ts:38](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L38)
@@ -42,7 +42,7 @@ The hook returns a tuple containing:
 
 ## Returns
 
-readonly \[`TValue`, `any`, `any`\]
+\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, `Debouncer`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`TValue`\]\>\]
 
 ## Example
 

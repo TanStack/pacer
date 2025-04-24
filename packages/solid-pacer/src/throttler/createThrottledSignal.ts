@@ -31,14 +31,13 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  *   trailing: false  // Skip trailing edge updates
  * });
  *
- * // Access throttler methods if needed
- * const handleReset = () => {
- *   setValue(0);
- *   throttler.cancel(); // Cancel any pending updates
- * };
+ * // Access throttler state via signals
+ * console.log('Executions:', throttler.executionCount());
+ * console.log('Is pending:', throttler.isPending());
+ * console.log('Last execution:', throttler.lastExecutionTime());
+ * console.log('Next execution:', throttler.nextExecutionTime());
  * ```
  */
-
 export function createThrottledSignal<TValue>(
   value: TValue,
   initialOptions: ThrottlerOptions<Setter<TValue>, [Accessor<TValue>]>,

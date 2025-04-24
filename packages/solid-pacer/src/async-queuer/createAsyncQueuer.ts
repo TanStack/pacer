@@ -95,10 +95,6 @@ export interface SolidAsyncQueuer<TValue>
  * // Start processing
  * asyncQueuer.start();
  *
- * // Monitor queue state
- * const isPending = !asyncQueuer.isIdle();
- * const itemCount = asyncQueuer.size();
- *
  * // Handle results
  * asyncQueuer.onSuccess((result) => {
  *   console.log('Item processed:', result);

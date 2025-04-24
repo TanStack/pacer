@@ -18,8 +18,8 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * or calculations occur.
  *
  * The hook returns a tuple containing:
- * - The current debounced value
- * - The debouncer instance with control methods
+ * - The current debounced value (as an Accessor)
+ * - The debouncer instance with control methods and state signals
  *
  * @example
  * ```tsx
@@ -31,8 +31,12 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  *
  * // debouncedQuery will update 500ms after searchQuery stops changing
  * createEffect(() => {
- *   fetchSearchResults(debouncedQuery);
- * }, [debouncedQuery]);
+ *   fetchSearchResults(debouncedQuery());
+ * });
+ *
+ * // Access debouncer state via signals
+ * console.log('Executions:', debouncer.executionCount());
+ * console.log('Is pending:', debouncer.isPending());
  *
  * // Handle input changes
  * const handleChange = (e) => {

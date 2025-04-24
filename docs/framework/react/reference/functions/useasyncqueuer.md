@@ -8,7 +8,7 @@ title: useAsyncQueuer
 # Function: useAsyncQueuer()
 
 ```ts
-function useAsyncQueuer<TValue>(options): any
+function useAsyncQueuer<TValue>(options): AsyncQueuer<TValue>
 ```
 
 Defined in: [async-queuer/useAsyncQueuer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L55)
@@ -43,7 +43,7 @@ The hook returns an object containing methods to:
 
 ## Returns
 
-`any`
+`AsyncQueuer`\<`TValue`\>
 
 ## Example
 

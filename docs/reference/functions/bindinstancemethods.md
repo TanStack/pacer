@@ -11,7 +11,7 @@ title: bindInstanceMethods
 function bindInstanceMethods<T>(instance): any
 ```
 
-Defined in: utils.ts:1
+Defined in: [utils.ts:1](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/utils.ts#L1)
 
 ## Type Parameters
 

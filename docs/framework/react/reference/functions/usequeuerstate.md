@@ -8,7 +8,7 @@ title: useQueuerState
 # Function: useQueuerState()
 
 ```ts
-function useQueuerState<TValue>(options): readonly [TValue[], any]
+function useQueuerState<TValue>(options): [TValue[], Queuer<TValue>]
 ```
 
 Defined in: [queuer/useQueuerState.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuerState.ts#L54)
@@ -39,7 +39,7 @@ The hook returns a tuple containing:
 
 ## Returns
 
-readonly \[`TValue`[], `any`\]
+\[`TValue`[], `Queuer`\<`TValue`\>\]
 
 ## Example
 

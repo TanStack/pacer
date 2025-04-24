@@ -25,7 +25,7 @@ export interface SolidAsyncRateLimiter<
  * A low-level Solid hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
  *
  * This hook is designed to be flexible and state-management agnostic - it simply returns a rate limiter instance that
- * you can integrate with any state management solution (createSignal, Redux, Zustand, Jotai, etc).
+ * you can integrate with any state management solution (createSignal, etc).
  *
  * Rate limiting allows an async function to execute up to a specified limit within a time window,
  * then blocks subsequent calls until the window passes. This is useful for respecting API rate limits,

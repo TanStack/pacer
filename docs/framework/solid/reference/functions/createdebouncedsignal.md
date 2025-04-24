@@ -8,10 +8,10 @@ title: createDebouncedSignal
 # Function: createDebouncedSignal()
 
 ```ts
-function createDebouncedSignal<TValue>(value, initialOptions): readonly [Accessor<TValue>, Setter<TValue>, SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>]
+function createDebouncedSignal<TValue>(value, initialOptions): [Accessor<TValue>, Setter<TValue>, SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
-Defined in: [debouncer/createDebouncedSignal.ts:36](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedSignal.ts#L36)
+Defined in: [debouncer/createDebouncedSignal.ts:46](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedSignal.ts#L46)
 
 A Solid hook that creates a debounced state value, combining Solid's createSignal with debouncing functionality.
 This hook provides both the current debounced value and methods to update it.
@@ -24,7 +24,7 @@ or window resize dimensions.
 The hook returns a tuple containing:
 - The current debounced value accessor
 - A function to update the debounced value
-- The debouncer instance with additional control methods
+- The debouncer instance with additional control methods and state signals
 
 ## Type Parameters
 
@@ -42,7 +42,7 @@ The hook returns a tuple containing:
 
 ## Returns
 
-readonly \[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, [`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
+\[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, [`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
 
 ## Example
 
@@ -57,6 +57,15 @@ const handleChange = (e) => {
   setSearchTerm(e.target.value);
 };
 
-// Get number of times the debounced function has executed
-const executionCount = debouncer.getExecutionCount();
+// Access debouncer state via signals
+console.log('Executions:', debouncer.executionCount());
+console.log('Is pending:', debouncer.isPending());
+
+// In onExecute callback, use get* methods
+const [searchTerm, setSearchTerm, debouncer] = createDebouncedSignal('', {
+  wait: 500,
+  onExecute: (debouncer) => {
+    console.log('Total executions:', debouncer.getExecutionCount());
+  }
+});
 ```

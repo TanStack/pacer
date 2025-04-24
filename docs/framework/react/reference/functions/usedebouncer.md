@@ -8,7 +8,7 @@ title: useDebouncer
 # Function: useDebouncer()
 
 ```ts
-function useDebouncer<TFn, TArgs>(fn, options): any
+function useDebouncer<TFn, TArgs>(fn, options): Debouncer<TFn, TArgs>
 ```
 
 Defined in: [debouncer/useDebouncer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L42)
@@ -45,7 +45,7 @@ timer resets and starts waiting again.
 
 ## Returns
 
-`any`
+`Debouncer`\<`TFn`, `TArgs`\>
 
 ## Example
 

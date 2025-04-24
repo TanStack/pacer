@@ -8,7 +8,7 @@ title: useThrottledCallback
 # Function: useThrottledCallback()
 
 ```ts
-function useThrottledCallback<TFn, TArgs>(fn, options): (...args) => any
+function useThrottledCallback<TFn, TArgs>(fn, options): (...args) => void
 ```
 
 Defined in: [throttler/useThrottledCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledCallback.ts#L43)
@@ -61,7 +61,7 @@ Consider using the `useThrottler` hook instead.
 
 ### Returns
 
-`any`
+`void`
 
 ## Example
 

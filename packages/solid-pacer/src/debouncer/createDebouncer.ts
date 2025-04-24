@@ -34,22 +34,24 @@ export interface SolidDebouncer<
  * @example
  * ```tsx
  * // Debounce a search function to limit API calls
- * const { maybeExecute, executionCount, isPending } = createDebouncer(
+ * const debouncer = createDebouncer(
  *   (query: string) => fetchSearchResults(query),
  *   { wait: 500 } // Wait 500ms after last keystroke
  * );
  *
  * // In an event handler
  * const handleChange = (e) => {
- *   maybeExecute(e.target.value);
+ *   debouncer.maybeExecute(e.target.value);
  * };
  *
- * // Get number of times the debounced function has executed
- * console.log('Executions:', executionCount());
- * console.log('Is pending:', isPending());
+ * // Access debouncer state via signals
+ * console.log('Executions:', debouncer.executionCount());
+ * console.log('Is pending:', debouncer.isPending());
+ *
+ * // Update options
+ * debouncer.setOptions({ wait: 1000 });
  * ```
  */
-
 export function createDebouncer<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,

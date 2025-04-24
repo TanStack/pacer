@@ -86,6 +86,13 @@ export interface SolidQueuer<TValue>
  * // Control the scheduler
  * queue.stop();  // Pause processing
  * queue.start(); // Resume processing
+ *
+ * // Access queue state via signals
+ * console.log('Items:', queue.allItems());
+ * console.log('Size:', queue.size());
+ * console.log('Is empty:', queue.isEmpty());
+ * console.log('Is running:', queue.isRunning());
+ * console.log('Next item:', queue.peek());
  * ```
  */
 export function createQueuer<TValue>(

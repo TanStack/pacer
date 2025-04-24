@@ -44,7 +44,10 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 export function useAsyncThrottler<
   TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncThrottlerOptions<TFn, TArgs>) {
+>(
+  fn: TFn,
+  options: AsyncThrottlerOptions<TFn, TArgs>,
+): AsyncThrottler<TFn, TArgs> {
   const [asyncThrottler] = useState(() =>
     bindInstanceMethods(new AsyncThrottler<TFn, TArgs>(fn, options)),
   )

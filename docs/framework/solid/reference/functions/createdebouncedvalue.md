@@ -11,7 +11,7 @@ title: createDebouncedValue
 function createDebouncedValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
-Defined in: [debouncer/createDebouncedValue.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L43)
+Defined in: [debouncer/createDebouncedValue.ts:47](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L47)
 
 A Solid hook that creates a debounced value that updates only after a specified delay.
 Unlike createDebouncedSignal, this hook automatically tracks changes to the input value
@@ -26,8 +26,8 @@ like search queries or form inputs, where you want to limit how often downstream
 or calculations occur.
 
 The hook returns a tuple containing:
-- The current debounced value
-- The debouncer instance with control methods
+- The current debounced value (as an Accessor)
+- The debouncer instance with control methods and state signals
 
 ## Type Parameters
 
@@ -58,8 +58,12 @@ const [debouncedQuery, debouncer] = createDebouncedValue(searchQuery, {
 
 // debouncedQuery will update 500ms after searchQuery stops changing
 createEffect(() => {
-  fetchSearchResults(debouncedQuery);
-}, [debouncedQuery]);
+  fetchSearchResults(debouncedQuery());
+});
+
+// Access debouncer state via signals
+console.log('Executions:', debouncer.executionCount());
+console.log('Is pending:', debouncer.isPending());
 
 // Handle input changes
 const handleChange = (e) => {

@@ -13,8 +13,8 @@ function createRateLimitedValue<TValue>(value, initialOptions): [Accessor<TValue
 
 Defined in: [rate-limiter/createRateLimitedValue.ts:54](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedValue.ts#L54)
 
-A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
-This hook uses React's createSignal internally to manage the rate-limited state.
+A high-level Solid hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
+This hook uses Solid's createSignal internally to manage the rate-limited state.
 
 Rate limiting is a simple "hard limit" approach - it allows all updates until the limit is reached, then blocks
 subsequent updates until the window resets. Unlike throttling or debouncing, it does not attempt to space out
@@ -28,7 +28,7 @@ Rate limiting should primarily be used when you need to enforce strict limits, l
 
 The hook returns both the rate-limited value and the underlying rateLimiter instance for additional control.
 
-For more direct control over rate limiting behavior without React state management,
+For more direct control over rate limiting behavior without Solid state management,
 consider using the lower-level createRateLimiter hook instead.
 
 ## Type Parameters
@@ -67,9 +67,9 @@ const [rateLimitedValue, rateLimiter] = createRateLimitedValue(rawValue, {
   }
 });
 
-// Optionally access rateLimiter methods
+// Optionally access rateLimiter state via signals
 const handleSubmit = () => {
-  const remaining = rateLimiter.getRemainingInWindow();
+  const remaining = rateLimiter.remainingInWindow();
   if (remaining > 0) {
     console.log(`${remaining} updates remaining in this window`);
   } else {

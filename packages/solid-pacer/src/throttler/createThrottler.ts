@@ -35,19 +35,14 @@ export interface SolidThrottler<
  * regardless of how many times it is called. This is useful for rate-limiting
  * expensive operations or UI updates.
  *
- * The hook returns an object containing:
- * - maybeExecute: The throttled function that respects the configured wait time
- * - cancel: A function to cancel any pending trailing execution
- * - getExecutionCount: A function that returns the number of times the throttled function has executed
- *
  * @example
  * ```tsx
  * // Basic throttling with custom state
  * const [value, setValue] = createSignal(0);
- * const { maybeExecute } = createThrottler(setValue, { wait: 1000 });
+ * const throttler = createThrottler(setValue, { wait: 1000 });
  *
  * // With any state manager
- * const { maybeExecute, cancel } = createThrottler(
+ * const throttler = createThrottler(
  *   (value) => stateManager.setState(value),
  *   {
  *     wait: 2000,
@@ -55,6 +50,12 @@ export interface SolidThrottler<
  *     trailing: false  // Skip trailing edge updates
  *   }
  * );
+ *
+ * // Access throttler state via signals
+ * console.log(throttler.executionCount()); // number of times executed
+ * console.log(throttler.isPending());      // whether throttled function is pending
+ * console.log(throttler.lastExecutionTime()); // timestamp of last execution
+ * console.log(throttler.nextExecutionTime()); // timestamp of next allowed execution
  * ```
  */
 export function createThrottler<

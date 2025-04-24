@@ -11,7 +11,7 @@ title: createRateLimitedSignal
 function createRateLimitedSignal<TValue>(value, initialOptions): [Accessor<TValue>, Setter<TValue>, SolidRateLimiter<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
-Defined in: [rate-limiter/createRateLimitedSignal.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L58)
+Defined in: [rate-limiter/createRateLimitedSignal.ts:57](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L57)
 
 A Solid hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
 This hook combines Solid's createSignal with rate limiting functionality to provide controlled state updates.
@@ -70,9 +70,9 @@ const [value, setValue] = createRateLimitedSignal(0, {
   }
 });
 
-// Access rateLimiter methods if needed
+// Access rateLimiter state via signals
 const handleSubmit = () => {
-  const remaining = rateLimiter.getRemainingInWindow();
+  const remaining = rateLimiter.remainingInWindow();
   if (remaining > 0) {
     setValue(newValue);
   } else {

@@ -16,7 +16,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:54](https://github.com/TanS
 A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
 This hook is designed to be flexible and state-management agnostic - it simply returns a debouncer instance that
-you can integrate with any state management solution (createSignal, Redux, Zustand, Jotai, etc).
+you can integrate with any state management solution (createSignal, etc).
 
 Async debouncing ensures that an async function only executes after a specified delay has passed since its last invocation.
 This is useful for handling fast-changing inputs like search fields, form validation, or any scenario where you want to

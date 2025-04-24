@@ -41,7 +41,9 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * queue.start(); // Resume processing
  * ```
  */
-export function useQueuer<TValue>(options: QueuerOptions<TValue> = {}) {
+export function useQueuer<TValue>(
+  options: QueuerOptions<TValue> = {},
+): Queuer<TValue> {
   const [queuer] = useState(() =>
     bindInstanceMethods(new Queuer<TValue>(options)),
   )

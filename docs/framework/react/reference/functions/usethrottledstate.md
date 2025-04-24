@@ -8,7 +8,7 @@ title: useThrottledState
 # Function: useThrottledState()
 
 ```ts
-function useThrottledState<TValue>(value, options): readonly [TValue, any, any]
+function useThrottledState<TValue>(value, options): [TValue, Dispatch<SetStateAction<TValue>>, Throttler<Dispatch<SetStateAction<TValue>>, [TValue]>]
 ```
 
 Defined in: [throttler/useThrottledState.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledState.ts#L40)
@@ -43,7 +43,7 @@ consider using the lower-level useThrottler hook instead.
 
 ## Returns
 
-readonly \[`TValue`, `any`, `any`\]
+\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, `Throttler`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`TValue`\]\>\]
 
 ## Example
 

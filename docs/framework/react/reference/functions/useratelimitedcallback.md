@@ -8,7 +8,7 @@ title: useRateLimitedCallback
 # Function: useRateLimitedCallback()
 
 ```ts
-function useRateLimitedCallback<TFn, TArgs>(fn, options): (...args) => any
+function useRateLimitedCallback<TFn, TArgs>(fn, options): (...args) => boolean
 ```
 
 Defined in: [rate-limiter/useRateLimitedCallback.ts:52](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedCallback.ts#L52)
@@ -69,7 +69,7 @@ Consider using the `useRateLimiter` hook instead.
 
 ### Returns
 
-`any`
+`boolean`
 
 ## Example
 

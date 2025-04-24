@@ -29,10 +29,11 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  *   trailing: false  // Skip trailing edge updates
  * });
  *
- * // Optionally access throttler methods
- * const handleExecutionCount = () => {
- *   console.log('Executions:', throttler.getExecutionCount());
- * };
+ * // Access throttler state via signals
+ * console.log('Executions:', throttler.executionCount());
+ * console.log('Is pending:', throttler.isPending());
+ * console.log('Last execution:', throttler.lastExecutionTime());
+ * console.log('Next execution:', throttler.nextExecutionTime());
  * ```
  */
 export function createThrottledValue<TValue>(

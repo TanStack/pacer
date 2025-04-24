@@ -8,7 +8,7 @@ title: useRateLimiter
 # Function: useRateLimiter()
 
 ```ts
-function useRateLimiter<TFn, TArgs>(fn, options): any
+function useRateLimiter<TFn, TArgs>(fn, options): RateLimiter<TFn, TArgs>
 ```
 
 Defined in: [rate-limiter/useRateLimiter.ts:48](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L48)
@@ -52,7 +52,7 @@ The hook returns an object containing:
 
 ## Returns
 
-`any`
+`RateLimiter`\<`TFn`, `TArgs`\>
 
 ## Example
 

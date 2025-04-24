@@ -43,9 +43,9 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  *   }
  * });
  *
- * // Access rateLimiter methods if needed
+ * // Access rateLimiter state via signals
  * const handleSubmit = () => {
- *   const remaining = rateLimiter.getRemainingInWindow();
+ *   const remaining = rateLimiter.remainingInWindow();
  *   if (remaining > 0) {
  *     setValue(newValue);
  *   } else {
@@ -54,7 +54,6 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * };
  * ```
  */
-
 export function createRateLimitedSignal<TValue>(
   value: TValue,
   initialOptions: RateLimiterOptions<Setter<TValue>, [Accessor<TValue>]>,

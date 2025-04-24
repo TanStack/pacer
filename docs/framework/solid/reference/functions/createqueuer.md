@@ -11,7 +11,7 @@ title: createQueuer
 function createQueuer<TValue>(initialOptions): SolidQueuer<TValue>
 ```
 
-Defined in: [queuer/createQueuer.ts:91](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L91)
+Defined in: [queuer/createQueuer.ts:98](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L98)
 
 A Solid hook that creates and manages a Queuer instance.
 
@@ -63,4 +63,11 @@ queue.addItem('task2');
 // Control the scheduler
 queue.stop();  // Pause processing
 queue.start(); // Resume processing
+
+// Access queue state via signals
+console.log('Items:', queue.allItems());
+console.log('Size:', queue.size());
+console.log('Is empty:', queue.isEmpty());
+console.log('Is running:', queue.isRunning());
+console.log('Next item:', queue.peek());
 ```

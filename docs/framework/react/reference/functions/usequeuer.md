@@ -8,7 +8,7 @@ title: useQueuer
 # Function: useQueuer()
 
 ```ts
-function useQueuer<TValue>(options): any
+function useQueuer<TValue>(options): Queuer<TValue>
 ```
 
 Defined in: [queuer/useQueuer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L44)
@@ -41,7 +41,7 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 ## Returns
 
-`any`
+`Queuer`\<`TValue`\>
 
 ## Example
 

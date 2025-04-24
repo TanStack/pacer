@@ -8,7 +8,7 @@ title: useAsyncDebouncer
 # Function: useAsyncDebouncer()
 
 ```ts
-function useAsyncDebouncer<TFn, TArgs>(fn, options): any
+function useAsyncDebouncer<TFn, TArgs>(fn, options): AsyncDebouncer<TFn, TArgs>
 ```
 
 Defined in: [async-debouncer/useAsyncDebouncer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L42)
@@ -40,7 +40,7 @@ wait for user input to settle before making expensive async calls.
 
 ## Returns
 
-`any`
+`AsyncDebouncer`\<`TFn`, `TArgs`\>
 
 ## Example
 

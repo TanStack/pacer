@@ -42,7 +42,7 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 export function useThrottler<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: ThrottlerOptions<TFn, TArgs>) {
+>(fn: TFn, options: ThrottlerOptions<TFn, TArgs>): Throttler<TFn, TArgs> {
   const [throttler] = useState(() =>
     bindInstanceMethods(new Throttler<TFn, TArgs>(fn, options)),
   )

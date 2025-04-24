@@ -11,7 +11,7 @@ title: createThrottledSignal
 function createThrottledSignal<TValue>(value, initialOptions): [Accessor<TValue>, Setter<TValue>, SolidThrottler<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
-Defined in: [throttler/createThrottledSignal.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottledSignal.ts#L42)
+Defined in: [throttler/createThrottledSignal.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottledSignal.ts#L41)
 
 A Solid hook that creates a throttled state value that updates at most once within a specified time window.
 This hook combines Solid's createSignal with throttling functionality to provide controlled state updates.
@@ -58,9 +58,9 @@ const [value, setValue] = createThrottledSignal(0, {
   trailing: false  // Skip trailing edge updates
 });
 
-// Access throttler methods if needed
-const handleReset = () => {
-  setValue(0);
-  throttler.cancel(); // Cancel any pending updates
-};
+// Access throttler state via signals
+console.log('Executions:', throttler.executionCount());
+console.log('Is pending:', throttler.isPending());
+console.log('Last execution:', throttler.lastExecutionTime());
+console.log('Next execution:', throttler.nextExecutionTime());
 ```

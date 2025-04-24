@@ -11,7 +11,7 @@ title: createThrottledValue
 function createThrottledValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidThrottler<Setter<TValue>, [Accessor<TValue>]>]
 ```
 
-Defined in: [throttler/createThrottledValue.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottledValue.ts#L38)
+Defined in: [throttler/createThrottledValue.ts:39](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottledValue.ts#L39)
 
 A high-level Solid hook that creates a throttled version of a value that updates at most once within a specified time window.
 This hook uses Solid's createSignal internally to manage the throttled state.
@@ -56,8 +56,9 @@ const [throttledValue, throttler] = createThrottledValue(rawValue, {
   trailing: false  // Skip trailing edge updates
 });
 
-// Optionally access throttler methods
-const handleExecutionCount = () => {
-  console.log('Executions:', throttler.getExecutionCount());
-};
+// Access throttler state via signals
+console.log('Executions:', throttler.executionCount());
+console.log('Is pending:', throttler.isPending());
+console.log('Last execution:', throttler.lastExecutionTime());
+console.log('Next execution:', throttler.nextExecutionTime());
 ```

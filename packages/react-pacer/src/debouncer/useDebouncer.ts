@@ -42,7 +42,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
 export function useDebouncer<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
+>(fn: TFn, options: DebouncerOptions<TFn, TArgs>): Debouncer<TFn, TArgs> {
   const [debouncer] = useState(() =>
     bindInstanceMethods(new Debouncer<TFn, TArgs>(fn, options)),
   )

@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useAsyncQueuer } from './useAsyncQueuer'
-import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
+import type {
+  AsyncQueuer,
+  AsyncQueuerOptions,
+} from '@tanstack/pacer/async-queuer'
 
 /**
  * A higher-level React hook that creates an `AsyncQueuer` instance with built-in state management.
@@ -49,16 +52,16 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
  */
 export function useAsyncQueuerState<TValue>(
   options: AsyncQueuerOptions<TValue> = {},
-) {
+): [Array<() => Promise<TValue>>, AsyncQueuer<TValue>] {
   const [items, setItems] = useState<Array<() => Promise<TValue>>>(
     options.initialItems ?? [],
   )
 
-  const queue = useAsyncQueuer<TValue>({
+  const asyncQueuer = useAsyncQueuer<TValue>({
     ...options,
-    onItemsChange: (queue) => {
-      setItems(queue.getAllItems())
-      options.onItemsChange?.(queue)
+    onItemsChange: (asyncQueuer) => {
+      setItems(asyncQueuer.getAllItems())
+      options.onItemsChange?.(asyncQueuer)
     },
     onIsRunningChange: (queue) => {
       setItems((prev) => [...prev]) // rerender
@@ -66,5 +69,5 @@ export function useAsyncQueuerState<TValue>(
     },
   })
 
-  return [items, queue] as const
+  return [items, asyncQueuer]
 }

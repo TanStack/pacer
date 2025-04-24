@@ -8,7 +8,7 @@ title: useDebouncedCallback
 # Function: useDebouncedCallback()
 
 ```ts
-function useDebouncedCallback<TFn, TArgs>(fn, options): (...args) => any
+function useDebouncedCallback<TFn, TArgs>(fn, options): (...args) => void
 ```
 
 Defined in: [debouncer/useDebouncedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L42)
@@ -60,7 +60,7 @@ Consider using the `useDebouncer` hook instead.
 
 ### Returns
 
-`any`
+`void`
 
 ## Example
 

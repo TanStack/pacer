@@ -1,5 +1,6 @@
 import { createSignal } from 'solid-js'
 import { createDebouncer } from './createDebouncer'
+import type { SolidDebouncer } from './createDebouncer'
 import type { Accessor, Setter } from 'solid-js'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
@@ -15,7 +16,7 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * The hook returns a tuple containing:
  * - The current debounced value accessor
  * - A function to update the debounced value
- * - The debouncer instance with additional control methods
+ * - The debouncer instance with additional control methods and state signals
  *
  * @example
  * ```tsx
@@ -29,21 +30,30 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  *   setSearchTerm(e.target.value);
  * };
  *
- * // Get number of times the debounced function has executed
- * const executionCount = debouncer.getExecutionCount();
+ * // Access debouncer state via signals
+ * console.log('Executions:', debouncer.executionCount());
+ * console.log('Is pending:', debouncer.isPending());
+ *
+ * // In onExecute callback, use get* methods
+ * const [searchTerm, setSearchTerm, debouncer] = createDebouncedSignal('', {
+ *   wait: 500,
+ *   onExecute: (debouncer) => {
+ *     console.log('Total executions:', debouncer.getExecutionCount());
+ *   }
+ * });
  * ```
  */
 export function createDebouncedSignal<TValue>(
   value: TValue,
   initialOptions: DebouncerOptions<Setter<TValue>, [Accessor<TValue>]>,
-) {
+): [
+  Accessor<TValue>,
+  Setter<TValue>,
+  SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>,
+] {
   const [debouncedValue, setDebouncedValue] = createSignal<TValue>(value)
 
   const debouncer = createDebouncer(setDebouncedValue, initialOptions)
 
-  return [
-    debouncedValue,
-    debouncer.maybeExecute as Setter<TValue>,
-    debouncer,
-  ] as const
+  return [debouncedValue, debouncer.maybeExecute as Setter<TValue>, debouncer]
 }

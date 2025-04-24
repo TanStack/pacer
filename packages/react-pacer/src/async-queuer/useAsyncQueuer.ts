@@ -54,7 +54,7 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
  */
 export function useAsyncQueuer<TValue>(
   options: AsyncQueuerOptions<TValue> = {},
-) {
+): AsyncQueuer<TValue> {
   const [asyncQueuer] = useState(() =>
     bindInstanceMethods(new AsyncQueuer<TValue>(options)),
   )
