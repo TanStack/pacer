@@ -11,6 +11,8 @@ function App() {
   const [queueItems, setQueueItems] = useState<Array<AsyncTask>>([])
   const [concurrency, setConcurrency] = useState(2)
 
+  const [, rerender] = useState(0) // demo - rerender when start/stop changes
+
   const queuer = useAsyncQueuer<string>({
     maxSize: 25,
     initialItems: Array.from({ length: 10 }, (_, i) => async () => {
@@ -18,9 +20,15 @@ function App() {
       return `Initial Task ${i + 1}`
     }),
     concurrency: concurrency, // Process 2 items concurrently
-    wait: 100, // for demo purposes - usually you would not want extra wait time unless you are throttling with concurrency
-    onUpdate: (asyncQueuer) => {
+    wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
+    onItemsChange: (asyncQueuer) => {
       setQueueItems(asyncQueuer.getAllItems())
+    },
+    onIsRunningChange: (_asyncQueuer) => {
+      rerender((prev) => prev + 1)
+    },
+    onReject: (item, _asyncQueuer) => {
+      console.log('Queue is full, rejecting item', item)
     },
   })
 
@@ -37,13 +45,14 @@ function App() {
     <div>
       <h1>TanStack Pacer useAsyncQueuer Example</h1>
       <div></div>
-      <div>Queue Size: {queuer.size()}</div>
+      <div>Queue Size: {queuer.getSize()}</div>
       <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {queuer.isFull() ? 'Yes' : 'No'}</div>
-      <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
+      <div>Queue Full: {queuer.getIsFull() ? 'Yes' : 'No'}</div>
+      <div>Queue Empty: {queuer.getIsEmpty() ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {queuer.getIsIdle() ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {queuer.getIsRunning() ? 'Running' : 'Stopped'}</div>
       <div>Items Processed: {queuer.getExecutionCount()}</div>
+      <div>Items Rejected: {queuer.getRejectionCount()}</div>
       <div>Active Tasks: {queuer.getActiveItems().length}</div>
       <div>Pending Tasks: {queuer.getPendingItems().length}</div>
       <div>
@@ -85,19 +94,19 @@ function App() {
               : 1
             queuer.addItem(createAsyncTask(nextNumber))
           }}
-          disabled={queuer.isFull()}
+          disabled={queuer.getIsFull()}
         >
           Add Async Task
         </button>
         <button onClick={() => queuer.getNextItem()}>Get Next Item</button>
-        <button onClick={() => queuer.clear()} disabled={queuer.isEmpty()}>
+        <button onClick={() => queuer.clear()} disabled={queuer.getIsEmpty()}>
           Clear Queue
         </button>
         <button onClick={() => queuer.reset()}>Reset Queue</button>
-        <button onClick={() => queuer.start()} disabled={queuer.isRunning()}>
+        <button onClick={() => queuer.start()} disabled={queuer.getIsRunning()}>
           Start Processing
         </button>
-        <button onClick={() => queuer.stop()} disabled={!queuer.isRunning()}>
+        <button onClick={() => queuer.stop()} disabled={!queuer.getIsRunning()}>
           Stop Processing
         </button>
       </div>

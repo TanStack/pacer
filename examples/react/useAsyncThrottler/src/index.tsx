@@ -56,7 +56,7 @@ function App() {
   })
 
   // get and name our throttled function
-  const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute //
+  const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute
 
   useEffect(() => {
     console.log('mount')
@@ -78,7 +78,7 @@ function App() {
       <h1>TanStack Pacer useAsyncThrottler Example</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={searchTerm}
           onChange={onSearchChange}
           placeholder="Type to search..."

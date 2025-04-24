@@ -11,7 +11,7 @@ function App1() {
     queue<number>({
       maxSize: 25,
       wait: 1000,
-      onUpdate: (queue) => {
+      onItemsChange: (queue) => {
         setQueueItems(queue.getAllItems())
         setProcessedCount(queue.getExecutionCount())
       },
@@ -67,7 +67,7 @@ function App2() {
       onGetNextItem: (item, _queue) => {
         setQueuedText(item)
       },
-      onUpdate: (queue) => {
+      onItemsChange: (queue) => {
         setQueueItems(queue.getAllItems())
         setProcessedCount(queue.getExecutionCount())
       },
@@ -85,7 +85,7 @@ function App2() {
       <h1>TanStack Pacer queue Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={inputText}
           onChange={handleInputChange}
           placeholder="Type to add to queue..."

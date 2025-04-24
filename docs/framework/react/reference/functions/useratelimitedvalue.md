@@ -8,16 +8,10 @@ title: useRateLimitedValue
 # Function: useRateLimitedValue()
 
 ```ts
-function useRateLimitedValue<TValue>(value, options): readonly [TValue, {
-  getExecutionCount: () => number;
-  getRejectionCount: () => number;
-  getRemainingInWindow: () => number;
-  maybeExecute: (...args) => boolean;
-  reset: () => void;
- }]
+function useRateLimitedValue<TValue>(value, options): [TValue, RateLimiter<Dispatch<SetStateAction<TValue>>, [TValue]>]
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:52](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L52)
+Defined in: [rate-limiter/useRateLimitedValue.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L55)
 
 A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses React's useState internally to manage the rate-limited state.
@@ -49,17 +43,11 @@ consider using the lower-level useRateLimiter hook instead.
 
 ### options
 
-`RateLimiterOptions`
+`RateLimiterOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>
 
 ## Returns
 
-readonly \[`TValue`, \{
-  `getExecutionCount`: () => `number`;
-  `getRejectionCount`: () => `number`;
-  `getRemainingInWindow`: () => `number`;
-  `maybeExecute`: (...`args`) => `boolean`;
-  `reset`: () => `void`;
- \}\]
+\[`TValue`, `RateLimiter`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`TValue`\]\>\]
 
 ## Example
 
@@ -74,8 +62,8 @@ const [rateLimitedValue] = useRateLimitedValue(rawValue, {
 const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
   limit: 3,
   window: 5000,
-  onReject: ({ msUntilNextWindow }) => {
-    console.log(`Update rejected. Try again in ${msUntilNextWindow}ms`);
+  onReject: (rateLimiter) => {
+    console.log(`Update rejected. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }
 });
 

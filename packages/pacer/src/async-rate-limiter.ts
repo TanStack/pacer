@@ -1,9 +1,12 @@
-import type { RateLimitRejectionInfo } from './rate-limiter'
+import type { AnyAsyncFunction } from './types'
 
 /**
  * Options for configuring an async rate-limited function
  */
-export interface AsyncRateLimiterOptions {
+export interface AsyncRateLimiterOptions<
+  TFn extends AnyAsyncFunction,
+  TArgs extends Parameters<TFn>,
+> {
   /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -14,17 +17,30 @@ export interface AsyncRateLimiterOptions {
    */
   limit: number
   /**
-   * Time window in milliseconds within which the limit applies
-   */
-  window: number
-  /**
-   * Optional callback function that is called when an execution is rejected due to rate limiting
-   */
-  onReject?: (info: RateLimitRejectionInfo) => void
-  /**
    * Optional error handler for when the rate-limited function throws
    */
   onError?: (error: unknown) => void
+  /**
+   * Optional function to call when the rate-limited function is executed
+   */
+  onExecute?: (rateLimiter: AsyncRateLimiter<TFn, TArgs>) => void
+  /**
+   * Optional callback function that is called when an execution is rejected due to rate limiting
+   */
+  onReject?: (rateLimiter: AsyncRateLimiter<TFn, TArgs>) => void
+  /**
+   * Time window in milliseconds within which the limit applies
+   */
+  window: number
+}
+
+const defaultOptions: Required<
+  Omit<AsyncRateLimiterOptions<any, any>, 'limit' | 'window'>
+> = {
+  enabled: true,
+  onReject: () => {},
+  onError: () => {},
+  onExecute: () => {},
 }
 
 /**
@@ -53,20 +69,20 @@ export interface AsyncRateLimiterOptions {
  * ```
  */
 export class AsyncRateLimiter<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
-  private executionCount = 0
-  private rejectionCount = 0
-  private executionTimes: Array<number> = []
-  private options: AsyncRateLimiterOptions
+  private _executionCount = 0
+  private _executionTimes: Array<number> = []
+  private _options: AsyncRateLimiterOptions<TFn, TArgs>
+  private _rejectionCount = 0
 
   constructor(
     private fn: TFn,
-    initialOptions: AsyncRateLimiterOptions,
+    initialOptions: AsyncRateLimiterOptions<TFn, TArgs>,
   ) {
-    this.options = {
-      enabled: true,
+    this._options = {
+      ...defaultOptions,
       ...initialOptions,
     }
   }
@@ -76,35 +92,20 @@ export class AsyncRateLimiter<
    * Returns the new options state
    */
   setOptions(
-    newOptions: Partial<AsyncRateLimiterOptions>,
-  ): AsyncRateLimiterOptions {
-    this.options = {
-      ...this.options,
+    newOptions: Partial<AsyncRateLimiterOptions<TFn, TArgs>>,
+  ): AsyncRateLimiterOptions<TFn, TArgs> {
+    this._options = {
+      ...this._options,
       ...newOptions,
     }
-    return this.options
+    return this._options
   }
 
   /**
-   * Returns the number of times the function has been executed
+   * Returns the current rate limiter options
    */
-  getExecutionCount(): number {
-    return this.executionCount
-  }
-
-  /**
-   * Returns the number of times the function has been rejected
-   */
-  getRejectionCount(): number {
-    return this.rejectionCount
-  }
-
-  /**
-   * Returns the number of remaining executions allowed in the current window
-   */
-  getRemainingInWindow(): number {
-    this.cleanupOldExecutions()
-    return Math.max(0, this.options.limit - this.executionTimes.length)
+  getOptions(): Required<AsyncRateLimiterOptions<TFn, TArgs>> {
+    return this._options as Required<AsyncRateLimiterOptions<TFn, TArgs>>
   }
 
   /**
@@ -126,7 +127,7 @@ export class AsyncRateLimiter<
   async maybeExecute(...args: TArgs): Promise<boolean> {
     this.cleanupOldExecutions()
 
-    if (this.executionTimes.length < this.options.limit) {
+    if (this._executionTimes.length < this._options.limit) {
       await this.executeFunction(...args)
       return true
     }
@@ -136,57 +137,78 @@ export class AsyncRateLimiter<
   }
 
   private async executeFunction(...args: TArgs): Promise<void> {
-    if (!this.options.enabled) return
+    if (!this._options.enabled) return
     const now = Date.now()
-    this.executionCount++
-    this.executionTimes.push(now)
+    this._executionCount++
+    this._executionTimes.push(now)
 
     try {
       await this.fn(...args)
     } catch (error) {
-      if (this.options.onError) {
+      if (this._options.onError) {
         try {
-          this.options.onError(error)
-        } catch {
-          // Ignore errors from error handler
+          this._options.onError(error)
+        } catch (error) {
+          console.error('Error in onError handler', error)
         }
       }
       throw error
     } finally {
+      this._options.onExecute?.(this)
     }
   }
 
   private rejectFunction(): void {
-    this.rejectionCount++
-    if (this.options.onReject) {
-      const oldestExecution = Math.min(...this.executionTimes)
-      const msUntilNextWindow =
-        oldestExecution + this.options.window - Date.now()
-
-      this.options.onReject({
-        msUntilNextWindow,
-        currentExecutions: this.executionTimes.length,
-        limit: this.options.limit,
-        rejectionCount: this.rejectionCount,
-      })
+    this._rejectionCount++
+    if (this._options.onReject) {
+      this._options.onReject(this)
     }
   }
 
   private cleanupOldExecutions(): void {
     const now = Date.now()
-    const windowStart = now - this.options.window
-    this.executionTimes = this.executionTimes.filter(
+    const windowStart = now - this._options.window
+    this._executionTimes = this._executionTimes.filter(
       (time) => time > windowStart,
     )
+  }
+
+  /**
+   * Returns the number of times the function has been executed
+   */
+  getExecutionCount(): number {
+    return this._executionCount
+  }
+
+  /**
+   * Returns the number of times the function has been rejected
+   */
+  getRejectionCount(): number {
+    return this._rejectionCount
+  }
+
+  /**
+   * Returns the number of remaining executions allowed in the current window
+   */
+  getRemainingInWindow(): number {
+    this.cleanupOldExecutions()
+    return Math.max(0, this._options.limit - this._executionTimes.length)
+  }
+
+  /**
+   * Returns the number of milliseconds until the next execution will be possible
+   */
+  getMsUntilNextWindow(): number {
+    return this.getRemainingInWindow() * this._options.window
   }
 
   /**
    * Resets the rate limiter state
    */
   reset(): void {
-    this.executionTimes = []
-    this.executionCount = 0
-    this.rejectionCount = 0
+    this._executionTimes = []
+    this._executionCount = 0
+    this._rejectionCount = 0
   }
 }
 
@@ -207,8 +229,8 @@ export class AsyncRateLimiter<
  * const rateLimited = asyncRateLimit(makeApiCall, {
  *   limit: 5,
  *   window: 60000,
- *   onReject: ({ msUntilNextWindow }) => {
- *     console.log(`Rate limit exceeded. Try again in ${msUntilNextWindow}ms`);
+ *   onReject: (rateLimiter) => {
+ *     console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }
  * });
  *
@@ -221,8 +243,12 @@ export class AsyncRateLimiter<
  * ```
  */
 export function asyncRateLimit<
-  TFn extends (...args: Array<any>) => Promise<any>,
->(fn: TFn, initialOptions: Omit<AsyncRateLimiterOptions, 'enabled'>) {
+  TFn extends AnyAsyncFunction,
+  TArgs extends Parameters<TFn>,
+>(
+  fn: TFn,
+  initialOptions: Omit<AsyncRateLimiterOptions<TFn, TArgs>, 'enabled'>,
+) {
   const rateLimiter = new AsyncRateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)
 }

@@ -8,10 +8,10 @@ title: asyncDebounce
 # Function: asyncDebounce()
 
 ```ts
-function asyncDebounce<TFn>(fn, initialOptions): (...args) => Promise<void>
+function asyncDebounce<TFn, TArgs>(fn, initialOptions): (...args) => Promise<void>
 ```
 
-Defined in: [async-debouncer.ts:192](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L192)
+Defined in: [async-debouncer.ts:219](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L219)
 
 Creates an async debounced function that delays execution until after a specified wait time.
 The debounced function will only execute once the wait period has elapsed without any new calls.
@@ -19,7 +19,9 @@ If called again during the wait period, the timer resets and a new wait period b
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `Promise`\<`any`\>
+• **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
+
+• **TArgs** *extends* `any`[]
 
 ## Parameters
 
@@ -29,7 +31,7 @@ If called again during the wait period, the timer resets and a new wait period b
 
 ### initialOptions
 
-`Omit`\<[`AsyncDebouncerOptions`](../interfaces/asyncdebounceroptions.md), `"enabled"`\>
+`Omit`\<[`AsyncDebouncerOptions`](../interfaces/asyncdebounceroptions.md)\<`TFn`, `TArgs`\>, `"enabled"`\>
 
 ## Returns
 
@@ -42,7 +44,7 @@ If a call is already in progress, it will be queued
 
 #### args
 
-...`Parameters`
+...`TArgs`
 
 ### Returns
 

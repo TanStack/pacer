@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 
 /**
@@ -39,32 +41,17 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
  * ```
  */
 export function useAsyncRateLimiter<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncRateLimiterOptions) {
-  const [asyncRateLimiter] = useState(
-    () => new AsyncRateLimiter<TFn, TArgs>(fn, options),
+>(
+  fn: TFn,
+  options: AsyncRateLimiterOptions<TFn, TArgs>,
+): AsyncRateLimiter<TFn, TArgs> {
+  const [asyncRateLimiter] = useState(() =>
+    bindInstanceMethods(new AsyncRateLimiter<TFn, TArgs>(fn, options)),
   )
 
-  const setOptions = useMemo(
-    () => asyncRateLimiter.setOptions.bind(asyncRateLimiter),
-    [asyncRateLimiter],
-  )
+  asyncRateLimiter.setOptions(options)
 
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: asyncRateLimiter.maybeExecute.bind(asyncRateLimiter),
-        getExecutionCount:
-          asyncRateLimiter.getExecutionCount.bind(asyncRateLimiter),
-        getRejectionCount:
-          asyncRateLimiter.getRejectionCount.bind(asyncRateLimiter),
-        reset: asyncRateLimiter.reset.bind(asyncRateLimiter),
-        getRemainingInWindow:
-          asyncRateLimiter.getRemainingInWindow.bind(asyncRateLimiter),
-      }) as const,
-    [asyncRateLimiter],
-  )
+  return asyncRateLimiter
 }

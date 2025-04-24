@@ -61,7 +61,7 @@ import { asyncQueue } from '@tanstack/pacer'
 // Create a queue that processes up to 2 items concurrently
 const processItems = asyncQueue<string>({
   concurrency: 2,
-  onUpdate: (queuer) => {
+  onItemsChange: (queuer) => {
     console.log('Active tasks:', queuer.getActiveItems().length)
   }
 })

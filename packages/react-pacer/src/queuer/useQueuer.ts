@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Queuer } from '@tanstack/pacer/queuer'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { QueuerOptions } from '@tanstack/pacer/queuer'
 
 /**
@@ -7,7 +8,7 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  *
  * This is a lower-level hook that provides direct access to the Queuer's functionality without
  * any built-in state management. This allows you to integrate it with any state management solution
- * you prefer (useState, Redux, Zustand, etc.) by utilizing the onUpdate callback.
+ * you prefer (useState, Redux, Zustand, etc.) by utilizing the onItemsChange callback.
  *
  * For a hook with built-in state management, see useQueuerState.
  *
@@ -27,7 +28,7 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * const queue = useQueuer({
  *   started: true, // Start processing immediately
  *   wait: 1000,    // Process one item every second
- *   onUpdate: (queue) => setItems(queue.getAllItems()),
+ *   onItemsChange: (queue) => setItems(queue.getAllItems()),
  *   getPriority: (item) => item.priority // Process higher priority items first
  * });
  *
@@ -40,32 +41,14 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * queue.start(); // Resume processing
  * ```
  */
-export function useQueuer<TValue>(options: QueuerOptions<TValue> = {}) {
-  const [queuer] = useState(() => new Queuer<TValue>(options))
-
-  const setOptions = useMemo(() => queuer.setOptions.bind(queuer), [queuer])
-
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        addItem: queuer.addItem.bind(queuer),
-        clear: queuer.clear.bind(queuer),
-        getAllItems: queuer.getAllItems.bind(queuer),
-        getExecutionCount: queuer.getExecutionCount.bind(queuer),
-        getNextItem: queuer.getNextItem.bind(queuer),
-        isEmpty: queuer.isEmpty.bind(queuer),
-        isFull: queuer.isFull.bind(queuer),
-        isRunning: queuer.isRunning.bind(queuer),
-        isIdle: queuer.isIdle.bind(queuer),
-        onUpdate: queuer.onUpdate.bind(queuer),
-        peek: queuer.peek.bind(queuer),
-        reset: queuer.reset.bind(queuer),
-        size: queuer.size.bind(queuer),
-        start: queuer.start.bind(queuer),
-        stop: queuer.stop.bind(queuer),
-      }) as const,
-    [queuer],
+export function useQueuer<TValue>(
+  options: QueuerOptions<TValue> = {},
+): Queuer<TValue> {
+  const [queuer] = useState(() =>
+    bindInstanceMethods(new Queuer<TValue>(options)),
   )
+
+  queuer.setOptions(options)
+
+  return queuer
 }

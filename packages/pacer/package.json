@@ -127,6 +127,13 @@
         "default": "./dist/cjs/throttler.cjs"
       }
     },
+    "./types": {
+      "types": "./dist/esm/types.d.ts"
+    },
+    "./utils": {
+      "types": "./dist/esm/utils.d.ts",
+      "default": "./dist/esm/utils.js"
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,

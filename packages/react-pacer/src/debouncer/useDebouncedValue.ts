@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDebouncedState } from './useDebouncedState'
-import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
+import type { Debouncer, DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 /**
  * A React hook that creates a debounced value that updates only after a specified delay.
@@ -40,8 +40,11 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  */
 export function useDebouncedValue<TValue>(
   value: TValue,
-  options: DebouncerOptions,
-) {
+  options: DebouncerOptions<
+    React.Dispatch<React.SetStateAction<TValue>>,
+    [value: React.SetStateAction<TValue>]
+  >,
+): [TValue, Debouncer<React.Dispatch<React.SetStateAction<TValue>>, [TValue]>] {
   const [debouncedValue, setDebouncedValue, debouncer] = useDebouncedState(
     value,
     options,
@@ -54,5 +57,5 @@ export function useDebouncedValue<TValue>(
     }
   }, [value, setDebouncedValue, debouncer])
 
-  return [debouncedValue, debouncer] as const
+  return [debouncedValue, debouncer]
 }

@@ -30,9 +30,17 @@ export interface QueuerOptions<TValue> {
    */
   onGetNextItem?: (item: TValue, queuer: Queuer<TValue>) => void
   /**
+   * Callback fired whenever the queuer's running state changes
+   */
+  onIsRunningChange?: (queuer: Queuer<TValue>) => void
+  /**
    * Callback fired whenever an item is added or removed from the queuer
    */
-  onUpdate?: (queuer: Queuer<TValue>) => void
+  onItemsChange?: (queuer: Queuer<TValue>) => void
+  /**
+   * Callback fired whenever an item is rejected from being added to the queuer
+   */
+  onReject?: (item: TValue, queuer: Queuer<TValue>) => void
   /**
    * Whether the queuer should start processing tasks immediately
    */
@@ -46,11 +54,13 @@ export interface QueuerOptions<TValue> {
 const defaultOptions: Required<QueuerOptions<any>> = {
   addItemsTo: 'back',
   getItemsFrom: 'front',
-  getPriority: () => 0,
+  getPriority: (item) => item?.priority ?? 0,
   initialItems: [],
   maxSize: Infinity,
   onGetNextItem: () => {},
-  onUpdate: () => {},
+  onIsRunningChange: () => {},
+  onItemsChange: () => {},
+  onReject: () => {},
   started: false,
   wait: 0,
 }
@@ -87,7 +97,7 @@ export type QueuePosition = 'front' | 'back'
  * - start(): begins processing items in the queuer
  * - stop(): pauses processing
  * - wait: configurable delay between processing items
- * - onUpdate/onGetNextItem: callbacks for monitoring queuer state
+ * - onItemsChange/onGetNextItem: callbacks for monitoring queuer state
  *
  * @example
  * ```ts
@@ -102,7 +112,7 @@ export type QueuePosition = 'front' | 'back'
  *   getPriority: (n) => n, // Higher numbers have priority
  *   started: true, // Begin processing immediately
  *   wait: 1000, // Wait 1s between items
- *   onGetNextItem: (item) => console.log(item)
+ *   onGetNextItem: (item, queuer) => console.log(item)
  * });
  * priorityQueue.addItem(1); // [1]
  * priorityQueue.addItem(3); // [3, 1] - 3 processed first
@@ -110,48 +120,23 @@ export type QueuePosition = 'front' | 'back'
  * ```
  */
 export class Queuer<TValue> {
-  protected options: Required<QueuerOptions<TValue>>
-  private items: Array<TValue> = []
-  private executionCount = 0
-  private onUpdates: Array<(item: TValue) => void> = []
-  private running: boolean
-  private pendingTick = false
+  private _options: Required<QueuerOptions<TValue>>
+  private _items: Array<TValue> = []
+  private _executionCount = 0
+  private _rejectionCount = 0
+  private _onItemsChanges: Array<(item: TValue) => void> = []
+  private _running: boolean
+  private _pendingTick = false
 
   constructor(initialOptions: QueuerOptions<TValue> = defaultOptions) {
-    this.options = { ...defaultOptions, ...initialOptions }
-    this.running = this.options.started
+    this._options = { ...defaultOptions, ...initialOptions }
+    this._running = this._options.started
 
-    for (let i = 0; i < this.options.initialItems.length; i++) {
-      const item = this.options.initialItems[i]!
-      const isLast = i === this.options.initialItems.length - 1
-      this.addItem(item, this.options.addItemsTo, isLast)
+    for (let i = 0; i < this._options.initialItems.length; i++) {
+      const item = this._options.initialItems[i]!
+      const isLast = i === this._options.initialItems.length - 1
+      this.addItem(item, this._options.addItemsTo, isLast)
     }
-  }
-
-  /**
-   * Processes items in the queuer
-   */
-  protected tick() {
-    if (!this.running) {
-      this.pendingTick = false
-      return
-    }
-    while (!this.isEmpty()) {
-      const nextItem = this.getNextItem(this.options.getItemsFrom)
-      if (nextItem === undefined) {
-        break
-      }
-      this.onUpdates.forEach((cb) => cb(nextItem))
-
-      if (this.options.wait > 0) {
-        // Use setTimeout to wait before processing next item
-        setTimeout(() => this.tick(), this.options.wait)
-        return
-      }
-
-      this.tick()
-    }
-    this.pendingTick = false
   }
 
   /**
@@ -161,8 +146,82 @@ export class Queuer<TValue> {
   setOptions(
     newOptions: Partial<QueuerOptions<TValue>>,
   ): QueuerOptions<TValue> {
-    this.options = { ...this.options, ...newOptions }
-    return this.options
+    this._options = { ...this._options, ...newOptions }
+    return this._options
+  }
+
+  /**
+   * Returns the current queuer options
+   */
+  getOptions(): Required<QueuerOptions<TValue>> {
+    return this._options
+  }
+
+  /**
+   * Processes items in the queuer
+   */
+  private tick() {
+    if (!this._running) {
+      this._pendingTick = false
+      return
+    }
+    while (!this.getIsEmpty()) {
+      const nextItem = this.getNextItem(this._options.getItemsFrom)
+      if (nextItem === undefined) {
+        break
+      }
+      this._onItemsChanges.forEach((cb) => cb(nextItem))
+
+      if (this._options.wait > 0) {
+        // Use setTimeout to wait before processing next item
+        setTimeout(() => this.tick(), this._options.wait)
+        return
+      }
+
+      this.tick()
+    }
+    this._pendingTick = false
+  }
+
+  /**
+   * Stops the queuer from processing items
+   */
+  stop() {
+    this._running = false
+    this._pendingTick = false
+    this._options.onIsRunningChange(this)
+  }
+
+  /**
+   * Starts the queuer and processes items
+   */
+  start() {
+    this._running = true
+    if (!this._pendingTick && !this.getIsEmpty()) {
+      this._pendingTick = true
+      this.tick()
+    }
+    this._options.onIsRunningChange(this)
+  }
+
+  /**
+   * Removes all items from the queuer
+   */
+  clear(): void {
+    this._items = []
+    this._options.onItemsChange(this)
+  }
+
+  /**
+   * Resets the queuer to its initial state
+   */
+  reset(withInitialItems?: boolean): void {
+    this.clear()
+    this._executionCount = 0
+    if (withInitialItems) {
+      this._items = [...this._options.initialItems]
+    }
+    this._running = this._options.started
   }
 
   /**
@@ -171,40 +230,42 @@ export class Queuer<TValue> {
    */
   addItem(
     item: TValue,
-    position: QueuePosition = this.options.addItemsTo,
+    position: QueuePosition = this._options.addItemsTo,
     runOnUpdate: boolean = true,
   ): boolean {
-    if (this.isFull()) {
+    if (this.getIsFull()) {
+      this._rejectionCount++
+      this._options.onReject(item, this)
       return false
     }
 
-    if (this.options.getPriority !== defaultOptions.getPriority) {
+    if (this._options.getPriority !== defaultOptions.getPriority) {
       // If custom priority function is provided, insert based on priority
-      const priority = this.options.getPriority(item)
-      const insertIndex = this.items.findIndex(
-        (existing) => this.options.getPriority(existing) > priority,
+      const priority = this._options.getPriority(item)
+      const insertIndex = this._items.findIndex(
+        (existing) => this._options.getPriority(existing) > priority,
       )
 
       if (insertIndex === -1) {
-        this.items.push(item)
+        this._items.push(item)
       } else {
-        this.items.splice(insertIndex, 0, item)
+        this._items.splice(insertIndex, 0, item)
       }
     } else {
       // Default FIFO/LIFO behavior
       if (position === 'front') {
-        this.items.unshift(item)
+        this._items.unshift(item)
       } else {
-        this.items.push(item)
+        this._items.push(item)
       }
     }
 
-    if (this.running && !this.pendingTick) {
-      this.pendingTick = true
+    if (this._running && !this._pendingTick) {
+      this._pendingTick = true
       this.tick()
     }
     if (runOnUpdate) {
-      this.options.onUpdate(this)
+      this._options.onItemsChange(this)
     }
     return true
   }
@@ -221,20 +282,20 @@ export class Queuer<TValue> {
    * ```
    */
   getNextItem(
-    position: QueuePosition = this.options.getItemsFrom,
+    position: QueuePosition = this._options.getItemsFrom,
   ): TValue | undefined {
     let item: TValue | undefined
 
     if (position === 'front') {
-      item = this.items.shift()
+      item = this._items.shift()
     } else {
-      item = this.items.pop()
+      item = this._items.pop()
     }
 
     if (item !== undefined) {
-      this.executionCount++
-      this.options.onUpdate(this)
-      this.options.onGetNextItem(item, this)
+      this._executionCount++
+      this._options.onItemsChange(this)
+      this._options.onGetNextItem(item, this)
     }
     return item
   }
@@ -245,118 +306,74 @@ export class Queuer<TValue> {
    * @example
    * ```ts
    * // Look at next item to getNextItem
-   * queuer.peek()
+   * queuer.getPeek()
    * // Look at last item (like stack top)
-   * queuer.peek('back')
+   * queuer.getPeek('back')
    * ```
    */
-  peek(
-    position: QueuePosition = this.options.getItemsFrom,
+  getPeek(
+    position: QueuePosition = this._options.getItemsFrom,
   ): TValue | undefined {
     if (position === 'front') {
-      return this.items[0]
+      return this._items[0]
     }
-    return this.items[this.items.length - 1]
+    return this._items[this._items.length - 1]
   }
 
   /**
    * Returns true if the queuer is empty
    */
-  isEmpty(): boolean {
-    return this.items.length === 0
+  getIsEmpty(): boolean {
+    return this._items.length === 0
   }
 
   /**
    * Returns true if the queuer is full
    */
-  isFull(): boolean {
-    return this.items.length >= this.options.maxSize
+  getIsFull(): boolean {
+    return this._items.length >= this._options.maxSize
   }
 
   /**
    * Returns the current size of the queuer
    */
-  size(): number {
-    return this.items.length
-  }
-
-  /**
-   * Removes all items from the queuer
-   */
-  clear(): void {
-    this.items = []
-    this.options.onUpdate(this)
-  }
-
-  /**
-   * Resets the queuer to its initial state
-   */
-  reset(withInitialItems?: boolean): void {
-    this.clear()
-    this.executionCount = 0
-    if (withInitialItems) {
-      this.items = [...this.options.initialItems]
-    }
-    this.running = this.options.started
+  getSize(): number {
+    return this._items.length
   }
 
   /**
    * Returns a copy of all items in the queuer
    */
   getAllItems(): Array<TValue> {
-    return [...this.items]
+    return [...this._items]
   }
 
   /**
    * Returns the number of items that have been removed from the queuer
    */
   getExecutionCount(): number {
-    return this.executionCount
+    return this._executionCount
   }
 
   /**
-   * Adds a callback to be called when an item is processed
+   * Returns the number of items that have been rejected from the queuer
    */
-  onUpdate(cb: (item: TValue) => void) {
-    this.onUpdates.push(cb)
-    return () => {
-      this.onUpdates = this.onUpdates.filter((d) => d !== cb)
-    }
-  }
-
-  /**
-   * Stops the queuer from processing items
-   */
-  stop() {
-    this.running = false
-    this.pendingTick = false
-    this.options.onUpdate(this)
-  }
-
-  /**
-   * Starts the queuer and processes items
-   */
-  start() {
-    this.running = true
-    if (!this.pendingTick && !this.isEmpty()) {
-      this.pendingTick = true
-      this.tick()
-    }
-    this.options.onUpdate(this)
+  getRejectionCount(): number {
+    return this._rejectionCount
   }
 
   /**
    * Returns true if the queuer is running
    */
-  isRunning() {
-    return this.running
+  getIsRunning() {
+    return this._running
   }
 
   /**
    * Returns true if the queuer is running but has no items to process
    */
-  isIdle() {
-    return this.running && this.isEmpty()
+  getIsIdle() {
+    return this._running && this.getIsEmpty()
   }
 }
 
@@ -374,7 +391,7 @@ export class Queuer<TValue> {
  * // Basic sequential processing
  * const processItems = queuer<number>({
  *   wait: 1000,
- *   onUpdate: (queuer) => console.log(queuer.getAllItems())
+ *   onItemsChange: (queuer) => console.log(queuer.getAllItems())
  * })
  * processItems(1) // Logs: 1
  * processItems(2) // Logs: 2 after 1 completes

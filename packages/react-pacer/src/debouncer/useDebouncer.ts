@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
+import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
  * A React hook that creates and manages a Debouncer instance.
@@ -38,26 +40,14 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * ```
  */
 export function useDebouncer<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions) {
-  const [debouncer] = useState(() => new Debouncer<TFn, TArgs>(fn, options))
-
-  const setOptions = useMemo(
-    () => debouncer.setOptions.bind(debouncer),
-    [debouncer],
+>(fn: TFn, options: DebouncerOptions<TFn, TArgs>): Debouncer<TFn, TArgs> {
+  const [debouncer] = useState(() =>
+    bindInstanceMethods(new Debouncer<TFn, TArgs>(fn, options)),
   )
 
-  setOptions(options)
+  debouncer.setOptions(options)
 
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: debouncer.maybeExecute.bind(debouncer),
-        cancel: debouncer.cancel.bind(debouncer),
-        getExecutionCount: debouncer.getExecutionCount.bind(debouncer),
-        getIsPending: debouncer.getIsPending.bind(debouncer),
-      }) as const,
-    [debouncer],
-  )
+  return debouncer
 }

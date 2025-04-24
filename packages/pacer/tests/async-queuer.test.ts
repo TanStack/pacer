@@ -11,11 +11,11 @@ describe('AsyncQueuer', () => {
   describe('basic functionality', () => {
     it('should create an empty queue', () => {
       expect(asyncQueuer.getAllItems()).toHaveLength(0)
-      expect(asyncQueuer.isIdle()).toBe(false)
-      expect(asyncQueuer.isRunning()).toBe(false)
+      expect(asyncQueuer.getIsIdle()).toBe(false)
+      expect(asyncQueuer.getIsRunning()).toBe(false)
       asyncQueuer.start()
-      expect(asyncQueuer.isRunning()).toBe(true)
-      expect(asyncQueuer.isRunning()).toBe(true)
+      expect(asyncQueuer.getIsRunning()).toBe(true)
+      expect(asyncQueuer.getIsRunning()).toBe(true)
     })
 
     it('should process tasks in FIFO order when started', async () => {
@@ -31,7 +31,7 @@ describe('AsyncQueuer', () => {
       await asyncQueuer.start()
 
       expect(results).toEqual([1, 2, 3])
-      expect(asyncQueuer.isIdle()).toBe(true)
+      expect(asyncQueuer.getIsIdle()).toBe(true)
     })
 
     it('should respect concurrency limit', async () => {
@@ -136,8 +136,8 @@ describe('AsyncQueuer', () => {
       asyncQueuer.addItem(task1)
       asyncQueuer.addItem(task2)
 
-      const frontTask = asyncQueuer.peek()
-      const backTask = asyncQueuer.peek('back')
+      const frontTask = asyncQueuer.getPeek()
+      const backTask = asyncQueuer.getPeek('back')
 
       // We can't compare the wrapped task functions directly
       // Instead verify the resolved values
@@ -149,7 +149,7 @@ describe('AsyncQueuer', () => {
   describe('constructor options', () => {
     it('should respect started option', () => {
       const queue = new AsyncQueuer({ started: true })
-      expect(queue.isRunning()).toBe(true)
+      expect(queue.getIsRunning()).toBe(true)
     })
 
     it('should respect initial concurrency', async () => {

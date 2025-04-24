@@ -11,7 +11,7 @@ title: queue
 function queue<TValue>(options): (item, position, runOnUpdate) => boolean
 ```
 
-Defined in: [queuer.ts:391](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L391)
+Defined in: [queuer.ts:408](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L408)
 
 Creates a queue that processes items in a queuer immediately upon addition.
 Items are processed sequentially in FIFO order by default.
@@ -63,7 +63,7 @@ true if item was added, false if queuer is full
 // Basic sequential processing
 const processItems = queuer<number>({
   wait: 1000,
-  onUpdate: (queuer) => console.log(queuer.getAllItems())
+  onItemsChange: (queuer) => console.log(queuer.getAllItems())
 })
 processItems(1) // Logs: 1
 processItems(2) // Logs: 2 after 1 completes

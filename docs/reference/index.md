@@ -27,11 +27,12 @@ title: "@tanstack/pacer"
 - [DebouncerOptions](interfaces/debounceroptions.md)
 - [QueuerOptions](interfaces/queueroptions.md)
 - [RateLimiterOptions](interfaces/ratelimiteroptions.md)
-- [RateLimitRejectionInfo](interfaces/ratelimitrejectioninfo.md)
 - [ThrottlerOptions](interfaces/throttleroptions.md)
 
 ## Type Aliases
 
+- [AnyAsyncFunction](type-aliases/anyasyncfunction.md)
+- [AnyFunction](type-aliases/anyfunction.md)
 - [QueuePosition](type-aliases/queueposition.md)
 
 ## Functions
@@ -40,6 +41,7 @@ title: "@tanstack/pacer"
 - [asyncQueue](functions/asyncqueue.md)
 - [asyncRateLimit](functions/asyncratelimit.md)
 - [asyncThrottle](functions/asyncthrottle.md)
+- [bindInstanceMethods](functions/bindinstancemethods.md)
 - [debounce](functions/debounce.md)
 - [isPlainArray](functions/isplainarray.md)
 - [isPlainObject](functions/isplainobject.md)

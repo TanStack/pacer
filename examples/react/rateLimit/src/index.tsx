@@ -12,8 +12,11 @@ function App1() {
     rateLimit(setRateLimitedCount, {
       limit: 5,
       window: 5000,
-      onReject: (rejectionInfo) =>
-        console.log('Rejected by rate limiter', rejectionInfo),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     }),
     [],
   )
@@ -58,8 +61,11 @@ function App2() {
     rateLimit(setRateLimitedText, {
       limit: 5,
       window: 5000,
-      onReject: (rejectionInfo) =>
-        console.log('Rejected by rate limiter', rejectionInfo),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     }),
     [],
   )
@@ -75,7 +81,7 @@ function App2() {
       <h1>TanStack Pacer rateLimit Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={text}
           onChange={handleTextChange}
           placeholder="Type text (rate limited to 3 updates per 5 seconds)..."

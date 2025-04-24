@@ -8,14 +8,10 @@ title: useThrottledState
 # Function: useThrottledState()
 
 ```ts
-function useThrottledState<TValue>(value, options): readonly [TValue, (...args) => void, {
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => void;
- }]
+function useThrottledState<TValue>(value, options): [TValue, Dispatch<SetStateAction<TValue>>, Throttler<Dispatch<SetStateAction<TValue>>, [TValue]>]
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottledState.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledState.ts#L40)
+Defined in: [throttler/useThrottledState.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledState.ts#L40)
 
 A React hook that creates a throttled state value that updates at most once within a specified time window.
 This hook combines React's useState with throttling functionality to provide controlled state updates.
@@ -43,15 +39,11 @@ consider using the lower-level useThrottler hook instead.
 
 ### options
 
-`ThrottlerOptions`
+`ThrottlerOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>
 
 ## Returns
 
-readonly \[`TValue`, (...`args`) => `void`, \{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `void`;
- \}\]
+\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, `Throttler`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`TValue`\]\>\]
 
 ## Example
 

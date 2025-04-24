@@ -29,6 +29,8 @@ export default mergeConfig(
       './src/queuer/index.ts',
       './src/rate-limiter/index.ts',
       './src/throttler/index.ts',
+      './src/types/index.ts',
+      './src/utils/index.ts',
     ],
     srcDir: './src',
   }),

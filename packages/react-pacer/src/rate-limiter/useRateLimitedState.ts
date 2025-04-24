@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useRateLimiter } from './useRateLimiter'
-import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
+import type {
+  RateLimiter,
+  RateLimiterOptions,
+} from '@tanstack/pacer/rate-limiter'
 
 /**
  * A React hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
@@ -36,8 +39,8 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * const [value, setValue] = useRateLimitedState(0, {
  *   limit: 3,
  *   window: 5000,
- *   onReject: ({ msUntilNextWindow }) => {
- *     alert(`Rate limit reached. Try again in ${msUntilNextWindow}ms`);
+ *   onReject: (rateLimiter) => {
+ *     alert(`Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }
  * });
  *
@@ -55,9 +58,16 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 export function useRateLimitedState<TValue>(
   value: TValue,
-  options: RateLimiterOptions,
-) {
+  options: RateLimiterOptions<
+    React.Dispatch<React.SetStateAction<TValue>>,
+    [value: React.SetStateAction<TValue>]
+  >,
+): [
+  TValue,
+  React.Dispatch<React.SetStateAction<TValue>>,
+  RateLimiter<React.Dispatch<React.SetStateAction<TValue>>, [TValue]>,
+] {
   const [rateLimitedValue, setRateLimitedValue] = useState<TValue>(value)
   const rateLimiter = useRateLimiter(setRateLimitedValue, options)
-  return [rateLimitedValue, rateLimiter.maybeExecute, rateLimiter] as const
+  return [rateLimitedValue, rateLimiter.maybeExecute, rateLimiter]
 }

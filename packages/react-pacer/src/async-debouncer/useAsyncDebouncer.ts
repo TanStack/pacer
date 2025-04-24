@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 
 /**
@@ -38,28 +40,17 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
  */
 
 export function useAsyncDebouncer<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncDebouncerOptions) {
-  const [asyncDebouncer] = useState(
-    () => new AsyncDebouncer<TFn, TArgs>(fn, options),
+>(
+  fn: TFn,
+  options: AsyncDebouncerOptions<TFn, TArgs>,
+): AsyncDebouncer<TFn, TArgs> {
+  const [asyncDebouncer] = useState(() =>
+    bindInstanceMethods(new AsyncDebouncer<TFn, TArgs>(fn, options)),
   )
 
-  const setOptions = useMemo(
-    () => asyncDebouncer.setOptions.bind(asyncDebouncer),
-    [asyncDebouncer],
-  )
+  asyncDebouncer.setOptions(options)
 
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: asyncDebouncer.maybeExecute.bind(asyncDebouncer),
-        cancel: asyncDebouncer.cancel.bind(asyncDebouncer),
-        getExecutionCount:
-          asyncDebouncer.getExecutionCount.bind(asyncDebouncer),
-      }) as const,
-    [asyncDebouncer],
-  )
+  return asyncDebouncer
 }

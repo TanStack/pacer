@@ -69,7 +69,7 @@ function App2() {
       <h1>TanStack Pacer debounce Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={searchText}
           onChange={handleSearchChange}
           placeholder="Type to search..."

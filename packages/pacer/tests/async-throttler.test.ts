@@ -52,13 +52,13 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait })
 
     // Start first long-running call
-    const promise1 = throttler.maybeExecute(1)
-    throttler.maybeExecute(2)
-    const promise3 = throttler.maybeExecute(3)
+    const promise1 = throttler.maybeExecute('1')
+    throttler.maybeExecute('2')
+    const promise3 = throttler.maybeExecute('3')
 
     // First call should be executing
     expect(mockFn).toHaveBeenCalledTimes(1)
-    expect(mockFn).toHaveBeenLastCalledWith(1)
+    expect(mockFn).toHaveBeenLastCalledWith('1')
 
     // Complete first long-running call
     resolveFirst!({})
@@ -70,7 +70,7 @@ describe('AsyncThrottler', () => {
 
     // Should have executed with latest args
     expect(mockFn).toHaveBeenCalledTimes(2)
-    expect(mockFn).toHaveBeenLastCalledWith(3)
+    expect(mockFn).toHaveBeenLastCalledWith('3')
   })
 
   it('should handle special timing cases with delayed calls', async () => {

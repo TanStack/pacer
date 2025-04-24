@@ -4,8 +4,8 @@ import { Queuer } from '../src/queuer'
 describe('Queuer', () => {
   it('should create an empty queuer', () => {
     const queuer = new Queuer()
-    expect(queuer.isEmpty()).toBe(true)
-    expect(queuer.size()).toBe(0)
+    expect(queuer.getIsEmpty()).toBe(true)
+    expect(queuer.getSize()).toBe(0)
   })
 
   it('should respect maxSize option', () => {
@@ -13,15 +13,15 @@ describe('Queuer', () => {
     expect(queuer.addItem(1)).toBe(true)
     expect(queuer.addItem(2)).toBe(true)
     expect(queuer.addItem(3)).toBe(false)
-    expect(queuer.size()).toBe(2)
+    expect(queuer.getSize()).toBe(2)
   })
 
   describe('addItem', () => {
     it('should add items to the queuer', () => {
       const queuer = new Queuer<number>()
       expect(queuer.addItem(1)).toBe(true)
-      expect(queuer.size()).toBe(1)
-      expect(queuer.peek()).toBe(1)
+      expect(queuer.getSize()).toBe(1)
+      expect(queuer.getPeek()).toBe(1)
     })
   })
 
@@ -50,26 +50,26 @@ describe('Queuer', () => {
       queuer.addItem(1)
       queuer.addItem(2)
 
-      expect(queuer.peek()).toBe(1)
-      expect(queuer.size()).toBe(2)
+      expect(queuer.getPeek()).toBe(1)
+      expect(queuer.getSize()).toBe(2)
     })
 
     it('should return undefined when queuer is empty', () => {
       const queuer = new Queuer<number>()
-      expect(queuer.peek()).toBeUndefined()
+      expect(queuer.getPeek()).toBeUndefined()
     })
   })
 
   describe('isEmpty', () => {
     it('should return true when queuer is empty', () => {
       const queuer = new Queuer<number>()
-      expect(queuer.isEmpty()).toBe(true)
+      expect(queuer.getIsEmpty()).toBe(true)
     })
 
     it('should return false when queuer has items', () => {
       const queuer = new Queuer<number>()
       queuer.addItem(1)
-      expect(queuer.isEmpty()).toBe(false)
+      expect(queuer.getIsEmpty()).toBe(false)
     })
   })
 
@@ -78,13 +78,13 @@ describe('Queuer', () => {
       const queuer = new Queuer<number>({ maxSize: 2 })
       queuer.addItem(1)
       queuer.addItem(2)
-      expect(queuer.isFull()).toBe(true)
+      expect(queuer.getIsFull()).toBe(true)
     })
 
     it('should return false when queuer is not full', () => {
       const queuer = new Queuer<number>({ maxSize: 2 })
       queuer.addItem(1)
-      expect(queuer.isFull()).toBe(false)
+      expect(queuer.getIsFull()).toBe(false)
     })
   })
 
@@ -95,9 +95,9 @@ describe('Queuer', () => {
       queuer.addItem(2)
       queuer.clear()
 
-      expect(queuer.isEmpty()).toBe(true)
-      expect(queuer.size()).toBe(0)
-      expect(queuer.peek()).toBeUndefined()
+      expect(queuer.getIsEmpty()).toBe(true)
+      expect(queuer.getSize()).toBe(0)
+      expect(queuer.getPeek()).toBeUndefined()
     })
   })
 
@@ -105,7 +105,7 @@ describe('Queuer', () => {
     describe('initialItems', () => {
       it('should initialize queuer with provided items', () => {
         const queuer = new Queuer<number>({ initialItems: [1, 2, 3] })
-        expect(queuer.size()).toBe(3)
+        expect(queuer.getSize()).toBe(3)
         expect(queuer.getAllItems()).toEqual([1, 2, 3])
       })
 
@@ -128,7 +128,7 @@ describe('Queuer', () => {
 
       it('should handle empty initialItems array', () => {
         const queuer = new Queuer<number>({ initialItems: [] })
-        expect(queuer.isEmpty()).toBe(true)
+        expect(queuer.getIsEmpty()).toBe(true)
       })
     })
 
@@ -199,46 +199,46 @@ describe('Queuer', () => {
       })
     })
 
-    describe('onUpdate', () => {
-      it('should call onUpdate when items are added', () => {
-        const onUpdate = vi.fn()
-        const queuer = new Queuer<number>({ onUpdate })
+    describe('onItemsChange', () => {
+      it('should call onItemsChange when items are added', () => {
+        const onItemsChange = vi.fn()
+        const queuer = new Queuer<number>({ onItemsChange })
 
         queuer.addItem(1)
-        expect(onUpdate).toHaveBeenCalledTimes(1)
-        expect(onUpdate).toHaveBeenCalledWith(queuer)
+        expect(onItemsChange).toHaveBeenCalledTimes(1)
+        expect(onItemsChange).toHaveBeenCalledWith(queuer)
       })
 
-      it('should call onUpdate when items are removed', () => {
-        const onUpdate = vi.fn()
-        const queuer = new Queuer<number>({ onUpdate })
+      it('should call onItemsChange when items are removed', () => {
+        const onItemsChange = vi.fn()
+        const queuer = new Queuer<number>({ onItemsChange })
 
         queuer.addItem(1)
-        onUpdate.mockClear()
+        onItemsChange.mockClear()
 
         queuer.getNextItem()
-        expect(onUpdate).toHaveBeenCalledTimes(1)
-        expect(onUpdate).toHaveBeenCalledWith(queuer)
+        expect(onItemsChange).toHaveBeenCalledTimes(1)
+        expect(onItemsChange).toHaveBeenCalledWith(queuer)
       })
 
-      it('should call onUpdate when queuer is cleared', () => {
-        const onUpdate = vi.fn()
-        const queuer = new Queuer<number>({ onUpdate })
+      it('should call onItemsChange when queuer is cleared', () => {
+        const onItemsChange = vi.fn()
+        const queuer = new Queuer<number>({ onItemsChange })
 
         queuer.addItem(1)
-        onUpdate.mockClear()
+        onItemsChange.mockClear()
 
         queuer.clear()
-        expect(onUpdate).toHaveBeenCalledTimes(1)
-        expect(onUpdate).toHaveBeenCalledWith(queuer)
+        expect(onItemsChange).toHaveBeenCalledTimes(1)
+        expect(onItemsChange).toHaveBeenCalledWith(queuer)
       })
 
-      it('should not call onUpdate when dequeuing from empty queuer', () => {
-        const onUpdate = vi.fn()
-        const queuer = new Queuer<number>({ onUpdate })
+      it('should not call onItemsChange when dequeuing from empty queuer', () => {
+        const onItemsChange = vi.fn()
+        const queuer = new Queuer<number>({ onItemsChange })
 
         queuer.getNextItem()
-        expect(onUpdate).not.toHaveBeenCalled()
+        expect(onItemsChange).not.toHaveBeenCalled()
       })
     })
   })
@@ -264,9 +264,9 @@ describe('Queuer', () => {
     queuer.addItem(2, 'front') // [2,1]
     queuer.addItem(3, 'back') // [2,1,3]
 
-    expect(queuer.peek('front')).toBe(2)
-    expect(queuer.peek('back')).toBe(3)
-    expect(queuer.size()).toBe(3)
+    expect(queuer.getPeek('front')).toBe(2)
+    expect(queuer.getPeek('back')).toBe(3)
+    expect(queuer.getSize()).toBe(3)
 
     // Remove from both ends
     expect(queuer.getNextItem('front')).toBe(2)

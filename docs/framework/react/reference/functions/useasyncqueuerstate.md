@@ -8,30 +8,10 @@ title: useAsyncQueuerState
 # Function: useAsyncQueuerState()
 
 ```ts
-function useAsyncQueuerState<TValue>(options): readonly [() => Promise<TValue>[], {
-  addItem: (fn, position?, runOnUpdate?) => Promise<TValue>;
-  clear: () => void;
-  getActiveItems: () => () => Promise<TValue>[];
-  getAllItems: () => () => Promise<TValue>[];
-  getExecutionCount: () => number;
-  getNextItem: (position?) => undefined | () => Promise<TValue>;
-  getPendingItems: () => () => Promise<TValue>[];
-  isEmpty: () => boolean;
-  isFull: () => boolean;
-  isIdle: () => boolean;
-  isRunning: () => boolean;
-  onError: (cb) => () => void;
-  onSettled: (cb) => () => void;
-  onSuccess: (cb) => () => void;
-  peek: (position?) => undefined | () => Promise<TValue>;
-  reset: (withInitialItems?) => void;
-  size: () => number;
-  start: () => Promise<void>;
-  stop: () => void;
- }]
+function useAsyncQueuerState<TValue>(options): [() => Promise<TValue>[], AsyncQueuer<TValue>]
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuerState.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuerState.ts#L50)
+Defined in: [async-queuer/useAsyncQueuerState.ts:53](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuerState.ts#L53)
 
 A higher-level React hook that creates an `AsyncQueuer` instance with built-in state management.
 
@@ -64,27 +44,7 @@ The state will automatically update whenever items are:
 
 ## Returns
 
-readonly \[() => `Promise`\<`TValue`\>[], \{
-  `addItem`: (`fn`, `position`?, `runOnUpdate`?) => `Promise`\<`TValue`\>;
-  `clear`: () => `void`;
-  `getActiveItems`: () => () => `Promise`\<`TValue`\>[];
-  `getAllItems`: () => () => `Promise`\<`TValue`\>[];
-  `getExecutionCount`: () => `number`;
-  `getNextItem`: (`position`?) => `undefined` \| () => `Promise`\<`TValue`\>;
-  `getPendingItems`: () => () => `Promise`\<`TValue`\>[];
-  `isEmpty`: () => `boolean`;
-  `isFull`: () => `boolean`;
-  `isIdle`: () => `boolean`;
-  `isRunning`: () => `boolean`;
-  `onError`: (`cb`) => () => `void`;
-  `onSettled`: (`cb`) => () => `void`;
-  `onSuccess`: (`cb`) => () => `void`;
-  `peek`: (`position`?) => `undefined` \| () => `Promise`\<`TValue`\>;
-  `reset`: (`withInitialItems`?) => `void`;
-  `size`: () => `number`;
-  `start`: () => `Promise`\<`void`\>;
-  `stop`: () => `void`;
- \}\]
+\[() => `Promise`\<`TValue`\>[], `AsyncQueuer`\<`TValue`\>\]
 
 ## Example
 

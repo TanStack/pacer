@@ -95,7 +95,7 @@ function App2() {
       </div>
       <div>
         <input
-          type="text"
+          type="search"
           value={searchText}
           onChange={handleSearchChange}
           placeholder="Type to search..."

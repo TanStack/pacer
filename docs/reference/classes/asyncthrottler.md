@@ -7,7 +7,7 @@ title: AsyncThrottler
 
 # Class: AsyncThrottler\<TFn, TArgs\>
 
-Defined in: [async-throttler.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L49)
+Defined in: [async-throttler.ts:59](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L59)
 
 A class that creates an async throttled function.
 
@@ -33,7 +33,7 @@ inputElement.addEventListener('input', () => {
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `Promise`\<`any`\>
+• **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
 
 • **TArgs** *extends* `Parameters`\<`TFn`\>
 
@@ -45,7 +45,7 @@ inputElement.addEventListener('input', () => {
 new AsyncThrottler<TFn, TArgs>(fn, initialOptions): AsyncThrottler<TFn, TArgs>
 ```
 
-Defined in: [async-throttler.ts:61](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L61)
+Defined in: [async-throttler.ts:72](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L72)
 
 #### Parameters
 
@@ -55,7 +55,7 @@ Defined in: [async-throttler.ts:61](https://github.com/TanStack/pacer/blob/main/
 
 ##### initialOptions
 
-[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)
+[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\<`TFn`, `TArgs`\>
 
 #### Returns
 
@@ -69,7 +69,7 @@ Defined in: [async-throttler.ts:61](https://github.com/TanStack/pacer/blob/main/
 cancel(): void
 ```
 
-Defined in: [async-throttler.ts:102](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L102)
+Defined in: [async-throttler.ts:169](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L169)
 
 Cancels any pending execution
 
@@ -85,9 +85,41 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [async-throttler.ts:88](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L88)
+Defined in: [async-throttler.ts:181](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L181)
 
 Returns the number of times the function has been executed
+
+#### Returns
+
+`number`
+
+***
+
+### getIsPending()
+
+```ts
+getIsPending(): boolean
+```
+
+Defined in: [async-throttler.ts:202](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L202)
+
+Returns the current pending state
+
+#### Returns
+
+`boolean`
+
+***
+
+### getLastExecutionTime()
+
+```ts
+getLastExecutionTime(): number
+```
+
+Defined in: [async-throttler.ts:188](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L188)
+
+Returns the last execution time
 
 #### Returns
 
@@ -101,7 +133,7 @@ Returns the number of times the function has been executed
 getNextExecutionTime(): number
 ```
 
-Defined in: [async-throttler.ts:95](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L95)
+Defined in: [async-throttler.ts:195](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L195)
 
 Returns the next execution time
 
@@ -111,13 +143,29 @@ Returns the next execution time
 
 ***
 
+### getOptions()
+
+```ts
+getOptions(): Required<AsyncThrottlerOptions<TFn, TArgs>>
+```
+
+Defined in: [async-throttler.ts:99](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L99)
+
+Returns the current options
+
+#### Returns
+
+`Required`\<[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\<`TFn`, `TArgs`\>\>
+
+***
+
 ### maybeExecute()
 
 ```ts
 maybeExecute(...args): Promise<void>
 ```
 
-Defined in: [async-throttler.ts:115](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L115)
+Defined in: [async-throttler.ts:107](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L107)
 
 Attempts to execute the throttled function
 If a call is already in progress, it may be blocked or queued depending on the `wait` option
@@ -137,10 +185,10 @@ If a call is already in progress, it may be blocked or queued depending on the `
 ### setOptions()
 
 ```ts
-setOptions(newOptions): Required<AsyncThrottlerOptions>
+setOptions(newOptions): Required<AsyncThrottlerOptions<TFn, TArgs>>
 ```
 
-Defined in: [async-throttler.ts:75](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L75)
+Defined in: [async-throttler.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L86)
 
 Updates the throttler options
 Returns the new options state
@@ -149,8 +197,8 @@ Returns the new options state
 
 ##### newOptions
 
-`Partial`\<[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\>
+`Partial`\<[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\<`TFn`, `TArgs`\>\>
 
 #### Returns
 
-`Required`\<[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\>
+`Required`\<[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\<`TFn`, `TArgs`\>\>

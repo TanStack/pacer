@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
+import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
  * A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
@@ -28,16 +30,9 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * ```tsx
  * // Basic rate limiting - max 5 calls per minute
  * const { maybeExecute } = useRateLimiter(apiCall, {
- *   maxExecutions: 5,
- *   windowMs: 60000
+ *   limit: 5,
+ *   window: 60000,
  * });
- *
- * // With Redux
- * const dispatch = useDispatch();
- * const { maybeExecute, getRemainingInWindow } = useRateLimiter(
- *   (value) => dispatch(updateAction(value)),
- *   { maxExecutions: 10, windowMs: 30000 }
- * );
  *
  * // Monitor rate limit status
  * const handleClick = () => {
@@ -51,28 +46,14 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * ```
  */
 export function useRateLimiter<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: RateLimiterOptions) {
-  const [rateLimiter] = useState(() => new RateLimiter<TFn, TArgs>(fn, options))
-
-  const setOptions = useMemo(
-    () => rateLimiter.setOptions.bind(rateLimiter),
-    [rateLimiter],
+>(fn: TFn, options: RateLimiterOptions<TFn, TArgs>): RateLimiter<TFn, TArgs> {
+  const [rateLimiter] = useState(() =>
+    bindInstanceMethods(new RateLimiter<TFn, TArgs>(fn, options)),
   )
 
-  setOptions(options)
+  rateLimiter.setOptions(options)
 
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: rateLimiter.maybeExecute.bind(rateLimiter),
-        getExecutionCount: rateLimiter.getExecutionCount.bind(rateLimiter),
-        getRejectionCount: rateLimiter.getRejectionCount.bind(rateLimiter),
-        getRemainingInWindow:
-          rateLimiter.getRemainingInWindow.bind(rateLimiter),
-        reset: rateLimiter.reset.bind(rateLimiter),
-      }) as const,
-    [rateLimiter],
-  )
+  return rateLimiter
 }

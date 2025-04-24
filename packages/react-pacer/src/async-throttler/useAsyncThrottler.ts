@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 
 /**
@@ -40,30 +42,17 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
  */
 
 export function useAsyncThrottler<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: AsyncThrottlerOptions) {
-  const [asyncThrottler] = useState(
-    () => new AsyncThrottler<TFn, TArgs>(fn, options),
+>(
+  fn: TFn,
+  options: AsyncThrottlerOptions<TFn, TArgs>,
+): AsyncThrottler<TFn, TArgs> {
+  const [asyncThrottler] = useState(() =>
+    bindInstanceMethods(new AsyncThrottler<TFn, TArgs>(fn, options)),
   )
 
-  const setOptions = useMemo(
-    () => asyncThrottler.setOptions.bind(asyncThrottler),
-    [asyncThrottler],
-  )
+  asyncThrottler.setOptions(options)
 
-  setOptions(options)
-
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: asyncThrottler.maybeExecute.bind(asyncThrottler),
-        cancel: asyncThrottler.cancel.bind(asyncThrottler),
-        getExecutionCount:
-          asyncThrottler.getExecutionCount.bind(asyncThrottler),
-        getNextExecutionTime:
-          asyncThrottler.getNextExecutionTime.bind(asyncThrottler),
-      }) as const,
-    [asyncThrottler],
-  )
+  return asyncThrottler
 }

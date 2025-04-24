@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Your rule content
+
+- The JSDoc in this repo is important as it gets converted to markdown docs for the website, so it should read like documentation.
+- Don't include `@params`, `@args`, `@template`, or `@returns` in our jsdoc

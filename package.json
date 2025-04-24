@@ -51,26 +51,31 @@
     }
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.28.1",
-    "@faker-js/faker": "^9.6.0",
+    "@changesets/cli": "^2.29.2",
+    "@faker-js/faker": "^9.7.0",
     "@size-limit/preset-small-lib": "^11.2.0",
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
     "@tanstack/config": "0.18.0",
     "@testing-library/jest-dom": "^6.6.3",
-    "@types/node": "^22.14.0",
-    "eslint": "^9.24.0",
+    "@types/node": "^22.14.1",
+    "eslint": "^9.25.1",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "jsdom": "^26.0.0",
-    "knip": "^5.46.5",
-    "nx": "^20.7.1",
+    "jsdom": "^26.1.0",
+    "knip": "^5.50.5",
+    "nx": "^20.8.0",
     "premove": "^4.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
-    "publint": "^0.3.10",
-    "sherif": "^1.4.0",
+    "publint": "^0.3.12",
+    "sherif": "^1.5.0",
     "size-limit": "^11.2.0",
     "typescript": "5.8.3",
-    "vite": "^6.2.5",
-    "vitest": "^3.1.1"
+    "vite": "^6.3.2",
+    "vitest": "^3.1.2"
+  },
+  "overrides": {
+    "@tanstack/pacer": "workspace:*",
+    "@tanstack/react-pacer": "workspace:*",
+    "@tanstack/solid-pacer": "workspace:*"
   }
 }

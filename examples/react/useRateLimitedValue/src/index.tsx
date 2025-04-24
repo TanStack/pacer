@@ -10,8 +10,11 @@ function App1() {
     // enabled: instantCount > 2, // optional, defaults to true
     limit: 5,
     window: 5000,
-    onReject: (rejectionInfo) =>
-      console.log('Rejected by rate limiter', rejectionInfo),
+    onReject: (rateLimiter) =>
+      console.log(
+        'Rejected by rate limiter',
+        rateLimiter.getMsUntilNextWindow(),
+      ),
   })
 
   function increment() {
@@ -60,8 +63,11 @@ function App2() {
     // enabled: instantSearch.length > 2, // optional, defaults to true
     limit: 5,
     window: 5000,
-    onReject: (rejectionInfo) =>
-      console.log('Rejected by rate limiter', rejectionInfo),
+    onReject: (rateLimiter) =>
+      console.log(
+        'Rejected by rate limiter',
+        rateLimiter.getMsUntilNextWindow(),
+      ),
   })
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -73,7 +79,7 @@ function App2() {
       <h1>TanStack Pacer useRateLimitedValue Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={instantSearch}
           onChange={handleSearchChange}
           placeholder="Type to search..."

@@ -44,7 +44,7 @@ function SearchApp() {
       <h1>TanStack Pacer asyncThrottle Example</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={searchText}
           onChange={(e) => {
             const newValue = e.target.value

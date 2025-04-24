@@ -1,7 +1,12 @@
+import type { AnyAsyncFunction } from './types'
+
 /**
  * Options for configuring an async debounced function
  */
-export interface AsyncDebouncerOptions {
+export interface AsyncDebouncerOptions<
+  TFn extends AnyAsyncFunction,
+  TArgs extends Parameters<TFn>,
+> {
   /**
    * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -13,6 +18,14 @@ export interface AsyncDebouncerOptions {
    */
   leading?: boolean
   /**
+   * Optional error handler for when the debounced function throws
+   */
+  onError?: (error: unknown) => void
+  /**
+   * Optional function to call when the debounced function is executed
+   */
+  onExecute?: (debouncer: AsyncDebouncer<TFn, TArgs>) => void
+  /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
    */
@@ -22,17 +35,14 @@ export interface AsyncDebouncerOptions {
    * Defaults to 0ms
    */
   wait: number
-  /**
-   * Optional error handler for when the debounced function throws
-   */
-  onError?: (error: unknown) => void
 }
 
-const defaultOptions: Required<AsyncDebouncerOptions> = {
+const defaultOptions: Required<AsyncDebouncerOptions<any, any>> = {
   enabled: true,
   leading: false,
   trailing: true,
   onError: () => {},
+  onExecute: () => {},
   wait: 0,
 }
 
@@ -48,33 +58,33 @@ const defaultOptions: Required<AsyncDebouncerOptions> = {
  *
  * @example
  * ```ts
- * const debouncer = new AsyncDebouncer(async (value: string) => {
+ * const asyncDebouncer = new AsyncDebouncer(async (value: string) => {
  *   await searchAPI(value);
  * }, { wait: 500 });
  *
  * // Called on each keystroke but only executes after 500ms of no typing
  * inputElement.addEventListener('input', () => {
- *   debouncer.maybeExecute(inputElement.value);
+ *   asyncDebouncer.maybeExecute(inputElement.value);
  * });
  * ```
  */
 export class AsyncDebouncer<
-  TFn extends (...args: Array<any>) => Promise<any>,
+  TFn extends AnyAsyncFunction,
   TArgs extends Parameters<TFn>,
 > {
-  private abortController: AbortController | null = null
-  private executionCount = 0
-  private isExecuting = false
-  private lastArgs: TArgs | undefined
-  private options: Required<AsyncDebouncerOptions>
-  private timeoutId: ReturnType<typeof setTimeout> | null = null
-  private canLeadingExecute = true
+  private _abortController: AbortController | null = null
+  private _executionCount = 0
+  private _isExecuting = false
+  private _lastArgs: TArgs | undefined
+  private _options: Required<AsyncDebouncerOptions<TFn, TArgs>>
+  private _timeoutId: ReturnType<typeof setTimeout> | null = null
+  private _canLeadingExecute = true
 
   constructor(
     private fn: TFn,
-    initialOptions: AsyncDebouncerOptions,
+    initialOptions: AsyncDebouncerOptions<TFn, TArgs>,
   ) {
-    this.options = {
+    this._options = {
       ...defaultOptions,
       ...initialOptions,
     }
@@ -85,36 +95,20 @@ export class AsyncDebouncer<
    * Returns the new options state
    */
   setOptions(
-    newOptions: Partial<AsyncDebouncerOptions>,
-  ): Required<AsyncDebouncerOptions> {
-    this.options = {
-      ...this.options,
+    newOptions: Partial<AsyncDebouncerOptions<TFn, TArgs>>,
+  ): Required<AsyncDebouncerOptions<TFn, TArgs>> {
+    this._options = {
+      ...this._options,
       ...newOptions,
     }
-    return this.options
+    return this._options
   }
 
   /**
-   * Returns the number of times the function has been executed
+   * Returns the current debouncer options
    */
-  getExecutionCount(): number {
-    return this.executionCount
-  }
-
-  /**
-   * Cancels any pending execution
-   */
-  cancel(): void {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
-      this.timeoutId = null
-    }
-    if (this.abortController) {
-      this.abortController.abort()
-      this.abortController = null
-    }
-    this.lastArgs = undefined
-    this.canLeadingExecute = true
+  getOptions(): Required<AsyncDebouncerOptions<TFn, TArgs>> {
+    return this._options
   }
 
   /**
@@ -123,52 +117,85 @@ export class AsyncDebouncer<
    */
   async maybeExecute(...args: TArgs): Promise<void> {
     this.cancel()
-    this.lastArgs = args
+    this._lastArgs = args
 
     // Handle leading execution
-    if (this.options.leading && this.canLeadingExecute) {
-      this.canLeadingExecute = false
+    if (this._options.leading && this._canLeadingExecute) {
+      this._canLeadingExecute = false
       await this.executeFunction(...args)
     }
 
     return new Promise((resolve) => {
-      this.timeoutId = setTimeout(async () => {
-        if (this.isExecuting) {
+      this._timeoutId = setTimeout(async () => {
+        if (this._isExecuting) {
           resolve()
           return
         }
 
-        this.canLeadingExecute = true
+        this._canLeadingExecute = true
         // Execute trailing only if enabled
-        if (this.options.trailing) {
-          this.abortController = new AbortController()
+        if (this._options.trailing) {
+          this._abortController = new AbortController()
           try {
-            this.isExecuting = true
-            if (this.lastArgs) {
-              await this.executeFunction(...this.lastArgs)
+            this._isExecuting = true
+            if (this._lastArgs) {
+              await this.executeFunction(...this._lastArgs)
             }
           } catch (error) {
             try {
-              this.options.onError(error)
+              this._options.onError(error)
             } catch {
-              // Ignore errors from error handler
+              console.error('Error in error handler', error)
             }
           } finally {
-            this.isExecuting = false
-            this.abortController = null
+            this._isExecuting = false
+            this._abortController = null
             resolve()
           }
         } else {
           resolve()
         }
-      }, this.options.wait)
+      }, this._options.wait)
     })
   }
 
   private async executeFunction(...args: TArgs): Promise<void> {
-    if (!this.options.enabled) return
-    this.executionCount++
+    if (!this._options.enabled) return
+    this._executionCount++
     await this.fn(...args)
+    this._options.onExecute(this)
+  }
+
+  /**
+   * Cancels any pending execution
+   */
+  cancel(): void {
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId)
+      this._timeoutId = null
+    }
+    if (this._abortController) {
+      this._abortController.abort()
+      this._abortController = null
+    }
+    this._lastArgs = undefined
+    this._canLeadingExecute = true
+  }
+
+  /**
+   * Returns the number of times the function has been executed
+   */
+  getExecutionCount(): number {
+    return this._executionCount
+  }
+
+  /**
+   * Returns `true` if there is a pending execution
+   */
+  getIsPending(): boolean {
+    return (
+      this._options.enabled && (this._timeoutId !== null || this._isExecuting)
+    )
   }
 }
 
@@ -190,8 +217,9 @@ export class AsyncDebouncer<
  * ```
  */
 export function asyncDebounce<
-  TFn extends (...args: Array<any>) => Promise<any>,
->(fn: TFn, initialOptions: Omit<AsyncDebouncerOptions, 'enabled'>) {
+  TFn extends AnyAsyncFunction,
+  TArgs extends Parameters<TFn>,
+>(fn: TFn, initialOptions: Omit<AsyncDebouncerOptions<TFn, TArgs>, 'enabled'>) {
   const asyncDebouncer = new AsyncDebouncer(fn, initialOptions)
   return asyncDebouncer.maybeExecute.bind(asyncDebouncer)
 }

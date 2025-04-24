@@ -12,8 +12,10 @@ function App1() {
     limit: 5,
     window: 5000,
     enabled: instantCount > 2,
-    onReject: ({ msUntilNextWindow }) => {
-      console.log(`Rate limit reached. Try again in ${msUntilNextWindow}ms`)
+    onReject: (rateLimiter) => {
+      console.log(
+        `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
+      )
     },
   })
 
@@ -59,8 +61,10 @@ function App2() {
       limit: 5,
       window: 5000,
       enabled: searchText.length > 2,
-      onReject: ({ msUntilNextWindow }) => {
-        console.log(`Rate limit reached. Try again in ${msUntilNextWindow}ms`)
+      onReject: (rateLimiter) => {
+        console.log(
+          `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
+        )
       },
     },
   )
@@ -76,7 +80,7 @@ function App2() {
       <h1>TanStack Pacer useRateLimitedCallback Example 2</h1>
       <div>
         <input
-          type="text"
+          type="search"
           value={searchText}
           onChange={handleSearchChange}
           placeholder="Type to search..."

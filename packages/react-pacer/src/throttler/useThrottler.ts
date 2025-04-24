@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Throttler } from '@tanstack/pacer/throttler'
+import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import type { AnyFunction } from '@tanstack/pacer/types'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 /**
@@ -13,26 +15,21 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * regardless of how many times it is called. This is useful for rate-limiting
  * expensive operations or UI updates.
  *
- * The hook returns an object containing:
- * - maybeExecute: The throttled function that respects the configured wait time
- * - cancel: A function to cancel any pending trailing execution
- * - getExecutionCount: A function that returns the number of times the throttled function has executed
- *
  * @example
  * ```tsx
  * // Basic throttling with custom state
  * const [value, setValue] = useState(0);
- * const { maybeExecute } = useThrottler(setValue, { wait: 1000 });
+ * const throttler = useThrottler(setValue, { wait: 1000 });
  *
  * // With Redux
  * const dispatch = useDispatch();
- * const { maybeExecute } = useThrottler(
+ * const throttler = useThrottler(
  *   (value) => dispatch(updateAction(value)),
  *   { wait: 1000 }
  * );
  *
  * // With any state manager
- * const { maybeExecute, cancel } = useThrottler(
+ * const throttler = useThrottler(
  *   (value) => stateManager.setState(value),
  *   {
  *     wait: 2000,
@@ -43,25 +40,14 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * ```
  */
 export function useThrottler<
-  TFn extends (...args: Array<any>) => any,
+  TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: ThrottlerOptions) {
-  const [throttler] = useState(() => new Throttler<TFn, TArgs>(fn, options))
-
-  const setOptions = useMemo(
-    () => throttler.setOptions.bind(throttler),
-    [throttler],
+>(fn: TFn, options: ThrottlerOptions<TFn, TArgs>): Throttler<TFn, TArgs> {
+  const [throttler] = useState(() =>
+    bindInstanceMethods(new Throttler<TFn, TArgs>(fn, options)),
   )
 
-  setOptions(options)
+  throttler.setOptions(options)
 
-  return useMemo(
-    () =>
-      ({
-        maybeExecute: throttler.maybeExecute.bind(throttler),
-        cancel: throttler.cancel.bind(throttler),
-        getExecutionCount: throttler.getExecutionCount.bind(throttler),
-      }) as const,
-    [throttler],
-  )
+  return throttler
 }

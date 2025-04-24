@@ -8,10 +8,10 @@ title: useAsyncRateLimiter
 # Function: useAsyncRateLimiter()
 
 ```ts
-function useAsyncRateLimiter<TFn, TArgs>(fn, options): object
+function useAsyncRateLimiter<TFn, TArgs>(fn, options): AsyncRateLimiter<TFn, TArgs>
 ```
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L41)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L43)
 
 A low-level React hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -24,7 +24,7 @@ managing resource constraints, or controlling bursts of async operations.
 
 ## Type Parameters
 
-• **TFn** *extends* (...`args`) => `any`
+• **TFn** *extends* `AnyAsyncFunction`
 
 • **TArgs** *extends* `any`[]
 
@@ -36,91 +36,11 @@ managing resource constraints, or controlling bursts of async operations.
 
 ### options
 
-`AsyncRateLimiterOptions`
+`AsyncRateLimiterOptions`\<`TFn`, `TArgs`\>
 
 ## Returns
 
-`object`
-
-### getExecutionCount()
-
-```ts
-readonly getExecutionCount: () => number;
-```
-
-Returns the number of times the function has been executed
-
-#### Returns
-
-`number`
-
-### getRejectionCount()
-
-```ts
-readonly getRejectionCount: () => number;
-```
-
-Returns the number of times the function has been rejected
-
-#### Returns
-
-`number`
-
-### getRemainingInWindow()
-
-```ts
-readonly getRemainingInWindow: () => number;
-```
-
-Returns the number of remaining executions allowed in the current window
-
-#### Returns
-
-`number`
-
-### maybeExecute()
-
-```ts
-readonly maybeExecute: (...args) => Promise<boolean>;
-```
-
-Attempts to execute the rate-limited function if within the configured limits.
-Will reject execution if the number of calls in the current window exceeds the limit.
-If execution is allowed, waits for any previous execution to complete before proceeding.
-
-#### Parameters
-
-##### args
-
-...`TArgs`
-
-#### Returns
-
-`Promise`\<`boolean`\>
-
-#### Example
-
-```ts
-const rateLimiter = new AsyncRateLimiter(fn, { limit: 5, window: 1000 });
-
-// First 5 calls will execute
-await rateLimiter.maybeExecute('arg1', 'arg2');
-
-// Additional calls within the window will be rejected
-await rateLimiter.maybeExecute('arg1', 'arg2'); // Rejected
-```
-
-### reset()
-
-```ts
-readonly reset: () => void;
-```
-
-Resets the rate limiter state
-
-#### Returns
-
-`void`
+`AsyncRateLimiter`\<`TFn`, `TArgs`\>
 
 ## Example
 

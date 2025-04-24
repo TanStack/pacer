@@ -8,14 +8,10 @@ title: useDebouncedState
 # Function: useDebouncedState()
 
 ```ts
-function useDebouncedState<TValue>(value, options): readonly [TValue, (...args) => void, {
-  cancel: () => void;
-  getExecutionCount: () => number;
-  maybeExecute: (...args) => void;
- }]
+function useDebouncedState<TValue>(value, options): [TValue, Dispatch<SetStateAction<TValue>>, Debouncer<Dispatch<SetStateAction<TValue>>, [TValue]>]
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:35](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L35)
+Defined in: [debouncer/useDebouncedState.ts:38](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L38)
 
 A React hook that creates a debounced state value, combining React's useState with debouncing functionality.
 This hook provides both the current debounced value and methods to update it.
@@ -42,15 +38,11 @@ The hook returns a tuple containing:
 
 ### options
 
-`DebouncerOptions`
+`DebouncerOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>
 
 ## Returns
 
-readonly \[`TValue`, (...`args`) => `void`, \{
-  `cancel`: () => `void`;
-  `getExecutionCount`: () => `number`;
-  `maybeExecute`: (...`args`) => `void`;
- \}\]
+\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, `Debouncer`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`TValue`\]\>\]
 
 ## Example
 
@@ -67,4 +59,7 @@ const handleChange = (e) => {
 
 // Get number of times the debounced function has executed
 const executionCount = debouncer.getExecutionCount();
+
+// Get the pending state
+const isPending = debouncer.getIsPending();
 ```

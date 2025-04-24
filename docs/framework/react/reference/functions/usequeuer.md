@@ -8,16 +8,16 @@ title: useQueuer
 # Function: useQueuer()
 
 ```ts
-function useQueuer<TValue>(options): object
+function useQueuer<TValue>(options): Queuer<TValue>
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L43)
+Defined in: [queuer/useQueuer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L44)
 
 A React hook that creates and manages a Queuer instance.
 
 This is a lower-level hook that provides direct access to the Queuer's functionality without
 any built-in state management. This allows you to integrate it with any state management solution
-you prefer (useState, Redux, Zustand, etc.) by utilizing the onUpdate callback.
+you prefer (useState, Redux, Zustand, etc.) by utilizing the onItemsChange callback.
 
 For a hook with built-in state management, see useQueuerState.
 
@@ -41,249 +41,7 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 ## Returns
 
-`object`
-
-### addItem()
-
-```ts
-readonly addItem: (item, position?, runOnUpdate?) => boolean;
-```
-
-Adds an item to the queuer and starts processing if not already running
-
-#### Parameters
-
-##### item
-
-`TValue`
-
-##### position?
-
-`QueuePosition`
-
-##### runOnUpdate?
-
-`boolean`
-
-#### Returns
-
-`boolean`
-
-true if item was added, false if queuer is full
-
-### clear()
-
-```ts
-readonly clear: () => void;
-```
-
-Removes all items from the queuer
-
-#### Returns
-
-`void`
-
-### getAllItems()
-
-```ts
-readonly getAllItems: () => TValue[];
-```
-
-Returns a copy of all items in the queuer
-
-#### Returns
-
-`TValue`[]
-
-### getExecutionCount()
-
-```ts
-readonly getExecutionCount: () => number;
-```
-
-Returns the number of items that have been removed from the queuer
-
-#### Returns
-
-`number`
-
-### getNextItem()
-
-```ts
-readonly getNextItem: (position?) => undefined | TValue;
-```
-
-Removes and returns an item from the queuer using shift (default) or pop
-
-#### Parameters
-
-##### position?
-
-`QueuePosition`
-
-#### Returns
-
-`undefined` \| `TValue`
-
-#### Example
-
-```ts
-// Standard FIFO queuer
-queuer.getNextItem()
-// Stack-like behavior (LIFO)
-queuer.getNextItem('back')
-```
-
-### isEmpty()
-
-```ts
-readonly isEmpty: () => boolean;
-```
-
-Returns true if the queuer is empty
-
-#### Returns
-
-`boolean`
-
-### isFull()
-
-```ts
-readonly isFull: () => boolean;
-```
-
-Returns true if the queuer is full
-
-#### Returns
-
-`boolean`
-
-### isIdle()
-
-```ts
-readonly isIdle: () => boolean;
-```
-
-Returns true if the queuer is running but has no items to process
-
-#### Returns
-
-`boolean`
-
-### isRunning()
-
-```ts
-readonly isRunning: () => boolean;
-```
-
-Returns true if the queuer is running
-
-#### Returns
-
-`boolean`
-
-### onUpdate()
-
-```ts
-readonly onUpdate: (cb) => () => void;
-```
-
-Adds a callback to be called when an item is processed
-
-#### Parameters
-
-##### cb
-
-(`item`) => `void`
-
-#### Returns
-
-`Function`
-
-##### Returns
-
-`void`
-
-### peek()
-
-```ts
-readonly peek: (position?) => undefined | TValue;
-```
-
-Returns an item without removing it
-
-#### Parameters
-
-##### position?
-
-`QueuePosition`
-
-#### Returns
-
-`undefined` \| `TValue`
-
-#### Example
-
-```ts
-// Look at next item to getNextItem
-queuer.peek()
-// Look at last item (like stack top)
-queuer.peek('back')
-```
-
-### reset()
-
-```ts
-readonly reset: (withInitialItems?) => void;
-```
-
-Resets the queuer to its initial state
-
-#### Parameters
-
-##### withInitialItems?
-
-`boolean`
-
-#### Returns
-
-`void`
-
-### size()
-
-```ts
-readonly size: () => number;
-```
-
-Returns the current size of the queuer
-
-#### Returns
-
-`number`
-
-### start()
-
-```ts
-readonly start: () => void;
-```
-
-Starts the queuer and processes items
-
-#### Returns
-
-`void`
-
-### stop()
-
-```ts
-readonly stop: () => void;
-```
-
-Stops the queuer from processing items
-
-#### Returns
-
-`void`
+`Queuer`\<`TValue`\>
 
 ## Example
 
@@ -294,7 +52,7 @@ const [items, setItems] = useState([]);
 const queue = useQueuer({
   started: true, // Start processing immediately
   wait: 1000,    // Process one item every second
-  onUpdate: (queue) => setItems(queue.getAllItems()),
+  onItemsChange: (queue) => setItems(queue.getAllItems()),
   getPriority: (item) => item.priority // Process higher priority items first
 });
 
