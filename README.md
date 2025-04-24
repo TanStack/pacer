@@ -33,7 +33,7 @@ Utilities for debouncing, throttling, rate limiting, queuing, and more.
 
 Try other [TanStack](https://tanstack.com) libraries:
 
-- [TanStack Starter](https://github.com/TanStack/starter) <img alt="" src="https://img.shields.io/github/stars/tanstack/starter.svg" />
+- [TanStack Starter](https://github.com/TanStack/start) <img alt="" src="https://img.shields.io/github/stars/tanstack/start.svg" />
 - [TanStack Router](https://github.com/TanStack/router) <img alt="" src="https://img.shields.io/github/stars/tanstack/router.svg" />
 - [TanStack Query](https://github.com/TanStack/query) <img alt="" src="https://img.shields.io/github/stars/tanstack/query.svg" />
 - [TanSack Table](https://github.com/TanStack/table) <img alt="" src="https://img.shields.io/github/stars/tanstack/table.svg" />

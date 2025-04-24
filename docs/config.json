@@ -153,6 +153,10 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidDebouncer",
+              "to": "framework/solid/reference/interfaces/soliddebouncer"
+            },
+            {
               "label": "createDebouncer",
               "to": "framework/solid/reference/functions/createdebouncer"
             },
@@ -227,6 +231,10 @@
         {
           "label": "solid",
           "children": [
+            {
+              "label": "SolidThrottler",
+              "to": "framework/solid/reference/interfaces/solidthrottler"
+            },
             {
               "label": "createThrottler",
               "to": "framework/solid/reference/functions/createthrottler"
@@ -303,6 +311,10 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidRateLimiter",
+              "to": "framework/solid/reference/interfaces/solidratelimiter"
+            },
+            {
               "label": "createRateLimiter",
               "to": "framework/solid/reference/functions/createratelimiter"
             },
@@ -365,6 +377,10 @@
         {
           "label": "solid",
           "children": [
+            {
+              "label": "SolidQueuer",
+              "to": "framework/solid/reference/interfaces/solidqueuer"
+            },
             {
               "label": "createQueuer",
               "to": "framework/solid/reference/functions/createqueuer"
