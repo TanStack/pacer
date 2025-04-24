@@ -15,6 +15,14 @@ npm install @tanstack/react-pacer
 
 TanStack Pacer is compatible with React v16.8+
 
+## Solid
+
+```sh
+npm install @tanstack/solid-pacer
+```
+
+TanStack Pacer is compatible with Solid v1.9.5+
+
 ## Vanilla JS
 
 ```sh
