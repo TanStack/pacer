@@ -122,16 +122,49 @@ const throttler = new Throttler(fn, { wait: 200, enabled: false }) // Disable by
 throttler.setOptions({ enabled: true }) // Enable at any time
 ```
 
-If you are using a framework adapter where the throttler options are reactive, you can set the `enabled` option to a conditional value to enable/disable the throttler on the fly:
+If you are using a framework adapter where the throttler options are reactive, you can set the `enabled` option to a conditional value to enable/disable the throttler on the fly. However, if you are using the `throttle` function or the `Throttler` class directly, you must use the `setOptions` method to change the `enabled` option, since the options that are passed are actually passed to the constructor of the `Throttler` class.
+
+### Callback Options
+
+Both the synchronous and asynchronous throttlers support callback options to handle different aspects of the throttling lifecycle:
+
+#### Synchronous Throttler Callbacks
+
+The synchronous `Throttler` supports the following callback:
 
 ```ts
-const throttler = useThrottler(
-  updateUI, 
-  { wait: 200, enabled: isScrolling } // Enable/disable based on scroll state IF using a framework adapter that supports reactive options
-)
+const throttler = new Throttler(fn, {
+  wait: 200,
+  onExecute: (throttler) => {
+    // Called after each successful execution
+    console.log('Function executed', throttler.getExecutionCount())
+  }
+})
 ```
 
-However, if you are using the `throttle` function or the `Throttler` class directly, you must use the `setOptions` method to change the `enabled` option, since the options that are passed are actually passed to the constructor of the `Throttler` class.
+The `onExecute` callback is called after each successful execution of the throttled function, making it useful for tracking executions, updating UI state, or performing cleanup operations.
+
+#### Asynchronous Throttler Callbacks
+
+The asynchronous `AsyncThrottler` supports additional callbacks for error handling:
+
+```ts
+const asyncThrottler = new AsyncThrottler(async (value) => {
+  await saveToAPI(value)
+}, {
+  wait: 200,
+  onExecute: (throttler) => {
+    // Called after each successful execution
+    console.log('Async function executed', throttler.getExecutionCount())
+  },
+  onError: (error) => {
+    // Called if the async function throws an error
+    console.error('Async function failed:', error)
+  }
+})
+```
+
+The `onExecute` callback works the same way as in the synchronous throttler, while the `onError` callback allows you to handle errors gracefully without breaking the throttling chain. These callbacks are particularly useful for tracking execution counts, updating UI state, handling errors, performing cleanup operations, and logging execution metrics.
 
 ### Asynchronous Throttling
 
@@ -157,14 +190,57 @@ const throttledFetch = asyncThrottle(
 await throttledFetch('123')
 ```
 
-For most use cases, the normal non-async `Throttler` is sufficient, but when you need error handling or want to properly handle Promise-based operations, then the async `AsyncThrottler` is for you.
-
-The async version provides:
-- Promise-based execution tracking
-- Error handling through `onError` callback
-- Proper cleanup of pending async operations
-- Awaitable `maybeExecute` method
+The async version provides Promise-based execution tracking, error handling through the `onError` callback, proper cleanup of pending async operations, and an awaitable `maybeExecute` method.
 
 ### Framework Adapters
 
-Each framework adapter builds convenient hooks and functions around the throttler classes. Hooks like `useThrottledCallback`, `useThrottledState`, or `useThrottledValue` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases. 
+Each framework adapter provides hooks that build on top of the core throttling functionality to integrate with the framework's state management system. Hooks like `createThrottler`, `useThrottledCallback`, `useThrottledState`, or `useThrottledValue` are available for each framework.
+
+Here are some examples:
+
+#### React
+
+```tsx
+import { useThrottler, useThrottledCallback, useThrottledValue } from '@tanstack/react-pacer'
+
+// Low-level hook for full control
+const throttler = useThrottler(
+  (value: number) => updateProgressBar(value),
+  { wait: 200 }
+)
+
+// Simple callback hook for basic use cases
+const handleUpdate = useThrottledCallback(
+  (value: number) => updateProgressBar(value),
+  { wait: 200 }
+)
+
+// State-based hook for reactive state management
+const [instantState, setInstantState] = useState(0)
+const [throttledState, setThrottledState] = useThrottledValue(
+  instantState, // Value to throttle
+  { wait: 200 }
+)
+```
+
+#### Solid
+
+```tsx
+import { createThrottler, createThrottledSignal } from '@tanstack/solid-pacer'
+
+// Low-level hook for full control
+const throttler = createThrottler(
+  (value: number) => updateProgressBar(value),
+  { wait: 200 }
+)
+
+// Signal-based hook for state management
+const [value, setValue, throttler] = createThrottledSignal(0, {
+  wait: 200,
+  onExecute: (throttler) => {
+    console.log('Total executions:', throttler.getExecutionCount())
+  }
+})
+```
+
+Each framework adapter provides hooks that integrate with the framework's state management system while maintaining the core throttling functionality. 

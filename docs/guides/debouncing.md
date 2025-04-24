@@ -80,6 +80,7 @@ const searchDebouncer = new Debouncer(
 
 // Get information about current state
 console.log(searchDebouncer.getExecutionCount()) // Number of successful executions
+console.log(searchDebouncer.getIsPending()) // Whether a call is pending
 
 // Update options dynamically
 searchDebouncer.setOptions({ wait: 1000 }) // Increase wait time
@@ -110,6 +111,10 @@ Common patterns:
 - `{ leading: true, trailing: false }` - Execute immediately, ignore subsequent calls
 - `{ leading: true, trailing: true }` - Execute on both first call and after wait
 
+### Max Wait Time
+
+The TanStack Pacer Debouncer does NOT have a `maxWait` option like other debouncing libraries. If you need to let executions run over a more spread out period of time, consider using the [throttling](../guides/throttling) technique instead.
+
 ### Enabling/Disabling
 
 The `Debouncer` class supports enabling/disabling via the `enabled` option. Using the `setOptions` method, you can enable/disable the debouncer at any time:
@@ -122,6 +127,7 @@ debouncer.setOptions({ enabled: true }) // Enable at any time
 If you are using a framework adapter where the debouncer options are reactive, you can set the `enabled` option to a conditional value to enable/disable the debouncer on the fly:
 
 ```ts
+// React example
 const debouncer = useDebouncer(
   setSearch, 
   { wait: 500, enabled: searchInput.value.length > 3 } // Enable/disable based on input length IF using a framework adapter that supports reactive options
@@ -129,6 +135,56 @@ const debouncer = useDebouncer(
 ```
 
 However, if you are using the `debounce` function or the `Debouncer` class directly, you must use the `setOptions` method to change the `enabled` option, since the options that are passed are actually passed to the constructor of the `Debouncer` class.
+
+```ts
+// Solid example
+const debouncer = new Debouncer(fn, { wait: 500, enabled: false }) // Disable by default
+createEffect(() => {
+  debouncer.setOptions({ enabled: search().length > 3 }) // Enable/disable based on input length
+})
+```
+
+### Callback Options
+
+Both the synchronous and asynchronous debouncers support callback options to handle different aspects of the debouncing lifecycle:
+
+#### Synchronous Debouncer Callbacks
+
+The synchronous `Debouncer` supports the following callback:
+
+```ts
+const debouncer = new Debouncer(fn, {
+  wait: 500,
+  onExecute: (debouncer) => {
+    // Called after each successful execution
+    console.log('Function executed', debouncer.getExecutionCount())
+  }
+})
+```
+
+The `onExecute` callback is called after each successful execution of the debounced function, making it useful for tracking executions, updating UI state, or performing cleanup operations.
+
+#### Asynchronous Debouncer Callbacks
+
+The asynchronous `AsyncDebouncer` supports additional callbacks for error handling:
+
+```ts
+const asyncDebouncer = new AsyncDebouncer(async (value) => {
+  await saveToAPI(value)
+}, {
+  wait: 500,
+  onExecute: (debouncer) => {
+    // Called after each successful execution
+    console.log('Async function executed', debouncer.getExecutionCount())
+  },
+  onError: (error) => {
+    // Called if the async function throws an error
+    console.error('Async function failed:', error)
+  }
+})
+```
+
+The `onExecute` callback works the same way as in the synchronous debouncer, while the `onError` callback allows you to handle errors gracefully without breaking the debouncing chain. These callbacks are particularly useful for tracking execution counts, updating UI state, handling errors, performing cleanup operations, and logging execution metrics.
 
 ### Asynchronous Debouncing
 
@@ -156,14 +212,55 @@ searchInput.addEventListener('input', async (e) => {
 })
 ```
 
-For most use cases, the normal non-async `Debouncer` is sufficient, but when you need error handling or want to properly handle Promise-based operations, then the async `AsyncDebouncer` is for you.
-
-The async version provides:
-- Promise-based execution tracking
-- Error handling through `onError` callback
-- Proper cleanup of pending async operations
-- Awaitable `maybeExecute` method
+The async version provides Promise-based execution tracking, error handling through the `onError` callback, proper cleanup of pending async operations, and an awaitable `maybeExecute` method.
 
 ### Framework Adapters
 
-Each framework adapter builds convenient hooks and functions around the debouncer classes. Hooks like `useDebouncedCallback`, `useDebouncedState`, or `useDebouncedValue` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases. 
+Each framework adapter provides hooks that build on top of the core debouncing functionality to integrate with the framework's state management system. Hooks like `createDebouncer`, `useDebouncedCallback`, `useDebouncedState`, or `useDebouncedValue` are available for each framework.
+
+Here are some examples:
+
+#### React
+
+```tsx
+import { useDebouncer, useDebouncedCallback, useDebouncedValue } from '@tanstack/react-pacer'
+
+// Low-level hook for full control
+const debouncer = useDebouncer(
+  (value: string) => saveToDatabase(value),
+  { wait: 500 }
+)
+
+// Simple callback hook for basic use cases
+const handleSearch = useDebouncedCallback(
+  (query: string) => fetchSearchResults(query),
+  { wait: 500 }
+)
+
+// State-based hook for reactive state management
+const [instantState, setInstantState] = useState('')
+const [debouncedState, setDebouncedState] = useDebouncedValue(
+  instantState, // Value to debounce
+  { wait: 500 }
+)
+```
+
+#### Solid
+
+```tsx
+import { createDebouncer, createDebouncedSignal } from '@tanstack/solid-pacer'
+
+// Low-level hook for full control
+const debouncer = createDebouncer(
+  (value: string) => saveToDatabase(value),
+  { wait: 500 }
+)
+
+// Signal-based hook for state management
+const [searchTerm, setSearchTerm, debouncer] = createDebouncedSignal('', {
+  wait: 500,
+  onExecute: (debouncer) => {
+    console.log('Total executions:', debouncer.getExecutionCount())
+  }
+})
+```

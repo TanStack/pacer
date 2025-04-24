@@ -228,8 +228,8 @@ queue.start() // Begin processing items
 queue.stop()  // Pause processing
 
 // Check processing state
-console.log(queue.isRunning()) // Whether the queue is currently processing
-console.log(queue.isIdle())    // Whether the queue is running but empty
+console.log(queue.getIsRunning()) // Whether the queue is currently processing
+console.log(queue.getIsIdle())    // Whether the queue is running but empty
 ```
 
 If you are using a framework adapter where the queuer options are reactive, you can set the `started` option to a conditional value:
@@ -250,10 +250,10 @@ The Queuer provides several helpful methods for queue management:
 
 ```ts
 // Queue inspection
-queue.peek()           // View next item without removing it
-queue.size()          // Get current queue size
-queue.isEmpty()       // Check if queue is empty
-queue.isFull()        // Check if queue has reached maxSize
+queue.getPeek()           // View next item without removing it
+queue.getSize()          // Get current queue size
+queue.getIsEmpty()       // Check if queue is empty
+queue.getIsFull()        // Check if queue has reached maxSize
 queue.getAllItems()   // Get copy of all queued items
 
 // Queue manipulation
@@ -265,6 +265,75 @@ queue.getExecutionCount() // Get number of processed items
 queue.onItemsChange((item) => {
   console.log('Processed:', item)
 })
+```
+
+### Rejection Handling
+
+When a queue reaches its maximum size (set by `maxSize` option), new items will be rejected. The Queuer provides ways to handle and monitor these rejections:
+
+```ts
+const queue = new Queuer<number>({
+  maxSize: 2, // Only allow 2 items in queue
+  onReject: (item, queuer) => {
+    console.log('Queue is full. Item rejected:', item)
+  }
+})
+
+queue.addItem(1) // Accepted
+queue.addItem(2) // Accepted
+queue.addItem(3) // Rejected, triggers onReject callback
+
+console.log(queue.getRejectionCount()) // 1
+```
+
+### Initial Items
+
+You can pre-populate a queue with initial items when creating it:
+
+```ts
+const queue = new Queuer<number>({
+  initialItems: [1, 2, 3],
+  started: true // Start processing immediately
+})
+
+// Queue starts with [1, 2, 3] and begins processing
+```
+
+### Dynamic Configuration
+
+The Queuer's options can be modified after creation using `setOptions()` and retrieved using `getOptions()`:
+
+```ts
+const queue = new Queuer<number>({
+  wait: 1000,
+  started: false
+})
+
+// Change configuration
+queue.setOptions({
+  wait: 500, // Process items twice as fast
+  started: true // Start processing
+})
+
+// Get current configuration
+const options = queue.getOptions()
+console.log(options.wait) // 500
+```
+
+### Performance Monitoring
+
+The Queuer provides methods to monitor its performance:
+
+```ts
+const queue = new Queuer<number>()
+
+// Add and process some items
+queue.addItem(1)
+queue.addItem(2)
+queue.addItem(3)
+
+console.log(queue.getExecutionCount()) // Number of items processed
+console.log(queue.getRejectionCount()) // Number of items rejected
 ```
 
 ### Asynchronous Queueing

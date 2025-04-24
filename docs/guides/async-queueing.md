@@ -3,7 +3,7 @@ title: Asynchronous Queueing Guide
 id: async-queueing
 ---
 
-While the [Queuer](./queueing) provides synchronous queueing with timing controls, the `AsyncQueuer` is designed specifically for handling concurrent asynchronous operations. It implements what is traditionally known as a "task pool" or "worker pool" pattern, allowing multiple operations to be processed simultaneously while maintaining control over concurrency and timing. The implementation is mostly copied from [Swimmer](https://github.com/tannerlinsley/swimmer), Tanner's original task pooling utility that has been serving the JavaScript community since 2017.
+While the [Queuer](../guides//queueing) provides synchronous queueing with timing controls, the `AsyncQueuer` is designed specifically for handling concurrent asynchronous operations. It implements what is traditionally known as a "task pool" or "worker pool" pattern, allowing multiple operations to be processed simultaneously while maintaining control over concurrency and timing. The implementation is mostly copied from [Swimmer](https://github.com/tannerlinsley/swimmer), Tanner's original task pooling utility that has been serving the JavaScript community since 2017.
 
 ## Async Queueing Concept
 
@@ -251,10 +251,10 @@ The AsyncQueuer provides several methods for monitoring and controlling queue st
 
 ```ts
 // Queue inspection
-queue.peek()           // View next item without removing it
-queue.size()          // Get current queue size
-queue.isEmpty()       // Check if queue is empty
-queue.isFull()        // Check if queue has reached maxSize
+queue.getPeek()           // View next item without removing it
+queue.getSize()          // Get current queue size
+queue.getIsEmpty()       // Check if queue is empty
+queue.getIsFull()        // Check if queue has reached maxSize
 queue.getAllItems()   // Get copy of all queued items
 queue.getActiveItems() // Get currently processing items
 queue.getPendingItems() // Get items waiting to be processed
@@ -267,8 +267,122 @@ queue.getExecutionCount() // Get number of processed items
 // Processing control
 queue.start()         // Begin processing items
 queue.stop()          // Pause processing
-queue.isRunning()     // Check if queue is processing
-queue.isIdle()        // Check if queue is empty and not processing
+queue.getIsRunning()     // Check if queue is processing
+queue.getIsIdle()        // Check if queue is empty and not processing
+```
+
+### Task Callbacks
+
+The AsyncQueuer provides three types of callbacks for monitoring task execution:
+
+```ts
+const queue = new AsyncQueuer<string>()
+
+// Handle successful task completion
+const unsubSuccess = queue.onSuccess((result) => {
+  console.log('Task succeeded:', result)
+})
+
+// Handle task errors
+const unsubError = queue.onError((error) => {
+  console.error('Task failed:', error)
+})
+
+// Handle task completion regardless of success/failure
+const unsubSettled = queue.onSettled((result) => {
+  if (result instanceof Error) {
+    console.log('Task failed:', result)
+  } else {
+    console.log('Task succeeded:', result)
+  }
+})
+
+// Unsubscribe from callbacks when no longer needed
+unsubSuccess()
+unsubError()
+unsubSettled()
+```
+
+### Rejection Handling
+
+When a queue reaches its maximum size (set by `maxSize` option), new tasks will be rejected. The AsyncQueuer provides ways to handle and monitor these rejections:
+
+```ts
+const queue = new AsyncQueuer<string>({
+  maxSize: 2, // Only allow 2 tasks in queue
+  onReject: (task, queuer) => {
+    console.log('Queue is full. Task rejected:', task)
+  }
+})
+
+queue.addItem(async () => 'first') // Accepted
+queue.addItem(async () => 'second') // Accepted
+queue.addItem(async () => 'third') // Rejected, triggers onReject callback
+
+console.log(queue.getRejectionCount()) // 1
+```
+
+### Initial Tasks
+
+You can pre-populate an async queue with initial tasks when creating it:
+
+```ts
+const queue = new AsyncQueuer<string>({
+  initialItems: [
+    async () => 'first',
+    async () => 'second',
+    async () => 'third'
+  ],
+  started: true // Start processing immediately
+})
+
+// Queue starts with three tasks and begins processing them
+```
+
+### Dynamic Configuration
+
+The AsyncQueuer's options can be modified after creation using `setOptions()` and retrieved using `getOptions()`:
+
+```ts
+const queue = new AsyncQueuer<string>({
+  concurrency: 2,
+  started: false
+})
+
+// Change configuration
+queue.setOptions({
+  concurrency: 4, // Process more tasks simultaneously
+  started: true // Start processing
+})
+
+// Get current configuration
+const options = queue.getOptions()
+console.log(options.concurrency) // 4
+```
+
+### Active and Pending Tasks
+
+The AsyncQueuer provides methods to monitor both active and pending tasks:
+
+```ts
+const queue = new AsyncQueuer<string>({
+  concurrency: 2
+})
+
+// Add some tasks
+queue.addItem(async () => {
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  return 'first'
+})
+queue.addItem(async () => {
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  return 'second'
+})
+queue.addItem(async () => 'third')
+
+// Monitor task states
+console.log(queue.getActiveItems().length) // Currently processing tasks
+console.log(queue.getPendingItems().length) // Tasks waiting to be processed
 ```
 
 ### Framework Adapters
