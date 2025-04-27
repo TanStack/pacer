@@ -9,13 +9,17 @@ describe('AsyncQueuer', () => {
   })
 
   describe('basic functionality', () => {
-    it('should create an empty queue', () => {
+    it('should create an empty queue that is running and idle', () => {
+      expect(asyncQueuer.getAllItems()).toHaveLength(0)
+      expect(asyncQueuer.getIsIdle()).toBe(true)
+      expect(asyncQueuer.getIsRunning()).toBe(true)
+    })
+
+    it('should create an empty queue that is not running and idle', () => {
+      asyncQueuer = new AsyncQueuer({ started: false })
       expect(asyncQueuer.getAllItems()).toHaveLength(0)
       expect(asyncQueuer.getIsIdle()).toBe(false)
       expect(asyncQueuer.getIsRunning()).toBe(false)
-      asyncQueuer.start()
-      expect(asyncQueuer.getIsRunning()).toBe(true)
-      expect(asyncQueuer.getIsRunning()).toBe(true)
     })
 
     it('should process tasks in FIFO order when started', async () => {
@@ -89,6 +93,7 @@ describe('AsyncQueuer', () => {
 
   describe('queue control', () => {
     it('should clear the queue', () => {
+      asyncQueuer.stop()
       asyncQueuer.addItem(() => Promise.resolve(1))
       asyncQueuer.addItem(() => Promise.resolve(2))
 
@@ -130,6 +135,7 @@ describe('AsyncQueuer', () => {
 
   describe('queue positions', () => {
     it('should support peeking at tasks', () => {
+      asyncQueuer.stop()
       const task1 = () => Promise.resolve(1)
       const task2 = () => Promise.resolve(2)
 

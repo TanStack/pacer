@@ -11,7 +11,7 @@ title: useRateLimitedValue
 function useRateLimitedValue<TValue>(value, options): [TValue, RateLimiter<Dispatch<SetStateAction<TValue>>, [TValue]>]
 ```
 
-Defined in: [rate-limiter/useRateLimitedValue.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L55)
+Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L55)
 
 A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses React's useState internally to manage the rate-limited state.

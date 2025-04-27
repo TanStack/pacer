@@ -387,4 +387,4 @@ console.log(queue.getPendingItems().length) // Tasks waiting to be processed
 
 ### Framework Adapters
 
-Each framework adapter builds convenient hooks and functions around the async queuer classes. Hooks like `useAsyncQueuer` or `useAsyncQueuerState` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.
+Each framework adapter builds convenient hooks and functions around the async queuer classes. Hooks like `useAsyncQueuer` or `useAsyncQueuedState` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.

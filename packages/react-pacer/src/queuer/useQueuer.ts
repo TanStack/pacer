@@ -10,7 +10,7 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * any built-in state management. This allows you to integrate it with any state management solution
  * you prefer (useState, Redux, Zustand, etc.) by utilizing the onItemsChange callback.
  *
- * For a hook with built-in state management, see useQueuerState.
+ * For a hook with built-in state management, see useQueuedState.
  *
  * The Queuer extends the base Queue to add processing capabilities. Items are processed
  * synchronously in order, with optional delays between processing each item. The queuer includes

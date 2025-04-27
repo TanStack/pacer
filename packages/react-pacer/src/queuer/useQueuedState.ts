@@ -20,7 +20,7 @@ import type { Queuer, QueuerOptions } from '@tanstack/pacer/queuer'
  * @example
  * ```tsx
  * // Basic queue with initial items and priority
- * const [items, queue] = useQueuerState({
+ * const [items, queue] = useQueuedState({
  *   initialItems: ['item1', 'item2'],
  *   started: true,
  *   wait: 1000,
@@ -51,9 +51,9 @@ import type { Queuer, QueuerOptions } from '@tanstack/pacer/queuer'
  * };
  * ```
  */
-export function useQueuerState<TValue>(
+export function useQueuedState<TValue>(
   options: QueuerOptions<TValue> = {},
-): [Array<TValue>, Queuer<TValue>] {
+): [Array<TValue>, Queuer<TValue>['addItem'], Queuer<TValue>] {
   const [allItems, setAllItems] = useState<Array<TValue>>(
     options.initialItems || [],
   )
@@ -70,5 +70,5 @@ export function useQueuerState<TValue>(
     },
   })
 
-  return [allItems, queue]
+  return [allItems, queue.addItem, queue]
 }

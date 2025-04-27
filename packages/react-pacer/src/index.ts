@@ -10,7 +10,7 @@ export * from './async-debouncer/useAsyncDebouncer'
 
 // async-queuer
 export * from './async-queuer/useAsyncQueuer'
-export * from './async-queuer/useAsyncQueuerState'
+export * from './async-queuer/useAsyncQueuedState'
 
 // async-rate-limiter
 export * from './async-rate-limiter/useAsyncRateLimiter'
@@ -26,7 +26,8 @@ export * from './debouncer/useDebouncer'
 
 // queuer
 export * from './queuer/useQueuer'
-export * from './queuer/useQueuerState'
+export * from './queuer/useQueuedState'
+export * from './queuer/useQueuedValue'
 
 // rate-limiter
 export * from './rate-limiter/useRateLimitedCallback'
