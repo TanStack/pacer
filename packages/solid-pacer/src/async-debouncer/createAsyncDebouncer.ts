@@ -5,13 +5,8 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { Accessor } from 'solid-js'
 
-export interface SolidAsyncDebouncer<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> extends Omit<
-    AsyncDebouncer<TFn, TArgs>,
-    'getExecutionCount' | 'getIsPending'
-  > {
+export interface SolidAsyncDebouncer<TFn extends AnyAsyncFunction>
+  extends Omit<AsyncDebouncer<TFn>, 'getExecutionCount' | 'getIsPending'> {
   executionCount: Accessor<number>
   isPending: Accessor<boolean>
 }
@@ -51,21 +46,18 @@ export interface SolidAsyncDebouncer<
  * ```
  */
 
-export function createAsyncDebouncer<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: AsyncDebouncerOptions<TFn, TArgs>,
-): SolidAsyncDebouncer<TFn, TArgs> {
-  const asyncDebouncer = new AsyncDebouncer<TFn, TArgs>(fn, initialOptions)
+  initialOptions: AsyncDebouncerOptions<TFn>,
+): SolidAsyncDebouncer<TFn> {
+  const asyncDebouncer = new AsyncDebouncer<TFn>(fn, initialOptions)
 
   const [executionCount, setExecutionCount] = createSignal(
     asyncDebouncer.getExecutionCount(),
   )
   const [isPending, setIsPending] = createSignal(asyncDebouncer.getIsPending())
 
-  function setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn, TArgs>>) {
+  function setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn>>) {
     asyncDebouncer.setOptions({
       ...newOptions,
       onExecute: (asyncDebouncer) => {

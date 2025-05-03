@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
@@ -39,15 +39,21 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * const isPending = searchDebouncer.getIsPending();
  * ```
  */
-export function useDebouncer<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions<TFn, TArgs>): Debouncer<TFn, TArgs> {
+export function useDebouncer<TFn extends AnyFunction>(
+  fn: TFn,
+  options: DebouncerOptions<TFn>,
+): Debouncer<TFn> {
   const [debouncer] = useState(() =>
-    bindInstanceMethods(new Debouncer<TFn, TArgs>(fn, options)),
+    bindInstanceMethods(new Debouncer<TFn>(fn, options)),
   )
 
   debouncer.setOptions(options)
+
+  useEffect(() => {
+    return () => {
+      debouncer.cancel()
+    }
+  }, [debouncer])
 
   return debouncer
 }

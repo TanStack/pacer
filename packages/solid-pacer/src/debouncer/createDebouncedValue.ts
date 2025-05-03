@@ -1,6 +1,5 @@
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect } from 'solid-js'
 import { createDebouncedSignal } from './createDebouncedSignal'
-import type { SolidDebouncer } from './createDebouncer'
 import type { Accessor, Setter } from 'solid-js'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
@@ -17,15 +16,13 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * like search queries or form inputs, where you want to limit how often downstream effects
  * or calculations occur.
  *
- * The hook returns a tuple containing:
- * - The current debounced value (as an Accessor)
- * - The debouncer instance with control methods and state signals
+ * The hook returns an Accessor that provides the current debounced value.
  *
  * @example
  * ```tsx
  * // Debounce a search query
  * const [searchQuery, setSearchQuery] = createSignal('');
- * const [debouncedQuery, debouncer] = createDebouncedValue(searchQuery, {
+ * const debouncedQuery = createDebouncedValue(searchQuery, {
  *   wait: 500 // Wait 500ms after last change
  * });
  *
@@ -33,10 +30,6 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * createEffect(() => {
  *   fetchSearchResults(debouncedQuery());
  * });
- *
- * // Access debouncer state via signals
- * console.log('Executions:', debouncer.executionCount());
- * console.log('Is pending:', debouncer.isPending());
  *
  * // Handle input changes
  * const handleChange = (e) => {
@@ -46,19 +39,16 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  */
 export function createDebouncedValue<TValue>(
   value: Accessor<TValue>,
-  initialOptions: DebouncerOptions<Setter<TValue>, [Accessor<TValue>]>,
-): [Accessor<TValue>, SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>] {
-  const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
+  initialOptions: DebouncerOptions<Setter<TValue>>,
+): Accessor<TValue> {
+  const [debouncedValue, setDebouncedValue] = createDebouncedSignal(
     value(),
     initialOptions,
   )
 
   createEffect(() => {
     setDebouncedValue(value() as any)
-    onCleanup(() => {
-      debouncer.cancel()
-    })
   })
 
-  return [debouncedValue, debouncer]
+  return debouncedValue
 }

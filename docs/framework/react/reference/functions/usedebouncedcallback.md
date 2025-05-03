@@ -8,7 +8,7 @@ title: useDebouncedCallback
 # Function: useDebouncedCallback()
 
 ```ts
-function useDebouncedCallback<TFn, TArgs>(fn, options): (...args) => void
+function useDebouncedCallback<TFn>(fn, options): (...args) => void
 ```
 
 Defined in: [react-pacer/src/debouncer/useDebouncedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L42)
@@ -36,8 +36,6 @@ Consider using the `useDebouncer` hook instead.
 
 • **TFn** *extends* `AnyFunction`
 
-• **TArgs** *extends* `any`[]
-
 ## Parameters
 
 ### fn
@@ -46,7 +44,7 @@ Consider using the `useDebouncer` hook instead.
 
 ### options
 
-`DebouncerOptions`\<`TFn`, `TArgs`\>
+`DebouncerOptions`\<`TFn`\>
 
 ## Returns
 
@@ -56,7 +54,7 @@ Consider using the `useDebouncer` hook instead.
 
 #### args
 
-...`TArgs`
+...`Parameters`\<`TFn`\>
 
 ### Returns
 

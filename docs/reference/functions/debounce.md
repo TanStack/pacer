@@ -34,20 +34,17 @@ before allowing another execution.
 
 ### initialOptions
 
-`Omit`\<[`DebouncerOptions`](../interfaces/debounceroptions.md)\<`TFn`, `Parameters`\<`TFn`\>\>, `"enabled"`\>
+`Omit`\<[`DebouncerOptions`](../interfaces/debounceroptions.md)\<`TFn`\>, `"enabled"`\>
 
 ## Returns
 
 `Function`
 
-Attempts to execute the debounced function
-If a call is already in progress, it will be queued
-
 ### Parameters
 
 #### args
 
-...`Parameters`
+...`Parameters`\<`TFn`\>
 
 ### Returns
 

@@ -41,7 +41,7 @@ function PostList({
   >(null)
 
   // debounce the hovered post id to avoid excessive prefetches
-  const [debouncedHoveredPostId] = useDebouncedValue(currentHoveredPostId, {
+  const debouncedHoveredPostId = useDebouncedValue(currentHoveredPostId, {
     wait: 100, // adjust this value to see the difference
   })
 

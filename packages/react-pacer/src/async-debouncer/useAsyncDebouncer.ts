@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -39,18 +39,21 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
  * ```
  */
 
-export function useAsyncDebouncer<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function useAsyncDebouncer<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AsyncDebouncerOptions<TFn, TArgs>,
-): AsyncDebouncer<TFn, TArgs> {
+  options: AsyncDebouncerOptions<TFn>,
+): AsyncDebouncer<TFn> {
   const [asyncDebouncer] = useState(() =>
-    bindInstanceMethods(new AsyncDebouncer<TFn, TArgs>(fn, options)),
+    bindInstanceMethods(new AsyncDebouncer<TFn>(fn, options)),
   )
 
   asyncDebouncer.setOptions(options)
+
+  useEffect(() => {
+    return () => {
+      asyncDebouncer.cancel()
+    }
+  }, [asyncDebouncer])
 
   return asyncDebouncer
 }

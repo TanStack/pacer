@@ -12,6 +12,7 @@ function App1() {
     {
       wait: 500,
       // enabled: instantCount > 2, // optional, defaults to true
+      // leading: true, // optional, defaults to false
     },
   )
 
@@ -30,12 +31,21 @@ function App1() {
       <table>
         <tbody>
           <tr>
-            <td>Execution Count:</td>
-            <td>{debouncer.getExecutionCount()}</td>
+            <td>Enabled:</td>
+            <td>{debouncer.getOptions().enabled.toString()}</td>
           </tr>
           <tr>
             <td>Is Pending:</td>
             <td>{debouncer.getIsPending().toString()}</td>
+          </tr>
+          <tr>
+            <td>Execution Count:</td>
+            <td>{debouncer.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -62,7 +72,7 @@ function App2() {
     instantSearch,
     {
       wait: 500,
-      // enabled: instantSearch.length > 2, // optional, defaults to true
+      enabled: instantSearch.length > 2, // optional, defaults to true
     },
   )
 
@@ -87,12 +97,21 @@ function App2() {
       <table>
         <tbody>
           <tr>
-            <td>Execution Count:</td>
-            <td>{debouncer.getExecutionCount()}</td>
+            <td>Enabled:</td>
+            <td>{debouncer.getOptions().enabled.toString()}</td>
           </tr>
           <tr>
             <td>Is Pending:</td>
             <td>{debouncer.getIsPending().toString()}</td>
+          </tr>
+          <tr>
+            <td>Execution Count:</td>
+            <td>{debouncer.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Search:</td>

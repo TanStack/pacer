@@ -10,7 +10,8 @@ function App1() {
   // Create debounced setter function - Stable reference provided by useDebouncedCallback
   const debouncedSetCount = useDebouncedCallback(setDebouncedCount, {
     wait: 500,
-    enabled: instantCount > 2,
+    // enabled: instantCount > 2, // optional, defaults to true
+    // leading: true, // optional, defaults to false
   })
 
   function increment() {

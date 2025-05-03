@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDebouncedState } from './useDebouncedState'
-import type { Debouncer, DebouncerOptions } from '@tanstack/pacer/debouncer'
+import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
 /**
  * A React hook that creates a debounced value that updates only after a specified delay.
@@ -15,15 +15,13 @@ import type { Debouncer, DebouncerOptions } from '@tanstack/pacer/debouncer'
  * like search queries or form inputs, where you want to limit how often downstream effects
  * or calculations occur.
  *
- * The hook returns a tuple containing:
- * - The current debounced value
- * - The debouncer instance with control methods
+ * The hook returns the current debounced value.
  *
  * @example
  * ```tsx
  * // Debounce a search query
  * const [searchQuery, setSearchQuery] = useState('');
- * const [debouncedQuery, debouncer] = useDebouncedValue(searchQuery, {
+ * const debouncedQuery = useDebouncedValue(searchQuery, {
  *   wait: 500 // Wait 500ms after last change
  * });
  *
@@ -40,11 +38,8 @@ import type { Debouncer, DebouncerOptions } from '@tanstack/pacer/debouncer'
  */
 export function useDebouncedValue<TValue>(
   value: TValue,
-  options: DebouncerOptions<
-    React.Dispatch<React.SetStateAction<TValue>>,
-    [value: React.SetStateAction<TValue>]
-  >,
-): [TValue, Debouncer<React.Dispatch<React.SetStateAction<TValue>>, [TValue]>] {
+  options: DebouncerOptions<React.Dispatch<React.SetStateAction<TValue>>>,
+): TValue {
   const [debouncedValue, setDebouncedValue, debouncer] = useDebouncedState(
     value,
     options,
@@ -52,10 +47,7 @@ export function useDebouncedValue<TValue>(
 
   useEffect(() => {
     setDebouncedValue(value)
-    return () => {
-      debouncer.cancel()
-    }
   }, [value, setDebouncedValue, debouncer])
 
-  return [debouncedValue, debouncer]
+  return debouncedValue
 }

@@ -45,12 +45,8 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  */
 export function createDebouncedSignal<TValue>(
   value: TValue,
-  initialOptions: DebouncerOptions<Setter<TValue>, [Accessor<TValue>]>,
-): [
-  Accessor<TValue>,
-  Setter<TValue>,
-  SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>,
-] {
+  initialOptions: DebouncerOptions<Setter<TValue>>,
+): [Accessor<TValue>, Setter<TValue>, SolidDebouncer<Setter<TValue>>] {
   const [debouncedValue, setDebouncedValue] = createSignal<TValue>(value)
 
   const debouncer = createDebouncer(setDebouncedValue, initialOptions)

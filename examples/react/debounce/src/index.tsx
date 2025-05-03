@@ -11,6 +11,7 @@ function App1() {
   const debouncedSetCount = useCallback(
     debounce(setDebouncedCount, {
       wait: 500,
+      // leading: true, // optional, defaults to false
     }),
     [],
   )

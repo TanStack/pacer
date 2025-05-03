@@ -3,10 +3,7 @@ import type { AnyAsyncFunction } from './types'
 /**
  * Options for configuring an async debounced function
  */
-export interface AsyncDebouncerOptions<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> {
+export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
   /**
    * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -24,7 +21,7 @@ export interface AsyncDebouncerOptions<
   /**
    * Optional function to call when the debounced function is executed
    */
-  onExecute?: (debouncer: AsyncDebouncer<TFn, TArgs>) => void
+  onExecute?: (debouncer: AsyncDebouncer<TFn>) => void
   /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
@@ -37,7 +34,7 @@ export interface AsyncDebouncerOptions<
   wait: number
 }
 
-const defaultOptions: Required<AsyncDebouncerOptions<any, any>> = {
+const defaultOptions: Required<AsyncDebouncerOptions<any>> = {
   enabled: true,
   leading: false,
   trailing: true,
@@ -68,21 +65,18 @@ const defaultOptions: Required<AsyncDebouncerOptions<any, any>> = {
  * });
  * ```
  */
-export class AsyncDebouncer<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> {
+export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   private _abortController: AbortController | null = null
   private _executionCount = 0
   private _isExecuting = false
-  private _lastArgs: TArgs | undefined
-  private _options: Required<AsyncDebouncerOptions<TFn, TArgs>>
+  private _lastArgs: Parameters<TFn> | undefined
+  private _options: Required<AsyncDebouncerOptions<TFn>>
   private _timeoutId: ReturnType<typeof setTimeout> | null = null
   private _canLeadingExecute = true
 
   constructor(
     private fn: TFn,
-    initialOptions: AsyncDebouncerOptions<TFn, TArgs>,
+    initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
     this._options = {
       ...defaultOptions,
@@ -95,8 +89,8 @@ export class AsyncDebouncer<
    * Returns the new options state
    */
   setOptions(
-    newOptions: Partial<AsyncDebouncerOptions<TFn, TArgs>>,
-  ): Required<AsyncDebouncerOptions<TFn, TArgs>> {
+    newOptions: Partial<AsyncDebouncerOptions<TFn>>,
+  ): Required<AsyncDebouncerOptions<TFn>> {
     this._options = {
       ...this._options,
       ...newOptions,
@@ -107,7 +101,7 @@ export class AsyncDebouncer<
   /**
    * Returns the current debouncer options
    */
-  getOptions(): Required<AsyncDebouncerOptions<TFn, TArgs>> {
+  getOptions(): Required<AsyncDebouncerOptions<TFn>> {
     return this._options
   }
 
@@ -115,7 +109,7 @@ export class AsyncDebouncer<
    * Attempts to execute the debounced function
    * If a call is already in progress, it will be queued
    */
-  async maybeExecute(...args: TArgs): Promise<void> {
+  async maybeExecute(...args: Parameters<TFn>): Promise<void> {
     this.cancel()
     this._lastArgs = args
 
@@ -159,7 +153,7 @@ export class AsyncDebouncer<
     })
   }
 
-  private async executeFunction(...args: TArgs): Promise<void> {
+  private async executeFunction(...args: Parameters<TFn>): Promise<void> {
     if (!this._options.enabled) return
     this._executionCount++
     await this.fn(...args)
@@ -216,10 +210,10 @@ export class AsyncDebouncer<
  * await debounced("third");  // Executes after 1s
  * ```
  */
-export function asyncDebounce<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(fn: TFn, initialOptions: Omit<AsyncDebouncerOptions<TFn, TArgs>, 'enabled'>) {
+export function asyncDebounce<TFn extends AnyAsyncFunction>(
+  fn: TFn,
+  initialOptions: Omit<AsyncDebouncerOptions<TFn>, 'enabled'>,
+) {
   const asyncDebouncer = new AsyncDebouncer(fn, initialOptions)
   return asyncDebouncer.maybeExecute.bind(asyncDebouncer)
 }

@@ -11,6 +11,7 @@ function App1() {
     instantCount(),
     {
       wait: 500,
+      // leading: true, // optional, defaults to false
     },
   )
 
@@ -31,6 +32,11 @@ function App1() {
           <tr>
             <td>Execution Count:</td>
             <td>{debouncer.executionCount()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -82,6 +88,11 @@ function App2() {
           <tr>
             <td>Execution Count:</td>
             <td>{debouncer.executionCount()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Search:</td>

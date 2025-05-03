@@ -11,7 +11,7 @@ title: useAsyncQueuedState
 function useAsyncQueuedState<TValue>(options): [() => Promise<TValue>[], AsyncQueuer<TValue>]
 ```
 
-Defined in: react-pacer/src/async-queuer/useAsyncQueuedState.ts:53
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuedState.ts:53](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuedState.ts#L53)
 
 A higher-level React hook that creates an `AsyncQueuer` instance with built-in state management.
 
