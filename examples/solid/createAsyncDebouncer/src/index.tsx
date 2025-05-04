@@ -37,12 +37,11 @@ function App() {
     }
 
     const data = await fakeApi(term)
-    setResults(data)
+    setResults(data) // option 1: set results immediately
     setIsLoading(false)
     setError(null)
 
-    console.log('execution count: ', setSearchAsyncDebouncer.executionCount())
-    return data // this could alternatively be a void function without a return
+    return data // option 2: return data if you need to
   }
 
   // hook that gives you an async debouncer instance
@@ -64,8 +63,8 @@ function App() {
   async function onSearchChange(e: Event) {
     const newTerm = (e.target as HTMLInputElement).value
     setSearchTerm(newTerm)
-    const result = await handleSearchDebounced(newTerm) // optionally await result if you need to
-    console.log('result', result)
+    const result = await handleSearchDebounced(newTerm) // ^option 2: await results
+    console.log('result', result) // demo test to see awaited result
   }
 
   return (
@@ -84,7 +83,7 @@ function App() {
       </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncDebouncer.executionCount()}</p>
+        <p>API calls made: {setSearchAsyncDebouncer.successCount()}</p>
         {results().length > 0 && (
           <ul>
             {results().map((item) => (

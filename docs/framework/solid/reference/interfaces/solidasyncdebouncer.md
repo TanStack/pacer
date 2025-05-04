@@ -11,7 +11,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:8](https://github.com/TanSt
 
 ## Extends
 
-- `Omit`\<`AsyncDebouncer`\<`TFn`\>, `"getExecutionCount"` \| `"getIsPending"`\>
+- `Omit`\<`AsyncDebouncer`\<`TFn`\>, `"getErrorCount"` \| `"getSettleCount"` \| `"getSuccessCount"` \| `"getIsPending"`\>
 
 ## Type Parameters
 
@@ -19,13 +19,13 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:8](https://github.com/TanSt
 
 ## Properties
 
-### executionCount
+### errorCount
 
 ```ts
-executionCount: Accessor<number>;
+errorCount: Accessor<number>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L10)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L13)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:10](https://github.com/TanS
 isPending: Accessor<boolean>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L11)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L14)
 
 ***
 
@@ -45,4 +45,24 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:11](https://github.com/TanS
 lastResult: Accessor<undefined | ReturnType<TFn>>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L12)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L15)
+
+***
+
+### settleCount
+
+```ts
+settleCount: Accessor<number>;
+```
+
+Defined in: [async-debouncer/createAsyncDebouncer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L16)
+
+***
+
+### successCount
+
+```ts
+successCount: Accessor<number>;
+```
+
+Defined in: [async-debouncer/createAsyncDebouncer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L17)

@@ -6,10 +6,19 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { Accessor } from 'solid-js'
 
 export interface SolidAsyncDebouncer<TFn extends AnyAsyncFunction>
-  extends Omit<AsyncDebouncer<TFn>, 'getExecutionCount' | 'getIsPending'> {
-  executionCount: Accessor<number>
+  extends Omit<
+    AsyncDebouncer<TFn>,
+    | 'getErrorCount'
+    | 'getIsPending'
+    | 'getLastResult'
+    | 'getSettleCount'
+    | 'getSuccessCount'
+  > {
+  errorCount: Accessor<number>
   isPending: Accessor<boolean>
   lastResult: Accessor<ReturnType<TFn> | undefined>
+  settleCount: Accessor<number>
+  successCount: Accessor<number>
 }
 
 /**
@@ -53,8 +62,14 @@ export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
 ): SolidAsyncDebouncer<TFn> {
   const asyncDebouncer = new AsyncDebouncer<TFn>(fn, initialOptions)
 
-  const [executionCount, setExecutionCount] = createSignal(
-    asyncDebouncer.getExecutionCount(),
+  const [errorCount, setErrorCount] = createSignal(
+    asyncDebouncer.getErrorCount(),
+  )
+  const [settleCount, setSettleCount] = createSignal(
+    asyncDebouncer.getSettleCount(),
+  )
+  const [successCount, setSuccessCount] = createSignal(
+    asyncDebouncer.getSuccessCount(),
   )
   const [isPending, setIsPending] = createSignal(asyncDebouncer.getIsPending())
   const [lastResult, setLastResult] = createSignal(
@@ -65,7 +80,9 @@ export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
     asyncDebouncer.setOptions({
       ...newOptions,
       onSettled: (asyncDebouncer) => {
-        setExecutionCount(asyncDebouncer.getExecutionCount())
+        setSuccessCount(asyncDebouncer.getSuccessCount())
+        setErrorCount(asyncDebouncer.getErrorCount())
+        setSettleCount(asyncDebouncer.getSettleCount())
         setIsPending(asyncDebouncer.getIsPending())
         setLastResult(asyncDebouncer.getLastResult())
         const onSettled = newOptions.onSettled ?? initialOptions.onSettled
@@ -78,9 +95,11 @@ export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
 
   return {
     ...bindInstanceMethods(asyncDebouncer),
-    executionCount,
+    errorCount,
     isPending,
     lastResult,
+    settleCount,
+    successCount,
     setOptions,
   }
 }

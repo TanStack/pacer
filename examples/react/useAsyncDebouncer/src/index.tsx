@@ -41,10 +41,6 @@ function App() {
     setIsLoading(false)
     setError(null)
 
-    console.log(
-      'execution count: ',
-      setSearchAsyncDebouncer.getExecutionCount(),
-    )
     return data // this could alternatively be a void function without a return
   }
 
@@ -67,6 +63,7 @@ function App() {
   async function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newTerm = e.target.value
     setSearchTerm(newTerm)
+    console.log(setSearchAsyncDebouncer.getIsPending())
     const result = await handleSearchDebounced(newTerm) // optionally await result if you need to
     console.log('result', result)
   }
@@ -87,7 +84,7 @@ function App() {
       </div>
       {error && <div>Error: {error.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncDebouncer.getExecutionCount()}</p>
+        <p>API calls made: {setSearchAsyncDebouncer.getSuccessCount()}</p>
         {results.length > 0 && (
           <ul>
             {results.map((item) => (
