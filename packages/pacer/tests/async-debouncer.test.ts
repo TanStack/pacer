@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { AsyncDebouncer } from '../src/async-debouncer'
+import { AsyncDebouncer, asyncDebounce } from '../src/async-debouncer'
 
 describe('AsyncDebouncer', () => {
   beforeEach(() => {
@@ -481,61 +481,558 @@ describe('AsyncDebouncer', () => {
   })
 
   describe('Callback Execution', () => {
-    it('should call onSuccess after successful execution')
-    it('should call onSettled after execution completes')
-    it('should call onError when execution fails')
-    it('should maintain correct callback order')
-    it('should handle callback errors gracefully')
+    it('should call onSuccess after successful execution', async () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const onSuccess = vi.fn()
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        onSuccess,
+      })
+
+      const promise = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise
+
+      expect(onSuccess).toBeCalledTimes(1)
+      expect(onSuccess).toBeCalledWith('success', debouncer)
+    })
+
+    it('should call onSettled after execution completes', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const onSettled = vi.fn()
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        onSettled,
+      })
+
+      const promise = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise
+
+      expect(onSettled).toBeCalledTimes(1)
+      expect(onSettled).toBeCalledWith(debouncer)
+    })
+
+    it('should call onError when execution fails', async () => {
+      const error = new Error('test error')
+      const mockFn = vi.fn().mockRejectedValue(error)
+      const onError = vi.fn()
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        onError,
+      })
+
+      const promise = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise
+
+      expect(onError).toBeCalledTimes(1)
+      expect(onError).toBeCalledWith(error, debouncer)
+    })
+
+    it('should maintain correct callback order', async () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const callOrder: Array<string> = []
+      const onSuccess = vi
+        .fn()
+        .mockImplementation(() => callOrder.push('success'))
+      const onSettled = vi
+        .fn()
+        .mockImplementation(() => callOrder.push('settled'))
+      const onError = vi.fn().mockImplementation(() => callOrder.push('error'))
+
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        onSuccess,
+        onSettled,
+        onError,
+      })
+
+      const promise = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise
+
+      expect(callOrder).toEqual(['success', 'settled'])
+    })
+
+    it('should handle callback errors gracefully', async () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const callbackError = new Error('callback error')
+      const onSuccess = vi.fn().mockImplementation(() => {
+        throw callbackError
+      })
+      const onSettled = vi.fn()
+      const onError = vi.fn()
+
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        onSuccess,
+        onSettled,
+        onError,
+      })
+
+      const promise = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise
+
+      // onSuccess throws, which triggers onError, and onSettled is always called
+      expect(onSuccess).toBeCalledTimes(1)
+      expect(onError).toBeCalledTimes(1)
+      expect(onError).toBeCalledWith(callbackError, debouncer)
+      expect(onSettled).toBeCalledTimes(1)
+      expect(onSettled).toBeCalledWith(debouncer)
+    })
   })
 
   describe('Execution Control', () => {
-    it('should cancel pending execution')
-    it('should properly handle canLeadingExecute flag after cancellation')
-    it('should abort in-progress execution when cancelled')
-    it('should handle rapid calls with cancellation')
-    it('should handle cancellation during leading execution')
-    it('should handle cancellation during trailing execution')
+    it('should cancel pending execution', () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // Start execution
+      debouncer.maybeExecute()
+      expect(debouncer.getIsPending()).toBe(true)
+
+      // Cancel before wait period ends
+      debouncer.cancel()
+      expect(debouncer.getIsPending()).toBe(false)
+
+      // Advance time and verify no execution
+      vi.advanceTimersByTime(1000)
+      expect(mockFn).not.toBeCalled()
+    })
+
+    it('should properly handle canLeadingExecute flag after cancellation', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        leading: true,
+      })
+
+      // First call - should execute immediately
+      const promise1 = debouncer.maybeExecute('first')
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('first')
+
+      // Cancel and verify canLeadingExecute is reset
+      debouncer.cancel()
+      expect(debouncer.getIsPending()).toBe(false)
+
+      // Next call should execute immediately again
+      const promise2 = debouncer.maybeExecute('second')
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toBeCalledWith('second')
+
+      await Promise.all([promise1, promise2])
+    })
+
+    it('should handle cancellation during leading execution', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        leading: true,
+      })
+
+      // First call - executes immediately
+      const promise1 = debouncer.maybeExecute('first')
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('first')
+
+      // Cancel during leading execution
+      debouncer.cancel()
+      expect(debouncer.getIsPending()).toBe(false)
+
+      // Next call should execute immediately again
+      const promise2 = debouncer.maybeExecute('second')
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toBeCalledWith('second')
+
+      await Promise.all([promise1, promise2])
+    })
   })
 
   describe('Result Management', () => {
-    it('should track last result')
-    it('should return last result when execution is pending')
-    it('should clear last result on cancellation')
-    it('should maintain last result across multiple executions')
-    it('should handle undefined/null results')
+    it('should track last result', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      const promise = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise
+
+      expect(debouncer.getLastResult()).toBe('result')
+    })
+
+    it('should return last result when execution is pending', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // First execution
+      const promise1 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise1
+      expect(debouncer.getLastResult()).toBe('result')
+
+      // Second execution - should still return last result while pending
+      const promise2 = debouncer.maybeExecute()
+      expect(debouncer.getLastResult()).toBe('result')
+      vi.advanceTimersByTime(1000)
+      await promise2
+    })
+
+    it('should clear last result on cancellation', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // First execution
+      const promise1 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise1
+      expect(debouncer.getLastResult()).toBe('result')
+
+      // Second execution with cancellation
+      debouncer.maybeExecute()
+      debouncer.cancel()
+      expect(debouncer.getLastResult()).toBe('result') // Should still have last result
+
+      // Third execution
+      const promise3 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise3
+      expect(debouncer.getLastResult()).toBe('result')
+    })
+
+    it('should maintain last result across multiple executions', async () => {
+      const mockFn = vi
+        .fn()
+        .mockResolvedValueOnce('first')
+        .mockResolvedValueOnce('second')
+        .mockResolvedValueOnce('third')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // First execution
+      const promise1 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise1
+      expect(debouncer.getLastResult()).toBe('first')
+
+      // Second execution
+      const promise2 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise2
+      expect(debouncer.getLastResult()).toBe('second')
+
+      // Third execution
+      const promise3 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise3
+      expect(debouncer.getLastResult()).toBe('third')
+    })
+
+    it('should handle undefined/null results', async () => {
+      const mockFn = vi
+        .fn()
+        .mockResolvedValueOnce(undefined)
+        .mockResolvedValueOnce(null)
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // Test undefined result
+      const promise1 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise1
+      expect(debouncer.getLastResult()).toBeUndefined()
+
+      // Test null result
+      const promise2 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise2
+      expect(debouncer.getLastResult()).toBeNull()
+    })
+
+    it('should maintain last result after error', async () => {
+      const mockFn = vi
+        .fn()
+        .mockResolvedValueOnce('success')
+        .mockRejectedValueOnce(new Error('test error'))
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // First execution - success
+      const promise1 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise1
+      expect(debouncer.getLastResult()).toBe('success')
+
+      // Second execution - error
+      const promise2 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise2
+      expect(debouncer.getLastResult()).toBe('success') // Should maintain last successful result
+    })
   })
 
   describe('Enabled/Disabled State', () => {
-    it('should not execute when enabled is false')
-    it('should not execute leading edge when disabled')
-    it('should default to enabled')
-    it('should allow enabling/disabling after construction')
-    it('should allow disabling mid-wait')
+    it('should not execute when enabled is false', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        enabled: false,
+      })
+
+      // Try to execute while disabled
+      const promise = debouncer.maybeExecute()
+      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getIsExecuting()).toBe(false)
+
+      // Advance time and verify no execution
+      vi.advanceTimersByTime(1000)
+      await promise
+      expect(mockFn).not.toBeCalled()
+    })
+
+    it('should not execute leading edge when disabled', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        leading: true,
+        enabled: false,
+      })
+
+      // Try to execute while disabled
+      const promise = debouncer.maybeExecute()
+      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getIsExecuting()).toBe(false)
+
+      // Advance time and verify no execution
+      vi.advanceTimersByTime(1000)
+      await promise
+      expect(mockFn).not.toBeCalled()
+    })
+
+    it('should default to enabled', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // Should execute by default
+      const promise = debouncer.maybeExecute()
+      expect(debouncer.getIsPending()).toBe(true)
+
+      // Advance time and verify execution
+      vi.advanceTimersByTime(1000)
+      await promise
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
+    it('should allow disabling mid-wait', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // Start execution
+      const promise = debouncer.maybeExecute()
+      expect(debouncer.getIsPending()).toBe(true)
+
+      // Disable during wait
+      debouncer.setOptions({ enabled: false })
+      expect(debouncer.getIsPending()).toBe(false)
+
+      // Advance time and verify no execution
+      vi.advanceTimersByTime(1000)
+      await promise
+      expect(mockFn).not.toBeCalled()
+    })
+
+    it('should handle rapid enable/disable cycles', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // Enable/disable rapidly
+      debouncer.setOptions({ enabled: true })
+      debouncer.maybeExecute()
+      debouncer.setOptions({ enabled: false })
+      debouncer.setOptions({ enabled: true })
+      debouncer.maybeExecute()
+      debouncer.setOptions({ enabled: false })
+      debouncer.setOptions({ enabled: true })
+      const promise = debouncer.maybeExecute()
+
+      // Should only have one pending execution
+      expect(debouncer.getIsPending()).toBe(true)
+
+      // Advance time and verify single execution
+      vi.advanceTimersByTime(1000)
+      await promise
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
+    it('should maintain state when disabled', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // First execution
+      const promise1 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise1
+      expect(debouncer.getLastResult()).toBe('result')
+
+      // Disable and verify state is maintained
+      debouncer.setOptions({ enabled: false })
+      expect(debouncer.getLastResult()).toBe('result')
+      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getIsExecuting()).toBe(false)
+
+      // Re-enable and verify state is still maintained
+      debouncer.setOptions({ enabled: true })
+      expect(debouncer.getLastResult()).toBe('result')
+    })
   })
 
   describe('Options Management', () => {
-    it('should allow updating multiple options at once')
-    it('should handle option changes during execution')
-    it('should maintain state across option changes')
-  })
+    it('should allow updating multiple options at once', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
 
-  describe('State Tracking', () => {
-    it('should track execution count')
-    it('should track execution count with leading and trailing')
-    it('should not increment count when execution is cancelled')
-    it('should track pending state correctly')
-    it('should track execution state correctly')
-  })
+      // Update multiple options
+      debouncer.setOptions({
+        wait: 500,
+        leading: true,
+        trailing: false,
+        onSuccess: vi.fn(),
+        onError: vi.fn(),
+        onSettled: vi.fn(),
+      })
 
-  describe('Edge Cases and Error Handling', () => {
-    it('should handle wait time of 0')
-    it('should handle negative wait time by using 0')
-    it('should handle very large wait times')
-    it('should handle NaN wait time by using 0')
-    it('should handle undefined/null arguments')
-    it('should prevent memory leaks by clearing timeouts')
-    it('should handle rapid option changes')
-    it('should handle rapid enable/disable cycles')
+      // Verify new options are applied
+      const promise = debouncer.maybeExecute()
+      expect(mockFn).toBeCalledTimes(1) // Leading execution
+      expect(mockFn).toBeCalledWith()
+
+      // Advance time and verify no trailing execution
+      vi.advanceTimersByTime(500)
+      await promise
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
+    it('should handle option changes during execution', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const onSuccess = vi.fn()
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        onSuccess: vi.fn(),
+      })
+
+      // Start execution
+      const promise = debouncer.maybeExecute()
+      expect(debouncer.getIsPending()).toBe(true)
+
+      // Change options during wait
+      debouncer.setOptions({ onSuccess })
+
+      // Advance time and verify new callback is used
+      vi.advanceTimersByTime(1000)
+      await promise
+      expect(onSuccess).toBeCalledTimes(1)
+      expect(onSuccess).toBeCalledWith('result', debouncer)
+    })
+
+    it('should maintain state across option changes', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+
+      // First execution
+      const promise1 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise1
+      expect(debouncer.getLastResult()).toBe('result')
+      expect(debouncer.getSuccessCount()).toBe(1)
+
+      // Change options
+      debouncer.setOptions({ wait: 500, leading: true })
+
+      // Verify state is maintained
+      expect(debouncer.getLastResult()).toBe('result')
+      expect(debouncer.getSuccessCount()).toBe(1)
+
+      // Second execution with new options
+      const promise2 = debouncer.maybeExecute()
+      expect(mockFn).toBeCalledTimes(2) // Leading execution
+      vi.advanceTimersByTime(500)
+      await promise2
+      expect(debouncer.getSuccessCount()).toBe(2)
+    })
+
+    it('should handle callback option changes', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const onSuccess1 = vi.fn()
+      const onSuccess2 = vi.fn()
+      const onError1 = vi.fn()
+      const onError2 = vi.fn()
+      const onSettled1 = vi.fn()
+      const onSettled2 = vi.fn()
+
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        onSuccess: onSuccess1,
+        onError: onError1,
+        onSettled: onSettled1,
+      })
+
+      // First execution
+      const promise1 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise1
+      expect(onSuccess1).toBeCalledTimes(1)
+      expect(onSettled1).toBeCalledTimes(1)
+      expect(onError1).not.toBeCalled()
+
+      // Change callbacks
+      debouncer.setOptions({
+        onSuccess: onSuccess2,
+        onError: onError2,
+        onSettled: onSettled2,
+      })
+
+      // Second execution
+      const promise2 = debouncer.maybeExecute()
+      vi.advanceTimersByTime(1000)
+      await promise2
+      expect(onSuccess2).toBeCalledTimes(1)
+      expect(onSettled2).toBeCalledTimes(1)
+      expect(onError2).not.toBeCalled()
+    })
+
+    it('should handle option changes during error handling', async () => {
+      const error = new Error('test error')
+      const mockFn = vi.fn().mockRejectedValue(error)
+      const onError1 = vi.fn()
+      const onError2 = vi.fn()
+      const onSettled1 = vi.fn()
+      const onSettled2 = vi.fn()
+
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        onError: onError1,
+        onSettled: onSettled1,
+      })
+
+      // Start execution
+      const promise = debouncer.maybeExecute()
+      expect(debouncer.getIsPending()).toBe(true)
+
+      // Change callbacks during wait
+      debouncer.setOptions({
+        onError: onError2,
+        onSettled: onSettled2,
+      })
+
+      // Advance time and verify new callbacks are used
+      vi.advanceTimersByTime(1000)
+      await promise
+      expect(onError2).toBeCalledTimes(1)
+      expect(onError2).toBeCalledWith(error, debouncer)
+      expect(onSettled2).toBeCalledTimes(1)
+      expect(onSettled2).toBeCalledWith(debouncer)
+      expect(onError1).not.toBeCalled()
+      expect(onSettled1).not.toBeCalled()
+    })
   })
 })
 
@@ -549,14 +1046,86 @@ describe('asyncDebounce helper function', () => {
   })
 
   describe('Basic Functionality', () => {
-    it('should create a debounced async function with default options')
-    it('should pass arguments correctly')
-    it('should return a promise')
+    it('should create a debounced async function with default options', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debounced = asyncDebounce(mockFn, { wait: 1000 })
+
+      const promise = debounced()
+      expect(mockFn).not.toBeCalled()
+
+      vi.advanceTimersByTime(1000)
+      const result = await promise
+      expect(mockFn).toBeCalledTimes(1)
+      expect(result).toBe('result')
+    })
+
+    it('should pass arguments correctly', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debounced = asyncDebounce(mockFn, { wait: 1000 })
+
+      const promise = debounced('arg1', 42, { foo: 'bar' })
+      vi.advanceTimersByTime(1000)
+      await promise
+
+      expect(mockFn).toBeCalledWith('arg1', 42, { foo: 'bar' })
+    })
+
+    it('should return a promise', () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debounced = asyncDebounce(mockFn, { wait: 1000 })
+
+      const promise = debounced()
+      expect(promise).toBeInstanceOf(Promise)
+    })
   })
 
   describe('Execution Options', () => {
-    it('should respect leading option')
-    it('should handle multiple calls with trailing edge')
-    it('should support both leading and trailing execution')
+    it('should respect leading option', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debounced = asyncDebounce(mockFn, { wait: 1000, leading: true })
+
+      const promise = debounced()
+      expect(mockFn).toBeCalledTimes(1)
+
+      vi.advanceTimersByTime(1000)
+      await promise
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
+    it('should handle multiple calls with trailing edge', () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debounced = asyncDebounce(mockFn, { wait: 1000 })
+
+      debounced()
+      debounced()
+      debounced()
+      expect(mockFn).not.toBeCalled()
+
+      vi.advanceTimersByTime(1000)
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
+    it('should support both leading and trailing execution', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debounced = asyncDebounce(mockFn, {
+        wait: 1000,
+        leading: true,
+        trailing: true,
+      })
+
+      // First call - should execute immediately
+      const promise1 = debounced('first')
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('first')
+
+      // Second call - should queue for trailing
+      const promise2 = debounced('second')
+      expect(mockFn).toBeCalledTimes(1)
+
+      vi.advanceTimersByTime(1000)
+      await Promise.all([promise1, promise2])
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toBeCalledWith('second')
+    })
   })
 })

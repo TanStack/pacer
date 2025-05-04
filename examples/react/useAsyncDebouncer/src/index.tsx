@@ -63,7 +63,6 @@ function App() {
   async function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newTerm = e.target.value
     setSearchTerm(newTerm)
-    console.log(setSearchAsyncDebouncer.getIsPending())
     const result = await handleSearchDebounced(newTerm) // optionally await result if you need to
     console.log('result', result)
   }

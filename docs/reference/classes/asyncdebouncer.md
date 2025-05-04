@@ -67,7 +67,7 @@ Defined in: [async-debouncer.ts:86](https://github.com/TanStack/pacer/blob/main/
 cancel(): void
 ```
 
-Defined in: [async-debouncer.ts:194](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L194)
+Defined in: [async-debouncer.ts:196](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L196)
 
 Cancels any pending execution
 
@@ -83,7 +83,7 @@ Cancels any pending execution
 getErrorCount(): number
 ```
 
-Defined in: [async-debouncer.ts:223](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L223)
+Defined in: [async-debouncer.ts:225](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L225)
 
 Returns the number of times the function has errored
 
@@ -99,7 +99,7 @@ Returns the number of times the function has errored
 getIsExecuting(): boolean
 ```
 
-Defined in: [async-debouncer.ts:237](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L237)
+Defined in: [async-debouncer.ts:239](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L239)
 
 Returns `true` if there is currently an execution in progress
 
@@ -115,7 +115,7 @@ Returns `true` if there is currently an execution in progress
 getIsPending(): boolean
 ```
 
-Defined in: [async-debouncer.ts:230](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L230)
+Defined in: [async-debouncer.ts:232](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L232)
 
 Returns `true` if there is a pending execution queued up for trailing execution
 
@@ -131,7 +131,7 @@ Returns `true` if there is a pending execution queued up for trailing execution
 getLastResult(): undefined | ReturnType<TFn>
 ```
 
-Defined in: [async-debouncer.ts:202](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L202)
+Defined in: [async-debouncer.ts:204](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L204)
 
 Returns the last result of the debounced function
 
@@ -163,7 +163,7 @@ Returns the current debouncer options
 getSettleCount(): number
 ```
 
-Defined in: [async-debouncer.ts:216](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L216)
+Defined in: [async-debouncer.ts:218](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L218)
 
 Returns the number of times the function has settled (completed or errored)
 
@@ -179,7 +179,7 @@ Returns the number of times the function has settled (completed or errored)
 getSuccessCount(): number
 ```
 
-Defined in: [async-debouncer.ts:209](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L209)
+Defined in: [async-debouncer.ts:211](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L211)
 
 Returns the number of times the function has been executed successfully
 

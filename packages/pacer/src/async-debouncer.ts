@@ -121,7 +121,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   async maybeExecute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
-    this.reset()
+    this._cancel()
     this._lastArgs = args
 
     // Handle leading execution
@@ -176,7 +176,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   /**
    * Cancel without resetting _canLeadingExecute
    */
-  private reset(): void {
+  private _cancel(): void {
     if (this._timeoutId) {
       clearTimeout(this._timeoutId)
       this._timeoutId = null
@@ -186,6 +186,8 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this._abortController = null
     }
     this._lastArgs = undefined
+    this._isPending = false
+    this._isExecuting = false
   }
 
   /**
@@ -193,7 +195,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    */
   cancel(): void {
     this._canLeadingExecute = true
-    this.reset()
+    this._cancel()
   }
 
   /**
