@@ -69,6 +69,7 @@ function App2() {
       <h1>TanStack Pacer throttle Example 2</h1>
       <div>
         <input
+          autoFocus
           type="search"
           value={text}
           onChange={handleTextChange}

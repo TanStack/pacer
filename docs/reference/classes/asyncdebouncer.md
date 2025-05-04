@@ -7,7 +7,7 @@ title: AsyncDebouncer
 
 # Class: AsyncDebouncer\<TFn\>
 
-Defined in: [async-debouncer.ts:68](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L68)
+Defined in: [async-debouncer.ts:73](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L73)
 
 A class that creates an async debounced function.
 
@@ -43,7 +43,7 @@ inputElement.addEventListener('input', () => {
 new AsyncDebouncer<TFn>(fn, initialOptions): AsyncDebouncer<TFn>
 ```
 
-Defined in: [async-debouncer.ts:77](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L77)
+Defined in: [async-debouncer.ts:83](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L83)
 
 #### Parameters
 
@@ -67,7 +67,7 @@ Defined in: [async-debouncer.ts:77](https://github.com/TanStack/pacer/blob/main/
 cancel(): void
 ```
 
-Defined in: [async-debouncer.ts:166](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L166)
+Defined in: [async-debouncer.ts:186](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L186)
 
 Cancels any pending execution
 
@@ -83,7 +83,7 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [async-debouncer.ts:182](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L182)
+Defined in: [async-debouncer.ts:208](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L208)
 
 Returns the number of times the function has been executed
 
@@ -99,7 +99,7 @@ Returns the number of times the function has been executed
 getIsPending(): boolean
 ```
 
-Defined in: [async-debouncer.ts:189](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L189)
+Defined in: [async-debouncer.ts:215](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L215)
 
 Returns `true` if there is a pending execution
 
@@ -109,13 +109,29 @@ Returns `true` if there is a pending execution
 
 ***
 
+### getLastResult()
+
+```ts
+getLastResult(): undefined | ReturnType<TFn>
+```
+
+Defined in: [async-debouncer.ts:201](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L201)
+
+Returns the last result of the debounced function
+
+#### Returns
+
+`undefined` \| `ReturnType`\<`TFn`\>
+
+***
+
 ### getOptions()
 
 ```ts
 getOptions(): Required<AsyncDebouncerOptions<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:104](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L104)
+Defined in: [async-debouncer.ts:110](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L110)
 
 Returns the current debouncer options
 
@@ -128,10 +144,10 @@ Returns the current debouncer options
 ### maybeExecute()
 
 ```ts
-maybeExecute(...args): Promise<void>
+maybeExecute(...args): Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:112](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L112)
+Defined in: [async-debouncer.ts:118](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L118)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued
@@ -144,7 +160,7 @@ If a call is already in progress, it will be queued
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
 
 ***
 
@@ -154,7 +170,7 @@ If a call is already in progress, it will be queued
 setOptions(newOptions): Required<AsyncDebouncerOptions<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:91](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L91)
+Defined in: [async-debouncer.ts:97](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L97)
 
 Updates the debouncer options
 Returns the new options state

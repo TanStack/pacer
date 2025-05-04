@@ -41,6 +41,7 @@ function SearchApp() {
       <h1>TanStack Pacer asyncDebounce Example</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchText()}
           onInput={(e) => {

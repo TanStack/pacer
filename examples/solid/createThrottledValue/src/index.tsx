@@ -58,6 +58,7 @@ function App2() {
       <h1>TanStack Pacer createThrottledValue Example 2</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={instantSearch()}
           onInput={handleSearchChange}

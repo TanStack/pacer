@@ -54,6 +54,7 @@ function App2() {
       <h1>TanStack Pacer createDebouncedValue Example 2</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={instantSearch()}
           onInput={handleSearchChange}

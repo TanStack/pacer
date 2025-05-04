@@ -64,8 +64,8 @@ const defaultOptions: Required<DebouncerOptions<any>> = {
  */
 export class Debouncer<TFn extends AnyFunction> {
   private _canLeadingExecute = true
-  private _isPending = false
   private _executionCount = 0
+  private _isPending = false
   private _options: Required<DebouncerOptions<TFn>>
   private _timeoutId: NodeJS.Timeout | undefined
 

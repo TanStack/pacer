@@ -36,3 +36,13 @@ isPending: Accessor<boolean>;
 ```
 
 Defined in: [async-debouncer/createAsyncDebouncer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L11)
+
+***
+
+### lastResult
+
+```ts
+lastResult: Accessor<undefined | ReturnType<TFn>>;
+```
+
+Defined in: [async-debouncer/createAsyncDebouncer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L12)

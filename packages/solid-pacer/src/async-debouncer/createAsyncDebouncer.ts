@@ -9,6 +9,7 @@ export interface SolidAsyncDebouncer<TFn extends AnyAsyncFunction>
   extends Omit<AsyncDebouncer<TFn>, 'getExecutionCount' | 'getIsPending'> {
   executionCount: Accessor<number>
   isPending: Accessor<boolean>
+  lastResult: Accessor<ReturnType<TFn> | undefined>
 }
 
 /**
@@ -56,16 +57,19 @@ export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
     asyncDebouncer.getExecutionCount(),
   )
   const [isPending, setIsPending] = createSignal(asyncDebouncer.getIsPending())
+  const [lastResult, setLastResult] = createSignal(
+    asyncDebouncer.getLastResult(),
+  )
 
   function setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn>>) {
     asyncDebouncer.setOptions({
       ...newOptions,
-      onExecute: (asyncDebouncer) => {
+      onSettled: (asyncDebouncer) => {
         setExecutionCount(asyncDebouncer.getExecutionCount())
         setIsPending(asyncDebouncer.getIsPending())
-
-        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
-        onExecute?.(asyncDebouncer)
+        setLastResult(asyncDebouncer.getLastResult())
+        const onSettled = newOptions.onSettled ?? initialOptions.onSettled
+        onSettled?.(asyncDebouncer)
       },
     })
   }
@@ -76,6 +80,7 @@ export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
     ...bindInstanceMethods(asyncDebouncer),
     executionCount,
     isPending,
+    lastResult,
     setOptions,
   }
 }

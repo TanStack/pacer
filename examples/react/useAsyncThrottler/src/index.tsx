@@ -78,6 +78,7 @@ function App() {
       <h1>TanStack Pacer useAsyncThrottler Example</h1>
       <div>
         <input
+          autoFocus
           type="search"
           value={searchTerm}
           onChange={onSearchChange}

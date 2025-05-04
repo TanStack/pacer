@@ -17,11 +17,15 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
   /**
    * Optional error handler for when the debounced function throws
    */
-  onError?: (error: unknown) => void
+  onError?: (error: unknown, debouncer: AsyncDebouncer<TFn>) => void
   /**
-   * Optional function to call when the debounced function is executed
+   * Optional callback to call when the debounced function is executed
    */
-  onExecute?: (debouncer: AsyncDebouncer<TFn>) => void
+  onSettled?: (debouncer: AsyncDebouncer<TFn>) => void
+  /**
+   * Optional callback to call when the debounced function is executed
+   */
+  onSuccess?: (result: ReturnType<TFn>, debouncer: AsyncDebouncer<TFn>) => void
   /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
@@ -37,9 +41,10 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
 const defaultOptions: Required<AsyncDebouncerOptions<any>> = {
   enabled: true,
   leading: false,
-  trailing: true,
   onError: () => {},
-  onExecute: () => {},
+  onSettled: () => {},
+  onSuccess: () => {},
+  trailing: true,
   wait: 0,
 }
 
@@ -67,12 +72,13 @@ const defaultOptions: Required<AsyncDebouncerOptions<any>> = {
  */
 export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   private _abortController: AbortController | null = null
+  private _canLeadingExecute = true
   private _executionCount = 0
   private _isExecuting = false
   private _lastArgs: Parameters<TFn> | undefined
+  private _lastResult: ReturnType<TFn> | undefined
   private _options: Required<AsyncDebouncerOptions<TFn>>
   private _timeoutId: ReturnType<typeof setTimeout> | null = null
-  private _canLeadingExecute = true
 
   constructor(
     private fn: TFn,
@@ -109,55 +115,69 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * Attempts to execute the debounced function
    * If a call is already in progress, it will be queued
    */
-  async maybeExecute(...args: Parameters<TFn>): Promise<void> {
+  async maybeExecute(
+    ...args: Parameters<TFn>
+  ): Promise<ReturnType<TFn> | undefined> {
     this.cancel()
     this._lastArgs = args
+
+    let _didLeadingExecute = false
 
     // Handle leading execution
     if (this._options.leading && this._canLeadingExecute) {
       this._canLeadingExecute = false
-      await this.executeFunction(...args)
+      _didLeadingExecute = true
+      try {
+        this._lastResult = await this.executeFunction(...args)
+        return this._lastResult
+      } catch (error) {
+        this._options.onError(error, this)
+      } finally {
+        this._isExecuting = false
+        this._abortController = null
+        this._options.onSettled(this)
+      }
     }
 
     return new Promise((resolve) => {
       this._timeoutId = setTimeout(async () => {
         if (this._isExecuting) {
-          resolve()
+          resolve(this._lastResult)
           return
         }
-
-        this._canLeadingExecute = true
         // Execute trailing only if enabled
-        if (this._options.trailing) {
+        if (this._options.trailing && !_didLeadingExecute) {
           this._abortController = new AbortController()
           try {
             this._isExecuting = true
             if (this._lastArgs) {
-              await this.executeFunction(...this._lastArgs)
+              this._lastResult = await this.executeFunction(...this._lastArgs)
             }
           } catch (error) {
-            try {
-              this._options.onError(error)
-            } catch {
-              console.error('Error in error handler', error)
-            }
+            this._options.onError(error, this)
           } finally {
             this._isExecuting = false
             this._abortController = null
-            resolve()
+            this._options.onSettled(this)
+            resolve(this._lastResult)
           }
         } else {
-          resolve()
+          resolve(this._lastResult)
         }
+        // Reset _canLeadingExecute after the trailing execution is complete
+        this._canLeadingExecute = true
       }, this._options.wait)
     })
   }
 
-  private async executeFunction(...args: Parameters<TFn>): Promise<void> {
-    if (!this._options.enabled) return
+  private async executeFunction(
+    ...args: Parameters<TFn>
+  ): Promise<ReturnType<TFn> | undefined> {
+    if (!this._options.enabled) return undefined
+    this._lastResult = await this.fn(...args) // EXECUTE!
     this._executionCount++
-    await this.fn(...args)
-    this._options.onExecute(this)
+    this._options.onSuccess(this._lastResult!, this)
+    return this._lastResult
   }
 
   /**
@@ -173,7 +193,13 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this._abortController = null
     }
     this._lastArgs = undefined
-    this._canLeadingExecute = true
+  }
+
+  /**
+   * Returns the last result of the debounced function
+   */
+  getLastResult(): ReturnType<TFn> | undefined {
+    return this._lastResult
   }
 
   /**

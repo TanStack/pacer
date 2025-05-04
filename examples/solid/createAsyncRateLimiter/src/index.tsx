@@ -71,6 +71,7 @@ function App() {
       <h1>TanStack Pacer createAsyncRateLimiter Example</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchTerm()}
           onInput={onSearchChange}

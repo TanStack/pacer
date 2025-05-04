@@ -66,15 +66,13 @@ describe('AsyncDebouncer', () => {
     const promise = debouncer.maybeExecute()
     vi.advanceTimersByTime(100)
     await promise
-    expect(onError).toHaveBeenCalledWith(error)
+    expect(onError).toHaveBeenCalledWith(error, debouncer)
   })
 
   it('should ignore errors in onError callback', async () => {
     const error = new Error('Test error')
     const mockFn = vi.fn().mockRejectedValue(error)
-    const onError = vi.fn().mockImplementation(() => {
-      throw new Error('Error handler error')
-    })
+    const onError = vi.fn().mockRejectedValue(new Error('Error handler error'))
     const debouncer = new AsyncDebouncer(mockFn, { wait: 100, onError })
 
     const promise = debouncer.maybeExecute()

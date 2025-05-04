@@ -22,7 +22,6 @@ function App() {
   const [results, setResults] = createSignal<Array<SearchResult>>([])
   const [isLoading, setIsLoading] = createSignal(false)
   const [error, setError] = createSignal<Error | null>(null)
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // The function that will become debounced
   const handleSearch = async (term: string) => {
@@ -42,20 +41,19 @@ function App() {
     setIsLoading(false)
     setError(null)
 
-    console.log(setSearchAsyncDebouncer.executionCount())
+    console.log('execution count: ', setSearchAsyncDebouncer.executionCount())
+    return data // this could alternatively be a void function without a return
   }
 
   // hook that gives you an async debouncer instance
   const setSearchAsyncDebouncer = createAsyncDebouncer(handleSearch, {
+    // leading: true, // optional leading execution
     wait: 500, // Wait 500ms between API calls
     onError: (error) => {
       // optional error handler
       console.error('Search failed:', error)
       setError(error as Error)
       setResults([])
-    },
-    onExecute: (asyncDebouncer) => {
-      setExecutionCount(asyncDebouncer.getExecutionCount())
     },
   })
 
@@ -66,7 +64,8 @@ function App() {
   async function onSearchChange(e: Event) {
     const newTerm = (e.target as HTMLInputElement).value
     setSearchTerm(newTerm)
-    await handleSearchDebounced(newTerm) // optionally await if you need to
+    const result = await handleSearchDebounced(newTerm) // optionally await result if you need to
+    console.log('result', result)
   }
 
   return (
@@ -74,6 +73,7 @@ function App() {
       <h1>TanStack Pacer createAsyncDebouncer Example</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchTerm()}
           onInput={onSearchChange}
@@ -84,7 +84,7 @@ function App() {
       </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {executionCount()}</p>
+        <p>API calls made: {setSearchAsyncDebouncer.executionCount()}</p>
         {results().length > 0 && (
           <ul>
             {results().map((item) => (

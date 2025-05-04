@@ -35,6 +35,7 @@ function App() {
         }}
       >
         <input
+          autoFocus
           type="search"
           value={instantSearchValue}
           onChange={(e) => {
