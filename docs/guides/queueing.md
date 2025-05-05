@@ -3,11 +3,11 @@ title: Queueing Guide
 id: queueing
 ---
 
-Unlike [Rate Limiting](../guides/rate-limiting), [Throttling](../guides/throttling), and [Debouncing](../guides/debouncing) which drop executions when they occur too frequently, queuers ensure that every operation is processed. They provide a way to manage and control the flow of operations without losing any requests. This makes them ideal for scenarios where data loss is unacceptable. This guide will cover the Queueing concepts of TanStack Pacer.
+Unlike [Rate Limiting](../guides/rate-limiting), [Throttling](../guides/throttling), and [Debouncing](../guides/debouncing) which drop executions when they occur too frequently, queuers can be configured to ensure that every operation is processed. They provide a way to manage and control the flow of operations without losing any requests. This makes them ideal for scenarios where data loss is unacceptable. Queueing can also be set to have a maximum size, which can be useful for preventing memory leaks or other issues. This guide will cover the Queueing concepts of TanStack Pacer.
 
 ## Queueing Concept
 
-Queueing ensures that every operation is eventually processed, even if they come in faster than they can be handled. Unlike the other execution control techniques that drop excess operations, queueing buffers operations in an ordered list and processes them according to specific rules. This makes queueing the only "lossless" execution control technique in TanStack Pacer.
+Queueing ensures that every operation is eventually processed, even if they come in faster than they can be handled. Unlike the other execution control techniques that drop excess operations, queueing buffers operations in an ordered list and processes them according to specific rules. This makes queueing the only "lossless" execution control technique in TanStack Pacer, unless a `maxSize` is specified which can cause items to be rejected when the buffer is full.
 
 ### Queueing Visualization
 
@@ -27,15 +27,17 @@ Executed:     ✅     ✅       ✅        ✅      ✅     ✅
 
 ### When to Use Queueing
 
-Queueing is particularly important when you need to ensure that every operation is processed, even if it means introducing some delay. This makes it ideal for scenarios where data consistency and completeness are more important than immediate execution.
+Queueing is particularly important when you need to ensure that every operation is processed, even if it means introducing some delay. This makes it ideal for scenarios where data consistency and completeness are more important than immediate execution. When using a `maxSize`, it can also serve as a buffer to prevent overwhelming a system with too many pending operations.
 
 Common use cases include:
+- Pre-fetching data before it's needed without overloading the system
 - Processing user interactions in a UI where every action must be recorded
 - Handling database operations that need to maintain data consistency
 - Managing API requests that must all complete successfully
 - Coordinating background tasks that can't be dropped
 - Animation sequences where every frame matters
 - Form submissions where every entry needs to be saved
+- Buffering data streams with a fixed capacity using `maxSize`
 
 ### When Not to Use Queueing
 
@@ -60,6 +62,7 @@ import { queue } from '@tanstack/pacer'
 // Create a queue that processes items every second
 const processItems = queue<number>({
   wait: 1000,
+  maxSize: 10, // Optional: limit queue size to prevent memory or time issues
   onItemsChange: (queuer) => {
     console.log('Current queue:', queuer.getAllItems())
   }
@@ -83,6 +86,7 @@ import { Queuer } from '@tanstack/pacer'
 // Create a queue that processes items every second
 const queue = new Queuer<number>({
   wait: 1000, // Wait 1 second between processing items
+  maxSize: 5, // Optional: limit queue size to prevent memory or time issues
   onItemsChange: (queuer) => {
     console.log('Current queue:', queuer.getAllItems())
   }
@@ -109,20 +113,22 @@ What makes TanStack Pacer's Queuer unique is its ability to adapt to different u
 
 #### FIFO Queue (First In, First Out)
 
-The default behavior where items are processed in the order they were added. This is the most common queue type and follows the principle that the first item added should be the first one processed.
+The default behavior where items are processed in the order they were added. This is the most common queue type and follows the principle that the first item added should be the first one processed. When using `maxSize`, new items will be rejected if the queue is full.
 
 ```text
-FIFO Queue Visualization:
+FIFO Queue Visualization (with maxSize=3):
 
-Entry →  [A][B][C][D] → Exit
-         ⬇️         ⬆️
+Entry →  [A][B][C] → Exit
+         ⬇️     ⬆️
       New items   Items are
       added here  processed here
+      (rejected if full)
 
 Timeline: [1 second per tick]
-Calls:        ⬇️  ⬇️  ⬇️     ⬇️
+Calls:        ⬇️  ⬇️  ⬇️     ⬇️  ⬇️
 Queue:       [ABC]   [BC]    [C]    []
 Processed:    A       B       C
+Rejected:     D      E
 ```
 
 FIFO queues are ideal for:
@@ -143,22 +149,23 @@ queue.addItem(2) // [1, 2]
 
 #### LIFO Stack (Last In, First Out)
 
-By specifying 'back' as the position for both adding and retrieving items, the queuer behaves like a stack. In a stack, the most recently added item is the first one to be processed.
+By specifying 'back' as the position for both adding and retrieving items, the queuer behaves like a stack. In a stack, the most recently added item is the first one to be processed. When using `maxSize`, new items will be rejected if the stack is full.
 
 ```text
-LIFO Stack Visualization:
+LIFO Stack Visualization (with maxSize=3):
 
      ⬆️ Process
-    [D] ← Most recently added
-    [C]
+    [C] ← Most recently added
     [B]
     [A] ← First added
      ⬇️ Entry
+     (rejected if full)
 
 Timeline: [1 second per tick]
-Calls:        ⬇️  ⬇️  ⬇️     ⬇️
+Calls:        ⬇️  ⬇️  ⬇️     ⬇️  ⬇️
 Queue:       [ABC]   [AB]    [A]    []
 Processed:    C       B       A
+Rejected:     D      E
 ```
 
 Stack behavior is particularly useful for:
@@ -181,20 +188,22 @@ stack.getNextItem('back') // get next item from back of queue instead of front
 
 #### Priority Queue
 
-Priority queues add another dimension to queue ordering by allowing items to be sorted based on their priority rather than just their insertion order. Each item is assigned a priority value, and the queue automatically maintains the items in priority order.
+Priority queues add another dimension to queue ordering by allowing items to be sorted based on their priority rather than just their insertion order. Each item is assigned a priority value, and the queue automatically maintains the items in priority order. When using `maxSize`, lower priority items may be rejected if the queue is full.
 
 ```text
-Priority Queue Visualization:
+Priority Queue Visualization (with maxSize=3):
 
-Entry →  [P:5][P:3][P:2][P:1] → Exit
+Entry →  [P:5][P:3][P:2] → Exit
           ⬇️           ⬆️
      High Priority   Low Priority
      items here      processed last
+     (rejected if full)
 
 Timeline: [1 second per tick]
 Calls:        ⬇️(P:2)  ⬇️(P:5)  ⬇️(P:1)     ⬇️(P:3)
 Queue:       [2]      [5,2]    [5,2,1]    [3,2,1]    [2,1]    [1]    []
 Processed:              5         -          3         2        1
+Rejected:                         4
 ```
 
 Priority queues are essential for:
@@ -266,6 +275,39 @@ queue.onItemsChange((item) => {
   console.log('Processed:', item)
 })
 ```
+
+### Item Expiration
+
+The Queuer supports automatic expiration of items that have been in the queue too long. This is useful for preventing stale data from being processed or for implementing timeouts on queued operations.
+
+```ts
+const queue = new Queuer<number>({
+  expirationDuration: 5000, // Items expire after 5 seconds
+  onExpire: (item, queuer) => {
+    console.log('Item expired:', item)
+  }
+})
+
+// Or use a custom expiration check
+const queue = new Queuer<number>({
+  getIsExpired: (item, addedAt) => {
+    // Custom expiration logic
+    return Date.now() - addedAt > 5000
+  },
+  onExpire: (item, queuer) => {
+    console.log('Item expired:', item)
+  }
+})
+
+// Check expiration statistics
+console.log(queue.getExpirationCount()) // Number of items that have expired
+```
+
+Expiration features are particularly useful for:
+- Preventing stale data from being processed
+- Implementing timeouts on queued operations
+- Managing memory usage by automatically removing old items
+- Handling temporary data that should only be valid for a limited time
 
 ### Rejection Handling
 

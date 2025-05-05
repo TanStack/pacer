@@ -648,6 +648,29 @@
           ]
         }
       ]
+    },
+    {
+      "label": "Advanced Examples",
+      "children": [],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "React Query Debounced Prefetch",
+              "to": "framework/react/examples/react-query-debounced-prefetch"
+            },
+            {
+              "label": "React Query Throttled Prefetch",
+              "to": "framework/react/examples/react-query-throttled-prefetch"
+            },
+            {
+              "label": "React Query Queued Prefetch",
+              "to": "framework/react/examples/react-query-queued-prefetch"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
