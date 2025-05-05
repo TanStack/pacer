@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useThrottledState } from './useThrottledState'
-import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
+import type { Throttler, ThrottlerOptions } from '@tanstack/pacer/throttler'
 
 /**
  * A high-level React hook that creates a throttled version of a value that updates at most once within a specified time window.
@@ -9,7 +9,9 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * Throttling ensures the value updates occur at a controlled rate regardless of how frequently the input value changes.
  * This is useful for rate-limiting expensive re-renders or API calls that depend on rapidly changing values.
  *
- * The hook returns the throttled value that updates according to the leading/trailing edge behavior specified in the options.
+ * The hook returns a tuple containing:
+ * - The throttled value that updates according to the leading/trailing edge behavior specified in the options
+ * - The throttler instance with control methods
  *
  * For more direct control over throttling behavior without React state management,
  * consider using the lower-level useThrottler hook instead.
@@ -17,10 +19,10 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * @example
  * ```tsx
  * // Basic throttling - update at most once per second
- * const throttledValue = useThrottledValue(rawValue, { wait: 1000 });
+ * const [throttledValue, throttler] = useThrottledValue(rawValue, { wait: 1000 });
  *
  * // With custom leading/trailing behavior
- * const throttledValue = useThrottledValue(rawValue, {
+ * const [throttledValue, throttler] = useThrottledValue(rawValue, {
  *   wait: 1000,
  *   leading: true,   // Update immediately on first change
  *   trailing: false  // Skip trailing edge updates
@@ -30,12 +32,15 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 export function useThrottledValue<TValue>(
   value: TValue,
   options: ThrottlerOptions<React.Dispatch<React.SetStateAction<TValue>>>,
-): TValue {
-  const [throttledValue, setThrottledValue] = useThrottledState(value, options)
+): [TValue, Throttler<React.Dispatch<React.SetStateAction<TValue>>>] {
+  const [throttledValue, setThrottledValue, throttler] = useThrottledState(
+    value,
+    options,
+  )
 
   useEffect(() => {
     setThrottledValue(value)
   }, [value, setThrottledValue])
 
-  return throttledValue
+  return [throttledValue, throttler]
 }

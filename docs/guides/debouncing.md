@@ -279,7 +279,7 @@ const handleSearch = useDebouncedCallback(
 
 // State-based hook for reactive state management
 const [instantState, setInstantState] = useState('')
-const debouncedValue = useDebouncedValue(
+const [debouncedValue] = useDebouncedValue(
   instantState, // Value to debounce
   { wait: 500 }
 )

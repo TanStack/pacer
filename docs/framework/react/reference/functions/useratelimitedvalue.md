@@ -8,10 +8,10 @@ title: useRateLimitedValue
 # Function: useRateLimitedValue()
 
 ```ts
-function useRateLimitedValue<TValue>(value, options): TValue
+function useRateLimitedValue<TValue>(value, options): [TValue, RateLimiter<Dispatch<SetStateAction<TValue>>>]
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L42)
+Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:47](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L47)
 
 A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses React's useState internally to manage the rate-limited state.
@@ -26,7 +26,9 @@ For smoother update patterns, consider:
 
 Rate limiting should primarily be used when you need to enforce strict limits, like API rate limits.
 
-The hook returns the rate-limited value that updates according to the configured rate limit.
+The hook returns a tuple containing:
+- The rate-limited value that updates according to the configured rate limit
+- The rate limiter instance with control methods
 
 For more direct control over rate limiting behavior without React state management,
 consider using the lower-level useRateLimiter hook instead.
@@ -47,19 +49,19 @@ consider using the lower-level useRateLimiter hook instead.
 
 ## Returns
 
-`TValue`
+\[`TValue`, `RateLimiter`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>\]
 
 ## Example
 
 ```tsx
 // Basic rate limiting - update at most 5 times per minute
-const rateLimitedValue = useRateLimitedValue(rawValue, {
+const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
   limit: 5,
   window: 60000
 });
 
 // With rejection callback
-const rateLimitedValue = useRateLimitedValue(rawValue, {
+const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
   limit: 3,
   window: 5000,
   onReject: (rateLimiter) => {

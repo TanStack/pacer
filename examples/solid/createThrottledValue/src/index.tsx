@@ -11,7 +11,7 @@ function App1() {
 
   // highest-level hook that watches an instant local state value and returns a throttled value
   // optionally, grab the throttler from the last index of the returned array
-  const throttledCount = createThrottledValue(instantCount, {
+  const [throttledCount] = createThrottledValue(instantCount, {
     wait: 1000,
   })
 
@@ -41,7 +41,7 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const throttledSearch = createThrottledValue(instantSearch, {
+  const [throttledSearch] = createThrottledValue(instantSearch, {
     wait: 1000,
   })
 

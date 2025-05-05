@@ -49,12 +49,9 @@ function PostList({
   })
 
   useEffect(() => {
-    if (
-      queuedHoveredPostId &&
-      !queryClient.getQueryData(['post', queuedHoveredPostId])
-    ) {
+    if (queuedHoveredPostId) {
       // queue up the hovered post id to be processed in order
-      queryClient.prefetchQuery({
+      queryClient.ensureQueryData({
         queryKey: ['post', queuedHoveredPostId],
         queryFn: () => fetchPost(queuedHoveredPostId),
       })

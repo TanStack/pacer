@@ -10,7 +10,7 @@ function App1() {
   }
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const debouncedCount = createDebouncedValue(instantCount, {
+  const [debouncedCount] = createDebouncedValue(instantCount, {
     wait: 500,
     // leading: true, // optional, defaults to false
   })
@@ -41,7 +41,7 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const debouncedSearch = createDebouncedValue(instantSearch, {
+  const [debouncedSearch] = createDebouncedValue(instantSearch, {
     wait: 500,
   })
 

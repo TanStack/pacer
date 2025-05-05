@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import { useRateLimitedState } from './useRateLimitedState'
-import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
+import type {
+  RateLimiter,
+  RateLimiterOptions,
+} from '@tanstack/pacer/rate-limiter'
 
 /**
  * A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
@@ -16,7 +19,9 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  *
  * Rate limiting should primarily be used when you need to enforce strict limits, like API rate limits.
  *
- * The hook returns the rate-limited value that updates according to the configured rate limit.
+ * The hook returns a tuple containing:
+ * - The rate-limited value that updates according to the configured rate limit
+ * - The rate limiter instance with control methods
  *
  * For more direct control over rate limiting behavior without React state management,
  * consider using the lower-level useRateLimiter hook instead.
@@ -24,13 +29,13 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * @example
  * ```tsx
  * // Basic rate limiting - update at most 5 times per minute
- * const rateLimitedValue = useRateLimitedValue(rawValue, {
+ * const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
  *   limit: 5,
  *   window: 60000
  * });
  *
  * // With rejection callback
- * const rateLimitedValue = useRateLimitedValue(rawValue, {
+ * const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
  *   limit: 3,
  *   window: 5000,
  *   onReject: (rateLimiter) => {
@@ -42,15 +47,13 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 export function useRateLimitedValue<TValue>(
   value: TValue,
   options: RateLimiterOptions<React.Dispatch<React.SetStateAction<TValue>>>,
-): TValue {
-  const [rateLimitedValue, setRateLimitedValue] = useRateLimitedState(
-    value,
-    options,
-  )
+): [TValue, RateLimiter<React.Dispatch<React.SetStateAction<TValue>>>] {
+  const [rateLimitedValue, setRateLimitedValue, rateLimiter] =
+    useRateLimitedState(value, options)
 
   useEffect(() => {
     setRateLimitedValue(value)
   }, [value, setRateLimitedValue])
 
-  return rateLimitedValue
+  return [rateLimitedValue, rateLimiter]
 }

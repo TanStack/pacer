@@ -4,5 +4,4 @@
 
 - breaking: renamed `useQueuerState` hook to `useQueuedState`
 - breaking: changed return signature of `useQueuedState` to include the `addItem` function
-- breaking: changed return signature of `useDebouncedValue` to return a single value and not a tuple
 - feat: add `useQueuedValue` hook

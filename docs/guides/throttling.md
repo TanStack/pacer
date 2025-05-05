@@ -255,7 +255,7 @@ const handleUpdate = useThrottledCallback(
 
 // State-based hook for reactive state management
 const [instantState, setInstantState] = useState(0)
-const throttledValue = useThrottledValue(
+const [throttledValue] = useThrottledValue(
   instantState, // Value to throttle
   { wait: 200 }
 )

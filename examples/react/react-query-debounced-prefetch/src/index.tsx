@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   QueryClient,
   QueryClientProvider,
-  usePrefetchQuery,
   useQuery,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -41,15 +40,19 @@ function PostList({
   >(null)
 
   // debounce the hovered post id to avoid excessive prefetches
-  const debouncedHoveredPostId = useDebouncedValue(currentHoveredPostId, {
+  const [debouncedHoveredPostId] = useDebouncedValue(currentHoveredPostId, {
     wait: 100, // adjust this value to see the difference
   })
 
   // perform the prefetch when the debounced hovered post id changes
-  usePrefetchQuery({
-    queryKey: ['post', debouncedHoveredPostId],
-    queryFn: () => fetchPost(debouncedHoveredPostId!),
-  })
+  useEffect(() => {
+    if (debouncedHoveredPostId) {
+      queryClient.ensureQueryData({
+        queryKey: ['post', debouncedHoveredPostId],
+        queryFn: () => fetchPost(debouncedHoveredPostId),
+      })
+    }
+  }, [debouncedHoveredPostId])
 
   const handleMouseEnter = (postId: number) => {
     setCurrentHoveredPostId(postId) // update the hovered post id

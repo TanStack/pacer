@@ -6,7 +6,7 @@ function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
 
   // Using createRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const limitedCount = createRateLimitedValue(instantCount, {
+  const [limitedCount] = createRateLimitedValue(instantCount, {
     limit: 5,
     window: 5000,
   })
@@ -41,7 +41,7 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // Using createRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const limitedSearch = createRateLimitedValue(instantSearch, {
+  const [limitedSearch] = createRateLimitedValue(instantSearch, {
     limit: 5,
     window: 5000,
   })

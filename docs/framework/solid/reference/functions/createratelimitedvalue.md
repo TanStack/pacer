@@ -8,10 +8,10 @@ title: createRateLimitedValue
 # Function: createRateLimitedValue()
 
 ```ts
-function createRateLimitedValue<TValue>(value, initialOptions): Accessor<TValue>
+function createRateLimitedValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidRateLimiter<Setter<TValue>>]
 ```
 
-Defined in: [rate-limiter/createRateLimitedValue.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedValue.ts#L37)
+Defined in: [rate-limiter/createRateLimitedValue.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedValue.ts#L43)
 
 A high-level Solid hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses Solid's createSignal internally to manage the rate-limited state.
@@ -26,7 +26,9 @@ For smoother update patterns, consider:
 
 Rate limiting should primarily be used when you need to enforce strict limits, like API rate limits.
 
-The hook returns an accessor function that provides the rate-limited value.
+The hook returns a tuple containing:
+- An accessor function that provides the rate-limited value
+- The rate limiter instance with control methods
 
 For more direct control over rate limiting behavior without Solid state management,
 consider using the lower-level createRateLimiter hook instead.
@@ -47,17 +49,20 @@ consider using the lower-level createRateLimiter hook instead.
 
 ## Returns
 
-`Accessor`\<`TValue`\>
+\[`Accessor`\<`TValue`\>, [`SolidRateLimiter`](../interfaces/solidratelimiter.md)\<`Setter`\<`TValue`\>\>\]
 
 ## Example
 
 ```tsx
 // Basic rate limiting - update at most 5 times per minute
-const rateLimitedValue = createRateLimitedValue(rawValue, {
+const [rateLimitedValue, rateLimiter] = createRateLimitedValue(rawValue, {
   limit: 5,
   window: 60000
 });
 
 // Use the rate-limited value
 console.log(rateLimitedValue()); // Access the current rate-limited value
+
+// Control the rate limiter
+rateLimiter.reset(); // Reset the rate limit window
 ```

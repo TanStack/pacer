@@ -6,7 +6,8 @@ function App1() {
   const [instantCount, setInstantCount] = useState(0)
 
   // Using useRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const limitedCount = useRateLimitedValue(instantCount, {
+  // optionally, grab the rate limiter from the last index of the returned array
+  const [limitedCount] = useRateLimitedValue(instantCount, {
     // enabled: instantCount > 2, // optional, defaults to true
     limit: 5,
     window: 5000,
@@ -47,7 +48,7 @@ function App2() {
   const [instantSearch, setInstantSearch] = useState('')
 
   // Using useRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const limitedSearch = useRateLimitedValue(instantSearch, {
+  const [limitedSearch] = useRateLimitedValue(instantSearch, {
     // enabled: instantSearch.length > 2, // optional, defaults to true
     limit: 5,
     window: 5000,

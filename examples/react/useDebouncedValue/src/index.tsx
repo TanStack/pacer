@@ -10,7 +10,7 @@ function App1() {
   }
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const debouncedCount = useDebouncedValue(instantCount, {
+  const [debouncedCount] = useDebouncedValue(instantCount, {
     wait: 500,
     // enabled: instantCount > 2, // optional, defaults to true
     // leading: true, // optional, defaults to false
@@ -42,7 +42,8 @@ function App2() {
   const [instantSearch, setInstantSearch] = useState('')
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const debouncedSearch = useDebouncedValue(instantSearch, {
+  // optionally, grab the debouncer from the last index of the returned array
+  const [debouncedSearch] = useDebouncedValue(instantSearch, {
     wait: 500,
     enabled: instantSearch.length > 2, // optional, defaults to true
   })

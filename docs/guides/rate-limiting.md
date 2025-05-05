@@ -271,7 +271,7 @@ const handleFetch = useRateLimitedCallback(
 
 // State-based hook for reactive state management
 const [instantState, setInstantState] = useState('')
-const [rateLimitedState, setRateLimitedState] = useRateLimitedValue(
+const [rateLimitedValue] = useRateLimitedValue(
   instantState, // Value to rate limit
   { limit: 5, window: 1000 }
 )

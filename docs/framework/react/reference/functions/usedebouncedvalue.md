@@ -8,10 +8,10 @@ title: useDebouncedValue
 # Function: useDebouncedValue()
 
 ```ts
-function useDebouncedValue<TValue>(value, options): TValue
+function useDebouncedValue<TValue>(value, options): [TValue, Debouncer<Dispatch<SetStateAction<TValue>>>]
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:39](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L39)
+Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L41)
 
 A React hook that creates a debounced value that updates only after a specified delay.
 Unlike useDebouncedState, this hook automatically tracks changes to the input value
@@ -25,7 +25,9 @@ This is useful for deriving debounced values from props or state that change fre
 like search queries or form inputs, where you want to limit how often downstream effects
 or calculations occur.
 
-The hook returns the current debounced value.
+The hook returns the current debounced value and the underlying debouncer instance.
+The debouncer instance can be used to access additional functionality like cancellation
+and execution counts.
 
 ## Type Parameters
 
@@ -43,14 +45,14 @@ The hook returns the current debounced value.
 
 ## Returns
 
-`TValue`
+\[`TValue`, `Debouncer`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>\]
 
 ## Example
 
 ```tsx
 // Debounce a search query
 const [searchQuery, setSearchQuery] = useState('');
-const debouncedQuery = useDebouncedValue(searchQuery, {
+const [debouncedQuery, debouncer] = useDebouncedValue(searchQuery, {
   wait: 500 // Wait 500ms after last change
 });
 

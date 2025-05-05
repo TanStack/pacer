@@ -8,10 +8,10 @@ title: createDebouncedValue
 # Function: createDebouncedValue()
 
 ```ts
-function createDebouncedValue<TValue>(value, initialOptions): Accessor<TValue>
+function createDebouncedValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidDebouncer<Setter<TValue>>]
 ```
 
-Defined in: [debouncer/createDebouncedValue.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L40)
+Defined in: [debouncer/createDebouncedValue.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L41)
 
 A Solid hook that creates a debounced value that updates only after a specified delay.
 Unlike createDebouncedSignal, this hook automatically tracks changes to the input value
@@ -25,7 +25,9 @@ This is useful for deriving debounced values from props or state that change fre
 like search queries or form inputs, where you want to limit how often downstream effects
 or calculations occur.
 
-The hook returns an Accessor that provides the current debounced value.
+The hook returns a tuple containing:
+- An Accessor that provides the current debounced value
+- The debouncer instance with control methods
 
 ## Type Parameters
 
@@ -43,14 +45,14 @@ The hook returns an Accessor that provides the current debounced value.
 
 ## Returns
 
-`Accessor`\<`TValue`\>
+\[`Accessor`\<`TValue`\>, [`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`Setter`\<`TValue`\>\>\]
 
 ## Example
 
 ```tsx
 // Debounce a search query
 const [searchQuery, setSearchQuery] = createSignal('');
-const debouncedQuery = createDebouncedValue(searchQuery, {
+const [debouncedQuery, debouncer] = createDebouncedValue(searchQuery, {
   wait: 500 // Wait 500ms after last change
 });
 
@@ -59,8 +61,6 @@ createEffect(() => {
   fetchSearchResults(debouncedQuery());
 });
 
-// Handle input changes
-const handleChange = (e) => {
-  setSearchQuery(e.target.value);
-};
+// Control the debouncer
+debouncer.cancel(); // Cancel any pending updates
 ```

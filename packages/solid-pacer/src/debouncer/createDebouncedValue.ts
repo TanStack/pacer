@@ -1,5 +1,6 @@
 import { createEffect } from 'solid-js'
 import { createDebouncedSignal } from './createDebouncedSignal'
+import type { SolidDebouncer } from './createDebouncer'
 import type { Accessor, Setter } from 'solid-js'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 
@@ -16,13 +17,15 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * like search queries or form inputs, where you want to limit how often downstream effects
  * or calculations occur.
  *
- * The hook returns an Accessor that provides the current debounced value.
+ * The hook returns a tuple containing:
+ * - An Accessor that provides the current debounced value
+ * - The debouncer instance with control methods
  *
  * @example
  * ```tsx
  * // Debounce a search query
  * const [searchQuery, setSearchQuery] = createSignal('');
- * const debouncedQuery = createDebouncedValue(searchQuery, {
+ * const [debouncedQuery, debouncer] = createDebouncedValue(searchQuery, {
  *   wait: 500 // Wait 500ms after last change
  * });
  *
@@ -31,17 +34,15 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  *   fetchSearchResults(debouncedQuery());
  * });
  *
- * // Handle input changes
- * const handleChange = (e) => {
- *   setSearchQuery(e.target.value);
- * };
+ * // Control the debouncer
+ * debouncer.cancel(); // Cancel any pending updates
  * ```
  */
 export function createDebouncedValue<TValue>(
   value: Accessor<TValue>,
   initialOptions: DebouncerOptions<Setter<TValue>>,
-): Accessor<TValue> {
-  const [debouncedValue, setDebouncedValue] = createDebouncedSignal(
+): [Accessor<TValue>, SolidDebouncer<Setter<TValue>>] {
+  const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
     value(),
     initialOptions,
   )
@@ -50,5 +51,5 @@ export function createDebouncedValue<TValue>(
     setDebouncedValue(value() as any)
   })
 
-  return debouncedValue
+  return [debouncedValue, debouncer]
 }
