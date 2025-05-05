@@ -8,13 +8,21 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 export interface SolidAsyncThrottler<TFn extends AnyAsyncFunction>
   extends Omit<
     AsyncThrottler<TFn>,
-    | 'getExecutionCount'
+    | 'getSuccessCount'
+    | 'getSettleCount'
+    | 'getErrorCount'
     | 'getIsPending'
+    | 'getIsExecuting'
+    | 'getLastResult'
     | 'getLastExecutionTime'
     | 'getNextExecutionTime'
   > {
-  executionCount: Accessor<number>
+  successCount: Accessor<number>
+  settleCount: Accessor<number>
+  errorCount: Accessor<number>
   isPending: Accessor<boolean>
+  isExecuting: Accessor<boolean>
+  lastResult: Accessor<ReturnType<TFn> | undefined>
   lastExecutionTime: Accessor<number>
   nextExecutionTime: Accessor<number>
 }
@@ -64,10 +72,22 @@ export function createAsyncThrottler<TFn extends AnyAsyncFunction>(
     new AsyncThrottler<TFn>(fn, initialOptions),
   )
 
-  const [executionCount, setExecutionCount] = createSignal(
-    asyncThrottler.getExecutionCount(),
+  const [successCount, setSuccessCount] = createSignal(
+    asyncThrottler.getSuccessCount(),
+  )
+  const [settleCount, setSettleCount] = createSignal(
+    asyncThrottler.getSettleCount(),
+  )
+  const [errorCount, setErrorCount] = createSignal(
+    asyncThrottler.getErrorCount(),
   )
   const [isPending, setIsPending] = createSignal(asyncThrottler.getIsPending())
+  const [isExecuting, setIsExecuting] = createSignal(
+    asyncThrottler.getIsExecuting(),
+  )
+  const [lastResult, setLastResult] = createSignal(
+    asyncThrottler.getLastResult(),
+  )
   const [lastExecutionTime, setLastExecutionTime] = createSignal(
     asyncThrottler.getLastExecutionTime(),
   )
@@ -78,14 +98,18 @@ export function createAsyncThrottler<TFn extends AnyAsyncFunction>(
   function setOptions(newOptions: Partial<AsyncThrottlerOptions<TFn>>) {
     asyncThrottler.setOptions({
       ...newOptions,
-      onExecute: (throttler) => {
-        setExecutionCount(throttler.getExecutionCount())
+      onSettled: (throttler) => {
+        setSuccessCount(throttler.getSuccessCount())
+        setSettleCount(throttler.getSettleCount())
+        setErrorCount(throttler.getErrorCount())
         setIsPending(throttler.getIsPending())
+        setIsExecuting(throttler.getIsExecuting())
         setLastExecutionTime(throttler.getLastExecutionTime())
         setNextExecutionTime(throttler.getNextExecutionTime())
+        setLastResult(throttler.getLastResult())
 
-        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
-        onExecute?.(throttler)
+        const onSettled = newOptions.onSettled ?? initialOptions.onSettled
+        onSettled?.(throttler)
       },
     })
   }
@@ -93,11 +117,15 @@ export function createAsyncThrottler<TFn extends AnyAsyncFunction>(
   setOptions(initialOptions)
 
   return {
-    ...bindInstanceMethods(asyncThrottler),
-    executionCount,
+    ...asyncThrottler,
+    errorCount,
+    isExecuting,
     isPending,
     lastExecutionTime,
+    lastResult,
     nextExecutionTime,
     setOptions,
+    settleCount,
+    successCount,
   } as SolidAsyncThrottler<TFn>
 }

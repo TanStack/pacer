@@ -30,13 +30,26 @@ Defaults to true.
 
 ***
 
+### leading?
+
+```ts
+optional leading: boolean;
+```
+
+Defined in: [async-throttler.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L16)
+
+Whether to execute the function immediately when called
+Defaults to true
+
+***
+
 ### onError()?
 
 ```ts
-optional onError: (error) => void;
+optional onError: (error, asyncThrottler) => void;
 ```
 
-Defined in: [async-throttler.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L15)
+Defined in: [async-throttler.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L20)
 
 Optional error handler for when the throttled function throws
 
@@ -46,25 +59,7 @@ Optional error handler for when the throttled function throws
 
 `unknown`
 
-#### Returns
-
-`void`
-
-***
-
-### onExecute()?
-
-```ts
-optional onExecute: (throttler) => void;
-```
-
-Defined in: [async-throttler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L19)
-
-Optional function to call when the throttled function is executed
-
-#### Parameters
-
-##### throttler
+##### asyncThrottler
 
 [`AsyncThrottler`](../classes/asyncthrottler.md)\<`TFn`\>
 
@@ -74,13 +69,74 @@ Optional function to call when the throttled function is executed
 
 ***
 
+### onSettled()?
+
+```ts
+optional onSettled: (asyncThrottler) => void;
+```
+
+Defined in: [async-throttler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L24)
+
+Optional function to call when the throttled function is executed
+
+#### Parameters
+
+##### asyncThrottler
+
+[`AsyncThrottler`](../classes/asyncthrottler.md)\<`TFn`\>
+
+#### Returns
+
+`void`
+
+***
+
+### onSuccess()?
+
+```ts
+optional onSuccess: (result, asyncThrottler) => void;
+```
+
+Defined in: [async-throttler.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L28)
+
+Optional function to call when the throttled function is executed
+
+#### Parameters
+
+##### result
+
+`ReturnType`\<`TFn`\>
+
+##### asyncThrottler
+
+[`AsyncThrottler`](../classes/asyncthrottler.md)\<`TFn`\>
+
+#### Returns
+
+`void`
+
+***
+
+### trailing?
+
+```ts
+optional trailing: boolean;
+```
+
+Defined in: [async-throttler.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L36)
+
+Whether to execute the function on the trailing edge of the wait period
+Defaults to true
+
+***
+
 ### wait
 
 ```ts
 wait: number;
 ```
 
-Defined in: [async-throttler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L24)
+Defined in: [async-throttler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L41)
 
 Time window in milliseconds during which the function can only be executed once
 Defaults to 0ms

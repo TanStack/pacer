@@ -190,7 +190,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   /**
-   * Cancels any pending execution
+   * Cancels any pending execution or aborts any execution in progress
    */
   cancel(): void {
     this._canLeadingExecute = true

@@ -69,7 +69,7 @@ cancel(): void
 
 Defined in: [async-debouncer.ts:195](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L195)
 
-Cancels any pending execution
+Cancels any pending execution or aborts any execution in progress
 
 #### Returns
 

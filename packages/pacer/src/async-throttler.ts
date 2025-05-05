@@ -10,13 +10,30 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    */
   enabled?: boolean
   /**
+   * Whether to execute the function immediately when called
+   * Defaults to true
+   */
+  leading?: boolean
+  /**
    * Optional error handler for when the throttled function throws
    */
-  onError?: (error: unknown) => void
+  onError?: (error: unknown, asyncThrottler: AsyncThrottler<TFn>) => void
   /**
    * Optional function to call when the throttled function is executed
    */
-  onExecute?: (throttler: AsyncThrottler<TFn>) => void
+  onSettled?: (asyncThrottler: AsyncThrottler<TFn>) => void
+  /**
+   * Optional function to call when the throttled function is executed
+   */
+  onSuccess?: (
+    result: ReturnType<TFn>,
+    asyncThrottler: AsyncThrottler<TFn>,
+  ) => void
+  /**
+   * Whether to execute the function on the trailing edge of the wait period
+   * Defaults to true
+   */
+  trailing?: boolean
   /**
    * Time window in milliseconds during which the function can only be executed once
    * Defaults to 0ms
@@ -26,8 +43,11 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
 
 const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
   enabled: true,
+  leading: true,
   onError: () => {},
-  onExecute: () => {},
+  onSettled: () => {},
+  onSuccess: () => {},
+  trailing: true,
   wait: 0,
 }
 
@@ -56,12 +76,15 @@ const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
 export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   private _options: Required<AsyncThrottlerOptions<TFn>>
   private _abortController: AbortController | null = null
-  private _executionCount = 0
+  private _errorCount = 0
   private _isExecuting = false
-  private _isPending = false
   private _lastArgs: Parameters<TFn> | undefined
   private _lastExecutionTime = 0
+  private _lastResult: ReturnType<TFn> | undefined
   private _nextExecutionTime = 0
+  private _settleCount = 0
+  private _successCount = 0
+  private _timeoutId: NodeJS.Timeout | null = null
 
   constructor(
     private fn: TFn,
@@ -79,6 +102,11 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    */
   setOptions(newOptions: Partial<AsyncThrottlerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
+
+    // End the pending state if the debouncer is disabled
+    if (!this._options.enabled) {
+      this.cancel()
+    }
   }
 
   /**
@@ -92,82 +120,80 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    * Attempts to execute the throttled function
    * If a call is already in progress, it may be blocked or queued depending on the `wait` option
    */
-  async maybeExecute(...args: Parameters<TFn>): Promise<void> {
-    this._lastArgs = args
-    if (this._isPending) return
-    this._isPending = true
+  async maybeExecute(
+    ...args: Parameters<TFn>
+  ): Promise<ReturnType<TFn> | undefined> {
+    const now = Date.now()
+    const timeSinceLastExecution = now - this._lastExecutionTime
 
-    this._abortController = new AbortController()
-    const signal = this._abortController.signal
+    // Handle leading execution
+    if (this._options.leading && timeSinceLastExecution >= this._options.wait) {
+      await this.executeFunction(...args)
+      return this._lastResult
+    } else {
+      // Store the most recent arguments for potential trailing execution
+      this._lastArgs = args
 
-    try {
-      while (this._isExecuting) {
-        await this.delay(this._options.wait, signal)
-      }
+      return new Promise((resolve) => {
+        // Clear any existing timeout to ensure we use the latest arguments
+        if (this._timeoutId) {
+          clearTimeout(this._timeoutId)
+        }
 
-      while (Date.now() < this._nextExecutionTime) {
-        await this.delay(this._nextExecutionTime - Date.now(), signal)
-      }
-
-      this._isPending = false
-      this._isExecuting = true
-
-      await this.executeFunction(...this._lastArgs)
-    } catch (error) {
-      if (error instanceof Error && error.name === 'AbortError') {
-        return // Silent return on cancellation
-      }
-      try {
-        this._options.onError(error)
-      } catch {
-        // Ignore errors from error handler
-      }
-    } finally {
-      this._lastExecutionTime = Date.now()
-      this._nextExecutionTime = this._lastExecutionTime + this._options.wait
-      this._isExecuting = false
-      this._abortController = null
+        // Set up trailing execution if enabled
+        if (this._options.trailing) {
+          const _timeSinceLastExecution = this._lastExecutionTime
+            ? now - this._lastExecutionTime
+            : 0
+          const timeoutDuration = this._options.wait - _timeSinceLastExecution
+          this._timeoutId = setTimeout(async () => {
+            if (this._lastArgs !== undefined) {
+              await this.executeFunction(...this._lastArgs)
+            }
+            resolve(this._lastResult)
+          }, timeoutDuration)
+        }
+      })
     }
   }
 
-  private delay(ms: number, signal: AbortSignal): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(resolve, ms)
-      signal.addEventListener(
-        'abort',
-        () => {
-          clearTimeout(timeout)
-          reject(new Error('AbortError'))
-        },
-        { once: true },
-      )
-    })
-  }
-
-  private async executeFunction(...args: Parameters<TFn>): Promise<void> {
-    if (!this._options.enabled) return
-    this._executionCount++
-    await this.fn(...args)
-    this._options.onExecute(this)
+  private async executeFunction(
+    ...args: Parameters<TFn>
+  ): Promise<ReturnType<TFn> | undefined> {
+    if (!this._options.enabled || this._isExecuting) return undefined
+    this._abortController = new AbortController()
+    try {
+      this._isExecuting = true
+      this._lastResult = await this.fn(...args) // EXECUTE!
+      this._successCount++
+      this._options.onSuccess(this._lastResult!, this)
+    } catch (error) {
+      this._errorCount++
+      this._options.onError(error, this)
+    } finally {
+      this._isExecuting = false
+      this._settleCount++
+      this._abortController = null
+      this._lastExecutionTime = Date.now()
+      this._nextExecutionTime = this._lastExecutionTime + this._options.wait
+      this._options.onSettled(this)
+    }
+    return this._lastResult
   }
 
   /**
-   * Cancels any pending execution
+   * Cancels any pending execution or aborts any execution in progress
    */
   cancel(): void {
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId)
+      this._timeoutId = null
+    }
     if (this._abortController) {
       this._abortController.abort()
       this._abortController = null
     }
-    this._isPending = false
     this._lastArgs = undefined
-  }
-
-  /**
-   * Returns the number of times the function has been executed
-   */
-  getExecutionCount(): number {
-    return this._executionCount
   }
 
   /**
@@ -185,10 +211,45 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   }
 
   /**
+   * Returns the last result of the debounced function
+   */
+  getLastResult(): ReturnType<TFn> | undefined {
+    return this._lastResult
+  }
+
+  /**
+   * Returns the number of times the function has been executed successfully
+   */
+  getSuccessCount(): number {
+    return this._successCount
+  }
+
+  /**
+   * Returns the number of times the function has settled (completed or errored)
+   */
+  getSettleCount(): number {
+    return this._settleCount
+  }
+
+  /**
+   * Returns the number of times the function has errored
+   */
+  getErrorCount(): number {
+    return this._errorCount
+  }
+
+  /**
    * Returns the current pending state
    */
   getIsPending(): boolean {
-    return this._isPending
+    return this._options.enabled && !!this._timeoutId
+  }
+
+  /**
+   * Returns the current executing state
+   */
+  getIsExecuting(): boolean {
+    return this._isExecuting
   }
 }
 

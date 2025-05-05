@@ -87,6 +87,11 @@ export class Throttler<TFn extends AnyFunction> {
    */
   setOptions(newOptions: Partial<ThrottlerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
+
+    // End the pending state if the debouncer is disabled
+    if (!this._options.enabled) {
+      this.cancel()
+    }
   }
 
   /**
@@ -172,20 +177,6 @@ export class Throttler<TFn extends AnyFunction> {
   }
 
   /**
-   * Returns the number of times the function has been executed
-   */
-  getExecutionCount(): number {
-    return this._executionCount
-  }
-
-  /**
-   * Returns `true` if there is a pending execution
-   */
-  getIsPending(): boolean {
-    return this._options.enabled && !!this._timeoutId
-  }
-
-  /**
    * Returns the last execution time
    */
   getLastExecutionTime(): number {
@@ -197,6 +188,20 @@ export class Throttler<TFn extends AnyFunction> {
    */
   getNextExecutionTime(): number {
     return this._lastExecutionTime + this._options.wait
+  }
+
+  /**
+   * Returns the number of times the function has been executed
+   */
+  getExecutionCount(): number {
+    return this._executionCount
+  }
+
+  /**
+   * Returns `true` if there is a pending execution
+   */
+  getIsPending(): boolean {
+    return this._options.enabled && !!this._timeoutId
   }
 }
 

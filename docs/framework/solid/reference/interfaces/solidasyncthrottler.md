@@ -12,8 +12,12 @@ Defined in: [async-throttler/createAsyncThrottler.ts:8](https://github.com/TanSt
 ## Extends
 
 - `Omit`\<`AsyncThrottler`\<`TFn`\>, 
-  \| `"getExecutionCount"`
+  \| `"getSuccessCount"`
+  \| `"getSettleCount"`
+  \| `"getErrorCount"`
   \| `"getIsPending"`
+  \| `"getIsExecuting"`
+  \| `"getLastResult"`
   \| `"getLastExecutionTime"`
   \| `"getNextExecutionTime"`\>
 
@@ -23,13 +27,23 @@ Defined in: [async-throttler/createAsyncThrottler.ts:8](https://github.com/TanSt
 
 ## Properties
 
-### executionCount
+### errorCount
 
 ```ts
-executionCount: Accessor<number>;
+errorCount: Accessor<number>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:16](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L16)
+Defined in: [async-throttler/createAsyncThrottler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L22)
+
+***
+
+### isExecuting
+
+```ts
+isExecuting: Accessor<boolean>;
+```
+
+Defined in: [async-throttler/createAsyncThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L24)
 
 ***
 
@@ -39,7 +53,7 @@ Defined in: [async-throttler/createAsyncThrottler.ts:16](https://github.com/TanS
 isPending: Accessor<boolean>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L17)
+Defined in: [async-throttler/createAsyncThrottler.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L23)
 
 ***
 
@@ -49,7 +63,17 @@ Defined in: [async-throttler/createAsyncThrottler.ts:17](https://github.com/TanS
 lastExecutionTime: Accessor<number>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L18)
+Defined in: [async-throttler/createAsyncThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L26)
+
+***
+
+### lastResult
+
+```ts
+lastResult: Accessor<undefined | ReturnType<TFn>>;
+```
+
+Defined in: [async-throttler/createAsyncThrottler.ts:25](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L25)
 
 ***
 
@@ -59,4 +83,24 @@ Defined in: [async-throttler/createAsyncThrottler.ts:18](https://github.com/TanS
 nextExecutionTime: Accessor<number>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L19)
+Defined in: [async-throttler/createAsyncThrottler.ts:27](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L27)
+
+***
+
+### settleCount
+
+```ts
+settleCount: Accessor<number>;
+```
+
+Defined in: [async-throttler/createAsyncThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L21)
+
+***
+
+### successCount
+
+```ts
+successCount: Accessor<number>;
+```
+
+Defined in: [async-throttler/createAsyncThrottler.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L20)
