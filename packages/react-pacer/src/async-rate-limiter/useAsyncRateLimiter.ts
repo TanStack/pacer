@@ -40,15 +40,12 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
  * );
  * ```
  */
-export function useAsyncRateLimiter<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function useAsyncRateLimiter<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AsyncRateLimiterOptions<TFn, TArgs>,
-): AsyncRateLimiter<TFn, TArgs> {
+  options: AsyncRateLimiterOptions<TFn>,
+): AsyncRateLimiter<TFn> {
   const [asyncRateLimiter] = useState(() =>
-    bindInstanceMethods(new AsyncRateLimiter<TFn, TArgs>(fn, options)),
+    bindInstanceMethods(new AsyncRateLimiter<TFn>(fn, options)),
   )
 
   asyncRateLimiter.setOptions(options)

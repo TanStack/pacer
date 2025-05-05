@@ -55,7 +55,7 @@ Consider using the `useRateLimiter` hook instead.
 
 ### options
 
-`RateLimiterOptions`\<`TFn`, `TArgs`\>
+`RateLimiterOptions`\<`TFn`\>
 
 ## Returns
 

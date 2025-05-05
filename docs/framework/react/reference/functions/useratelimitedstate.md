@@ -8,7 +8,7 @@ title: useRateLimitedState
 # Function: useRateLimitedState()
 
 ```ts
-function useRateLimitedState<TValue>(value, options): [TValue, Dispatch<SetStateAction<TValue>>, RateLimiter<Dispatch<SetStateAction<TValue>>, [TValue]>]
+function useRateLimitedState<TValue>(value, options): [TValue, Dispatch<SetStateAction<TValue>>, RateLimiter<Dispatch<SetStateAction<TValue>>>]
 ```
 
 Defined in: [react-pacer/src/rate-limiter/useRateLimitedState.ts:59](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedState.ts#L59)
@@ -46,11 +46,11 @@ consider using the lower-level useRateLimiter hook instead.
 
 ### options
 
-`RateLimiterOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>
+`RateLimiterOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
 
 ## Returns
 
-\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, `RateLimiter`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`TValue`\]\>\]
+\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, `RateLimiter`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>\]
 
 ## Example
 

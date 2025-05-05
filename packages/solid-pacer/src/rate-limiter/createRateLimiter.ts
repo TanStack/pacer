@@ -5,11 +5,9 @@ import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
-export interface SolidRateLimiter<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
-> extends Omit<
-    RateLimiter<TFn, TArgs>,
+export interface SolidRateLimiter<TFn extends AnyFunction>
+  extends Omit<
+    RateLimiter<TFn>,
     | 'getExecutionCount'
     | 'getMsUntilNextWindow'
     | 'getRejectionCount'
@@ -60,14 +58,13 @@ export interface SolidRateLimiter<
  * console.log('Next window in:', rateLimiter.msUntilNextWindow());
  * ```
  */
-export function createRateLimiter<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function createRateLimiter<TFn extends AnyFunction>(
   fn: TFn,
-  initialOptions: RateLimiterOptions<TFn, TArgs>,
-): SolidRateLimiter<TFn, TArgs> {
-  const rateLimiter = new RateLimiter<TFn, TArgs>(fn, initialOptions)
+  initialOptions: RateLimiterOptions<TFn>,
+): SolidRateLimiter<TFn> {
+  const rateLimiter = bindInstanceMethods(
+    new RateLimiter<TFn>(fn, initialOptions),
+  )
 
   const [executionCount, setExecutionCount] = createSignal(
     rateLimiter.getExecutionCount(),
@@ -82,13 +79,14 @@ export function createRateLimiter<
     rateLimiter.getMsUntilNextWindow(),
   )
 
-  function setOptions(newOptions: Partial<RateLimiterOptions<TFn, TArgs>>) {
+  function setOptions(newOptions: Partial<RateLimiterOptions<TFn>>) {
     rateLimiter.setOptions({
       ...newOptions,
       onExecute: (rateLimiter) => {
         setExecutionCount(rateLimiter.getExecutionCount())
         setRemainingInWindow(rateLimiter.getRemainingInWindow())
         setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+
         const onExecute = newOptions.onExecute ?? initialOptions.onExecute
         onExecute?.(rateLimiter)
       },
@@ -96,6 +94,7 @@ export function createRateLimiter<
         setRejectionCount(rateLimiter.getRejectionCount())
         setRemainingInWindow(rateLimiter.getRemainingInWindow())
         setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
+
         const onReject = newOptions.onReject ?? initialOptions.onReject
         onReject?.(rateLimiter)
       },
@@ -105,11 +104,11 @@ export function createRateLimiter<
   setOptions(initialOptions)
 
   return {
-    ...bindInstanceMethods(rateLimiter),
+    ...rateLimiter,
     executionCount,
     rejectionCount,
     remainingInWindow,
     msUntilNextWindow,
     setOptions,
-  }
+  } as SolidRateLimiter<TFn>
 }

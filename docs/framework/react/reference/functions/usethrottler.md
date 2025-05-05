@@ -8,7 +8,7 @@ title: useThrottler
 # Function: useThrottler()
 
 ```ts
-function useThrottler<TFn, TArgs>(fn, options): Throttler<TFn, TArgs>
+function useThrottler<TFn>(fn, options): Throttler<TFn>
 ```
 
 Defined in: [react-pacer/src/throttler/useThrottler.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L42)
@@ -27,8 +27,6 @@ expensive operations or UI updates.
 
 • **TFn** *extends* `AnyFunction`
 
-• **TArgs** *extends* `any`[]
-
 ## Parameters
 
 ### fn
@@ -37,11 +35,11 @@ expensive operations or UI updates.
 
 ### options
 
-`ThrottlerOptions`\<`TFn`, `TArgs`\>
+`ThrottlerOptions`\<`TFn`\>
 
 ## Returns
 
-`Throttler`\<`TFn`, `TArgs`\>
+`Throttler`\<`TFn`\>
 
 ## Example
 

@@ -149,11 +149,8 @@ export class AsyncQueuer<TValue> {
    * Updates the queuer options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<AsyncQueuerOptions<TValue>>,
-  ): AsyncQueuerOptions<TValue> {
+  setOptions(newOptions: Partial<AsyncQueuerOptions<TValue>>): void {
     this._options = { ...this._options, ...newOptions }
-    return this._options
   }
 
   /**

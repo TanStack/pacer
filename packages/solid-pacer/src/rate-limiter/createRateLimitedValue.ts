@@ -1,6 +1,5 @@
 import { createEffect } from 'solid-js'
 import { createRateLimitedSignal } from './createRateLimitedSignal'
-import type { SolidRateLimiter } from './createRateLimiter'
 import type { Accessor, Setter } from 'solid-js'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
@@ -18,7 +17,7 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  *
  * Rate limiting should primarily be used when you need to enforce strict limits, like API rate limits.
  *
- * The hook returns both the rate-limited value and the underlying rateLimiter instance for additional control.
+ * The hook returns an accessor function that provides the rate-limited value.
  *
  * For more direct control over rate limiting behavior without Solid state management,
  * consider using the lower-level createRateLimiter hook instead.
@@ -26,41 +25,27 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * @example
  * ```tsx
  * // Basic rate limiting - update at most 5 times per minute
- * const [rateLimitedValue] = createRateLimitedValue(rawValue, {
+ * const rateLimitedValue = createRateLimitedValue(rawValue, {
  *   limit: 5,
  *   window: 60000
  * });
  *
- * // With rejection callback
- * const [rateLimitedValue, rateLimiter] = createRateLimitedValue(rawValue, {
- *   limit: 3,
- *   window: 5000,
- *   onReject: (rateLimiter) => {
- *     console.log(`Update rejected. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
- *   }
- * });
- *
- * // Optionally access rateLimiter state via signals
- * const handleSubmit = () => {
- *   const remaining = rateLimiter.remainingInWindow();
- *   if (remaining > 0) {
- *     console.log(`${remaining} updates remaining in this window`);
- *   } else {
- *     console.log('Rate limit reached for this window');
- *   }
- * };
+ * // Use the rate-limited value
+ * console.log(rateLimitedValue()); // Access the current rate-limited value
  * ```
  */
 export function createRateLimitedValue<TValue>(
   value: Accessor<TValue>,
-  initialOptions: RateLimiterOptions<Setter<TValue>, [Accessor<TValue>]>,
-): [Accessor<TValue>, SolidRateLimiter<Setter<TValue>, [Accessor<TValue>]>] {
-  const [rateLimitedValue, setRateLimitedValue, rateLimiter] =
-    createRateLimitedSignal(value(), initialOptions)
+  initialOptions: RateLimiterOptions<Setter<TValue>>,
+): Accessor<TValue> {
+  const [rateLimitedValue, setRateLimitedValue] = createRateLimitedSignal(
+    value(),
+    initialOptions,
+  )
 
   createEffect(() => {
     setRateLimitedValue(value() as any)
   })
 
-  return [rateLimitedValue, rateLimiter]
+  return rateLimitedValue
 }

@@ -167,11 +167,8 @@ export class Queuer<TValue> {
    * Updates the queuer options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<QueuerOptions<TValue>>,
-  ): QueuerOptions<TValue> {
+  setOptions(newOptions: Partial<QueuerOptions<TValue>>): void {
     this._options = { ...this._options, ...newOptions }
-    return this._options
   }
 
   /**

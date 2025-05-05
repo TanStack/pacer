@@ -97,14 +97,13 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * Updates the debouncer options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<AsyncDebouncerOptions<TFn>>,
-  ): Required<AsyncDebouncerOptions<TFn>> {
-    this._options = {
-      ...this._options,
-      ...newOptions,
+  setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn>>): void {
+    this._options = { ...this._options, ...newOptions }
+
+    // End the pending state if the debouncer is disabled
+    if (!this._options.enabled) {
+      this._isPending = false
     }
-    return this._options
   }
 
   /**

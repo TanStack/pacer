@@ -3,10 +3,7 @@ import type { AnyAsyncFunction } from './types'
 /**
  * Options for configuring an async throttled function
  */
-export interface AsyncThrottlerOptions<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> {
+export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   /**
    * Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -19,7 +16,7 @@ export interface AsyncThrottlerOptions<
   /**
    * Optional function to call when the throttled function is executed
    */
-  onExecute?: (throttler: AsyncThrottler<TFn, TArgs>) => void
+  onExecute?: (throttler: AsyncThrottler<TFn>) => void
   /**
    * Time window in milliseconds during which the function can only be executed once
    * Defaults to 0ms
@@ -27,7 +24,7 @@ export interface AsyncThrottlerOptions<
   wait: number
 }
 
-const defaultOptions: Required<AsyncThrottlerOptions<any, any>> = {
+const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
   enabled: true,
   onError: () => {},
   onExecute: () => {},
@@ -56,22 +53,19 @@ const defaultOptions: Required<AsyncThrottlerOptions<any, any>> = {
  * });
  * ```
  */
-export class AsyncThrottler<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> {
-  private _options: Required<AsyncThrottlerOptions<TFn, TArgs>>
+export class AsyncThrottler<TFn extends AnyAsyncFunction> {
+  private _options: Required<AsyncThrottlerOptions<TFn>>
   private _abortController: AbortController | null = null
   private _executionCount = 0
   private _isExecuting = false
   private _isPending = false
-  private _lastArgs: TArgs | undefined
+  private _lastArgs: Parameters<TFn> | undefined
   private _lastExecutionTime = 0
   private _nextExecutionTime = 0
 
   constructor(
     private fn: TFn,
-    initialOptions: AsyncThrottlerOptions<TFn, TArgs>,
+    initialOptions: AsyncThrottlerOptions<TFn>,
   ) {
     this._options = {
       ...defaultOptions,
@@ -83,20 +77,14 @@ export class AsyncThrottler<
    * Updates the throttler options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<AsyncThrottlerOptions<TFn, TArgs>>,
-  ): Required<AsyncThrottlerOptions<TFn, TArgs>> {
-    this._options = {
-      ...this._options,
-      ...newOptions,
-    }
-    return this._options
+  setOptions(newOptions: Partial<AsyncThrottlerOptions<TFn>>): void {
+    this._options = { ...this._options, ...newOptions }
   }
 
   /**
    * Returns the current options
    */
-  getOptions(): Required<AsyncThrottlerOptions<TFn, TArgs>> {
+  getOptions(): Required<AsyncThrottlerOptions<TFn>> {
     return this._options
   }
 
@@ -104,7 +92,7 @@ export class AsyncThrottler<
    * Attempts to execute the throttled function
    * If a call is already in progress, it may be blocked or queued depending on the `wait` option
    */
-  async maybeExecute(...args: TArgs): Promise<void> {
+  async maybeExecute(...args: Parameters<TFn>): Promise<void> {
     this._lastArgs = args
     if (this._isPending) return
     this._isPending = true
@@ -156,7 +144,7 @@ export class AsyncThrottler<
     })
   }
 
-  private async executeFunction(...args: TArgs): Promise<void> {
+  private async executeFunction(...args: Parameters<TFn>): Promise<void> {
     if (!this._options.enabled) return
     this._executionCount++
     await this.fn(...args)
@@ -220,10 +208,10 @@ export class AsyncThrottler<
  * await throttled(); // Waits 1 second before executing
  * ```
  */
-export function asyncThrottle<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(fn: TFn, initialOptions: Omit<AsyncThrottlerOptions<TFn, TArgs>, 'enabled'>) {
+export function asyncThrottle<TFn extends AnyAsyncFunction>(
+  fn: TFn,
+  initialOptions: Omit<AsyncThrottlerOptions<TFn>, 'enabled'>,
+) {
   const asyncThrottler = new AsyncThrottler(fn, initialOptions)
   return asyncThrottler.maybeExecute.bind(asyncThrottler)
 }

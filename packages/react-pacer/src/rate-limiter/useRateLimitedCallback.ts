@@ -52,8 +52,8 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 export function useRateLimitedCallback<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: RateLimiterOptions<TFn, TArgs>) {
-  const rateLimitedFn = useRateLimiter<TFn, TArgs>(fn, options).maybeExecute
+>(fn: TFn, options: RateLimiterOptions<TFn>) {
+  const rateLimitedFn = useRateLimiter<TFn>(fn, options).maybeExecute
   return useCallback(
     (...args: TArgs) => rateLimitedFn(...args),
     [rateLimitedFn],

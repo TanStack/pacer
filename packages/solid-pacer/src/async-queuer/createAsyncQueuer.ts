@@ -49,11 +49,15 @@ export interface SolidAsyncQueuer<TValue>
   /**
    * Signal version of `getPeek`
    */
-  peek: Accessor<TValue | undefined>
+  peek: Accessor<(() => Promise<TValue>) | undefined>
   /**
    * Signal version of `getPendingItems`
    */
   pendingItems: Accessor<Array<() => Promise<TValue>>>
+  /**
+   * Signal version of `getRejectionCount`
+   */
+  rejectionCount: Accessor<number>
   /**
    * Signal version of `getSize`
    */
@@ -171,5 +175,5 @@ export function createAsyncQueuer<TValue>(
     pendingItems,
     rejectionCount,
     size,
-  }
+  } as SolidAsyncQueuer<TValue>
 }

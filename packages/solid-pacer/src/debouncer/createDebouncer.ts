@@ -54,7 +54,7 @@ export function createDebouncer<TFn extends AnyFunction>(
   fn: TFn,
   initialOptions: DebouncerOptions<TFn>,
 ): SolidDebouncer<TFn> {
-  const debouncer = new Debouncer<TFn>(fn, initialOptions)
+  const debouncer = bindInstanceMethods(new Debouncer<TFn>(fn, initialOptions))
 
   const [executionCount, setExecutionCount] = createSignal(
     debouncer.getExecutionCount(),
@@ -83,9 +83,9 @@ export function createDebouncer<TFn extends AnyFunction>(
   })
 
   return {
-    ...bindInstanceMethods(debouncer),
+    ...debouncer,
     executionCount,
     isPending,
     setOptions,
-  }
+  } as SolidDebouncer<TFn>
 }

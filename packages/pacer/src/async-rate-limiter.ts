@@ -3,10 +3,7 @@ import type { AnyAsyncFunction } from './types'
 /**
  * Options for configuring an async rate-limited function
  */
-export interface AsyncRateLimiterOptions<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> {
+export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -23,11 +20,11 @@ export interface AsyncRateLimiterOptions<
   /**
    * Optional function to call when the rate-limited function is executed
    */
-  onExecute?: (rateLimiter: AsyncRateLimiter<TFn, TArgs>) => void
+  onExecute?: (rateLimiter: AsyncRateLimiter<TFn>) => void
   /**
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
-  onReject?: (rateLimiter: AsyncRateLimiter<TFn, TArgs>) => void
+  onReject?: (rateLimiter: AsyncRateLimiter<TFn>) => void
   /**
    * Time window in milliseconds within which the limit applies
    */
@@ -35,7 +32,7 @@ export interface AsyncRateLimiterOptions<
 }
 
 const defaultOptions: Required<
-  Omit<AsyncRateLimiterOptions<any, any>, 'limit' | 'window'>
+  Omit<AsyncRateLimiterOptions<any>, 'limit' | 'window'>
 > = {
   enabled: true,
   onReject: () => {},
@@ -68,18 +65,15 @@ const defaultOptions: Required<
  * await rateLimiter.maybeExecute('123');
  * ```
  */
-export class AsyncRateLimiter<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> {
+export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   private _executionCount = 0
   private _executionTimes: Array<number> = []
-  private _options: AsyncRateLimiterOptions<TFn, TArgs>
+  private _options: AsyncRateLimiterOptions<TFn>
   private _rejectionCount = 0
 
   constructor(
     private fn: TFn,
-    initialOptions: AsyncRateLimiterOptions<TFn, TArgs>,
+    initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
     this._options = {
       ...defaultOptions,
@@ -91,21 +85,15 @@ export class AsyncRateLimiter<
    * Updates the rate limiter options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<AsyncRateLimiterOptions<TFn, TArgs>>,
-  ): AsyncRateLimiterOptions<TFn, TArgs> {
-    this._options = {
-      ...this._options,
-      ...newOptions,
-    }
-    return this._options
+  setOptions(newOptions: Partial<AsyncRateLimiterOptions<TFn>>): void {
+    this._options = { ...this._options, ...newOptions }
   }
 
   /**
    * Returns the current rate limiter options
    */
-  getOptions(): Required<AsyncRateLimiterOptions<TFn, TArgs>> {
-    return this._options as Required<AsyncRateLimiterOptions<TFn, TArgs>>
+  getOptions(): Required<AsyncRateLimiterOptions<TFn>> {
+    return this._options as Required<AsyncRateLimiterOptions<TFn>>
   }
 
   /**
@@ -124,7 +112,7 @@ export class AsyncRateLimiter<
    * await rateLimiter.maybeExecute('arg1', 'arg2'); // Rejected
    * ```
    */
-  async maybeExecute(...args: TArgs): Promise<boolean> {
+  async maybeExecute(...args: Parameters<TFn>): Promise<boolean> {
     this.cleanupOldExecutions()
 
     if (this._executionTimes.length < this._options.limit) {
@@ -136,7 +124,7 @@ export class AsyncRateLimiter<
     return false
   }
 
-  private async executeFunction(...args: TArgs): Promise<void> {
+  private async executeFunction(...args: Parameters<TFn>): Promise<void> {
     if (!this._options.enabled) return
     const now = Date.now()
     this._executionCount++
@@ -242,12 +230,9 @@ export class AsyncRateLimiter<
  * const throttled = throttle(makeApiCall, { wait: 12000 }); // One call every 12 seconds
  * ```
  */
-export function asyncRateLimit<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function asyncRateLimit<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: Omit<AsyncRateLimiterOptions<TFn, TArgs>, 'enabled'>,
+  initialOptions: Omit<AsyncRateLimiterOptions<TFn>, 'enabled'>,
 ) {
   const rateLimiter = new AsyncRateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)

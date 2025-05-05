@@ -56,12 +56,8 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  */
 export function createRateLimitedSignal<TValue>(
   value: TValue,
-  initialOptions: RateLimiterOptions<Setter<TValue>, [Accessor<TValue>]>,
-): [
-  Accessor<TValue>,
-  Setter<TValue>,
-  SolidRateLimiter<Setter<TValue>, [Accessor<TValue>]>,
-] {
+  initialOptions: RateLimiterOptions<Setter<TValue>>,
+): [Accessor<TValue>, Setter<TValue>, SolidRateLimiter<Setter<TValue>>] {
   const [rateLimitedValue, setRateLimitedValue] = createSignal<TValue>(value)
 
   const rateLimiter = createRateLimiter(setRateLimitedValue, initialOptions)

@@ -11,7 +11,7 @@ title: createQueuer
 function createQueuer<TValue>(initialOptions): SolidQueuer<TValue>
 ```
 
-Defined in: [queuer/createQueuer.ts:98](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L98)
+Defined in: [queuer/createQueuer.ts:102](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L102)
 
 A Solid hook that creates and manages a Queuer instance.
 

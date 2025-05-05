@@ -8,7 +8,7 @@ title: useAsyncThrottler
 # Function: useAsyncThrottler()
 
 ```ts
-function useAsyncThrottler<TFn, TArgs>(fn, options): AsyncThrottler<TFn, TArgs>
+function useAsyncThrottler<TFn>(fn, options): AsyncThrottler<TFn>
 ```
 
 Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L44)
@@ -26,8 +26,6 @@ database operations, or other async tasks.
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TArgs** *extends* `any`[]
-
 ## Parameters
 
 ### fn
@@ -36,11 +34,11 @@ database operations, or other async tasks.
 
 ### options
 
-`AsyncThrottlerOptions`\<`TFn`, `TArgs`\>
+`AsyncThrottlerOptions`\<`TFn`\>
 
 ## Returns
 
-`AsyncThrottler`\<`TFn`, `TArgs`\>
+`AsyncThrottler`\<`TFn`\>
 
 ## Example
 

@@ -101,5 +101,5 @@ export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
     settleCount,
     successCount,
     setOptions,
-  }
+  } as SolidAsyncDebouncer<TFn>
 }

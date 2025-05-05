@@ -5,11 +5,9 @@ import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 
-export interface SolidAsyncThrottler<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> extends Omit<
-    AsyncThrottler<TFn, TArgs>,
+export interface SolidAsyncThrottler<TFn extends AnyAsyncFunction>
+  extends Omit<
+    AsyncThrottler<TFn>,
     | 'getExecutionCount'
     | 'getIsPending'
     | 'getLastExecutionTime'
@@ -58,14 +56,13 @@ export interface SolidAsyncThrottler<
  * ```
  */
 
-export function createAsyncThrottler<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function createAsyncThrottler<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: AsyncThrottlerOptions<TFn, TArgs>,
-): SolidAsyncThrottler<TFn, TArgs> {
-  const asyncThrottler = new AsyncThrottler<TFn, TArgs>(fn, initialOptions)
+  initialOptions: AsyncThrottlerOptions<TFn>,
+): SolidAsyncThrottler<TFn> {
+  const asyncThrottler = bindInstanceMethods(
+    new AsyncThrottler<TFn>(fn, initialOptions),
+  )
 
   const [executionCount, setExecutionCount] = createSignal(
     asyncThrottler.getExecutionCount(),
@@ -78,7 +75,7 @@ export function createAsyncThrottler<
     asyncThrottler.getNextExecutionTime(),
   )
 
-  function setOptions(newOptions: Partial<AsyncThrottlerOptions<TFn, TArgs>>) {
+  function setOptions(newOptions: Partial<AsyncThrottlerOptions<TFn>>) {
     asyncThrottler.setOptions({
       ...newOptions,
       onExecute: (throttler) => {
@@ -102,5 +99,5 @@ export function createAsyncThrottler<
     lastExecutionTime,
     nextExecutionTime,
     setOptions,
-  }
+  } as SolidAsyncThrottler<TFn>
 }

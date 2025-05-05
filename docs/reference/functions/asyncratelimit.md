@@ -8,10 +8,10 @@ title: asyncRateLimit
 # Function: asyncRateLimit()
 
 ```ts
-function asyncRateLimit<TFn, TArgs>(fn, initialOptions): (...args) => Promise<boolean>
+function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<boolean>
 ```
 
-Defined in: [async-rate-limiter.ts:245](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L245)
+Defined in: [async-rate-limiter.ts:233](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L233)
 
 Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -27,8 +27,6 @@ need to enforce a hard limit on the number of executions within a time period.
 
 • **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
 
-• **TArgs** *extends* `any`[]
-
 ## Parameters
 
 ### fn
@@ -37,7 +35,7 @@ need to enforce a hard limit on the number of executions within a time period.
 
 ### initialOptions
 
-`Omit`\<[`AsyncRateLimiterOptions`](../interfaces/asyncratelimiteroptions.md)\<`TFn`, `TArgs`\>, `"enabled"`\>
+`Omit`\<[`AsyncRateLimiterOptions`](../interfaces/asyncratelimiteroptions.md)\<`TFn`\>, `"enabled"`\>
 
 ## Returns
 
@@ -51,7 +49,7 @@ If execution is allowed, waits for any previous execution to complete before pro
 
 #### args
 
-...`TArgs`
+...`Parameters`\<`TFn`\>
 
 ### Returns
 

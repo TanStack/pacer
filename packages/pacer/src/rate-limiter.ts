@@ -3,10 +3,7 @@ import type { AnyFunction } from './types'
 /**
  * Options for configuring a rate-limited function
  */
-export interface RateLimiterOptions<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
-> {
+export interface RateLimiterOptions<TFn extends AnyFunction> {
   /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -19,18 +16,18 @@ export interface RateLimiterOptions<
   /**
    * Callback function that is called after the function is executed
    */
-  onExecute?: (rateLimiter: RateLimiter<TFn, TArgs>) => void
+  onExecute?: (rateLimiter: RateLimiter<TFn>) => void
   /**
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
-  onReject?: (rateLimiter: RateLimiter<TFn, TArgs>) => void
+  onReject?: (rateLimiter: RateLimiter<TFn>) => void
   /**
    * Time window in milliseconds within which the limit applies
    */
   window: number
 }
 
-const defaultOptions: Required<RateLimiterOptions<any, any>> = {
+const defaultOptions: Required<RateLimiterOptions<any>> = {
   enabled: true,
   limit: 1,
   onExecute: () => {},
@@ -63,18 +60,15 @@ const defaultOptions: Required<RateLimiterOptions<any, any>> = {
  * rateLimiter.maybeExecute('123');
  * ```
  */
-export class RateLimiter<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
-> {
+export class RateLimiter<TFn extends AnyFunction> {
   private _executionCount = 0
   private _rejectionCount = 0
   private _executionTimes: Array<number> = []
-  private _options: RateLimiterOptions<TFn, TArgs>
+  private _options: RateLimiterOptions<TFn>
 
   constructor(
     private fn: TFn,
-    initialOptions: RateLimiterOptions<TFn, TArgs>,
+    initialOptions: RateLimiterOptions<TFn>,
   ) {
     this._options = {
       ...defaultOptions,
@@ -86,21 +80,15 @@ export class RateLimiter<
    * Updates the rate limiter options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<RateLimiterOptions<TFn, TArgs>>,
-  ): RateLimiterOptions<TFn, TArgs> {
-    this._options = {
-      ...this._options,
-      ...newOptions,
-    }
-    return this._options
+  setOptions(newOptions: Partial<RateLimiterOptions<TFn>>): void {
+    this._options = { ...this._options, ...newOptions }
   }
 
   /**
    * Returns the current rate limiter options
    */
-  getOptions(): Required<RateLimiterOptions<TFn, TArgs>> {
-    return this._options as Required<RateLimiterOptions<TFn, TArgs>>
+  getOptions(): Required<RateLimiterOptions<TFn>> {
+    return this._options as Required<RateLimiterOptions<TFn>>
   }
 
   /**
@@ -118,7 +106,7 @@ export class RateLimiter<
    * rateLimiter.maybeExecute('arg1', 'arg2'); // false
    * ```
    */
-  maybeExecute(...args: TArgs): boolean {
+  maybeExecute(...args: Parameters<TFn>): boolean {
     this.cleanupOldExecutions()
 
     if (this._executionTimes.length < this._options.limit) {
@@ -131,7 +119,7 @@ export class RateLimiter<
     return false
   }
 
-  private executeFunction(...args: TArgs): void {
+  private executeFunction(...args: Parameters<TFn>): void {
     if (!this._options.enabled) return
     const now = Date.now()
     this._executionCount++
@@ -227,7 +215,7 @@ export class RateLimiter<
  */
 export function rateLimit<TFn extends AnyFunction>(
   fn: TFn,
-  initialOptions: Omit<RateLimiterOptions<TFn, Parameters<TFn>>, 'enabled'>,
+  initialOptions: Omit<RateLimiterOptions<TFn>, 'enabled'>,
 ) {
   const rateLimiter = new RateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)

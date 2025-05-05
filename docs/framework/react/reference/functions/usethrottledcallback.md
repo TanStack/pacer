@@ -47,7 +47,7 @@ Consider using the `useThrottler` hook instead.
 
 ### options
 
-`ThrottlerOptions`\<`TFn`, `TArgs`\>
+`ThrottlerOptions`\<`TFn`\>
 
 ## Returns
 

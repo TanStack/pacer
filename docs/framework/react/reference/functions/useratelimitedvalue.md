@@ -8,10 +8,10 @@ title: useRateLimitedValue
 # Function: useRateLimitedValue()
 
 ```ts
-function useRateLimitedValue<TValue>(value, options): [TValue, RateLimiter<Dispatch<SetStateAction<TValue>>, [TValue]>]
+function useRateLimitedValue<TValue>(value, options): TValue
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L55)
+Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L42)
 
 A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses React's useState internally to manage the rate-limited state.
@@ -26,7 +26,7 @@ For smoother update patterns, consider:
 
 Rate limiting should primarily be used when you need to enforce strict limits, like API rate limits.
 
-The hook returns both the rate-limited value and the underlying rateLimiter instance for additional control.
+The hook returns the rate-limited value that updates according to the configured rate limit.
 
 For more direct control over rate limiting behavior without React state management,
 consider using the lower-level useRateLimiter hook instead.
@@ -43,37 +43,27 @@ consider using the lower-level useRateLimiter hook instead.
 
 ### options
 
-`RateLimiterOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>
+`RateLimiterOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
 
 ## Returns
 
-\[`TValue`, `RateLimiter`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`TValue`\]\>\]
+`TValue`
 
 ## Example
 
 ```tsx
 // Basic rate limiting - update at most 5 times per minute
-const [rateLimitedValue] = useRateLimitedValue(rawValue, {
+const rateLimitedValue = useRateLimitedValue(rawValue, {
   limit: 5,
   window: 60000
 });
 
 // With rejection callback
-const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
+const rateLimitedValue = useRateLimitedValue(rawValue, {
   limit: 3,
   window: 5000,
   onReject: (rateLimiter) => {
     console.log(`Update rejected. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }
 });
-
-// Optionally access rateLimiter methods
-const handleSubmit = () => {
-  const remaining = rateLimiter.getRemainingInWindow();
-  if (remaining > 0) {
-    console.log(`${remaining} updates remaining in this window`);
-  } else {
-    console.log('Rate limit reached for this window');
-  }
-};
 ```

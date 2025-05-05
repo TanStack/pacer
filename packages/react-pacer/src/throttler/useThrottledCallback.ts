@@ -43,7 +43,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
 export function useThrottledCallback<
   TFn extends AnyFunction,
   TArgs extends Parameters<TFn>,
->(fn: TFn, options: ThrottlerOptions<TFn, TArgs>) {
-  const throttledFn = useThrottler<TFn, TArgs>(fn, options).maybeExecute
+>(fn: TFn, options: ThrottlerOptions<TFn>) {
+  const throttledFn = useThrottler<TFn>(fn, options).maybeExecute
   return useCallback((...args: TArgs) => throttledFn(...args), [throttledFn])
 }

@@ -56,7 +56,7 @@ function PostList({
       // queue up the hovered post id to be processed in order
       queryClient.prefetchQuery({
         queryKey: ['post', queuedHoveredPostId],
-        queryFn: () => fetchPost(queuedHoveredPostId as number),
+        queryFn: () => fetchPost(queuedHoveredPostId),
       })
     }
   }, [queuedHoveredPostId])

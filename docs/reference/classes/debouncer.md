@@ -68,7 +68,7 @@ Defined in: [debouncer.ts:72](https://github.com/TanStack/pacer/blob/main/packag
 cancel(): void
 ```
 
-Defined in: [debouncer.ts:151](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L151)
+Defined in: [debouncer.ts:144](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L144)
 
 Cancels any pending execution
 
@@ -84,7 +84,7 @@ Cancels any pending execution
 getExecutionCount(): number
 ```
 
-Defined in: [debouncer.ts:162](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L162)
+Defined in: [debouncer.ts:155](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L155)
 
 Returns the number of times the function has been executed
 
@@ -100,7 +100,7 @@ Returns the number of times the function has been executed
 getIsPending(): boolean
 ```
 
-Defined in: [debouncer.ts:169](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L169)
+Defined in: [debouncer.ts:162](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L162)
 
 Returns `true` if debouncing
 
@@ -116,7 +116,7 @@ Returns `true` if debouncing
 getOptions(): Required<DebouncerOptions<TFn>>
 ```
 
-Defined in: [debouncer.ts:105](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L105)
+Defined in: [debouncer.ts:98](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L98)
 
 Returns the current debouncer options
 
@@ -132,7 +132,7 @@ Returns the current debouncer options
 maybeExecute(...args): void
 ```
 
-Defined in: [debouncer.ts:113](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L113)
+Defined in: [debouncer.ts:106](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L106)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued
@@ -152,7 +152,7 @@ If a call is already in progress, it will be queued
 ### setOptions()
 
 ```ts
-setOptions(newOptions): Required<DebouncerOptions<TFn>>
+setOptions(newOptions): void
 ```
 
 Defined in: [debouncer.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L86)
@@ -168,4 +168,4 @@ Returns the new options state
 
 #### Returns
 
-`Required`\<[`DebouncerOptions`](../interfaces/debounceroptions.md)\<`TFn`\>\>
+`void`

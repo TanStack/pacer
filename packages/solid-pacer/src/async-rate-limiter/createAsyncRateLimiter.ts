@@ -5,11 +5,9 @@ import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 
-export interface SolidAsyncRateLimiter<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> extends Omit<
-    AsyncRateLimiter<TFn, TArgs>,
+export interface SolidAsyncRateLimiter<TFn extends AnyAsyncFunction>
+  extends Omit<
+    AsyncRateLimiter<TFn>,
     | 'getExecutionCount'
     | 'getRejectionCount'
     | 'getRemainingInWindow'
@@ -57,14 +55,11 @@ export interface SolidAsyncRateLimiter<
  * );
  * ```
  */
-export function createAsyncRateLimiter<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function createAsyncRateLimiter<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: AsyncRateLimiterOptions<TFn, TArgs>,
-): SolidAsyncRateLimiter<TFn, TArgs> {
-  const asyncRateLimiter = new AsyncRateLimiter<TFn, TArgs>(fn, initialOptions)
+  initialOptions: AsyncRateLimiterOptions<TFn>,
+): SolidAsyncRateLimiter<TFn> {
+  const asyncRateLimiter = new AsyncRateLimiter<TFn>(fn, initialOptions)
 
   const [executionCount, setExecutionCount] = createSignal(
     asyncRateLimiter.getExecutionCount(),
@@ -79,9 +74,7 @@ export function createAsyncRateLimiter<
     asyncRateLimiter.getMsUntilNextWindow(),
   )
 
-  function setOptions(
-    newOptions: Partial<AsyncRateLimiterOptions<TFn, TArgs>>,
-  ) {
+  function setOptions(newOptions: Partial<AsyncRateLimiterOptions<TFn>>) {
     asyncRateLimiter.setOptions({
       ...newOptions,
       onExecute: (rateLimiter) => {
@@ -112,5 +105,5 @@ export function createAsyncRateLimiter<
     remainingInWindow,
     msUntilNextWindow,
     setOptions,
-  }
+  } as SolidAsyncRateLimiter<TFn>
 }
