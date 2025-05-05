@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncDebouncer } from '@tanstack/solid-pacer/async-debouncer'
 
@@ -22,7 +22,6 @@ function App() {
   const [results, setResults] = createSignal<Array<SearchResult>>([])
   const [isLoading, setIsLoading] = createSignal(false)
   const [error, setError] = createSignal<Error | null>(null)
-  const [executionCount, setExecutionCount] = createSignal(0)
 
   // The function that will become debounced
   const handleSearch = async (term: string) => {
@@ -38,24 +37,22 @@ function App() {
     }
 
     const data = await fakeApi(term)
-    setResults(data)
+    setResults(data) // option 1: set results immediately
     setIsLoading(false)
     setError(null)
 
-    console.log(setSearchAsyncDebouncer.executionCount())
+    return data // option 2: return data if you need to
   }
 
   // hook that gives you an async debouncer instance
   const setSearchAsyncDebouncer = createAsyncDebouncer(handleSearch, {
+    // leading: true, // optional leading execution
     wait: 500, // Wait 500ms between API calls
     onError: (error) => {
       // optional error handler
       console.error('Search failed:', error)
       setError(error as Error)
       setResults([])
-    },
-    onExecute: (asyncDebouncer) => {
-      setExecutionCount(asyncDebouncer.getExecutionCount())
     },
   })
 
@@ -66,7 +63,8 @@ function App() {
   async function onSearchChange(e: Event) {
     const newTerm = (e.target as HTMLInputElement).value
     setSearchTerm(newTerm)
-    await handleSearchDebounced(newTerm) // optionally await if you need to
+    const result = await handleSearchDebounced(newTerm) // ^option 2: await results
+    console.log('result', result) // demo test to see awaited result
   }
 
   return (
@@ -74,6 +72,7 @@ function App() {
       <h1>TanStack Pacer createAsyncDebouncer Example</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchTerm()}
           onInput={onSearchChange}
@@ -84,12 +83,10 @@ function App() {
       </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {executionCount()}</p>
+        <p>API calls made: {setSearchAsyncDebouncer.successCount()}</p>
         {results().length > 0 && (
           <ul>
-            {results().map((item) => (
-              <li>{item.title}</li>
-            ))}
+            <For each={results()}>{(item) => <li>{item.title}</li>}</For>
           </ul>
         )}
         {isLoading() && <p>Loading...</p>}

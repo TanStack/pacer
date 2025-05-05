@@ -10,7 +10,9 @@ function App1() {
   // Lower-level useThrottler hook - requires you to manage your own state
   const setCountThrottler = useThrottler(setThrottledCount, {
     wait: 1000,
-    enabled: instantCount > 2,
+    leading: false,
+    // trailing: true,
+    // enabled: instantCount > 2,
   })
 
   function increment() {
@@ -69,6 +71,7 @@ function App2() {
       <h1>TanStack Pacer useThrottler Example 2</h1>
       <div>
         <input
+          autoFocus
           type="search"
           value={instantSearch}
           onChange={handleSearchChange}

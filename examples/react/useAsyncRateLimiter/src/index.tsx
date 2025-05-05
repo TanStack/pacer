@@ -41,7 +41,7 @@ function App() {
     setIsLoading(false)
     setError(null)
 
-    console.log(setSearchAsyncRateLimiter.getExecutionCount())
+    console.log(setSearchAsyncRateLimiter.getSuccessCount())
   }
 
   // hook that gives you an async rate limiter instance
@@ -79,6 +79,7 @@ function App() {
       <h1>TanStack Pacer useAsyncRateLimiter Example</h1>
       <div>
         <input
+          autoFocus
           type="search"
           value={searchTerm}
           onChange={onSearchChange}
@@ -89,7 +90,7 @@ function App() {
       </div>
       {error && <div>Error: {error.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncRateLimiter.getExecutionCount()}</p>
+        <p>API calls made: {setSearchAsyncRateLimiter.getSuccessCount()}</p>
         {results.length > 0 && (
           <ul>
             {results.map((item) => (

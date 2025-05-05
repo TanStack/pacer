@@ -116,7 +116,7 @@ Signal version of `getIsRunning`
 ### peek
 
 ```ts
-peek: Accessor<undefined | TValue>;
+peek: Accessor<undefined | () => Promise<TValue>>;
 ```
 
 Defined in: [async-queuer/createAsyncQueuer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L52)
@@ -137,12 +137,24 @@ Signal version of `getPendingItems`
 
 ***
 
+### rejectionCount
+
+```ts
+rejectionCount: Accessor<number>;
+```
+
+Defined in: [async-queuer/createAsyncQueuer.ts:60](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L60)
+
+Signal version of `getRejectionCount`
+
+***
+
 ### size
 
 ```ts
 size: Accessor<number>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:60](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L60)
+Defined in: [async-queuer/createAsyncQueuer.ts:64](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L64)
 
 Signal version of `getSize`

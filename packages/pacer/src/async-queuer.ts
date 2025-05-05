@@ -11,6 +11,16 @@ export interface AsyncQueuerOptions<TValue> {
    */
   concurrency?: number
   /**
+   * Maximum time in milliseconds that an item can stay in the queue
+   * If not provided, items will never expire
+   */
+  expirationDuration?: number
+  /**
+   * Function to determine if an item has expired
+   * If provided, this overrides the expirationDuration behavior
+   */
+  getIsExpired?: (item: () => Promise<TValue>, addedAt: number) => boolean
+  /**
    * Default position to get items from during processing
    * @default 'front'
    */
@@ -49,7 +59,11 @@ export interface AsyncQueuerOptions<TValue> {
    */
   onReject?: (item: () => Promise<TValue>, queuer: AsyncQueuer<TValue>) => void
   /**
-   * Whether the queuer should start processing tasks immediately
+   * Callback fired whenever an item expires in the queuer
+   */
+  onExpire?: (item: () => Promise<TValue>, queuer: AsyncQueuer<TValue>) => void
+  /**
+   * Whether the queuer should start processing tasks immediately or not.
    */
   started?: boolean
   /**
@@ -61,6 +75,8 @@ export interface AsyncQueuerOptions<TValue> {
 const defaultOptions: Required<AsyncQueuerOptions<any>> = {
   addItemsTo: 'back',
   concurrency: 1,
+  expirationDuration: Infinity,
+  getIsExpired: () => false,
   getItemsFrom: 'front',
   getPriority: (item) => (item as any)?.priority ?? 0,
   initialItems: [],
@@ -69,7 +85,8 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
   onIsRunningChange: () => {},
   onItemsChange: () => {},
   onReject: () => {},
-  started: false,
+  onExpire: () => {},
+  started: true,
   wait: 0,
 }
 
@@ -83,6 +100,7 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
  * - FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
  * - Pause/resume task processing
  * - Task cancellation
+ * - Item expiration to clear stale items from the queue
  *
  * Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
  * the next pending task is processed if below the concurrency limit.
@@ -107,7 +125,9 @@ export class AsyncQueuer<TValue> {
   private _activeItems: Set<() => Promise<TValue>> = new Set()
   private _executionCount = 0
   private _rejectionCount = 0
+  private _expirationCount = 0
   private _items: Array<() => Promise<TValue>> = []
+  private _itemTimestamps: Array<number> = []
   private _onErrorCallbacks: Array<(error: Error) => void> = []
   private _onSettledCallbacks: Array<(result: TValue | Error) => void> = []
   private _onSuccessCallbacks: Array<(result: TValue) => void> = []
@@ -129,11 +149,8 @@ export class AsyncQueuer<TValue> {
    * Updates the queuer options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<AsyncQueuerOptions<TValue>>,
-  ): AsyncQueuerOptions<TValue> {
+  setOptions(newOptions: Partial<AsyncQueuerOptions<TValue>>): void {
     this._options = { ...this._options, ...newOptions }
-    return this._options
   }
 
   /**
@@ -151,6 +168,9 @@ export class AsyncQueuer<TValue> {
       this._pendingTick = false
       return
     }
+
+    // Check for expired items
+    this.checkExpiredItems()
 
     while (
       this._activeItems.size < this._options.concurrency &&
@@ -194,6 +214,56 @@ export class AsyncQueuer<TValue> {
     }
 
     this._pendingTick = false
+  }
+
+  /**
+   * Checks for and removes expired items from the queuer
+   */
+  private checkExpiredItems() {
+    if (
+      this._options.expirationDuration === Infinity &&
+      this._options.getIsExpired === defaultOptions.getIsExpired
+    )
+      return
+
+    const now = Date.now()
+    const expiredIndices: Array<number> = []
+
+    // Find indices of expired items
+    for (let i = 0; i < this._items.length; i++) {
+      const timestamp = this._itemTimestamps[i]
+      if (timestamp === undefined) continue
+
+      const item = this._items[i]
+      if (item === undefined) continue
+
+      const isExpired =
+        this._options.getIsExpired !== defaultOptions.getIsExpired
+          ? this._options.getIsExpired(item, timestamp)
+          : now - timestamp > this._options.expirationDuration
+
+      if (isExpired) {
+        expiredIndices.push(i)
+      }
+    }
+
+    // Remove expired items from back to front to maintain indices
+    for (let i = expiredIndices.length - 1; i >= 0; i--) {
+      const index = expiredIndices[i]
+      if (index === undefined) continue
+
+      const expiredItem = this._items[index]
+      if (expiredItem === undefined) continue
+
+      this._items.splice(index, 1)
+      this._itemTimestamps.splice(index, 1)
+      this._expirationCount++
+      this._options.onExpire(expiredItem, this)
+    }
+
+    if (expiredIndices.length > 0) {
+      this._options.onItemsChange(this)
+    }
   }
 
   /**
@@ -295,15 +365,19 @@ export class AsyncQueuer<TValue> {
 
         if (insertIndex === -1) {
           this._items.push(task)
+          this._itemTimestamps.push(Date.now())
         } else {
           this._items.splice(insertIndex, 0, task)
+          this._itemTimestamps.splice(insertIndex, 0, Date.now())
         }
       } else {
         // Default FIFO/LIFO behavior
         if (position === 'front') {
           this._items.unshift(task)
+          this._itemTimestamps.unshift(Date.now())
         } else {
           this._items.push(task)
+          this._itemTimestamps.push(Date.now())
         }
       }
 
@@ -328,8 +402,10 @@ export class AsyncQueuer<TValue> {
 
     if (position === 'front') {
       item = this._items.shift()
+      this._itemTimestamps.shift()
     } else {
       item = this._items.pop()
+      this._itemTimestamps.pop()
     }
 
     if (item !== undefined) {
@@ -455,6 +531,13 @@ export class AsyncQueuer<TValue> {
       )
     }
   }
+
+  /**
+   * Returns the number of items that have expired from the queuer
+   */
+  getExpirationCount(): number {
+    return this._expirationCount
+  }
 }
 
 /**
@@ -474,7 +557,9 @@ export class AsyncQueuer<TValue> {
  * @param options - Configuration options for the AsyncQueuer
  * @returns A bound addItem function that can be used to add tasks to the queuer
  */
-export function asyncQueue<TValue>(options: AsyncQueuerOptions<TValue> = {}) {
-  const queuer = new AsyncQueuer<TValue>({ ...options, started: true })
+export function asyncQueue<TValue>(
+  options: Omit<AsyncQueuerOptions<TValue>, 'started'> = {},
+) {
+  const queuer = new AsyncQueuer<TValue>(options)
   return queuer.addItem.bind(queuer)
 }

@@ -15,9 +15,9 @@ import type { Debouncer, DebouncerOptions } from '@tanstack/pacer/debouncer'
  * like search queries or form inputs, where you want to limit how often downstream effects
  * or calculations occur.
  *
- * The hook returns a tuple containing:
- * - The current debounced value
- * - The debouncer instance with control methods
+ * The hook returns the current debounced value and the underlying debouncer instance.
+ * The debouncer instance can be used to access additional functionality like cancellation
+ * and execution counts.
  *
  * @example
  * ```tsx
@@ -40,11 +40,8 @@ import type { Debouncer, DebouncerOptions } from '@tanstack/pacer/debouncer'
  */
 export function useDebouncedValue<TValue>(
   value: TValue,
-  options: DebouncerOptions<
-    React.Dispatch<React.SetStateAction<TValue>>,
-    [value: React.SetStateAction<TValue>]
-  >,
-): [TValue, Debouncer<React.Dispatch<React.SetStateAction<TValue>>, [TValue]>] {
+  options: DebouncerOptions<React.Dispatch<React.SetStateAction<TValue>>>,
+): [TValue, Debouncer<React.Dispatch<React.SetStateAction<TValue>>>] {
   const [debouncedValue, setDebouncedValue, debouncer] = useDebouncedState(
     value,
     options,
@@ -52,10 +49,7 @@ export function useDebouncedValue<TValue>(
 
   useEffect(() => {
     setDebouncedValue(value)
-    return () => {
-      debouncer.cancel()
-    }
-  }, [value, setDebouncedValue, debouncer])
+  }, [value, setDebouncedValue])
 
   return [debouncedValue, debouncer]
 }

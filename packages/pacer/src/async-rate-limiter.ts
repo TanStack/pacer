@@ -3,10 +3,7 @@ import type { AnyAsyncFunction } from './types'
 /**
  * Options for configuring an async rate-limited function
  */
-export interface AsyncRateLimiterOptions<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> {
+export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -19,15 +16,22 @@ export interface AsyncRateLimiterOptions<
   /**
    * Optional error handler for when the rate-limited function throws
    */
-  onError?: (error: unknown) => void
+  onError?: (error: unknown, rateLimiter: AsyncRateLimiter<TFn>) => void
   /**
    * Optional function to call when the rate-limited function is executed
    */
-  onExecute?: (rateLimiter: AsyncRateLimiter<TFn, TArgs>) => void
+  onSettled?: (rateLimiter: AsyncRateLimiter<TFn>) => void
+  /**
+   * Optional function to call when the rate-limited function is executed
+   */
+  onSuccess?: (
+    result: ReturnType<TFn>,
+    rateLimiter: AsyncRateLimiter<TFn>,
+  ) => void
   /**
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
-  onReject?: (rateLimiter: AsyncRateLimiter<TFn, TArgs>) => void
+  onReject?: (rateLimiter: AsyncRateLimiter<TFn>) => void
   /**
    * Time window in milliseconds within which the limit applies
    */
@@ -35,12 +39,13 @@ export interface AsyncRateLimiterOptions<
 }
 
 const defaultOptions: Required<
-  Omit<AsyncRateLimiterOptions<any, any>, 'limit' | 'window'>
+  Omit<AsyncRateLimiterOptions<any>, 'limit' | 'window'>
 > = {
   enabled: true,
-  onReject: () => {},
   onError: () => {},
-  onExecute: () => {},
+  onReject: () => {},
+  onSettled: () => {},
+  onSuccess: () => {},
 }
 
 /**
@@ -68,18 +73,18 @@ const defaultOptions: Required<
  * await rateLimiter.maybeExecute('123');
  * ```
  */
-export class AsyncRateLimiter<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> {
-  private _executionCount = 0
+export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
+  private _options: AsyncRateLimiterOptions<TFn>
+  private _errorCount = 0
   private _executionTimes: Array<number> = []
-  private _options: AsyncRateLimiterOptions<TFn, TArgs>
+  private _lastResult: ReturnType<TFn> | undefined
   private _rejectionCount = 0
+  private _settleCount = 0
+  private _successCount = 0
 
   constructor(
     private fn: TFn,
-    initialOptions: AsyncRateLimiterOptions<TFn, TArgs>,
+    initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
     this._options = {
       ...defaultOptions,
@@ -91,21 +96,15 @@ export class AsyncRateLimiter<
    * Updates the rate limiter options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<AsyncRateLimiterOptions<TFn, TArgs>>,
-  ): AsyncRateLimiterOptions<TFn, TArgs> {
-    this._options = {
-      ...this._options,
-      ...newOptions,
-    }
-    return this._options
+  setOptions(newOptions: Partial<AsyncRateLimiterOptions<TFn>>): void {
+    this._options = { ...this._options, ...newOptions }
   }
 
   /**
    * Returns the current rate limiter options
    */
-  getOptions(): Required<AsyncRateLimiterOptions<TFn, TArgs>> {
-    return this._options as Required<AsyncRateLimiterOptions<TFn, TArgs>>
+  getOptions(): Required<AsyncRateLimiterOptions<TFn>> {
+    return this._options as Required<AsyncRateLimiterOptions<TFn>>
   }
 
   /**
@@ -124,38 +123,40 @@ export class AsyncRateLimiter<
    * await rateLimiter.maybeExecute('arg1', 'arg2'); // Rejected
    * ```
    */
-  async maybeExecute(...args: TArgs): Promise<boolean> {
+  async maybeExecute(
+    ...args: Parameters<TFn>
+  ): Promise<ReturnType<TFn> | undefined> {
     this.cleanupOldExecutions()
 
     if (this._executionTimes.length < this._options.limit) {
       await this.executeFunction(...args)
-      return true
+      return this._lastResult
     }
 
     this.rejectFunction()
-    return false
+    return undefined
   }
 
-  private async executeFunction(...args: TArgs): Promise<void> {
+  private async executeFunction(
+    ...args: Parameters<TFn>
+  ): Promise<ReturnType<TFn> | undefined> {
     if (!this._options.enabled) return
     const now = Date.now()
-    this._executionCount++
     this._executionTimes.push(now)
 
     try {
-      await this.fn(...args)
+      this._lastResult = await this.fn(...args)
+      this._successCount++
+      this._options.onSuccess?.(this._lastResult!, this)
     } catch (error) {
-      if (this._options.onError) {
-        try {
-          this._options.onError(error)
-        } catch (error) {
-          console.error('Error in onError handler', error)
-        }
-      }
-      throw error
+      this._errorCount++
+      this._options.onError?.(error, this)
     } finally {
-      this._options.onExecute?.(this)
+      this._settleCount++
+      this._options.onSettled?.(this)
     }
+
+    return this._lastResult
   }
 
   private rejectFunction(): void {
@@ -174,20 +175,6 @@ export class AsyncRateLimiter<
   }
 
   /**
-   * Returns the number of times the function has been executed
-   */
-  getExecutionCount(): number {
-    return this._executionCount
-  }
-
-  /**
-   * Returns the number of times the function has been rejected
-   */
-  getRejectionCount(): number {
-    return this._rejectionCount
-  }
-
-  /**
    * Returns the number of remaining executions allowed in the current window
    */
   getRemainingInWindow(): number {
@@ -203,12 +190,42 @@ export class AsyncRateLimiter<
   }
 
   /**
+   * Returns the number of times the function has been executed
+   */
+  getSuccessCount(): number {
+    return this._successCount
+  }
+
+  /**
+   * Returns the number of times the function has been settled
+   */
+  getSettleCount(): number {
+    return this._settleCount
+  }
+
+  /**
+   * Returns the number of times the function has errored
+   */
+  getErrorCount(): number {
+    return this._errorCount
+  }
+
+  /**
+   * Returns the number of times the function has been rejected
+   */
+  getRejectionCount(): number {
+    return this._rejectionCount
+  }
+
+  /**
    * Resets the rate limiter state
    */
   reset(): void {
     this._executionTimes = []
-    this._executionCount = 0
+    this._successCount = 0
+    this._errorCount = 0
     this._rejectionCount = 0
+    this._settleCount = 0
   }
 }
 
@@ -242,12 +259,9 @@ export class AsyncRateLimiter<
  * const throttled = throttle(makeApiCall, { wait: 12000 }); // One call every 12 seconds
  * ```
  */
-export function asyncRateLimit<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function asyncRateLimit<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: Omit<AsyncRateLimiterOptions<TFn, TArgs>, 'enabled'>,
+  initialOptions: Omit<AsyncRateLimiterOptions<TFn>, 'enabled'>,
 ) {
   const rateLimiter = new AsyncRateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)

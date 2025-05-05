@@ -40,12 +40,8 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  */
 export function createThrottledSignal<TValue>(
   value: TValue,
-  initialOptions: ThrottlerOptions<Setter<TValue>, [Accessor<TValue>]>,
-): [
-  Accessor<TValue>,
-  Setter<TValue>,
-  SolidThrottler<Setter<TValue>, [Accessor<TValue>]>,
-] {
+  initialOptions: ThrottlerOptions<Setter<TValue>>,
+): [Accessor<TValue>, Setter<TValue>, SolidThrottler<Setter<TValue>>] {
   const [throttledValue, setThrottledValue] = createSignal<TValue>(value)
   const throttler = createThrottler(setThrottledValue, initialOptions)
   return [throttledValue, throttler.maybeExecute as Setter<TValue>, throttler]

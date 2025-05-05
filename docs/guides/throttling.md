@@ -168,29 +168,67 @@ The `onExecute` callback works the same way as in the synchronous throttler, whi
 
 ### Asynchronous Throttling
 
-For async functions or when you need error handling, use the `AsyncThrottler` or `asyncThrottle`:
+The async throttler provides a powerful way to handle asynchronous operations with throttling, offering several key advantages over the synchronous version. While the synchronous throttler is great for UI events and immediate feedback, the async version is specifically designed for handling API calls, database operations, and other asynchronous tasks.
+
+#### Key Differences from Synchronous Throttling
+
+1. **Return Value Handling**
+Unlike the synchronous throttler which returns void, the async version allows you to capture and use the return value from your throttled function. This is particularly useful when you need to work with the results of API calls or other async operations. The `maybeExecute` method returns a Promise that resolves with the function's return value, allowing you to await the result and handle it appropriately.
+
+2. **Enhanced Callback System**
+The async throttler provides a more sophisticated callback system compared to the synchronous version's single `onExecute` callback. This system includes:
+- `onSuccess`: Called when the async function completes successfully, providing both the result and the throttler instance
+- `onError`: Called when the async function throws an error, providing both the error and the throttler instance
+- `onSettled`: Called after every execution attempt, regardless of success or failure
+
+3. **Execution Tracking**
+The async throttler provides comprehensive execution tracking through several methods:
+- `getSuccessCount()`: Number of successful executions
+- `getErrorCount()`: Number of failed executions
+- `getSettledCount()`: Total number of settled executions (success + error)
+
+4. **Sequential Execution**
+The async throttler ensures that subsequent executions wait for the previous call to complete before starting. This prevents out-of-order execution and guarantees that each call processes the most up-to-date data. This is particularly important when dealing with operations that depend on the results of previous calls or when maintaining data consistency is critical.
+
+For example, if you're updating a user's profile and then immediately fetching their updated data, the async throttler will ensure the fetch operation waits for the update to complete, preventing race conditions where you might get stale data.
+
+#### Basic Usage Example
+
+Here's a basic example showing how to use the async throttler for a search operation:
 
 ```ts
-import { asyncThrottle } from '@tanstack/pacer'
-
-const throttledFetch = asyncThrottle(
-  async (id: string) => {
-    const response = await fetch(`/api/data/${id}`)
-    return response.json()
+const throttledSearch = asyncThrottle(
+  async (searchTerm: string) => {
+    const results = await fetchSearchResults(searchTerm)
+    return results
   },
   {
-    wait: 1000,
-    onError: (error) => {
-      console.error('API call failed:', error)
+    wait: 500,
+    onSuccess: (results, throttler) => {
+      console.log('Search succeeded:', results)
+    },
+    onError: (error, throttler) => {
+      console.error('Search failed:', error)
     }
   }
 )
 
-// Will only make one API call per second
-await throttledFetch('123')
+// Usage
+const results = await throttledSearch('query')
 ```
 
-The async version provides Promise-based execution tracking, error handling through the `onError` callback, proper cleanup of pending async operations, and an awaitable `maybeExecute` method.
+#### Advanced Patterns
+
+The async throttler can be combined with various patterns to solve complex problems:
+
+1. **State Management Integration**
+When using the async throttler with state management systems (like React's useState or Solid's createSignal), you can create powerful patterns for handling loading states, error states, and data updates. The throttler's callbacks provide perfect hooks for updating UI state based on the success or failure of operations.
+
+2. **Race Condition Prevention**
+The throttling pattern naturally prevents race conditions in many scenarios. When multiple parts of your application try to update the same resource simultaneously, the throttler ensures that updates occur at a controlled rate, while still providing results to all callers.
+
+3. **Error Recovery**
+The async throttler's error handling capabilities make it ideal for implementing retry logic and error recovery patterns. You can use the `onError` callback to implement custom error handling strategies, such as exponential backoff or fallback mechanisms.
 
 ### Framework Adapters
 
@@ -217,7 +255,7 @@ const handleUpdate = useThrottledCallback(
 
 // State-based hook for reactive state management
 const [instantState, setInstantState] = useState(0)
-const [throttledState, setThrottledState] = useThrottledValue(
+const [throttledValue] = useThrottledValue(
   instantState, // Value to throttle
   { wait: 200 }
 )

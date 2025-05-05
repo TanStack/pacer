@@ -8,10 +8,10 @@ title: createDebouncedValue
 # Function: createDebouncedValue()
 
 ```ts
-function createDebouncedValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>]
+function createDebouncedValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidDebouncer<Setter<TValue>>]
 ```
 
-Defined in: [debouncer/createDebouncedValue.ts:47](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L47)
+Defined in: [debouncer/createDebouncedValue.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L41)
 
 A Solid hook that creates a debounced value that updates only after a specified delay.
 Unlike createDebouncedSignal, this hook automatically tracks changes to the input value
@@ -26,8 +26,8 @@ like search queries or form inputs, where you want to limit how often downstream
 or calculations occur.
 
 The hook returns a tuple containing:
-- The current debounced value (as an Accessor)
-- The debouncer instance with control methods and state signals
+- An Accessor that provides the current debounced value
+- The debouncer instance with control methods
 
 ## Type Parameters
 
@@ -41,11 +41,11 @@ The hook returns a tuple containing:
 
 ### initialOptions
 
-`DebouncerOptions`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>
+`DebouncerOptions`\<`Setter`\<`TValue`\>\>
 
 ## Returns
 
-\[`Accessor`\<`TValue`\>, [`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
+\[`Accessor`\<`TValue`\>, [`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`Setter`\<`TValue`\>\>\]
 
 ## Example
 
@@ -61,12 +61,6 @@ createEffect(() => {
   fetchSearchResults(debouncedQuery());
 });
 
-// Access debouncer state via signals
-console.log('Executions:', debouncer.executionCount());
-console.log('Is pending:', debouncer.isPending());
-
-// Handle input changes
-const handleChange = (e) => {
-  setSearchQuery(e.target.value);
-};
+// Control the debouncer
+debouncer.cancel(); // Cancel any pending updates
 ```

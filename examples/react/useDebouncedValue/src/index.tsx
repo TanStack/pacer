@@ -10,10 +10,10 @@ function App1() {
   }
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  // optionally, grab the debouncer from the last index of the returned array
-  const [debouncedCount, debouncer] = useDebouncedValue(instantCount, {
+  const [debouncedCount] = useDebouncedValue(instantCount, {
     wait: 500,
     // enabled: instantCount > 2, // optional, defaults to true
+    // leading: true, // optional, defaults to false
   })
 
   return (
@@ -21,14 +21,6 @@ function App1() {
       <h1>TanStack Pacer useDebouncedValue Example 1</h1>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{debouncer.getExecutionCount()}</td>
-          </tr>
-          <tr>
-            <td>Is Pending:</td>
-            <td>{debouncer.getIsPending().toString()}</td>
-          </tr>
           <tr>
             <td>Instant Count:</td>
             <td>{instantCount}</td>
@@ -50,9 +42,10 @@ function App2() {
   const [instantSearch, setInstantSearch] = useState('')
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const [debouncedSearch, debouncer] = useDebouncedValue(instantSearch, {
+  // optionally, grab the debouncer from the last index of the returned array
+  const [debouncedSearch] = useDebouncedValue(instantSearch, {
     wait: 500,
-    // enabled: instantSearch.length > 2, // optional, defaults to true
+    enabled: instantSearch.length > 2, // optional, defaults to true
   })
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -64,6 +57,7 @@ function App2() {
       <h1>TanStack Pacer useDebouncedValue Example 2</h1>
       <div>
         <input
+          autoFocus
           type="search"
           value={instantSearch}
           onChange={handleSearchChange}
@@ -73,14 +67,6 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{debouncer.getExecutionCount()}</td>
-          </tr>
-          <tr>
-            <td>Is Pending:</td>
-            <td>{debouncer.getIsPending().toString()}</td>
-          </tr>
           <tr>
             <td>Instant Search:</td>
             <td>{instantSearch}</td>

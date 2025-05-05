@@ -10,7 +10,8 @@ function App1() {
   // Lower-level useDebouncer hook - requires you to manage your own state
   const setCountDebouncer = useDebouncer(setDebouncedCount, {
     wait: 500,
-    enabled: instantCount > 2, // optional, defaults to true
+    // enabled: instantCount > 2, // optional, defaults to true
+    // leading: true, // optional, defaults to false
   })
 
   function increment() {
@@ -28,12 +29,21 @@ function App1() {
       <table>
         <tbody>
           <tr>
-            <td>Execution Count:</td>
-            <td>{setCountDebouncer.getExecutionCount()}</td>
+            <td>Enabled:</td>
+            <td>{setCountDebouncer.getOptions().enabled.toString()}</td>
           </tr>
           <tr>
             <td>Is Pending:</td>
             <td>{setCountDebouncer.getIsPending().toString()}</td>
+          </tr>
+          <tr>
+            <td>Execution Count:</td>
+            <td>{setCountDebouncer.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -55,15 +65,11 @@ function App1() {
 function App2() {
   const [searchText, setSearchText] = useState('')
   const [debouncedSearchText, setDebouncedSearchText] = useState('')
-  const [leading, setLeading] = useState(false)
-  const [trailing, setTrailing] = useState(true)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
   const setSearchDebouncer = useDebouncer(setDebouncedSearchText, {
     wait: 500,
     enabled: searchText.length > 2, // optional, defaults to true
-    leading,
-    trailing,
   })
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -77,40 +83,32 @@ function App2() {
       <h1>TanStack Pacer useDebouncer Example 2</h1>
       <div>
         <input
-          type="checkbox"
-          name="leading"
-          id="leading"
-          checked={leading}
-          onChange={() => setLeading((t) => !t)}
-        />
-        <label htmlFor="leading">Leading</label>
-        <input
-          type="checkbox"
-          name="trailing"
-          id="trailing"
-          checked={trailing}
-          onChange={() => setTrailing((t) => !t)}
-        />
-        <label htmlFor="trailing">Trailing</label>
-      </div>
-      <div>
-        <input
+          autoFocus
           type="search"
           value={searchText}
           onChange={handleSearchChange}
           placeholder="Type to search..."
-          style={{ width: '100%' }}
+          style={{ width: '100%', marginBottom: '1rem' }}
         />
       </div>
       <table>
         <tbody>
           <tr>
-            <td>Execution Count:</td>
-            <td>{setSearchDebouncer.getExecutionCount()}</td>
+            <td>Enabled:</td>
+            <td>{setSearchDebouncer.getOptions().enabled.toString()}</td>
           </tr>
           <tr>
             <td>Is Pending:</td>
             <td>{setSearchDebouncer.getIsPending().toString()}</td>
+          </tr>
+          <tr>
+            <td>Execution Count:</td>
+            <td>{setSearchDebouncer.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Search:</td>

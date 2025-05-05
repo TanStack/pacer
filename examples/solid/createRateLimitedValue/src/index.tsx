@@ -6,7 +6,7 @@ function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
 
   // Using createRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const [limitedCount, rateLimiter] = createRateLimitedValue(instantCount, {
+  const [limitedCount] = createRateLimitedValue(instantCount, {
     limit: 5,
     window: 5000,
   })
@@ -21,14 +21,6 @@ function App1() {
       <table>
         <tbody>
           <tr>
-            <td>Execution Count:</td>
-            <td>{rateLimiter.executionCount()}</td>
-          </tr>
-          <tr>
-            <td>Rejection Count:</td>
-            <td>{rateLimiter.rejectionCount()}</td>
-          </tr>
-          <tr>
             <td>Instant Count:</td>
             <td>{instantCount()}</td>
           </tr>
@@ -40,10 +32,6 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
-        <button onClick={() => alert(rateLimiter.remainingInWindow())}>
-          Remaining in Window
-        </button>
-        <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
       </div>
     </div>
   )
@@ -53,7 +41,7 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // Using createRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const [limitedSearch, rateLimiter] = createRateLimitedValue(instantSearch, {
+  const [limitedSearch] = createRateLimitedValue(instantSearch, {
     limit: 5,
     window: 5000,
   })
@@ -67,6 +55,7 @@ function App2() {
       <h1>TanStack Pacer createRateLimitedValue Example 2</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={instantSearch()}
           onInput={handleSearchChange}
@@ -77,14 +66,6 @@ function App2() {
       <table>
         <tbody>
           <tr>
-            <td>Execution Count:</td>
-            <td>{rateLimiter.executionCount()}</td>
-          </tr>
-          <tr>
-            <td>Rejection Count:</td>
-            <td>{rateLimiter.rejectionCount()}</td>
-          </tr>
-          <tr>
             <td>Instant Search:</td>
             <td>{instantSearch()}</td>
           </tr>
@@ -94,12 +75,6 @@ function App2() {
           </tr>
         </tbody>
       </table>
-      <div>
-        <button onClick={() => alert(rateLimiter.remainingInWindow())}>
-          Remaining in Window
-        </button>
-        <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
-      </div>
     </div>
   )
 }

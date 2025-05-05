@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import { useAsyncQueuerState } from '@tanstack/react-pacer/async-queuer'
+import { useAsyncQueuedState } from '@tanstack/react-pacer/async-queuer'
 import { useState } from 'react'
 
 type AsyncTask = () => Promise<string>
@@ -12,13 +12,14 @@ function App() {
   const [, rerender] = useState(0) // demo - rerender when start/stop changes
 
   // Queuer that uses React.useState under the hood
-  const [queueItems, queuer] = useAsyncQueuerState<string>({
+  const [queueItems, queuer] = useAsyncQueuedState<string>({
     maxSize: 25,
     initialItems: Array.from({ length: 10 }, (_, i) => async () => {
       await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
       return `Initial Task ${i + 1}`
     }),
     concurrency: concurrency, // Process 2 items concurrently
+    started: false,
     wait: 100, // for demo purposes - usually you would not want extra wait time unless you are throttling
     onIsRunningChange: (_asyncQueuer) => {
       rerender((prev) => prev + 1)
@@ -39,7 +40,7 @@ function App() {
 
   return (
     <div>
-      <h1>TanStack Pacer useAsyncQueuerState Example</h1>
+      <h1>TanStack Pacer useAsyncQueuedState Example</h1>
       <div></div>
       <div>Queue Size: {queuer.getSize()}</div>
       <div>Queue Max Size: {25}</div>

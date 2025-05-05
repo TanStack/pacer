@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncDebouncer } from '@tanstack/react-pacer/async-debouncer'
 
@@ -41,11 +41,12 @@ function App() {
     setIsLoading(false)
     setError(null)
 
-    console.log(setSearchAsyncDebouncer.getExecutionCount())
+    return data // this could alternatively be a void function without a return
   }
 
   // hook that gives you an async debouncer instance
   const setSearchAsyncDebouncer = useAsyncDebouncer(handleSearch, {
+    // leading: true, // optional leading execution
     wait: 500, // Wait 500ms between API calls
     onError: (error) => {
       // optional error handler
@@ -58,19 +59,12 @@ function App() {
   // get and name our debounced function
   const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute
 
-  useEffect(() => {
-    console.log('mount')
-    return () => {
-      console.log('unmount')
-      setSearchAsyncDebouncer.cancel() // cancel any pending async calls when the component unmounts
-    }
-  }, [])
-
   // instant event handler that calls both the instant local state setter and the debounced function
   async function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newTerm = e.target.value
     setSearchTerm(newTerm)
-    await handleSearchDebounced(newTerm) // optionally await if you need to
+    const result = await handleSearchDebounced(newTerm) // optionally await result if you need to
+    console.log('result', result)
   }
 
   return (
@@ -78,6 +72,7 @@ function App() {
       <h1>TanStack Pacer useAsyncDebouncer Example</h1>
       <div>
         <input
+          autoFocus
           type="search"
           value={searchTerm}
           onChange={onSearchChange}
@@ -88,7 +83,7 @@ function App() {
       </div>
       {error && <div>Error: {error.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncDebouncer.getExecutionCount()}</p>
+        <p>API calls made: {setSearchAsyncDebouncer.getSuccessCount()}</p>
         {results.length > 0 && (
           <ul>
             {results.map((item) => (

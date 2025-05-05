@@ -45,6 +45,10 @@ export interface SolidQueuer<TValue>
    */
   peek: Accessor<TValue | undefined>
   /**
+   * Signal version of `getRejectionCount`
+   */
+  rejectionCount: Accessor<number>
+  /**
    * Signal version of `getSize`
    */
   size: Accessor<number>
@@ -98,7 +102,7 @@ export interface SolidQueuer<TValue>
 export function createQueuer<TValue>(
   initialOptions: QueuerOptions<TValue> = {},
 ): SolidQueuer<TValue> {
-  const queuer = new Queuer<TValue>(initialOptions)
+  const queuer = bindInstanceMethods(new Queuer<TValue>(initialOptions))
 
   const [allItems, setAllItems] = createSignal<Array<TValue>>(
     queuer.getAllItems(),
@@ -152,7 +156,7 @@ export function createQueuer<TValue>(
   setOptions(initialOptions)
 
   return {
-    ...bindInstanceMethods(queuer),
+    ...queuer,
     allItems,
     executionCount,
     isEmpty,
@@ -163,5 +167,5 @@ export function createQueuer<TValue>(
     rejectionCount,
     size,
     setOptions,
-  }
+  } as SolidQueuer<TValue>
 }

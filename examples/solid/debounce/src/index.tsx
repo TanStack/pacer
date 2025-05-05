@@ -10,6 +10,7 @@ function App1() {
   // Create debounced setter function - Stable reference required!
   const debouncedSetCount = debounce(setDebouncedCount, {
     wait: 500,
+    // leading: true, // optional, defaults to false
   })
 
   function increment() {
@@ -64,6 +65,7 @@ function App2() {
       <h1>TanStack Pacer debounce Example 2</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchText()}
           onInput={handleSearchChange}

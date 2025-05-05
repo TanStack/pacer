@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -41,18 +41,19 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
  * ```
  */
 
-export function useAsyncThrottler<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function useAsyncThrottler<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AsyncThrottlerOptions<TFn, TArgs>,
-): AsyncThrottler<TFn, TArgs> {
+  options: AsyncThrottlerOptions<TFn>,
+): AsyncThrottler<TFn> {
   const [asyncThrottler] = useState(() =>
-    bindInstanceMethods(new AsyncThrottler<TFn, TArgs>(fn, options)),
+    bindInstanceMethods(new AsyncThrottler<TFn>(fn, options)),
   )
 
   asyncThrottler.setOptions(options)
+
+  useEffect(() => {
+    return () => asyncThrottler.cancel()
+  }, [asyncThrottler])
 
   return asyncThrottler
 }

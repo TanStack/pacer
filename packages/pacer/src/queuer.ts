@@ -8,6 +8,16 @@ export interface QueuerOptions<TValue> {
    */
   addItemsTo?: QueuePosition
   /**
+   * Maximum time in milliseconds that an item can stay in the queue
+   * If not provided, items will never expire
+   */
+  expirationDuration?: number
+  /**
+   * Function to determine if an item has expired
+   * If provided, this overrides the expirationDuration behavior
+   */
+  getIsExpired?: (item: TValue, addedAt: number) => boolean
+  /**
    * Default position to get items from during processing
    * @default 'front'
    */
@@ -25,6 +35,10 @@ export interface QueuerOptions<TValue> {
    * Maximum number of items allowed in the queuer
    */
   maxSize?: number
+  /**
+   * Callback fired whenever an item expires in the queuer
+   */
+  onExpire?: (item: TValue, queuer: Queuer<TValue>) => void
   /**
    * Callback fired whenever an item is removed from the queuer
    */
@@ -55,12 +69,15 @@ const defaultOptions: Required<QueuerOptions<any>> = {
   addItemsTo: 'back',
   getItemsFrom: 'front',
   getPriority: (item) => item?.priority ?? 0,
+  getIsExpired: () => false,
+  expirationDuration: Infinity,
   initialItems: [],
   maxSize: Infinity,
   onGetNextItem: () => {},
   onIsRunningChange: () => {},
   onItemsChange: () => {},
   onReject: () => {},
+  onExpire: () => {},
   started: false,
   wait: 0,
 }
@@ -99,6 +116,11 @@ export type QueuePosition = 'front' | 'back'
  * - wait: configurable delay between processing items
  * - onItemsChange/onGetNextItem: callbacks for monitoring queuer state
  *
+ * Supports item expiration to clear stale items from the queuer
+ * - expirationDuration: maximum time in milliseconds that an item can stay in the queue
+ * - getIsExpired: function to override default expiration behavior
+ * - onExpire: callback for when an item expires
+ *
  * @example
  * ```ts
  * // FIFO queuer
@@ -122,8 +144,10 @@ export type QueuePosition = 'front' | 'back'
 export class Queuer<TValue> {
   private _options: Required<QueuerOptions<TValue>>
   private _items: Array<TValue> = []
+  private _itemTimestamps: Array<number> = []
   private _executionCount = 0
   private _rejectionCount = 0
+  private _expirationCount = 0
   private _onItemsChanges: Array<(item: TValue) => void> = []
   private _running: boolean
   private _pendingTick = false
@@ -143,11 +167,8 @@ export class Queuer<TValue> {
    * Updates the queuer options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<QueuerOptions<TValue>>,
-  ): QueuerOptions<TValue> {
+  setOptions(newOptions: Partial<QueuerOptions<TValue>>): void {
     this._options = { ...this._options, ...newOptions }
-    return this._options
   }
 
   /**
@@ -165,6 +186,10 @@ export class Queuer<TValue> {
       this._pendingTick = false
       return
     }
+
+    // Check for expired items
+    this.checkExpiredItems()
+
     while (!this.getIsEmpty()) {
       const nextItem = this.getNextItem(this._options.getItemsFrom)
       if (nextItem === undefined) {
@@ -181,6 +206,56 @@ export class Queuer<TValue> {
       this.tick()
     }
     this._pendingTick = false
+  }
+
+  /**
+   * Checks for and removes expired items from the queuer
+   */
+  private checkExpiredItems() {
+    if (
+      this._options.expirationDuration === Infinity &&
+      this._options.getIsExpired === defaultOptions.getIsExpired
+    )
+      return
+
+    const now = Date.now()
+    const expiredIndices: Array<number> = []
+
+    // Find indices of expired items
+    for (let i = 0; i < this._items.length; i++) {
+      const timestamp = this._itemTimestamps[i]
+      if (timestamp === undefined) continue
+
+      const item = this._items[i]
+      if (item === undefined) continue
+
+      const isExpired =
+        this._options.getIsExpired !== defaultOptions.getIsExpired
+          ? this._options.getIsExpired(item, timestamp)
+          : now - timestamp > this._options.expirationDuration
+
+      if (isExpired) {
+        expiredIndices.push(i)
+      }
+    }
+
+    // Remove expired items from back to front to maintain indices
+    for (let i = expiredIndices.length - 1; i >= 0; i--) {
+      const index = expiredIndices[i]
+      if (index === undefined) continue
+
+      const expiredItem = this._items[index]
+      if (expiredItem === undefined) continue
+
+      this._items.splice(index, 1)
+      this._itemTimestamps.splice(index, 1)
+      this._expirationCount++
+      this._options.onExpire(expiredItem, this)
+    }
+
+    if (expiredIndices.length > 0) {
+      this._options.onItemsChange(this)
+    }
   }
 
   /**
@@ -248,15 +323,19 @@ export class Queuer<TValue> {
 
       if (insertIndex === -1) {
         this._items.push(item)
+        this._itemTimestamps.push(Date.now())
       } else {
         this._items.splice(insertIndex, 0, item)
+        this._itemTimestamps.splice(insertIndex, 0, Date.now())
       }
     } else {
       // Default FIFO/LIFO behavior
       if (position === 'front') {
         this._items.unshift(item)
+        this._itemTimestamps.unshift(Date.now())
       } else {
         this._items.push(item)
+        this._itemTimestamps.push(Date.now())
       }
     }
 
@@ -288,8 +367,10 @@ export class Queuer<TValue> {
 
     if (position === 'front') {
       item = this._items.shift()
+      this._itemTimestamps.shift()
     } else {
       item = this._items.pop()
+      this._itemTimestamps.pop()
     }
 
     if (item !== undefined) {
@@ -360,6 +441,13 @@ export class Queuer<TValue> {
    */
   getRejectionCount(): number {
     return this._rejectionCount
+  }
+
+  /**
+   * Returns the number of items that have expired from the queuer
+   */
+  getExpirationCount(): number {
+    return this._expirationCount
   }
 
   /**

@@ -45,12 +45,12 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * };
  * ```
  */
-export function useRateLimiter<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
->(fn: TFn, options: RateLimiterOptions<TFn, TArgs>): RateLimiter<TFn, TArgs> {
+export function useRateLimiter<TFn extends AnyFunction>(
+  fn: TFn,
+  options: RateLimiterOptions<TFn>,
+): RateLimiter<TFn> {
   const [rateLimiter] = useState(() =>
-    bindInstanceMethods(new RateLimiter<TFn, TArgs>(fn, options)),
+    bindInstanceMethods(new RateLimiter<TFn>(fn, options)),
   )
 
   rateLimiter.setOptions(options)

@@ -5,15 +5,20 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { Accessor } from 'solid-js'
 
-export interface SolidAsyncDebouncer<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
-> extends Omit<
-    AsyncDebouncer<TFn, TArgs>,
-    'getExecutionCount' | 'getIsPending'
+export interface SolidAsyncDebouncer<TFn extends AnyAsyncFunction>
+  extends Omit<
+    AsyncDebouncer<TFn>,
+    | 'getErrorCount'
+    | 'getIsPending'
+    | 'getLastResult'
+    | 'getSettleCount'
+    | 'getSuccessCount'
   > {
-  executionCount: Accessor<number>
+  errorCount: Accessor<number>
   isPending: Accessor<boolean>
+  lastResult: Accessor<ReturnType<TFn> | undefined>
+  settleCount: Accessor<number>
+  successCount: Accessor<number>
 }
 
 /**
@@ -51,29 +56,37 @@ export interface SolidAsyncDebouncer<
  * ```
  */
 
-export function createAsyncDebouncer<
-  TFn extends AnyAsyncFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: AsyncDebouncerOptions<TFn, TArgs>,
-): SolidAsyncDebouncer<TFn, TArgs> {
-  const asyncDebouncer = new AsyncDebouncer<TFn, TArgs>(fn, initialOptions)
+  initialOptions: AsyncDebouncerOptions<TFn>,
+): SolidAsyncDebouncer<TFn> {
+  const asyncDebouncer = new AsyncDebouncer<TFn>(fn, initialOptions)
 
-  const [executionCount, setExecutionCount] = createSignal(
-    asyncDebouncer.getExecutionCount(),
+  const [errorCount, setErrorCount] = createSignal(
+    asyncDebouncer.getErrorCount(),
+  )
+  const [settleCount, setSettleCount] = createSignal(
+    asyncDebouncer.getSettleCount(),
+  )
+  const [successCount, setSuccessCount] = createSignal(
+    asyncDebouncer.getSuccessCount(),
   )
   const [isPending, setIsPending] = createSignal(asyncDebouncer.getIsPending())
+  const [lastResult, setLastResult] = createSignal(
+    asyncDebouncer.getLastResult(),
+  )
 
-  function setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn, TArgs>>) {
+  function setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn>>) {
     asyncDebouncer.setOptions({
       ...newOptions,
-      onExecute: (asyncDebouncer) => {
-        setExecutionCount(asyncDebouncer.getExecutionCount())
+      onSettled: (asyncDebouncer) => {
+        setSuccessCount(asyncDebouncer.getSuccessCount())
+        setErrorCount(asyncDebouncer.getErrorCount())
+        setSettleCount(asyncDebouncer.getSettleCount())
         setIsPending(asyncDebouncer.getIsPending())
-
-        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
-        onExecute?.(asyncDebouncer)
+        setLastResult(asyncDebouncer.getLastResult())
+        const onSettled = newOptions.onSettled ?? initialOptions.onSettled
+        onSettled?.(asyncDebouncer)
       },
     })
   }
@@ -82,8 +95,11 @@ export function createAsyncDebouncer<
 
   return {
     ...bindInstanceMethods(asyncDebouncer),
-    executionCount,
+    errorCount,
     isPending,
+    lastResult,
+    settleCount,
+    successCount,
     setOptions,
-  }
+  } as SolidAsyncDebouncer<TFn>
 }

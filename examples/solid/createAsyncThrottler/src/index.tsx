@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncThrottler } from '@tanstack/solid-pacer/async-throttler'
 
@@ -20,7 +20,6 @@ const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
 function App() {
   const [searchTerm, setSearchTerm] = createSignal('')
   const [results, setResults] = createSignal<Array<SearchResult>>([])
-  const [isLoading, setIsLoading] = createSignal(false)
   const [error, setError] = createSignal<Error | null>(null)
 
   // The function that will become throttled
@@ -32,16 +31,11 @@ function App() {
 
     // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
 
-    if (!results.length) {
-      setIsLoading(true)
-    }
-
     const data = await fakeApi(term)
-    setResults(data)
-    setIsLoading(false)
+    setResults(data) // option 1: set results immediately
     setError(null)
 
-    console.log(setSearchAsyncThrottler.executionCount())
+    return data // option 2: return data if you need to
   }
 
   // hook that gives you an async throttler instance
@@ -62,7 +56,8 @@ function App() {
   async function onSearchChange(e: Event) {
     const newTerm = (e.target as HTMLInputElement).value
     setSearchTerm(newTerm)
-    await handleSearchThrottled(newTerm) // optionally await if you need to
+    const results = await handleSearchThrottled(newTerm) // optionally await if you need to
+    console.log('results', results)
   }
 
   return (
@@ -70,6 +65,7 @@ function App() {
       <h1>TanStack Pacer createAsyncThrottler Example</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchTerm()}
           onInput={onSearchChange}
@@ -80,15 +76,13 @@ function App() {
       </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncThrottler.executionCount()}</p>
-        {results().length > 0 && (
-          <ul>
-            {results().map((item) => (
-              <li>{item.title}</li>
-            ))}
-          </ul>
-        )}
-        {isLoading() && <p>Loading...</p>}
+        <p>API calls made: {setSearchAsyncThrottler.successCount()}</p>
+        <For each={results()}>{(item) => <li>{item.title}</li>}</For>
+        {setSearchAsyncThrottler.isPending() ? (
+          <p>Pending...</p>
+        ) : setSearchAsyncThrottler.isExecuting() ? (
+          <p>Executing...</p>
+        ) : null}
       </div>
     </div>
   )

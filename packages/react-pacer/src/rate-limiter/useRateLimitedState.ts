@@ -58,14 +58,11 @@ import type {
 
 export function useRateLimitedState<TValue>(
   value: TValue,
-  options: RateLimiterOptions<
-    React.Dispatch<React.SetStateAction<TValue>>,
-    [value: React.SetStateAction<TValue>]
-  >,
+  options: RateLimiterOptions<React.Dispatch<React.SetStateAction<TValue>>>,
 ): [
   TValue,
   React.Dispatch<React.SetStateAction<TValue>>,
-  RateLimiter<React.Dispatch<React.SetStateAction<TValue>>, [TValue]>,
+  RateLimiter<React.Dispatch<React.SetStateAction<TValue>>>,
 ] {
   const [rateLimitedValue, setRateLimitedValue] = useState<TValue>(value)
   const rateLimiter = useRateLimiter(setRateLimitedValue, options)

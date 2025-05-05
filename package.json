@@ -57,12 +57,12 @@
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
     "@tanstack/config": "0.18.0",
     "@testing-library/jest-dom": "^6.6.3",
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.2",
     "eslint": "^9.25.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "jsdom": "^26.1.0",
     "knip": "^5.50.5",
-    "nx": "^20.8.0",
+    "nx": "^20.8.1",
     "premove": "^4.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
@@ -70,7 +70,7 @@
     "sherif": "^1.5.0",
     "size-limit": "^11.2.0",
     "typescript": "5.8.3",
-    "vite": "^6.3.2",
+    "vite": "^6.3.3",
     "vitest": "^3.1.2"
   },
   "overrides": {

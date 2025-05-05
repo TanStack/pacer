@@ -39,10 +39,13 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * />
  * ```
  */
-export function useDebouncedCallback<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions<TFn, TArgs>) {
-  const debouncedFn = useDebouncer<TFn, TArgs>(fn, options).maybeExecute
-  return useCallback((...args: TArgs) => debouncedFn(...args), [debouncedFn])
+export function useDebouncedCallback<TFn extends AnyFunction>(
+  fn: TFn,
+  options: DebouncerOptions<TFn>,
+) {
+  const debouncedFn = useDebouncer<TFn>(fn, options).maybeExecute
+  return useCallback(
+    (...args: Parameters<TFn>) => debouncedFn(...args),
+    [debouncedFn],
+  )
 }

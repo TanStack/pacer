@@ -11,7 +11,7 @@ title: queue
 function queue<TValue>(options): (item, position, runOnUpdate) => boolean
 ```
 
-Defined in: [queuer.ts:408](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L408)
+Defined in: [queuer.ts:496](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L496)
 
 Creates a queue that processes items in a queuer immediately upon addition.
 Items are processed sequentially in FIFO order by default.

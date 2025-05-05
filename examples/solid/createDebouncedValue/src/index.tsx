@@ -10,9 +10,9 @@ function App1() {
   }
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  // optionally, grab the debouncer from the last index of the returned array
-  const [debouncedCount, debouncer] = createDebouncedValue(instantCount, {
+  const [debouncedCount] = createDebouncedValue(instantCount, {
     wait: 500,
+    // leading: true, // optional, defaults to false
   })
 
   return (
@@ -20,10 +20,6 @@ function App1() {
       <h1>TanStack Pacer createDebouncedValue Example 1</h1>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{debouncer.executionCount()}</td>
-          </tr>
           <tr>
             <td>Instant Count:</td>
             <td>{instantCount()}</td>
@@ -45,7 +41,7 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const [debouncedSearch, debouncer] = createDebouncedValue(instantSearch, {
+  const [debouncedSearch] = createDebouncedValue(instantSearch, {
     wait: 500,
   })
 
@@ -58,6 +54,7 @@ function App2() {
       <h1>TanStack Pacer createDebouncedValue Example 2</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={instantSearch()}
           onInput={handleSearchChange}
@@ -67,10 +64,6 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{debouncer.executionCount()}</td>
-          </tr>
           <tr>
             <td>Instant Search:</td>
             <td>{instantSearch()}</td>

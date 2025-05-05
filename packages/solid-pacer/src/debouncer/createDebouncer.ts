@@ -1,5 +1,5 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { createSignal } from 'solid-js'
+import { createEffect, createSignal, onCleanup } from 'solid-js'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -8,10 +8,8 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 /**
  * An extension of the Debouncer class that adds Solid signals to access the internal state of the debouncer
  */
-export interface SolidDebouncer<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
-> extends Omit<Debouncer<TFn, TArgs>, 'getExecutionCount' | 'getIsPending'> {
+export interface SolidDebouncer<TFn extends AnyFunction>
+  extends Omit<Debouncer<TFn>, 'getExecutionCount' | 'getIsPending'> {
   executionCount: Accessor<number>
   isPending: Accessor<boolean>
 }
@@ -52,21 +50,18 @@ export interface SolidDebouncer<
  * debouncer.setOptions({ wait: 1000 });
  * ```
  */
-export function createDebouncer<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function createDebouncer<TFn extends AnyFunction>(
   fn: TFn,
-  initialOptions: DebouncerOptions<TFn, TArgs>,
-): SolidDebouncer<TFn, TArgs> {
-  const debouncer = new Debouncer<TFn, TArgs>(fn, initialOptions)
+  initialOptions: DebouncerOptions<TFn>,
+): SolidDebouncer<TFn> {
+  const debouncer = bindInstanceMethods(new Debouncer<TFn>(fn, initialOptions))
 
   const [executionCount, setExecutionCount] = createSignal(
     debouncer.getExecutionCount(),
   )
   const [isPending, setIsPending] = createSignal(debouncer.getIsPending())
 
-  function setOptions(newOptions: Partial<DebouncerOptions<TFn, TArgs>>) {
+  function setOptions(newOptions: Partial<DebouncerOptions<TFn>>) {
     debouncer.setOptions({
       ...newOptions,
       onExecute: (debouncer) => {
@@ -81,10 +76,16 @@ export function createDebouncer<
 
   setOptions(initialOptions)
 
+  createEffect(() => {
+    onCleanup(() => {
+      debouncer.cancel()
+    })
+  })
+
   return {
-    ...bindInstanceMethods(debouncer),
+    ...debouncer,
     executionCount,
     isPending,
     setOptions,
-  }
+  } as SolidDebouncer<TFn>
 }

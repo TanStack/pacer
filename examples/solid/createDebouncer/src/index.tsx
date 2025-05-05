@@ -10,6 +10,7 @@ function App1() {
   // Lower-level createDebouncer hook - requires you to manage your own state
   const setCountDebouncer = createDebouncer(setDebouncedCount, {
     wait: 500,
+    // leading: true, // optional, defaults to false
   })
 
   // enable the debouncer when the instant count is greater than 2
@@ -34,6 +35,11 @@ function App1() {
           <tr>
             <td>Execution Count:</td>
             <td>{setCountDebouncer.executionCount()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -79,6 +85,7 @@ function App2() {
       <h1>TanStack Pacer createDebouncer Example 2</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchText()}
           onInput={handleSearchChange}
@@ -91,6 +98,11 @@ function App2() {
           <tr>
             <td>Execution Count:</td>
             <td>{setSearchDebouncer.executionCount()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Search:</td>

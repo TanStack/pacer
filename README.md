@@ -74,7 +74,7 @@ Take control of your application's timing with TanStack Pacer's rate limiting, t
   - Perform deep equality checks between values
   - Create custom comparison logic for specific needs
 - **Convenient Hooks**
-  - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuerState`, and more.
+  - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuedState`, and more.
 - **Type Safety**
   - Full type safety with TypeScript that makes sure that your functions will always be called with the correct arguments
   - Generics for flexible and reusable utilities

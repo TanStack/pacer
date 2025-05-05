@@ -81,6 +81,7 @@ function App2() {
       <h1>TanStack Pacer rateLimit Example 2</h1>
       <div>
         <input
+          autoFocus
           type="search"
           value={text}
           onChange={handleTextChange}

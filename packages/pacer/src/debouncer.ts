@@ -3,10 +3,7 @@ import type { AnyFunction } from './types'
 /**
  * Options for configuring a debounced function
  */
-export interface DebouncerOptions<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
-> {
+export interface DebouncerOptions<TFn extends AnyFunction> {
   /**
    * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
@@ -14,13 +11,14 @@ export interface DebouncerOptions<
   enabled?: boolean
   /**
    * Whether to execute on the leading edge of the timeout.
+   * The first call will execute immediately and the rest will wait the delay.
    * Defaults to false.
    */
   leading?: boolean
   /**
    * Callback function that is called after the function is executed
    */
-  onExecute?: (debouncer: Debouncer<TFn, TArgs>) => void
+  onExecute?: (debouncer: Debouncer<TFn>) => void
   /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
@@ -33,12 +31,12 @@ export interface DebouncerOptions<
   wait: number
 }
 
-const defaultOptions: Required<DebouncerOptions<any, any>> = {
+const defaultOptions: Required<DebouncerOptions<any>> = {
   enabled: true,
   leading: false,
+  onExecute: () => {},
   trailing: true,
   wait: 0,
-  onExecute: () => {},
 }
 
 /**
@@ -64,16 +62,16 @@ const defaultOptions: Required<DebouncerOptions<any, any>> = {
  * });
  * ```
  */
-export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
+export class Debouncer<TFn extends AnyFunction> {
   private _canLeadingExecute = true
-  private _isPending = false
   private _executionCount = 0
-  private _options: Required<DebouncerOptions<TFn, TArgs>>
+  private _isPending = false
+  private _options: Required<DebouncerOptions<TFn>>
   private _timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
-    initialOptions: DebouncerOptions<TFn, TArgs>,
+    initialOptions: DebouncerOptions<TFn>,
   ) {
     this._options = {
       ...defaultOptions,
@@ -85,26 +83,19 @@ export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
    * Updates the debouncer options
    * Returns the new options state
    */
-  setOptions(
-    newOptions: Partial<DebouncerOptions<TFn, TArgs>>,
-  ): Required<DebouncerOptions<TFn, TArgs>> {
-    this._options = {
-      ...this._options,
-      ...newOptions,
-    }
+  setOptions(newOptions: Partial<DebouncerOptions<TFn>>): void {
+    this._options = { ...this._options, ...newOptions }
 
     // End the pending state if the debouncer is disabled
     if (!this._options.enabled) {
       this._isPending = false
     }
-
-    return this._options
   }
 
   /**
    * Returns the current debouncer options
    */
-  getOptions(): Required<DebouncerOptions<TFn, TArgs>> {
+  getOptions(): Required<DebouncerOptions<TFn>> {
     return this._options
   }
 
@@ -112,35 +103,37 @@ export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
    * Attempts to execute the debounced function
    * If a call is already in progress, it will be queued
    */
-  maybeExecute(...args: TArgs): void {
+  maybeExecute(...args: Parameters<TFn>): void {
+    let _didLeadingExecute = false
+
     // Handle leading execution
     if (this._options.leading && this._canLeadingExecute) {
-      this.executeFunction(...args)
       this._canLeadingExecute = false
+      _didLeadingExecute = true
+      this.executeFunction(...args)
     }
 
-    // Start pending state
-    if (this._options.leading || this._options.trailing) {
+    // Start pending state to indicate that the debouncer is waiting for the trailing edge
+    if (this._options.trailing) {
       this._isPending = true
     }
 
     // Clear any existing timeout
     if (this._timeoutId) clearTimeout(this._timeoutId)
 
-    // Set new timeout that will reset canLeadingExecute
+    // Set new timeout that will reset canLeadingExecute and execute trailing only if enabled and did not execute leading
     this._timeoutId = setTimeout(() => {
       this._canLeadingExecute = true
-      this._isPending = false
-      // Execute trailing only if enabled
-      if (this._options.trailing) {
+      if (this._options.trailing && !_didLeadingExecute) {
         this.executeFunction(...args)
       }
     }, this._options.wait)
   }
 
-  private executeFunction(...args: TArgs): void {
-    if (!this._options.enabled) return
+  private executeFunction(...args: Parameters<TFn>): void {
+    if (!this._options.enabled) return undefined
     this.fn(...args) // EXECUTE!
+    this._isPending = false
     this._executionCount++
     this._options.onExecute(this)
   }
@@ -193,8 +186,8 @@ export class Debouncer<TFn extends AnyFunction, TArgs extends Parameters<TFn>> {
  */
 export function debounce<TFn extends AnyFunction>(
   fn: TFn,
-  initialOptions: Omit<DebouncerOptions<TFn, Parameters<TFn>>, 'enabled'>,
-) {
+  initialOptions: Omit<DebouncerOptions<TFn>, 'enabled'>,
+): (...args: Parameters<TFn>) => void {
   const debouncer = new Debouncer(fn, initialOptions)
   return debouncer.maybeExecute.bind(debouncer)
 }

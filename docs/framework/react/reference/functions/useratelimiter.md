@@ -8,10 +8,10 @@ title: useRateLimiter
 # Function: useRateLimiter()
 
 ```ts
-function useRateLimiter<TFn, TArgs>(fn, options): RateLimiter<TFn, TArgs>
+function useRateLimiter<TFn>(fn, options): RateLimiter<TFn>
 ```
 
-Defined in: [rate-limiter/useRateLimiter.ts:48](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L48)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:48](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L48)
 
 A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
@@ -38,8 +38,6 @@ The hook returns an object containing:
 
 • **TFn** *extends* `AnyFunction`
 
-• **TArgs** *extends* `any`[]
-
 ## Parameters
 
 ### fn
@@ -48,11 +46,11 @@ The hook returns an object containing:
 
 ### options
 
-`RateLimiterOptions`\<`TFn`, `TArgs`\>
+`RateLimiterOptions`\<`TFn`\>
 
 ## Returns
 
-`RateLimiter`\<`TFn`, `TArgs`\>
+`RateLimiter`\<`TFn`\>
 
 ## Example
 

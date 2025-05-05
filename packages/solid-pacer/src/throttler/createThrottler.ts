@@ -1,5 +1,5 @@
 import { Throttler } from '@tanstack/pacer/throttler'
-import { createSignal } from 'solid-js'
+import { createEffect, createSignal, onCleanup } from 'solid-js'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -8,11 +8,9 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 /**
  * An extension of the Throttler class that adds Solid signals to access the internal state of the throttler
  */
-export interface SolidThrottler<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
-> extends Omit<
-    Throttler<TFn, TArgs>,
+export interface SolidThrottler<TFn extends AnyFunction>
+  extends Omit<
+    Throttler<TFn>,
     | 'getExecutionCount'
     | 'getIsPending'
     | 'getLastExecutionTime'
@@ -58,14 +56,11 @@ export interface SolidThrottler<
  * console.log(throttler.nextExecutionTime()); // timestamp of next allowed execution
  * ```
  */
-export function createThrottler<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
->(
+export function createThrottler<TFn extends AnyFunction>(
   fn: TFn,
-  initialOptions: ThrottlerOptions<TFn, TArgs>,
-): SolidThrottler<TFn, TArgs> {
-  const throttler = new Throttler<TFn, TArgs>(fn, initialOptions)
+  initialOptions: ThrottlerOptions<TFn>,
+): SolidThrottler<TFn> {
+  const throttler = bindInstanceMethods(new Throttler<TFn>(fn, initialOptions))
 
   const [executionCount, setExecutionCount] = createSignal(
     throttler.getExecutionCount(),
@@ -78,7 +73,7 @@ export function createThrottler<
     throttler.getNextExecutionTime(),
   )
 
-  function setOptions(newOptions: Partial<ThrottlerOptions<TFn, TArgs>>) {
+  function setOptions(newOptions: Partial<ThrottlerOptions<TFn>>) {
     throttler.setOptions({
       ...newOptions,
       onExecute: (throttler) => {
@@ -95,12 +90,18 @@ export function createThrottler<
 
   setOptions(initialOptions)
 
+  createEffect(() => {
+    onCleanup(() => {
+      throttler.cancel()
+    })
+  })
+
   return {
-    ...bindInstanceMethods(throttler),
+    ...throttler,
     executionCount,
     isPending,
     lastExecutionTime,
     nextExecutionTime,
     setOptions,
-  }
+  } as SolidThrottler<TFn>
 }

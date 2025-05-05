@@ -8,10 +8,10 @@ title: asyncThrottle
 # Function: asyncThrottle()
 
 ```ts
-function asyncThrottle<TFn, TArgs>(fn, initialOptions): (...args) => Promise<void>
+function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-throttler.ts:223](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L223)
+Defined in: [async-throttler.ts:272](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L272)
 
 Creates an async throttled function that limits how often the function can execute.
 The throttled function will execute at most once per wait period, even if called multiple times.
@@ -21,8 +21,6 @@ If called while executing, it will wait until execution completes before schedul
 
 • **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
 
-• **TArgs** *extends* `any`[]
-
 ## Parameters
 
 ### fn
@@ -31,7 +29,7 @@ If called while executing, it will wait until execution completes before schedul
 
 ### initialOptions
 
-`Omit`\<[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\<`TFn`, `TArgs`\>, `"enabled"`\>
+`Omit`\<[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\<`TFn`\>, `"enabled"`\>
 
 ## Returns
 
@@ -44,11 +42,11 @@ If a call is already in progress, it may be blocked or queued depending on the `
 
 #### args
 
-...`TArgs`
+...`Parameters`\<`TFn`\>
 
 ### Returns
 
-`Promise`\<`void`\>
+`Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
 
 ## Example
 

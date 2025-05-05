@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { asyncThrottle } from '@tanstack/solid-pacer/async-throttler'
 
@@ -41,6 +41,7 @@ function SearchApp() {
       <h1>TanStack Pacer asyncThrottle Example</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchText()}
           onInput={(e) => {
@@ -69,9 +70,7 @@ function SearchApp() {
       <div>
         <h3>Search Results:</h3>
         <ul>
-          {searchResults().map((result) => (
-            <li>{result}</li>
-          ))}
+          <For each={searchResults()}>{(result) => <li>{result}</li>}</For>
         </ul>
       </div>
     </div>

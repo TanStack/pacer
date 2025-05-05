@@ -28,7 +28,7 @@ import type {
  * @example
  * ```tsx
  * // Create a queue with state management
- * const [queueItems, asyncQueuer] = useAsyncQueuerState({
+ * const [queueItems, asyncQueuer] = useAsyncQueuedState({
  *   concurrency: 2,
  *   maxSize: 100,
  *   started: true
@@ -50,7 +50,7 @@ import type {
  * const pendingCount = asyncQueuer.getPendingItems().length;
  * ```
  */
-export function useAsyncQueuerState<TValue>(
+export function useAsyncQueuedState<TValue>(
   options: AsyncQueuerOptions<TValue> = {},
 ): [Array<() => Promise<TValue>>, AsyncQueuer<TValue>] {
   const [items, setItems] = useState<Array<() => Promise<TValue>>>(

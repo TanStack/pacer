@@ -19,7 +19,9 @@ import type {
  *
  * Rate limiting should primarily be used when you need to enforce strict limits, like API rate limits.
  *
- * The hook returns both the rate-limited value and the underlying rateLimiter instance for additional control.
+ * The hook returns a tuple containing:
+ * - The rate-limited value that updates according to the configured rate limit
+ * - The rate limiter instance with control methods
  *
  * For more direct control over rate limiting behavior without React state management,
  * consider using the lower-level useRateLimiter hook instead.
@@ -27,7 +29,7 @@ import type {
  * @example
  * ```tsx
  * // Basic rate limiting - update at most 5 times per minute
- * const [rateLimitedValue] = useRateLimitedValue(rawValue, {
+ * const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
  *   limit: 5,
  *   window: 60000
  * });
@@ -40,28 +42,12 @@ import type {
  *     console.log(`Update rejected. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }
  * });
- *
- * // Optionally access rateLimiter methods
- * const handleSubmit = () => {
- *   const remaining = rateLimiter.getRemainingInWindow();
- *   if (remaining > 0) {
- *     console.log(`${remaining} updates remaining in this window`);
- *   } else {
- *     console.log('Rate limit reached for this window');
- *   }
- * };
  * ```
  */
 export function useRateLimitedValue<TValue>(
   value: TValue,
-  options: RateLimiterOptions<
-    React.Dispatch<React.SetStateAction<TValue>>,
-    [value: React.SetStateAction<TValue>]
-  >,
-): [
-  TValue,
-  RateLimiter<React.Dispatch<React.SetStateAction<TValue>>, [TValue]>,
-] {
+  options: RateLimiterOptions<React.Dispatch<React.SetStateAction<TValue>>>,
+): [TValue, RateLimiter<React.Dispatch<React.SetStateAction<TValue>>>] {
   const [rateLimitedValue, setRateLimitedValue, rateLimiter] =
     useRateLimitedState(value, options)
 

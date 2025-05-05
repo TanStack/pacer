@@ -8,7 +8,7 @@ title: bindInstanceMethods
 # Function: bindInstanceMethods()
 
 ```ts
-function bindInstanceMethods<T>(instance): any
+function bindInstanceMethods<T>(instance): T
 ```
 
 Defined in: [utils.ts:1](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/utils.ts#L1)
@@ -25,4 +25,4 @@ Defined in: [utils.ts:1](https://github.com/TanStack/pacer/blob/main/packages/pa
 
 ## Returns
 
-`any`
+`T`

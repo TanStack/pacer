@@ -8,10 +8,10 @@ title: createRateLimitedValue
 # Function: createRateLimitedValue()
 
 ```ts
-function createRateLimitedValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidRateLimiter<Setter<TValue>, [Accessor<TValue>]>]
+function createRateLimitedValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidRateLimiter<Setter<TValue>>]
 ```
 
-Defined in: [rate-limiter/createRateLimitedValue.ts:54](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedValue.ts#L54)
+Defined in: [rate-limiter/createRateLimitedValue.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedValue.ts#L43)
 
 A high-level Solid hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses Solid's createSignal internally to manage the rate-limited state.
@@ -26,7 +26,9 @@ For smoother update patterns, consider:
 
 Rate limiting should primarily be used when you need to enforce strict limits, like API rate limits.
 
-The hook returns both the rate-limited value and the underlying rateLimiter instance for additional control.
+The hook returns a tuple containing:
+- An accessor function that provides the rate-limited value
+- The rate limiter instance with control methods
 
 For more direct control over rate limiting behavior without Solid state management,
 consider using the lower-level createRateLimiter hook instead.
@@ -43,37 +45,24 @@ consider using the lower-level createRateLimiter hook instead.
 
 ### initialOptions
 
-`RateLimiterOptions`\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>
+`RateLimiterOptions`\<`Setter`\<`TValue`\>\>
 
 ## Returns
 
-\[`Accessor`\<`TValue`\>, [`SolidRateLimiter`](../interfaces/solidratelimiter.md)\<`Setter`\<`TValue`\>, \[`Accessor`\<`TValue`\>\]\>\]
+\[`Accessor`\<`TValue`\>, [`SolidRateLimiter`](../interfaces/solidratelimiter.md)\<`Setter`\<`TValue`\>\>\]
 
 ## Example
 
 ```tsx
 // Basic rate limiting - update at most 5 times per minute
-const [rateLimitedValue] = createRateLimitedValue(rawValue, {
+const [rateLimitedValue, rateLimiter] = createRateLimitedValue(rawValue, {
   limit: 5,
   window: 60000
 });
 
-// With rejection callback
-const [rateLimitedValue, rateLimiter] = createRateLimitedValue(rawValue, {
-  limit: 3,
-  window: 5000,
-  onReject: (rateLimiter) => {
-    console.log(`Update rejected. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
-  }
-});
+// Use the rate-limited value
+console.log(rateLimitedValue()); // Access the current rate-limited value
 
-// Optionally access rateLimiter state via signals
-const handleSubmit = () => {
-  const remaining = rateLimiter.remainingInWindow();
-  if (remaining > 0) {
-    console.log(`${remaining} updates remaining in this window`);
-  } else {
-    console.log('Rate limit reached for this window');
-  }
-};
+// Control the rate limiter
+rateLimiter.reset(); // Reset the rate limit window
 ```

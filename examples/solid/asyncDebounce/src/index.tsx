@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { asyncDebounce } from '@tanstack/solid-pacer/async-debouncer'
 
@@ -41,6 +41,7 @@ function SearchApp() {
       <h1>TanStack Pacer asyncDebounce Example</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchText()}
           onInput={(e) => {
@@ -68,11 +69,7 @@ function SearchApp() {
       </table>
       <div>
         <h3>Search Results:</h3>
-        <ul>
-          {searchResults().map((result) => (
-            <li>{result}</li>
-          ))}
-        </ul>
+        <For each={searchResults()}>{(result) => <li>{result}</li>}</For>
       </div>
     </div>
   )

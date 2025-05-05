@@ -28,15 +28,20 @@ Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of th
 - **Queuing**
   - Queue functions to be executed in a specific order
   - Choose from FIFO, LIFO, and Priority queue implementations
-  - Control processing with configurable wait times or concurrency limits
+  - Control processing speed with configurable wait times or concurrency limits
   - Manage queue execution with start/stop capabilities
-  - Synchronous or Asynchronous Queue utilities with promise support and success, settled, and error, handling
+  - Expire items from the queue after a configurable duration
+- **Async or Sync Variations**
+  - Choose between synchronous and asynchronous versions of each utility
+  - Enforce single-flight execution of functions if needed in the async variations of the utilities
+  - Optional error, success, and settled handling for async variations
 - **Comparison Utilities**
   - Perform deep equality checks between values
   - Create custom comparison logic for specific needs
 - **Convenient Hooks**
-  - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuerState`, and more.
+  - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuedState`, and more.
   - Multiple layers of abstraction to choose from depending on your use case.
+  - Works with each framework's default state management solutions, or with whatever custom state management library that you prefer.
 - **Type Safety**
   - Full type safety with TypeScript that makes sure that your functions will always be called with the correct arguments
   - Generics for flexible and reusable utilities

@@ -8,10 +8,10 @@ title: createAsyncDebouncer
 # Function: createAsyncDebouncer()
 
 ```ts
-function createAsyncDebouncer<TFn, TArgs>(fn, initialOptions): SolidAsyncDebouncer<TFn, TArgs>
+function createAsyncDebouncer<TFn>(fn, initialOptions): SolidAsyncDebouncer<TFn>
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L54)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:59](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L59)
 
 A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -26,8 +26,6 @@ wait for user input to settle before making expensive async calls.
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TArgs** *extends* `any`[]
-
 ## Parameters
 
 ### fn
@@ -36,11 +34,11 @@ wait for user input to settle before making expensive async calls.
 
 ### initialOptions
 
-`AsyncDebouncerOptions`\<`TFn`, `TArgs`\>
+`AsyncDebouncerOptions`\<`TFn`\>
 
 ## Returns
 
-[`SolidAsyncDebouncer`](../interfaces/solidasyncdebouncer.md)\<`TFn`, `TArgs`\>
+[`SolidAsyncDebouncer`](../interfaces/solidasyncdebouncer.md)\<`TFn`\>
 
 ## Example
 

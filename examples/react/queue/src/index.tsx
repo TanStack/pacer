@@ -85,6 +85,7 @@ function App2() {
       <h1>TanStack Pacer queue Example 2</h1>
       <div>
         <input
+          autoFocus
           type="search"
           value={inputText}
           onChange={handleInputChange}

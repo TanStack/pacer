@@ -9,6 +9,7 @@ function App() {
   const queuer = useQueuer({
     maxSize: 25,
     initialItems: queueItems,
+    started: false,
     wait: 1000, // wait 1 second between processing items - wait is optional!
     onItemsChange: (queue) => {
       setQueueItems(queue.getAllItems())

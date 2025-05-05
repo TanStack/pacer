@@ -111,12 +111,24 @@ Signal version of `getPeek`
 
 ***
 
+### rejectionCount
+
+```ts
+rejectionCount: Accessor<number>;
+```
+
+Defined in: [queuer/createQueuer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L50)
+
+Signal version of `getRejectionCount`
+
+***
+
 ### size
 
 ```ts
 size: Accessor<number>;
 ```
 
-Defined in: [queuer/createQueuer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L50)
+Defined in: [queuer/createQueuer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L54)
 
 Signal version of `getSize`

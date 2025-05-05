@@ -11,7 +11,7 @@ function App1() {
 
   // highest-level hook that watches an instant local state value and returns a throttled value
   // optionally, grab the throttler from the last index of the returned array
-  const [throttledCount, throttler] = createThrottledValue(instantCount, {
+  const [throttledCount] = createThrottledValue(instantCount, {
     wait: 1000,
   })
 
@@ -20,10 +20,6 @@ function App1() {
       <h1>TanStack Pacer createThrottledValue Example 1</h1>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{throttler.executionCount()}</td>
-          </tr>
           <tr>
             <td>Instant Count:</td>
             <td>{instantCount()}</td>
@@ -45,7 +41,7 @@ function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledSearch, throttler] = createThrottledValue(instantSearch, {
+  const [throttledSearch] = createThrottledValue(instantSearch, {
     wait: 1000,
   })
 
@@ -58,6 +54,7 @@ function App2() {
       <h1>TanStack Pacer createThrottledValue Example 2</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={instantSearch()}
           onInput={handleSearchChange}
@@ -67,10 +64,6 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{throttler.executionCount()}</td>
-          </tr>
           <tr>
             <td>Instant Search:</td>
             <td>{instantSearch()}</td>

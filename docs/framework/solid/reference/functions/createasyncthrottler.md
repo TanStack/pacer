@@ -8,10 +8,10 @@ title: createAsyncThrottler
 # Function: createAsyncThrottler()
 
 ```ts
-function createAsyncThrottler<TFn, TArgs>(fn, initialOptions): SolidAsyncThrottler<TFn, TArgs>
+function createAsyncThrottler<TFn>(fn, initialOptions): SolidAsyncThrottler<TFn>
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:61](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L61)
+Defined in: [async-throttler/createAsyncThrottler.ts:67](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L67)
 
 A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -26,8 +26,6 @@ database operations, or other async tasks.
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TArgs** *extends* `any`[]
-
 ## Parameters
 
 ### fn
@@ -36,11 +34,11 @@ database operations, or other async tasks.
 
 ### initialOptions
 
-`AsyncThrottlerOptions`\<`TFn`, `TArgs`\>
+`AsyncThrottlerOptions`\<`TFn`\>
 
 ## Returns
 
-[`SolidAsyncThrottler`](../interfaces/solidasyncthrottler.md)\<`TFn`, `TArgs`\>
+[`SolidAsyncThrottler`](../interfaces/solidasyncthrottler.md)\<`TFn`\>
 
 ## Example
 

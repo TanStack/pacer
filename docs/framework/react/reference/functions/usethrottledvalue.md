@@ -8,10 +8,10 @@ title: useThrottledValue
 # Function: useThrottledValue()
 
 ```ts
-function useThrottledValue<TValue>(value, options): [TValue, Throttler<Dispatch<SetStateAction<TValue>>, [TValue]>]
+function useThrottledValue<TValue>(value, options): [TValue, Throttler<Dispatch<SetStateAction<TValue>>>]
 ```
 
-Defined in: [throttler/useThrottledValue.ts:36](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledValue.ts#L36)
+Defined in: [react-pacer/src/throttler/useThrottledValue.ts:32](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledValue.ts#L32)
 
 A high-level React hook that creates a throttled version of a value that updates at most once within a specified time window.
 This hook uses React's useState internally to manage the throttled state.
@@ -19,8 +19,9 @@ This hook uses React's useState internally to manage the throttled state.
 Throttling ensures the value updates occur at a controlled rate regardless of how frequently the input value changes.
 This is useful for rate-limiting expensive re-renders or API calls that depend on rapidly changing values.
 
-The hook returns both the throttled value and the underlying throttler instance for additional control.
-The throttled value will update according to the leading/trailing edge behavior specified in the options.
+The hook returns a tuple containing:
+- The throttled value that updates according to the leading/trailing edge behavior specified in the options
+- The throttler instance with control methods
 
 For more direct control over throttling behavior without React state management,
 consider using the lower-level useThrottler hook instead.
@@ -37,17 +38,17 @@ consider using the lower-level useThrottler hook instead.
 
 ### options
 
-`ThrottlerOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`SetStateAction`\<`TValue`\>\]\>
+`ThrottlerOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
 
 ## Returns
 
-\[`TValue`, `Throttler`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, \[`TValue`\]\>\]
+\[`TValue`, `Throttler`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>\]
 
 ## Example
 
 ```tsx
 // Basic throttling - update at most once per second
-const [throttledValue] = useThrottledValue(rawValue, { wait: 1000 });
+const [throttledValue, throttler] = useThrottledValue(rawValue, { wait: 1000 });
 
 // With custom leading/trailing behavior
 const [throttledValue, throttler] = useThrottledValue(rawValue, {
@@ -55,9 +56,4 @@ const [throttledValue, throttler] = useThrottledValue(rawValue, {
   leading: true,   // Update immediately on first change
   trailing: false  // Skip trailing edge updates
 });
-
-// Optionally access throttler methods
-const handleExecutionCount = () => {
-  console.log('Executions:', throttler.getExecutionCount());
-};
 ```

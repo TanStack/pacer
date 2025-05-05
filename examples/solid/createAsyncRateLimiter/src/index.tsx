@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncRateLimiter } from '@tanstack/solid-pacer/async-rate-limiter'
 
@@ -41,7 +41,7 @@ function App() {
     setIsLoading(false)
     setError(null)
 
-    console.log(setSearchAsyncRateLimiter.executionCount())
+    console.log(setSearchAsyncRateLimiter.successCount())
   }
 
   // hook that gives you an async rate limiter instance
@@ -71,6 +71,7 @@ function App() {
       <h1>TanStack Pacer createAsyncRateLimiter Example</h1>
       <div>
         <input
+          autofocus
           type="search"
           value={searchTerm()}
           onInput={onSearchChange}
@@ -81,12 +82,10 @@ function App() {
       </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncRateLimiter.executionCount()}</p>
+        <p>API calls made: {setSearchAsyncRateLimiter.successCount()}</p>
         {results().length > 0 && (
           <ul>
-            {results().map((item) => (
-              <li>{item.title}</li>
-            ))}
+            <For each={results()}>{(item) => <li>{item.title}</li>}</For>
           </ul>
         )}
         {isLoading() && <p>Loading...</p>}

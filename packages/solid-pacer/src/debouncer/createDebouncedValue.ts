@@ -1,4 +1,4 @@
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect } from 'solid-js'
 import { createDebouncedSignal } from './createDebouncedSignal'
 import type { SolidDebouncer } from './createDebouncer'
 import type { Accessor, Setter } from 'solid-js'
@@ -18,8 +18,8 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * or calculations occur.
  *
  * The hook returns a tuple containing:
- * - The current debounced value (as an Accessor)
- * - The debouncer instance with control methods and state signals
+ * - An Accessor that provides the current debounced value
+ * - The debouncer instance with control methods
  *
  * @example
  * ```tsx
@@ -34,20 +34,14 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  *   fetchSearchResults(debouncedQuery());
  * });
  *
- * // Access debouncer state via signals
- * console.log('Executions:', debouncer.executionCount());
- * console.log('Is pending:', debouncer.isPending());
- *
- * // Handle input changes
- * const handleChange = (e) => {
- *   setSearchQuery(e.target.value);
- * };
+ * // Control the debouncer
+ * debouncer.cancel(); // Cancel any pending updates
  * ```
  */
 export function createDebouncedValue<TValue>(
   value: Accessor<TValue>,
-  initialOptions: DebouncerOptions<Setter<TValue>, [Accessor<TValue>]>,
-): [Accessor<TValue>, SolidDebouncer<Setter<TValue>, [Accessor<TValue>]>] {
+  initialOptions: DebouncerOptions<Setter<TValue>>,
+): [Accessor<TValue>, SolidDebouncer<Setter<TValue>>] {
   const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
     value(),
     initialOptions,
@@ -55,9 +49,6 @@ export function createDebouncedValue<TValue>(
 
   createEffect(() => {
     setDebouncedValue(value() as any)
-    onCleanup(() => {
-      debouncer.cancel()
-    })
   })
 
   return [debouncedValue, debouncer]

@@ -11,6 +11,7 @@ function App1() {
   const debouncedSetCount = useCallback(
     debounce(setDebouncedCount, {
       wait: 500,
+      // leading: true, // optional, defaults to false
     }),
     [],
   )
@@ -69,6 +70,7 @@ function App2() {
       <h1>TanStack Pacer debounce Example 2</h1>
       <div>
         <input
+          autoFocus
           type="search"
           value={searchText}
           onChange={handleSearchChange}
