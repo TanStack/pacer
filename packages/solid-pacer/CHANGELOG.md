@@ -1,5 +1,18 @@
 # @tanstack/solid-pacer
 
+## 0.3.0
+
+### Minor Changes
+
+- - breaking: renamed `createQueuerState` hook to `createQueuedState` ([#12](https://github.com/TanStack/pacer/pull/12))
+  - breaking: changed return signature of `createQueuedState` to include the `addItem` function
+  - feat: add `createQueuedValue` hook
+
+### Patch Changes
+
+- Updated dependencies [[`35efeea`](https://github.com/TanStack/pacer/commit/35efeeab76d54a1479bd158db9b804b60e87d89b)]:
+  - @tanstack/pacer@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes
