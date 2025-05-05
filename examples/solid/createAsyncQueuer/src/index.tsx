@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncQueuer } from '@tanstack/solid-pacer/async-queuer'
 
@@ -18,6 +18,7 @@ function App() {
     }),
     concurrency: concurrency(), // Process 2 items concurrently
     wait: 500, // for demo purposes - usually you would not want extra wait time unless you are throttling with concurrency
+    started: false,
   })
 
   // Simulated async task
@@ -56,11 +57,13 @@ function App() {
       </div>
       <div style={{ 'min-height': '250px' }}>
         Queue Items:
-        {queuer.allItems().map((task, index) => (
-          <div>
-            {index}: {task.toString()}
-          </div>
-        ))}
+        <For each={queuer.allItems()}>
+          {(task, index) => (
+            <div>
+              {index()}: {task.toString()}
+            </div>
+          )}
+        </For>
       </div>
       <div
         style={{

@@ -8,12 +8,16 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
 export interface SolidAsyncRateLimiter<TFn extends AnyAsyncFunction>
   extends Omit<
     AsyncRateLimiter<TFn>,
-    | 'getExecutionCount'
+    | 'getSuccessCount'
+    | 'getSettleCount'
+    | 'getErrorCount'
     | 'getRejectionCount'
     | 'getRemainingInWindow'
     | 'getMsUntilNextWindow'
   > {
-  executionCount: Accessor<number>
+  successCount: Accessor<number>
+  settleCount: Accessor<number>
+  errorCount: Accessor<number>
   rejectionCount: Accessor<number>
   remainingInWindow: Accessor<number>
   msUntilNextWindow: Accessor<number>
@@ -61,11 +65,17 @@ export function createAsyncRateLimiter<TFn extends AnyAsyncFunction>(
 ): SolidAsyncRateLimiter<TFn> {
   const asyncRateLimiter = new AsyncRateLimiter<TFn>(fn, initialOptions)
 
-  const [executionCount, setExecutionCount] = createSignal(
-    asyncRateLimiter.getExecutionCount(),
+  const [successCount, setSuccessCount] = createSignal(
+    asyncRateLimiter.getSuccessCount(),
   )
   const [rejectionCount, setRejectionCount] = createSignal(
     asyncRateLimiter.getRejectionCount(),
+  )
+  const [errorCount, setErrorCount] = createSignal(
+    asyncRateLimiter.getErrorCount(),
+  )
+  const [settleCount, setSettleCount] = createSignal(
+    asyncRateLimiter.getSettleCount(),
   )
   const [remainingInWindow, setRemainingInWindow] = createSignal(
     asyncRateLimiter.getRemainingInWindow(),
@@ -77,13 +87,16 @@ export function createAsyncRateLimiter<TFn extends AnyAsyncFunction>(
   function setOptions(newOptions: Partial<AsyncRateLimiterOptions<TFn>>) {
     asyncRateLimiter.setOptions({
       ...newOptions,
-      onExecute: (rateLimiter) => {
-        setExecutionCount(rateLimiter.getExecutionCount())
+      onSettled: (rateLimiter) => {
+        setSuccessCount(rateLimiter.getSuccessCount())
+        setSettleCount(rateLimiter.getSettleCount())
+        setErrorCount(rateLimiter.getErrorCount())
+        setRejectionCount(rateLimiter.getRejectionCount())
         setRemainingInWindow(rateLimiter.getRemainingInWindow())
         setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
 
-        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
-        onExecute?.(rateLimiter)
+        const onSettled = newOptions.onSettled ?? initialOptions.onSettled
+        onSettled?.(rateLimiter)
       },
       onReject: (rateLimiter) => {
         setRejectionCount(rateLimiter.getRejectionCount())
@@ -100,10 +113,12 @@ export function createAsyncRateLimiter<TFn extends AnyAsyncFunction>(
 
   return {
     ...bindInstanceMethods(asyncRateLimiter),
-    executionCount,
-    rejectionCount,
+    errorCount,
     remainingInWindow,
     msUntilNextWindow,
+    rejectionCount,
     setOptions,
+    settleCount,
+    successCount,
   } as SolidAsyncRateLimiter<TFn>
 }

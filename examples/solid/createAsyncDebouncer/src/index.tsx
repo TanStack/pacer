@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncDebouncer } from '@tanstack/solid-pacer/async-debouncer'
 
@@ -86,9 +86,7 @@ function App() {
         <p>API calls made: {setSearchAsyncDebouncer.successCount()}</p>
         {results().length > 0 && (
           <ul>
-            {results().map((item) => (
-              <li>{item.title}</li>
-            ))}
+            <For each={results()}>{(item) => <li>{item.title}</li>}</For>
           </ul>
         )}
         {isLoading() && <p>Loading...</p>}

@@ -12,7 +12,9 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:8](https://github.com/
 ## Extends
 
 - `Omit`\<`AsyncRateLimiter`\<`TFn`\>, 
-  \| `"getExecutionCount"`
+  \| `"getSuccessCount"`
+  \| `"getSettleCount"`
+  \| `"getErrorCount"`
   \| `"getRejectionCount"`
   \| `"getRemainingInWindow"`
   \| `"getMsUntilNextWindow"`\>
@@ -23,13 +25,13 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:8](https://github.com/
 
 ## Properties
 
-### executionCount
+### errorCount
 
 ```ts
-executionCount: Accessor<number>;
+errorCount: Accessor<number>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:16](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L16)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L20)
 
 ***
 
@@ -39,7 +41,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:16](https://github.com
 msUntilNextWindow: Accessor<number>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L19)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L23)
 
 ***
 
@@ -49,7 +51,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:19](https://github.com
 rejectionCount: Accessor<number>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L17)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L21)
 
 ***
 
@@ -57,6 +59,26 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:17](https://github.com
 
 ```ts
 remainingInWindow: Accessor<number>;
+```
+
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L22)
+
+***
+
+### settleCount
+
+```ts
+settleCount: Accessor<number>;
+```
+
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L19)
+
+***
+
+### successCount
+
+```ts
+successCount: Accessor<number>;
 ```
 
 Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L18)
