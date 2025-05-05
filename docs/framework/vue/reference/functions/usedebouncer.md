@@ -10,22 +10,76 @@ A Vue composable that creates a debouncer instance with Vue reactivity integrati
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import { useDebouncer } from '@tanstack/vue-pacer'
 
-const [debouncedValue, debouncer] = useDebouncer('initial', {
-  wait: 500 // Wait 500ms after last change
+// Create a debouncer with initial value and options
+const { value, setValue, flush, cancel, isPending } = useDebouncer('', {
+  wait: 1000,
+  leading: false,   // Don't execute on first call
+  trailing: true,   // Execute after wait period
 })
 
-// Update the value (will be debounced)
-debouncer.set('new value')
+// Track time since last update
+const lastUpdateTime = ref(Date.now())
+const timeSinceUpdate = computed(() => {
+  return Date.now() - lastUpdateTime.value
+})
 
-// Access the current value
-console.log(debouncedValue.value)
+// Update handlers
+function handleInput(event: Event) {
+  const input = event.target as HTMLInputElement
+  setValue(input.value)
+}
 
-// Cancel pending updates
-debouncer.cancel()
+function updateNow() {
+  if (value.value !== undefined) {
+    flush()
+    lastUpdateTime.value = Date.now()
+  }
+}
+
+function cancelUpdate() {
+  cancel()
+}
 </script>
+
+<template>
+  <div>
+    <div class="input-group">
+      <label>Debounced input:</label>
+      <input 
+        :value="value"
+        @input="handleInput"
+        placeholder="Type here..."
+      />
+    </div>
+
+    <div class="controls">
+      <button 
+        @click="cancelUpdate"
+        :disabled="!isPending.value"
+      >
+        Cancel Update
+      </button>
+      <button 
+        @click="updateNow"
+        :disabled="!isPending.value"
+      >
+        Update Now
+      </button>
+    </div>
+
+    <div class="values">
+      <p><strong>Current value:</strong> {{ value }}</p>
+      <p><strong>Status:</strong> 
+        {{ isPending.value ? 'Update Pending...' : 'Up to date' }}
+      </p>
+      <p><strong>Time since update:</strong> {{ timeSinceUpdate }}ms</p>
+    </div>
+  </div>
+</template>
 ```
 
 ## Type Declaration
@@ -34,7 +88,7 @@ debouncer.cancel()
 function useDebouncer<TValue>(
   initialValue: MaybeRef<TValue>,
   options: DebouncerOptions<(value: TValue) => void>
-): [Ref<TValue>, VueDebouncer<TValue>]
+): UseDebouncerReturn<TValue>
 ```
 
 ## Parameters
@@ -48,11 +102,9 @@ function useDebouncer<TValue>(
 
 ## Returns
 
-Returns a tuple containing:
-1. A Vue ref containing the current debounced value
-2. A debouncer instance with the following methods:
-   - `set(value)`: Update the debounced value
-   - `cancel()`: Cancel any pending debounced invocations
-   - `flush()`: Immediately invoke any pending debounced invocations
-   - `isPending()`: Check if there are any pending invocations
-   - `value`: Get the current debounced value
+Returns an object containing:
+- `value`: A Vue ref containing the current debounced value
+- `setValue(newValue)`: Function to update the debounced value
+- `flush()`: Immediately invoke any pending debounced invocations
+- `cancel()`: Cancel any pending debounced invocations
+- `isPending`: A Vue ref indicating if there are pending updates

@@ -10,33 +10,72 @@ A Vue composable that creates a debounced value that updates only after a specif
 ## Usage
 
 ```vue
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
 import { useDebouncedValue } from '@tanstack/vue-pacer'
 
+// Basic debouncing example
 const searchQuery = ref('')
-const [debouncedQuery, debouncer] = useDebouncedValue(searchQuery, {
-  wait: 500 // Wait 500ms after last change
+const updateCount = ref(0)
+const lastUpdateTime = ref(Date.now())
+
+const { value: debouncedQuery } = useDebouncedValue(searchQuery, {
+  wait: 500
 })
 
-// debouncedQuery will update 500ms after searchQuery stops changing
-watch(debouncedQuery, async (newValue) => {
-  const results = await fetchSearchResults(newValue)
-  // Update UI with results
+// Compute time since last update
+const timeSinceUpdate = computed(() => {
+  return Date.now() - lastUpdateTime.value
 })
 
-// The source value can be updated directly
-searchQuery.value = 'new search'
+// Watch for debounced updates
+watch(debouncedQuery, () => {
+  updateCount.value++
+  lastUpdateTime.value = Date.now()
+})
 
-// Or you can use the debouncer methods
-debouncer.set('another search')
-debouncer.cancel() // Cancel pending updates
+// Advanced example with controls
+const controlledValue = ref('')
+const { value: debouncedControlled, ...controlledDebouncer } = useDebouncedValue(
+  controlledValue,
+  {
+    wait: 1000,
+    leading: false,  // Don't execute on first call
+    trailing: true,  // Execute after wait period
+  }
+)
 </script>
 
 <template>
   <div>
-    <input v-model="searchQuery" />
-    <p>Debounced query: {{ debouncedQuery }}</p>
+    <!-- Basic Example -->
+    <div>
+      <input v-model="searchQuery" placeholder="Type here..." />
+      <p><strong>Instant value:</strong> {{ searchQuery }}</p>
+      <p><strong>Debounced value:</strong> {{ debouncedQuery }}</p>
+      <p><strong>Update count:</strong> {{ updateCount }}</p>
+      <p><strong>Time since last update:</strong> {{ timeSinceUpdate }}ms</p>
+    </div>
+
+    <!-- Advanced Example with Controls -->
+    <div>
+      <input v-model="controlledValue" placeholder="Type and use controls..." />
+      <button 
+        @click="controlledDebouncer.cancel()"
+        :disabled="!controlledDebouncer.isPending.value"
+      >
+        Cancel Update
+      </button>
+      <button 
+        @click="controlledDebouncer.flush()"
+        :disabled="!controlledDebouncer.isPending.value"
+      >
+        Update Now
+      </button>
+      <p><strong>Status:</strong> 
+        {{ controlledDebouncer.isPending.value ? 'Update Pending...' : 'Up to date' }}
+      </p>
+    </div>
   </div>
 </template>
 ```
@@ -47,7 +86,7 @@ debouncer.cancel() // Cancel pending updates
 function useDebouncedValue<TValue>(
   value: MaybeRefOrGetter<TValue>,
   options: DebouncerOptions<(value: TValue) => void>
-): [Ref<TValue>, VueDebouncer<TValue>]
+): UseDebouncedValueReturn<TValue>
 ```
 
 ## Parameters
@@ -64,11 +103,8 @@ function useDebouncedValue<TValue>(
 
 ## Returns
 
-Returns a tuple containing:
-1. A Vue ref containing the current debounced value
-2. A debouncer instance with the following methods:
-   - `set(value)`: Update the debounced value
-   - `cancel()`: Cancel any pending debounced invocations
-   - `flush()`: Immediately invoke any pending debounced invocations
-   - `isPending()`: Check if there are any pending invocations
-   - `value`: Get the current debounced value
+Returns an object containing:
+- `value`: A Vue ref containing the current debounced value
+- `flush()`: Immediately invoke any pending debounced invocations
+- `cancel()`: Cancel any pending debounced invocations
+- `isPending`: A Vue ref indicating if there are pending updates
