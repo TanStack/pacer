@@ -24,29 +24,36 @@ export interface UseDebouncerReturn<TValue> {
  *
  * @example
  * ```vue
- * <script setup>
+ * <script setup lang="ts">
+ * import { computed, ref } from 'vue'
  * import { useDebouncer } from '@tanstack/vue-pacer'
  * 
- * // Create a debouncer with an initial value and 500ms delay
- * const { value, setValue, flush, cancel, isPending } = useDebouncer('initial', {
- *   wait: 500,
- *   // Optional: execute on the leading edge (first call)
- *   leading: false,
- *   // Optional: execute on the trailing edge (after wait)
- *   trailing: true
+ * // Create a debouncer with initial value and options
+ * const { value, setValue, flush, cancel, isPending } = useDebouncer('', {
+ *   wait: 1000,
+ *   leading: false,   // Don't execute on first call
+ *   trailing: true,   // Execute after wait period
  * })
  * 
- * // Update the value - will be debounced
- * function handleInput(event) {
- *   setValue(event.target.value)
+ * // Track time since last update
+ * const lastUpdateTime = ref(Date.now())
+ * const timeSinceUpdate = computed(() => {
+ *   return Date.now() - lastUpdateTime.value
+ * })
+ * 
+ * // Update handlers
+ * function handleInput(event: Event) {
+ *   const input = event.target as HTMLInputElement
+ *   setValue(input.value)
  * }
  * 
- * // Force immediate update of current value
  * function updateNow() {
- *   flush()
+ *   if (value.value !== undefined) {
+ *     flush()
+ *     lastUpdateTime.value = Date.now()
+ *   }
  * }
  * 
- * // Cancel any pending updates
  * function cancelUpdate() {
  *   cancel()
  * }
@@ -54,11 +61,37 @@ export interface UseDebouncerReturn<TValue> {
  * 
  * <template>
  *   <div>
- *     <input :value="value" @input="handleInput" />
- *     <p>Current value: {{ value }}</p>
- *     <p>Update pending: {{ isPending.value }}</p>
- *     <button @click="updateNow">Update Now</button>
- *     <button @click="cancelUpdate">Cancel</button>
+ *     <div class="input-group">
+ *       <label>Debounced input:</label>
+ *       <input 
+ *         :value="value"
+ *         @input="handleInput"
+ *         placeholder="Type here..."
+ *       />
+ *     </div>
+ * 
+ *     <div class="controls">
+ *       <button 
+ *         @click="cancelUpdate"
+ *         :disabled="!isPending.value"
+ *       >
+ *         Cancel Update
+ *       </button>
+ *       <button 
+ *         @click="updateNow"
+ *         :disabled="!isPending.value"
+ *       >
+ *         Update Now
+ *       </button>
+ *     </div>
+ * 
+ *     <div class="values">
+ *       <p><strong>Current value:</strong> {{ value }}</p>
+ *       <p><strong>Status:</strong> 
+ *         {{ isPending.value ? 'Update Pending...' : 'Up to date' }}
+ *       </p>
+ *       <p><strong>Time since update:</strong> {{ timeSinceUpdate }}ms</p>
+ *     </div>
  *   </div>
  * </template>
  * ```
