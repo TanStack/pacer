@@ -11,11 +11,15 @@ title: asyncDebounce
 function asyncDebounce<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:260](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L260)
+Defined in: [async-debouncer.ts:268](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L268)
 
 Creates an async debounced function that delays execution until after a specified wait time.
 The debounced function will only execute once the wait period has elapsed without any new calls.
 If called again during the wait period, the timer resets and a new wait period begins.
+
+Unlike the non-async Debouncer, this async version supports returning values from the debounced function,
+making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+instead of setting the result on a state variable from within the debounced function.
 
 ## Type Parameters
 
@@ -52,11 +56,11 @@ If a call is already in progress, it will be queued
 
 ```ts
 const debounced = asyncDebounce(async (value: string) => {
-  await saveToAPI(value);
+  const result = await saveToAPI(value);
+  return result; // Return value is preserved
 }, { wait: 1000 });
 
 // Will only execute once, 1 second after the last call
-await debounced("first");  // Cancelled
-await debounced("second"); // Cancelled
-await debounced("third");  // Executes after 1s
+// Returns the API response directly
+const result = await debounced("third");
 ```

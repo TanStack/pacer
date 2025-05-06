@@ -48,6 +48,11 @@ Try other [TanStack](https://tanstack.com) libraries:
 You may know **TanSack Pacer** by our adapter names, too!
 
 - [**React Pacer**](https://tanstack.com/pacer/latest/docs/framework/react/react-pacer)
+- [**Solid Pacer**](https://tanstack.com/pacer/latest/docs/framework/solid/solid-pacer)
+- Angular Pacer - needs a contributor!
+- Preact Pacer - Coming soon! (After React Pacer is more fleshed out)
+- Svelte Pacer - needs a contributor!
+- Vue Pacer - needs a contributor!
 
 ## Summary
 
@@ -64,6 +69,7 @@ Take control of your application's timing with TanStack Pacer's rate limiting, t
 - **Rate Limiting**
   - Limit the rate at which a function can fire
   - Synchronous or Asynchronous Rate Limiting utilities with promise support and error handling
+  - Fixed or Sliding window types
 - **Queuing**
   - Queue functions to be executed in a specific order
   - Choose from FIFO, LIFO, and Priority queue implementations
@@ -90,6 +96,7 @@ Install one of the following packages based on your framework of choice:
 ```bash
 # Npm
 npm install @tanstack/react-pacer
+npm install @tanstack/solid-pacer
 npm install @tanstack/pacer # no framework, just vanilla js
 ```
 

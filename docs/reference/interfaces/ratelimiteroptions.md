@@ -95,3 +95,18 @@ window: number;
 Defined in: [rate-limiter.ts:27](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L27)
 
 Time window in milliseconds within which the limit applies
+
+***
+
+### windowType?
+
+```ts
+optional windowType: "fixed" | "sliding";
+```
+
+Defined in: [rate-limiter.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L34)
+
+Type of window to use for rate limiting
+- 'fixed': Uses a fixed window that resets after the window period
+- 'sliding': Uses a sliding window that allows executions as old ones expire
+Defaults to 'fixed'
