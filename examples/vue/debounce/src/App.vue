@@ -4,7 +4,7 @@
 
     <!-- Basic Debouncing -->
     <section>
-      <h2>Basic Debouncing (500ms delay)</h2>
+      <h2>Basic Debouncing with useDebouncedValue (500ms delay)</h2>
       <div class="example-box">
         <div class="input-group">
           <label>Type here:</label>
@@ -25,7 +25,7 @@
 
     <!-- Advanced Debouncing with Controls -->
     <section>
-      <h2>Advanced Debouncing (1000ms delay)</h2>
+      <h2>Advanced Debouncing with useDebouncer (1000ms delay)</h2>
       <div class="example-box">
         <div class="input-group">
           <label>Controlled input:</label>
@@ -37,26 +37,28 @@
         </div>
         <div class="controls">
           <button 
-            @click="controlledDebouncer.cancel()"
-            :disabled="!controlledDebouncer.isPending.value"
+            @click="cancelControlled()"
+            :disabled="!controlledIsPending"
           >
             Cancel Update
           </button>
           <button 
-            @click="controlledDebouncer.flush()"
-            :disabled="!controlledDebouncer.isPending.value"
+            @click="flushControlled()"
+            :disabled="!controlledIsPending"
           >
             Update Now
           </button>
+          <button @click="toggleEnabled">{{ isEnabled ? 'Disable' : 'Enable' }}</button>
+          <button @click="toggleLeading">{{ isLeading ? 'Disable Leading' : 'Enable Leading' }}</button>
           <button @click="resetControlled">Reset</button>
         </div>
         <div class="values">
           <p><strong>Instant value:</strong> {{ controlledValue }}</p>
           <p><strong>Debounced value:</strong> {{ debouncedControlled }}</p>
-          <p>
-            <strong>Status:</strong> 
-            {{ controlledDebouncer.isPending.value ? 'Update Pending...' : 'Up to date' }}
-          </p>
+          <p><strong>Status:</strong> {{ controlledIsPending ? 'Update Pending...' : 'Up to date' }}</p>
+          <p><strong>Execution count:</strong> {{ controlledExecutionCount }}</p>
+          <p><strong>Leading edge:</strong> {{ isLeading ? 'Enabled' : 'Disabled' }}</p>
+          <p><strong>Debouncer:</strong> {{ isEnabled ? 'Enabled' : 'Disabled' }}</p>
         </div>
       </div>
     </section>
@@ -65,7 +67,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useDebouncedValue } from '@tanstack/vue-pacer'
+import { useDebouncedValue, useDebouncer } from '@tanstack/vue-pacer'
 
 // Basic debouncing example
 const searchQuery = ref('')
@@ -89,20 +91,40 @@ watch(debouncedQuery, () => {
 
 // Advanced debouncing example
 const controlledValue = ref('')
-const { value: debouncedControlled, ...controlledDebouncer } = useDebouncedValue(
+const isEnabled = ref(true)
+const isLeading = ref(false)
+
+// Toggle functions
+const toggleEnabled = () => {
+  isEnabled.value = !isEnabled.value
+  setControlledOptions({ enabled: isEnabled.value })
+}
+
+const toggleLeading = () => {
+  isLeading.value = !isLeading.value
+  setControlledOptions({ leading: isLeading.value })
+}
+const { 
+  value: debouncedControlled, 
+  executionCount: controlledExecutionCount,
+  isPending: controlledIsPending,
+  setOptions: setControlledOptions,
+  cancel: cancelControlled,
+  flush: flushControlled
+} = useDebouncer(
   controlledValue,
   {
     wait: 1000,
-    // Optional: you can configure leading/trailing behavior
     leading: false,  // Don't execute on first call
     trailing: true,  // Execute after wait period
+    enabled: true,   // Start enabled
   },
 )
 
 // Reset both value and pending state
 const resetControlled = () => {
+  cancelControlled()
   controlledValue.value = ''
-  controlledDebouncer.cancel()
 }
 </script>
 
