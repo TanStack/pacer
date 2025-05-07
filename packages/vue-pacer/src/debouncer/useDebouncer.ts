@@ -15,6 +15,12 @@ export interface UseDebouncerReturn<TValue> {
   cancel: () => void
   /** Check if there are any pending updates */
   isPending: ComputedRef<boolean>
+  /** Get the number of times the value has been updated */
+  executionCount: ComputedRef<number>
+  /** Update debouncer options */
+  setOptions: (newOptions: Partial<DebouncerOptions<(value: TValue) => void>>) => void
+  /** Get current debouncer options */
+  getOptions: () => Required<DebouncerOptions<(value: TValue) => void>>
 }
 
 /**
@@ -108,6 +114,8 @@ export function useDebouncer<TValue>(
 
   const isPending = computed(() => debouncer.getIsPending())
 
+  const executionCount = computed(() => debouncer.getExecutionCount())
+
   return {
     value,
     setValue: (newValue: TValue) => {
@@ -115,13 +123,17 @@ export function useDebouncer<TValue>(
     },
     flush: () => {
       if (value.value !== undefined) {
-        // Force immediate execution by setting wait to 0
-        debouncer.setOptions({ ...options, wait: 0 })
+        // Cancel any pending execution and force immediate execution
+        debouncer.cancel()
         debouncer.maybeExecute(value.value)
-        debouncer.setOptions(options)
       }
     },
     cancel: () => debouncer.cancel(),
-    isPending
+    isPending,
+    executionCount,
+    setOptions: (newOptions: Partial<DebouncerOptions<(v: TValue) => void>>) => {
+      debouncer.setOptions(newOptions)
+    },
+    getOptions: () => debouncer.getOptions()
   }
 }
