@@ -1,6 +1,6 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref } from 'vue'
 import { Debouncer } from '@tanstack/pacer'
-import { computed, ref, unref } from 'vue'
+import { readonly, ref, unref } from 'vue'
 import type { MaybeRef } from '../types'
 import type { DebouncerOptions } from '@tanstack/pacer'
 
@@ -14,9 +14,9 @@ export interface UseDebouncerReturn<TValue> {
   /** Cancel any pending updates */
   cancel: () => void
   /** Check if there are any pending updates */
-  isPending: ComputedRef<boolean>
+  isPending: Readonly<Ref<boolean>>
   /** Get the number of times the value has been updated */
-  executionCount: ComputedRef<number>
+  executionCount: Readonly<Ref<number>>
   /** Update debouncer options */
   setOptions: (newOptions: Partial<DebouncerOptions<(value: TValue) => void>>) => void
   /** Get current debouncer options */
@@ -104,36 +104,74 @@ export interface UseDebouncerReturn<TValue> {
  */
 export function useDebouncer<TValue>(
   initialValue: MaybeRef<TValue>,
-  options: DebouncerOptions<(value: TValue) => void>
+  optionsInput: DebouncerOptions<(value: TValue) => void>
 ): UseDebouncerReturn<TValue> {
   const value = ref<TValue>(unref(initialValue)) as Ref<TValue>
+  const _isPending = ref(false)
+  const _executionCount = ref(0)
   
+  const getEffectiveOptions = (currentOpts: DebouncerOptions<(v: TValue) => void>) => {
+    return {
+      ...currentOpts,
+      onExecute: () => {
+        // Call original onExecute if it exists
+        if (currentOpts.onExecute) {
+          // Assuming currentOpts.onExecute expects the debouncer instance
+          currentOpts.onExecute(debouncer as any); // Type assertion for now, can be refined
+        }
+        _isPending.value = debouncer.getIsPending() // Sync after execution
+        _executionCount.value = debouncer.getExecutionCount() // Sync execution count
+      }
+    } as Required<DebouncerOptions<(newValue:TValue) => void>>;
+  }
+
   const debouncer = new Debouncer((newValue: TValue) => {
     value.value = newValue
-  }, options)
+  }, getEffectiveOptions(optionsInput))
 
-  const isPending = computed(() => debouncer.getIsPending())
+  // Initialize reactive refs with initial state from debouncer
+  _isPending.value = debouncer.getIsPending();
+  _executionCount.value = debouncer.getExecutionCount();
 
-  const executionCount = computed(() => debouncer.getExecutionCount())
+  const wrappedSetValue = (newValue: TValue) => {
+    debouncer.maybeExecute(newValue)
+    _isPending.value = debouncer.getIsPending() // Update after trying to execute
+    console.log(`[useDebouncer.ts] after maybeExecute, _isPending.value = ${_isPending.value}`);
+  }
+
+  const wrappedCancel = () => {
+    debouncer.cancel()
+    _isPending.value = debouncer.getIsPending() // Update after cancelling
+  }
+  
+  const wrappedFlush = () => {
+    // The core debouncer doesn't have a 'pending value' to flush to.
+    // It flushes by cancelling current timer and executing with last *successful* value if leading, or current *input* value for trailing.
+    // The previous logic was: cancel and then maybeExecute the current `value.value`.
+    if (value.value !== undefined) { // This is the current debounced value
+      debouncer.cancel() // This sets its internal _isPending to false
+      debouncer.maybeExecute(value.value) // This might make it pending again or execute immediately
+    }
+    _isPending.value = debouncer.getIsPending(); // Sync after flush actions
+  }
+
+  const wrappedSetOptions = (newOptions: Partial<DebouncerOptions<(v: TValue) => void>>) => {
+    const currentCoreOptions = debouncer.getOptions();
+    const mergedOptions = { ...currentCoreOptions, ...newOptions };
+    debouncer.setOptions(getEffectiveOptions(mergedOptions)); // Re-wrap onExecute
+    _isPending.value = debouncer.getIsPending(); // Sync after options change
+    // Note: if `wait` changes, the existing timer isn't automatically rescheduled by core setOptions.
+    // This behavior is inherited from the core debouncer.
+  }
 
   return {
     value,
-    setValue: (newValue: TValue) => {
-      debouncer.maybeExecute(newValue)
-    },
-    flush: () => {
-      if (value.value !== undefined) {
-        // Cancel any pending execution and force immediate execution
-        debouncer.cancel()
-        debouncer.maybeExecute(value.value)
-      }
-    },
-    cancel: () => debouncer.cancel(),
-    isPending,
-    executionCount,
-    setOptions: (newOptions: Partial<DebouncerOptions<(v: TValue) => void>>) => {
-      debouncer.setOptions(newOptions)
-    },
+    setValue: wrappedSetValue,
+    flush: wrappedFlush,
+    cancel: wrappedCancel,
+    isPending: readonly(_isPending),
+    executionCount: readonly(_executionCount),
+    setOptions: wrappedSetOptions,
     getOptions: () => debouncer.getOptions()
   }
 }
