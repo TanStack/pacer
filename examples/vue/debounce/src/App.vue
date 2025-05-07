@@ -57,6 +57,7 @@
           <p><strong>Debounced value:</strong> {{ debouncedControlled }}</p>
           <p><strong>Status:</strong> {{ controlledIsPending ? 'Update Pending...' : 'Up to date' }}</p>
           <p><strong>Execution count:</strong> {{ controlledExecutionCount }}</p>
+          <p><strong>Time typing:</strong> {{ elapsedTypingTime }}ms</p>
           <p><strong>Leading edge:</strong> {{ isLeading ? 'Enabled' : 'Disabled' }}</p>
           <p><strong>Debouncer:</strong> {{ isEnabled ? 'Enabled' : 'Disabled' }}</p>
         </div>
@@ -94,6 +95,11 @@ const controlledValue = ref('')
 const isEnabled = ref(true)
 const isLeading = ref(false)
 
+// Timing for typing duration
+const typingStartTime = ref<number | null>(null)
+const elapsedTypingTime = ref(0)
+const elapsedTimeInterval = ref<NodeJS.Timeout | null>(null)
+
 // Toggle functions
 const toggleEnabled = () => {
   isEnabled.value = !isEnabled.value
@@ -104,27 +110,66 @@ const toggleLeading = () => {
   isLeading.value = !isLeading.value
   setControlledOptions({ leading: isLeading.value })
 }
+
 const { 
   value: debouncedControlled, 
   executionCount: controlledExecutionCount,
   isPending: controlledIsPending,
   setOptions: setControlledOptions,
   cancel: cancelControlled,
-  flush: flushControlled
+  flush: flushControlled,
+  setValue: setDebouncedControlledValue 
 } = useDebouncer(
-  controlledValue,
+  controlledValue.value, 
   {
     wait: 1000,
-    leading: false,  // Don't execute on first call
-    trailing: true,  // Execute after wait period
-    enabled: true,   // Start enabled
+    leading: isLeading.value,  
+    trailing: true,  
+    enabled: isEnabled.value,   
   },
 )
 
+// Watch the raw input and call the debouncer's setValue
+watch(controlledValue, (newValue) => {
+  setDebouncedControlledValue(newValue)
+})
+
+// Watch for pending state changes to manage typing timer
+watch(controlledIsPending, (pending, oldPending) => {
+  console.log(`[App.vue] controlledIsPending changed from ${oldPending} to ${pending}`);
+  if (pending) {
+    typingStartTime.value = Date.now();
+    console.log(`[App.vue] Typing timer started. Start time: ${typingStartTime.value}`);
+    if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value); // Clear previous, just in case
+    elapsedTimeInterval.value = setInterval(() => {
+      if (typingStartTime.value) {
+        elapsedTypingTime.value = Date.now() - typingStartTime.value;
+        // console.log(`[App.vue] Interval: elapsedTypingTime = ${elapsedTypingTime.value}`); // Optional: can be noisy
+      } else {
+        // This case should ideally not happen if interval is cleared promptly
+        if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value);
+        elapsedTimeInterval.value = null;
+      }
+    }, 50); // Update every 50ms
+  } else {
+    if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value);
+    elapsedTimeInterval.value = null;
+    typingStartTime.value = null; // Ensure this is nulled
+    console.log(`[App.vue] Typing timer stopped. Final elapsed: ${elapsedTypingTime.value}ms`);
+    // elapsedTypingTime holds the last value until next typing or reset
+  }
+});
+
 // Reset both value and pending state
 const resetControlled = () => {
-  cancelControlled()
-  controlledValue.value = ''
+  console.log('[App.vue] resetControlled called');
+  cancelControlled(); // This will make controlledIsPending false
+  controlledValue.value = '';
+  // Also explicitly reset typing time on manual reset
+  if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value);
+  elapsedTimeInterval.value = null;
+  typingStartTime.value = null;
+  elapsedTypingTime.value = 0;
 }
 </script>
 

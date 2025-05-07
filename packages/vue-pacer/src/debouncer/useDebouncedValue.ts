@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref } from 'vue'
 import { unref, watch } from 'vue'
 import { useDebouncer } from './useDebouncer'
 import type { MaybeRefOrGetter } from '../types'
@@ -12,7 +12,7 @@ export interface UseDebouncedValueReturn<TValue> {
   /** Cancel any pending updates */
   cancel: () => void
   /** Check if there are any pending updates */
-  isPending: ComputedRef<boolean>
+  isPending: Readonly<Ref<boolean>>
 }
 
 /**
