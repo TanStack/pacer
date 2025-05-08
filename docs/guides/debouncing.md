@@ -124,6 +124,17 @@ const debouncer = new Debouncer(fn, { wait: 500, enabled: false }) // Disable by
 debouncer.setOptions({ enabled: true }) // Enable at any time
 ```
 
+The `enabled` option can also be a function that returns a boolean, allowing for dynamic enabling/disabling based on runtime conditions:
+
+```ts
+const debouncer = new Debouncer(fn, {
+  wait: 500,
+  enabled: (debouncer) => {
+    return debouncer.getExecutionCount() < 10 // Disable after 10 executions
+  }
+})
+```
+
 If you are using a framework adapter where the debouncer options are reactive, you can set the `enabled` option to a conditional value to enable/disable the debouncer on the fly:
 
 ```ts
@@ -134,15 +145,28 @@ const debouncer = useDebouncer(
 )
 ```
 
-However, if you are using the `debounce` function or the `Debouncer` class directly, you must use the `setOptions` method to change the `enabled` option, since the options that are passed are actually passed to the constructor of the `Debouncer` class.
+### Dynamic Options
+
+Several options in the Debouncer support dynamic values through callback functions that receive the debouncer instance:
 
 ```ts
-// Solid example
-const debouncer = new Debouncer(fn, { wait: 500, enabled: false }) // Disable by default
-createEffect(() => {
-  debouncer.setOptions({ enabled: search().length > 3 }) // Enable/disable based on input length
+const debouncer = new Debouncer(fn, {
+  // Dynamic wait time based on execution count
+  wait: (debouncer) => {
+    return debouncer.getExecutionCount() * 100 // Increase wait time with each execution
+  },
+  // Dynamic enabled state based on execution count
+  enabled: (debouncer) => {
+    return debouncer.getExecutionCount() < 10 // Disable after 10 executions
+  }
 })
 ```
+
+The following options support dynamic values:
+- `enabled`: Can be a boolean or a function that returns a boolean
+- `wait`: Can be a number or a function that returns a number
+
+This allows for sophisticated debouncing behavior that adapts to runtime conditions.
 
 ### Callback Options
 
@@ -238,50 +262,3 @@ const results = await debouncedSearch('query')
 ### Framework Adapters
 
 Each framework adapter provides hooks that build on top of the core debouncing functionality to integrate with the framework's state management system. Hooks like `createDebouncer`, `useDebouncedCallback`, `useDebouncedState`, or `useDebouncedValue` are available for each framework.
-
-Here are some examples:
-
-#### React
-
-```tsx
-import { useDebouncer, useDebouncedCallback, useDebouncedValue } from '@tanstack/react-pacer'
-
-// Low-level hook for full control
-const debouncer = useDebouncer(
-  (value: string) => saveToDatabase(value),
-  { wait: 500 }
-)
-
-// Simple callback hook for basic use cases
-const handleSearch = useDebouncedCallback(
-  (query: string) => fetchSearchResults(query),
-  { wait: 500 }
-)
-
-// State-based hook for reactive state management
-const [instantState, setInstantState] = useState('')
-const [debouncedValue] = useDebouncedValue(
-  instantState, // Value to debounce
-  { wait: 500 }
-)
-```
-
-#### Solid
-
-```tsx
-import { createDebouncer, createDebouncedSignal } from '@tanstack/solid-pacer'
-
-// Low-level hook for full control
-const debouncer = createDebouncer(
-  (value: string) => saveToDatabase(value),
-  { wait: 500 }
-)
-
-// Signal-based hook for state management
-const [searchTerm, setSearchTerm, debouncer] = createDebouncedSignal('', {
-  wait: 500,
-  onExecute: (debouncer) => {
-    console.log('Total executions:', debouncer.getExecutionCount())
-  }
-})
-```

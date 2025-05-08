@@ -156,7 +156,47 @@ const limiter = new RateLimiter(fn, {
 limiter.setOptions({ enabled: true }) // Enable at any time
 ```
 
+The `enabled` option can also be a function that returns a boolean, allowing for dynamic enabling/disabling based on runtime conditions:
+
+```ts
+const limiter = new RateLimiter(fn, {
+  limit: 5,
+  window: 1000,
+  enabled: (limiter) => {
+    return limiter.getExecutionCount() < 100 // Disable after 100 executions
+  }
+})
+```
+
 If you are using a framework adapter where the rate limiter options are reactive, you can set the `enabled` option to a conditional value to enable/disable the rate limiter on the fly. However, if you are using the `rateLimit` function or the `RateLimiter` class directly, you must use the `setOptions` method to change the `enabled` option, since the options that are passed are actually passed to the constructor of the `RateLimiter` class.
+
+### Dynamic Options
+
+Several options in the RateLimiter support dynamic values through callback functions that receive the rate limiter instance:
+
+```ts
+const limiter = new RateLimiter(fn, {
+  // Dynamic limit based on execution count
+  limit: (limiter) => {
+    return Math.max(1, 10 - limiter.getExecutionCount()) // Decrease limit with each execution
+  },
+  // Dynamic window based on execution count
+  window: (limiter) => {
+    return limiter.getExecutionCount() * 1000 // Increase window with each execution
+  },
+  // Dynamic enabled state based on execution count
+  enabled: (limiter) => {
+    return limiter.getExecutionCount() < 100 // Disable after 100 executions
+  }
+})
+```
+
+The following options support dynamic values:
+- `enabled`: Can be a boolean or a function that returns a boolean
+- `limit`: Can be a number or a function that returns a number
+- `window`: Can be a number or a function that returns a number
+
+This allows for sophisticated rate limiting behavior that adapts to runtime conditions.
 
 ### Callback Options
 

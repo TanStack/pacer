@@ -1,3 +1,4 @@
+import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
 /**
@@ -6,9 +7,10 @@ import type { AnyFunction } from './types'
 export interface DebouncerOptions<TFn extends AnyFunction> {
   /**
    * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
    */
-  enabled?: boolean
+  enabled?: boolean | ((debouncer: Debouncer<TFn>) => boolean)
   /**
    * Whether to execute on the leading edge of the timeout.
    * The first call will execute immediately and the rest will wait the delay.
@@ -25,10 +27,11 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    */
   trailing?: boolean
   /**
-   * Delay in milliseconds before executing the function
+   * Delay in milliseconds before executing the function.
+   * Can be a number or a function that returns a number.
    * Defaults to 0ms
    */
-  wait: number
+  wait: number | ((debouncer: Debouncer<TFn>) => number)
 }
 
 const defaultOptions: Required<DebouncerOptions<any>> = {
@@ -100,6 +103,20 @@ export class Debouncer<TFn extends AnyFunction> {
   }
 
   /**
+   * Returns the current enabled state of the debouncer
+   */
+  getEnabled(): boolean {
+    return parseFunctionOrValue(!!this._options.enabled, this)
+  }
+
+  /**
+   * Returns the current wait time in milliseconds
+   */
+  getWait(): number {
+    return parseFunctionOrValue(this._options.wait, this)
+  }
+
+  /**
    * Attempts to execute the debounced function
    * If a call is already in progress, it will be queued
    */
@@ -127,11 +144,11 @@ export class Debouncer<TFn extends AnyFunction> {
       if (this._options.trailing && !_didLeadingExecute) {
         this.executeFunction(...args)
       }
-    }, this._options.wait)
+    }, this.getWait())
   }
 
   private executeFunction(...args: Parameters<TFn>): void {
-    if (!this._options.enabled) return undefined
+    if (!this.getEnabled()) return undefined
     this.fn(...args) // EXECUTE!
     this._isPending = false
     this._executionCount++
@@ -160,7 +177,7 @@ export class Debouncer<TFn extends AnyFunction> {
    * Returns `true` if debouncing
    */
   getIsPending(): boolean {
-    return this._options.enabled && this._isPending
+    return this.getEnabled() && this._isPending
   }
 }
 

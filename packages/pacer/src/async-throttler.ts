@@ -1,3 +1,4 @@
+import { parseFunctionOrValue } from './utils'
 import type { AnyAsyncFunction } from './types'
 
 /**
@@ -6,9 +7,10 @@ import type { AnyAsyncFunction } from './types'
 export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   /**
    * Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
    */
-  enabled?: boolean
+  enabled?: boolean | ((throttler: AsyncThrottler<TFn>) => boolean)
   /**
    * Whether to execute the function immediately when called
    * Defaults to true
@@ -35,10 +37,11 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    */
   trailing?: boolean
   /**
-   * Time window in milliseconds during which the function can only be executed once
+   * Time window in milliseconds during which the function can only be executed once.
+   * Can be a number or a function that returns a number.
    * Defaults to 0ms
    */
-  wait: number
+  wait: number | ((throttler: AsyncThrottler<TFn>) => number)
 }
 
 const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
@@ -121,6 +124,20 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   }
 
   /**
+   * Returns the current enabled state of the throttler
+   */
+  getEnabled(): boolean {
+    return parseFunctionOrValue(!!this._options.enabled, this)
+  }
+
+  /**
+   * Returns the current wait time in milliseconds
+   */
+  getWait(): number {
+    return parseFunctionOrValue(this._options.wait, this)
+  }
+
+  /**
    * Attempts to execute the throttled function
    * If a call is already in progress, it may be blocked or queued depending on the `wait` option
    */
@@ -129,9 +146,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> {
     const now = Date.now()
     const timeSinceLastExecution = now - this._lastExecutionTime
+    const wait = this.getWait()
 
     // Handle leading execution
-    if (this._options.leading && timeSinceLastExecution >= this._options.wait) {
+    if (this._options.leading && timeSinceLastExecution >= wait) {
       await this.executeFunction(...args)
       return this._lastResult
     } else {
@@ -149,7 +167,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
           const _timeSinceLastExecution = this._lastExecutionTime
             ? now - this._lastExecutionTime
             : 0
-          const timeoutDuration = this._options.wait - _timeSinceLastExecution
+          const timeoutDuration = wait - _timeSinceLastExecution
           this._timeoutId = setTimeout(async () => {
             if (this._lastArgs !== undefined) {
               await this.executeFunction(...this._lastArgs)
@@ -164,7 +182,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   private async executeFunction(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
-    if (!this._options.enabled || this._isExecuting) return undefined
+    if (!this.getEnabled() || this._isExecuting) return undefined
     this._abortController = new AbortController()
     try {
       this._isExecuting = true
@@ -179,7 +197,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this._settleCount++
       this._abortController = null
       this._lastExecutionTime = Date.now()
-      this._nextExecutionTime = this._lastExecutionTime + this._options.wait
+      this._nextExecutionTime = this._lastExecutionTime + this.getWait()
       this._options.onSettled(this)
     }
     return this._lastResult
@@ -246,7 +264,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    * Returns the current pending state
    */
   getIsPending(): boolean {
-    return this._options.enabled && !!this._timeoutId
+    return this.getEnabled() && !!this._timeoutId
   }
 
   /**

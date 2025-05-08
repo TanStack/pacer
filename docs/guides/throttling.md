@@ -122,7 +122,41 @@ const throttler = new Throttler(fn, { wait: 200, enabled: false }) // Disable by
 throttler.setOptions({ enabled: true }) // Enable at any time
 ```
 
+The `enabled` option can also be a function that returns a boolean, allowing for dynamic enabling/disabling based on runtime conditions:
+
+```ts
+const throttler = new Throttler(fn, {
+  wait: 200,
+  enabled: (throttler) => {
+    return throttler.getExecutionCount() < 50 // Disable after 50 executions
+  }
+})
+```
+
 If you are using a framework adapter where the throttler options are reactive, you can set the `enabled` option to a conditional value to enable/disable the throttler on the fly. However, if you are using the `throttle` function or the `Throttler` class directly, you must use the `setOptions` method to change the `enabled` option, since the options that are passed are actually passed to the constructor of the `Throttler` class.
+
+### Dynamic Options
+
+Several options in the Throttler support dynamic values through callback functions that receive the throttler instance:
+
+```ts
+const throttler = new Throttler(fn, {
+  // Dynamic wait time based on execution count
+  wait: (throttler) => {
+    return throttler.getExecutionCount() * 100 // Increase wait time with each execution
+  },
+  // Dynamic enabled state based on execution count
+  enabled: (throttler) => {
+    return throttler.getExecutionCount() < 50 // Disable after 50 executions
+  }
+})
+```
+
+The following options support dynamic values:
+- `enabled`: Can be a boolean or a function that returns a boolean
+- `wait`: Can be a number or a function that returns a number
+
+This allows for sophisticated throttling behavior that adapts to runtime conditions.
 
 ### Callback Options
 
