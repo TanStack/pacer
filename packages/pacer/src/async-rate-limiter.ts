@@ -18,6 +18,10 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    */
   onError?: (error: unknown, rateLimiter: AsyncRateLimiter<TFn>) => void
   /**
+   * Optional callback function that is called when an execution is rejected due to rate limiting
+   */
+  onReject?: (rateLimiter: AsyncRateLimiter<TFn>) => void
+  /**
    * Optional function to call when the rate-limited function is executed
    */
   onSettled?: (rateLimiter: AsyncRateLimiter<TFn>) => void
@@ -28,10 +32,6 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
     result: ReturnType<TFn>,
     rateLimiter: AsyncRateLimiter<TFn>,
   ) => void
-  /**
-   * Optional callback function that is called when an execution is rejected due to rate limiting
-   */
-  onReject?: (rateLimiter: AsyncRateLimiter<TFn>) => void
   /**
    * Time window in milliseconds within which the limit applies
    */
@@ -100,6 +100,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   private _rejectionCount = 0
   private _settleCount = 0
   private _successCount = 0
+  private _isExecuting = false
 
   constructor(
     private fn: TFn,
@@ -173,6 +174,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
     if (!this._options.enabled) return
+    this._isExecuting = true
     const now = Date.now()
     this._executionTimes.push(now)
 
@@ -184,6 +186,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       this._errorCount++
       this._options.onError?.(error, this)
     } finally {
+      this._isExecuting = false
       this._settleCount++
       this._options.onSettled?.(this)
     }
@@ -253,6 +256,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    */
   getRejectionCount(): number {
     return this._rejectionCount
+  }
+
+  /**
+   * Returns whether the function is currently executing
+   */
+  getIsExecuting(): boolean {
+    return this._isExecuting
   }
 
   /**

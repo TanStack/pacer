@@ -23,6 +23,35 @@ Executed:     ✅     ✅     ✅     ❌     ❌                             �
              [=== 3 allowed ===][=== blocked until window ends ===][=== new window =======]
 ```
 
+### Window Types
+
+TanStack Pacer supports two types of rate limiting windows:
+
+1. **Fixed Window** (default)
+   - A strict window that resets after the window period
+   - All executions within the window count towards the limit
+   - The window resets completely after the period
+   - Can lead to bursty behavior at window boundaries
+
+2. **Sliding Window**
+   - A rolling window that allows executions as old ones expire
+   - Provides a more consistent rate of execution over time
+   - Better for maintaining a steady flow of executions
+   - Prevents bursty behavior at window boundaries
+
+Here's a visualization of sliding window rate limiting:
+
+```text
+Sliding Window Rate Limiting (limit: 3 calls per window)
+Timeline: [1 second per tick]
+                                        Window 1                  |    Window 2            
+Calls:        ⬇️     ⬇️     ⬇️     ⬇️     ⬇️                             ⬇️     ⬇️
+Executed:     ✅     ✅     ✅     ❌     ✅                             ✅     ✅
+             [=== 3 allowed ===][=== oldest expires, new allowed ===][=== continues sliding =======]
+```
+
+The key difference is that with a sliding window, as soon as the oldest execution expires, a new execution is allowed. This creates a more consistent flow of executions compared to the fixed window approach.
+
 ### When to Use Rate Limiting
 
 Rate Limiting is particularly important when dealing with front-end operations that could accidentally overwhelm your back-end services or cause performance issues in the browser.
@@ -58,6 +87,7 @@ const rateLimitedApi = rateLimit(
   {
     limit: 5,
     window: 60 * 1000, // 1 minute in milliseconds
+    windowType: 'fixed', // default
     onReject: (rateLimiter) => {
       console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`)
     }
@@ -113,6 +143,9 @@ limiter.reset()
 ### Enabling/Disabling
 
 The `RateLimiter` class supports enabling/disabling via the `enabled` option. Using the `setOptions` method, you can enable/disable the rate limiter at any time:
+
+> [!NOTE]
+> The `enabled` option enables/disables the actual function execution. Disabling the rate limiter does not turn off rate limiting, it just prevents the function from being executed at all.
 
 ```ts
 const limiter = new RateLimiter(fn, { 
@@ -186,23 +219,18 @@ The async rate limiter provides a powerful way to handle asynchronous operations
 1. **Return Value Handling**
 Unlike the synchronous rate limiter which returns a boolean indicating success, the async version allows you to capture and use the return value from your rate-limited function. This is particularly useful when you need to work with the results of API calls or other async operations. The `maybeExecute` method returns a Promise that resolves with the function's return value, allowing you to await the result and handle it appropriately.
 
-2. **Enhanced Callback System**
-The async rate limiter provides a more sophisticated callback system compared to the synchronous version's callbacks. This system includes:
-- `onExecute`: Called after each successful execution, providing the rate limiter instance
-- `onReject`: Called when an execution is rejected due to rate limiting, providing the rate limiter instance
+2. **Different Callbacks**
+The `AsyncRateLimiter` supports the following callbacks instead of just `onExecute` in the synchronous version:
+- `onSuccess`: Called after each successful execution, providing the rate limiter instance
+- `onSettled`: Called after each execution, providing the rate limiter instance
 - `onError`: Called if the async function throws an error, providing both the error and the rate limiter instance
 
-3. **Execution Tracking**
-The async rate limiter provides comprehensive execution tracking through several methods:
-- `getExecutionCount()`: Number of successful executions
-- `getRejectionCount()`: Number of rejected executions
-- `getRemainingInWindow()`: Number of executions remaining in current window
-- `getMsUntilNextWindow()`: Milliseconds until the next window starts
+Both the Async and Synchronous rate limiters support the `onReject` callback for handling blocked executions.
 
-4. **Sequential Execution**
-The async rate limiter ensures that subsequent executions wait for the previous call to complete before starting. This prevents out-of-order execution and guarantees that each call processes the most up-to-date data. This is particularly important when dealing with operations that depend on the results of previous calls or when maintaining data consistency is critical.
+3. **Sequential Execution**
+Since the rate limiter's `maybeExecute` method returns a Promise, you can choose to await each execution before starting the next one. This gives you control over the execution order and ensures each call processes the most up-to-date data. This is particularly useful when dealing with operations that depend on the results of previous calls or when maintaining data consistency is critical.
 
-For example, if you're updating a user's profile and then immediately fetching their updated data, the async rate limiter will ensure the fetch operation waits for the update to complete, preventing race conditions where you might get stale data.
+For example, if you're updating a user's profile and then immediately fetching their updated data, you can await the update operation before starting the fetch:
 
 #### Basic Usage Example
 
@@ -232,19 +260,6 @@ const rateLimitedApi = asyncRateLimit(
 // Usage
 const result = await rateLimitedApi('123')
 ```
-
-#### Advanced Patterns
-
-The async rate limiter can be combined with various patterns to solve complex problems:
-
-1. **State Management Integration**
-When using the async rate limiter with state management systems (like React's useState or Solid's createSignal), you can create powerful patterns for handling loading states, error states, and data updates. The rate limiter's callbacks provide perfect hooks for updating UI state based on the success or failure of operations.
-
-2. **Race Condition Prevention**
-The rate limiting pattern naturally prevents race conditions in many scenarios. When multiple parts of your application try to update the same resource simultaneously, the rate limiter ensures that updates occur within the configured limits, while still providing results to all callers.
-
-3. **Error Recovery**
-The async rate limiter's error handling capabilities make it ideal for implementing retry logic and error recovery patterns. You can use the `onError` callback to implement custom error handling strategies, such as exponential backoff or fallback mechanisms.
 
 ### Framework Adapters
 

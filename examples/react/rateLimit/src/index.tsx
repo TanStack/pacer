@@ -12,6 +12,7 @@ function App1() {
     rateLimit(setRateLimitedCount, {
       limit: 5,
       window: 5000,
+      // windowType: 'sliding', // default is 'fixed'
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
