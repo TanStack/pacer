@@ -1,5 +1,17 @@
 # @tanstack/react-pacer
 
+## 0.4.0
+
+### Minor Changes
+
+- Added fixed and sliding windowTypes to rate limiters ([#17](https://github.com/TanStack/pacer/pull/17))
+  Added `getIsExecuting` to `AsyncRateLimiter`
+
+### Patch Changes
+
+- Updated dependencies [[`f12ba56`](https://github.com/TanStack/pacer/commit/f12ba561d9eafb6a19a16514f8db1a2f5f6fda82)]:
+  - @tanstack/pacer@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes

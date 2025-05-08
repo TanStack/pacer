@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Utilities for debouncing, throttling, rate-limiting, queuing, and more.",
   "author": "Tanner Linsley",
   "license": "MIT",

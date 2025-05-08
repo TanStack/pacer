@@ -1,5 +1,12 @@
 # @tanstack/pacer
 
+## 0.4.0
+
+### Minor Changes
+
+- Added fixed and sliding windowTypes to rate limiters ([#17](https://github.com/TanStack/pacer/pull/17))
+  Added `getIsExecuting` to `AsyncRateLimiter`
+
 ## 0.3.0
 
 ### Minor Changes
