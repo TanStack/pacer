@@ -5,3 +5,4 @@
 ---
 
 Added fixed and sliding windowTypes to rate limiters
+Added `getIsExecuting` to `AsyncRateLimiter`
