@@ -58,19 +58,23 @@ const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
  * Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a
  * regular interval regardless of how often it's called.
  *
+ * Unlike the non-async Throttler, this async version supports returning values from the throttled function,
+ * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+ * instead of setting the result on a state variable from within the throttled function.
+ *
  * This is useful for rate-limiting API calls, handling scroll/resize events, or any scenario where you want to
  * ensure a maximum execution frequency.
  *
  * @example
  * ```ts
  * const throttler = new AsyncThrottler(async (value: string) => {
- *   await saveToAPI(value);
+ *   const result = await saveToAPI(value);
+ *   return result; // Return value is preserved
  * }, { wait: 1000 });
  *
  * // Will only execute once per second no matter how often called
- * inputElement.addEventListener('input', () => {
- *   throttler.maybeExecute(inputElement.value);
- * });
+ * // Returns the API response directly
+ * const result = await throttler.maybeExecute(inputElement.value);
  * ```
  */
 export class AsyncThrottler<TFn extends AnyAsyncFunction> {
@@ -258,15 +262,20 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
  * The throttled function will execute at most once per wait period, even if called multiple times.
  * If called while executing, it will wait until execution completes before scheduling the next call.
  *
+ * Unlike the non-async Throttler, this async version supports returning values from the throttled function,
+ * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+ * instead of setting the result on a state variable from within the throttled function.
+ *
  * @example
  * ```ts
- * const throttled = asyncThrottle(async () => {
- *   await someAsyncOperation();
+ * const throttled = asyncThrottle(async (value: string) => {
+ *   const result = await saveToAPI(value);
+ *   return result; // Return value is preserved
  * }, { wait: 1000 });
  *
  * // This will execute at most once per second
- * await throttled();
- * await throttled(); // Waits 1 second before executing
+ * // Returns the API response directly
+ * const result = await throttled(inputElement.value);
  * ```
  */
 export function asyncThrottle<TFn extends AnyAsyncFunction>(

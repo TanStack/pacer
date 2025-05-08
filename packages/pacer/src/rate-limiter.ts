@@ -25,6 +25,13 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    * Time window in milliseconds within which the limit applies
    */
   window: number
+  /**
+   * Type of window to use for rate limiting
+   * - 'fixed': Uses a fixed window that resets after the window period
+   * - 'sliding': Uses a sliding window that allows executions as old ones expire
+   * Defaults to 'fixed'
+   */
+  windowType?: 'fixed' | 'sliding'
 }
 
 const defaultOptions: Required<RateLimiterOptions<any>> = {
@@ -33,6 +40,7 @@ const defaultOptions: Required<RateLimiterOptions<any>> = {
   onExecute: () => {},
   onReject: () => {},
   window: 0,
+  windowType: 'fixed',
 }
 
 /**
@@ -41,6 +49,12 @@ const defaultOptions: Required<RateLimiterOptions<any>> = {
  * Rate limiting is a simple approach that allows a function to execute up to a limit within a time window,
  * then blocks all subsequent calls until the window passes. This can lead to "bursty" behavior where
  * all executions happen immediately, followed by a complete block.
+ *
+ * The rate limiter supports two types of windows:
+ * - 'fixed': A strict window that resets after the window period. All executions within the window count
+ *   towards the limit, and the window resets completely after the period.
+ * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
+ *   consistent rate of execution over time.
  *
  * For smoother execution patterns, consider using:
  * - Throttling: Ensures consistent spacing between executions (e.g. max once per 200ms)
@@ -53,7 +67,7 @@ const defaultOptions: Required<RateLimiterOptions<any>> = {
  * ```ts
  * const rateLimiter = new RateLimiter(
  *   (id: string) => api.getData(id),
- *   { limit: 5, window: 1000 } // 5 calls per second
+ *   { limit: 5, window: 1000, windowType: 'sliding' } // 5 calls per second with sliding window
  * );
  *
  * // Will execute immediately until limit reached, then block
@@ -109,13 +123,25 @@ export class RateLimiter<TFn extends AnyFunction> {
   maybeExecute(...args: Parameters<TFn>): boolean {
     this.cleanupOldExecutions()
 
-    if (this._executionTimes.length < this._options.limit) {
-      this.executeFunction(...args)
-      return true
+    if (this._options.windowType === 'sliding') {
+      // For sliding window, we can execute if we have capacity in the current window
+      if (this._executionTimes.length < this._options.limit) {
+        this.executeFunction(...args)
+        return true
+      }
+    } else {
+      // For fixed window, we need to check if we're in a new window
+      const now = Date.now()
+      const oldestExecution = Math.min(...this._executionTimes)
+      const isNewWindow = oldestExecution + this._options.window <= now
+
+      if (isNewWindow || this._executionTimes.length < this._options.limit) {
+        this.executeFunction(...args)
+        return true
+      }
     }
 
     this.rejectFunction()
-
     return false
   }
 
@@ -169,6 +195,9 @@ export class RateLimiter<TFn extends AnyFunction> {
    * Returns the number of milliseconds until the next execution will be possible
    */
   getMsUntilNextWindow(): number {
+    if (this.getRemainingInWindow() > 0) {
+      return 0
+    }
     const oldestExecution = Math.min(...this._executionTimes)
     return oldestExecution + this._options.window - Date.now()
   }
@@ -191,15 +220,22 @@ export class RateLimiter<TFn extends AnyFunction> {
  * - A throttler ensures even spacing between executions, which can be better for consistent performance
  * - A debouncer collapses multiple calls into one, which is better for handling bursts of events
  *
+ * The rate limiter supports two types of windows:
+ * - 'fixed': A strict window that resets after the window period. All executions within the window count
+ *   towards the limit, and the window resets completely after the period.
+ * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
+ *   consistent rate of execution over time.
+ *
  * Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
  * need to enforce a hard limit on the number of executions within a time period.
  *
  * @example
  * ```ts
- * // Rate limit to 5 calls per minute
+ * // Rate limit to 5 calls per minute with a sliding window
  * const rateLimited = rateLimit(makeApiCall, {
  *   limit: 5,
  *   window: 60000,
+ *   windowType: 'sliding',
  *   onReject: (rateLimiter) => {
  *     console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }

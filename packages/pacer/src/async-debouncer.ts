@@ -58,16 +58,20 @@ const defaultOptions: Required<AsyncDebouncerOptions<any>> = {
  * Unlike throttling which allows execution at regular intervals, debouncing prevents any execution until
  * the function stops being called for the specified delay period.
  *
+ * Unlike the non-async Debouncer, this async version supports returning values from the debounced function,
+ * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+ * instead of setting the result on a state variable from within the debounced function.
+ *
  * @example
  * ```ts
  * const asyncDebouncer = new AsyncDebouncer(async (value: string) => {
- *   await searchAPI(value);
+ *   const results = await searchAPI(value);
+ *   return results; // Return value is preserved
  * }, { wait: 500 });
  *
  * // Called on each keystroke but only executes after 500ms of no typing
- * inputElement.addEventListener('input', () => {
- *   asyncDebouncer.maybeExecute(inputElement.value);
- * });
+ * // Returns the API response directly
+ * const results = await asyncDebouncer.maybeExecute(inputElement.value);
  * ```
  */
 export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
@@ -245,16 +249,20 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
  * The debounced function will only execute once the wait period has elapsed without any new calls.
  * If called again during the wait period, the timer resets and a new wait period begins.
  *
+ * Unlike the non-async Debouncer, this async version supports returning values from the debounced function,
+ * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+ * instead of setting the result on a state variable from within the debounced function.
+ *
  * @example
  * ```ts
  * const debounced = asyncDebounce(async (value: string) => {
- *   await saveToAPI(value);
+ *   const result = await saveToAPI(value);
+ *   return result; // Return value is preserved
  * }, { wait: 1000 });
  *
  * // Will only execute once, 1 second after the last call
- * await debounced("first");  // Cancelled
- * await debounced("second"); // Cancelled
- * await debounced("third");  // Executes after 1s
+ * // Returns the API response directly
+ * const result = await debounced("third");
  * ```
  */
 export function asyncDebounce<TFn extends AnyAsyncFunction>(

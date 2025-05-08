@@ -9,9 +9,10 @@ function App1() {
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const rateLimiter = useRateLimiter(setLimitedCount, {
-    enabled: instantCount > 2,
+    // enabled: instantCount > 2,
     limit: 5,
     window: 5000,
+    // windowType: 'sliding', // default is 'fixed'
     onReject: (rateLimiter) =>
       console.log(
         'Rejected by rate limiter',
@@ -42,6 +43,19 @@ function App1() {
             <td>{rateLimiter.getRejectionCount()}</td>
           </tr>
           <tr>
+            <td>Remaining in Window:</td>
+            <td>{rateLimiter.getRemainingInWindow()}</td>
+          </tr>
+          <tr>
+            <td>Ms Until Next Window:</td>
+            <td>{rateLimiter.getMsUntilNextWindow()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
+          </tr>
+          <tr>
             <td>Instant Count:</td>
             <td>{instantCount}</td>
           </tr>
@@ -53,10 +67,7 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
-        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
-          Remaining in Window
-        </button>
-        <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
+        <button onClick={() => rateLimiter.reset()}>Reset</button>
       </div>
     </div>
   )
@@ -71,6 +82,7 @@ function App2() {
     enabled: instantSearch.length > 2, // optional, defaults to true
     limit: 5,
     window: 5000,
+    // windowType: 'sliding', // default is 'fixed'
     onReject: (rateLimiter) =>
       console.log(
         'Rejected by rate limiter',
@@ -108,8 +120,20 @@ function App2() {
             <td>{rateLimiter.getRejectionCount()}</td>
           </tr>
           <tr>
+            <td>Remaining in Window:</td>
+            <td>{rateLimiter.getRemainingInWindow()}</td>
+          </tr>
+          <tr>
+            <td>Ms Until Next Window:</td>
+            <td>{rateLimiter.getMsUntilNextWindow()}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
+          </tr>
+          <tr>
             <td>Instant Search:</td>
-            <td>{instantSearch}</td>
           </tr>
           <tr>
             <td>Rate Limited Search:</td>
@@ -118,10 +142,7 @@ function App2() {
         </tbody>
       </table>
       <div>
-        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
-          Remaining in Window
-        </button>
-        <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
+        <button onClick={() => rateLimiter.reset()}>Reset</button>
       </div>
     </div>
   )

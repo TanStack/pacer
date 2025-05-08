@@ -147,3 +147,18 @@ window: number;
 Defined in: [async-rate-limiter.ts:38](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L38)
 
 Time window in milliseconds within which the limit applies
+
+***
+
+### windowType?
+
+```ts
+optional windowType: "fixed" | "sliding";
+```
+
+Defined in: [async-rate-limiter.ts:45](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L45)
+
+Type of window to use for rate limiting
+- 'fixed': Uses a fixed window that resets after the window period
+- 'sliding': Uses a sliding window that allows executions as old ones expire
+Defaults to 'fixed'

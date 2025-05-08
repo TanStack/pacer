@@ -11,7 +11,7 @@ title: rateLimit
 function rateLimit<TFn>(fn, initialOptions): (...args) => boolean
 ```
 
-Defined in: [rate-limiter.ts:216](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L216)
+Defined in: [rate-limiter.ts:252](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L252)
 
 Creates a rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -19,6 +19,12 @@ Note that rate limiting is a simpler form of execution control compared to throt
 - A rate limiter will allow all executions until the limit is reached, then block all subsequent calls until the window resets
 - A throttler ensures even spacing between executions, which can be better for consistent performance
 - A debouncer collapses multiple calls into one, which is better for handling bursts of events
+
+The rate limiter supports two types of windows:
+- 'fixed': A strict window that resets after the window period. All executions within the window count
+  towards the limit, and the window resets completely after the period.
+- 'sliding': A rolling window that allows executions as old ones expire. This provides a more
+  consistent rate of execution over time.
 
 Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
 need to enforce a hard limit on the number of executions within a time period.
@@ -69,10 +75,11 @@ rateLimiter.maybeExecute('arg1', 'arg2'); // false
 ## Example
 
 ```ts
-// Rate limit to 5 calls per minute
+// Rate limit to 5 calls per minute with a sliding window
 const rateLimited = rateLimit(makeApiCall, {
   limit: 5,
   window: 60000,
+  windowType: 'sliding',
   onReject: (rateLimiter) => {
     console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }
