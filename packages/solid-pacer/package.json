@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/solid-pacer",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Utilities for debouncing and throttling functions in Solid.",
   "author": "Tanner Linsley",
   "license": "MIT",
