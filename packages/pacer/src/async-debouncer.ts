@@ -284,7 +284,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
  */
 export function asyncDebounce<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: Omit<AsyncDebouncerOptions<TFn>, 'enabled'>,
+  initialOptions: AsyncDebouncerOptions<TFn>,
 ) {
   const asyncDebouncer = new AsyncDebouncer(fn, initialOptions)
   return asyncDebouncer.maybeExecute.bind(asyncDebouncer)

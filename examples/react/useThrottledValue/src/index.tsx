@@ -13,7 +13,7 @@ function App1() {
   // optionally, grab the throttler from the last index of the returned array
   const [throttledCount] = useThrottledValue(instantCount, {
     wait: 1000,
-    // enabled: instantCount > 2, // optional, defaults to true
+    // enabled: () => instantCount > 2, // optional, defaults to true
   })
 
   return (

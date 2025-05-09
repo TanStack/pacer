@@ -82,7 +82,7 @@ const defaultOptions: Required<QueuerOptions<any>> = {
   onItemsChange: () => {},
   onReject: () => {},
   onExpire: () => {},
-  started: false,
+  started: true,
   wait: 0,
 }
 
@@ -505,7 +505,7 @@ export class Queuer<TValue> {
  * processPriority(3) // Processed before 1
  * ```
  */
-export function queue<TValue>(options: QueuerOptions<TValue> = {}) {
-  const queuer = new Queuer<TValue>({ ...options, started: true })
+export function queue<TValue>(options: QueuerOptions<TValue>) {
+  const queuer = new Queuer<TValue>(options)
   return queuer.addItem.bind(queuer)
 }

@@ -37,7 +37,7 @@ limits, consider using rateLimit().
 
 ### initialOptions
 
-`Omit`\<[`ThrottlerOptions`](../interfaces/throttleroptions.md)\<`TFn`\>, `"enabled"`\>
+[`ThrottlerOptions`](../interfaces/throttleroptions.md)\<`TFn`\>
 
 ## Returns
 

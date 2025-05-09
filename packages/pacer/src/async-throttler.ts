@@ -127,7 +127,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    * Returns the current enabled state of the throttler
    */
   getEnabled(): boolean {
-    return parseFunctionOrValue(!!this._options.enabled, this)
+    return parseFunctionOrValue(this._options.enabled, this)
   }
 
   /**
@@ -298,7 +298,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
  */
 export function asyncThrottle<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: Omit<AsyncThrottlerOptions<TFn>, 'enabled'>,
+  initialOptions: AsyncThrottlerOptions<TFn>,
 ) {
   const asyncThrottler = new AsyncThrottler(fn, initialOptions)
   return asyncThrottler.maybeExecute.bind(asyncThrottler)

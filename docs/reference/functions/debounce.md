@@ -34,7 +34,7 @@ before allowing another execution.
 
 ### initialOptions
 
-`Omit`\<[`DebouncerOptions`](../interfaces/debounceroptions.md)\<`TFn`\>, `"enabled"`\>
+[`DebouncerOptions`](../interfaces/debounceroptions.md)\<`TFn`\>
 
 ## Returns
 

@@ -106,7 +106,7 @@ export class Debouncer<TFn extends AnyFunction> {
    * Returns the current enabled state of the debouncer
    */
   getEnabled(): boolean {
-    return parseFunctionOrValue(!!this._options.enabled, this)
+    return parseFunctionOrValue(this._options.enabled, this)
   }
 
   /**
@@ -203,7 +203,7 @@ export class Debouncer<TFn extends AnyFunction> {
  */
 export function debounce<TFn extends AnyFunction>(
   fn: TFn,
-  initialOptions: Omit<DebouncerOptions<TFn>, 'enabled'>,
+  initialOptions: DebouncerOptions<TFn>,
 ): (...args: Parameters<TFn>) => void {
   const debouncer = new Debouncer(fn, initialOptions)
   return debouncer.maybeExecute.bind(debouncer)

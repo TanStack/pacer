@@ -33,7 +33,7 @@ instead of setting the result on a state variable from within the debounced func
 
 ### initialOptions
 
-`Omit`\<[`AsyncDebouncerOptions`](../interfaces/asyncdebounceroptions.md)\<`TFn`\>, `"enabled"`\>
+[`AsyncDebouncerOptions`](../interfaces/asyncdebounceroptions.md)\<`TFn`\>
 
 ## Returns
 

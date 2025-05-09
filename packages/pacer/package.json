@@ -131,8 +131,14 @@
       "types": "./dist/esm/types.d.ts"
     },
     "./utils": {
-      "types": "./dist/esm/utils.d.ts",
-      "default": "./dist/esm/utils.js"
+      "import": {
+        "types": "./dist/esm/utils.d.ts",
+        "default": "./dist/esm/utils.js"
+      },
+      "require": {
+        "types": "./dist/cjs/utils.d.cts",
+        "default": "./dist/cjs/utils.cjs"
+      }
     },
     "./package.json": "./package.json"
   },

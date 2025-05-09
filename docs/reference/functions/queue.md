@@ -29,7 +29,7 @@ directly which provides methods like `start`, `stop`, `reset`, and more.
 
 ### options
 
-[`QueuerOptions`](../interfaces/queueroptions.md)\<`TValue`\> = `{}`
+[`QueuerOptions`](../interfaces/queueroptions.md)\<`TValue`\>
 
 ## Returns
 

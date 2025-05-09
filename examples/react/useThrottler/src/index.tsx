@@ -12,7 +12,7 @@ function App1() {
     wait: 1000,
     leading: false,
     // trailing: true,
-    // enabled: instantCount > 2,
+    // enabled: () => instantCount > 2,
   })
 
   function increment() {

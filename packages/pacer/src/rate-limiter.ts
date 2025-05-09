@@ -1,3 +1,4 @@
+import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
 /**
@@ -8,7 +9,7 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
    */
-  enabled?: boolean
+  enabled?: boolean | ((rateLimiter: RateLimiter<TFn>) => boolean)
   /**
    * Maximum number of executions allowed within the time window.
    * Can be a number or a callback function that receives the rate limiter instance and returns a number.
@@ -108,19 +109,24 @@ export class RateLimiter<TFn extends AnyFunction> {
   }
 
   /**
+   * Returns the current enabled state of the rate limiter
+   */
+  getEnabled(): boolean {
+    return parseFunctionOrValue(this._options.enabled, this)!
+  }
+
+  /**
    * Returns the current limit of executions allowed within the time window
    */
   getLimit(): number {
-    const limit = this._options.limit
-    return typeof limit === 'function' ? limit(this) : limit
+    return parseFunctionOrValue(this._options.limit, this)
   }
 
   /**
    * Returns the current time window in milliseconds
    */
   getWindow(): number {
-    const window = this._options.window
-    return typeof window === 'function' ? window(this) : window
+    return parseFunctionOrValue(this._options.window, this)
   }
 
   /**
@@ -164,7 +170,7 @@ export class RateLimiter<TFn extends AnyFunction> {
   }
 
   private executeFunction(...args: Parameters<TFn>): void {
-    if (!this._options.enabled) return
+    if (!this.getEnabled()) return
     const now = Date.now()
     this._executionCount++
     this._executionTimes.push(now)
@@ -269,7 +275,7 @@ export class RateLimiter<TFn extends AnyFunction> {
  */
 export function rateLimit<TFn extends AnyFunction>(
   fn: TFn,
-  initialOptions: Omit<RateLimiterOptions<TFn>, 'enabled'>,
+  initialOptions: RateLimiterOptions<TFn>,
 ) {
   const rateLimiter = new RateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)

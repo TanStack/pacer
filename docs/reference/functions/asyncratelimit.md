@@ -45,7 +45,7 @@ need to enforce a hard limit on the number of executions within a time period.
 
 ### initialOptions
 
-`Omit`\<[`AsyncRateLimiterOptions`](../interfaces/asyncratelimiteroptions.md)\<`TFn`\>, `"enabled"`\>
+[`AsyncRateLimiterOptions`](../interfaces/asyncratelimiteroptions.md)\<`TFn`\>
 
 ## Returns
 

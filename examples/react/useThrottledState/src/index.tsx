@@ -11,7 +11,7 @@ function App1() {
     instantCount,
     {
       wait: 1000,
-      // enabled: instantCount > 2, // optional, defaults to true
+      // enabled: () => instantCount > 2, // optional, defaults to true
     },
   )
 

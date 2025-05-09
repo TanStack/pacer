@@ -1,4 +1,5 @@
 import { parseFunctionOrValue } from './utils'
+import type { AnyAsyncFunction } from './types'
 import type { QueuePosition } from './queuer'
 
 export interface AsyncQueuerOptions<TValue> {
@@ -342,9 +343,9 @@ export class AsyncQueuer<TValue> {
    * Adds a task to the queuer
    */
   addItem(
-    fn: (() => Promise<TValue>) & { priority?: number },
+    fn: AnyAsyncFunction & { priority?: number },
     position: QueuePosition = this._options.addItemsTo,
-    runOnUpdate: boolean = true,
+    runOnItemsChange: boolean = true,
   ): Promise<TValue> {
     if (this.getIsFull()) {
       this._rejectionCount++
@@ -401,7 +402,7 @@ export class AsyncQueuer<TValue> {
         }
       }
 
-      if (runOnUpdate) {
+      if (runOnItemsChange) {
         this._options.onItemsChange(this)
       }
 
@@ -577,9 +578,7 @@ export class AsyncQueuer<TValue> {
  * @param options - Configuration options for the AsyncQueuer
  * @returns A bound addItem function that can be used to add tasks to the queuer
  */
-export function asyncQueue<TValue>(
-  options: Omit<AsyncQueuerOptions<TValue>, 'started'> = {},
-) {
+export function asyncQueue<TValue>(options: AsyncQueuerOptions<TValue>) {
   const queuer = new AsyncQueuer<TValue>(options)
   return queuer.addItem.bind(queuer)
 }

@@ -135,7 +135,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    * Returns the current enabled state of the rate limiter
    */
   getEnabled(): boolean {
-    return parseFunctionOrValue(!!this._options.enabled, this)
+    return !!parseFunctionOrValue(this._options.enabled, this)
   }
 
   /**
@@ -349,7 +349,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
  */
 export function asyncRateLimit<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: Omit<AsyncRateLimiterOptions<TFn>, 'enabled'>,
+  initialOptions: AsyncRateLimiterOptions<TFn>,
 ) {
   const rateLimiter = new AsyncRateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)

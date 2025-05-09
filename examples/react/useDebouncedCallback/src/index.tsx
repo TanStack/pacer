@@ -10,7 +10,7 @@ function App1() {
   // Create debounced setter function - Stable reference provided by useDebouncedCallback
   const debouncedSetCount = useDebouncedCallback(setDebouncedCount, {
     wait: 500,
-    // enabled: instantCount > 2, // optional, defaults to true
+    // enabled: () => instantCount > 2, // optional, defaults to true
     // leading: true, // optional, defaults to false
   })
 
@@ -52,7 +52,7 @@ function App2() {
   // Create debounced setter function - Stable reference provided by useDebouncedCallback
   const debouncedSetSearch = useDebouncedCallback(setDebouncedSearchText, {
     wait: 500,
-    enabled: searchText.length > 2,
+    enabled: () => searchText.length > 2,
   })
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {

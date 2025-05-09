@@ -33,7 +33,7 @@ instead of setting the result on a state variable from within the throttled func
 
 ### initialOptions
 
-`Omit`\<[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\<`TFn`\>, `"enabled"`\>
+[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\<`TFn`\>
 
 ## Returns
 

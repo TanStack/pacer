@@ -9,7 +9,7 @@ function App1() {
   const [limitedCount, setLimitedCount, rateLimiter] = useRateLimitedState(
     instantCount,
     {
-      // enabled: instantCount > 2, // optional, defaults to true
+      // enabled: () => instantCount > 2, // optional, defaults to true
       limit: 5,
       window: 5000,
       onReject: (rateLimiter) =>
