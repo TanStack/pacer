@@ -10,7 +10,7 @@ function App1() {
   // Create throttled setter function - Stable reference provided by useThrottledCallback
   const throttledSetCount = useThrottledCallback(setThrottledCount, {
     wait: 1000,
-    enabled: instantCount > 2,
+    enabled: () => instantCount > 2,
   })
 
   function increment() {
@@ -51,7 +51,7 @@ function App2() {
   // Create throttled setter function - Stable reference provided by useThrottledCallback
   const throttledSetSearch = useThrottledCallback(setThrottledSearchText, {
     wait: 1000,
-    enabled: searchText.length > 2,
+    enabled: () => searchText.length > 2,
   })
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {

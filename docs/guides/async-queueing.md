@@ -341,11 +341,12 @@ const queue = new AsyncQueuer<string>({
 
 ### Dynamic Configuration
 
-The AsyncQueuer's options can be modified after creation using `setOptions()` and retrieved using `getOptions()`:
+The AsyncQueuer's options can be modified after creation using `setOptions()` and retrieved using `getOptions()`. Additionally, several options support dynamic values through callback functions:
 
 ```ts
 const queue = new AsyncQueuer<string>({
   concurrency: 2,
+  wait: 1000,
   started: false
 })
 
@@ -359,6 +360,29 @@ queue.setOptions({
 const options = queue.getOptions()
 console.log(options.concurrency) // 4
 ```
+
+### Dynamic Options
+
+Several options in the AsyncQueuer support dynamic values through callback functions that receive the queuer instance:
+
+```ts
+const queue = new AsyncQueuer<string>({
+  // Dynamic concurrency based on system load
+  concurrency: (queuer) => {
+    return Math.max(1, 4 - queuer.getActiveItems().length)
+  },
+  // Dynamic wait time based on queue size
+  wait: (queuer) => {
+    return queuer.getSize() > 10 ? 2000 : 1000
+  }
+})
+```
+
+The following options support dynamic values:
+- `concurrency`: Can be a number or a function that returns a number
+- `wait`: Can be a number or a function that returns a number
+
+This allows for sophisticated queue behavior that adapts to runtime conditions.
 
 ### Active and Pending Tasks
 

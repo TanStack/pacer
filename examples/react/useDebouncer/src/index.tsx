@@ -10,7 +10,7 @@ function App1() {
   // Lower-level useDebouncer hook - requires you to manage your own state
   const setCountDebouncer = useDebouncer(setDebouncedCount, {
     wait: 500,
-    // enabled: instantCount > 2, // optional, defaults to true
+    // enabled: () => instantCount > 2, // optional, defaults to true
     // leading: true, // optional, defaults to false
   })
 
@@ -30,7 +30,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Enabled:</td>
-            <td>{setCountDebouncer.getOptions().enabled.toString()}</td>
+            <td>{setCountDebouncer.getEnabled().toString()}</td>
           </tr>
           <tr>
             <td>Is Pending:</td>
@@ -69,7 +69,7 @@ function App2() {
   // Lower-level useDebouncer hook - requires you to manage your own state
   const setSearchDebouncer = useDebouncer(setDebouncedSearchText, {
     wait: 500,
-    enabled: searchText.length > 2, // optional, defaults to true
+    enabled: () => searchText.length > 2, // optional, defaults to true
   })
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {

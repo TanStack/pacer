@@ -8,7 +8,7 @@ function App1() {
   // Using useRateLimitedValue with a rate limit of 5 executions per 5 seconds
   // optionally, grab the rate limiter from the last index of the returned array
   const [limitedCount] = useRateLimitedValue(instantCount, {
-    // enabled: instantCount > 2, // optional, defaults to true
+    // enabled: () => instantCount > 2, // optional, defaults to true
     limit: 5,
     window: 5000,
     onReject: (rateLimiter) =>

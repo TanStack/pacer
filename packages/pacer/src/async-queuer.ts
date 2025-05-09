@@ -1,3 +1,5 @@
+import { parseFunctionOrValue } from './utils'
+import type { AnyAsyncFunction } from './types'
 import type { QueuePosition } from './queuer'
 
 export interface AsyncQueuerOptions<TValue> {
@@ -7,9 +9,11 @@ export interface AsyncQueuerOptions<TValue> {
    */
   addItemsTo?: QueuePosition
   /**
-   * Maximum number of concurrent tasks to process
+   * Maximum number of concurrent tasks to process.
+   * Can be a number or a function that returns a number.
+   * @default 1
    */
-  concurrency?: number
+  concurrency?: number | ((queuer: AsyncQueuer<TValue>) => number)
   /**
    * Maximum time in milliseconds that an item can stay in the queue
    * If not provided, items will never expire
@@ -67,9 +71,11 @@ export interface AsyncQueuerOptions<TValue> {
    */
   started?: boolean
   /**
-   * Time in milliseconds to wait between processing items
+   * Time in milliseconds to wait between processing items.
+   * Can be a number or a function that returns a number.
+   * @default 0
    */
-  wait?: number
+  wait?: number | ((queuer: AsyncQueuer<TValue>) => number)
 }
 
 const defaultOptions: Required<AsyncQueuerOptions<any>> = {
@@ -161,6 +167,20 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
+   * Returns the current wait time between processing items
+   */
+  getWait(): number {
+    return parseFunctionOrValue(this._options.wait, this)
+  }
+
+  /**
+   * Returns the current concurrency limit
+   */
+  getConcurrency(): number {
+    return parseFunctionOrValue(this._options.concurrency, this)
+  }
+
+  /**
    * Processes items in the queuer
    */
   private tick() {
@@ -173,7 +193,7 @@ export class AsyncQueuer<TValue> {
     this.checkExpiredItems()
 
     while (
-      this._activeItems.size < this._options.concurrency &&
+      this._activeItems.size < this.getConcurrency() &&
       !this.getIsEmpty()
     ) {
       const nextFn = this.getNextItem()
@@ -204,8 +224,9 @@ export class AsyncQueuer<TValue> {
         }
         this._onSettledCallbacks.forEach((cb) => cb(success ? res : error!))
 
-        if (this._options.wait > 0) {
-          setTimeout(() => this.tick(), this._options.wait)
+        const wait = this.getWait()
+        if (wait > 0) {
+          setTimeout(() => this.tick(), wait)
           return
         }
 
@@ -322,9 +343,9 @@ export class AsyncQueuer<TValue> {
    * Adds a task to the queuer
    */
   addItem(
-    fn: (() => Promise<TValue>) & { priority?: number },
+    fn: AnyAsyncFunction & { priority?: number },
     position: QueuePosition = this._options.addItemsTo,
-    runOnUpdate: boolean = true,
+    runOnItemsChange: boolean = true,
   ): Promise<TValue> {
     if (this.getIsFull()) {
       this._rejectionCount++
@@ -381,7 +402,7 @@ export class AsyncQueuer<TValue> {
         }
       }
 
-      if (runOnUpdate) {
+      if (runOnItemsChange) {
         this._options.onItemsChange(this)
       }
 
@@ -557,9 +578,7 @@ export class AsyncQueuer<TValue> {
  * @param options - Configuration options for the AsyncQueuer
  * @returns A bound addItem function that can be used to add tasks to the queuer
  */
-export function asyncQueue<TValue>(
-  options: Omit<AsyncQueuerOptions<TValue>, 'started'> = {},
-) {
+export function asyncQueue<TValue>(options: AsyncQueuerOptions<TValue>) {
   const queuer = new AsyncQueuer<TValue>(options)
   return queuer.addItem.bind(queuer)
 }

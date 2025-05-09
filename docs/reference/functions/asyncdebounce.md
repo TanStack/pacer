@@ -11,7 +11,7 @@ title: asyncDebounce
 function asyncDebounce<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:268](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L268)
+Defined in: [async-debouncer.ts:285](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L285)
 
 Creates an async debounced function that delays execution until after a specified wait time.
 The debounced function will only execute once the wait period has elapsed without any new calls.
@@ -33,7 +33,7 @@ instead of setting the result on a state variable from within the debounced func
 
 ### initialOptions
 
-`Omit`\<[`AsyncDebouncerOptions`](../interfaces/asyncdebounceroptions.md)\<`TFn`\>, `"enabled"`\>
+[`AsyncDebouncerOptions`](../interfaces/asyncdebounceroptions.md)\<`TFn`\>
 
 ## Returns
 

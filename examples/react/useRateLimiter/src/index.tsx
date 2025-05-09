@@ -9,7 +9,7 @@ function App1() {
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const rateLimiter = useRateLimiter(setLimitedCount, {
-    // enabled: instantCount > 2,
+    // enabled: () => instantCount > 2,
     limit: 5,
     window: 5000,
     // windowType: 'sliding', // default is 'fixed'

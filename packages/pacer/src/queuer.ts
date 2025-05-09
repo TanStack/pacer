@@ -1,3 +1,5 @@
+import { parseFunctionOrValue } from './utils'
+
 /**
  * Options for configuring a Queuer instance
  */
@@ -60,9 +62,11 @@ export interface QueuerOptions<TValue> {
    */
   started?: boolean
   /**
-   * Time in milliseconds to wait between processing items
+   * Time in milliseconds to wait between processing items.
+   * Can be a number or a function that returns a number.
+   * @default 0
    */
-  wait?: number
+  wait?: number | ((queuer: Queuer<TValue>) => number)
 }
 
 const defaultOptions: Required<QueuerOptions<any>> = {
@@ -78,7 +82,7 @@ const defaultOptions: Required<QueuerOptions<any>> = {
   onItemsChange: () => {},
   onReject: () => {},
   onExpire: () => {},
-  started: false,
+  started: true,
   wait: 0,
 }
 
@@ -179,6 +183,13 @@ export class Queuer<TValue> {
   }
 
   /**
+   * Returns the current wait time in milliseconds
+   */
+  getWait(): number {
+    return parseFunctionOrValue(this._options.wait, this)
+  }
+
+  /**
    * Processes items in the queuer
    */
   private tick() {
@@ -197,9 +208,10 @@ export class Queuer<TValue> {
       }
       this._onItemsChanges.forEach((cb) => cb(nextItem))
 
-      if (this._options.wait > 0) {
+      const wait = this.getWait()
+      if (wait > 0) {
         // Use setTimeout to wait before processing next item
-        setTimeout(() => this.tick(), this._options.wait)
+        setTimeout(() => this.tick(), wait)
         return
       }
 
@@ -493,7 +505,7 @@ export class Queuer<TValue> {
  * processPriority(3) // Processed before 1
  * ```
  */
-export function queue<TValue>(options: QueuerOptions<TValue> = {}) {
-  const queuer = new Queuer<TValue>({ ...options, started: true })
+export function queue<TValue>(options: QueuerOptions<TValue>) {
+  const queuer = new Queuer<TValue>(options)
   return queuer.addItem.bind(queuer)
 }

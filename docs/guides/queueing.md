@@ -343,7 +343,7 @@ const queue = new Queuer<number>({
 
 ### Dynamic Configuration
 
-The Queuer's options can be modified after creation using `setOptions()` and retrieved using `getOptions()`:
+The Queuer's options can be modified after creation using `setOptions()` and retrieved using `getOptions()`. Additionally, several options support dynamic values through callback functions:
 
 ```ts
 const queue = new Queuer<number>({
@@ -361,6 +361,24 @@ queue.setOptions({
 const options = queue.getOptions()
 console.log(options.wait) // 500
 ```
+
+### Dynamic Options
+
+Several options in the Queuer support dynamic values through callback functions that receive the queuer instance:
+
+```ts
+const queue = new Queuer<number>({
+  // Dynamic wait time based on queue size
+  wait: (queuer) => {
+    return queuer.getSize() > 10 ? 2000 : 1000
+  }
+})
+```
+
+The following options support dynamic values:
+- `wait`: Can be a number or a function that returns a number
+
+This allows for sophisticated queue behavior that adapts to runtime conditions.
 
 ### Performance Monitoring
 

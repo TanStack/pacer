@@ -11,7 +11,7 @@ function App1() {
   const rateLimitedSetCount = useRateLimitedCallback(setRateLimitedCount, {
     limit: 5,
     window: 5000,
-    enabled: instantCount > 2,
+    enabled: () => instantCount > 2,
     onReject: (rateLimiter) => {
       console.log(
         `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
@@ -60,7 +60,7 @@ function App2() {
     {
       limit: 5,
       window: 5000,
-      enabled: searchText.length > 2,
+      enabled: () => searchText.length > 2,
       onReject: (rateLimiter) => {
         console.log(
           `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,

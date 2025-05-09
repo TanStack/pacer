@@ -8,10 +8,10 @@ title: asyncQueue
 # Function: asyncQueue()
 
 ```ts
-function asyncQueue<TValue>(options): (fn, position, runOnUpdate) => Promise<TValue>
+function asyncQueue<TValue>(options): (fn, position, runOnItemsChange) => Promise<TValue>
 ```
 
-Defined in: [async-queuer.ts:560](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L560)
+Defined in: [async-queuer.ts:581](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L581)
 
 Creates a new AsyncQueuer instance with the given options and returns a bound addItem function.
 The queuer is automatically started and ready to process items.
@@ -24,7 +24,7 @@ The queuer is automatically started and ready to process items.
 
 ### options
 
-`Omit`\<[`AsyncQueuerOptions`](../interfaces/asyncqueueroptions.md)\<`TValue`\>, `"started"`\> = `{}`
+[`AsyncQueuerOptions`](../interfaces/asyncqueueroptions.md)\<`TValue`\>
 
 Configuration options for the AsyncQueuer
 
@@ -40,13 +40,13 @@ Adds a task to the queuer
 
 #### fn
 
-() => `Promise`\<`TValue`\> & `object`
+[`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md) & `object`
 
 #### position
 
 [`QueuePosition`](../type-aliases/queueposition.md) = `...`
 
-#### runOnUpdate
+#### runOnItemsChange
 
 `boolean` = `true`
 

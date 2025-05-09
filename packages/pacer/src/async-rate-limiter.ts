@@ -1,3 +1,4 @@
+import { parseFunctionOrValue } from './utils'
 import type { AnyAsyncFunction } from './types'
 
 /**
@@ -6,13 +7,15 @@ import type { AnyAsyncFunction } from './types'
 export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
    */
-  enabled?: boolean
+  enabled?: boolean | ((rateLimiter: AsyncRateLimiter<TFn>) => boolean)
   /**
-   * Maximum number of executions allowed within the time window
+   * Maximum number of executions allowed within the time window.
+   * Can be a number or a function that returns a number.
    */
-  limit: number
+  limit: number | ((rateLimiter: AsyncRateLimiter<TFn>) => number)
   /**
    * Optional error handler for when the rate-limited function throws
    */
@@ -33,9 +36,10 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
     rateLimiter: AsyncRateLimiter<TFn>,
   ) => void
   /**
-   * Time window in milliseconds within which the limit applies
+   * Time window in milliseconds within which the limit applies.
+   * Can be a number or a function that returns a number.
    */
-  window: number
+  window: number | ((rateLimiter: AsyncRateLimiter<TFn>) => number)
   /**
    * Type of window to use for rate limiting
    * - 'fixed': Uses a fixed window that resets after the window period
@@ -128,6 +132,27 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   }
 
   /**
+   * Returns the current enabled state of the rate limiter
+   */
+  getEnabled(): boolean {
+    return !!parseFunctionOrValue(this._options.enabled, this)
+  }
+
+  /**
+   * Returns the current limit of executions allowed within the time window
+   */
+  getLimit(): number {
+    return parseFunctionOrValue(this._options.limit, this)
+  }
+
+  /**
+   * Returns the current time window in milliseconds
+   */
+  getWindow(): number {
+    return parseFunctionOrValue(this._options.window, this)
+  }
+
+  /**
    * Attempts to execute the rate-limited function if within the configured limits.
    * Will reject execution if the number of calls in the current window exceeds the limit.
    * If execution is allowed, waits for any previous execution to complete before proceeding.
@@ -148,9 +173,12 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> {
     this.cleanupOldExecutions()
 
+    const limit = this.getLimit()
+    const window = this.getWindow()
+
     if (this._options.windowType === 'sliding') {
       // For sliding window, we can execute if we have capacity in the current window
-      if (this._executionTimes.length < this._options.limit) {
+      if (this._executionTimes.length < limit) {
         await this.executeFunction(...args)
         return this._lastResult
       }
@@ -158,9 +186,9 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       // For fixed window, we need to check if we're in a new window
       const now = Date.now()
       const oldestExecution = Math.min(...this._executionTimes)
-      const isNewWindow = oldestExecution + this._options.window <= now
+      const isNewWindow = oldestExecution + window <= now
 
-      if (isNewWindow || this._executionTimes.length < this._options.limit) {
+      if (isNewWindow || this._executionTimes.length < limit) {
         await this.executeFunction(...args)
         return this._lastResult
       }
@@ -173,7 +201,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   private async executeFunction(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
-    if (!this._options.enabled) return
+    if (!this.getEnabled()) return
     this._isExecuting = true
     const now = Date.now()
     this._executionTimes.push(now)
@@ -203,7 +231,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
 
   private cleanupOldExecutions(): void {
     const now = Date.now()
-    const windowStart = now - this._options.window
+    const windowStart = now - this.getWindow()
     this._executionTimes = this._executionTimes.filter(
       (time) => time > windowStart,
     )
@@ -214,7 +242,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    */
   getRemainingInWindow(): number {
     this.cleanupOldExecutions()
-    return Math.max(0, this._options.limit - this._executionTimes.length)
+    return Math.max(0, this.getLimit() - this._executionTimes.length)
   }
 
   /**
@@ -227,7 +255,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       return 0
     }
     const oldestExecution = Math.min(...this._executionTimes)
-    return oldestExecution + this._options.window - Date.now()
+    return oldestExecution + this.getWindow() - Date.now()
   }
 
   /**
@@ -321,7 +349,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
  */
 export function asyncRateLimit<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: Omit<AsyncRateLimiterOptions<TFn>, 'enabled'>,
+  initialOptions: AsyncRateLimiterOptions<TFn>,
 ) {
   const rateLimiter = new AsyncRateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)

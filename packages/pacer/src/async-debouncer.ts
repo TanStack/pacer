@@ -1,3 +1,4 @@
+import { parseFunctionOrValue } from './utils'
 import type { AnyAsyncFunction } from './types'
 
 /**
@@ -6,9 +7,10 @@ import type { AnyAsyncFunction } from './types'
 export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
   /**
    * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
    */
-  enabled?: boolean
+  enabled?: boolean | ((debouncer: AsyncDebouncer<TFn>) => boolean)
   /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to false.
@@ -32,10 +34,11 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    */
   trailing?: boolean
   /**
-   * Delay in milliseconds to wait after the last call before executing
+   * Delay in milliseconds to wait after the last call before executing.
+   * Can be a number or a function that returns a number.
    * Defaults to 0ms
    */
-  wait: number
+  wait: number | ((debouncer: AsyncDebouncer<TFn>) => number)
 }
 
 const defaultOptions: Required<AsyncDebouncerOptions<any>> = {
@@ -118,6 +121,20 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   /**
+   * Returns the current debouncer enabled state
+   */
+  getEnabled(): boolean {
+    return parseFunctionOrValue(this._options.enabled, this)
+  }
+
+  /**
+   * Returns the current debouncer wait state
+   */
+  getWait(): number {
+    return parseFunctionOrValue(this._options.wait, this)
+  }
+
+  /**
    * Attempts to execute the debounced function
    * If a call is already in progress, it will be queued
    */
@@ -149,14 +166,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         // Reset state and resolve
         this._canLeadingExecute = true
         resolve(this._lastResult)
-      }, this._options.wait)
+      }, this.getWait())
     })
   }
 
   private async executeFunction(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
-    if (!this._options.enabled) return undefined
+    if (!this.getEnabled()) return undefined
     this._abortController = new AbortController()
     try {
       this._isExecuting = true
@@ -233,7 +250,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * Returns `true` if there is a pending execution queued up for trailing execution
    */
   getIsPending(): boolean {
-    return this._options.enabled && this._isPending
+    return this.getEnabled() && this._isPending
   }
 
   /**
@@ -267,7 +284,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
  */
 export function asyncDebounce<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: Omit<AsyncDebouncerOptions<TFn>, 'enabled'>,
+  initialOptions: AsyncDebouncerOptions<TFn>,
 ) {
   const asyncDebouncer = new AsyncDebouncer(fn, initialOptions)
   return asyncDebouncer.maybeExecute.bind(asyncDebouncer)

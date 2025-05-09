@@ -3,13 +3,18 @@ import { Queuer } from '../src/queuer'
 
 describe('Queuer', () => {
   it('should create an empty queuer', () => {
-    const queuer = new Queuer()
+    const queuer = new Queuer({ started: false })
     expect(queuer.getIsEmpty()).toBe(true)
     expect(queuer.getSize()).toBe(0)
   })
 
+  it('should start with started: true by default', () => {
+    const queuer = new Queuer()
+    expect(queuer.getIsRunning()).toBe(true)
+  })
+
   it('should respect maxSize option', () => {
-    const queuer = new Queuer({ maxSize: 2 })
+    const queuer = new Queuer({ maxSize: 2, started: false })
     expect(queuer.addItem(1)).toBe(true)
     expect(queuer.addItem(2)).toBe(true)
     expect(queuer.addItem(3)).toBe(false)
@@ -18,7 +23,7 @@ describe('Queuer', () => {
 
   describe('addItem', () => {
     it('should add items to the queuer', () => {
-      const queuer = new Queuer<number>()
+      const queuer = new Queuer<number>({ started: false })
       expect(queuer.addItem(1)).toBe(true)
       expect(queuer.getSize()).toBe(1)
       expect(queuer.getPeek()).toBe(1)
@@ -27,7 +32,7 @@ describe('Queuer', () => {
 
   describe('getNextItem', () => {
     it('should remove and return items in FIFO order', () => {
-      const queuer = new Queuer<number>()
+      const queuer = new Queuer<number>({ started: false })
       queuer.addItem(1)
       queuer.addItem(2)
       queuer.addItem(3)
@@ -39,14 +44,14 @@ describe('Queuer', () => {
     })
 
     it('should return undefined when queuer is empty', () => {
-      const queuer = new Queuer<number>()
+      const queuer = new Queuer<number>({ started: false })
       expect(queuer.getNextItem()).toBeUndefined()
     })
   })
 
   describe('peek', () => {
     it('should return first item without removing it', () => {
-      const queuer = new Queuer<number>()
+      const queuer = new Queuer<number>({ started: false })
       queuer.addItem(1)
       queuer.addItem(2)
 
@@ -55,19 +60,19 @@ describe('Queuer', () => {
     })
 
     it('should return undefined when queuer is empty', () => {
-      const queuer = new Queuer<number>()
+      const queuer = new Queuer<number>({ started: false })
       expect(queuer.getPeek()).toBeUndefined()
     })
   })
 
   describe('isEmpty', () => {
     it('should return true when queuer is empty', () => {
-      const queuer = new Queuer<number>()
+      const queuer = new Queuer<number>({ started: false })
       expect(queuer.getIsEmpty()).toBe(true)
     })
 
     it('should return false when queuer has items', () => {
-      const queuer = new Queuer<number>()
+      const queuer = new Queuer<number>({ started: false })
       queuer.addItem(1)
       expect(queuer.getIsEmpty()).toBe(false)
     })
@@ -75,14 +80,14 @@ describe('Queuer', () => {
 
   describe('isFull', () => {
     it('should return true when queuer reaches maxSize', () => {
-      const queuer = new Queuer<number>({ maxSize: 2 })
+      const queuer = new Queuer<number>({ maxSize: 2, started: false })
       queuer.addItem(1)
       queuer.addItem(2)
       expect(queuer.getIsFull()).toBe(true)
     })
 
     it('should return false when queuer is not full', () => {
-      const queuer = new Queuer<number>({ maxSize: 2 })
+      const queuer = new Queuer<number>({ maxSize: 2, started: false })
       queuer.addItem(1)
       expect(queuer.getIsFull()).toBe(false)
     })
@@ -90,7 +95,7 @@ describe('Queuer', () => {
 
   describe('clear', () => {
     it('should remove all items from the queuer', () => {
-      const queuer = new Queuer<number>()
+      const queuer = new Queuer<number>({ started: false })
       queuer.addItem(1)
       queuer.addItem(2)
       queuer.clear()
@@ -104,7 +109,10 @@ describe('Queuer', () => {
   describe('options', () => {
     describe('initialItems', () => {
       it('should initialize queuer with provided items', () => {
-        const queuer = new Queuer<number>({ initialItems: [1, 2, 3] })
+        const queuer = new Queuer<number>({
+          initialItems: [1, 2, 3],
+          started: false,
+        })
         expect(queuer.getSize()).toBe(3)
         expect(queuer.getAllItems()).toEqual([1, 2, 3])
       })
@@ -117,6 +125,7 @@ describe('Queuer', () => {
             { value: 'medium', priority: 2 },
           ],
           getPriority: (item) => item.priority,
+          started: false,
         })
 
         expect(queuer.getAllItems()).toEqual([
@@ -127,7 +136,7 @@ describe('Queuer', () => {
       })
 
       it('should handle empty initialItems array', () => {
-        const queuer = new Queuer<number>({ initialItems: [] })
+        const queuer = new Queuer<number>({ initialItems: [], started: false })
         expect(queuer.getIsEmpty()).toBe(true)
       })
     })
@@ -136,6 +145,7 @@ describe('Queuer', () => {
       it('should maintain priority order when addIteming items', () => {
         const queuer = new Queuer<{ value: string; priority: number }>({
           getPriority: (item) => item.priority,
+          started: false,
         })
 
         queuer.addItem({ value: 'medium', priority: 2 })
@@ -152,6 +162,7 @@ describe('Queuer', () => {
       it('should insert items in correct position based on priority', () => {
         const queuer = new Queuer<{ value: string; priority: number }>({
           getPriority: (item) => item.priority,
+          started: false,
         })
 
         queuer.addItem({ value: 'lowest', priority: 0 })
@@ -168,6 +179,7 @@ describe('Queuer', () => {
       it('should handle items with equal priorities', () => {
         const queuer = new Queuer<{ value: string; priority: number }>({
           getPriority: (item) => item.priority,
+          started: false,
         })
 
         queuer.addItem({ value: 'first', priority: 1 })
@@ -185,6 +197,7 @@ describe('Queuer', () => {
       it('should ignore position parameter when priority is enabled', () => {
         const queuer = new Queuer<{ value: string; priority: number }>({
           getPriority: (item) => item.priority,
+          started: false,
         })
 
         queuer.addItem({ value: 'medium', priority: 2 })
@@ -202,7 +215,7 @@ describe('Queuer', () => {
     describe('onItemsChange', () => {
       it('should call onItemsChange when items are added', () => {
         const onItemsChange = vi.fn()
-        const queuer = new Queuer<number>({ onItemsChange })
+        const queuer = new Queuer<number>({ onItemsChange, started: false })
 
         queuer.addItem(1)
         expect(onItemsChange).toHaveBeenCalledTimes(1)
@@ -211,7 +224,7 @@ describe('Queuer', () => {
 
       it('should call onItemsChange when items are removed', () => {
         const onItemsChange = vi.fn()
-        const queuer = new Queuer<number>({ onItemsChange })
+        const queuer = new Queuer<number>({ onItemsChange, started: false })
 
         queuer.addItem(1)
         onItemsChange.mockClear()
@@ -223,7 +236,7 @@ describe('Queuer', () => {
 
       it('should call onItemsChange when queuer is cleared', () => {
         const onItemsChange = vi.fn()
-        const queuer = new Queuer<number>({ onItemsChange })
+        const queuer = new Queuer<number>({ onItemsChange, started: false })
 
         queuer.addItem(1)
         onItemsChange.mockClear()
@@ -235,7 +248,7 @@ describe('Queuer', () => {
 
       it('should not call onItemsChange when dequeuing from empty queuer', () => {
         const onItemsChange = vi.fn()
-        const queuer = new Queuer<number>({ onItemsChange })
+        const queuer = new Queuer<number>({ onItemsChange, started: false })
 
         queuer.getNextItem()
         expect(onItemsChange).not.toHaveBeenCalled()
@@ -244,7 +257,7 @@ describe('Queuer', () => {
   })
 
   it('should support stack-like (LIFO) operations', () => {
-    const queuer = new Queuer<number>()
+    const queuer = new Queuer<number>({ started: false })
     expect(queuer.addItem(1, 'back')).toBe(true)
     expect(queuer.addItem(2, 'back')).toBe(true)
     expect(queuer.addItem(3, 'back')).toBe(true)
@@ -257,7 +270,7 @@ describe('Queuer', () => {
   })
 
   it('should support double-ended operations', () => {
-    const queuer = new Queuer<number>()
+    const queuer = new Queuer<number>({ started: false })
 
     // Add items from both ends
     queuer.addItem(1, 'back') // [1]

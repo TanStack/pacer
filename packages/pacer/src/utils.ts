@@ -1,13 +1,27 @@
+import type { AnyFunction } from './types'
+
+export function isFunction<T extends AnyFunction>(value: any): value is T {
+  return typeof value === 'function'
+}
+
+export function parseFunctionOrValue<T, TArgs extends Array<any>>(
+  value: T | ((...args: TArgs) => T),
+  ...args: TArgs
+): T {
+  return isFunction(value) ? value(...args) : value
+}
+
 export function bindInstanceMethods<T extends Record<string, any>>(
   instance: T,
 ): T {
-  return Object.getOwnPropertyNames(Object.getPrototypeOf(instance))
-    .filter((key) => typeof instance[key as keyof T] === 'function')
-    .reduce((acc: any, key) => {
+  return Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).reduce(
+    (acc: any, key) => {
       const method = instance[key as keyof T]
-      if (typeof method === 'function') {
+      if (isFunction(method)) {
         acc[key] = method.bind(instance)
       }
       return acc
-    }, {} as T)
+    },
+    instance,
+  )
 }

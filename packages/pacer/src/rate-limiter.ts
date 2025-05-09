@@ -1,3 +1,4 @@
+import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
 /**
@@ -8,11 +9,12 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Defaults to true.
    */
-  enabled?: boolean
+  enabled?: boolean | ((rateLimiter: RateLimiter<TFn>) => boolean)
   /**
-   * Maximum number of executions allowed within the time window
+   * Maximum number of executions allowed within the time window.
+   * Can be a number or a callback function that receives the rate limiter instance and returns a number.
    */
-  limit: number
+  limit: number | ((rateLimiter: RateLimiter<TFn>) => number)
   /**
    * Callback function that is called after the function is executed
    */
@@ -22,9 +24,10 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    */
   onReject?: (rateLimiter: RateLimiter<TFn>) => void
   /**
-   * Time window in milliseconds within which the limit applies
+   * Time window in milliseconds within which the limit applies.
+   * Can be a number or a callback function that receives the rate limiter instance and returns a number.
    */
-  window: number
+  window: number | ((rateLimiter: RateLimiter<TFn>) => number)
   /**
    * Type of window to use for rate limiting
    * - 'fixed': Uses a fixed window that resets after the window period
@@ -106,6 +109,27 @@ export class RateLimiter<TFn extends AnyFunction> {
   }
 
   /**
+   * Returns the current enabled state of the rate limiter
+   */
+  getEnabled(): boolean {
+    return parseFunctionOrValue(this._options.enabled, this)!
+  }
+
+  /**
+   * Returns the current limit of executions allowed within the time window
+   */
+  getLimit(): number {
+    return parseFunctionOrValue(this._options.limit, this)
+  }
+
+  /**
+   * Returns the current time window in milliseconds
+   */
+  getWindow(): number {
+    return parseFunctionOrValue(this._options.window, this)
+  }
+
+  /**
    * Attempts to execute the rate-limited function if within the configured limits.
    * Will reject execution if the number of calls in the current window exceeds the limit.
    *
@@ -125,7 +149,7 @@ export class RateLimiter<TFn extends AnyFunction> {
 
     if (this._options.windowType === 'sliding') {
       // For sliding window, we can execute if we have capacity in the current window
-      if (this._executionTimes.length < this._options.limit) {
+      if (this._executionTimes.length < this.getLimit()) {
         this.executeFunction(...args)
         return true
       }
@@ -133,9 +157,9 @@ export class RateLimiter<TFn extends AnyFunction> {
       // For fixed window, we need to check if we're in a new window
       const now = Date.now()
       const oldestExecution = Math.min(...this._executionTimes)
-      const isNewWindow = oldestExecution + this._options.window <= now
+      const isNewWindow = oldestExecution + this.getWindow() <= now
 
-      if (isNewWindow || this._executionTimes.length < this._options.limit) {
+      if (isNewWindow || this._executionTimes.length < this.getLimit()) {
         this.executeFunction(...args)
         return true
       }
@@ -146,7 +170,7 @@ export class RateLimiter<TFn extends AnyFunction> {
   }
 
   private executeFunction(...args: Parameters<TFn>): void {
-    if (!this._options.enabled) return
+    if (!this.getEnabled()) return
     const now = Date.now()
     this._executionCount++
     this._executionTimes.push(now)
@@ -163,7 +187,7 @@ export class RateLimiter<TFn extends AnyFunction> {
 
   private cleanupOldExecutions(): void {
     const now = Date.now()
-    const windowStart = now - this._options.window
+    const windowStart = now - this.getWindow()
     this._executionTimes = this._executionTimes.filter(
       (time) => time > windowStart,
     )
@@ -188,7 +212,7 @@ export class RateLimiter<TFn extends AnyFunction> {
    */
   getRemainingInWindow(): number {
     this.cleanupOldExecutions()
-    return Math.max(0, this._options.limit - this._executionTimes.length)
+    return Math.max(0, this.getLimit() - this._executionTimes.length)
   }
 
   /**
@@ -199,7 +223,7 @@ export class RateLimiter<TFn extends AnyFunction> {
       return 0
     }
     const oldestExecution = Math.min(...this._executionTimes)
-    return oldestExecution + this._options.window - Date.now()
+    return oldestExecution + this.getWindow() - Date.now()
   }
 
   /**
@@ -251,7 +275,7 @@ export class RateLimiter<TFn extends AnyFunction> {
  */
 export function rateLimit<TFn extends AnyFunction>(
   fn: TFn,
-  initialOptions: Omit<RateLimiterOptions<TFn>, 'enabled'>,
+  initialOptions: RateLimiterOptions<TFn>,
 ) {
   const rateLimiter = new RateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)

@@ -12,7 +12,7 @@ function App1() {
   // highest-level hook that watches an instant local state value and returns a debounced value
   const [debouncedCount] = useDebouncedValue(instantCount, {
     wait: 500,
-    // enabled: instantCount > 2, // optional, defaults to true
+    // enabled: () => instantCount > 2, // optional, defaults to true
     // leading: true, // optional, defaults to false
   })
 

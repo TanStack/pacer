@@ -7,7 +7,7 @@ title: Throttler
 
 # Class: Throttler\<TFn\>
 
-Defined in: [throttler.ts:67](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L67)
+Defined in: [throttler.ts:71](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L71)
 
 A class that creates a throttled function.
 
@@ -48,7 +48,7 @@ throttler.maybeExecute('123'); // Throttled
 new Throttler<TFn>(fn, initialOptions): Throttler<TFn>
 ```
 
-Defined in: [throttler.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L74)
+Defined in: [throttler.ts:78](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L78)
 
 #### Parameters
 
@@ -72,7 +72,7 @@ Defined in: [throttler.ts:74](https://github.com/TanStack/pacer/blob/main/packag
 cancel(): void
 ```
 
-Defined in: [throttler.ts:171](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L171)
+Defined in: [throttler.ts:190](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L190)
 
 Cancels any pending trailing execution and clears internal state.
 
@@ -88,13 +88,29 @@ Has no effect if there is no pending execution.
 
 ***
 
+### getEnabled()
+
+```ts
+getEnabled(): boolean
+```
+
+Defined in: [throttler.ts:111](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L111)
+
+Returns the current enabled state of the throttler
+
+#### Returns
+
+`boolean`
+
+***
+
 ### getExecutionCount()
 
 ```ts
 getExecutionCount(): number
 ```
 
-Defined in: [throttler.ts:196](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L196)
+Defined in: [throttler.ts:215](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L215)
 
 Returns the number of times the function has been executed
 
@@ -110,7 +126,7 @@ Returns the number of times the function has been executed
 getIsPending(): boolean
 ```
 
-Defined in: [throttler.ts:203](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L203)
+Defined in: [throttler.ts:222](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L222)
 
 Returns `true` if there is a pending execution
 
@@ -126,7 +142,7 @@ Returns `true` if there is a pending execution
 getLastExecutionTime(): number
 ```
 
-Defined in: [throttler.ts:182](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L182)
+Defined in: [throttler.ts:201](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L201)
 
 Returns the last execution time
 
@@ -142,7 +158,7 @@ Returns the last execution time
 getNextExecutionTime(): number
 ```
 
-Defined in: [throttler.ts:189](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L189)
+Defined in: [throttler.ts:208](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L208)
 
 Returns the next execution time
 
@@ -158,7 +174,7 @@ Returns the next execution time
 getOptions(): Required<ThrottlerOptions<TFn>>
 ```
 
-Defined in: [throttler.ts:100](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L100)
+Defined in: [throttler.ts:104](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L104)
 
 Returns the current throttler options
 
@@ -168,13 +184,29 @@ Returns the current throttler options
 
 ***
 
+### getWait()
+
+```ts
+getWait(): number
+```
+
+Defined in: [throttler.ts:118](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L118)
+
+Returns the current wait time in milliseconds
+
+#### Returns
+
+`number`
+
+***
+
 ### maybeExecute()
 
 ```ts
 maybeExecute(...args): void
 ```
 
-Defined in: [throttler.ts:126](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L126)
+Defined in: [throttler.ts:144](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L144)
 
 Attempts to execute the throttled function. The execution behavior depends on the throttler options:
 
@@ -216,7 +248,7 @@ throttled.maybeExecute('c', 'd');
 setOptions(newOptions): void
 ```
 
-Defined in: [throttler.ts:88](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L88)
+Defined in: [throttler.ts:92](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L92)
 
 Updates the throttler options
 Returns the new options state
