@@ -1,5 +1,17 @@
 # @tanstack/react-pacer
 
+## 0.5.0
+
+### Minor Changes
+
+- feat: let enabled, wait, limit, window, and concurrency options support callback variants ([#20](https://github.com/TanStack/pacer/pull/20))
+  breaking: set queuer to be started by default
+
+### Patch Changes
+
+- Updated dependencies [[`a3294e7`](https://github.com/TanStack/pacer/commit/a3294e722915f3a17ea6a1333978994c57568a57)]:
+  - @tanstack/pacer@0.5.0
+
 ## 0.4.0
 
 ### Minor Changes

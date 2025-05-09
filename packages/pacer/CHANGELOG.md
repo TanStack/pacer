@@ -1,5 +1,12 @@
 # @tanstack/pacer
 
+## 0.5.0
+
+### Minor Changes
+
+- feat: let enabled, wait, limit, window, and concurrency options support callback variants ([#20](https://github.com/TanStack/pacer/pull/20))
+  breaking: set queuer to be started by default
+
 ## 0.4.0
 
 ### Minor Changes
