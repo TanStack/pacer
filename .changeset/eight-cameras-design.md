@@ -1,6 +1,6 @@
 ---
 '@tanstack/pacer': minor
-'@tanstack/react-query': minor
+'@tanstack/react-pacer': minor
 '@tanstack/solid-pacer': minor
 ---
 
