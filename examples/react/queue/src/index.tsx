@@ -117,11 +117,92 @@ function App2() {
   )
 }
 
+function App3() {
+  const [queueItems, setQueueItems] = useState<Array<number>>([])
+  const [processedCount, setProcessedCount] = useState(0)
+  const [currentValue, setCurrentValue] = useState(50)
+  const [queuedValue, setQueuedValue] = useState(50)
+
+  // Create the simplified queuer function
+  const queueValue = useCallback(
+    queue<number>({
+      maxSize: 100,
+      wait: 100,
+      onGetNextItem: (item, _queue) => {
+        setQueuedValue(item)
+      },
+      onItemsChange: (queue) => {
+        setQueueItems(queue.getAllItems())
+        setProcessedCount(queue.getExecutionCount())
+      },
+    }),
+    [],
+  )
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setCurrentValue(newValue)
+    queueValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer queue Example 3</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Queued Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={queuedValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{queuedValue}</span>
+        </label>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Queue Size:</td>
+            <td>{queueItems.length}</td>
+          </tr>
+          <tr>
+            <td>Items Processed:</td>
+            <td>{processedCount}</td>
+          </tr>
+          <tr>
+            <td>Queue Items:</td>
+            <td>{queueItems.join(', ')}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <div>
     <App1 />
     <hr />
     <App2 />
+    <hr />
+    <App3 />
   </div>,
 )

@@ -94,11 +94,66 @@ function App2() {
   )
 }
 
+function App3() {
+  const [instantValue, setInstantValue] = useState(50)
+  const [debouncedValue, setDebouncedValue] = useState(50)
+
+  // Create debounced setter function - Stable reference required!
+  const debouncedSetValue = useCallback(
+    debounce(setDebouncedValue, {
+      wait: 250,
+    }),
+    [],
+  )
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setInstantValue(newValue)
+    debouncedSetValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer debounce Example 3</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Instant Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={instantValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{instantValue}</span>
+        </label>
+      </div>
+      <div>
+        <label>
+          Debounced Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={debouncedValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{debouncedValue}</span>
+        </label>
+      </div>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <div>
     <App1 />
     <hr />
     <App2 />
+    <hr />
+    <App3 />
   </div>,
 )

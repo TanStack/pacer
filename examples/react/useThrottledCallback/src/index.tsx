@@ -89,11 +89,66 @@ function App2() {
   )
 }
 
+function App3() {
+  const [currentValue, setCurrentValue] = useState(50)
+  const [throttledValue, setThrottledValue] = useState(50)
+
+  // Create throttled setter function - Stable reference provided by useThrottledCallback
+  const throttledSetValue = useThrottledCallback(setThrottledValue, {
+    wait: 250,
+  })
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setCurrentValue(newValue)
+    throttledSetValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer useThrottledCallback Example 3</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Throttled Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={throttledValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{throttledValue}</span>
+        </label>
+      </div>
+      <div style={{ color: '#666', fontSize: '0.9em' }}>
+        <p>Throttled to 1 update per 250ms</p>
+      </div>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <div>
     <App1 />
     <hr />
     <App2 />
+    <hr />
+    <App3 />
   </div>,
 )

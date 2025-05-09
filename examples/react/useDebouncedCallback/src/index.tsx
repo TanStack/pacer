@@ -90,11 +90,66 @@ function App2() {
   )
 }
 
+function App3() {
+  const [currentValue, setCurrentValue] = useState(50)
+  const [debouncedValue, setDebouncedValue] = useState(50)
+
+  // Create debounced setter function - Stable reference provided by useDebouncedCallback
+  const debouncedSetValue = useDebouncedCallback(setDebouncedValue, {
+    wait: 250,
+  })
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setCurrentValue(newValue)
+    debouncedSetValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer useDebouncedCallback Example 3</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Debounced Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={debouncedValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{debouncedValue}</span>
+        </label>
+      </div>
+      <div style={{ color: '#666', fontSize: '0.9em' }}>
+        <p>Debounced to 250ms wait time</p>
+      </div>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <div>
     <App1 />
     <hr />
     <App2 />
+    <hr />
+    <App3 />
   </div>,
 )

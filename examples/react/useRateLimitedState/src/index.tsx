@@ -130,11 +130,117 @@ function App2() {
   )
 }
 
+function App3() {
+  const [currentValue, setCurrentValue] = useState(50)
+  const [instantExecutionCount, setInstantExecutionCount] = useState(0)
+
+  // Using useRateLimitedState with a rate limit of 5 executions per 5 seconds
+  const [limitedValue, setLimitedValue, rateLimiter] = useRateLimitedState(
+    currentValue,
+    {
+      limit: 20,
+      window: 2000,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+  )
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setCurrentValue(newValue)
+    setInstantExecutionCount((c) => c + 1)
+    setLimitedValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer useRateLimitedState Example 3</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Rate Limited Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={limitedValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{limitedValue}</span>
+        </label>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Execution Count:</td>
+            <td>{rateLimiter.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Rejection Count:</td>
+            <td>{rateLimiter.getRejectionCount()}</td>
+          </tr>
+          <tr>
+            <td>Remaining in Window:</td>
+            <td>{rateLimiter.getRemainingInWindow()}</td>
+          </tr>
+          <tr>
+            <td>Ms Until Next Window:</td>
+            <td>{rateLimiter.getMsUntilNextWindow()}</td>
+          </tr>
+          <tr>
+            <td>Instant Executions:</td>
+            <td>{instantExecutionCount}</td>
+          </tr>
+          <tr>
+            <td>Saved Executions:</td>
+            <td>{instantExecutionCount - rateLimiter.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>% Reduction:</td>
+            <td>
+              {instantExecutionCount === 0
+                ? '0'
+                : Math.round(
+                    ((instantExecutionCount - rateLimiter.getExecutionCount()) /
+                      instantExecutionCount) *
+                      100,
+                  )}
+              %
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style={{ color: '#666', fontSize: '0.9em' }}>
+        <p>Rate limited to 20 updates per 2 seconds</p>
+      </div>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <div>
     <App1 />
     <hr />
     <App2 />
+    <hr />
+    <App3 />
   </div>,
 )
