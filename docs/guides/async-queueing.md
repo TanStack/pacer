@@ -45,7 +45,7 @@ Common use cases include:
 
 ### When Not to Use Async Queueing
 
-The AsyncQueuer is very versatile and can be used in many situations. Really, it's just not a good fit only when you don't plan to take advantage of all of its features. If you don't need all executions that are queued to go through, use [Throttling][../guides/throttling] instead. If you don't need concurrent processing, use [Queueing][../guides/queueing] instead.
+The AsyncQueuer is very versatile and can be used in many situations. Really, it's just not a good fit only when you don't plan to take advantage of all of its features. If you don't need all executions that are queued to go through, use [Throttling](../guides/throttling) instead. If you don't need concurrent processing, use [Queueing](../guides/queueing) instead.
 
 ## Async Queueing in TanStack Pacer
 
@@ -87,7 +87,7 @@ The `AsyncQueuer` class provides complete control over async queue behavior:
 ```ts
 import { AsyncQueuer } from '@tanstack/pacer'
 
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   concurrency: 2, // Process 2 items at once
   wait: 1000,     // Wait 1 second between starting new items
   started: true   // Start processing immediately
@@ -123,7 +123,7 @@ The AsyncQueuer supports different queueing strategies to handle various process
 FIFO queues process tasks in the exact order they were added, making them ideal for maintaining sequence:
 
 ```ts
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   addItemsTo: 'back',  // default
   getItemsFrom: 'front', // default
   concurrency: 2
@@ -139,7 +139,7 @@ queue.addItem(async () => 'second') // [first, second]
 LIFO stacks process the most recently added tasks first, useful for prioritizing newer tasks:
 
 ```ts
-const stack = new AsyncQueuer<string>({
+const stack = new AsyncQueuer({
   addItemsTo: 'back',
   getItemsFrom: 'back', // Process newest items first
   concurrency: 2
@@ -156,7 +156,7 @@ Priority queues process tasks based on their assigned priority values, ensuring 
 
 1. Static priority values attached to tasks:
 ```ts
-const priorityQueue = new AsyncQueuer<string>({
+const priorityQueue = new AsyncQueuer({
   concurrency: 2
 })
 
@@ -185,7 +185,7 @@ priorityQueue.addItem(mediumPriorityTask)
 
 2. Dynamic priority calculation using `getPriority` option:
 ```ts
-const dynamicPriorityQueue = new AsyncQueuer<string>({
+const dynamicPriorityQueue = new AsyncQueuer({
   concurrency: 2,
   getPriority: (task) => {
     // Calculate priority based on task properties or other factors
@@ -218,7 +218,7 @@ Priority queues are essential when:
 The AsyncQueuer provides comprehensive error handling capabilities to ensure robust task processing. You can handle errors at both the queue level and individual task level:
 
 ```ts
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   // Handle errors globally
   onError: (error, queuer) => {
     console.error('Task failed:', error)
@@ -263,7 +263,7 @@ Key error handling features:
 The AsyncQueuer provides several callback options for monitoring task execution and queue state:
 
 ```ts
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   // Handle successful task completion
   onSuccess: (result, queuer) => {
     console.log('Task succeeded:', result)
@@ -331,7 +331,7 @@ queue.getExpirationCount() // Get number of expired items
 When a queue reaches its maximum size (set by `maxSize` option), new tasks will be rejected. The AsyncQueuer provides ways to handle and monitor these rejections:
 
 ```ts
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   maxSize: 2, // Only allow 2 tasks in queue
   onReject: (task, queuer) => {
     console.log('Queue is full. Task rejected:', task)
@@ -352,7 +352,7 @@ console.log(queue.getRejectionCount()) // 1
 The AsyncQueuer supports task expiration to automatically remove stale tasks from the queue:
 
 ```ts
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   expirationDuration: 5000, // Tasks expire after 5 seconds
   onExpire: (task, queuer) => {
     console.log('Task expired:', task)
@@ -362,7 +362,7 @@ const queue = new AsyncQueuer<string>({
 })
 
 // Or use custom expiration logic
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   getIsExpired: (task, addedAt) => {
     // Custom expiration logic
     return Date.now() - addedAt > 5000
@@ -375,7 +375,7 @@ const queue = new AsyncQueuer<string>({
 You can pre-populate an async queue with initial tasks when creating it:
 
 ```ts
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   initialItems: [
     async () => 'first',
     async () => 'second',
@@ -392,7 +392,7 @@ const queue = new AsyncQueuer<string>({
 The AsyncQueuer's options can be modified after creation using `setOptions()` and retrieved using `getOptions()`. Additionally, several options support dynamic values through callback functions:
 
 ```ts
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   concurrency: 2,
   wait: 1000,
   started: false
@@ -414,7 +414,7 @@ console.log(options.concurrency) // 4
 Several options in the AsyncQueuer support dynamic values through callback functions that receive the queuer instance:
 
 ```ts
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   // Dynamic concurrency based on system load
   concurrency: (queuer) => {
     return Math.max(1, 4 - queuer.getActiveItems().length)
@@ -437,7 +437,7 @@ This allows for sophisticated queue behavior that adapts to runtime conditions.
 The AsyncQueuer provides methods to monitor both active and pending tasks:
 
 ```ts
-const queue = new AsyncQueuer<string>({
+const queue = new AsyncQueuer({
   concurrency: 2
 })
 
