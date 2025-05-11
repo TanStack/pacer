@@ -1,5 +1,18 @@
 # @tanstack/solid-pacer
 
+## 0.6.0
+
+### Minor Changes
+
+- breaking: remove `onError`, `onSuccess`, `onSettled` options from `AsyncQueuer` in favor of options of the same name on the `AsyncQueuer` ([#22](https://github.com/TanStack/pacer/pull/22))
+  feat: standardize error handling callbacks on `AsyncQueuer`, `AsyncDebouncer`, `AsyncRateLimiter`, and `AsyncThrottler`
+  feat: add `throwOnError` option to `AsyncQueuer`, `AsyncDebouncer`, `AsyncRateLimiter`, and `AsyncThrottler`
+
+### Patch Changes
+
+- Updated dependencies [[`b3d5247`](https://github.com/TanStack/pacer/commit/b3d52477a387f52b0242d2d753f5f271beb92283)]:
+  - @tanstack/pacer@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes
