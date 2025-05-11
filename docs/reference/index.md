@@ -33,6 +33,8 @@ title: "@tanstack/pacer"
 
 - [AnyAsyncFunction](type-aliases/anyasyncfunction.md)
 - [AnyFunction](type-aliases/anyfunction.md)
+- [AsyncQueuerFn](type-aliases/asyncqueuerfn.md)
+- [OptionalKeys](type-aliases/optionalkeys.md)
 - [QueuePosition](type-aliases/queueposition.md)
 
 ## Functions

@@ -11,7 +11,7 @@ title: useAsyncRateLimiter
 function useAsyncRateLimiter<TFn>(fn, options): AsyncRateLimiter<TFn>
 ```
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L54)
+Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:67](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L67)
 
 A low-level React hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -31,6 +31,14 @@ The rate limiter supports two types of windows:
   towards the limit, and the window resets completely after the period.
 - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
   consistent rate of execution over time.
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and rate limiter instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncRateLimiter instance
+- Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
 
 ## Type Parameters
 
@@ -73,7 +81,12 @@ const { maybeExecute } = useAsyncRateLimiter(
   {
     limit: 10,
     window: 60000, // 10 calls per minute
-    onReject: (info) => console.log(`Rate limit exceeded: ${info.nextValidTime - Date.now()}ms until next window`)
+    onReject: (rateLimiter) => {
+      console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
+    },
+    onError: (error) => {
+      console.error('API call failed:', error);
+    }
   }
 );
 ```

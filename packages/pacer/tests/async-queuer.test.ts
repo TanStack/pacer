@@ -70,24 +70,49 @@ describe('AsyncQueuer', () => {
       const successHandler = vi.fn()
       const result = 'success'
 
-      asyncQueuer.onSuccess(successHandler)
+      asyncQueuer = new AsyncQueuer({
+        onSuccess: successHandler,
+      })
 
       asyncQueuer.addItem(() => Promise.resolve(result))
       await asyncQueuer.start()
 
-      expect(successHandler).toHaveBeenCalledWith(result)
+      expect(successHandler).toHaveBeenCalledWith(result, asyncQueuer)
+      expect(asyncQueuer.getSuccessCount()).toBe(1)
+      expect(asyncQueuer.getErrorCount()).toBe(0)
+      expect(asyncQueuer.getSettledCount()).toBe(1)
+    })
+
+    it('should handle task errors properly', async () => {
+      const errorHandler = vi.fn()
+      const error = new Error('test error')
+
+      asyncQueuer = new AsyncQueuer({
+        onError: errorHandler,
+      })
+
+      asyncQueuer.addItem(() => Promise.reject(error))
+      await asyncQueuer.start()
+
+      expect(errorHandler).toHaveBeenCalledWith(error, asyncQueuer)
+      expect(asyncQueuer.getSuccessCount()).toBe(0)
+      expect(asyncQueuer.getErrorCount()).toBe(1)
+      expect(asyncQueuer.getSettledCount()).toBe(1)
     })
 
     it('should handle settled callback', async () => {
       const settledHandler = vi.fn()
       const result = 'test'
 
-      asyncQueuer.onSettled(settledHandler)
+      asyncQueuer = new AsyncQueuer({
+        onSettled: settledHandler,
+      })
 
       asyncQueuer.addItem(() => Promise.resolve(result))
       await asyncQueuer.start()
 
-      expect(settledHandler).toHaveBeenCalled()
+      expect(settledHandler).toHaveBeenCalledWith(asyncQueuer)
+      expect(asyncQueuer.getSettledCount()).toBe(1)
     })
   })
 

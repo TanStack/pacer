@@ -11,7 +11,7 @@ title: createAsyncThrottler
 function createAsyncThrottler<TFn>(fn, initialOptions): SolidAsyncThrottler<TFn>
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:67](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L67)
+Defined in: [async-throttler/createAsyncThrottler.ts:80](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L80)
 
 A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -21,6 +21,17 @@ you can integrate with any state management solution (createSignal, etc).
 Async throttling ensures an async function executes at most once within a specified time window,
 regardless of how many times it is called. This is useful for rate-limiting expensive API calls,
 database operations, or other async tasks.
+
+Unlike the non-async Throttler, this async version supports returning values from the throttled function,
+making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+instead of setting the result on a state variable from within the throttled function.
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and throttler instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncThrottler instance
 
 ## Type Parameters
 
@@ -62,7 +73,10 @@ const { maybeExecute } = createAsyncThrottler(
   {
     wait: 2000,
     leading: true,   // Execute immediately on first call
-    trailing: false  // Skip trailing edge updates
+    trailing: false, // Skip trailing edge updates
+    onError: (error) => {
+      console.error('API call failed:', error);
+    }
   }
 );
 ```

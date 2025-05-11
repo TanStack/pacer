@@ -224,33 +224,23 @@ priorityQueue.addItem(2) // [3, 2, 1]
 
 ### Starting and Stopping
 
-The `Queuer` class supports starting and stopping processing through the `start()` and `stop()` methods, and can be configured to start automatically with the `started` option:
+The `Queuer` class supports starting and stopping processing through the `start()` and `stop()` methods. By default, queues start processing automatically. You can set `started: false` to have the queue paused initially, allowing you to either:
+
+1. Start processing later with `start()`
+2. Manually process items by calling `getNextItem()` in an event-driven manner
 
 ```ts
-const queue = new Queuer<number>({ 
-  wait: 1000,
+const queue = new Queuer<number>({
   started: false // Start paused
 })
 
-// Control processing
 queue.start() // Begin processing items
 queue.stop()  // Pause processing
 
-// Check processing state
-console.log(queue.getIsRunning()) // Whether the queue is currently processing
-console.log(queue.getIsIdle())    // Whether the queue is running but empty
-```
-
-If you are using a framework adapter where the queuer options are reactive, you can set the `started` option to a conditional value:
-
-```ts
-const queue = useQueuer(
-  processItem, 
-  { 
-    wait: 1000,
-    started: isOnline // Start/stop based on connection status IF using a framework adapter that supports reactive options
-  }
-)
+// Manually process items while the queue is stopped (run it your own way)
+queue.getNextItem() // Get next item
+queue.getNextItem() // Get next item
+queue.getNextItem() // Get next item
 ```
 
 ### Additional Features

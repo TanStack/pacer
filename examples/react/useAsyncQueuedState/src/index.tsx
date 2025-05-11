@@ -9,23 +9,21 @@ const fakeWaitTime = 2000
 function App() {
   const [concurrency, setConcurrency] = useState(2)
 
-  const [, rerender] = useState(0) // demo - rerender when start/stop changes
-
   // Queuer that uses React.useState under the hood
-  const [queueItems, queuer] = useAsyncQueuedState<string>({
+  const [queueItems, queuer] = useAsyncQueuedState<AsyncTask>({
     maxSize: 25,
     initialItems: Array.from({ length: 10 }, (_, i) => async () => {
       await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
       return `Initial Task ${i + 1}`
     }),
-    concurrency: concurrency, // Process 2 items concurrently
+    concurrency, // Process 2 items concurrently
     started: false,
     wait: 100, // for demo purposes - usually you would not want extra wait time unless you are throttling
-    onIsRunningChange: (_asyncQueuer) => {
-      rerender((prev) => prev + 1)
-    },
     onReject: (item, _asyncQueuer) => {
       console.log('Queue is full, rejecting item', item)
+    },
+    onError: (error, _asyncQueuer) => {
+      console.error('Error processing item', error) // optionally, handle errors here instead of your own try/catch
     },
   })
 
@@ -48,7 +46,7 @@ function App() {
       <div>Queue Empty: {queuer.getIsEmpty() ? 'Yes' : 'No'}</div>
       <div>Queue Idle: {queuer.getIsIdle() ? 'Yes' : 'No'}</div>
       <div>Queuer Status: {queuer.getIsRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.getExecutionCount()}</div>
+      <div>Items Processed: {queuer.getSuccessCount()}</div>
       <div>Active Tasks: {queuer.getActiveItems().length}</div>
       <div>Pending Tasks: {queuer.getPendingItems().length}</div>
       <div>

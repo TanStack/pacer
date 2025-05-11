@@ -259,15 +259,27 @@ The async rate limiter provides a powerful way to handle asynchronous operations
 1. **Return Value Handling**
 Unlike the synchronous rate limiter which returns a boolean indicating success, the async version allows you to capture and use the return value from your rate-limited function. This is particularly useful when you need to work with the results of API calls or other async operations. The `maybeExecute` method returns a Promise that resolves with the function's return value, allowing you to await the result and handle it appropriately.
 
-2. **Different Callbacks**
+2. **Error Handling**
+The async rate limiter provides robust error handling capabilities:
+- If your rate-limited function throws an error and no `onError` handler is provided, the error will be thrown and propagate up to the caller
+- If you provide an `onError` handler, errors will be caught and passed to the handler instead of being thrown
+- The `throwOnError` option can be used to control error throwing behavior:
+  - When true (default if no onError handler), errors will be thrown
+  - When false (default if onError handler provided), errors will be swallowed
+  - Can be explicitly set to override these defaults
+- You can track error counts using `getErrorCount()` and check execution state with `getIsExecuting()`
+- The rate limiter maintains its state and can continue to be used after an error occurs
+- Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
+
+3. **Different Callbacks**
 The `AsyncRateLimiter` supports the following callbacks instead of just `onExecute` in the synchronous version:
-- `onSuccess`: Called after each successful execution, providing the rate limiter instance
-- `onSettled`: Called after each execution, providing the rate limiter instance
+- `onSuccess`: Called after each successful execution, providing the result and rate limiter instance
+- `onSettled`: Called after each execution (success or failure), providing the rate limiter instance
 - `onError`: Called if the async function throws an error, providing both the error and the rate limiter instance
 
 Both the Async and Synchronous rate limiters support the `onReject` callback for handling blocked executions.
 
-3. **Sequential Execution**
+4. **Sequential Execution**
 Since the rate limiter's `maybeExecute` method returns a Promise, you can choose to await each execution before starting the next one. This gives you control over the execution order and ensures each call processes the most up-to-date data. This is particularly useful when dealing with operations that depend on the results of previous calls or when maintaining data consistency is critical.
 
 For example, if you're updating a user's profile and then immediately fetching their updated data, you can await the update operation before starting the fetch:
@@ -298,57 +310,16 @@ const rateLimitedApi = asyncRateLimit(
 )
 
 // Usage
-const result = await rateLimitedApi('123')
+try {
+  const result = await rateLimitedApi('123')
+  // Handle successful result
+} catch (error) {
+  // Handle errors if no onError handler was provided
+  console.error('API call failed:', error)
+}
 ```
 
 ### Framework Adapters
 
 Each framework adapter provides hooks that build on top of the core rate limiting functionality to integrate with the framework's state management system. Hooks like `createRateLimiter`, `useRateLimitedCallback`, `useRateLimitedState`, or `useRateLimitedValue` are available for each framework.
 
-Here are some examples:
-
-#### React
-
-```tsx
-import { useRateLimiter, useRateLimitedCallback, useRateLimitedValue } from '@tanstack/react-pacer'
-
-// Low-level hook for full control
-const limiter = useRateLimiter(
-  (id: string) => fetchUserData(id),
-  { limit: 5, window: 1000 }
-)
-
-// Simple callback hook for basic use cases
-const handleFetch = useRateLimitedCallback(
-  (id: string) => fetchUserData(id),
-  { limit: 5, window: 1000 }
-)
-
-// State-based hook for reactive state management
-const [instantState, setInstantState] = useState('')
-const [rateLimitedValue] = useRateLimitedValue(
-  instantState, // Value to rate limit
-  { limit: 5, window: 1000 }
-)
-```
-
-#### Solid
-
-```tsx
-import { createRateLimiter, createRateLimitedSignal } from '@tanstack/solid-pacer'
-
-// Low-level hook for full control
-const limiter = createRateLimiter(
-  (id: string) => fetchUserData(id),
-  { limit: 5, window: 1000 }
-)
-
-// Signal-based hook for state management
-const [value, setValue, limiter] = createRateLimitedSignal('', {
-  limit: 5,
-  window: 1000,
-  onExecute: (limiter) => {
-    console.log('Total executions:', limiter.getExecutionCount())
-  }
-})
-```
