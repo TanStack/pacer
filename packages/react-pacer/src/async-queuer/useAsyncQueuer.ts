@@ -9,21 +9,24 @@ import type {
 /**
  * A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
  *
- * This hook provides a flexible, state-management agnostic way to handle queued async operations.
- * It returns a queuer instance with methods to add items, control queue execution, and monitor queue state.
+ * Features:
+ * - Priority queue support via getPriority option
+ * - Configurable concurrency limit
+ * - Task success/error/completion callbacks
+ * - FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
+ * - Pause/resume task processing
+ * - Task cancellation
+ * - Item expiration to clear stale items from the queue
  *
- * The queue can be configured with:
- * - Maximum concurrent operations
- * - Maximum queue size
- * - Processing function for queue items
- * - Various lifecycle callbacks
+ * Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
+ * the next pending task is processed if below the concurrency limit.
  *
- * The hook returns an object containing methods to:
- * - Add/remove items from the queue
- * - Start/stop queue processing
- * - Get queue status and items
- * - Register event handlers
- * - Control execution throttling
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and queuer instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncQueuer instance
  *
  * @example
  * ```tsx
@@ -33,6 +36,12 @@ import type {
  *   concurrency: 2,
  *   maxSize: 100,
  *   started: false,
+ *   onSuccess: (result) => {
+ *     console.log('Item processed:', result);
+ *   },
+ *   onError: (error) => {
+ *     console.error('Processing failed:', error);
+ *   }
  * });
  *
  * // Add items to queue
@@ -40,19 +49,6 @@ import type {
  *
  * // Start processing
  * asyncQueuer.start();
- *
- * // Monitor queue state
- * const isPending = !asyncQueuer.isIdle();
- * const itemCount = asyncQueuer.size();
- *
- * // Handle results
- * asyncQueuer.onSuccess((result) => {
- *   console.log('Item processed:', result);
- * });
- *
- * asyncQueuer.onError((error) => {
- *   console.error('Processing failed:', error);
- * });
  * ```
  */
 export function useAsyncQueuer<TFn extends AsyncQueuerFn>(

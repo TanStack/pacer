@@ -147,17 +147,18 @@ const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
  *
  * @example
  * ```ts
- * const asyncQueuer = new AsyncQueuer<string>({ concurrency: 2 });
+ * const asyncQueuer = new AsyncQueuer<string>({
+ *   concurrency: 2,
+ *   onSuccess: (result) => {
+ *     console.log(result); // 'Hello'
+ *   }
+ * });
  *
  * asyncQueuer.addItem(async () => {
  *   return 'Hello';
  * });
  *
  * asyncQueuer.start();
- *
- * asyncQueuer.onSuccess((result) => {
- *   console.log(result); // 'Hello'
- * });
  * ```
  */
 export class AsyncQueuer<TFn extends AsyncQueuerFn> {

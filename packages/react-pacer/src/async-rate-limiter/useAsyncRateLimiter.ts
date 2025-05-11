@@ -24,6 +24,14 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
  * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
  *   consistent rate of execution over time.
  *
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and rate limiter instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncRateLimiter instance
+ * - Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
+ *
  * @example
  * ```tsx
  * // Basic API call rate limiting with return value
@@ -46,7 +54,12 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
  *   {
  *     limit: 10,
  *     window: 60000, // 10 calls per minute
- *     onReject: (info) => console.log(`Rate limit exceeded: ${info.nextValidTime - Date.now()}ms until next window`)
+ *     onReject: (rateLimiter) => {
+ *       console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
+ *     },
+ *     onError: (error) => {
+ *       console.error('API call failed:', error);
+ *     }
  *   }
  * );
  * ```

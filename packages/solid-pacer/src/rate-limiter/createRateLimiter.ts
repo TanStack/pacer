@@ -46,17 +46,11 @@ export interface SolidRateLimiter<TFn extends AnyFunction>
  * const rateLimiter = createRateLimiter(apiCall, {
  *   limit: 5,
  *   window: 60000,
- *   windowType: 'sliding'
- * });
- *
- * // Monitor rate limit status
- * const handleClick = () => {
- *   if (rateLimiter.remainingInWindow() > 0) {
- *     rateLimiter.maybeExecute(data);
- *   } else {
- *     showRateLimitWarning();
+ *   windowType: 'sliding',
+ *   onReject: (rateLimiter) => {
+ *     console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }
- * };
+ * });
  *
  * // Access rate limiter state via signals
  * console.log('Executions:', rateLimiter.executionCount());

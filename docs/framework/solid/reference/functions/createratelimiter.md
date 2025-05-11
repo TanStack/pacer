@@ -11,7 +11,7 @@ title: createRateLimiter
 function createRateLimiter<TFn>(fn, initialOptions): SolidRateLimiter<TFn>
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:68](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L68)
+Defined in: [rate-limiter/createRateLimiter.ts:62](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L62)
 
 A low-level Solid hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
@@ -58,17 +58,11 @@ For smoother execution patterns:
 const rateLimiter = createRateLimiter(apiCall, {
   limit: 5,
   window: 60000,
-  windowType: 'sliding'
-});
-
-// Monitor rate limit status
-const handleClick = () => {
-  if (rateLimiter.remainingInWindow() > 0) {
-    rateLimiter.maybeExecute(data);
-  } else {
-    showRateLimitWarning();
+  windowType: 'sliding',
+  onReject: (rateLimiter) => {
+    console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }
-};
+});
 
 // Access rate limiter state via signals
 console.log('Executions:', rateLimiter.executionCount());
