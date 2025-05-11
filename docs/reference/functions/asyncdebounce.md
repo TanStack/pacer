@@ -11,7 +11,7 @@ title: asyncDebounce
 function asyncDebounce<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:327](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L327)
+Defined in: [async-debouncer.ts:335](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L335)
 
 Creates an async debounced function that delays execution until after a specified wait time.
 The debounced function will only execute once the wait period has elapsed without any new calls.
@@ -22,11 +22,11 @@ making it ideal for API calls and other async operations where you want the resu
 instead of setting the result on a state variable from within the debounced function.
 
 Error Handling:
-- If the debounced function throws and no `onError` handler is configured,
-  the error will be thrown from the returned function.
-- If an `onError` handler is configured, errors will be caught and passed to the handler,
-  and the function will return undefined.
-- The error state can be checked using the underlying AsyncDebouncer instance.
+- If an `onError` handler is provided, it will be called with the error and debouncer instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- The error state can be checked using the underlying AsyncDebouncer instance
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
 
 ## Type Parameters
 
@@ -82,7 +82,8 @@ const debounced = asyncDebounce(async (value: string) => {
   wait: 1000,
   onError: (error) => {
     console.error('API call failed:', error);
-  }
+  },
+  throwOnError: true // Will both log the error and throw it
 });
 
 // Will only execute once, 1 second after the last call

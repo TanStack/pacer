@@ -18,9 +18,8 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   leading?: boolean
   /**
    * Optional error handler for when the throttled function throws.
-   * If provided, errors will be caught and passed to this handler.
-   * If not provided, errors will be thrown and propagate up to the caller.
-   * The handler receives both the error and the throttler instance.
+   * If provided, the handler will be called with the error and throttler instance.
+   * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (error: unknown, asyncThrottler: AsyncThrottler<TFn>) => void
   /**
@@ -34,6 +33,12 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
     result: ReturnType<TFn>,
     asyncThrottler: AsyncThrottler<TFn>,
   ) => void
+  /**
+   * Whether to throw errors when they occur.
+   * Defaults to true if no onError handler is provided, false if an onError handler is provided.
+   * Can be explicitly set to override these defaults.
+   */
+  throwOnError?: boolean
   /**
    * Whether to execute the function on the trailing edge of the wait period
    * Defaults to true
@@ -74,10 +79,11 @@ const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {
  * ensure a maximum execution frequency.
  *
  * Error Handling:
- * - If an error occurs during execution and no `onError` handler is provided, the error will be thrown and propagate up to the caller.
- * - If an `onError` handler is provided, errors will be caught and passed to the handler instead of being thrown.
- * - The error count can be tracked using `getErrorCount()`.
- * - The throttler maintains its state and can continue to be used after an error occurs.
+ * - If an `onError` handler is provided, it will be called with the error and throttler instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncThrottler instance
  *
  * @example
  * ```ts
@@ -116,6 +122,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     this._options = {
       ...defaultOptions,
       ...initialOptions,
+      throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
   }
 
@@ -217,10 +224,11 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this._options.onSuccess?.(this._lastResult!, this)
     } catch (error) {
       this._errorCount++
-      if (this._options.onError) {
-        this._options.onError(error, this)
-      } else {
+      this._options.onError?.(error, this)
+      if (this._options.throwOnError) {
         throw error
+      } else {
+        console.error(error)
       }
     } finally {
       this._isExecuting = false
@@ -315,11 +323,11 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
  * instead of setting the result on a state variable from within the throttled function.
  *
  * Error Handling:
- * - If the throttled function throws and no `onError` handler is configured,
- *   the error will be thrown from the returned function.
- * - If an `onError` handler is configured, errors will be caught and passed to the handler,
- *   and the function will return undefined.
- * - The error state can be checked using the underlying AsyncThrottler instance.
+ * - If an `onError` handler is provided, it will be called with the error and throttler instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncThrottler instance
  *
  * @example
  * ```ts

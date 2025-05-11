@@ -59,7 +59,7 @@ The `asyncQueue` function provides a simple way to create an always-running asyn
 import { asyncQueue } from '@tanstack/pacer'
 
 // Create a queue that processes up to 2 items concurrently
-const processItems = asyncQueue<string>({
+const processItems = asyncQueue({
   concurrency: 2,
   onItemsChange: (queuer) => {
     console.log('Active tasks:', queuer.getActiveItems().length)
@@ -218,22 +218,23 @@ Priority queues are essential when:
 The AsyncQueuer provides comprehensive error handling capabilities to ensure robust task processing. You can handle errors at both the queue level and individual task level:
 
 ```ts
-const queue = new AsyncQueuer<string>()
-
-// Handle errors globally
 const queue = new AsyncQueuer<string>({
-  onError: (error) => {
+  // Handle errors globally
+  onError: (error, queuer) => {
     console.error('Task failed:', error)
+    // You can access queue state here
+    console.log('Error count:', queuer.getErrorCount())
   },
-  onSuccess: (result) => {
+  // Control error throwing behavior
+  throwOnError: true, // Will throw errors even with onError handler
+  onSuccess: (result, queuer) => {
     console.log('Task succeeded:', result)
+    // You can access queue state here
+    console.log('Success count:', queuer.getSuccessCount())
   },
-  onSettled: (result) => {
-    if (result instanceof Error) {
-      console.log('Task failed:', result)
-    } else {
-      console.log('Task succeeded:', result)
-    }
+  onSettled: (queuer) => {
+    // Called after each execution (success or failure)
+    console.log('Total settled:', queuer.getSettledCount())
   }
 })
 
@@ -242,6 +243,53 @@ queue.addItem(async () => {
   throw new Error('Task failed')
 }).catch(error => {
   console.error('Individual task error:', error)
+})
+```
+
+Key error handling features:
+- If a task throws an error and no `onError` handler is provided, the error will be thrown and propagate up to the caller
+- If an `onError` handler is provided, errors will be caught and passed to the handler instead of being thrown
+- The `throwOnError` option can be used to control error throwing behavior:
+  - When true (default if no onError handler), errors will be thrown
+  - When false (default if onError handler provided), errors will be swallowed
+  - Can be explicitly set to override these defaults
+- You can track error counts using `getErrorCount()` and check execution state with `getActiveItems()`
+- The queue maintains its state and can continue processing other tasks after an error occurs
+- Each task can have its own error handling via Promise catch blocks
+- The `onSettled` callback is called after each execution attempt, regardless of success or failure
+
+### Callback Options
+
+The AsyncQueuer provides several callback options for monitoring task execution and queue state:
+
+```ts
+const queue = new AsyncQueuer<string>({
+  // Handle successful task completion
+  onSuccess: (result, queuer) => {
+    console.log('Task succeeded:', result)
+    // Access queue state
+    console.log('Success count:', queuer.getSuccessCount())
+  },
+  // Handle task errors
+  onError: (error, queuer) => {
+    console.error('Task failed:', error)
+    // Access queue state
+    console.log('Error count:', queuer.getErrorCount())
+  },
+  // Handle task completion regardless of success/failure
+  onSettled: (queuer) => {
+    // Called after each execution (success or failure)
+    console.log('Total settled:', queuer.getSettledCount())
+  },
+  // Handle queue state changes
+  onItemsChange: (queuer) => {
+    console.log('Queue size:', queuer.getSize())
+    console.log('Active items:', queuer.getActiveItems().length)
+  },
+  // Handle running state changes
+  onIsRunningChange: (queuer) => {
+    console.log('Queue running:', queuer.getIsRunning())
+  }
 })
 ```
 
@@ -255,52 +303,27 @@ queue.getPeek()           // View next item without removing it
 queue.getSize()          // Get current queue size
 queue.getIsEmpty()       // Check if queue is empty
 queue.getIsFull()        // Check if queue has reached maxSize
-queue.getAllItems()   // Get copy of all queued items
-queue.getActiveItems() // Get currently processing items
-queue.getPendingItems() // Get items waiting to be processed
+queue.getAllItems()      // Get copy of all queued items
+queue.getActiveItems()   // Get currently processing items
+queue.getPendingItems()  // Get items waiting to be processed
 
 // Queue manipulation
-queue.clear()         // Remove all items
-queue.reset()         // Reset to initial state
+queue.clear()            // Remove all items
+queue.reset()            // Reset to initial state
 queue.getExecutionCount() // Get number of processed items
 
 // Processing control
-queue.start()         // Begin processing items
-queue.stop()          // Pause processing
+queue.start()            // Begin processing items
+queue.stop()             // Pause processing
 queue.getIsRunning()     // Check if queue is processing
 queue.getIsIdle()        // Check if queue is empty and not processing
-```
 
-### Task Callbacks
-
-The AsyncQueuer provides three types of callbacks for monitoring task execution:
-
-```ts
-const queue = new AsyncQueuer<string>()
-
-// Handle successful task completion
-const unsubSuccess = queue.onSuccess((result) => {
-  console.log('Task succeeded:', result)
-})
-
-// Handle task errors
-const unsubError = queue.onError((error) => {
-  console.error('Task failed:', error)
-})
-
-// Handle task completion regardless of success/failure
-const unsubSettled = queue.onSettled((result) => {
-  if (result instanceof Error) {
-    console.log('Task failed:', result)
-  } else {
-    console.log('Task succeeded:', result)
-  }
-})
-
-// Unsubscribe from callbacks when no longer needed
-unsubSuccess()
-unsubError()
-unsubSettled()
+// Statistics
+queue.getSuccessCount()  // Get number of successful executions
+queue.getErrorCount()    // Get number of failed executions
+queue.getSettledCount()  // Get total number of completed executions
+queue.getRejectionCount() // Get number of rejected items
+queue.getExpirationCount() // Get number of expired items
 ```
 
 ### Rejection Handling
@@ -312,6 +335,8 @@ const queue = new AsyncQueuer<string>({
   maxSize: 2, // Only allow 2 tasks in queue
   onReject: (task, queuer) => {
     console.log('Queue is full. Task rejected:', task)
+    // Access queue state
+    console.log('Rejection count:', queuer.getRejectionCount())
   }
 })
 
@@ -320,6 +345,29 @@ queue.addItem(async () => 'second') // Accepted
 queue.addItem(async () => 'third') // Rejected, triggers onReject callback
 
 console.log(queue.getRejectionCount()) // 1
+```
+
+### Task Expiration
+
+The AsyncQueuer supports task expiration to automatically remove stale tasks from the queue:
+
+```ts
+const queue = new AsyncQueuer<string>({
+  expirationDuration: 5000, // Tasks expire after 5 seconds
+  onExpire: (task, queuer) => {
+    console.log('Task expired:', task)
+    // Access queue state
+    console.log('Expiration count:', queuer.getExpirationCount())
+  }
+})
+
+// Or use custom expiration logic
+const queue = new AsyncQueuer<string>({
+  getIsExpired: (task, addedAt) => {
+    // Custom expiration logic
+    return Date.now() - addedAt > 5000
+  }
+})
 ```
 
 ### Initial Tasks

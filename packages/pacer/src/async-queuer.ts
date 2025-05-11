@@ -46,6 +46,16 @@ export interface AsyncQueuerOptions<TFn extends AsyncQueuerFn> {
    */
   maxSize?: number
   /**
+   * Optional error handler for when a task throws.
+   * If provided, the handler will be called with the error and queuer instance.
+   * This can be used alongside throwOnError - the handler will be called before any error is thrown.
+   */
+  onError?: (error: unknown, queuer: AsyncQueuer<TFn>) => void
+  /**
+   * Callback fired whenever an item expires in the queuer
+   */
+  onExpire?: (item: TFn, queuer: AsyncQueuer<TFn>) => void
+  /**
    * Callback fired whenever an item is removed from the queuer
    */
   onGetNextItem?: (item: TFn, queuer: AsyncQueuer<TFn>) => void
@@ -62,14 +72,6 @@ export interface AsyncQueuerOptions<TFn extends AsyncQueuerFn> {
    */
   onReject?: (item: TFn, queuer: AsyncQueuer<TFn>) => void
   /**
-   * Callback fired whenever an item expires in the queuer
-   */
-  onExpire?: (item: TFn, queuer: AsyncQueuer<TFn>) => void
-  /**
-   * Optional error handler for when a task throws
-   */
-  onError?: (error: unknown, queuer: AsyncQueuer<TFn>) => void
-  /**
    * Optional callback to call when a task is settled
    */
   onSettled?: (queuer: AsyncQueuer<TFn>) => void
@@ -81,6 +83,12 @@ export interface AsyncQueuerOptions<TFn extends AsyncQueuerFn> {
    * Whether the queuer should start processing tasks immediately or not.
    */
   started?: boolean
+  /**
+   * Whether to throw errors when they occur.
+   * Defaults to true if no onError handler is provided, false if an onError handler is provided.
+   * Can be explicitly set to override these defaults.
+   */
+  throwOnError?: boolean
   /**
    * Time in milliseconds to wait between processing items.
    * Can be a number or a function that returns a number.
@@ -99,6 +107,7 @@ type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
   | 'onReject'
   | 'onSettled'
   | 'onSuccess'
+  | 'throwOnError'
 >
 
 const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
@@ -129,6 +138,13 @@ const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
  * Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
  * the next pending task is processed if below the concurrency limit.
  *
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and queuer instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncQueuer instance
+ *
  * @example
  * ```ts
  * const asyncQueuer = new AsyncQueuer<string>({ concurrency: 2 });
@@ -158,7 +174,11 @@ export class AsyncQueuer<TFn extends AsyncQueuerFn> {
   private _running: boolean
 
   constructor(initialOptions: AsyncQueuerOptions<TFn> = defaultOptions) {
-    this._options = { ...defaultOptions, ...initialOptions }
+    this._options = {
+      ...defaultOptions,
+      ...initialOptions,
+      throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
+    }
     this._running = this._options.started
 
     for (let i = 0; i < this._options.initialItems.length; i++) {
@@ -228,10 +248,11 @@ export class AsyncQueuer<TFn extends AsyncQueuerFn> {
           this._options.onSuccess?.(res, this)
         } catch (error) {
           this._errorCount++
-          if (this._options.onError) {
-            this._options.onError(error, this)
-          } else {
+          this._options.onError?.(error, this)
+          if (this._options.throwOnError) {
             throw error
+          } else {
+            console.error(error)
           }
         } finally {
           this._settledCount++
@@ -544,6 +565,13 @@ export class AsyncQueuer<TFn extends AsyncQueuerFn> {
 /**
  * Creates a new AsyncQueuer instance with the given options and returns a bound addItem function.
  * The queuer is automatically started and ready to process items.
+ *
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and queuer instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncQueuer instance
  *
  * @example
  * ```ts

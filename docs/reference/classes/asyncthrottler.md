@@ -7,7 +7,7 @@ title: AsyncThrottler
 
 # Class: AsyncThrottler\<TFn\>
 
-Defined in: [async-throttler.ts:99](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L99)
+Defined in: [async-throttler.ts:105](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L105)
 
 A class that creates an async throttled function.
 
@@ -23,10 +23,11 @@ This is useful for rate-limiting API calls, handling scroll/resize events, or an
 ensure a maximum execution frequency.
 
 Error Handling:
-- If an error occurs during execution and no `onError` handler is provided, the error will be thrown and propagate up to the caller.
-- If an `onError` handler is provided, errors will be caught and passed to the handler instead of being thrown.
-- The error count can be tracked using `getErrorCount()`.
-- The throttler maintains its state and can continue to be used after an error occurs.
+- If an `onError` handler is provided, it will be called with the error and throttler instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncThrottler instance
 
 ## Example
 
@@ -58,7 +59,7 @@ const result = await throttler.maybeExecute(inputElement.value);
 new AsyncThrottler<TFn>(fn, initialOptions): AsyncThrottler<TFn>
 ```
 
-Defined in: [async-throttler.ts:112](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L112)
+Defined in: [async-throttler.ts:118](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L118)
 
 #### Parameters
 
@@ -82,7 +83,7 @@ Defined in: [async-throttler.ts:112](https://github.com/TanStack/pacer/blob/main
 cancel(): void
 ```
 
-Defined in: [async-throttler.ts:239](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L239)
+Defined in: [async-throttler.ts:247](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L247)
 
 Cancels any pending execution or aborts any execution in progress
 
@@ -98,7 +99,7 @@ Cancels any pending execution or aborts any execution in progress
 getEnabled(): boolean
 ```
 
-Defined in: [async-throttler.ts:145](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L145)
+Defined in: [async-throttler.ts:152](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L152)
 
 Returns the current enabled state of the throttler
 
@@ -114,7 +115,7 @@ Returns the current enabled state of the throttler
 getErrorCount(): number
 ```
 
-Defined in: [async-throttler.ts:289](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L289)
+Defined in: [async-throttler.ts:297](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L297)
 
 Returns the number of times the function has errored
 
@@ -130,7 +131,7 @@ Returns the number of times the function has errored
 getIsExecuting(): boolean
 ```
 
-Defined in: [async-throttler.ts:303](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L303)
+Defined in: [async-throttler.ts:311](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L311)
 
 Returns the current executing state
 
@@ -146,7 +147,7 @@ Returns the current executing state
 getIsPending(): boolean
 ```
 
-Defined in: [async-throttler.ts:296](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L296)
+Defined in: [async-throttler.ts:304](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L304)
 
 Returns the current pending state
 
@@ -162,7 +163,7 @@ Returns the current pending state
 getLastExecutionTime(): number
 ```
 
-Defined in: [async-throttler.ts:254](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L254)
+Defined in: [async-throttler.ts:262](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L262)
 
 Returns the last execution time
 
@@ -178,7 +179,7 @@ Returns the last execution time
 getLastResult(): undefined | ReturnType<TFn>
 ```
 
-Defined in: [async-throttler.ts:268](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L268)
+Defined in: [async-throttler.ts:276](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L276)
 
 Returns the last result of the debounced function
 
@@ -194,7 +195,7 @@ Returns the last result of the debounced function
 getNextExecutionTime(): number
 ```
 
-Defined in: [async-throttler.ts:261](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L261)
+Defined in: [async-throttler.ts:269](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L269)
 
 Returns the next execution time
 
@@ -210,7 +211,7 @@ Returns the next execution time
 getOptions(): AsyncThrottlerOptions<TFn>
 ```
 
-Defined in: [async-throttler.ts:138](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L138)
+Defined in: [async-throttler.ts:145](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L145)
 
 Returns the current options
 
@@ -226,7 +227,7 @@ Returns the current options
 getSettleCount(): number
 ```
 
-Defined in: [async-throttler.ts:282](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L282)
+Defined in: [async-throttler.ts:290](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L290)
 
 Returns the number of times the function has settled (completed or errored)
 
@@ -242,7 +243,7 @@ Returns the number of times the function has settled (completed or errored)
 getSuccessCount(): number
 ```
 
-Defined in: [async-throttler.ts:275](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L275)
+Defined in: [async-throttler.ts:283](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L283)
 
 Returns the number of times the function has been executed successfully
 
@@ -258,7 +259,7 @@ Returns the number of times the function has been executed successfully
 getWait(): number
 ```
 
-Defined in: [async-throttler.ts:152](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L152)
+Defined in: [async-throttler.ts:159](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L159)
 
 Returns the current wait time in milliseconds
 
@@ -274,7 +275,7 @@ Returns the current wait time in milliseconds
 maybeExecute(...args): Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-throttler.ts:170](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L170)
+Defined in: [async-throttler.ts:177](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L177)
 
 Attempts to execute the throttled function.
 If a call is already in progress, it may be blocked or queued depending on the `wait` option.
@@ -310,7 +311,7 @@ The error from the throttled function if no onError handler is configured
 setOptions(newOptions): void
 ```
 
-Defined in: [async-throttler.ts:126](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L126)
+Defined in: [async-throttler.ts:133](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L133)
 
 Updates the throttler options
 Returns the new options state

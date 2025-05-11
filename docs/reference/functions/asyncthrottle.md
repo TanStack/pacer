@@ -11,7 +11,7 @@ title: asyncThrottle
 function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-throttler.ts:341](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L341)
+Defined in: [async-throttler.ts:349](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L349)
 
 Creates an async throttled function that limits how often the function can execute.
 The throttled function will execute at most once per wait period, even if called multiple times.
@@ -22,11 +22,11 @@ making it ideal for API calls and other async operations where you want the resu
 instead of setting the result on a state variable from within the throttled function.
 
 Error Handling:
-- If the throttled function throws and no `onError` handler is configured,
-  the error will be thrown from the returned function.
-- If an `onError` handler is configured, errors will be caught and passed to the handler,
-  and the function will return undefined.
-- The error state can be checked using the underlying AsyncThrottler instance.
+- If an `onError` handler is provided, it will be called with the error and throttler instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncThrottler instance
 
 ## Type Parameters
 

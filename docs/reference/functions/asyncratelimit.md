@@ -11,7 +11,7 @@ title: asyncRateLimit
 function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-rate-limiter.ts:401](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L401)
+Defined in: [async-rate-limiter.ts:408](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L408)
 
 Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -34,13 +34,12 @@ Consider using throttle() or debounce() if you need more intelligent execution c
 need to enforce a hard limit on the number of executions within a time period.
 
 Error Handling:
-- If the rate-limited function throws and no `onError` handler is configured,
-  the error will be thrown from the returned function.
-- If an `onError` handler is configured, errors will be caught and passed to the handler,
-  and the function will return undefined.
-- If the rate limit is exceeded, the execution will be rejected and the `onReject` handler
-  will be called if configured.
-- The error state can be checked using the underlying AsyncRateLimiter instance.
+- If an `onError` handler is provided, it will be called with the error and rate limiter instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncRateLimiter instance
+- Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
 
 ## Type Parameters
 

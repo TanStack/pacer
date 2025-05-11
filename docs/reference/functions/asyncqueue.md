@@ -11,10 +11,17 @@ title: asyncQueue
 function asyncQueue<TFn>(options): (fn, position, runOnItemsChange) => void
 ```
 
-Defined in: [async-queuer.ts:561](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L561)
+Defined in: [async-queuer.ts:589](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L589)
 
 Creates a new AsyncQueuer instance with the given options and returns a bound addItem function.
 The queuer is automatically started and ready to process items.
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and queuer instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncQueuer instance
 
 ## Type Parameters
 
