@@ -1,5 +1,5 @@
 import { parseFunctionOrValue } from './utils'
-import type { AnyAsyncFunction } from './types'
+import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 /**
  * Options for configuring an async throttled function
@@ -17,7 +17,10 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    */
   leading?: boolean
   /**
-   * Optional error handler for when the throttled function throws
+   * Optional error handler for when the throttled function throws.
+   * If provided, errors will be caught and passed to this handler.
+   * If not provided, errors will be thrown and propagate up to the caller.
+   * The handler receives both the error and the throttler instance.
    */
   onError?: (error: unknown, asyncThrottler: AsyncThrottler<TFn>) => void
   /**
@@ -44,12 +47,14 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   wait: number | ((throttler: AsyncThrottler<TFn>) => number)
 }
 
-const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
+type AsyncThrottlerOptionsWithOptionalCallbacks = OptionalKeys<
+  AsyncThrottlerOptions<any>,
+  'onError' | 'onSettled' | 'onSuccess'
+>
+
+const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {
   enabled: true,
   leading: true,
-  onError: () => {},
-  onSettled: () => {},
-  onSuccess: () => {},
   trailing: true,
   wait: 0,
 }
@@ -68,12 +73,23 @@ const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
  * This is useful for rate-limiting API calls, handling scroll/resize events, or any scenario where you want to
  * ensure a maximum execution frequency.
  *
+ * Error Handling:
+ * - If an error occurs during execution and no `onError` handler is provided, the error will be thrown and propagate up to the caller.
+ * - If an `onError` handler is provided, errors will be caught and passed to the handler instead of being thrown.
+ * - The error count can be tracked using `getErrorCount()`.
+ * - The throttler maintains its state and can continue to be used after an error occurs.
+ *
  * @example
  * ```ts
  * const throttler = new AsyncThrottler(async (value: string) => {
  *   const result = await saveToAPI(value);
  *   return result; // Return value is preserved
- * }, { wait: 1000 });
+ * }, {
+ *   wait: 1000,
+ *   onError: (error) => {
+ *     console.error('API call failed:', error);
+ *   }
+ * });
  *
  * // Will only execute once per second no matter how often called
  * // Returns the API response directly
@@ -81,7 +97,7 @@ const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
  * ```
  */
 export class AsyncThrottler<TFn extends AnyAsyncFunction> {
-  private _options: Required<AsyncThrottlerOptions<TFn>>
+  private _options: AsyncThrottlerOptionsWithOptionalCallbacks
   private _abortController: AbortController | null = null
   private _errorCount = 0
   private _isExecuting = false
@@ -119,7 +135,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   /**
    * Returns the current options
    */
-  getOptions(): Required<AsyncThrottlerOptions<TFn>> {
+  getOptions(): AsyncThrottlerOptions<TFn> {
     return this._options
   }
 
@@ -127,7 +143,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    * Returns the current enabled state of the throttler
    */
   getEnabled(): boolean {
-    return parseFunctionOrValue(this._options.enabled, this)
+    return !!parseFunctionOrValue(this._options.enabled, this)
   }
 
   /**
@@ -138,8 +154,18 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   }
 
   /**
-   * Attempts to execute the throttled function
-   * If a call is already in progress, it may be blocked or queued depending on the `wait` option
+   * Attempts to execute the throttled function.
+   * If a call is already in progress, it may be blocked or queued depending on the `wait` option.
+   *
+   * Error Handling:
+   * - If the throttled function throws and no `onError` handler is configured,
+   *   the error will be thrown from this method.
+   * - If an `onError` handler is configured, errors will be caught and passed to the handler,
+   *   and this method will return undefined.
+   * - The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
+   *
+   * @returns A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
+   * @throws The error from the throttled function if no onError handler is configured
    */
   async maybeExecute(
     ...args: Parameters<TFn>
@@ -188,17 +214,21 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this._isExecuting = true
       this._lastResult = await this.fn(...args) // EXECUTE!
       this._successCount++
-      this._options.onSuccess(this._lastResult!, this)
+      this._options.onSuccess?.(this._lastResult!, this)
     } catch (error) {
       this._errorCount++
-      this._options.onError(error, this)
+      if (this._options.onError) {
+        this._options.onError(error, this)
+      } else {
+        throw error
+      }
     } finally {
       this._isExecuting = false
       this._settleCount++
       this._abortController = null
       this._lastExecutionTime = Date.now()
       this._nextExecutionTime = this._lastExecutionTime + this.getWait()
-      this._options.onSettled(this)
+      this._options.onSettled?.(this)
     }
     return this._lastResult
   }
@@ -284,12 +314,24 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
  * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
  * instead of setting the result on a state variable from within the throttled function.
  *
+ * Error Handling:
+ * - If the throttled function throws and no `onError` handler is configured,
+ *   the error will be thrown from the returned function.
+ * - If an `onError` handler is configured, errors will be caught and passed to the handler,
+ *   and the function will return undefined.
+ * - The error state can be checked using the underlying AsyncThrottler instance.
+ *
  * @example
  * ```ts
  * const throttled = asyncThrottle(async (value: string) => {
  *   const result = await saveToAPI(value);
  *   return result; // Return value is preserved
- * }, { wait: 1000 });
+ * }, {
+ *   wait: 1000,
+ *   onError: (error) => {
+ *     console.error('API call failed:', error);
+ *   }
+ * });
  *
  * // This will execute at most once per second
  * // Returns the API response directly

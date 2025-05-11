@@ -2,34 +2,40 @@ import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { createSignal } from 'solid-js'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
-import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
+import type {
+  AsyncQueuerFn,
+  AsyncQueuerOptions,
+} from '@tanstack/pacer/async-queuer'
 
-export interface SolidAsyncQueuer<TValue>
+export interface SolidAsyncQueuer<TFn extends AsyncQueuerFn>
   extends Omit<
-    AsyncQueuer<TValue>,
+    AsyncQueuer<TFn>,
     | 'getActiveItems'
     | 'getAllItems'
-    | 'getExecutionCount'
+    | 'getErrorCount'
     | 'getIsEmpty'
     | 'getIsFull'
     | 'getIsIdle'
     | 'getIsRunning'
     | 'getPeek'
     | 'getPendingItems'
+    | 'getRejectionCount'
+    | 'getSettledCount'
     | 'getSize'
+    | 'getSuccessCount'
   > {
   /**
    * Signal version of `getActiveItems`
    */
-  activeItems: Accessor<Array<() => Promise<TValue>>>
+  activeItems: Accessor<Array<TFn>>
   /**
    * Signal version of `getAllItems`
    */
-  allItems: Accessor<Array<() => Promise<TValue>>>
+  allItems: Accessor<Array<TFn>>
   /**
-   * Signal version of `getExecutionCount`
+   * Signal version of `getErrorCount`
    */
-  executionCount: Accessor<number>
+  errorCount: Accessor<number>
   /**
    * Signal version of `getIsEmpty`
    */
@@ -49,19 +55,27 @@ export interface SolidAsyncQueuer<TValue>
   /**
    * Signal version of `getPeek`
    */
-  peek: Accessor<(() => Promise<TValue>) | undefined>
+  peek: Accessor<TFn | undefined>
   /**
    * Signal version of `getPendingItems`
    */
-  pendingItems: Accessor<Array<() => Promise<TValue>>>
+  pendingItems: Accessor<Array<TFn>>
   /**
    * Signal version of `getRejectionCount`
    */
   rejectionCount: Accessor<number>
   /**
+   * Signal version of `getSettledCount`
+   */
+  settledCount: Accessor<number>
+  /**
    * Signal version of `getSize`
    */
   size: Accessor<number>
+  /**
+   * Signal version of `getSuccessCount`
+   */
+  successCount: Accessor<number>
 }
 
 /**
@@ -109,13 +123,17 @@ export interface SolidAsyncQueuer<TValue>
  * });
  * ```
  */
-export function createAsyncQueuer<TValue>(
-  initialOptions: AsyncQueuerOptions<TValue> = {},
-): SolidAsyncQueuer<TValue> {
-  const asyncQueuer = new AsyncQueuer<TValue>(initialOptions)
+export function createAsyncQueuer<TFn extends AsyncQueuerFn>(
+  initialOptions: AsyncQueuerOptions<TFn> = {},
+): SolidAsyncQueuer<TFn> {
+  const asyncQueuer = new AsyncQueuer<TFn>(initialOptions)
 
-  const [executionCount, setExecutionCount] = createSignal(
-    asyncQueuer.getExecutionCount(),
+  const [successCount, setSuccessCount] = createSignal(
+    asyncQueuer.getSuccessCount(),
+  )
+  const [errorCount, setErrorCount] = createSignal(asyncQueuer.getErrorCount())
+  const [settledCount, setSettledCount] = createSignal(
+    asyncQueuer.getSettledCount(),
   )
   const [rejectionCount, setRejectionCount] = createSignal(
     asyncQueuer.getRejectionCount(),
@@ -124,31 +142,32 @@ export function createAsyncQueuer<TValue>(
   const [isFull, setIsFull] = createSignal(asyncQueuer.getIsFull())
   const [isIdle, setIsIdle] = createSignal(asyncQueuer.getIsIdle())
   const [isRunning, setIsRunning] = createSignal(asyncQueuer.getIsRunning())
-  const [allItems, setAllItems] = createSignal<Array<() => Promise<TValue>>>(
+  const [allItems, setAllItems] = createSignal<Array<TFn>>(
     asyncQueuer.getAllItems(),
   )
-  const [activeItems, setActiveItems] = createSignal<
-    Array<() => Promise<TValue>>
-  >(asyncQueuer.getActiveItems())
-  const [pendingItems, setPendingItems] = createSignal<
-    Array<() => Promise<TValue>>
-  >(asyncQueuer.getPendingItems())
-  const [peek, setPeek] = createSignal<(() => Promise<TValue>) | undefined>(
-    asyncQueuer.getPeek(),
+  const [activeItems, setActiveItems] = createSignal<Array<TFn>>(
+    asyncQueuer.getActiveItems(),
   )
+  const [pendingItems, setPendingItems] = createSignal<Array<TFn>>(
+    asyncQueuer.getPendingItems(),
+  )
+  const [peek, setPeek] = createSignal<TFn | undefined>(asyncQueuer.getPeek())
   const [size, setSize] = createSignal(asyncQueuer.getSize())
 
   asyncQueuer.setOptions({
     onItemsChange: (queuer) => {
-      setExecutionCount(queuer.getExecutionCount())
+      setActiveItems(queuer.getActiveItems())
+      setAllItems(queuer.getAllItems())
+      setErrorCount(queuer.getErrorCount())
       setIsEmpty(queuer.getIsEmpty())
       setIsFull(queuer.getIsFull())
       setIsIdle(queuer.getIsIdle())
-      setAllItems(queuer.getAllItems())
-      setActiveItems(queuer.getActiveItems())
-      setPendingItems(queuer.getPendingItems())
       setPeek(() => queuer.getPeek())
+      setPendingItems(queuer.getPendingItems())
+      setRejectionCount(queuer.getRejectionCount())
+      setSettledCount(queuer.getSettledCount())
       setSize(queuer.getSize())
+      setSuccessCount(queuer.getSuccessCount())
       initialOptions.onItemsChange?.(queuer)
     },
     onIsRunningChange: (queuer) => {
@@ -165,15 +184,17 @@ export function createAsyncQueuer<TValue>(
   return {
     ...bindInstanceMethods(asyncQueuer),
     activeItems,
-    executionCount,
+    allItems,
+    errorCount,
     isEmpty,
     isFull,
     isIdle,
     isRunning,
-    allItems,
     peek,
     pendingItems,
     rejectionCount,
+    settledCount,
     size,
-  } as SolidAsyncQueuer<TValue>
+    successCount,
+  } as SolidAsyncQueuer<TFn>
 }

@@ -754,7 +754,10 @@ describe('AsyncDebouncer', () => {
         .fn()
         .mockResolvedValueOnce('success')
         .mockRejectedValueOnce(new Error('test error'))
-      const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        onError: vi.fn(),
+      })
 
       // First execution - success
       const promise1 = debouncer.maybeExecute()

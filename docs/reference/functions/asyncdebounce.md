@@ -11,7 +11,7 @@ title: asyncDebounce
 function asyncDebounce<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:285](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L285)
+Defined in: [async-debouncer.ts:327](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L327)
 
 Creates an async debounced function that delays execution until after a specified wait time.
 The debounced function will only execute once the wait period has elapsed without any new calls.
@@ -20,6 +20,13 @@ If called again during the wait period, the timer resets and a new wait period b
 Unlike the non-async Debouncer, this async version supports returning values from the debounced function,
 making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
 instead of setting the result on a state variable from within the debounced function.
+
+Error Handling:
+- If the debounced function throws and no `onError` handler is configured,
+  the error will be thrown from the returned function.
+- If an `onError` handler is configured, errors will be caught and passed to the handler,
+  and the function will return undefined.
+- The error state can be checked using the underlying AsyncDebouncer instance.
 
 ## Type Parameters
 
@@ -39,8 +46,15 @@ instead of setting the result on a state variable from within the debounced func
 
 `Function`
 
-Attempts to execute the debounced function
-If a call is already in progress, it will be queued
+Attempts to execute the debounced function.
+If a call is already in progress, it will be queued.
+
+Error Handling:
+- If the debounced function throws and no `onError` handler is configured,
+  the error will be thrown from this method.
+- If an `onError` handler is configured, errors will be caught and passed to the handler,
+  and this method will return undefined.
+- The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
 
 ### Parameters
 
@@ -52,13 +66,24 @@ If a call is already in progress, it will be queued
 
 `Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
 
+A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
+
+### Throws
+
+The error from the debounced function if no onError handler is configured
+
 ## Example
 
 ```ts
 const debounced = asyncDebounce(async (value: string) => {
   const result = await saveToAPI(value);
   return result; // Return value is preserved
-}, { wait: 1000 });
+}, {
+  wait: 1000,
+  onError: (error) => {
+    console.error('API call failed:', error);
+  }
+});
 
 // Will only execute once, 1 second after the last call
 // Returns the API response directly

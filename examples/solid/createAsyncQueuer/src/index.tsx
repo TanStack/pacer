@@ -10,7 +10,7 @@ function App() {
   // Use your state management library of choice
   const [concurrency, setConcurrency] = createSignal(2)
 
-  const queuer = createAsyncQueuer<string>({
+  const queuer = createAsyncQueuer<AsyncTask>({
     maxSize: 25,
     initialItems: Array.from({ length: 10 }, (_, i) => async () => {
       await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
@@ -19,6 +19,12 @@ function App() {
     concurrency: concurrency(), // Process 2 items concurrently
     wait: 500, // for demo purposes - usually you would not want extra wait time unless you are throttling with concurrency
     started: false,
+    onReject: (item) => {
+      console.log('Queue is full, rejecting item', item)
+    },
+    onError: (error) => {
+      console.error('Error processing item', error) // optionally, handle errors here instead of your own try/catch
+    },
   })
 
   // Simulated async task
@@ -40,7 +46,7 @@ function App() {
       <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
       <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
       <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.executionCount()}</div>
+      <div>Items Processed: {queuer.successCount()}</div>
       <div>Active Tasks: {queuer.activeItems().length}</div>
       <div>Pending Tasks: {queuer.pendingItems().length}</div>
       <div>

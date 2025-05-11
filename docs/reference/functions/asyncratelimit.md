@@ -11,7 +11,7 @@ title: asyncRateLimit
 function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-rate-limiter.ts:350](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L350)
+Defined in: [async-rate-limiter.ts:401](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L401)
 
 Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -32,6 +32,15 @@ Note that rate limiting is a simpler form of execution control compared to throt
 
 Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
 need to enforce a hard limit on the number of executions within a time period.
+
+Error Handling:
+- If the rate-limited function throws and no `onError` handler is configured,
+  the error will be thrown from the returned function.
+- If an `onError` handler is configured, errors will be caught and passed to the handler,
+  and the function will return undefined.
+- If the rate limit is exceeded, the execution will be rejected and the `onReject` handler
+  will be called if configured.
+- The error state can be checked using the underlying AsyncRateLimiter instance.
 
 ## Type Parameters
 
@@ -55,6 +64,16 @@ Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
 If execution is allowed, waits for any previous execution to complete before proceeding.
 
+Error Handling:
+- If the rate-limited function throws and no `onError` handler is configured,
+  the error will be thrown from this method.
+- If an `onError` handler is configured, errors will be caught and passed to the handler,
+  and this method will return undefined.
+- If the rate limit is exceeded, the execution will be rejected and the `onReject` handler
+  will be called if configured.
+- The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
+- Rate limit rejections can be tracked using `getRejectionCount()`.
+
 ### Parameters
 
 #### args
@@ -64,6 +83,12 @@ If execution is allowed, waits for any previous execution to complete before pro
 ### Returns
 
 `Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
+
+A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
+
+### Throws
+
+The error from the rate-limited function if no onError handler is configured
 
 ### Example
 
@@ -85,6 +110,9 @@ const rateLimited = asyncRateLimit(makeApiCall, {
   limit: 5,
   window: 60000,
   windowType: 'sliding',
+  onError: (error) => {
+    console.error('API call failed:', error);
+  },
   onReject: (rateLimiter) => {
     console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }

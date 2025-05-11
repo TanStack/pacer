@@ -8,23 +8,23 @@ title: asyncQueue
 # Function: asyncQueue()
 
 ```ts
-function asyncQueue<TValue>(options): (fn, position, runOnItemsChange) => Promise<TValue>
+function asyncQueue<TFn>(options): (fn, position, runOnItemsChange) => void
 ```
 
-Defined in: [async-queuer.ts:581](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L581)
+Defined in: [async-queuer.ts:561](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L561)
 
 Creates a new AsyncQueuer instance with the given options and returns a bound addItem function.
 The queuer is automatically started and ready to process items.
 
 ## Type Parameters
 
-• **TValue**
+• **TFn** *extends* [`AsyncQueuerFn`](../type-aliases/asyncqueuerfn.md)
 
 ## Parameters
 
 ### options
 
-[`AsyncQueuerOptions`](../interfaces/asyncqueueroptions.md)\<`TValue`\>
+[`AsyncQueuerOptions`](../interfaces/asyncqueueroptions.md)\<`TFn`\>
 
 Configuration options for the AsyncQueuer
 
@@ -40,7 +40,7 @@ Adds a task to the queuer
 
 #### fn
 
-[`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md) & `object`
+`TFn`
 
 #### position
 
@@ -52,7 +52,7 @@ Adds a task to the queuer
 
 ### Returns
 
-`Promise`\<`TValue`\>
+`void`
 
 ## Example
 

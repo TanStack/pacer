@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
+import type {
+  AsyncQueuerFn,
+  AsyncQueuerOptions,
+} from '@tanstack/pacer/async-queuer'
 
 /**
  * A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
@@ -52,11 +55,11 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
  * });
  * ```
  */
-export function useAsyncQueuer<TValue>(
-  options: AsyncQueuerOptions<TValue> = {},
-): AsyncQueuer<TValue> {
+export function useAsyncQueuer<TFn extends AsyncQueuerFn>(
+  options: AsyncQueuerOptions<TFn> = {},
+): AsyncQueuer<TFn> {
   const [asyncQueuer] = useState(() =>
-    bindInstanceMethods(new AsyncQueuer<TValue>(options)),
+    bindInstanceMethods(new AsyncQueuer<TFn>(options)),
   )
 
   asyncQueuer.setOptions(options)

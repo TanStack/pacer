@@ -1,8 +1,10 @@
 import { parseFunctionOrValue } from './utils'
-import type { AnyAsyncFunction } from './types'
+import type { AnyAsyncFunction, OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
-export interface AsyncQueuerOptions<TValue> {
+export type AsyncQueuerFn = AnyAsyncFunction & { priority?: number }
+
+export interface AsyncQueuerOptions<TFn extends AsyncQueuerFn> {
   /**
    * Default position to add items to the queuer
    * @default 'back'
@@ -13,7 +15,7 @@ export interface AsyncQueuerOptions<TValue> {
    * Can be a number or a function that returns a number.
    * @default 1
    */
-  concurrency?: number | ((queuer: AsyncQueuer<TValue>) => number)
+  concurrency?: number | ((queuer: AsyncQueuer<TFn>) => number)
   /**
    * Maximum time in milliseconds that an item can stay in the queue
    * If not provided, items will never expire
@@ -23,7 +25,7 @@ export interface AsyncQueuerOptions<TValue> {
    * Function to determine if an item has expired
    * If provided, this overrides the expirationDuration behavior
    */
-  getIsExpired?: (item: () => Promise<TValue>, addedAt: number) => boolean
+  getIsExpired?: (item: TFn, addedAt: number) => boolean
   /**
    * Default position to get items from during processing
    * @default 'front'
@@ -34,11 +36,11 @@ export interface AsyncQueuerOptions<TValue> {
    * Higher priority items will be processed first
    * If not provided, will use static priority values attached to tasks
    */
-  getPriority?: (item: () => Promise<TValue>) => number
+  getPriority?: (item: TFn) => number
   /**
    * Initial items to populate the queuer with
    */
-  initialItems?: Array<(() => Promise<TValue>) & { priority?: number }>
+  initialItems?: Array<TFn & { priority?: number }>
   /**
    * Maximum number of items allowed in the queuer
    */
@@ -46,26 +48,35 @@ export interface AsyncQueuerOptions<TValue> {
   /**
    * Callback fired whenever an item is removed from the queuer
    */
-  onGetNextItem?: (
-    item: () => Promise<TValue>,
-    queuer: AsyncQueuer<TValue>,
-  ) => void
+  onGetNextItem?: (item: TFn, queuer: AsyncQueuer<TFn>) => void
   /**
    * Callback fired whenever the queuer's running state changes
    */
-  onIsRunningChange?: (queuer: AsyncQueuer<TValue>) => void
+  onIsRunningChange?: (queuer: AsyncQueuer<TFn>) => void
   /**
    * Callback fired whenever an item is added or removed from the queuer
    */
-  onItemsChange?: (queuer: AsyncQueuer<TValue>) => void
+  onItemsChange?: (queuer: AsyncQueuer<TFn>) => void
   /**
    * Callback fired whenever an item is rejected from being added to the queuer
    */
-  onReject?: (item: () => Promise<TValue>, queuer: AsyncQueuer<TValue>) => void
+  onReject?: (item: TFn, queuer: AsyncQueuer<TFn>) => void
   /**
    * Callback fired whenever an item expires in the queuer
    */
-  onExpire?: (item: () => Promise<TValue>, queuer: AsyncQueuer<TValue>) => void
+  onExpire?: (item: TFn, queuer: AsyncQueuer<TFn>) => void
+  /**
+   * Optional error handler for when a task throws
+   */
+  onError?: (error: unknown, queuer: AsyncQueuer<TFn>) => void
+  /**
+   * Optional callback to call when a task is settled
+   */
+  onSettled?: (queuer: AsyncQueuer<TFn>) => void
+  /**
+   * Optional callback to call when a task succeeds
+   */
+  onSuccess?: (result: TFn, queuer: AsyncQueuer<TFn>) => void
   /**
    * Whether the queuer should start processing tasks immediately or not.
    */
@@ -75,23 +86,30 @@ export interface AsyncQueuerOptions<TValue> {
    * Can be a number or a function that returns a number.
    * @default 0
    */
-  wait?: number | ((queuer: AsyncQueuer<TValue>) => number)
+  wait?: number | ((queuer: AsyncQueuer<TFn>) => number)
 }
 
-const defaultOptions: Required<AsyncQueuerOptions<any>> = {
+type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
+  Required<AsyncQueuerOptions<any>>,
+  | 'onError'
+  | 'onExpire'
+  | 'onGetNextItem'
+  | 'onIsRunningChange'
+  | 'onItemsChange'
+  | 'onReject'
+  | 'onSettled'
+  | 'onSuccess'
+>
+
+const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
   addItemsTo: 'back',
   concurrency: 1,
   expirationDuration: Infinity,
   getIsExpired: () => false,
   getItemsFrom: 'front',
-  getPriority: (item) => (item as any)?.priority ?? 0,
+  getPriority: (item: any) => item?.priority ?? 0,
   initialItems: [],
   maxSize: Infinity,
-  onGetNextItem: () => {},
-  onIsRunningChange: () => {},
-  onItemsChange: () => {},
-  onReject: () => {},
-  onExpire: () => {},
   started: true,
   wait: 0,
 }
@@ -126,21 +144,20 @@ const defaultOptions: Required<AsyncQueuerOptions<any>> = {
  * });
  * ```
  */
-export class AsyncQueuer<TValue> {
-  private _options: Required<AsyncQueuerOptions<TValue>>
-  private _activeItems: Set<() => Promise<TValue>> = new Set()
-  private _executionCount = 0
+export class AsyncQueuer<TFn extends AsyncQueuerFn> {
+  private _options: AsyncQueuerOptionsWithOptionalCallbacks
+  private _activeItems: Set<TFn> = new Set()
+  private _successCount = 0
+  private _errorCount = 0
+  private _settledCount = 0
   private _rejectionCount = 0
   private _expirationCount = 0
-  private _items: Array<() => Promise<TValue>> = []
+  private _items: Array<TFn> = []
   private _itemTimestamps: Array<number> = []
-  private _onErrorCallbacks: Array<(error: Error) => void> = []
-  private _onSettledCallbacks: Array<(result: TValue | Error) => void> = []
-  private _onSuccessCallbacks: Array<(result: TValue) => void> = []
   private _pendingTick = false
   private _running: boolean
 
-  constructor(initialOptions: AsyncQueuerOptions<TValue> = defaultOptions) {
+  constructor(initialOptions: AsyncQueuerOptions<TFn> = defaultOptions) {
     this._options = { ...defaultOptions, ...initialOptions }
     this._running = this._options.started
 
@@ -155,14 +172,14 @@ export class AsyncQueuer<TValue> {
    * Updates the queuer options
    * Returns the new options state
    */
-  setOptions(newOptions: Partial<AsyncQueuerOptions<TValue>>): void {
+  setOptions(newOptions: Partial<AsyncQueuerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
   }
 
   /**
    * Returns the current queuer options
    */
-  getOptions(): Required<AsyncQueuerOptions<TValue>> {
+  getOptions(): AsyncQueuerOptions<TFn> {
     return this._options
   }
 
@@ -201,28 +218,27 @@ export class AsyncQueuer<TValue> {
         break
       }
       this._activeItems.add(nextFn)
-      this._options.onItemsChange(this)
+      this._options.onItemsChange?.(this)
       ;(async () => {
-        let success = false
-        let res!: TValue
-        let error: Error | undefined
+        let res!: TFn
 
         try {
           res = await nextFn()
-          success = true
-        } catch (e) {
-          error = e as Error
+          this._successCount++
+          this._options.onSuccess?.(res, this)
+        } catch (error) {
+          this._errorCount++
+          if (this._options.onError) {
+            this._options.onError(error, this)
+          } else {
+            throw error
+          }
         } finally {
+          this._settledCount++
           this._activeItems.delete(nextFn)
-          this._options.onItemsChange(this)
+          this._options.onItemsChange?.(this)
+          this._options.onSettled?.(this)
         }
-
-        if (success) {
-          this._onSuccessCallbacks.forEach((cb) => cb(res))
-        } else {
-          this._onErrorCallbacks.forEach((cb) => cb(error!))
-        }
-        this._onSettledCallbacks.forEach((cb) => cb(success ? res : error!))
 
         const wait = this.getWait()
         if (wait > 0) {
@@ -240,7 +256,7 @@ export class AsyncQueuer<TValue> {
   /**
    * Checks for and removes expired items from the queuer
    */
-  private checkExpiredItems() {
+  private checkExpiredItems(): void {
     if (
       this._options.expirationDuration === Infinity &&
       this._options.getIsExpired === defaultOptions.getIsExpired
@@ -279,11 +295,11 @@ export class AsyncQueuer<TValue> {
       this._items.splice(index, 1)
       this._itemTimestamps.splice(index, 1)
       this._expirationCount++
-      this._options.onExpire(expiredItem, this)
+      this._options.onExpire?.(expiredItem, this)
     }
 
     if (expiredIndices.length > 0) {
-      this._options.onItemsChange(this)
+      this._options.onItemsChange?.(this)
     }
   }
 
@@ -296,7 +312,7 @@ export class AsyncQueuer<TValue> {
       this._pendingTick = true
       this.tick()
     }
-    this._options.onIsRunningChange(this)
+    this._options.onIsRunningChange?.(this)
 
     return new Promise<void>((resolve) => {
       const checkIdle = () => {
@@ -316,7 +332,7 @@ export class AsyncQueuer<TValue> {
   stop(): void {
     this._running = false
     this._pendingTick = false
-    this._options.onIsRunningChange(this)
+    this._options.onIsRunningChange?.(this)
   }
 
   /**
@@ -324,7 +340,7 @@ export class AsyncQueuer<TValue> {
    */
   clear(): void {
     this._items = []
-    this._options.onItemsChange(this)
+    this._options.onItemsChange?.(this)
   }
 
   /**
@@ -332,7 +348,9 @@ export class AsyncQueuer<TValue> {
    */
   reset(withInitialItems?: boolean): void {
     this.clear()
-    this._executionCount = 0
+    this._successCount = 0
+    this._errorCount = 0
+    this._settledCount = 0
     if (withInitialItems) {
       this._items = [...this._options.initialItems]
     }
@@ -343,74 +361,59 @@ export class AsyncQueuer<TValue> {
    * Adds a task to the queuer
    */
   addItem(
-    fn: AnyAsyncFunction & { priority?: number },
+    fn: TFn,
     position: QueuePosition = this._options.addItemsTo,
     runOnItemsChange: boolean = true,
-  ): Promise<TValue> {
+  ): void {
     if (this.getIsFull()) {
       this._rejectionCount++
-      this._options.onReject(fn, this)
-      return Promise.reject(new Error('Queuer is full'))
+      this._options.onReject?.(fn, this)
+      return
     }
 
-    return new Promise<TValue>((resolve, reject) => {
-      const task = Object.assign(
-        async () => {
-          try {
-            const result = await fn()
-            resolve(result)
-            return result
-          } catch (error) {
-            reject(error)
-            throw error
-          }
-        },
-        { priority: fn.priority ?? undefined },
-      )
+    // Get priority either from the function or from getPriority option
+    const priority =
+      this._options.getPriority !== defaultOptions.getPriority
+        ? this._options.getPriority(fn)
+        : fn.priority
 
-      // Get priority either from the function or from getPriority option
-      const priority =
-        this._options.getPriority !== defaultOptions.getPriority
-          ? this._options.getPriority(task)
-          : task.priority
+    if (priority !== undefined) {
+      // Insert based on priority
+      const insertIndex = this._items.findIndex((existing) => {
+        const existingPriority =
+          this._options.getPriority !== defaultOptions.getPriority
+            ? this._options.getPriority(existing)
+            : (existing as any).priority
+        return existingPriority > priority
+      })
 
-      if (priority !== undefined) {
-        // Insert based on priority
-        const insertIndex = this._items.findIndex((existing) => {
-          const existingPriority =
-            this._options.getPriority !== defaultOptions.getPriority
-              ? this._options.getPriority(existing)
-              : (existing as any).priority
-          return existingPriority > priority
-        })
-
-        if (insertIndex === -1) {
-          this._items.push(task)
-          this._itemTimestamps.push(Date.now())
-        } else {
-          this._items.splice(insertIndex, 0, task)
-          this._itemTimestamps.splice(insertIndex, 0, Date.now())
-        }
+      if (insertIndex === -1) {
+        this._items.push(fn)
+        this._itemTimestamps.push(Date.now())
       } else {
+        this._items.splice(insertIndex, 0, fn)
+        this._itemTimestamps.splice(insertIndex, 0, Date.now())
+      }
+    } else {
+      if (position === 'front') {
         // Default FIFO/LIFO behavior
-        if (position === 'front') {
-          this._items.unshift(task)
-          this._itemTimestamps.unshift(Date.now())
-        } else {
-          this._items.push(task)
-          this._itemTimestamps.push(Date.now())
-        }
+        this._items.unshift(fn)
+        this._itemTimestamps.unshift(Date.now())
+      } else {
+        // LIFO
+        this._items.push(fn)
+        this._itemTimestamps.push(Date.now())
       }
+    }
 
-      if (runOnItemsChange) {
-        this._options.onItemsChange(this)
-      }
+    if (runOnItemsChange) {
+      this._options.onItemsChange?.(this)
+    }
 
-      if (this._running && !this._pendingTick) {
-        this._pendingTick = true
-        this.tick()
-      }
-    })
+    if (this._running && !this._pendingTick) {
+      this._pendingTick = true
+      this.tick()
+    }
   }
 
   /**
@@ -418,8 +421,8 @@ export class AsyncQueuer<TValue> {
    */
   getNextItem(
     position: QueuePosition = this._options.getItemsFrom,
-  ): (() => Promise<TValue>) | undefined {
-    let item: (() => Promise<TValue>) | undefined
+  ): TFn | undefined {
+    let item: TFn | undefined
 
     if (position === 'front') {
       item = this._items.shift()
@@ -430,9 +433,8 @@ export class AsyncQueuer<TValue> {
     }
 
     if (item !== undefined) {
-      this._executionCount++
-      this._options.onItemsChange(this)
-      this._options.onGetNextItem(item, this)
+      this._options.onItemsChange?.(this)
+      this._options.onGetNextItem?.(item, this)
     }
     return item
   }
@@ -440,9 +442,7 @@ export class AsyncQueuer<TValue> {
   /**
    * Returns an item without removing it
    */
-  getPeek(
-    position: QueuePosition = 'front',
-  ): (() => Promise<TValue>) | undefined {
+  getPeek(position: QueuePosition = 'front'): TFn | undefined {
     if (position === 'front') {
       return this._items[0]
     }
@@ -473,29 +473,43 @@ export class AsyncQueuer<TValue> {
   /**
    * Returns a copy of all items in the queuer
    */
-  getAllItems(): Array<() => Promise<TValue>> {
+  getAllItems(): Array<TFn> {
     return [...this.getActiveItems(), ...this.getPendingItems()]
   }
 
   /**
    * Returns the active items
    */
-  getActiveItems(): Array<() => Promise<TValue>> {
+  getActiveItems(): Array<TFn> {
     return Array.from(this._activeItems)
   }
 
   /**
    * Returns the pending items
    */
-  getPendingItems(): Array<() => Promise<TValue>> {
+  getPendingItems(): Array<TFn> {
     return [...this._items]
   }
 
   /**
-   * Returns the number of items that have been removed from the queuer
+   * Returns the number of items that have been successfully processed
    */
-  getExecutionCount(): number {
-    return this._executionCount
+  getSuccessCount(): number {
+    return this._successCount
+  }
+
+  /**
+   * Returns the number of items that have failed processing
+   */
+  getErrorCount(): number {
+    return this._errorCount
+  }
+
+  /**
+   * Returns the number of items that have completed processing (success or error)
+   */
+  getSettledCount(): number {
+    return this._settledCount
   }
 
   /**
@@ -517,40 +531,6 @@ export class AsyncQueuer<TValue> {
    */
   getIsIdle(): boolean {
     return this._running && this.getIsEmpty() && this._activeItems.size === 0
-  }
-
-  /**
-   * Adds a callback to be called when a task succeeds
-   */
-  onSuccess(cb: (result: TValue) => void) {
-    this._onSuccessCallbacks.push(cb)
-    return () => {
-      this._onSuccessCallbacks = this._onSuccessCallbacks.filter(
-        (d) => d !== cb,
-      )
-    }
-  }
-
-  /**
-   * Adds a callback to be called when a task errors
-   */
-  onError(cb: (error: Error) => void) {
-    this._onErrorCallbacks.push(cb)
-    return () => {
-      this._onErrorCallbacks = this._onErrorCallbacks.filter((d) => d !== cb)
-    }
-  }
-
-  /**
-   * Adds a callback to be called when a task is settled
-   */
-  onSettled(cb: (result: TValue | Error) => void) {
-    this._onSettledCallbacks.push(cb)
-    return () => {
-      this._onSettledCallbacks = this._onSettledCallbacks.filter(
-        (d) => d !== cb,
-      )
-    }
   }
 
   /**
@@ -578,7 +558,9 @@ export class AsyncQueuer<TValue> {
  * @param options - Configuration options for the AsyncQueuer
  * @returns A bound addItem function that can be used to add tasks to the queuer
  */
-export function asyncQueue<TValue>(options: AsyncQueuerOptions<TValue>) {
-  const queuer = new AsyncQueuer<TValue>(options)
+export function asyncQueue<TFn extends AsyncQueuerFn>(
+  options: AsyncQueuerOptions<TFn>,
+) {
+  const queuer = new AsyncQueuer<TFn>(options)
   return queuer.addItem.bind(queuer)
 }

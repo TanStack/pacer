@@ -40,7 +40,6 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
  * );
  * ```
  */
-
 export function useAsyncThrottler<TFn extends AnyAsyncFunction>(
   fn: TFn,
   options: AsyncThrottlerOptions<TFn>,
