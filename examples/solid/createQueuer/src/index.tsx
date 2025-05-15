@@ -3,12 +3,17 @@ import { createQueuer } from '@tanstack/solid-pacer/queuer'
 import { createSignal } from 'solid-js'
 
 function App1() {
-  const queuer = createQueuer({
-    initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    maxSize: 25,
-    started: false,
-    wait: 1000, // wait 1 second between processing items - wait is optional!
-  })
+  const queuer = createQueuer(
+    (item) => {
+      console.log('processing item', item)
+    },
+    {
+      initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      maxSize: 25,
+      started: false,
+      wait: 1000, // wait 1 second between processing items - wait is optional!
+    },
+  )
 
   return (
     <div>
@@ -72,13 +77,15 @@ function App2() {
   const [inputText, setInputText] = createSignal('')
   const [queuedText, setQueuedText] = createSignal('')
 
-  const queuer = createQueuer({
-    maxSize: 100,
-    wait: 500,
-    onGetNextItem: (item) => {
+  const queuer = createQueuer(
+    (item) => {
       setQueuedText(item as string)
     },
-  })
+    {
+      maxSize: 100,
+      wait: 500,
+    },
+  )
 
   function handleInputChange(e: Event) {
     const target = e.target as HTMLInputElement
@@ -151,13 +158,15 @@ function App3() {
   const [queuedValue, setQueuedValue] = createSignal(50)
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
 
-  const queuer = createQueuer({
-    maxSize: 100,
-    wait: 100,
-    onGetNextItem: (item) => {
+  const queuer = createQueuer(
+    (item) => {
       setQueuedValue(item as number)
     },
-  })
+    {
+      maxSize: 100,
+      wait: 100,
+    },
+  )
 
   function handleRangeChange(e: Event) {
     const target = e.target as HTMLInputElement

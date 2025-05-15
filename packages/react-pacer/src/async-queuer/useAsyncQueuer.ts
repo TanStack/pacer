@@ -58,7 +58,5 @@ export function useAsyncQueuer<TFn extends AsyncQueuerFn>(
     bindInstanceMethods(new AsyncQueuer<TFn>(options)),
   )
 
-  asyncQueuer.setOptions(options)
-
   return asyncQueuer
 }

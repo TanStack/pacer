@@ -47,8 +47,7 @@ function App1() {
         <button
           disabled={queuer.getIsEmpty()}
           onClick={() => {
-            const item = queuer.getNextItem()
-            console.log('getNextItem item', item)
+            queuer.execute()
           }}
         >
           Process Next

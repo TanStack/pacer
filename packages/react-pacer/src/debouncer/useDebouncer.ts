@@ -47,8 +47,6 @@ export function useDebouncer<TFn extends AnyFunction>(
     bindInstanceMethods(new Debouncer<TFn>(fn, options)),
   )
 
-  debouncer.setOptions(options)
-
   useEffect(() => {
     return () => {
       debouncer.cancel()

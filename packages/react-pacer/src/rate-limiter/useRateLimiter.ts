@@ -60,7 +60,5 @@ export function useRateLimiter<TFn extends AnyFunction>(
     bindInstanceMethods(new RateLimiter<TFn>(fn, options)),
   )
 
-  rateLimiter.setOptions(options)
-
   return rateLimiter
 }

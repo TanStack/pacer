@@ -100,9 +100,10 @@ export interface SolidQueuer<TValue>
  * ```
  */
 export function createQueuer<TValue>(
+  fn: (item: TValue) => void,
   initialOptions: QueuerOptions<TValue> = {},
 ): SolidQueuer<TValue> {
-  const queuer = bindInstanceMethods(new Queuer<TValue>(initialOptions))
+  const queuer = bindInstanceMethods(new Queuer<TValue>(fn, initialOptions))
 
   const [allItems, setAllItems] = createSignal<Array<TValue>>(
     queuer.getAllItems(),

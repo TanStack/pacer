@@ -7,7 +7,7 @@ function App1() {
   const [processedCount, setProcessedCount] = createSignal(0)
 
   // Create the simplified queuer function
-  const queueItem = queue<number>({
+  const queueItem = queue<number>((item) => console.log(item), {
     maxSize: 25,
     wait: 1000,
     onItemsChange: (queue) => {
@@ -57,12 +57,9 @@ function App2() {
   const [queuedText, setQueuedText] = createSignal('')
 
   // Create the simplified queuer function
-  const queueTextChange = queue<string>({
+  const queueTextChange = queue<string>((item) => setQueuedText(item), {
     maxSize: 100,
     wait: 500,
-    onGetNextItem: (item, _queue) => {
-      setQueuedText(item)
-    },
     onItemsChange: (queue) => {
       setQueueItems(queue.getAllItems())
       setProcessedCount(queue.getExecutionCount())
@@ -118,12 +115,9 @@ function App3() {
   const [queuedValue, setQueuedValue] = createSignal(50)
 
   // Create the simplified queuer function
-  const queueValue = queue<number>({
+  const queueValue = queue<number>((item) => setQueuedValue(item), {
     maxSize: 100,
     wait: 100,
-    onGetNextItem: (item, _queue) => {
-      setQueuedValue(item)
-    },
     onItemsChange: (queue) => {
       setQueueItems(queue.getAllItems())
       setProcessedCount(queue.getExecutionCount())

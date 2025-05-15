@@ -47,8 +47,6 @@ export function useThrottler<TFn extends AnyFunction>(
     bindInstanceMethods(new Throttler<TFn>(fn, options)),
   )
 
-  throttler.setOptions(options)
-
   useEffect(() => {
     return () => {
       throttler.cancel()

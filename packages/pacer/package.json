@@ -37,6 +37,16 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./async-batcher": {
+      "import": {
+        "types": "./dist/esm/async-batcher.d.ts",
+        "default": "./dist/esm/async-batcher.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-batcher.d.cts",
+        "default": "./dist/cjs/async-batcher.cjs"
+      }
+    },
     "./async-debouncer": {
       "import": {
         "types": "./dist/esm/async-debouncer.d.ts",
@@ -75,6 +85,16 @@
       "require": {
         "types": "./dist/cjs/async-throttler.d.cts",
         "default": "./dist/cjs/async-throttler.cjs"
+      }
+    },
+    "./batcher": {
+      "import": {
+        "types": "./dist/esm/batcher.d.ts",
+        "default": "./dist/esm/batcher.js"
+      },
+      "require": {
+        "types": "./dist/cjs/batcher.d.cts",
+        "default": "./dist/cjs/batcher.cjs"
       }
     },
     "./compare": {

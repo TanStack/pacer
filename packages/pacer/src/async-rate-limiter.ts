@@ -147,7 +147,6 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
 
   /**
    * Updates the rate limiter options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<AsyncRateLimiterOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -221,7 +220,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     if (this._options.windowType === 'sliding') {
       // For sliding window, we can execute if we have capacity in the current window
       if (this._executionTimes.length < limit) {
-        await this.executeFunction(...args)
+        await this.execute(...args)
         return this._lastResult
       }
     } else {
@@ -231,7 +230,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       const isNewWindow = oldestExecution + window <= now
 
       if (isNewWindow || this._executionTimes.length < limit) {
-        await this.executeFunction(...args)
+        await this.execute(...args)
         return this._lastResult
       }
     }
@@ -240,7 +239,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     return undefined
   }
 
-  private async executeFunction(
+  private async execute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
     if (!this.getEnabled()) return

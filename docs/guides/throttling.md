@@ -41,7 +41,7 @@ Common use cases include:
 
 Throttling might not be the best choice when:
 - You want to wait for activity to stop (use [debouncing](../guides/debouncing) instead)
-- You can't afford to miss any executions (use [queueing](../guides/queueing) instead)
+- You can't afford to miss any executions (use [queuing](../guides/queuing) instead)
 
 > [!TIP]
 > Throttling is often the best choice when you need smooth, consistent execution timing. It provides a more predictable execution pattern than rate limiting and more immediate feedback than debouncing.
