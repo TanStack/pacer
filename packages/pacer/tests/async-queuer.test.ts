@@ -5,7 +5,7 @@ describe('AsyncQueuer', () => {
   let asyncQueuer: AsyncQueuer<any>
 
   beforeEach(() => {
-    asyncQueuer = new AsyncQueuer()
+    asyncQueuer = new AsyncQueuer({})
   })
 
   describe('basic functionality', () => {

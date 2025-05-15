@@ -68,7 +68,7 @@ Rate Limiting is the most naive approach to controlling function execution frequ
 > [!TIP]
 > You most likely don't want to use "rate limiting" for most use cases. Consider using [throttling](../guides/throttling) or [debouncing](../guides/debouncing) instead. 
 
-Rate Limiting's "lossy" nature also means that some executions will be rejected and lost. This can be a problem if you need to ensure that all executions are always successful. Consider using [queueing](../guides/queueing) if you need to ensure that all executions are queued up to be executed, but with a throttled delay to slow down the rate of execution.
+Rate Limiting's "lossy" nature also means that some executions will be rejected and lost. This can be a problem if you need to ensure that all executions are always successful. Consider using [queuing](../guides/queuing) if you need to ensure that all executions are queued up to be executed, but with a throttled delay to slow down the rate of execution.
 
 ## Rate Limiting in TanStack Pacer
 

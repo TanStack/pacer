@@ -44,7 +44,7 @@ export interface QueuerOptions<TValue> {
   /**
    * Callback fired whenever an item is removed from the queuer
    */
-  onGetNextItem?: (item: TValue, queuer: Queuer<TValue>) => void
+  onExecute?: (item: TValue, queuer: Queuer<TValue>) => void
   /**
    * Callback fired whenever the queuer's running state changes
    */
@@ -77,7 +77,7 @@ const defaultOptions: Required<QueuerOptions<any>> = {
   expirationDuration: Infinity,
   initialItems: [],
   maxSize: Infinity,
-  onGetNextItem: () => {},
+  onExecute: () => {},
   onIsRunningChange: () => {},
   onItemsChange: () => {},
   onReject: () => {},
@@ -92,57 +92,60 @@ const defaultOptions: Required<QueuerOptions<any>> = {
 export type QueuePosition = 'front' | 'back'
 
 /**
- * A flexible queue data structure that defaults to FIFO (First In First Out) behavior
- * with optional position overrides for stack-like or double-ended operations.
+ * A flexible queue data structure that automatically processes items with configurable
+ * wait times between executions. The queuer maintains its state when stopped/started
+ * and provides fine-grained control over how items are processed.
  *
- * The queuer can automatically process items as they are added, with configurable
- * wait times between processing each item. Processing can be started/stopped
- * and the queuer will maintain its state.
+ * Running behavior:
+ * - start(): begins automatically processing items in the queue (defaults to running)
+ * - stop(): pauses processing but maintains queue state
+ * - wait: configurable delay between processing items
+ * - onItemsChange/onExecute: callbacks for monitoring queue state
  *
- * Supports priority-based ordering when a getPriority function is provided.
+ * Manual processing is also supported when automatic processing is disabled:
+ * - execute(): processes next item using provided function
+ * - getNextItem(): removes and returns next item without processing
+ *
+ * Queue behavior defaults to FIFO (First In First Out):
+ * - addItem(item): adds to back of queue
+ * - Items processed from front of queue
+ *
+ * Supports priority-based ordering when getPriority function is provided.
  * Items with higher priority values will be processed first.
  *
- * Default queue behavior:
- * - addItem(item): adds to back of queuer
- * - getNextItem(): removes and returns from front of queuer
- *
- * Stack (LIFO) behavior:
+ * Alternative queue behaviors:
+ * Stack (LIFO):
  * - addItem(item, 'back'): adds to back
- * - getNextItem('back'): removes and returns from back
+ * - getNextItem('back'): removes from back
  *
- * Double-ended queuer behavior:
- * - addItem(item, position): adds to specified position ('front' or 'back')
- * - getNextItem(position): removes and returns from specified position
+ * Double-ended queue:
+ * - addItem(item, position): adds to specified position ('front'/'back')
+ * - getNextItem(position): removes from specified position
  *
- * Processing behavior:
- * - start(): begins processing items in the queuer
- * - stop(): pauses processing
- * - wait: configurable delay between processing items
- * - onItemsChange/onGetNextItem: callbacks for monitoring queuer state
- *
- * Supports item expiration to clear stale items from the queuer
- * - expirationDuration: maximum time in milliseconds that an item can stay in the queue
- * - getIsExpired: function to override default expiration behavior
- * - onExpire: callback for when an item expires
+ * Supports item expiration to clear stale items:
+ * - expirationDuration: maximum time items can stay in queue
+ * - getIsExpired: function to override default expiration
+ * - onExpire: callback for expired items
  *
  * @example
  * ```ts
- * // FIFO queuer
- * const queuer = new Queuer<number>();
- * queuer.addItem(1); // [1]
- * queuer.addItem(2); // [1, 2]
- * queuer.getNextItem(); // returns 1, queuer is [2]
- *
- * // Priority queuer with processing
- * const priorityQueue = new Queuer<number>({
- *   getPriority: (n) => n, // Higher numbers have priority
+ * // Auto-processing queue with wait time
+ * const autoQueue = new Queuer<number>((n) => console.log(n), {
  *   started: true, // Begin processing immediately
  *   wait: 1000, // Wait 1s between items
- *   onGetNextItem: (item, queuer) => console.log(item)
+ *   onExecute: (item) => console.log(`Processed ${item}`)
  * });
- * priorityQueue.addItem(1); // [1]
- * priorityQueue.addItem(3); // [3, 1] - 3 processed first
- * priorityQueue.addItem(2); // [3, 2, 1]
+ * autoQueue.addItem(1); // Will process after 1s
+ * autoQueue.addItem(2); // Will process 1s after first item
+ *
+ * // Manual processing queue
+ * const manualQueue = new Queuer<number>((n) => console.log(n), {
+ *   started: false
+ * });
+ * manualQueue.addItem(1); // [1]
+ * manualQueue.addItem(2); // [1, 2]
+ * manualQueue.execute(); // logs 1, queue is [2]
+ * manualQueue.getNextItem(); // returns 2, queue is empty
  * ```
  */
 export class Queuer<TValue> {
@@ -156,7 +159,10 @@ export class Queuer<TValue> {
   private _running: boolean
   private _pendingTick = false
 
-  constructor(initialOptions: QueuerOptions<TValue> = defaultOptions) {
+  constructor(
+    private fn: (item: TValue) => void,
+    initialOptions: QueuerOptions<TValue> = {},
+  ) {
     this._options = { ...defaultOptions, ...initialOptions }
     this._running = this._options.started
 
@@ -169,7 +175,6 @@ export class Queuer<TValue> {
 
   /**
    * Updates the queuer options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<QueuerOptions<TValue>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -202,7 +207,7 @@ export class Queuer<TValue> {
     this.checkExpiredItems()
 
     while (!this.getIsEmpty()) {
-      const nextItem = this.getNextItem(this._options.getItemsFrom)
+      const nextItem = this.execute(this._options.getItemsFrom)
       if (nextItem === undefined) {
         break
       }
@@ -362,7 +367,9 @@ export class Queuer<TValue> {
   }
 
   /**
-   * Removes and returns an item from the queuer using shift (default) or pop
+   * Removes and returns an item from the queuer using shift (default) or pop without executing the function
+   *
+   * Note: Normally, you should use execute instead of getNextItem
    *
    * @example
    * ```ts
@@ -386,9 +393,31 @@ export class Queuer<TValue> {
     }
 
     if (item !== undefined) {
-      this._executionCount++
       this._options.onItemsChange(this)
-      this._options.onGetNextItem(item, this)
+    }
+
+    return item
+  }
+
+  /**
+   * Removes and returns an item from the queuer using shift (default) or pop and then processes the fn by calling the queuer's function with the item as the argument
+   *
+   * @example
+   * ```ts
+   * // Standard FIFO queuer
+   * queuer.getNextItem()
+   * // Stack-like behavior (LIFO)
+   * queuer.getNextItem('back')
+   * ```
+   */
+  execute(
+    position: QueuePosition = this._options.getItemsFrom,
+  ): TValue | undefined {
+    const item = this.getNextItem(position)
+    if (item !== undefined) {
+      this.fn(item)
+      this._executionCount++
+      this._options.onExecute(item, this)
     }
     return item
   }
@@ -505,7 +534,10 @@ export class Queuer<TValue> {
  * processPriority(3) // Processed before 1
  * ```
  */
-export function queue<TValue>(options: QueuerOptions<TValue>) {
-  const queuer = new Queuer<TValue>(options)
+export function queue<TValue>(
+  fn: (item: TValue) => void,
+  options: QueuerOptions<TValue>,
+) {
+  const queuer = new Queuer<TValue>(fn, options)
   return queuer.addItem.bind(queuer)
 }

@@ -60,8 +60,6 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction>(
     bindInstanceMethods(new AsyncThrottler<TFn>(fn, options)),
   )
 
-  asyncThrottler.setOptions(options)
-
   useEffect(() => {
     return () => asyncThrottler.cancel()
   }, [asyncThrottler])

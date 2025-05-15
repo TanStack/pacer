@@ -43,14 +43,15 @@ export function useQueuedValue<TValue>(
 ): [TValue, Queuer<TValue>] {
   const [value, setValue] = useState<TValue>(initialValue)
 
-  const [, addItem, queuer] = useQueuedState<TValue>({
-    started: true,
-    ...options,
-    onGetNextItem: (item, queuer) => {
+  const [, addItem, queuer] = useQueuedState<TValue>(
+    (item) => {
       setValue(item)
-      options.onGetNextItem?.(item, queuer)
     },
-  })
+    {
+      started: true,
+      ...options,
+    },
+  )
 
   useEffect(() => {
     addItem(initialValue)

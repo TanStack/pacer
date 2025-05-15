@@ -174,7 +174,7 @@ export class AsyncQueuer<TFn extends AsyncQueuerFn> {
   private _pendingTick = false
   private _running: boolean
 
-  constructor(initialOptions: AsyncQueuerOptions<TFn> = defaultOptions) {
+  constructor(initialOptions: AsyncQueuerOptions<TFn>) {
     this._options = {
       ...defaultOptions,
       ...initialOptions,
@@ -191,7 +191,6 @@ export class AsyncQueuer<TFn extends AsyncQueuerFn> {
 
   /**
    * Updates the queuer options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<AsyncQueuerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }

@@ -40,7 +40,7 @@ Common use cases include:
 
 Debouncing might not be the best choice when:
 - You need guaranteed execution over a specific time period (use [throttling](../guides/throttling) instead)
-- You can't afford to miss any executions (use [queueing](../guides/queueing) instead)
+- You can't afford to miss any executions (use [queuing](../guides/queuing) instead)
 
 ## Debouncing in TanStack Pacer
 

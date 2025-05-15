@@ -6,7 +6,12 @@ function App1() {
   // Use your state management library of choice
   const [queueItems, setQueueItems] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
-  const queuer = useQueuer({
+  // The function that we will be queuing
+  function processItem(item: number) {
+    console.log('processing item', item)
+  }
+
+  const queuer = useQueuer(processItem, {
     maxSize: 25,
     initialItems: queueItems,
     started: false,
@@ -51,7 +56,7 @@ function App1() {
         <button
           disabled={queuer.getIsEmpty()}
           onClick={() => {
-            const item = queuer.getNextItem()
+            const item = queuer.execute()
             console.log('getNextItem item', item)
           }}
         >
@@ -79,13 +84,14 @@ function App2() {
   const [queuedValue, setQueuedValue] = useState(50)
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
-  const queuer = useQueuer({
+  function processItem(item: number) {
+    setQueuedValue(item)
+  }
+
+  const queuer = useQueuer(processItem, {
     maxSize: 100,
     initialItems: [currentValue],
     wait: 100,
-    onGetNextItem: (item) => {
-      setQueuedValue(item)
-    },
   })
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {

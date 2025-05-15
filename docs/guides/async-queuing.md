@@ -1,34 +1,34 @@
 ---
-title: Asynchronous Queueing Guide
-id: async-queueing
+title: Asynchronous Queuing Guide
+id: async-queuing
 ---
 
-While the [Queuer](../guides//queueing) provides synchronous queueing with timing controls, the `AsyncQueuer` is designed specifically for handling concurrent asynchronous operations. It implements what is traditionally known as a "task pool" or "worker pool" pattern, allowing multiple operations to be processed simultaneously while maintaining control over concurrency and timing. The implementation is mostly copied from [Swimmer](https://github.com/tannerlinsley/swimmer), Tanner's original task pooling utility that has been serving the JavaScript community since 2017.
+While the [Queuer](../guides/queuing) provides synchronous queuing with timing controls, the `AsyncQueuer` is designed specifically for handling concurrent asynchronous operations. It implements what is traditionally known as a "task pool" or "worker pool" pattern, allowing multiple operations to be processed simultaneously while maintaining control over concurrency and timing. The implementation is mostly copied from [Swimmer](https://github.com/tannerlinsley/swimmer), Tanner's original task pooling utility that has been serving the JavaScript community since 2017.
 
-## Async Queueing Concept
+## Async Queuing Concept
 
-Async queueing extends the basic queueing concept by adding concurrent processing capabilities. Instead of processing one item at a time, an async queuer can process multiple items simultaneously while still maintaining order and control over the execution. This is particularly useful when dealing with I/O operations, network requests, or any tasks that spend most of their time waiting rather than consuming CPU.
+Async queuing extends the basic queuing concept by adding concurrent processing capabilities. Instead of processing one item at a time, an async queuer can process multiple items simultaneously while still maintaining order and control over the execution. This is particularly useful when dealing with I/O operations, network requests, or any tasks that spend most of their time waiting rather than consuming CPU.
 
-### Async Queueing Visualization
+### Async Queuing Visualization
 
 ```text
-Async Queueing (concurrency: 2, wait: 2 ticks)
+Async Queuing (concurrency: 2, wait: 2 ticks)
 Timeline: [1 second per tick]
 Calls:        ⬇️  ⬇️  ⬇️  ⬇️     ⬇️  ⬇️     ⬇️
 Queue:       [ABC]   [C]    [CDE]    [E]    []
 Active:      [A,B]   [B,C]  [C,D]    [D,E]  [E]
 Completed:    -       A      B        C      D,E
              [=================================================================]
-             ^ Unlike regular queueing, multiple items
+             ^ Unlike regular queuing, multiple items
                can be processed concurrently
 
              [Items queue up]   [Process 2 at once]   [Complete]
               when busy         with wait between      all items
 ```
 
-### When to Use Async Queueing
+### When to Use Async Queuing
 
-Async queueing is particularly effective when you need to:
+Async queuing is particularly effective when you need to:
 - Process multiple asynchronous operations concurrently
 - Control the number of simultaneous operations
 - Handle Promise-based tasks with proper error handling
@@ -43,13 +43,13 @@ Common use cases include:
 - Processing data streams with backpressure
 - Managing resource-intensive background tasks
 
-### When Not to Use Async Queueing
+### When Not to Use Async Queuing
 
-The AsyncQueuer is very versatile and can be used in many situations. Really, it's just not a good fit only when you don't plan to take advantage of all of its features. If you don't need all executions that are queued to go through, use [Throttling](../guides/throttling) instead. If you don't need concurrent processing, use [Queueing](../guides/queueing) instead.
+The AsyncQueuer is very versatile and can be used in many situations. Really, it's just not a good fit only when you don't plan to take advantage of all of its features. If you don't need all executions that are queued to go through, use [Throttling](../guides/throttling) instead. If you don't need concurrent processing, use [Queuing](../guides/queuing) instead.
 
-## Async Queueing in TanStack Pacer
+## Async Queuing in TanStack Pacer
 
-TanStack Pacer provides async queueing through the simple `asyncQueue` function and the more powerful `AsyncQueuer` class.
+TanStack Pacer provides async queuing through the simple `asyncQueue` function and the more powerful `AsyncQueuer` class.
 
 ### Basic Usage with `asyncQueue`
 
@@ -116,7 +116,7 @@ queue.addItem(async () => {
 
 ### Queue Types and Ordering
 
-The AsyncQueuer supports different queueing strategies to handle various processing requirements. Each strategy determines how tasks are added and processed from the queue.
+The AsyncQueuer supports different queuing strategies to handle various processing requirements. Each strategy determines how tasks are added and processed from the queue.
 
 #### FIFO Queue (First In, First Out)
 

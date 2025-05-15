@@ -1,18 +1,18 @@
 ---
-title: Queueing Guide
-id: queueing
+title: Queuing Guide
+id: queuing
 ---
 
-Unlike [Rate Limiting](../guides/rate-limiting), [Throttling](../guides/throttling), and [Debouncing](../guides/debouncing) which drop executions when they occur too frequently, queuers can be configured to ensure that every operation is processed. They provide a way to manage and control the flow of operations without losing any requests. This makes them ideal for scenarios where data loss is unacceptable. Queueing can also be set to have a maximum size, which can be useful for preventing memory leaks or other issues. This guide will cover the Queueing concepts of TanStack Pacer.
+Unlike [Rate Limiting](../guides/rate-limiting), [Throttling](../guides/throttling), and [Debouncing](../guides/debouncing) which drop executions when they occur too frequently, queuers can be configured to ensure that every operation is processed. They provide a way to manage and control the flow of operations without losing any requests. This makes them ideal for scenarios where data loss is unacceptable. Queuing can also be set to have a maximum size, which can be useful for preventing memory leaks or other issues. This guide will cover the Queuing concepts of TanStack Pacer.
 
-## Queueing Concept
+## Queuing Concept
 
-Queueing ensures that every operation is eventually processed, even if they come in faster than they can be handled. Unlike the other execution control techniques that drop excess operations, queueing buffers operations in an ordered list and processes them according to specific rules. This makes queueing the only "lossless" execution control technique in TanStack Pacer, unless a `maxSize` is specified which can cause items to be rejected when the buffer is full.
+Queuing ensures that every operation is eventually processed, even if they come in faster than they can be handled. Unlike the other execution control techniques that drop excess operations, queuing buffers operations in an ordered list and processes them according to specific rules. This makes queuing the only "lossless" execution control technique in TanStack Pacer, unless a `maxSize` is specified which can cause items to be rejected when the buffer is full.
 
-### Queueing Visualization
+### Queuing Visualization
 
 ```text
-Queueing (processing one item every 2 ticks)
+Queuing (processing one item every 2 ticks)
 Timeline: [1 second per tick]
 Calls:        ⬇️  ⬇️  ⬇️     ⬇️  ⬇️     ⬇️  ⬇️  ⬇️
 Queue:       [ABC]   [BC]    [BCDE]    [DE]    [E]    []
@@ -25,9 +25,9 @@ Executed:     ✅     ✅       ✅        ✅      ✅     ✅
               when busy          one by one           queue
 ```
 
-### When to Use Queueing
+### When to Use Queuing
 
-Queueing is particularly important when you need to ensure that every operation is processed, even if it means introducing some delay. This makes it ideal for scenarios where data consistency and completeness are more important than immediate execution. When using a `maxSize`, it can also serve as a buffer to prevent overwhelming a system with too many pending operations.
+Queuing is particularly important when you need to ensure that every operation is processed, even if it means introducing some delay. This makes it ideal for scenarios where data consistency and completeness are more important than immediate execution. When using a `maxSize`, it can also serve as a buffer to prevent overwhelming a system with too many pending operations.
 
 Common use cases include:
 - Pre-fetching data before it's needed without overloading the system
@@ -39,18 +39,18 @@ Common use cases include:
 - Form submissions where every entry needs to be saved
 - Buffering data streams with a fixed capacity using `maxSize`
 
-### When Not to Use Queueing
+### When Not to Use Queuing
 
-Queueing might not be the best choice when:
+Queuing might not be the best choice when:
 - Immediate feedback is more important than processing every operation
 - You only care about the most recent value (use [debouncing](../guides/debouncing) instead)
 
 > [!TIP]
-> If you're currently using rate limiting, throttling, or debouncing but finding that dropped operations are causing problems, queueing is likely the solution you need.
+> If you're currently using rate limiting, throttling, or debouncing but finding that dropped operations are causing problems, queuing is likely the solution you need.
 
-## Queueing in TanStack Pacer
+## Queuing in TanStack Pacer
 
-TanStack Pacer provides queueing through the simple `queue` function and the more powerful `Queuer` class. While other execution control techniques typically favor their function-based APIs, queueing often benefits from the additional control provided by the class-based API.
+TanStack Pacer provides queuing through the simple `queue` function and the more powerful `Queuer` class. While other execution control techniques typically favor their function-based APIs, queuing often benefits from the additional control provided by the class-based API.
 
 ### Basic Usage with `queue`
 
@@ -386,9 +386,9 @@ console.log(queue.getExecutionCount()) // Number of items processed
 console.log(queue.getRejectionCount()) // Number of items rejected
 ```
 
-### Asynchronous Queueing
+### Asynchronous Queuing
 
-For handling asynchronous operations with multiple workers, see the [Async Queueing Guide](../guides/async-queueing) which covers the `AsyncQueuer` class.
+For handling asynchronous operations with multiple workers, see the [Async Queuing Guide](../guides/async-queuing) which covers the `AsyncQueuer` class.
 
 ### Framework Adapters
 

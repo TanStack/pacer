@@ -128,7 +128,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
 
   /**
    * Updates the throttler options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<AsyncThrottlerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -183,7 +182,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
 
     // Handle leading execution
     if (this._options.leading && timeSinceLastExecution >= wait) {
-      await this.executeFunction(...args)
+      await this.execute(...args)
       return this._lastResult
     } else {
       // Store the most recent arguments for potential trailing execution
@@ -203,7 +202,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
           const timeoutDuration = wait - _timeSinceLastExecution
           this._timeoutId = setTimeout(async () => {
             if (this._lastArgs !== undefined) {
-              await this.executeFunction(...this._lastArgs)
+              await this.execute(...this._lastArgs)
             }
             resolve(this._lastResult)
           }, timeoutDuration)
@@ -212,7 +211,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
   }
 
-  private async executeFunction(
+  private async execute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
     if (!this.getEnabled() || this._isExecuting) return undefined

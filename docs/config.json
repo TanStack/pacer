@@ -59,12 +59,12 @@
           "to": "guides/rate-limiting"
         },
         {
-          "label": "Queueing Guide",
-          "to": "guides/queueing"
+          "label": "Queuing Guide",
+          "to": "guides/queuing"
         },
         {
-          "label": "Async Queueing Guide",
-          "to": "guides/async-queueing"
+          "label": "Async Queuing Guide",
+          "to": "guides/async-queuing"
         }
       ]
     },

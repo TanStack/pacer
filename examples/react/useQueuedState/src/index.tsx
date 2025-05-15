@@ -4,7 +4,11 @@ import { useState } from 'react'
 
 function App1() {
   // Queuer that uses React.useState under the hood
-  const [queueItems, addItem, queuer] = useQueuedState({
+  function processItem(item: number) {
+    console.log('processing item', item)
+  }
+
+  const [queueItems, addItem, queuer] = useQueuedState(processItem, {
     maxSize: 25,
     initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     started: false,
@@ -46,8 +50,7 @@ function App1() {
         <button
           disabled={queuer.getIsEmpty()}
           onClick={() => {
-            const item = queuer.getNextItem()
-            console.log('getNextItem item', item)
+            queuer.execute()
           }}
         >
           Process Next
@@ -75,14 +78,16 @@ function App2() {
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
   // Queuer that processes a single value with delays
-  const [, addItem, queuer] = useQueuedState<number>({
-    maxSize: 100,
-    started: true,
-    wait: 100,
-    onGetNextItem: (item) => {
+  const [, addItem, queuer] = useQueuedState<number>(
+    (item) => {
       setQueuedValue(item)
     },
-  })
+    {
+      maxSize: 100,
+      started: true,
+      wait: 100,
+    },
+  )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)
