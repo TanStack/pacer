@@ -49,5 +49,7 @@ export function useQueuer<TValue>(
     bindInstanceMethods(new Queuer<TValue>(fn, options)),
   )
 
+  queuer.setOptions(options)
+
   return queuer
 }

@@ -72,5 +72,7 @@ export function useAsyncRateLimiter<TFn extends AnyAsyncFunction>(
     bindInstanceMethods(new AsyncRateLimiter<TFn>(fn, options)),
   )
 
+  asyncRateLimiter.setOptions(options)
+
   return asyncRateLimiter
 }

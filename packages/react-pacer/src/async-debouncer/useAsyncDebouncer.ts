@@ -65,6 +65,8 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction>(
     bindInstanceMethods(new AsyncDebouncer<TFn>(fn, options)),
   )
 
+  asyncDebouncer.setOptions(options)
+
   useEffect(() => {
     return () => {
       asyncDebouncer.cancel()

@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useAsyncQueuer } from './useAsyncQueuer'
 import type {
   AsyncQueuer,
-  AsyncQueuerFn,
   AsyncQueuerOptions,
 } from '@tanstack/pacer/async-queuer'
 
@@ -51,12 +50,13 @@ import type {
  * const pendingCount = asyncQueuer.getPendingItems().length;
  * ```
  */
-export function useAsyncQueuedState<TFn extends AsyncQueuerFn>(
-  options: AsyncQueuerOptions<TFn> = {},
-): [Array<TFn>, AsyncQueuer<TFn>] {
-  const [items, setItems] = useState<Array<TFn>>(options.initialItems ?? [])
+export function useAsyncQueuedState<TValue>(
+  fn: (value: TValue) => Promise<any>,
+  options: AsyncQueuerOptions<TValue> = {},
+): [Array<TValue>, AsyncQueuer<TValue>] {
+  const [items, setItems] = useState<Array<TValue>>(options.initialItems ?? [])
 
-  const asyncQueuer = useAsyncQueuer<TFn>({
+  const asyncQueuer = useAsyncQueuer<TValue>(fn, {
     ...options,
     onItemsChange: (asyncQueuer) => {
       setItems(asyncQueuer.getAllItems())

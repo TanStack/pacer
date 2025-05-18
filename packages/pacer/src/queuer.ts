@@ -405,14 +405,12 @@ export class Queuer<TValue> {
    * @example
    * ```ts
    * // Standard FIFO queuer
-   * queuer.getNextItem()
+   * queuer.execute()
    * // Stack-like behavior (LIFO)
-   * queuer.getNextItem('back')
+   * queuer.execute('back')
    * ```
    */
-  execute(
-    position: QueuePosition = this._options.getItemsFrom,
-  ): TValue | undefined {
+  execute(position?: QueuePosition): TValue | undefined {
     const item = this.getNextItem(position)
     if (item !== undefined) {
       this.fn(item)

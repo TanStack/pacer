@@ -48,5 +48,7 @@ export function useBatcher<TValue>(
     bindInstanceMethods(new Batcher<TValue>(fn, options)),
   )
 
+  batcher.setOptions(options)
+
   return batcher
 }
