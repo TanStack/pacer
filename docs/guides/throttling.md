@@ -29,26 +29,18 @@ Executed:     ✅  ❌  ⏳  ->   ✅  ❌  ❌  ❌  ✅             ✅
 
 Throttling is particularly effective when you need consistent, predictable execution timing. This makes it ideal for handling frequent events or updates where you want smooth, controlled behavior.
 
-Common use cases include:
-- UI updates that need consistent timing (e.g., progress indicators)
-- Scroll or resize event handlers that shouldn't overwhelm the browser
-- Real-time data polling where consistent intervals are desired
-- Resource-intensive operations that need steady pacing
-- Game loop updates or animation frame handling
-- Live search suggestions as users type
-
 ### When Not to Use Throttling
 
 Throttling might not be the best choice when:
-- You want to wait for activity to stop (use [debouncing](../guides/debouncing) instead)
-- You can't afford to miss any executions (use [queuing](../guides/queuing) instead)
+- You want to wait for activity to stop (use [debouncing](./debouncing.md) instead)
+- You can't afford to miss any executions (use [queuing](./queuing.md) instead)
 
 > [!TIP]
 > Throttling is often the best choice when you need smooth, consistent execution timing. It provides a more predictable execution pattern than rate limiting and more immediate feedback than debouncing.
 
 ## Throttling in TanStack Pacer
 
-TanStack Pacer provides both synchronous and asynchronous throttling through the `Throttler` and `AsyncThrottler` classes respectively (and their corresponding `throttle` and `asyncThrottle` functions).
+TanStack Pacer provides both synchronous and asynchronous throttling. This guide covers the synchronous `Throttler` class and `throttle` function. For async throttling, see the [Async Throttling Guide](./async-throttling.md).
 
 ### Basic Usage with `throttle`
 
@@ -160,10 +152,6 @@ This allows for sophisticated throttling behavior that adapts to runtime conditi
 
 ### Callback Options
 
-Both the synchronous and asynchronous throttlers support callback options to handle different aspects of the throttling lifecycle:
-
-#### Synchronous Throttler Callbacks
-
 The synchronous `Throttler` supports the following callback:
 
 ```ts
@@ -178,141 +166,6 @@ const throttler = new Throttler(fn, {
 
 The `onExecute` callback is called after each successful execution of the throttled function, making it useful for tracking executions, updating UI state, or performing cleanup operations.
 
-#### Asynchronous Throttler Callbacks
+---
 
-The asynchronous `AsyncThrottler` supports additional callbacks for error handling:
-
-```ts
-const asyncThrottler = new AsyncThrottler(async (value) => {
-  await saveToAPI(value)
-}, {
-  wait: 200,
-  onExecute: (throttler) => {
-    // Called after each successful execution
-    console.log('Async function executed', throttler.getExecutionCount())
-  },
-  onError: (error) => {
-    // Called if the async function throws an error
-    console.error('Async function failed:', error)
-  }
-})
-```
-
-The `onExecute` callback works the same way as in the synchronous throttler, while the `onError` callback allows you to handle errors gracefully without breaking the throttling chain. These callbacks are particularly useful for tracking execution counts, updating UI state, handling errors, performing cleanup operations, and logging execution metrics.
-
-### Asynchronous Throttling
-
-The async throttler provides a powerful way to handle asynchronous operations with throttling, offering several key advantages over the synchronous version. While the synchronous throttler is great for UI events and immediate feedback, the async version is specifically designed for handling API calls, database operations, and other asynchronous tasks.
-
-#### Key Differences from Synchronous Throttling
-
-1. **Return Value Handling**
-Unlike the synchronous throttler which returns void, the async version allows you to capture and use the return value from your throttled function. This is particularly useful when you need to work with the results of API calls or other async operations. The `maybeExecute` method returns a Promise that resolves with the function's return value, allowing you to await the result and handle it appropriately.
-
-2. **Error Handling**
-The async throttler provides robust error handling capabilities:
-- If your throttled function throws an error and no `onError` handler is provided, the error will be thrown and propagate up to the caller
-- If you provide an `onError` handler, errors will be caught and passed to the handler instead of being thrown
-- The `throwOnError` option can be used to control error throwing behavior:
-  - When true (default if no onError handler), errors will be thrown
-  - When false (default if onError handler provided), errors will be swallowed
-  - Can be explicitly set to override these defaults
-- You can track error counts using `getErrorCount()` and check execution state with `getIsExecuting()`
-- The throttler maintains its state and can continue to be used after an error occurs
-
-3. **Different Callbacks**
-The `AsyncThrottler` supports the following callbacks instead of just `onExecute` in the synchronous version:
-- `onSuccess`: Called after each successful execution, providing the result and throttler instance
-- `onSettled`: Called after each execution (success or failure), providing the throttler instance
-- `onError`: Called if the async function throws an error, providing both the error and the throttler instance
-
-Both the Async and Synchronous throttlers support the `onExecute` callback for handling successful executions.
-
-4. **Sequential Execution**
-Since the throttler's `maybeExecute` method returns a Promise, you can choose to await each execution before starting the next one. This gives you control over the execution order and ensures each call processes the most up-to-date data. This is particularly useful when dealing with operations that depend on the results of previous calls or when maintaining data consistency is critical.
-
-For example, if you're updating a user's profile and then immediately fetching their updated data, you can await the update operation before starting the fetch:
-
-#### Basic Usage Example
-
-Here's a basic example showing how to use the async throttler for a search operation:
-
-```ts
-const throttledSearch = asyncThrottle(
-  async (searchTerm: string) => {
-    const results = await fetchSearchResults(searchTerm)
-    return results
-  },
-  {
-    wait: 500,
-    onSuccess: (results, throttler) => {
-      console.log('Search succeeded:', results)
-    },
-    onError: (error, throttler) => {
-      console.error('Search failed:', error)
-    }
-  }
-)
-
-// Usage
-try {
-  const results = await throttledSearch('query')
-  // Handle successful results
-} catch (error) {
-  // Handle errors if no onError handler was provided
-  console.error('Search failed:', error)
-}
-```
-
-### Framework Adapters
-
-Each framework adapter provides hooks that build on top of the core throttling functionality to integrate with the framework's state management system. Hooks like `createThrottler`, `useThrottledCallback`, `useThrottledState`, or `useThrottledValue` are available for each framework.
-
-Here are some examples:
-
-#### React
-
-```tsx
-import { useThrottler, useThrottledCallback, useThrottledValue } from '@tanstack/react-pacer'
-
-// Low-level hook for full control
-const throttler = useThrottler(
-  (value: number) => updateProgressBar(value),
-  { wait: 200 }
-)
-
-// Simple callback hook for basic use cases
-const handleUpdate = useThrottledCallback(
-  (value: number) => updateProgressBar(value),
-  { wait: 200 }
-)
-
-// State-based hook for reactive state management
-const [instantState, setInstantState] = useState(0)
-const [throttledValue] = useThrottledValue(
-  instantState, // Value to throttle
-  { wait: 200 }
-)
-```
-
-#### Solid
-
-```tsx
-import { createThrottler, createThrottledSignal } from '@tanstack/solid-pacer'
-
-// Low-level hook for full control
-const throttler = createThrottler(
-  (value: number) => updateProgressBar(value),
-  { wait: 200 }
-)
-
-// Signal-based hook for state management
-const [value, setValue, throttler] = createThrottledSignal(0, {
-  wait: 200,
-  onExecute: (throttler) => {
-    console.log('Total executions:', throttler.getExecutionCount())
-  }
-})
-```
-
-Each framework adapter provides hooks that integrate with the framework's state management system while maintaining the core throttling functionality. 
+For asynchronous throttling (e.g., API calls, async operations), see the [Async Throttling Guide](./async-throttling.md). 

@@ -44,7 +44,7 @@ title: "@tanstack/pacer"
 - [asyncQueue](functions/asyncqueue.md)
 - [asyncRateLimit](functions/asyncratelimit.md)
 - [asyncThrottle](functions/asyncthrottle.md)
-- [batcher](functions/batcher.md)
+- [batch](functions/batch.md)
 - [bindInstanceMethods](functions/bindinstancemethods.md)
 - [debounce](functions/debounce.md)
 - [isFunction](functions/isfunction.md)

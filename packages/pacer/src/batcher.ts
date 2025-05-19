@@ -234,7 +234,7 @@ export class Batcher<TValue> {
  *
  * @example
  * ```ts
- * const batchItems = batcher<number>({
+ * const batchItems = batch<number>({
  *   batchSize: 3,
  *   processBatch: (items) => console.log('Processing:', items)
  * });
@@ -244,7 +244,7 @@ export class Batcher<TValue> {
  * batchItems(3); // Triggers batch processing
  * ```
  */
-export function batcher<TValue>(
+export function batch<TValue>(
   fn: (items: Array<TValue>) => void,
   options: BatcherOptions<TValue>,
 ) {

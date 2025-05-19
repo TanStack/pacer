@@ -7,7 +7,7 @@ title: SolidBatcher
 
 # Interface: SolidBatcher\<TValue\>
 
-Defined in: batcher/createBatcher.ts:7
+Defined in: [batcher/createBatcher.ts:7](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L7)
 
 ## Extends
 
@@ -31,7 +31,7 @@ Defined in: batcher/createBatcher.ts:7
 allItems: Accessor<TValue[]>;
 ```
 
-Defined in: batcher/createBatcher.ts:20
+Defined in: [batcher/createBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L20)
 
 Signal version of `getAllItems`
 
@@ -43,7 +43,7 @@ Signal version of `getAllItems`
 batchExecutionCount: Accessor<number>;
 ```
 
-Defined in: batcher/createBatcher.ts:24
+Defined in: [batcher/createBatcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L24)
 
 Signal version of `getBatchExecutionCount`
 
@@ -55,7 +55,7 @@ Signal version of `getBatchExecutionCount`
 isEmpty: Accessor<boolean>;
 ```
 
-Defined in: batcher/createBatcher.ts:28
+Defined in: [batcher/createBatcher.ts:28](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L28)
 
 Signal version of `getIsEmpty`
 
@@ -67,7 +67,7 @@ Signal version of `getIsEmpty`
 isRunning: Accessor<boolean>;
 ```
 
-Defined in: batcher/createBatcher.ts:32
+Defined in: [batcher/createBatcher.ts:32](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L32)
 
 Signal version of `getIsRunning`
 
@@ -79,7 +79,7 @@ Signal version of `getIsRunning`
 itemExecutionCount: Accessor<number>;
 ```
 
-Defined in: batcher/createBatcher.ts:36
+Defined in: [batcher/createBatcher.ts:36](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L36)
 
 Signal version of `getItemExecutionCount`
 
@@ -91,6 +91,6 @@ Signal version of `getItemExecutionCount`
 size: Accessor<number>;
 ```
 
-Defined in: batcher/createBatcher.ts:40
+Defined in: [batcher/createBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L40)
 
 Signal version of `getSize`

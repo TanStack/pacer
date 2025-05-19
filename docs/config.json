@@ -51,12 +51,24 @@
           "to": "guides/debouncing"
         },
         {
+          "label": "Async Debouncing Guide",
+          "to": "guides/async-debouncing"
+        },
+        {
           "label": "Throttling Guide",
           "to": "guides/throttling"
         },
         {
+          "label": "Async Throttling Guide",
+          "to": "guides/async-throttling"
+        },
+        {
           "label": "Rate Limiting Guide",
           "to": "guides/rate-limiting"
+        },
+        {
+          "label": "Async Rate Limiting Guide",
+          "to": "guides/async-rate-limiting"
         },
         {
           "label": "Queuing Guide",
@@ -65,6 +77,10 @@
         {
           "label": "Async Queuing Guide",
           "to": "guides/async-queuing"
+        },
+        {
+          "label": "Batching Guide",
+          "to": "guides/batching"
         }
       ]
     },
@@ -354,6 +370,14 @@
         {
           "label": "AsyncQueuer",
           "to": "reference/classes/asyncqueuer"
+        },
+        {
+          "label": "queue",
+          "to": "reference/functions/queue"
+        },
+        {
+          "label": "asyncQueue",
+          "to": "reference/functions/asyncqueue"
         }
       ],
       "frameworks": [
@@ -388,6 +412,45 @@
             {
               "label": "createAsyncQueuer",
               "to": "framework/solid/reference/functions/createasyncqueuer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "collapsible": true,
+      "defaultCollapsed": true,
+      "label": "Batcher API Reference",
+      "children": [
+        {
+          "label": "BatcherOptions",
+          "to": "reference/interfaces/batcheroptions"
+        },
+        {
+          "label": "Batcher",
+          "to": "reference/classes/batcher"
+        }
+      ],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "useBatcher",
+              "to": "framework/react/reference/functions/usebatcher"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "SolidBatcher",
+              "to": "framework/solid/reference/interfaces/solidbatcher"
+            },
+            {
+              "label": "createBatcher",
+              "to": "framework/solid/reference/functions/createbatcher"
             }
           ]
         }
@@ -650,7 +713,39 @@
       ]
     },
     {
-      "label": "Advanced Examples",
+      "label": "Batcher Examples",
+      "children": [],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "batch",
+              "to": "framework/react/examples/batch"
+            },
+            {
+              "label": "useBatcher",
+              "to": "framework/react/examples/useBatcher"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "batch",
+              "to": "framework/solid/examples/batch"
+            },
+            {
+              "label": "createBatcher",
+              "to": "framework/solid/examples/createBatcher"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "TanStack Query Examples",
       "children": [],
       "frameworks": [
         {
