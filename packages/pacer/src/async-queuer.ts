@@ -117,40 +117,40 @@ const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
 }
 
 /**
- * A flexible asynchronous queue that processes tasks with configurable concurrency control.
+ * A flexible asynchronous queue for processing tasks with configurable concurrency, priority, and expiration.
  *
  * Features:
- * - Priority queue support via getPriority option
+ * - Priority queue support via the getPriority option
  * - Configurable concurrency limit
- * - Task success/error/completion callbacks
+ * - Callbacks for task success, error, completion, and queue state changes
  * - FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
- * - Pause/resume task processing
+ * - Pause and resume processing
  * - Task cancellation
- * - Item expiration to clear stale items from the queue
+ * - Item expiration to remove stale items from the queue
  *
  * Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
- * the next pending task is processed if below the concurrency limit.
+ * the next pending task is processed if the concurrency limit allows.
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and queuer instance
  * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
  * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
- * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
- * - The error state can be checked using the underlying AsyncQueuer instance
+ * - Both onError and throwOnError can be used together; the handler will be called before any error is thrown
+ * - The error state can be checked using the AsyncQueuer instance
  *
- * @example
+ * Example usage:
  * ```ts
- * const asyncQueuer = new AsyncQueuer<string>({
+ * const asyncQueuer = new AsyncQueuer<string>(async (item) => {
+ *   // process item
+ *   return item.toUpperCase();
+ * }, {
  *   concurrency: 2,
  *   onSuccess: (result) => {
- *     console.log(result); // 'Hello'
+ *     console.log(result);
  *   }
  * });
  *
- * asyncQueuer.addItem(async () => {
- *   return 'Hello';
- * });
- *
+ * asyncQueuer.addItem('hello');
  * asyncQueuer.start();
  * ```
  */
@@ -187,35 +187,37 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Updates the queuer options
+   * Updates the queuer options. New options are merged with existing options.
    */
   setOptions(newOptions: Partial<AsyncQueuerOptions<TValue>>): void {
     this._options = { ...this._options, ...newOptions }
   }
 
   /**
-   * Returns the current queuer options
+   * Returns the current queuer options, including defaults and any overrides.
    */
   getOptions(): AsyncQueuerOptions<TValue> {
     return this._options
   }
 
   /**
-   * Returns the current wait time between processing items
+   * Returns the current wait time (in milliseconds) between processing items.
+   * If a function is provided, it is called with the queuer instance.
    */
   getWait(): number {
     return parseFunctionOrValue(this._options.wait, this)
   }
 
   /**
-   * Returns the current concurrency limit
+   * Returns the current concurrency limit for processing items.
+   * If a function is provided, it is called with the queuer instance.
    */
   getConcurrency(): number {
     return parseFunctionOrValue(this._options.concurrency, this)
   }
 
   /**
-   * Processes items in the queuer
+   * Processes items in the queue up to the concurrency limit. Internal use only.
    */
   private tick() {
     if (!this._running) {
@@ -254,7 +256,7 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Starts the queuer and processes items
+   * Starts processing items in the queue. If already running, does nothing.
    */
   start(): void {
     this._running = true
@@ -266,7 +268,7 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Stops the queuer from processing items
+   * Stops processing items in the queue. Does not clear the queue.
    */
   stop(): void {
     this._running = false
@@ -275,7 +277,7 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Removes all items from the queuer
+   * Removes all pending items from the queue. Does not affect active tasks.
    */
   clear(): void {
     this._items = []
@@ -283,7 +285,8 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Resets the queuer to its initial state
+   * Resets the queuer to its initial state. Optionally repopulates with initial items.
+   * Does not affect callbacks or options.
    */
   reset(withInitialItems?: boolean): void {
     this.clear()
@@ -297,7 +300,14 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Adds a task to the queuer
+   * Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
+   * Items can be inserted based on priority or at the front/back depending on configuration.
+   *
+   * @example
+   * ```ts
+   * queuer.addItem({ value: 'task', priority: 10 });
+   * queuer.addItem('task2', 'front');
+   * ```
    */
   addItem(
     item: TValue & { priority?: number },
@@ -356,16 +366,15 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Removes and returns an item from the queuer using shift (default) or pop without executing the function
-   *
-   * Note: Normally, you should use execute instead of getNextItem
+   * Removes and returns the next item from the queue without executing the task function.
+   * Use for manual queue management. Normally, use execute() to process items.
    *
    * @example
    * ```ts
-   * // Standard FIFO queuer
-   * queuer.getNextItem()
-   * // Stack-like behavior (LIFO)
-   * queuer.getNextItem('back')
+   * // FIFO
+   * queuer.getNextItem();
+   * // LIFO
+   * queuer.getNextItem('back');
    * ```
    */
   getNextItem(
@@ -389,13 +398,13 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Removes and returns an item from the queuer and executes the function with the item as the argument
+   * Removes and returns the next item from the queue and executes the task function with it.
    *
    * @example
    * ```ts
-   * queuer.execute()
-   * // Stack-like behavior (LIFO)
-   * queuer.execute('back')
+   * queuer.execute();
+   * // LIFO
+   * queuer.execute('back');
    * ```
    */
   async execute(position?: QueuePosition): Promise<any> {
@@ -422,7 +431,8 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Checks for and removes expired items from the queuer
+   * Checks for expired items in the queue and removes them. Calls onExpire for each expired item.
+   * Internal use only.
    */
   private checkExpiredItems(): void {
     if (
@@ -472,7 +482,13 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Returns an item without removing it
+   * Returns the next item in the queue without removing it.
+   *
+   * @example
+   * ```ts
+   * queuer.getPeek(); // front
+   * queuer.getPeek('back'); // back
+   * ```
    */
   getPeek(position: QueuePosition = 'front'): TValue | undefined {
     if (position === 'front') {
@@ -482,91 +498,91 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Returns true if the queuer is empty
+   * Returns true if the queue is empty (no pending items).
    */
   getIsEmpty(): boolean {
     return this._items.length === 0
   }
 
   /**
-   * Returns true if the queuer is full
+   * Returns true if the queue is full (reached maxSize).
    */
   getIsFull(): boolean {
     return this._items.length >= this._options.maxSize
   }
 
   /**
-   * Returns the current size of the queuer
+   * Returns the number of pending items in the queue.
    */
   getSize(): number {
     return this._items.length
   }
 
   /**
-   * Returns a copy of all items in the queuer
+   * Returns a copy of all items in the queue, including active and pending items.
    */
   getAllItems(): Array<TValue> {
     return [...this.getActiveItems(), ...this.getPendingItems()]
   }
 
   /**
-   * Returns the active items
+   * Returns the items currently being processed (active tasks).
    */
   getActiveItems(): Array<TValue> {
     return Array.from(this._activeItems)
   }
 
   /**
-   * Returns the pending items
+   * Returns the items waiting to be processed (pending tasks).
    */
   getPendingItems(): Array<TValue> {
     return [...this._items]
   }
 
   /**
-   * Returns the number of items that have been successfully processed
+   * Returns the number of items that have been successfully processed.
    */
   getSuccessCount(): number {
     return this._successCount
   }
 
   /**
-   * Returns the number of items that have failed processing
+   * Returns the number of items that have failed processing.
    */
   getErrorCount(): number {
     return this._errorCount
   }
 
   /**
-   * Returns the number of items that have completed processing (success or error)
+   * Returns the number of items that have completed processing (success or error).
    */
   getSettledCount(): number {
     return this._settledCount
   }
 
   /**
-   * Returns the number of items that have been rejected from the queuer
+   * Returns the number of items that have been rejected from being added to the queue.
    */
   getRejectionCount(): number {
     return this._rejectionCount
   }
 
   /**
-   * Returns true if the queuer is running
+   * Returns true if the queuer is currently running (processing items).
    */
   getIsRunning(): boolean {
     return this._running
   }
 
   /**
-   * Returns true if the queuer is running but has no items to process
+   * Returns true if the queuer is running but has no items to process and no active tasks.
    */
   getIsIdle(): boolean {
     return this._running && this.getIsEmpty() && this._activeItems.size === 0
   }
 
   /**
-   * Returns the number of items that have expired from the queuer
+   * Returns the number of items that have expired and been removed from the queue.
    */
   getExpirationCount(): number {
     return this._expirationCount
@@ -574,28 +590,24 @@ export class AsyncQueuer<TValue> {
 }
 
 /**
- * Creates a new AsyncQueuer instance with the given options and returns a bound addItem function.
- * The queuer is automatically started and ready to process items.
+ * Creates a new AsyncQueuer instance and returns a bound addItem function for adding tasks.
+ * The queuer is started automatically and ready to process items.
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and queuer instance
  * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
  * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
- * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - Both onError and throwOnError can be used together; the handler will be called before any error is thrown
  * - The error state can be checked using the underlying AsyncQueuer instance
  *
- * @example
+ * Example usage:
  * ```ts
- * const enqueue = asyncQueue<string>();
+ * const enqueue = asyncQueue<string>(async (item) => {
+ *   return item.toUpperCase();
+ * }, {...options});
  *
- * // Add items to be processed
- * enqueue(async () => {
- *   return 'Hello';
- * });
+ * enqueue('hello');
  * ```
- *
- * @param initialOptions - Configuration options for the AsyncQueuer
- * @returns A bound addItem function that can be used to add tasks to the queuer
  */
 export function asyncQueue<TValue>(
   fn: (value: TValue) => Promise<any>,

@@ -144,9 +144,9 @@ describe('Queuer', () => {
         })
 
         expect(queuer.getAllItems()).toEqual([
-          { value: 'low', priority: 1 },
-          { value: 'medium', priority: 2 },
           { value: 'high', priority: 3 },
+          { value: 'medium', priority: 2 },
+          { value: 'low', priority: 1 },
         ])
       })
 
@@ -170,9 +170,9 @@ describe('Queuer', () => {
         queuer.addItem({ value: 'low', priority: 1 })
 
         expect(queuer.getAllItems()).toEqual([
-          { value: 'low', priority: 1 },
-          { value: 'medium', priority: 2 },
           { value: 'high', priority: 3 },
+          { value: 'medium', priority: 2 },
+          { value: 'low', priority: 1 },
         ])
       })
 
@@ -188,9 +188,9 @@ describe('Queuer', () => {
         queuer.addItem({ value: 'medium', priority: 2 }) // Should go between lowest and highest
 
         expect(queuer.getAllItems()).toEqual([
-          { value: 'lowest', priority: 0 },
-          { value: 'medium', priority: 2 },
           { value: 'highest', priority: 4 },
+          { value: 'medium', priority: 2 },
+          { value: 'lowest', priority: 0 },
         ])
       })
 
@@ -225,9 +225,9 @@ describe('Queuer', () => {
         queuer.addItem({ value: 'low', priority: 1 }, 'back') // back position should be ignored
 
         expect(queuer.getAllItems()).toEqual([
-          { value: 'low', priority: 1 },
-          { value: 'medium', priority: 2 },
           { value: 'high', priority: 3 },
+          { value: 'medium', priority: 2 },
+          { value: 'low', priority: 1 },
         ])
       })
     })
