@@ -14,6 +14,7 @@ title: "@tanstack/react-pacer"
 - [useAsyncQueuer](functions/useasyncqueuer.md)
 - [useAsyncRateLimiter](functions/useasyncratelimiter.md)
 - [useAsyncThrottler](functions/useasyncthrottler.md)
+- [useBatcher](functions/usebatcher.md)
 - [useDebouncedCallback](functions/usedebouncedcallback.md)
 - [useDebouncedState](functions/usedebouncedstate.md)
 - [useDebouncedValue](functions/usedebouncedvalue.md)

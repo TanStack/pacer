@@ -37,16 +37,6 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
-    "./async-batcher": {
-      "import": {
-        "types": "./dist/esm/async-batcher/index.d.ts",
-        "default": "./dist/esm/async-batcher/index.js"
-      },
-      "require": {
-        "types": "./dist/cjs/async-batcher/index.d.cts",
-        "default": "./dist/cjs/async-batcher/index.cjs"
-      }
-    },
     "./async-debouncer": {
       "import": {
         "types": "./dist/esm/async-debouncer/index.d.ts",

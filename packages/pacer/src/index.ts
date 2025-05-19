@@ -1,4 +1,3 @@
-export * from './async-batcher'
 export * from './async-debouncer'
 export * from './async-queuer'
 export * from './async-rate-limiter'

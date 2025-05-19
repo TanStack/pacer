@@ -1,3 +1,5 @@
+import type { OptionalKeys } from './types'
+
 /**
  * Options for configuring a Batcher instance
  */
@@ -17,6 +19,10 @@ export interface BatcherOptions<TValue> {
    */
   onExecute?: (batcher: Batcher<TValue>) => void
   /**
+   * Callback fired when the batcher's running state changes
+   */
+  onIsRunningChange?: (batcher: Batcher<TValue>) => void
+  /**
    * Callback fired after items are added to the batcher
    */
   onItemsChange?: (batcher: Batcher<TValue>) => void
@@ -34,11 +40,14 @@ export interface BatcherOptions<TValue> {
   wait?: number
 }
 
-const defaultOptions: Required<BatcherOptions<any>> = {
+type BatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
+  Required<BatcherOptions<TValue>>,
+  'onExecute' | 'onItemsChange' | 'onIsRunningChange'
+>
+
+const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
   getShouldExecute: () => false,
   maxSize: Infinity,
-  onExecute: () => {},
-  onItemsChange: () => {},
   started: true,
   wait: Infinity,
 }
@@ -73,7 +82,7 @@ const defaultOptions: Required<BatcherOptions<any>> = {
  * ```
  */
 export class Batcher<TValue> {
-  private _options: Required<BatcherOptions<TValue>>
+  private _options: BatcherOptionsWithOptionalCallbacks<TValue>
   private _batchExecutionCount = 0
   private _itemExecutionCount = 0
   private _items: Array<TValue> = []
@@ -98,7 +107,7 @@ export class Batcher<TValue> {
   /**
    * Returns the current batcher options
    */
-  getOptions(): Required<BatcherOptions<TValue>> {
+  getOptions(): BatcherOptions<TValue> {
     return this._options
   }
 
@@ -108,7 +117,7 @@ export class Batcher<TValue> {
    */
   addItem(item: TValue): void {
     this._items.push(item)
-    this._options.onItemsChange(this)
+    this._options.onItemsChange?.(this)
 
     const shouldProcess =
       this._items.length >= this._options.maxSize ||
@@ -144,13 +153,14 @@ export class Batcher<TValue> {
       return
     }
 
-    const batch = this.getAllItems()
+    const batch = this.getAllItems() // copy of the items to be processed (to prevent race conditions)
     this._items = [] // Clear items before processing to prevent race conditions
+    this._options.onItemsChange?.(this) // Call onItemsChange to notify listeners that the items have changed
 
     this.fn(batch)
     this._batchExecutionCount++
     this._itemExecutionCount += batch.length
-    this._options.onExecute(this)
+    this._options.onExecute?.(this)
   }
 
   /**
@@ -158,6 +168,7 @@ export class Batcher<TValue> {
    */
   stop(): void {
     this._running = false
+    this._options.onIsRunningChange?.(this)
     if (this._timeoutId) {
       clearTimeout(this._timeoutId)
       this._timeoutId = null
@@ -169,6 +180,7 @@ export class Batcher<TValue> {
    */
   start(): void {
     this._running = true
+    this._options.onIsRunningChange?.(this)
     if (this._items.length > 0 && !this._timeoutId) {
       this._timeoutId = setTimeout(() => this.execute(), this._options.wait)
     }

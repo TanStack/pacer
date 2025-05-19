@@ -328,7 +328,7 @@ describe('AsyncQueuer', () => {
           (item) => Promise.resolve(item),
           {
             started: false,
-            getPriority: (item) => 1, // All items have same priority
+            getPriority: (_item) => 1, // All items have same priority
           },
         )
 
