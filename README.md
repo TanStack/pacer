@@ -58,6 +58,8 @@ You may know **TanSack Pacer** by our adapter names, too!
 
 Take control of your application's timing with TanStack Pacer's rate limiting, throttling, and debouncing utilities. Manage complex async workflows using intelligent queuing and concurrency controls while maintaining full control with built-in pause, resume, and cancel capabilities.
 
+## Features
+
 - **Debouncing**
   - Delay execution until after a period of inactivity for when you only care about the last execution in a sequence.
   - Synchronous or Asynchronous Debounce utilities with promise support and error handling
