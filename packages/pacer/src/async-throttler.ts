@@ -114,6 +114,9 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   private _settleCount = 0
   private _successCount = 0
   private _timeoutId: NodeJS.Timeout | null = null
+  private _resolvePreviousPromise:
+    | ((value?: ReturnType<TFn> | undefined) => void)
+    | null = null
 
   constructor(
     private fn: TFn,
@@ -180,6 +183,8 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     const timeSinceLastExecution = now - this._lastExecutionTime
     const wait = this.getWait()
 
+    this.resolvePreviousPromise()
+
     // Handle leading execution
     if (this._options.leading && timeSinceLastExecution >= wait) {
       await this.execute(...args)
@@ -189,6 +194,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this._lastArgs = args
 
       return new Promise((resolve) => {
+        this._resolvePreviousPromise = resolve
         // Clear any existing timeout to ensure we use the latest arguments
         if (this._timeoutId) {
           clearTimeout(this._timeoutId)
@@ -204,6 +210,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
             if (this._lastArgs !== undefined) {
               await this.execute(...this._lastArgs)
             }
+            this._resolvePreviousPromise = null
             resolve(this._lastResult)
           }, timeoutDuration)
         }
@@ -240,6 +247,13 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     return this._lastResult
   }
 
+  private resolvePreviousPromise(): void {
+    if (this._resolvePreviousPromise) {
+      this._resolvePreviousPromise(this._lastResult)
+      this._resolvePreviousPromise = null
+    }
+  }
+
   /**
    * Cancels any pending execution or aborts any execution in progress
    */
@@ -252,6 +266,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this._abortController.abort()
       this._abortController = null
     }
+    this.resolvePreviousPromise()
     this._lastArgs = undefined
   }
 
