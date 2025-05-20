@@ -58,29 +58,37 @@ You may know **TanSack Pacer** by our adapter names, too!
 
 Take control of your application's timing with TanStack Pacer's rate limiting, throttling, and debouncing utilities. Manage complex async workflows using intelligent queuing and concurrency controls while maintaining full control with built-in pause, resume, and cancel capabilities.
 
-## Quick Features
-
 - **Debouncing**
-  - Delay functions execution until after a period of inactivity
+  - Delay execution until after a period of inactivity for when you only care about the last execution in a sequence.
   - Synchronous or Asynchronous Debounce utilities with promise support and error handling
+  - Control of leading, trailing, and enabled options
 - **Throttling**
-  - Limit the rate at which a function can fire
+  - Smoothly limit the rate at which a function can fire
   - Synchronous or Asynchronous Throttle utilities with promise support and error handling
+  - Control of leading, trailing, and enabled options.
 - **Rate Limiting**
-  - Limit the rate at which a function can fire
+  - Limit the rate at which a function can fire over a period of time
   - Synchronous or Asynchronous Rate Limiting utilities with promise support and error handling
-  - Fixed or Sliding window types
+  - Fixed or Sliding Window variations of Rate Limiting
 - **Queuing**
   - Queue functions to be executed in a specific order
   - Choose from FIFO, LIFO, and Priority queue implementations
-  - Control processing with configurable wait times or concurrency limits
+  - Control processing speed with configurable wait times or concurrency limits
   - Manage queue execution with start/stop capabilities
-  - Synchronous or Asynchronous Queue utilities with promise support and success, settled, and error, handling
+  - Expire items from the queue after a configurable duration
+- **Batching**
+  - Chunk up multiple operations into larger batches to reduce total back-and-forth operations
+  - Batch by time period, batch size, whichever comes first, or a custom condition to trigger batch executions
+- **Async or Sync Variations**
+  - Choose between synchronous and asynchronous versions of each utility
+  - Optional error, success, and settled handling for async variations
 - **Comparison Utilities**
   - Perform deep equality checks between values
   - Create custom comparison logic for specific needs
 - **Convenient Hooks**
   - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuedState`, and more.
+  - Multiple layers of abstraction to choose from depending on your use case.
+  - Works with each framework's default state management solutions, or with whatever custom state management library that you prefer.
 - **Type Safety**
   - Full type safety with TypeScript that makes sure that your functions will always be called with the correct arguments
   - Generics for flexible and reusable utilities
