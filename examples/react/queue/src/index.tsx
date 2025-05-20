@@ -6,9 +6,13 @@ function App1() {
   const [queueItems, setQueueItems] = useState<Array<number>>([])
   const [processedCount, setProcessedCount] = useState(0)
 
+  function processQueueItem(item: number) {
+    console.log('Processing item:', item)
+  }
+
   // Create the simplified queuer function
   const queueItem = useCallback(
-    queue<number>({
+    queue<number>(processQueueItem, {
       maxSize: 25,
       wait: 1000,
       onItemsChange: (queue) => {
@@ -59,14 +63,15 @@ function App2() {
   const [inputText, setInputText] = useState('')
   const [queuedText, setQueuedText] = useState('')
 
+  function processQueueItem(item: string) {
+    setQueuedText(item)
+  }
+
   // Create the simplified queuer function
   const queueTextChange = useCallback(
-    queue<string>({
+    queue<string>(processQueueItem, {
       maxSize: 100,
       wait: 500,
-      onGetNextItem: (item, _queue) => {
-        setQueuedText(item)
-      },
       onItemsChange: (queue) => {
         setQueueItems(queue.getAllItems())
         setProcessedCount(queue.getExecutionCount())
@@ -123,14 +128,15 @@ function App3() {
   const [currentValue, setCurrentValue] = useState(50)
   const [queuedValue, setQueuedValue] = useState(50)
 
+  function processQueueItem(item: number) {
+    setQueuedValue(item)
+  }
+
   // Create the simplified queuer function
   const queueValue = useCallback(
-    queue<number>({
+    queue<number>(processQueueItem, {
       maxSize: 100,
       wait: 100,
-      onGetNextItem: (item, _queue) => {
-        setQueuedValue(item)
-      },
       onItemsChange: (queue) => {
         setQueueItems(queue.getAllItems())
         setProcessedCount(queue.getExecutionCount())

@@ -95,7 +95,6 @@ export class RateLimiter<TFn extends AnyFunction> {
 
   /**
    * Updates the rate limiter options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<RateLimiterOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -150,7 +149,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     if (this._options.windowType === 'sliding') {
       // For sliding window, we can execute if we have capacity in the current window
       if (this._executionTimes.length < this.getLimit()) {
-        this.executeFunction(...args)
+        this.execute(...args)
         return true
       }
     } else {
@@ -160,7 +159,7 @@ export class RateLimiter<TFn extends AnyFunction> {
       const isNewWindow = oldestExecution + this.getWindow() <= now
 
       if (isNewWindow || this._executionTimes.length < this.getLimit()) {
-        this.executeFunction(...args)
+        this.execute(...args)
         return true
       }
     }
@@ -169,7 +168,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     return false
   }
 
-  private executeFunction(...args: Parameters<TFn>): void {
+  private execute(...args: Parameters<TFn>): void {
     if (!this.getEnabled()) return
     const now = Date.now()
     this._executionCount++

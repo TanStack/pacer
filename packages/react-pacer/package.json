@@ -77,6 +77,16 @@
         "default": "./dist/cjs/async-throttler/index.cjs"
       }
     },
+    "./batcher": {
+      "import": {
+        "types": "./dist/esm/batcher/index.d.ts",
+        "default": "./dist/esm/batcher/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/batcher/index.d.cts",
+        "default": "./dist/cjs/batcher/index.cjs"
+      }
+    },
     "./debouncer": {
       "import": {
         "types": "./dist/esm/debouncer/index.d.ts",

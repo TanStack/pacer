@@ -84,7 +84,6 @@ export class Debouncer<TFn extends AnyFunction> {
 
   /**
    * Updates the debouncer options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<DebouncerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -127,7 +126,7 @@ export class Debouncer<TFn extends AnyFunction> {
     if (this._options.leading && this._canLeadingExecute) {
       this._canLeadingExecute = false
       _didLeadingExecute = true
-      this.executeFunction(...args)
+      this.execute(...args)
     }
 
     // Start pending state to indicate that the debouncer is waiting for the trailing edge
@@ -142,12 +141,12 @@ export class Debouncer<TFn extends AnyFunction> {
     this._timeoutId = setTimeout(() => {
       this._canLeadingExecute = true
       if (this._options.trailing && !_didLeadingExecute) {
-        this.executeFunction(...args)
+        this.execute(...args)
       }
     }, this.getWait())
   }
 
-  private executeFunction(...args: Parameters<TFn>): void {
+  private execute(...args: Parameters<TFn>): void {
     if (!this.getEnabled()) return undefined
     this.fn(...args) // EXECUTE!
     this._isPending = false

@@ -2,14 +2,11 @@ import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { createSignal } from 'solid-js'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
-import type {
-  AsyncQueuerFn,
-  AsyncQueuerOptions,
-} from '@tanstack/pacer/async-queuer'
+import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 
-export interface SolidAsyncQueuer<TFn extends AsyncQueuerFn>
+export interface SolidAsyncQueuer<TValue>
   extends Omit<
-    AsyncQueuer<TFn>,
+    AsyncQueuer<TValue>,
     | 'getActiveItems'
     | 'getAllItems'
     | 'getErrorCount'
@@ -27,11 +24,11 @@ export interface SolidAsyncQueuer<TFn extends AsyncQueuerFn>
   /**
    * Signal version of `getActiveItems`
    */
-  activeItems: Accessor<Array<TFn>>
+  activeItems: Accessor<Array<TValue>>
   /**
    * Signal version of `getAllItems`
    */
-  allItems: Accessor<Array<TFn>>
+  allItems: Accessor<Array<TValue>>
   /**
    * Signal version of `getErrorCount`
    */
@@ -55,11 +52,11 @@ export interface SolidAsyncQueuer<TFn extends AsyncQueuerFn>
   /**
    * Signal version of `getPeek`
    */
-  peek: Accessor<TFn | undefined>
+  peek: Accessor<TValue | undefined>
   /**
    * Signal version of `getPendingItems`
    */
-  pendingItems: Accessor<Array<TFn>>
+  pendingItems: Accessor<Array<TValue>>
   /**
    * Signal version of `getRejectionCount`
    */
@@ -79,31 +76,35 @@ export interface SolidAsyncQueuer<TFn extends AsyncQueuerFn>
 }
 
 /**
- * A lower-level Solid hook that creates an `AsyncQueuer` instance for managing an async queue of items.
+ * Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
  *
  * Features:
- * - Priority queue support via getPriority option
+ * - Priority queueing via `getPriority` or item `priority` property
  * - Configurable concurrency limit
- * - Task success/error/completion callbacks
  * - FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
- * - Pause/resume task processing
+ * - Pause/resume processing
  * - Task cancellation
- * - Item expiration to clear stale items from the queue
+ * - Item expiration
+ * - Lifecycle callbacks for success, error, settled, items change, etc.
+ * - All stateful properties (active items, pending items, counts, etc.) are exposed as Solid signals for reactivity
  *
  * Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
- * the next pending task is processed if below the concurrency limit.
+ * the next pending task is processed if the concurrency limit allows.
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and queuer instance
  * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
  * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
- * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - Both onError and throwOnError can be used together; the handler will be called before any error is thrown
  * - The error state can be checked using the underlying AsyncQueuer instance
  *
- * @example
+ * Example usage:
  * ```tsx
  * // Basic async queuer for API requests
- * const asyncQueuer = createAsyncQueuer({
+ * const asyncQueuer = createAsyncQueuer(async (item) => {
+ *   // process item
+ *   return await fetchData(item);
+ * }, {
  *   initialItems: [],
  *   concurrency: 2,
  *   maxSize: 100,
@@ -121,12 +122,16 @@ export interface SolidAsyncQueuer<TFn extends AsyncQueuerFn>
  *
  * // Start processing
  * asyncQueuer.start();
+ *
+ * // Use Solid signals in your UI
+ * const pending = asyncQueuer.pendingItems();
  * ```
  */
-export function createAsyncQueuer<TFn extends AsyncQueuerFn>(
-  initialOptions: AsyncQueuerOptions<TFn> = {},
-): SolidAsyncQueuer<TFn> {
-  const asyncQueuer = new AsyncQueuer<TFn>(initialOptions)
+export function createAsyncQueuer<TValue>(
+  fn: (value: TValue) => Promise<any>,
+  initialOptions: AsyncQueuerOptions<TValue> = {},
+): SolidAsyncQueuer<TValue> {
+  const asyncQueuer = new AsyncQueuer<TValue>(fn, initialOptions)
 
   const [successCount, setSuccessCount] = createSignal(
     asyncQueuer.getSuccessCount(),
@@ -142,16 +147,18 @@ export function createAsyncQueuer<TFn extends AsyncQueuerFn>(
   const [isFull, setIsFull] = createSignal(asyncQueuer.getIsFull())
   const [isIdle, setIsIdle] = createSignal(asyncQueuer.getIsIdle())
   const [isRunning, setIsRunning] = createSignal(asyncQueuer.getIsRunning())
-  const [allItems, setAllItems] = createSignal<Array<TFn>>(
+  const [allItems, setAllItems] = createSignal<Array<TValue>>(
     asyncQueuer.getAllItems(),
   )
-  const [activeItems, setActiveItems] = createSignal<Array<TFn>>(
+  const [activeItems, setActiveItems] = createSignal<Array<TValue>>(
     asyncQueuer.getActiveItems(),
   )
-  const [pendingItems, setPendingItems] = createSignal<Array<TFn>>(
+  const [pendingItems, setPendingItems] = createSignal<Array<TValue>>(
     asyncQueuer.getPendingItems(),
   )
-  const [peek, setPeek] = createSignal<TFn | undefined>(asyncQueuer.getPeek())
+  const [peek, setPeek] = createSignal<TValue | undefined>(
+    asyncQueuer.getPeek(),
+  )
   const [size, setSize] = createSignal(asyncQueuer.getSize())
 
   asyncQueuer.setOptions({
@@ -196,5 +203,5 @@ export function createAsyncQueuer<TFn extends AsyncQueuerFn>(
     settledCount,
     size,
     successCount,
-  } as SolidAsyncQueuer<TFn>
+  } as SolidAsyncQueuer<TValue>
 }

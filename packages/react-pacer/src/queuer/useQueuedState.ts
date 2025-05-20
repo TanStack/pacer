@@ -52,13 +52,14 @@ import type { Queuer, QueuerOptions } from '@tanstack/pacer/queuer'
  * ```
  */
 export function useQueuedState<TValue>(
+  fn: (item: TValue) => void,
   options: QueuerOptions<TValue> = {},
 ): [Array<TValue>, Queuer<TValue>['addItem'], Queuer<TValue>] {
   const [allItems, setAllItems] = useState<Array<TValue>>(
     options.initialItems || [],
   )
 
-  const queue = useQueuer<TValue>({
+  const queue = useQueuer<TValue>(fn, {
     ...options,
     onItemsChange: (queue) => {
       setAllItems(queue.getAllItems())

@@ -13,6 +13,7 @@ title: "@tanstack/pacer"
 - [AsyncQueuer](classes/asyncqueuer.md)
 - [AsyncRateLimiter](classes/asyncratelimiter.md)
 - [AsyncThrottler](classes/asyncthrottler.md)
+- [Batcher](classes/batcher.md)
 - [Debouncer](classes/debouncer.md)
 - [Queuer](classes/queuer.md)
 - [RateLimiter](classes/ratelimiter.md)
@@ -24,6 +25,7 @@ title: "@tanstack/pacer"
 - [AsyncQueuerOptions](interfaces/asyncqueueroptions.md)
 - [AsyncRateLimiterOptions](interfaces/asyncratelimiteroptions.md)
 - [AsyncThrottlerOptions](interfaces/asyncthrottleroptions.md)
+- [BatcherOptions](interfaces/batcheroptions.md)
 - [DebouncerOptions](interfaces/debounceroptions.md)
 - [QueuerOptions](interfaces/queueroptions.md)
 - [RateLimiterOptions](interfaces/ratelimiteroptions.md)
@@ -33,7 +35,6 @@ title: "@tanstack/pacer"
 
 - [AnyAsyncFunction](type-aliases/anyasyncfunction.md)
 - [AnyFunction](type-aliases/anyfunction.md)
-- [AsyncQueuerFn](type-aliases/asyncqueuerfn.md)
 - [OptionalKeys](type-aliases/optionalkeys.md)
 - [QueuePosition](type-aliases/queueposition.md)
 
@@ -43,6 +44,7 @@ title: "@tanstack/pacer"
 - [asyncQueue](functions/asyncqueue.md)
 - [asyncRateLimit](functions/asyncratelimit.md)
 - [asyncThrottle](functions/asyncthrottle.md)
+- [batch](functions/batch.md)
 - [bindInstanceMethods](functions/bindinstancemethods.md)
 - [debounce](functions/debounce.md)
 - [isFunction](functions/isfunction.md)

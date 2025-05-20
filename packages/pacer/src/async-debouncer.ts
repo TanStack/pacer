@@ -110,6 +110,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   private _settleCount = 0
   private _successCount = 0
   private _timeoutId: NodeJS.Timeout | null = null
+  private _resolvePreviousPromise:
+    | ((value?: ReturnType<TFn> | undefined) => void)
+    | null = null
 
   constructor(
     private fn: TFn,
@@ -124,7 +127,6 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
 
   /**
    * Updates the debouncer options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -179,7 +181,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     // Handle leading execution
     if (this._options.leading && this._canLeadingExecute) {
       this._canLeadingExecute = false
-      await this.executeFunction(...args)
+      await this.execute(...args)
       return this._lastResult
     }
 
@@ -189,20 +191,22 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     }
 
     return new Promise((resolve) => {
+      this._resolvePreviousPromise = resolve
       this._timeoutId = setTimeout(async () => {
         // Execute trailing if enabled
         if (this._options.trailing && this._lastArgs) {
-          await this.executeFunction(...this._lastArgs)
+          await this.execute(...this._lastArgs)
         }
 
         // Reset state and resolve
         this._canLeadingExecute = true
+        this._resolvePreviousPromise = null
         resolve(this._lastResult)
       }, this.getWait())
     })
   }
 
-  private async executeFunction(
+  private async execute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
     if (!this.getEnabled()) return undefined
@@ -217,8 +221,6 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this._options.onError?.(error, this)
       if (this._options.throwOnError) {
         throw error
-      } else {
-        console.error(error)
       }
     } finally {
       this._isExecuting = false
@@ -241,6 +243,10 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     if (this._abortController) {
       this._abortController.abort()
       this._abortController = null
+    }
+    if (this._resolvePreviousPromise) {
+      this._resolvePreviousPromise(this._lastResult)
+      this._resolvePreviousPromise = null
     }
     this._lastArgs = undefined
     this._isPending = false

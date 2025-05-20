@@ -55,33 +55,39 @@ export interface SolidQueuer<TValue>
 }
 
 /**
- * A Solid hook that creates and manages a Queuer instance.
+ * Creates a Solid-compatible Queuer instance for managing a synchronous queue of items, exposing Solid signals for all stateful properties.
  *
- * This is a lower-level hook that provides direct access to the Queuer's functionality without
- * any built-in state management. This allows you to integrate it with any state management solution
- * you prefer (createSignal, Redux, Zustand, etc.) by utilizing the onItemsChange callback.
+ * Features:
+ * - Synchronous processing of items using the provided `fn` function
+ * - FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
+ * - Priority queueing via `getPriority` or item `priority` property
+ * - Item expiration and removal of stale items
+ * - Configurable wait time between processing items
+ * - Pause/resume processing
+ * - Callbacks for queue state changes, execution, rejection, and expiration
+ * - All stateful properties (items, counts, etc.) are exposed as Solid signals for reactivity
  *
- * For a hook with built-in state management, see createQueuerSignal.
+ * The queue processes items synchronously in order, with optional delays between each item. When started, it will process one item per tick, with an optional wait time between ticks. You can pause and resume processing with `stop()` and `start()`.
  *
- * The Queuer extends the base Queue to add processing capabilities. Items are processed
- * synchronously in order, with optional delays between processing each item. The queuer includes
- * an internal tick mechanism that can be started and stopped, making it useful as a scheduler.
- * When started, it will process one item per tick, with an optional wait time between ticks.
+ * By default, the queue uses FIFO behavior, but you can configure LIFO or double-ended queueing by specifying the position when adding or removing items.
  *
- * By default uses FIFO (First In First Out) behavior, but can be configured for LIFO
- * (Last In First Out) by specifying 'front' position when adding items.
- *
- * @example
+ * Example usage:
  * ```tsx
- * // Example with custom state management and scheduling
+ * // Example with Solid signals and scheduling
  * const [items, setItems] = createSignal([]);
  *
- * const queue = createQueuer({
- *   started: true, // Start processing immediately
- *   wait: 1000,    // Process one item every second
- *   onItemsChange: (queue) => setItems(queue.getAllItems()),
- *   getPriority: (item) => item.priority // Process higher priority items first
- * });
+ * const queue = createQueuer(
+ *   (item) => {
+ *     // process item synchronously
+ *     console.log('Processing', item);
+ *   },
+ *   {
+ *     started: true, // Start processing immediately
+ *     wait: 1000,    // Process one item every second
+ *     onItemsChange: (queue) => setItems(queue.getAllItems()),
+ *     getPriority: (item) => item.priority // Process higher priority items first
+ *   }
+ * );
  *
  * // Add items to process - they'll be handled automatically
  * queue.addItem('task1');
@@ -100,9 +106,10 @@ export interface SolidQueuer<TValue>
  * ```
  */
 export function createQueuer<TValue>(
+  fn: (item: TValue) => void,
   initialOptions: QueuerOptions<TValue> = {},
 ): SolidQueuer<TValue> {
-  const queuer = bindInstanceMethods(new Queuer<TValue>(initialOptions))
+  const queuer = bindInstanceMethods(new Queuer<TValue>(fn, initialOptions))
 
   const [allItems, setAllItems] = createSignal<Array<TValue>>(
     queuer.getAllItems(),

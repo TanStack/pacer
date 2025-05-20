@@ -8,51 +8,40 @@ title: createAsyncQueuer
 # Function: createAsyncQueuer()
 
 ```ts
-function createAsyncQueuer<TFn>(initialOptions): SolidAsyncQueuer<TFn>
+function createAsyncQueuer<TValue>(fn, initialOptions): SolidAsyncQueuer<TValue>
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:126](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L126)
+Defined in: [async-queuer/createAsyncQueuer.ts:130](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L130)
 
-A lower-level Solid hook that creates an `AsyncQueuer` instance for managing an async queue of items.
+Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 
 Features:
-- Priority queue support via getPriority option
+- Priority queueing via `getPriority` or item `priority` property
 - Configurable concurrency limit
-- Task success/error/completion callbacks
 - FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
-- Pause/resume task processing
+- Pause/resume processing
 - Task cancellation
-- Item expiration to clear stale items from the queue
+- Item expiration
+- Lifecycle callbacks for success, error, settled, items change, etc.
+- All stateful properties (active items, pending items, counts, etc.) are exposed as Solid signals for reactivity
 
 Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
-the next pending task is processed if below the concurrency limit.
+the next pending task is processed if the concurrency limit allows.
 
 Error Handling:
 - If an `onError` handler is provided, it will be called with the error and queuer instance
 - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
 - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
-- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- Both onError and throwOnError can be used together; the handler will be called before any error is thrown
 - The error state can be checked using the underlying AsyncQueuer instance
 
-## Type Parameters
-
-• **TFn** *extends* `AsyncQueuerFn`
-
-## Parameters
-
-### initialOptions
-
-`AsyncQueuerOptions`\<`TFn`\> = `{}`
-
-## Returns
-
-[`SolidAsyncQueuer`](../interfaces/solidasyncqueuer.md)\<`TFn`\>
-
-## Example
-
+Example usage:
 ```tsx
 // Basic async queuer for API requests
-const asyncQueuer = createAsyncQueuer({
+const asyncQueuer = createAsyncQueuer(async (item) => {
+  // process item
+  return await fetchData(item);
+}, {
   initialItems: [],
   concurrency: 2,
   maxSize: 100,
@@ -70,4 +59,25 @@ asyncQueuer.addItem(newItem);
 
 // Start processing
 asyncQueuer.start();
+
+// Use Solid signals in your UI
+const pending = asyncQueuer.pendingItems();
 ```
+
+## Type Parameters
+
+• **TValue**
+
+## Parameters
+
+### fn
+
+(`value`) => `Promise`\<`any`\>
+
+### initialOptions
+
+`AsyncQueuerOptions`\<`TValue`\> = `{}`
+
+## Returns
+
+[`SolidAsyncQueuer`](../interfaces/solidasyncqueuer.md)\<`TValue`\>

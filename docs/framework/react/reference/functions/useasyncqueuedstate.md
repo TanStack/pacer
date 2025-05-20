@@ -8,10 +8,10 @@ title: useAsyncQueuedState
 # Function: useAsyncQueuedState()
 
 ```ts
-function useAsyncQueuedState<TFn>(options): [TFn[], AsyncQueuer<TFn>]
+function useAsyncQueuedState<TValue>(fn, options): [TValue[], AsyncQueuer<TValue>]
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuedState.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuedState.ts#L54)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuedState.ts:53](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuedState.ts#L53)
 
 A higher-level React hook that creates an `AsyncQueuer` instance with built-in state management.
 
@@ -34,17 +34,21 @@ The state will automatically update whenever items are:
 
 ## Type Parameters
 
-• **TFn** *extends* `AsyncQueuerFn`
+• **TValue**
 
 ## Parameters
 
+### fn
+
+(`value`) => `Promise`\<`any`\>
+
 ### options
 
-`AsyncQueuerOptions`\<`TFn`\> = `{}`
+`AsyncQueuerOptions`\<`TValue`\> = `{}`
 
 ## Returns
 
-\[`TFn`[], `AsyncQueuer`\<`TFn`\>\]
+\[`TValue`[], `AsyncQueuer`\<`TValue`\>\]
 
 ## Example
 

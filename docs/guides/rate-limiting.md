@@ -56,23 +56,18 @@ The key difference is that with a sliding window, as soon as the oldest executio
 
 Rate Limiting is particularly important when dealing with front-end operations that could accidentally overwhelm your back-end services or cause performance issues in the browser.
 
-Common use cases include:
-- Preventing accidental API spam from rapid user interactions (e.g., button clicks or form submissions)
-- Scenarios where bursty behavior is acceptable but you want to cap the maximum rate
-- Protecting against accidental infinite loops or recursive operations
-
 ### When Not to Use Rate Limiting
 
-Rate Limiting is the most naive approach to controlling function execution frequency. It is the least flexible and most restrictive of the three techniques. Consider using [throttling](../guides/throttling) or [debouncing](../guides/debouncing) instead for more spaced out executions.
+Rate Limiting is the most naive approach to controlling function execution frequency. It is the least flexible and most restrictive of the three techniques. Consider using [throttling](./throttling.md) or [debouncing](./debouncing.md) instead for more spaced out executions.
 
 > [!TIP]
-> You most likely don't want to use "rate limiting" for most use cases. Consider using [throttling](../guides/throttling) or [debouncing](../guides/debouncing) instead. 
+> You most likely don't want to use "rate limiting" for most use cases. Consider using [throttling](./throttling.md) or [debouncing](./debouncing.md) instead. 
 
-Rate Limiting's "lossy" nature also means that some executions will be rejected and lost. This can be a problem if you need to ensure that all executions are always successful. Consider using [queueing](../guides/queueing) if you need to ensure that all executions are queued up to be executed, but with a throttled delay to slow down the rate of execution.
+Rate Limiting's "lossy" nature also means that some executions will be rejected and lost. This can be a problem if you need to ensure that all executions are always successful. Consider using [queuing](./queuing.md) if you need to ensure that all executions are queued up to be executed, but with a throttled delay to slow down the rate of execution.
 
 ## Rate Limiting in TanStack Pacer
 
-TanStack Pacer provides both synchronous and asynchronous rate limiting through the `RateLimiter` and `AsyncRateLimiter` classes respectively (and their corresponding `rateLimit` and `asyncRateLimit` functions).
+TanStack Pacer provides both synchronous and asynchronous rate limiting. This guide covers the synchronous `RateLimiter` class and `rateLimit` function. For async rate limiting, see the [Async Rate Limiting Guide](./async-rate-limiting.md).
 
 ### Basic Usage with `rateLimit`
 
@@ -200,10 +195,6 @@ This allows for sophisticated rate limiting behavior that adapts to runtime cond
 
 ### Callback Options
 
-Both the synchronous and asynchronous rate limiters support callback options to handle different aspects of the rate limiting lifecycle:
-
-#### Synchronous Rate Limiter Callbacks
-
 The synchronous `RateLimiter` supports the following callbacks:
 
 ```ts
@@ -223,103 +214,7 @@ const limiter = new RateLimiter(fn, {
 
 The `onExecute` callback is called after each successful execution of the rate-limited function, while the `onReject` callback is called when an execution is rejected due to rate limiting. These callbacks are useful for tracking executions, updating UI state, or providing feedback to users.
 
-#### Asynchronous Rate Limiter Callbacks
+---
 
-The asynchronous `AsyncRateLimiter` supports additional callbacks for error handling:
-
-```ts
-const asyncLimiter = new AsyncRateLimiter(async (id) => {
-  await saveToAPI(id)
-}, {
-  limit: 5,
-  window: 1000,
-  onExecute: (rateLimiter) => {
-    // Called after each successful execution
-    console.log('Async function executed', rateLimiter.getExecutionCount())
-  },
-  onReject: (rateLimiter) => {
-    // Called when an execution is rejected
-    console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`)
-  },
-  onError: (error) => {
-    // Called if the async function throws an error
-    console.error('Async function failed:', error)
-  }
-})
-```
-
-The `onExecute` and `onReject` callbacks work the same way as in the synchronous rate limiter, while the `onError` callback allows you to handle errors gracefully without breaking the rate limiting chain. These callbacks are particularly useful for tracking execution counts, updating UI state, handling errors, and providing feedback to users.
-
-### Asynchronous Rate Limiting
-
-The async rate limiter provides a powerful way to handle asynchronous operations with rate limiting, offering several key advantages over the synchronous version. While the synchronous rate limiter is great for UI events and immediate feedback, the async version is specifically designed for handling API calls, database operations, and other asynchronous tasks.
-
-#### Key Differences from Synchronous Rate Limiting
-
-1. **Return Value Handling**
-Unlike the synchronous rate limiter which returns a boolean indicating success, the async version allows you to capture and use the return value from your rate-limited function. This is particularly useful when you need to work with the results of API calls or other async operations. The `maybeExecute` method returns a Promise that resolves with the function's return value, allowing you to await the result and handle it appropriately.
-
-2. **Error Handling**
-The async rate limiter provides robust error handling capabilities:
-- If your rate-limited function throws an error and no `onError` handler is provided, the error will be thrown and propagate up to the caller
-- If you provide an `onError` handler, errors will be caught and passed to the handler instead of being thrown
-- The `throwOnError` option can be used to control error throwing behavior:
-  - When true (default if no onError handler), errors will be thrown
-  - When false (default if onError handler provided), errors will be swallowed
-  - Can be explicitly set to override these defaults
-- You can track error counts using `getErrorCount()` and check execution state with `getIsExecuting()`
-- The rate limiter maintains its state and can continue to be used after an error occurs
-- Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
-
-3. **Different Callbacks**
-The `AsyncRateLimiter` supports the following callbacks instead of just `onExecute` in the synchronous version:
-- `onSuccess`: Called after each successful execution, providing the result and rate limiter instance
-- `onSettled`: Called after each execution (success or failure), providing the rate limiter instance
-- `onError`: Called if the async function throws an error, providing both the error and the rate limiter instance
-
-Both the Async and Synchronous rate limiters support the `onReject` callback for handling blocked executions.
-
-4. **Sequential Execution**
-Since the rate limiter's `maybeExecute` method returns a Promise, you can choose to await each execution before starting the next one. This gives you control over the execution order and ensures each call processes the most up-to-date data. This is particularly useful when dealing with operations that depend on the results of previous calls or when maintaining data consistency is critical.
-
-For example, if you're updating a user's profile and then immediately fetching their updated data, you can await the update operation before starting the fetch:
-
-#### Basic Usage Example
-
-Here's a basic example showing how to use the async rate limiter for an API operation:
-
-```ts
-const rateLimitedApi = asyncRateLimit(
-  async (id: string) => {
-    const response = await fetch(`/api/data/${id}`)
-    return response.json()
-  },
-  {
-    limit: 5,
-    window: 1000,
-    onExecute: (limiter) => {
-      console.log('API call succeeded:', limiter.getExecutionCount())
-    },
-    onReject: (limiter) => {
-      console.log(`Rate limit exceeded. Try again in ${limiter.getMsUntilNextWindow()}ms`)
-    },
-    onError: (error, limiter) => {
-      console.error('API call failed:', error)
-    }
-  }
-)
-
-// Usage
-try {
-  const result = await rateLimitedApi('123')
-  // Handle successful result
-} catch (error) {
-  // Handle errors if no onError handler was provided
-  console.error('API call failed:', error)
-}
-```
-
-### Framework Adapters
-
-Each framework adapter provides hooks that build on top of the core rate limiting functionality to integrate with the framework's state management system. Hooks like `createRateLimiter`, `useRateLimitedCallback`, `useRateLimitedState`, or `useRateLimitedValue` are available for each framework.
+For asynchronous rate limiting (e.g., API calls, async operations), see the [Async Rate Limiting Guide](./async-rate-limiting.md).
 

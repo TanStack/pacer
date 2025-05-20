@@ -87,7 +87,6 @@ export class Throttler<TFn extends AnyFunction> {
 
   /**
    * Updates the throttler options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<ThrottlerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -148,7 +147,7 @@ export class Throttler<TFn extends AnyFunction> {
 
     // Handle leading execution
     if (this._options.leading && timeSinceLastExecution >= wait) {
-      this.executeFunction(...args)
+      this.execute(...args)
     } else {
       // Store the most recent arguments for potential trailing execution
       this._lastArgs = args
@@ -161,14 +160,14 @@ export class Throttler<TFn extends AnyFunction> {
         const timeoutDuration = wait - _timeSinceLastExecution
         this._timeoutId = setTimeout(() => {
           if (this._lastArgs !== undefined) {
-            this.executeFunction(...this._lastArgs)
+            this.execute(...this._lastArgs)
           }
         }, timeoutDuration)
       }
     }
   }
 
-  private executeFunction(...args: Parameters<TFn>): void {
+  private execute(...args: Parameters<TFn>): void {
     if (!this.getEnabled()) return
     this.fn(...args) // EXECUTE!
     this._executionCount++
