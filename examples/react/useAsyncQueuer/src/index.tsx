@@ -25,20 +25,20 @@ function App() {
     concurrency, // Process 2 items concurrently
     started: false,
     wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
-    onItemsChange: (asyncQueuer: any) => {
+    onItemsChange: (asyncQueuer) => {
       setQueueItems(asyncQueuer.getAllItems())
     },
-    onIsRunningChange: (_asyncQueuer: any) => {
+    onIsRunningChange: (_asyncQueuer) => {
       rerender((prev) => prev + 1)
     },
-    onReject: (item: Item, asyncQueuer: any) => {
+    onReject: (item: Item, asyncQueuer) => {
       console.log(
         'Queue is full, rejecting item',
         item,
         asyncQueuer.getRejectionCount(),
       )
     },
-    onError: (error: unknown, _asyncQueuer: any) => {
+    onError: (error: unknown, _asyncQueuer) => {
       console.error('Error processing item', error, asyncQueuer.getErrorCount()) // optionally, handle errors here instead of your own try/catch
     },
   })
