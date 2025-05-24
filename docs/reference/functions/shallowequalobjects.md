@@ -11,7 +11,7 @@ title: shallowEqualObjects
 function shallowEqualObjects<T>(a, b): boolean
 ```
 
-Defined in: [compare.ts:49](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/compare.ts#L49)
+Defined in: [compare.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/compare.ts#L49)
 
 Shallow compare objects.
 

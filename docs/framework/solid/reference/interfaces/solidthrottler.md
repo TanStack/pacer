@@ -7,7 +7,7 @@ title: SolidThrottler
 
 # Interface: SolidThrottler\<TFn\>
 
-Defined in: [throttler/createThrottler.ts:11](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L11)
+Defined in: [throttler/createThrottler.ts:11](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L11)
 
 An extension of the Throttler class that adds Solid signals to access the internal state of the throttler
 
@@ -31,7 +31,7 @@ An extension of the Throttler class that adds Solid signals to access the intern
 executionCount: Accessor<number>;
 ```
 
-Defined in: [throttler/createThrottler.ts:19](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L19)
+Defined in: [throttler/createThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L19)
 
 ***
 
@@ -41,7 +41,7 @@ Defined in: [throttler/createThrottler.ts:19](https://github.com/tanstack/pacer/
 isPending: Accessor<boolean>;
 ```
 
-Defined in: [throttler/createThrottler.ts:20](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L20)
+Defined in: [throttler/createThrottler.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L20)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [throttler/createThrottler.ts:20](https://github.com/tanstack/pacer/
 lastExecutionTime: Accessor<number>;
 ```
 
-Defined in: [throttler/createThrottler.ts:21](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L21)
+Defined in: [throttler/createThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L21)
 
 ***
 
@@ -61,4 +61,4 @@ Defined in: [throttler/createThrottler.ts:21](https://github.com/tanstack/pacer/
 nextExecutionTime: Accessor<number>;
 ```
 
-Defined in: [throttler/createThrottler.ts:22](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L22)
+Defined in: [throttler/createThrottler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L22)

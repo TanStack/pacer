@@ -11,7 +11,7 @@ title: useQueuedValue
 function useQueuedValue<TValue>(initialValue, options): [TValue, Queuer<TValue>]
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuedValue.ts:40](https://github.com/tanstack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedValue.ts#L40)
+Defined in: [react-pacer/src/queuer/useQueuedValue.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedValue.ts#L40)
 
 A React hook that creates a queued value that processes state changes in order with an optional delay.
 This hook uses useQueuer internally to manage a queue of state changes and apply them sequentially.

@@ -7,7 +7,7 @@ title: SolidAsyncDebouncer
 
 # Interface: SolidAsyncDebouncer\<TFn\>
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:8](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L8)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L8)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:8](https://github.com/tanst
 errorCount: Accessor<number>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:17](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L17)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L17)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:17](https://github.com/tans
 isPending: Accessor<boolean>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:18](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L18)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L18)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:18](https://github.com/tans
 lastResult: Accessor<undefined | ReturnType<TFn>>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:19](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L19)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L19)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:19](https://github.com/tans
 settleCount: Accessor<number>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:20](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L20)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L20)
 
 ***
 
@@ -70,4 +70,4 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:20](https://github.com/tans
 successCount: Accessor<number>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:21](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L21)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L21)

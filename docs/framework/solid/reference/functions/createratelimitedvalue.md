@@ -11,7 +11,7 @@ title: createRateLimitedValue
 function createRateLimitedValue<TValue>(value, initialOptions): [Accessor<TValue>, SolidRateLimiter<Setter<TValue>>]
 ```
 
-Defined in: [rate-limiter/createRateLimitedValue.ts:50](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedValue.ts#L50)
+Defined in: [rate-limiter/createRateLimitedValue.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedValue.ts#L50)
 
 A high-level Solid hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses Solid's createSignal internally to manage the rate-limited state.

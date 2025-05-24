@@ -11,7 +11,7 @@ title: useBatcher
 function useBatcher<TValue>(fn, options): Batcher<TValue>
 ```
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:43](https://github.com/tanstack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L43)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L43)
 
 A React hook that creates and manages a Batcher instance.
 

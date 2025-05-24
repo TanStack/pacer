@@ -11,7 +11,7 @@ title: useQueuedState
 function useQueuedState<TValue>(fn, options): [TValue[], (item, position?, runOnUpdate?) => boolean, Queuer<TValue>]
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuedState.ts:54](https://github.com/tanstack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedState.ts#L54)
+Defined in: [react-pacer/src/queuer/useQueuedState.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedState.ts#L54)
 
 A React hook that creates a queuer with managed state, combining React's useState with queuing functionality.
 This hook provides both the current queue state and queue control methods.
