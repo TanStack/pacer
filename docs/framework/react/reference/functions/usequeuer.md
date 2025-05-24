@@ -11,7 +11,7 @@ title: useQueuer
 function useQueuer<TValue>(fn, options): Queuer<TValue>
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L44)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:44](https://github.com/tanstack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L44)
 
 A React hook that creates and manages a Queuer instance.
 

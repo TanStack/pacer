@@ -11,7 +11,7 @@ title: createBatcher
 function createBatcher<TValue>(fn, initialOptions): SolidBatcher<TValue>
 ```
 
-Defined in: [batcher/createBatcher.ts:90](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L90)
+Defined in: [batcher/createBatcher.ts:90](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L90)
 
 Creates a Solid-compatible Batcher instance for managing batches of items, exposing Solid signals for all stateful properties.
 
@@ -75,4 +75,4 @@ console.log('Item count:', batcher.itemExecutionCount());
 
 ## Returns
 
-[`SolidBatcher`](../interfaces/solidbatcher.md)\<`TValue`\>
+[`SolidBatcher`](../../interfaces/solidbatcher.md)\<`TValue`\>

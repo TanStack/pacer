@@ -11,7 +11,7 @@ title: useAsyncRateLimiter
 function useAsyncRateLimiter<TFn>(fn, options): AsyncRateLimiter<TFn>
 ```
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:67](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L67)
+Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:67](https://github.com/tanstack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L67)
 
 A low-level React hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 

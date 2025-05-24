@@ -7,7 +7,7 @@ title: Batcher
 
 # Class: Batcher\<TValue\>
 
-Defined in: [batcher.ts:84](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L84)
+Defined in: [batcher.ts:84](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L84)
 
 A class that collects items and processes them in batches.
 
@@ -50,7 +50,7 @@ batcher.addItem(2);
 new Batcher<TValue>(fn, initialOptions): Batcher<TValue>
 ```
 
-Defined in: [batcher.ts:92](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L92)
+Defined in: [batcher.ts:92](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L92)
 
 #### Parameters
 
@@ -60,11 +60,11 @@ Defined in: [batcher.ts:92](https://github.com/TanStack/pacer/blob/main/packages
 
 ##### initialOptions
 
-[`BatcherOptions`](../interfaces/batcheroptions.md)\<`TValue`\>
+[`BatcherOptions`](../../interfaces/batcheroptions.md)\<`TValue`\>
 
 #### Returns
 
-[`Batcher`](batcher.md)\<`TValue`\>
+[`Batcher`](../batcher.md)\<`TValue`\>
 
 ## Methods
 
@@ -74,7 +74,7 @@ Defined in: [batcher.ts:92](https://github.com/TanStack/pacer/blob/main/packages
 addItem(item): void
 ```
 
-Defined in: [batcher.ts:118](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L118)
+Defined in: [batcher.ts:118](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L118)
 
 Adds an item to the batcher
 If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
@@ -97,7 +97,7 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 execute(): void
 ```
 
-Defined in: [batcher.ts:146](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L146)
+Defined in: [batcher.ts:146](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L146)
 
 Processes the current batch of items.
 This method will automatically be triggered if the batcher is running and any of these conditions are met:
@@ -119,7 +119,7 @@ You can also call this method manually to process the current batch at any time.
 getAllItems(): TValue[]
 ```
 
-Defined in: [batcher.ts:213](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L213)
+Defined in: [batcher.ts:213](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L213)
 
 Returns a copy of all items currently in the batcher
 
@@ -135,7 +135,7 @@ Returns a copy of all items currently in the batcher
 getBatchExecutionCount(): number
 ```
 
-Defined in: [batcher.ts:220](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L220)
+Defined in: [batcher.ts:220](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L220)
 
 Returns the number of times batches have been processed
 
@@ -151,7 +151,7 @@ Returns the number of times batches have been processed
 getIsEmpty(): boolean
 ```
 
-Defined in: [batcher.ts:199](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L199)
+Defined in: [batcher.ts:199](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L199)
 
 Returns true if the batcher is empty
 
@@ -167,7 +167,7 @@ Returns true if the batcher is empty
 getIsRunning(): boolean
 ```
 
-Defined in: [batcher.ts:206](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L206)
+Defined in: [batcher.ts:206](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L206)
 
 Returns true if the batcher is running
 
@@ -183,7 +183,7 @@ Returns true if the batcher is running
 getItemExecutionCount(): number
 ```
 
-Defined in: [batcher.ts:227](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L227)
+Defined in: [batcher.ts:227](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L227)
 
 Returns the total number of individual items that have been processed
 
@@ -199,13 +199,13 @@ Returns the total number of individual items that have been processed
 getOptions(): BatcherOptions<TValue>
 ```
 
-Defined in: [batcher.ts:110](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L110)
+Defined in: [batcher.ts:110](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L110)
 
 Returns the current batcher options
 
 #### Returns
 
-[`BatcherOptions`](../interfaces/batcheroptions.md)\<`TValue`\>
+[`BatcherOptions`](../../interfaces/batcheroptions.md)\<`TValue`\>
 
 ***
 
@@ -215,7 +215,7 @@ Returns the current batcher options
 getSize(): number
 ```
 
-Defined in: [batcher.ts:192](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L192)
+Defined in: [batcher.ts:192](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L192)
 
 Returns the current number of items in the batcher
 
@@ -231,7 +231,7 @@ Returns the current number of items in the batcher
 setOptions(newOptions): void
 ```
 
-Defined in: [batcher.ts:103](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L103)
+Defined in: [batcher.ts:103](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L103)
 
 Updates the batcher options
 
@@ -239,7 +239,7 @@ Updates the batcher options
 
 ##### newOptions
 
-`Partial`\<[`BatcherOptions`](../interfaces/batcheroptions.md)\<`TValue`\>\>
+`Partial`\<[`BatcherOptions`](../../interfaces/batcheroptions.md)\<`TValue`\>\>
 
 #### Returns
 
@@ -253,7 +253,7 @@ Updates the batcher options
 start(): void
 ```
 
-Defined in: [batcher.ts:181](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L181)
+Defined in: [batcher.ts:181](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L181)
 
 Starts the batcher and processes any pending items
 
@@ -269,7 +269,7 @@ Starts the batcher and processes any pending items
 stop(): void
 ```
 
-Defined in: [batcher.ts:169](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L169)
+Defined in: [batcher.ts:169](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/batcher.ts#L169)
 
 Stops the batcher from processing batches
 

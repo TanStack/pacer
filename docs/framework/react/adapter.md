@@ -13,7 +13,7 @@ npm install @tanstack/react-pacer
 
 ## React Hooks
 
-See the [React Functions Reference](./reference/index.md) to see the full list of hooks available in the React Adapter.
+See the [React Functions Reference](../reference/index.md) to see the full list of hooks available in the React Adapter.
 
 ## Basic Usage
 

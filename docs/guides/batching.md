@@ -3,7 +3,7 @@ title: Batching Guide
 id: batching
 ---
 
-Batching is a powerful technique for grouping multiple operations together and processing them as a single unit. Unlike [Queuing](./queuing.md), which ensures every operation is processed individually, batching collects items and processes them in configurable groups, improving efficiency and reducing overhead. This guide covers the Batching concepts of TanStack Pacer.
+Batching is a powerful technique for grouping multiple operations together and processing them as a single unit. Unlike [Queuing](../queuing.md), which ensures every operation is processed individually, batching collects items and processes them in configurable groups, improving efficiency and reducing overhead. This guide covers the Batching concepts of TanStack Pacer.
 
 ## Batching Concept
 
@@ -38,8 +38,8 @@ Batching is best when:
 ## When Not to Use Batching
 
 Batching may not be ideal when:
-- Every item must be processed individually and immediately (use [queuing](./queuing.md))
-- You only care about the most recent value (use [debouncing](./debouncing.md))
+- Every item must be processed individually and immediately (use [queuing](../queuing.md))
+- You only care about the most recent value (use [debouncing](../debouncing.md))
 
 > [!TIP]
 > If you find yourself making repeated calls that could be grouped, batching can help you optimize performance and resource usage.

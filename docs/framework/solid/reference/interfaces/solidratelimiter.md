@@ -7,7 +7,7 @@ title: SolidRateLimiter
 
 # Interface: SolidRateLimiter\<TFn\>
 
-Defined in: [rate-limiter/createRateLimiter.ts:8](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L8)
+Defined in: [rate-limiter/createRateLimiter.ts:8](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L8)
 
 ## Extends
 
@@ -29,7 +29,7 @@ Defined in: [rate-limiter/createRateLimiter.ts:8](https://github.com/TanStack/pa
 executionCount: Accessor<number>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:16](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L16)
+Defined in: [rate-limiter/createRateLimiter.ts:16](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L16)
 
 ***
 
@@ -39,7 +39,7 @@ Defined in: [rate-limiter/createRateLimiter.ts:16](https://github.com/TanStack/p
 msUntilNextWindow: Accessor<number>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L17)
+Defined in: [rate-limiter/createRateLimiter.ts:17](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L17)
 
 ***
 
@@ -49,7 +49,7 @@ Defined in: [rate-limiter/createRateLimiter.ts:17](https://github.com/TanStack/p
 rejectionCount: Accessor<number>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L18)
+Defined in: [rate-limiter/createRateLimiter.ts:18](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L18)
 
 ***
 
@@ -59,4 +59,4 @@ Defined in: [rate-limiter/createRateLimiter.ts:18](https://github.com/TanStack/p
 remainingInWindow: Accessor<number>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L19)
+Defined in: [rate-limiter/createRateLimiter.ts:19](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L19)

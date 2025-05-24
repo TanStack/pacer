@@ -11,7 +11,7 @@ title: asyncQueue
 function asyncQueue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => void
 ```
 
-Defined in: [async-queuer.ts:612](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L612)
+Defined in: [async-queuer.ts:612](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L612)
 
 Creates a new AsyncQueuer instance and returns a bound addItem function for adding tasks.
 The queuer is started automatically and ready to process items.
@@ -44,7 +44,7 @@ enqueue('hello');
 
 ### initialOptions
 
-[`AsyncQueuerOptions`](../interfaces/asyncqueueroptions.md)\<`TValue`\>
+[`AsyncQueuerOptions`](../../interfaces/asyncqueueroptions.md)\<`TValue`\>
 
 ## Returns
 
@@ -61,7 +61,7 @@ Items can be inserted based on priority or at the front/back depending on config
 
 #### position
 
-[`QueuePosition`](../type-aliases/queueposition.md) = `...`
+[`QueuePosition`](../../type-aliases/queueposition.md) = `...`
 
 #### runOnItemsChange
 

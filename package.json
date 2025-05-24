@@ -36,7 +36,8 @@
     "test:pr": "nx affected --targets=test:format,test:eslint,test:sherif,test:knip,test:lib,test:types,test:build,build",
     "test:sherif": "sherif",
     "test:types": "nx affected --targets=test:types --exclude=examples/**",
-    "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all"
+    "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all",
+    "verify-links": "node scripts/verify-links.ts"
   },
   "nx": {
     "includedScripts": [
@@ -60,8 +61,10 @@
     "@types/node": "^22.15.17",
     "eslint": "^9.26.0",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "fast-glob": "^3.3.3",
     "jsdom": "^26.1.0",
     "knip": "^5.55.1",
+    "markdown-link-extractor": "^4.0.2",
     "nx": "^21.0.3",
     "premove": "^4.0.0",
     "prettier": "^3.5.3",
