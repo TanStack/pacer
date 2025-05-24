@@ -3,7 +3,7 @@ title: Async Rate Limiting Guide
 id: async-rate-limiting
 ---
 
-All core concepts from the [Rate Limiting Guide](./rate-limiting.md) apply to async rate limiting as well.
+All core concepts from the [Rate Limiting Guide](../rate-limiting.md) apply to async rate limiting as well.
 
 ## When to Use Async Rate Limiting
 
@@ -115,4 +115,4 @@ Each framework adapter provides hooks that build on top of the core async rate l
 
 ---
 
-For core rate limiting concepts and synchronous rate limiting, see the [Rate Limiting Guide](./rate-limiting.md). 
+For core rate limiting concepts and synchronous rate limiting, see the [Rate Limiting Guide](../rate-limiting.md). 

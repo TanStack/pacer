@@ -31,12 +31,12 @@ Debouncing is particularly effective when you want to wait for a "pause" in acti
 ### When Not to Use Debouncing
 
 Debouncing might not be the best choice when:
-- You need guaranteed execution over a specific time period (use [throttling](./throttling.md) instead)
-- You can't afford to miss any executions (use [queuing](./queuing.md) instead)
+- You need guaranteed execution over a specific time period (use [throttling](../throttling.md) instead)
+- You can't afford to miss any executions (use [queuing](../queuing.md) instead)
 
 ## Debouncing in TanStack Pacer
 
-TanStack Pacer provides both synchronous and asynchronous debouncing. This guide covers the synchronous `Debouncer` class and `debounce` function. For async debouncing, see the [Async Debouncing Guide](./async-debouncing.md).
+TanStack Pacer provides both synchronous and asynchronous debouncing. This guide covers the synchronous `Debouncer` class and `debounce` function. For async debouncing, see the [Async Debouncing Guide](../async-debouncing.md).
 
 ### Basic Usage with `debounce`
 
@@ -105,7 +105,7 @@ Common patterns:
 
 ### Max Wait Time
 
-The TanStack Pacer Debouncer purposely does NOT have a `maxWait` option like other debouncing libraries. If you need to let executions run over a more spread out period of time, consider using the [throttling](./throttling.md) technique instead.
+The TanStack Pacer Debouncer purposely does NOT have a `maxWait` option like other debouncing libraries. If you need to let executions run over a more spread out period of time, consider using the [throttling](../throttling.md) technique instead.
 
 ### Enabling/Disabling
 
@@ -178,4 +178,4 @@ The `onExecute` callback is called after each successful execution of the deboun
 
 ---
 
-For asynchronous debouncing (e.g., API calls, async operations), see the [Async Debouncing Guide](./async-debouncing.md).
+For asynchronous debouncing (e.g., API calls, async operations), see the [Async Debouncing Guide](../async-debouncing.md).

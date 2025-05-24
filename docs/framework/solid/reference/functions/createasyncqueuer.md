@@ -11,7 +11,7 @@ title: createAsyncQueuer
 function createAsyncQueuer<TValue>(fn, initialOptions): SolidAsyncQueuer<TValue>
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:130](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L130)
+Defined in: [async-queuer/createAsyncQueuer.ts:130](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L130)
 
 Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 
@@ -80,4 +80,4 @@ const pending = asyncQueuer.pendingItems();
 
 ## Returns
 
-[`SolidAsyncQueuer`](../interfaces/solidasyncqueuer.md)\<`TValue`\>
+[`SolidAsyncQueuer`](../../interfaces/solidasyncqueuer.md)\<`TValue`\>

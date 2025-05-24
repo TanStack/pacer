@@ -11,11 +11,11 @@ title: isFunction
 function isFunction<T>(value): value is T
 ```
 
-Defined in: [utils.ts:3](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/utils.ts#L3)
+Defined in: [utils.ts:3](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/utils.ts#L3)
 
 ## Type Parameters
 
-• **T** *extends* [`AnyFunction`](../type-aliases/anyfunction.md)
+• **T** *extends* [`AnyFunction`](../../type-aliases/anyfunction.md)
 
 ## Parameters
 

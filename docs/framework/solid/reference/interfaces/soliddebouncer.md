@@ -7,7 +7,7 @@ title: SolidDebouncer
 
 # Interface: SolidDebouncer\<TFn\>
 
-Defined in: [debouncer/createDebouncer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L11)
+Defined in: [debouncer/createDebouncer.ts:11](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L11)
 
 An extension of the Debouncer class that adds Solid signals to access the internal state of the debouncer
 
@@ -27,7 +27,7 @@ An extension of the Debouncer class that adds Solid signals to access the intern
 executionCount: Accessor<number>;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L13)
+Defined in: [debouncer/createDebouncer.ts:13](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L13)
 
 ***
 
@@ -37,4 +37,4 @@ Defined in: [debouncer/createDebouncer.ts:13](https://github.com/TanStack/pacer/
 isPending: Accessor<boolean>;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L14)
+Defined in: [debouncer/createDebouncer.ts:14](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L14)

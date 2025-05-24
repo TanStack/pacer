@@ -11,7 +11,7 @@ title: createDebouncer
 function createDebouncer<TFn>(fn, initialOptions): SolidDebouncer<TFn>
 ```
 
-Defined in: [debouncer/createDebouncer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L53)
+Defined in: [debouncer/createDebouncer.ts:53](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L53)
 
 A Solid hook that creates and manages a Debouncer instance.
 
@@ -43,7 +43,7 @@ timer resets and starts waiting again.
 
 ## Returns
 
-[`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`TFn`\>
+[`SolidDebouncer`](../../interfaces/soliddebouncer.md)\<`TFn`\>
 
 ## Example
 

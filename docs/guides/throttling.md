@@ -32,15 +32,15 @@ Throttling is particularly effective when you need consistent, predictable execu
 ### When Not to Use Throttling
 
 Throttling might not be the best choice when:
-- You want to wait for activity to stop (use [debouncing](./debouncing.md) instead)
-- You can't afford to miss any executions (use [queuing](./queuing.md) instead)
+- You want to wait for activity to stop (use [debouncing](../debouncing.md) instead)
+- You can't afford to miss any executions (use [queuing](../queuing.md) instead)
 
 > [!TIP]
 > Throttling is often the best choice when you need smooth, consistent execution timing. It provides a more predictable execution pattern than rate limiting and more immediate feedback than debouncing.
 
 ## Throttling in TanStack Pacer
 
-TanStack Pacer provides both synchronous and asynchronous throttling. This guide covers the synchronous `Throttler` class and `throttle` function. For async throttling, see the [Async Throttling Guide](./async-throttling.md).
+TanStack Pacer provides both synchronous and asynchronous throttling. This guide covers the synchronous `Throttler` class and `throttle` function. For async throttling, see the [Async Throttling Guide](../async-throttling.md).
 
 ### Basic Usage with `throttle`
 
@@ -168,4 +168,4 @@ The `onExecute` callback is called after each successful execution of the thrott
 
 ---
 
-For asynchronous throttling (e.g., API calls, async operations), see the [Async Throttling Guide](./async-throttling.md). 
+For asynchronous throttling (e.g., API calls, async operations), see the [Async Throttling Guide](../async-throttling.md). 

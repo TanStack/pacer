@@ -3,7 +3,7 @@ title: Async Throttling Guide
 id: async-throttling
 ---
 
-All core concepts from the [Throttling Guide](./throttling.md) apply to async throttling as well.
+All core concepts from the [Throttling Guide](../throttling.md) apply to async throttling as well.
 
 ## When to Use Async Throttling
 
@@ -107,4 +107,4 @@ Each framework adapter provides hooks that build on top of the core async thrott
 
 ---
 
-For core throttling concepts and synchronous throttling, see the [Throttling Guide](./throttling.md). 
+For core throttling concepts and synchronous throttling, see the [Throttling Guide](../throttling.md). 

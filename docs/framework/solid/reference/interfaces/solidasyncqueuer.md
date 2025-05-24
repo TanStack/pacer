@@ -7,7 +7,7 @@ title: SolidAsyncQueuer
 
 # Interface: SolidAsyncQueuer\<TValue\>
 
-Defined in: [async-queuer/createAsyncQueuer.ts:7](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L7)
+Defined in: [async-queuer/createAsyncQueuer.ts:7](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L7)
 
 ## Extends
 
@@ -38,7 +38,7 @@ Defined in: [async-queuer/createAsyncQueuer.ts:7](https://github.com/TanStack/pa
 activeItems: Accessor<TValue[]>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L27)
+Defined in: [async-queuer/createAsyncQueuer.ts:27](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L27)
 
 Signal version of `getActiveItems`
 
@@ -50,7 +50,7 @@ Signal version of `getActiveItems`
 allItems: Accessor<TValue[]>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L31)
+Defined in: [async-queuer/createAsyncQueuer.ts:31](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L31)
 
 Signal version of `getAllItems`
 
@@ -62,7 +62,7 @@ Signal version of `getAllItems`
 errorCount: Accessor<number>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:35](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L35)
+Defined in: [async-queuer/createAsyncQueuer.ts:35](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L35)
 
 Signal version of `getErrorCount`
 
@@ -74,7 +74,7 @@ Signal version of `getErrorCount`
 isEmpty: Accessor<boolean>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L39)
+Defined in: [async-queuer/createAsyncQueuer.ts:39](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L39)
 
 Signal version of `getIsEmpty`
 
@@ -86,7 +86,7 @@ Signal version of `getIsEmpty`
 isFull: Accessor<boolean>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L43)
+Defined in: [async-queuer/createAsyncQueuer.ts:43](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L43)
 
 Signal version of `getIsFull`
 
@@ -98,7 +98,7 @@ Signal version of `getIsFull`
 isIdle: Accessor<boolean>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:47](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L47)
+Defined in: [async-queuer/createAsyncQueuer.ts:47](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L47)
 
 Signal version of `getIsIdle`
 
@@ -110,7 +110,7 @@ Signal version of `getIsIdle`
 isRunning: Accessor<boolean>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:51](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L51)
+Defined in: [async-queuer/createAsyncQueuer.ts:51](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L51)
 
 Signal version of `getIsRunning`
 
@@ -122,7 +122,7 @@ Signal version of `getIsRunning`
 peek: Accessor<undefined | TValue>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L55)
+Defined in: [async-queuer/createAsyncQueuer.ts:55](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L55)
 
 Signal version of `getPeek`
 
@@ -134,7 +134,7 @@ Signal version of `getPeek`
 pendingItems: Accessor<TValue[]>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:59](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L59)
+Defined in: [async-queuer/createAsyncQueuer.ts:59](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L59)
 
 Signal version of `getPendingItems`
 
@@ -146,7 +146,7 @@ Signal version of `getPendingItems`
 rejectionCount: Accessor<number>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:63](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L63)
+Defined in: [async-queuer/createAsyncQueuer.ts:63](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L63)
 
 Signal version of `getRejectionCount`
 
@@ -158,7 +158,7 @@ Signal version of `getRejectionCount`
 settledCount: Accessor<number>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:67](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L67)
+Defined in: [async-queuer/createAsyncQueuer.ts:67](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L67)
 
 Signal version of `getSettledCount`
 
@@ -170,7 +170,7 @@ Signal version of `getSettledCount`
 size: Accessor<number>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:71](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L71)
+Defined in: [async-queuer/createAsyncQueuer.ts:71](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L71)
 
 Signal version of `getSize`
 
@@ -182,6 +182,6 @@ Signal version of `getSize`
 successCount: Accessor<number>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:75](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L75)
+Defined in: [async-queuer/createAsyncQueuer.ts:75](https://github.com/tanstack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L75)
 
 Signal version of `getSuccessCount`

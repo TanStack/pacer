@@ -3,7 +3,7 @@ title: Queuing Guide
 id: queuing
 ---
 
-Unlike [Rate Limiting](./rate-limiting.md), [Throttling](./throttling.md), and [Debouncing](./debouncing.md) which drop executions when they occur too frequently, queuers can be configured to ensure that every operation is processed. They provide a way to manage and control the flow of operations without losing any requests. This makes them ideal for scenarios where data loss is unacceptable. Queuing can also be set to have a maximum size, which can be useful for preventing memory leaks or other issues. This guide will cover the Queuing concepts of TanStack Pacer.
+Unlike [Rate Limiting](../rate-limiting.md), [Throttling](../throttling.md), and [Debouncing](../debouncing.md) which drop executions when they occur too frequently, queuers can be configured to ensure that every operation is processed. They provide a way to manage and control the flow of operations without losing any requests. This makes them ideal for scenarios where data loss is unacceptable. Queuing can also be set to have a maximum size, which can be useful for preventing memory leaks or other issues. This guide will cover the Queuing concepts of TanStack Pacer.
 
 ## Queuing Concept
 
@@ -33,8 +33,8 @@ Queuing is particularly important when you need to ensure that every operation i
 
 Queuing might not be the best choice when:
 - Immediate feedback is more important than processing every operation
-- You only care about the most recent value (use [debouncing](./debouncing.md) instead)
-- You want to group operations together (use [batching](./batching.md) instead)
+- You only care about the most recent value (use [debouncing](../debouncing.md) instead)
+- You want to group operations together (use [batching](../batching.md) instead)
 
 > [!TIP]
 > If you're currently using rate limiting, throttling, or debouncing but finding that dropped operations are causing problems, queuing is likely the solution you need.
@@ -398,7 +398,7 @@ console.log(queue.getRejectionCount()) // Number of items rejected
 
 ### Asynchronous Queuing
 
-For handling asynchronous operations with multiple workers, see the [Async Queuing Guide](./async-queuing.md) which covers the `AsyncQueuer` class.
+For handling asynchronous operations with multiple workers, see the [Async Queuing Guide](../async-queuing.md) which covers the `AsyncQueuer` class.
 
 ### Framework Adapters
 

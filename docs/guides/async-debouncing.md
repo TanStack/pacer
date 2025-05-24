@@ -3,7 +3,7 @@ title: Async Debouncing Guide
 id: async-debouncing
 ---
 
-All core concepts from the [Debouncing Guide](./debouncing.md) apply to async debouncing as well. 
+All core concepts from the [Debouncing Guide](../debouncing.md) apply to async debouncing as well. 
 
 ## When to Use Async Debouncing
 
@@ -107,4 +107,4 @@ Each framework adapter provides hooks that build on top of the core async deboun
 
 ---
 
-For core debouncing concepts and synchronous debouncing, see the [Debouncing Guide](./debouncing.md). 
+For core debouncing concepts and synchronous debouncing, see the [Debouncing Guide](../debouncing.md). 

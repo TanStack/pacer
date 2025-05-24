@@ -7,7 +7,7 @@ title: RateLimiter
 
 # Class: RateLimiter\<TFn\>
 
-Defined in: [rate-limiter.ts:80](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L80)
+Defined in: [rate-limiter.ts:80](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L80)
 
 A class that creates a rate-limited function.
 
@@ -42,7 +42,7 @@ rateLimiter.maybeExecute('123');
 
 ## Type Parameters
 
-• **TFn** *extends* [`AnyFunction`](../type-aliases/anyfunction.md)
+• **TFn** *extends* [`AnyFunction`](../../type-aliases/anyfunction.md)
 
 ## Constructors
 
@@ -52,7 +52,7 @@ rateLimiter.maybeExecute('123');
 new RateLimiter<TFn>(fn, initialOptions): RateLimiter<TFn>
 ```
 
-Defined in: [rate-limiter.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L86)
+Defined in: [rate-limiter.ts:86](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L86)
 
 #### Parameters
 
@@ -62,11 +62,11 @@ Defined in: [rate-limiter.ts:86](https://github.com/TanStack/pacer/blob/main/pac
 
 ##### initialOptions
 
-[`RateLimiterOptions`](../interfaces/ratelimiteroptions.md)\<`TFn`\>
+[`RateLimiterOptions`](../../interfaces/ratelimiteroptions.md)\<`TFn`\>
 
 #### Returns
 
-[`RateLimiter`](ratelimiter.md)\<`TFn`\>
+[`RateLimiter`](../ratelimiter.md)\<`TFn`\>
 
 ## Methods
 
@@ -76,7 +76,7 @@ Defined in: [rate-limiter.ts:86](https://github.com/TanStack/pacer/blob/main/pac
 getEnabled(): boolean
 ```
 
-Defined in: [rate-limiter.ts:113](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L113)
+Defined in: [rate-limiter.ts:113](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L113)
 
 Returns the current enabled state of the rate limiter
 
@@ -92,7 +92,7 @@ Returns the current enabled state of the rate limiter
 getExecutionCount(): number
 ```
 
-Defined in: [rate-limiter.ts:198](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L198)
+Defined in: [rate-limiter.ts:198](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L198)
 
 Returns the number of times the function has been executed
 
@@ -108,7 +108,7 @@ Returns the number of times the function has been executed
 getLimit(): number
 ```
 
-Defined in: [rate-limiter.ts:120](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L120)
+Defined in: [rate-limiter.ts:120](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L120)
 
 Returns the current limit of executions allowed within the time window
 
@@ -124,7 +124,7 @@ Returns the current limit of executions allowed within the time window
 getMsUntilNextWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:220](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L220)
+Defined in: [rate-limiter.ts:220](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L220)
 
 Returns the number of milliseconds until the next execution will be possible
 
@@ -140,13 +140,13 @@ Returns the number of milliseconds until the next execution will be possible
 getOptions(): Required<RateLimiterOptions<TFn>>
 ```
 
-Defined in: [rate-limiter.ts:106](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L106)
+Defined in: [rate-limiter.ts:106](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L106)
 
 Returns the current rate limiter options
 
 #### Returns
 
-`Required`\<[`RateLimiterOptions`](../interfaces/ratelimiteroptions.md)\<`TFn`\>\>
+`Required`\<[`RateLimiterOptions`](../../interfaces/ratelimiteroptions.md)\<`TFn`\>\>
 
 ***
 
@@ -156,7 +156,7 @@ Returns the current rate limiter options
 getRejectionCount(): number
 ```
 
-Defined in: [rate-limiter.ts:205](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L205)
+Defined in: [rate-limiter.ts:205](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L205)
 
 Returns the number of times the function has been rejected
 
@@ -172,7 +172,7 @@ Returns the number of times the function has been rejected
 getRemainingInWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:212](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L212)
+Defined in: [rate-limiter.ts:212](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L212)
 
 Returns the number of remaining executions allowed in the current window
 
@@ -188,7 +188,7 @@ Returns the number of remaining executions allowed in the current window
 getWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:127](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L127)
+Defined in: [rate-limiter.ts:127](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L127)
 
 Returns the current time window in milliseconds
 
@@ -204,7 +204,7 @@ Returns the current time window in milliseconds
 maybeExecute(...args): boolean
 ```
 
-Defined in: [rate-limiter.ts:146](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L146)
+Defined in: [rate-limiter.ts:146](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L146)
 
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
@@ -239,7 +239,7 @@ rateLimiter.maybeExecute('arg1', 'arg2'); // false
 reset(): void
 ```
 
-Defined in: [rate-limiter.ts:231](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L231)
+Defined in: [rate-limiter.ts:231](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L231)
 
 Resets the rate limiter state
 
@@ -255,7 +255,7 @@ Resets the rate limiter state
 setOptions(newOptions): void
 ```
 
-Defined in: [rate-limiter.ts:99](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L99)
+Defined in: [rate-limiter.ts:99](https://github.com/tanstack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L99)
 
 Updates the rate limiter options
 
@@ -263,7 +263,7 @@ Updates the rate limiter options
 
 ##### newOptions
 
-`Partial`\<[`RateLimiterOptions`](../interfaces/ratelimiteroptions.md)\<`TFn`\>\>
+`Partial`\<[`RateLimiterOptions`](../../interfaces/ratelimiteroptions.md)\<`TFn`\>\>
 
 #### Returns
 
