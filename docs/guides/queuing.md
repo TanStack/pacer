@@ -60,7 +60,7 @@ const processItems = queue<number>(
     wait: 1000,
     maxSize: 10, // Optional: limit queue size to prevent memory or time issues
     onItemsChange: (queuer) => {
-      console.log('Current queue:', queuer.getAllItems())
+      console.log('Current queue:', queuer.peekAllItems())
     }
   }
 )
@@ -90,7 +90,7 @@ const queue = new Queuer<number>(
     wait: 1000, // Wait 1 second between processing items
     maxSize: 5, // Optional: limit queue size to prevent memory or time issues
     onItemsChange: (queuer) => {
-      console.log('Current queue:', queuer.getAllItems())
+      console.log('Current queue:', queuer.peekAllItems())
     }
   }
 )
@@ -209,11 +209,11 @@ The Queuer provides several helpful methods for queue management:
 
 ```ts
 // Queue inspection
-queue.getPeek()           // View next item without removing it
+queue.peekNextItem()           // View next item without removing it
 queue.getSize()           // Get current queue size
 queue.getIsEmpty()        // Check if queue is empty
 queue.getIsFull()         // Check if queue has reached maxSize
-queue.getAllItems()       // Get copy of all queued items
+queue.peekAllItems()       // Get copy of all queued items
 
 // Queue manipulation
 queue.clear()             // Remove all items
@@ -229,7 +229,7 @@ const queue = new Queuer<number>(
   },
   {
     onItemsChange: (queuer) => {
-      console.log('Processed:', queuer.getAllItems())
+      console.log('Processed:', queuer.peekAllItems())
     }
   }
 )

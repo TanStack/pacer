@@ -26,7 +26,7 @@ function App() {
     started: false,
     wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
     onItemsChange: (asyncQueuer) => {
-      setQueueItems(asyncQueuer.getAllItems())
+      setQueueItems(asyncQueuer.peekAllItems())
     },
     onIsRunningChange: (_asyncQueuer) => {
       rerender((prev) => prev + 1)
@@ -57,8 +57,8 @@ function App() {
       </div>
       <div>Items Processed: {asyncQueuer.getSuccessCount()}</div>
       <div>Items Rejected: {asyncQueuer.getRejectionCount()}</div>
-      <div>Active Tasks: {asyncQueuer.getActiveItems().length}</div>
-      <div>Pending Tasks: {asyncQueuer.getPendingItems().length}</div>
+      <div>Active Tasks: {asyncQueuer.peekActiveItems().length}</div>
+      <div>Pending Tasks: {asyncQueuer.peekPendingItems().length}</div>
       <div>
         Concurrency:{' '}
         <input

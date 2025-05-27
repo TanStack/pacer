@@ -163,38 +163,6 @@ queuer.execute('back');
 
 ***
 
-### getActiveItems()
-
-```ts
-getActiveItems(): TValue[]
-```
-
-Defined in: [async-queuer.ts:531](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L531)
-
-Returns the items currently being processed (active tasks).
-
-#### Returns
-
-`TValue`[]
-
-***
-
-### getAllItems()
-
-```ts
-getAllItems(): TValue[]
-```
-
-Defined in: [async-queuer.ts:524](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L524)
-
-Returns a copy of all items in the queue, including active and pending items.
-
-#### Returns
-
-`TValue`[]
-
-***
-
 ### getConcurrency()
 
 ```ts
@@ -356,51 +324,6 @@ Returns the current queuer options, including defaults and any overrides.
 
 ***
 
-### getPeek()
-
-```ts
-getPeek(position): undefined | TValue
-```
-
-Defined in: [async-queuer.ts:493](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L493)
-
-Returns the next item in the queue without removing it.
-
-#### Parameters
-
-##### position
-
-[`QueuePosition`](../../type-aliases/queueposition.md) = `'front'`
-
-#### Returns
-
-`undefined` \| `TValue`
-
-#### Example
-
-```ts
-queuer.getPeek(); // front
-queuer.getPeek('back'); // back
-```
-
-***
-
-### getPendingItems()
-
-```ts
-getPendingItems(): TValue[]
-```
-
-Defined in: [async-queuer.ts:538](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L538)
-
-Returns the items waiting to be processed (pending tasks).
-
-#### Returns
-
-`TValue`[]
-
-***
-
 ### getRejectionCount()
 
 ```ts
@@ -479,6 +402,83 @@ If a function is provided, it is called with the queuer instance.
 #### Returns
 
 `number`
+
+***
+
+### peekActiveItems()
+
+```ts
+peekActiveItems(): TValue[]
+```
+
+Defined in: [async-queuer.ts:531](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L531)
+
+Returns the items currently being processed (active tasks).
+
+#### Returns
+
+`TValue`[]
+
+***
+
+### peekAllItems()
+
+```ts
+peekAllItems(): TValue[]
+```
+
+Defined in: [async-queuer.ts:524](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L524)
+
+Returns a copy of all items in the queue, including active and pending items.
+
+#### Returns
+
+`TValue`[]
+
+***
+
+### peekNextItem()
+
+```ts
+peekNextItem(position): undefined | TValue
+```
+
+Defined in: [async-queuer.ts:493](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L493)
+
+Returns the next item in the queue without removing it.
+
+#### Parameters
+
+##### position
+
+[`QueuePosition`](../../type-aliases/queueposition.md) = `'front'`
+
+#### Returns
+
+`undefined` \| `TValue`
+
+#### Example
+
+```ts
+queuer.peekNextItem(); // front
+queuer.peekNextItem('back'); // back
+```
+
+***
+
+### peekPendingItems()
+
+```ts
+peekPendingItems(): TValue[]
+```
+
+Defined in: [async-queuer.ts:538](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L538)
+
+Returns the items waiting to be processed (pending tasks).
+
+#### Returns
+
+`TValue`[]
 
 ***
 

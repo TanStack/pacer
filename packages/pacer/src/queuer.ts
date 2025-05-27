@@ -443,11 +443,11 @@ export class Queuer<TValue> {
    *
    * Example usage:
    * ```ts
-   * queuer.getPeek(); // front
-   * queuer.getPeek('back'); // back
+   * queuer.peekNextItem(); // front
+   * queuer.peekNextItem('back'); // back
    * ```
    */
-  getPeek(
+  peekNextItem(
     position: QueuePosition = this._options.getItemsFrom,
   ): TValue | undefined {
     if (position === 'front') {
@@ -480,7 +480,7 @@ export class Queuer<TValue> {
   /**
    * Returns a copy of all items in the queue.
    */
-  getAllItems(): Array<TValue> {
+  peekAllItems(): Array<TValue> {
     return [...this._items]
   }
 
@@ -533,7 +533,7 @@ export class Queuer<TValue> {
  * // Basic sequential processing
  * const processItems = queue<number>((n) => console.log(n), {
  *   wait: 1000,
- *   onItemsChange: (queuer) => console.log(queuer.getAllItems())
+ *   onItemsChange: (queuer) => console.log(queuer.peekAllItems())
  * });
  * processItems(1); // Logs: 1
  * processItems(2); // Logs: 2 after 1 completes

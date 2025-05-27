@@ -73,5 +73,5 @@ asyncQueuer.start();
 asyncQueuer.stop();
 
 // queueItems reflects current queue state
-const pendingCount = asyncQueuer.getPendingItems().length;
+const pendingCount = asyncQueuer.peekPendingItems().length;
 ```

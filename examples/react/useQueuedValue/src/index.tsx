@@ -19,12 +19,12 @@ function App1() {
       <hr />
       <div>Queue Size: {queuer.getSize()}</div>
       <div>Queue Full: {queuer.getIsFull() ? 'Yes' : 'No'}</div>
-      <div>Queue Peek: {queuer.getPeek()}</div>
+      <div>Queue Peek: {queuer.peekNextItem()}</div>
       <div>Queue Empty: {queuer.getIsEmpty() ? 'Yes' : 'No'}</div>
       <div>Queue Idle: {queuer.getIsIdle() ? 'Yes' : 'No'}</div>
       <div>Queuer Status: {queuer.getIsRunning() ? 'Running' : 'Stopped'}</div>
       <div>Items Processed: {queuer.getExecutionCount()}</div>
-      <div>Queue Items: {queuer.getAllItems().join(', ')}</div>
+      <div>Queue Items: {queuer.peekAllItems().join(', ')}</div>
       <div
         style={{
           display: 'grid',

@@ -42,7 +42,7 @@ const queue = createQueuer(
   {
     started: true, // Start processing immediately
     wait: 1000,    // Process one item every second
-    onItemsChange: (queue) => setItems(queue.getAllItems()),
+    onItemsChange: (queue) => setItems(queue.peekAllItems()),
     getPriority: (item) => item.priority // Process higher priority items first
   }
 );
@@ -60,7 +60,7 @@ console.log('Items:', queue.allItems());
 console.log('Size:', queue.size());
 console.log('Is empty:', queue.isEmpty());
 console.log('Is running:', queue.isRunning());
-console.log('Next item:', queue.peek());
+console.log('Next item:', queue.nextItem());
 ```
 
 ## Type Parameters

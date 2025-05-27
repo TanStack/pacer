@@ -56,7 +56,7 @@ const [items, setItems] = useState([]);
 const queue = useQueuer({
   started: true, // Start processing immediately
   wait: 1000,    // Process one item every second
-  onItemsChange: (queue) => setItems(queue.getAllItems()),
+  onItemsChange: (queue) => setItems(queue.peekAllItems()),
   getPriority: (item) => item.priority // Process higher priority items first
 });
 

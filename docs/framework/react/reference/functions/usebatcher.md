@@ -53,7 +53,7 @@ const batcher = useBatcher<number>(
   {
     maxSize: 5,
     wait: 2000,
-    onItemsChange: (batcher) => setItems(batcher.getAllItems()),
+    onItemsChange: (batcher) => setItems(batcher.peekAllItems()),
     getShouldExecute: (items) => items.length >= 3
   }
 );

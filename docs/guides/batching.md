@@ -65,7 +65,7 @@ const processBatch = batch<number>(
     maxSize: 3, // Process when 3 items are collected
     wait: 2000, // Or after 2 seconds, whichever comes first
     onItemsChange: (batcher) => {
-      console.log('Current batch:', batcher.getAllItems())
+      console.log('Current batch:', batcher.peekAllItems())
     }
   }
 )
@@ -98,7 +98,7 @@ const batcher = new Batcher<number>(
     wait: 3000, // Or after 3 seconds
     getShouldExecute: (items, batcher) => items.includes(42), // Custom trigger
     onItemsChange: (batcher) => {
-      console.log('Current batch:', batcher.getAllItems())
+      console.log('Current batch:', batcher.peekAllItems())
     }
   }
 )
@@ -141,7 +141,7 @@ batcher.start()                 // Resume batching
 batcher.getSize()               // Get current batch size
 batcher.getIsEmpty()            // Check if batch is empty
 batcher.getIsRunning()          // Check if batcher is running
-batcher.getAllItems()           // Get all items in the current batch
+batcher.peekAllItems()           // Get all items in the current batch
 batcher.getBatchExecutionCount()// Number of batches processed
 batcher.getItemExecutionCount() // Number of items processed
 batcher.setOptions(opts)        // Update batcher options

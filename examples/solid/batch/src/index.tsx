@@ -19,7 +19,7 @@ function App1() {
       wait: 3000,
       getShouldExecute: (items) => items.includes(42),
       onItemsChange: (batcherInstance) => {
-        setBatchItems(batcherInstance.getAllItems())
+        setBatchItems(batcherInstance.peekAllItems())
       },
     },
   )

@@ -21,7 +21,7 @@ function App1() {
     wait: 3000, // wait up to 3 seconds before processing a batch (if time elapses before maxSize is reached)
     getShouldExecute: (items, _batcher) => items.includes(42), // or pass in a custom function to determine if the batch should be processed
     onItemsChange: (batcher) => {
-      setBatchItems(batcher.getAllItems())
+      setBatchItems(batcher.peekAllItems())
     },
   })
 

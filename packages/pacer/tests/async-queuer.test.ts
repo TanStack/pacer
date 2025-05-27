@@ -141,8 +141,8 @@ describe('AsyncQueuer', () => {
         },
       )
       asyncQueuer.addItem('first')
-      expect(asyncQueuer.getPeek()).toBe('first')
-      expect(asyncQueuer.getPeek()).toBe('first')
+      expect(asyncQueuer.peekNextItem()).toBe('first')
+      expect(asyncQueuer.peekNextItem()).toBe('first')
     })
     it('should return undefined when queuer is empty', () => {
       const asyncQueuer = new AsyncQueuer<string>(
@@ -151,7 +151,7 @@ describe('AsyncQueuer', () => {
           started: false,
         },
       )
-      expect(asyncQueuer.getPeek()).toBeUndefined()
+      expect(asyncQueuer.peekNextItem()).toBeUndefined()
     })
   })
 

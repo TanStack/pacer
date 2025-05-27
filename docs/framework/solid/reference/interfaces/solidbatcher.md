@@ -12,7 +12,7 @@ Defined in: [batcher/createBatcher.ts:7](https://github.com/TanStack/pacer/blob/
 ## Extends
 
 - `Omit`\<`Batcher`\<`TValue`\>, 
-  \| `"getAllItems"`
+  \| `"peekAllItems"`
   \| `"getBatchExecutionCount"`
   \| `"getIsEmpty"`
   \| `"getIsRunning"`
@@ -33,7 +33,7 @@ allItems: Accessor<TValue[]>;
 
 Defined in: [batcher/createBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L20)
 
-Signal version of `getAllItems`
+Signal version of `peekAllItems`
 
 ***
 

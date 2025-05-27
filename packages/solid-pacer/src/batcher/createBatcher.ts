@@ -7,7 +7,7 @@ import type { BatcherOptions } from '@tanstack/pacer/batcher'
 export interface SolidBatcher<TValue>
   extends Omit<
     Batcher<TValue>,
-    | 'getAllItems'
+    | 'peekAllItems'
     | 'getBatchExecutionCount'
     | 'getIsEmpty'
     | 'getIsRunning'
@@ -15,7 +15,7 @@ export interface SolidBatcher<TValue>
     | 'getSize'
   > {
   /**
-   * Signal version of `getAllItems`
+   * Signal version of `peekAllItems`
    */
   allItems: Accessor<Array<TValue>>
   /**
@@ -94,7 +94,7 @@ export function createBatcher<TValue>(
   const batcher = bindInstanceMethods(new Batcher<TValue>(fn, initialOptions))
 
   const [allItems, setAllItems] = createSignal<Array<TValue>>(
-    batcher.getAllItems(),
+    batcher.peekAllItems(),
   )
   const [batchExecutionCount, setBatchExecutionCount] = createSignal(
     batcher.getBatchExecutionCount(),
@@ -110,7 +110,7 @@ export function createBatcher<TValue>(
     batcher.setOptions({
       ...newOptions,
       onItemsChange: (batcher) => {
-        setAllItems(batcher.getAllItems())
+        setAllItems(batcher.peekAllItems())
         setBatchExecutionCount(batcher.getBatchExecutionCount())
         setItemExecutionCount(batcher.getItemExecutionCount())
         setIsEmpty(batcher.getIsEmpty())

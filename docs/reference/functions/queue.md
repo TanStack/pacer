@@ -25,7 +25,7 @@ Example usage:
 // Basic sequential processing
 const processItems = queue<number>((n) => console.log(n), {
   wait: 1000,
-  onItemsChange: (queuer) => console.log(queuer.getAllItems())
+  onItemsChange: (queuer) => console.log(queuer.peekAllItems())
 });
 processItems(1); // Logs: 1
 processItems(2); // Logs: 2 after 1 completes

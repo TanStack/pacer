@@ -7,26 +7,26 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
 export interface SolidAsyncQueuer<TValue>
   extends Omit<
     AsyncQueuer<TValue>,
-    | 'getActiveItems'
-    | 'getAllItems'
     | 'getErrorCount'
     | 'getIsEmpty'
     | 'getIsFull'
     | 'getIsIdle'
     | 'getIsRunning'
-    | 'getPeek'
-    | 'getPendingItems'
     | 'getRejectionCount'
     | 'getSettledCount'
     | 'getSize'
     | 'getSuccessCount'
+    | 'peekActiveItems'
+    | 'peekAllItems'
+    | 'peekNextItem'
+    | 'peekPendingItems'
   > {
   /**
-   * Signal version of `getActiveItems`
+   * Signal version of `peekActiveItems`
    */
   activeItems: Accessor<Array<TValue>>
   /**
-   * Signal version of `getAllItems`
+   * Signal version of `peekAllItems`
    */
   allItems: Accessor<Array<TValue>>
   /**
@@ -50,11 +50,11 @@ export interface SolidAsyncQueuer<TValue>
    */
   isRunning: Accessor<boolean>
   /**
-   * Signal version of `getPeek`
+   * Signal version of `peekNextItem`
    */
-  peek: Accessor<TValue | undefined>
+  nextItem: Accessor<TValue | undefined>
   /**
-   * Signal version of `getPendingItems`
+   * Signal version of `peekPendingItems`
    */
   pendingItems: Accessor<Array<TValue>>
   /**
@@ -148,29 +148,29 @@ export function createAsyncQueuer<TValue>(
   const [isIdle, setIsIdle] = createSignal(asyncQueuer.getIsIdle())
   const [isRunning, setIsRunning] = createSignal(asyncQueuer.getIsRunning())
   const [allItems, setAllItems] = createSignal<Array<TValue>>(
-    asyncQueuer.getAllItems(),
+    asyncQueuer.peekAllItems(),
   )
   const [activeItems, setActiveItems] = createSignal<Array<TValue>>(
-    asyncQueuer.getActiveItems(),
+    asyncQueuer.peekActiveItems(),
   )
   const [pendingItems, setPendingItems] = createSignal<Array<TValue>>(
-    asyncQueuer.getPendingItems(),
+    asyncQueuer.peekPendingItems(),
   )
-  const [peek, setPeek] = createSignal<TValue | undefined>(
-    asyncQueuer.getPeek(),
+  const [nextItem, setNextItem] = createSignal<TValue | undefined>(
+    asyncQueuer.peekNextItem(),
   )
   const [size, setSize] = createSignal(asyncQueuer.getSize())
 
   asyncQueuer.setOptions({
     onItemsChange: (queuer) => {
-      setActiveItems(queuer.getActiveItems())
-      setAllItems(queuer.getAllItems())
+      setActiveItems(queuer.peekActiveItems())
+      setAllItems(queuer.peekAllItems())
       setErrorCount(queuer.getErrorCount())
       setIsEmpty(queuer.getIsEmpty())
       setIsFull(queuer.getIsFull())
       setIsIdle(queuer.getIsIdle())
-      setPeek(() => queuer.getPeek())
-      setPendingItems(queuer.getPendingItems())
+      setNextItem(() => queuer.peekNextItem())
+      setPendingItems(queuer.peekPendingItems())
       setRejectionCount(queuer.getRejectionCount())
       setSettledCount(queuer.getSettledCount())
       setSize(queuer.getSize())
@@ -197,7 +197,7 @@ export function createAsyncQueuer<TValue>(
     isFull,
     isIdle,
     isRunning,
-    peek,
+    nextItem,
     pendingItems,
     rejectionCount,
     settledCount,

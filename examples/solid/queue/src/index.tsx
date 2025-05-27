@@ -15,7 +15,7 @@ function App1() {
     maxSize: 25,
     wait: 1000,
     onItemsChange: (queue) => {
-      setQueueItems(queue.getAllItems())
+      setQueueItems(queue.peekAllItems())
       setProcessedCount(queue.getExecutionCount())
     },
   })
@@ -69,7 +69,7 @@ function App2() {
     maxSize: 100,
     wait: 500,
     onItemsChange: (queue) => {
-      setQueueItems(queue.getAllItems())
+      setQueueItems(queue.peekAllItems())
       setProcessedCount(queue.getExecutionCount())
     },
   })
@@ -131,7 +131,7 @@ function App3() {
     maxSize: 100,
     wait: 100,
     onItemsChange: (queue) => {
-      setQueueItems(queue.getAllItems())
+      setQueueItems(queue.peekAllItems())
       setProcessedCount(queue.getExecutionCount())
     },
   })

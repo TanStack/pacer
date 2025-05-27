@@ -24,7 +24,7 @@ function App() {
     started: false,
     wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
     onItemsChange: (queuer) => {
-      setQueueItems(queuer.getAllItems())
+      setQueueItems(queuer.peekAllItems())
     },
     onReject: (item, queuer) => {
       console.log(

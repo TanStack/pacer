@@ -53,8 +53,8 @@ function App() {
       </div>
       <div>Items Processed: {asyncQueuer.getSuccessCount()}</div>
       <div>Items Rejected: {asyncQueuer.getRejectionCount()}</div>
-      <div>Active Tasks: {asyncQueuer.getActiveItems().length}</div>
-      <div>Pending Tasks: {asyncQueuer.getPendingItems().length}</div>
+      <div>Active Tasks: {asyncQueuer.peekActiveItems().length}</div>
+      <div>Pending Tasks: {asyncQueuer.peekPendingItems().length}</div>
       <div>
         Concurrency:{' '}
         <input

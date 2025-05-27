@@ -47,7 +47,7 @@ import type {
  * asyncQueuer.stop();
  *
  * // queueItems reflects current queue state
- * const pendingCount = asyncQueuer.getPendingItems().length;
+ * const pendingCount = asyncQueuer.peekPendingItems().length;
  * ```
  */
 export function useAsyncQueuedState<TValue>(
@@ -59,7 +59,7 @@ export function useAsyncQueuedState<TValue>(
   const asyncQueuer = useAsyncQueuer<TValue>(fn, {
     ...options,
     onItemsChange: (asyncQueuer) => {
-      setItems(asyncQueuer.getAllItems())
+      setItems(asyncQueuer.peekAllItems())
       options.onItemsChange?.(asyncQueuer)
     },
     onIsRunningChange: (queue) => {

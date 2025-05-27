@@ -7,17 +7,17 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
 export interface SolidQueuer<TValue>
   extends Omit<
     Queuer<TValue>,
-    | 'getAllItems'
     | 'getExecutionCount'
     | 'getIsEmpty'
     | 'getIsFull'
     | 'getIsIdle'
     | 'getIsRunning'
-    | 'getPeek'
     | 'getSize'
+    | 'peekAllItems'
+    | 'peekNextItem'
   > {
   /**
-   * Signal version of `getAllItems`
+   * Signal version of `peekAllItems`
    */
   allItems: Accessor<Array<TValue>>
   /**
@@ -41,9 +41,9 @@ export interface SolidQueuer<TValue>
    */
   isRunning: Accessor<boolean>
   /**
-   * Signal version of `getPeek`
+   * Signal version of `peekNextItem`
    */
-  peek: Accessor<TValue | undefined>
+  nextItem: Accessor<TValue | undefined>
   /**
    * Signal version of `getRejectionCount`
    */
@@ -84,7 +84,7 @@ export interface SolidQueuer<TValue>
  *   {
  *     started: true, // Start processing immediately
  *     wait: 1000,    // Process one item every second
- *     onItemsChange: (queue) => setItems(queue.getAllItems()),
+ *     onItemsChange: (queue) => setItems(queue.peekAllItems()),
  *     getPriority: (item) => item.priority // Process higher priority items first
  *   }
  * );
@@ -102,7 +102,7 @@ export interface SolidQueuer<TValue>
  * console.log('Size:', queue.size());
  * console.log('Is empty:', queue.isEmpty());
  * console.log('Is running:', queue.isRunning());
- * console.log('Next item:', queue.peek());
+ * console.log('Next item:', queue.nextItem());
  * ```
  */
 export function createQueuer<TValue>(
@@ -112,7 +112,7 @@ export function createQueuer<TValue>(
   const queuer = bindInstanceMethods(new Queuer<TValue>(fn, initialOptions))
 
   const [allItems, setAllItems] = createSignal<Array<TValue>>(
-    queuer.getAllItems(),
+    queuer.peekAllItems(),
   )
   const [executionCount, setExecutionCount] = createSignal(
     queuer.getExecutionCount(),
@@ -124,19 +124,21 @@ export function createQueuer<TValue>(
   const [isFull, setIsFull] = createSignal(queuer.getIsFull())
   const [isIdle, setIsIdle] = createSignal(queuer.getIsIdle())
   const [isRunning, setIsRunning] = createSignal(queuer.getIsRunning())
-  const [peek, setPeek] = createSignal<TValue | undefined>(queuer.getPeek())
+  const [nextItem, setNextItem] = createSignal<TValue | undefined>(
+    queuer.peekNextItem(),
+  )
   const [size, setSize] = createSignal(queuer.getSize())
 
   function setOptions(newOptions: Partial<QueuerOptions<TValue>>) {
     queuer.setOptions({
       ...newOptions,
       onItemsChange: (queuer) => {
-        setAllItems(queuer.getAllItems())
+        setAllItems(queuer.peekAllItems())
         setExecutionCount(queuer.getExecutionCount())
         setIsEmpty(queuer.getIsEmpty())
         setIsFull(queuer.getIsFull())
         setIsIdle(queuer.getIsIdle())
-        setPeek(() => queuer.getPeek())
+        setNextItem(() => queuer.peekNextItem())
         setSize(queuer.getSize())
 
         const onItemsChange =
@@ -170,7 +172,7 @@ export function createQueuer<TValue>(
     isFull,
     isIdle,
     isRunning,
-    peek,
+    nextItem,
     rejectionCount,
     size,
     setOptions,

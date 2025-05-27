@@ -62,7 +62,7 @@ export function useQueuedState<TValue>(
   const queue = useQueuer<TValue>(fn, {
     ...options,
     onItemsChange: (queue) => {
-      setAllItems(queue.getAllItems())
+      setAllItems(queue.peekAllItems())
       options.onItemsChange?.(queue)
     },
     onIsRunningChange: (queue) => {

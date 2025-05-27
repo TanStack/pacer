@@ -30,7 +30,7 @@ describe('Queuer', () => {
       const queuer = new Queuer(fn, { started: false })
       expect(queuer.addItem(1)).toBe(true)
       expect(queuer.getSize()).toBe(1)
-      expect(queuer.getPeek()).toBe(1)
+      expect(queuer.peekNextItem()).toBe(1)
     })
   })
 
@@ -62,14 +62,14 @@ describe('Queuer', () => {
       queuer.addItem(1)
       queuer.addItem(2)
 
-      expect(queuer.getPeek()).toBe(1)
+      expect(queuer.peekNextItem()).toBe(1)
       expect(queuer.getSize()).toBe(2)
     })
 
     it('should return undefined when queuer is empty', () => {
       const fn = vi.fn()
       const queuer = new Queuer(fn, { started: false })
-      expect(queuer.getPeek()).toBeUndefined()
+      expect(queuer.peekNextItem()).toBeUndefined()
     })
   })
 
@@ -115,7 +115,7 @@ describe('Queuer', () => {
 
       expect(queuer.getIsEmpty()).toBe(true)
       expect(queuer.getSize()).toBe(0)
-      expect(queuer.getPeek()).toBeUndefined()
+      expect(queuer.peekNextItem()).toBeUndefined()
     })
   })
 
@@ -128,7 +128,7 @@ describe('Queuer', () => {
           started: false,
         })
         expect(queuer.getSize()).toBe(3)
-        expect(queuer.getAllItems()).toEqual([1, 2, 3])
+        expect(queuer.peekAllItems()).toEqual([1, 2, 3])
       })
 
       it('should sort initial items by priority if getPriority is provided', () => {
@@ -143,7 +143,7 @@ describe('Queuer', () => {
           started: false,
         })
 
-        expect(queuer.getAllItems()).toEqual([
+        expect(queuer.peekAllItems()).toEqual([
           { value: 'high', priority: 3 },
           { value: 'medium', priority: 2 },
           { value: 'low', priority: 1 },
@@ -169,7 +169,7 @@ describe('Queuer', () => {
         queuer.addItem({ value: 'high', priority: 3 })
         queuer.addItem({ value: 'low', priority: 1 })
 
-        expect(queuer.getAllItems()).toEqual([
+        expect(queuer.peekAllItems()).toEqual([
           { value: 'high', priority: 3 },
           { value: 'medium', priority: 2 },
           { value: 'low', priority: 1 },
@@ -187,7 +187,7 @@ describe('Queuer', () => {
         queuer.addItem({ value: 'highest', priority: 4 })
         queuer.addItem({ value: 'medium', priority: 2 }) // Should go between lowest and highest
 
-        expect(queuer.getAllItems()).toEqual([
+        expect(queuer.peekAllItems()).toEqual([
           { value: 'highest', priority: 4 },
           { value: 'medium', priority: 2 },
           { value: 'lowest', priority: 0 },
@@ -206,7 +206,7 @@ describe('Queuer', () => {
         queuer.addItem({ value: 'third', priority: 1 })
 
         // Items with equal priority should maintain FIFO order
-        expect(queuer.getAllItems()).toEqual([
+        expect(queuer.peekAllItems()).toEqual([
           { value: 'first', priority: 1 },
           { value: 'second', priority: 1 },
           { value: 'third', priority: 1 },
@@ -224,7 +224,7 @@ describe('Queuer', () => {
         queuer.addItem({ value: 'high', priority: 3 }, 'front') // front position should be ignored
         queuer.addItem({ value: 'low', priority: 1 }, 'back') // back position should be ignored
 
-        expect(queuer.getAllItems()).toEqual([
+        expect(queuer.peekAllItems()).toEqual([
           { value: 'high', priority: 3 },
           { value: 'medium', priority: 2 },
           { value: 'low', priority: 1 },
@@ -303,8 +303,8 @@ describe('Queuer', () => {
     queuer.addItem(2, 'front') // [2,1]
     queuer.addItem(3, 'back') // [2,1,3]
 
-    expect(queuer.getPeek('front')).toBe(2)
-    expect(queuer.getPeek('back')).toBe(3)
+    expect(queuer.peekNextItem('front')).toBe(2)
+    expect(queuer.peekNextItem('back')).toBe(3)
     expect(queuer.getSize()).toBe(3)
 
     // Remove from both ends
@@ -347,9 +347,9 @@ describe('Queuer', () => {
       const queuer = new Queuer(fn, { initialItems: [1, 2], started: false })
       queuer.addItem(3)
       queuer.reset(true)
-      expect(queuer.getAllItems()).toEqual([1, 2])
+      expect(queuer.peekAllItems()).toEqual([1, 2])
       queuer.reset()
-      expect(queuer.getAllItems()).toEqual([])
+      expect(queuer.peekAllItems()).toEqual([])
     })
   })
 

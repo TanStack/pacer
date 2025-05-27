@@ -12,19 +12,19 @@ Defined in: [async-queuer/createAsyncQueuer.ts:7](https://github.com/TanStack/pa
 ## Extends
 
 - `Omit`\<`AsyncQueuer`\<`TValue`\>, 
-  \| `"getActiveItems"`
-  \| `"getAllItems"`
   \| `"getErrorCount"`
   \| `"getIsEmpty"`
   \| `"getIsFull"`
   \| `"getIsIdle"`
   \| `"getIsRunning"`
-  \| `"getPeek"`
-  \| `"getPendingItems"`
   \| `"getRejectionCount"`
   \| `"getSettledCount"`
   \| `"getSize"`
-  \| `"getSuccessCount"`\>
+  \| `"getSuccessCount"`
+  \| `"peekActiveItems"`
+  \| `"peekAllItems"`
+  \| `"peekNextItem"`
+  \| `"peekPendingItems"`\>
 
 ## Type Parameters
 
@@ -40,7 +40,7 @@ activeItems: Accessor<TValue[]>;
 
 Defined in: [async-queuer/createAsyncQueuer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L27)
 
-Signal version of `getActiveItems`
+Signal version of `peekActiveItems`
 
 ***
 
@@ -52,7 +52,7 @@ allItems: Accessor<TValue[]>;
 
 Defined in: [async-queuer/createAsyncQueuer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L31)
 
-Signal version of `getAllItems`
+Signal version of `peekAllItems`
 
 ***
 
@@ -116,15 +116,15 @@ Signal version of `getIsRunning`
 
 ***
 
-### peek
+### nextItem
 
 ```ts
-peek: Accessor<undefined | TValue>;
+nextItem: Accessor<undefined | TValue>;
 ```
 
 Defined in: [async-queuer/createAsyncQueuer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L55)
 
-Signal version of `getPeek`
+Signal version of `peekNextItem`
 
 ***
 
@@ -136,7 +136,7 @@ pendingItems: Accessor<TValue[]>;
 
 Defined in: [async-queuer/createAsyncQueuer.ts:59](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L59)
 
-Signal version of `getPendingItems`
+Signal version of `peekPendingItems`
 
 ***
 

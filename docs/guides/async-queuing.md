@@ -64,7 +64,7 @@ const processItems = asyncQueue(
   {
     concurrency: 2,
     onItemsChange: (queuer) => {
-      console.log('Active tasks:', queuer.getActiveItems().length)
+      console.log('Active tasks:', queuer.peekActiveItems().length)
     }
   }
 )
@@ -128,7 +128,7 @@ queue.addItem(2)
 All queue types and ordering strategies (FIFO, LIFO, priority, etc.) are supported—see the [Queuing Guide](../queuing) for details. AsyncQueuer adds:
 - **Concurrency:** Multiple items can be processed at once, controlled by the `concurrency` option (can be dynamic).
 - **Async error handling:** Use `onError`, `onSuccess`, and `onSettled` for robust error and result tracking.
-- **Active and pending task tracking:** Use `getActiveItems()` and `getPendingItems()` to monitor queue state.
+- **Active and pending task tracking:** Use `peekActiveItems()` and `peekPendingItems()` to monitor queue state.
 - **Async expiration and rejection:** Items can expire or be rejected just like in the core queuing guide, but with async-specific callbacks.
 
 ### Example: Priority Async Queue
@@ -194,7 +194,7 @@ const queue = new AsyncQueuer(
   {
     // Dynamic concurrency based on system load
     concurrency: (queuer) => {
-      return Math.max(1, 4 - queuer.getActiveItems().length)
+      return Math.max(1, 4 - queuer.peekActiveItems().length)
     },
     // Dynamic wait time based on queue size
     wait: (queuer) => {
@@ -207,8 +207,8 @@ const queue = new AsyncQueuer(
 ### Queue Management and Monitoring
 
 AsyncQueuer provides all the queue management and monitoring methods from the core queuing guide, plus async-specific ones:
-- `getActiveItems()` — Items currently being processed
-- `getPendingItems()` — Items waiting to be processed
+- `peekActiveItems()` — Items currently being processed
+- `peekPendingItems()` — Items waiting to be processed
 - `getSuccessCount()`, `getErrorCount()`, `getSettledCount()` — Execution statistics
 - `start()`, `stop()`, `clear()`, `reset()`, etc.
 

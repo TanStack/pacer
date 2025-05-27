@@ -153,7 +153,7 @@ export class Batcher<TValue> {
       return
     }
 
-    const batch = this.getAllItems() // copy of the items to be processed (to prevent race conditions)
+    const batch = this.peekAllItems() // copy of the items to be processed (to prevent race conditions)
     this._items = [] // Clear items before processing to prevent race conditions
     this._options.onItemsChange?.(this) // Call onItemsChange to notify listeners that the items have changed
 
@@ -210,7 +210,7 @@ export class Batcher<TValue> {
   /**
    * Returns a copy of all items currently in the batcher
    */
-  getAllItems(): Array<TValue> {
+  peekAllItems(): Array<TValue> {
     return [...this._items]
   }
 

@@ -21,7 +21,7 @@ function App1() {
       <div>Queue Size: {queuer.getSize()}</div>
       <div>Queue Max Size: {25}</div>
       <div>Queue Full: {queuer.getIsFull() ? 'Yes' : 'No'}</div>
-      <div>Queue Peek: {queuer.getPeek()}</div>
+      <div>Queue Peek: {queuer.peekNextItem()}</div>
       <div>Queue Empty: {queuer.getIsEmpty() ? 'Yes' : 'No'}</div>
       <div>Queue Idle: {queuer.getIsIdle() ? 'Yes' : 'No'}</div>
       <div>Queuer Status: {queuer.getIsRunning() ? 'Running' : 'Stopped'}</div>

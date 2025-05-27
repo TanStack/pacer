@@ -113,22 +113,6 @@ You can also call this method manually to process the current batch at any time.
 
 ***
 
-### getAllItems()
-
-```ts
-getAllItems(): TValue[]
-```
-
-Defined in: [batcher.ts:213](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L213)
-
-Returns a copy of all items currently in the batcher
-
-#### Returns
-
-`TValue`[]
-
-***
-
 ### getBatchExecutionCount()
 
 ```ts
@@ -222,6 +206,22 @@ Returns the current number of items in the batcher
 #### Returns
 
 `number`
+
+***
+
+### peekAllItems()
+
+```ts
+peekAllItems(): TValue[]
+```
+
+Defined in: [batcher.ts:213](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L213)
+
+Returns a copy of all items currently in the batcher
+
+#### Returns
+
+`TValue`[]
 
 ***
 

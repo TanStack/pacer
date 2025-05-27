@@ -233,7 +233,7 @@ export class AsyncQueuer<TValue> {
       this._activeItems.size < this.getConcurrency() &&
       !this.getIsEmpty()
     ) {
-      const nextItem = this.getPeek()
+      const nextItem = this.peekNextItem()
       if (!nextItem) {
         break
       }
@@ -486,11 +486,11 @@ export class AsyncQueuer<TValue> {
    *
    * @example
    * ```ts
-   * queuer.getPeek(); // front
-   * queuer.getPeek('back'); // back
+   * queuer.peekNextItem(); // front
+   * queuer.peekNextItem('back'); // back
    * ```
    */
-  getPeek(position: QueuePosition = 'front'): TValue | undefined {
+  peekNextItem(position: QueuePosition = 'front'): TValue | undefined {
     if (position === 'front') {
       return this._items[0]
     }
@@ -521,21 +521,21 @@ export class AsyncQueuer<TValue> {
   /**
    * Returns a copy of all items in the queue, including active and pending items.
    */
-  getAllItems(): Array<TValue> {
-    return [...this.getActiveItems(), ...this.getPendingItems()]
+  peekAllItems(): Array<TValue> {
+    return [...this.peekActiveItems(), ...this.peekPendingItems()]
   }
 
   /**
    * Returns the items currently being processed (active tasks).
    */
-  getActiveItems(): Array<TValue> {
+  peekActiveItems(): Array<TValue> {
     return Array.from(this._activeItems)
   }
 
   /**
    * Returns the items waiting to be processed (pending tasks).
    */
-  getPendingItems(): Array<TValue> {
+  peekPendingItems(): Array<TValue> {
     return [...this._items]
   }
 

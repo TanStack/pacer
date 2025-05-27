@@ -186,22 +186,6 @@ queuer.execute('back');
 
 ***
 
-### getAllItems()
-
-```ts
-getAllItems(): TValue[]
-```
-
-Defined in: [queuer.ts:483](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L483)
-
-Returns a copy of all items in the queue.
-
-#### Returns
-
-`TValue`[]
-
-***
-
 ### getExecutionCount()
 
 ```ts
@@ -345,34 +329,6 @@ Returns the current queuer options, including defaults and any overrides.
 
 ***
 
-### getPeek()
-
-```ts
-getPeek(position): undefined | TValue
-```
-
-Defined in: [queuer.ts:450](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L450)
-
-Returns the next item in the queue without removing it.
-
-Example usage:
-```ts
-queuer.getPeek(); // front
-queuer.getPeek('back'); // back
-```
-
-#### Parameters
-
-##### position
-
-[`QueuePosition`](../../type-aliases/queueposition.md) = `...`
-
-#### Returns
-
-`undefined` \| `TValue`
-
-***
-
 ### getRejectionCount()
 
 ```ts
@@ -419,6 +375,50 @@ If a function is provided, it is called with the queuer instance.
 #### Returns
 
 `number`
+
+***
+
+### peekAllItems()
+
+```ts
+peekAllItems(): TValue[]
+```
+
+Defined in: [queuer.ts:483](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L483)
+
+Returns a copy of all items in the queue.
+
+#### Returns
+
+`TValue`[]
+
+***
+
+### peekNextItem()
+
+```ts
+peekNextItem(position): undefined | TValue
+```
+
+Defined in: [queuer.ts:450](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L450)
+
+Returns the next item in the queue without removing it.
+
+Example usage:
+```ts
+queuer.peekNextItem(); // front
+queuer.peekNextItem('back'); // back
+```
+
+#### Parameters
+
+##### position
+
+[`QueuePosition`](../../type-aliases/queueposition.md) = `...`
+
+#### Returns
+
+`undefined` \| `TValue`
 
 ***
 
