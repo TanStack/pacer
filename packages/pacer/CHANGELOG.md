@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.8.0
+
+### Minor Changes
+
+- breaking: Renamed `get*Item` instance methods to `peek*Item` instance methods to indicate that they do not pop or process items ([`1599c97`](https://github.com/TanStack/pacer/commit/1599c9785f7496648a2b44274b839c7f784ce7f5))
+
 ## 0.7.0
 
 ### Minor Changes
