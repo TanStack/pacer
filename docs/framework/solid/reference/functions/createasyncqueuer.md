@@ -8,52 +8,50 @@ title: createAsyncQueuer
 # Function: createAsyncQueuer()
 
 ```ts
-function createAsyncQueuer<TValue>(initialOptions): SolidAsyncQueuer<TValue>
+function createAsyncQueuer<TValue>(fn, initialOptions): SolidAsyncQueuer<TValue>
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:112](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L112)
+Defined in: [async-queuer/createAsyncQueuer.ts:130](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L130)
 
-A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
+Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 
-This hook provides a flexible, state-management agnostic way to handle queued async operations.
-It returns a queuer instance with methods to add items, control queue execution, and monitor queue state.
+Features:
+- Priority queueing via `getPriority` or item `priority` property
+- Configurable concurrency limit
+- FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
+- Pause/resume processing
+- Task cancellation
+- Item expiration
+- Lifecycle callbacks for success, error, settled, items change, etc.
+- All stateful properties (active items, pending items, counts, etc.) are exposed as Solid signals for reactivity
 
-The queue can be configured with:
-- Maximum concurrent operations
-- Maximum queue size
-- Processing function for queue items
-- Various lifecycle callbacks
+Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
+the next pending task is processed if the concurrency limit allows.
 
-The hook returns an object containing methods to:
-- Add/remove items from the queue
-- Start/stop queue processing
-- Get queue status and items
-- Register event handlers
-- Control execution throttling
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and queuer instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together; the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncQueuer instance
 
-## Type Parameters
-
-• **TValue**
-
-## Parameters
-
-### initialOptions
-
-`AsyncQueuerOptions`\<`TValue`\> = `{}`
-
-## Returns
-
-[`SolidAsyncQueuer`](../interfaces/solidasyncqueuer.md)\<`TValue`\>
-
-## Example
-
+Example usage:
 ```tsx
 // Basic async queuer for API requests
-const asyncQueuer = createAsyncQueuer({
+const asyncQueuer = createAsyncQueuer(async (item) => {
+  // process item
+  return await fetchData(item);
+}, {
   initialItems: [],
   concurrency: 2,
   maxSize: 100,
   started: false,
+  onSuccess: (result) => {
+    console.log('Item processed:', result);
+  },
+  onError: (error) => {
+    console.error('Processing failed:', error);
+  }
 });
 
 // Add items to queue
@@ -62,12 +60,24 @@ asyncQueuer.addItem(newItem);
 // Start processing
 asyncQueuer.start();
 
-// Handle results
-asyncQueuer.onSuccess((result) => {
-  console.log('Item processed:', result);
-});
-
-asyncQueuer.onError((error) => {
-  console.error('Processing failed:', error);
-});
+// Use Solid signals in your UI
+const pending = asyncQueuer.pendingItems();
 ```
+
+## Type Parameters
+
+• **TValue**
+
+## Parameters
+
+### fn
+
+(`value`) => `Promise`\<`any`\>
+
+### initialOptions
+
+`AsyncQueuerOptions`\<`TValue`\> = `{}`
+
+## Returns
+
+[`SolidAsyncQueuer`](../../interfaces/solidasyncqueuer.md)\<`TValue`\>

@@ -2,33 +2,41 @@ import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncQueuer } from '@tanstack/solid-pacer/async-queuer'
 
-type AsyncTask = () => Promise<string>
+const fakeWaitTime = 500
 
-const fakeWaitTime = 2000
+type Item = number
 
 function App() {
   // Use your state management library of choice
+  const [queueItems, setQueueItems] = createSignal<Array<Item>>([])
   const [concurrency, setConcurrency] = createSignal(2)
 
-  const queuer = createAsyncQueuer<string>({
-    maxSize: 25,
-    initialItems: Array.from({ length: 10 }, (_, i) => async () => {
-      await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
-      return `Initial Task ${i + 1}`
-    }),
-    concurrency: concurrency(), // Process 2 items concurrently
-    wait: 500, // for demo purposes - usually you would not want extra wait time unless you are throttling with concurrency
-    started: false,
-  })
+  // The function to process each item (now a number)
+  async function processItem(item: Item): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
+    console.log(`Processed ${item}`)
+  }
 
-  // Simulated async task
-  const createAsyncTask =
-    (num: number): AsyncTask =>
-    async () => {
-      // Simulate some async work
-      await new Promise((resolve) => setTimeout(resolve, fakeWaitTime))
-      return `Processed ${num}`
-    }
+  const queuer = createAsyncQueuer<Item>(processItem, {
+    maxSize: 25,
+    initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
+    concurrency: () => concurrency(), // Process 2 items concurrently
+    started: false,
+    wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
+    onItemsChange: (queuer) => {
+      setQueueItems(queuer.peekAllItems())
+    },
+    onReject: (item, queuer) => {
+      console.log(
+        'Queue is full, rejecting item',
+        item,
+        queuer.getRejectionCount(),
+      )
+    },
+    onError: (error, queuer) => {
+      console.error('Error processing item', error, queuer.getErrorCount()) // optionally, handle errors here instead of your own try/catch
+    },
+  })
 
   return (
     <div>
@@ -40,7 +48,8 @@ function App() {
       <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
       <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
       <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.executionCount()}</div>
+      <div>Items Processed: {queuer.successCount()}</div>
+      <div>Items Rejected: {queuer.rejectionCount()}</div>
       <div>Active Tasks: {queuer.activeItems().length}</div>
       <div>Pending Tasks: {queuer.pendingItems().length}</div>
       <div>
@@ -50,17 +59,17 @@ function App() {
           min={1}
           value={concurrency()}
           onInput={(e) =>
-            setConcurrency(Math.max(1, parseInt(e.target.value) || 1))
+            setConcurrency(Math.max(1, parseInt(e.currentTarget.value) || 1))
           }
           style={{ width: '60px' }}
         />
       </div>
       <div style={{ 'min-height': '250px' }}>
         Queue Items:
-        <For each={queuer.allItems()}>
-          {(task, index) => (
+        <For each={queueItems()}>
+          {(item, index) => (
             <div>
-              {index()}: {task.toString()}
+              {index()}: {item}
             </div>
           )}
         </For>
@@ -76,12 +85,9 @@ function App() {
       >
         <button
           onClick={() => {
-            const nextNumber = queuer.allItems().length
-              ? Math.max(
-                  ...queuer.allItems().map((task) => parseInt(task.toString())),
-                )
-              : 1
-            queuer.addItem(createAsyncTask(nextNumber))
+            const items = queueItems()
+            const nextNumber = items.length ? Math.max(...items) + 1 : 1
+            queuer.addItem(nextNumber)
           }}
           disabled={queuer.isFull()}
         >

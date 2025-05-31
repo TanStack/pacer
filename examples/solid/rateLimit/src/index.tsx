@@ -100,12 +100,75 @@ function App2() {
   )
 }
 
+function App3() {
+  const [currentValue, setCurrentValue] = createSignal(50)
+  const [rateLimitedValue, setRateLimitedValue] = createSignal(50)
+
+  // Create rate-limited setter function - Stable reference required!
+  const rateLimitedSetValue = rateLimit(setRateLimitedValue, {
+    limit: 20,
+    window: 2000,
+    // windowType: 'sliding',
+    onReject: (rateLimiter) =>
+      console.log(
+        'Rejected by rate limiter',
+        rateLimiter.getMsUntilNextWindow(),
+      ),
+  })
+
+  function handleRangeChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    const newValue = parseInt(target.value, 10)
+    setCurrentValue(newValue)
+    rateLimitedSetValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer rateLimit Example 3</h1>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue()}
+            onInput={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue()}</span>
+        </label>
+      </div>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Rate Limited Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={rateLimitedValue()}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{rateLimitedValue()}</span>
+        </label>
+      </div>
+      <div style={{ color: '#666', 'font-size': '0.9em' }}>
+        <p>Rate limited to 20 updates per 2 seconds</p>
+      </div>
+    </div>
+  )
+}
+
 render(
   () => (
     <div>
       <App1 />
       <hr />
       <App2 />
+      <hr />
+      <App3 />
     </div>
   ),
   document.getElementById('root')!,

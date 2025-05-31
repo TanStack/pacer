@@ -12,6 +12,12 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * subsequent updates until the window resets. Unlike throttling or debouncing, it does not attempt to space out
  * or intelligently collapse updates. This can lead to bursts of rapid updates followed by periods of no updates.
  *
+ * The rate limiter supports two types of windows:
+ * - 'fixed': A strict window that resets after the window period. All updates within the window count
+ *   towards the limit, and the window resets completely after the period.
+ * - 'sliding': A rolling window that allows updates as old ones expire. This provides a more
+ *   consistent rate of updates over time.
+ *
  * For smoother update patterns, consider:
  * - createThrottledValue: When you want consistent spacing between updates (e.g. UI changes)
  * - createDebouncedValue: When you want to collapse rapid updates into a single update (e.g. search input)
@@ -27,10 +33,11 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  *
  * @example
  * ```tsx
- * // Basic rate limiting - update at most 5 times per minute
+ * // Basic rate limiting - update at most 5 times per minute with a sliding window
  * const [rateLimitedValue, rateLimiter] = createRateLimitedValue(rawValue, {
  *   limit: 5,
- *   window: 60000
+ *   window: 60000,
+ *   windowType: 'sliding'
  * });
  *
  * // Use the rate-limited value

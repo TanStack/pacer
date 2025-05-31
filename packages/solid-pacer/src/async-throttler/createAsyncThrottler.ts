@@ -37,6 +37,17 @@ export interface SolidAsyncThrottler<TFn extends AnyAsyncFunction>
  * regardless of how many times it is called. This is useful for rate-limiting expensive API calls,
  * database operations, or other async tasks.
  *
+ * Unlike the non-async Throttler, this async version supports returning values from the throttled function,
+ * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+ * instead of setting the result on a state variable from within the throttled function.
+ *
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and throttler instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncThrottler instance
+ *
  * @example
  * ```tsx
  * // Basic API call throttling
@@ -58,12 +69,14 @@ export interface SolidAsyncThrottler<TFn extends AnyAsyncFunction>
  *   {
  *     wait: 2000,
  *     leading: true,   // Execute immediately on first call
- *     trailing: false  // Skip trailing edge updates
+ *     trailing: false, // Skip trailing edge updates
+ *     onError: (error) => {
+ *       console.error('API call failed:', error);
+ *     }
  *   }
  * );
  * ```
  */
-
 export function createAsyncThrottler<TFn extends AnyAsyncFunction>(
   fn: TFn,
   initialOptions: AsyncThrottlerOptions<TFn>,

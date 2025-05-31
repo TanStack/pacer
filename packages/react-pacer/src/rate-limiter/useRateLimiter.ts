@@ -14,6 +14,12 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * a time window, then blocks all subsequent calls until the window resets. Unlike throttling or debouncing,
  * it does not attempt to space out or collapse executions intelligently.
  *
+ * The rate limiter supports two types of windows:
+ * - 'fixed': A strict window that resets after the window period. All executions within the window count
+ *   towards the limit, and the window resets completely after the period.
+ * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
+ *   consistent rate of execution over time.
+ *
  * For smoother execution patterns:
  * - Use throttling when you want consistent spacing between executions (e.g. UI updates)
  * - Use debouncing when you want to collapse rapid-fire events (e.g. search input)
@@ -28,10 +34,11 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  *
  * @example
  * ```tsx
- * // Basic rate limiting - max 5 calls per minute
+ * // Basic rate limiting - max 5 calls per minute with a sliding window
  * const { maybeExecute } = useRateLimiter(apiCall, {
  *   limit: 5,
  *   window: 60000,
+ *   windowType: 'sliding',
  * });
  *
  * // Monitor rate limit status

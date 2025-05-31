@@ -11,6 +11,7 @@ function App1() {
     instantCount(),
     {
       wait: 1000,
+      // enabled: () => instantCount() > 2, // optional, defaults to true
     },
   )
 
@@ -56,6 +57,7 @@ function App2() {
   const [throttledSearch, setThrottledSearch, throttler] =
     createThrottledSignal(instantSearch(), {
       wait: 1000,
+      // enabled: () => instantSearch().length > 2, // optional, defaults to true
     })
 
   function handleSearchChange(e: Event) {
@@ -98,12 +100,101 @@ function App2() {
   )
 }
 
+function App3() {
+  const [currentValue, setCurrentValue] = createSignal(50)
+  const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
+
+  // higher-level hook that uses Solid.createSignal with the state setter automatically throttled
+  const [throttledValue, setThrottledValue, throttler] = createThrottledSignal(
+    currentValue(),
+    {
+      wait: 250,
+    },
+  )
+
+  function handleRangeChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    const newValue = parseInt(target.value, 10)
+    setCurrentValue(newValue)
+    setInstantExecutionCount((c) => c + 1)
+    setThrottledValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer createThrottledSignal Example 3</h1>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue()}
+            onInput={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue()}</span>
+        </label>
+      </div>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Throttled Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={throttledValue()}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{throttledValue()}</span>
+        </label>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Instant Executions:</td>
+            <td>{instantExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Throttled Executions:</td>
+            <td>{throttler.executionCount()}</td>
+          </tr>
+          <tr>
+            <td>Saved Executions:</td>
+            <td>{instantExecutionCount() - throttler.executionCount()}</td>
+          </tr>
+          <tr>
+            <td>% Reduction:</td>
+            <td>
+              {instantExecutionCount() === 0
+                ? '0'
+                : Math.round(
+                    ((instantExecutionCount() - throttler.executionCount()) /
+                      instantExecutionCount()) *
+                      100,
+                  )}
+              %
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style={{ color: '#666', 'font-size': '0.9em' }}>
+        <p>Throttled with 250ms wait time</p>
+      </div>
+    </div>
+  )
+}
+
 render(
   () => (
     <div>
       <App1 />
       <hr />
       <App2 />
+      <hr />
+      <App3 />
     </div>
   ),
   document.getElementById('root')!,

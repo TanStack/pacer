@@ -8,18 +8,35 @@ title: queue
 # Function: queue()
 
 ```ts
-function queue<TValue>(options): (item, position, runOnUpdate) => boolean
+function queue<TValue>(fn, options): (item, position, runOnUpdate) => boolean
 ```
 
-Defined in: [queuer.ts:496](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L496)
+Defined in: [queuer.ts:549](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L549)
 
-Creates a queue that processes items in a queuer immediately upon addition.
+Creates a queue that processes items immediately upon addition.
 Items are processed sequentially in FIFO order by default.
 
 This is a simplified wrapper around the Queuer class that only exposes the
-`addItem` method. This queue is always running and will process items as they are added.
-For more control over queuer processing, use the Queuer class
-directly which provides methods like `start`, `stop`, `reset`, and more.
+`addItem` method. The queue is always running and will process items as they are added.
+For more control over queue processing, use the Queuer class directly.
+
+Example usage:
+```ts
+// Basic sequential processing
+const processItems = queue<number>((n) => console.log(n), {
+  wait: 1000,
+  onItemsChange: (queuer) => console.log(queuer.peekAllItems())
+});
+processItems(1); // Logs: 1
+processItems(2); // Logs: 2 after 1 completes
+
+// Priority queue
+const processPriority = queue<number>((n) => console.log(n), {
+  getPriority: n => n // Higher numbers processed first
+});
+processPriority(1);
+processPriority(3); // Processed before 1
+```
 
 ## Type Parameters
 
@@ -27,15 +44,28 @@ directly which provides methods like `start`, `stop`, `reset`, and more.
 
 ## Parameters
 
+### fn
+
+(`item`) => `void`
+
 ### options
 
-[`QueuerOptions`](../interfaces/queueroptions.md)\<`TValue`\> = `{}`
+[`QueuerOptions`](../../interfaces/queueroptions.md)\<`TValue`\>
 
 ## Returns
 
 `Function`
 
-Adds an item to the queuer and starts processing if not already running
+Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
+Items can be inserted based on priority or at the front/back depending on configuration.
+
+Returns true if the item was added, false if the queue is full.
+
+Example usage:
+```ts
+queuer.addItem('task');
+queuer.addItem('task2', 'front');
+```
 
 ### Parameters
 
@@ -45,7 +75,7 @@ Adds an item to the queuer and starts processing if not already running
 
 #### position
 
-[`QueuePosition`](../type-aliases/queueposition.md) = `...`
+[`QueuePosition`](../../type-aliases/queueposition.md) = `...`
 
 #### runOnUpdate
 
@@ -54,25 +84,3 @@ Adds an item to the queuer and starts processing if not already running
 ### Returns
 
 `boolean`
-
-true if item was added, false if queuer is full
-
-## Example
-
-```ts
-// Basic sequential processing
-const processItems = queuer<number>({
-  wait: 1000,
-  onItemsChange: (queuer) => console.log(queuer.getAllItems())
-})
-processItems(1) // Logs: 1
-processItems(2) // Logs: 2 after 1 completes
-
-// Priority queuer
-const processPriority = queuer<number>({
-  process: async (n) => console.log(n),
-  getPriority: n => n // Higher numbers processed first
-})
-processPriority(1)
-processPriority(3) // Processed before 1
-```

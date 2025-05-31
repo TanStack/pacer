@@ -11,15 +11,26 @@ title: asyncThrottle
 function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-throttler.ts:272](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L272)
+Defined in: [async-throttler.ts:363](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L363)
 
 Creates an async throttled function that limits how often the function can execute.
 The throttled function will execute at most once per wait period, even if called multiple times.
 If called while executing, it will wait until execution completes before scheduling the next call.
 
+Unlike the non-async Throttler, this async version supports returning values from the throttled function,
+making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+instead of setting the result on a state variable from within the throttled function.
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and throttler instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncThrottler instance
+
 ## Type Parameters
 
-• **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
+• **TFn** *extends* [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md)
 
 ## Parameters
 
@@ -29,14 +40,21 @@ If called while executing, it will wait until execution completes before schedul
 
 ### initialOptions
 
-`Omit`\<[`AsyncThrottlerOptions`](../interfaces/asyncthrottleroptions.md)\<`TFn`\>, `"enabled"`\>
+[`AsyncThrottlerOptions`](../../interfaces/asyncthrottleroptions.md)\<`TFn`\>
 
 ## Returns
 
 `Function`
 
-Attempts to execute the throttled function
-If a call is already in progress, it may be blocked or queued depending on the `wait` option
+Attempts to execute the throttled function.
+If a call is already in progress, it may be blocked or queued depending on the `wait` option.
+
+Error Handling:
+- If the throttled function throws and no `onError` handler is configured,
+  the error will be thrown from this method.
+- If an `onError` handler is configured, errors will be caught and passed to the handler,
+  and this method will return undefined.
+- The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
 
 ### Parameters
 
@@ -48,14 +66,26 @@ If a call is already in progress, it may be blocked or queued depending on the `
 
 `Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
 
+A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
+
+### Throws
+
+The error from the throttled function if no onError handler is configured
+
 ## Example
 
 ```ts
-const throttled = asyncThrottle(async () => {
-  await someAsyncOperation();
-}, { wait: 1000 });
+const throttled = asyncThrottle(async (value: string) => {
+  const result = await saveToAPI(value);
+  return result; // Return value is preserved
+}, {
+  wait: 1000,
+  onError: (error) => {
+    console.error('API call failed:', error);
+  }
+});
 
 // This will execute at most once per second
-await throttled();
-await throttled(); // Waits 1 second before executing
+// Returns the API response directly
+const result = await throttled(inputElement.value);
 ```

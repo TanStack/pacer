@@ -112,16 +112,20 @@ describe('AsyncThrottler', () => {
     expect(onError).toHaveBeenCalledWith(error, throttler)
   })
 
-  it('should continue processing after function throws error', async () => {
+  it('should continue processing after function throws error if onError is provided', async () => {
+    const onError = vi.fn()
     const mockFn = vi
       .fn()
       .mockRejectedValueOnce(new Error('First call error'))
       .mockResolvedValueOnce(undefined)
-    const throttler = new AsyncThrottler(mockFn, { wait: 100 })
+    const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
 
     // First call throws
     await throttler.maybeExecute(1)
-
+    expect(onError).toHaveBeenCalledWith(
+      new Error('First call error'),
+      throttler,
+    )
     // Second call should still execute after wait period
     const promise = throttler.maybeExecute(2)
     vi.advanceTimersByTime(100)

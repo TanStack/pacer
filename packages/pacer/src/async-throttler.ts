@@ -1,4 +1,5 @@
-import type { AnyAsyncFunction } from './types'
+import { parseFunctionOrValue } from './utils'
+import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 /**
  * Options for configuring an async throttled function
@@ -6,16 +7,19 @@ import type { AnyAsyncFunction } from './types'
 export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   /**
    * Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
    */
-  enabled?: boolean
+  enabled?: boolean | ((throttler: AsyncThrottler<TFn>) => boolean)
   /**
    * Whether to execute the function immediately when called
    * Defaults to true
    */
   leading?: boolean
   /**
-   * Optional error handler for when the throttled function throws
+   * Optional error handler for when the throttled function throws.
+   * If provided, the handler will be called with the error and throttler instance.
+   * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (error: unknown, asyncThrottler: AsyncThrottler<TFn>) => void
   /**
@@ -30,23 +34,32 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
     asyncThrottler: AsyncThrottler<TFn>,
   ) => void
   /**
+   * Whether to throw errors when they occur.
+   * Defaults to true if no onError handler is provided, false if an onError handler is provided.
+   * Can be explicitly set to override these defaults.
+   */
+  throwOnError?: boolean
+  /**
    * Whether to execute the function on the trailing edge of the wait period
    * Defaults to true
    */
   trailing?: boolean
   /**
-   * Time window in milliseconds during which the function can only be executed once
+   * Time window in milliseconds during which the function can only be executed once.
+   * Can be a number or a function that returns a number.
    * Defaults to 0ms
    */
-  wait: number
+  wait: number | ((throttler: AsyncThrottler<TFn>) => number)
 }
 
-const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
+type AsyncThrottlerOptionsWithOptionalCallbacks = OptionalKeys<
+  AsyncThrottlerOptions<any>,
+  'onError' | 'onSettled' | 'onSuccess'
+>
+
+const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {
   enabled: true,
   leading: true,
-  onError: () => {},
-  onSettled: () => {},
-  onSuccess: () => {},
   trailing: true,
   wait: 0,
 }
@@ -58,23 +71,39 @@ const defaultOptions: Required<AsyncThrottlerOptions<any>> = {
  * Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a
  * regular interval regardless of how often it's called.
  *
+ * Unlike the non-async Throttler, this async version supports returning values from the throttled function,
+ * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+ * instead of setting the result on a state variable from within the throttled function.
+ *
  * This is useful for rate-limiting API calls, handling scroll/resize events, or any scenario where you want to
  * ensure a maximum execution frequency.
+ *
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and throttler instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncThrottler instance
  *
  * @example
  * ```ts
  * const throttler = new AsyncThrottler(async (value: string) => {
- *   await saveToAPI(value);
- * }, { wait: 1000 });
+ *   const result = await saveToAPI(value);
+ *   return result; // Return value is preserved
+ * }, {
+ *   wait: 1000,
+ *   onError: (error) => {
+ *     console.error('API call failed:', error);
+ *   }
+ * });
  *
  * // Will only execute once per second no matter how often called
- * inputElement.addEventListener('input', () => {
- *   throttler.maybeExecute(inputElement.value);
- * });
+ * // Returns the API response directly
+ * const result = await throttler.maybeExecute(inputElement.value);
  * ```
  */
 export class AsyncThrottler<TFn extends AnyAsyncFunction> {
-  private _options: Required<AsyncThrottlerOptions<TFn>>
+  private _options: AsyncThrottlerOptionsWithOptionalCallbacks
   private _abortController: AbortController | null = null
   private _errorCount = 0
   private _isExecuting = false
@@ -85,6 +114,9 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   private _settleCount = 0
   private _successCount = 0
   private _timeoutId: NodeJS.Timeout | null = null
+  private _resolvePreviousPromise:
+    | ((value?: ReturnType<TFn> | undefined) => void)
+    | null = null
 
   constructor(
     private fn: TFn,
@@ -93,12 +125,12 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     this._options = {
       ...defaultOptions,
       ...initialOptions,
+      throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
   }
 
   /**
    * Updates the throttler options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<AsyncThrottlerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -112,29 +144,57 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   /**
    * Returns the current options
    */
-  getOptions(): Required<AsyncThrottlerOptions<TFn>> {
+  getOptions(): AsyncThrottlerOptions<TFn> {
     return this._options
   }
 
   /**
-   * Attempts to execute the throttled function
-   * If a call is already in progress, it may be blocked or queued depending on the `wait` option
+   * Returns the current enabled state of the throttler
+   */
+  getEnabled(): boolean {
+    return !!parseFunctionOrValue(this._options.enabled, this)
+  }
+
+  /**
+   * Returns the current wait time in milliseconds
+   */
+  getWait(): number {
+    return parseFunctionOrValue(this._options.wait, this)
+  }
+
+  /**
+   * Attempts to execute the throttled function.
+   * If a call is already in progress, it may be blocked or queued depending on the `wait` option.
+   *
+   * Error Handling:
+   * - If the throttled function throws and no `onError` handler is configured,
+   *   the error will be thrown from this method.
+   * - If an `onError` handler is configured, errors will be caught and passed to the handler,
+   *   and this method will return undefined.
+   * - The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
+   *
+   * @returns A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
+   * @throws The error from the throttled function if no onError handler is configured
    */
   async maybeExecute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
     const now = Date.now()
     const timeSinceLastExecution = now - this._lastExecutionTime
+    const wait = this.getWait()
+
+    this.resolvePreviousPromise()
 
     // Handle leading execution
-    if (this._options.leading && timeSinceLastExecution >= this._options.wait) {
-      await this.executeFunction(...args)
+    if (this._options.leading && timeSinceLastExecution >= wait) {
+      await this.execute(...args)
       return this._lastResult
     } else {
       // Store the most recent arguments for potential trailing execution
       this._lastArgs = args
 
       return new Promise((resolve) => {
+        this._resolvePreviousPromise = resolve
         // Clear any existing timeout to ensure we use the latest arguments
         if (this._timeoutId) {
           clearTimeout(this._timeoutId)
@@ -145,11 +205,12 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
           const _timeSinceLastExecution = this._lastExecutionTime
             ? now - this._lastExecutionTime
             : 0
-          const timeoutDuration = this._options.wait - _timeSinceLastExecution
+          const timeoutDuration = wait - _timeSinceLastExecution
           this._timeoutId = setTimeout(async () => {
             if (this._lastArgs !== undefined) {
-              await this.executeFunction(...this._lastArgs)
+              await this.execute(...this._lastArgs)
             }
+            this._resolvePreviousPromise = null
             resolve(this._lastResult)
           }, timeoutDuration)
         }
@@ -157,28 +218,40 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
   }
 
-  private async executeFunction(
+  private async execute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
-    if (!this._options.enabled || this._isExecuting) return undefined
+    if (!this.getEnabled() || this._isExecuting) return undefined
     this._abortController = new AbortController()
     try {
       this._isExecuting = true
       this._lastResult = await this.fn(...args) // EXECUTE!
       this._successCount++
-      this._options.onSuccess(this._lastResult!, this)
+      this._options.onSuccess?.(this._lastResult!, this)
     } catch (error) {
       this._errorCount++
-      this._options.onError(error, this)
+      this._options.onError?.(error, this)
+      if (this._options.throwOnError) {
+        throw error
+      } else {
+        console.error(error)
+      }
     } finally {
       this._isExecuting = false
       this._settleCount++
       this._abortController = null
       this._lastExecutionTime = Date.now()
-      this._nextExecutionTime = this._lastExecutionTime + this._options.wait
-      this._options.onSettled(this)
+      this._nextExecutionTime = this._lastExecutionTime + this.getWait()
+      this._options.onSettled?.(this)
     }
     return this._lastResult
+  }
+
+  private resolvePreviousPromise(): void {
+    if (this._resolvePreviousPromise) {
+      this._resolvePreviousPromise(this._lastResult)
+      this._resolvePreviousPromise = null
+    }
   }
 
   /**
@@ -193,6 +266,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this._abortController.abort()
       this._abortController = null
     }
+    this.resolvePreviousPromise()
     this._lastArgs = undefined
   }
 
@@ -242,7 +316,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    * Returns the current pending state
    */
   getIsPending(): boolean {
-    return this._options.enabled && !!this._timeoutId
+    return this.getEnabled() && !!this._timeoutId
   }
 
   /**
@@ -258,20 +332,37 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
  * The throttled function will execute at most once per wait period, even if called multiple times.
  * If called while executing, it will wait until execution completes before scheduling the next call.
  *
+ * Unlike the non-async Throttler, this async version supports returning values from the throttled function,
+ * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+ * instead of setting the result on a state variable from within the throttled function.
+ *
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and throttler instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncThrottler instance
+ *
  * @example
  * ```ts
- * const throttled = asyncThrottle(async () => {
- *   await someAsyncOperation();
- * }, { wait: 1000 });
+ * const throttled = asyncThrottle(async (value: string) => {
+ *   const result = await saveToAPI(value);
+ *   return result; // Return value is preserved
+ * }, {
+ *   wait: 1000,
+ *   onError: (error) => {
+ *     console.error('API call failed:', error);
+ *   }
+ * });
  *
  * // This will execute at most once per second
- * await throttled();
- * await throttled(); // Waits 1 second before executing
+ * // Returns the API response directly
+ * const result = await throttled(inputElement.value);
  * ```
  */
 export function asyncThrottle<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: Omit<AsyncThrottlerOptions<TFn>, 'enabled'>,
+  initialOptions: AsyncThrottlerOptions<TFn>,
 ) {
   const asyncThrottler = new AsyncThrottler(fn, initialOptions)
   return asyncThrottler.maybeExecute.bind(asyncThrottler)

@@ -8,7 +8,7 @@ title: useAsyncQueuedState
 # Function: useAsyncQueuedState()
 
 ```ts
-function useAsyncQueuedState<TValue>(options): [() => Promise<TValue>[], AsyncQueuer<TValue>]
+function useAsyncQueuedState<TValue>(fn, options): [TValue[], AsyncQueuer<TValue>]
 ```
 
 Defined in: [react-pacer/src/async-queuer/useAsyncQueuedState.ts:53](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuedState.ts#L53)
@@ -38,13 +38,17 @@ The state will automatically update whenever items are:
 
 ## Parameters
 
+### fn
+
+(`value`) => `Promise`\<`any`\>
+
 ### options
 
 `AsyncQueuerOptions`\<`TValue`\> = `{}`
 
 ## Returns
 
-\[() => `Promise`\<`TValue`\>[], `AsyncQueuer`\<`TValue`\>\]
+\[`TValue`[], `AsyncQueuer`\<`TValue`\>\]
 
 ## Example
 
@@ -69,5 +73,5 @@ asyncQueuer.start();
 asyncQueuer.stop();
 
 // queueItems reflects current queue state
-const pendingCount = asyncQueuer.getPendingItems().length;
+const pendingCount = asyncQueuer.peekPendingItems().length;
 ```

@@ -17,6 +17,9 @@ export * from './async-rate-limiter/createAsyncRateLimiter'
 // async-throttler
 export * from './async-throttler/createAsyncThrottler'
 
+// batcher
+export * from './batcher/createBatcher'
+
 // debouncer
 export * from './debouncer/createDebouncedSignal'
 export * from './debouncer/createDebouncedValue'

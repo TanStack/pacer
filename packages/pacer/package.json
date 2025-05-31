@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer",
-  "version": "0.3.0",
+  "version": "0.8.0",
   "description": "Utilities for debouncing, throttling, rate-limiting, queuing, and more.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -77,6 +77,16 @@
         "default": "./dist/cjs/async-throttler.cjs"
       }
     },
+    "./batcher": {
+      "import": {
+        "types": "./dist/esm/batcher.d.ts",
+        "default": "./dist/esm/batcher.js"
+      },
+      "require": {
+        "types": "./dist/cjs/batcher.d.cts",
+        "default": "./dist/cjs/batcher.cjs"
+      }
+    },
     "./compare": {
       "import": {
         "types": "./dist/esm/compare.d.ts",
@@ -131,8 +141,14 @@
       "types": "./dist/esm/types.d.ts"
     },
     "./utils": {
-      "types": "./dist/esm/utils.d.ts",
-      "default": "./dist/esm/utils.js"
+      "import": {
+        "types": "./dist/esm/utils.d.ts",
+        "default": "./dist/esm/utils.js"
+      },
+      "require": {
+        "types": "./dist/cjs/utils.d.cts",
+        "default": "./dist/cjs/utils.cjs"
+      }
     },
     "./package.json": "./package.json"
   },

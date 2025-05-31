@@ -9,8 +9,8 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/solid-pacer": "^0.3.0",
-    "solid-js": "^1.9.6"
+    "@tanstack/solid-pacer": "^0.8.0",
+    "solid-js": "^1.9.7"
   },
   "devDependencies": {
     "vite": "^6.3.5",

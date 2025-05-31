@@ -28,7 +28,7 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * const queue = useQueuer({
  *   started: true, // Start processing immediately
  *   wait: 1000,    // Process one item every second
- *   onItemsChange: (queue) => setItems(queue.getAllItems()),
+ *   onItemsChange: (queue) => setItems(queue.peekAllItems()),
  *   getPriority: (item) => item.priority // Process higher priority items first
  * });
  *
@@ -42,10 +42,11 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * ```
  */
 export function useQueuer<TValue>(
+  fn: (item: TValue) => void,
   options: QueuerOptions<TValue> = {},
 ): Queuer<TValue> {
   const [queuer] = useState(() =>
-    bindInstanceMethods(new Queuer<TValue>(options)),
+    bindInstanceMethods(new Queuer<TValue>(fn, options)),
   )
 
   queuer.setOptions(options)

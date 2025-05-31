@@ -43,7 +43,7 @@ timer resets and starts waiting again.
 
 ## Returns
 
-[`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`TFn`\>
+[`SolidDebouncer`](../../interfaces/soliddebouncer.md)\<`TFn`\>
 
 ## Example
 

@@ -1,4 +1,5 @@
-import type { AnyAsyncFunction } from './types'
+import { parseFunctionOrValue } from './utils'
+import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 /**
  * Options for configuring an async rate-limited function
@@ -6,17 +7,25 @@ import type { AnyAsyncFunction } from './types'
 export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
    */
-  enabled?: boolean
+  enabled?: boolean | ((rateLimiter: AsyncRateLimiter<TFn>) => boolean)
   /**
-   * Maximum number of executions allowed within the time window
+   * Maximum number of executions allowed within the time window.
+   * Can be a number or a function that returns a number.
    */
-  limit: number
+  limit: number | ((rateLimiter: AsyncRateLimiter<TFn>) => number)
   /**
-   * Optional error handler for when the rate-limited function throws
+   * Optional error handler for when the rate-limited function throws.
+   * If provided, the handler will be called with the error and rate limiter instance.
+   * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (error: unknown, rateLimiter: AsyncRateLimiter<TFn>) => void
+  /**
+   * Optional callback function that is called when an execution is rejected due to rate limiting
+   */
+  onReject?: (rateLimiter: AsyncRateLimiter<TFn>) => void
   /**
    * Optional function to call when the rate-limited function is executed
    */
@@ -29,23 +38,36 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
     rateLimiter: AsyncRateLimiter<TFn>,
   ) => void
   /**
-   * Optional callback function that is called when an execution is rejected due to rate limiting
+   * Whether to throw errors when they occur.
+   * Defaults to true if no onError handler is provided, false if an onError handler is provided.
+   * Can be explicitly set to override these defaults.
    */
-  onReject?: (rateLimiter: AsyncRateLimiter<TFn>) => void
+  throwOnError?: boolean
   /**
-   * Time window in milliseconds within which the limit applies
+   * Time window in milliseconds within which the limit applies.
+   * Can be a number or a function that returns a number.
    */
-  window: number
+  window: number | ((rateLimiter: AsyncRateLimiter<TFn>) => number)
+  /**
+   * Type of window to use for rate limiting
+   * - 'fixed': Uses a fixed window that resets after the window period
+   * - 'sliding': Uses a sliding window that allows executions as old ones expire
+   * Defaults to 'fixed'
+   */
+  windowType?: 'fixed' | 'sliding'
 }
 
-const defaultOptions: Required<
-  Omit<AsyncRateLimiterOptions<any>, 'limit' | 'window'>
+type AsyncRateLimiterOptionsWithOptionalCallbacks = OptionalKeys<
+  AsyncRateLimiterOptions<any>,
+  'onError' | 'onReject' | 'onSettled' | 'onSuccess'
+>
+
+const defaultOptions: Omit<
+  AsyncRateLimiterOptionsWithOptionalCallbacks,
+  'limit' | 'window'
 > = {
   enabled: true,
-  onError: () => {},
-  onReject: () => {},
-  onSettled: () => {},
-  onSuccess: () => {},
+  windowType: 'fixed',
 }
 
 /**
@@ -55,6 +77,16 @@ const defaultOptions: Required<
  * then blocks all subsequent calls until the window passes. This can lead to "bursty" behavior where
  * all executions happen immediately, followed by a complete block.
  *
+ * The rate limiter supports two types of windows:
+ * - 'fixed': A strict window that resets after the window period. All executions within the window count
+ *   towards the limit, and the window resets completely after the period.
+ * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
+ *   consistent rate of execution over time.
+ *
+ * Unlike the non-async RateLimiter, this async version supports returning values from the rate-limited function,
+ * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+ * instead of setting the result on a state variable from within the rate-limited function.
+ *
  * For smoother execution patterns, consider using:
  * - Throttling: Ensures consistent spacing between executions (e.g. max once per 200ms)
  * - Debouncing: Waits for a pause in calls before executing (e.g. after 500ms of no calls)
@@ -62,25 +94,45 @@ const defaultOptions: Required<
  * Rate limiting is best used for hard API limits or resource constraints. For UI updates or
  * smoothing out frequent events, throttling or debouncing usually provide better user experience.
  *
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and rate limiter instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncRateLimiter instance
+ * - Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
+ *
  * @example
  * ```ts
  * const rateLimiter = new AsyncRateLimiter(
  *   async (id: string) => await api.getData(id),
- *   { limit: 5, window: 1000 } // 5 calls per second
+ *   {
+ *     limit: 5,
+ *     window: 1000,
+ *     windowType: 'sliding',
+ *     onError: (error) => {
+ *       console.error('API call failed:', error);
+ *     },
+ *     onReject: (limiter) => {
+ *       console.log(`Rate limit exceeded. Try again in ${limiter.getMsUntilNextWindow()}ms`);
+ *     }
+ *   }
  * );
  *
  * // Will execute immediately until limit reached, then block
- * await rateLimiter.maybeExecute('123');
+ * // Returns the API response directly
+ * const data = await rateLimiter.maybeExecute('123');
  * ```
  */
 export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
-  private _options: AsyncRateLimiterOptions<TFn>
+  private _options: AsyncRateLimiterOptionsWithOptionalCallbacks
   private _errorCount = 0
   private _executionTimes: Array<number> = []
   private _lastResult: ReturnType<TFn> | undefined
   private _rejectionCount = 0
   private _settleCount = 0
   private _successCount = 0
+  private _isExecuting = false
 
   constructor(
     private fn: TFn,
@@ -89,12 +141,12 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     this._options = {
       ...defaultOptions,
       ...initialOptions,
+      throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
   }
 
   /**
    * Updates the rate limiter options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<AsyncRateLimiterOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -103,14 +155,48 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   /**
    * Returns the current rate limiter options
    */
-  getOptions(): Required<AsyncRateLimiterOptions<TFn>> {
-    return this._options as Required<AsyncRateLimiterOptions<TFn>>
+  getOptions(): AsyncRateLimiterOptions<TFn> {
+    return this._options
+  }
+
+  /**
+   * Returns the current enabled state of the rate limiter
+   */
+  getEnabled(): boolean {
+    return !!parseFunctionOrValue(this._options.enabled, this)
+  }
+
+  /**
+   * Returns the current limit of executions allowed within the time window
+   */
+  getLimit(): number {
+    return parseFunctionOrValue(this._options.limit, this)
+  }
+
+  /**
+   * Returns the current time window in milliseconds
+   */
+  getWindow(): number {
+    return parseFunctionOrValue(this._options.window, this)
   }
 
   /**
    * Attempts to execute the rate-limited function if within the configured limits.
    * Will reject execution if the number of calls in the current window exceeds the limit.
    * If execution is allowed, waits for any previous execution to complete before proceeding.
+   *
+   * Error Handling:
+   * - If the rate-limited function throws and no `onError` handler is configured,
+   *   the error will be thrown from this method.
+   * - If an `onError` handler is configured, errors will be caught and passed to the handler,
+   *   and this method will return undefined.
+   * - If the rate limit is exceeded, the execution will be rejected and the `onReject` handler
+   *   will be called if configured.
+   * - The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
+   * - Rate limit rejections can be tracked using `getRejectionCount()`.
+   *
+   * @returns A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
+   * @throws The error from the rate-limited function if no onError handler is configured
    *
    * @example
    * ```ts
@@ -128,19 +214,36 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> {
     this.cleanupOldExecutions()
 
-    if (this._executionTimes.length < this._options.limit) {
-      await this.executeFunction(...args)
-      return this._lastResult
+    const limit = this.getLimit()
+    const window = this.getWindow()
+
+    if (this._options.windowType === 'sliding') {
+      // For sliding window, we can execute if we have capacity in the current window
+      if (this._executionTimes.length < limit) {
+        await this.execute(...args)
+        return this._lastResult
+      }
+    } else {
+      // For fixed window, we need to check if we're in a new window
+      const now = Date.now()
+      const oldestExecution = Math.min(...this._executionTimes)
+      const isNewWindow = oldestExecution + window <= now
+
+      if (isNewWindow || this._executionTimes.length < limit) {
+        await this.execute(...args)
+        return this._lastResult
+      }
     }
 
     this.rejectFunction()
     return undefined
   }
 
-  private async executeFunction(
+  private async execute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
-    if (!this._options.enabled) return
+    if (!this.getEnabled()) return
+    this._isExecuting = true
     const now = Date.now()
     this._executionTimes.push(now)
 
@@ -151,7 +254,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     } catch (error) {
       this._errorCount++
       this._options.onError?.(error, this)
+      if (this._options.throwOnError) {
+        throw error
+      } else {
+        console.error(error)
+      }
     } finally {
+      this._isExecuting = false
       this._settleCount++
       this._options.onSettled?.(this)
     }
@@ -168,7 +277,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
 
   private cleanupOldExecutions(): void {
     const now = Date.now()
-    const windowStart = now - this._options.window
+    const windowStart = now - this.getWindow()
     this._executionTimes = this._executionTimes.filter(
       (time) => time > windowStart,
     )
@@ -179,14 +288,20 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    */
   getRemainingInWindow(): number {
     this.cleanupOldExecutions()
-    return Math.max(0, this._options.limit - this._executionTimes.length)
+    return Math.max(0, this.getLimit() - this._executionTimes.length)
   }
 
   /**
    * Returns the number of milliseconds until the next execution will be possible
+   * For fixed windows, this is the time until the current window resets
+   * For sliding windows, this is the time until the oldest execution expires
    */
   getMsUntilNextWindow(): number {
-    return this.getRemainingInWindow() * this._options.window
+    if (this.getRemainingInWindow() > 0) {
+      return 0
+    }
+    const oldestExecution = Math.min(...this._executionTimes)
+    return oldestExecution + this.getWindow() - Date.now()
   }
 
   /**
@@ -218,6 +333,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   }
 
   /**
+   * Returns whether the function is currently executing
+   */
+  getIsExecuting(): boolean {
+    return this._isExecuting
+  }
+
+  /**
    * Resets the rate limiter state
    */
   reset(): void {
@@ -232,6 +354,16 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
 /**
  * Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
  *
+ * Unlike the non-async rate limiter, this async version supports returning values from the rate-limited function,
+ * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+ * instead of setting the result on a state variable from within the rate-limited function.
+ *
+ * The rate limiter supports two types of windows:
+ * - 'fixed': A strict window that resets after the window period. All executions within the window count
+ *   towards the limit, and the window resets completely after the period.
+ * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
+ *   consistent rate of execution over time.
+ *
  * Note that rate limiting is a simpler form of execution control compared to throttling or debouncing:
  * - A rate limiter will allow all executions until the limit is reached, then block all subsequent calls until the window resets
  * - A throttler ensures even spacing between executions, which can be better for consistent performance
@@ -240,12 +372,24 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
  * Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
  * need to enforce a hard limit on the number of executions within a time period.
  *
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and rate limiter instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncRateLimiter instance
+ * - Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
+ *
  * @example
  * ```ts
- * // Rate limit to 5 calls per minute
+ * // Rate limit to 5 calls per minute with a sliding window
  * const rateLimited = asyncRateLimit(makeApiCall, {
  *   limit: 5,
  *   window: 60000,
+ *   windowType: 'sliding',
+ *   onError: (error) => {
+ *     console.error('API call failed:', error);
+ *   },
  *   onReject: (rateLimiter) => {
  *     console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }
@@ -253,7 +397,8 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
  *
  * // First 5 calls will execute immediately
  * // Additional calls will be rejected until the minute window resets
- * await rateLimited();
+ * // Returns the API response directly
+ * const result = await rateLimited();
  *
  * // For more even execution, consider using throttle instead:
  * const throttled = throttle(makeApiCall, { wait: 12000 }); // One call every 12 seconds
@@ -261,7 +406,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
  */
 export function asyncRateLimit<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  initialOptions: Omit<AsyncRateLimiterOptions<TFn>, 'enabled'>,
+  initialOptions: AsyncRateLimiterOptions<TFn>,
 ) {
   const rateLimiter = new AsyncRateLimiter(fn, initialOptions)
   return rateLimiter.maybeExecute.bind(rateLimiter)

@@ -8,7 +8,7 @@ title: useQueuedState
 # Function: useQueuedState()
 
 ```ts
-function useQueuedState<TValue>(options): [TValue[], (item, position?, runOnUpdate?) => boolean, Queuer<TValue>]
+function useQueuedState<TValue>(fn, options): [TValue[], (item, position?, runOnUpdate?) => boolean, Queuer<TValue>]
 ```
 
 Defined in: [react-pacer/src/queuer/useQueuedState.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedState.ts#L54)
@@ -32,6 +32,10 @@ The hook returns a tuple containing:
 • **TValue**
 
 ## Parameters
+
+### fn
+
+(`item`) => `void`
 
 ### options
 

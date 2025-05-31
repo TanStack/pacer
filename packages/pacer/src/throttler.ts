@@ -1,3 +1,4 @@
+import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
 /**
@@ -6,9 +7,10 @@ import type { AnyFunction } from './types'
 export interface ThrottlerOptions<TFn extends AnyFunction> {
   /**
    * Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
+   * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
    */
-  enabled?: boolean
+  enabled?: boolean | ((throttler: Throttler<TFn>) => boolean)
   /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to true.
@@ -24,9 +26,11 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
    */
   trailing?: boolean
   /**
-   * Time window in milliseconds during which the function can only be executed once
+   * Time window in milliseconds during which the function can only be executed once.
+   * Can be a number or a function that returns a number.
+   * Defaults to 0ms
    */
-  wait: number
+  wait: number | ((throttler: Throttler<TFn>) => number)
 }
 
 const defaultOptions: Required<ThrottlerOptions<any>> = {
@@ -83,7 +87,6 @@ export class Throttler<TFn extends AnyFunction> {
 
   /**
    * Updates the throttler options
-   * Returns the new options state
    */
   setOptions(newOptions: Partial<ThrottlerOptions<TFn>>): void {
     this._options = { ...this._options, ...newOptions }
@@ -99,6 +102,20 @@ export class Throttler<TFn extends AnyFunction> {
    */
   getOptions(): Required<ThrottlerOptions<TFn>> {
     return this._options
+  }
+
+  /**
+   * Returns the current enabled state of the throttler
+   */
+  getEnabled(): boolean {
+    return parseFunctionOrValue(this._options.enabled, this)
+  }
+
+  /**
+   * Returns the current wait time in milliseconds
+   */
+  getWait(): number {
+    return parseFunctionOrValue(this._options.wait, this)
   }
 
   /**
@@ -126,10 +143,11 @@ export class Throttler<TFn extends AnyFunction> {
   maybeExecute(...args: Parameters<TFn>): void {
     const now = Date.now()
     const timeSinceLastExecution = now - this._lastExecutionTime
+    const wait = this.getWait()
 
     // Handle leading execution
-    if (this._options.leading && timeSinceLastExecution >= this._options.wait) {
-      this.executeFunction(...args)
+    if (this._options.leading && timeSinceLastExecution >= wait) {
+      this.execute(...args)
     } else {
       // Store the most recent arguments for potential trailing execution
       this._lastArgs = args
@@ -139,18 +157,18 @@ export class Throttler<TFn extends AnyFunction> {
         const _timeSinceLastExecution = this._lastExecutionTime
           ? now - this._lastExecutionTime
           : 0
-        const timeoutDuration = this._options.wait - _timeSinceLastExecution
+        const timeoutDuration = wait - _timeSinceLastExecution
         this._timeoutId = setTimeout(() => {
           if (this._lastArgs !== undefined) {
-            this.executeFunction(...this._lastArgs)
+            this.execute(...this._lastArgs)
           }
         }, timeoutDuration)
       }
     }
   }
 
-  private executeFunction(...args: Parameters<TFn>): void {
-    if (!this._options.enabled) return
+  private execute(...args: Parameters<TFn>): void {
+    if (!this.getEnabled()) return
     this.fn(...args) // EXECUTE!
     this._executionCount++
     this._lastExecutionTime = Date.now()
@@ -187,7 +205,7 @@ export class Throttler<TFn extends AnyFunction> {
    * Returns the next execution time
    */
   getNextExecutionTime(): number {
-    return this._lastExecutionTime + this._options.wait
+    return this._lastExecutionTime + this.getWait()
   }
 
   /**
@@ -201,7 +219,7 @@ export class Throttler<TFn extends AnyFunction> {
    * Returns `true` if there is a pending execution
    */
   getIsPending(): boolean {
-    return this._options.enabled && !!this._timeoutId
+    return this.getEnabled() && !!this._timeoutId
   }
 }
 
@@ -233,7 +251,7 @@ export class Throttler<TFn extends AnyFunction> {
  */
 export function throttle<TFn extends AnyFunction>(
   fn: TFn,
-  initialOptions: Omit<ThrottlerOptions<TFn>, 'enabled'>,
+  initialOptions: ThrottlerOptions<TFn>,
 ) {
   const throttler = new Throttler(fn, initialOptions)
   return throttler.maybeExecute.bind(throttler)

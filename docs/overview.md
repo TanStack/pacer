@@ -14,26 +14,34 @@ TanStack Pacer is a library focused on providing high-quality utilities for cont
 
 Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of these utilities have been living in other TanStack libraries for quite some time. We extracted code from TanStack Query, Router, Form, and even Tanner's original [Swimmer](https://github.com/tannerlinsley/swimmer) library. Then we cleaned up these utilities, filled in some gaps, and shipped them as a standalone library.
 
-## Key Features
+## Features
+
+> [!NOTE]
+> TanStack Pacer is currently a client-side only library
 
 - **Debouncing**
-  - Delay functions execution until after a period of inactivity
+  - Delay execution until after a period of inactivity for when you only care about the last execution in a sequence.
   - Synchronous or Asynchronous Debounce utilities with promise support and error handling
+  - Control of leading, trailing, and enabled options
 - **Throttling**
-  - Limit the rate at which a function can fire
+  - Smoothly limit the rate at which a function can fire
   - Synchronous or Asynchronous Throttle utilities with promise support and error handling
+  - Control of leading, trailing, and enabled options.
 - **Rate Limiting**
-  - Limit the rate at which a function can fire
+  - Limit the rate at which a function can fire over a period of time
   - Synchronous or Asynchronous Rate Limiting utilities with promise support and error handling
+  - Fixed or Sliding Window variations of Rate Limiting
 - **Queuing**
   - Queue functions to be executed in a specific order
   - Choose from FIFO, LIFO, and Priority queue implementations
   - Control processing speed with configurable wait times or concurrency limits
   - Manage queue execution with start/stop capabilities
   - Expire items from the queue after a configurable duration
+- **Batching**
+  - Chunk up multiple operations into larger batches to reduce total back-and-forth operations
+  - Batch by time period, batch size, whichever comes first, or a custom condition to trigger batch executions
 - **Async or Sync Variations**
   - Choose between synchronous and asynchronous versions of each utility
-  - Enforce single-flight execution of functions if needed in the async variations of the utilities
   - Optional error, success, and settled handling for async variations
 - **Comparison Utilities**
   - Perform deep equality checks between values

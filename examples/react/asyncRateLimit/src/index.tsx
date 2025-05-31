@@ -35,6 +35,7 @@ function SearchApp() {
       {
         limit: 5,
         window: 5000,
+        // windowType: 'sliding', // default is 'fixed'
         onReject: (rateLimiter) => {
           console.log(
             `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,

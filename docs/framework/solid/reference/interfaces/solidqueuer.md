@@ -12,14 +12,14 @@ Defined in: [queuer/createQueuer.ts:7](https://github.com/TanStack/pacer/blob/ma
 ## Extends
 
 - `Omit`\<`Queuer`\<`TValue`\>, 
-  \| `"getAllItems"`
   \| `"getExecutionCount"`
   \| `"getIsEmpty"`
   \| `"getIsFull"`
   \| `"getIsIdle"`
   \| `"getIsRunning"`
-  \| `"getPeek"`
-  \| `"getSize"`\>
+  \| `"getSize"`
+  \| `"peekAllItems"`
+  \| `"peekNextItem"`\>
 
 ## Type Parameters
 
@@ -35,7 +35,7 @@ allItems: Accessor<TValue[]>;
 
 Defined in: [queuer/createQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L22)
 
-Signal version of `getAllItems`
+Signal version of `peekAllItems`
 
 ***
 
@@ -99,15 +99,15 @@ Signal version of `getIsRunning`
 
 ***
 
-### peek
+### nextItem
 
 ```ts
-peek: Accessor<undefined | TValue>;
+nextItem: Accessor<undefined | TValue>;
 ```
 
 Defined in: [queuer/createQueuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L46)
 
-Signal version of `getPeek`
+Signal version of `peekNextItem`
 
 ***
 

@@ -127,4 +127,145 @@ describe('RateLimiter', () => {
       expect(mockFn).toHaveBeenLastCalledWith('d')
     })
   })
+
+  describe('sliding window functionality', () => {
+    it('should allow executions as old ones expire', () => {
+      const mockFn = vi.fn()
+      const rateLimiter = new RateLimiter(mockFn, {
+        limit: 3,
+        window: 1000,
+        windowType: 'sliding',
+      })
+
+      // Fill up the window
+      expect(rateLimiter.maybeExecute()).toBe(true)
+      expect(rateLimiter.maybeExecute()).toBe(true)
+      expect(rateLimiter.maybeExecute()).toBe(true)
+      expect(rateLimiter.maybeExecute()).toBe(false)
+
+      // Advance time by 500ms - oldest execution should still be in window
+      vi.advanceTimersByTime(500)
+      expect(rateLimiter.maybeExecute()).toBe(false)
+
+      // Advance time by 600ms more - oldest execution should be expired
+      vi.advanceTimersByTime(600)
+      expect(rateLimiter.maybeExecute()).toBe(true)
+      expect(mockFn).toHaveBeenCalledTimes(4)
+    })
+
+    it('should maintain consistent rate with sliding window', () => {
+      const mockFn = vi.fn()
+      const rateLimiter = new RateLimiter(mockFn, {
+        limit: 3,
+        window: 1000,
+        windowType: 'sliding',
+      })
+
+      // Execute 3 times
+      rateLimiter.maybeExecute()
+      rateLimiter.maybeExecute()
+      rateLimiter.maybeExecute()
+
+      // Advance time by 400ms
+      vi.advanceTimersByTime(400)
+      expect(rateLimiter.maybeExecute()).toBe(false)
+
+      // Advance time by 700ms - one execution should be expired
+      vi.advanceTimersByTime(700)
+      expect(rateLimiter.maybeExecute()).toBe(true)
+      expect(mockFn).toHaveBeenCalledTimes(4)
+    })
+  })
+
+  describe('enabled/disabled state', () => {
+    it('should not execute when disabled', () => {
+      const mockFn = vi.fn()
+      const rateLimiter = new RateLimiter(mockFn, {
+        limit: 3,
+        window: 1000,
+        enabled: false,
+      })
+
+      expect(rateLimiter.maybeExecute()).toBe(true)
+      expect(mockFn).not.toHaveBeenCalled()
+    })
+
+    it('should update enabled state', () => {
+      const mockFn = vi.fn()
+      const rateLimiter = new RateLimiter(mockFn, {
+        limit: 3,
+        window: 1000,
+        enabled: false,
+      })
+
+      rateLimiter.maybeExecute()
+      expect(mockFn).not.toHaveBeenCalled()
+
+      rateLimiter.setOptions({ enabled: true })
+      rateLimiter.maybeExecute()
+      expect(mockFn).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('callback functions', () => {
+    it('should call onExecute callback after successful execution', () => {
+      const mockFn = vi.fn()
+      const onExecute = vi.fn()
+      const rateLimiter = new RateLimiter(mockFn, {
+        limit: 1,
+        window: 1000,
+        onExecute,
+      })
+
+      rateLimiter.maybeExecute()
+      expect(onExecute).toHaveBeenCalledTimes(1)
+      expect(onExecute).toHaveBeenCalledWith(rateLimiter)
+    })
+
+    it('should call onReject callback when execution is rejected', () => {
+      const mockFn = vi.fn()
+      const onReject = vi.fn()
+      const rateLimiter = new RateLimiter(mockFn, {
+        limit: 1,
+        window: 1000,
+        onReject,
+      })
+
+      rateLimiter.maybeExecute()
+      rateLimiter.maybeExecute()
+      expect(onReject).toHaveBeenCalledTimes(1)
+      expect(onReject).toHaveBeenCalledWith(rateLimiter)
+    })
+  })
+
+  describe('time tracking', () => {
+    it('should correctly calculate time until next window', () => {
+      const mockFn = vi.fn()
+      const rateLimiter = new RateLimiter(mockFn, {
+        limit: 1,
+        window: 1000,
+      })
+
+      rateLimiter.maybeExecute()
+      expect(rateLimiter.getMsUntilNextWindow()).toBe(1000)
+
+      vi.advanceTimersByTime(500)
+      expect(rateLimiter.getMsUntilNextWindow()).toBe(500)
+
+      vi.advanceTimersByTime(500)
+      expect(rateLimiter.getMsUntilNextWindow()).toBe(0)
+    })
+
+    it('should return 0 ms when executions are available', () => {
+      const mockFn = vi.fn()
+      const rateLimiter = new RateLimiter(mockFn, {
+        limit: 2,
+        window: 1000,
+      })
+
+      expect(rateLimiter.getMsUntilNextWindow()).toBe(0)
+      rateLimiter.maybeExecute()
+      expect(rateLimiter.getMsUntilNextWindow()).toBe(0)
+    })
+  })
 })
