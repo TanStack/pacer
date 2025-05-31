@@ -12,6 +12,7 @@ function App1() {
     rateLimit(setRateLimitedCount, {
       limit: 5,
       window: 5000,
+      // windowType: 'sliding', // default is 'fixed'
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -105,11 +106,75 @@ function App2() {
   )
 }
 
+function App3() {
+  const [currentValue, setCurrentValue] = useState(50)
+  const [rateLimitedValue, setRateLimitedValue] = useState(50)
+
+  // Create rate-limited setter function - Stable reference required!
+  const rateLimitedSetValue = useCallback(
+    rateLimit(setRateLimitedValue, {
+      limit: 30,
+      window: 2000,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    }),
+    [],
+  )
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setCurrentValue(newValue)
+    rateLimitedSetValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer rateLimit Example 3</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Rate Limited Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={rateLimitedValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{rateLimitedValue}</span>
+        </label>
+      </div>
+      <div style={{ color: '#666', fontSize: '0.9em' }}>
+        <p>Rate limited to 30 updates per 2000ms window</p>
+      </div>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <div>
     <App1 />
     <hr />
     <App2 />
+    <hr />
+    <App3 />
   </div>,
 )

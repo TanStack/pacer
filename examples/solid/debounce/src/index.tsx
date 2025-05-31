@@ -89,12 +89,68 @@ function App2() {
   )
 }
 
+function App3() {
+  const [currentValue, setCurrentValue] = createSignal(50)
+  const [debouncedValue, setDebouncedValue] = createSignal(50)
+
+  // Create debounced setter function - Stable reference required!
+  const debouncedSetValue = debounce(setDebouncedValue, {
+    wait: 250,
+  })
+
+  function handleRangeChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    const newValue = parseInt(target.value, 10)
+    setCurrentValue(newValue)
+    debouncedSetValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer debounce Example 3</h1>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue()}
+            onInput={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue()}</span>
+        </label>
+      </div>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Debounced Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={debouncedValue()}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{debouncedValue()}</span>
+        </label>
+      </div>
+      <div style={{ color: '#666', 'font-size': '0.9em' }}>
+        <p>Debounced with 250ms wait time</p>
+      </div>
+    </div>
+  )
+}
+
 render(
   () => (
     <div>
       <App1 />
       <hr />
       <App2 />
+      <hr />
+      <App3 />
     </div>
   ),
   document.getElementById('root')!,

@@ -11,9 +11,19 @@ title: asyncRateLimit
 function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-rate-limiter.ts:262](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L262)
+Defined in: [async-rate-limiter.ts:407](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L407)
 
 Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
+
+Unlike the non-async rate limiter, this async version supports returning values from the rate-limited function,
+making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+instead of setting the result on a state variable from within the rate-limited function.
+
+The rate limiter supports two types of windows:
+- 'fixed': A strict window that resets after the window period. All executions within the window count
+  towards the limit, and the window resets completely after the period.
+- 'sliding': A rolling window that allows executions as old ones expire. This provides a more
+  consistent rate of execution over time.
 
 Note that rate limiting is a simpler form of execution control compared to throttling or debouncing:
 - A rate limiter will allow all executions until the limit is reached, then block all subsequent calls until the window resets
@@ -23,9 +33,17 @@ Note that rate limiting is a simpler form of execution control compared to throt
 Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
 need to enforce a hard limit on the number of executions within a time period.
 
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and rate limiter instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncRateLimiter instance
+- Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
+
 ## Type Parameters
 
-• **TFn** *extends* [`AnyAsyncFunction`](../type-aliases/anyasyncfunction.md)
+• **TFn** *extends* [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md)
 
 ## Parameters
 
@@ -35,7 +53,7 @@ need to enforce a hard limit on the number of executions within a time period.
 
 ### initialOptions
 
-`Omit`\<[`AsyncRateLimiterOptions`](../interfaces/asyncratelimiteroptions.md)\<`TFn`\>, `"enabled"`\>
+[`AsyncRateLimiterOptions`](../../interfaces/asyncratelimiteroptions.md)\<`TFn`\>
 
 ## Returns
 
@@ -44,6 +62,16 @@ need to enforce a hard limit on the number of executions within a time period.
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
 If execution is allowed, waits for any previous execution to complete before proceeding.
+
+Error Handling:
+- If the rate-limited function throws and no `onError` handler is configured,
+  the error will be thrown from this method.
+- If an `onError` handler is configured, errors will be caught and passed to the handler,
+  and this method will return undefined.
+- If the rate limit is exceeded, the execution will be rejected and the `onReject` handler
+  will be called if configured.
+- The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
+- Rate limit rejections can be tracked using `getRejectionCount()`.
 
 ### Parameters
 
@@ -54,6 +82,12 @@ If execution is allowed, waits for any previous execution to complete before pro
 ### Returns
 
 `Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
+
+A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
+
+### Throws
+
+The error from the rate-limited function if no onError handler is configured
 
 ### Example
 
@@ -70,10 +104,14 @@ await rateLimiter.maybeExecute('arg1', 'arg2'); // Rejected
 ## Example
 
 ```ts
-// Rate limit to 5 calls per minute
+// Rate limit to 5 calls per minute with a sliding window
 const rateLimited = asyncRateLimit(makeApiCall, {
   limit: 5,
   window: 60000,
+  windowType: 'sliding',
+  onError: (error) => {
+    console.error('API call failed:', error);
+  },
   onReject: (rateLimiter) => {
     console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
   }
@@ -81,7 +119,8 @@ const rateLimited = asyncRateLimit(makeApiCall, {
 
 // First 5 calls will execute immediately
 // Additional calls will be rejected until the minute window resets
-await rateLimited();
+// Returns the API response directly
+const result = await rateLimited();
 
 // For more even execution, consider using throttle instead:
 const throttled = throttle(makeApiCall, { wait: 12000 }); // One call every 12 seconds

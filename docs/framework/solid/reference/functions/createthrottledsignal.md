@@ -43,7 +43,7 @@ consider using the lower-level createThrottler hook instead.
 
 ## Returns
 
-\[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, [`SolidThrottler`](../interfaces/solidthrottler.md)\<`Setter`\<`TValue`\>\>\]
+\[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, [`SolidThrottler`](../../interfaces/solidthrottler.md)\<`Setter`\<`TValue`\>\>\]
 
 ## Example
 

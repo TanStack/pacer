@@ -11,7 +11,7 @@ function App1() {
   const rateLimitedSetCount = useRateLimitedCallback(setRateLimitedCount, {
     limit: 5,
     window: 5000,
-    enabled: instantCount > 2,
+    enabled: () => instantCount > 2,
     onReject: (rateLimiter) => {
       console.log(
         `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
@@ -60,7 +60,7 @@ function App2() {
     {
       limit: 5,
       window: 5000,
-      enabled: searchText.length > 2,
+      enabled: () => searchText.length > 2,
       onReject: (rateLimiter) => {
         console.log(
           `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
@@ -104,11 +104,72 @@ function App2() {
   )
 }
 
+function App3() {
+  const [currentValue, setCurrentValue] = useState(50)
+  const [limitedValue, setLimitedValue] = useState(50)
+
+  // Create rateLimited setter function - Stable reference provided by useRateLimitedCallback
+  const rateLimitedSetValue = useRateLimitedCallback(setLimitedValue, {
+    limit: 20,
+    window: 2000,
+    onReject: (rateLimiter) => {
+      console.log(
+        `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
+      )
+    },
+  })
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setCurrentValue(newValue)
+    rateLimitedSetValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer useRateLimitedCallback Example 3</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Rate Limited Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={limitedValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{limitedValue}</span>
+        </label>
+      </div>
+      <div style={{ color: '#666', fontSize: '0.9em' }}>
+        <p>Rate limited to 20 updates per 2 seconds</p>
+      </div>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <div>
     <App1 />
     <hr />
     <App2 />
+    <hr />
+    <App3 />
   </div>,
 )

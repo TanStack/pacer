@@ -39,7 +39,7 @@ expensive operations or UI updates.
 
 ## Returns
 
-[`SolidThrottler`](../interfaces/solidthrottler.md)\<`TFn`\>
+[`SolidThrottler`](../../interfaces/solidthrottler.md)\<`TFn`\>
 
 ## Example
 

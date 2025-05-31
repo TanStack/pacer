@@ -45,7 +45,7 @@ The hook returns a tuple containing:
 
 ## Returns
 
-\[`Accessor`\<`TValue`\>, [`SolidDebouncer`](../interfaces/soliddebouncer.md)\<`Setter`\<`TValue`\>\>\]
+\[`Accessor`\<`TValue`\>, [`SolidDebouncer`](../../interfaces/soliddebouncer.md)\<`Setter`\<`TValue`\>\>\]
 
 ## Example
 

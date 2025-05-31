@@ -8,7 +8,7 @@ title: useQueuer
 # Function: useQueuer()
 
 ```ts
-function useQueuer<TValue>(options): Queuer<TValue>
+function useQueuer<TValue>(fn, options): Queuer<TValue>
 ```
 
 Defined in: [react-pacer/src/queuer/useQueuer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L44)
@@ -35,6 +35,10 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 ## Parameters
 
+### fn
+
+(`item`) => `void`
+
 ### options
 
 `QueuerOptions`\<`TValue`\> = `{}`
@@ -52,7 +56,7 @@ const [items, setItems] = useState([]);
 const queue = useQueuer({
   started: true, // Start processing immediately
   wait: 1000,    // Process one item every second
-  onItemsChange: (queue) => setItems(queue.getAllItems()),
+  onItemsChange: (queue) => setItems(queue.peekAllItems()),
   getPriority: (item) => item.priority // Process higher priority items first
 });
 

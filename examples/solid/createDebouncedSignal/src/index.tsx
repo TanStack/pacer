@@ -11,6 +11,7 @@ function App1() {
     instantCount(),
     {
       wait: 500,
+      // enabled: () => instantCount() > 2, // optional, defaults to true
       // leading: true, // optional, defaults to false
     },
   )
@@ -109,12 +110,101 @@ function App2() {
   )
 }
 
+function App3() {
+  const [currentValue, setCurrentValue] = createSignal(50)
+  const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
+
+  // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
+  const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
+    currentValue(),
+    {
+      wait: 250,
+    },
+  )
+
+  function handleRangeChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    const newValue = parseInt(target.value, 10)
+    setCurrentValue(newValue)
+    setInstantExecutionCount((c) => c + 1)
+    setDebouncedValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer createDebouncedSignal Example 3</h1>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue()}
+            onInput={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue()}</span>
+        </label>
+      </div>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Debounced Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={debouncedValue()}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{debouncedValue()}</span>
+        </label>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Instant Executions:</td>
+            <td>{instantExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Debounced Executions:</td>
+            <td>{debouncer.executionCount()}</td>
+          </tr>
+          <tr>
+            <td>Saved Executions:</td>
+            <td>{instantExecutionCount() - debouncer.executionCount()}</td>
+          </tr>
+          <tr>
+            <td>% Reduction:</td>
+            <td>
+              {instantExecutionCount() === 0
+                ? '0'
+                : Math.round(
+                    ((instantExecutionCount() - debouncer.executionCount()) /
+                      instantExecutionCount()) *
+                      100,
+                  )}
+              %
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style={{ color: '#666', 'font-size': '0.9em' }}>
+        <p>Debounced with 250ms wait time</p>
+      </div>
+    </div>
+  )
+}
+
 render(
   () => (
     <div>
       <App1 />
       <hr />
       <App2 />
+      <hr />
+      <App3 />
     </div>
   ),
   document.getElementById('root')!,

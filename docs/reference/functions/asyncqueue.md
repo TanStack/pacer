@@ -8,13 +8,29 @@ title: asyncQueue
 # Function: asyncQueue()
 
 ```ts
-function asyncQueue<TValue>(options): (fn, position, runOnUpdate) => Promise<TValue>
+function asyncQueue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => void
 ```
 
-Defined in: [async-queuer.ts:560](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L560)
+Defined in: [async-queuer.ts:612](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L612)
 
-Creates a new AsyncQueuer instance with the given options and returns a bound addItem function.
-The queuer is automatically started and ready to process items.
+Creates a new AsyncQueuer instance and returns a bound addItem function for adding tasks.
+The queuer is started automatically and ready to process items.
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and queuer instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together; the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncQueuer instance
+
+Example usage:
+```ts
+const enqueue = asyncQueue<string>(async (item) => {
+  return item.toUpperCase();
+}, {...options});
+
+enqueue('hello');
+```
 
 ## Type Parameters
 
@@ -22,45 +38,42 @@ The queuer is automatically started and ready to process items.
 
 ## Parameters
 
-### options
+### fn
 
-`Omit`\<[`AsyncQueuerOptions`](../interfaces/asyncqueueroptions.md)\<`TValue`\>, `"started"`\> = `{}`
+(`value`) => `Promise`\<`any`\>
 
-Configuration options for the AsyncQueuer
+### initialOptions
+
+[`AsyncQueuerOptions`](../../interfaces/asyncqueueroptions.md)\<`TValue`\>
 
 ## Returns
 
 `Function`
 
-A bound addItem function that can be used to add tasks to the queuer
-
-Adds a task to the queuer
+Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
+Items can be inserted based on priority or at the front/back depending on configuration.
 
 ### Parameters
 
-#### fn
+#### item
 
-() => `Promise`\<`TValue`\> & `object`
+`TValue` & `object`
 
 #### position
 
-[`QueuePosition`](../type-aliases/queueposition.md) = `...`
+[`QueuePosition`](../../type-aliases/queueposition.md) = `...`
 
-#### runOnUpdate
+#### runOnItemsChange
 
 `boolean` = `true`
 
 ### Returns
 
-`Promise`\<`TValue`\>
+`void`
 
-## Example
+### Example
 
 ```ts
-const enqueue = asyncQueue<string>();
-
-// Add items to be processed
-enqueue(async () => {
-  return 'Hello';
-});
+queuer.addItem({ value: 'task', priority: 10 });
+queuer.addItem('task2', 'front');
 ```

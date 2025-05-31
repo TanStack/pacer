@@ -6,12 +6,16 @@ function App1() {
   const [queueItems, setQueueItems] = createSignal<Array<number>>([])
   const [processedCount, setProcessedCount] = createSignal(0)
 
+  function processQueueItem(item: number) {
+    console.log(item)
+  }
+
   // Create the simplified queuer function
-  const queueItem = queue<number>({
+  const queueItem = queue<number>(processQueueItem, {
     maxSize: 25,
     wait: 1000,
     onItemsChange: (queue) => {
-      setQueueItems(queue.getAllItems())
+      setQueueItems(queue.peekAllItems())
       setProcessedCount(queue.getExecutionCount())
     },
   })
@@ -56,15 +60,16 @@ function App2() {
   const [inputText, setInputText] = createSignal('')
   const [queuedText, setQueuedText] = createSignal('')
 
+  function processQueueItem(item: string) {
+    setQueuedText(item)
+  }
+
   // Create the simplified queuer function
-  const queueTextChange = queue<string>({
+  const queueTextChange = queue<string>(processQueueItem, {
     maxSize: 100,
     wait: 500,
-    onGetNextItem: (item, _queue) => {
-      setQueuedText(item)
-    },
     onItemsChange: (queue) => {
-      setQueueItems(queue.getAllItems())
+      setQueueItems(queue.peekAllItems())
       setProcessedCount(queue.getExecutionCount())
     },
   })
@@ -111,12 +116,92 @@ function App2() {
   )
 }
 
+function App3() {
+  const [queueItems, setQueueItems] = createSignal<Array<number>>([])
+  const [processedCount, setProcessedCount] = createSignal(0)
+  const [currentValue, setCurrentValue] = createSignal(50)
+  const [queuedValue, setQueuedValue] = createSignal(50)
+
+  function processQueueItem(item: number) {
+    setQueuedValue(item)
+  }
+
+  // Create the simplified queuer function
+  const queueValue = queue<number>(processQueueItem, {
+    maxSize: 100,
+    wait: 100,
+    onItemsChange: (queue) => {
+      setQueueItems(queue.peekAllItems())
+      setProcessedCount(queue.getExecutionCount())
+    },
+  })
+
+  function handleRangeChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    const newValue = parseInt(target.value, 10)
+    setCurrentValue(newValue)
+    queueValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer queue Example 3</h1>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue()}
+            onInput={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue()}</span>
+        </label>
+      </div>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Queued Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={queuedValue()}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{queuedValue()}</span>
+        </label>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Queue Size:</td>
+            <td>{queueItems().length}</td>
+          </tr>
+          <tr>
+            <td>Items Processed:</td>
+            <td>{processedCount()}</td>
+          </tr>
+          <tr>
+            <td>Queue Items:</td>
+            <td>{queueItems().join(', ')}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 render(
   () => (
     <div>
       <App1 />
       <hr />
       <App2 />
+      <hr />
+      <App3 />
     </div>
   ),
   document.getElementById('root')!,

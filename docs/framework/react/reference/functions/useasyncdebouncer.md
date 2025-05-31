@@ -11,7 +11,7 @@ title: useAsyncDebouncer
 function useAsyncDebouncer<TFn>(fn, options): AsyncDebouncer<TFn>
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L42)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:60](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L60)
 
 A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -19,8 +19,22 @@ This hook is designed to be flexible and state-management agnostic - it simply r
 you can integrate with any state management solution (useState, Redux, Zustand, Jotai, etc).
 
 Async debouncing ensures that an async function only executes after a specified delay has passed since its last invocation.
-This is useful for handling fast-changing inputs like search fields, form validation, or any scenario where you want to
-wait for user input to settle before making expensive async calls.
+Each new invocation resets the delay timer. This is useful for handling frequent events like window resizing
+or input changes where you only want to execute the handler after the events have stopped occurring.
+
+Unlike throttling which allows execution at regular intervals, debouncing prevents any execution until
+the function stops being called for the specified delay period.
+
+Unlike the non-async Debouncer, this async version supports returning values from the debounced function,
+making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
+instead of setting the result on a state variable from within the debounced function.
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and debouncer instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncDebouncer instance
 
 ## Type Parameters
 
@@ -61,6 +75,11 @@ const { maybeExecute } = useAsyncDebouncer(
   },
   {
     wait: 300,
+    leading: true,   // Execute immediately on first call
+    trailing: false, // Skip trailing edge updates
+    onError: (error) => {
+      console.error('API call failed:', error);
+    }
   }
 );
 ```

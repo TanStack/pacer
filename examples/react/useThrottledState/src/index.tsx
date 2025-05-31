@@ -11,7 +11,7 @@ function App1() {
     instantCount,
     {
       wait: 1000,
-      // enabled: instantCount > 2, // optional, defaults to true
+      // enabled: () => instantCount > 2, // optional, defaults to true
     },
   )
 
@@ -101,11 +101,96 @@ function App2() {
   )
 }
 
+function App3() {
+  const [instantExecutionCount, setInstantExecutionCount] = useState(0)
+  const [currentValue, setCurrentValue] = useState(50)
+
+  // higher-level hook that uses React.useState with the state setter automatically throttled
+  const [throttledValue, setThrottledValue, throttler] = useThrottledState(
+    currentValue,
+    {
+      wait: 250,
+    },
+  )
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setCurrentValue(newValue)
+    setThrottledValue(newValue)
+    setInstantExecutionCount((c) => c + 1)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer useThrottledState Example 3</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Throttled Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={throttledValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{throttledValue}</span>
+        </label>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Instant Execution Count:</td>
+            <td>{instantExecutionCount}</td>
+          </tr>
+          <tr>
+            <td>Throttled Execution Count:</td>
+            <td>{throttler.getExecutionCount()}</td>
+          </tr>
+          <tr>
+            <td>Saved Executions:</td>
+            <td>
+              {instantExecutionCount - throttler.getExecutionCount()} (
+              {instantExecutionCount > 0
+                ? (
+                    ((instantExecutionCount - throttler.getExecutionCount()) /
+                      instantExecutionCount) *
+                    100
+                  ).toFixed(2)
+                : 0}
+              % Reduction in execution calls)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style={{ color: '#666', fontSize: '0.9em' }}>
+        <p>Throttled to 1 update per 250ms</p>
+      </div>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <div>
     <App1 />
     <hr />
     <App2 />
+    <hr />
+    <App3 />
   </div>,
 )
