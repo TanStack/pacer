@@ -8,9 +8,9 @@
       <div class="example-box">
         <div class="input-group">
           <label>Type here:</label>
-          <input 
-            v-model="searchQuery" 
-            placeholder="Start typing..." 
+          <input
+            v-model="searchQuery"
+            placeholder="Start typing..."
             class="input-field"
           />
         </div>
@@ -18,7 +18,9 @@
           <p><strong>Instant value:</strong> {{ searchQuery }}</p>
           <p><strong>Debounced value:</strong> {{ debouncedQuery }}</p>
           <p><strong>Update count:</strong> {{ updateCount }}</p>
-          <p><strong>Time since last update:</strong> {{ timeSinceUpdate }}ms</p>
+          <p>
+            <strong>Time since last update:</strong> {{ timeSinceUpdate }}ms
+          </p>
         </div>
       </div>
     </section>
@@ -29,37 +31,45 @@
       <div class="example-box">
         <div class="input-group">
           <label>Controlled input:</label>
-          <input 
-            v-model="controlledValue" 
-            placeholder="Type and use controls below..." 
+          <input
+            v-model="controlledValue"
+            placeholder="Type and use controls below..."
             class="input-field"
           />
         </div>
         <div class="controls">
-          <button 
-            @click="cancelControlled()"
-            :disabled="!controlledIsPending"
-          >
+          <button @click="cancelControlled()" :disabled="!controlledIsPending">
             Cancel Update
           </button>
-          <button 
-            @click="flushControlled()"
-            :disabled="!controlledIsPending"
-          >
+          <button @click="flushControlled()" :disabled="!controlledIsPending">
             Update Now
           </button>
-          <button @click="toggleEnabled">{{ isEnabled ? 'Disable' : 'Enable' }}</button>
-          <button @click="toggleLeading">{{ isLeading ? 'Disable Leading' : 'Enable Leading' }}</button>
+          <button @click="toggleEnabled">
+            {{ isEnabled ? 'Disable' : 'Enable' }}
+          </button>
+          <button @click="toggleLeading">
+            {{ isLeading ? 'Disable Leading' : 'Enable Leading' }}
+          </button>
           <button @click="resetControlled">Reset</button>
         </div>
         <div class="values">
           <p><strong>Instant value:</strong> {{ controlledValue }}</p>
           <p><strong>Debounced value:</strong> {{ debouncedControlled }}</p>
-          <p><strong>Status:</strong> {{ controlledIsPending ? 'Update Pending...' : 'Up to date' }}</p>
-          <p><strong>Execution count:</strong> {{ controlledExecutionCount }}</p>
+          <p>
+            <strong>Status:</strong>
+            {{ controlledIsPending ? 'Update Pending...' : 'Up to date' }}
+          </p>
+          <p>
+            <strong>Execution count:</strong> {{ controlledExecutionCount }}
+          </p>
           <p><strong>Time typing:</strong> {{ elapsedTypingTime }}ms</p>
-          <p><strong>Leading edge:</strong> {{ isLeading ? 'Enabled' : 'Disabled' }}</p>
-          <p><strong>Debouncer:</strong> {{ isEnabled ? 'Enabled' : 'Disabled' }}</p>
+          <p>
+            <strong>Leading edge:</strong>
+            {{ isLeading ? 'Enabled' : 'Disabled' }}
+          </p>
+          <p>
+            <strong>Debouncer:</strong> {{ isEnabled ? 'Enabled' : 'Disabled' }}
+          </p>
         </div>
       </div>
     </section>
@@ -111,23 +121,20 @@ const toggleLeading = () => {
   setControlledOptions({ leading: isLeading.value })
 }
 
-const { 
-  value: debouncedControlled, 
+const {
+  value: debouncedControlled,
   executionCount: controlledExecutionCount,
   isPending: controlledIsPending,
   setOptions: setControlledOptions,
   cancel: cancelControlled,
   flush: flushControlled,
-  setValue: setDebouncedControlledValue 
-} = useDebouncer(
-  controlledValue.value, 
-  {
-    wait: 1000,
-    leading: isLeading.value,  
-    trailing: true,  
-    enabled: isEnabled.value,   
-  },
-)
+  setValue: setDebouncedControlledValue,
+} = useDebouncer(controlledValue.value, {
+  wait: 1000,
+  leading: isLeading.value,
+  trailing: true,
+  enabled: isEnabled.value,
+})
 
 // Watch the raw input and call the debouncer's setValue
 watch(controlledValue, (newValue) => {
@@ -136,40 +143,46 @@ watch(controlledValue, (newValue) => {
 
 // Watch for pending state changes to manage typing timer
 watch(controlledIsPending, (pending, oldPending) => {
-  console.log(`[App.vue] controlledIsPending changed from ${oldPending} to ${pending}`);
+  console.log(
+    `[App.vue] controlledIsPending changed from ${oldPending} to ${pending}`,
+  )
   if (pending) {
-    typingStartTime.value = Date.now();
-    console.log(`[App.vue] Typing timer started. Start time: ${typingStartTime.value}`);
-    if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value); // Clear previous, just in case
+    typingStartTime.value = Date.now()
+    console.log(
+      `[App.vue] Typing timer started. Start time: ${typingStartTime.value}`,
+    )
+    if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value) // Clear previous, just in case
     elapsedTimeInterval.value = setInterval(() => {
       if (typingStartTime.value) {
-        elapsedTypingTime.value = Date.now() - typingStartTime.value;
+        elapsedTypingTime.value = Date.now() - typingStartTime.value
         // console.log(`[App.vue] Interval: elapsedTypingTime = ${elapsedTypingTime.value}`); // Optional: can be noisy
       } else {
         // This case should ideally not happen if interval is cleared promptly
-        if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value);
-        elapsedTimeInterval.value = null;
+        if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value)
+        elapsedTimeInterval.value = null
       }
-    }, 50); // Update every 50ms
+    }, 50) // Update every 50ms
   } else {
-    if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value);
-    elapsedTimeInterval.value = null;
-    typingStartTime.value = null; // Ensure this is nulled
-    console.log(`[App.vue] Typing timer stopped. Final elapsed: ${elapsedTypingTime.value}ms`);
+    if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value)
+    elapsedTimeInterval.value = null
+    typingStartTime.value = null // Ensure this is nulled
+    console.log(
+      `[App.vue] Typing timer stopped. Final elapsed: ${elapsedTypingTime.value}ms`,
+    )
     // elapsedTypingTime holds the last value until next typing or reset
   }
-});
+})
 
 // Reset both value and pending state
 const resetControlled = () => {
-  console.log('[App.vue] resetControlled called');
-  cancelControlled(); // This will make controlledIsPending false
-  controlledValue.value = '';
+  console.log('[App.vue] resetControlled called')
+  cancelControlled() // This will make controlledIsPending false
+  controlledValue.value = ''
   // Also explicitly reset typing time on manual reset
-  if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value);
-  elapsedTimeInterval.value = null;
-  typingStartTime.value = null;
-  elapsedTypingTime.value = 0;
+  if (elapsedTimeInterval.value) clearInterval(elapsedTimeInterval.value)
+  elapsedTimeInterval.value = null
+  typingStartTime.value = null
+  elapsedTypingTime.value = 0
 }
 </script>
 
@@ -178,7 +191,10 @@ const resetControlled = () => {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 h1 {

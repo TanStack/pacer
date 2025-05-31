@@ -29,27 +29,27 @@ export interface UseDebouncedValueReturn<TValue> {
  * <script setup lang="ts">
  * import { computed, ref, watch } from 'vue'
  * import { useDebouncedValue } from '@tanstack/vue-pacer'
- * 
+ *
  * // Basic debouncing example
  * const searchQuery = ref('')
  * const updateCount = ref(0)
  * const lastUpdateTime = ref(Date.now())
- * 
+ *
  * const { value: debouncedQuery } = useDebouncedValue(searchQuery, {
  *   wait: 500
  * })
- * 
+ *
  * // Compute time since last update
  * const timeSinceUpdate = computed(() => {
  *   return Date.now() - lastUpdateTime.value
  * })
- * 
+ *
  * // Watch for debounced updates
  * watch(debouncedQuery, () => {
  *   updateCount.value++
  *   lastUpdateTime.value = Date.now()
  * })
- * 
+ *
  * // Advanced example with controls
  * const controlledValue = ref('')
  * const { value: debouncedControlled, ...controlledDebouncer } = useDebouncedValue(
@@ -61,7 +61,7 @@ export interface UseDebouncedValueReturn<TValue> {
  *   }
  * )
  * </script>
- * 
+ *
  * <template>
  *   <div>
  *     <!-- Basic Example -->
@@ -72,23 +72,23 @@ export interface UseDebouncedValueReturn<TValue> {
  *       <p><strong>Update count:</strong> {{ updateCount }}</p>
  *       <p><strong>Time since last update:</strong> {{ timeSinceUpdate }}ms</p>
  *     </div>
- * 
+ *
  *     <!-- Advanced Example with Controls -->
  *     <div>
  *       <input v-model="controlledValue" placeholder="Type and use controls..." />
- *       <button 
+ *       <button
  *         @click="controlledDebouncer.cancel()"
  *         :disabled="!controlledDebouncer.isPending.value"
  *       >
  *         Cancel Update
  *       </button>
- *       <button 
+ *       <button
  *         @click="controlledDebouncer.flush()"
  *         :disabled="!controlledDebouncer.isPending.value"
  *       >
  *         Update Now
  *       </button>
- *       <p><strong>Status:</strong> 
+ *       <p><strong>Status:</strong>
  *         {{ controlledDebouncer.isPending.value ? 'Update Pending...' : 'Up to date' }}
  *       </p>
  *     </div>
@@ -98,26 +98,33 @@ export interface UseDebouncedValueReturn<TValue> {
  */
 export function useDebouncedValue<TValue>(
   inputValue: MaybeRefOrGetter<TValue>,
-  options: DebouncerOptions<(value: TValue) => void>
+  options: DebouncerOptions<(value: TValue) => void>,
 ): UseDebouncedValueReturn<TValue> {
-  const getValue = typeof inputValue === 'function'
-    ? inputValue as () => TValue
-    : () => unref(inputValue)
+  const getValue =
+    typeof inputValue === 'function'
+      ? (inputValue as () => TValue)
+      : () => unref(inputValue)
 
-  const { value: debouncedValue, setValue, flush, cancel, isPending } = useDebouncer(getValue(), options)
+  const {
+    value: debouncedValue,
+    setValue,
+    flush,
+    cancel,
+    isPending,
+  } = useDebouncer(getValue(), options)
 
   watch(
     getValue,
     (newValue) => {
       setValue(newValue)
     },
-    { immediate: true }
+    { immediate: true },
   )
 
   return {
     value: debouncedValue,
     flush,
     cancel,
-    isPending
+    isPending,
   }
 }
