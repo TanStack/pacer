@@ -1,5 +1,5 @@
 {
-  "name": "vue-debouncing-example",
+  "name": "@tanstack/pacer-example-vue-debounce",
   "private": true,
   "version": "0.0.0",
   "type": "module",
