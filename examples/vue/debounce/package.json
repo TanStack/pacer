@@ -1,0 +1,21 @@
+{
+  "name": "@tanstack/pacer-example-vue-debounce",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tanstack/vue-pacer": "workspace:*",
+    "vue": "^3.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "typescript": "5.8.3",
+    "vite": "^6.3.5",
+    "vue-tsc": "^1.8.8"
+  }
+}
