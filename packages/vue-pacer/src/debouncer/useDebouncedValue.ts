@@ -4,17 +4,6 @@ import { useDebouncer } from './useDebouncer'
 import type { MaybeRefOrGetter } from '../types'
 import type { DebouncerOptions } from '@tanstack/pacer'
 
-export interface UseDebouncedValueReturn<TValue> {
-  /** The current debounced value */
-  value: Ref<TValue>
-  /** Force immediate update of the value */
-  flush: () => void
-  /** Cancel any pending updates */
-  cancel: () => void
-  /** Check if there are any pending updates */
-  isPending: Readonly<Ref<boolean>>
-}
-
 /**
  * A Vue composable that creates a debounced value that updates only after a specified delay.
  * This composable automatically tracks changes to the input value and updates the
@@ -99,7 +88,16 @@ export interface UseDebouncedValueReturn<TValue> {
 export function useDebouncedValue<TValue>(
   inputValue: MaybeRefOrGetter<TValue>,
   options: DebouncerOptions<(value: TValue) => void>,
-): UseDebouncedValueReturn<TValue> {
+): {
+  /** The current debounced value */
+  value: Ref<TValue>
+  /** Force immediate update of the value */
+  flush: () => void
+  /** Cancel any pending updates */
+  cancel: () => void
+  /** Check if there are any pending updates */
+  isPending: Readonly<Ref<boolean>>
+} {
   const getValue =
     typeof inputValue === 'function'
       ? (inputValue as () => TValue)

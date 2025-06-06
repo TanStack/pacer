@@ -4,27 +4,6 @@ import { readonly, ref, unref } from 'vue'
 import type { MaybeRef } from '../types'
 import type { DebouncerOptions } from '@tanstack/pacer'
 
-export interface UseDebouncerReturn<TValue> {
-  /** The current debounced value */
-  value: Ref<TValue>
-  /** Set a new value (will be debounced) */
-  setValue: (newValue: TValue) => void
-  /** Force immediate update of the value */
-  flush: () => void
-  /** Cancel any pending updates */
-  cancel: () => void
-  /** Check if there are any pending updates */
-  isPending: Readonly<Ref<boolean>>
-  /** Get the number of times the value has been updated */
-  executionCount: Readonly<Ref<number>>
-  /** Update debouncer options */
-  setOptions: (
-    newOptions: Partial<DebouncerOptions<(value: TValue) => void>>,
-  ) => void
-  /** Get current debouncer options */
-  getOptions: () => Required<DebouncerOptions<(value: TValue) => void>>
-}
-
 /**
  * Creates a debouncer instance with Vue reactivity integration.
  * This composable provides a debounced value that updates only after
@@ -107,7 +86,26 @@ export interface UseDebouncerReturn<TValue> {
 export function useDebouncer<TValue>(
   initialValue: MaybeRef<TValue>,
   optionsInput: DebouncerOptions<(value: TValue) => void>,
-): UseDebouncerReturn<TValue> {
+): {
+  /** The current debounced value */
+  value: Ref<TValue>
+  /** Set a new value (will be debounced) */
+  setValue: (newValue: TValue) => void
+  /** Force immediate update of the value */
+  flush: () => void
+  /** Cancel any pending updates */
+  cancel: () => void
+  /** Check if there are any pending updates */
+  isPending: Readonly<Ref<boolean>>
+  /** Get the number of times the value has been updated */
+  executionCount: Readonly<Ref<number>>
+  /** Update debouncer options */
+  setOptions: (
+    newOptions: Partial<DebouncerOptions<(value: TValue) => void>>,
+  ) => void
+  /** Get current debouncer options */
+  getOptions: () => Required<DebouncerOptions<(value: TValue) => void>>
+} {
   const value = ref<TValue>(unref(initialValue)) as Ref<TValue>
   const _isPending = ref(false)
   const _executionCount = ref(0)

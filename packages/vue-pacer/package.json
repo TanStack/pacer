@@ -74,7 +74,6 @@
   "devDependencies": {
     "@tanstack/config": "0.18.0",
     "@vitejs/plugin-vue": "^4.5.0",
-    "@vue/test-utils": "^2.4.0",
     "typescript": "5.8.3",
     "vite": "^6.3.5",
     "vitest": "^3.1.4"
