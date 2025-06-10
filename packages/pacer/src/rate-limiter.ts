@@ -1,5 +1,15 @@
 import { parseFunctionOrValue } from './utils'
+import type { Persister } from './persister'
 import type { AnyFunction } from './types'
+
+/**
+ * State shape for persisting RateLimiter
+ */
+export interface RateLimiterState {
+  executionCount: number
+  rejectionCount: number
+  executionTimes: Array<number>
+}
 
 /**
  * Options for configuring a rate-limited function
@@ -35,13 +45,18 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    * Defaults to 'fixed'
    */
   windowType?: 'fixed' | 'sliding'
+  /**
+   * Optional persister for saving/loading rate limiter state
+   */
+  persister?: Persister<RateLimiterState>
 }
 
-const defaultOptions: Required<RateLimiterOptions<any>> = {
+const defaultOptions: Omit<
+  Required<RateLimiterOptions<any>>,
+  'persister' | 'onExecute' | 'onReject'
+> = {
   enabled: true,
   limit: 1,
-  onExecute: () => {},
-  onReject: () => {},
   window: 0,
   windowType: 'fixed',
 }
@@ -78,10 +93,13 @@ const defaultOptions: Required<RateLimiterOptions<any>> = {
  * ```
  */
 export class RateLimiter<TFn extends AnyFunction> {
-  private _executionCount = 0
-  private _rejectionCount = 0
-  private _executionTimes: Array<number> = []
+  private _state: RateLimiterState = {
+    executionCount: 0,
+    rejectionCount: 0,
+    executionTimes: [],
+  }
   private _options: RateLimiterOptions<TFn>
+  private _persister?: Persister<RateLimiterState>
 
   constructor(
     private fn: TFn,
@@ -90,6 +108,43 @@ export class RateLimiter<TFn extends AnyFunction> {
     this._options = {
       ...defaultOptions,
       ...initialOptions,
+    }
+    this._persister = this._options.persister
+    if (this._persister) {
+      // Load state
+      const loadedState = this._persister.loadState(this._persister.key)
+      if (loadedState) {
+        this.setState(loadedState, false)
+      }
+    }
+  }
+
+  /**
+   * Returns the current state for persistence
+   */
+  private getState(): RateLimiterState {
+    return { ...this._state }
+  }
+
+  /**
+   * Loads state from a persisted object or updates state with a partial
+   */
+  private setState(
+    state: Partial<RateLimiterState>,
+    save: boolean = true,
+  ): void {
+    this._state = { ...this._state, ...state }
+    if (save) {
+      this.saveState()
+    }
+  }
+
+  /**
+   * Saves state using the persister if available
+   */
+  private saveState(): void {
+    if (this._persister) {
+      this._persister.saveState(this._persister.key, this.getState())
     }
   }
 
@@ -148,17 +203,17 @@ export class RateLimiter<TFn extends AnyFunction> {
 
     if (this._options.windowType === 'sliding') {
       // For sliding window, we can execute if we have capacity in the current window
-      if (this._executionTimes.length < this.getLimit()) {
+      if (this._state.executionTimes.length < this.getLimit()) {
         this.execute(...args)
         return true
       }
     } else {
       // For fixed window, we need to check if we're in a new window
       const now = Date.now()
-      const oldestExecution = Math.min(...this._executionTimes)
+      const oldestExecution = Math.min(...this._state.executionTimes)
       const isNewWindow = oldestExecution + this.getWindow() <= now
 
-      if (isNewWindow || this._executionTimes.length < this.getLimit()) {
+      if (isNewWindow || this._state.executionTimes.length < this.getLimit()) {
         this.execute(...args)
         return true
       }
@@ -171,39 +226,43 @@ export class RateLimiter<TFn extends AnyFunction> {
   private execute(...args: Parameters<TFn>): void {
     if (!this.getEnabled()) return
     const now = Date.now()
-    this._executionCount++
-    this._executionTimes.push(now)
-    this.fn(...args) // execute the function
+    this.fn(...args) // EXECUTE!
+    this._state.executionTimes.push(now) // mutate state directly for performance
+    this.setState({
+      executionCount: this._state.executionCount + 1,
+    })
     this._options.onExecute?.(this)
   }
 
   private rejectFunction(): void {
-    this._rejectionCount++
-    if (this._options.onReject) {
-      this._options.onReject(this)
-    }
+    this.setState({
+      rejectionCount: this._state.rejectionCount + 1,
+    })
+    this._options.onReject?.(this)
   }
 
   private cleanupOldExecutions(): void {
     const now = Date.now()
     const windowStart = now - this.getWindow()
-    this._executionTimes = this._executionTimes.filter(
-      (time) => time > windowStart,
-    )
+    this.setState({
+      executionTimes: this._state.executionTimes.filter(
+        (time) => time > windowStart,
+      ),
+    })
   }
 
   /**
    * Returns the number of times the function has been executed
    */
   getExecutionCount(): number {
-    return this._executionCount
+    return this._state.executionCount
   }
 
   /**
    * Returns the number of times the function has been rejected
    */
   getRejectionCount(): number {
-    return this._rejectionCount
+    return this._state.rejectionCount
   }
 
   /**
@@ -211,7 +270,7 @@ export class RateLimiter<TFn extends AnyFunction> {
    */
   getRemainingInWindow(): number {
     this.cleanupOldExecutions()
-    return Math.max(0, this.getLimit() - this._executionTimes.length)
+    return Math.max(0, this.getLimit() - this._state.executionTimes.length)
   }
 
   /**
@@ -221,7 +280,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     if (this.getRemainingInWindow() > 0) {
       return 0
     }
-    const oldestExecution = Math.min(...this._executionTimes)
+    const oldestExecution = this._state.executionTimes[0] ?? Infinity
     return oldestExecution + this.getWindow() - Date.now()
   }
 
@@ -229,9 +288,11 @@ export class RateLimiter<TFn extends AnyFunction> {
    * Resets the rate limiter state
    */
   reset(): void {
-    this._executionTimes = []
-    this._executionCount = 0
-    this._rejectionCount = 0
+    this.setState({
+      executionTimes: [],
+      executionCount: 0,
+      rejectionCount: 0,
+    })
   }
 }
 

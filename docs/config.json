@@ -81,6 +81,10 @@
         {
           "label": "Batching Guide",
           "to": "guides/batching"
+        },
+        {
+          "label": "Persisting State Guide",
+          "to": "guides/persisting-state"
         }
       ]
     },
@@ -451,6 +455,48 @@
             {
               "label": "createBatcher",
               "to": "framework/solid/reference/functions/createbatcher"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "collapsible": true,
+      "defaultCollapsed": true,
+      "label": "Persister API Reference",
+      "children": [
+        {
+          "label": "Persister",
+          "to": "reference/classes/persister"
+        },
+        {
+          "label": "PersistedStorage",
+          "to": "reference/interfaces/persistedstorage"
+        },
+        {
+          "label": "StoragePersisterOptions",
+          "to": "reference/interfaces/storagepersisteroptions"
+        },
+        {
+          "label": "StoragePersister",
+          "to": "reference/classes/storagepersister"
+        }
+      ],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "useStoragePersister",
+              "to": "framework/react/reference/functions/usestoragepersister"
+            },
+            {
+              "label": "useLocalStorageState",
+              "to": "framework/react/reference/functions/uselocalstoragestate"
+            },
+            {
+              "label": "useSessionStorageState",
+              "to": "framework/react/reference/functions/usesessionstoragestate"
             }
           ]
         }
