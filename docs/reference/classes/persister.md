@@ -7,7 +7,7 @@ title: Persister
 
 # Class: `abstract` Persister\<TState\>
 
-Defined in: persister.ts:23
+Defined in: [persister.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L23)
 
 Abstract class that defines the contract for a state persister implementation.
 A persister is responsible for loading and saving state to a storage medium.
@@ -47,7 +47,7 @@ class MyPersister extends Persister<MyState> {
 new Persister<TState>(key): Persister<TState>
 ```
 
-Defined in: persister.ts:24
+Defined in: [persister.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L24)
 
 #### Parameters
 
@@ -67,7 +67,7 @@ Defined in: persister.ts:24
 readonly key: string;
 ```
 
-Defined in: persister.ts:24
+Defined in: [persister.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L24)
 
 ## Methods
 
@@ -77,7 +77,7 @@ Defined in: persister.ts:24
 abstract loadState(key): undefined | TState
 ```
 
-Defined in: persister.ts:26
+Defined in: [persister.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L26)
 
 #### Parameters
 
@@ -97,7 +97,7 @@ Defined in: persister.ts:26
 abstract saveState(key, state): void
 ```
 
-Defined in: persister.ts:27
+Defined in: [persister.ts:27](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L27)
 
 #### Parameters
 

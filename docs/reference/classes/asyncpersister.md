@@ -7,7 +7,7 @@ title: AsyncPersister
 
 # Class: `abstract` AsyncPersister\<TState\>
 
-Defined in: async-persister.ts:4
+Defined in: [async-persister.ts:4](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-persister.ts#L4)
 
 Interface for an async persister that can save/load state for a given type
 
@@ -23,7 +23,7 @@ Interface for an async persister that can save/load state for a given type
 new AsyncPersister<TState>(key): AsyncPersister<TState>
 ```
 
-Defined in: async-persister.ts:5
+Defined in: [async-persister.ts:5](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-persister.ts#L5)
 
 #### Parameters
 
@@ -43,7 +43,7 @@ Defined in: async-persister.ts:5
 readonly key: string;
 ```
 
-Defined in: async-persister.ts:5
+Defined in: [async-persister.ts:5](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-persister.ts#L5)
 
 ## Methods
 
@@ -53,7 +53,7 @@ Defined in: async-persister.ts:5
 abstract loadState(key): Promise<undefined | TState>
 ```
 
-Defined in: async-persister.ts:7
+Defined in: [async-persister.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-persister.ts#L7)
 
 #### Parameters
 
@@ -73,7 +73,7 @@ Defined in: async-persister.ts:7
 abstract saveState(key, state): Promise<void>
 ```
 
-Defined in: async-persister.ts:8
+Defined in: [async-persister.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-persister.ts#L8)
 
 #### Parameters
 
