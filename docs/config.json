@@ -84,7 +84,7 @@
         },
         {
           "label": "Persisting State Guide",
-          "to": "guides/persisting-state"
+          "to": "guides/persisting"
         }
       ]
     },
