@@ -172,7 +172,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     this._persister = this._options.persister
     if (this._persister) {
       // Load state
-      const loadedState = this._persister.loadState(this._persister.key)
+      const loadedState = this._persister.loadState()
       if (loadedState instanceof Promise) {
         loadedState.then((state) => {
           if (state) {
@@ -201,16 +201,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   ): void {
     this._state = { ...this._state, ...state }
     if (save) {
-      this.saveState()
-    }
-  }
-
-  /**
-   * Saves state using the persister if available
-   */
-  private saveState(): void {
-    if (this._persister) {
-      this._persister.saveState(this._persister.key, this.getState())
+      this._persister?.saveState(this.getState())
     }
   }
 

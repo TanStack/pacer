@@ -26,13 +26,13 @@ describe('createStoragePersister', () => {
     ;(storage.getItem as any).mockReturnValue(
       JSON.stringify({ state, timestamp }),
     )
-    const result = persister.loadState('test-key')
+    const result = persister.loadState()
     expect(result).toEqual(state)
   })
 
   it('should return undefined when no state exists', () => {
     ;(storage.getItem as any).mockReturnValue(null)
-    const result = persister.loadState('test-key')
+    const result = persister.loadState()
     expect(result).toBeUndefined()
   })
 
@@ -47,8 +47,8 @@ describe('createStoragePersister', () => {
       storage,
       onSaveStateError,
     })
-    persister.saveState('test-key', { count: 1 })
-    expect(onSaveStateError).toHaveBeenCalledWith('test-key', error)
+    persister.saveState({ count: 1 })
+    expect(onSaveStateError).toHaveBeenCalledWith(error)
   })
 
   it('should call onSaveState callback when state is saved', () => {
@@ -59,8 +59,8 @@ describe('createStoragePersister', () => {
       onSaveState,
     })
     const state = { count: 1 }
-    persister.saveState('test-key', state)
-    expect(onSaveState).toHaveBeenCalledWith('test-key', state)
+    persister.saveState(state)
+    expect(onSaveState).toHaveBeenCalledWith(state)
   })
 
   it('should call onLoadState callback when state is loaded', () => {
@@ -74,8 +74,8 @@ describe('createStoragePersister', () => {
     ;(storage.getItem as any).mockReturnValue(
       JSON.stringify({ state, timestamp: Date.now() }),
     )
-    persister.loadState('test-key')
-    expect(onLoadState).toHaveBeenCalledWith('test-key', state)
+    persister.loadState()
+    expect(onLoadState).toHaveBeenCalledWith(state)
   })
 
   it('should respect buster string when loading state', () => {
@@ -91,7 +91,7 @@ describe('createStoragePersister', () => {
         buster: 'v1',
       }),
     )
-    const result = persister.loadState('test-key')
+    const result = persister.loadState()
     expect(result).toBeUndefined()
   })
 
@@ -107,7 +107,7 @@ describe('createStoragePersister', () => {
         timestamp: Date.now() - 2000,
       }),
     )
-    const result = persister.loadState('test-key')
+    const result = persister.loadState()
     expect(result).toBeUndefined()
   })
 
@@ -121,12 +121,12 @@ describe('createStoragePersister', () => {
       deserializer,
     })
     const state = { count: 1 }
-    persister.saveState('test-key', state)
+    persister.saveState(state)
     expect(serializer).toHaveBeenCalled()
     ;(storage.getItem as any).mockReturnValue(
       JSON.stringify({ state, timestamp: Date.now() }),
     )
-    persister.loadState('test-key')
+    persister.loadState()
     expect(deserializer).toHaveBeenCalled()
   })
 })

@@ -84,7 +84,7 @@ When exceeded, the state will be cleared and treated as if it doesn't exist.
 ### onLoadState()?
 
 ```ts
-optional onLoadState: (key, state) => void;
+optional onLoadState: (state) => void;
 ```
 
 Defined in: [persister.ts:65](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L65)
@@ -92,10 +92,6 @@ Defined in: [persister.ts:65](https://github.com/TanStack/pacer/blob/main/packag
 Optional callback that runs after state is successfully loaded.
 
 #### Parameters
-
-##### key
-
-`string`
 
 ##### state
 
@@ -110,7 +106,7 @@ Optional callback that runs after state is successfully loaded.
 ### onLoadStateError()?
 
 ```ts
-optional onLoadStateError: (key, error) => void;
+optional onLoadStateError: (error) => void;
 ```
 
 Defined in: [persister.ts:69](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L69)
@@ -118,10 +114,6 @@ Defined in: [persister.ts:69](https://github.com/TanStack/pacer/blob/main/packag
 Optional callback that runs after state is unable to be loaded.
 
 #### Parameters
-
-##### key
-
-`string`
 
 ##### error
 
@@ -136,7 +128,7 @@ Optional callback that runs after state is unable to be loaded.
 ### onSaveState()?
 
 ```ts
-optional onSaveState: (key, state) => void;
+optional onSaveState: (state) => void;
 ```
 
 Defined in: [persister.ts:73](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L73)
@@ -144,10 +136,6 @@ Defined in: [persister.ts:73](https://github.com/TanStack/pacer/blob/main/packag
 Optional callback that runs after state is successfully saved.
 
 #### Parameters
-
-##### key
-
-`string`
 
 ##### state
 
@@ -162,7 +150,7 @@ Optional callback that runs after state is successfully saved.
 ### onSaveStateError()?
 
 ```ts
-optional onSaveStateError: (key, error) => void;
+optional onSaveStateError: (error) => void;
 ```
 
 Defined in: [persister.ts:78](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L78)
@@ -171,10 +159,6 @@ Optional callback that runs after state is unable to be saved.
 For example, if the storage is full (localStorage >= 5MB)
 
 #### Parameters
-
-##### key
-
-`string`
 
 ##### error
 

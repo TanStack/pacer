@@ -14,7 +14,7 @@ function useLocalStorageState<TValue>(
    options?): readonly [TValue, Dispatch<SetStateAction<TValue>>]
 ```
 
-Defined in: [react-pacer/src/persister/useStorageState.ts:47](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/persister/useStorageState.ts#L47)
+Defined in: [react-pacer/src/persister/useStorageState.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/persister/useStorageState.ts#L46)
 
 A hook that persists state to localStorage and syncs it across tabs
 

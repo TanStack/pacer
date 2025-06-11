@@ -106,16 +106,10 @@ Returns the current persister options
 ### loadState()
 
 ```ts
-loadState(key): undefined | TState
+loadState(): undefined | TState
 ```
 
 Defined in: [persister.ts:167](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L167)
-
-#### Parameters
-
-##### key
-
-`string`
 
 #### Returns
 
@@ -130,16 +124,12 @@ Defined in: [persister.ts:167](https://github.com/TanStack/pacer/blob/main/packa
 ### saveState()
 
 ```ts
-saveState(key, state): void
+saveState(state): void
 ```
 
 Defined in: [persister.ts:150](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L150)
 
 #### Parameters
-
-##### key
-
-`string`
 
 ##### state
 

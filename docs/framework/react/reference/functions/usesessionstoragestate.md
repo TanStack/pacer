@@ -14,7 +14,7 @@ function useSessionStorageState<TValue>(
    options?): readonly [TValue, Dispatch<SetStateAction<TValue>>]
 ```
 
-Defined in: [react-pacer/src/persister/useStorageState.ts:70](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/persister/useStorageState.ts#L70)
+Defined in: [react-pacer/src/persister/useStorageState.ts:69](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/persister/useStorageState.ts#L69)
 
 A hook that persists state to sessionStorage and syncs it across tabs
 

@@ -6,32 +6,31 @@ function useStorageState<TValue>(
   initialValue: TValue,
   options: StoragePersisterOptions<TValue>,
 ) {
-  const { key } = options
   const persister = useStoragePersister<TValue>(options)
 
   const [state, setState] = useState<TValue>(() => {
-    return persister.loadState(key) ?? initialValue
+    return persister.loadState() ?? initialValue
   })
 
   useEffect(() => {
-    persister.saveState(key, state)
+    persister.saveState(state)
 
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === key && e.newValue) {
+      if (e.key === options.key && e.newValue) {
         try {
-          const parsed = JSON.parse(e.newValue)
+          const parsed = (options.deserializer ?? JSON.parse)(e.newValue)
           if (parsed.state) {
             setState(parsed.state)
           }
-        } catch {
-          // Ignore invalid JSON
+        } catch (e) {
+          console.error('Failed to parse storage event', e)
         }
       }
     }
 
     window.addEventListener('storage', handleStorageChange)
     return () => window.removeEventListener('storage', handleStorageChange)
-  }, [key, state, persister])
+  }, [state, persister, options.deserializer, options.key])
 
   return [state, setState] as const
 }

@@ -5,16 +5,16 @@
  * @example
  * ```ts
  * class MyPersister extends Persister<MyState> {
- *   constructor(key: string) {
+ *   constructor() {
  *     super(key)
  *   }
  *
- *   loadState(key: string): MyState | undefined {
+ *   loadState(): MyState | undefined {
  *     // Load state from storage
  *     return state
  *   }
  *
- *   saveState(key: string, state: MyState): void {
+ *   saveState(, state: MyState): void {
  *     // Save state to storage
  *   }
  * }
@@ -23,8 +23,8 @@
 export abstract class Persister<TState> {
   constructor(public readonly key: string) {}
 
-  abstract loadState(key: string): TState | undefined
-  abstract saveState(key: string, state: TState): void
+  abstract loadState(): TState | undefined
+  abstract saveState(state: TState): void
 }
 
 export interface PersistedStorage<TState> {
@@ -62,20 +62,20 @@ export interface StoragePersisterOptions<TState> {
   /**
    * Optional callback that runs after state is successfully loaded.
    */
-  onLoadState?: (key: string, state: TState | undefined) => void
+  onLoadState?: (state: TState | undefined) => void
   /**
    * Optional callback that runs after state is unable to be loaded.
    */
-  onLoadStateError?: (key: string, error: Error) => void
+  onLoadStateError?: (error: Error) => void
   /**
    * Optional callback that runs after state is successfully saved.
    */
-  onSaveState?: (key: string, state: TState) => void
+  onSaveState?: (state: TState) => void
   /**
    * Optional callback that runs after state is unable to be saved.
    * For example, if the storage is full (localStorage >= 5MB)
    */
-  onSaveStateError?: (key: string, error: Error) => void
+  onSaveStateError?: (error: Error) => void
   /**
    * Optional function to customize how state is serialized before saving to storage.
    * By default, JSON.stringify is used.
@@ -147,25 +147,25 @@ export class StoragePersister<TState> extends Persister<TState> {
     return this._options
   }
 
-  saveState(key: string, state: TState): void {
+  saveState(state: TState): void {
     try {
       this._options.storage.setItem(
-        key,
+        this.key,
         this._options.serializer!({
           buster: this._options.buster,
           state,
           timestamp: Date.now(),
         }),
       )
-      this._options.onSaveState?.(key, state)
+      this._options.onSaveState?.(state)
     } catch (error) {
       console.error(error)
-      this._options.onSaveStateError?.(key, error as Error)
+      this._options.onSaveStateError?.(error as Error)
     }
   }
 
-  loadState(key: string): TState | undefined {
-    const stored = this._options.storage.getItem(key)
+  loadState(): TState | undefined {
+    const stored = this._options.storage.getItem(this.key)
     if (!stored) {
       return undefined
     }
@@ -184,11 +184,11 @@ export class StoragePersister<TState> extends Persister<TState> {
       }
 
       const state = parsed.state as TState
-      this._options.onLoadState?.(key, state)
+      this._options.onLoadState?.(state)
       return state
     } catch (error) {
       console.error(error)
-      this._options.onLoadStateError?.(key, error as Error)
+      this._options.onLoadStateError?.(error as Error)
       return undefined
     }
   }

@@ -16,16 +16,16 @@ A persister is responsible for loading and saving state to a storage medium.
 
 ```ts
 class MyPersister extends Persister<MyState> {
-  constructor(key: string) {
+  constructor() {
     super(key)
   }
 
-  loadState(key: string): MyState | undefined {
+  loadState(): MyState | undefined {
     // Load state from storage
     return state
   }
 
-  saveState(key: string, state: MyState): void {
+  saveState(, state: MyState): void {
     // Save state to storage
   }
 }
@@ -74,16 +74,10 @@ Defined in: [persister.ts:24](https://github.com/TanStack/pacer/blob/main/packag
 ### loadState()
 
 ```ts
-abstract loadState(key): undefined | TState
+abstract loadState(): undefined | TState
 ```
 
 Defined in: [persister.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L26)
-
-#### Parameters
-
-##### key
-
-`string`
 
 #### Returns
 
@@ -94,16 +88,12 @@ Defined in: [persister.ts:26](https://github.com/TanStack/pacer/blob/main/packag
 ### saveState()
 
 ```ts
-abstract saveState(key, state): void
+abstract saveState(state): void
 ```
 
 Defined in: [persister.ts:27](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L27)
 
 #### Parameters
-
-##### key
-
-`string`
 
 ##### state
 

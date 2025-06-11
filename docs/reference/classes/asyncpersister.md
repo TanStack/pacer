@@ -50,16 +50,10 @@ Defined in: [async-persister.ts:5](https://github.com/TanStack/pacer/blob/main/p
 ### loadState()
 
 ```ts
-abstract loadState(key): Promise<undefined | TState>
+abstract loadState(): Promise<undefined | TState>
 ```
 
 Defined in: [async-persister.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-persister.ts#L7)
-
-#### Parameters
-
-##### key
-
-`string`
 
 #### Returns
 
@@ -70,16 +64,12 @@ Defined in: [async-persister.ts:7](https://github.com/TanStack/pacer/blob/main/p
 ### saveState()
 
 ```ts
-abstract saveState(key, state): Promise<void>
+abstract saveState(state): Promise<void>
 ```
 
 Defined in: [async-persister.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-persister.ts#L8)
 
 #### Parameters
-
-##### key
-
-`string`
 
 ##### state
 
