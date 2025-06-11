@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
+import { useStoragePersister } from '@tanstack/react-pacer/persister'
 
 function App1() {
   // Use your state management library of choice
@@ -18,6 +19,12 @@ function App1() {
         'Rejected by rate limiter',
         rateLimiter.getMsUntilNextWindow(),
       ),
+    persister: useStoragePersister({
+      key: 'my-rate-limiter',
+      storage: localStorage,
+      maxAge: 1000 * 60, // 1 minute
+      buster: 'v1',
+    }),
   })
 
   function increment() {

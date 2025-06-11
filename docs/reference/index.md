@@ -10,13 +10,16 @@ title: "@tanstack/pacer"
 ## Classes
 
 - [AsyncDebouncer](../classes/asyncdebouncer.md)
+- [AsyncPersister](../classes/asyncpersister.md)
 - [AsyncQueuer](../classes/asyncqueuer.md)
 - [AsyncRateLimiter](../classes/asyncratelimiter.md)
 - [AsyncThrottler](../classes/asyncthrottler.md)
 - [Batcher](../classes/batcher.md)
 - [Debouncer](../classes/debouncer.md)
+- [Persister](../classes/persister.md)
 - [Queuer](../classes/queuer.md)
 - [RateLimiter](../classes/ratelimiter.md)
+- [StoragePersister](../classes/storagepersister.md)
 - [Throttler](../classes/throttler.md)
 
 ## Interfaces
@@ -24,11 +27,15 @@ title: "@tanstack/pacer"
 - [AsyncDebouncerOptions](../interfaces/asyncdebounceroptions.md)
 - [AsyncQueuerOptions](../interfaces/asyncqueueroptions.md)
 - [AsyncRateLimiterOptions](../interfaces/asyncratelimiteroptions.md)
+- [AsyncRateLimiterState](../interfaces/asyncratelimiterstate.md)
 - [AsyncThrottlerOptions](../interfaces/asyncthrottleroptions.md)
 - [BatcherOptions](../interfaces/batcheroptions.md)
 - [DebouncerOptions](../interfaces/debounceroptions.md)
+- [PersistedStorage](../interfaces/persistedstorage.md)
 - [QueuerOptions](../interfaces/queueroptions.md)
 - [RateLimiterOptions](../interfaces/ratelimiteroptions.md)
+- [RateLimiterState](../interfaces/ratelimiterstate.md)
+- [StoragePersisterOptions](../interfaces/storagepersisteroptions.md)
 - [ThrottlerOptions](../interfaces/throttleroptions.md)
 
 ## Type Aliases

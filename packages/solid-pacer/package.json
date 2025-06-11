@@ -47,6 +47,16 @@
         "default": "./dist/cjs/async-debouncer/index.cjs"
       }
     },
+    "./async-persister": {
+      "import": {
+        "types": "./dist/esm/async-persister/index.d.ts",
+        "default": "./dist/esm/async-persister/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-persister/index.d.cts",
+        "default": "./dist/cjs/async-persister/index.cjs"
+      }
+    },
     "./async-queuer": {
       "import": {
         "types": "./dist/esm/async-queuer/index.d.ts",
@@ -95,6 +105,16 @@
       "require": {
         "types": "./dist/cjs/debouncer/index.d.cts",
         "default": "./dist/cjs/debouncer/index.cjs"
+      }
+    },
+    "./persister": {
+      "import": {
+        "types": "./dist/esm/persister/index.d.ts",
+        "default": "./dist/esm/persister/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/persister/index.d.cts",
+        "default": "./dist/cjs/persister/index.cjs"
       }
     },
     "./queuer": {

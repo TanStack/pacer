@@ -30,6 +30,9 @@ export * from './debouncer/useDebouncedState'
 export * from './debouncer/useDebouncedValue'
 export * from './debouncer/useDebouncer'
 
+export * from './persister/useStoragePersister'
+export * from './persister/useStorageState'
+
 // queuer
 export * from './queuer/useQueuer'
 export * from './queuer/useQueuedState'
