@@ -10,7 +10,7 @@
   "scripts": {
     "build": "nx affected --targets=build --exclude=examples/** && size-limit",
     "build:all": "nx run-many --targets=build --exclude=examples/** && size-limit",
-    "build:core": "nx build @tanstack/pacer && size-limit",
+    "build:core": "nx build @tanstack/pacer @tanstack/persister && size-limit",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
     "changeset:version": "changeset version && pnpm install --no-frozen-lockfile && pnpm prettier:write",
@@ -78,7 +78,9 @@
   },
   "overrides": {
     "@tanstack/pacer": "workspace:*",
+    "@tanstack/persister": "workspace:*",
     "@tanstack/react-pacer": "workspace:*",
+    "@tanstack/react-persister": "workspace:*",
     "@tanstack/solid-pacer": "workspace:*"
   }
 }

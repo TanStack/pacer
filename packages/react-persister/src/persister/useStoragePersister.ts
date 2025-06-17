@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { StoragePersister } from '@tanstack/pacer/persister'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import type { StoragePersisterOptions } from '@tanstack/pacer/persister'
+import { StoragePersister } from '@tanstack/persister/persister'
+import { bindInstanceMethods } from '@tanstack/persister/utils'
+import type { StoragePersisterOptions } from '@tanstack/persister/persister'
 
 export function useStoragePersister<TState>(
   options: StoragePersisterOptions<TState>,

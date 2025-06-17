@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncRateLimiter } from '@tanstack/react-pacer/async-rate-limiter'
-import { useStoragePersister } from '@tanstack/react-pacer/persister'
+import { useStoragePersister } from '@tanstack/react-persister/persister'
 import type { AsyncRateLimiterState } from '@tanstack/react-pacer/async-rate-limiter'
 
 interface SearchResult {

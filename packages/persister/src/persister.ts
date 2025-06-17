@@ -1,3 +1,5 @@
+import type { RequiredKeys } from './types'
+
 /**
  * Abstract class that defines the contract for a state persister implementation.
  * A persister is responsible for loading and saving state to a storage medium.
@@ -88,7 +90,12 @@ export interface StoragePersisterOptions<TState> {
   storage: Storage
 }
 
-const defaultOptions: Partial<StoragePersisterOptions<any>> = {
+type DefaultOptions = RequiredKeys<
+  Partial<StoragePersisterOptions<any>>,
+  'deserializer' | 'serializer'
+>
+
+const defaultOptions: DefaultOptions = {
   deserializer: JSON.parse,
   serializer: JSON.stringify,
 }
@@ -124,7 +131,7 @@ const defaultOptions: Partial<StoragePersisterOptions<any>> = {
  * ```
  */
 export class StoragePersister<TState> extends Persister<TState> {
-  private _options: StoragePersisterOptions<TState>
+  private _options: StoragePersisterOptions<TState> & DefaultOptions
   constructor(options: StoragePersisterOptions<TState>) {
     super(options.key)
     this._options = {
@@ -151,7 +158,7 @@ export class StoragePersister<TState> extends Persister<TState> {
     try {
       this._options.storage.setItem(
         this.key,
-        this._options.serializer!({
+        this._options.serializer({
           buster: this._options.buster,
           state,
           timestamp: Date.now(),
@@ -171,7 +178,7 @@ export class StoragePersister<TState> extends Persister<TState> {
     }
 
     try {
-      const parsed = this._options.deserializer!(stored)
+      const parsed = this._options.deserializer(stored)
       const isValid =
         !this._options.buster || parsed.buster === this._options.buster
       const isNotExpired =

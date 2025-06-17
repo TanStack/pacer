@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
-import { useStoragePersister } from '@tanstack/react-pacer/persister'
+import { useStoragePersister } from '@tanstack/react-persister/persister'
 
 function App1() {
   // Use your state management library of choice
-  const [instantCount, setInstantCount] = useState(0)
-  const [limitedCount, setLimitedCount] = useState(0)
+  const [instantCount, setInstantCount] = useState(0) // not rate-limited
+  const [limitedCount, setLimitedCount] = useState(0) // rate-limited
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const rateLimiter = useRateLimiter(setLimitedCount, {
@@ -19,6 +19,7 @@ function App1() {
         'Rejected by rate limiter',
         rateLimiter.getMsUntilNextWindow(),
       ),
+    // optional local storage persister to retain state on page refresh
     persister: useStoragePersister({
       key: 'my-rate-limiter',
       storage: localStorage,
@@ -38,7 +39,7 @@ function App1() {
 
   return (
     <div>
-      <h1>TanStack Pacer useRateLimiter Example 1</h1>
+      <h1>TanStack Pacer useRateLimiter Example 1 (with persister)</h1>
       <table>
         <tbody>
           <tr>

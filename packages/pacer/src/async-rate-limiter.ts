@@ -1,7 +1,6 @@
 import { parseFunctionOrValue } from './utils'
-import type { Persister } from './persister'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
-import type { AsyncPersister } from './async-persister'
+import type { AsyncPersister, Persister } from '@tanstack/persister'
 
 /**
  * State shape for persisting AsyncRateLimiter

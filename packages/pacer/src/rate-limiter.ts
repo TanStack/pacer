@@ -1,5 +1,5 @@
 import { parseFunctionOrValue } from './utils'
-import type { Persister } from './persister'
+import type { Persister } from '@tanstack/persister/persister'
 import type { AnyFunction } from './types'
 
 /**
@@ -122,7 +122,7 @@ export class RateLimiter<TFn extends AnyFunction> {
   /**
    * Returns the current state for persistence
    */
-  private getState(): RateLimiterState {
+  getState(): RateLimiterState {
     return { ...this._state }
   }
 

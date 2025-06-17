@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useStoragePersister } from './useStoragePersister'
-import type { StoragePersisterOptions } from '@tanstack/pacer/persister'
+import type { StoragePersisterOptions } from '@tanstack/persister/persister'
 
 function useStorageState<TValue>(
   initialValue: TValue,
