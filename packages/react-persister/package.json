@@ -16,11 +16,12 @@
   },
   "keywords": [
     "react",
-    "debounce",
-    "throttle",
-    "rate-limit",
-    "queue",
-    "async"
+    "persister",
+    "persist",
+    "storage",
+    "localstorage",
+    "sessionstorage",
+    "indexeddb"
   ],
   "type": "module",
   "types": "dist/esm/index.d.ts",

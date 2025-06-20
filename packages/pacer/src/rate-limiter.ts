@@ -1,5 +1,4 @@
 import { parseFunctionOrValue } from './utils'
-import type { Persister } from '@tanstack/persister/persister'
 import type { AnyFunction } from './types'
 
 /**
@@ -7,8 +6,8 @@ import type { AnyFunction } from './types'
  */
 export interface RateLimiterState {
   executionCount: number
-  rejectionCount: number
   executionTimes: Array<number>
+  rejectionCount: number
 }
 
 /**
@@ -20,6 +19,10 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    * Defaults to true.
    */
   enabled?: boolean | ((rateLimiter: RateLimiter<TFn>) => boolean)
+  /**
+   * Initial state for the rate limiter
+   */
+  initialState?: Partial<RateLimiterState>
   /**
    * Maximum number of executions allowed within the time window.
    * Can be a number or a callback function that receives the rate limiter instance and returns a number.
@@ -34,6 +37,10 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    */
   onReject?: (rateLimiter: RateLimiter<TFn>) => void
   /**
+   * Callback function that is called when the state of the rate limiter is updated
+   */
+  onStateChange?: (state: RateLimiterState) => void
+  /**
    * Time window in milliseconds within which the limit applies.
    * Can be a number or a callback function that receives the rate limiter instance and returns a number.
    */
@@ -45,15 +52,11 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    * Defaults to 'fixed'
    */
   windowType?: 'fixed' | 'sliding'
-  /**
-   * Optional persister for saving/loading rate limiter state
-   */
-  persister?: Persister<RateLimiterState>
 }
 
 const defaultOptions: Omit<
   Required<RateLimiterOptions<any>>,
-  'persister' | 'onExecute' | 'onReject'
+  'initialState' | 'onStateChange' | 'onExecute' | 'onReject'
 > = {
   enabled: true,
   limit: 1,
@@ -81,11 +84,21 @@ const defaultOptions: Omit<
  * Rate limiting is best used for hard API limits or resource constraints. For UI updates or
  * smoothing out frequent events, throttling or debouncing usually provide better user experience.
  *
+ * State Management:
+ * - Use `initialState` to provide initial state values when creating the rate limiter
+ * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - The state includes execution count, execution times, and rejection count
+ * - State can be retrieved using `getState()` method
+ *
  * @example
  * ```ts
  * const rateLimiter = new RateLimiter(
  *   (id: string) => api.getData(id),
- *   { limit: 5, window: 1000, windowType: 'sliding' } // 5 calls per second with sliding window
+ *   {
+ *     limit: 5,
+ *     window: 1000,
+ *     windowType: 'sliding',
+ *   }
  * );
  *
  * // Will execute immediately until limit reached, then block
@@ -93,49 +106,24 @@ const defaultOptions: Omit<
  * ```
  */
 export class RateLimiter<TFn extends AnyFunction> {
-  private _state: RateLimiterState = {
+  #options: RateLimiterOptions<TFn>
+  #state: RateLimiterState = {
     executionCount: 0,
-    rejectionCount: 0,
     executionTimes: [],
+    rejectionCount: 0,
   }
-  private _options: RateLimiterOptions<TFn>
-  private _persister?: Persister<RateLimiterState>
 
   constructor(
     private fn: TFn,
     initialOptions: RateLimiterOptions<TFn>,
   ) {
-    this._options = {
+    this.#options = {
       ...defaultOptions,
       ...initialOptions,
     }
-    this._persister = this._options.persister
-    if (this._persister) {
-      // Load state
-      const loadedState = this._persister.loadState()
-      if (loadedState) {
-        this.setState(loadedState, false)
-      }
-    }
-  }
-
-  /**
-   * Returns the current state for persistence
-   */
-  getState(): RateLimiterState {
-    return { ...this._state }
-  }
-
-  /**
-   * Loads state from a persisted object or updates state with a partial
-   */
-  private setState(
-    state: Partial<RateLimiterState>,
-    save: boolean = true,
-  ): void {
-    this._state = { ...this._state, ...state }
-    if (save) {
-      this._persister?.saveState(this.getState())
+    this.#state = {
+      ...this.#state,
+      ...this.#options.initialState,
     }
   }
 
@@ -143,35 +131,50 @@ export class RateLimiter<TFn extends AnyFunction> {
    * Updates the rate limiter options
    */
   setOptions(newOptions: Partial<RateLimiterOptions<TFn>>): void {
-    this._options = { ...this._options, ...newOptions }
+    this.#options = { ...this.#options, ...newOptions }
   }
 
   /**
    * Returns the current rate limiter options
    */
   getOptions(): Required<RateLimiterOptions<TFn>> {
-    return this._options as Required<RateLimiterOptions<TFn>>
+    return this.#options as Required<RateLimiterOptions<TFn>>
+  }
+
+  /**
+   * Returns the current state for persistence
+   */
+  getState(): RateLimiterState {
+    return { ...this.#state }
+  }
+
+  /**
+   * Loads state from a persisted object or updates state with a partial
+   */
+  #setState(state: Partial<RateLimiterState>): void {
+    this.#state = { ...this.#state, ...state }
+    this.#options.onStateChange?.(this.#state)
   }
 
   /**
    * Returns the current enabled state of the rate limiter
    */
   getEnabled(): boolean {
-    return parseFunctionOrValue(this._options.enabled, this)!
+    return parseFunctionOrValue(this.#options.enabled, this)!
   }
 
   /**
    * Returns the current limit of executions allowed within the time window
    */
   getLimit(): number {
-    return parseFunctionOrValue(this._options.limit, this)
+    return parseFunctionOrValue(this.#options.limit, this)
   }
 
   /**
    * Returns the current time window in milliseconds
    */
   getWindow(): number {
-    return parseFunctionOrValue(this._options.window, this)
+    return parseFunctionOrValue(this.#options.window, this)
   }
 
   /**
@@ -190,53 +193,53 @@ export class RateLimiter<TFn extends AnyFunction> {
    * ```
    */
   maybeExecute(...args: Parameters<TFn>): boolean {
-    this.cleanupOldExecutions()
+    this.#cleanupOldExecutions()
 
-    if (this._options.windowType === 'sliding') {
+    if (this.#options.windowType === 'sliding') {
       // For sliding window, we can execute if we have capacity in the current window
-      if (this._state.executionTimes.length < this.getLimit()) {
-        this.execute(...args)
+      if (this.#state.executionTimes.length < this.getLimit()) {
+        this.#execute(...args)
         return true
       }
     } else {
       // For fixed window, we need to check if we're in a new window
       const now = Date.now()
-      const oldestExecution = Math.min(...this._state.executionTimes)
+      const oldestExecution = Math.min(...this.#state.executionTimes)
       const isNewWindow = oldestExecution + this.getWindow() <= now
 
-      if (isNewWindow || this._state.executionTimes.length < this.getLimit()) {
-        this.execute(...args)
+      if (isNewWindow || this.#state.executionTimes.length < this.getLimit()) {
+        this.#execute(...args)
         return true
       }
     }
 
-    this.rejectFunction()
+    this.#rejectFunction()
     return false
   }
 
-  private execute(...args: Parameters<TFn>): void {
+  #execute(...args: Parameters<TFn>): void {
     if (!this.getEnabled()) return
     const now = Date.now()
     this.fn(...args) // EXECUTE!
-    this._state.executionTimes.push(now) // mutate state directly for performance
-    this.setState({
-      executionCount: this._state.executionCount + 1,
+    this.#state.executionTimes.push(now) // mutate state directly for performance
+    this.#setState({
+      executionCount: this.#state.executionCount + 1,
     })
-    this._options.onExecute?.(this)
+    this.#options.onExecute?.(this)
   }
 
-  private rejectFunction(): void {
-    this.setState({
-      rejectionCount: this._state.rejectionCount + 1,
+  #rejectFunction(): void {
+    this.#setState({
+      rejectionCount: this.#state.rejectionCount + 1,
     })
-    this._options.onReject?.(this)
+    this.#options.onReject?.(this)
   }
 
-  private cleanupOldExecutions(): void {
+  #cleanupOldExecutions(): void {
     const now = Date.now()
     const windowStart = now - this.getWindow()
-    this.setState({
-      executionTimes: this._state.executionTimes.filter(
+    this.#setState({
+      executionTimes: this.#state.executionTimes.filter(
         (time) => time > windowStart,
       ),
     })
@@ -246,22 +249,22 @@ export class RateLimiter<TFn extends AnyFunction> {
    * Returns the number of times the function has been executed
    */
   getExecutionCount(): number {
-    return this._state.executionCount
+    return this.#state.executionCount
   }
 
   /**
    * Returns the number of times the function has been rejected
    */
   getRejectionCount(): number {
-    return this._state.rejectionCount
+    return this.#state.rejectionCount
   }
 
   /**
    * Returns the number of remaining executions allowed in the current window
    */
   getRemainingInWindow(): number {
-    this.cleanupOldExecutions()
-    return Math.max(0, this.getLimit() - this._state.executionTimes.length)
+    this.#cleanupOldExecutions()
+    return Math.max(0, this.getLimit() - this.#state.executionTimes.length)
   }
 
   /**
@@ -271,7 +274,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     if (this.getRemainingInWindow() > 0) {
       return 0
     }
-    const oldestExecution = this._state.executionTimes[0] ?? Infinity
+    const oldestExecution = this.#state.executionTimes[0] ?? Infinity
     return oldestExecution + this.getWindow() - Date.now()
   }
 
@@ -279,7 +282,7 @@ export class RateLimiter<TFn extends AnyFunction> {
    * Resets the rate limiter state
    */
   reset(): void {
-    this.setState({
+    this.#setState({
       executionTimes: [],
       executionCount: 0,
       rejectionCount: 0,
@@ -300,6 +303,11 @@ export class RateLimiter<TFn extends AnyFunction> {
  *   towards the limit, and the window resets completely after the period.
  * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
  *   consistent rate of execution over time.
+ *
+ * State Management:
+ * - Use `initialState` to provide initial state values when creating the rate limiter
+ * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - The state includes execution count, execution times, and rejection count
  *
  * Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
  * need to enforce a hard limit on the number of executions within a time period.

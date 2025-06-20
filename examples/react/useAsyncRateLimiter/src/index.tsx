@@ -40,6 +40,15 @@ function App() {
     console.log(setSearchAsyncRateLimiter.getSuccessCount())
   }
 
+  const rateLimiterPersister = useStoragePersister<
+    AsyncRateLimiterState<typeof handleSearch>
+  >({
+    key: 'my-async-rate-limiter',
+    storage: localStorage,
+    maxAge: 1000 * 60, // 1 minute
+    buster: 'v1',
+  })
+
   // hook that gives you an async rate limiter instance
   const setSearchAsyncRateLimiter = useAsyncRateLimiter(handleSearch, {
     // windowType: 'sliding', // default is 'fixed'
@@ -57,12 +66,8 @@ function App() {
       setResults([])
     },
     // optionally, you can persist the rate limiter state to localStorage
-    persister: useStoragePersister<AsyncRateLimiterState<any>>({
-      key: 'my-async-rate-limiter',
-      storage: localStorage,
-      maxAge: 1000 * 60, // 1 minute
-      buster: 'v1',
-    }),
+    initialState: rateLimiterPersister.loadState(),
+    onStateChange: (state) => rateLimiterPersister.saveState(state),
   })
 
   // get and name our rate limited function

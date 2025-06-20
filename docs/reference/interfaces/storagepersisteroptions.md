@@ -7,7 +7,7 @@ title: StoragePersisterOptions
 
 # Interface: StoragePersisterOptions\<TState\>
 
-Defined in: [persister.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L42)
+Defined in: [persister.ts:44](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L44)
 
 Configuration options for creating a browser-based state persister.
 
@@ -26,7 +26,7 @@ sessionStorage (cleared when browser tab/window closes) to store serialized stat
 optional buster: string;
 ```
 
-Defined in: [persister.ts:47](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L47)
+Defined in: [persister.ts:49](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L49)
 
 A version string used to invalidate cached state. When changed, any existing
 stored state will be considered invalid and cleared.
@@ -39,7 +39,7 @@ stored state will be considered invalid and cleared.
 optional deserializer: (state) => PersistedStorage<TState>;
 ```
 
-Defined in: [persister.ts:52](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L52)
+Defined in: [persister.ts:54](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L54)
 
 Optional function to customize how state is deserialized after loading from storage.
 By default, JSON.parse is used.
@@ -62,7 +62,7 @@ By default, JSON.parse is used.
 key: string;
 ```
 
-Defined in: [persister.ts:56](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L56)
+Defined in: [persister.ts:58](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L58)
 
 Unique identifier used as the storage key for persisting state.
 
@@ -74,7 +74,7 @@ Unique identifier used as the storage key for persisting state.
 optional maxAge: number;
 ```
 
-Defined in: [persister.ts:61](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L61)
+Defined in: [persister.ts:63](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L63)
 
 Maximum age in milliseconds before stored state is considered expired.
 When exceeded, the state will be cleared and treated as if it doesn't exist.
@@ -87,7 +87,7 @@ When exceeded, the state will be cleared and treated as if it doesn't exist.
 optional onLoadState: (state) => void;
 ```
 
-Defined in: [persister.ts:65](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L65)
+Defined in: [persister.ts:67](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L67)
 
 Optional callback that runs after state is successfully loaded.
 
@@ -109,7 +109,7 @@ Optional callback that runs after state is successfully loaded.
 optional onLoadStateError: (error) => void;
 ```
 
-Defined in: [persister.ts:69](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L69)
+Defined in: [persister.ts:71](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L71)
 
 Optional callback that runs after state is unable to be loaded.
 
@@ -131,7 +131,7 @@ Optional callback that runs after state is unable to be loaded.
 optional onSaveState: (state) => void;
 ```
 
-Defined in: [persister.ts:73](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L73)
+Defined in: [persister.ts:75](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L75)
 
 Optional callback that runs after state is successfully saved.
 
@@ -153,7 +153,7 @@ Optional callback that runs after state is successfully saved.
 optional onSaveStateError: (error) => void;
 ```
 
-Defined in: [persister.ts:78](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L78)
+Defined in: [persister.ts:80](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L80)
 
 Optional callback that runs after state is unable to be saved.
 For example, if the storage is full (localStorage >= 5MB)
@@ -176,7 +176,7 @@ For example, if the storage is full (localStorage >= 5MB)
 optional serializer: (state) => string;
 ```
 
-Defined in: [persister.ts:83](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L83)
+Defined in: [persister.ts:85](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L85)
 
 Optional function to customize how state is serialized before saving to storage.
 By default, JSON.stringify is used.
@@ -199,7 +199,7 @@ By default, JSON.stringify is used.
 storage: Storage;
 ```
 
-Defined in: [persister.ts:88](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/persister.ts#L88)
+Defined in: [persister.ts:90](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L90)
 
 The browser storage implementation to use for persisting state.
 Typically window.localStorage or window.sessionStorage.
