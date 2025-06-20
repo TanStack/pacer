@@ -8,5 +8,5 @@ export * from '@tanstack/persister'
 // async-debouncer
 
 // persister
-export * from './persister/useStoragePersister'
-export * from './persister/useStorageState'
+export * from './storage-persister/useStoragePersister'
+export * from './storage-persister/useStorageState'

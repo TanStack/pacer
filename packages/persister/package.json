@@ -67,6 +67,16 @@
         "default": "./dist/cjs/persister.cjs"
       }
     },
+    "./storage-persister": {
+      "import": {
+        "types": "./dist/esm/storage-persister.d.ts",
+        "default": "./dist/esm/storage-persister.js"
+      },
+      "require": {
+        "types": "./dist/cjs/storage-persister.d.cts",
+        "default": "./dist/cjs/storage-persister.cjs"
+      }
+    },
     "./types": {
       "types": "./dist/esm/types.d.ts"
     },

@@ -11,7 +11,7 @@ title: useStoragePersister
 function useStoragePersister<TState>(options): StoragePersister<TState>
 ```
 
-Defined in: [useStoragePersister.ts:6](https://github.com/TanStack/pacer/blob/main/packages/react-persister/src/persister/useStoragePersister.ts#L6)
+Defined in: useStoragePersister.ts:6
 
 ## Type Parameters
 

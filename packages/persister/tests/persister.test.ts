@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { StoragePersister } from '../src/persister'
+import { StoragePersister } from '../src/storage-persister'
 
 describe('createStoragePersister', () => {
   let storage: Storage

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
-import { useStoragePersister } from '@tanstack/react-persister/persister'
+import { useStoragePersister } from '@tanstack/react-persister/storage-persister'
 import type { RateLimiterState } from '@tanstack/react-pacer/rate-limiter'
 
 function App1() {

@@ -7,7 +7,7 @@ title: PersistedStorage
 
 # Interface: PersistedStorage\<TState\>
 
-Defined in: [persister.ts:32](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L32)
+Defined in: storage-persister.ts:4
 
 ## Type Parameters
 
@@ -21,7 +21,7 @@ Defined in: [persister.ts:32](https://github.com/TanStack/pacer/blob/main/packag
 optional buster: string;
 ```
 
-Defined in: [persister.ts:33](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L33)
+Defined in: storage-persister.ts:5
 
 ***
 
@@ -31,7 +31,7 @@ Defined in: [persister.ts:33](https://github.com/TanStack/pacer/blob/main/packag
 state: undefined | TState;
 ```
 
-Defined in: [persister.ts:34](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L34)
+Defined in: storage-persister.ts:6
 
 ***
 
@@ -41,4 +41,4 @@ Defined in: [persister.ts:34](https://github.com/TanStack/pacer/blob/main/packag
 timestamp: number;
 ```
 
-Defined in: [persister.ts:35](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L35)
+Defined in: storage-persister.ts:7

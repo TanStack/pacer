@@ -7,7 +7,7 @@ title: StoragePersister
 
 # Class: StoragePersister\<TState\>
 
-Defined in: [persister.ts:133](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L133)
+Defined in: storage-persister.ts:116
 
 A persister that saves state to browser local/session storage.
 
@@ -23,19 +23,22 @@ Optionally, callbacks can be provided to run after state is saved or loaded.
 
 ```ts
 const persister = new StoragePersister({
+  // required
   key: 'my-rate-limiter',
   storage: window.localStorage,
+  // optional
   buster: 'v2',
   maxAge: 1000 * 60 * 60, // 1 hour
+  stateTransform: (state) => ({
+    // Only persist specific parts of the state
+    count: state.count,
+    lastReset: state.lastReset,
+    // Exclude sensitive or temporary data
+  }),
   onSaveState: (key, state) => console.log('State saved:', key, state),
   onLoadState: (key, state) => console.log('State loaded:', key, state),
   onLoadStateError: (key, error) => console.error('Error loading state:', key, error),
   onSaveStateError: (key, error) => console.error('Error saving state:', key, error)
-})
-const rateLimiter = new RateLimiter(fn, {
-  persister,
-  limit: 5,
-  window: 1000
 })
 ```
 
@@ -55,7 +58,7 @@ const rateLimiter = new RateLimiter(fn, {
 new StoragePersister<TState>(options): StoragePersister<TState>
 ```
 
-Defined in: [persister.ts:135](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L135)
+Defined in: storage-persister.ts:119
 
 #### Parameters
 
@@ -79,7 +82,7 @@ Defined in: [persister.ts:135](https://github.com/TanStack/pacer/blob/main/packa
 readonly key: string;
 ```
 
-Defined in: [persister.ts:26](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L26)
+Defined in: [persister.ts:24](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L24)
 
 #### Inherited from
 
@@ -93,7 +96,7 @@ Defined in: [persister.ts:26](https://github.com/TanStack/pacer/blob/main/packag
 getOptions(): StoragePersisterOptions<TState>
 ```
 
-Defined in: [persister.ts:153](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L153)
+Defined in: storage-persister.ts:137
 
 Returns the current persister options
 
@@ -109,7 +112,7 @@ Returns the current persister options
 loadState(): undefined | TState
 ```
 
-Defined in: [persister.ts:174](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L174)
+Defined in: storage-persister.ts:161
 
 #### Returns
 
@@ -127,7 +130,7 @@ Defined in: [persister.ts:174](https://github.com/TanStack/pacer/blob/main/packa
 saveState(state): void
 ```
 
-Defined in: [persister.ts:157](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L157)
+Defined in: storage-persister.ts:141
 
 #### Parameters
 
@@ -151,7 +154,7 @@ Defined in: [persister.ts:157](https://github.com/TanStack/pacer/blob/main/packa
 setOptions(newOptions): void
 ```
 
-Defined in: [persister.ts:146](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L146)
+Defined in: storage-persister.ts:130
 
 Updates the persister options
 

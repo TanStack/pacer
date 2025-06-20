@@ -23,6 +23,7 @@ export default mergeConfig(
       './src/compare/index.ts',
       './src/index.ts',
       './src/persister/index.ts',
+      './src/storage-persister/index.ts',
       './src/types/index.ts',
       './src/utils/index.ts',
     ],
