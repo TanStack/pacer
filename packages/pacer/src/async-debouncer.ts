@@ -1,6 +1,17 @@
 import { parseFunctionOrValue } from './utils'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
+export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
+  canLeadingExecute: boolean
+  errorCount: number
+  isExecuting: boolean
+  isPending: boolean
+  lastArgs: Parameters<TFn> | undefined
+  lastResult: ReturnType<TFn> | undefined
+  settleCount: number
+  successCount: number
+}
+
 /**
  * Options for configuring an async debounced function
  */
@@ -11,6 +22,10 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    * Defaults to true.
    */
   enabled?: boolean | ((debouncer: AsyncDebouncer<TFn>) => boolean)
+  /**
+   * Initial state for the async debouncer
+   */
+  initialState?: Partial<AsyncDebouncerState<TFn>>
   /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to false.
@@ -30,6 +45,13 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    * Optional callback to call when the debounced function is executed
    */
   onSuccess?: (result: ReturnType<TFn>, debouncer: AsyncDebouncer<TFn>) => void
+  /**
+   * Callback function that is called when the state of the async debouncer is updated
+   */
+  onStateChange?: (
+    state: AsyncDebouncerState<TFn>,
+    debouncer: AsyncDebouncer<TFn>,
+  ) => void
   /**
    * Whether to throw errors when they occur.
    * Defaults to true if no onError handler is provided, false if an onError handler is provided.
@@ -51,7 +73,7 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
 
 type AsyncDebouncerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncDebouncerOptions<any>,
-  'onError' | 'onSettled' | 'onSuccess'
+  'initialState' | 'onError' | 'onSettled' | 'onSuccess' | 'onStateChange'
 >
 
 const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
@@ -81,6 +103,12 @@ const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
  * - The error count can be tracked using `getErrorCount()`.
  * - The debouncer maintains its state and can continue to be used after an error occurs.
  *
+ * State Management:
+ * - Use `initialState` to provide initial state values when creating the async debouncer
+ * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - The state includes canLeadingExecute, error count, execution status, and success/settle counts
+ * - State can be retrieved using `getState()` method
+ *
  * @example
  * ```ts
  * const asyncDebouncer = new AsyncDebouncer(async (value: string) => {
@@ -99,18 +127,20 @@ const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
  * ```
  */
 export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
-  private _options: AsyncDebouncerOptionsWithOptionalCallbacks
-  private _abortController: AbortController | null = null
-  private _canLeadingExecute = true
-  private _errorCount = 0
-  private _isExecuting = false
-  private _isPending = false
-  private _lastArgs: Parameters<TFn> | undefined
-  private _lastResult: ReturnType<TFn> | undefined
-  private _settleCount = 0
-  private _successCount = 0
-  private _timeoutId: NodeJS.Timeout | null = null
-  private _resolvePreviousPromise:
+  #options: AsyncDebouncerOptions<TFn>
+  #state: AsyncDebouncerState<TFn> = {
+    canLeadingExecute: true,
+    errorCount: 0,
+    isExecuting: false,
+    isPending: false,
+    lastArgs: undefined,
+    lastResult: undefined,
+    settleCount: 0,
+    successCount: 0,
+  }
+  #abortController: AbortController | null = null
+  #timeoutId: NodeJS.Timeout | null = null
+  #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null
 
@@ -118,10 +148,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     private fn: TFn,
     initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
-    this._options = {
+    this.#options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
+    }
+    this.#state = {
+      ...this.#state,
+      ...this.#options.initialState,
     }
   }
 
@@ -129,11 +163,11 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * Updates the debouncer options
    */
   setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn>>): void {
-    this._options = { ...this._options, ...newOptions }
+    this.#options = { ...this.#options, ...newOptions }
 
     // End the pending state if the debouncer is disabled
-    if (!this._options.enabled) {
-      this._isPending = false
+    if (!this.getEnabled()) {
+      this.#setState({ isPending: false })
     }
   }
 
@@ -141,21 +175,36 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * Returns the current debouncer options
    */
   getOptions(): AsyncDebouncerOptions<TFn> {
-    return this._options
+    return this.#options
+  }
+
+  /**
+   * Returns the current state for persistence
+   */
+  getState(): AsyncDebouncerState<TFn> {
+    return { ...this.#state }
+  }
+
+  /**
+   * Loads state from a persisted object or updates state with a partial
+   */
+  #setState(state: Partial<AsyncDebouncerState<TFn>>): void {
+    this.#state = { ...this.#state, ...state }
+    this.#options.onStateChange?.(this.#state, this)
   }
 
   /**
    * Returns the current debouncer enabled state
    */
   getEnabled(): boolean {
-    return !!parseFunctionOrValue(this._options.enabled, this)
+    return !!parseFunctionOrValue(this.#options.enabled, this)
   }
 
   /**
    * Returns the current debouncer wait state
    */
   getWait(): number {
-    return parseFunctionOrValue(this._options.wait, this)
+    return parseFunctionOrValue(this.#options.wait, this)
   }
 
   /**
@@ -175,132 +224,138 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   async maybeExecute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
-    this._cancel()
-    this._lastArgs = args
+    this.#cancel()
+    this.#setState({ lastArgs: args })
 
     // Handle leading execution
-    if (this._options.leading && this._canLeadingExecute) {
-      this._canLeadingExecute = false
-      await this.execute(...args)
-      return this._lastResult
+    if (this.#options.leading && this.#state.canLeadingExecute) {
+      this.#setState({ canLeadingExecute: false })
+      await this.#execute(...args)
+      return this.#state.lastResult
     }
 
     // Handle trailing execution
-    if (this._options.trailing) {
-      this._isPending = true
+    if (this.#options.trailing) {
+      this.#setState({ isPending: true })
     }
 
     return new Promise((resolve) => {
-      this._resolvePreviousPromise = resolve
-      this._timeoutId = setTimeout(async () => {
+      this.#resolvePreviousPromise = resolve
+      this.#timeoutId = setTimeout(async () => {
         // Execute trailing if enabled
-        if (this._options.trailing && this._lastArgs) {
-          await this.execute(...this._lastArgs)
+        if (this.#options.trailing && this.#state.lastArgs) {
+          await this.#execute(...this.#state.lastArgs)
         }
 
         // Reset state and resolve
-        this._canLeadingExecute = true
-        this._resolvePreviousPromise = null
-        resolve(this._lastResult)
+        this.#setState({ canLeadingExecute: true })
+        this.#resolvePreviousPromise = null
+        resolve(this.#state.lastResult)
       }, this.getWait())
     })
   }
 
-  private async execute(
+  async #execute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
     if (!this.getEnabled()) return undefined
-    this._abortController = new AbortController()
+    this.#abortController = new AbortController()
     try {
-      this._isExecuting = true
-      this._lastResult = await this.fn(...args) // EXECUTE!
-      this._successCount++
-      this._options.onSuccess?.(this._lastResult!, this)
+      this.#setState({ isExecuting: true })
+      const result = await this.fn(...args) // EXECUTE!
+      this.#setState({
+        lastResult: result,
+        successCount: this.#state.successCount + 1,
+      })
+      this.#options.onSuccess?.(result, this)
     } catch (error) {
-      this._errorCount++
-      this._options.onError?.(error, this)
-      if (this._options.throwOnError) {
+      this.#setState({
+        errorCount: this.#state.errorCount + 1,
+      })
+      this.#options.onError?.(error, this)
+      if (this.#options.throwOnError) {
         throw error
       }
     } finally {
-      this._isExecuting = false
-      this._isPending = false
-      this._settleCount++
-      this._abortController = null
-      this._options.onSettled?.(this)
+      this.#setState({
+        isExecuting: false,
+        isPending: false,
+        settleCount: this.#state.settleCount + 1,
+      })
+      this.#abortController = null
+      this.#options.onSettled?.(this)
     }
-    return this._lastResult
+    return this.#state.lastResult
   }
 
   /**
-   * Cancel without resetting _canLeadingExecute
+   * Cancel without resetting canLeadingExecute
    */
-  private _cancel(): void {
-    if (this._timeoutId) {
-      clearTimeout(this._timeoutId)
-      this._timeoutId = null
+  #cancel(): void {
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = null
     }
-    if (this._abortController) {
-      this._abortController.abort()
-      this._abortController = null
+    if (this.#abortController) {
+      this.#abortController.abort()
+      this.#abortController = null
     }
-    if (this._resolvePreviousPromise) {
-      this._resolvePreviousPromise(this._lastResult)
-      this._resolvePreviousPromise = null
+    if (this.#resolvePreviousPromise) {
+      this.#resolvePreviousPromise(this.#state.lastResult)
+      this.#resolvePreviousPromise = null
     }
-    this._lastArgs = undefined
-    this._isPending = false
-    this._isExecuting = false
+    this.#state.lastArgs = undefined
+    this.#setState({ isPending: false, isExecuting: false })
   }
 
   /**
    * Cancels any pending execution or aborts any execution in progress
    */
   cancel(): void {
-    this._canLeadingExecute = true
-    this._cancel()
+    this.#setState({ canLeadingExecute: true })
+    this.#cancel()
   }
 
   /**
    * Returns the last result of the debounced function
    */
   getLastResult(): ReturnType<TFn> | undefined {
-    return this._lastResult
+    return this.#state.lastResult
   }
 
   /**
    * Returns the number of times the function has been executed successfully
    */
   getSuccessCount(): number {
-    return this._successCount
+    return this.#state.successCount
   }
 
   /**
    * Returns the number of times the function has settled (completed or errored)
    */
   getSettleCount(): number {
-    return this._settleCount
+    return this.#state.settleCount
   }
 
   /**
    * Returns the number of times the function has errored
    */
   getErrorCount(): number {
-    return this._errorCount
+    return this.#state.errorCount
   }
 
   /**
    * Returns `true` if there is a pending execution queued up for trailing execution
    */
   getIsPending(): boolean {
-    return this.getEnabled() && this._isPending
+    return this.getEnabled() && this.#state.isPending
   }
 
   /**
    * Returns `true` if there is currently an execution in progress
    */
   getIsExecuting(): boolean {
-    return this._isExecuting
+    return this.#state.isExecuting
   }
 }
 
@@ -319,6 +374,11 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
  * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
  * - The error state can be checked using the underlying AsyncDebouncer instance
  * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ *
+ * State Management:
+ * - Use `initialState` to provide initial state values when creating the async debouncer
+ * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - The state includes canLeadingExecute, error count, execution status, and success/settle counts
  *
  * @example
  * ```ts

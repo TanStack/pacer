@@ -1,9 +1,6 @@
 import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
-/**
- * State shape for persisting RateLimiter
- */
 export interface RateLimiterState {
   executionCount: number
   executionTimes: Array<number>

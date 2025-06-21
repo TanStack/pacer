@@ -679,6 +679,9 @@ importers:
       '@tanstack/react-pacer':
         specifier: ^0.8.0
         version: link:../../../packages/react-pacer
+      '@tanstack/react-persister':
+        specifier: ^0.0.0
+        version: link:../../../packages/react-persister
       react:
         specifier: ^19.1.0
         version: 19.1.0

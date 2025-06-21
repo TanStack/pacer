@@ -1,13 +1,11 @@
 import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
-/**
- * State shape for persisting Debouncer
- */
-export interface DebouncerState {
+export interface DebouncerState<TFn extends AnyFunction> {
   canLeadingExecute: boolean
   executionCount: number
   isPending: boolean
+  lastArgs: Parameters<TFn> | undefined
 }
 
 /**
@@ -23,7 +21,7 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
   /**
    * Initial state for the debouncer
    */
-  initialState?: Partial<DebouncerState>
+  initialState?: Partial<DebouncerState<TFn>>
   /**
    * Whether to execute on the leading edge of the timeout.
    * The first call will execute immediately and the rest will wait the delay.
@@ -37,7 +35,10 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
   /**
    * Callback function that is called when the state of the debouncer is updated
    */
-  onStateChange?: (state: DebouncerState, debouncer: Debouncer<TFn>) => void
+  onStateChange?: (
+    state: DebouncerState<TFn>,
+    debouncer: Debouncer<TFn>,
+  ) => void
   /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
@@ -92,10 +93,11 @@ const defaultOptions: Omit<
  */
 export class Debouncer<TFn extends AnyFunction> {
   #options: DebouncerOptions<TFn>
-  #state: DebouncerState = {
+  #state: DebouncerState<TFn> = {
     canLeadingExecute: true,
     executionCount: 0,
     isPending: false,
+    lastArgs: undefined,
   }
   #timeoutId: NodeJS.Timeout | undefined
 
@@ -135,14 +137,14 @@ export class Debouncer<TFn extends AnyFunction> {
   /**
    * Returns the current state for persistence
    */
-  getState(): DebouncerState {
+  getState(): DebouncerState<TFn> {
     return { ...this.#state }
   }
 
   /**
    * Loads state from a persisted object or updates state with a partial
    */
-  #setState(state: Partial<DebouncerState>): void {
+  #setState(state: Partial<DebouncerState<TFn>>): void {
     this.#state = { ...this.#state, ...state }
     this.#options.onStateChange?.(this.#state, this)
   }
@@ -198,6 +200,7 @@ export class Debouncer<TFn extends AnyFunction> {
     this.#setState({
       isPending: false,
       executionCount: this.#state.executionCount + 1,
+      lastArgs: args,
     })
     this.#options.onExecute?.(this)
   }

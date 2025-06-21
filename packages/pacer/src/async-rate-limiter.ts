@@ -1,9 +1,6 @@
 import { parseFunctionOrValue } from './utils'
 import type { AnyAsyncFunction } from './types'
 
-/**
- * State shape for persisting AsyncRateLimiter
- */
 export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
   errorCount: number
   executionTimes: Array<number>

@@ -1,5 +1,12 @@
 import type { OptionalKeys } from './types'
 
+export interface BatcherState<TValue> {
+  batchExecutionCount: number
+  itemExecutionCount: number
+  items: Array<TValue>
+  running: boolean
+}
+
 /**
  * Options for configuring a Batcher instance
  */
@@ -9,6 +16,10 @@ export interface BatcherOptions<TValue> {
    * Return true to process the batch immediately
    */
   getShouldExecute?: (items: Array<TValue>, batcher: Batcher<TValue>) => boolean
+  /**
+   * Initial state for the batcher
+   */
+  initialState?: Partial<BatcherState<TValue>>
   /**
    * Maximum number of items in a batch
    * @default Infinity
@@ -27,6 +38,13 @@ export interface BatcherOptions<TValue> {
    */
   onItemsChange?: (batcher: Batcher<TValue>) => void
   /**
+   * Callback function that is called when the state of the batcher is updated
+   */
+  onStateChange?: (
+    state: BatcherState<TValue>,
+    batcher: Batcher<TValue>,
+  ) => void
+  /**
    * Whether the batcher should start processing immediately
    * @default true
    */
@@ -42,7 +60,11 @@ export interface BatcherOptions<TValue> {
 
 type BatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<BatcherOptions<TValue>>,
-  'onExecute' | 'onItemsChange' | 'onIsRunningChange'
+  | 'initialState'
+  | 'onExecute'
+  | 'onItemsChange'
+  | 'onIsRunningChange'
+  | 'onStateChange'
 >
 
 const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
@@ -63,6 +85,12 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * - Custom batch processing logic via getShouldExecute
  * - Event callbacks for monitoring batch operations
  *
+ * State Management:
+ * - Use `initialState` to provide initial state values when creating the batcher
+ * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - The state includes batch execution count, item execution count, items, and running status
+ * - State can be retrieved using `getState()` method
+ *
  * @example
  * ```ts
  * const batcher = new Batcher<number>(
@@ -82,33 +110,53 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * ```
  */
 export class Batcher<TValue> {
-  private _options: BatcherOptionsWithOptionalCallbacks<TValue>
-  private _batchExecutionCount = 0
-  private _itemExecutionCount = 0
-  private _items: Array<TValue> = []
-  private _running: boolean
-  private _timeoutId: NodeJS.Timeout | null = null
+  #options: BatcherOptionsWithOptionalCallbacks<TValue>
+  #state: BatcherState<TValue> = {
+    batchExecutionCount: 0,
+    itemExecutionCount: 0,
+    items: [],
+    running: true,
+  }
+  #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
     private fn: (items: Array<TValue>) => void,
     initialOptions: BatcherOptions<TValue>,
   ) {
-    this._options = { ...defaultOptions, ...initialOptions }
-    this._running = this._options.started
+    this.#options = { ...defaultOptions, ...initialOptions }
+    this.#state = {
+      ...this.#state,
+      ...this.#options.initialState,
+    }
   }
 
   /**
    * Updates the batcher options
    */
   setOptions(newOptions: Partial<BatcherOptions<TValue>>): void {
-    this._options = { ...this._options, ...newOptions }
+    this.#options = { ...this.#options, ...newOptions }
   }
 
   /**
    * Returns the current batcher options
    */
   getOptions(): BatcherOptions<TValue> {
-    return this._options
+    return this.#options
+  }
+
+  /**
+   * Returns the current state for persistence
+   */
+  getState(): BatcherState<TValue> {
+    return { ...this.#state }
+  }
+
+  /**
+   * Loads state from a persisted object or updates state with a partial
+   */
+  #setState(state: Partial<BatcherState<TValue>>): void {
+    this.#state = { ...this.#state, ...state }
+    this.#options.onStateChange?.(this.#state, this)
   }
 
   /**
@@ -116,21 +164,23 @@ export class Batcher<TValue> {
    * If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
    */
   addItem(item: TValue): void {
-    this._items.push(item)
-    this._options.onItemsChange?.(this)
+    this.#setState({
+      items: [...this.#state.items, item],
+    })
+    this.#options.onItemsChange?.(this)
 
     const shouldProcess =
-      this._items.length >= this._options.maxSize ||
-      this._options.getShouldExecute(this._items, this)
+      this.#state.items.length >= this.#options.maxSize ||
+      this.#options.getShouldExecute(this.#state.items, this)
 
     if (shouldProcess) {
       this.execute()
     } else if (
-      this._running &&
-      !this._timeoutId &&
-      this._options.wait !== Infinity
+      this.#state.running &&
+      !this.#timeoutId &&
+      this.#options.wait !== Infinity
     ) {
-      this._timeoutId = setTimeout(() => this.execute(), this._options.wait)
+      this.#timeoutId = setTimeout(() => this.execute(), this.#options.wait)
     }
   }
 
@@ -144,34 +194,36 @@ export class Batcher<TValue> {
    * You can also call this method manually to process the current batch at any time.
    */
   execute(): void {
-    if (this._timeoutId) {
-      clearTimeout(this._timeoutId)
-      this._timeoutId = null
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = null
     }
 
-    if (this._items.length === 0) {
+    if (this.#state.items.length === 0) {
       return
     }
 
     const batch = this.peekAllItems() // copy of the items to be processed (to prevent race conditions)
-    this._items = [] // Clear items before processing to prevent race conditions
-    this._options.onItemsChange?.(this) // Call onItemsChange to notify listeners that the items have changed
+    this.#setState({ items: [] }) // Clear items before processing to prevent race conditions
+    this.#options.onItemsChange?.(this) // Call onItemsChange to notify listeners that the items have changed
 
     this.fn(batch)
-    this._batchExecutionCount++
-    this._itemExecutionCount += batch.length
-    this._options.onExecute?.(this)
+    this.#setState({
+      batchExecutionCount: this.#state.batchExecutionCount + 1,
+      itemExecutionCount: this.#state.itemExecutionCount + batch.length,
+    })
+    this.#options.onExecute?.(this)
   }
 
   /**
    * Stops the batcher from processing batches
    */
   stop(): void {
-    this._running = false
-    this._options.onIsRunningChange?.(this)
-    if (this._timeoutId) {
-      clearTimeout(this._timeoutId)
-      this._timeoutId = null
+    this.#setState({ running: false })
+    this.#options.onIsRunningChange?.(this)
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = null
     }
   }
 
@@ -179,10 +231,10 @@ export class Batcher<TValue> {
    * Starts the batcher and processes any pending items
    */
   start(): void {
-    this._running = true
-    this._options.onIsRunningChange?.(this)
-    if (this._items.length > 0 && !this._timeoutId) {
-      this._timeoutId = setTimeout(() => this.execute(), this._options.wait)
+    this.#setState({ running: true })
+    this.#options.onIsRunningChange?.(this)
+    if (this.#state.items.length > 0 && !this.#timeoutId) {
+      this.#timeoutId = setTimeout(() => this.execute(), this.#options.wait)
     }
   }
 
@@ -190,42 +242,42 @@ export class Batcher<TValue> {
    * Returns the current number of items in the batcher
    */
   getSize(): number {
-    return this._items.length
+    return this.#state.items.length
   }
 
   /**
    * Returns true if the batcher is empty
    */
   getIsEmpty(): boolean {
-    return this._items.length === 0
+    return this.#state.items.length === 0
   }
 
   /**
    * Returns true if the batcher is running
    */
   getIsRunning(): boolean {
-    return this._running
+    return this.#state.running
   }
 
   /**
-   * Returns a copy of all items currently in the batcher
+   * Returns a copy of all items in the batcher
    */
   peekAllItems(): Array<TValue> {
-    return [...this._items]
+    return [...this.#state.items]
   }
 
   /**
-   * Returns the number of times batches have been processed
+   * Returns the number of batches that have been processed
    */
   getBatchExecutionCount(): number {
-    return this._batchExecutionCount
+    return this.#state.batchExecutionCount
   }
 
   /**
-   * Returns the total number of individual items that have been processed
+   * Returns the total number of items that have been processed
    */
   getItemExecutionCount(): number {
-    return this._itemExecutionCount
+    return this.#state.itemExecutionCount
   }
 }
 
