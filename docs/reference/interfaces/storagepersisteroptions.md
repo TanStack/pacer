@@ -7,7 +7,7 @@ title: StoragePersisterOptions
 
 # Interface: StoragePersisterOptions\<TState\>
 
-Defined in: storage-persister.ts:16
+Defined in: [storage-persister.ts:16](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L16)
 
 Configuration options for creating a browser-based state persister.
 
@@ -26,7 +26,7 @@ sessionStorage (cleared when browser tab/window closes) to store serialized stat
 optional buster: string;
 ```
 
-Defined in: storage-persister.ts:21
+Defined in: [storage-persister.ts:21](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L21)
 
 A version string used to invalidate cached state. When changed, any existing
 stored state will be considered invalid and cleared.
@@ -39,7 +39,7 @@ stored state will be considered invalid and cleared.
 optional deserializer: (state) => PersistedStorage<TState>;
 ```
 
-Defined in: storage-persister.ts:26
+Defined in: [storage-persister.ts:26](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L26)
 
 Optional function to customize how state is deserialized after loading from storage.
 By default, JSON.parse is used.
@@ -62,7 +62,7 @@ By default, JSON.parse is used.
 key: string;
 ```
 
-Defined in: storage-persister.ts:30
+Defined in: [storage-persister.ts:30](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L30)
 
 Unique identifier used as the storage key for persisting state.
 
@@ -74,7 +74,7 @@ Unique identifier used as the storage key for persisting state.
 optional maxAge: number;
 ```
 
-Defined in: storage-persister.ts:35
+Defined in: [storage-persister.ts:35](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L35)
 
 Maximum age in milliseconds before stored state is considered expired.
 When exceeded, the state will be cleared and treated as if it doesn't exist.
@@ -87,7 +87,7 @@ When exceeded, the state will be cleared and treated as if it doesn't exist.
 optional onLoadState: (state) => void;
 ```
 
-Defined in: storage-persister.ts:39
+Defined in: [storage-persister.ts:39](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L39)
 
 Optional callback that runs after state is successfully loaded.
 
@@ -109,7 +109,7 @@ Optional callback that runs after state is successfully loaded.
 optional onLoadStateError: (error) => void;
 ```
 
-Defined in: storage-persister.ts:43
+Defined in: [storage-persister.ts:43](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L43)
 
 Optional callback that runs after state is unable to be loaded.
 
@@ -131,7 +131,7 @@ Optional callback that runs after state is unable to be loaded.
 optional onSaveState: (state) => void;
 ```
 
-Defined in: storage-persister.ts:47
+Defined in: [storage-persister.ts:47](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L47)
 
 Optional callback that runs after state is successfully saved.
 
@@ -153,7 +153,7 @@ Optional callback that runs after state is successfully saved.
 optional onSaveStateError: (error) => void;
 ```
 
-Defined in: storage-persister.ts:52
+Defined in: [storage-persister.ts:52](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L52)
 
 Optional callback that runs after state is unable to be saved.
 For example, if the storage is full (localStorage >= 5MB)
@@ -176,7 +176,7 @@ For example, if the storage is full (localStorage >= 5MB)
 optional serializer: (state) => string;
 ```
 
-Defined in: storage-persister.ts:57
+Defined in: [storage-persister.ts:57](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L57)
 
 Optional function to customize how state is serialized before saving to storage.
 By default, JSON.stringify is used.
@@ -199,7 +199,7 @@ By default, JSON.stringify is used.
 optional stateTransform: (state) => Partial<TState>;
 ```
 
-Defined in: storage-persister.ts:65
+Defined in: [storage-persister.ts:65](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L65)
 
 Optional function to filter which parts of the state are persisted and loaded, or to otherwise transform the state before saving or loading.
 When provided, only the filtered state will be saved to storage and returned when loading.
@@ -225,7 +225,7 @@ Note: Don't use this to replace the serialization. Use the `serializer` option i
 storage: Storage;
 ```
 
-Defined in: storage-persister.ts:70
+Defined in: [storage-persister.ts:70](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L70)
 
 The browser storage implementation to use for persisting state.
 Typically window.localStorage or window.sessionStorage.

@@ -39,7 +39,10 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
   /**
    * Callback function that is called when the state of the rate limiter is updated
    */
-  onStateChange?: (state: RateLimiterState) => void
+  onStateChange?: (
+    state: RateLimiterState,
+    rateLimiter: RateLimiter<TFn>,
+  ) => void
   /**
    * Time window in milliseconds within which the limit applies.
    * Can be a number or a callback function that receives the rate limiter instance and returns a number.
@@ -153,7 +156,7 @@ export class RateLimiter<TFn extends AnyFunction> {
    */
   #setState(state: Partial<RateLimiterState>): void {
     this.#state = { ...this.#state, ...state }
-    this.#options.onStateChange?.(this.#state)
+    this.#options.onStateChange?.(this.#state, this)
   }
 
   /**

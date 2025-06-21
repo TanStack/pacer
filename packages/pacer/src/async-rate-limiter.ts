@@ -59,7 +59,10 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   /**
    * Callback function that is called when the state of the rate limiter is updated
    */
-  onStateChange?: (state: AsyncRateLimiterState<TFn>) => void
+  onStateChange?: (
+    state: AsyncRateLimiterState<TFn>,
+    rateLimiter: AsyncRateLimiter<TFn>,
+  ) => void
   /**
    * Whether to throw errors when they occur.
    * Defaults to true if no onError handler is provided, false if an onError handler is provided.
@@ -216,7 +219,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    */
   #setState(state: Partial<AsyncRateLimiterState<TFn>>): void {
     this.#state = { ...this.#state, ...state }
-    this.#options.onStateChange?.(this.#state)
+    this.#options.onStateChange?.(this.#state, this)
   }
 
   /**
