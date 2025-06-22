@@ -1,10 +1,20 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
+import { useStoragePersister } from '@tanstack/react-persister'
+import type { QueuerState } from '@tanstack/react-pacer/queuer'
 
 function App1() {
   // Use your state management library of choice
   const [queueItems, setQueueItems] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+  // optional session storage persister to retain state on page refresh
+  const queuerPersister = useStoragePersister<QueuerState<number>>({
+    key: 'my-queuer',
+    storage: sessionStorage,
+    maxAge: 1000 * 60, // 1 minute
+    buster: 'v1',
+  })
 
   // The function that we will be queuing
   function processItem(item: number) {
@@ -19,11 +29,13 @@ function App1() {
     onItemsChange: (queue) => {
       setQueueItems(queue.peekAllItems())
     },
+    initialState: queuerPersister.loadState(),
+    onStateChange: (state) => queuerPersister.saveState(state),
   })
 
   return (
     <div>
-      <h1>TanStack Pacer useQueuer Example 1</h1>
+      <h1>TanStack Pacer useQueuer Example 1 (with persister)</h1>
       <div>Queue Size: {queuer.getSize()}</div>
       <div>Queue Max Size: {25}</div>
       <div>Queue Full: {queuer.getIsFull() ? 'Yes' : 'No'}</div>

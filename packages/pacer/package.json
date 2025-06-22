@@ -87,16 +87,6 @@
         "default": "./dist/cjs/batcher.cjs"
       }
     },
-    "./compare": {
-      "import": {
-        "types": "./dist/esm/compare.d.ts",
-        "default": "./dist/esm/compare.js"
-      },
-      "require": {
-        "types": "./dist/cjs/compare.d.cts",
-        "default": "./dist/cjs/compare.cjs"
-      }
-    },
     "./debouncer": {
       "import": {
         "types": "./dist/esm/debouncer.d.ts",

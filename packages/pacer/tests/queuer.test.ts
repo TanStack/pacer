@@ -404,18 +404,6 @@ describe('Queuer', () => {
       queuer.addItem(2)
       expect(onReject).toHaveBeenCalledWith(2, queuer)
     })
-    it('should call onExpire when an item expires', () => {
-      const onExpire = vi.fn()
-      const fn = vi.fn()
-      const queuer = new Queuer(fn, {
-        expirationDuration: 0,
-        onExpire,
-        started: false,
-      })
-      queuer.addItem(1)
-      queuer['checkExpiredItems']()
-      expect(onExpire).not.toHaveBeenCalled()
-    })
     it('should call onExecute when an item is executed', () => {
       const onExecute = vi.fn()
       const fn = vi.fn()

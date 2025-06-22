@@ -1,0 +1,6 @@
+---
+description: running commands
+globs: 
+alwaysApply: false
+---
+- use pnpm instead of npm
