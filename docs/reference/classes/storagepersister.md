@@ -112,7 +112,9 @@ Returns the current persister options
 loadState(): undefined | TState
 ```
 
-Defined in: [storage-persister.ts:161](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L161)
+Defined in: [storage-persister.ts:167](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L167)
+
+Loads the state from storage
 
 #### Returns
 
@@ -130,7 +132,9 @@ Defined in: [storage-persister.ts:161](https://github.com/TanStack/pacer/blob/ma
 saveState(state): void
 ```
 
-Defined in: [storage-persister.ts:141](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L141)
+Defined in: [storage-persister.ts:144](https://github.com/TanStack/pacer/blob/main/packages/persister/src/storage-persister.ts#L144)
+
+Saves the state to storage
 
 #### Parameters
 
