@@ -182,18 +182,12 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     return this.#options
   }
 
-  /**
-   * Returns the current state for persistence
-   */
   getState(): AsyncThrottlerState<TFn> {
     return { ...this.#state }
   }
 
-  /**
-   * Loads state from a persisted object or updates state with a partial
-   */
-  #setState(state: Partial<AsyncThrottlerState<TFn>>): void {
-    this.#state = { ...this.#state, ...state }
+  #setState(newState: Partial<AsyncThrottlerState<TFn>>): void {
+    this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
 

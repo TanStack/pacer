@@ -204,18 +204,12 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     return this.#options as Required<AsyncRateLimiterOptions<TFn>>
   }
 
-  /**
-   * Returns the current state for persistence
-   */
   getState(): AsyncRateLimiterState<TFn> {
     return { ...this.#state }
   }
 
-  /**
-   * Loads state from a persisted object or updates state with a partial
-   */
-  #setState(state: Partial<AsyncRateLimiterState<TFn>>): void {
-    this.#state = { ...this.#state, ...state }
+  #setState(newState: Partial<AsyncRateLimiterState<TFn>>): void {
+    this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
 

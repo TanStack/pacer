@@ -141,18 +141,12 @@ export class RateLimiter<TFn extends AnyFunction> {
     return this.#options as Required<RateLimiterOptions<TFn>>
   }
 
-  /**
-   * Returns the current state for persistence
-   */
   getState(): RateLimiterState {
     return { ...this.#state }
   }
 
-  /**
-   * Loads state from a persisted object or updates state with a partial
-   */
-  #setState(state: Partial<RateLimiterState>): void {
-    this.#state = { ...this.#state, ...state }
+  #setState(newState: Partial<RateLimiterState>): void {
+    this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
 

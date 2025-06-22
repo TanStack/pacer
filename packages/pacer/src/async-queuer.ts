@@ -245,18 +245,12 @@ export class AsyncQueuer<TValue> {
     return this.#options
   }
 
-  /**
-   * Returns the current state for persistence
-   */
   getState(): AsyncQueuerState<TValue> {
     return { ...this.#state }
   }
 
-  /**
-   * Loads state from a persisted object or updates state with a partial
-   */
-  #setState(state: Partial<AsyncQueuerState<TValue>>): void {
-    this.#state = { ...this.#state, ...state }
+  #setState(newState: Partial<AsyncQueuerState<TValue>>): void {
+    this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
 

@@ -135,18 +135,12 @@ export class Throttler<TFn extends AnyFunction> {
     return this.#options as Required<ThrottlerOptions<TFn>>
   }
 
-  /**
-   * Returns the current state for persistence
-   */
   getState(): ThrottlerState<TFn> {
     return { ...this.#state }
   }
 
-  /**
-   * Loads state from a persisted object or updates state with a partial
-   */
-  #setState(state: Partial<ThrottlerState<TFn>>): void {
-    this.#state = { ...this.#state, ...state }
+  #setState(newState: Partial<ThrottlerState<TFn>>): void {
+    this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
 

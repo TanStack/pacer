@@ -144,18 +144,12 @@ export class Batcher<TValue> {
     return this.#options
   }
 
-  /**
-   * Returns the current state for persistence
-   */
   getState(): BatcherState<TValue> {
     return { ...this.#state }
   }
 
-  /**
-   * Loads state from a persisted object or updates state with a partial
-   */
-  #setState(state: Partial<BatcherState<TValue>>): void {
-    this.#state = { ...this.#state, ...state }
+  #setState(newState: Partial<BatcherState<TValue>>): void {
+    this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
 

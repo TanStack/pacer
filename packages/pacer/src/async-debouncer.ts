@@ -178,18 +178,12 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     return this.#options
   }
 
-  /**
-   * Returns the current state for persistence
-   */
   getState(): AsyncDebouncerState<TFn> {
     return { ...this.#state }
   }
 
-  /**
-   * Loads state from a persisted object or updates state with a partial
-   */
-  #setState(state: Partial<AsyncDebouncerState<TFn>>): void {
-    this.#state = { ...this.#state, ...state }
+  #setState(newState: Partial<AsyncDebouncerState<TFn>>): void {
+    this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
 

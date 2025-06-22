@@ -138,6 +138,9 @@ export class StoragePersister<TState> extends Persister<TState> {
     return this._options
   }
 
+  /**
+   * Saves the state to storage
+   */
   saveState(state: TState): void {
     try {
       const stateToSave = this._options.stateTransform
@@ -158,6 +161,9 @@ export class StoragePersister<TState> extends Persister<TState> {
     }
   }
 
+  /**
+   * Loads the state from storage
+   */
   loadState(): TState | undefined {
     const stored = this._options.storage.getItem(this.key)
     if (!stored) {

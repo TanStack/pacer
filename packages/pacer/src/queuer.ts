@@ -237,18 +237,12 @@ export class Queuer<TValue> {
     return this.#options as Required<QueuerOptions<TValue>>
   }
 
-  /**
-   * Returns the current state for persistence
-   */
   getState(): QueuerState<TValue> {
     return { ...this.#state }
   }
 
-  /**
-   * Loads state from a persisted object or updates state with a partial
-   */
-  #setState(state: Partial<QueuerState<TValue>>): void {
-    this.#state = { ...this.#state, ...state }
+  #setState(newState: Partial<QueuerState<TValue>>): void {
+    this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
 
