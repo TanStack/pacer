@@ -10,8 +10,8 @@ function App1() {
   // Lower-level useThrottler hook - requires you to manage your own state
   const setCountThrottler = useThrottler(setThrottledCount, {
     wait: 1000,
-    leading: false,
-    // trailing: true,
+    // leading: true, // default
+    // trailing: true, // default
     // enabled: () => instantCount > 2,
   })
 
@@ -107,7 +107,8 @@ function App3() {
   // Lower-level useThrottler hook - requires you to manage your own state
   const setValueThrottler = useThrottler(setThrottledValue, {
     wait: 250,
-    leading: false,
+    // leading: true, // default
+    // trailing: true, // default
   })
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {

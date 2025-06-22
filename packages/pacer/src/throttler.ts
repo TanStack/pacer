@@ -148,7 +148,7 @@ export class Throttler<TFn extends AnyFunction> {
    * Returns the current enabled state of the throttler
    */
   getEnabled(): boolean {
-    return parseFunctionOrValue(this.#options.enabled, this)!
+    return !!parseFunctionOrValue(this.#options.enabled, this)
   }
 
   /**
