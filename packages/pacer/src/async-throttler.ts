@@ -234,7 +234,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       return this.#state.lastResult
     } else {
       // Store the most recent arguments for potential trailing execution
-      this.#state.lastArgs = args
+      this.#setState({ lastArgs: args })
 
       return new Promise((resolve) => {
         this.#resolvePreviousPromise = resolve
@@ -268,8 +268,9 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     this.#abortController = new AbortController()
     try {
       this.#setState({ isExecuting: true })
-      this.#state.lastResult = await this.fn(...args) // EXECUTE!
+      const result = await this.fn(...args) // EXECUTE!
       this.#setState({
+        lastResult: result,
         successCount: this.#state.successCount + 1,
       })
       this.#options.onSuccess?.(this.#state.lastResult!, this)
@@ -284,13 +285,14 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         console.error(error)
       }
     } finally {
+      const lastExecutionTime = Date.now()
+      const nextExecutionTime = lastExecutionTime + this.getWait()
       this.#setState({
         isExecuting: false,
         settleCount: this.#state.settleCount + 1,
-        lastExecutionTime: Date.now(),
+        lastExecutionTime,
+        nextExecutionTime,
       })
-      this.#state.nextExecutionTime =
-        this.#state.lastExecutionTime + this.getWait()
       this.#abortController = null
       this.#options.onSettled?.(this)
     }
@@ -317,7 +319,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this.#abortController = null
     }
     this.#resolvePreviousPromiseInternal()
-    this.#state.lastArgs = undefined
+    this.#setState({ lastArgs: undefined })
   }
 
   /**

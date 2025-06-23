@@ -363,8 +363,10 @@ export class Queuer<TValue> {
    * Removes all pending items from the queue. Does not affect items being processed.
    */
   clear(): void {
-    this.#state.items = []
-    this.#state.itemTimestamps = []
+    this.#setState({
+      items: [],
+      itemTimestamps: [],
+    })
     this.#options.onItemsChange?.(this)
   }
 
@@ -381,8 +383,10 @@ export class Queuer<TValue> {
       running: this.#options.started ?? true,
     })
     if (withInitialItems) {
-      this.#state.items = [...(this.#options.initialItems ?? [])]
-      this.#state.itemTimestamps = this.#state.items.map(() => Date.now())
+      this.#setState({
+        items: [...(this.#options.initialItems ?? [])],
+        itemTimestamps: this.#state.items.map(() => Date.now()),
+      })
     }
   }
 

@@ -298,8 +298,11 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#resolvePreviousPromise(this.#state.lastResult)
       this.#resolvePreviousPromise = null
     }
-    this.#state.lastArgs = undefined
-    this.#setState({ isPending: false, isExecuting: false })
+    this.#setState({
+      isPending: false,
+      isExecuting: false,
+      lastArgs: undefined,
+    })
   }
 
   /**
