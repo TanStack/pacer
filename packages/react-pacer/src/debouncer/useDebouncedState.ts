@@ -32,7 +32,7 @@ import type { Debouncer, DebouncerOptions } from '@tanstack/pacer/debouncer'
  * const executionCount = debouncer.getExecutionCount();
  *
  * // Get the pending state
- * const isPending = debouncer.getIsPending();
+ * const isPending = debouncer.getState().isPending;
  * ```
  */
 export function useDebouncedState<TValue>(

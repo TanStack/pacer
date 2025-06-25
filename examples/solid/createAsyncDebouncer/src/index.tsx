@@ -20,8 +20,6 @@ const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
 function App() {
   const [searchTerm, setSearchTerm] = createSignal('')
   const [results, setResults] = createSignal<Array<SearchResult>>([])
-  const [isLoading, setIsLoading] = createSignal(false)
-  const [error, setError] = createSignal<Error | null>(null)
 
   // The function that will become debounced
   const handleSearch = async (term: string) => {
@@ -32,14 +30,8 @@ function App() {
 
     // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
 
-    if (!results.length) {
-      setIsLoading(true)
-    }
-
     const data = await fakeApi(term)
     setResults(data) // option 1: set results immediately
-    setIsLoading(false)
-    setError(null)
 
     return data // option 2: return data if you need to
   }
@@ -51,7 +43,6 @@ function App() {
     onError: (error) => {
       // optional error handler
       console.error('Search failed:', error)
-      setError(error as Error)
       setResults([])
     },
   })
@@ -81,15 +72,22 @@ function App() {
           autocomplete="new-password"
         />
       </div>
-      {error() && <div>Error: {error()?.message}</div>}
+      {setSearchAsyncDebouncer.store.errorCount > 0 && (
+        <div>Errors: {setSearchAsyncDebouncer.store.errorCount}</div>
+      )}
       <div>
-        <p>API calls made: {setSearchAsyncDebouncer.successCount()}</p>
+        <p>API calls made: {setSearchAsyncDebouncer.store.successCount}</p>
         {results().length > 0 && (
           <ul>
             <For each={results()}>{(item) => <li>{item.title}</li>}</For>
           </ul>
         )}
-        {isLoading() && <p>Loading...</p>}
+        {setSearchAsyncDebouncer.store.isExecuting && <p>Executing...</p>}
+        {setSearchAsyncDebouncer.store.isPending && <p>Pending...</p>}
+        <hr />
+        <pre>
+          {JSON.stringify({ store: setSearchAsyncDebouncer.store }, null, 2)}
+        </pre>
       </div>
     </div>
   )

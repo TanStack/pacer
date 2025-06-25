@@ -1,8 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
-import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
+import type {
+  AsyncDebouncerOptions,
+  AsyncDebouncerState,
+} from '@tanstack/pacer/async-debouncer'
+
+interface ReactAsyncDebouncerOptions<TFn extends AnyAsyncFunction>
+  extends AsyncDebouncerOptions<TFn> {
+  enableStateRerenders?: boolean
+}
+
+interface ReactAsyncDebouncer<TFn extends AnyAsyncFunction>
+  extends Omit<AsyncDebouncer<TFn>, 'getState'> {
+  state: AsyncDebouncerState<TFn>
+}
 
 /**
  * A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
@@ -59,13 +72,35 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
  */
 export function useAsyncDebouncer<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AsyncDebouncerOptions<TFn>,
-): AsyncDebouncer<TFn> {
+  {
+    enableStateRerenders = true,
+    onStateChange,
+    ...options
+  }: ReactAsyncDebouncerOptions<TFn>,
+): ReactAsyncDebouncer<TFn> {
   const [asyncDebouncer] = useState(() =>
     bindInstanceMethods(new AsyncDebouncer<TFn>(fn, options)),
   )
 
-  asyncDebouncer.setOptions(options)
+  const [state, setState] = useState(asyncDebouncer.getState())
+
+  const setOptions = useCallback(
+    (newOptions: Partial<AsyncDebouncerOptions<TFn>>) => {
+      asyncDebouncer.setOptions({
+        ...newOptions,
+        onStateChange: (state, asyncDebouncer) => {
+          if (enableStateRerenders) {
+            setState(state)
+          }
+          const _onStateChange = newOptions.onStateChange ?? onStateChange
+          _onStateChange?.(state, asyncDebouncer)
+        },
+      })
+    },
+    [asyncDebouncer, enableStateRerenders, onStateChange],
+  )
+
+  setOptions(options)
 
   useEffect(() => {
     return () => {
@@ -73,5 +108,13 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction>(
     }
   }, [asyncDebouncer])
 
-  return asyncDebouncer
+  return useMemo(
+    () =>
+      ({
+        ...asyncDebouncer,
+        state,
+        setOptions,
+      }) as ReactAsyncDebouncer<TFn>,
+    [asyncDebouncer, state, setOptions],
+  )
 }

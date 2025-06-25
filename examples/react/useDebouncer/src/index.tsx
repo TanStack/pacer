@@ -34,7 +34,7 @@ function App1() {
           </tr>
           <tr>
             <td>Is Pending:</td>
-            <td>{setCountDebouncer.getIsPending().toString()}</td>
+            <td>{setCountdebouncer.getState().isPending.toString()}</td>
           </tr>
           <tr>
             <td>Execution Count:</td>
@@ -99,7 +99,7 @@ function App2() {
           </tr>
           <tr>
             <td>Is Pending:</td>
-            <td>{setSearchDebouncer.getIsPending().toString()}</td>
+            <td>{setSearchdebouncer.getState().isPending.toString()}</td>
           </tr>
           <tr>
             <td>Execution Count:</td>
@@ -180,7 +180,7 @@ function App3() {
           </tr>
           <tr>
             <td>Is Pending:</td>
-            <td>{setValueDebouncer.getIsPending().toString()}</td>
+            <td>{setValuedebouncer.getState().isPending.toString()}</td>
           </tr>
           <tr>
             <td>Instant Executions:</td>

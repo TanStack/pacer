@@ -358,7 +358,7 @@ describe('Debouncer', () => {
       })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(true)
+      expect(debouncer.getState().isPending).toBe(true)
 
       // Call again before wait expires
       vi.advanceTimersByTime(500)
@@ -366,10 +366,10 @@ describe('Debouncer', () => {
 
       // Time is almost up
       vi.advanceTimersByTime(900)
-      expect(debouncer.getIsPending()).toBe(true) // Still pending
+      expect(debouncer.getState().isPending).toBe(true) // Still pending
 
       vi.advanceTimersByTime(100)
-      expect(debouncer.getIsPending()).toBe(false) // Now it's done
+      expect(debouncer.getState().isPending).toBe(false) // Now it's done
     })
 
     it('should never be pending when trailing is false', () => {
@@ -381,7 +381,7 @@ describe('Debouncer', () => {
       })
 
       debouncer.maybeExecute('test1')
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getState().isPending).toBe(false)
 
       // Call again before wait expires
       vi.advanceTimersByTime(500)
@@ -389,10 +389,10 @@ describe('Debouncer', () => {
 
       // Time is almost up
       vi.advanceTimersByTime(900)
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getState().isPending).toBe(false)
 
       vi.advanceTimersByTime(100)
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getState().isPending).toBe(false)
     })
 
     it('should not be pending when leading and trailing are both false', () => {
@@ -404,10 +404,10 @@ describe('Debouncer', () => {
       })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getState().isPending).toBe(false)
 
       vi.advanceTimersByTime(1000)
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getState().isPending).toBe(false)
     })
 
     it('should not be pending when disabled', () => {
@@ -415,10 +415,10 @@ describe('Debouncer', () => {
       const debouncer = new Debouncer(mockFn, { wait: 1000, enabled: false })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getState().isPending).toBe(false)
 
       vi.advanceTimersByTime(1000)
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getState().isPending).toBe(false)
     })
 
     it('should update pending when enabling/disabling', () => {
@@ -426,15 +426,15 @@ describe('Debouncer', () => {
       const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(true)
+      expect(debouncer.getState().isPending).toBe(true)
 
       // Disable while there is a pending execution
       debouncer.setOptions({ enabled: false })
-      expect(debouncer.getIsPending()).toBe(false) // Should be false now
+      expect(debouncer.getState().isPending).toBe(false) // Should be false now
 
       // Re-enable
       debouncer.setOptions({ enabled: true })
-      expect(debouncer.getIsPending()).toBe(false) // Should still be false
+      expect(debouncer.getState().isPending).toBe(false) // Should still be false
     })
 
     it('should set pending to false when canceled', () => {
@@ -442,10 +442,10 @@ describe('Debouncer', () => {
       const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(true)
+      expect(debouncer.getState().isPending).toBe(true)
 
       debouncer.cancel()
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.getState().isPending).toBe(false)
     })
   })
 

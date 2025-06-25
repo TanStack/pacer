@@ -166,7 +166,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     this.#options = { ...this.#options, ...newOptions }
 
     // End the pending state if the debouncer is disabled
-    if (!this.getEnabled()) {
+    if (!this.#getEnabled()) {
       this.#setState({ isPending: false })
     }
   }
@@ -190,14 +190,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   /**
    * Returns the current debouncer enabled state
    */
-  getEnabled(): boolean {
+  #getEnabled(): boolean {
     return !!parseFunctionOrValue(this.#options.enabled, this)
   }
 
   /**
    * Returns the current debouncer wait state
    */
-  getWait(): number {
+  #getWait(): number {
     return parseFunctionOrValue(this.#options.wait, this)
   }
 
@@ -218,7 +218,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   async maybeExecute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
-    this.#cancel()
+    this.#cancelPendingExecution()
     this.#setState({ lastArgs: args })
 
     // Handle leading execution
@@ -229,7 +229,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     }
 
     // Handle trailing execution
-    if (this.#options.trailing) {
+    if (this.#options.trailing && this.#getEnabled()) {
       this.#setState({ isPending: true })
     }
 
@@ -245,14 +245,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         this.#setState({ canLeadingExecute: true })
         this.#resolvePreviousPromise = null
         resolve(this.#state.lastResult)
-      }, this.getWait())
+      }, this.#getWait())
     })
   }
 
   async #execute(
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> {
-    if (!this.getEnabled()) return undefined
+    if (!this.#getEnabled()) return undefined
     this.#abortController = new AbortController()
     try {
       this.#setState({ isExecuting: true })
@@ -282,17 +282,10 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     return this.#state.lastResult
   }
 
-  /**
-   * Cancel without resetting canLeadingExecute
-   */
-  #cancel(): void {
+  #cancelPendingExecution(): void {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
       this.#timeoutId = null
-    }
-    if (this.#abortController) {
-      this.#abortController.abort()
-      this.#abortController = null
     }
     if (this.#resolvePreviousPromise) {
       this.#resolvePreviousPromise(this.#state.lastResult)
@@ -309,50 +302,12 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * Cancels any pending execution or aborts any execution in progress
    */
   cancel(): void {
+    this.#cancelPendingExecution()
+    if (this.#abortController) {
+      this.#abortController.abort()
+      this.#abortController = null
+    }
     this.#setState({ canLeadingExecute: true })
-    this.#cancel()
-  }
-
-  /**
-   * Returns the last result of the debounced function
-   */
-  getLastResult(): ReturnType<TFn> | undefined {
-    return this.#state.lastResult
-  }
-
-  /**
-   * Returns the number of times the function has been executed successfully
-   */
-  getSuccessCount(): number {
-    return this.#state.successCount
-  }
-
-  /**
-   * Returns the number of times the function has settled (completed or errored)
-   */
-  getSettleCount(): number {
-    return this.#state.settleCount
-  }
-
-  /**
-   * Returns the number of times the function has errored
-   */
-  getErrorCount(): number {
-    return this.#state.errorCount
-  }
-
-  /**
-   * Returns `true` if there is a pending execution queued up for trailing execution
-   */
-  getIsPending(): boolean {
-    return this.getEnabled() && this.#state.isPending
-  }
-
-  /**
-   * Returns `true` if there is currently an execution in progress
-   */
-  getIsExecuting(): boolean {
-    return this.#state.isExecuting
   }
 }
 

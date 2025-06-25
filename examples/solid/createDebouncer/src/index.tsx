@@ -30,7 +30,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setCountDebouncer.executionCount()}</td>
+            <td>{setCountDebouncer.store.executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -88,7 +88,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setSearchDebouncer.executionCount()}</td>
+            <td>{setSearchDebouncer.store.executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -166,12 +166,12 @@ function App3() {
           </tr>
           <tr>
             <td>Debounced Executions:</td>
-            <td>{setValueDebouncer.executionCount()}</td>
+            <td>{setValueDebouncer.store.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
             <td>
-              {instantExecutionCount() - setValueDebouncer.executionCount()}
+              {instantExecutionCount() - setValueDebouncer.store.executionCount}
             </td>
           </tr>
           <tr>
@@ -181,7 +181,7 @@ function App3() {
                 ? '0'
                 : Math.round(
                     ((instantExecutionCount() -
-                      setValueDebouncer.executionCount()) /
+                      setValueDebouncer.store.executionCount) /
                       instantExecutionCount()) *
                       100,
                   )}

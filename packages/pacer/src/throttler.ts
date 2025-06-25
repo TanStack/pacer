@@ -5,6 +5,8 @@ export interface ThrottlerState<TFn extends AnyFunction> {
   executionCount: number
   lastArgs: Parameters<TFn> | undefined
   lastExecutionTime: number
+  nextExecutionTime: number
+  isPending: boolean
 }
 
 /**
@@ -96,9 +98,11 @@ const defaultOptions: Omit<
 export class Throttler<TFn extends AnyFunction> {
   #options: ThrottlerOptions<TFn>
   #state: ThrottlerState<TFn> = {
+    isPending: false,
     executionCount: 0,
     lastArgs: undefined,
     lastExecutionTime: 0,
+    nextExecutionTime: 0,
   }
   #timeoutId: NodeJS.Timeout | undefined
 
@@ -210,13 +214,16 @@ export class Throttler<TFn extends AnyFunction> {
 
   #execute(...args: Parameters<TFn>): void {
     if (!this.getEnabled()) return
+    this.#setState({ isPending: true })
     this.fn(...args) // EXECUTE!
-    this.#setState({
-      executionCount: this.#state.executionCount + 1,
-      lastExecutionTime: Date.now(),
-    })
+    const lastExecutionTime = Date.now()
+    const nextExecutionTime = lastExecutionTime + this.getWait()
     this.#timeoutId = undefined
     this.#setState({
+      executionCount: this.#state.executionCount + 1,
+      lastExecutionTime,
+      nextExecutionTime,
+      isPending: false,
       lastArgs: undefined,
     })
     this.#options.onExecute?.(this)
@@ -237,6 +244,7 @@ export class Throttler<TFn extends AnyFunction> {
       this.#timeoutId = undefined
       this.#setState({
         lastArgs: undefined,
+        isPending: false,
       })
     }
   }
@@ -252,7 +260,7 @@ export class Throttler<TFn extends AnyFunction> {
    * Returns the next execution time
    */
   getNextExecutionTime(): number {
-    return this.#state.lastExecutionTime + this.getWait()
+    return this.#state.nextExecutionTime
   }
 
   /**
@@ -266,7 +274,7 @@ export class Throttler<TFn extends AnyFunction> {
    * Returns `true` if there is a pending execution
    */
   getIsPending(): boolean {
-    return this.getEnabled() && !!this.#timeoutId
+    return this.#state.isPending
   }
 }
 

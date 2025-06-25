@@ -20,8 +20,6 @@ const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [results, setResults] = useState<Array<SearchResult>>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
 
   // The function that will become debounced
   const handleSearch = async (term: string) => {
@@ -32,14 +30,8 @@ function App() {
 
     // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
 
-    if (!results.length) {
-      setIsLoading(true)
-    }
-
     const data = await fakeApi(term)
     setResults(data)
-    setIsLoading(false)
-    setError(null)
 
     return data // this could alternatively be a void function without a return
   }
@@ -47,11 +39,11 @@ function App() {
   // hook that gives you an async debouncer instance
   const setSearchAsyncDebouncer = useAsyncDebouncer(handleSearch, {
     // leading: true, // optional leading execution
+    // enableStateRerenders: false, // turn off state rerenders if you don't care about the state
     wait: 500, // Wait 500ms between API calls
     onError: (error) => {
       // optional error handler
       console.error('Search failed:', error)
-      setError(error as Error)
       setResults([])
     },
   })
@@ -81,9 +73,8 @@ function App() {
           autoComplete="new-password"
         />
       </div>
-      {error && <div>Error: {error.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncDebouncer.getSuccessCount()}</p>
+        <p>API calls made: {setSearchAsyncDebouncer.state.successCount}</p>
         {results.length > 0 && (
           <ul>
             {results.map((item) => (
@@ -91,7 +82,11 @@ function App() {
             ))}
           </ul>
         )}
-        {isLoading && <p>Loading...</p>}
+        {setSearchAsyncDebouncer.state.isPending && <p>Pending...</p>}
+        {setSearchAsyncDebouncer.state.isExecuting && <p>Executing...</p>}
+        <pre>
+          {JSON.stringify({ state: setSearchAsyncDebouncer.state }, null, 2)}
+        </pre>
       </div>
     </div>
   )

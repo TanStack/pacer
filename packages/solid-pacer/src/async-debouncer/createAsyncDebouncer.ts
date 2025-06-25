@@ -1,24 +1,16 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { createSignal } from 'solid-js'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
+import { createStore } from 'solid-js/store'
+import type { Store } from 'solid-js/store'
+import type {
+  AsyncDebouncerOptions,
+  AsyncDebouncerState,
+} from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
-import type { Accessor } from 'solid-js'
 
 export interface SolidAsyncDebouncer<TFn extends AnyAsyncFunction>
-  extends Omit<
-    AsyncDebouncer<TFn>,
-    | 'getErrorCount'
-    | 'getIsPending'
-    | 'getLastResult'
-    | 'getSettleCount'
-    | 'getSuccessCount'
-  > {
-  errorCount: Accessor<number>
-  isPending: Accessor<boolean>
-  lastResult: Accessor<ReturnType<TFn> | undefined>
-  settleCount: Accessor<number>
-  successCount: Accessor<number>
+  extends Omit<AsyncDebouncer<TFn>, 'getState'> {
+  store: Store<AsyncDebouncerState<TFn>>
 }
 
 /**
@@ -79,32 +71,19 @@ export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
   initialOptions: AsyncDebouncerOptions<TFn>,
 ): SolidAsyncDebouncer<TFn> {
   const asyncDebouncer = new AsyncDebouncer<TFn>(fn, initialOptions)
-
-  const [errorCount, setErrorCount] = createSignal(
-    asyncDebouncer.getErrorCount(),
-  )
-  const [settleCount, setSettleCount] = createSignal(
-    asyncDebouncer.getSettleCount(),
-  )
-  const [successCount, setSuccessCount] = createSignal(
-    asyncDebouncer.getSuccessCount(),
-  )
-  const [isPending, setIsPending] = createSignal(asyncDebouncer.getIsPending())
-  const [lastResult, setLastResult] = createSignal(
-    asyncDebouncer.getLastResult(),
+  
+  const [store, setStore] = createStore<AsyncDebouncerState<TFn>>(
+    asyncDebouncer.getState(),
   )
 
   function setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn>>) {
     asyncDebouncer.setOptions({
       ...newOptions,
-      onSettled: (asyncDebouncer) => {
-        setSuccessCount(asyncDebouncer.getSuccessCount())
-        setErrorCount(asyncDebouncer.getErrorCount())
-        setSettleCount(asyncDebouncer.getSettleCount())
-        setIsPending(asyncDebouncer.getIsPending())
-        setLastResult(asyncDebouncer.getLastResult())
-        const onSettled = newOptions.onSettled ?? initialOptions.onSettled
-        onSettled?.(asyncDebouncer)
+      onStateChange: (state, asyncDebouncer) => {
+        setStore(state)
+        const onStateChange =
+          newOptions.onStateChange ?? initialOptions.onStateChange
+        onStateChange?.(state, asyncDebouncer)
       },
     })
   }
@@ -113,11 +92,7 @@ export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
 
   return {
     ...bindInstanceMethods(asyncDebouncer),
-    errorCount,
-    isPending,
-    lastResult,
-    settleCount,
-    successCount,
+    store,
     setOptions,
   } as SolidAsyncDebouncer<TFn>
 }

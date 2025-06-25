@@ -1,25 +1,20 @@
 import { Throttler } from '@tanstack/pacer/throttler'
-import { createEffect, createSignal, onCleanup } from 'solid-js'
+import { createEffect, onCleanup } from 'solid-js'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import type { Accessor } from 'solid-js'
+import { createStore } from 'solid-js/store'
+import type { Store } from 'solid-js/store'
 import type { AnyFunction } from '@tanstack/pacer/types'
-import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
+import type {
+  ThrottlerOptions,
+  ThrottlerState,
+} from '@tanstack/pacer/throttler'
 
 /**
  * An extension of the Throttler class that adds Solid signals to access the internal state of the throttler
  */
 export interface SolidThrottler<TFn extends AnyFunction>
-  extends Omit<
-    Throttler<TFn>,
-    | 'getExecutionCount'
-    | 'getIsPending'
-    | 'getLastExecutionTime'
-    | 'getNextExecutionTime'
-  > {
-  executionCount: Accessor<number>
-  isPending: Accessor<boolean>
-  lastExecutionTime: Accessor<number>
-  nextExecutionTime: Accessor<number>
+  extends Omit<Throttler<TFn>, 'getState'> {
+  store: Store<ThrottlerState<TFn>>
 }
 
 /**
@@ -61,29 +56,19 @@ export function createThrottler<TFn extends AnyFunction>(
   initialOptions: ThrottlerOptions<TFn>,
 ): SolidThrottler<TFn> {
   const throttler = bindInstanceMethods(new Throttler<TFn>(fn, initialOptions))
-
-  const [executionCount, setExecutionCount] = createSignal(
-    throttler.getExecutionCount(),
-  )
-  const [isPending, setIsPending] = createSignal(throttler.getIsPending())
-  const [lastExecutionTime, setLastExecutionTime] = createSignal(
-    throttler.getLastExecutionTime(),
-  )
-  const [nextExecutionTime, setNextExecutionTime] = createSignal(
-    throttler.getNextExecutionTime(),
+  const [store, setStore] = createStore<ThrottlerState<TFn>>(
+    throttler.getState(),
   )
 
   function setOptions(newOptions: Partial<ThrottlerOptions<TFn>>) {
     throttler.setOptions({
       ...newOptions,
-      onExecute: (throttler) => {
-        setExecutionCount(throttler.getExecutionCount())
-        setIsPending(throttler.getIsPending())
-        setLastExecutionTime(throttler.getLastExecutionTime())
-        setNextExecutionTime(throttler.getNextExecutionTime())
+      onStateChange: (state, throttler) => {
+        setStore(state)
 
-        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
-        onExecute?.(throttler)
+        const onStateChange =
+          newOptions.onStateChange ?? initialOptions.onStateChange
+        onStateChange?.(state, throttler)
       },
     })
   }
@@ -98,10 +83,7 @@ export function createThrottler<TFn extends AnyFunction>(
 
   return {
     ...throttler,
-    executionCount,
-    isPending,
-    lastExecutionTime,
-    nextExecutionTime,
+    store,
     setOptions,
   } as SolidThrottler<TFn>
 }
