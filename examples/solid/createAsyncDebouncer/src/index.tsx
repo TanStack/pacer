@@ -94,9 +94,7 @@ function App() {
         {asyncDebouncer.state().isExecuting && <p>Executing...</p>}
         {asyncDebouncer.state().isPending && <p>Pending...</p>}
         <hr />
-        <pre>
-          {JSON.stringify({ state: asyncDebouncer.state() }, null, 2)}
-        </pre>
+        <pre>{JSON.stringify({ state: asyncDebouncer.state() }, null, 2)}</pre>
       </div>
     </div>
   )
