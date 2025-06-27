@@ -1,20 +1,23 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncDebouncerOptions,
   AsyncDebouncerState,
 } from '@tanstack/pacer/async-debouncer'
 
-interface ReactAsyncDebouncerOptions<TFn extends AnyAsyncFunction>
-  extends AsyncDebouncerOptions<TFn> {
-  enableStateRerenders?: boolean
-}
-
-interface ReactAsyncDebouncer<TFn extends AnyAsyncFunction>
-  extends Omit<AsyncDebouncer<TFn>, 'getState'> {
-  state: AsyncDebouncerState<TFn>
+interface ReactAsyncDebouncer<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncDebouncerState<TFn>,
+> extends Omit<AsyncDebouncer<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the debouncer state changes
+   *
+   * Use this instead of `debouncer.store.state`
+   */
+  state: TSelected
 }
 
 /**
@@ -70,37 +73,19 @@ interface ReactAsyncDebouncer<TFn extends AnyAsyncFunction>
  * );
  * ```
  */
-export function useAsyncDebouncer<TFn extends AnyAsyncFunction>(
+export function useAsyncDebouncer<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncDebouncerState<TFn>,
+>(
   fn: TFn,
-  {
-    enableStateRerenders = true,
-    onStateChange,
-    ...options
-  }: ReactAsyncDebouncerOptions<TFn>,
-): ReactAsyncDebouncer<TFn> {
+  options: AsyncDebouncerOptions<TFn>,
+  selector?: (state: AsyncDebouncerState<TFn>) => TSelected,
+): ReactAsyncDebouncer<TFn, TSelected> {
   const [asyncDebouncer] = useState(() =>
     bindInstanceMethods(new AsyncDebouncer<TFn>(fn, options)),
   )
 
-  const [state, setState] = useState(asyncDebouncer.getState())
-
-  const setOptions = useCallback(
-    (newOptions: Partial<AsyncDebouncerOptions<TFn>>) => {
-      asyncDebouncer.setOptions({
-        ...newOptions,
-        onStateChange: (state, asyncDebouncer) => {
-          if (enableStateRerenders) {
-            setState(state)
-          }
-          const _onStateChange = newOptions.onStateChange ?? onStateChange
-          _onStateChange?.(state, asyncDebouncer)
-        },
-      })
-    },
-    [asyncDebouncer, enableStateRerenders, onStateChange],
-  )
-
-  setOptions(options)
+  const state = useStore(asyncDebouncer.store, selector)
 
   useEffect(() => {
     return () => {
@@ -113,8 +98,7 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction>(
       ({
         ...asyncDebouncer,
         state,
-        setOptions,
-      }) as ReactAsyncDebouncer<TFn>,
-    [asyncDebouncer, state, setOptions],
+      }) as unknown as ReactAsyncDebouncer<TFn, TSelected>, // omit `store` in favor of `state`
+    [asyncDebouncer, state],
   )
 }

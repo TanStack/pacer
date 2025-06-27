@@ -345,9 +345,9 @@ describe('AsyncDebouncer', () => {
 
       expect(onError).toBeCalledWith(error, debouncer)
       expect(onSettled).toBeCalledWith(debouncer)
-      expect(debouncer.getState().errorCount).toBe(1)
-      expect(debouncer.getState().settleCount).toBe(1)
-      expect(debouncer.getState().successCount).toBe(0)
+      expect(debouncer.store.state.errorCount).toBe(1)
+      expect(debouncer.store.state.settleCount).toBe(1)
+      expect(debouncer.store.state.successCount).toBe(0)
     })
 
     it('should not break debouncing chain on error', async () => {
@@ -367,9 +367,9 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise1
       expect(onError).toBeCalledWith(error, debouncer)
-      expect(debouncer.getState().errorCount).toBe(1)
-      expect(debouncer.getState().settleCount).toBe(1)
-      expect(debouncer.getState().successCount).toBe(0)
+      expect(debouncer.store.state.errorCount).toBe(1)
+      expect(debouncer.store.state.settleCount).toBe(1)
+      expect(debouncer.store.state.successCount).toBe(0)
 
       // Second call - should succeed
       const promise2 = debouncer.maybeExecute()
@@ -377,9 +377,9 @@ describe('AsyncDebouncer', () => {
       const result = await promise2
       expect(result).toBe('success')
       expect(mockFn).toBeCalledTimes(2)
-      expect(debouncer.getState().errorCount).toBe(1)
-      expect(debouncer.getState().settleCount).toBe(2)
-      expect(debouncer.getState().successCount).toBe(1)
+      expect(debouncer.store.state.errorCount).toBe(1)
+      expect(debouncer.store.state.settleCount).toBe(2)
+      expect(debouncer.store.state.successCount).toBe(1)
     })
 
     it('should handle multiple errors in sequence', async () => {
@@ -400,18 +400,18 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise1
       expect(onError).toHaveBeenNthCalledWith(1, error1, debouncer)
-      expect(debouncer.getState().errorCount).toBe(1)
-      expect(debouncer.getState().settleCount).toBe(1)
-      expect(debouncer.getState().successCount).toBe(0)
+      expect(debouncer.store.state.errorCount).toBe(1)
+      expect(debouncer.store.state.settleCount).toBe(1)
+      expect(debouncer.store.state.successCount).toBe(0)
 
       // Second call - should error again
       const promise2 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise2
       expect(onError).toHaveBeenNthCalledWith(2, error2, debouncer)
-      expect(debouncer.getState().errorCount).toBe(2)
-      expect(debouncer.getState().settleCount).toBe(2)
-      expect(debouncer.getState().successCount).toBe(0)
+      expect(debouncer.store.state.errorCount).toBe(2)
+      expect(debouncer.store.state.settleCount).toBe(2)
+      expect(debouncer.store.state.successCount).toBe(0)
     })
 
     it('should handle errors during leading execution', async () => {
@@ -431,9 +431,9 @@ describe('AsyncDebouncer', () => {
       await promise
       expect(onError).toBeCalledWith(error, debouncer)
       expect(onSettled).toBeCalledWith(debouncer)
-      expect(debouncer.getState().errorCount).toBe(1)
-      expect(debouncer.getState().settleCount).toBe(1)
-      expect(debouncer.getState().successCount).toBe(0)
+      expect(debouncer.store.state.errorCount).toBe(1)
+      expect(debouncer.store.state.settleCount).toBe(1)
+      expect(debouncer.store.state.successCount).toBe(0)
     })
 
     it('should handle errors during trailing execution', async () => {
@@ -453,9 +453,9 @@ describe('AsyncDebouncer', () => {
       await promise
       expect(onError).toBeCalledWith(error, debouncer)
       expect(onSettled).toBeCalledWith(debouncer)
-      expect(debouncer.getState().errorCount).toBe(1)
-      expect(debouncer.getState().settleCount).toBe(1)
-      expect(debouncer.getState().successCount).toBe(0)
+      expect(debouncer.store.state.errorCount).toBe(1)
+      expect(debouncer.store.state.settleCount).toBe(1)
+      expect(debouncer.store.state.successCount).toBe(0)
     })
 
     it('should maintain state after error', async () => {
@@ -473,10 +473,10 @@ describe('AsyncDebouncer', () => {
       await promise1
 
       // Verify state is maintained
-      expect(debouncer.getState().errorCount).toBe(1)
-      expect(debouncer.getState().settleCount).toBe(1)
-      expect(debouncer.getState().successCount).toBe(0)
-      expect(debouncer.getState().isPending).toBe(false)
+      expect(debouncer.store.state.errorCount).toBe(1)
+      expect(debouncer.store.state.settleCount).toBe(1)
+      expect(debouncer.store.state.successCount).toBe(0)
+      expect(debouncer.store.state.isPending).toBe(false)
     })
   })
 
@@ -591,11 +591,11 @@ describe('AsyncDebouncer', () => {
 
       // Start execution
       debouncer.maybeExecute()
-      expect(debouncer.getState().isPending).toBe(true)
+      expect(debouncer.store.state.isPending).toBe(true)
 
       // Cancel before wait period ends
       debouncer.cancel()
-      expect(debouncer.getState().isPending).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
 
       // Advance time and verify no execution
       vi.advanceTimersByTime(1000)
@@ -616,7 +616,7 @@ describe('AsyncDebouncer', () => {
 
       // Cancel and verify canLeadingExecute is reset
       debouncer.cancel()
-      expect(debouncer.getState().isPending).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
 
       // Next call should execute immediately again
       const promise2 = debouncer.maybeExecute('second')
@@ -640,7 +640,7 @@ describe('AsyncDebouncer', () => {
 
       // Cancel during leading execution
       debouncer.cancel()
-      expect(debouncer.getState().isPending).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
 
       // Next call should execute immediately again
       const promise2 = debouncer.maybeExecute('second')
@@ -660,7 +660,7 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
 
-      expect(debouncer.getState().lastResult).toBe('result')
+      expect(debouncer.store.state.lastResult).toBe('result')
     })
 
     it('should return last result when execution is pending', async () => {
@@ -671,11 +671,11 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(debouncer.getState().lastResult).toBe('result')
+      expect(debouncer.store.state.lastResult).toBe('result')
 
       // Second execution - should still return last result while pending
       const promise2 = debouncer.maybeExecute()
-      expect(debouncer.getState().lastResult).toBe('result')
+      expect(debouncer.store.state.lastResult).toBe('result')
       vi.advanceTimersByTime(1000)
       await promise2
     })
@@ -688,18 +688,18 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(debouncer.getState().lastResult).toBe('result')
+      expect(debouncer.store.state.lastResult).toBe('result')
 
       // Second execution with cancellation
       debouncer.maybeExecute()
       debouncer.cancel()
-      expect(debouncer.getState().lastResult).toBe('result') // Should still have last result
+      expect(debouncer.store.state.lastResult).toBe('result') // Should still have last result
 
       // Third execution
       const promise3 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise3
-      expect(debouncer.getState().lastResult).toBe('result')
+      expect(debouncer.store.state.lastResult).toBe('result')
     })
 
     it('should maintain last result across multiple executions', async () => {
@@ -714,19 +714,19 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(debouncer.getState().lastResult).toBe('first')
+      expect(debouncer.store.state.lastResult).toBe('first')
 
       // Second execution
       const promise2 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise2
-      expect(debouncer.getState().lastResult).toBe('second')
+      expect(debouncer.store.state.lastResult).toBe('second')
 
       // Third execution
       const promise3 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise3
-      expect(debouncer.getState().lastResult).toBe('third')
+      expect(debouncer.store.state.lastResult).toBe('third')
     })
 
     it('should handle undefined/null results', async () => {
@@ -740,13 +740,13 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(debouncer.getState().lastResult).toBeUndefined()
+      expect(debouncer.store.state.lastResult).toBeUndefined()
 
       // Test null result
       const promise2 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise2
-      expect(debouncer.getState().lastResult).toBeNull()
+      expect(debouncer.store.state.lastResult).toBeNull()
     })
 
     it('should maintain last result after error', async () => {
@@ -763,13 +763,13 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(debouncer.getState().lastResult).toBe('success')
+      expect(debouncer.store.state.lastResult).toBe('success')
 
       // Second execution - error
       const promise2 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise2
-      expect(debouncer.getState().lastResult).toBe('success') // Should maintain last successful result
+      expect(debouncer.store.state.lastResult).toBe('success') // Should maintain last successful result
     })
   })
 
@@ -783,8 +783,8 @@ describe('AsyncDebouncer', () => {
 
       // Try to execute while disabled
       const promise = debouncer.maybeExecute()
-      expect(debouncer.getState().isPending).toBe(false)
-      expect(debouncer.getState().isExecuting).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
+      expect(debouncer.store.state.isExecuting).toBe(false)
 
       // Advance time and verify no execution
       vi.advanceTimersByTime(1000)
@@ -802,8 +802,8 @@ describe('AsyncDebouncer', () => {
 
       // Try to execute while disabled
       const promise = debouncer.maybeExecute()
-      expect(debouncer.getState().isPending).toBe(false)
-      expect(debouncer.getState().isExecuting).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
+      expect(debouncer.store.state.isExecuting).toBe(false)
 
       // Advance time and verify no execution
       vi.advanceTimersByTime(1000)
@@ -817,7 +817,7 @@ describe('AsyncDebouncer', () => {
 
       // Should execute by default
       const promise = debouncer.maybeExecute()
-      expect(debouncer.getState().isPending).toBe(true)
+      expect(debouncer.store.state.isPending).toBe(true)
 
       // Advance time and verify execution
       vi.advanceTimersByTime(1000)
@@ -831,11 +831,11 @@ describe('AsyncDebouncer', () => {
 
       // Start execution
       const promise = debouncer.maybeExecute()
-      expect(debouncer.getState().isPending).toBe(true)
+      expect(debouncer.store.state.isPending).toBe(true)
 
       // Disable during wait
       debouncer.setOptions({ enabled: false })
-      expect(debouncer.getState().isPending).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
 
       // Advance time and verify no execution
       vi.advanceTimersByTime(1000)
@@ -858,7 +858,7 @@ describe('AsyncDebouncer', () => {
       const promise = debouncer.maybeExecute()
 
       // Should only have one pending execution
-      expect(debouncer.getState().isPending).toBe(true)
+      expect(debouncer.store.state.isPending).toBe(true)
 
       // Advance time and verify single execution
       vi.advanceTimersByTime(1000)
@@ -874,17 +874,17 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(debouncer.getState().lastResult).toBe('result')
+      expect(debouncer.store.state.lastResult).toBe('result')
 
       // Disable and verify state is maintained
       debouncer.setOptions({ enabled: false })
-      expect(debouncer.getState().lastResult).toBe('result')
-      expect(debouncer.getState().isPending).toBe(false)
-      expect(debouncer.getState().isExecuting).toBe(false)
+      expect(debouncer.store.state.lastResult).toBe('result')
+      expect(debouncer.store.state.isPending).toBe(false)
+      expect(debouncer.store.state.isExecuting).toBe(false)
 
       // Re-enable and verify state is still maintained
       debouncer.setOptions({ enabled: true })
-      expect(debouncer.getState().lastResult).toBe('result')
+      expect(debouncer.store.state.lastResult).toBe('result')
     })
   })
 
@@ -924,7 +924,7 @@ describe('AsyncDebouncer', () => {
 
       // Start execution
       const promise = debouncer.maybeExecute()
-      expect(debouncer.getState().isPending).toBe(true)
+      expect(debouncer.store.state.isPending).toBe(true)
 
       // Change options during wait
       debouncer.setOptions({ onSuccess })
@@ -944,22 +944,22 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(debouncer.getState().lastResult).toBe('result')
-      expect(debouncer.getState().successCount).toBe(1)
+      expect(debouncer.store.state.lastResult).toBe('result')
+      expect(debouncer.store.state.successCount).toBe(1)
 
       // Change options
       debouncer.setOptions({ wait: 500, leading: true })
 
       // Verify state is maintained
-      expect(debouncer.getState().lastResult).toBe('result')
-      expect(debouncer.getState().successCount).toBe(1)
+      expect(debouncer.store.state.lastResult).toBe('result')
+      expect(debouncer.store.state.successCount).toBe(1)
 
       // Second execution with new options
       const promise2 = debouncer.maybeExecute()
       expect(mockFn).toBeCalledTimes(2) // Leading execution
       vi.advanceTimersByTime(500)
       await promise2
-      expect(debouncer.getState().successCount).toBe(2)
+      expect(debouncer.store.state.successCount).toBe(2)
     })
 
     it('should handle callback option changes', async () => {
@@ -1018,7 +1018,7 @@ describe('AsyncDebouncer', () => {
 
       // Start execution
       const promise = debouncer.maybeExecute()
-      expect(debouncer.getState().isPending).toBe(true)
+      expect(debouncer.store.state.isPending).toBe(true)
 
       // Change callbacks during wait
       debouncer.setOptions({

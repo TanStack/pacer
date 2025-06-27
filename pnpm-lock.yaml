@@ -1273,7 +1273,11 @@ importers:
         specifier: ^2.11.6
         version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.7)(vite@6.3.5(@types/node@22.15.30)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
 
-  packages/pacer: {}
+  packages/pacer:
+    dependencies:
+      '@tanstack/store':
+        specifier: ^0.7.1
+        version: 0.7.1
 
   packages/persister: {}
 
@@ -1282,9 +1286,12 @@ importers:
       '@tanstack/pacer':
         specifier: workspace:*
         version: link:../pacer
+      '@tanstack/react-store':
+        specifier: ^0.7.1
+        version: 0.7.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-dom:
         specifier: '>=16.8'
-        version: 19.0.0(react@19.1.0)
+        version: 19.1.0(react@19.1.0)
     devDependencies:
       '@eslint-react/eslint-plugin':
         specifier: ^1.51.2
@@ -1338,6 +1345,9 @@ importers:
       '@tanstack/pacer':
         specifier: workspace:*
         version: link:../pacer
+      '@tanstack/solid-store':
+        specifier: ^0.7.1
+        version: 0.7.1(solid-js@1.9.7)
     devDependencies:
       solid-js:
         specifier: ^1.9.7
@@ -2262,6 +2272,20 @@ packages:
     resolution: {integrity: sha512-izX+5CnkpON3NQGcEm3/d7LfFQNo9ZpFtX2QsINgCYK9LT2VCIdi8D3bMaMSNhrAJCznRoAkFic76uvLroALBw==}
     peerDependencies:
       react: ^18 || ^19
+
+  '@tanstack/react-store@0.7.1':
+    resolution: {integrity: sha512-qUTEKdId6QPWGiWyKAPf/gkN29scEsz6EUSJ0C3HgLMgaqTAyBsQ2sMCfGVcqb+kkhEXAdjleCgH6LAPD6f2sA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  '@tanstack/solid-store@0.7.1':
+    resolution: {integrity: sha512-chcElOdXhDTcJnMrY02Q+EPyI11C6/vKIinxd7ALW5iGWaGEpo+Re5S1cIP4YyWYUqZE8nWU9O/imSnxZ+9W8A==}
+    peerDependencies:
+      solid-js: ^1.6.0
+
+  '@tanstack/store@0.7.1':
+    resolution: {integrity: sha512-PjUQKXEXhLYj2X5/6c1Xn/0/qKY0IVFxTJweopRfF26xfjVyb14yALydJrHupDh3/d+1WKmfEgZPBVCmDkzzwg==}
 
   '@tanstack/typedoc-config@0.2.0':
     resolution: {integrity: sha512-1ak0ZirlLRxd3dNNOFnMoYORBeC83nK4C+OiXpE0dxsO8ZVrBqCtNCKr8SG+W9zICXcWGiFu9qYLsgNKTayOqw==}
@@ -4000,11 +4024,6 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  react-dom@19.0.0:
-    resolution: {integrity: sha512-4GV5sHFG0e/0AD4X+ySy6UJd3jVl1iNsNHdpad0qhABJ11twS3TTBnseqsKurKcsNqCEFeGL3uLpVChpIO3QfQ==}
-    peerDependencies:
-      react: ^19.0.0
-
   react-dom@19.1.0:
     resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
     peerDependencies:
@@ -4105,9 +4124,6 @@ packages:
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
-
-  scheduler@0.25.0:
-    resolution: {integrity: sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==}
 
   scheduler@0.26.0:
     resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
@@ -4494,6 +4510,11 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  use-sync-external-store@1.5.0:
+    resolution: {integrity: sha512-Rb46I4cGGVBmjamjphe8L/UnvJD+uPPtTkNvX5mZgqdbavhI4EbgIWJiIHXJ8bc/i9EQGPRh4DwEURJ552Do0A==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -5819,6 +5840,20 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.80.6
       react: 19.1.0
+
+  '@tanstack/react-store@0.7.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tanstack/store': 0.7.1
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      use-sync-external-store: 1.5.0(react@19.1.0)
+
+  '@tanstack/solid-store@0.7.1(solid-js@1.9.7)':
+    dependencies:
+      '@tanstack/store': 0.7.1
+      solid-js: 1.9.7
+
+  '@tanstack/store@0.7.1': {}
 
   '@tanstack/typedoc-config@0.2.0(typescript@5.8.3)':
     dependencies:
@@ -7724,11 +7759,6 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  react-dom@19.0.0(react@19.1.0):
-    dependencies:
-      react: 19.1.0
-      scheduler: 0.25.0
-
   react-dom@19.1.0(react@19.1.0):
     dependencies:
       react: 19.1.0
@@ -7835,8 +7865,6 @@ snapshots:
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
-
-  scheduler@0.25.0: {}
 
   scheduler@0.26.0: {}
 
@@ -8191,6 +8219,10 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  use-sync-external-store@1.5.0(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   util-deprecate@1.0.2: {}
 

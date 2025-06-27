@@ -27,7 +27,6 @@ function App() {
       setResults([])
       return
     }
-
     // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
 
     const data = await fakeApi(term)
@@ -37,19 +36,27 @@ function App() {
   }
 
   // hook that gives you an async debouncer instance
-  const setSearchAsyncDebouncer = useAsyncDebouncer(handleSearch, {
-    // leading: true, // optional leading execution
-    // enableStateRerenders: false, // turn off state rerenders if you don't care about the state
-    wait: 500, // Wait 500ms between API calls
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setResults([])
+  const asyncDebouncer = useAsyncDebouncer(
+    handleSearch,
+    {
+      // leading: true, // optional leading execution
+      wait: 500, // Wait 500ms between API calls
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setResults([])
+      },
     },
-  })
+    // optionally subscribe to only the react state re-renders you care about
+    // (state) => ({
+    //   isExecuting: state.isExecuting,
+    //   isPending: state.isPending,
+    //   successCount: state.successCount,
+    // }),
+  )
 
   // get and name our debounced function
-  const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute
+  const handleSearchDebounced = asyncDebouncer.maybeExecute
 
   // instant event handler that calls both the instant local state setter and the debounced function
   async function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -74,7 +81,7 @@ function App() {
         />
       </div>
       <div>
-        <p>API calls made: {setSearchAsyncDebouncer.state.successCount}</p>
+        <p>API calls made: {asyncDebouncer.state.successCount}</p>
         {results.length > 0 && (
           <ul>
             {results.map((item) => (
@@ -82,11 +89,9 @@ function App() {
             ))}
           </ul>
         )}
-        {setSearchAsyncDebouncer.state.isPending && <p>Pending...</p>}
-        {setSearchAsyncDebouncer.state.isExecuting && <p>Executing...</p>}
-        <pre>
-          {JSON.stringify({ state: setSearchAsyncDebouncer.state }, null, 2)}
-        </pre>
+        {asyncDebouncer.state.isPending && <p>Pending...</p>}
+        {asyncDebouncer.state.isExecuting && <p>Executing...</p>}
+        <pre>{JSON.stringify({ state: asyncDebouncer.state }, null, 2)}</pre>
       </div>
     </div>
   )

@@ -37,18 +37,27 @@ function App() {
   }
 
   // hook that gives you an async debouncer instance
-  const setSearchAsyncDebouncer = createAsyncDebouncer(handleSearch, {
-    // leading: true, // optional leading execution
-    wait: 500, // Wait 500ms between API calls
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setResults([])
+  const asyncDebouncer = createAsyncDebouncer(
+    handleSearch,
+    {
+      // leading: true, // optional leading execution
+      wait: 500, // Wait 500ms between API calls
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setResults([])
+      },
     },
-  })
+    // optionally subscribe to only the solid state changes you care about
+    // (state) => ({
+    //   isExecuting: state.isExecuting,
+    //   isPending: state.isPending,
+    //   successCount: state.successCount,
+    // }),
+  )
 
   // get and name our debounced function
-  const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute
+  const handleSearchDebounced = asyncDebouncer.maybeExecute
 
   // instant event handler that calls both the instant local state setter and the debounced function
   async function onSearchChange(e: Event) {
@@ -72,21 +81,21 @@ function App() {
           autocomplete="new-password"
         />
       </div>
-      {setSearchAsyncDebouncer.store.errorCount > 0 && (
-        <div>Errors: {setSearchAsyncDebouncer.store.errorCount}</div>
+      {asyncDebouncer.state().errorCount > 0 && (
+        <div>Errors: {asyncDebouncer.state().errorCount}</div>
       )}
       <div>
-        <p>API calls made: {setSearchAsyncDebouncer.store.successCount}</p>
+        <p>API calls made: {asyncDebouncer.state().successCount}</p>
         {results().length > 0 && (
           <ul>
             <For each={results()}>{(item) => <li>{item.title}</li>}</For>
           </ul>
         )}
-        {setSearchAsyncDebouncer.store.isExecuting && <p>Executing...</p>}
-        {setSearchAsyncDebouncer.store.isPending && <p>Pending...</p>}
+        {asyncDebouncer.state().isExecuting && <p>Executing...</p>}
+        {asyncDebouncer.state().isPending && <p>Pending...</p>}
         <hr />
         <pre>
-          {JSON.stringify({ store: setSearchAsyncDebouncer.store }, null, 2)}
+          {JSON.stringify({ state: asyncDebouncer.state() }, null, 2)}
         </pre>
       </div>
     </div>

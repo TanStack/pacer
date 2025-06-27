@@ -1,16 +1,23 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import { createStore } from 'solid-js/store'
-import type { Store } from 'solid-js/store'
+import { useStore } from '@tanstack/solid-store'
+import type { Accessor } from 'solid-js'
 import type {
   AsyncDebouncerOptions,
   AsyncDebouncerState,
 } from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
-export interface SolidAsyncDebouncer<TFn extends AnyAsyncFunction>
-  extends Omit<AsyncDebouncer<TFn>, 'getState'> {
-  store: Store<AsyncDebouncerState<TFn>>
+export interface SolidAsyncDebouncer<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncDebouncerState<TFn>,
+> extends Omit<AsyncDebouncer<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated when the debouncer state changes
+   *
+   * Use this instead of `debouncer.store.state`
+   */
+  state: Accessor<TSelected>
 }
 
 /**
@@ -66,33 +73,22 @@ export interface SolidAsyncDebouncer<TFn extends AnyAsyncFunction>
  * );
  * ```
  */
-export function createAsyncDebouncer<TFn extends AnyAsyncFunction>(
+export function createAsyncDebouncer<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncDebouncerState<TFn>,
+>(
   fn: TFn,
   initialOptions: AsyncDebouncerOptions<TFn>,
-): SolidAsyncDebouncer<TFn> {
-  const asyncDebouncer = new AsyncDebouncer<TFn>(fn, initialOptions)
-  
-  const [store, setStore] = createStore<AsyncDebouncerState<TFn>>(
-    asyncDebouncer.getState(),
+  selector?: (state: AsyncDebouncerState<TFn>) => TSelected,
+): SolidAsyncDebouncer<TFn, TSelected> {
+  const asyncDebouncer = bindInstanceMethods(
+    new AsyncDebouncer<TFn>(fn, initialOptions),
   )
 
-  function setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn>>) {
-    asyncDebouncer.setOptions({
-      ...newOptions,
-      onStateChange: (state, asyncDebouncer) => {
-        setStore(state)
-        const onStateChange =
-          newOptions.onStateChange ?? initialOptions.onStateChange
-        onStateChange?.(state, asyncDebouncer)
-      },
-    })
-  }
-
-  setOptions(initialOptions)
+  const state = useStore(asyncDebouncer.store, selector)
 
   return {
-    ...bindInstanceMethods(asyncDebouncer),
-    store,
-    setOptions,
-  } as SolidAsyncDebouncer<TFn>
+    ...asyncDebouncer,
+    state,
+  } as unknown as SolidAsyncDebouncer<TFn, TSelected> // omit `store` in favor of `state`
 }
