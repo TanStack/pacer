@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import { useAsyncQueuer } from './useAsyncQueuer'
+import type { ReactAsyncQueuer } from './useAsyncQueuer'
 import type {
-  AsyncQueuer,
   AsyncQueuerOptions,
+  AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
 /**
@@ -50,23 +50,18 @@ import type {
  * const pendingCount = asyncQueuer.peekPendingItems().length;
  * ```
  */
-export function useAsyncQueuedState<TValue>(
+export function useAsyncQueuedState<
+  TValue,
+  TSelected extends Pick<
+    AsyncQueuerState<TValue>,
+    'items'
+  > = AsyncQueuerState<TValue>,
+>(
   fn: (value: TValue) => Promise<any>,
   options: AsyncQueuerOptions<TValue> = {},
-): [Array<TValue>, AsyncQueuer<TValue>] {
-  const [items, setItems] = useState<Array<TValue>>(options.initialItems ?? [])
+  selector?: (state: AsyncQueuerState<TValue>) => TSelected,
+): [Array<TValue>, ReactAsyncQueuer<TValue, TSelected>] {
+  const asyncQueuer = useAsyncQueuer(fn, options, selector)
 
-  const asyncQueuer = useAsyncQueuer<TValue>(fn, {
-    ...options,
-    onItemsChange: (asyncQueuer) => {
-      setItems(asyncQueuer.peekAllItems())
-      options.onItemsChange?.(asyncQueuer)
-    },
-    onIsRunningChange: (queue) => {
-      setItems((prev) => [...prev]) // rerender
-      options.onIsRunningChange?.(queue)
-    },
-  })
-
-  return [items, asyncQueuer]
+  return [asyncQueuer.state.items, asyncQueuer]
 }

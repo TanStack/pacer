@@ -1,78 +1,20 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { createSignal } from 'solid-js'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
-import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
+import type {
+  AsyncQueuerOptions,
+  AsyncQueuerState,
+} from '@tanstack/pacer/async-queuer'
 
-export interface SolidAsyncQueuer<TValue>
-  extends Omit<
-    AsyncQueuer<TValue>,
-    | 'getErrorCount'
-    | 'getIsEmpty'
-    | 'getIsFull'
-    | 'getIsIdle'
-    | 'getIsRunning'
-    | 'getRejectionCount'
-    | 'getSettledCount'
-    | 'getSize'
-    | 'getSuccessCount'
-    | 'peekActiveItems'
-    | 'peekAllItems'
-    | 'peekNextItem'
-    | 'peekPendingItems'
-  > {
+export interface SolidAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
+  extends Omit<AsyncQueuer<TValue>, 'store'> {
   /**
-   * Signal version of `peekActiveItems`
+   * Reactive state that will be updated and re-rendered when the queuer state changes
+   *
+   * Use this instead of `queuer.store.state`
    */
-  activeItems: Accessor<Array<TValue>>
-  /**
-   * Signal version of `peekAllItems`
-   */
-  allItems: Accessor<Array<TValue>>
-  /**
-   * Signal version of `getErrorCount`
-   */
-  errorCount: Accessor<number>
-  /**
-   * Signal version of `getIsEmpty`
-   */
-  isEmpty: Accessor<boolean>
-  /**
-   * Signal version of `getIsFull`
-   */
-  isFull: Accessor<boolean>
-  /**
-   * Signal version of `getIsIdle`
-   */
-  isIdle: Accessor<boolean>
-  /**
-   * Signal version of `getIsRunning`
-   */
-  isRunning: Accessor<boolean>
-  /**
-   * Signal version of `peekNextItem`
-   */
-  nextItem: Accessor<TValue | undefined>
-  /**
-   * Signal version of `peekPendingItems`
-   */
-  pendingItems: Accessor<Array<TValue>>
-  /**
-   * Signal version of `getRejectionCount`
-   */
-  rejectionCount: Accessor<number>
-  /**
-   * Signal version of `getSettledCount`
-   */
-  settledCount: Accessor<number>
-  /**
-   * Signal version of `getSize`
-   */
-  size: Accessor<number>
-  /**
-   * Signal version of `getSuccessCount`
-   */
-  successCount: Accessor<number>
+  state: Accessor<TSelected>
 }
 
 /**
@@ -127,81 +69,17 @@ export interface SolidAsyncQueuer<TValue>
  * const pending = asyncQueuer.pendingItems();
  * ```
  */
-export function createAsyncQueuer<TValue>(
+export function createAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>(
   fn: (value: TValue) => Promise<any>,
   initialOptions: AsyncQueuerOptions<TValue> = {},
-): SolidAsyncQueuer<TValue> {
+  selector?: (state: AsyncQueuerState<TValue>) => TSelected,
+): SolidAsyncQueuer<TValue, TSelected> {
   const asyncQueuer = new AsyncQueuer<TValue>(fn, initialOptions)
 
-  const [successCount, setSuccessCount] = createSignal(
-    asyncQueuer.getSuccessCount(),
-  )
-  const [errorCount, setErrorCount] = createSignal(asyncQueuer.getErrorCount())
-  const [settledCount, setSettledCount] = createSignal(
-    asyncQueuer.getSettledCount(),
-  )
-  const [rejectionCount, setRejectionCount] = createSignal(
-    asyncQueuer.getRejectionCount(),
-  )
-  const [isEmpty, setIsEmpty] = createSignal(asyncQueuer.getIsEmpty())
-  const [isFull, setIsFull] = createSignal(asyncQueuer.getIsFull())
-  const [isIdle, setIsIdle] = createSignal(asyncQueuer.getIsIdle())
-  const [isRunning, setIsRunning] = createSignal(asyncQueuer.getIsRunning())
-  const [allItems, setAllItems] = createSignal<Array<TValue>>(
-    asyncQueuer.peekAllItems(),
-  )
-  const [activeItems, setActiveItems] = createSignal<Array<TValue>>(
-    asyncQueuer.peekActiveItems(),
-  )
-  const [pendingItems, setPendingItems] = createSignal<Array<TValue>>(
-    asyncQueuer.peekPendingItems(),
-  )
-  const [nextItem, setNextItem] = createSignal<TValue | undefined>(
-    asyncQueuer.peekNextItem(),
-  )
-  const [size, setSize] = createSignal(asyncQueuer.getSize())
-
-  asyncQueuer.setOptions({
-    onItemsChange: (queuer) => {
-      setActiveItems(queuer.peekActiveItems())
-      setAllItems(queuer.peekAllItems())
-      setErrorCount(queuer.getErrorCount())
-      setIsEmpty(queuer.getIsEmpty())
-      setIsFull(queuer.getIsFull())
-      setIsIdle(queuer.getIsIdle())
-      setNextItem(() => queuer.peekNextItem())
-      setPendingItems(queuer.peekPendingItems())
-      setRejectionCount(queuer.getRejectionCount())
-      setSettledCount(queuer.getSettledCount())
-      setSize(queuer.getSize())
-      setSuccessCount(queuer.getSuccessCount())
-      initialOptions.onItemsChange?.(queuer)
-    },
-    onIsRunningChange: (queuer) => {
-      setIsRunning(queuer.getIsRunning())
-      setIsIdle(queuer.getIsIdle())
-      initialOptions.onIsRunningChange?.(queuer)
-    },
-    onReject: (item, queuer) => {
-      setRejectionCount(queuer.getRejectionCount())
-      initialOptions.onReject?.(item, queuer)
-    },
-  })
+  const state = useStore(asyncQueuer.store, selector)
 
   return {
     ...bindInstanceMethods(asyncQueuer),
-    activeItems,
-    allItems,
-    errorCount,
-    isEmpty,
-    isFull,
-    isIdle,
-    isRunning,
-    nextItem,
-    pendingItems,
-    rejectionCount,
-    settledCount,
-    size,
-    successCount,
-  } as SolidAsyncQueuer<TValue>
+    state,
+  } as unknown as SolidAsyncQueuer<TValue, TSelected>
 }

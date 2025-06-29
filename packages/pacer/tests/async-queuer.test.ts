@@ -11,17 +11,17 @@ describe('AsyncQueuer', () => {
 
   it('should create an empty async queuer and be started by default', () => {
     const asyncQueuer = new AsyncQueuer((item) => Promise.resolve(item), {})
-    expect(asyncQueuer.getIsRunning()).toBe(true)
-    expect(asyncQueuer.getIsIdle()).toBe(true)
-    expect(asyncQueuer.getSize()).toBe(0)
+    expect(asyncQueuer.store.state.isRunning).toBe(true)
+    expect(asyncQueuer.store.state.isIdle).toBe(true)
+    expect(asyncQueuer.store.state.items.length).toBe(0)
   })
 
   it('should respect started option', () => {
     const asyncQueuer = new AsyncQueuer((item) => Promise.resolve(item), {
       started: false,
     })
-    expect(asyncQueuer.getIsRunning()).toBe(false)
-    expect(asyncQueuer.getIsIdle()).toBe(false)
+    expect(asyncQueuer.store.state.isRunning).toBe(false)
+    expect(asyncQueuer.store.state.isIdle).toBe(false)
   })
 
   it('should respect maxSize option', () => {
@@ -32,10 +32,10 @@ describe('AsyncQueuer', () => {
         started: false,
       },
     )
-    expect(asyncQueuer.getSize()).toBe(0)
+    expect(asyncQueuer.store.state.items.length).toBe(0)
     asyncQueuer.addItem('test')
-    expect(asyncQueuer.getSize()).toBe(1)
-    expect(asyncQueuer.getIsFull()).toBe(true)
+    expect(asyncQueuer.store.state.items.length).toBe(1)
+    expect(asyncQueuer.store.state.isFull).toBe(true)
   })
 
   describe('addItem', () => {
@@ -47,7 +47,7 @@ describe('AsyncQueuer', () => {
         },
       )
       asyncQueuer.addItem('test')
-      expect(asyncQueuer.getSize()).toBe(1)
+      expect(asyncQueuer.store.state.items.length).toBe(1)
     })
     it('should reject items when full and call onReject', () => {
       const onReject = vi.fn()
@@ -60,11 +60,11 @@ describe('AsyncQueuer', () => {
         },
       )
       asyncQueuer.addItem('test')
-      expect(asyncQueuer.getSize()).toBe(1)
-      expect(asyncQueuer.getIsFull()).toBe(true)
+      expect(asyncQueuer.store.state.items.length).toBe(1)
+      expect(asyncQueuer.store.state.isFull).toBe(true)
       asyncQueuer.addItem('test2')
       expect(onReject).toHaveBeenCalledTimes(1)
-      expect(asyncQueuer.getSize()).toBe(1)
+      expect(asyncQueuer.store.state.items.length).toBe(1)
     })
   })
 
@@ -163,7 +163,7 @@ describe('AsyncQueuer', () => {
           started: false,
         },
       )
-      expect(asyncQueuer.getIsEmpty()).toBe(true)
+      expect(asyncQueuer.store.state.isEmpty).toBe(true)
     })
     it('should return false when queuer has items', () => {
       const asyncQueuer = new AsyncQueuer<string>(
@@ -173,7 +173,7 @@ describe('AsyncQueuer', () => {
         },
       )
       asyncQueuer.addItem('test')
-      expect(asyncQueuer.getIsEmpty()).toBe(false)
+      expect(asyncQueuer.store.state.isEmpty).toBe(false)
     })
   })
 
@@ -187,7 +187,7 @@ describe('AsyncQueuer', () => {
         },
       )
       asyncQueuer.addItem('test')
-      expect(asyncQueuer.getIsFull()).toBe(true)
+      expect(asyncQueuer.store.state.isFull).toBe(true)
     })
     it('should return false when queuer is not full', () => {
       const asyncQueuer = new AsyncQueuer<string>(
@@ -197,7 +197,7 @@ describe('AsyncQueuer', () => {
         },
       )
       asyncQueuer.addItem('test')
-      expect(asyncQueuer.getIsFull()).toBe(false)
+      expect(asyncQueuer.store.state.isFull).toBe(false)
     })
   })
 
@@ -211,7 +211,7 @@ describe('AsyncQueuer', () => {
       )
       asyncQueuer.addItem('test')
       asyncQueuer.clear()
-      expect(asyncQueuer.getSize()).toBe(0)
+      expect(asyncQueuer.store.state.items.length).toBe(0)
     })
   })
 
@@ -225,7 +225,7 @@ describe('AsyncQueuer', () => {
             initialItems: ['test'],
           },
         )
-        expect(asyncQueuer.getSize()).toBe(1)
+        expect(asyncQueuer.store.state.items.length).toBe(1)
         expect(asyncQueuer.getNextItem()).toBe('test')
       })
 
@@ -249,7 +249,7 @@ describe('AsyncQueuer', () => {
             },
           },
         )
-        expect(asyncQueuer.getSize()).toBe(3)
+        expect(asyncQueuer.store.state.items.length).toBe(3)
         expect(asyncQueuer.getNextItem()).toBe('high')
         expect(asyncQueuer.getNextItem()).toBe('medium')
         expect(asyncQueuer.getNextItem()).toBe('low')
@@ -263,8 +263,8 @@ describe('AsyncQueuer', () => {
             initialItems: [],
           },
         )
-        expect(asyncQueuer.getSize()).toBe(0)
-        expect(asyncQueuer.getIsEmpty()).toBe(true)
+        expect(asyncQueuer.store.state.items.length).toBe(0)
+        expect(asyncQueuer.store.state.isEmpty).toBe(true)
       })
     })
 
@@ -491,85 +491,6 @@ describe('AsyncQueuer', () => {
     expect(asyncQueuer.getNextItem('front')).toBeUndefined()
   })
 
-  describe('setOptions', () => {
-    it('should update queuer options', () => {
-      const asyncQueuer = new AsyncQueuer<string>(
-        (item) => Promise.resolve(item),
-        {
-          started: false,
-          concurrency: 1,
-        },
-      )
-      asyncQueuer.setOptions({ concurrency: 2, started: true })
-      expect(asyncQueuer.getOptions()).toEqual(
-        expect.objectContaining({
-          concurrency: 2,
-          started: true,
-        }),
-      )
-    })
-  })
-
-  describe('getOptions', () => {
-    it('should return current queuer options', () => {
-      const options = {
-        started: false,
-        concurrency: 2,
-        maxSize: 10,
-      }
-      const asyncQueuer = new AsyncQueuer<string>(
-        (item) => Promise.resolve(item),
-        options,
-      )
-      expect(asyncQueuer.getOptions()).toEqual(expect.objectContaining(options))
-    })
-  })
-
-  describe('getWait', () => {
-    it('should return the current wait time', () => {
-      const asyncQueuer = new AsyncQueuer<string>(
-        (item) => Promise.resolve(item),
-        {
-          wait: 100,
-        },
-      )
-      expect(asyncQueuer.getWait()).toBe(100)
-
-      // Test with function
-      const asyncQueuer2 = new AsyncQueuer<string>(
-        (item) => Promise.resolve(item),
-        {
-          wait: () => 200,
-        },
-      )
-      expect(asyncQueuer2.getWait()).toBe(200)
-    })
-  })
-
-  describe('reset', () => {
-    it('should reset the queuer to its initial state', () => {
-      const asyncQueuer = new AsyncQueuer<string>(
-        (item) => Promise.resolve(item),
-        {
-          started: false,
-          initialItems: ['initial'],
-        },
-      )
-      asyncQueuer.addItem('added')
-      expect(asyncQueuer.getSize()).toBe(2)
-
-      asyncQueuer.reset()
-      expect(asyncQueuer.getSize()).toBe(0)
-      expect(asyncQueuer.getSuccessCount()).toBe(0)
-      expect(asyncQueuer.getErrorCount()).toBe(0)
-      expect(asyncQueuer.getSettledCount()).toBe(0)
-
-      asyncQueuer.reset(true)
-      expect(asyncQueuer.getSize()).toBe(1)
-      expect(asyncQueuer.getNextItem()).toBe('initial')
-    })
-  })
-
   describe('start', () => {
     it('should start the queuer', () => {
       const asyncQueuer = new AsyncQueuer<string>(
@@ -578,9 +499,9 @@ describe('AsyncQueuer', () => {
           started: false,
         },
       )
-      expect(asyncQueuer.getIsRunning()).toBe(false)
+      expect(asyncQueuer.store.state.isRunning).toBe(false)
       asyncQueuer.start()
-      expect(asyncQueuer.getIsRunning()).toBe(true)
+      expect(asyncQueuer.store.state.isRunning).toBe(true)
     })
   })
 
@@ -592,9 +513,9 @@ describe('AsyncQueuer', () => {
           started: true,
         },
       )
-      expect(asyncQueuer.getIsRunning()).toBe(true)
+      expect(asyncQueuer.store.state.isRunning).toBe(true)
       asyncQueuer.stop()
-      expect(asyncQueuer.getIsRunning()).toBe(false)
+      expect(asyncQueuer.store.state.isRunning).toBe(false)
     })
   })
 
@@ -608,7 +529,7 @@ describe('AsyncQueuer', () => {
       asyncQueuer.addItem('test2')
       await asyncQueuer.execute()
       await asyncQueuer.execute()
-      expect(asyncQueuer.getSuccessCount()).toBe(2)
+      expect(asyncQueuer.store.state.successCount).toBe(2)
     })
   })
 
@@ -622,7 +543,7 @@ describe('AsyncQueuer', () => {
       asyncQueuer.addItem('test2')
       await asyncQueuer.execute()
       await asyncQueuer.execute()
-      expect(asyncQueuer.getErrorCount()).toBe(2)
+      expect(asyncQueuer.store.state.errorCount).toBe(2)
     })
   })
 
@@ -636,7 +557,7 @@ describe('AsyncQueuer', () => {
       asyncQueuer.addItem('test2')
       await asyncQueuer.execute()
       await asyncQueuer.execute()
-      expect(asyncQueuer.getSettledCount()).toBe(2)
+      expect(asyncQueuer.store.state.settledCount).toBe(2)
     })
   })
 
@@ -649,7 +570,7 @@ describe('AsyncQueuer', () => {
       asyncQueuer.addItem('test1')
       asyncQueuer.addItem('test2')
       asyncQueuer.addItem('test3')
-      expect(asyncQueuer.getRejectionCount()).toBe(2)
+      expect(asyncQueuer.store.state.rejectionCount).toBe(2)
     })
   })
 
@@ -668,7 +589,7 @@ describe('AsyncQueuer', () => {
       await vi.advanceTimersByTimeAsync(200)
       asyncQueuer.start()
       await vi.advanceTimersByTimeAsync(0)
-      expect(asyncQueuer.getExpirationCount()).toBe(2)
+      expect(asyncQueuer.store.state.expirationCount).toBe(2)
     })
   })
 
@@ -723,18 +644,6 @@ describe('AsyncQueuer', () => {
       asyncQueuer.start()
       await vi.advanceTimersByTimeAsync(0)
       expect(onExpire).toHaveBeenCalledWith('test', asyncQueuer)
-    })
-
-    it('should call onIsRunningChange when running state changes', () => {
-      const onIsRunningChange = vi.fn()
-      const asyncQueuer = new AsyncQueuer<string>(
-        (item) => Promise.resolve(item),
-        { started: false, onIsRunningChange },
-      )
-      asyncQueuer.start()
-      expect(onIsRunningChange).toHaveBeenCalledWith(asyncQueuer)
-      asyncQueuer.stop()
-      expect(onIsRunningChange).toHaveBeenCalledWith(asyncQueuer)
     })
 
     it('should call onReject when an item is rejected', () => {
@@ -814,7 +723,8 @@ describe('AsyncQueuer', () => {
           return item
         },
         {
-          concurrency: (queuer) => (queuer.getSize() > 1 ? 2 : 1),
+          concurrency: (queuer) =>
+            queuer.store.state.items.length > 1 ? 2 : 1,
           started: false,
         },
       )
@@ -875,7 +785,7 @@ describe('AsyncQueuer', () => {
           return item
         },
         {
-          wait: (queuer) => (queuer.getSize() > 1 ? 100 : 50),
+          wait: (queuer) => (queuer.store.state.items.length > 1 ? 100 : 50),
           started: false,
         },
       )

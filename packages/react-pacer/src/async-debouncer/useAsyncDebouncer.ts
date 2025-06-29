@@ -8,7 +8,7 @@ import type {
   AsyncDebouncerState,
 } from '@tanstack/pacer/async-debouncer'
 
-interface ReactAsyncDebouncer<
+export interface ReactAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = AsyncDebouncerState<TFn>,
 > extends Omit<AsyncDebouncer<TFn>, 'store'> {

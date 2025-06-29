@@ -10,6 +10,7 @@ export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
   lastArgs: Parameters<TFn> | undefined
   lastResult: ReturnType<TFn> | undefined
   settleCount: number
+  status: 'idle' | 'pending' | 'executing' | 'settled'
   successCount: number
 }
 
@@ -134,6 +135,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     lastResult: undefined,
     settleCount: 0,
     successCount: 0,
+    status: 'idle',
   })
   #options: AsyncDebouncerOptions<TFn>
   #abortController: AbortController | null = null
@@ -151,10 +153,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.store.setState((state) => ({
-      ...state,
-      ...this.#options.initialState,
-    }))
+    this.#setState(this.#options.initialState ?? {})
   }
 
   /**
@@ -170,7 +169,23 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   #setState(newState: Partial<AsyncDebouncerState<TFn>>): void {
-    this.store.setState((state) => ({ ...state, ...newState }))
+    this.store.setState((state) => {
+      const combinedState = {
+        ...state,
+        ...newState,
+      }
+      const { isPending, isExecuting, settleCount } = combinedState
+      return {
+        ...combinedState,
+        status: isPending
+          ? 'pending'
+          : isExecuting
+            ? 'executing'
+            : settleCount > 0
+              ? 'settled'
+              : 'idle',
+      }
+    })
   }
 
   /**
