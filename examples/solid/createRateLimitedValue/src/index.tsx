@@ -141,11 +141,11 @@ function App3() {
           </tr>
           <tr>
             <td>Rate Limited Executions:</td>
-            <td>{rateLimiter.executionCount()}</td>
+            <td>{rateLimiter.state().executionCount}</td>
           </tr>
           <tr>
             <td>Rejected Executions:</td>
-            <td>{rateLimiter.rejectionCount()}</td>
+            <td>{rateLimiter.state().rejectionCount}</td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -153,7 +153,8 @@ function App3() {
               {instantExecutionCount() === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount() - rateLimiter.executionCount()) /
+                    ((instantExecutionCount() -
+                      rateLimiter.state().executionCount) /
                       instantExecutionCount()) *
                       100,
                   )}

@@ -1,8 +1,24 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
+import { useStore,  } from '@tanstack/react-store'
+import type {
+  RateLimiterOptions,
+  RateLimiterState,
+} from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
+
+export interface ReactRateLimiter<
+  TFn extends AnyFunction,
+  TSelected = RateLimiterState,
+> extends Omit<RateLimiter<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the rate limiter state changes
+   *
+   * Use this instead of `rateLimiter.store.state`
+   */
+  state: TSelected
+}
 
 /**
  * A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
@@ -52,15 +68,28 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * };
  * ```
  */
-export function useRateLimiter<TFn extends AnyFunction>(
+export function useRateLimiter<
+  TFn extends AnyFunction,
+  TSelected = RateLimiterState,
+>(
   fn: TFn,
   options: RateLimiterOptions<TFn>,
-): RateLimiter<TFn> {
+  selector?: (state: RateLimiterState) => TSelected,
+): ReactRateLimiter<TFn, TSelected> {
   const [rateLimiter] = useState(() =>
     bindInstanceMethods(new RateLimiter<TFn>(fn, options)),
   )
 
+  const state = useStore(rateLimiter.store, selector)
+
   rateLimiter.setOptions(options)
 
-  return rateLimiter
+  return useMemo(
+    () =>
+      ({
+        ...rateLimiter,
+        state,
+      }) as unknown as ReactRateLimiter<TFn, TSelected>, // omit `store` in favor of `state`
+    [rateLimiter, state],
+  )
 }

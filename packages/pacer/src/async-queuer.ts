@@ -22,6 +22,27 @@ export interface AsyncQueuerState<TValue> {
   successCount: number
 }
 
+function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
+  return structuredClone({
+    activeItems: [],
+    errorCount: 0,
+    expirationCount: 0,
+    isEmpty: true,
+    isFull: false,
+    isIdle: true,
+    isRunning: true,
+    itemTimestamps: [],
+    items: [],
+    lastResult: null,
+    pendingTick: false,
+    rejectionCount: 0,
+    settledCount: 0,
+    size: 0,
+    status: 'idle',
+    successCount: 0,
+  })
+}
+
 export interface AsyncQueuerOptions<TValue> {
   /**
    * Default position to add items to the queuer
@@ -182,24 +203,7 @@ const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
 export class AsyncQueuer<TValue> {
   readonly store: Store<AsyncQueuerState<TValue>> = new Store<
     AsyncQueuerState<TValue>
-  >({
-    activeItems: [],
-    errorCount: 0,
-    expirationCount: 0,
-    isEmpty: true,
-    isFull: false,
-    isIdle: true,
-    isRunning: true,
-    itemTimestamps: [],
-    items: [],
-    lastResult: null,
-    pendingTick: false,
-    rejectionCount: 0,
-    settledCount: 0,
-    size: 0,
-    status: 'idle',
-    successCount: 0,
-  })
+  >(getDefaultAsyncQueuerState<TValue>())
   #options: AsyncQueuerOptions<TValue>
 
   constructor(
@@ -322,32 +326,6 @@ export class AsyncQueuer<TValue> {
     }
 
     this.#setState({ pendingTick: false })
-  }
-
-  /**
-   * Starts processing items in the queue. If already running, does nothing.
-   */
-  start(): void {
-    this.#setState({ isRunning: true })
-    if (!this.store.state.pendingTick && !this.store.state.isEmpty) {
-      this.#setState({ pendingTick: true })
-      this.#tick()
-    }
-  }
-
-  /**
-   * Stops processing items in the queue. Does not clear the queue.
-   */
-  stop(): void {
-    this.#setState({ isRunning: false, pendingTick: false })
-  }
-
-  /**
-   * Removes all pending items from the queue. Does not affect active tasks.
-   */
-  clear(): void {
-    this.#setState({ items: [], itemTimestamps: [] })
-    this.#options.onItemsChange?.(this)
   }
 
   /**
@@ -603,6 +581,39 @@ export class AsyncQueuer<TValue> {
    */
   peekPendingItems(): Array<TValue> {
     return [...this.store.state.items]
+  }
+
+  /**
+   * Starts processing items in the queue. If already running, does nothing.
+   */
+  start(): void {
+    this.#setState({ isRunning: true })
+    if (!this.store.state.pendingTick && !this.store.state.isEmpty) {
+      this.#setState({ pendingTick: true })
+      this.#tick()
+    }
+  }
+
+  /**
+   * Stops processing items in the queue. Does not clear the queue.
+   */
+  stop(): void {
+    this.#setState({ isRunning: false, pendingTick: false })
+  }
+
+  /**
+   * Removes all pending items from the queue. Does not affect active tasks.
+   */
+  clear(): void {
+    this.#setState({ items: [], itemTimestamps: [] })
+    this.#options.onItemsChange?.(this)
+  }
+
+  /**
+   * Resets the queuer state to its default values
+   */
+  reset(): void {
+    this.#setState(getDefaultAsyncQueuerState<TValue>())
   }
 }
 

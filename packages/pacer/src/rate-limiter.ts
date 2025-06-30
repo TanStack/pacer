@@ -1,3 +1,4 @@
+import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
@@ -5,6 +6,14 @@ export interface RateLimiterState {
   executionCount: number
   executionTimes: Array<number>
   rejectionCount: number
+}
+
+function getDefaultRateLimiterState(): RateLimiterState {
+  return structuredClone({
+    executionCount: 0,
+    executionTimes: [],
+    rejectionCount: 0,
+  })
 }
 
 /**
@@ -33,13 +42,6 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
   onReject?: (rateLimiter: RateLimiter<TFn>) => void
-  /**
-   * Callback function that is called when the state of the rate limiter is updated
-   */
-  onStateChange?: (
-    state: RateLimiterState,
-    rateLimiter: RateLimiter<TFn>,
-  ) => void
   /**
    * Time window in milliseconds within which the limit applies.
    * Can be a number or a callback function that receives the rate limiter instance and returns a number.
@@ -106,12 +108,10 @@ const defaultOptions: Omit<
  * ```
  */
 export class RateLimiter<TFn extends AnyFunction> {
+  readonly store: Store<RateLimiterState> = new Store<RateLimiterState>(
+    getDefaultRateLimiterState(),
+  )
   #options: RateLimiterOptions<TFn>
-  #state: RateLimiterState = {
-    executionCount: 0,
-    executionTimes: [],
-    rejectionCount: 0,
-  }
 
   constructor(
     private fn: TFn,
@@ -121,10 +121,7 @@ export class RateLimiter<TFn extends AnyFunction> {
       ...defaultOptions,
       ...initialOptions,
     }
-    this.#state = {
-      ...this.#state,
-      ...this.#options.initialState,
-    }
+    this.#setState(this.#options.initialState ?? {})
   }
 
   /**
@@ -134,40 +131,34 @@ export class RateLimiter<TFn extends AnyFunction> {
     this.#options = { ...this.#options, ...newOptions }
   }
 
-  /**
-   * Returns the current rate limiter options
-   */
-  getOptions(): Required<RateLimiterOptions<TFn>> {
-    return this.#options as Required<RateLimiterOptions<TFn>>
-  }
-
-  getState(): RateLimiterState {
-    return { ...this.#state }
-  }
-
   #setState(newState: Partial<RateLimiterState>): void {
-    this.#state = { ...this.#state, ...newState }
-    this.#options.onStateChange?.(this.#state, this)
+    this.store.setState((state) => {
+      const combinedState = {
+        ...state,
+        ...newState,
+      }
+      return combinedState
+    })
   }
 
   /**
    * Returns the current enabled state of the rate limiter
    */
-  getEnabled(): boolean {
-    return parseFunctionOrValue(this.#options.enabled, this)!
+  #getEnabled(): boolean {
+    return !!parseFunctionOrValue(this.#options.enabled, this)
   }
 
   /**
    * Returns the current limit of executions allowed within the time window
    */
-  getLimit(): number {
+  #getLimit(): number {
     return parseFunctionOrValue(this.#options.limit, this)
   }
 
   /**
    * Returns the current time window in milliseconds
    */
-  getWindow(): number {
+  #getWindow(): number {
     return parseFunctionOrValue(this.#options.window, this)
   }
 
@@ -189,22 +180,11 @@ export class RateLimiter<TFn extends AnyFunction> {
   maybeExecute(...args: Parameters<TFn>): boolean {
     this.#cleanupOldExecutions()
 
-    if (this.#options.windowType === 'sliding') {
-      // For sliding window, we can execute if we have capacity in the current window
-      if (this.#state.executionTimes.length < this.getLimit()) {
-        this.#execute(...args)
-        return true
-      }
-    } else {
-      // For fixed window, we need to check if we're in a new window
-      const now = Date.now()
-      const oldestExecution = Math.min(...this.#state.executionTimes)
-      const isNewWindow = oldestExecution + this.getWindow() <= now
+    const relevantExecutionTimes = this.#getRelevantExecutionTimes()
 
-      if (isNewWindow || this.#state.executionTimes.length < this.getLimit()) {
-        this.#execute(...args)
-        return true
-      }
+    if (relevantExecutionTimes.length < this.#getLimit()) {
+      this.#execute(...args)
+      return true
     }
 
     this.#rejectFunction()
@@ -212,53 +192,57 @@ export class RateLimiter<TFn extends AnyFunction> {
   }
 
   #execute(...args: Parameters<TFn>): void {
-    if (!this.getEnabled()) return
+    if (!this.#getEnabled()) return
     const now = Date.now()
     this.fn(...args) // EXECUTE!
-    this.#state.executionTimes.push(now) // mutate state directly for performance
+    this.store.state.executionTimes.push(now) // mutate state directly for performance
     this.#setState({
-      executionCount: this.#state.executionCount + 1,
+      executionCount: this.store.state.executionCount + 1,
     })
     this.#options.onExecute?.(this)
   }
 
   #rejectFunction(): void {
     this.#setState({
-      rejectionCount: this.#state.rejectionCount + 1,
+      rejectionCount: this.store.state.rejectionCount + 1,
     })
     this.#options.onReject?.(this)
   }
 
+  #getRelevantExecutionTimes(): Array<number> {
+    if (this.#options.windowType === 'sliding') {
+      // For sliding window, return all executions within the current window
+      return this.store.state.executionTimes.filter(
+        (time) => time > Date.now() - this.#getWindow(),
+      )
+    } else {
+      // For fixed window, return all executions in the current window
+      // The window starts from the oldest execution time
+      const oldestExecution = Math.min(...this.store.state.executionTimes)
+      const windowStart = oldestExecution
+      return this.store.state.executionTimes.filter(
+        (time) =>
+          time >= windowStart && time <= windowStart + this.#getWindow(),
+      )
+    }
+  }
+
   #cleanupOldExecutions(): void {
     const now = Date.now()
-    const windowStart = now - this.getWindow()
+    const windowStart = now - this.#getWindow()
     this.#setState({
-      executionTimes: this.#state.executionTimes.filter(
+      executionTimes: this.store.state.executionTimes.filter(
         (time) => time > windowStart,
       ),
     })
   }
 
   /**
-   * Returns the number of times the function has been executed
-   */
-  getExecutionCount(): number {
-    return this.#state.executionCount
-  }
-
-  /**
-   * Returns the number of times the function has been rejected
-   */
-  getRejectionCount(): number {
-    return this.#state.rejectionCount
-  }
-
-  /**
    * Returns the number of remaining executions allowed in the current window
    */
   getRemainingInWindow(): number {
-    this.#cleanupOldExecutions()
-    return Math.max(0, this.getLimit() - this.#state.executionTimes.length)
+    const relevantExecutionTimes = this.#getRelevantExecutionTimes()
+    return Math.max(0, this.#getLimit() - relevantExecutionTimes.length)
   }
 
   /**
@@ -268,19 +252,15 @@ export class RateLimiter<TFn extends AnyFunction> {
     if (this.getRemainingInWindow() > 0) {
       return 0
     }
-    const oldestExecution = this.#state.executionTimes[0] ?? Infinity
-    return oldestExecution + this.getWindow() - Date.now()
+    const oldestExecution = this.store.state.executionTimes[0] ?? Infinity
+    return oldestExecution + this.#getWindow() - Date.now()
   }
 
   /**
    * Resets the rate limiter state
    */
   reset(): void {
-    this.#setState({
-      executionTimes: [],
-      executionCount: 0,
-      rejectionCount: 0,
-    })
+    this.#setState(getDefaultRateLimiterState())
   }
 }
 

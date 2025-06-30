@@ -14,6 +14,22 @@ export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
   successCount: number
 }
 
+function getDefaultAsyncDebouncerState<
+  TFn extends AnyAsyncFunction,
+>(): AsyncDebouncerState<TFn> {
+  return structuredClone({
+    canLeadingExecute: true,
+    errorCount: 0,
+    isExecuting: false,
+    isPending: false,
+    lastArgs: undefined,
+    lastResult: undefined,
+    settleCount: 0,
+    successCount: 0,
+    status: 'idle',
+  })
+}
+
 /**
  * Options for configuring an async debounced function
  */
@@ -126,17 +142,7 @@ const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
 export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   readonly store: Store<AsyncDebouncerState<TFn>> = new Store<
     AsyncDebouncerState<TFn>
-  >({
-    canLeadingExecute: true,
-    errorCount: 0,
-    isExecuting: false,
-    isPending: false,
-    lastArgs: undefined,
-    lastResult: undefined,
-    settleCount: 0,
-    successCount: 0,
-    status: 'idle',
-  })
+  >(getDefaultAsyncDebouncerState<TFn>())
   #options: AsyncDebouncerOptions<TFn>
   #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
@@ -309,6 +315,13 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#abortController = null
     }
     this.#setState({ canLeadingExecute: true })
+  }
+
+  /**
+   * Resets the debouncer state to its default values
+   */
+  reset(): void {
+    this.#setState(getDefaultAsyncDebouncerState<TFn>())
   }
 }
 
