@@ -8,7 +8,6 @@ type Item = number
 
 function App() {
   // Use your state management library of choice
-  const [queueItems, setQueueItems] = createSignal<Array<Item>>([])
   const [concurrency, setConcurrency] = createSignal(2)
 
   // The function to process each item (now a number)
@@ -17,41 +16,47 @@ function App() {
     console.log(`Processed ${item}`)
   }
 
-  const queuer = createAsyncQueuer<Item>(processItem, {
-    maxSize: 25,
-    initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
-    concurrency: () => concurrency(), // Process 2 items concurrently
-    started: false,
-    wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
-    onItemsChange: (queuer) => {
-      setQueueItems(queuer.peekAllItems())
+  const queuer = createAsyncQueuer<Item>(
+    processItem,
+    {
+      maxSize: 25,
+      initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
+      concurrency: () => concurrency(), // Process 2 items concurrently
+      started: false,
+      wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
+      onReject: (item, queuer) => {
+        console.log(
+          'Queue is full, rejecting item',
+          item,
+          queuer.store.state.rejectionCount,
+        )
+      },
+      onError: (error, queuer) => {
+        console.error(
+          'Error processing item',
+          error,
+          queuer.store.state.errorCount,
+        ) // optionally, handle errors here instead of your own try/catch
+      },
     },
-    onReject: (item, queuer) => {
-      console.log(
-        'Queue is full, rejecting item',
-        item,
-        queuer.getRejectionCount(),
-      )
-    },
-    onError: (error, queuer) => {
-      console.error('Error processing item', error, queuer.getErrorCount()) // optionally, handle errors here instead of your own try/catch
-    },
-  })
+    // optionally, you can select a subset of the state to re-render when it changes
+    // (state) => ({}),
+  )
 
   return (
     <div>
       <h1>TanStack Pacer createAsyncQueuer Example</h1>
       <div></div>
-      <div>Queue Size: {queuer.size()}</div>
+      <div>Queue Size: {queuer.state().size}</div>
       <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {queuer.isFull() ? 'Yes' : 'No'}</div>
-      <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.successCount()}</div>
-      <div>Items Rejected: {queuer.rejectionCount()}</div>
-      <div>Active Tasks: {queuer.activeItems().length}</div>
-      <div>Pending Tasks: {queuer.pendingItems().length}</div>
+      <div>Queue Full: {queuer.state().isFull ? 'Yes' : 'No'}</div>
+      <div>Queue Empty: {queuer.state().isEmpty ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {queuer.state().isIdle ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {queuer.state().status}</div>
+      <div>Items Processed: {queuer.state().successCount}</div>
+      <div>Items Rejected: {queuer.state().rejectionCount}</div>
+      <div>Active Tasks: {queuer.state().activeItems.length}</div>
+      <div>Pending Tasks: {queuer.state().items.length}</div>
       <div>
         Concurrency:{' '}
         <input
@@ -66,7 +71,7 @@ function App() {
       </div>
       <div style={{ 'min-height': '250px' }}>
         Queue Items:
-        <For each={queueItems()}>
+        <For each={queuer.state().items}>
           {(item, index) => (
             <div>
               {index()}: {item}
@@ -85,23 +90,33 @@ function App() {
       >
         <button
           onClick={() => {
-            const items = queueItems()
-            const nextNumber = items.length ? Math.max(...items) + 1 : 1
+            const nextNumber = queuer.state().items.length
+              ? Math.max(...queuer.state().items) + 1
+              : 1
             queuer.addItem(nextNumber)
           }}
-          disabled={queuer.isFull()}
+          disabled={queuer.state().isFull}
         >
           Add Async Task
         </button>
         <button onClick={() => queuer.getNextItem()}>Get Next Item</button>
-        <button onClick={() => queuer.clear()} disabled={queuer.isEmpty()}>
+        <button
+          onClick={() => queuer.clear()}
+          disabled={queuer.state().isEmpty}
+        >
           Clear Queue
         </button>
-        <button onClick={() => queuer.reset()}>Reset Queue</button>
-        <button onClick={() => queuer.start()} disabled={queuer.isRunning()}>
+        <br />
+        <button
+          onClick={() => queuer.start()}
+          disabled={queuer.state().isRunning}
+        >
           Start Processing
         </button>
-        <button onClick={() => queuer.stop()} disabled={!queuer.isRunning()}>
+        <button
+          onClick={() => queuer.stop()}
+          disabled={!queuer.state().isRunning}
+        >
           Stop Processing
         </button>
       </div>

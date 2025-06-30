@@ -72,7 +72,7 @@ const searchDebouncer = new Debouncer(
 
 // Get information about current state
 console.log(searchDebouncer.getExecutionCount()) // Number of successful executions
-console.log(searchDebouncer.getIsPending()) // Whether a call is pending
+console.log(searchdebouncer.getState().isPending) // Whether a call is pending
 
 // Update options dynamically
 searchDebouncer.setOptions({ wait: 1000 }) // Increase wait time

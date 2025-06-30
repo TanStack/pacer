@@ -1,6 +1,5 @@
 import { Queuer } from '@tanstack/pacer/queuer'
 import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
 import type { QueuerOptions } from '@tanstack/pacer/queuer'
 
@@ -109,7 +108,7 @@ export function createQueuer<TValue>(
   fn: (item: TValue) => void,
   initialOptions: QueuerOptions<TValue> = {},
 ): SolidQueuer<TValue> {
-  const queuer = bindInstanceMethods(new Queuer<TValue>(fn, initialOptions))
+  const queuer = new Queuer<TValue>(fn, initialOptions)
 
   const [allItems, setAllItems] = createSignal<Array<TValue>>(
     queuer.peekAllItems(),

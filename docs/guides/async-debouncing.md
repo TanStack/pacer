@@ -78,7 +78,7 @@ const asyncDebouncer = new AsyncDebouncer(async (value) => {
   wait: 500,
   onSuccess: (result, debouncer) => {
     // Called after each successful execution
-    console.log('Async function executed', debouncer.getSuccessCount())
+    console.log('Async function executed', debouncer.getState().successCount)
   },
   onSettled: (debouncer) => {
     // Called after each execution attempt

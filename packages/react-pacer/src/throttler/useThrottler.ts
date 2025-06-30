@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Throttler } from '@tanstack/pacer/throttler'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
 
@@ -43,9 +42,7 @@ export function useThrottler<TFn extends AnyFunction>(
   fn: TFn,
   options: ThrottlerOptions<TFn>,
 ): Throttler<TFn> {
-  const [throttler] = useState(() =>
-    bindInstanceMethods(new Throttler<TFn>(fn, options)),
-  )
+  const [throttler] = useState(() => new Throttler<TFn>(fn, options))
 
   throttler.setOptions(options)
 

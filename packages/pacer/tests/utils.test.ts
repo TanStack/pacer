@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  bindInstanceMethods,
-  isFunction,
-  parseFunctionOrValue,
-} from '../src/utils'
+import { isFunction, parseFunctionOrValue } from '../src/utils'
 
 describe('isFunction', () => {
   it('should return true for function declarations', () => {
@@ -58,63 +54,5 @@ describe('parseFunctionValue', () => {
       return 42
     }
     expect(await parseFunctionOrValue(asyncFn)).toBe(42)
-  })
-})
-
-describe('bindInstanceMethods', () => {
-  it('should bind all instance methods', () => {
-    class TestClass {
-      value = 42
-      method1() {
-        return this.value
-      }
-      method2() {
-        return this.value * 2
-      }
-    }
-
-    const instance = new TestClass()
-    const bound = bindInstanceMethods(instance)
-
-    // Test that methods are bound by calling them without the instance context
-    const { method1, method2 } = bound
-    expect(method1()).toBe(42)
-    expect(method2()).toBe(84)
-  })
-
-  it('should not bind non-method properties', () => {
-    class TestClass {
-      value = 42
-      method() {
-        return this.value
-      }
-    }
-
-    const instance = new TestClass()
-    const bound = bindInstanceMethods(instance)
-
-    expect(bound.value).toBe(42)
-    expect(bound.method()).toBe(42)
-  })
-
-  it('should work with inheritance', () => {
-    class Parent {
-      parentMethod() {
-        return 'parent'
-      }
-    }
-
-    class Child extends Parent {
-      childMethod() {
-        return 'child'
-      }
-    }
-
-    const instance = new Child()
-    const bound = bindInstanceMethods(instance)
-
-    const { parentMethod, childMethod } = bound
-    expect(parentMethod()).toBe('parent')
-    expect(childMethod()).toBe('child')
   })
 })

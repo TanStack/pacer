@@ -1,6 +1,13 @@
 import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
+export interface DebouncerState<TFn extends AnyFunction> {
+  canLeadingExecute: boolean
+  executionCount: number
+  isPending: boolean
+  lastArgs: Parameters<TFn> | undefined
+}
+
 /**
  * Options for configuring a debounced function
  */
@@ -12,6 +19,10 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    */
   enabled?: boolean | ((debouncer: Debouncer<TFn>) => boolean)
   /**
+   * Initial state for the debouncer
+   */
+  initialState?: Partial<DebouncerState<TFn>>
+  /**
    * Whether to execute on the leading edge of the timeout.
    * The first call will execute immediately and the rest will wait the delay.
    * Defaults to false.
@@ -21,6 +32,13 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    * Callback function that is called after the function is executed
    */
   onExecute?: (debouncer: Debouncer<TFn>) => void
+  /**
+   * Callback function that is called when the state of the debouncer is updated
+   */
+  onStateChange?: (
+    state: DebouncerState<TFn>,
+    debouncer: Debouncer<TFn>,
+  ) => void
   /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
@@ -34,10 +52,12 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
   wait: number | ((debouncer: Debouncer<TFn>) => number)
 }
 
-const defaultOptions: Required<DebouncerOptions<any>> = {
+const defaultOptions: Omit<
+  Required<DebouncerOptions<any>>,
+  'initialState' | 'onStateChange' | 'onExecute'
+> = {
   enabled: true,
   leading: false,
-  onExecute: () => {},
   trailing: true,
   wait: 0,
 }
@@ -53,6 +73,12 @@ const defaultOptions: Required<DebouncerOptions<any>> = {
  * (leading edge) or at the end (trailing edge, default). Each new call during the wait period
  * will reset the timer.
  *
+ * State Management:
+ * - Use `initialState` to provide initial state values when creating the debouncer
+ * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - The state includes canLeadingExecute, execution count, and isPending status
+ * - State can be retrieved using `getState()` method
+ *
  * @example
  * ```ts
  * const debouncer = new Debouncer((value: string) => {
@@ -66,117 +92,138 @@ const defaultOptions: Required<DebouncerOptions<any>> = {
  * ```
  */
 export class Debouncer<TFn extends AnyFunction> {
-  private _canLeadingExecute = true
-  private _executionCount = 0
-  private _isPending = false
-  private _options: Required<DebouncerOptions<TFn>>
-  private _timeoutId: NodeJS.Timeout | undefined
+  #options: DebouncerOptions<TFn>
+  #state: DebouncerState<TFn> = {
+    canLeadingExecute: true,
+    executionCount: 0,
+    isPending: false,
+    lastArgs: undefined,
+  }
+  #timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
     initialOptions: DebouncerOptions<TFn>,
   ) {
-    this._options = {
+    this.#options = {
       ...defaultOptions,
       ...initialOptions,
+    }
+    this.#state = {
+      ...this.#state,
+      ...this.#options.initialState,
     }
   }
 
   /**
    * Updates the debouncer options
    */
-  setOptions(newOptions: Partial<DebouncerOptions<TFn>>): void {
-    this._options = { ...this._options, ...newOptions }
+  setOptions = (newOptions: Partial<DebouncerOptions<TFn>>): void => {
+    this.#options = { ...this.#options, ...newOptions }
 
     // End the pending state if the debouncer is disabled
-    if (!this._options.enabled) {
-      this._isPending = false
+    if (!this.getEnabled()) {
+      this.#setState({ isPending: false })
     }
   }
 
   /**
    * Returns the current debouncer options
    */
-  getOptions(): Required<DebouncerOptions<TFn>> {
-    return this._options
+  getOptions = (): Required<DebouncerOptions<TFn>> => {
+    return this.#options as Required<DebouncerOptions<TFn>>
+  }
+
+  getState = (): DebouncerState<TFn> => {
+    return { ...this.#state }
+  }
+
+  #setState = (newState: Partial<DebouncerState<TFn>>): void => {
+    this.#state = { ...this.#state, ...newState }
+    this.#options.onStateChange?.(this.#state, this)
   }
 
   /**
    * Returns the current enabled state of the debouncer
    */
-  getEnabled(): boolean {
-    return parseFunctionOrValue(this._options.enabled, this)
+  getEnabled = (): boolean => {
+    return !!parseFunctionOrValue(this.#options.enabled, this)
   }
 
   /**
    * Returns the current wait time in milliseconds
    */
-  getWait(): number {
-    return parseFunctionOrValue(this._options.wait, this)
+  getWait = (): number => {
+    return parseFunctionOrValue(this.#options.wait, this)
   }
 
   /**
    * Attempts to execute the debounced function
    * If a call is already in progress, it will be queued
    */
-  maybeExecute(...args: Parameters<TFn>): void {
+  maybeExecute = (...args: Parameters<TFn>): void => {
     let _didLeadingExecute = false
 
     // Handle leading execution
-    if (this._options.leading && this._canLeadingExecute) {
-      this._canLeadingExecute = false
+    if (this.#options.leading && this.#state.canLeadingExecute) {
+      this.#setState({ canLeadingExecute: false })
       _didLeadingExecute = true
-      this.execute(...args)
+      this.#execute(...args)
     }
 
     // Start pending state to indicate that the debouncer is waiting for the trailing edge
-    if (this._options.trailing) {
-      this._isPending = true
+    if (this.#options.trailing) {
+      this.#setState({ isPending: true })
     }
 
     // Clear any existing timeout
-    if (this._timeoutId) clearTimeout(this._timeoutId)
+    if (this.#timeoutId) clearTimeout(this.#timeoutId)
 
     // Set new timeout that will reset canLeadingExecute and execute trailing only if enabled and did not execute leading
-    this._timeoutId = setTimeout(() => {
-      this._canLeadingExecute = true
-      if (this._options.trailing && !_didLeadingExecute) {
-        this.execute(...args)
+    this.#timeoutId = setTimeout(() => {
+      this.#setState({ canLeadingExecute: true })
+      if (this.#options.trailing && !_didLeadingExecute) {
+        this.#execute(...args)
       }
     }, this.getWait())
   }
 
-  private execute(...args: Parameters<TFn>): void {
+  #execute = (...args: Parameters<TFn>): void => {
     if (!this.getEnabled()) return undefined
     this.fn(...args) // EXECUTE!
-    this._isPending = false
-    this._executionCount++
-    this._options.onExecute(this)
+    this.#setState({
+      isPending: false,
+      executionCount: this.#state.executionCount + 1,
+      lastArgs: args,
+    })
+    this.#options.onExecute?.(this)
   }
 
   /**
    * Cancels any pending execution
    */
-  cancel(): void {
-    if (this._timeoutId) {
-      clearTimeout(this._timeoutId)
-      this._canLeadingExecute = true
-      this._isPending = false
+  cancel = (): void => {
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#setState({
+        canLeadingExecute: true,
+        isPending: false,
+      })
     }
   }
 
   /**
    * Returns the number of times the function has been executed
    */
-  getExecutionCount(): number {
-    return this._executionCount
+  getExecutionCount = (): number => {
+    return this.#state.executionCount
   }
 
   /**
    * Returns `true` if debouncing
    */
-  getIsPending(): boolean {
-    return this.getEnabled() && this._isPending
+  getIsPending = (): boolean => {
+    return this.getEnabled() && this.#state.isPending
   }
 }
 
@@ -189,6 +236,11 @@ export class Debouncer<TFn extends AnyFunction> {
  *
  * If leading option is true, the function will execute immediately on the first call, then wait the delay
  * before allowing another execution.
+ *
+ * State Management:
+ * - Use `initialState` to provide initial state values when creating the debouncer
+ * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - The state includes canLeadingExecute, execution count, and isPending status
  *
  * @example
  * ```ts
@@ -205,5 +257,5 @@ export function debounce<TFn extends AnyFunction>(
   initialOptions: DebouncerOptions<TFn>,
 ): (...args: Parameters<TFn>) => void {
   const debouncer = new Debouncer(fn, initialOptions)
-  return debouncer.maybeExecute.bind(debouncer)
+  return debouncer.maybeExecute
 }

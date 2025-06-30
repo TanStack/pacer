@@ -7,7 +7,7 @@ title: SolidQueuer
 
 # Interface: SolidQueuer\<TValue\>
 
-Defined in: [queuer/createQueuer.ts:7](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L7)
+Defined in: [queuer/createQueuer.ts:6](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L6)
 
 ## Extends
 
@@ -33,7 +33,7 @@ Defined in: [queuer/createQueuer.ts:7](https://github.com/TanStack/pacer/blob/ma
 allItems: Accessor<TValue[]>;
 ```
 
-Defined in: [queuer/createQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L22)
+Defined in: [queuer/createQueuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L21)
 
 Signal version of `peekAllItems`
 
@@ -45,7 +45,7 @@ Signal version of `peekAllItems`
 executionCount: Accessor<number>;
 ```
 
-Defined in: [queuer/createQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L26)
+Defined in: [queuer/createQueuer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L25)
 
 Signal version of `getExecutionCount`
 
@@ -57,7 +57,7 @@ Signal version of `getExecutionCount`
 isEmpty: Accessor<boolean>;
 ```
 
-Defined in: [queuer/createQueuer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L30)
+Defined in: [queuer/createQueuer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L29)
 
 Signal version of `getIsEmpty`
 
@@ -69,7 +69,7 @@ Signal version of `getIsEmpty`
 isFull: Accessor<boolean>;
 ```
 
-Defined in: [queuer/createQueuer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L34)
+Defined in: [queuer/createQueuer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L33)
 
 Signal version of `getIsFull`
 
@@ -81,7 +81,7 @@ Signal version of `getIsFull`
 isIdle: Accessor<boolean>;
 ```
 
-Defined in: [queuer/createQueuer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L38)
+Defined in: [queuer/createQueuer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L37)
 
 Signal version of `getIsIdle`
 
@@ -93,7 +93,7 @@ Signal version of `getIsIdle`
 isRunning: Accessor<boolean>;
 ```
 
-Defined in: [queuer/createQueuer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L42)
+Defined in: [queuer/createQueuer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L41)
 
 Signal version of `getIsRunning`
 
@@ -105,7 +105,7 @@ Signal version of `getIsRunning`
 nextItem: Accessor<undefined | TValue>;
 ```
 
-Defined in: [queuer/createQueuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L46)
+Defined in: [queuer/createQueuer.ts:45](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L45)
 
 Signal version of `peekNextItem`
 
@@ -117,7 +117,7 @@ Signal version of `peekNextItem`
 rejectionCount: Accessor<number>;
 ```
 
-Defined in: [queuer/createQueuer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L50)
+Defined in: [queuer/createQueuer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L49)
 
 Signal version of `getRejectionCount`
 
@@ -129,6 +129,6 @@ Signal version of `getRejectionCount`
 size: Accessor<number>;
 ```
 
-Defined in: [queuer/createQueuer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L54)
+Defined in: [queuer/createQueuer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L53)
 
 Signal version of `getSize`

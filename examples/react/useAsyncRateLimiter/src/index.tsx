@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncRateLimiter } from '@tanstack/react-pacer/async-rate-limiter'
+import { useStoragePersister } from '@tanstack/react-persister/storage-persister'
+import type { AsyncRateLimiterState } from '@tanstack/react-pacer/async-rate-limiter'
 
 interface SearchResult {
   id: number
@@ -38,6 +40,15 @@ function App() {
     console.log(setSearchAsyncRateLimiter.getSuccessCount())
   }
 
+  const rateLimiterPersister = useStoragePersister<
+    AsyncRateLimiterState<typeof handleSearch>
+  >({
+    key: 'my-async-rate-limiter',
+    storage: localStorage,
+    maxAge: 1000 * 60, // 1 minute
+    buster: 'v1',
+  })
+
   // hook that gives you an async rate limiter instance
   const setSearchAsyncRateLimiter = useAsyncRateLimiter(handleSearch, {
     // windowType: 'sliding', // default is 'fixed'
@@ -54,6 +65,9 @@ function App() {
       setError(error as Error)
       setResults([])
     },
+    // optionally, you can persist the rate limiter state to localStorage
+    initialState: rateLimiterPersister.loadState(),
+    onStateChange: (state) => rateLimiterPersister.saveState(state),
   })
 
   // get and name our rate limited function

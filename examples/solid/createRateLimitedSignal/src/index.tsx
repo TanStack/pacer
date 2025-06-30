@@ -30,11 +30,11 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.executionCount()}</td>
+            <td>{rateLimiter.state().executionCount}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.rejectionCount()}</td>
+            <td>{rateLimiter.state().rejectionCount}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -48,7 +48,7 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
-        <button onClick={() => alert(rateLimiter.remainingInWindow())}>
+        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
           Remaining in Window
         </button>
         <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
@@ -91,11 +91,11 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.executionCount()}</td>
+            <td>{rateLimiter.state().executionCount}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.rejectionCount()}</td>
+            <td>{rateLimiter.state().rejectionCount}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -108,7 +108,7 @@ function App2() {
         </tbody>
       </table>
       <div>
-        <button onClick={() => alert(rateLimiter.remainingInWindow())}>
+        <button onClick={() => alert(rateLimiter.getRemainingInWindow())}>
           Remaining in Window
         </button>
         <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
@@ -183,11 +183,11 @@ function App3() {
           </tr>
           <tr>
             <td>Rate Limited Executions:</td>
-            <td>{rateLimiter.executionCount()}</td>
+            <td>{rateLimiter.state().executionCount}</td>
           </tr>
           <tr>
             <td>Rejected Executions:</td>
-            <td>{rateLimiter.rejectionCount()}</td>
+            <td>{rateLimiter.state().rejectionCount}</td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -195,7 +195,8 @@ function App3() {
               {instantExecutionCount() === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount() - rateLimiter.executionCount()) /
+                    ((instantExecutionCount() -
+                      rateLimiter.state().executionCount) /
                       instantExecutionCount()) *
                       100,
                   )}

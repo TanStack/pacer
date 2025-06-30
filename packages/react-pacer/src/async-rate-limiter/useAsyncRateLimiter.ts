@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 
@@ -68,8 +67,8 @@ export function useAsyncRateLimiter<TFn extends AnyAsyncFunction>(
   fn: TFn,
   options: AsyncRateLimiterOptions<TFn>,
 ): AsyncRateLimiter<TFn> {
-  const [asyncRateLimiter] = useState(() =>
-    bindInstanceMethods(new AsyncRateLimiter<TFn>(fn, options)),
+  const [asyncRateLimiter] = useState(
+    () => new AsyncRateLimiter<TFn>(fn, options),
   )
 
   asyncRateLimiter.setOptions(options)

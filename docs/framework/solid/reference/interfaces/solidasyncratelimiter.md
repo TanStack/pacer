@@ -7,7 +7,7 @@ title: SolidAsyncRateLimiter
 
 # Interface: SolidAsyncRateLimiter\<TFn\>
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:8](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L8)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:7](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L7)
 
 ## Extends
 
@@ -31,7 +31,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:8](https://github.com/
 errorCount: Accessor<number>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L20)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L19)
 
 ***
 
@@ -41,7 +41,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:20](https://github.com
 msUntilNextWindow: Accessor<number>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L23)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L22)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:23](https://github.com
 rejectionCount: Accessor<number>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L21)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L20)
 
 ***
 
@@ -61,7 +61,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:21](https://github.com
 remainingInWindow: Accessor<number>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L22)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L21)
 
 ***
 
@@ -71,7 +71,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:22](https://github.com
 settleCount: Accessor<number>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L19)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L18)
 
 ***
 
@@ -81,4 +81,4 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:19](https://github.com
 successCount: Accessor<number>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L18)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L17)

@@ -8,7 +8,10 @@ title: createRateLimiter
 # Function: createRateLimiter()
 
 ```ts
-function createRateLimiter<TFn>(fn, initialOptions): SolidRateLimiter<TFn>
+function createRateLimiter<TFn, TSelected>(
+   fn, 
+   initialOptions, 
+selector?): SolidRateLimiter<TFn, TSelected>
 ```
 
 Defined in: [rate-limiter/createRateLimiter.ts:62](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L62)
@@ -37,6 +40,8 @@ For smoother execution patterns:
 
 • **TFn** *extends* `AnyFunction`
 
+• **TSelected** = `RateLimiterState`
+
 ## Parameters
 
 ### fn
@@ -47,9 +52,13 @@ For smoother execution patterns:
 
 `RateLimiterOptions`\<`TFn`\>
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-[`SolidRateLimiter`](../../interfaces/solidratelimiter.md)\<`TFn`\>
+[`SolidRateLimiter`](../../interfaces/solidratelimiter.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

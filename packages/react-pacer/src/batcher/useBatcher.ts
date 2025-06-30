@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Batcher } from '@tanstack/pacer/batcher'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { BatcherOptions } from '@tanstack/pacer/batcher'
 
 /**
@@ -44,9 +43,7 @@ export function useBatcher<TValue>(
   fn: (items: Array<TValue>) => void,
   options: BatcherOptions<TValue> = {},
 ): Batcher<TValue> {
-  const [batcher] = useState(() =>
-    bindInstanceMethods(new Batcher<TValue>(fn, options)),
-  )
+  const [batcher] = useState(() => new Batcher<TValue>(fn, options))
 
   batcher.setOptions(options)
 

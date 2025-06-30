@@ -40,8 +40,8 @@ function App() {
 
   // hook that gives you an async throttler instance
   const setSearchAsyncThrottler = useAsyncThrottler(handleSearch, {
-    // leading: false,
-    // trailing: false,
+    // leading: true, // default
+    // trailing: true, // default
     wait: 1000, // Wait 1 second between API calls
     onError: (error) => {
       // optional error handler

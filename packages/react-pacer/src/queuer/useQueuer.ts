@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Queuer } from '@tanstack/pacer/queuer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { QueuerOptions } from '@tanstack/pacer/queuer'
 
 /**
@@ -45,9 +44,7 @@ export function useQueuer<TValue>(
   fn: (item: TValue) => void,
   options: QueuerOptions<TValue> = {},
 ): Queuer<TValue> {
-  const [queuer] = useState(() =>
-    bindInstanceMethods(new Queuer<TValue>(fn, options)),
-  )
+  const [queuer] = useState(() => new Queuer<TValue>(fn, options))
 
   queuer.setOptions(options)
 

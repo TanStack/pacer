@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { useRateLimitedState } from './useRateLimitedState'
+import type { ReactRateLimiter } from './useRateLimiter'
 import type {
-  RateLimiter,
   RateLimiterOptions,
+  RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
 
 /**
@@ -52,12 +53,16 @@ import type {
  * });
  * ```
  */
-export function useRateLimitedValue<TValue>(
+export function useRateLimitedValue<TValue, TSelected = RateLimiterState>(
   value: TValue,
   options: RateLimiterOptions<React.Dispatch<React.SetStateAction<TValue>>>,
-): [TValue, RateLimiter<React.Dispatch<React.SetStateAction<TValue>>>] {
+  selector?: (state: RateLimiterState) => TSelected,
+): [
+  TValue,
+  ReactRateLimiter<React.Dispatch<React.SetStateAction<TValue>>, TSelected>,
+] {
   const [rateLimitedValue, setRateLimitedValue, rateLimiter] =
-    useRateLimitedState(value, options)
+    useRateLimitedState(value, options, selector)
 
   useEffect(() => {
     setRateLimitedValue(value)

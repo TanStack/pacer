@@ -45,14 +45,14 @@ describe('RateLimiter', () => {
       const rateLimiter = new RateLimiter(mockFn, { limit: 2, window: 1000 })
 
       rateLimiter.maybeExecute()
-      expect(rateLimiter.getExecutionCount()).toBe(1)
+      expect(rateLimiter.store.state.executionCount).toBe(1)
 
       rateLimiter.maybeExecute()
-      expect(rateLimiter.getExecutionCount()).toBe(2)
+      expect(rateLimiter.store.state.executionCount).toBe(2)
 
       // This should not increment the count
       rateLimiter.maybeExecute()
-      expect(rateLimiter.getExecutionCount()).toBe(2)
+      expect(rateLimiter.store.state.executionCount).toBe(2)
     })
 
     it('should track remaining executions', () => {

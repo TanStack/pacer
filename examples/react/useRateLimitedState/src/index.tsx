@@ -36,11 +36,11 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.getExecutionCount()}</td>
+            <td>{rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.getRejectionCount()}</td>
+            <td>{rateLimiter.state.rejectionCount}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -104,11 +104,11 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.getExecutionCount()}</td>
+            <td>{rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.getRejectionCount()}</td>
+            <td>{rateLimiter.state.rejectionCount}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -190,11 +190,11 @@ function App3() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.getExecutionCount()}</td>
+            <td>{rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.getRejectionCount()}</td>
+            <td>{rateLimiter.state.rejectionCount}</td>
           </tr>
           <tr>
             <td>Remaining in Window:</td>
@@ -210,7 +210,7 @@ function App3() {
           </tr>
           <tr>
             <td>Saved Executions:</td>
-            <td>{instantExecutionCount - rateLimiter.getExecutionCount()}</td>
+            <td>{instantExecutionCount - rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -218,7 +218,8 @@ function App3() {
               {instantExecutionCount === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount - rateLimiter.getExecutionCount()) /
+                    ((instantExecutionCount -
+                      rateLimiter.state.executionCount) /
                       instantExecutionCount) *
                       100,
                   )}

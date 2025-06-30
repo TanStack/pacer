@@ -1,6 +1,5 @@
 import { Batcher } from '@tanstack/pacer/batcher'
 import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
 import type { BatcherOptions } from '@tanstack/pacer/batcher'
 
@@ -91,7 +90,7 @@ export function createBatcher<TValue>(
   fn: (items: Array<TValue>) => void,
   initialOptions: BatcherOptions<TValue> = {},
 ): SolidBatcher<TValue> {
-  const batcher = bindInstanceMethods(new Batcher<TValue>(fn, initialOptions))
+  const batcher = new Batcher<TValue>(fn, initialOptions)
 
   const [allItems, setAllItems] = createSignal<Array<TValue>>(
     batcher.peekAllItems(),

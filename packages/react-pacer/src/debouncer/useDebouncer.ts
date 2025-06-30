@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
@@ -36,16 +35,14 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * const executionCount = searchDebouncer.getExecutionCount();
  *
  * // Get the pending state
- * const isPending = searchDebouncer.getIsPending();
+ * const isPending = searchdebouncer.getState().isPending;
  * ```
  */
 export function useDebouncer<TFn extends AnyFunction>(
   fn: TFn,
   options: DebouncerOptions<TFn>,
 ): Debouncer<TFn> {
-  const [debouncer] = useState(() =>
-    bindInstanceMethods(new Debouncer<TFn>(fn, options)),
-  )
+  const [debouncer] = useState(() => new Debouncer<TFn>(fn, options))
 
   debouncer.setOptions(options)
 
