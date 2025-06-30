@@ -196,6 +196,7 @@ export class Queuer<TValue> {
   }
   #onItemsChanges: Array<(item: TValue) => void> = []
   #pendingTick = false
+  #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
     private fn: (item: TValue) => void,
@@ -221,27 +222,31 @@ export class Queuer<TValue> {
         this.addItem(item, this.#options.addItemsTo ?? 'back', isLast)
       }
     }
+
+    if (this.#options.started) {
+      this.start()
+    }
   }
 
   /**
    * Updates the queuer options. New options are merged with existing options.
    */
-  setOptions(newOptions: Partial<QueuerOptions<TValue>>): void {
+  setOptions = (newOptions: Partial<QueuerOptions<TValue>>): void => {
     this.#options = { ...this.#options, ...newOptions }
   }
 
   /**
    * Returns the current queuer options, including defaults and any overrides.
    */
-  getOptions(): Required<QueuerOptions<TValue>> {
+  getOptions = (): Required<QueuerOptions<TValue>> => {
     return this.#options as Required<QueuerOptions<TValue>>
   }
 
-  getState(): QueuerState<TValue> {
+  getState = (): QueuerState<TValue> => {
     return { ...this.#state }
   }
 
-  #setState(newState: Partial<QueuerState<TValue>>): void {
+  #setState = (newState: Partial<QueuerState<TValue>>): void => {
     this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
@@ -250,14 +255,14 @@ export class Queuer<TValue> {
    * Returns the current wait time (in milliseconds) between processing items.
    * If a function is provided, it is called with the queuer instance.
    */
-  getWait(): number {
+  getWait = (): number => {
     return parseFunctionOrValue(this.#options.wait ?? 0, this)
   }
 
   /**
    * Processes items in the queue up to the wait interval. Internal use only.
    */
-  #tick() {
+  #tick = () => {
     if (!this.#state.running) {
       this.#pendingTick = false
       return
@@ -276,7 +281,7 @@ export class Queuer<TValue> {
       const wait = this.getWait()
       if (wait > 0) {
         // Use setTimeout to wait before processing next item
-        setTimeout(() => this.#tick(), wait)
+        this.#timeoutId = setTimeout(() => this.#tick(), wait)
         return
       }
 
@@ -289,7 +294,7 @@ export class Queuer<TValue> {
    * Checks for expired items in the queue and removes them. Calls onExpire for each expired item.
    * Internal use only.
    */
-  #checkExpiredItems() {
+  #checkExpiredItems = (): void => {
     if (
       (this.#options.expirationDuration ?? Infinity) === Infinity &&
       this.#options.getIsExpired === defaultOptions.getIsExpired
@@ -341,7 +346,11 @@ export class Queuer<TValue> {
   /**
    * Stops processing items in the queue. Does not clear the queue.
    */
-  stop() {
+  stop = () => {
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = null
+    }
     this.#setState({ running: false })
     this.#pendingTick = false
     this.#options.onIsRunningChange?.(this)
@@ -350,7 +359,7 @@ export class Queuer<TValue> {
   /**
    * Starts processing items in the queue. If already running, does nothing.
    */
-  start() {
+  start = () => {
     this.#setState({ running: true })
     if (!this.#pendingTick && !this.getIsEmpty()) {
       this.#pendingTick = true
@@ -362,7 +371,7 @@ export class Queuer<TValue> {
   /**
    * Removes all pending items from the queue. Does not affect items being processed.
    */
-  clear(): void {
+  clear = (): void => {
     this.#setState({
       items: [],
       itemTimestamps: [],
@@ -374,7 +383,7 @@ export class Queuer<TValue> {
    * Resets the queuer to its initial state. Optionally repopulates with initial items.
    * Does not affect callbacks or options.
    */
-  reset(withInitialItems?: boolean): void {
+  reset = (withInitialItems?: boolean): void => {
     this.clear()
     this.#setState({
       executionCount: 0,
@@ -402,11 +411,11 @@ export class Queuer<TValue> {
    * queuer.addItem('task2', 'front');
    * ```
    */
-  addItem(
+  addItem = (
     item: TValue,
     position: QueuePosition = this.#options.addItemsTo ?? 'back',
     runOnUpdate: boolean = true,
-  ): boolean {
+  ): boolean => {
     if (this.getIsFull()) {
       this.#setState({
         rejectionCount: this.#state.rejectionCount + 1,
@@ -466,9 +475,9 @@ export class Queuer<TValue> {
    * queuer.getNextItem('back');
    * ```
    */
-  getNextItem(
+  getNextItem = (
     position: QueuePosition = this.#options.getItemsFrom ?? 'front',
-  ): TValue | undefined {
+  ): TValue | undefined => {
     let item: TValue | undefined
 
     if (position === 'front') {
@@ -496,7 +505,7 @@ export class Queuer<TValue> {
    * queuer.execute('back');
    * ```
    */
-  execute(position?: QueuePosition): TValue | undefined {
+  execute = (position?: QueuePosition): TValue | undefined => {
     const item = this.getNextItem(position)
     if (item !== undefined) {
       this.fn(item)
@@ -517,9 +526,9 @@ export class Queuer<TValue> {
    * queuer.peekNextItem('back'); // back
    * ```
    */
-  peekNextItem(
+  peekNextItem = (
     position: QueuePosition = this.#options.getItemsFrom ?? 'front',
-  ): TValue | undefined {
+  ): TValue | undefined => {
     if (position === 'front') {
       return this.#state.items[0]
     }
@@ -529,63 +538,63 @@ export class Queuer<TValue> {
   /**
    * Returns true if the queue is empty (no pending items).
    */
-  getIsEmpty(): boolean {
+  getIsEmpty = (): boolean => {
     return this.#state.items.length === 0
   }
 
   /**
    * Returns true if the queue is full (reached maxSize).
    */
-  getIsFull(): boolean {
+  getIsFull = (): boolean => {
     return this.#state.items.length >= (this.#options.maxSize ?? Infinity)
   }
 
   /**
    * Returns the number of pending items in the queue.
    */
-  getSize(): number {
+  getSize = (): number => {
     return this.#state.items.length
   }
 
   /**
    * Returns a copy of all items in the queue.
    */
-  peekAllItems(): Array<TValue> {
+  peekAllItems = (): Array<TValue> => {
     return [...this.#state.items]
   }
 
   /**
    * Returns the number of items that have been processed and removed from the queue.
    */
-  getExecutionCount(): number {
+  getExecutionCount = (): number => {
     return this.#state.executionCount
   }
 
   /**
    * Returns the number of items that have been rejected from being added to the queue.
    */
-  getRejectionCount(): number {
+  getRejectionCount = (): number => {
     return this.#state.rejectionCount
   }
 
   /**
    * Returns the number of items that have expired and been removed from the queue.
    */
-  getExpirationCount(): number {
+  getExpirationCount = (): number => {
     return this.#state.expirationCount
   }
 
   /**
    * Returns true if the queuer is currently running (processing items).
    */
-  getIsRunning() {
+  getIsRunning = () => {
     return this.#state.running
   }
 
   /**
    * Returns true if the queuer is running but has no items to process.
    */
-  getIsIdle() {
+  getIsIdle = () => {
     return this.#state.running && this.getIsEmpty()
   }
 }

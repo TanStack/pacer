@@ -1,6 +1,5 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { createEffect, onCleanup } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import { createStore } from 'solid-js/store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
@@ -57,7 +56,7 @@ export function createDebouncer<TFn extends AnyFunction>(
   fn: TFn,
   initialOptions: DebouncerOptions<TFn>,
 ): SolidDebouncer<TFn> {
-  const debouncer = bindInstanceMethods(new Debouncer<TFn>(fn, initialOptions))
+  const debouncer = new Debouncer<TFn>(fn, initialOptions)
   const [store, setStore] = createStore<DebouncerState<TFn>>(
     debouncer.getState(),
   )

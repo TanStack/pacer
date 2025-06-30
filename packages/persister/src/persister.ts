@@ -23,6 +23,6 @@
 export abstract class Persister<TState> {
   constructor(public readonly key: string) {}
 
-  abstract loadState(): TState | undefined
-  abstract saveState(state: TState): void
+  abstract loadState: () => TState | undefined
+  abstract saveState: (state: TState) => void
 }

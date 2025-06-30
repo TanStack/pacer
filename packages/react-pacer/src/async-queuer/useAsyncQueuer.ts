@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import { useStore } from '@tanstack/react-store'
 import type {
   AsyncQueuerOptions,
@@ -67,9 +66,7 @@ export function useAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>(
   options: AsyncQueuerOptions<TValue> = {},
   selector?: (state: AsyncQueuerState<TValue>) => TSelected,
 ): ReactAsyncQueuer<TValue, TSelected> {
-  const [asyncQueuer] = useState(() =>
-    bindInstanceMethods(new AsyncQueuer<TValue>(fn, options)),
-  )
+  const [asyncQueuer] = useState(() => new AsyncQueuer<TValue>(fn, options))
 
   const state = useStore(asyncQueuer.store, selector)
 

@@ -238,11 +238,11 @@ export class AsyncQueuer<TValue> {
   /**
    * Updates the queuer options. New options are merged with existing options.
    */
-  setOptions(newOptions: Partial<AsyncQueuerOptions<TValue>>): void {
+  setOptions = (newOptions: Partial<AsyncQueuerOptions<TValue>>): void => {
     this.#options = { ...this.#options, ...newOptions }
   }
 
-  #setState(newState: Partial<AsyncQueuerState<TValue>>): void {
+  #setState = (newState: Partial<AsyncQueuerState<TValue>>): void => {
     this.store.setState((state) => {
       const combinedState = {
         ...state,
@@ -273,7 +273,7 @@ export class AsyncQueuer<TValue> {
    * Returns the current wait time (in milliseconds) between processing items.
    * If a function is provided, it is called with the queuer instance.
    */
-  #getWait(): number {
+  #getWait = (): number => {
     return parseFunctionOrValue(this.#options.wait ?? 0, this)
   }
 
@@ -281,14 +281,14 @@ export class AsyncQueuer<TValue> {
    * Returns the current concurrency limit for processing items.
    * If a function is provided, it is called with the queuer instance.
    */
-  #getConcurrency(): number {
+  #getConcurrency = (): number => {
     return parseFunctionOrValue(this.#options.concurrency ?? 1, this)
   }
 
   /**
    * Processes items in the queue up to the concurrency limit. Internal use only.
    */
-  #tick() {
+  #tick = () => {
     if (!this.store.state.isRunning) {
       this.#setState({ pendingTick: false })
       return
@@ -338,11 +338,11 @@ export class AsyncQueuer<TValue> {
    * queuer.addItem('task2', 'front');
    * ```
    */
-  addItem(
+  addItem = (
     item: TValue & { priority?: number },
     position: QueuePosition = this.#options.addItemsTo ?? 'back',
     runOnItemsChange: boolean = true,
-  ): void {
+  ): void => {
     if (this.store.state.isFull) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,
@@ -416,9 +416,9 @@ export class AsyncQueuer<TValue> {
    * queuer.getNextItem('back');
    * ```
    */
-  getNextItem(
+  getNextItem = (
     position: QueuePosition = this.#options.getItemsFrom ?? 'front',
-  ): TValue | undefined {
+  ): TValue | undefined => {
     const items = this.store.state.items
     const itemTimestamps = this.store.state.itemTimestamps
     let item: TValue | undefined
@@ -458,7 +458,7 @@ export class AsyncQueuer<TValue> {
    * queuer.execute('back');
    * ```
    */
-  async execute(position?: QueuePosition): Promise<any> {
+  execute = async (position?: QueuePosition): Promise<any> => {
     const item = this.getNextItem(position)
     if (item !== undefined) {
       try {
@@ -493,7 +493,7 @@ export class AsyncQueuer<TValue> {
    * Checks for expired items in the queue and removes them. Calls onExpire for each expired item.
    * Internal use only.
    */
-  #checkExpiredItems(): void {
+  #checkExpiredItems = (): void => {
     if (
       (this.#options.expirationDuration ?? Infinity) === Infinity &&
       this.#options.getIsExpired === defaultOptions.getIsExpired
@@ -555,7 +555,7 @@ export class AsyncQueuer<TValue> {
    * queuer.peekNextItem('back'); // back
    * ```
    */
-  peekNextItem(position: QueuePosition = 'front'): TValue | undefined {
+  peekNextItem = (position: QueuePosition = 'front'): TValue | undefined => {
     if (position === 'front') {
       return this.store.state.items[0]
     }
@@ -565,28 +565,28 @@ export class AsyncQueuer<TValue> {
   /**
    * Returns a copy of all items in the queue, including active and pending items.
    */
-  peekAllItems(): Array<TValue> {
+  peekAllItems = (): Array<TValue> => {
     return [...this.peekActiveItems(), ...this.peekPendingItems()]
   }
 
   /**
    * Returns the items currently being processed (active tasks).
    */
-  peekActiveItems(): Array<TValue> {
+  peekActiveItems = (): Array<TValue> => {
     return [...this.store.state.activeItems]
   }
 
   /**
    * Returns the items waiting to be processed (pending tasks).
    */
-  peekPendingItems(): Array<TValue> {
+  peekPendingItems = (): Array<TValue> => {
     return [...this.store.state.items]
   }
 
   /**
    * Starts processing items in the queue. If already running, does nothing.
    */
-  start(): void {
+  start = (): void => {
     this.#setState({ isRunning: true })
     if (!this.store.state.pendingTick && !this.store.state.isEmpty) {
       this.#setState({ pendingTick: true })
@@ -597,14 +597,14 @@ export class AsyncQueuer<TValue> {
   /**
    * Stops processing items in the queue. Does not clear the queue.
    */
-  stop(): void {
+  stop = (): void => {
     this.#setState({ isRunning: false, pendingTick: false })
   }
 
   /**
    * Removes all pending items from the queue. Does not affect active tasks.
    */
-  clear(): void {
+  clear = (): void => {
     this.#setState({ items: [], itemTimestamps: [] })
     this.#options.onItemsChange?.(this)
   }
@@ -612,7 +612,7 @@ export class AsyncQueuer<TValue> {
   /**
    * Resets the queuer state to its default values
    */
-  reset(): void {
+  reset = (): void => {
     this.#setState(getDefaultAsyncQueuerState<TValue>())
   }
 }
@@ -647,5 +647,5 @@ export function asyncQueue<TValue>(
   initialOptions: AsyncQueuerOptions<TValue>,
 ) {
   const asyncQueuer = new AsyncQueuer<TValue>(fn, initialOptions)
-  return asyncQueuer.addItem.bind(asyncQueuer)
+  return asyncQueuer.addItem
 }

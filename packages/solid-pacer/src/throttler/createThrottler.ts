@@ -1,6 +1,5 @@
 import { Throttler } from '@tanstack/pacer/throttler'
 import { createEffect, onCleanup } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import { createStore } from 'solid-js/store'
 import type { Store } from 'solid-js/store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -55,7 +54,7 @@ export function createThrottler<TFn extends AnyFunction>(
   fn: TFn,
   initialOptions: ThrottlerOptions<TFn>,
 ): SolidThrottler<TFn> {
-  const throttler = bindInstanceMethods(new Throttler<TFn>(fn, initialOptions))
+  const throttler = new Throttler<TFn>(fn, initialOptions)
   const [store, setStore] = createStore<ThrottlerState<TFn>>(
     throttler.getState(),
   )

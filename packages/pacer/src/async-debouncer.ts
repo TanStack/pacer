@@ -163,9 +163,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   /**
-   * Updates the debouncer options
+   * Updates the async debouncer options
    */
-  setOptions(newOptions: Partial<AsyncDebouncerOptions<TFn>>): void {
+  setOptions = (newOptions: Partial<AsyncDebouncerOptions<TFn>>): void => {
     this.#options = { ...this.#options, ...newOptions }
 
     // End the pending state if the debouncer is disabled
@@ -174,7 +174,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     }
   }
 
-  #setState(newState: Partial<AsyncDebouncerState<TFn>>): void {
+  #setState = (newState: Partial<AsyncDebouncerState<TFn>>): void => {
     this.store.setState((state) => {
       const combinedState = {
         ...state,
@@ -197,14 +197,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   /**
    * Returns the current debouncer enabled state
    */
-  #getEnabled(): boolean {
+  #getEnabled = (): boolean => {
     return !!parseFunctionOrValue(this.#options.enabled, this)
   }
 
   /**
    * Returns the current debouncer wait state
    */
-  #getWait(): number {
+  #getWait = (): number => {
     return parseFunctionOrValue(this.#options.wait, this)
   }
 
@@ -222,9 +222,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * @returns A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
    * @throws The error from the debounced function if no onError handler is configured
    */
-  async maybeExecute(
+  maybeExecute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> {
+  ): Promise<ReturnType<TFn> | undefined> => {
     this.#cancelPendingExecution()
     this.#setState({ lastArgs: args })
 
@@ -256,9 +256,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     })
   }
 
-  async #execute(
+  #execute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> {
+  ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
     this.#abortController = new AbortController()
     try {
@@ -289,7 +289,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     return this.store.state.lastResult
   }
 
-  #cancelPendingExecution(): void {
+  #cancelPendingExecution = (): void => {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
       this.#timeoutId = null
@@ -308,7 +308,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   /**
    * Cancels any pending execution or aborts any execution in progress
    */
-  cancel(): void {
+  cancel = (): void => {
     this.#cancelPendingExecution()
     if (this.#abortController) {
       this.#abortController.abort()
@@ -320,7 +320,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   /**
    * Resets the debouncer state to its default values
    */
-  reset(): void {
+  reset = (): void => {
     this.#setState(getDefaultAsyncDebouncerState<TFn>())
   }
 }
@@ -369,5 +369,5 @@ export function asyncDebounce<TFn extends AnyAsyncFunction>(
   initialOptions: AsyncDebouncerOptions<TFn>,
 ) {
   const asyncDebouncer = new AsyncDebouncer(fn, initialOptions)
-  return asyncDebouncer.maybeExecute.bind(asyncDebouncer)
+  return asyncDebouncer.maybeExecute
 }

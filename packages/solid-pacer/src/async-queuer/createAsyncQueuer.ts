@@ -1,5 +1,4 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import { useStore } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type {
@@ -79,7 +78,7 @@ export function createAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>(
   const state = useStore(asyncQueuer.store, selector)
 
   return {
-    ...bindInstanceMethods(asyncQueuer),
+    ...asyncQueuer,
     state,
   } as unknown as SolidAsyncQueuer<TValue, TSelected>
 }

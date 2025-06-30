@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import { useStore } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
@@ -81,9 +80,7 @@ export function useAsyncDebouncer<
   options: AsyncDebouncerOptions<TFn>,
   selector?: (state: AsyncDebouncerState<TFn>) => TSelected,
 ): ReactAsyncDebouncer<TFn, TSelected> {
-  const [asyncDebouncer] = useState(() =>
-    bindInstanceMethods(new AsyncDebouncer<TFn>(fn, options)),
-  )
+  const [asyncDebouncer] = useState(() => new AsyncDebouncer<TFn>(fn, options))
 
   const state = useStore(asyncDebouncer.store, selector)
 

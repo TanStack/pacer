@@ -1,5 +1,4 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import { useStore } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -68,9 +67,7 @@ export function createRateLimiter<
   initialOptions: RateLimiterOptions<TFn>,
   selector?: (state: RateLimiterState) => TSelected,
 ): SolidRateLimiter<TFn, TSelected> {
-  const rateLimiter = bindInstanceMethods(
-    new RateLimiter<TFn>(fn, initialOptions),
-  )
+  const rateLimiter = new RateLimiter<TFn>(fn, initialOptions)
 
   const state = useStore(rateLimiter.store, selector)
 

@@ -133,22 +133,22 @@ export class Batcher<TValue> {
   /**
    * Updates the batcher options
    */
-  setOptions(newOptions: Partial<BatcherOptions<TValue>>): void {
+  setOptions = (newOptions: Partial<BatcherOptions<TValue>>): void => {
     this.#options = { ...this.#options, ...newOptions }
   }
 
   /**
    * Returns the current batcher options
    */
-  getOptions(): BatcherOptions<TValue> {
+  getOptions = (): BatcherOptions<TValue> => {
     return this.#options
   }
 
-  getState(): BatcherState<TValue> {
+  getState = (): BatcherState<TValue> => {
     return { ...this.#state }
   }
 
-  #setState(newState: Partial<BatcherState<TValue>>): void {
+  #setState = (newState: Partial<BatcherState<TValue>>): void => {
     this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
@@ -157,7 +157,7 @@ export class Batcher<TValue> {
    * Adds an item to the batcher
    * If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
    */
-  addItem(item: TValue): void {
+  addItem = (item: TValue): void => {
     this.#setState({
       items: [...this.#state.items, item],
     })
@@ -187,7 +187,7 @@ export class Batcher<TValue> {
    *
    * You can also call this method manually to process the current batch at any time.
    */
-  execute(): void {
+  execute = (): void => {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
       this.#timeoutId = null
@@ -212,7 +212,7 @@ export class Batcher<TValue> {
   /**
    * Stops the batcher from processing batches
    */
-  stop(): void {
+  stop = (): void => {
     this.#setState({ running: false })
     this.#options.onIsRunningChange?.(this)
     if (this.#timeoutId) {
@@ -224,7 +224,7 @@ export class Batcher<TValue> {
   /**
    * Starts the batcher and processes any pending items
    */
-  start(): void {
+  start = (): void => {
     this.#setState({ running: true })
     this.#options.onIsRunningChange?.(this)
     if (this.#state.items.length > 0 && !this.#timeoutId) {
@@ -235,42 +235,42 @@ export class Batcher<TValue> {
   /**
    * Returns the current number of items in the batcher
    */
-  getSize(): number {
+  getSize = (): number => {
     return this.#state.items.length
   }
 
   /**
    * Returns true if the batcher is empty
    */
-  getIsEmpty(): boolean {
+  getIsEmpty = (): boolean => {
     return this.#state.items.length === 0
   }
 
   /**
    * Returns true if the batcher is running
    */
-  getIsRunning(): boolean {
+  getIsRunning = (): boolean => {
     return this.#state.running
   }
 
   /**
    * Returns a copy of all items in the batcher
    */
-  peekAllItems(): Array<TValue> {
+  peekAllItems = (): Array<TValue> => {
     return [...this.#state.items]
   }
 
   /**
    * Returns the number of batches that have been processed
    */
-  getBatchExecutionCount(): number {
+  getBatchExecutionCount = (): number => {
     return this.#state.batchExecutionCount
   }
 
   /**
    * Returns the total number of items that have been processed
    */
-  getItemExecutionCount(): number {
+  getItemExecutionCount = (): number => {
     return this.#state.itemExecutionCount
   }
 }
@@ -295,5 +295,5 @@ export function batch<TValue>(
   options: BatcherOptions<TValue>,
 ) {
   const batcher = new Batcher<TValue>(fn, options)
-  return batcher.addItem.bind(batcher)
+  return batcher.addItem
 }

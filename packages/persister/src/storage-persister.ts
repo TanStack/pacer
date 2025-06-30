@@ -127,21 +127,21 @@ export class StoragePersister<TState> extends Persister<TState> {
   /**
    * Updates the persister options
    */
-  setOptions(newOptions: Partial<StoragePersisterOptions<TState>>): void {
+  setOptions = (newOptions: Partial<StoragePersisterOptions<TState>>): void => {
     this._options = { ...this._options, ...newOptions }
   }
 
   /**
    * Returns the current persister options
    */
-  getOptions(): StoragePersisterOptions<TState> {
+  getOptions = (): StoragePersisterOptions<TState> => {
     return this._options
   }
 
   /**
    * Saves the state to storage
    */
-  saveState(state: TState): void {
+  saveState = (state: TState): void => {
     try {
       const stateToSave = this._options.stateTransform
         ? this._options.stateTransform(state)
@@ -164,7 +164,7 @@ export class StoragePersister<TState> extends Persister<TState> {
   /**
    * Loads the state from storage
    */
-  loadState(): TState | undefined {
+  loadState = (): TState | undefined => {
     const stored = this._options.storage.getItem(this.key)
     if (!stored) {
       return undefined

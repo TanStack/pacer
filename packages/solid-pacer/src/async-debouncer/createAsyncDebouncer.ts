@@ -1,5 +1,4 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import { useStore } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type {
@@ -81,9 +80,7 @@ export function createAsyncDebouncer<
   initialOptions: AsyncDebouncerOptions<TFn>,
   selector?: (state: AsyncDebouncerState<TFn>) => TSelected,
 ): SolidAsyncDebouncer<TFn, TSelected> {
-  const asyncDebouncer = bindInstanceMethods(
-    new AsyncDebouncer<TFn>(fn, initialOptions),
-  )
+  const asyncDebouncer = new AsyncDebouncer<TFn>(fn, initialOptions)
 
   const state = useStore(asyncDebouncer.store, selector)
 

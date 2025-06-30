@@ -1,6 +1,5 @@
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
 import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
@@ -81,9 +80,7 @@ export function createAsyncThrottler<TFn extends AnyAsyncFunction>(
   fn: TFn,
   initialOptions: AsyncThrottlerOptions<TFn>,
 ): SolidAsyncThrottler<TFn> {
-  const asyncThrottler = bindInstanceMethods(
-    new AsyncThrottler<TFn>(fn, initialOptions),
-  )
+  const asyncThrottler = new AsyncThrottler<TFn>(fn, initialOptions)
 
   const [successCount, setSuccessCount] = createSignal(
     asyncThrottler.getSuccessCount(),

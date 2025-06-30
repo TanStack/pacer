@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import { useStore,  } from '@tanstack/react-store'
+import { useStore } from '@tanstack/react-store'
 import type {
   RateLimiterOptions,
   RateLimiterState,
@@ -76,9 +75,7 @@ export function useRateLimiter<
   options: RateLimiterOptions<TFn>,
   selector?: (state: RateLimiterState) => TSelected,
 ): ReactRateLimiter<TFn, TSelected> {
-  const [rateLimiter] = useState(() =>
-    bindInstanceMethods(new RateLimiter<TFn>(fn, options)),
-  )
+  const [rateLimiter] = useState(() => new RateLimiter<TFn>(fn, options))
 
   const state = useStore(rateLimiter.store, selector)
 

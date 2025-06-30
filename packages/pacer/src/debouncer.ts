@@ -118,7 +118,7 @@ export class Debouncer<TFn extends AnyFunction> {
   /**
    * Updates the debouncer options
    */
-  setOptions(newOptions: Partial<DebouncerOptions<TFn>>): void {
+  setOptions = (newOptions: Partial<DebouncerOptions<TFn>>): void => {
     this.#options = { ...this.#options, ...newOptions }
 
     // End the pending state if the debouncer is disabled
@@ -130,15 +130,15 @@ export class Debouncer<TFn extends AnyFunction> {
   /**
    * Returns the current debouncer options
    */
-  getOptions(): Required<DebouncerOptions<TFn>> {
+  getOptions = (): Required<DebouncerOptions<TFn>> => {
     return this.#options as Required<DebouncerOptions<TFn>>
   }
 
-  getState(): DebouncerState<TFn> {
+  getState = (): DebouncerState<TFn> => {
     return { ...this.#state }
   }
 
-  #setState(newState: Partial<DebouncerState<TFn>>): void {
+  #setState = (newState: Partial<DebouncerState<TFn>>): void => {
     this.#state = { ...this.#state, ...newState }
     this.#options.onStateChange?.(this.#state, this)
   }
@@ -146,14 +146,14 @@ export class Debouncer<TFn extends AnyFunction> {
   /**
    * Returns the current enabled state of the debouncer
    */
-  getEnabled(): boolean {
-    return parseFunctionOrValue(this.#options.enabled, this)!
+  getEnabled = (): boolean => {
+    return !!parseFunctionOrValue(this.#options.enabled, this)
   }
 
   /**
    * Returns the current wait time in milliseconds
    */
-  getWait(): number {
+  getWait = (): number => {
     return parseFunctionOrValue(this.#options.wait, this)
   }
 
@@ -161,7 +161,7 @@ export class Debouncer<TFn extends AnyFunction> {
    * Attempts to execute the debounced function
    * If a call is already in progress, it will be queued
    */
-  maybeExecute(...args: Parameters<TFn>): void {
+  maybeExecute = (...args: Parameters<TFn>): void => {
     let _didLeadingExecute = false
 
     // Handle leading execution
@@ -188,7 +188,7 @@ export class Debouncer<TFn extends AnyFunction> {
     }, this.getWait())
   }
 
-  #execute(...args: Parameters<TFn>): void {
+  #execute = (...args: Parameters<TFn>): void => {
     if (!this.getEnabled()) return undefined
     this.fn(...args) // EXECUTE!
     this.#setState({
@@ -202,7 +202,7 @@ export class Debouncer<TFn extends AnyFunction> {
   /**
    * Cancels any pending execution
    */
-  cancel(): void {
+  cancel = (): void => {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
       this.#setState({
@@ -215,14 +215,14 @@ export class Debouncer<TFn extends AnyFunction> {
   /**
    * Returns the number of times the function has been executed
    */
-  getExecutionCount(): number {
+  getExecutionCount = (): number => {
     return this.#state.executionCount
   }
 
   /**
    * Returns `true` if debouncing
    */
-  getIsPending(): boolean {
+  getIsPending = (): boolean => {
     return this.getEnabled() && this.#state.isPending
   }
 }
@@ -257,5 +257,5 @@ export function debounce<TFn extends AnyFunction>(
   initialOptions: DebouncerOptions<TFn>,
 ): (...args: Parameters<TFn>) => void {
   const debouncer = new Debouncer(fn, initialOptions)
-  return debouncer.maybeExecute.bind(debouncer)
+  return debouncer.maybeExecute
 }
