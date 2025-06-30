@@ -27,7 +27,6 @@ title: "@tanstack/persister"
 
 ## Functions
 
-- [bindInstanceMethods](../functions/bindinstancemethods.md)
 - [isFunction](../functions/isfunction.md)
 - [isPlainArray](../functions/isplainarray.md)
 - [isPlainObject](../functions/isplainobject.md)

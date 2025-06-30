@@ -7,7 +7,7 @@ title: SolidThrottler
 
 # Interface: SolidThrottler\<TFn\>
 
-Defined in: [throttler/createThrottler.ts:15](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L15)
+Defined in: [throttler/createThrottler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L14)
 
 An extension of the Throttler class that adds Solid signals to access the internal state of the throttler
 
@@ -27,4 +27,4 @@ An extension of the Throttler class that adds Solid signals to access the intern
 store: ThrottlerState<TFn>;
 ```
 
-Defined in: [throttler/createThrottler.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L17)
+Defined in: [throttler/createThrottler.ts:16](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L16)

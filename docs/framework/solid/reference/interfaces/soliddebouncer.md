@@ -7,7 +7,7 @@ title: SolidDebouncer
 
 # Interface: SolidDebouncer\<TFn\>
 
-Defined in: [debouncer/createDebouncer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L15)
+Defined in: [debouncer/createDebouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L14)
 
 An extension of the Debouncer class that adds Solid signals to access the internal state of the debouncer
 
@@ -27,4 +27,4 @@ An extension of the Debouncer class that adds Solid signals to access the intern
 store: DebouncerState<TFn>;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L17)
+Defined in: [debouncer/createDebouncer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L16)

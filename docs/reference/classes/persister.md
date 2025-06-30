@@ -69,12 +69,12 @@ readonly key: string;
 
 Defined in: [persister.ts:24](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L24)
 
-## Methods
+***
 
 ### loadState()
 
 ```ts
-abstract loadState(): undefined | TState
+abstract loadState: () => undefined | TState;
 ```
 
 Defined in: [persister.ts:26](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L26)
@@ -88,7 +88,7 @@ Defined in: [persister.ts:26](https://github.com/TanStack/pacer/blob/main/packag
 ### saveState()
 
 ```ts
-abstract saveState(state): void
+abstract saveState: (state) => void;
 ```
 
 Defined in: [persister.ts:27](https://github.com/TanStack/pacer/blob/main/packages/persister/src/persister.ts#L27)

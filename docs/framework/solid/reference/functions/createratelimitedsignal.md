@@ -8,10 +8,13 @@ title: createRateLimitedSignal
 # Function: createRateLimitedSignal()
 
 ```ts
-function createRateLimitedSignal<TValue>(value, initialOptions): [Accessor<TValue>, Setter<TValue>, SolidRateLimiter<Setter<TValue>>]
+function createRateLimitedSignal<TValue, TSelected>(
+   value, 
+   initialOptions, 
+   selector?): [Accessor<TValue>, Setter<TValue>, SolidRateLimiter<Setter<TValue>, TSelected>]
 ```
 
-Defined in: [rate-limiter/createRateLimitedSignal.ts:65](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L65)
+Defined in: [rate-limiter/createRateLimitedSignal.ts:68](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L68)
 
 A Solid hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
 This hook combines Solid's createSignal with rate limiting functionality to provide controlled state updates.
@@ -44,6 +47,8 @@ consider using the lower-level createRateLimiter hook instead.
 
 • **TValue**
 
+• **TSelected** = `RateLimiterState`
+
 ## Parameters
 
 ### value
@@ -54,9 +59,13 @@ consider using the lower-level createRateLimiter hook instead.
 
 `RateLimiterOptions`\<`Setter`\<`TValue`\>\>
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-\[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, [`SolidRateLimiter`](../../interfaces/solidratelimiter.md)\<`Setter`\<`TValue`\>\>\]
+\[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, [`SolidRateLimiter`](../../interfaces/solidratelimiter.md)\<`Setter`\<`TValue`\>, `TSelected`\>\]
 
 ## Example
 

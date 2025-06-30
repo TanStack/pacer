@@ -7,7 +7,7 @@ title: SolidAsyncQueuer
 
 # Interface: SolidAsyncQueuer\<TValue, TSelected\>
 
-Defined in: [async-queuer/createAsyncQueuer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L10)
+Defined in: [async-queuer/createAsyncQueuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L9)
 
 ## Extends
 
@@ -27,7 +27,7 @@ Defined in: [async-queuer/createAsyncQueuer.ts:10](https://github.com/TanStack/p
 state: Accessor<TSelected>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L17)
+Defined in: [async-queuer/createAsyncQueuer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L16)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 

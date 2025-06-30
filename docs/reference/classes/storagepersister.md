@@ -122,7 +122,9 @@ Loads the state from storage
 
 #### Overrides
 
-[`Persister`](../persister.md).[`loadState`](../Persister.md#loadstate)
+```ts
+Persister.loadState
+```
 
 ***
 
@@ -148,7 +150,9 @@ Saves the state to storage
 
 #### Overrides
 
-[`Persister`](../persister.md).[`saveState`](../Persister.md#savestate)
+```ts
+Persister.saveState
+```
 
 ***
 

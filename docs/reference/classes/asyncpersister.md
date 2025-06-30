@@ -45,12 +45,12 @@ readonly key: string;
 
 Defined in: [async-persister.ts:5](https://github.com/TanStack/pacer/blob/main/packages/persister/src/async-persister.ts#L5)
 
-## Methods
+***
 
 ### loadState()
 
 ```ts
-abstract loadState(): Promise<undefined | TState>
+abstract loadState: () => Promise<undefined | TState>;
 ```
 
 Defined in: [async-persister.ts:7](https://github.com/TanStack/pacer/blob/main/packages/persister/src/async-persister.ts#L7)
@@ -64,7 +64,7 @@ Defined in: [async-persister.ts:7](https://github.com/TanStack/pacer/blob/main/p
 ### saveState()
 
 ```ts
-abstract saveState(state): Promise<void>
+abstract saveState: (state) => Promise<void>;
 ```
 
 Defined in: [async-persister.ts:8](https://github.com/TanStack/pacer/blob/main/packages/persister/src/async-persister.ts#L8)
