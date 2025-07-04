@@ -7,7 +7,7 @@ title: SolidAsyncDebouncer
 
 # Interface: SolidAsyncDebouncer\<TFn, TSelected\>
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L10)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L11)
 
 ## Extends
 
@@ -27,7 +27,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:10](https://github.com/TanS
 state: Accessor<TSelected>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L19)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L20)
 
 Reactive state that will be updated when the debouncer state changes
 
