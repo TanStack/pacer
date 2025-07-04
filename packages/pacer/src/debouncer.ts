@@ -1,3 +1,4 @@
+import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
@@ -6,6 +7,19 @@ export interface DebouncerState<TFn extends AnyFunction> {
   executionCount: number
   isPending: boolean
   lastArgs: Parameters<TFn> | undefined
+  status: 'idle' | 'pending'
+}
+
+function getDefaultDebouncerState<
+  TFn extends AnyFunction,
+>(): DebouncerState<TFn> {
+  return structuredClone({
+    canLeadingExecute: true,
+    executionCount: 0,
+    isPending: false,
+    lastArgs: undefined,
+    status: 'idle',
+  })
 }
 
 /**
@@ -92,13 +106,10 @@ const defaultOptions: Omit<
  * ```
  */
 export class Debouncer<TFn extends AnyFunction> {
+  readonly store: Store<DebouncerState<TFn>> = new Store(
+    getDefaultDebouncerState<TFn>(),
+  )
   #options: DebouncerOptions<TFn>
-  #state: DebouncerState<TFn> = {
-    canLeadingExecute: true,
-    executionCount: 0,
-    isPending: false,
-    lastArgs: undefined,
-  }
   #timeoutId: NodeJS.Timeout | undefined
 
   constructor(
@@ -109,10 +120,7 @@ export class Debouncer<TFn extends AnyFunction> {
       ...defaultOptions,
       ...initialOptions,
     }
-    this.#state = {
-      ...this.#state,
-      ...this.#options.initialState,
-    }
+    this.#setState(this.#options.initialState ?? {})
   }
 
   /**
@@ -122,38 +130,36 @@ export class Debouncer<TFn extends AnyFunction> {
     this.#options = { ...this.#options, ...newOptions }
 
     // End the pending state if the debouncer is disabled
-    if (!this.getEnabled()) {
+    if (!this.#getEnabled()) {
       this.#setState({ isPending: false })
     }
   }
 
-  /**
-   * Returns the current debouncer options
-   */
-  getOptions = (): Required<DebouncerOptions<TFn>> => {
-    return this.#options as Required<DebouncerOptions<TFn>>
-  }
-
-  getState = (): DebouncerState<TFn> => {
-    return { ...this.#state }
-  }
-
   #setState = (newState: Partial<DebouncerState<TFn>>): void => {
-    this.#state = { ...this.#state, ...newState }
-    this.#options.onStateChange?.(this.#state, this)
+    this.store.setState((state) => {
+      const combinedState = {
+        ...state,
+        ...newState,
+      }
+      const { isPending } = combinedState
+      return {
+        ...combinedState,
+        status: isPending ? 'pending' : 'idle',
+      }
+    })
   }
 
   /**
    * Returns the current enabled state of the debouncer
    */
-  getEnabled = (): boolean => {
+  #getEnabled = (): boolean => {
     return !!parseFunctionOrValue(this.#options.enabled, this)
   }
 
   /**
    * Returns the current wait time in milliseconds
    */
-  getWait = (): number => {
+  #getWait = (): number => {
     return parseFunctionOrValue(this.#options.wait, this)
   }
 
@@ -162,10 +168,11 @@ export class Debouncer<TFn extends AnyFunction> {
    * If a call is already in progress, it will be queued
    */
   maybeExecute = (...args: Parameters<TFn>): void => {
+    if (!this.#getEnabled()) return undefined
     let _didLeadingExecute = false
 
     // Handle leading execution
-    if (this.#options.leading && this.#state.canLeadingExecute) {
+    if (this.#options.leading && this.store.state.canLeadingExecute) {
       this.#setState({ canLeadingExecute: false })
       _didLeadingExecute = true
       this.#execute(...args)
@@ -185,15 +192,15 @@ export class Debouncer<TFn extends AnyFunction> {
       if (this.#options.trailing && !_didLeadingExecute) {
         this.#execute(...args)
       }
-    }, this.getWait())
+    }, this.#getWait())
   }
 
   #execute = (...args: Parameters<TFn>): void => {
-    if (!this.getEnabled()) return undefined
+    if (!this.#getEnabled()) return undefined
     this.fn(...args) // EXECUTE!
     this.#setState({
       isPending: false,
-      executionCount: this.#state.executionCount + 1,
+      executionCount: this.store.state.executionCount + 1,
       lastArgs: args,
     })
     this.#options.onExecute?.(this)
@@ -213,17 +220,10 @@ export class Debouncer<TFn extends AnyFunction> {
   }
 
   /**
-   * Returns the number of times the function has been executed
+   * Resets the debouncer state to its default values
    */
-  getExecutionCount = (): number => {
-    return this.#state.executionCount
-  }
-
-  /**
-   * Returns `true` if debouncing
-   */
-  getIsPending = (): boolean => {
-    return this.getEnabled() && this.#state.isPending
+  reset = (): void => {
+    this.#setState(getDefaultDebouncerState<TFn>())
   }
 }
 

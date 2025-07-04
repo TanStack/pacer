@@ -225,6 +225,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   maybeExecute = async (
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
+    if (!this.#getEnabled()) return undefined
     this.#cancelPendingExecution()
     this.#setState({ lastArgs: args })
 

@@ -1,5 +1,6 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { useStore } from '@tanstack/solid-store'
+import { createEffect, onCleanup } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import type {
   AsyncDebouncerOptions,
@@ -83,6 +84,12 @@ export function createAsyncDebouncer<
   const asyncDebouncer = new AsyncDebouncer<TFn>(fn, initialOptions)
 
   const state = useStore(asyncDebouncer.store, selector)
+
+  createEffect(() => {
+    onCleanup(() => {
+      asyncDebouncer.cancel()
+    })
+  })
 
   return {
     ...asyncDebouncer,

@@ -2,7 +2,10 @@ import { createEffect } from 'solid-js'
 import { createDebouncedSignal } from './createDebouncedSignal'
 import type { SolidDebouncer } from './createDebouncer'
 import type { Accessor, Setter } from 'solid-js'
-import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
+import type {
+  DebouncerOptions,
+  DebouncerState,
+} from '@tanstack/pacer/debouncer'
 
 /**
  * A Solid hook that creates a debounced value that updates only after a specified delay.
@@ -38,13 +41,18 @@ import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
  * debouncer.cancel(); // Cancel any pending updates
  * ```
  */
-export function createDebouncedValue<TValue>(
+export function createDebouncedValue<
+  TValue,
+  TSelected = DebouncerState<Setter<TValue>>,
+>(
   value: Accessor<TValue>,
   initialOptions: DebouncerOptions<Setter<TValue>>,
-): [Accessor<TValue>, SolidDebouncer<Setter<TValue>>] {
+  selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
+): [Accessor<TValue>, SolidDebouncer<Setter<TValue>, TSelected>] {
   const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
     value(),
     initialOptions,
+    selector,
   )
 
   createEffect(() => {

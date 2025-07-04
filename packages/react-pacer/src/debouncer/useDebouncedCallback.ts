@@ -1,6 +1,9 @@
 import { useCallback } from 'react'
 import { useDebouncer } from './useDebouncer'
-import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
+import type {
+  DebouncerOptions,
+  DebouncerState,
+} from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
@@ -39,13 +42,14 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * />
  * ```
  */
-export function useDebouncedCallback<TFn extends AnyFunction>(
+export function useDebouncedCallback<
+  TFn extends AnyFunction,
+  TSelected = DebouncerState<TFn>,
+>(
   fn: TFn,
   options: DebouncerOptions<TFn>,
-) {
-  const debouncedFn = useDebouncer<TFn>(fn, options).maybeExecute
-  return useCallback(
-    (...args: Parameters<TFn>) => debouncedFn(...args),
-    [debouncedFn],
-  )
+  selector?: (state: DebouncerState<TFn>) => TSelected,
+): (...args: Parameters<TFn>) => void {
+  const debouncedFn = useDebouncer(fn, options, selector).maybeExecute
+  return useCallback((...args) => debouncedFn(...args), [debouncedFn])
 }

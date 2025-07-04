@@ -29,16 +29,12 @@ function App1() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{setCountDebouncer.getEnabled().toString()}</td>
-          </tr>
-          <tr>
             <td>Is Pending:</td>
-            <td>{setCountDebouncer.getState().isPending.toString()}</td>
+            <td>{setCountDebouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
             <td>Execution Count:</td>
-            <td>{setCountDebouncer.getExecutionCount()}</td>
+            <td>{setCountDebouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -94,16 +90,12 @@ function App2() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{setSearchDebouncer.getOptions().enabled.toString()}</td>
-          </tr>
-          <tr>
             <td>Is Pending:</td>
-            <td>{setSearchDebouncer.getState().isPending.toString()}</td>
+            <td>{setSearchDebouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
             <td>Execution Count:</td>
-            <td>{setSearchDebouncer.getExecutionCount()}</td>
+            <td>{setSearchDebouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -175,12 +167,8 @@ function App3() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{setValueDebouncer.getEnabled().toString()}</td>
-          </tr>
-          <tr>
             <td>Is Pending:</td>
-            <td>{setValueDebouncer.getState().isPending.toString()}</td>
+            <td>{setValueDebouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
             <td>Instant Executions:</td>
@@ -188,12 +176,12 @@ function App3() {
           </tr>
           <tr>
             <td>Debounced Executions:</td>
-            <td>{setValueDebouncer.getExecutionCount()}</td>
+            <td>{setValueDebouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
             <td>
-              {instantExecutionCount - setValueDebouncer.getExecutionCount()}
+              {instantExecutionCount - setValueDebouncer.state.executionCount}
             </td>
           </tr>
           <tr>
@@ -203,7 +191,7 @@ function App3() {
                 ? '0'
                 : Math.round(
                     ((instantExecutionCount -
-                      setValueDebouncer.getExecutionCount()) /
+                      setValueDebouncer.state.executionCount) /
                       instantExecutionCount) *
                       100,
                   )}

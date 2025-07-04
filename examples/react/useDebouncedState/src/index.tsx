@@ -31,16 +31,12 @@ function App1() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{debouncer.getOptions().enabled.toString()}</td>
-          </tr>
-          <tr>
             <td>Is Pending:</td>
-            <td>{debouncer.getState().isPending.toString()}</td>
+            <td>{debouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
             <td>Execution Count:</td>
-            <td>{debouncer.getExecutionCount()}</td>
+            <td>{debouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -98,16 +94,12 @@ function App2() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{debouncer.getOptions().enabled.toString()}</td>
-          </tr>
-          <tr>
             <td>Is Pending:</td>
-            <td>{debouncer.getState().isPending.toString()}</td>
+            <td>{debouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
             <td>Execution Count:</td>
-            <td>{debouncer.getExecutionCount()}</td>
+            <td>{debouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -181,12 +173,8 @@ function App3() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{debouncer.getOptions().enabled.toString()}</td>
-          </tr>
-          <tr>
             <td>Is Pending:</td>
-            <td>{debouncer.getState().isPending.toString()}</td>
+            <td>{debouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
             <td>Instant Executions:</td>
@@ -194,11 +182,11 @@ function App3() {
           </tr>
           <tr>
             <td>Debounced Executions:</td>
-            <td>{debouncer.getExecutionCount()}</td>
+            <td>{debouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
-            <td>{instantExecutionCount - debouncer.getExecutionCount()}</td>
+            <td>{instantExecutionCount - debouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -206,7 +194,7 @@ function App3() {
               {instantExecutionCount === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount - debouncer.getExecutionCount()) /
+                    ((instantExecutionCount - debouncer.state.executionCount) /
                       instantExecutionCount) *
                       100,
                   )}

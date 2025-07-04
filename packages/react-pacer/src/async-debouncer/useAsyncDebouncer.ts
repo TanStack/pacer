@@ -84,6 +84,8 @@ export function useAsyncDebouncer<
 
   const state = useStore(asyncDebouncer.store, selector)
 
+  asyncDebouncer.setOptions(options)
+
   useEffect(() => {
     return () => {
       asyncDebouncer.cancel()
