@@ -84,7 +84,7 @@ export function createRateLimitedSignal<TValue, TSelected = RateLimiterState>(
 
   return [
     rateLimitedValue,
-    rateLimiter.maybeExecute.bind(rateLimiter) as Setter<TValue>,
+    rateLimiter.maybeExecute as Setter<TValue>,
     rateLimiter,
   ]
 }

@@ -80,5 +80,5 @@ export function createAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>(
   return {
     ...asyncQueuer,
     state,
-  } as unknown as SolidAsyncQueuer<TValue, TSelected>
+  } as unknown as SolidAsyncQueuer<TValue, TSelected> // omit `store` in favor of `state`
 }

@@ -18,14 +18,14 @@ function App1() {
   return (
     <div>
       <h1>TanStack Pacer useQueuedState Example 1</h1>
-      <div>Queue Size: {queuer.getSize()}</div>
+      <div>Queue Size: {queuer.state.size}</div>
       <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {queuer.getIsFull() ? 'Yes' : 'No'}</div>
+      <div>Queue Full: {queuer.state.isFull ? 'Yes' : 'No'}</div>
       <div>Queue Peek: {queuer.peekNextItem()}</div>
-      <div>Queue Empty: {queuer.getIsEmpty() ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer.getIsIdle() ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer.getIsRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.getExecutionCount()}</div>
+      <div>Queue Empty: {queuer.state.isEmpty ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {queuer.state.isIdle ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {queuer.state.status}</div>
+      <div>Items Processed: {queuer.state.executionCount}</div>
       <div>Queue Items: {queueItems.join(', ')}</div>
       <div
         style={{
@@ -43,28 +43,34 @@ function App1() {
               : 1
             addItem(nextNumber)
           }}
-          disabled={queuer.getIsFull()}
+          disabled={queuer.state.isFull}
         >
           Add Number
         </button>
         <button
-          disabled={queuer.getIsEmpty()}
+          disabled={queuer.state.isEmpty}
           onClick={() => {
             queuer.execute()
           }}
         >
           Process Next
         </button>
-        <button onClick={() => queuer.clear()} disabled={queuer.getIsEmpty()}>
+        <button onClick={() => queuer.clear()} disabled={queuer.state.isEmpty}>
           Clear Queue
         </button>
-        <button onClick={() => queuer.reset()} disabled={queuer.getIsEmpty()}>
+        <button onClick={() => queuer.reset()} disabled={queuer.state.isEmpty}>
           Reset Queue
         </button>
-        <button onClick={() => queuer.start()} disabled={queuer.getIsRunning()}>
+        <button
+          onClick={() => queuer.start()}
+          disabled={queuer.state.isRunning}
+        >
           Start Processing
         </button>
-        <button onClick={() => queuer.stop()} disabled={!queuer.getIsRunning()}>
+        <button
+          onClick={() => queuer.stop()}
+          disabled={!queuer.state.isRunning}
+        >
           Stop Processing
         </button>
       </div>
@@ -131,23 +137,23 @@ function App2() {
         <tbody>
           <tr>
             <td>Queue Size:</td>
-            <td>{queuer.getSize()}</td>
+            <td>{queuer.state.size}</td>
           </tr>
           <tr>
             <td>Queue Full:</td>
-            <td>{queuer.getIsFull() ? 'Yes' : 'No'}</td>
+            <td>{queuer.state.isFull ? 'Yes' : 'No'}</td>
           </tr>
           <tr>
             <td>Queue Empty:</td>
-            <td>{queuer.getIsEmpty() ? 'Yes' : 'No'}</td>
+            <td>{queuer.state.isEmpty ? 'Yes' : 'No'}</td>
           </tr>
           <tr>
             <td>Queue Idle:</td>
-            <td>{queuer.getIsIdle() ? 'Yes' : 'No'}</td>
+            <td>{queuer.state.isIdle ? 'Yes' : 'No'}</td>
           </tr>
           <tr>
             <td>Queuer Status:</td>
-            <td>{queuer.getIsRunning() ? 'Running' : 'Stopped'}</td>
+            <td>{queuer.state.status}</td>
           </tr>
           <tr>
             <td>Instant Executions:</td>
@@ -155,11 +161,11 @@ function App2() {
           </tr>
           <tr>
             <td>Items Processed:</td>
-            <td>{queuer.getExecutionCount()}</td>
+            <td>{queuer.state.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
-            <td>{instantExecutionCount - queuer.getExecutionCount()}</td>
+            <td>{instantExecutionCount - queuer.state.executionCount}</td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -167,7 +173,7 @@ function App2() {
               {instantExecutionCount === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount - queuer.getExecutionCount()) /
+                    ((instantExecutionCount - queuer.state.executionCount) /
                       instantExecutionCount) *
                       100,
                   )}

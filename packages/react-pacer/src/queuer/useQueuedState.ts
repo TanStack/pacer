@@ -1,6 +1,6 @@
-import { useState } from 'react'
 import { useQueuer } from './useQueuer'
-import type { Queuer, QueuerOptions } from '@tanstack/pacer/queuer'
+import type { ReactQueuer } from './useQueuer'
+import type { Queuer, QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
 /**
  * A React hook that creates a queuer with managed state, combining React's useState with queuing functionality.
@@ -51,25 +51,15 @@ import type { Queuer, QueuerOptions } from '@tanstack/pacer/queuer'
  * };
  * ```
  */
-export function useQueuedState<TValue>(
+export function useQueuedState<
+  TValue,
+  TSelected extends Pick<QueuerState<TValue>, 'items'> = QueuerState<TValue>,
+>(
   fn: (item: TValue) => void,
   options: QueuerOptions<TValue> = {},
-): [Array<TValue>, Queuer<TValue>['addItem'], Queuer<TValue>] {
-  const [allItems, setAllItems] = useState<Array<TValue>>(
-    options.initialItems || [],
-  )
+  selector?: (state: QueuerState<TValue>) => TSelected,
+): [Array<TValue>, Queuer<TValue>['addItem'], ReactQueuer<TValue, TSelected>] {
+  const queue = useQueuer(fn, options, selector)
 
-  const queue = useQueuer<TValue>(fn, {
-    ...options,
-    onItemsChange: (queue) => {
-      setAllItems(queue.peekAllItems())
-      options.onItemsChange?.(queue)
-    },
-    onIsRunningChange: (queue) => {
-      setAllItems((prev) => [...prev]) // rerender
-      options.onIsRunningChange?.(queue)
-    },
-  })
-
-  return [allItems, queue.addItem, queue]
+  return [queue.state.items, queue.addItem, queue]
 }

@@ -205,10 +205,11 @@ export class AsyncQueuer<TValue> {
     AsyncQueuerState<TValue>
   >(getDefaultAsyncQueuerState<TValue>())
   #options: AsyncQueuerOptions<TValue>
+  #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
-    private fn: (value: TValue) => Promise<any>,
-    initialOptions: AsyncQueuerOptions<TValue>,
+    private fn: (item: TValue) => Promise<any>,
+    initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
     this.#options = {
       ...defaultOptions,
@@ -293,6 +294,7 @@ export class AsyncQueuer<TValue> {
       this.#setState({ pendingTick: false })
       return
     }
+    this.#setState({ pendingTick: true })
 
     // Check for expired items
     this.#checkExpiredItems()
@@ -317,7 +319,8 @@ export class AsyncQueuer<TValue> {
 
         const wait = this.#getWait()
         if (wait > 0) {
-          setTimeout(() => this.#tick(), wait)
+          const timeoutId = setTimeout(() => this.#tick(), wait)
+          this.#timeoutIds.add(timeoutId)
           return
         }
 
@@ -339,23 +342,23 @@ export class AsyncQueuer<TValue> {
    * ```
    */
   addItem = (
-    item: TValue & { priority?: number },
+    item: TValue,
     position: QueuePosition = this.#options.addItemsTo ?? 'back',
     runOnItemsChange: boolean = true,
-  ): void => {
+  ): boolean => {
     if (this.store.state.isFull) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,
       })
       this.#options.onReject?.(item, this)
-      return
+      return false
     }
 
     // Get priority either from the function or from getPriority option
     const priority =
       this.#options.getPriority !== defaultOptions.getPriority
         ? this.#options.getPriority!(item)
-        : item.priority
+        : (item as any).priority
 
     const items = this.store.state.items
     const itemTimestamps = this.store.state.itemTimestamps
@@ -399,9 +402,10 @@ export class AsyncQueuer<TValue> {
     }
 
     if (this.store.state.isRunning && !this.store.state.pendingTick) {
-      this.#setState({ pendingTick: true })
       this.#tick()
     }
+
+    return true
   }
 
   /**
@@ -419,8 +423,7 @@ export class AsyncQueuer<TValue> {
   getNextItem = (
     position: QueuePosition = this.#options.getItemsFrom ?? 'front',
   ): TValue | undefined => {
-    const items = this.store.state.items
-    const itemTimestamps = this.store.state.itemTimestamps
+    const { items, itemTimestamps } = this.store.state
     let item: TValue | undefined
 
     if (position === 'front') {
@@ -497,8 +500,9 @@ export class AsyncQueuer<TValue> {
     if (
       (this.#options.expirationDuration ?? Infinity) === Infinity &&
       this.#options.getIsExpired === defaultOptions.getIsExpired
-    )
+    ) {
       return
+    }
 
     const now = Date.now()
     const expiredIndices: Array<number> = []
@@ -589,7 +593,6 @@ export class AsyncQueuer<TValue> {
   start = (): void => {
     this.#setState({ isRunning: true })
     if (!this.store.state.pendingTick && !this.store.state.isEmpty) {
-      this.#setState({ pendingTick: true })
       this.#tick()
     }
   }
@@ -598,6 +601,8 @@ export class AsyncQueuer<TValue> {
    * Stops processing items in the queue. Does not clear the queue.
    */
   stop = (): void => {
+    this.#timeoutIds.forEach((timeoutId) => clearTimeout(timeoutId))
+    this.#timeoutIds.clear()
     this.#setState({ isRunning: false, pendingTick: false })
   }
 

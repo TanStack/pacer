@@ -5,14 +5,14 @@ describe('Queuer', () => {
   it('should create an empty queuer', () => {
     const fn = vi.fn()
     const queuer = new Queuer(fn, { started: false })
-    expect(queuer.getIsEmpty()).toBe(true)
-    expect(queuer.getSize()).toBe(0)
+    expect(queuer.store.state.isEmpty).toBe(true)
+    expect(queuer.store.state.size).toBe(0)
   })
 
   it('should start with started: true by default', () => {
     const fn = vi.fn()
     const queuer = new Queuer(fn, {})
-    expect(queuer.getIsRunning()).toBe(true)
+    expect(queuer.store.state.isRunning).toBe(true)
   })
 
   it('should respect maxSize option', () => {
@@ -21,7 +21,7 @@ describe('Queuer', () => {
     expect(queuer.addItem(1)).toBe(true)
     expect(queuer.addItem(2)).toBe(true)
     expect(queuer.addItem(3)).toBe(false)
-    expect(queuer.getSize()).toBe(2)
+    expect(queuer.store.state.size).toBe(2)
   })
 
   describe('addItem', () => {
@@ -29,7 +29,7 @@ describe('Queuer', () => {
       const fn = vi.fn()
       const queuer = new Queuer(fn, { started: false })
       expect(queuer.addItem(1)).toBe(true)
-      expect(queuer.getSize()).toBe(1)
+      expect(queuer.store.state.size).toBe(1)
       expect(queuer.peekNextItem()).toBe(1)
     })
   })
@@ -63,7 +63,7 @@ describe('Queuer', () => {
       queuer.addItem(2)
 
       expect(queuer.peekNextItem()).toBe(1)
-      expect(queuer.getSize()).toBe(2)
+      expect(queuer.store.state.size).toBe(2)
     })
 
     it('should return undefined when queuer is empty', () => {
@@ -77,14 +77,14 @@ describe('Queuer', () => {
     it('should return true when queuer is empty', () => {
       const fn = vi.fn()
       const queuer = new Queuer(fn, { started: false })
-      expect(queuer.getIsEmpty()).toBe(true)
+      expect(queuer.store.state.isEmpty).toBe(true)
     })
 
     it('should return false when queuer has items', () => {
       const fn = vi.fn()
       const queuer = new Queuer(fn, { started: false })
       queuer.addItem(1)
-      expect(queuer.getIsEmpty()).toBe(false)
+      expect(queuer.store.state.isEmpty).toBe(false)
     })
   })
 
@@ -94,14 +94,14 @@ describe('Queuer', () => {
       const queuer = new Queuer(fn, { maxSize: 2, started: false })
       queuer.addItem(1)
       queuer.addItem(2)
-      expect(queuer.getIsFull()).toBe(true)
+      expect(queuer.store.state.isFull).toBe(true)
     })
 
     it('should return false when queuer is not full', () => {
       const fn = vi.fn()
       const queuer = new Queuer(fn, { maxSize: 2, started: false })
       queuer.addItem(1)
-      expect(queuer.getIsFull()).toBe(false)
+      expect(queuer.store.state.isFull).toBe(false)
     })
   })
 
@@ -113,8 +113,8 @@ describe('Queuer', () => {
       queuer.addItem(2)
       queuer.clear()
 
-      expect(queuer.getIsEmpty()).toBe(true)
-      expect(queuer.getSize()).toBe(0)
+      expect(queuer.store.state.isEmpty).toBe(true)
+      expect(queuer.store.state.size).toBe(0)
       expect(queuer.peekNextItem()).toBeUndefined()
     })
   })
@@ -127,7 +127,7 @@ describe('Queuer', () => {
           initialItems: [1, 2, 3],
           started: false,
         })
-        expect(queuer.getSize()).toBe(3)
+        expect(queuer.store.state.size).toBe(3)
         expect(queuer.peekAllItems()).toEqual([1, 2, 3])
       })
 
@@ -153,7 +153,7 @@ describe('Queuer', () => {
       it('should handle empty initialItems array', () => {
         const fn = vi.fn()
         const queuer = new Queuer(fn, { initialItems: [], started: false })
-        expect(queuer.getIsEmpty()).toBe(true)
+        expect(queuer.store.state.isEmpty).toBe(true)
       })
     })
 
@@ -305,7 +305,7 @@ describe('Queuer', () => {
 
     expect(queuer.peekNextItem('front')).toBe(2)
     expect(queuer.peekNextItem('back')).toBe(3)
-    expect(queuer.getSize()).toBe(3)
+    expect(queuer.store.state.size).toBe(3)
 
     // Remove from both ends
     expect(queuer.execute('front')).toBe(2)
@@ -313,41 +313,11 @@ describe('Queuer', () => {
     expect(queuer.execute('front')).toBe(1)
   })
 
-  describe('setOptions', () => {
-    it('should update queuer options', () => {
-      const fn = vi.fn()
-      const queuer = new Queuer(fn, { wait: 100 })
-      queuer.setOptions({ wait: 200 })
-      expect(queuer.getWait()).toBe(200)
-    })
-  })
-
-  describe('getOptions', () => {
-    it('should return current queuer options', () => {
-      const fn = vi.fn()
-      const options = { wait: 123, maxSize: 5 }
-      const queuer = new Queuer(fn, options)
-      const result = queuer.getOptions()
-      expect(result.wait).toBe(123)
-      expect(result.maxSize).toBe(5)
-    })
-  })
-
-  describe('getWait', () => {
-    it('should return the current wait time', () => {
-      const fn = vi.fn()
-      const queuer = new Queuer(fn, { wait: 42 })
-      expect(queuer.getWait()).toBe(42)
-    })
-  })
-
   describe('reset', () => {
     it('should reset the queuer to its initial state', () => {
       const fn = vi.fn()
       const queuer = new Queuer(fn, { initialItems: [1, 2], started: false })
       queuer.addItem(3)
-      queuer.reset(true)
-      expect(queuer.peekAllItems()).toEqual([1, 2])
       queuer.reset()
       expect(queuer.peekAllItems()).toEqual([])
     })
@@ -357,9 +327,9 @@ describe('Queuer', () => {
     it('should start the queuer', () => {
       const fn = vi.fn()
       const queuer = new Queuer(fn, { started: false })
-      expect(queuer.getIsRunning()).toBe(false)
+      expect(queuer.store.state.isRunning).toBe(false)
       queuer.start()
-      expect(queuer.getIsRunning()).toBe(true)
+      expect(queuer.store.state.isRunning).toBe(true)
     })
   })
 
@@ -367,9 +337,9 @@ describe('Queuer', () => {
     it('should stop the queuer', () => {
       const fn = vi.fn()
       const queuer = new Queuer(fn, { started: true })
-      expect(queuer.getIsRunning()).toBe(true)
+      expect(queuer.store.state.isRunning).toBe(true)
       queuer.stop()
-      expect(queuer.getIsRunning()).toBe(false)
+      expect(queuer.store.state.isRunning).toBe(false)
     })
   })
 
@@ -381,7 +351,7 @@ describe('Queuer', () => {
       queuer.addItem(2)
       queuer.execute()
       queuer.execute()
-      expect(queuer.getExecutionCount()).toBe(2)
+      expect(queuer.store.state.executionCount).toBe(2)
     })
   })
 
@@ -391,7 +361,7 @@ describe('Queuer', () => {
       const queuer = new Queuer(fn, { maxSize: 1, started: false })
       queuer.addItem(1)
       queuer.addItem(2)
-      expect(queuer.getRejectionCount()).toBe(1)
+      expect(queuer.store.state.rejectionCount).toBe(1)
     })
   })
 
@@ -411,15 +381,6 @@ describe('Queuer', () => {
       queuer.addItem(1)
       queuer.execute()
       expect(onExecute).toHaveBeenCalledWith(1, queuer)
-    })
-    it('should call onIsRunningChange when running state changes', () => {
-      const onIsRunningChange = vi.fn()
-      const fn = vi.fn()
-      const queuer = new Queuer(fn, { onIsRunningChange, started: false })
-      queuer.start()
-      queuer.stop()
-      expect(onIsRunningChange).toHaveBeenCalledTimes(2)
-      expect(onIsRunningChange).toHaveBeenCalledWith(queuer)
     })
   })
 })
