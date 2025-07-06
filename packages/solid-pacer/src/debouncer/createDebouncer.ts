@@ -77,5 +77,5 @@ export function createDebouncer<
   return {
     ...asyncDebouncer,
     state,
-  } as unknown as SolidDebouncer<TFn, TSelected> // omit `store` in favor of `state`
+  } as SolidDebouncer<TFn, TSelected> // omit `store` in favor of `state`
 }

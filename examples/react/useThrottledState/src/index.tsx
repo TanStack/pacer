@@ -31,7 +31,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{throttler.getExecutionCount()}</td>
+            <td>{throttler.state.executionCount}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -85,7 +85,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{throttler.getExecutionCount()}</td>
+            <td>{throttler.state.executionCount}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -159,15 +159,15 @@ function App3() {
           </tr>
           <tr>
             <td>Throttled Execution Count:</td>
-            <td>{throttler.getExecutionCount()}</td>
+            <td>{throttler.state.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
             <td>
-              {instantExecutionCount - throttler.getExecutionCount()} (
+              {instantExecutionCount - throttler.state.executionCount} (
               {instantExecutionCount > 0
                 ? (
-                    ((instantExecutionCount - throttler.getExecutionCount()) /
+                    ((instantExecutionCount - throttler.state.executionCount) /
                       instantExecutionCount) *
                     100
                   ).toFixed(2)

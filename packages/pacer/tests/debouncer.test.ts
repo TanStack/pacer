@@ -632,24 +632,6 @@ describe('Debouncer', () => {
       vi.advanceTimersByTime(1000)
       expect(mockFn).toBeCalledTimes(1)
     })
-
-    it('should handle rapid enable/disable cycles', () => {
-      const mockFn = vi.fn()
-      const debouncer = new Debouncer(mockFn, { wait: 1000 })
-
-      // Start execution
-      debouncer.maybeExecute()
-
-      // Rapidly enable/disable
-      debouncer.setOptions({ enabled: false })
-      debouncer.setOptions({ enabled: true })
-      debouncer.setOptions({ enabled: false })
-      debouncer.setOptions({ enabled: true })
-
-      // Should execute if last state was enabled
-      vi.advanceTimersByTime(1000)
-      expect(mockFn).toBeCalledTimes(1)
-    })
   })
 })
 

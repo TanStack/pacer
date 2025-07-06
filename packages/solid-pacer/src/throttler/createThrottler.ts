@@ -1,19 +1,23 @@
 import { Throttler } from '@tanstack/pacer/throttler'
 import { createEffect, onCleanup } from 'solid-js'
-import { createStore } from 'solid-js/store'
-import type { Store } from 'solid-js/store'
+import { useStore } from '@tanstack/solid-store'
+import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
 
-/**
- * An extension of the Throttler class that adds Solid signals to access the internal state of the throttler
- */
-export interface SolidThrottler<TFn extends AnyFunction>
-  extends Omit<Throttler<TFn>, 'getState'> {
-  store: Store<ThrottlerState<TFn>>
+export interface SolidThrottler<
+  TFn extends AnyFunction,
+  TSelected = ThrottlerState<TFn>,
+> extends Omit<Throttler<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated when the throttler state changes
+   *
+   * Use this instead of `throttler.store.state`
+   */
+  state: Accessor<TSelected>
 }
 
 /**
@@ -50,39 +54,26 @@ export interface SolidThrottler<TFn extends AnyFunction>
  * console.log(throttler.nextExecutionTime()); // timestamp of next allowed execution
  * ```
  */
-export function createThrottler<TFn extends AnyFunction>(
+export function createThrottler<
+  TFn extends AnyFunction,
+  TSelected = ThrottlerState<TFn>,
+>(
   fn: TFn,
   initialOptions: ThrottlerOptions<TFn>,
-): SolidThrottler<TFn> {
-  const throttler = new Throttler<TFn>(fn, initialOptions)
-  const [store, setStore] = createStore<ThrottlerState<TFn>>(
-    throttler.getState(),
-  )
+  selector?: (state: ThrottlerState<TFn>) => TSelected,
+): SolidThrottler<TFn, TSelected> {
+  const asyncThrottler = new Throttler<TFn>(fn, initialOptions)
 
-  function setOptions(newOptions: Partial<ThrottlerOptions<TFn>>) {
-    throttler.setOptions({
-      ...newOptions,
-      onStateChange: (state, throttler) => {
-        setStore(state)
-
-        const onStateChange =
-          newOptions.onStateChange ?? initialOptions.onStateChange
-        onStateChange?.(state, throttler)
-      },
-    })
-  }
-
-  setOptions(initialOptions)
+  const state = useStore(asyncThrottler.store, selector)
 
   createEffect(() => {
     onCleanup(() => {
-      throttler.cancel()
+      asyncThrottler.cancel()
     })
   })
 
   return {
-    ...throttler,
-    store,
-    setOptions,
-  } as SolidThrottler<TFn>
+    ...asyncThrottler,
+    state,
+  } as SolidThrottler<TFn, TSelected> // omit `store` in favor of `state`
 }

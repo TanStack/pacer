@@ -47,13 +47,6 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    */
   onExecute?: (debouncer: Debouncer<TFn>) => void
   /**
-   * Callback function that is called when the state of the debouncer is updated
-   */
-  onStateChange?: (
-    state: DebouncerState<TFn>,
-    debouncer: Debouncer<TFn>,
-  ) => void
-  /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
    */
@@ -129,9 +122,9 @@ export class Debouncer<TFn extends AnyFunction> {
   setOptions = (newOptions: Partial<DebouncerOptions<TFn>>): void => {
     this.#options = { ...this.#options, ...newOptions }
 
-    // End the pending state if the debouncer is disabled
+    // Cancel pending execution if the debouncer is disabled
     if (!this.#getEnabled()) {
-      this.#setState({ isPending: false })
+      this.cancel()
     }
   }
 

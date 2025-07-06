@@ -168,9 +168,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   setOptions = (newOptions: Partial<AsyncDebouncerOptions<TFn>>): void => {
     this.#options = { ...this.#options, ...newOptions }
 
-    // End the pending state if the debouncer is disabled
+    // Cancel pending execution if the debouncer is disabled
     if (!this.#getEnabled()) {
-      this.#setState({ isPending: false })
+      this.cancel()
     }
   }
 
