@@ -32,7 +32,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{debouncer.executionCount()}</td>
+            <td>{debouncer.state().executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -89,7 +89,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{debouncer.executionCount()}</td>
+            <td>{debouncer.state().executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -169,11 +169,13 @@ function App3() {
           </tr>
           <tr>
             <td>Debounced Executions:</td>
-            <td>{debouncer.executionCount()}</td>
+            <td>{debouncer.state().executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
-            <td>{instantExecutionCount() - debouncer.executionCount()}</td>
+            <td>
+              {instantExecutionCount() - debouncer.state().executionCount}
+            </td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -181,7 +183,8 @@ function App3() {
               {instantExecutionCount() === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount() - debouncer.executionCount()) /
+                    ((instantExecutionCount() -
+                      debouncer.state().executionCount) /
                       instantExecutionCount()) *
                       100,
                   )}
