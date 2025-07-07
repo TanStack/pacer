@@ -171,7 +171,8 @@ function App3() {
           <tr>
             <td>Saved Executions:</td>
             <td>
-              {instantExecutionCount() - setValueDebouncer.state().executionCount}
+              {instantExecutionCount() -
+                setValueDebouncer.state().executionCount}
             </td>
           </tr>
           <tr>
