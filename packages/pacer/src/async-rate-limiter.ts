@@ -1,3 +1,4 @@
+import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
 import type { AnyAsyncFunction } from './types'
 
@@ -9,6 +10,20 @@ export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
   rejectionCount: number
   settleCount: number
   successCount: number
+}
+
+function getDefaultAsyncRateLimiterState<
+  TFn extends AnyAsyncFunction,
+>(): AsyncRateLimiterState<TFn> {
+  return {
+    errorCount: 0,
+    executionTimes: [],
+    isExecuting: false,
+    lastResult: undefined,
+    rejectionCount: 0,
+    settleCount: 0,
+    successCount: 0,
+  }
 }
 
 /**
@@ -24,9 +39,7 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   /**
    * Initial state for the rate limiter
    */
-  initialState?:
-    | Partial<AsyncRateLimiterState<TFn>>
-    | Promise<Partial<AsyncRateLimiterState<TFn>>>
+  initialState?: Partial<AsyncRateLimiterState<TFn>>
   /**
    * Maximum number of executions allowed within the time window.
    * Can be a number or a function that returns a number.
@@ -51,13 +64,6 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    */
   onSuccess?: (
     result: ReturnType<TFn>,
-    rateLimiter: AsyncRateLimiter<TFn>,
-  ) => void
-  /**
-   * Callback function that is called when the state of the rate limiter is updated
-   */
-  onStateChange?: (
-    state: AsyncRateLimiterState<TFn>,
     rateLimiter: AsyncRateLimiter<TFn>,
   ) => void
   /**
@@ -158,16 +164,10 @@ const defaultOptions: Omit<
  * ```
  */
 export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
+  readonly store: Store<AsyncRateLimiterState<TFn>> = new Store<
+    AsyncRateLimiterState<TFn>
+  >(getDefaultAsyncRateLimiterState<TFn>())
   #options: AsyncRateLimiterOptions<TFn>
-  #state: AsyncRateLimiterState<TFn> = {
-    errorCount: 0,
-    executionTimes: [],
-    isExecuting: false,
-    lastResult: undefined,
-    rejectionCount: 0,
-    settleCount: 0,
-    successCount: 0,
-  }
 
   constructor(
     private fn: TFn,
@@ -178,16 +178,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    if (this.#options.initialState instanceof Promise) {
-      this.#options.initialState.then((state) => {
-        this.#setState(state)
-      })
-    } else {
-      this.#state = {
-        ...this.#state,
-        ...this.#options.initialState,
-      }
-    }
+    this.#setState(this.#options.initialState ?? {})
   }
 
   /**
@@ -197,40 +188,34 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     this.#options = { ...this.#options, ...newOptions }
   }
 
-  /**
-   * Returns the current async rate limiter options
-   */
-  getOptions = (): Required<AsyncRateLimiterOptions<TFn>> => {
-    return this.#options as Required<AsyncRateLimiterOptions<TFn>>
-  }
-
-  getState = (): AsyncRateLimiterState<TFn> => {
-    return { ...this.#state }
-  }
-
   #setState = (newState: Partial<AsyncRateLimiterState<TFn>>): void => {
-    this.#state = { ...this.#state, ...newState }
-    this.#options.onStateChange?.(this.#state, this)
+    this.store.setState((state) => {
+      const combinedState = {
+        ...state,
+        ...newState,
+      }
+      return combinedState
+    })
   }
 
   /**
    * Returns the current enabled state of the async rate limiter
    */
-  getEnabled = (): boolean => {
+  #getEnabled = (): boolean => {
     return !!parseFunctionOrValue(this.#options.enabled, this)
   }
 
   /**
    * Returns the current limit of executions allowed within the time window
    */
-  getLimit = (): number => {
+  #getLimit = (): number => {
     return parseFunctionOrValue(this.#options.limit, this)
   }
 
   /**
    * Returns the current time window in milliseconds
    */
-  getWindow = (): number => {
+  #getWindow = (): number => {
     return parseFunctionOrValue(this.#options.window, this)
   }
 
@@ -264,81 +249,81 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> => {
     this.#cleanupOldExecutions()
 
-    const limit = this.getLimit()
-    const window = this.getWindow()
+    const relevantExecutionTimes = this.#getRelevantExecutionTimes()
 
-    if (this.#options.windowType === 'sliding') {
-      // For sliding window, we can execute if we have capacity in the current window
-      if (this.#state.executionTimes.length < limit) {
-        await this.#execute(...args)
-        return this.#state.lastResult
-      }
-    } else {
-      // For fixed window, we need to check if we're in a new window
-      const now = Date.now()
-      const oldestExecution = Math.min(...this.#state.executionTimes)
-      const isNewWindow = oldestExecution + window <= now
-
-      if (isNewWindow || this.#state.executionTimes.length < limit) {
-        await this.#execute(...args)
-        return this.#state.lastResult
-      }
+    if (relevantExecutionTimes.length < this.#getLimit()) {
+      await this.#execute(...args)
+      return this.store.state.lastResult
     }
 
-    this.#rejectFunction()
+    this.#setState({
+      rejectionCount: this.store.state.rejectionCount + 1,
+    })
+    this.#options.onReject?.(this)
     return undefined
   }
 
   #execute = async (
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
-    if (!this.getEnabled()) return
+    if (!this.#getEnabled()) return
+
     const now = Date.now()
-    this.#state.executionTimes.push(now) // mutate state directly for performance
+    const executionTimes = [...this.store.state.executionTimes, now]
     this.#setState({
       isExecuting: true,
+      executionTimes,
     })
 
     try {
       const result = await this.fn(...args)
       this.#setState({
-        successCount: this.#state.successCount + 1,
+        successCount: this.store.state.successCount + 1,
         lastResult: result,
       })
       this.#options.onSuccess?.(result, this)
     } catch (error) {
       this.#setState({
-        errorCount: this.#state.errorCount + 1,
+        errorCount: this.store.state.errorCount + 1,
       })
       this.#options.onError?.(error, this)
       if (this.#options.throwOnError) {
         throw error
-      } else {
-        console.error(error)
       }
     } finally {
       this.#setState({
         isExecuting: false,
-        settleCount: this.#state.settleCount + 1,
+        settleCount: this.store.state.settleCount + 1,
       })
       this.#options.onSettled?.(this)
     }
 
-    return this.#state.lastResult
+    return this.store.state.lastResult
   }
 
-  #rejectFunction = (): void => {
-    this.#setState({
-      rejectionCount: this.#state.rejectionCount + 1,
-    })
-    this.#options.onReject?.(this)
+  #getRelevantExecutionTimes = (): Array<number> => {
+    if (this.#options.windowType === 'sliding') {
+      // For sliding window, return all executions within the current window
+      return this.store.state.executionTimes.filter(
+        (time) => time > Date.now() - this.#getWindow(),
+      )
+    } else {
+      // For fixed window, return all executions in the current window
+      // The window starts from the oldest execution time
+      const oldestExecution = Math.min(...this.store.state.executionTimes)
+      const windowStart = oldestExecution
+      return this.store.state.executionTimes.filter(
+        (time) =>
+          time >= windowStart && time <= windowStart + this.#getWindow(),
+      )
+    }
   }
 
   #cleanupOldExecutions = (): void => {
     const now = Date.now()
-    const windowStart = now - this.getWindow()
+    const windowStart = now - this.#getWindow()
     this.#setState({
-      executionTimes: this.#state.executionTimes.filter(
+      executionTimes: this.store.state.executionTimes.filter(
         (time) => time > windowStart,
       ),
     })
@@ -348,8 +333,8 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    * Returns the number of remaining executions allowed in the current window
    */
   getRemainingInWindow = (): number => {
-    this.#cleanupOldExecutions()
-    return Math.max(0, this.getLimit() - this.#state.executionTimes.length)
+    const relevantExecutionTimes = this.#getRelevantExecutionTimes()
+    return Math.max(0, this.#getLimit() - relevantExecutionTimes.length)
   }
 
   /**
@@ -361,58 +346,15 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     if (this.getRemainingInWindow() > 0) {
       return 0
     }
-    const oldestExecution = this.#state.executionTimes[0] ?? Infinity
-    return oldestExecution + this.getWindow() - Date.now()
-  }
-
-  /**
-   * Returns the number of times the function has been executed
-   */
-  getSuccessCount = (): number => {
-    return this.#state.successCount
-  }
-
-  /**
-   * Returns the number of times the function has been settled
-   */
-  getSettleCount = (): number => {
-    return this.#state.settleCount
-  }
-
-  /**
-   * Returns the number of times the function has errored
-   */
-  getErrorCount = (): number => {
-    return this.#state.errorCount
-  }
-
-  /**
-   * Returns the number of times the function has been rejected
-   */
-  getRejectionCount = (): number => {
-    return this.#state.rejectionCount
-  }
-
-  /**
-   * Returns whether the function is currently executing
-   */
-  getIsExecuting = (): boolean => {
-    return this.#state.isExecuting
+    const oldestExecution = this.store.state.executionTimes[0] ?? Infinity
+    return oldestExecution + this.#getWindow() - Date.now()
   }
 
   /**
    * Resets the rate limiter state
    */
   reset = (): void => {
-    this.#setState({
-      executionTimes: [],
-      rejectionCount: 0,
-      errorCount: 0,
-      settleCount: 0,
-      successCount: 0,
-      isExecuting: false,
-      lastResult: undefined,
-    })
+    this.#setState(getDefaultAsyncRateLimiterState())
   }
 }
 

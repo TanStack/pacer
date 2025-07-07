@@ -86,7 +86,7 @@ export function useRateLimiter<
       ({
         ...rateLimiter,
         state,
-      }) as unknown as ReactRateLimiter<TFn, TSelected>, // omit `store` in favor of `state`
+      }) as ReactRateLimiter<TFn, TSelected>, // omit `store` in favor of `state`
     [rateLimiter, state],
   )
 }

@@ -58,16 +58,16 @@ describe('AsyncRateLimiter', () => {
       })
 
       await rateLimiter.maybeExecute()
-      expect(rateLimiter.getSuccessCount()).toBe(1)
-      expect(rateLimiter.getErrorCount()).toBe(0)
+      expect(rateLimiter.store.state.successCount).toBe(1)
+      expect(rateLimiter.store.state.errorCount).toBe(0)
 
       await rateLimiter.maybeExecute().catch(() => {})
-      expect(rateLimiter.getSuccessCount()).toBe(1)
-      expect(rateLimiter.getErrorCount()).toBe(1)
+      expect(rateLimiter.store.state.successCount).toBe(1)
+      expect(rateLimiter.store.state.errorCount).toBe(1)
 
       await rateLimiter.maybeExecute()
-      expect(rateLimiter.getSuccessCount()).toBe(2)
-      expect(rateLimiter.getErrorCount()).toBe(1)
+      expect(rateLimiter.store.state.successCount).toBe(2)
+      expect(rateLimiter.store.state.errorCount).toBe(1)
     })
 
     it('should track remaining executions', async () => {

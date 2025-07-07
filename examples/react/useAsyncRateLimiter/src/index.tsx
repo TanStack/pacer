@@ -37,7 +37,7 @@ function App() {
     setResults(data)
     setError(null)
 
-    console.log(setSearchAsyncRateLimiter.getSuccessCount())
+    console.log(setSearchAsyncRateLimiter.state.successCount)
   }
 
   const rateLimiterPersister = useStoragePersister<
@@ -67,8 +67,11 @@ function App() {
     },
     // optionally, you can persist the rate limiter state to localStorage
     initialState: rateLimiterPersister.loadState(),
-    onStateChange: (state) => rateLimiterPersister.saveState(state),
   })
+
+  useEffect(() => {
+    rateLimiterPersister.saveState(setSearchAsyncRateLimiter.state)
+  }, [setSearchAsyncRateLimiter.state])
 
   // get and name our rate limited function
   const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute
@@ -108,16 +111,16 @@ function App() {
           <tbody>
             <tr>
               <td>API calls made:</td>
-              <td>{setSearchAsyncRateLimiter.getSuccessCount()}</td>
+              <td>{setSearchAsyncRateLimiter.state.successCount}</td>
             </tr>
             <tr>
               <td>Rejected calls:</td>
-              <td>{setSearchAsyncRateLimiter.getRejectionCount()}</td>
+              <td>{setSearchAsyncRateLimiter.state.rejectionCount}</td>
             </tr>
             <tr>
               <td>Is executing:</td>
               <td>
-                {setSearchAsyncRateLimiter.getIsExecuting() ? 'Yes' : 'No'}
+                {setSearchAsyncRateLimiter.state.isExecuting ? 'Yes' : 'No'}
               </td>
             </tr>
             <tr>
