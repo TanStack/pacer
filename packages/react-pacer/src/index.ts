@@ -6,7 +6,7 @@ export * from '@tanstack/pacer'
  */
 
 // async-batcher
-// export * from './async-batcher/useAsyncBatcher'
+export * from './async-batcher/useAsyncBatcher'
 
 // async-debouncer
 export * from './async-debouncer/useAsyncDebouncer'

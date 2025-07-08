@@ -5,6 +5,9 @@ export * from '@tanstack/pacer'
  * Export every hook individually - DON'T export from barrel files
  */
 
+// async-batcher
+export * from './async-batcher/createAsyncBatcher'
+
 // async-debouncer
 export * from './async-debouncer/createAsyncDebouncer'
 

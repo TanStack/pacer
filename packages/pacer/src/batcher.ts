@@ -2,11 +2,11 @@ import { Store } from '@tanstack/store'
 import type { OptionalKeys } from './types'
 
 export interface BatcherState<TValue> {
-  batchExecutionCount: number
+  executionCount: number
   isEmpty: boolean
   isPending: boolean
   isRunning: boolean
-  itemExecutionCount: number
+  totalItemsProcessed: number
   items: Array<TValue>
   size: number
   status: 'idle' | 'pending'
@@ -14,11 +14,11 @@ export interface BatcherState<TValue> {
 
 function getDefaultBatcherState<TValue>(): BatcherState<TValue> {
   return {
-    batchExecutionCount: 0,
+    executionCount: 0,
     isEmpty: true,
     isPending: false,
     isRunning: true,
-    itemExecutionCount: 0,
+    totalItemsProcessed: 0,
     items: [],
     size: 0,
     status: 'idle',
@@ -91,7 +91,7 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * State Management:
  * - Use `initialState` to provide initial state values when creating the batcher
  * - Use `onStateChange` callback to react to state changes and implement custom persistence
- * - The state includes batch execution count, item execution count, items, and running status
+ * - The state includes batch execution count, total items processed, items, and running status
  * - State can be retrieved using `getState()` method
  *
  * @example
@@ -206,8 +206,8 @@ export class Batcher<TValue> {
 
     this.fn(batch) // EXECUTE
     this.#setState({
-      batchExecutionCount: this.store.state.batchExecutionCount + 1,
-      itemExecutionCount: this.store.state.itemExecutionCount + batch.length,
+      executionCount: this.store.state.executionCount + 1,
+      totalItemsProcessed: this.store.state.totalItemsProcessed + batch.length,
     })
     this.#options.onExecute?.(this)
   }

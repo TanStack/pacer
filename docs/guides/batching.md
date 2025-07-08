@@ -142,7 +142,7 @@ batcher.getSize()               // Get current batch size
 batcher.getIsEmpty()            // Check if batch is empty
 batcher.getIsRunning()          // Check if batcher is running
 batcher.peekAllItems()           // Get all items in the current batch
-batcher.getBatchExecutionCount()// Number of batches processed
+batcher.getexecutionCount()// Number of batches processed
 batcher.getItemExecutionCount() // Number of items processed
 batcher.setOptions(opts)        // Update batcher options
 batcher.getOptions()            // Get current options
@@ -183,7 +183,7 @@ console.log(options.maxSize) // 10
 Batcher provides methods to monitor its performance:
 
 ```ts
-console.log(batcher.getBatchExecutionCount()) // Number of batches processed
+console.log(batcher.getexecutionCount()) // Number of batches processed
 console.log(batcher.getItemExecutionCount())  // Number of items processed
 ```
 

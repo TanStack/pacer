@@ -19,6 +19,7 @@ export default mergeConfig(
   config,
   tanstackViteConfig({
     entry: [
+      './src/async-batcher/index.ts',
       './src/async-debouncer/index.ts',
       './src/async-queuer/index.ts',
       './src/async-rate-limiter/index.ts',

@@ -26,8 +26,8 @@ function App1() {
       <div>Batch Size: {batcher.state().size}</div>
       <div>Batch Max Size: {5}</div>
       <div>Batch Items: {batcher.state().items.join(', ')}</div>
-      <div>Batches Processed: {batcher.state().batchExecutionCount}</div>
-      <div>Items Processed: {batcher.state().itemExecutionCount}</div>
+      <div>Batches Processed: {batcher.state().executionCount}</div>
+      <div>Items Processed: {batcher.state().totalItemsProcessed}</div>
       <div>
         Processed Batches:{' '}
         <For each={processedBatches()}>
