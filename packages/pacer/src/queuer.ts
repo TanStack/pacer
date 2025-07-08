@@ -455,6 +455,19 @@ export class Queuer<TValue> {
   }
 
   /**
+   * Processes a specified number of items to execute immediately with no wait time
+   * If no numberOfItems is provided, all items will be processed
+   */
+  flush = (
+    numberOfItems: number = this.store.state.items.length,
+    position?: QueuePosition,
+  ): void => {
+    for (let i = 0; i < numberOfItems; i++) {
+      this.execute(position)
+    }
+  }
+
+  /**
    * Checks for expired items in the queue and removes them. Calls onExpire for each expired item.
    * Internal use only.
    */

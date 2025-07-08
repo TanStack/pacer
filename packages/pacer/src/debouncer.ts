@@ -200,6 +200,15 @@ export class Debouncer<TFn extends AnyFunction> {
   }
 
   /**
+   * Processes the current pending execution immediately
+   */
+  flush = (): void => {
+    if (this.store.state.isPending && this.store.state.lastArgs) {
+      this.#execute(...this.store.state.lastArgs)
+    }
+  }
+
+  /**
    * Cancels any pending execution
    */
   cancel = (): void => {

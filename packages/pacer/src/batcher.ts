@@ -171,13 +171,13 @@ export class Batcher<TValue> {
       this.#options.getShouldExecute(this.store.state.items, this)
 
     if (shouldProcess) {
-      this.execute()
+      this.#execute()
     } else if (
       this.store.state.isRunning &&
       !this.#timeoutId &&
       this.#options.wait !== Infinity
     ) {
-      this.#timeoutId = setTimeout(() => this.execute(), this.#options.wait)
+      this.#timeoutId = setTimeout(() => this.#execute(), this.#options.wait)
     }
   }
 
@@ -190,7 +190,7 @@ export class Batcher<TValue> {
    *
    * You can also call this method manually to process the current batch at any time.
    */
-  execute = (): void => {
+  #execute = (): void => {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
       this.#timeoutId = null
@@ -213,6 +213,13 @@ export class Batcher<TValue> {
   }
 
   /**
+   * Processes the current batch of items immediately
+   */
+  flush = (): void => {
+    this.#execute()
+  }
+
+  /**
    * Stops the batcher from processing batches
    */
   stop = (): void => {
@@ -229,7 +236,7 @@ export class Batcher<TValue> {
   start = (): void => {
     this.#setState({ isRunning: true })
     if (this.store.state.items.length > 0 && !this.#timeoutId) {
-      this.#timeoutId = setTimeout(() => this.execute(), this.#options.wait)
+      this.#timeoutId = setTimeout(() => this.#execute(), this.#options.wait)
     }
   }
 

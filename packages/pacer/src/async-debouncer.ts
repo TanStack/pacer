@@ -290,6 +290,16 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     return this.store.state.lastResult
   }
 
+  /**
+   * Processes the current pending execution immediately
+   */
+  flush = (): void => {
+    if (this.store.state.isPending && this.store.state.lastArgs) {
+      this.#abortExecution() // abort any current execution
+      this.#execute(...this.store.state.lastArgs)
+    }
+  }
+
   #cancelPendingExecution = (): void => {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
@@ -306,15 +316,19 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     })
   }
 
+  #abortExecution = (): void => {
+    if (this.#abortController) {
+      this.#abortController.abort()
+      this.#abortController = null
+    }
+  }
+
   /**
    * Cancels any pending execution or aborts any execution in progress
    */
   cancel = (): void => {
     this.#cancelPendingExecution()
-    if (this.#abortController) {
-      this.#abortController.abort()
-      this.#abortController = null
-    }
+    this.#abortExecution()
     this.#setState({ canLeadingExecute: true })
   }
 

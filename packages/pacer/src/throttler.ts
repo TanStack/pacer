@@ -225,6 +225,15 @@ export class Throttler<TFn extends AnyFunction> {
   }
 
   /**
+   * Processes the current pending execution immediately
+   */
+  flush = (): void => {
+    if (this.store.state.isPending && this.store.state.lastArgs) {
+      this.#execute(...this.store.state.lastArgs)
+    }
+  }
+
+  /**
    * Cancels any pending trailing execution and clears internal state.
    *
    * If a trailing execution is scheduled (due to throttling with trailing=true),
