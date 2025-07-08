@@ -23,11 +23,11 @@ function App1() {
   return (
     <div>
       <h1>TanStack Pacer createBatcher Example 1</h1>
-      <div>Batch Size: {batcher.size()}</div>
+      <div>Batch Size: {batcher.state().size}</div>
       <div>Batch Max Size: {5}</div>
-      <div>Batch Items: {batcher.allItems().join(', ')}</div>
-      <div>Batches Processed: {batcher.batchExecutionCount()}</div>
-      <div>Items Processed: {batcher.itemExecutionCount()}</div>
+      <div>Batch Items: {batcher.state().items.join(', ')}</div>
+      <div>Batches Processed: {batcher.state().batchExecutionCount}</div>
+      <div>Items Processed: {batcher.state().itemExecutionCount}</div>
       <div>
         Processed Batches:{' '}
         <For each={processedBatches()}>
@@ -45,8 +45,8 @@ function App1() {
       >
         <button
           onClick={() => {
-            const nextNumber = batcher.allItems().length
-              ? batcher.allItems()[batcher.allItems().length - 1] + 1
+            const nextNumber = batcher.state().items.length
+              ? batcher.state().items[batcher.state().items.length - 1] + 1
               : 1
             batcher.addItem(nextNumber)
           }}
@@ -54,18 +54,24 @@ function App1() {
           Add Number
         </button>
         <button
-          disabled={batcher.size() === 0}
+          disabled={batcher.state().size === 0}
           onClick={() => {
             batcher.execute()
           }}
         >
           Process Current Batch
         </button>
-        <button onClick={() => batcher.stop()} disabled={!batcher.isRunning()}>
-          Stop Batching
+        <button
+          onClick={() => batcher.stop()}
+          disabled={!batcher.state().isRunning}
+        >
+          Stop Batching By Time
         </button>
-        <button onClick={() => batcher.start()} disabled={batcher.isRunning()}>
-          Start Batching
+        <button
+          onClick={() => batcher.start()}
+          disabled={batcher.state().isRunning}
+        >
+          Start Batching By Time
         </button>
       </div>
     </div>

@@ -11,7 +11,7 @@ export interface SolidAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TSelected = AsyncRateLimiterState<TFn>,
 > extends Omit<AsyncRateLimiter<TFn>, 'store'> {
-  state: Accessor<TSelected>
+  readonly state: Accessor<TSelected>
 }
 
 /**

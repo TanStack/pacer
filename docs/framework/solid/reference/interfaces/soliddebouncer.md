@@ -24,7 +24,7 @@ Defined in: [debouncer/createDebouncer.ts:11](https://github.com/TanStack/pacer/
 ### state
 
 ```ts
-state: Accessor<TSelected>;
+readonly state: Accessor<TSelected>;
 ```
 
 Defined in: [debouncer/createDebouncer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L20)

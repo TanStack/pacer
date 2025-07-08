@@ -28,11 +28,11 @@ function App1() {
   return (
     <div>
       <h1>TanStack Pacer useBatcher Example 1</h1>
-      <div>Batch Size: {batcher.getSize()}</div>
+      <div>Batch Size: {batcher.state.size}</div>
       <div>Batch Max Size: {3}</div>
       <div>Batch Items: {batchItems.join(', ')}</div>
-      <div>Batches Processed: {batcher.getBatchExecutionCount()}</div>
-      <div>Items Processed: {batcher.getItemExecutionCount()}</div>
+      <div>Batches Processed: {batcher.state.batchExecutionCount}</div>
+      <div>Items Processed: {batcher.state.itemExecutionCount}</div>
       <div>
         Processed Batches:{' '}
         {processedBatches.map((b, i) => (
@@ -61,7 +61,7 @@ function App1() {
           Add Number
         </button>
         <button
-          disabled={batcher.getSize() === 0}
+          disabled={batcher.state.size === 0}
           onClick={() => {
             batcher.execute()
           }}
@@ -70,15 +70,15 @@ function App1() {
         </button>
         <button
           onClick={() => batcher.stop()}
-          disabled={!batcher.getIsRunning()}
+          disabled={!batcher.state.isRunning}
         >
-          Stop Batching
+          Stop Batching By Time
         </button>
         <button
           onClick={() => batcher.start()}
-          disabled={batcher.getIsRunning()}
+          disabled={batcher.state.isRunning}
         >
-          Start Batching
+          Start Batching By Time
         </button>
       </div>
     </div>

@@ -24,7 +24,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:11](https://github.com/TanS
 ### state
 
 ```ts
-state: Accessor<TSelected>;
+readonly state: Accessor<TSelected>;
 ```
 
 Defined in: [async-debouncer/createAsyncDebouncer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L20)

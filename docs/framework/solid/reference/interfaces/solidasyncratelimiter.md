@@ -24,7 +24,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:10](https://github.com
 ### state
 
 ```ts
-state: Accessor<TSelected>;
+readonly state: Accessor<TSelected>;
 ```
 
 Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:14](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L14)

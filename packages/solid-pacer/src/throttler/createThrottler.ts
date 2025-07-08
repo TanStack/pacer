@@ -17,7 +17,7 @@ export interface SolidThrottler<
    *
    * Use this instead of `throttler.store.state`
    */
-  state: Accessor<TSelected>
+  readonly state: Accessor<TSelected>
 }
 
 /**

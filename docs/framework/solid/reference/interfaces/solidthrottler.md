@@ -24,7 +24,7 @@ Defined in: [throttler/createThrottler.ts:11](https://github.com/TanStack/pacer/
 ### state
 
 ```ts
-state: Accessor<TSelected>;
+readonly state: Accessor<TSelected>;
 ```
 
 Defined in: [throttler/createThrottler.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L20)
