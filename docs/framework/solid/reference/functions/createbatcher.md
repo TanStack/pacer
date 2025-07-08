@@ -59,7 +59,7 @@ console.log('Size:', batcher.size());
 console.log('Is empty:', batcher.isEmpty());
 console.log('Is running:', batcher.isRunning());
 console.log('Batch count:', batcher.executionCount());
-console.log('Item count:', batcher.itemExecutionCount());
+console.log('Item count:', batcher.totalItemsProcessed());
 ```
 
 ## Type Parameters
