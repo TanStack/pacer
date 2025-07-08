@@ -8,10 +8,13 @@ title: createAsyncThrottler
 # Function: createAsyncThrottler()
 
 ```ts
-function createAsyncThrottler<TFn>(fn, initialOptions): SolidAsyncThrottler<TFn>
+function createAsyncThrottler<TFn, TSelected>(
+   fn, 
+   initialOptions, 
+selector?): SolidAsyncThrottler<TFn, TSelected>
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:79](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L79)
+Defined in: [async-throttler/createAsyncThrottler.ts:72](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L72)
 
 A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -37,6 +40,8 @@ Error Handling:
 
 • **TFn** *extends* `AnyAsyncFunction`
 
+• **TSelected** = `AsyncThrottlerState`\<`TFn`\>
+
 ## Parameters
 
 ### fn
@@ -47,9 +52,13 @@ Error Handling:
 
 `AsyncThrottlerOptions`\<`TFn`\>
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-[`SolidAsyncThrottler`](../../interfaces/solidasyncthrottler.md)\<`TFn`\>
+[`SolidAsyncThrottler`](../../interfaces/solidasyncthrottler.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

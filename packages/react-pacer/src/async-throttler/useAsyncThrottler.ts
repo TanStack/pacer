@@ -1,7 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
+import { useStore } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
-import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
+import type {
+  AsyncThrottlerOptions,
+  AsyncThrottlerState,
+} from '@tanstack/pacer/async-throttler'
+
+export interface ReactAsyncThrottler<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncThrottlerState<TFn>,
+> extends Omit<AsyncThrottler<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the debouncer state changes
+   *
+   * Use this instead of `debouncer.store.state`
+   */
+  readonly state: TSelected
+}
 
 /**
  * A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
@@ -51,17 +67,27 @@ import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
  * );
  * ```
  */
-export function useAsyncThrottler<TFn extends AnyAsyncFunction>(
+export function useAsyncThrottler<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncThrottlerState<TFn>,
+>(
   fn: TFn,
   options: AsyncThrottlerOptions<TFn>,
-): AsyncThrottler<TFn> {
+  selector?: (state: AsyncThrottlerState<TFn>) => TSelected,
+): ReactAsyncThrottler<TFn, TSelected> {
   const [asyncThrottler] = useState(() => new AsyncThrottler<TFn>(fn, options))
 
-  asyncThrottler.setOptions(options)
+  const state = useStore(asyncThrottler.store, selector)
 
   useEffect(() => {
     return () => asyncThrottler.cancel()
   }, [asyncThrottler])
 
-  return asyncThrottler
+  return useMemo(
+    () => ({
+      ...asyncThrottler,
+      state,
+    }),
+    [asyncThrottler, state],
+  )
 }

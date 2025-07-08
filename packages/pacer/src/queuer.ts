@@ -107,7 +107,6 @@ export interface QueuerOptions<TValue> {
 const defaultOptions: Omit<
   Required<QueuerOptions<any>>,
   | 'initialState'
-  | 'onStateChange'
   | 'onExecute'
   | 'onIsRunningChange'
   | 'onItemsChange'

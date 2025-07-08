@@ -78,7 +78,7 @@ function App() {
       </div>
       {error && <div>Error: {error.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncThrottler.getSuccessCount()}</p>
+        <p>API calls made: {setSearchAsyncThrottler.state.successCount}</p>
         {results.length > 0 && (
           <ul>
             {results.map((item) => (
@@ -86,9 +86,9 @@ function App() {
             ))}
           </ul>
         )}
-        {setSearchAsyncThrottler.getIsPending() ? (
+        {setSearchAsyncThrottler.state.isPending ? (
           <p>Pending...</p>
-        ) : setSearchAsyncThrottler.getIsExecuting() ? (
+        ) : setSearchAsyncThrottler.state.isExecuting ? (
           <p>Executing...</p>
         ) : null}
       </div>

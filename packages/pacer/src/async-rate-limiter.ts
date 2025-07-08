@@ -88,12 +88,7 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
 
 const defaultOptions: Omit<
   Required<AsyncRateLimiterOptions<any>>,
-  | 'initialState'
-  | 'onStateChange'
-  | 'onError'
-  | 'onReject'
-  | 'onSettled'
-  | 'onSuccess'
+  'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess'
 > = {
   enabled: true,
   limit: 1,

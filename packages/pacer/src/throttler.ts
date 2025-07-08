@@ -62,7 +62,7 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<ThrottlerOptions<any>>,
-  'initialState' | 'onStateChange' | 'onExecute'
+  'initialState' | 'onExecute'
 > = {
   enabled: true,
   leading: true,

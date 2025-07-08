@@ -56,7 +56,7 @@ function App1() {
         <button
           disabled={batcher.state().size === 0}
           onClick={() => {
-            batcher.execute()
+            batcher.flush()
           }}
         >
           Process Current Batch

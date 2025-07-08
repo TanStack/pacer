@@ -78,7 +78,7 @@ function App() {
 
   const executeCurrentBatch = async () => {
     try {
-      const result = await batcher.execute()
+      const result = await batcher.flush()
       console.log('Manual execution result:', result)
     } catch (error) {
       console.error('Manual execution failed:', error)

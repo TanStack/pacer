@@ -61,7 +61,7 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<DebouncerOptions<any>>,
-  'initialState' | 'onStateChange' | 'onExecute'
+  'initialState' | 'onExecute'
 > = {
   enabled: true,
   leading: false,

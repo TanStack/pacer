@@ -296,15 +296,20 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   flush = (): void => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
       this.#abortExecution() // abort any current execution
+      this.#clearTimeout() // clear any existing timeout
       this.#execute(...this.store.state.lastArgs)
     }
   }
 
-  #cancelPendingExecution = (): void => {
+  #clearTimeout = (): void => {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
       this.#timeoutId = null
     }
+  }
+
+  #cancelPendingExecution = (): void => {
+    this.#clearTimeout()
     if (this.#resolvePreviousPromise) {
       this.#resolvePreviousPromise(this.store.state.lastResult)
       this.#resolvePreviousPromise = null

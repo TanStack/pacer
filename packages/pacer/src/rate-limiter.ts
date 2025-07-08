@@ -58,7 +58,7 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<RateLimiterOptions<any>>,
-  'initialState' | 'onStateChange' | 'onExecute' | 'onReject'
+  'initialState' | 'onExecute' | 'onReject'
 > = {
   enabled: true,
   limit: 1,
