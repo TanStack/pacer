@@ -3,33 +3,37 @@ import type { OptionalKeys } from './types'
 
 export interface AsyncBatcherState<TValue> {
   errorCount: number
+  failedItems: Array<TValue>
   isEmpty: boolean
   isExecuting: boolean
   isPending: boolean
   isRunning: boolean
-  totalItemsProcessed: number
   items: Array<TValue>
   lastResult: any
   settleCount: number
   size: number
   status: 'idle' | 'pending'
   successCount: number
+  totalItemsProcessed: number
+  totalItemsFailed: number
 }
 
 function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
   return {
     errorCount: 0,
+    failedItems: [],
     isEmpty: true,
     isExecuting: false,
     isPending: false,
     isRunning: true,
-    totalItemsProcessed: 0,
     items: [],
     lastResult: undefined,
     settleCount: 0,
     size: 0,
     status: 'idle',
     successCount: 0,
+    totalItemsProcessed: 0,
+    totalItemsFailed: 0,
   }
 }
 
@@ -59,7 +63,11 @@ export interface AsyncBatcherOptions<TValue> {
    * If provided, the handler will be called with the error and batcher instance.
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
-  onError?: (error: unknown, batcher: AsyncBatcher<TValue>) => void
+  onError?: (
+    error: unknown,
+    failedItems: Array<TValue>,
+    batcher: AsyncBatcher<TValue>,
+  ) => void
   /**
    * Callback fired after a batch is processed
    */
@@ -280,8 +288,10 @@ export class AsyncBatcher<TValue> {
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
+        failedItems: [...this.store.state.failedItems, ...batch],
+        totalItemsFailed: this.store.state.totalItemsFailed + batch.length,
       })
-      this.#options.onError?.(error, this)
+      this.#options.onError?.(error, batch, this)
       if (this.#options.throwOnError) {
         throw error
       }
@@ -324,11 +334,15 @@ export class AsyncBatcher<TValue> {
     return [...this.store.state.items]
   }
 
+  peekFailedItems = (): Array<TValue> => {
+    return [...this.store.state.failedItems]
+  }
+
   /**
    * Removes all items from the async batcher
    */
   clear = (): void => {
-    this.#setState({ items: [], isPending: false })
+    this.#setState({ items: [], failedItems: [], isPending: false })
   }
 
   /**
