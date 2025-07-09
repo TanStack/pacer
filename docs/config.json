@@ -83,8 +83,8 @@
           "to": "guides/batching"
         },
         {
-          "label": "Persisting State Guide",
-          "to": "guides/persisting"
+          "label": "Async Batching Guide",
+          "to": "guides/async-batching"
         }
       ]
     },

@@ -138,14 +138,14 @@ batcher.addItem(item)           // Add an item to the batch
 batcher.execute()               // Manually process the current batch
 batcher.stop()                  // Pause batching
 batcher.start()                 // Resume batching
-batcher.getSize()               // Get current batch size
-batcher.getIsEmpty()            // Check if batch is empty
-batcher.getIsRunning()          // Check if batcher is running
+batcher.store.state.size        // Get current batch size
+batcher.store.state.isEmpty     // Check if batch is empty
+batcher.store.state.isRunning   // Check if batcher is running
 batcher.peekAllItems()           // Get all items in the current batch
-batcher.getexecutionCount()// Number of batches processed
-batcher.getItemExecutionCount() // Number of items processed
+batcher.store.state.executionCount // Number of batches processed
+batcher.store.state.totalItemsProcessed // Number of items processed
 batcher.setOptions(opts)        // Update batcher options
-batcher.getOptions()            // Get current options
+batcher.flush()                 // Flush pending batch immediately
 ```
 
 ## Custom Batch Triggers
@@ -180,11 +180,101 @@ console.log(options.maxSize) // 10
 
 ## Performance Monitoring
 
-Batcher provides methods to monitor its performance:
+Batcher provides state properties to monitor its performance:
 
 ```ts
-console.log(batcher.getexecutionCount()) // Number of batches processed
-console.log(batcher.getItemExecutionCount())  // Number of items processed
+console.log(batcher.store.state.totalBatchesProcessed)
+```
+
+## State Management
+
+The `Batcher` class uses TanStack Store for reactive state management, providing real-time access to batch state, execution counts, and processing status.
+
+### Accessing State
+
+When using the `Batcher` class directly, access state via the `store.state` property:
+
+```ts
+const batcher = new Batcher(processFn, { maxSize: 5, wait: 1000 })
+
+// Access current state
+console.log(batcher.store.state.executionCount)
+```
+
+### Framework Adapters
+
+When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+
+```ts
+// React example
+const batcher = useBatcher(processFn, { maxSize: 5, wait: 1000 })
+
+// Access state directly (reactive)
+console.log(batcher.state.executionCount) // Reactive value
+console.log(batcher.state.size) // Reactive value
+```
+
+### Initial State
+
+You can provide initial state values when creating a batcher:
+
+```ts
+const batcher = new Batcher(processFn, {
+  maxSize: 5,
+  wait: 1000,
+  initialState: {
+    executionCount: 2, // Start with 2 batches processed
+    totalItemsProcessed: 10, // Start with 10 items processed
+    isRunning: false, // Start paused
+  }
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const batcher = new Batcher(processFn, { maxSize: 5, wait: 1000 })
+
+// Subscribe to state changes
+const unsubscribe = batcher.store.subscribe((state) => {
+  console.log('Batch size:', state.size)
+  console.log('Items processed:', state.totalItemsProcessed)
+  console.log('Is running:', state.isRunning)
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+### Available State Properties
+
+The `BatcherState` includes:
+
+- `executionCount`: Number of batch executions completed
+- `totalItemsProcessed`: Total number of items processed across all batches
+- `size`: Number of items currently in the batch queue
+- `isEmpty`: Whether the batch has no items (items array is empty)
+- `isPending`: Whether the batcher is waiting for timeout to trigger batch processing
+- `isRunning`: Whether the batcher is active and will process items automatically
+- `status`: Current processing status ('idle' | 'pending')
+- `items`: Array of items currently queued for batch processing
+
+### Flushing Pending Batches
+
+The batcher supports flushing pending batches to trigger processing immediately:
+
+```ts
+const batcher = new Batcher(processFn, { maxSize: 10, wait: 5000 })
+
+batcher.addItem('item1')
+batcher.addItem('item2')
+console.log(batcher.store.state.isPending) // true
+
+// Flush immediately instead of waiting
+batcher.flush()
+console.log(batcher.store.state.isEmpty) // true (batch was processed)
 ```
 
 ## Framework Adapters

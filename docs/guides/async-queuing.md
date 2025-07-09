@@ -105,16 +105,16 @@ queue.setOptions({
   onError: (error, queuer) => {
     console.error('Task failed:', error)
     // You can access queue state here
-    console.log('Error count:', queuer.getErrorCount())
+    console.log('Error count:', queuer.store.state.errorCount)
   },
   onSuccess: (result, queuer) => {
     console.log('Task completed:', result)
     // You can access queue state here
-    console.log('Success count:', queuer.getSuccessCount())
+    console.log('Success count:', queuer.store.state.successCount)
   },
   onSettled: (queuer) => {
     // Called after each execution (success or failure)
-    console.log('Total settled:', queuer.getSettledCount())
+    console.log('Total settled:', queuer.store.state.settledCount)
   }
 })
 
@@ -164,17 +164,17 @@ const queue = new AsyncQueuer(
     onError: (error, queuer) => {
       console.error('Task failed:', error)
       // You can access queue state here
-      console.log('Error count:', queuer.getErrorCount())
+      console.log('Error count:', queuer.store.state.errorCount)
     },
     throwOnError: true, // Will throw errors even with onError handler
     onSuccess: (result, queuer) => {
       console.log('Task succeeded:', result)
       // You can access queue state here
-      console.log('Success count:', queuer.getSuccessCount())
+      console.log('Success count:', queuer.store.state.successCount)
     },
     onSettled: (queuer) => {
       // Called after each execution (success or failure)
-      console.log('Total settled:', queuer.getSettledCount())
+      console.log('Total settled:', queuer.store.state.settledCount)
     }
   }
 )
@@ -194,11 +194,11 @@ const queue = new AsyncQueuer(
   {
     // Dynamic concurrency based on system load
     concurrency: (queuer) => {
-      return Math.max(1, 4 - queuer.peekActiveItems().length)
+      return Math.max(1, 4 - queuer.store.state.activeItems.length)
     },
     // Dynamic wait time based on queue size
     wait: (queuer) => {
-      return queuer.getSize() > 10 ? 2000 : 1000
+      return queuer.store.state.size > 10 ? 2000 : 1000
     }
   }
 )
@@ -209,8 +209,10 @@ const queue = new AsyncQueuer(
 AsyncQueuer provides all the queue management and monitoring methods from the core queuing guide, plus async-specific ones:
 - `peekActiveItems()` — Items currently being processed
 - `peekPendingItems()` — Items waiting to be processed
-- `getSuccessCount()`, `getErrorCount()`, `getSettledCount()` — Execution statistics
-- `start()`, `stop()`, `clear()`, `reset()`, etc.
+- `queuer.store.state.successCount`, `queuer.store.state.errorCount`, `queuer.store.state.settledCount` — Execution statistics
+- `queuer.store.state.activeItems` — Array of items currently being processed
+- `queuer.store.state.size` — Current queue size
+- `start()`, `stop()`, `clear()`, `reset()`, `flush()`, etc.
 
 See the [Queuing Guide](../queuing) for more on queue management concepts.
 
@@ -221,6 +223,114 @@ AsyncQueuer supports expiration and rejection just like the core queuer:
 - Use `maxSize` and `onReject` for handling queue overflow
 
 See the [Queuing Guide](../queuing.md) for details and examples.
+
+## State Management
+
+The `AsyncQueuer` class uses TanStack Store for reactive state management, providing real-time access to queue state, processing statistics, and concurrent task tracking.
+
+### Accessing State
+
+When using the `AsyncQueuer` class directly, access state via the `store.state` property:
+
+```ts
+const queue = new AsyncQueuer(processFn, { concurrency: 2, wait: 1000 })
+
+// Access current state
+console.log(queue.store.state.isIdle)
+```
+
+### Framework Adapters
+
+When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+
+```ts
+// React example
+const queue = useAsyncQueuer(processFn, { concurrency: 2, wait: 1000 })
+
+// Access state directly (reactive)
+console.log(queue.state.successCount) // Reactive value
+console.log(queue.state.activeItems.length) // Reactive value
+```
+
+### Initial State
+
+You can provide initial state values when creating an async queuer:
+
+```ts
+const queue = new AsyncQueuer(processFn, {
+  concurrency: 2,
+  wait: 1000,
+  initialState: {
+    successCount: 10, // Start with 10 successful tasks
+    errorCount: 2, // Start with 2 failed tasks
+    isRunning: false, // Start paused
+    lastResult: 'initial-result', // Start with initial result
+  }
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const queue = new AsyncQueuer(processFn, { concurrency: 2, wait: 1000 })
+
+// Subscribe to state changes
+const unsubscribe = queue.store.subscribe((state) => {
+  console.log('Active tasks:', state.activeItems.length)
+  console.log('Success count:', state.successCount)
+  console.log('Error count:', state.errorCount)
+  console.log('Queue size:', state.size)
+  console.log('Is running:', state.isRunning)
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+### Available State Properties
+
+The `AsyncQueuerState` includes all properties from the core queuing guide plus:
+
+- `successCount`: Number of successful task executions
+- `errorCount`: Number of failed task executions
+- `settledCount`: Total number of completed tasks (success + error)
+- `activeItems`: Array of items currently being processed
+- `lastResult`: Result from the most recent successful task execution
+- `rejectionCount`: Number of tasks rejected due to maxSize
+- `expirationCount`: Number of tasks expired
+- `size`: Current number of items in the queue
+- `isEmpty`: Whether the queue has no items
+- `isFull`: Whether the queue has reached maxSize
+- `isIdle`: Whether the queue has no active tasks
+- `isRunning`: Whether the queue is active and processing tasks
+- `status`: Current processing status ('idle' | 'running' | 'stopped')
+- `items`: Array of items waiting to be processed
+- `itemTimestamps`: Array of timestamps when items were added
+- `pendingTick`: Whether the queue has a pending timeout for processing
+
+### Flushing Queue Items
+
+The async queuer supports flushing items to process them immediately:
+
+```ts
+const queue = new AsyncQueuer(processFn, { concurrency: 2, wait: 5000 })
+
+queue.addItem('item1')
+queue.addItem('item2')
+queue.addItem('item3')
+console.log(queue.store.state.size) // 3
+
+// Flush all items immediately instead of waiting
+queue.flush()
+console.log(queue.store.state.activeItems.length) // 2 (processing concurrently)
+console.log(queue.store.state.size) // 1 (one remaining)
+
+// Or flush a specific number of items
+queue.flush(1) // Process 1 more item
+console.log(queue.store.state.activeItems.length) // 3 (all processing concurrently)
+```
 
 ### Framework Adapters
 

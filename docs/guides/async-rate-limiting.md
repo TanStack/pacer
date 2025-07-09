@@ -27,7 +27,7 @@ const rateLimitedApi = asyncRateLimit(
     limit: 5,
     window: 1000,
     onExecute: (limiter) => {
-      console.log('API call succeeded:', limiter.getExecutionCount())
+      console.log('API call succeeded:', limiter.store.state.successCount)
     },
     onReject: (limiter) => {
       console.log(`Rate limit exceeded. Try again in ${limiter.getMsUntilNextWindow()}ms`)
@@ -63,7 +63,7 @@ The async rate limiter provides robust error handling capabilities:
   - When true (default if no onError handler), errors will be thrown
   - When false (default if onError handler provided), errors will be swallowed
   - Can be explicitly set to override these defaults
-- You can track error counts using `getErrorCount()` and check execution state with `getIsExecuting()`
+- You can track error counts using `limiter.store.state.errorCount` and check execution state with `limiter.store.state.isExecuting`
 - The rate limiter maintains its state and can continue to be used after an error occurs
 - Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
 
@@ -86,7 +86,7 @@ const asyncLimiter = new AsyncRateLimiter(async (id) => {
   window: 1000,
   onExecute: (rateLimiter) => {
     // Called after each successful execution
-    console.log('Async function executed', rateLimiter.getExecutionCount())
+    console.log('Async function executed', rateLimiter.store.state.successCount)
   },
   onReject: (rateLimiter) => {
     // Called when an execution is rejected
@@ -112,6 +112,97 @@ Just like the synchronous rate limiter, the async rate limiter supports dynamic 
 ## Framework Adapters
 
 Each framework adapter provides hooks that build on top of the core async rate limiting functionality to integrate with the framework's state management system. Hooks like `createAsyncRateLimiter`, `useAsyncRateLimitedCallback`, or similar are available for each framework.
+
+## State Management
+
+The `AsyncRateLimiter` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and rejection statistics.
+
+### Accessing State
+
+When using the `AsyncRateLimiter` class directly, access state via the `store.state` property:
+
+```ts
+const asyncLimiter = new AsyncRateLimiter(asyncFn, { limit: 5, window: 1000 })
+
+// Access current state
+console.log(asyncLimiter.store.state.isExecuting)
+```
+
+### Framework Adapters
+
+When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+
+```ts
+// React example
+const asyncLimiter = useAsyncRateLimiter(asyncFn, { limit: 5, window: 1000 })
+
+// Access state directly (reactive)
+console.log(asyncLimiter.state.successCount) // Reactive value
+console.log(asyncLimiter.state.isExecuting) // Reactive value
+```
+
+### Initial State
+
+You can provide initial state values when creating an async rate limiter:
+
+```ts
+const asyncLimiter = new AsyncRateLimiter(asyncFn, {
+  limit: 5,
+  window: 1000,
+  initialState: {
+    successCount: 3, // Start with 3 successful executions
+    errorCount: 1, // Start with 1 error
+    rejectionCount: 2, // Start with 2 rejections
+    lastResult: 'initial-result', // Start with initial result
+    executionTimes: [Date.now() - 500], // Start with one execution timestamp
+  }
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const asyncLimiter = new AsyncRateLimiter(asyncFn, { limit: 5, window: 1000 })
+
+// Subscribe to state changes
+const unsubscribe = asyncLimiter.store.subscribe((state) => {
+  console.log('Success count:', state.successCount)
+  console.log('Error count:', state.errorCount)
+  console.log('Rejection count:', state.rejectionCount)
+  console.log('Currently executing:', state.isExecuting)
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+### Available State Properties
+
+The `AsyncRateLimiterState` includes:
+
+- `successCount`: Number of successful function executions
+- `errorCount`: Number of failed function executions
+- `settleCount`: Total number of completed executions (success + error)
+- `rejectionCount`: Number of rejected executions due to rate limiting
+- `isExecuting`: Whether the async function is currently executing
+- `lastResult`: Result from the most recent successful execution
+- `executionTimes`: Array of timestamps when executions occurred (used for rate limiting calculations)
+
+### Helper Methods
+
+The async rate limiter provides helper methods that compute values based on the current state:
+
+```ts
+const asyncLimiter = new AsyncRateLimiter(asyncFn, { limit: 5, window: 1000 })
+
+// These methods use the current state to compute values
+console.log(asyncLimiter.getRemainingInWindow()) // Number of calls remaining in current window
+console.log(asyncLimiter.getMsUntilNextWindow()) // Milliseconds until next window
+```
+
+These methods are computed values that use the current state and don't need to be accessed through the store.
 
 ---
 

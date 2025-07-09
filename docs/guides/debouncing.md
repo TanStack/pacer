@@ -70,15 +70,19 @@ const searchDebouncer = new Debouncer(
   { wait: 500 }
 )
 
-// Get information about current state
-console.log(searchDebouncer.getExecutionCount()) // Number of successful executions
-console.log(searchdebouncer.getState().isPending) // Whether a call is pending
+// Access current state via TanStack Store
+console.log(searchDebouncer.store.state.executionCount) // Number of successful executions
+console.log(searchDebouncer.store.state.isPending) // Whether a call is pending
+console.log(searchDebouncer.store.state.status) // Current execution status
 
 // Update options dynamically
 searchDebouncer.setOptions({ wait: 1000 }) // Increase wait time
 
 // Cancel pending execution
 searchDebouncer.cancel()
+
+// Flush pending execution immediately
+searchDebouncer.flush()
 ```
 
 ### Leading and Trailing Executions
@@ -122,7 +126,7 @@ The `enabled` option can also be a function that returns a boolean, allowing for
 const debouncer = new Debouncer(fn, {
   wait: 500,
   enabled: (debouncer) => {
-    return debouncer.getExecutionCount() < 10 // Disable after 10 executions
+    return debouncer.store.state.executionCount < 10 // Disable after 10 executions
   }
 })
 ```
@@ -145,11 +149,11 @@ Several options in the Debouncer support dynamic values through callback functio
 const debouncer = new Debouncer(fn, {
   // Dynamic wait time based on execution count
   wait: (debouncer) => {
-    return debouncer.getExecutionCount() * 100 // Increase wait time with each execution
+    return debouncer.store.state.executionCount * 100 // Increase wait time with each execution
   },
   // Dynamic enabled state based on execution count
   enabled: (debouncer) => {
-    return debouncer.getExecutionCount() < 10 // Disable after 10 executions
+    return debouncer.store.state.executionCount < 10 // Disable after 10 executions
   }
 })
 ```
@@ -169,12 +173,96 @@ const debouncer = new Debouncer(fn, {
   wait: 500,
   onExecute: (debouncer) => {
     // Called after each successful execution
-    console.log('Function executed', debouncer.getExecutionCount())
+    console.log('Function executed', debouncer.store.state.executionCount)
   }
 })
 ```
 
 The `onExecute` callback is called after each successful execution of the debounced function, making it useful for tracking executions, updating UI state, or performing cleanup operations.
+
+## State Management
+
+The `Debouncer` class uses TanStack Store for reactive state management, providing real-time access to execution state and statistics.
+
+### Accessing State
+
+When using the `Debouncer` class directly, access state via the `store.state` property:
+
+```ts
+const debouncer = new Debouncer(fn, { wait: 500 })
+
+// Access current state
+console.log(debouncer.store.state.isPending)
+```
+
+### Framework Adapters
+
+When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+
+```ts
+// React example
+const debouncer = useDebouncer(fn, { wait: 500 })
+
+// Access state directly (reactive)
+console.log(debouncer.state.executionCount) // Reactive value
+console.log(debouncer.state.isPending) // Reactive value
+```
+
+### Initial State
+
+You can provide initial state values when creating a debouncer:
+
+```ts
+const debouncer = new Debouncer(fn, {
+  wait: 500,
+  initialState: {
+    executionCount: 5, // Start with 5 executions
+    canLeadingExecute: false, // Start with leading execution disabled
+  }
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const debouncer = new Debouncer(fn, { wait: 500 })
+
+// Subscribe to state changes
+const unsubscribe = debouncer.store.subscribe((state) => {
+  console.log('Execution count:', state.executionCount)
+  console.log('Is pending:', state.isPending)
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+### Available State Properties
+
+The `DebouncerState` includes:
+
+- `executionCount`: Number of completed function executions
+- `isPending`: Whether the debouncer is waiting for timeout to trigger execution
+- `status`: Current execution status ('idle' | 'pending')
+- `canLeadingExecute`: Whether leading edge execution is allowed
+- `lastArgs`: Arguments from the most recent call to `maybeExecute`
+
+### Flushing Pending Executions
+
+The debouncer supports flushing pending executions to trigger them immediately:
+
+```ts
+const debouncer = new Debouncer(fn, { wait: 1000 })
+
+debouncer.maybeExecute('some-arg')
+console.log(debouncer.store.state.isPending) // true
+
+// Flush immediately instead of waiting
+debouncer.flush()
+console.log(debouncer.store.state.isPending) // false
+```
 
 ---
 

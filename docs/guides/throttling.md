@@ -75,12 +75,17 @@ const updateThrottler = new Throttler(
   { wait: 200 }
 )
 
-// Get information about execution state
-console.log(updateThrottler.getExecutionCount()) // Number of successful executions
-console.log(updateThrottler.getLastExecutionTime()) // Timestamp of last execution
+// Access current state via TanStack Store
+console.log(updateThrottler.store.state.executionCount) // Number of successful executions
+console.log(updateThrottler.store.state.lastExecutionTime) // Timestamp of last execution
+console.log(updateThrottler.store.state.isPending) // Whether execution is pending
+console.log(updateThrottler.store.state.status) // Current execution status
 
 // Cancel any pending execution
 updateThrottler.cancel()
+
+// Flush pending execution immediately
+updateThrottler.flush()
 ```
 
 ### Leading and Trailing Executions
@@ -120,7 +125,7 @@ The `enabled` option can also be a function that returns a boolean, allowing for
 const throttler = new Throttler(fn, {
   wait: 200,
   enabled: (throttler) => {
-    return throttler.getExecutionCount() < 50 // Disable after 50 executions
+    return throttler.store.state.executionCount < 50 // Disable after 50 executions
   }
 })
 ```
@@ -135,11 +140,11 @@ Several options in the Throttler support dynamic values through callback functio
 const throttler = new Throttler(fn, {
   // Dynamic wait time based on execution count
   wait: (throttler) => {
-    return throttler.getExecutionCount() * 100 // Increase wait time with each execution
+    return throttler.store.state.executionCount * 100 // Increase wait time with each execution
   },
   // Dynamic enabled state based on execution count
   enabled: (throttler) => {
-    return throttler.getExecutionCount() < 50 // Disable after 50 executions
+    return throttler.store.state.executionCount < 50 // Disable after 50 executions
   }
 })
 ```
@@ -159,12 +164,98 @@ const throttler = new Throttler(fn, {
   wait: 200,
   onExecute: (throttler) => {
     // Called after each successful execution
-    console.log('Function executed', throttler.getExecutionCount())
+    console.log('Function executed', throttler.store.state.executionCount)
   }
 })
 ```
 
 The `onExecute` callback is called after each successful execution of the throttled function, making it useful for tracking executions, updating UI state, or performing cleanup operations.
+
+## State Management
+
+The `Throttler` class uses TanStack Store for reactive state management, providing real-time access to execution state and timing information.
+
+### Accessing State
+
+When using the `Throttler` class directly, access state via the `store.state` property:
+
+```ts
+const throttler = new Throttler(fn, { wait: 200 })
+
+// Access current state
+console.log(throttler.store.state.isPending)
+```
+
+### Framework Adapters
+
+When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+
+```ts
+// React example
+const throttler = useThrottler(fn, { wait: 200 })
+
+// Access state directly (reactive)
+console.log(throttler.state.executionCount) // Reactive value
+console.log(throttler.state.isPending) // Reactive value
+```
+
+### Initial State
+
+You can provide initial state values when creating a throttler:
+
+```ts
+const throttler = new Throttler(fn, {
+  wait: 200,
+  initialState: {
+    executionCount: 10, // Start with 10 executions
+    lastExecutionTime: Date.now() - 1000, // Set last execution to 1 second ago
+  }
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const throttler = new Throttler(fn, { wait: 200 })
+
+// Subscribe to state changes
+const unsubscribe = throttler.store.subscribe((state) => {
+  console.log('Execution count:', state.executionCount)
+  console.log('Last execution time:', state.lastExecutionTime)
+  console.log('Is pending:', state.isPending)
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+### Available State Properties
+
+The `ThrottlerState` includes:
+
+- `executionCount`: Number of completed function executions
+- `lastExecutionTime`: Timestamp of the last function execution (in milliseconds)
+- `nextExecutionTime`: Timestamp when the next execution can occur (in milliseconds)
+- `isPending`: Whether the throttler is waiting for timeout to trigger execution
+- `status`: Current execution status ('idle' | 'pending')
+- `lastArgs`: Arguments from the most recent call to `maybeExecute`
+
+### Flushing Pending Executions
+
+The throttler supports flushing pending executions to trigger them immediately:
+
+```ts
+const throttler = new Throttler(fn, { wait: 1000 })
+
+throttler.maybeExecute('some-arg')
+console.log(throttler.store.state.isPending) // true
+
+// Flush immediately instead of waiting
+throttler.flush()
+console.log(throttler.store.state.isPending) // false
+```
 
 ---
 
