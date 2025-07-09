@@ -2,19 +2,61 @@ import { Store } from '@tanstack/store'
 import type { OptionalKeys } from './types'
 
 export interface AsyncBatcherState<TValue> {
+  /**
+   * Number of batch executions that have resulted in errors
+   */
   errorCount: number
+  /**
+   * Array of items that failed during batch processing
+   */
   failedItems: Array<TValue>
+  /**
+   * Whether the batcher has no items to process (items array is empty)
+   */
   isEmpty: boolean
+  /**
+   * Whether a batch is currently being processed asynchronously
+   */
   isExecuting: boolean
+  /**
+   * Whether the batcher is waiting for the timeout to trigger batch processing
+   */
   isPending: boolean
+  /**
+   * Whether the batcher is active and will process items automatically
+   */
   isRunning: boolean
+  /**
+   * Array of items currently queued for batch processing
+   */
   items: Array<TValue>
+  /**
+   * The result from the most recent batch execution
+   */
   lastResult: any
+  /**
+   * Number of batch executions that have completed (either successfully or with errors)
+   */
   settleCount: number
+  /**
+   * Number of items currently in the batch queue
+   */
   size: number
-  status: 'idle' | 'pending'
+  /**
+   * Current processing status - 'idle' when not processing, 'pending' when waiting for timeout, 'executing' when processing, 'populated' when items are present, but no wait is configured
+   */
+  status: 'idle' | 'pending' | 'executing' | 'populated'
+  /**
+   * Number of batch executions that have completed successfully
+   */
   successCount: number
+  /**
+   * Total number of items that have been processed across all batches
+   */
   totalItemsProcessed: number
+  /**
+   * Total number of items that have failed processing across all batches
+   */
   totalItemsFailed: number
 }
 
@@ -184,7 +226,7 @@ const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
  * ```
  */
 export class AsyncBatcher<TValue> {
-  readonly store: Store<AsyncBatcherState<TValue>> = new Store(
+  readonly store: Store<Readonly<AsyncBatcherState<TValue>>> = new Store(
     getDefaultAsyncBatcherState<TValue>(),
   )
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
@@ -215,14 +257,20 @@ export class AsyncBatcher<TValue> {
         ...state,
         ...newState,
       }
-      const { isPending, items } = combinedState
+      const { isExecuting, isPending, items } = combinedState
       const size = items.length
       const isEmpty = size === 0
       return {
         ...combinedState,
         isEmpty,
         size,
-        status: isPending ? 'pending' : 'idle',
+        status: isExecuting
+          ? 'executing'
+          : isPending
+            ? 'pending'
+            : isEmpty
+              ? 'idle'
+              : 'populated',
       }
     })
   }
@@ -266,11 +314,6 @@ export class AsyncBatcher<TValue> {
    * @throws The error from the batch function if no onError handler is configured
    */
   #execute = async (): Promise<any> => {
-    if (this.#timeoutId) {
-      clearTimeout(this.#timeoutId)
-      this.#timeoutId = null
-    }
-
     if (this.store.state.items.length === 0) {
       return undefined
     }
@@ -315,8 +358,9 @@ export class AsyncBatcher<TValue> {
   /**
    * Processes the current batch of items immediately
    */
-  flush = (): void => {
-    this.#execute()
+  flush = async (): Promise<any> => {
+    this.#clearTimeout() // clear any pending timeout
+    return await this.#execute()
   }
 
   /**
@@ -324,10 +368,7 @@ export class AsyncBatcher<TValue> {
    */
   stop = (): void => {
     this.#setState({ isRunning: false })
-    if (this.#timeoutId) {
-      clearTimeout(this.#timeoutId)
-      this.#timeoutId = null
-    }
+    this.#clearTimeout()
   }
 
   /**
@@ -349,6 +390,13 @@ export class AsyncBatcher<TValue> {
 
   peekFailedItems = (): Array<TValue> => {
     return [...this.store.state.failedItems]
+  }
+
+  #clearTimeout = (): void => {
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = null
+    }
   }
 
   /**

@@ -21,7 +21,9 @@ Defined in: [queuer.ts:4](https://github.com/TanStack/pacer/blob/main/packages/p
 executionCount: number;
 ```
 
-Defined in: [queuer.ts:5](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L5)
+Defined in: [queuer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L8)
+
+Number of items that have been processed by the queuer
 
 ***
 
@@ -31,7 +33,9 @@ Defined in: [queuer.ts:5](https://github.com/TanStack/pacer/blob/main/packages/p
 expirationCount: number;
 ```
 
-Defined in: [queuer.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L6)
+Defined in: [queuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L12)
+
+Number of items that have been removed from the queue due to expiration
 
 ***
 
@@ -41,7 +45,9 @@ Defined in: [queuer.ts:6](https://github.com/TanStack/pacer/blob/main/packages/p
 isEmpty: boolean;
 ```
 
-Defined in: [queuer.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L7)
+Defined in: [queuer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L16)
+
+Whether the queuer has no items to process (items array is empty)
 
 ***
 
@@ -51,7 +57,9 @@ Defined in: [queuer.ts:7](https://github.com/TanStack/pacer/blob/main/packages/p
 isFull: boolean;
 ```
 
-Defined in: [queuer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L8)
+Defined in: [queuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L20)
+
+Whether the queuer has reached its maximum capacity
 
 ***
 
@@ -61,7 +69,9 @@ Defined in: [queuer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/p
 isIdle: boolean;
 ```
 
-Defined in: [queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L9)
+Defined in: [queuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L24)
+
+Whether the queuer is not currently processing any items
 
 ***
 
@@ -71,7 +81,9 @@ Defined in: [queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/p
 isRunning: boolean;
 ```
 
-Defined in: [queuer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L10)
+Defined in: [queuer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L28)
+
+Whether the queuer is active and will process items automatically
 
 ***
 
@@ -81,7 +93,9 @@ Defined in: [queuer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/
 items: TValue[];
 ```
 
-Defined in: [queuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L12)
+Defined in: [queuer.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L36)
+
+Array of items currently waiting to be processed
 
 ***
 
@@ -91,7 +105,9 @@ Defined in: [queuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/
 itemTimestamps: number[];
 ```
 
-Defined in: [queuer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L11)
+Defined in: [queuer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L32)
+
+Timestamps when items were added to the queue for expiration tracking
 
 ***
 
@@ -101,7 +117,9 @@ Defined in: [queuer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/
 pendingTick: boolean;
 ```
 
-Defined in: [queuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L13)
+Defined in: [queuer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L40)
+
+Whether the queuer has a pending timeout for processing the next item
 
 ***
 
@@ -111,7 +129,9 @@ Defined in: [queuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/
 rejectionCount: number;
 ```
 
-Defined in: [queuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L14)
+Defined in: [queuer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L44)
+
+Number of items that have been rejected from being added to the queue
 
 ***
 
@@ -121,7 +141,9 @@ Defined in: [queuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/
 size: number;
 ```
 
-Defined in: [queuer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L15)
+Defined in: [queuer.ts:48](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L48)
+
+Number of items currently in the queue
 
 ***
 
@@ -131,4 +153,6 @@ Defined in: [queuer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/
 status: "idle" | "running" | "stopped";
 ```
 
-Defined in: [queuer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L16)
+Defined in: [queuer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L52)
+
+Current processing status - 'idle' when not processing, 'running' when active, 'stopped' when paused

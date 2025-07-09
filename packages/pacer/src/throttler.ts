@@ -3,11 +3,29 @@ import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
 export interface ThrottlerState<TFn extends AnyFunction> {
+  /**
+   * Number of function executions that have been completed
+   */
   executionCount: number
+  /**
+   * The arguments from the most recent call to maybeExecute
+   */
   lastArgs: Parameters<TFn> | undefined
+  /**
+   * Timestamp of the last function execution in milliseconds
+   */
   lastExecutionTime: number
+  /**
+   * Timestamp when the next execution can occur in milliseconds
+   */
   nextExecutionTime: number
+  /**
+   * Whether the throttler is waiting for the timeout to trigger execution
+   */
   isPending: boolean
+  /**
+   * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
+   */
   status: 'idle' | 'pending'
 }
 
@@ -106,7 +124,7 @@ const defaultOptions: Omit<
  * ```
  */
 export class Throttler<TFn extends AnyFunction> {
-  readonly store: Store<ThrottlerState<TFn>> = new Store(
+  readonly store: Store<Readonly<ThrottlerState<TFn>>> = new Store(
     getDefaultThrottlerState(),
   )
   options: ThrottlerOptions<TFn>
@@ -215,7 +233,7 @@ export class Throttler<TFn extends AnyFunction> {
     this.fn(...args) // EXECUTE!
     const lastExecutionTime = Date.now()
     const nextExecutionTime = lastExecutionTime + this.#getWait()
-    this.#timeoutId = undefined
+    this.#clearTimeout()
     this.#setState({
       executionCount: this.store.state.executionCount + 1,
       lastExecutionTime,
@@ -235,6 +253,13 @@ export class Throttler<TFn extends AnyFunction> {
     }
   }
 
+  #clearTimeout = (): void => {
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = undefined
+    }
+  }
+
   /**
    * Cancels any pending trailing execution and clears internal state.
    *
@@ -245,14 +270,11 @@ export class Throttler<TFn extends AnyFunction> {
    * Has no effect if there is no pending execution.
    */
   cancel = (): void => {
-    if (this.#timeoutId) {
-      clearTimeout(this.#timeoutId)
-      this.#timeoutId = undefined
-      this.#setState({
-        lastArgs: undefined,
-        isPending: false,
-      })
-    }
+    this.#clearTimeout()
+    this.#setState({
+      lastArgs: undefined,
+      isPending: false,
+    })
   }
 
   /**

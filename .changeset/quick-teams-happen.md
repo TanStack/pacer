@@ -4,4 +4,6 @@
 '@tanstack/pacer': minor
 ---
 
-Introduced initialState and onStateChange options to allow for state persistence
+- Rewrote TanStack Pacer to use TanStack Store for state management
+- Removed most "get" methods that can now be read directly from the state (e.g. `debouncer.getExecutionCount()` -> `debouncer.store.state.executionCount` or `debouncer.state.executionCount` in framework adapters)
+- Added `flush` methods to all utils to trigger pending executions to execute immediately.

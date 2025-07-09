@@ -21,7 +21,9 @@ Defined in: [async-rate-limiter.ts:5](https://github.com/TanStack/pacer/blob/mai
 errorCount: number;
 ```
 
-Defined in: [async-rate-limiter.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L6)
+Defined in: [async-rate-limiter.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L9)
+
+Number of function executions that have resulted in errors
 
 ***
 
@@ -31,7 +33,9 @@ Defined in: [async-rate-limiter.ts:6](https://github.com/TanStack/pacer/blob/mai
 executionTimes: number[];
 ```
 
-Defined in: [async-rate-limiter.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L7)
+Defined in: [async-rate-limiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L13)
+
+Array of timestamps when executions occurred for rate limiting calculations
 
 ***
 
@@ -41,7 +45,9 @@ Defined in: [async-rate-limiter.ts:7](https://github.com/TanStack/pacer/blob/mai
 isExecuting: boolean;
 ```
 
-Defined in: [async-rate-limiter.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L8)
+Defined in: [async-rate-limiter.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L17)
+
+Whether the rate-limited function is currently executing asynchronously
 
 ***
 
@@ -51,7 +57,9 @@ Defined in: [async-rate-limiter.ts:8](https://github.com/TanStack/pacer/blob/mai
 lastResult: undefined | ReturnType<TFn>;
 ```
 
-Defined in: [async-rate-limiter.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L9)
+Defined in: [async-rate-limiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L21)
+
+The result from the most recent successful function execution
 
 ***
 
@@ -61,7 +69,9 @@ Defined in: [async-rate-limiter.ts:9](https://github.com/TanStack/pacer/blob/mai
 rejectionCount: number;
 ```
 
-Defined in: [async-rate-limiter.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L10)
+Defined in: [async-rate-limiter.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L25)
+
+Number of function executions that have been rejected due to rate limiting
 
 ***
 
@@ -71,7 +81,9 @@ Defined in: [async-rate-limiter.ts:10](https://github.com/TanStack/pacer/blob/ma
 settleCount: number;
 ```
 
-Defined in: [async-rate-limiter.ts:11](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L11)
+Defined in: [async-rate-limiter.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L29)
+
+Number of function executions that have completed (either successfully or with errors)
 
 ***
 
@@ -81,4 +93,6 @@ Defined in: [async-rate-limiter.ts:11](https://github.com/TanStack/pacer/blob/ma
 successCount: number;
 ```
 
-Defined in: [async-rate-limiter.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L12)
+Defined in: [async-rate-limiter.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L33)
+
+Number of function executions that have completed successfully

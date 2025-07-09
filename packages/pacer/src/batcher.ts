@@ -2,13 +2,37 @@ import { Store } from '@tanstack/store'
 import type { OptionalKeys } from './types'
 
 export interface BatcherState<TValue> {
+  /**
+   * Number of batch executions that have been completed
+   */
   executionCount: number
+  /**
+   * Whether the batcher has no items to process (items array is empty)
+   */
   isEmpty: boolean
+  /**
+   * Whether the batcher is waiting for the timeout to trigger batch processing
+   */
   isPending: boolean
+  /**
+   * Whether the batcher is active and will process items automatically
+   */
   isRunning: boolean
+  /**
+   * Total number of items that have been processed across all batches
+   */
   totalItemsProcessed: number
+  /**
+   * Array of items currently queued for batch processing
+   */
   items: Array<TValue>
+  /**
+   * Number of items currently in the batch queue
+   */
   size: number
+  /**
+   * Current processing status - 'idle' when not processing, 'pending' when waiting for timeout
+   */
   status: 'idle' | 'pending'
 }
 
@@ -116,7 +140,7 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * ```
  */
 export class Batcher<TValue> {
-  readonly store: Store<BatcherState<TValue>> = new Store(
+  readonly store: Store<Readonly<BatcherState<TValue>>> = new Store(
     getDefaultBatcherState<TValue>(),
   )
   options: BatcherOptionsWithOptionalCallbacks<TValue>
@@ -194,11 +218,6 @@ export class Batcher<TValue> {
    * You can also call this method manually to process the current batch at any time.
    */
   #execute = (): void => {
-    if (this.#timeoutId) {
-      clearTimeout(this.#timeoutId)
-      this.#timeoutId = null
-    }
-
     if (this.store.state.items.length === 0) {
       return
     }
@@ -219,7 +238,8 @@ export class Batcher<TValue> {
    * Processes the current batch of items immediately
    */
   flush = (): void => {
-    this.#execute()
+    this.#clearTimeout() // clear any pending timeout
+    this.#execute() // execute immediately
   }
 
   /**
@@ -227,10 +247,7 @@ export class Batcher<TValue> {
    */
   stop = (): void => {
     this.#setState({ isRunning: false })
-    if (this.#timeoutId) {
-      clearTimeout(this.#timeoutId)
-      this.#timeoutId = null
-    }
+    this.#clearTimeout()
   }
 
   /**
@@ -248,6 +265,13 @@ export class Batcher<TValue> {
    */
   peekAllItems = (): Array<TValue> => {
     return [...this.store.state.items]
+  }
+
+  #clearTimeout = (): void => {
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = null
+    }
   }
 
   /**

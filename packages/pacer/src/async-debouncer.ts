@@ -3,14 +3,41 @@ import { parseFunctionOrValue } from './utils'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
+  /**
+   * Whether the debouncer can execute on the leading edge of the timeout
+   */
   canLeadingExecute: boolean
+  /**
+   * Number of function executions that have resulted in errors
+   */
   errorCount: number
+  /**
+   * Whether the debounced function is currently executing asynchronously
+   */
   isExecuting: boolean
+  /**
+   * Whether the debouncer is waiting for the timeout to trigger execution
+   */
   isPending: boolean
+  /**
+   * The arguments from the most recent call to maybeExecute
+   */
   lastArgs: Parameters<TFn> | undefined
+  /**
+   * The result from the most recent successful function execution
+   */
   lastResult: ReturnType<TFn> | undefined
+  /**
+   * Number of function executions that have completed (either successfully or with errors)
+   */
   settleCount: number
+  /**
+   * Current execution status - 'idle' when not active, 'pending' when waiting, 'executing' when running, 'settled' when completed
+   */
   status: 'idle' | 'pending' | 'executing' | 'settled'
+  /**
+   * Number of function executions that have completed successfully
+   */
   successCount: number
 }
 
@@ -140,7 +167,7 @@ const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
  * ```
  */
 export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
-  readonly store: Store<AsyncDebouncerState<TFn>> = new Store<
+  readonly store: Store<Readonly<AsyncDebouncerState<TFn>>> = new Store<
     AsyncDebouncerState<TFn>
   >(getDefaultAsyncDebouncerState<TFn>())
   options: AsyncDebouncerOptions<TFn>

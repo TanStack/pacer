@@ -21,7 +21,9 @@ Defined in: [async-queuer.ts:6](https://github.com/TanStack/pacer/blob/main/pack
 activeItems: TValue[];
 ```
 
-Defined in: [async-queuer.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L7)
+Defined in: [async-queuer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L10)
+
+Items currently being processed by the queuer
 
 ***
 
@@ -31,7 +33,9 @@ Defined in: [async-queuer.ts:7](https://github.com/TanStack/pacer/blob/main/pack
 errorCount: number;
 ```
 
-Defined in: [async-queuer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L8)
+Defined in: [async-queuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L14)
+
+Number of task executions that have resulted in errors
 
 ***
 
@@ -41,7 +45,9 @@ Defined in: [async-queuer.ts:8](https://github.com/TanStack/pacer/blob/main/pack
 expirationCount: number;
 ```
 
-Defined in: [async-queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L9)
+Defined in: [async-queuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L18)
+
+Number of items that have been removed from the queue due to expiration
 
 ***
 
@@ -51,7 +57,9 @@ Defined in: [async-queuer.ts:9](https://github.com/TanStack/pacer/blob/main/pack
 isEmpty: boolean;
 ```
 
-Defined in: [async-queuer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L10)
+Defined in: [async-queuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L22)
+
+Whether the queuer has no items to process (items array is empty)
 
 ***
 
@@ -61,7 +69,9 @@ Defined in: [async-queuer.ts:10](https://github.com/TanStack/pacer/blob/main/pac
 isFull: boolean;
 ```
 
-Defined in: [async-queuer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L11)
+Defined in: [async-queuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L26)
+
+Whether the queuer has reached its maximum capacity
 
 ***
 
@@ -71,7 +81,9 @@ Defined in: [async-queuer.ts:11](https://github.com/TanStack/pacer/blob/main/pac
 isIdle: boolean;
 ```
 
-Defined in: [async-queuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L12)
+Defined in: [async-queuer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L30)
+
+Whether the queuer is not currently processing any items
 
 ***
 
@@ -81,7 +93,9 @@ Defined in: [async-queuer.ts:12](https://github.com/TanStack/pacer/blob/main/pac
 isRunning: boolean;
 ```
 
-Defined in: [async-queuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L13)
+Defined in: [async-queuer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L34)
+
+Whether the queuer is active and will process items automatically
 
 ***
 
@@ -91,7 +105,9 @@ Defined in: [async-queuer.ts:13](https://github.com/TanStack/pacer/blob/main/pac
 items: TValue[];
 ```
 
-Defined in: [async-queuer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L15)
+Defined in: [async-queuer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L42)
+
+Array of items currently waiting to be processed
 
 ***
 
@@ -101,7 +117,9 @@ Defined in: [async-queuer.ts:15](https://github.com/TanStack/pacer/blob/main/pac
 itemTimestamps: number[];
 ```
 
-Defined in: [async-queuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L14)
+Defined in: [async-queuer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L38)
+
+Timestamps when items were added to the queue for expiration tracking
 
 ***
 
@@ -111,7 +129,9 @@ Defined in: [async-queuer.ts:14](https://github.com/TanStack/pacer/blob/main/pac
 lastResult: any;
 ```
 
-Defined in: [async-queuer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L16)
+Defined in: [async-queuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L46)
+
+The result from the most recent task execution
 
 ***
 
@@ -121,7 +141,9 @@ Defined in: [async-queuer.ts:16](https://github.com/TanStack/pacer/blob/main/pac
 pendingTick: boolean;
 ```
 
-Defined in: [async-queuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L17)
+Defined in: [async-queuer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L50)
+
+Whether the queuer has a pending timeout for processing the next item
 
 ***
 
@@ -131,7 +153,9 @@ Defined in: [async-queuer.ts:17](https://github.com/TanStack/pacer/blob/main/pac
 rejectionCount: number;
 ```
 
-Defined in: [async-queuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L18)
+Defined in: [async-queuer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L54)
+
+Number of items that have been rejected from being added to the queue
 
 ***
 
@@ -141,7 +165,9 @@ Defined in: [async-queuer.ts:18](https://github.com/TanStack/pacer/blob/main/pac
 settledCount: number;
 ```
 
-Defined in: [async-queuer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L19)
+Defined in: [async-queuer.ts:58](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L58)
+
+Number of task executions that have completed (either successfully or with errors)
 
 ***
 
@@ -151,7 +177,9 @@ Defined in: [async-queuer.ts:19](https://github.com/TanStack/pacer/blob/main/pac
 size: number;
 ```
 
-Defined in: [async-queuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L20)
+Defined in: [async-queuer.ts:62](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L62)
+
+Number of items currently in the queue
 
 ***
 
@@ -161,7 +189,9 @@ Defined in: [async-queuer.ts:20](https://github.com/TanStack/pacer/blob/main/pac
 status: "idle" | "running" | "stopped";
 ```
 
-Defined in: [async-queuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L21)
+Defined in: [async-queuer.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L66)
+
+Current processing status - 'idle' when not processing, 'running' when active, 'stopped' when paused
 
 ***
 
@@ -171,4 +201,6 @@ Defined in: [async-queuer.ts:21](https://github.com/TanStack/pacer/blob/main/pac
 successCount: number;
 ```
 
-Defined in: [async-queuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L22)
+Defined in: [async-queuer.ts:70](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L70)
+
+Number of task executions that have completed successfully

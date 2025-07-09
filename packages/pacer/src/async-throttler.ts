@@ -3,15 +3,45 @@ import { parseFunctionOrValue } from './utils'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
+  /**
+   * Number of function executions that have resulted in errors
+   */
   errorCount: number
+  /**
+   * Whether the throttled function is currently executing asynchronously
+   */
   isExecuting: boolean
+  /**
+   * Whether the throttler is waiting for the timeout to trigger execution
+   */
   isPending: boolean
+  /**
+   * The arguments from the most recent call to maybeExecute
+   */
   lastArgs: Parameters<TFn> | undefined
+  /**
+   * Timestamp of the last function execution in milliseconds
+   */
   lastExecutionTime: number
+  /**
+   * The result from the most recent successful function execution
+   */
   lastResult: ReturnType<TFn> | undefined
+  /**
+   * Timestamp when the next execution can occur in milliseconds
+   */
   nextExecutionTime: number
+  /**
+   * Number of function executions that have completed (either successfully or with errors)
+   */
   settleCount: number
+  /**
+   * Current execution status - 'idle' when not active, 'pending' when waiting, 'executing' when running, 'settled' when completed
+   */
   status: 'idle' | 'pending' | 'executing' | 'settled'
+  /**
+   * Number of function executions that have completed successfully
+   */
   successCount: number
 }
 
@@ -148,7 +178,7 @@ const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {
  * ```
  */
 export class AsyncThrottler<TFn extends AnyAsyncFunction> {
-  readonly store: Store<AsyncThrottlerState<TFn>> = new Store<
+  readonly store: Store<Readonly<AsyncThrottlerState<TFn>>> = new Store<
     AsyncThrottlerState<TFn>
   >(getDefaultAsyncThrottlerState<TFn>())
   options: AsyncThrottlerOptions<TFn>

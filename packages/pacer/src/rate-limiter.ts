@@ -3,8 +3,17 @@ import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
 export interface RateLimiterState {
+  /**
+   * Number of function executions that have been completed
+   */
   executionCount: number
+  /**
+   * Array of timestamps when executions occurred for rate limiting calculations
+   */
   executionTimes: Array<number>
+  /**
+   * Number of function executions that have been rejected due to rate limiting
+   */
   rejectionCount: number
 }
 
@@ -111,9 +120,8 @@ const defaultOptions: Omit<
  * ```
  */
 export class RateLimiter<TFn extends AnyFunction> {
-  readonly store: Store<RateLimiterState> = new Store<RateLimiterState>(
-    getDefaultRateLimiterState(),
-  )
+  readonly store: Store<Readonly<RateLimiterState>> =
+    new Store<RateLimiterState>(getDefaultRateLimiterState())
   options: RateLimiterOptions<TFn>
 
   constructor(
@@ -190,7 +198,10 @@ export class RateLimiter<TFn extends AnyFunction> {
       return true
     }
 
-    this.#rejectFunction()
+    this.#setState({
+      rejectionCount: this.store.state.rejectionCount + 1,
+    })
+    this.options.onReject?.(this)
     return false
   }
 
@@ -203,13 +214,6 @@ export class RateLimiter<TFn extends AnyFunction> {
       executionCount: this.store.state.executionCount + 1,
     })
     this.options.onExecute?.(this)
-  }
-
-  #rejectFunction = (): void => {
-    this.#setState({
-      rejectionCount: this.store.state.rejectionCount + 1,
-    })
-    this.options.onReject?.(this)
   }
 
   #getRelevantExecutionTimes = (): Array<number> => {

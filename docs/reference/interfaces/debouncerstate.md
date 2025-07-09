@@ -21,7 +21,9 @@ Defined in: [debouncer.ts:5](https://github.com/TanStack/pacer/blob/main/package
 canLeadingExecute: boolean;
 ```
 
-Defined in: [debouncer.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L6)
+Defined in: [debouncer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L9)
+
+Whether the debouncer can execute on the leading edge of the timeout
 
 ***
 
@@ -31,7 +33,9 @@ Defined in: [debouncer.ts:6](https://github.com/TanStack/pacer/blob/main/package
 executionCount: number;
 ```
 
-Defined in: [debouncer.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L7)
+Defined in: [debouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L13)
+
+Number of function executions that have been completed
 
 ***
 
@@ -41,7 +45,9 @@ Defined in: [debouncer.ts:7](https://github.com/TanStack/pacer/blob/main/package
 isPending: boolean;
 ```
 
-Defined in: [debouncer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L8)
+Defined in: [debouncer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L17)
+
+Whether the debouncer is waiting for the timeout to trigger execution
 
 ***
 
@@ -51,7 +57,9 @@ Defined in: [debouncer.ts:8](https://github.com/TanStack/pacer/blob/main/package
 lastArgs: undefined | Parameters<TFn>;
 ```
 
-Defined in: [debouncer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L9)
+Defined in: [debouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L21)
+
+The arguments from the most recent call to maybeExecute
 
 ***
 
@@ -61,4 +69,6 @@ Defined in: [debouncer.ts:9](https://github.com/TanStack/pacer/blob/main/package
 status: "idle" | "pending";
 ```
 
-Defined in: [debouncer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L10)
+Defined in: [debouncer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L25)
+
+Current execution status - 'idle' when not active, 'pending' when waiting for timeout

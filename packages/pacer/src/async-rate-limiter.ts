@@ -3,12 +3,33 @@ import { parseFunctionOrValue } from './utils'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
+  /**
+   * Number of function executions that have resulted in errors
+   */
   errorCount: number
+  /**
+   * Array of timestamps when executions occurred for rate limiting calculations
+   */
   executionTimes: Array<number>
+  /**
+   * Whether the rate-limited function is currently executing asynchronously
+   */
   isExecuting: boolean
+  /**
+   * The result from the most recent successful function execution
+   */
   lastResult: ReturnType<TFn> | undefined
+  /**
+   * Number of function executions that have been rejected due to rate limiting
+   */
   rejectionCount: number
+  /**
+   * Number of function executions that have completed (either successfully or with errors)
+   */
   settleCount: number
+  /**
+   * Number of function executions that have completed successfully
+   */
   successCount: number
 }
 
@@ -164,7 +185,7 @@ const defaultOptions: Omit<
  * ```
  */
 export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
-  readonly store: Store<AsyncRateLimiterState<TFn>> = new Store<
+  readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>> = new Store<
     AsyncRateLimiterState<TFn>
   >(getDefaultAsyncRateLimiterState<TFn>())
   options: AsyncRateLimiterOptions<TFn>

@@ -2,17 +2,53 @@ import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
 
 export interface QueuerState<TValue> {
+  /**
+   * Number of items that have been processed by the queuer
+   */
   executionCount: number
+  /**
+   * Number of items that have been removed from the queue due to expiration
+   */
   expirationCount: number
+  /**
+   * Whether the queuer has no items to process (items array is empty)
+   */
   isEmpty: boolean
+  /**
+   * Whether the queuer has reached its maximum capacity
+   */
   isFull: boolean
+  /**
+   * Whether the queuer is not currently processing any items
+   */
   isIdle: boolean
+  /**
+   * Whether the queuer is active and will process items automatically
+   */
   isRunning: boolean
+  /**
+   * Timestamps when items were added to the queue for expiration tracking
+   */
   itemTimestamps: Array<number>
+  /**
+   * Array of items currently waiting to be processed
+   */
   items: Array<TValue>
+  /**
+   * Whether the queuer has a pending timeout for processing the next item
+   */
   pendingTick: boolean
+  /**
+   * Number of items that have been rejected from being added to the queue
+   */
   rejectionCount: number
+  /**
+   * Number of items currently in the queue
+   */
   size: number
+  /**
+   * Current processing status - 'idle' when not processing, 'running' when active, 'stopped' when paused
+   */
   status: 'idle' | 'running' | 'stopped'
 }
 
@@ -205,7 +241,7 @@ export type QueuePosition = 'front' | 'back'
  * ```
  */
 export class Queuer<TValue> {
-  readonly store: Store<QueuerState<TValue>> = new Store(
+  readonly store: Store<Readonly<QueuerState<TValue>>> = new Store(
     getDefaultQueuerState<TValue>(),
   )
   options: QueuerOptions<TValue>
@@ -466,6 +502,7 @@ export class Queuer<TValue> {
     numberOfItems: number = this.store.state.items.length,
     position?: QueuePosition,
   ): void => {
+    this.#clearTimeout() // clear any pending timeout
     for (let i = 0; i < numberOfItems; i++) {
       this.execute(position)
     }
@@ -566,11 +603,15 @@ export class Queuer<TValue> {
    * Stops processing items in the queue. Does not clear the queue.
    */
   stop = () => {
+    this.#clearTimeout()
+    this.#setState({ isRunning: false, pendingTick: false })
+  }
+
+  #clearTimeout = (): void => {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
       this.#timeoutId = null
     }
-    this.#setState({ isRunning: false, pendingTick: false })
   }
 
   /**

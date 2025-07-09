@@ -7,7 +7,7 @@ title: AsyncRateLimiter
 
 # Class: AsyncRateLimiter\<TFn\>
 
-Defined in: [async-rate-limiter.ts:166](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L166)
+Defined in: [async-rate-limiter.ts:187](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L187)
 
 A class that creates an async rate-limited function.
 
@@ -87,7 +87,7 @@ const data = await rateLimiter.maybeExecute('123');
 new AsyncRateLimiter<TFn>(fn, initialOptions): AsyncRateLimiter<TFn>
 ```
 
-Defined in: [async-rate-limiter.ts:172](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L172)
+Defined in: [async-rate-limiter.ts:193](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L193)
 
 #### Parameters
 
@@ -111,17 +111,17 @@ Defined in: [async-rate-limiter.ts:172](https://github.com/TanStack/pacer/blob/m
 options: AsyncRateLimiterOptions<TFn>;
 ```
 
-Defined in: [async-rate-limiter.ts:170](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L170)
+Defined in: [async-rate-limiter.ts:191](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L191)
 
 ***
 
 ### store
 
 ```ts
-readonly store: Store<AsyncRateLimiterState<TFn>>;
+readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>;
 ```
 
-Defined in: [async-rate-limiter.ts:167](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L167)
+Defined in: [async-rate-limiter.ts:188](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L188)
 
 ## Methods
 
@@ -131,7 +131,7 @@ Defined in: [async-rate-limiter.ts:167](https://github.com/TanStack/pacer/blob/m
 getMsUntilNextWindow(): number
 ```
 
-Defined in: [async-rate-limiter.ts:345](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L345)
+Defined in: [async-rate-limiter.ts:366](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L366)
 
 Returns the number of milliseconds until the next execution will be possible
 For fixed windows, this is the time until the current window resets
@@ -149,7 +149,7 @@ For sliding windows, this is the time until the oldest execution expires
 getRemainingInWindow(): number
 ```
 
-Defined in: [async-rate-limiter.ts:335](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L335)
+Defined in: [async-rate-limiter.ts:356](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L356)
 
 Returns the number of remaining executions allowed in the current window
 
@@ -165,7 +165,7 @@ Returns the number of remaining executions allowed in the current window
 maybeExecute(...args): Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-rate-limiter.ts:247](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L247)
+Defined in: [async-rate-limiter.ts:268](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L268)
 
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
@@ -213,7 +213,7 @@ const result2 = await rateLimiter.maybeExecute('arg1', 'arg2'); // undefined
 reset(): void
 ```
 
-Defined in: [async-rate-limiter.ts:356](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L356)
+Defined in: [async-rate-limiter.ts:377](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L377)
 
 Resets the rate limiter state
 
@@ -229,7 +229,7 @@ Resets the rate limiter state
 setOptions(newOptions): void
 ```
 
-Defined in: [async-rate-limiter.ts:187](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L187)
+Defined in: [async-rate-limiter.ts:208](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L208)
 
 Updates the async rate limiter options
 

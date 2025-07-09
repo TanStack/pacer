@@ -4,21 +4,69 @@ import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
 export interface AsyncQueuerState<TValue> {
+  /**
+   * Items currently being processed by the queuer
+   */
   activeItems: Array<TValue>
+  /**
+   * Number of task executions that have resulted in errors
+   */
   errorCount: number
+  /**
+   * Number of items that have been removed from the queue due to expiration
+   */
   expirationCount: number
+  /**
+   * Whether the queuer has no items to process (items array is empty)
+   */
   isEmpty: boolean
+  /**
+   * Whether the queuer has reached its maximum capacity
+   */
   isFull: boolean
+  /**
+   * Whether the queuer is not currently processing any items
+   */
   isIdle: boolean
+  /**
+   * Whether the queuer is active and will process items automatically
+   */
   isRunning: boolean
+  /**
+   * Timestamps when items were added to the queue for expiration tracking
+   */
   itemTimestamps: Array<number>
+  /**
+   * Array of items currently waiting to be processed
+   */
   items: Array<TValue>
+  /**
+   * The result from the most recent task execution
+   */
   lastResult: any
+  /**
+   * Whether the queuer has a pending timeout for processing the next item
+   */
   pendingTick: boolean
+  /**
+   * Number of items that have been rejected from being added to the queue
+   */
   rejectionCount: number
+  /**
+   * Number of task executions that have completed (either successfully or with errors)
+   */
   settledCount: number
+  /**
+   * Number of items currently in the queue
+   */
   size: number
+  /**
+   * Current processing status - 'idle' when not processing, 'running' when active, 'stopped' when paused
+   */
   status: 'idle' | 'running' | 'stopped'
+  /**
+   * Number of task executions that have completed successfully
+   */
   successCount: number
 }
 
@@ -209,7 +257,7 @@ const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
  * ```
  */
 export class AsyncQueuer<TValue> {
-  readonly store: Store<AsyncQueuerState<TValue>> = new Store<
+  readonly store: Store<Readonly<AsyncQueuerState<TValue>>> = new Store<
     AsyncQueuerState<TValue>
   >(getDefaultAsyncQueuerState<TValue>())
   options: AsyncQueuerOptions<TValue>
@@ -508,6 +556,7 @@ export class AsyncQueuer<TValue> {
     numberOfItems: number = this.store.state.items.length,
     position?: QueuePosition,
   ): void => {
+    this.#clearTimeouts() // clear any pending timeouts
     for (let i = 0; i < numberOfItems; i++) {
       this.execute(position)
     }
@@ -622,9 +671,13 @@ export class AsyncQueuer<TValue> {
    * Stops processing items in the queue. Does not clear the queue.
    */
   stop = (): void => {
+    this.#clearTimeouts()
+    this.#setState({ isRunning: false, pendingTick: false })
+  }
+
+  #clearTimeouts = (): void => {
     this.#timeoutIds.forEach((timeoutId) => clearTimeout(timeoutId))
     this.#timeoutIds.clear()
-    this.#setState({ isRunning: false, pendingTick: false })
   }
 
   /**

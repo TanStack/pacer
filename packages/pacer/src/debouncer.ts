@@ -3,10 +3,25 @@ import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
 export interface DebouncerState<TFn extends AnyFunction> {
+  /**
+   * Whether the debouncer can execute on the leading edge of the timeout
+   */
   canLeadingExecute: boolean
+  /**
+   * Number of function executions that have been completed
+   */
   executionCount: number
+  /**
+   * Whether the debouncer is waiting for the timeout to trigger execution
+   */
   isPending: boolean
+  /**
+   * The arguments from the most recent call to maybeExecute
+   */
   lastArgs: Parameters<TFn> | undefined
+  /**
+   * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
+   */
   status: 'idle' | 'pending'
 }
 
@@ -101,7 +116,7 @@ const defaultOptions: Omit<
  * ```
  */
 export class Debouncer<TFn extends AnyFunction> {
-  readonly store: Store<DebouncerState<TFn>> = new Store(
+  readonly store: Store<Readonly<DebouncerState<TFn>>> = new Store(
     getDefaultDebouncerState<TFn>(),
   )
   options: DebouncerOptions<TFn>
@@ -206,7 +221,15 @@ export class Debouncer<TFn extends AnyFunction> {
    */
   flush = (): void => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
-      this.#execute(...this.store.state.lastArgs)
+      this.#clearTimeout() // clear any pending timeout
+      this.#execute(...this.store.state.lastArgs) // execute immediately
+    }
+  }
+
+  #clearTimeout = (): void => {
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = undefined
     }
   }
 
@@ -214,13 +237,11 @@ export class Debouncer<TFn extends AnyFunction> {
    * Cancels any pending execution
    */
   cancel = (): void => {
-    if (this.#timeoutId) {
-      clearTimeout(this.#timeoutId)
-      this.#setState({
-        canLeadingExecute: true,
-        isPending: false,
-      })
-    }
+    this.#clearTimeout()
+    this.#setState({
+      canLeadingExecute: true,
+      isPending: false,
+    })
   }
 
   /**

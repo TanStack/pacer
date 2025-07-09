@@ -17,7 +17,9 @@ Defined in: [rate-limiter.ts:5](https://github.com/TanStack/pacer/blob/main/pack
 executionCount: number;
 ```
 
-Defined in: [rate-limiter.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L6)
+Defined in: [rate-limiter.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L9)
+
+Number of function executions that have been completed
 
 ***
 
@@ -27,7 +29,9 @@ Defined in: [rate-limiter.ts:6](https://github.com/TanStack/pacer/blob/main/pack
 executionTimes: number[];
 ```
 
-Defined in: [rate-limiter.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L7)
+Defined in: [rate-limiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L13)
+
+Array of timestamps when executions occurred for rate limiting calculations
 
 ***
 
@@ -37,4 +41,6 @@ Defined in: [rate-limiter.ts:7](https://github.com/TanStack/pacer/blob/main/pack
 rejectionCount: number;
 ```
 
-Defined in: [rate-limiter.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L8)
+Defined in: [rate-limiter.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L17)
+
+Number of function executions that have been rejected due to rate limiting
