@@ -24,7 +24,7 @@ Defined in: [queuer/createQueuer.ts:6](https://github.com/TanStack/pacer/blob/ma
 ### state
 
 ```ts
-readonly state: Accessor<TSelected>;
+readonly state: Accessor<Readonly<TSelected>>;
 ```
 
 Defined in: [queuer/createQueuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L13)

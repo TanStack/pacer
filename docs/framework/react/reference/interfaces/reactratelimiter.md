@@ -24,7 +24,7 @@ Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:10](https://github.c
 ### state
 
 ```ts
-readonly state: TSelected;
+readonly state: Readonly<TSelected>;
 ```
 
 Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L19)

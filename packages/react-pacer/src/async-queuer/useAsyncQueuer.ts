@@ -13,7 +13,7 @@ export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
    *
    * Use this instead of `queuer.store.state`
    */
-  readonly state: TSelected
+  readonly state: Readonly<TSelected>
 }
 
 /**

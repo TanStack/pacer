@@ -11,7 +11,7 @@ title: queue
 function queue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean
 ```
 
-Defined in: [queuer.ts:618](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L618)
+Defined in: [queuer.ts:629](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L629)
 
 Creates a queue that processes items immediately upon addition.
 Items are processed sequentially in FIFO order by default.
@@ -21,9 +21,15 @@ This is a simplified wrapper around the Queuer class that only exposes the
 For more control over queue processing, use the Queuer class directly.
 
 State Management:
+- Uses TanStack Store for reactive state management
 - Use `initialState` to provide initial state values when creating the queuer
-- Use `onStateChange` callback to react to state changes and implement custom persistence
+- Use `onExecute` callback to react to item execution and implement custom logic
+- Use `onItemsChange` callback to react to items being added or removed from the queue
+- Use `onExpire` callback to react to items expiring and implement custom logic
+- Use `onReject` callback to react to items being rejected when the queue is full
 - The state includes execution count, expiration count, rejection count, and isRunning status
+- State can be accessed via the underlying Queuer instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 Example usage:
 ```ts

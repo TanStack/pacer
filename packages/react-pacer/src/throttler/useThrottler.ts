@@ -16,7 +16,7 @@ export interface ReactThrottler<
    *
    * Use this instead of `throttler.store.state`
    */
-  readonly state: TSelected
+  readonly state: Readonly<TSelected>
 }
 
 /**

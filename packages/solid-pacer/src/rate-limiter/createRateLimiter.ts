@@ -16,7 +16,7 @@ export interface SolidRateLimiter<
    *
    * Use this instead of `rateLimiter.store.state`
    */
-  readonly state: Accessor<TSelected>
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**

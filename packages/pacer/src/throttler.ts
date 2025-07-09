@@ -84,10 +84,12 @@ const defaultOptions: Omit<
  * For collapsing rapid-fire events where you only care about the last call, consider using Debouncer.
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the throttler
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
- * - The state includes execution count and last execution time
- * - State can be retrieved using `getState()` method
+ * - Use `onExecute` callback to react to function execution and implement custom logic
+ * - The state includes execution count, last execution time, pending status, and more
+ * - State can be accessed via `throttler.store.state` when using the class directly
+ * - When using framework adapters (React/Solid), state is accessed from `throttler.state`
  *
  * @example
  * ```ts
@@ -107,25 +109,25 @@ export class Throttler<TFn extends AnyFunction> {
   readonly store: Store<ThrottlerState<TFn>> = new Store(
     getDefaultThrottlerState(),
   )
-  #options: ThrottlerOptions<TFn>
+  options: ThrottlerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
     initialOptions: ThrottlerOptions<TFn>,
   ) {
-    this.#options = {
+    this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
-    this.#setState(this.#options.initialState ?? {})
+    this.#setState(this.options.initialState ?? {})
   }
 
   /**
    * Updates the throttler options
    */
   setOptions = (newOptions: Partial<ThrottlerOptions<TFn>>): void => {
-    this.#options = { ...this.#options, ...newOptions }
+    this.options = { ...this.options, ...newOptions }
 
     // Cancel pending execution if the throttler is disabled
     if (!this.#getEnabled()) {
@@ -148,11 +150,11 @@ export class Throttler<TFn extends AnyFunction> {
   }
 
   #getEnabled = (): boolean => {
-    return !!parseFunctionOrValue(this.#options.enabled, this)
+    return !!parseFunctionOrValue(this.options.enabled, this)
   }
 
   #getWait = (): number => {
-    return parseFunctionOrValue(this.#options.wait, this)
+    return parseFunctionOrValue(this.options.wait, this)
   }
 
   /**
@@ -183,7 +185,7 @@ export class Throttler<TFn extends AnyFunction> {
     const wait = this.#getWait()
 
     // Handle leading execution
-    if (this.#options.leading && timeSinceLastExecution >= wait) {
+    if (this.options.leading && timeSinceLastExecution >= wait) {
       this.#execute(...args)
     } else {
       // Store the most recent arguments for potential trailing execution
@@ -191,7 +193,7 @@ export class Throttler<TFn extends AnyFunction> {
         lastArgs: args,
       })
       // Set up trailing execution if not already scheduled
-      if (!this.#timeoutId && this.#options.trailing) {
+      if (!this.#timeoutId && this.options.trailing) {
         // prevent large number if lastExecutionTime is undefined
         const _timeSinceLastExecution = this.store.state.lastExecutionTime
           ? now - this.store.state.lastExecutionTime
@@ -221,7 +223,7 @@ export class Throttler<TFn extends AnyFunction> {
       isPending: false,
       lastArgs: undefined,
     })
-    this.#options.onExecute?.(this)
+    this.options.onExecute?.(this)
   }
 
   /**
@@ -275,9 +277,12 @@ export class Throttler<TFn extends AnyFunction> {
  * limits, consider using rateLimit().
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the throttler
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
- * - The state includes execution count and last execution time
+ * - Use `onExecute` callback to react to function execution and implement custom logic
+ * - The state includes execution count, last execution time, pending status, and more
+ * - State can be accessed via the underlying Throttler instance's `store.state` property
+ * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
  * @example
  * ```ts

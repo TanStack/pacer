@@ -11,7 +11,7 @@ title: batch
 function batch<TValue>(fn, options): (item) => void
 ```
 
-Defined in: [batcher.ts:280](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L280)
+Defined in: [batcher.ts:286](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L286)
 
 Creates a batcher that processes items in batches
 
@@ -49,10 +49,13 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 ## Example
 
 ```ts
-const batchItems = batch<number>({
-  batchSize: 3,
-  processBatch: (items) => console.log('Processing:', items)
-});
+const batchItems = batch<number>(
+  (items) => console.log('Processing:', items),
+  {
+    maxSize: 3,
+    onExecute: (batcher) => console.log('Batch executed')
+  }
+);
 
 batchItems(1);
 batchItems(2);

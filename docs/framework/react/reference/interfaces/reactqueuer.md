@@ -24,7 +24,7 @@ Defined in: [react-pacer/src/queuer/useQueuer.ts:6](https://github.com/TanStack/
 ### state
 
 ```ts
-readonly state: TSelected;
+readonly state: Readonly<TSelected>;
 ```
 
 Defined in: [react-pacer/src/queuer/useQueuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L13)

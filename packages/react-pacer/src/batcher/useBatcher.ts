@@ -10,7 +10,7 @@ export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
    *
    * Use this instead of `batcher.store.state`
    */
-  readonly state: TSelected
+  readonly state: Readonly<TSelected>
 }
 
 /**

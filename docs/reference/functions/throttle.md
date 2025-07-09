@@ -11,7 +11,7 @@ title: throttle
 function throttle<TFn>(fn, initialOptions): (...args) => void
 ```
 
-Defined in: [throttler.ts:295](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L295)
+Defined in: [throttler.ts:300](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L300)
 
 Creates a throttled function that limits how often the provided function can execute.
 
@@ -26,9 +26,12 @@ For handling bursts of events, consider using debounce() instead. For hard execu
 limits, consider using rateLimit().
 
 State Management:
+- Uses TanStack Store for reactive state management
 - Use `initialState` to provide initial state values when creating the throttler
-- Use `onStateChange` callback to react to state changes and implement custom persistence
-- The state includes execution count and last execution time
+- Use `onExecute` callback to react to function execution and implement custom logic
+- The state includes execution count, last execution time, pending status, and more
+- State can be accessed via the underlying Throttler instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 ## Type Parameters
 

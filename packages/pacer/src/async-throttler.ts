@@ -121,10 +121,14 @@ const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {
  * - The error state can be checked using the underlying AsyncThrottler instance
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the async throttler
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - Use `onSuccess` callback to react to successful function execution and implement custom logic
+ * - Use `onError` callback to react to function execution errors and implement custom error handling
+ * - Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
  * - The state includes error count, execution status, last execution time, and success/settle counts
- * - State can be retrieved using `getState()` method
+ * - State can be accessed via `asyncThrottler.store.state` when using the class directly
+ * - When using framework adapters (React/Solid), state is accessed from `asyncThrottler.state`
  *
  * @example
  * ```ts
@@ -147,7 +151,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   readonly store: Store<AsyncThrottlerState<TFn>> = new Store<
     AsyncThrottlerState<TFn>
   >(getDefaultAsyncThrottlerState<TFn>())
-  #options: AsyncThrottlerOptions<TFn>
+  options: AsyncThrottlerOptions<TFn>
   #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
@@ -158,19 +162,19 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     private fn: TFn,
     initialOptions: AsyncThrottlerOptions<TFn>,
   ) {
-    this.#options = {
+    this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.#setState(this.#options.initialState ?? {})
+    this.#setState(this.options.initialState ?? {})
   }
 
   /**
    * Updates the async throttler options
    */
   setOptions = (newOptions: Partial<AsyncThrottlerOptions<TFn>>): void => {
-    this.#options = { ...this.#options, ...newOptions }
+    this.options = { ...this.options, ...newOptions }
 
     // End the pending state if the throttler is disabled
     if (!this.#getEnabled()) {
@@ -202,14 +206,14 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    * Returns the current enabled state of the async throttler
    */
   #getEnabled = (): boolean => {
-    return !!parseFunctionOrValue(this.#options.enabled, this)
+    return !!parseFunctionOrValue(this.options.enabled, this)
   }
 
   /**
    * Returns the current wait time in milliseconds
    */
   #getWait = (): number => {
-    return parseFunctionOrValue(this.#options.wait, this)
+    return parseFunctionOrValue(this.options.wait, this)
   }
 
   /**
@@ -245,7 +249,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     this.#resolvePreviousPromiseInternal()
 
     // Handle leading execution
-    if (this.#options.leading && timeSinceLastExecution >= wait) {
+    if (this.options.leading && timeSinceLastExecution >= wait) {
       await this.#execute(...args)
       return this.store.state.lastResult
     } else {
@@ -258,7 +262,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         this.#clearTimeout()
 
         // Set up trailing execution if enabled
-        if (this.#options.trailing) {
+        if (this.options.trailing) {
           const _timeSinceLastExecution = this.store.state.lastExecutionTime
             ? now - this.store.state.lastExecutionTime
             : 0
@@ -288,13 +292,13 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.#options.onSuccess?.(result, this)
+      this.options.onSuccess?.(result, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.#options.onError?.(error, this)
-      if (this.#options.throwOnError) {
+      this.options.onError?.(error, this)
+      if (this.options.throwOnError) {
         throw error
       } else {
         console.error(error)
@@ -310,7 +314,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         nextExecutionTime,
       })
       this.#abortController = null
-      this.#options.onSettled?.(this)
+      this.options.onSettled?.(this)
     }
     return this.store.state.lastResult
   }
@@ -393,9 +397,14 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
  * - The error state can be checked using the underlying AsyncThrottler instance
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the async throttler
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - Use `onSuccess` callback to react to successful function execution and implement custom logic
+ * - Use `onError` callback to react to function execution errors and implement custom error handling
+ * - Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
  * - The state includes error count, execution status, last execution time, and success/settle counts
+ * - State can be accessed via the underlying AsyncThrottler instance's `store.state` property
+ * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
  * @example
  * ```ts

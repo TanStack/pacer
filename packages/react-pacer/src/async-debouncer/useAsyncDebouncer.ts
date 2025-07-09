@@ -16,7 +16,7 @@ export interface ReactAsyncDebouncer<
    *
    * Use this instead of `debouncer.store.state`
    */
-  readonly state: TSelected
+  readonly state: Readonly<TSelected>
 }
 
 /**

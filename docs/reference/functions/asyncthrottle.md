@@ -11,7 +11,7 @@ title: asyncThrottle
 function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-throttler.ts:417](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L417)
+Defined in: [async-throttler.ts:426](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L426)
 
 Creates an async throttled function that limits how often the function can execute.
 The throttled function will execute at most once per wait period, even if called multiple times.
@@ -29,9 +29,14 @@ Error Handling:
 - The error state can be checked using the underlying AsyncThrottler instance
 
 State Management:
+- Uses TanStack Store for reactive state management
 - Use `initialState` to provide initial state values when creating the async throttler
-- Use `onStateChange` callback to react to state changes and implement custom persistence
+- Use `onSuccess` callback to react to successful function execution and implement custom logic
+- Use `onError` callback to react to function execution errors and implement custom error handling
+- Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
 - The state includes error count, execution status, last execution time, and success/settle counts
+- State can be accessed via the underlying AsyncThrottler instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 ## Type Parameters
 

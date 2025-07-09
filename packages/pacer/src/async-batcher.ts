@@ -149,10 +149,16 @@ const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
  * - The error state can be checked using the AsyncBatcher instance
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the async batcher
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - Use `onSuccess` callback to react to successful batch execution and implement custom logic
+ * - Use `onError` callback to react to batch execution errors and implement custom error handling
+ * - Use `onSettled` callback to react to batch execution completion (success or error) and implement custom logic
+ * - Use `onExecute` callback to react to batch execution and implement custom logic
+ * - Use `onItemsChange` callback to react to items being added or removed from the batcher
  * - The state includes total items processed, success/error counts, and execution status
- * - State can be retrieved using `getState()` method
+ * - State can be accessed via `asyncBatcher.store.state` when using the class directly
+ * - When using framework adapters (React/Solid), state is accessed from `asyncBatcher.state`
  *
  * @example
  * ```ts
@@ -181,26 +187,26 @@ export class AsyncBatcher<TValue> {
   readonly store: Store<AsyncBatcherState<TValue>> = new Store(
     getDefaultAsyncBatcherState<TValue>(),
   )
-  #options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
+  options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
     private fn: (items: Array<TValue>) => Promise<any>,
     initialOptions: AsyncBatcherOptions<TValue>,
   ) {
-    this.#options = {
+    this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.#setState(this.#options.initialState ?? {})
+    this.#setState(this.options.initialState ?? {})
   }
 
   /**
    * Updates the async batcher options
    */
   setOptions = (newOptions: Partial<AsyncBatcherOptions<TValue>>): void => {
-    this.#options = { ...this.#options, ...newOptions }
+    this.options = { ...this.options, ...newOptions }
   }
 
   #setState = (newState: Partial<AsyncBatcherState<TValue>>): void => {
@@ -228,22 +234,22 @@ export class AsyncBatcher<TValue> {
   addItem = (item: TValue): void => {
     this.#setState({
       items: [...this.store.state.items, item],
-      isPending: this.#options.wait !== Infinity,
+      isPending: this.options.wait !== Infinity,
     })
-    this.#options.onItemsChange?.(this)
+    this.options.onItemsChange?.(this)
 
     const shouldProcess =
-      this.store.state.items.length >= this.#options.maxSize ||
-      this.#options.getShouldExecute(this.store.state.items, this)
+      this.store.state.items.length >= this.options.maxSize ||
+      this.options.getShouldExecute(this.store.state.items, this)
 
     if (shouldProcess) {
       this.#execute()
     } else if (
       this.store.state.isRunning &&
       !this.#timeoutId &&
-      this.#options.wait !== Infinity
+      this.options.wait !== Infinity
     ) {
-      this.#timeoutId = setTimeout(() => this.#execute(), this.#options.wait)
+      this.#timeoutId = setTimeout(() => this.#execute(), this.options.wait)
     }
   }
 
@@ -271,7 +277,7 @@ export class AsyncBatcher<TValue> {
 
     const batch = this.peekAllItems() // copy of the items to be processed (to prevent race conditions)
     this.clear() // Clear items before processing to prevent race conditions
-    this.#options.onItemsChange?.(this) // Call onItemsChange to notify listeners that the items have changed
+    this.options.onItemsChange?.(this) // Call onItemsChange to notify listeners that the items have changed
 
     this.#setState({ isExecuting: true })
 
@@ -283,7 +289,7 @@ export class AsyncBatcher<TValue> {
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.#options.onSuccess?.(result, this)
+      this.options.onSuccess?.(result, this)
       return result
     } catch (error) {
       this.#setState({
@@ -291,8 +297,8 @@ export class AsyncBatcher<TValue> {
         failedItems: [...this.store.state.failedItems, ...batch],
         totalItemsFailed: this.store.state.totalItemsFailed + batch.length,
       })
-      this.#options.onError?.(error, batch, this)
-      if (this.#options.throwOnError) {
+      this.options.onError?.(error, batch, this)
+      if (this.options.throwOnError) {
         throw error
       }
       return undefined
@@ -301,8 +307,8 @@ export class AsyncBatcher<TValue> {
         isExecuting: false,
         settleCount: this.store.state.settleCount + 1,
       })
-      this.#options.onSettled?.(this)
-      this.#options.onExecute?.(this)
+      this.options.onSettled?.(this)
+      this.options.onExecute?.(this)
     }
   }
 
@@ -330,7 +336,7 @@ export class AsyncBatcher<TValue> {
   start = (): void => {
     this.#setState({ isRunning: true })
     if (this.store.state.items.length > 0 && !this.#timeoutId) {
-      this.#timeoutId = setTimeout(() => this.#execute(), this.#options.wait)
+      this.#timeoutId = setTimeout(() => this.#execute(), this.options.wait)
     }
   }
 
@@ -377,9 +383,16 @@ export class AsyncBatcher<TValue> {
  * - The error state can be checked using the underlying AsyncBatcher instance
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the async batcher
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - Use `onSuccess` callback to react to successful batch execution and implement custom logic
+ * - Use `onError` callback to react to batch execution errors and implement custom error handling
+ * - Use `onSettled` callback to react to batch execution completion (success or error) and implement custom logic
+ * - Use `onExecute` callback to react to batch execution and implement custom logic
+ * - Use `onItemsChange` callback to react to items being added or removed from the batcher
  * - The state includes total items processed, success/error counts, and execution status
+ * - State can be accessed via the underlying AsyncBatcher instance's `store.state` property
+ * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
  * @example
  * ```ts

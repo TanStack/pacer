@@ -10,7 +10,7 @@ export interface SolidQueuer<TValue, TSelected = QueuerState<TValue>>
    *
    * Use this instead of `queuer.store.state`
    */
-  readonly state: Accessor<TSelected>
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**

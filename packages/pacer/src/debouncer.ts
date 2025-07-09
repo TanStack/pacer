@@ -81,10 +81,12 @@ const defaultOptions: Omit<
  * will reset the timer.
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the debouncer
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - Use `onExecute` callback to react to function execution and implement custom logic
  * - The state includes canLeadingExecute, execution count, and isPending status
- * - State can be retrieved using `getState()` method
+ * - State can be accessed via `debouncer.store.state` when using the class directly
+ * - When using framework adapters (React/Solid), state is accessed from `debouncer.state`
  *
  * @example
  * ```ts
@@ -102,25 +104,25 @@ export class Debouncer<TFn extends AnyFunction> {
   readonly store: Store<DebouncerState<TFn>> = new Store(
     getDefaultDebouncerState<TFn>(),
   )
-  #options: DebouncerOptions<TFn>
+  options: DebouncerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
     initialOptions: DebouncerOptions<TFn>,
   ) {
-    this.#options = {
+    this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
-    this.#setState(this.#options.initialState ?? {})
+    this.#setState(this.options.initialState ?? {})
   }
 
   /**
    * Updates the debouncer options
    */
   setOptions = (newOptions: Partial<DebouncerOptions<TFn>>): void => {
-    this.#options = { ...this.#options, ...newOptions }
+    this.options = { ...this.options, ...newOptions }
 
     // Cancel pending execution if the debouncer is disabled
     if (!this.#getEnabled()) {
@@ -146,14 +148,14 @@ export class Debouncer<TFn extends AnyFunction> {
    * Returns the current enabled state of the debouncer
    */
   #getEnabled = (): boolean => {
-    return !!parseFunctionOrValue(this.#options.enabled, this)
+    return !!parseFunctionOrValue(this.options.enabled, this)
   }
 
   /**
    * Returns the current wait time in milliseconds
    */
   #getWait = (): number => {
-    return parseFunctionOrValue(this.#options.wait, this)
+    return parseFunctionOrValue(this.options.wait, this)
   }
 
   /**
@@ -165,14 +167,14 @@ export class Debouncer<TFn extends AnyFunction> {
     let _didLeadingExecute = false
 
     // Handle leading execution
-    if (this.#options.leading && this.store.state.canLeadingExecute) {
+    if (this.options.leading && this.store.state.canLeadingExecute) {
       this.#setState({ canLeadingExecute: false })
       _didLeadingExecute = true
       this.#execute(...args)
     }
 
     // Start pending state to indicate that the debouncer is waiting for the trailing edge
-    if (this.#options.trailing) {
+    if (this.options.trailing) {
       this.#setState({ isPending: true })
     }
 
@@ -182,7 +184,7 @@ export class Debouncer<TFn extends AnyFunction> {
     // Set new timeout that will reset canLeadingExecute and execute trailing only if enabled and did not execute leading
     this.#timeoutId = setTimeout(() => {
       this.#setState({ canLeadingExecute: true })
-      if (this.#options.trailing && !_didLeadingExecute) {
+      if (this.options.trailing && !_didLeadingExecute) {
         this.#execute(...args)
       }
     }, this.#getWait())
@@ -196,7 +198,7 @@ export class Debouncer<TFn extends AnyFunction> {
       executionCount: this.store.state.executionCount + 1,
       lastArgs: args,
     })
-    this.#options.onExecute?.(this)
+    this.options.onExecute?.(this)
   }
 
   /**
@@ -240,9 +242,12 @@ export class Debouncer<TFn extends AnyFunction> {
  * before allowing another execution.
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the debouncer
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - Use `onExecute` callback to react to function execution and implement custom logic
  * - The state includes canLeadingExecute, execution count, and isPending status
+ * - State can be accessed via the underlying Debouncer instance's `store.state` property
+ * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
  * @example
  * ```ts

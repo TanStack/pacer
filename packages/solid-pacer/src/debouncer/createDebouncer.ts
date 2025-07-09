@@ -17,7 +17,7 @@ export interface SolidDebouncer<
    *
    * Use this instead of `debouncer.store.state`
    */
-  readonly state: Accessor<TSelected>
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**

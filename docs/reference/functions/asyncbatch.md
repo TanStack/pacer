@@ -11,7 +11,7 @@ title: asyncBatch
 function asyncBatch<TValue>(fn, options): (item) => void
 ```
 
-Defined in: [async-batcher.ts:405](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L405)
+Defined in: [async-batcher.ts:418](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L418)
 
 Creates an async batcher that processes items in batches
 
@@ -29,9 +29,16 @@ Error Handling:
 - The error state can be checked using the underlying AsyncBatcher instance
 
 State Management:
+- Uses TanStack Store for reactive state management
 - Use `initialState` to provide initial state values when creating the async batcher
-- Use `onStateChange` callback to react to state changes and implement custom persistence
+- Use `onSuccess` callback to react to successful batch execution and implement custom logic
+- Use `onError` callback to react to batch execution errors and implement custom error handling
+- Use `onSettled` callback to react to batch execution completion (success or error) and implement custom logic
+- Use `onExecute` callback to react to batch execution and implement custom logic
+- Use `onItemsChange` callback to react to items being added or removed from the batcher
 - The state includes total items processed, success/error counts, and execution status
+- State can be accessed via the underlying AsyncBatcher instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 ## Type Parameters
 

@@ -24,7 +24,7 @@ Defined in: [async-throttler/createAsyncThrottler.ts:10](https://github.com/TanS
 ### state
 
 ```ts
-readonly state: Accessor<TSelected>;
+readonly state: Accessor<Readonly<TSelected>>;
 ```
 
 Defined in: [async-throttler/createAsyncThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L19)

@@ -24,7 +24,7 @@ Defined in: [rate-limiter/createRateLimiter.ts:10](https://github.com/TanStack/p
 ### state
 
 ```ts
-readonly state: Accessor<TSelected>;
+readonly state: Accessor<Readonly<TSelected>>;
 ```
 
 Defined in: [rate-limiter/createRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L19)

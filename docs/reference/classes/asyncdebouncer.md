@@ -84,6 +84,16 @@ Defined in: [async-debouncer.ts:153](https://github.com/TanStack/pacer/blob/main
 
 ## Properties
 
+### options
+
+```ts
+options: AsyncDebouncerOptions<TFn>;
+```
+
+Defined in: [async-debouncer.ts:146](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L146)
+
+***
+
 ### store
 
 ```ts

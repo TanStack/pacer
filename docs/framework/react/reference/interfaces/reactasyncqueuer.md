@@ -24,7 +24,7 @@ Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:9](https://github.co
 ### state
 
 ```ts
-readonly state: TSelected;
+readonly state: Readonly<TSelected>;
 ```
 
 Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L16)

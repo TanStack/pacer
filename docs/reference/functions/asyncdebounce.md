@@ -11,7 +11,7 @@ title: asyncDebounce
 function asyncDebounce<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:387](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L387)
+Defined in: [async-debouncer.ts:392](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L392)
 
 Creates an async debounced function that delays execution until after a specified wait time.
 The debounced function will only execute once the wait period has elapsed without any new calls.
@@ -29,9 +29,14 @@ Error Handling:
 - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
 
 State Management:
+- Uses TanStack Store for reactive state management
 - Use `initialState` to provide initial state values when creating the async debouncer
-- Use `onStateChange` callback to react to state changes and implement custom persistence
+- Use `onSuccess` callback to react to successful function execution and implement custom logic
+- Use `onError` callback to react to function execution errors and implement custom error handling
+- Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
 - The state includes canLeadingExecute, error count, execution status, and success/settle counts
+- State can be accessed via `asyncDebouncer.store.state` when using the class directly
+- When using framework adapters (React/Solid), state is accessed from `asyncDebouncer.state`
 
 ## Type Parameters
 

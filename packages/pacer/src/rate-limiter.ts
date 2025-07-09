@@ -87,10 +87,13 @@ const defaultOptions: Omit<
  * smoothing out frequent events, throttling or debouncing usually provide better user experience.
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the rate limiter
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - Use `onExecute` callback to react to function execution and implement custom logic
+ * - Use `onReject` callback to react to executions being rejected when rate limit is exceeded
  * - The state includes execution count, execution times, and rejection count
- * - State can be retrieved using `getState()` method
+ * - State can be accessed via `rateLimiter.store.state` when using the class directly
+ * - When using framework adapters (React/Solid), state is accessed from `rateLimiter.state`
  *
  * @example
  * ```ts
@@ -111,24 +114,24 @@ export class RateLimiter<TFn extends AnyFunction> {
   readonly store: Store<RateLimiterState> = new Store<RateLimiterState>(
     getDefaultRateLimiterState(),
   )
-  #options: RateLimiterOptions<TFn>
+  options: RateLimiterOptions<TFn>
 
   constructor(
     private fn: TFn,
     initialOptions: RateLimiterOptions<TFn>,
   ) {
-    this.#options = {
+    this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
-    this.#setState(this.#options.initialState ?? {})
+    this.#setState(this.options.initialState ?? {})
   }
 
   /**
    * Updates the rate limiter options
    */
   setOptions = (newOptions: Partial<RateLimiterOptions<TFn>>): void => {
-    this.#options = { ...this.#options, ...newOptions }
+    this.options = { ...this.options, ...newOptions }
   }
 
   #setState = (newState: Partial<RateLimiterState>): void => {
@@ -145,21 +148,21 @@ export class RateLimiter<TFn extends AnyFunction> {
    * Returns the current enabled state of the rate limiter
    */
   #getEnabled = (): boolean => {
-    return !!parseFunctionOrValue(this.#options.enabled, this)
+    return !!parseFunctionOrValue(this.options.enabled, this)
   }
 
   /**
    * Returns the current limit of executions allowed within the time window
    */
   #getLimit = (): number => {
-    return parseFunctionOrValue(this.#options.limit, this)
+    return parseFunctionOrValue(this.options.limit, this)
   }
 
   /**
    * Returns the current time window in milliseconds
    */
   #getWindow = (): number => {
-    return parseFunctionOrValue(this.#options.window, this)
+    return parseFunctionOrValue(this.options.window, this)
   }
 
   /**
@@ -199,18 +202,18 @@ export class RateLimiter<TFn extends AnyFunction> {
     this.#setState({
       executionCount: this.store.state.executionCount + 1,
     })
-    this.#options.onExecute?.(this)
+    this.options.onExecute?.(this)
   }
 
   #rejectFunction = (): void => {
     this.#setState({
       rejectionCount: this.store.state.rejectionCount + 1,
     })
-    this.#options.onReject?.(this)
+    this.options.onReject?.(this)
   }
 
   #getRelevantExecutionTimes = (): Array<number> => {
-    if (this.#options.windowType === 'sliding') {
+    if (this.options.windowType === 'sliding') {
       // For sliding window, return all executions within the current window
       return this.store.state.executionTimes.filter(
         (time) => time > Date.now() - this.#getWindow(),
@@ -279,9 +282,13 @@ export class RateLimiter<TFn extends AnyFunction> {
  *   consistent rate of execution over time.
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the rate limiter
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - Use `onExecute` callback to react to function execution and implement custom logic
+ * - Use `onReject` callback to react to executions being rejected when rate limit is exceeded
  * - The state includes execution count, execution times, and rejection count
+ * - State can be accessed via the underlying RateLimiter instance's `store.state` property
+ * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
  * Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
  * need to enforce a hard limit on the number of executions within a time period.

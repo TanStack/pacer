@@ -143,7 +143,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   readonly store: Store<AsyncDebouncerState<TFn>> = new Store<
     AsyncDebouncerState<TFn>
   >(getDefaultAsyncDebouncerState<TFn>())
-  #options: AsyncDebouncerOptions<TFn>
+  options: AsyncDebouncerOptions<TFn>
   #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
@@ -154,19 +154,19 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     private fn: TFn,
     initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
-    this.#options = {
+    this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.#setState(this.#options.initialState ?? {})
+    this.#setState(this.options.initialState ?? {})
   }
 
   /**
    * Updates the async debouncer options
    */
   setOptions = (newOptions: Partial<AsyncDebouncerOptions<TFn>>): void => {
-    this.#options = { ...this.#options, ...newOptions }
+    this.options = { ...this.options, ...newOptions }
 
     // Cancel pending execution if the debouncer is disabled
     if (!this.#getEnabled()) {
@@ -198,14 +198,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * Returns the current debouncer enabled state
    */
   #getEnabled = (): boolean => {
-    return !!parseFunctionOrValue(this.#options.enabled, this)
+    return !!parseFunctionOrValue(this.options.enabled, this)
   }
 
   /**
    * Returns the current debouncer wait state
    */
   #getWait = (): number => {
-    return parseFunctionOrValue(this.#options.wait, this)
+    return parseFunctionOrValue(this.options.wait, this)
   }
 
   /**
@@ -230,14 +230,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     this.#setState({ lastArgs: args })
 
     // Handle leading execution
-    if (this.#options.leading && this.store.state.canLeadingExecute) {
+    if (this.options.leading && this.store.state.canLeadingExecute) {
       this.#setState({ canLeadingExecute: false })
       await this.#execute(...args)
       return this.store.state.lastResult
     }
 
     // Handle trailing execution
-    if (this.#options.trailing && this.#getEnabled()) {
+    if (this.options.trailing && this.#getEnabled()) {
       this.#setState({ isPending: true })
     }
 
@@ -245,7 +245,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#resolvePreviousPromise = resolve
       this.#timeoutId = setTimeout(async () => {
         // Execute trailing if enabled
-        if (this.#options.trailing && this.store.state.lastArgs) {
+        if (this.options.trailing && this.store.state.lastArgs) {
           await this.#execute(...this.store.state.lastArgs)
         }
 
@@ -269,13 +269,13 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.#options.onSuccess?.(result, this)
+      this.options.onSuccess?.(result, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.#options.onError?.(error, this)
-      if (this.#options.throwOnError) {
+      this.options.onError?.(error, this)
+      if (this.options.throwOnError) {
         throw error
       }
     } finally {
@@ -285,7 +285,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         settleCount: this.store.state.settleCount + 1,
       })
       this.#abortController = null
-      this.#options.onSettled?.(this)
+      this.options.onSettled?.(this)
     }
     return this.store.state.lastResult
   }
@@ -362,9 +362,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
  * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the async debouncer
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - Use `onSuccess` callback to react to successful function execution and implement custom logic
+ * - Use `onError` callback to react to function execution errors and implement custom error handling
+ * - Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
  * - The state includes canLeadingExecute, error count, execution status, and success/settle counts
+ * - State can be accessed via `asyncDebouncer.store.state` when using the class directly
+ * - When using framework adapters (React/Solid), state is accessed from `asyncDebouncer.state`
  *
  * @example
  * ```ts

@@ -10,7 +10,7 @@ export interface SolidBatcher<TValue, TSelected = BatcherState<TValue>>
    *
    * Use this instead of `batcher.store.state`
    */
-  readonly state: Accessor<TSelected>
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**

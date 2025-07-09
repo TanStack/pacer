@@ -20,8 +20,14 @@ export interface StoragePersisterOptions<TState> {
    */
   buster?: string
   /**
+   * The default state to use if no state is found in storage.
+   */
+  defaultState?: TState
+  /**
    * Optional function to customize how state is deserialized after loading from storage.
    * By default, JSON.parse is used.
+   *
+   * Optionally, consider using SuperJSON for better deserialization of complex objects. See https://github.com/flightcontrolhq/superjson
    */
   deserializer?: (state: string) => PersistedStorage<TState>
   /**
@@ -53,6 +59,8 @@ export interface StoragePersisterOptions<TState> {
   /**
    * Optional function to customize how state is serialized before saving to storage.
    * By default, JSON.stringify is used.
+   *
+   * Optionally, consider using SuperJSON for better serialization of complex objects. See https://github.com/flightcontrolhq/superjson
    */
   serializer?: (state: PersistedStorage<TState>) => string
   /**
@@ -66,18 +74,21 @@ export interface StoragePersisterOptions<TState> {
   /**
    * The browser storage implementation to use for persisting state.
    * Typically window.localStorage or window.sessionStorage.
+   *
+   * Defaults to window.localStorage.
    */
-  storage: Storage
+  storage?: Storage
 }
 
 type DefaultOptions = RequiredKeys<
   Partial<StoragePersisterOptions<any>>,
-  'deserializer' | 'serializer'
+  'deserializer' | 'serializer' | 'storage'
 >
 
 const defaultOptions: DefaultOptions = {
   deserializer: JSON.parse,
   serializer: JSON.stringify,
+  storage: window.localStorage,
 }
 
 /**
@@ -94,10 +105,8 @@ const defaultOptions: DefaultOptions = {
  * @example
  * ```ts
  * const persister = new StoragePersister({
- *   // required
- *   key: 'my-rate-limiter',
+ *   key: 'my-rate-limiter', // required
  *   storage: window.localStorage,
- *   // optional
  *   buster: 'v2',
  *   maxAge: 1000 * 60 * 60, // 1 hour
  *   stateTransform: (state) => ({
@@ -114,13 +123,13 @@ const defaultOptions: DefaultOptions = {
  * ```
  */
 export class StoragePersister<TState> extends Persister<TState> {
-  private _options: StoragePersisterOptions<TState> & DefaultOptions
+  options: StoragePersisterOptions<TState> & DefaultOptions
 
-  constructor(options: StoragePersisterOptions<TState>) {
-    super(options.key)
-    this._options = {
+  constructor(initialOptions: StoragePersisterOptions<TState>) {
+    super(initialOptions.key)
+    this.options = {
       ...defaultOptions,
-      ...options,
+      ...initialOptions,
     }
   }
 
@@ -128,14 +137,7 @@ export class StoragePersister<TState> extends Persister<TState> {
    * Updates the persister options
    */
   setOptions = (newOptions: Partial<StoragePersisterOptions<TState>>): void => {
-    this._options = { ...this._options, ...newOptions }
-  }
-
-  /**
-   * Returns the current persister options
-   */
-  getOptions = (): StoragePersisterOptions<TState> => {
-    return this._options
+    this.options = { ...this.options, ...newOptions }
   }
 
   /**
@@ -143,21 +145,21 @@ export class StoragePersister<TState> extends Persister<TState> {
    */
   saveState = (state: TState): void => {
     try {
-      const stateToSave = this._options.stateTransform
-        ? this._options.stateTransform(state)
+      const stateToSave = this.options.stateTransform
+        ? this.options.stateTransform(state)
         : state
-      this._options.storage.setItem(
+      this.options.storage.setItem(
         this.key,
-        this._options.serializer({
-          buster: this._options.buster,
+        this.options.serializer({
+          buster: this.options.buster,
           state: stateToSave,
           timestamp: Date.now(),
         }),
       )
-      this._options.onSaveState?.(state)
+      this.options.onSaveState?.(state)
     } catch (error) {
       console.error(error)
-      this._options.onSaveStateError?.(error as Error)
+      this.options.onSaveStateError?.(error as Error)
     }
   }
 
@@ -165,31 +167,44 @@ export class StoragePersister<TState> extends Persister<TState> {
    * Loads the state from storage
    */
   loadState = (): TState | undefined => {
-    const stored = this._options.storage.getItem(this.key)
+    const stored = this.options.storage.getItem(this.key)
     if (!stored) {
       return undefined
     }
 
     try {
-      const parsed = this._options.deserializer(stored)
+      const parsed = this.options.deserializer(stored)
       const isValid =
-        !this._options.buster || parsed.buster === this._options.buster
+        !this.options.buster || parsed.buster === this.options.buster
       const isNotExpired =
-        !this._options.maxAge ||
+        !this.options.maxAge ||
         !parsed.timestamp ||
-        Date.now() - parsed.timestamp <= this._options.maxAge
+        Date.now() - parsed.timestamp <= this.options.maxAge
 
       if (!isValid || !isNotExpired) {
+        // clear the item from storage
+        this.options.storage.removeItem(this.key)
         return undefined
       }
 
       const state = parsed.state as TState
-      this._options.onLoadState?.(state)
+      this.options.onLoadState?.(state)
       return state
     } catch (error) {
       console.error(error)
-      this._options.onLoadStateError?.(error as Error)
+      this.options.onLoadStateError?.(error as Error)
       return undefined
+    }
+  }
+
+  /**
+   * Clears the state from storage or sets the default state if provided and specified to be used
+   */
+  clearState = (useDefaultState: boolean = false): void => {
+    if (useDefaultState) {
+      this.saveState(this.options.defaultState)
+    } else {
+      this.options.storage.removeItem(this.key)
     }
   }
 }

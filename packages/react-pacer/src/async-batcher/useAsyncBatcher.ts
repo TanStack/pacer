@@ -15,7 +15,7 @@ export interface ReactAsyncBatcher<
    *
    * Use this instead of `batcher.store.state`
    */
-  readonly state: TSelected
+  readonly state: Readonly<TSelected>
 }
 
 /**

@@ -24,7 +24,7 @@ Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:10](https://gi
 ### state
 
 ```ts
-readonly state: TSelected;
+readonly state: Readonly<TSelected>;
 ```
 
 Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L19)

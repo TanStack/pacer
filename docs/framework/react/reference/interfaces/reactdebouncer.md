@@ -24,7 +24,7 @@ Defined in: [react-pacer/src/debouncer/useDebouncer.ts:10](https://github.com/Ta
 ### state
 
 ```ts
-readonly state: TSelected;
+readonly state: Readonly<TSelected>;
 ```
 
 Defined in: [react-pacer/src/debouncer/useDebouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L19)

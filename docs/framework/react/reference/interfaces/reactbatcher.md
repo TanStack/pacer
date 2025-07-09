@@ -24,7 +24,7 @@ Defined in: [react-pacer/src/batcher/useBatcher.ts:6](https://github.com/TanStac
 ### state
 
 ```ts
-readonly state: TSelected;
+readonly state: Readonly<TSelected>;
 ```
 
 Defined in: [react-pacer/src/batcher/useBatcher.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L13)

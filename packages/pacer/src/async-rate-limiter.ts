@@ -122,11 +122,16 @@ const defaultOptions: Omit<
  * smoothing out frequent events, throttling or debouncing usually provide better user experience.
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the rate limiter
- * - `initialState` can be a partial state object or a Promise that resolves to a partial state
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - `initialState` can be a partial state object
+ * - Use `onSuccess` callback to react to successful function execution and implement custom logic
+ * - Use `onError` callback to react to function execution errors and implement custom error handling
+ * - Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
+ * - Use `onReject` callback to react to executions being rejected when rate limit is exceeded
  * - The state includes execution times, success/error counts, and current execution status
- * - State can be retrieved using `getState()` method
+ * - State can be accessed via `asyncRateLimiter.store.state` when using the class directly
+ * - When using framework adapters (React/Solid), state is accessed from `asyncRateLimiter.state`
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and rate limiter instance
@@ -162,25 +167,25 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   readonly store: Store<AsyncRateLimiterState<TFn>> = new Store<
     AsyncRateLimiterState<TFn>
   >(getDefaultAsyncRateLimiterState<TFn>())
-  #options: AsyncRateLimiterOptions<TFn>
+  options: AsyncRateLimiterOptions<TFn>
 
   constructor(
     private fn: TFn,
     initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
-    this.#options = {
+    this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.#setState(this.#options.initialState ?? {})
+    this.#setState(this.options.initialState ?? {})
   }
 
   /**
    * Updates the async rate limiter options
    */
   setOptions = (newOptions: Partial<AsyncRateLimiterOptions<TFn>>): void => {
-    this.#options = { ...this.#options, ...newOptions }
+    this.options = { ...this.options, ...newOptions }
   }
 
   #setState = (newState: Partial<AsyncRateLimiterState<TFn>>): void => {
@@ -197,21 +202,21 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    * Returns the current enabled state of the async rate limiter
    */
   #getEnabled = (): boolean => {
-    return !!parseFunctionOrValue(this.#options.enabled, this)
+    return !!parseFunctionOrValue(this.options.enabled, this)
   }
 
   /**
    * Returns the current limit of executions allowed within the time window
    */
   #getLimit = (): number => {
-    return parseFunctionOrValue(this.#options.limit, this)
+    return parseFunctionOrValue(this.options.limit, this)
   }
 
   /**
    * Returns the current time window in milliseconds
    */
   #getWindow = (): number => {
-    return parseFunctionOrValue(this.#options.window, this)
+    return parseFunctionOrValue(this.options.window, this)
   }
 
   /**
@@ -254,7 +259,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     this.#setState({
       rejectionCount: this.store.state.rejectionCount + 1,
     })
-    this.#options.onReject?.(this)
+    this.options.onReject?.(this)
     return undefined
   }
 
@@ -276,13 +281,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         successCount: this.store.state.successCount + 1,
         lastResult: result,
       })
-      this.#options.onSuccess?.(result, this)
+      this.options.onSuccess?.(result, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.#options.onError?.(error, this)
-      if (this.#options.throwOnError) {
+      this.options.onError?.(error, this)
+      if (this.options.throwOnError) {
         throw error
       }
     } finally {
@@ -290,14 +295,14 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         isExecuting: false,
         settleCount: this.store.state.settleCount + 1,
       })
-      this.#options.onSettled?.(this)
+      this.options.onSettled?.(this)
     }
 
     return this.store.state.lastResult
   }
 
   #getRelevantExecutionTimes = (): Array<number> => {
-    if (this.#options.windowType === 'sliding') {
+    if (this.options.windowType === 'sliding') {
       // For sliding window, return all executions within the current window
       return this.store.state.executionTimes.filter(
         (time) => time > Date.now() - this.#getWindow(),
@@ -372,10 +377,16 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
  * - A debouncer collapses multiple calls into one, which is better for handling bursts of events
  *
  * State Management:
+ * - Uses TanStack Store for reactive state management
  * - Use `initialState` to provide initial state values when creating the rate limiter
- * - `initialState` can be a partial state object or a Promise that resolves to a partial state
- * - Use `onStateChange` callback to react to state changes and implement custom persistence
+ * - `initialState` can be a partial state object
+ * - Use `onSuccess` callback to react to successful function execution and implement custom logic
+ * - Use `onError` callback to react to function execution errors and implement custom error handling
+ * - Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
+ * - Use `onReject` callback to react to executions being rejected when rate limit is exceeded
  * - The state includes execution times, success/error counts, and current execution status
+ * - State can be accessed via the underlying AsyncRateLimiter instance's `store.state` property
+ * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
  * Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
  * need to enforce a hard limit on the number of executions within a time period.

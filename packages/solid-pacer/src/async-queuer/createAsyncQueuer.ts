@@ -13,7 +13,7 @@ export interface SolidAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
    *
    * Use this instead of `queuer.store.state`
    */
-  readonly state: Accessor<TSelected>
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**

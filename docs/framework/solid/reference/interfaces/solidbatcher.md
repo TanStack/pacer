@@ -24,7 +24,7 @@ Defined in: [batcher/createBatcher.ts:6](https://github.com/TanStack/pacer/blob/
 ### state
 
 ```ts
-readonly state: Accessor<TSelected>;
+readonly state: Accessor<Readonly<TSelected>>;
 ```
 
 Defined in: [batcher/createBatcher.ts:13](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L13)

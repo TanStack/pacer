@@ -16,7 +16,7 @@ export interface ReactRateLimiter<
    *
    * Use this instead of `rateLimiter.store.state`
    */
-  readonly state: TSelected
+  readonly state: Readonly<TSelected>
 }
 
 /**

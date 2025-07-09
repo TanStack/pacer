@@ -11,7 +11,7 @@ title: asyncRateLimit
 function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-rate-limiter.ts:415](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L415)
+Defined in: [async-rate-limiter.ts:426](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L426)
 
 Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -31,10 +31,16 @@ Note that rate limiting is a simpler form of execution control compared to throt
 - A debouncer collapses multiple calls into one, which is better for handling bursts of events
 
 State Management:
+- Uses TanStack Store for reactive state management
 - Use `initialState` to provide initial state values when creating the rate limiter
-- `initialState` can be a partial state object or a Promise that resolves to a partial state
-- Use `onStateChange` callback to react to state changes and implement custom persistence
+- `initialState` can be a partial state object
+- Use `onSuccess` callback to react to successful function execution and implement custom logic
+- Use `onError` callback to react to function execution errors and implement custom error handling
+- Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
+- Use `onReject` callback to react to executions being rejected when rate limit is exceeded
 - The state includes execution times, success/error counts, and current execution status
+- State can be accessed via the underlying AsyncRateLimiter instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
 need to enforce a hard limit on the number of executions within a time period.

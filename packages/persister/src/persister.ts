@@ -17,6 +17,10 @@
  *   saveState(, state: MyState): void {
  *     // Save state to storage
  *   }
+ *
+ *   clearState(useDefaultState?: boolean): void {
+ *     // Clear state from storage or set the default state if provided and specified to be used
+ *   }
  * }
  * ```
  */
@@ -25,4 +29,5 @@ export abstract class Persister<TState> {
 
   abstract loadState: () => TState | undefined
   abstract saveState: (state: TState) => void
+  abstract clearState: (useDefaultState?: boolean) => void
 }
