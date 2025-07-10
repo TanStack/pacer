@@ -65,7 +65,7 @@ export function useRateLimitedCallback<
 >(
   fn: TFn,
   options: RateLimiterOptions<TFn>,
-  selector?: (state: RateLimiterState) => TSelected,
+  selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): (...args: Parameters<TFn>) => boolean {
   const rateLimitedFn = useRateLimiter(fn, options, selector).maybeExecute
   return useCallback((...args) => rateLimitedFn(...args), [rateLimitedFn])

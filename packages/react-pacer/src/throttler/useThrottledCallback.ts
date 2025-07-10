@@ -49,7 +49,7 @@ export function useThrottledCallback<
 >(
   fn: TFn,
   options: ThrottlerOptions<TFn>,
-  selector?: (state: ThrottlerState<TFn>) => TSelected,
+  selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): (...args: Parameters<TFn>) => void {
   const throttledFn = useThrottler(fn, options, selector).maybeExecute
   return useCallback((...args) => throttledFn(...args), [throttledFn])
