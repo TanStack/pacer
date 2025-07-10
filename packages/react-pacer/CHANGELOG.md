@@ -1,5 +1,23 @@
 # @tanstack/react-pacer
 
+## 0.9.0
+
+### Minor Changes
+
+- - breaking: Removed most "get" methods that can now be read directly from the state (e.g. `debouncer.getExecutionCount()` -> `debouncer.store.state.executionCount` or `debouncer.state.executionCount` in framework adapters) ([#32](https://github.com/TanStack/pacer/pull/32))
+  - breaking: Removed `getOptions` and other option resolver methods such as `getEnabled` and `getWait`
+  - feat: Rewrote TanStack Pacer to use TanStack Store for state management
+  - feat: Added `flush` methods to all utils to trigger pending executions to execute immediately.
+  - feat: Added an `initialState` option to all utils to set the initial state for persistence features
+  - feat: Added status state to all utils except rate-limiters for pending, excution, etc. states.
+  - feat: Added new AsyncBatcher utility
+  - fix: Multiple bug fixes
+
+### Patch Changes
+
+- Updated dependencies [[`9e7bcb1`](https://github.com/TanStack/pacer/commit/9e7bcb1edf5e53314a6b808b6b9b22ea48df84ff)]:
+  - @tanstack/pacer@0.9.0
+
 ## 0.8.0
 
 ### Minor Changes
