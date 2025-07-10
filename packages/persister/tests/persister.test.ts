@@ -48,7 +48,7 @@ describe('createStoragePersister', () => {
       onSaveStateError,
     })
     persister.saveState({ count: 1 })
-    expect(onSaveStateError).toHaveBeenCalledWith(error)
+    expect(onSaveStateError).toHaveBeenCalledWith(error, persister)
   })
 
   it('should call onSaveState callback when state is saved', () => {
@@ -60,7 +60,7 @@ describe('createStoragePersister', () => {
     })
     const state = { count: 1 }
     persister.saveState(state)
-    expect(onSaveState).toHaveBeenCalledWith(state)
+    expect(onSaveState).toHaveBeenCalledWith(state, persister)
   })
 
   it('should call onLoadState callback when state is loaded', () => {
@@ -75,7 +75,7 @@ describe('createStoragePersister', () => {
       JSON.stringify({ state, timestamp: Date.now() }),
     )
     persister.loadState()
-    expect(onLoadState).toHaveBeenCalledWith(state)
+    expect(onLoadState).toHaveBeenCalledWith(state, persister)
   })
 
   it('should respect buster string when loading state', () => {
