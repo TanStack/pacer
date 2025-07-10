@@ -24,10 +24,13 @@
  * }
  * ```
  */
-export abstract class Persister<TState> {
+export abstract class Persister<
+  TState,
+  TSelected extends Partial<TState> = TState,
+> {
   constructor(public readonly key: string) {}
 
-  abstract loadState: () => TState | undefined
+  abstract loadState: () => TSelected | undefined
   abstract saveState: (state: TState) => void
   abstract clearState: (useDefaultState?: boolean) => void
 }

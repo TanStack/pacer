@@ -830,6 +830,31 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2(@types/node@24.0.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
 
+  examples/react/useStorageState:
+    dependencies:
+      '@tanstack/react-persister':
+        specifier: ^0.0.0
+        version: link:../../../packages/react-persister
+      react:
+        specifier: ^19.1.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.1.0(react@19.1.0)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.1.8
+        version: 19.1.8
+      '@types/react-dom':
+        specifier: ^19.1.6
+        version: 19.1.6(@types/react@19.1.8)
+      '@vitejs/plugin-react':
+        specifier: ^4.6.0
+        version: 4.6.0(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+      vite:
+        specifier: ^7.0.2
+        version: 7.0.2(@types/node@24.0.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
+
   examples/react/useThrottledCallback:
     dependencies:
       '@tanstack/react-pacer':

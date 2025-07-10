@@ -1,9 +1,12 @@
 import { Persister } from './persister'
 import type { RequiredKeys } from './types'
 
-export interface PersistedStorage<TState> {
+export interface PersistedStorage<
+  TState,
+  TSelected extends Partial<TState> = TState,
+> {
   buster?: string
-  state: TState | undefined
+  state: TSelected | undefined
   timestamp: number
 }
 
@@ -13,7 +16,10 @@ export interface PersistedStorage<TState> {
  * The persister can use either localStorage (persists across browser sessions) or
  * sessionStorage (cleared when browser tab/window closes) to store serialized state.
  */
-export interface StoragePersisterOptions<TState> {
+export interface StoragePersisterOptions<
+  TState,
+  TSelected extends Partial<TState> = TState,
+> {
   /**
    * A version string used to invalidate cached state. When changed, any existing
    * stored state will be considered invalid and cleared.
@@ -29,7 +35,7 @@ export interface StoragePersisterOptions<TState> {
    *
    * Optionally, consider using SuperJSON for better deserialization of complex objects. See https://github.com/flightcontrolhq/superjson
    */
-  deserializer?: (state: string) => PersistedStorage<TState>
+  deserializer?: (state: string) => PersistedStorage<TSelected>
   /**
    * Unique identifier used as the storage key for persisting state.
    */
@@ -42,42 +48,54 @@ export interface StoragePersisterOptions<TState> {
   /**
    * Optional callback that runs after state is successfully loaded.
    */
-  onLoadState?: (state: TState | undefined) => void
+  onLoadState?: (
+    state: TSelected | undefined,
+    storagePersister: StoragePersister<TState, TSelected>,
+  ) => void
   /**
    * Optional callback that runs after state is unable to be loaded.
    */
-  onLoadStateError?: (error: Error) => void
+  onLoadStateError?: (
+    error: Error,
+    storagePersister: StoragePersister<TState, TSelected>,
+  ) => void
   /**
    * Optional callback that runs after state is successfully saved.
    */
-  onSaveState?: (state: TState) => void
+  onSaveState?: (
+    state: TSelected,
+    storagePersister: StoragePersister<TState, TSelected>,
+  ) => void
   /**
    * Optional callback that runs after state is unable to be saved.
    * For example, if the storage is full (localStorage >= 5MB)
    */
-  onSaveStateError?: (error: Error) => void
+  onSaveStateError?: (
+    error: Error,
+    storagePersister: StoragePersister<TState, TSelected>,
+  ) => void
   /**
    * Optional function to customize how state is serialized before saving to storage.
    * By default, JSON.stringify is used.
    *
    * Optionally, consider using SuperJSON for better serialization of complex objects. See https://github.com/flightcontrolhq/superjson
    */
-  serializer?: (state: PersistedStorage<TState>) => string
+  serializer?: (state: PersistedStorage<TSelected>) => string
   /**
-   * Optional function to filter which parts of the state are persisted and loaded, or to otherwise transform the state before saving or loading.
+   * Optional function to filter which parts of the state are persisted and loaded.
    * When provided, only the filtered state will be saved to storage and returned when loading.
    * This is useful for excluding sensitive or temporary data from persistence.
    *
    * Note: Don't use this to replace the serialization. Use the `serializer` option instead for that.
    */
-  stateTransform?: (state: TState) => Partial<TState>
+  select?: (state: TState) => TSelected
   /**
    * The browser storage implementation to use for persisting state.
    * Typically window.localStorage or window.sessionStorage.
    *
    * Defaults to window.localStorage.
    */
-  storage?: Storage
+  storage?: Storage | null
 }
 
 type DefaultOptions = RequiredKeys<
@@ -88,7 +106,7 @@ type DefaultOptions = RequiredKeys<
 const defaultOptions: DefaultOptions = {
   deserializer: JSON.parse,
   serializer: JSON.stringify,
-  storage: window.localStorage,
+  storage: typeof window !== 'undefined' ? window.localStorage : null,
 }
 
 /**
@@ -122,10 +140,13 @@ const defaultOptions: DefaultOptions = {
  * })
  * ```
  */
-export class StoragePersister<TState> extends Persister<TState> {
-  options: StoragePersisterOptions<TState> & DefaultOptions
+export class StoragePersister<
+  TState,
+  TSelected extends Partial<TState> = TState,
+> extends Persister<TState, TSelected> {
+  options: StoragePersisterOptions<TState, TSelected> & DefaultOptions
 
-  constructor(initialOptions: StoragePersisterOptions<TState>) {
+  constructor(initialOptions: StoragePersisterOptions<TState, TSelected>) {
     super(initialOptions.key)
     this.options = {
       ...defaultOptions,
@@ -136,19 +157,22 @@ export class StoragePersister<TState> extends Persister<TState> {
   /**
    * Updates the persister options
    */
-  setOptions = (newOptions: Partial<StoragePersisterOptions<TState>>): void => {
+  setOptions = (
+    newOptions: Partial<StoragePersisterOptions<TState, TSelected>>,
+  ): void => {
     this.options = { ...this.options, ...newOptions }
   }
 
   /**
    * Saves the state to storage
    */
-  saveState = (state: TState): void => {
+  saveState = (state: TState | TSelected): void => {
     try {
-      const stateToSave = this.options.stateTransform
-        ? this.options.stateTransform(state)
+      const stateToSave = this.options.select
+        ? this.options.select(state)
         : state
-      this.options.storage.setItem(
+
+      this.options.storage?.setItem(
         this.key,
         this.options.serializer({
           buster: this.options.buster,
@@ -156,45 +180,76 @@ export class StoragePersister<TState> extends Persister<TState> {
           timestamp: Date.now(),
         }),
       )
-      this.options.onSaveState?.(state)
+      this.options.onSaveState?.(state, this)
     } catch (error) {
       console.error(error)
-      this.options.onSaveStateError?.(error as Error)
+      this.options.onSaveStateError?.(error as Error, this)
     }
   }
 
   /**
    * Loads the state from storage
    */
-  loadState = (): TState | undefined => {
-    const stored = this.options.storage.getItem(this.key)
+  loadState = (): TSelected | undefined => {
+    const stored = this.options.storage?.getItem(this.key)
     if (!stored) {
       return undefined
     }
 
     try {
       const parsed = this.options.deserializer(stored)
-      const isValid =
+
+      const isValidVersion =
         !this.options.buster || parsed.buster === this.options.buster
+
       const isNotExpired =
         !this.options.maxAge ||
         !parsed.timestamp ||
         Date.now() - parsed.timestamp <= this.options.maxAge
 
-      if (!isValid || !isNotExpired) {
+      if (!isValidVersion || !isNotExpired) {
         // clear the item from storage
-        this.options.storage.removeItem(this.key)
+        this.options.storage?.removeItem(this.key)
         return undefined
       }
 
-      const state = parsed.state as TState
-      this.options.onLoadState?.(state)
+      const state = parsed.state
+      this.options.onLoadState?.(state, this)
       return state
     } catch (error) {
       console.error(error)
-      this.options.onLoadStateError?.(error as Error)
+      this.options.onLoadStateError?.(error as Error, this)
       return undefined
     }
+  }
+
+  /**
+   * Handles the storage event and ignores events triggered by the current tab.
+   *
+   * The storage event is only fired in other tabs/windows, not the one that made the change.
+   * However, some browsers or environments may fire it in the same tab, so we check if the event's storageArea
+   * matches the persister's storage and ignore if not.
+   */
+  private handleStorageChange = (e: StorageEvent) => {
+    // Ignore events not from the same storage area or not matching our key
+    if (e.storageArea !== this.options.storage) {
+      return
+    }
+    // Ignore events triggered by the current tab (storage event is not fired in the same tab in most browsers)
+    // But this check is defensive in case of non-standard environments
+    if (e.key === this.key && e.newValue) {
+      this.loadState()
+    }
+  }
+
+  subscribeToStorage = (): void => {
+    typeof window !== 'undefined' &&
+      window.addEventListener('storage', this.handleStorageChange)
+  }
+
+  unsubscribeFromStorage = (): void => {
+    typeof window !== 'undefined' &&
+      window.removeEventListener('storage', this.handleStorageChange)
   }
 
   /**
@@ -204,7 +259,7 @@ export class StoragePersister<TState> extends Persister<TState> {
     if (useDefaultState) {
       this.saveState(this.options.defaultState)
     } else {
-      this.options.storage.removeItem(this.key)
+      this.options.storage?.removeItem(this.key)
     }
   }
 }

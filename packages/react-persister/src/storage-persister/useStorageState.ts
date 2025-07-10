@@ -2,35 +2,26 @@ import { useEffect, useState } from 'react'
 import { useStoragePersister } from './useStoragePersister'
 import type { StoragePersisterOptions } from '@tanstack/persister/storage-persister'
 
-function useStorageState<TValue>(
-  initialValue: TValue,
-  options: StoragePersisterOptions<TValue>,
+function useStorageState<TState, TSelected extends Partial<TState> = TState>(
+  initialValue: TState,
+  options: StoragePersisterOptions<TState, TSelected>,
 ) {
-  const persister = useStoragePersister<TValue>(options)
+  const persister = useStoragePersister<TState, TSelected>(options)
 
-  const [state, setState] = useState<TValue>(() => {
-    return persister.loadState() ?? initialValue
-  })
+  const [state, setState] = useState<TState | TSelected>(initialValue)
+
+  useEffect(() => {
+    // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
+    setState(persister.loadState() ?? initialValue)
+    // eslint-disable-next-line react-compiler/react-compiler
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     persister.saveState(state)
-
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === options.key && e.newValue) {
-        try {
-          const parsed = (options.deserializer ?? JSON.parse)(e.newValue)
-          if (parsed.state) {
-            setState(parsed.state)
-          }
-        } catch (e) {
-          console.error('Failed to parse storage event', e)
-        }
-      }
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
-  }, [state, persister, options.deserializer, options.key])
+    // eslint-disable-next-line react-compiler/react-compiler
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state])
 
   return [state, setState] as const
 }
@@ -43,18 +34,18 @@ function useStorageState<TValue>(
  * const [value, setValue] = useLocalStorageState('my-key', 'initial value')
  * ```
  */
-export function useLocalStorageState<TValue>(
+export function useLocalStorageState<
+  TValue,
+  TSelected extends Partial<TValue> = TValue,
+>(
   key: string,
   initialValue: TValue,
-  options?: {
-    buster?: string
-    maxAge?: number
-  },
+  options?: Omit<StoragePersisterOptions<TValue, TSelected>, 'key' | 'storage'>,
 ) {
   return useStorageState(initialValue, {
-    key,
-    storage: localStorage,
     ...options,
+    key,
+    storage: typeof window !== 'undefined' ? localStorage : null,
   })
 }
 
@@ -66,17 +57,17 @@ export function useLocalStorageState<TValue>(
  * const [value, setValue] = useSessionStorageState('my-key', 'initial value')
  * ```
  */
-export function useSessionStorageState<TValue>(
+export function useSessionStorageState<
+  TValue,
+  TSelected extends Partial<TValue> = TValue,
+>(
   key: string,
   initialValue: TValue,
-  options?: {
-    buster?: string
-    maxAge?: number
-  },
+  options?: Omit<StoragePersisterOptions<TValue, TSelected>, 'key' | 'storage'>,
 ) {
   return useStorageState(initialValue, {
-    key,
-    storage: sessionStorage,
     ...options,
+    key,
+    storage: typeof window !== 'undefined' ? sessionStorage : null,
   })
 }

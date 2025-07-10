@@ -48,7 +48,7 @@ export function useDebouncedCallback<
 >(
   fn: TFn,
   options: DebouncerOptions<TFn>,
-  selector?: (state: DebouncerState<TFn>) => TSelected,
+  selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): (...args: Parameters<TFn>) => void {
   const debouncedFn = useDebouncer(fn, options, selector).maybeExecute
   return useCallback((...args) => debouncedFn(...args), [debouncedFn])
