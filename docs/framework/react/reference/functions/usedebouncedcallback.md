@@ -39,7 +39,7 @@ Consider using the `useDebouncer` hook instead.
 
 • **TFn** *extends* `AnyFunction`
 
-• **TSelected** = `DebouncerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 

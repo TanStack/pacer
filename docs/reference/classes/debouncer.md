@@ -96,7 +96,7 @@ Defined in: [debouncer.ts:119](https://github.com/TanStack/pacer/blob/main/packa
 cancel(): void
 ```
 
-Defined in: [debouncer.ts:239](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L239)
+Defined in: [debouncer.ts:242](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L242)
 
 Cancels any pending execution
 
@@ -112,7 +112,7 @@ Cancels any pending execution
 flush(): void
 ```
 
-Defined in: [debouncer.ts:222](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L222)
+Defined in: [debouncer.ts:225](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L225)
 
 Processes the current pending execution immediately
 
@@ -128,7 +128,7 @@ Processes the current pending execution immediately
 maybeExecute(...args): void
 ```
 
-Defined in: [debouncer.ts:180](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L180)
+Defined in: [debouncer.ts:184](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L184)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued
@@ -151,7 +151,7 @@ If a call is already in progress, it will be queued
 reset(): void
 ```
 
-Defined in: [debouncer.ts:250](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L250)
+Defined in: [debouncer.ts:253](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L253)
 
 Resets the debouncer state to its default values
 

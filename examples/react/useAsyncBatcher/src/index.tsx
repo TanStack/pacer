@@ -11,8 +11,6 @@ type Item = {
 }
 
 function App() {
-  // Use your state management library of choice
-  const [batchItems, setBatchItems] = useState<Array<Item>>([])
   const [processedBatches, setProcessedBatches] = useState<
     Array<{ items: Array<Item>; result: string; timestamp: number }>
   >([])
@@ -43,14 +41,11 @@ function App() {
   }
 
   const asyncBatcher = useAsyncBatcher(processBatch, {
-    maxSize: 5, // Process in batches of 3 (if reached before wait time)
-    wait: 2000, // Wait up to 2 seconds before processing a batch
+    maxSize: 5, // Process in batches of 5 (if reached before wait time)
+    wait: 4000, // Wait up to 4 seconds before processing a batch
     getShouldExecute: (items) =>
       items.some((item) => item.value.includes('urgent')), // Process immediately if any item is marked urgent
     throwOnError: false, // Don't throw errors, handle them via onError
-    onItemsChange: (batcher) => {
-      setBatchItems(batcher.peekAllItems())
-    },
     onSuccess: (result, batcher) => {
       console.log('Batch succeeded:', result)
       console.log('Total successful batches:', batcher.store.state.successCount)
@@ -110,10 +105,10 @@ function App() {
       <div>
         <h3>Current Batch Items</h3>
         <div style={{ minHeight: '100px' }}>
-          {batchItems.length === 0 ? (
+          {asyncBatcher.peekAllItems().length === 0 ? (
             <em>No items in current batch</em>
           ) : (
-            batchItems.map((item, index) => (
+            asyncBatcher.peekAllItems().map((item, index) => (
               <div key={item.id}>
                 {index + 1}: {item.value} (added at{' '}
                 {new Date(item.timestamp).toLocaleTimeString()})
@@ -219,6 +214,9 @@ function App() {
           <li>Errors are handled gracefully and don't stop the batcher</li>
         </ul>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(asyncBatcher.state, null, 2)}
+      </pre>
     </div>
   )
 }

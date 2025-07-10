@@ -627,6 +627,7 @@ export class Queuer<TValue> {
    */
   reset = (): void => {
     this.#setState(getDefaultQueuerState<TValue>())
+    this.options.onItemsChange?.(this)
   }
 }
 

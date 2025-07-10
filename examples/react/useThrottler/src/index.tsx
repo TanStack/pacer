@@ -45,7 +45,16 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
+        <button
+          onClick={() => setCountThrottler.flush()}
+          style={{ marginLeft: '10px' }}
+        >
+          Flush
+        </button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setCountThrottler.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -95,6 +104,12 @@ function App2() {
           </tr>
         </tbody>
       </table>
+      <div>
+        <button onClick={() => setSearchThrottler.flush()}>Flush</button>
+      </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setSearchThrottler.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -183,6 +198,12 @@ function App3() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Throttled to 1 update per 250ms (trailing edge)</p>
       </div>
+      <div>
+        <button onClick={() => setValueThrottler.flush()}>Flush</button>
+      </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setValueThrottler.state, null, 2)}
+      </pre>
     </div>
   )
 }

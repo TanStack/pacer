@@ -26,7 +26,7 @@ export interface ThrottlerState<TFn extends AnyFunction> {
   /**
    * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
    */
-  status: 'idle' | 'pending'
+  status: 'disabled' | 'idle' | 'pending'
 }
 
 function getDefaultThrottlerState<
@@ -162,7 +162,11 @@ export class Throttler<TFn extends AnyFunction> {
       const { isPending } = combinedState
       return {
         ...combinedState,
-        status: isPending ? 'pending' : 'idle',
+        status: !this.#getEnabled()
+          ? 'disabled'
+          : isPending
+            ? 'pending'
+            : 'idle',
       }
     })
   }

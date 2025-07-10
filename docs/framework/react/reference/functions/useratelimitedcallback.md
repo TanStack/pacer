@@ -54,7 +54,7 @@ Consider using the `useRateLimiter` hook instead.
 
 • **TFn** *extends* `AnyFunction`
 
-• **TSelected** = `RateLimiterState`
+• **TSelected** = \{\}
 
 ## Parameters
 

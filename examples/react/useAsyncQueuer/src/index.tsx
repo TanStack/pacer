@@ -7,8 +7,6 @@ const fakeWaitTime = 500
 type Item = number
 
 function App() {
-  // Use your state management library of choice
-  const [queueItems, setQueueItems] = useState<Array<Item>>([])
   const [concurrency, setConcurrency] = useState(2)
 
   // The function to process each item (now a number)
@@ -25,9 +23,6 @@ function App() {
       concurrency, // Process 2 items concurrently
       started: false,
       wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
-      onItemsChange: (asyncQueuer) => {
-        setQueueItems(asyncQueuer.peekAllItems())
-      },
       onReject: (item, asyncQueuer) => {
         console.log(
           'Queue is full, rejecting item',
@@ -75,7 +70,7 @@ function App() {
       </div>
       <div style={{ minHeight: '250px' }}>
         Queue Items:
-        {queueItems.map((item, index) => (
+        {asyncQueuer.peekAllItems().map((item, index) => (
           <div key={index}>
             {index}: {item}
           </div>
@@ -92,8 +87,8 @@ function App() {
       >
         <button
           onClick={() => {
-            const nextNumber = queueItems.length
-              ? Math.max(...queueItems) + 1
+            const nextNumber = asyncQueuer.peekAllItems().length
+              ? Math.max(...asyncQueuer.peekAllItems()) + 1
               : 1
             asyncQueuer.addItem(nextNumber)
           }}
@@ -108,7 +103,12 @@ function App() {
         >
           Clear Queue
         </button>
-        <br />
+        <button
+          onClick={() => asyncQueuer.flush()}
+          disabled={asyncQueuer.state.isEmpty}
+        >
+          Flush Queue
+        </button>
         <button
           onClick={() => asyncQueuer.start()}
           disabled={asyncQueuer.state.isRunning}
@@ -121,7 +121,11 @@ function App() {
         >
           Stop Processing
         </button>
+        <button onClick={() => asyncQueuer.reset()}>Reset Queue</button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(asyncQueuer.state, null, 2)}
+      </pre>
     </div>
   )
 }

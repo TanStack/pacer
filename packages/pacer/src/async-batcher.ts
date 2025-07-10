@@ -1,4 +1,5 @@
 import { Store } from '@tanstack/store'
+import { parseFunctionOrValue } from './utils'
 import type { OptionalKeys } from './types'
 
 export interface AsyncBatcherState<TValue> {
@@ -143,7 +144,7 @@ export interface AsyncBatcherOptions<TValue> {
    * If not provided, the batch will not be triggered by a timeout.
    * @default Infinity
    */
-  wait?: number
+  wait?: number | ((asyncBatcher: AsyncBatcher<TValue>) => number)
 }
 
 type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
@@ -275,6 +276,10 @@ export class AsyncBatcher<TValue> {
     })
   }
 
+  #getWait = (): number => {
+    return parseFunctionOrValue(this.options.wait, this)
+  }
+
   /**
    * Adds an item to the async batcher
    * If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
@@ -292,12 +297,9 @@ export class AsyncBatcher<TValue> {
 
     if (shouldProcess) {
       this.#execute()
-    } else if (
-      this.store.state.isRunning &&
-      !this.#timeoutId &&
-      this.options.wait !== Infinity
-    ) {
-      this.#timeoutId = setTimeout(() => this.#execute(), this.options.wait)
+    } else if (this.store.state.isRunning && this.options.wait !== Infinity) {
+      this.#clearTimeout() // clear any pending timeout to replace it with a new one
+      this.#timeoutId = setTimeout(() => this.#execute(), this.#getWait())
     }
   }
 
@@ -377,7 +379,7 @@ export class AsyncBatcher<TValue> {
   start = (): void => {
     this.#setState({ isRunning: true })
     if (this.store.state.items.length > 0 && !this.#timeoutId) {
-      this.#timeoutId = setTimeout(() => this.#execute(), this.options.wait)
+      this.#timeoutId = setTimeout(() => this.#execute(), this.#getWait())
     }
   }
 
@@ -411,6 +413,7 @@ export class AsyncBatcher<TValue> {
    */
   reset = (): void => {
     this.#setState(getDefaultAsyncBatcherState<TValue>())
+    this.options.onItemsChange?.(this)
   }
 }
 

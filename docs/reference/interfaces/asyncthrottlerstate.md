@@ -114,7 +114,7 @@ Number of function executions that have completed (either successfully or with e
 ### status
 
 ```ts
-status: "idle" | "pending" | "executing" | "settled";
+status: "disabled" | "idle" | "pending" | "executing" | "settled";
 ```
 
 Defined in: [async-throttler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L41)

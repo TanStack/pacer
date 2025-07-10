@@ -22,7 +22,7 @@ export interface DebouncerState<TFn extends AnyFunction> {
   /**
    * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
    */
-  status: 'idle' | 'pending'
+  status: 'disabled' | 'idle' | 'pending'
 }
 
 function getDefaultDebouncerState<
@@ -154,7 +154,11 @@ export class Debouncer<TFn extends AnyFunction> {
       const { isPending } = combinedState
       return {
         ...combinedState,
-        status: isPending ? 'pending' : 'idle',
+        status: !this.#getEnabled()
+          ? 'disabled'
+          : isPending
+            ? 'pending'
+            : 'idle',
       }
     })
   }
@@ -190,7 +194,7 @@ export class Debouncer<TFn extends AnyFunction> {
 
     // Start pending state to indicate that the debouncer is waiting for the trailing edge
     if (this.options.trailing) {
-      this.#setState({ isPending: true })
+      this.#setState({ isPending: true, lastArgs: args })
     }
 
     // Clear any existing timeout
@@ -211,7 +215,6 @@ export class Debouncer<TFn extends AnyFunction> {
     this.#setState({
       isPending: false,
       executionCount: this.store.state.executionCount + 1,
-      lastArgs: args,
     })
     this.options.onExecute?.(this)
   }

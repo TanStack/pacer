@@ -38,7 +38,7 @@ export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
   /**
    * Current execution status - 'idle' when not active, 'pending' when waiting, 'executing' when running, 'settled' when completed
    */
-  status: 'idle' | 'pending' | 'executing' | 'settled'
+  status: 'disabled' | 'idle' | 'pending' | 'executing' | 'settled'
   /**
    * Number of function executions that have completed successfully
    */
@@ -221,13 +221,15 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       const { isPending, isExecuting, settleCount } = combinedState
       return {
         ...combinedState,
-        status: isPending
-          ? 'pending'
-          : isExecuting
-            ? 'executing'
-            : settleCount > 0
-              ? 'settled'
-              : 'idle',
+        status: !this.#getEnabled()
+          ? 'disabled'
+          : isPending
+            ? 'pending'
+            : isExecuting
+              ? 'executing'
+              : settleCount > 0
+                ? 'settled'
+                : 'idle',
       }
     })
   }
@@ -275,6 +277,8 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     const now = Date.now()
     const timeSinceLastExecution = now - this.store.state.lastExecutionTime
     const wait = this.#getWait()
+    // Store the most recent arguments for potential trailing execution
+    this.#setState({ lastArgs: args })
 
     this.#resolvePreviousPromiseInternal()
 
@@ -283,9 +287,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       await this.#execute(...args)
       return this.store.state.lastResult
     } else {
-      // Store the most recent arguments for potential trailing execution
-      this.#setState({ lastArgs: args })
-
       return new Promise((resolve) => {
         this.#resolvePreviousPromise = resolve
         // Clear any existing timeout to ensure we use the latest arguments

@@ -693,6 +693,7 @@ export class AsyncQueuer<TValue> {
    */
   reset = (): void => {
     this.#setState(getDefaultAsyncQueuerState<TValue>())
+    this.options.onItemsChange?.(this)
   }
 }
 

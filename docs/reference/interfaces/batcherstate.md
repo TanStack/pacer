@@ -7,7 +7,7 @@ title: BatcherState
 
 # Interface: BatcherState\<TValue\>
 
-Defined in: [batcher.ts:4](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L4)
+Defined in: [batcher.ts:5](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L5)
 
 ## Type Parameters
 
@@ -21,7 +21,7 @@ Defined in: [batcher.ts:4](https://github.com/TanStack/pacer/blob/main/packages/
 executionCount: number;
 ```
 
-Defined in: [batcher.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L8)
+Defined in: [batcher.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L9)
 
 Number of batch executions that have been completed
 
@@ -33,7 +33,7 @@ Number of batch executions that have been completed
 isEmpty: boolean;
 ```
 
-Defined in: [batcher.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L12)
+Defined in: [batcher.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L13)
 
 Whether the batcher has no items to process (items array is empty)
 
@@ -45,7 +45,7 @@ Whether the batcher has no items to process (items array is empty)
 isPending: boolean;
 ```
 
-Defined in: [batcher.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L16)
+Defined in: [batcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L17)
 
 Whether the batcher is waiting for the timeout to trigger batch processing
 
@@ -57,7 +57,7 @@ Whether the batcher is waiting for the timeout to trigger batch processing
 isRunning: boolean;
 ```
 
-Defined in: [batcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L20)
+Defined in: [batcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L21)
 
 Whether the batcher is active and will process items automatically
 
@@ -69,7 +69,7 @@ Whether the batcher is active and will process items automatically
 items: TValue[];
 ```
 
-Defined in: [batcher.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L28)
+Defined in: [batcher.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L29)
 
 Array of items currently queued for batch processing
 
@@ -81,7 +81,7 @@ Array of items currently queued for batch processing
 size: number;
 ```
 
-Defined in: [batcher.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L32)
+Defined in: [batcher.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L33)
 
 Number of items currently in the batch queue
 
@@ -93,7 +93,7 @@ Number of items currently in the batch queue
 status: "idle" | "pending";
 ```
 
-Defined in: [batcher.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L36)
+Defined in: [batcher.ts:37](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L37)
 
 Current processing status - 'idle' when not processing, 'pending' when waiting for timeout
 
@@ -105,6 +105,6 @@ Current processing status - 'idle' when not processing, 'pending' when waiting f
 totalItemsProcessed: number;
 ```
 
-Defined in: [batcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L24)
+Defined in: [batcher.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L25)
 
 Total number of items that have been processed across all batches

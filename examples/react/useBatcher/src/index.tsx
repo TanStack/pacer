@@ -4,7 +4,6 @@ import { useBatcher } from '@tanstack/react-pacer/batcher'
 
 function App1() {
   // Use your state management library of choice
-  const [batchItems, setBatchItems] = useState<Array<number>>([])
   const [processedBatches, setProcessedBatches] = useState<
     Array<Array<number>>
   >([])
@@ -20,9 +19,6 @@ function App1() {
     maxSize: 5, // Process in batches of 5 (if comes before wait time)
     wait: 3000, // wait up to 3 seconds before processing a batch (if time elapses before maxSize is reached)
     getShouldExecute: (items, _batcher) => items.includes(42), // or pass in a custom function to determine if the batch should be processed
-    onItemsChange: (batcher) => {
-      setBatchItems(batcher.peekAllItems())
-    },
   })
 
   return (
@@ -30,7 +26,7 @@ function App1() {
       <h1>TanStack Pacer useBatcher Example 1</h1>
       <div>Batch Size: {batcher.state.size}</div>
       <div>Batch Max Size: {3}</div>
-      <div>Batch Items: {batchItems.join(', ')}</div>
+      <div>Batch Items: {batcher.peekAllItems().join(', ')}</div>
       <div>Batches Processed: {batcher.state.executionCount}</div>
       <div>Items Processed: {batcher.state.totalItemsProcessed}</div>
       <div>
@@ -52,8 +48,8 @@ function App1() {
       >
         <button
           onClick={() => {
-            const nextNumber = batchItems.length
-              ? batchItems[batchItems.length - 1] + 1
+            const nextNumber = batcher.peekAllItems().length
+              ? batcher.peekAllItems()[batcher.peekAllItems().length - 1] + 1
               : 1
             batcher.addItem(nextNumber)
           }}
@@ -66,7 +62,7 @@ function App1() {
             batcher.flush()
           }}
         >
-          Process Current Batch
+          Flush Current Batch
         </button>
         <button
           onClick={() => batcher.stop()}
@@ -81,6 +77,9 @@ function App1() {
           Start Batching By Time
         </button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(batcher.state, null, 2)}
+      </pre>
     </div>
   )
 }

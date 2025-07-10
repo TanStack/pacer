@@ -40,7 +40,7 @@ Consider using the `useAsyncThrottler` hook instead.
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncThrottlerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 

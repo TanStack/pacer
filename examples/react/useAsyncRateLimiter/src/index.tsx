@@ -140,6 +140,9 @@ function App() {
           </tbody>
         </table>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setSearchAsyncRateLimiter.state, null, 2)}
+      </pre>
     </div>
   )
 }

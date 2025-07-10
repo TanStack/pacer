@@ -76,6 +76,9 @@ function App() {
           autoComplete="new-password"
         />
       </div>
+      <div style={{ marginTop: '10px' }}>
+        <button onClick={() => setSearchAsyncThrottler.flush()}>Flush</button>
+      </div>
       {error && <div>Error: {error.message}</div>}
       <div>
         <p>API calls made: {setSearchAsyncThrottler.state.successCount}</p>
@@ -91,6 +94,9 @@ function App() {
         ) : setSearchAsyncThrottler.state.isExecuting ? (
           <p>Executing...</p>
         ) : null}
+        <pre style={{ marginTop: '20px' }}>
+          {JSON.stringify(setSearchAsyncThrottler.state, null, 2)}
+        </pre>
       </div>
     </div>
   )
@@ -103,7 +109,7 @@ root.render(<App />)
 
 // demo unmounting and cancellation
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
+  if (e.shiftKey && e.key === 'Enter') {
     mounted = !mounted
     root.render(mounted ? <App /> : null)
   }

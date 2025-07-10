@@ -39,7 +39,7 @@ Consider using the `useAsyncDebouncer` hook instead.
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncDebouncerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 

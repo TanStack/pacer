@@ -155,6 +155,9 @@ function App3() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Throttled to 1 update per 250ms</p>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(throttler.state, null, 2)}
+      </pre>
     </div>
   )
 }

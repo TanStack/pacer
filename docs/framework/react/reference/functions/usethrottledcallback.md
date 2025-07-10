@@ -40,7 +40,7 @@ Consider using the `useThrottler` hook instead.
 
 • **TFn** *extends* `AnyFunction`
 
-• **TSelected** = `ThrottlerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 

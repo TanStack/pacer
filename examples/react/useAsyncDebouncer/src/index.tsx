@@ -80,6 +80,9 @@ function App() {
           autoComplete="new-password"
         />
       </div>
+      <div style={{ marginTop: '10px' }}>
+        <button onClick={() => asyncDebouncer.flush()}>Flush</button>
+      </div>
       <div>
         <p>API calls made: {asyncDebouncer.state.successCount}</p>
         {results.length > 0 && (
@@ -91,7 +94,9 @@ function App() {
         )}
         {asyncDebouncer.state.isPending && <p>Pending...</p>}
         {asyncDebouncer.state.isExecuting && <p>Executing...</p>}
-        <pre>{JSON.stringify({ state: asyncDebouncer.state }, null, 2)}</pre>
+        <pre style={{ marginTop: '20px' }}>
+          {JSON.stringify(asyncDebouncer.state, null, 2)}
+        </pre>
       </div>
     </div>
   )
@@ -104,7 +109,7 @@ root.render(<App />)
 
 // demo unmounting and cancellation
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
+  if (e.shiftKey && e.key === 'Enter') {
     mounted = !mounted
     root.render(mounted ? <App /> : null)
   }

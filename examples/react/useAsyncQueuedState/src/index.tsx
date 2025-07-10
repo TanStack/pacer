@@ -120,6 +120,9 @@ function App() {
           Stop Processing
         </button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(asyncQueuer.state, null, 2)}
+      </pre>
     </div>
   )
 }

@@ -70,6 +70,9 @@ function App1() {
           Stop Processing
         </button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(queuer.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -173,6 +176,9 @@ function App2() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Queued with 100ms wait time</p>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(queuer.state, null, 2)}
+      </pre>
     </div>
   )
 }

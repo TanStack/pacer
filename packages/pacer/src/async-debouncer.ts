@@ -34,7 +34,7 @@ export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
   /**
    * Current execution status - 'idle' when not active, 'pending' when waiting, 'executing' when running, 'settled' when completed
    */
-  status: 'idle' | 'pending' | 'executing' | 'settled'
+  status: 'disabled' | 'idle' | 'pending' | 'executing' | 'settled'
   /**
    * Number of function executions that have completed successfully
    */
@@ -210,13 +210,15 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       const { isPending, isExecuting, settleCount } = combinedState
       return {
         ...combinedState,
-        status: isPending
-          ? 'pending'
-          : isExecuting
-            ? 'executing'
-            : settleCount > 0
-              ? 'settled'
-              : 'idle',
+        status: !this.#getEnabled()
+          ? 'disabled'
+          : isPending
+            ? 'pending'
+            : isExecuting
+              ? 'executing'
+              : settleCount > 0
+                ? 'settled'
+                : 'idle',
       }
     })
   }

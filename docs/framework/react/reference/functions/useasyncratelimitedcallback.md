@@ -53,7 +53,7 @@ Consider using the `useAsyncRateLimiter` hook instead.
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncRateLimiterState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 

@@ -21,8 +21,8 @@ function App1() {
   const queuer = useQueuer(processItem, {
     initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     initialState: queuerPersister.loadState(),
-    maxSize: 25,
-    started: false,
+    maxSize: 25, // optional, defaults to Infinity
+    started: false, // optional, defaults to true
     wait: 1000, // wait 1 second between processing items - wait is optional!
   })
 
@@ -89,8 +89,13 @@ function App1() {
         >
           Stop Processing
         </button>
+        <button onClick={() => queuer.flush()} disabled={queuer.state.isEmpty}>
+          Flush Queue
+        </button>
       </div>
-      <pre>{JSON.stringify(queuer.state, null, 2)}</pre>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(queuer.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -200,6 +205,12 @@ function App2() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Queued with 100ms wait time</p>
       </div>
+      <div>
+        <button onClick={() => queuer.flush()}>Flush Queue</button>
+      </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(queuer.state, null, 2)}
+      </pre>
     </div>
   )
 }

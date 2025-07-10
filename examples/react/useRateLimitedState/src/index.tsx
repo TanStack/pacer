@@ -59,6 +59,9 @@ function App1() {
         </button>
         <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(rateLimiter.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -126,6 +129,9 @@ function App2() {
         </button>
         <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(rateLimiter.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -231,6 +237,9 @@ function App3() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Rate limited to 20 updates per 2 seconds</p>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(rateLimiter.state, null, 2)}
+      </pre>
     </div>
   )
 }
