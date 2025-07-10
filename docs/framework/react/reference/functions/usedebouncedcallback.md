@@ -11,7 +11,7 @@ title: useDebouncedCallback
 function useDebouncedCallback<TFn, TSelected>(
    fn, 
    options, 
-   selector?): (...args) => void
+   selector): (...args) => void
 ```
 
 Defined in: [react-pacer/src/debouncer/useDebouncedCallback.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L45)
@@ -51,7 +51,7 @@ Consider using the `useDebouncer` hook instead.
 
 `DebouncerOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 

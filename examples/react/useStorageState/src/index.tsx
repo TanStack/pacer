@@ -9,7 +9,7 @@ import {
 function App2() {
   const [todos, setTodos] = useLocalStorageState(
     'todos-list',
-    [] as Array<string>
+    [] as Array<string>,
   )
   const [newTodo, setNewTodo] = useState('')
 
