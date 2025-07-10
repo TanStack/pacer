@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useDebouncer } from './useDebouncer'
-import type { Debouncer, DebouncerOptions } from '@tanstack/pacer/debouncer'
+import type { ReactDebouncer } from './useDebouncer'
+import type {
+  DebouncerOptions,
+  DebouncerState,
+} from '@tanstack/pacer/debouncer'
 
 /**
  * A React hook that creates a debounced state value, combining React's useState with debouncing functionality.
@@ -32,18 +36,24 @@ import type { Debouncer, DebouncerOptions } from '@tanstack/pacer/debouncer'
  * const executionCount = debouncer.getExecutionCount();
  *
  * // Get the pending state
- * const isPending = debouncer.getIsPending();
+ * const isPending = debouncer.getState().isPending;
  * ```
  */
-export function useDebouncedState<TValue>(
+export function useDebouncedState<
+  TValue,
+  TSelected = DebouncerState<React.Dispatch<React.SetStateAction<TValue>>>,
+>(
   value: TValue,
   options: DebouncerOptions<React.Dispatch<React.SetStateAction<TValue>>>,
+  selector?: (
+    state: DebouncerState<React.Dispatch<React.SetStateAction<TValue>>>,
+  ) => TSelected,
 ): [
   TValue,
   React.Dispatch<React.SetStateAction<TValue>>,
-  Debouncer<React.Dispatch<React.SetStateAction<TValue>>>,
+  ReactDebouncer<React.Dispatch<React.SetStateAction<TValue>>, TSelected>,
 ] {
-  const [debouncedValue, setDebouncedValue] = useState<TValue>(value)
-  const debouncer = useDebouncer(setDebouncedValue, options)
+  const [debouncedValue, setDebouncedValue] = useState(value)
+  const debouncer = useDebouncer(setDebouncedValue, options, selector)
   return [debouncedValue, debouncer.maybeExecute, debouncer]
 }

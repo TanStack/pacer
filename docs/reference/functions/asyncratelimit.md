@@ -11,7 +11,7 @@ title: asyncRateLimit
 function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-rate-limiter.ts:407](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L407)
+Defined in: [async-rate-limiter.ts:447](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L447)
 
 Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -29,6 +29,18 @@ Note that rate limiting is a simpler form of execution control compared to throt
 - A rate limiter will allow all executions until the limit is reached, then block all subsequent calls until the window resets
 - A throttler ensures even spacing between executions, which can be better for consistent performance
 - A debouncer collapses multiple calls into one, which is better for handling bursts of events
+
+State Management:
+- Uses TanStack Store for reactive state management
+- Use `initialState` to provide initial state values when creating the rate limiter
+- `initialState` can be a partial state object
+- Use `onSuccess` callback to react to successful function execution and implement custom logic
+- Use `onError` callback to react to function execution errors and implement custom error handling
+- Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
+- Use `onReject` callback to react to executions being rejected when rate limit is exceeded
+- The state includes execution times, success/error counts, and current execution status
+- State can be accessed via the underlying AsyncRateLimiter instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
 need to enforce a hard limit on the number of executions within a time period.
@@ -61,17 +73,13 @@ Error Handling:
 
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
-If execution is allowed, waits for any previous execution to complete before proceeding.
 
 Error Handling:
 - If the rate-limited function throws and no `onError` handler is configured,
   the error will be thrown from this method.
 - If an `onError` handler is configured, errors will be caught and passed to the handler,
   and this method will return undefined.
-- If the rate limit is exceeded, the execution will be rejected and the `onReject` handler
-  will be called if configured.
 - The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
-- Rate limit rejections can be tracked using `getRejectionCount()`.
 
 ### Parameters
 
@@ -94,11 +102,11 @@ The error from the rate-limited function if no onError handler is configured
 ```ts
 const rateLimiter = new AsyncRateLimiter(fn, { limit: 5, window: 1000 });
 
-// First 5 calls will execute
-await rateLimiter.maybeExecute('arg1', 'arg2');
+// First 5 calls will return a promise that resolves with the result
+const result = await rateLimiter.maybeExecute('arg1', 'arg2');
 
-// Additional calls within the window will be rejected
-await rateLimiter.maybeExecute('arg1', 'arg2'); // Rejected
+// Additional calls within the window will return undefined
+const result2 = await rateLimiter.maybeExecute('arg1', 'arg2'); // undefined
 ```
 
 ## Example

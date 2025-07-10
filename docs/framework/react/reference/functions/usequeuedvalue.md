@@ -8,10 +8,13 @@ title: useQueuedValue
 # Function: useQueuedValue()
 
 ```ts
-function useQueuedValue<TValue>(initialValue, options): [TValue, Queuer<TValue>]
+function useQueuedValue<TValue, TSelected>(
+   initialValue, 
+   options, 
+   selector?): [TValue, ReactQueuer<TValue, TSelected>]
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuedValue.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedValue.ts#L40)
+Defined in: [react-pacer/src/queuer/useQueuedValue.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedValue.ts#L41)
 
 A React hook that creates a queued value that processes state changes in order with an optional delay.
 This hook uses useQueuer internally to manage a queue of state changes and apply them sequentially.
@@ -28,6 +31,8 @@ The hook returns a tuple containing:
 
 • **TValue**
 
+• **TSelected** *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `QueuerState`\<`TValue`\>
+
 ## Parameters
 
 ### initialValue
@@ -38,9 +43,13 @@ The hook returns a tuple containing:
 
 `QueuerOptions`\<`TValue`\> = `{}`
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-\[`TValue`, `Queuer`\<`TValue`\>\]
+\[`TValue`, [`ReactQueuer`](../../interfaces/reactqueuer.md)\<`TValue`, `TSelected`\>\]
 
 ## Example
 

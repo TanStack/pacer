@@ -59,7 +59,7 @@ The async debouncer provides robust error handling capabilities:
   - When true (default if no onError handler), errors will be thrown
   - When false (default if onError handler provided), errors will be swallowed
   - Can be explicitly set to override these defaults
-- You can track error counts using `getErrorCount()` and check execution state with `getIsExecuting()`
+- You can track error counts using `debouncer.store.state.errorCount` and check execution state with `debouncer.store.state.isExecuting`
 - The debouncer maintains its state and can continue to be used after an error occurs
 
 ### 3. Different Callbacks
@@ -78,11 +78,11 @@ const asyncDebouncer = new AsyncDebouncer(async (value) => {
   wait: 500,
   onSuccess: (result, debouncer) => {
     // Called after each successful execution
-    console.log('Async function executed', debouncer.getSuccessCount())
+    console.log('Async function executed', debouncer.store.state.successCount)
   },
   onSettled: (debouncer) => {
     // Called after each execution attempt
-    console.log('Async function settled', debouncer.getSettledCount())
+    console.log('Async function settled', debouncer.store.state.settleCount)
   },
   onError: (error) => {
     // Called if the async function throws an error
@@ -104,6 +104,96 @@ Just like the synchronous debouncer, the async debouncer supports dynamic option
 ## Framework Adapters
 
 Each framework adapter provides hooks that build on top of the core async debouncing functionality to integrate with the framework's state management system. Hooks like `createAsyncDebouncer`, `useAsyncDebouncedCallback`, or similar are available for each framework.
+
+## State Management
+
+The `AsyncDebouncer` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and execution statistics.
+
+### Accessing State
+
+When using the `AsyncDebouncer` class directly, access state via the `store.state` property:
+
+```ts
+const asyncDebouncer = new AsyncDebouncer(asyncFn, { wait: 500 })
+
+// Access current state
+console.log(asyncDebouncer.store.state.isPending) // Number of successful executions
+```
+
+### Framework Adapters
+
+When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+
+```ts
+// React example
+const asyncDebouncer = useAsyncDebouncer(asyncFn, { wait: 500 })
+
+// Access state directly (reactive)
+console.log(asyncDebouncer.state.successCount) // Reactive value
+console.log(asyncDebouncer.state.isExecuting) // Reactive value
+```
+
+### Initial State
+
+You can provide initial state values when creating an async debouncer:
+
+```ts
+const asyncDebouncer = new AsyncDebouncer(asyncFn, {
+  wait: 500,
+  initialState: {
+    successCount: 3, // Start with 3 successful executions
+    errorCount: 1, // Start with 1 error
+    lastResult: 'initial-result', // Start with initial result
+  }
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const asyncDebouncer = new AsyncDebouncer(asyncFn, { wait: 500 })
+
+// Subscribe to state changes
+const unsubscribe = asyncDebouncer.store.subscribe((state) => {
+  console.log('Success count:', state.successCount)
+  console.log('Error count:', state.errorCount)
+  console.log('Currently executing:', state.isExecuting)
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+### Available State Properties
+
+The `AsyncDebouncerState` includes:
+
+- `successCount`: Number of successful function executions
+- `errorCount`: Number of failed function executions
+- `settleCount`: Total number of completed executions (success + error)
+- `isExecuting`: Whether the async function is currently executing
+- `isPending`: Whether the debouncer is waiting for timeout to trigger execution
+- `status`: Current execution status ('idle' | 'pending' | 'executing' | 'settled')
+- `canLeadingExecute`: Whether leading edge execution is allowed
+- `lastResult`: Result from the most recent successful execution
+- `lastArgs`: Arguments from the most recent call to `maybeExecute`
+
+### Flushing Pending Executions
+
+The async debouncer supports flushing pending executions to trigger them immediately:
+
+```ts
+const asyncDebouncer = new AsyncDebouncer(asyncFn, { wait: 1000 })
+
+asyncDebouncer.maybeExecute('some-arg')
+console.log(asyncDebouncer.store.state.isPending) // true
+
+// Flush immediately instead of waiting
+asyncDebouncer.flush()
+console.log(asyncDebouncer.store.state.isPending) // false
+```
 
 ---
 

@@ -8,10 +8,13 @@ title: useAsyncDebouncer
 # Function: useAsyncDebouncer()
 
 ```ts
-function useAsyncDebouncer<TFn>(fn, options): AsyncDebouncer<TFn>
+function useAsyncDebouncer<TFn, TSelected>(
+   fn, 
+   options, 
+selector?): ReactAsyncDebouncer<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:60](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L60)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:75](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L75)
 
 A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -40,6 +43,8 @@ Error Handling:
 
 • **TFn** *extends* `AnyAsyncFunction`
 
+• **TSelected** = `AsyncDebouncerState`\<`TFn`\>
+
 ## Parameters
 
 ### fn
@@ -50,9 +55,13 @@ Error Handling:
 
 `AsyncDebouncerOptions`\<`TFn`\>
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-`AsyncDebouncer`\<`TFn`\>
+[`ReactAsyncDebouncer`](../../interfaces/reactasyncdebouncer.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

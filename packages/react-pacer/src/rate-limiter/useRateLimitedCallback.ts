@@ -1,7 +1,10 @@
 import { useCallback } from 'react'
 import { useRateLimiter } from './useRateLimiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
-import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
+import type {
+  RateLimiterOptions,
+  RateLimiterState,
+} from '@tanstack/pacer/rate-limiter'
 
 /**
  * A React hook that creates a rate-limited version of a callback function.
@@ -56,13 +59,11 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  * );
  * ```
  */
-export function useRateLimitedCallback<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
->(fn: TFn, options: RateLimiterOptions<TFn>) {
-  const rateLimitedFn = useRateLimiter<TFn>(fn, options).maybeExecute
-  return useCallback(
-    (...args: TArgs) => rateLimitedFn(...args),
-    [rateLimitedFn],
-  )
+export function useRateLimitedCallback<TFn extends AnyFunction, TSelected = {}>(
+  fn: TFn,
+  options: RateLimiterOptions<TFn>,
+  selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
+): (...args: Parameters<TFn>) => boolean {
+  const rateLimitedFn = useRateLimiter(fn, options, selector).maybeExecute
+  return useCallback((...args) => rateLimitedFn(...args), [rateLimitedFn])
 }

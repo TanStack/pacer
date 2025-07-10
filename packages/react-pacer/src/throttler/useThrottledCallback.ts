@@ -1,6 +1,9 @@
 import { useCallback } from 'react'
 import { useThrottler } from './useThrottler'
-import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
+import type {
+  ThrottlerOptions,
+  ThrottlerState,
+} from '@tanstack/pacer/throttler'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
@@ -40,10 +43,11 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * }, [handleResize]);
  * ```
  */
-export function useThrottledCallback<
-  TFn extends AnyFunction,
-  TArgs extends Parameters<TFn>,
->(fn: TFn, options: ThrottlerOptions<TFn>) {
-  const throttledFn = useThrottler<TFn>(fn, options).maybeExecute
-  return useCallback((...args: TArgs) => throttledFn(...args), [throttledFn])
+export function useThrottledCallback<TFn extends AnyFunction, TSelected = {}>(
+  fn: TFn,
+  options: ThrottlerOptions<TFn>,
+  selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
+): (...args: Parameters<TFn>) => void {
+  const throttledFn = useThrottler(fn, options, selector).maybeExecute
+  return useCallback((...args) => throttledFn(...args), [throttledFn])
 }

@@ -1,8 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
+import { useStore } from '@tanstack/react-store'
+import type {
+  DebouncerOptions,
+  DebouncerState,
+} from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
+
+export interface ReactDebouncer<
+  TFn extends AnyFunction,
+  TSelected = DebouncerState<TFn>,
+> extends Omit<Debouncer<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the debouncer state changes
+   *
+   * Use this instead of `debouncer.store.state`
+   */
+  readonly state: Readonly<TSelected>
+}
 
 /**
  * A React hook that creates and manages a Debouncer instance.
@@ -36,16 +51,20 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * const executionCount = searchDebouncer.getExecutionCount();
  *
  * // Get the pending state
- * const isPending = searchDebouncer.getIsPending();
+ * const isPending = searchdebouncer.getState().isPending;
  * ```
  */
-export function useDebouncer<TFn extends AnyFunction>(
+export function useDebouncer<
+  TFn extends AnyFunction,
+  TSelected = DebouncerState<TFn>,
+>(
   fn: TFn,
   options: DebouncerOptions<TFn>,
-): Debouncer<TFn> {
-  const [debouncer] = useState(() =>
-    bindInstanceMethods(new Debouncer<TFn>(fn, options)),
-  )
+  selector?: (state: DebouncerState<TFn>) => TSelected,
+): ReactDebouncer<TFn, TSelected> {
+  const [debouncer] = useState(() => new Debouncer(fn, options))
+
+  const state = useStore(debouncer.store, selector)
 
   debouncer.setOptions(options)
 
@@ -55,5 +74,12 @@ export function useDebouncer<TFn extends AnyFunction>(
     }
   }, [debouncer])
 
-  return debouncer
+  return useMemo(
+    () =>
+      ({
+        ...debouncer,
+        state,
+      }) as unknown as ReactDebouncer<TFn, TSelected>, // omit `store` in favor of `state`
+    [debouncer, state],
+  )
 }

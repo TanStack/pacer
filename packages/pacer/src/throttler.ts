@@ -1,5 +1,46 @@
+import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
+
+export interface ThrottlerState<TFn extends AnyFunction> {
+  /**
+   * Number of function executions that have been completed
+   */
+  executionCount: number
+  /**
+   * The arguments from the most recent call to maybeExecute
+   */
+  lastArgs: Parameters<TFn> | undefined
+  /**
+   * Timestamp of the last function execution in milliseconds
+   */
+  lastExecutionTime: number
+  /**
+   * Timestamp when the next execution can occur in milliseconds
+   */
+  nextExecutionTime: number
+  /**
+   * Whether the throttler is waiting for the timeout to trigger execution
+   */
+  isPending: boolean
+  /**
+   * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
+   */
+  status: 'disabled' | 'idle' | 'pending'
+}
+
+function getDefaultThrottlerState<
+  TFn extends AnyFunction,
+>(): ThrottlerState<TFn> {
+  return structuredClone({
+    executionCount: 0,
+    isPending: false,
+    lastArgs: undefined,
+    lastExecutionTime: 0,
+    nextExecutionTime: 0,
+    status: 'idle',
+  })
+}
 
 /**
  * Options for configuring a throttled function
@@ -11,6 +52,10 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
    * Defaults to true.
    */
   enabled?: boolean | ((throttler: Throttler<TFn>) => boolean)
+  /**
+   * Initial state for the throttler
+   */
+  initialState?: Partial<ThrottlerState<TFn>>
   /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to true.
@@ -33,10 +78,12 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
   wait: number | ((throttler: Throttler<TFn>) => number)
 }
 
-const defaultOptions: Required<ThrottlerOptions<any>> = {
+const defaultOptions: Omit<
+  Required<ThrottlerOptions<any>>,
+  'initialState' | 'onExecute'
+> = {
   enabled: true,
   leading: true,
-  onExecute: () => {},
   trailing: true,
   wait: 0,
 }
@@ -54,6 +101,14 @@ const defaultOptions: Required<ThrottlerOptions<any>> = {
  *
  * For collapsing rapid-fire events where you only care about the last call, consider using Debouncer.
  *
+ * State Management:
+ * - Uses TanStack Store for reactive state management
+ * - Use `initialState` to provide initial state values when creating the throttler
+ * - Use `onExecute` callback to react to function execution and implement custom logic
+ * - The state includes execution count, last execution time, pending status, and more
+ * - State can be accessed via `throttler.store.state` when using the class directly
+ * - When using framework adapters (React/Solid), state is accessed from `throttler.state`
+ *
  * @example
  * ```ts
  * const throttler = new Throttler(
@@ -69,53 +124,59 @@ const defaultOptions: Required<ThrottlerOptions<any>> = {
  * ```
  */
 export class Throttler<TFn extends AnyFunction> {
-  private _executionCount = 0
-  private _lastArgs: Parameters<TFn> | undefined
-  private _lastExecutionTime = 0
-  private _options: Required<ThrottlerOptions<TFn>>
-  private _timeoutId: NodeJS.Timeout | undefined
+  readonly store: Store<Readonly<ThrottlerState<TFn>>> = new Store(
+    getDefaultThrottlerState(),
+  )
+  options: ThrottlerOptions<TFn>
+  #timeoutId: NodeJS.Timeout | undefined
 
   constructor(
     private fn: TFn,
     initialOptions: ThrottlerOptions<TFn>,
   ) {
-    this._options = {
+    this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
+    this.#setState(this.options.initialState ?? {})
   }
 
   /**
    * Updates the throttler options
    */
-  setOptions(newOptions: Partial<ThrottlerOptions<TFn>>): void {
-    this._options = { ...this._options, ...newOptions }
+  setOptions = (newOptions: Partial<ThrottlerOptions<TFn>>): void => {
+    this.options = { ...this.options, ...newOptions }
 
-    // End the pending state if the debouncer is disabled
-    if (!this._options.enabled) {
+    // Cancel pending execution if the throttler is disabled
+    if (!this.#getEnabled()) {
       this.cancel()
     }
   }
 
-  /**
-   * Returns the current throttler options
-   */
-  getOptions(): Required<ThrottlerOptions<TFn>> {
-    return this._options
+  #setState = (newState: Partial<ThrottlerState<TFn>>): void => {
+    this.store.setState((state) => {
+      const combinedState = {
+        ...state,
+        ...newState,
+      }
+      const { isPending } = combinedState
+      return {
+        ...combinedState,
+        status: !this.#getEnabled()
+          ? 'disabled'
+          : isPending
+            ? 'pending'
+            : 'idle',
+      }
+    })
   }
 
-  /**
-   * Returns the current enabled state of the throttler
-   */
-  getEnabled(): boolean {
-    return parseFunctionOrValue(this._options.enabled, this)
+  #getEnabled = (): boolean => {
+    return !!parseFunctionOrValue(this.options.enabled, this)
   }
 
-  /**
-   * Returns the current wait time in milliseconds
-   */
-  getWait(): number {
-    return parseFunctionOrValue(this._options.wait, this)
+  #getWait = (): number => {
+    return parseFunctionOrValue(this.options.wait, this)
   }
 
   /**
@@ -140,41 +201,67 @@ export class Throttler<TFn extends AnyFunction> {
    * throttled.maybeExecute('c', 'd');
    * ```
    */
-  maybeExecute(...args: Parameters<TFn>): void {
+  maybeExecute = (...args: Parameters<TFn>): void => {
     const now = Date.now()
-    const timeSinceLastExecution = now - this._lastExecutionTime
-    const wait = this.getWait()
+    const timeSinceLastExecution = now - this.store.state.lastExecutionTime
+    const wait = this.#getWait()
 
     // Handle leading execution
-    if (this._options.leading && timeSinceLastExecution >= wait) {
-      this.execute(...args)
+    if (this.options.leading && timeSinceLastExecution >= wait) {
+      this.#execute(...args)
     } else {
       // Store the most recent arguments for potential trailing execution
-      this._lastArgs = args
-
+      this.#setState({
+        lastArgs: args,
+      })
       // Set up trailing execution if not already scheduled
-      if (!this._timeoutId && this._options.trailing) {
-        const _timeSinceLastExecution = this._lastExecutionTime
-          ? now - this._lastExecutionTime
+      if (!this.#timeoutId && this.options.trailing) {
+        // prevent large number if lastExecutionTime is undefined
+        const _timeSinceLastExecution = this.store.state.lastExecutionTime
+          ? now - this.store.state.lastExecutionTime
           : 0
         const timeoutDuration = wait - _timeSinceLastExecution
-        this._timeoutId = setTimeout(() => {
-          if (this._lastArgs !== undefined) {
-            this.execute(...this._lastArgs)
+        this.#setState({ isPending: true })
+        this.#timeoutId = setTimeout(() => {
+          const { lastArgs } = this.store.state
+          if (lastArgs !== undefined) {
+            this.#execute(...lastArgs)
           }
         }, timeoutDuration)
       }
     }
   }
 
-  private execute(...args: Parameters<TFn>): void {
-    if (!this.getEnabled()) return
+  #execute = (...args: Parameters<TFn>): void => {
+    if (!this.#getEnabled()) return
     this.fn(...args) // EXECUTE!
-    this._executionCount++
-    this._lastExecutionTime = Date.now()
-    this._timeoutId = undefined
-    this._lastArgs = undefined
-    this._options.onExecute(this)
+    const lastExecutionTime = Date.now()
+    const nextExecutionTime = lastExecutionTime + this.#getWait()
+    this.#clearTimeout()
+    this.#setState({
+      executionCount: this.store.state.executionCount + 1,
+      lastExecutionTime,
+      nextExecutionTime,
+      isPending: false,
+      lastArgs: undefined,
+    })
+    this.options.onExecute?.(this)
+  }
+
+  /**
+   * Processes the current pending execution immediately
+   */
+  flush = (): void => {
+    if (this.store.state.isPending && this.store.state.lastArgs) {
+      this.#execute(...this.store.state.lastArgs)
+    }
+  }
+
+  #clearTimeout = (): void => {
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = undefined
+    }
   }
 
   /**
@@ -186,40 +273,19 @@ export class Throttler<TFn extends AnyFunction> {
    *
    * Has no effect if there is no pending execution.
    */
-  cancel(): void {
-    if (this._timeoutId) {
-      clearTimeout(this._timeoutId)
-      this._timeoutId = undefined
-      this._lastArgs = undefined
-    }
+  cancel = (): void => {
+    this.#clearTimeout()
+    this.#setState({
+      lastArgs: undefined,
+      isPending: false,
+    })
   }
 
   /**
-   * Returns the last execution time
+   * Resets the throttler state to its default values
    */
-  getLastExecutionTime(): number {
-    return this._lastExecutionTime
-  }
-
-  /**
-   * Returns the next execution time
-   */
-  getNextExecutionTime(): number {
-    return this._lastExecutionTime + this.getWait()
-  }
-
-  /**
-   * Returns the number of times the function has been executed
-   */
-  getExecutionCount(): number {
-    return this._executionCount
-  }
-
-  /**
-   * Returns `true` if there is a pending execution
-   */
-  getIsPending(): boolean {
-    return this.getEnabled() && !!this._timeoutId
+  reset = (): void => {
+    this.#setState(getDefaultThrottlerState<TFn>())
   }
 }
 
@@ -235,6 +301,14 @@ export class Throttler<TFn extends AnyFunction> {
  *
  * For handling bursts of events, consider using debounce() instead. For hard execution
  * limits, consider using rateLimit().
+ *
+ * State Management:
+ * - Uses TanStack Store for reactive state management
+ * - Use `initialState` to provide initial state values when creating the throttler
+ * - Use `onExecute` callback to react to function execution and implement custom logic
+ * - The state includes execution count, last execution time, pending status, and more
+ * - State can be accessed via the underlying Throttler instance's `store.state` property
+ * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
  * @example
  * ```ts
@@ -254,5 +328,5 @@ export function throttle<TFn extends AnyFunction>(
   initialOptions: ThrottlerOptions<TFn>,
 ) {
   const throttler = new Throttler(fn, initialOptions)
-  return throttler.maybeExecute.bind(throttler)
+  return throttler.maybeExecute
 }

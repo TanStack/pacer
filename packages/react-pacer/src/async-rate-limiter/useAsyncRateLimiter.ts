@@ -1,8 +1,23 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
-import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
+import type {
+  AsyncRateLimiterOptions,
+  AsyncRateLimiterState,
+} from '@tanstack/pacer/async-rate-limiter'
+
+export interface ReactAsyncRateLimiter<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncRateLimiterState<TFn>,
+> extends Omit<AsyncRateLimiter<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the rate limiter state changes
+   *
+   * Use this instead of `rateLimiter.store.state`
+   */
+  readonly state: Readonly<TSelected>
+}
 
 /**
  * A low-level React hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
@@ -64,15 +79,28 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
  * );
  * ```
  */
-export function useAsyncRateLimiter<TFn extends AnyAsyncFunction>(
+export function useAsyncRateLimiter<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncRateLimiterState<TFn>,
+>(
   fn: TFn,
   options: AsyncRateLimiterOptions<TFn>,
-): AsyncRateLimiter<TFn> {
-  const [asyncRateLimiter] = useState(() =>
-    bindInstanceMethods(new AsyncRateLimiter<TFn>(fn, options)),
+  selector?: (state: AsyncRateLimiterState<TFn>) => TSelected,
+): ReactAsyncRateLimiter<TFn, TSelected> {
+  const [asyncRateLimiter] = useState(
+    () => new AsyncRateLimiter<TFn>(fn, options),
   )
+
+  const state = useStore(asyncRateLimiter.store, selector)
 
   asyncRateLimiter.setOptions(options)
 
-  return asyncRateLimiter
+  return useMemo(
+    () =>
+      ({
+        ...asyncRateLimiter,
+        state,
+      }) as unknown as ReactAsyncRateLimiter<TFn, TSelected>, // omit `store` in favor of `state`
+    [asyncRateLimiter, state],
+  )
 }

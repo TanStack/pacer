@@ -8,10 +8,13 @@ title: useAsyncThrottler
 # Function: useAsyncThrottler()
 
 ```ts
-function useAsyncThrottler<TFn>(fn, options): AsyncThrottler<TFn>
+function useAsyncThrottler<TFn, TSelected>(
+   fn, 
+   options, 
+selector?): ReactAsyncThrottler<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L55)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:70](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L70)
 
 A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -37,6 +40,8 @@ Error Handling:
 
 • **TFn** *extends* `AnyAsyncFunction`
 
+• **TSelected** = `AsyncThrottlerState`\<`TFn`\>
+
 ## Parameters
 
 ### fn
@@ -47,9 +52,13 @@ Error Handling:
 
 `AsyncThrottlerOptions`\<`TFn`\>
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-`AsyncThrottler`\<`TFn`\>
+[`ReactAsyncThrottler`](../../interfaces/reactasyncthrottler.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

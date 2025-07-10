@@ -8,10 +8,13 @@ title: useDebouncedState
 # Function: useDebouncedState()
 
 ```ts
-function useDebouncedState<TValue>(value, options): [TValue, Dispatch<SetStateAction<TValue>>, Debouncer<Dispatch<SetStateAction<TValue>>>]
+function useDebouncedState<TValue, TSelected>(
+   value, 
+   options, 
+   selector?): [TValue, Dispatch<SetStateAction<TValue>>, ReactDebouncer<Dispatch<SetStateAction<TValue>>, TSelected>]
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:38](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L38)
+Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L42)
 
 A React hook that creates a debounced state value, combining React's useState with debouncing functionality.
 This hook provides both the current debounced value and methods to update it.
@@ -30,6 +33,8 @@ The hook returns a tuple containing:
 
 • **TValue**
 
+• **TSelected** = `DebouncerState`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
+
 ## Parameters
 
 ### value
@@ -40,9 +45,13 @@ The hook returns a tuple containing:
 
 `DebouncerOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, `Debouncer`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>\]
+\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, [`ReactDebouncer`](../../interfaces/reactdebouncer.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>\]
 
 ## Example
 
@@ -61,5 +70,5 @@ const handleChange = (e) => {
 const executionCount = debouncer.getExecutionCount();
 
 // Get the pending state
-const isPending = debouncer.getIsPending();
+const isPending = debouncer.getState().isPending;
 ```

@@ -1,30 +1,22 @@
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
-import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
-import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
+import type {
+  AsyncThrottlerOptions,
+  AsyncThrottlerState,
+} from '@tanstack/pacer/async-throttler'
 
-export interface SolidAsyncThrottler<TFn extends AnyAsyncFunction>
-  extends Omit<
-    AsyncThrottler<TFn>,
-    | 'getSuccessCount'
-    | 'getSettleCount'
-    | 'getErrorCount'
-    | 'getIsPending'
-    | 'getIsExecuting'
-    | 'getLastResult'
-    | 'getLastExecutionTime'
-    | 'getNextExecutionTime'
-  > {
-  successCount: Accessor<number>
-  settleCount: Accessor<number>
-  errorCount: Accessor<number>
-  isPending: Accessor<boolean>
-  isExecuting: Accessor<boolean>
-  lastResult: Accessor<ReturnType<TFn> | undefined>
-  lastExecutionTime: Accessor<number>
-  nextExecutionTime: Accessor<number>
+export interface SolidAsyncThrottler<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncThrottlerState<TFn>,
+> extends Omit<AsyncThrottler<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the throttler state changes
+   *
+   * Use this instead of `throttler.store.state`
+   */
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**
@@ -77,68 +69,20 @@ export interface SolidAsyncThrottler<TFn extends AnyAsyncFunction>
  * );
  * ```
  */
-export function createAsyncThrottler<TFn extends AnyAsyncFunction>(
+export function createAsyncThrottler<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncThrottlerState<TFn>,
+>(
   fn: TFn,
   initialOptions: AsyncThrottlerOptions<TFn>,
-): SolidAsyncThrottler<TFn> {
-  const asyncThrottler = bindInstanceMethods(
-    new AsyncThrottler<TFn>(fn, initialOptions),
-  )
+  selector?: (state: AsyncThrottlerState<TFn>) => TSelected,
+): SolidAsyncThrottler<TFn, TSelected> {
+  const asyncThrottler = new AsyncThrottler(fn, initialOptions)
 
-  const [successCount, setSuccessCount] = createSignal(
-    asyncThrottler.getSuccessCount(),
-  )
-  const [settleCount, setSettleCount] = createSignal(
-    asyncThrottler.getSettleCount(),
-  )
-  const [errorCount, setErrorCount] = createSignal(
-    asyncThrottler.getErrorCount(),
-  )
-  const [isPending, setIsPending] = createSignal(asyncThrottler.getIsPending())
-  const [isExecuting, setIsExecuting] = createSignal(
-    asyncThrottler.getIsExecuting(),
-  )
-  const [lastResult, setLastResult] = createSignal(
-    asyncThrottler.getLastResult(),
-  )
-  const [lastExecutionTime, setLastExecutionTime] = createSignal(
-    asyncThrottler.getLastExecutionTime(),
-  )
-  const [nextExecutionTime, setNextExecutionTime] = createSignal(
-    asyncThrottler.getNextExecutionTime(),
-  )
-
-  function setOptions(newOptions: Partial<AsyncThrottlerOptions<TFn>>) {
-    asyncThrottler.setOptions({
-      ...newOptions,
-      onSettled: (throttler) => {
-        setSuccessCount(throttler.getSuccessCount())
-        setSettleCount(throttler.getSettleCount())
-        setErrorCount(throttler.getErrorCount())
-        setIsPending(throttler.getIsPending())
-        setIsExecuting(throttler.getIsExecuting())
-        setLastExecutionTime(throttler.getLastExecutionTime())
-        setNextExecutionTime(throttler.getNextExecutionTime())
-        setLastResult(throttler.getLastResult())
-
-        const onSettled = newOptions.onSettled ?? initialOptions.onSettled
-        onSettled?.(throttler)
-      },
-    })
-  }
-
-  setOptions(initialOptions)
+  const state = useStore(asyncThrottler.store, selector)
 
   return {
     ...asyncThrottler,
-    errorCount,
-    isExecuting,
-    isPending,
-    lastExecutionTime,
-    lastResult,
-    nextExecutionTime,
-    setOptions,
-    settleCount,
-    successCount,
-  } as SolidAsyncThrottler<TFn>
+    state,
+  } as SolidAsyncThrottler<TFn, TSelected>
 }

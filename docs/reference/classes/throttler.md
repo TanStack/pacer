@@ -7,7 +7,7 @@ title: Throttler
 
 # Class: Throttler\<TFn\>
 
-Defined in: [throttler.ts:71](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L71)
+Defined in: [throttler.ts:126](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L126)
 
 A class that creates a throttled function.
 
@@ -20,6 +20,14 @@ Supports both leading and trailing edge execution:
 - Trailing: Execute after wait period if called during throttle (default: true)
 
 For collapsing rapid-fire events where you only care about the last call, consider using Debouncer.
+
+State Management:
+- Uses TanStack Store for reactive state management
+- Use `initialState` to provide initial state values when creating the throttler
+- Use `onExecute` callback to react to function execution and implement custom logic
+- The state includes execution count, last execution time, pending status, and more
+- State can be accessed via `throttler.store.state` when using the class directly
+- When using framework adapters (React/Solid), state is accessed from `throttler.state`
 
 ## Example
 
@@ -48,7 +56,7 @@ throttler.maybeExecute('123'); // Throttled
 new Throttler<TFn>(fn, initialOptions): Throttler<TFn>
 ```
 
-Defined in: [throttler.ts:78](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L78)
+Defined in: [throttler.ts:133](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L133)
 
 #### Parameters
 
@@ -64,6 +72,26 @@ Defined in: [throttler.ts:78](https://github.com/TanStack/pacer/blob/main/packag
 
 [`Throttler`](../throttler.md)\<`TFn`\>
 
+## Properties
+
+### options
+
+```ts
+options: ThrottlerOptions<TFn>;
+```
+
+Defined in: [throttler.ts:130](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L130)
+
+***
+
+### store
+
+```ts
+readonly store: Store<Readonly<ThrottlerState<TFn>>>;
+```
+
+Defined in: [throttler.ts:127](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L127)
+
 ## Methods
 
 ### cancel()
@@ -72,7 +100,7 @@ Defined in: [throttler.ts:78](https://github.com/TanStack/pacer/blob/main/packag
 cancel(): void
 ```
 
-Defined in: [throttler.ts:189](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L189)
+Defined in: [throttler.ts:276](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L276)
 
 Cancels any pending trailing execution and clears internal state.
 
@@ -88,115 +116,19 @@ Has no effect if there is no pending execution.
 
 ***
 
-### getEnabled()
+### flush()
 
 ```ts
-getEnabled(): boolean
+flush(): void
 ```
 
-Defined in: [throttler.ts:110](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L110)
+Defined in: [throttler.ts:254](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L254)
 
-Returns the current enabled state of the throttler
+Processes the current pending execution immediately
 
 #### Returns
 
-`boolean`
-
-***
-
-### getExecutionCount()
-
-```ts
-getExecutionCount(): number
-```
-
-Defined in: [throttler.ts:214](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L214)
-
-Returns the number of times the function has been executed
-
-#### Returns
-
-`number`
-
-***
-
-### getIsPending()
-
-```ts
-getIsPending(): boolean
-```
-
-Defined in: [throttler.ts:221](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L221)
-
-Returns `true` if there is a pending execution
-
-#### Returns
-
-`boolean`
-
-***
-
-### getLastExecutionTime()
-
-```ts
-getLastExecutionTime(): number
-```
-
-Defined in: [throttler.ts:200](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L200)
-
-Returns the last execution time
-
-#### Returns
-
-`number`
-
-***
-
-### getNextExecutionTime()
-
-```ts
-getNextExecutionTime(): number
-```
-
-Defined in: [throttler.ts:207](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L207)
-
-Returns the next execution time
-
-#### Returns
-
-`number`
-
-***
-
-### getOptions()
-
-```ts
-getOptions(): Required<ThrottlerOptions<TFn>>
-```
-
-Defined in: [throttler.ts:103](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L103)
-
-Returns the current throttler options
-
-#### Returns
-
-`Required`\<[`ThrottlerOptions`](../../interfaces/throttleroptions.md)\<`TFn`\>\>
-
-***
-
-### getWait()
-
-```ts
-getWait(): number
-```
-
-Defined in: [throttler.ts:117](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L117)
-
-Returns the current wait time in milliseconds
-
-#### Returns
-
-`number`
+`void`
 
 ***
 
@@ -206,7 +138,7 @@ Returns the current wait time in milliseconds
 maybeExecute(...args): void
 ```
 
-Defined in: [throttler.ts:143](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L143)
+Defined in: [throttler.ts:204](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L204)
 
 Attempts to execute the throttled function. The execution behavior depends on the throttler options:
 
@@ -242,13 +174,29 @@ throttled.maybeExecute('c', 'd');
 
 ***
 
+### reset()
+
+```ts
+reset(): void
+```
+
+Defined in: [throttler.ts:287](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L287)
+
+Resets the throttler state to its default values
+
+#### Returns
+
+`void`
+
+***
+
 ### setOptions()
 
 ```ts
 setOptions(newOptions): void
 ```
 
-Defined in: [throttler.ts:91](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L91)
+Defined in: [throttler.ts:147](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L147)
 
 Updates the throttler options
 

@@ -7,7 +7,7 @@ title: Batcher
 
 # Class: Batcher\<TValue\>
 
-Defined in: [batcher.ts:84](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L84)
+Defined in: [batcher.ts:143](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L143)
 
 A class that collects items and processes them in batches.
 
@@ -19,6 +19,15 @@ The Batcher provides a flexible way to implement batching with configurable:
 - Custom batch processing logic via getShouldExecute
 - Event callbacks for monitoring batch operations
 
+State Management:
+- Uses TanStack Store for reactive state management
+- Use `initialState` to provide initial state values when creating the batcher
+- Use `onExecute` callback to react to batch execution and implement custom logic
+- Use `onItemsChange` callback to react to items being added or removed from the batcher
+- The state includes batch execution count, total items processed, items, and running status
+- State can be accessed via `batcher.store.state` when using the class directly
+- When using framework adapters (React/Solid), state is accessed from `batcher.state`
+
 ## Example
 
 ```ts
@@ -27,7 +36,7 @@ const batcher = new Batcher<number>(
   {
     maxSize: 5,
     wait: 2000,
-    onExecuteBatch: (items) => console.log('Batch executed:', items)
+    onExecute: (batcher) => console.log('Batch executed:', batcher.peekAllItems())
   }
 );
 
@@ -35,7 +44,7 @@ batcher.addItem(1);
 batcher.addItem(2);
 // After 2 seconds or when 5 items are added, whichever comes first,
 // the batch will be processed
-// batcher.execute() // manually trigger a batch
+// batcher.flush() // manually trigger a batch
 ```
 
 ## Type Parameters
@@ -50,7 +59,7 @@ batcher.addItem(2);
 new Batcher<TValue>(fn, initialOptions): Batcher<TValue>
 ```
 
-Defined in: [batcher.ts:92](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L92)
+Defined in: [batcher.ts:150](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L150)
 
 #### Parameters
 
@@ -66,6 +75,26 @@ Defined in: [batcher.ts:92](https://github.com/TanStack/pacer/blob/main/packages
 
 [`Batcher`](../batcher.md)\<`TValue`\>
 
+## Properties
+
+### options
+
+```ts
+options: BatcherOptionsWithOptionalCallbacks<TValue>;
+```
+
+Defined in: [batcher.ts:147](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L147)
+
+***
+
+### store
+
+```ts
+readonly store: Store<Readonly<BatcherState<TValue>>>;
+```
+
+Defined in: [batcher.ts:144](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L144)
+
 ## Methods
 
 ### addItem()
@@ -74,7 +103,7 @@ Defined in: [batcher.ts:92](https://github.com/TanStack/pacer/blob/main/packages
 addItem(item): void
 ```
 
-Defined in: [batcher.ts:118](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L118)
+Defined in: [batcher.ts:194](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L194)
 
 Adds an item to the batcher
 If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
@@ -91,21 +120,15 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 
 ***
 
-### execute()
+### clear()
 
 ```ts
-execute(): void
+clear(): void
 ```
 
-Defined in: [batcher.ts:146](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L146)
+Defined in: [batcher.ts:282](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L282)
 
-Processes the current batch of items.
-This method will automatically be triggered if the batcher is running and any of these conditions are met:
-- The number of items reaches batchSize
-- The wait duration has elapsed
-- The getShouldExecute function returns true upon adding an item
-
-You can also call this method manually to process the current batch at any time.
+Removes all items from the batcher
 
 #### Returns
 
@@ -113,99 +136,19 @@ You can also call this method manually to process the current batch at any time.
 
 ***
 
-### getBatchExecutionCount()
+### flush()
 
 ```ts
-getBatchExecutionCount(): number
+flush(): void
 ```
 
-Defined in: [batcher.ts:220](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L220)
+Defined in: [batcher.ts:242](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L242)
 
-Returns the number of times batches have been processed
+Processes the current batch of items immediately
 
 #### Returns
 
-`number`
-
-***
-
-### getIsEmpty()
-
-```ts
-getIsEmpty(): boolean
-```
-
-Defined in: [batcher.ts:199](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L199)
-
-Returns true if the batcher is empty
-
-#### Returns
-
-`boolean`
-
-***
-
-### getIsRunning()
-
-```ts
-getIsRunning(): boolean
-```
-
-Defined in: [batcher.ts:206](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L206)
-
-Returns true if the batcher is running
-
-#### Returns
-
-`boolean`
-
-***
-
-### getItemExecutionCount()
-
-```ts
-getItemExecutionCount(): number
-```
-
-Defined in: [batcher.ts:227](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L227)
-
-Returns the total number of individual items that have been processed
-
-#### Returns
-
-`number`
-
-***
-
-### getOptions()
-
-```ts
-getOptions(): BatcherOptions<TValue>
-```
-
-Defined in: [batcher.ts:110](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L110)
-
-Returns the current batcher options
-
-#### Returns
-
-[`BatcherOptions`](../../interfaces/batcheroptions.md)\<`TValue`\>
-
-***
-
-### getSize()
-
-```ts
-getSize(): number
-```
-
-Defined in: [batcher.ts:192](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L192)
-
-Returns the current number of items in the batcher
-
-#### Returns
-
-`number`
+`void`
 
 ***
 
@@ -215,13 +158,29 @@ Returns the current number of items in the batcher
 peekAllItems(): TValue[]
 ```
 
-Defined in: [batcher.ts:213](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L213)
+Defined in: [batcher.ts:268](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L268)
 
-Returns a copy of all items currently in the batcher
+Returns a copy of all items in the batcher
 
 #### Returns
 
 `TValue`[]
+
+***
+
+### reset()
+
+```ts
+reset(): void
+```
+
+Defined in: [batcher.ts:289](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L289)
+
+Resets the batcher state to its default values
+
+#### Returns
+
+`void`
 
 ***
 
@@ -231,7 +190,7 @@ Returns a copy of all items currently in the batcher
 setOptions(newOptions): void
 ```
 
-Defined in: [batcher.ts:103](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L103)
+Defined in: [batcher.ts:164](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L164)
 
 Updates the batcher options
 
@@ -253,7 +212,7 @@ Updates the batcher options
 start(): void
 ```
 
-Defined in: [batcher.ts:181](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L181)
+Defined in: [batcher.ts:258](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L258)
 
 Starts the batcher and processes any pending items
 
@@ -269,7 +228,7 @@ Starts the batcher and processes any pending items
 stop(): void
 ```
 
-Defined in: [batcher.ts:169](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L169)
+Defined in: [batcher.ts:250](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L250)
 
 Stops the batcher from processing batches
 

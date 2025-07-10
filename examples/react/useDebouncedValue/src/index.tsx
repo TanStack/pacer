@@ -130,12 +130,8 @@ function App3() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{debouncer.getOptions().enabled.toString()}</td>
-          </tr>
-          <tr>
             <td>Is Pending:</td>
-            <td>{debouncer.getIsPending().toString()}</td>
+            <td>{debouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
             <td>Instant Executions:</td>
@@ -143,11 +139,11 @@ function App3() {
           </tr>
           <tr>
             <td>Debounced Executions:</td>
-            <td>{debouncer.getExecutionCount()}</td>
+            <td>{debouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
-            <td>{instantExecutionCount - debouncer.getExecutionCount()}</td>
+            <td>{instantExecutionCount - debouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -155,7 +151,7 @@ function App3() {
               {instantExecutionCount === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount - debouncer.getExecutionCount()) /
+                    ((instantExecutionCount - debouncer.state.executionCount) /
                       instantExecutionCount) *
                       100,
                   )}
@@ -167,6 +163,9 @@ function App3() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Debounced to 250ms wait time</p>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(debouncer.state, null, 2)}
+      </pre>
     </div>
   )
 }

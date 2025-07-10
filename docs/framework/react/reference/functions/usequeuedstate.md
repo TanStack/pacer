@@ -8,7 +8,10 @@ title: useQueuedState
 # Function: useQueuedState()
 
 ```ts
-function useQueuedState<TValue>(fn, options): [TValue[], (item, position?, runOnUpdate?) => boolean, Queuer<TValue>]
+function useQueuedState<TValue, TSelected>(
+   fn, 
+   options, 
+   selector?): [TValue[], (item, position?, runOnItemsChange?) => boolean, ReactQueuer<TValue, TSelected>]
 ```
 
 Defined in: [react-pacer/src/queuer/useQueuedState.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedState.ts#L54)
@@ -31,6 +34,8 @@ The hook returns a tuple containing:
 
 • **TValue**
 
+• **TSelected** *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `QueuerState`\<`TValue`\>
+
 ## Parameters
 
 ### fn
@@ -41,9 +46,13 @@ The hook returns a tuple containing:
 
 `QueuerOptions`\<`TValue`\> = `{}`
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-\[`TValue`[], (`item`, `position`?, `runOnUpdate`?) => `boolean`, `Queuer`\<`TValue`\>\]
+\[`TValue`[], (`item`, `position`?, `runOnItemsChange`?) => `boolean`, [`ReactQueuer`](../../interfaces/reactqueuer.md)\<`TValue`, `TSelected`\>\]
 
 ## Example
 

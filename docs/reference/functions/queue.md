@@ -8,17 +8,28 @@ title: queue
 # Function: queue()
 
 ```ts
-function queue<TValue>(fn, options): (item, position, runOnUpdate) => boolean
+function queue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean
 ```
 
-Defined in: [queuer.ts:549](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L549)
+Defined in: [queuer.ts:671](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L671)
 
 Creates a queue that processes items immediately upon addition.
 Items are processed sequentially in FIFO order by default.
 
 This is a simplified wrapper around the Queuer class that only exposes the
-`addItem` method. The queue is always running and will process items as they are added.
+`addItem` method. The queue is always isRunning and will process items as they are added.
 For more control over queue processing, use the Queuer class directly.
+
+State Management:
+- Uses TanStack Store for reactive state management
+- Use `initialState` to provide initial state values when creating the queuer
+- Use `onExecute` callback to react to item execution and implement custom logic
+- Use `onItemsChange` callback to react to items being added or removed from the queue
+- Use `onExpire` callback to react to items expiring and implement custom logic
+- Use `onReject` callback to react to items being rejected when the queue is full
+- The state includes execution count, expiration count, rejection count, and isRunning status
+- State can be accessed via the underlying Queuer instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 Example usage:
 ```ts
@@ -48,7 +59,7 @@ processPriority(3); // Processed before 1
 
 (`item`) => `void`
 
-### options
+### initialOptions
 
 [`QueuerOptions`](../../interfaces/queueroptions.md)\<`TValue`\>
 
@@ -77,7 +88,7 @@ queuer.addItem('task2', 'front');
 
 [`QueuePosition`](../../type-aliases/queueposition.md) = `...`
 
-#### runOnUpdate
+#### runOnItemsChange
 
 `boolean` = `true`
 

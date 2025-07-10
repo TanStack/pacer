@@ -11,7 +11,7 @@ title: asyncThrottle
 function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-throttler.ts:363](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L363)
+Defined in: [async-throttler.ts:457](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L457)
 
 Creates an async throttled function that limits how often the function can execute.
 The throttled function will execute at most once per wait period, even if called multiple times.
@@ -27,6 +27,16 @@ Error Handling:
 - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
 - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
 - The error state can be checked using the underlying AsyncThrottler instance
+
+State Management:
+- Uses TanStack Store for reactive state management
+- Use `initialState` to provide initial state values when creating the async throttler
+- Use `onSuccess` callback to react to successful function execution and implement custom logic
+- Use `onError` callback to react to function execution errors and implement custom error handling
+- Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
+- The state includes error count, execution status, last execution time, and success/settle counts
+- State can be accessed via the underlying AsyncThrottler instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 ## Type Parameters
 
@@ -46,15 +56,15 @@ Error Handling:
 
 `Function`
 
-Attempts to execute the throttled function.
-If a call is already in progress, it may be blocked or queued depending on the `wait` option.
+Attempts to execute the throttled function. The execution behavior depends on the throttler options:
 
-Error Handling:
-- If the throttled function throws and no `onError` handler is configured,
-  the error will be thrown from this method.
-- If an `onError` handler is configured, errors will be caught and passed to the handler,
-  and this method will return undefined.
-- The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
+- If enough time has passed since the last execution (>= wait period):
+  - With leading=true: Executes immediately
+  - With leading=false: Waits for the next trailing execution
+
+- If within the wait period:
+  - With trailing=true: Schedules execution for end of wait period
+  - With trailing=false: Drops the execution
 
 ### Parameters
 
@@ -66,11 +76,17 @@ Error Handling:
 
 `Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
 
-A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
+### Example
 
-### Throws
+```ts
+const throttled = new AsyncThrottler(fn, { wait: 1000 });
 
-The error from the throttled function if no onError handler is configured
+// First call executes immediately
+await throttled.maybeExecute('a', 'b');
+
+// Call during wait period - gets throttled
+await throttled.maybeExecute('c', 'd');
+```
 
 ## Example
 

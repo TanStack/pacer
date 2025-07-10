@@ -8,10 +8,13 @@ title: useThrottledCallback
 # Function: useThrottledCallback()
 
 ```ts
-function useThrottledCallback<TFn, TArgs>(fn, options): (...args) => void
+function useThrottledCallback<TFn, TSelected>(
+   fn, 
+   options, 
+   selector): (...args) => void
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottledCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledCallback.ts#L43)
+Defined in: [react-pacer/src/throttler/useThrottledCallback.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledCallback.ts#L46)
 
 A React hook that creates a throttled version of a callback function.
 This hook is essentially a wrapper around the basic `throttle` function
@@ -37,7 +40,7 @@ Consider using the `useThrottler` hook instead.
 
 • **TFn** *extends* `AnyFunction`
 
-• **TArgs** *extends* `any`[]
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -49,6 +52,10 @@ Consider using the `useThrottler` hook instead.
 
 `ThrottlerOptions`\<`TFn`\>
 
+### selector
+
+(`state`) => `TSelected`
+
 ## Returns
 
 `Function`
@@ -57,7 +64,7 @@ Consider using the `useThrottler` hook instead.
 
 #### args
 
-...`TArgs`
+...`Parameters`\<`TFn`\>
 
 ### Returns
 

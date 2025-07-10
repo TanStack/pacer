@@ -8,10 +8,13 @@ title: useDebouncedCallback
 # Function: useDebouncedCallback()
 
 ```ts
-function useDebouncedCallback<TFn>(fn, options): (...args) => void
+function useDebouncedCallback<TFn, TSelected>(
+   fn, 
+   options, 
+   selector): (...args) => void
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L42)
+Defined in: [react-pacer/src/debouncer/useDebouncedCallback.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L45)
 
 A React hook that creates a debounced version of a callback function.
 This hook is essentially a wrapper around the basic `debounce` function
@@ -36,6 +39,8 @@ Consider using the `useDebouncer` hook instead.
 
 • **TFn** *extends* `AnyFunction`
 
+• **TSelected** = \{\}
+
 ## Parameters
 
 ### fn
@@ -45,6 +50,10 @@ Consider using the `useDebouncer` hook instead.
 ### options
 
 `DebouncerOptions`\<`TFn`\>
+
+### selector
+
+(`state`) => `TSelected`
 
 ## Returns
 

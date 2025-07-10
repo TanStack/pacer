@@ -1,22 +1,22 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
-import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
+import type {
+  RateLimiterOptions,
+  RateLimiterState,
+} from '@tanstack/pacer/rate-limiter'
 
-export interface SolidRateLimiter<TFn extends AnyFunction>
-  extends Omit<
-    RateLimiter<TFn>,
-    | 'getExecutionCount'
-    | 'getMsUntilNextWindow'
-    | 'getRejectionCount'
-    | 'getRemainingInWindow'
-  > {
-  executionCount: Accessor<number>
-  msUntilNextWindow: Accessor<number>
-  rejectionCount: Accessor<number>
-  remainingInWindow: Accessor<number>
+export interface SolidRateLimiter<
+  TFn extends AnyFunction,
+  TSelected = RateLimiterState,
+> extends Omit<RateLimiter<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated when the rate limiter state changes
+   *
+   * Use this instead of `rateLimiter.store.state`
+   */
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**
@@ -59,57 +59,20 @@ export interface SolidRateLimiter<TFn extends AnyFunction>
  * console.log('Next window in:', rateLimiter.msUntilNextWindow());
  * ```
  */
-export function createRateLimiter<TFn extends AnyFunction>(
+export function createRateLimiter<
+  TFn extends AnyFunction,
+  TSelected = RateLimiterState,
+>(
   fn: TFn,
   initialOptions: RateLimiterOptions<TFn>,
-): SolidRateLimiter<TFn> {
-  const rateLimiter = bindInstanceMethods(
-    new RateLimiter<TFn>(fn, initialOptions),
-  )
+  selector?: (state: RateLimiterState) => TSelected,
+): SolidRateLimiter<TFn, TSelected> {
+  const rateLimiter = new RateLimiter<TFn>(fn, initialOptions)
 
-  const [executionCount, setExecutionCount] = createSignal(
-    rateLimiter.getExecutionCount(),
-  )
-  const [rejectionCount, setRejectionCount] = createSignal(
-    rateLimiter.getRejectionCount(),
-  )
-  const [remainingInWindow, setRemainingInWindow] = createSignal(
-    rateLimiter.getRemainingInWindow(),
-  )
-  const [msUntilNextWindow, setMsUntilNextWindow] = createSignal(
-    rateLimiter.getMsUntilNextWindow(),
-  )
-
-  function setOptions(newOptions: Partial<RateLimiterOptions<TFn>>) {
-    rateLimiter.setOptions({
-      ...newOptions,
-      onExecute: (rateLimiter) => {
-        setExecutionCount(rateLimiter.getExecutionCount())
-        setRemainingInWindow(rateLimiter.getRemainingInWindow())
-        setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
-
-        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
-        onExecute?.(rateLimiter)
-      },
-      onReject: (rateLimiter) => {
-        setRejectionCount(rateLimiter.getRejectionCount())
-        setRemainingInWindow(rateLimiter.getRemainingInWindow())
-        setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
-
-        const onReject = newOptions.onReject ?? initialOptions.onReject
-        onReject?.(rateLimiter)
-      },
-    })
-  }
-
-  setOptions(initialOptions)
+  const state = useStore(rateLimiter.store, selector)
 
   return {
     ...rateLimiter,
-    executionCount,
-    rejectionCount,
-    remainingInWindow,
-    msUntilNextWindow,
-    setOptions,
-  } as SolidRateLimiter<TFn>
+    state,
+  } as unknown as SolidRateLimiter<TFn, TSelected> // omit `store` in favor of `state`
 }

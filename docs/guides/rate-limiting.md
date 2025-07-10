@@ -112,7 +112,7 @@ const limiter = new RateLimiter(
     limit: 5,
     window: 60 * 1000,
     onExecute: (rateLimiter) => {
-      console.log('Function executed', rateLimiter.getExecutionCount())
+      console.log('Function executed', rateLimiter.store.state.executionCount)
     },
     onReject: (rateLimiter) => {
       console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`)
@@ -120,10 +120,10 @@ const limiter = new RateLimiter(
   }
 )
 
-// Get information about current state
+// Access current state via TanStack Store
 console.log(limiter.getRemainingInWindow()) // Number of calls remaining in current window
-console.log(limiter.getExecutionCount()) // Total number of successful executions
-console.log(limiter.getRejectionCount()) // Total number of rejected executions
+console.log(limiter.store.state.executionCount) // Total number of successful executions
+console.log(limiter.store.state.rejectionCount) // Total number of rejected executions
 
 // Attempt to execute (returns boolean indicating success)
 limiter.maybeExecute('user-1')
@@ -158,7 +158,7 @@ const limiter = new RateLimiter(fn, {
   limit: 5,
   window: 1000,
   enabled: (limiter) => {
-    return limiter.getExecutionCount() < 100 // Disable after 100 executions
+    return limiter.store.state.executionCount < 100 // Disable after 100 executions
   }
 })
 ```
@@ -173,15 +173,15 @@ Several options in the RateLimiter support dynamic values through callback funct
 const limiter = new RateLimiter(fn, {
   // Dynamic limit based on execution count
   limit: (limiter) => {
-    return Math.max(1, 10 - limiter.getExecutionCount()) // Decrease limit with each execution
+    return Math.max(1, 10 - limiter.store.state.executionCount) // Decrease limit with each execution
   },
   // Dynamic window based on execution count
   window: (limiter) => {
-    return limiter.getExecutionCount() * 1000 // Increase window with each execution
+    return limiter.store.state.executionCount * 1000 // Increase window with each execution
   },
   // Dynamic enabled state based on execution count
   enabled: (limiter) => {
-    return limiter.getExecutionCount() < 100 // Disable after 100 executions
+    return limiter.store.state.executionCount < 100 // Disable after 100 executions
   }
 })
 ```
@@ -203,7 +203,7 @@ const limiter = new RateLimiter(fn, {
   window: 1000,
   onExecute: (rateLimiter) => {
     // Called after each successful execution
-    console.log('Function executed', rateLimiter.getExecutionCount())
+    console.log('Function executed', rateLimiter.store.state.executionCount)
   },
   onReject: (rateLimiter) => {
     // Called when an execution is rejected
@@ -213,6 +213,90 @@ const limiter = new RateLimiter(fn, {
 ```
 
 The `onExecute` callback is called after each successful execution of the rate-limited function, while the `onReject` callback is called when an execution is rejected due to rate limiting. These callbacks are useful for tracking executions, updating UI state, or providing feedback to users.
+
+## State Management
+
+The `RateLimiter` class uses TanStack Store for reactive state management, providing real-time access to execution counts and rejection statistics.
+
+### Accessing State
+
+When using the `RateLimiter` class directly, access state via the `store.state` property:
+
+```ts
+const limiter = new RateLimiter(fn, { limit: 5, window: 1000 })
+
+// Access current state
+console.log(limiter.store.state.rejectionCount)
+```
+
+### Framework Adapters
+
+When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+
+```ts
+// React example
+const limiter = useRateLimiter(fn, { limit: 5, window: 1000 })
+
+// Access state directly (reactive)
+console.log(limiter.state.executionCount) // Reactive value
+console.log(limiter.state.rejectionCount) // Reactive value
+```
+
+### Initial State
+
+You can provide initial state values when creating a rate limiter:
+
+```ts
+const limiter = new RateLimiter(fn, {
+  limit: 5,
+  window: 1000,
+  initialState: {
+    executionCount: 2, // Start with 2 executions
+    rejectionCount: 1, // Start with 1 rejection
+    executionTimes: [Date.now() - 500], // Start with one execution timestamp
+  }
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const limiter = new RateLimiter(fn, { limit: 5, window: 1000 })
+
+// Subscribe to state changes
+const unsubscribe = limiter.store.subscribe((state) => {
+  console.log('Execution count:', state.executionCount)
+  console.log('Rejection count:', state.rejectionCount)
+  console.log('Execution times:', state.executionTimes)
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+### Available State Properties
+
+The `RateLimiterState` includes:
+
+- `executionCount`: Number of successful function executions
+- `rejectionCount`: Number of rejected executions due to rate limiting
+- `executionTimes`: Array of timestamps when executions occurred (used for rate limiting calculations)
+
+### Helper Methods
+
+The rate limiter provides helper methods that compute values based on the current state:
+
+```ts
+const limiter = new RateLimiter(fn, { limit: 5, window: 1000 })
+
+// These methods use the current state to compute values
+console.log(limiter.getRemainingInWindow()) // Number of calls remaining in current window
+console.log(limiter.getMsUntilNextWindow()) // Milliseconds until next window
+```
+
+These methods are computed values that use the current state and don't need to be accessed through the store.
 
 ---
 

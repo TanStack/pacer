@@ -8,10 +8,13 @@ title: useQueuer
 # Function: useQueuer()
 
 ```ts
-function useQueuer<TValue>(fn, options): Queuer<TValue>
+function useQueuer<TValue, TSelected>(
+   fn, 
+   options, 
+selector?): ReactQueuer<TValue, TSelected>
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L44)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L54)
 
 A React hook that creates and manages a Queuer instance.
 
@@ -33,6 +36,8 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 • **TValue**
 
+• **TSelected** = `QueuerState`\<`TValue`\>
+
 ## Parameters
 
 ### fn
@@ -43,9 +48,13 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 `QueuerOptions`\<`TValue`\> = `{}`
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-`Queuer`\<`TValue`\>
+[`ReactQueuer`](../../interfaces/reactqueuer.md)\<`TValue`, `TSelected`\>
 
 ## Example
 

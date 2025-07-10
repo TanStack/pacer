@@ -9,6 +9,7 @@ title: "@tanstack/pacer"
 
 ## Classes
 
+- [AsyncBatcher](../classes/asyncbatcher.md)
 - [AsyncDebouncer](../classes/asyncdebouncer.md)
 - [AsyncQueuer](../classes/asyncqueuer.md)
 - [AsyncRateLimiter](../classes/asyncratelimiter.md)
@@ -21,15 +22,26 @@ title: "@tanstack/pacer"
 
 ## Interfaces
 
+- [AsyncBatcherOptions](../interfaces/asyncbatcheroptions.md)
+- [AsyncBatcherState](../interfaces/asyncbatcherstate.md)
 - [AsyncDebouncerOptions](../interfaces/asyncdebounceroptions.md)
+- [AsyncDebouncerState](../interfaces/asyncdebouncerstate.md)
 - [AsyncQueuerOptions](../interfaces/asyncqueueroptions.md)
+- [AsyncQueuerState](../interfaces/asyncqueuerstate.md)
 - [AsyncRateLimiterOptions](../interfaces/asyncratelimiteroptions.md)
+- [AsyncRateLimiterState](../interfaces/asyncratelimiterstate.md)
 - [AsyncThrottlerOptions](../interfaces/asyncthrottleroptions.md)
+- [AsyncThrottlerState](../interfaces/asyncthrottlerstate.md)
 - [BatcherOptions](../interfaces/batcheroptions.md)
+- [BatcherState](../interfaces/batcherstate.md)
 - [DebouncerOptions](../interfaces/debounceroptions.md)
+- [DebouncerState](../interfaces/debouncerstate.md)
 - [QueuerOptions](../interfaces/queueroptions.md)
+- [QueuerState](../interfaces/queuerstate.md)
 - [RateLimiterOptions](../interfaces/ratelimiteroptions.md)
+- [RateLimiterState](../interfaces/ratelimiterstate.md)
 - [ThrottlerOptions](../interfaces/throttleroptions.md)
+- [ThrottlerState](../interfaces/throttlerstate.md)
 
 ## Type Aliases
 
@@ -40,19 +52,15 @@ title: "@tanstack/pacer"
 
 ## Functions
 
+- [asyncBatch](../functions/asyncbatch.md)
 - [asyncDebounce](../functions/asyncdebounce.md)
 - [asyncQueue](../functions/asyncqueue.md)
 - [asyncRateLimit](../functions/asyncratelimit.md)
 - [asyncThrottle](../functions/asyncthrottle.md)
 - [batch](../functions/batch.md)
-- [bindInstanceMethods](../functions/bindinstancemethods.md)
 - [debounce](../functions/debounce.md)
 - [isFunction](../functions/isfunction.md)
-- [isPlainArray](../functions/isplainarray.md)
-- [isPlainObject](../functions/isplainobject.md)
 - [parseFunctionOrValue](../functions/parsefunctionorvalue.md)
 - [queue](../functions/queue.md)
 - [rateLimit](../functions/ratelimit.md)
-- [replaceEqualDeep](../functions/replaceequaldeep.md)
-- [shallowEqualObjects](../functions/shallowequalobjects.md)
 - [throttle](../functions/throttle.md)

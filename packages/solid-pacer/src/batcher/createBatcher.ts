@@ -1,43 +1,16 @@
 import { Batcher } from '@tanstack/pacer/batcher'
-import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
-import type { BatcherOptions } from '@tanstack/pacer/batcher'
+import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
-export interface SolidBatcher<TValue>
-  extends Omit<
-    Batcher<TValue>,
-    | 'peekAllItems'
-    | 'getBatchExecutionCount'
-    | 'getIsEmpty'
-    | 'getIsRunning'
-    | 'getItemExecutionCount'
-    | 'getSize'
-  > {
+export interface SolidBatcher<TValue, TSelected = BatcherState<TValue>>
+  extends Omit<Batcher<TValue>, 'store'> {
   /**
-   * Signal version of `peekAllItems`
+   * Reactive state that will be updated when the batcher state changes
+   *
+   * Use this instead of `batcher.store.state`
    */
-  allItems: Accessor<Array<TValue>>
-  /**
-   * Signal version of `getBatchExecutionCount`
-   */
-  batchExecutionCount: Accessor<number>
-  /**
-   * Signal version of `getIsEmpty`
-   */
-  isEmpty: Accessor<boolean>
-  /**
-   * Signal version of `getIsRunning`
-   */
-  isRunning: Accessor<boolean>
-  /**
-   * Signal version of `getItemExecutionCount`
-   */
-  itemExecutionCount: Accessor<number>
-  /**
-   * Signal version of `getSize`
-   */
-  size: Accessor<number>
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**
@@ -83,70 +56,20 @@ export interface SolidBatcher<TValue>
  * console.log('Size:', batcher.size());
  * console.log('Is empty:', batcher.isEmpty());
  * console.log('Is running:', batcher.isRunning());
- * console.log('Batch count:', batcher.batchExecutionCount());
- * console.log('Item count:', batcher.itemExecutionCount());
+ * console.log('Batch count:', batcher.executionCount());
+ * console.log('Item count:', batcher.totalItemsProcessed());
  * ```
  */
-export function createBatcher<TValue>(
+export function createBatcher<TValue, TSelected = BatcherState<TValue>>(
   fn: (items: Array<TValue>) => void,
   initialOptions: BatcherOptions<TValue> = {},
-): SolidBatcher<TValue> {
-  const batcher = bindInstanceMethods(new Batcher<TValue>(fn, initialOptions))
+  selector?: (state: BatcherState<TValue>) => TSelected,
+): SolidBatcher<TValue, TSelected> {
+  const batcher = new Batcher(fn, initialOptions)
 
-  const [allItems, setAllItems] = createSignal<Array<TValue>>(
-    batcher.peekAllItems(),
-  )
-  const [batchExecutionCount, setBatchExecutionCount] = createSignal(
-    batcher.getBatchExecutionCount(),
-  )
-  const [itemExecutionCount, setItemExecutionCount] = createSignal(
-    batcher.getItemExecutionCount(),
-  )
-  const [isEmpty, setIsEmpty] = createSignal(batcher.getIsEmpty())
-  const [isRunning, setIsRunning] = createSignal(batcher.getIsRunning())
-  const [size, setSize] = createSignal(batcher.getSize())
-
-  function setOptions(newOptions: Partial<BatcherOptions<TValue>>) {
-    batcher.setOptions({
-      ...newOptions,
-      onItemsChange: (batcher) => {
-        setAllItems(batcher.peekAllItems())
-        setBatchExecutionCount(batcher.getBatchExecutionCount())
-        setItemExecutionCount(batcher.getItemExecutionCount())
-        setIsEmpty(batcher.getIsEmpty())
-        setSize(batcher.getSize())
-
-        const onItemsChange =
-          newOptions.onItemsChange ?? initialOptions.onItemsChange
-        onItemsChange?.(batcher)
-      },
-      onExecute: (batcher) => {
-        setBatchExecutionCount(batcher.getBatchExecutionCount())
-        setItemExecutionCount(batcher.getItemExecutionCount())
-
-        const onExecute = newOptions.onExecute ?? initialOptions.onExecute
-        onExecute?.(batcher)
-      },
-      onIsRunningChange: (batcher) => {
-        setIsRunning(batcher.getIsRunning())
-
-        const onIsRunningChange =
-          newOptions.onIsRunningChange ?? initialOptions.onIsRunningChange
-        onIsRunningChange?.(batcher)
-      },
-    })
-  }
-
-  setOptions(initialOptions)
-
+  const state = useStore(batcher.store, selector)
   return {
     ...batcher,
-    allItems,
-    batchExecutionCount,
-    isEmpty,
-    isRunning,
-    itemExecutionCount,
-    size,
-    setOptions,
-  } as SolidBatcher<TValue>
+    state,
+  } as SolidBatcher<TValue, TSelected>
 }

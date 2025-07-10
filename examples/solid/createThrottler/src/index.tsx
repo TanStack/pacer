@@ -29,7 +29,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setCountThrottler.executionCount()}</td>
+            <td>{setCountThrottler.state().executionCount}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -82,7 +82,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setSearchThrottler.executionCount()}</td>
+            <td>{setSearchThrottler.state().executionCount}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -155,12 +155,13 @@ function App3() {
           </tr>
           <tr>
             <td>Throttled Executions:</td>
-            <td>{setValueThrottler.executionCount()}</td>
+            <td>{setValueThrottler.state().executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
             <td>
-              {instantExecutionCount() - setValueThrottler.executionCount()}
+              {instantExecutionCount() -
+                setValueThrottler.state().executionCount}
             </td>
           </tr>
           <tr>
@@ -170,7 +171,7 @@ function App3() {
                 ? '0'
                 : Math.round(
                     ((instantExecutionCount() -
-                      setValueThrottler.executionCount()) /
+                      setValueThrottler.state().executionCount) /
                       instantExecutionCount()) *
                       100,
                   )}

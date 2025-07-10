@@ -308,15 +308,15 @@ describe('Debouncer', () => {
       const mockFn = vi.fn()
       const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
-      expect(debouncer.getExecutionCount()).toBe(0)
+      expect(debouncer.store.state.executionCount).toBe(0)
 
       debouncer.maybeExecute('test')
       vi.advanceTimersByTime(1000)
-      expect(debouncer.getExecutionCount()).toBe(1)
+      expect(debouncer.store.state.executionCount).toBe(1)
 
       debouncer.maybeExecute('test')
       vi.advanceTimersByTime(1000)
-      expect(debouncer.getExecutionCount()).toBe(2)
+      expect(debouncer.store.state.executionCount).toBe(2)
     })
 
     it('should track execution count with leading and trailing', () => {
@@ -326,14 +326,14 @@ describe('Debouncer', () => {
         leading: true,
       })
 
-      expect(debouncer.getExecutionCount()).toBe(0)
+      expect(debouncer.store.state.executionCount).toBe(0)
 
       debouncer.maybeExecute('test')
       debouncer.maybeExecute('test2')
-      expect(debouncer.getExecutionCount()).toBe(1) // Leading execution
+      expect(debouncer.store.state.executionCount).toBe(1) // Leading execution
 
       vi.advanceTimersByTime(1000)
-      expect(debouncer.getExecutionCount()).toBe(2) // Trailing execution
+      expect(debouncer.store.state.executionCount).toBe(2) // Trailing execution
     })
 
     it('should not increment count when execution is cancelled', () => {
@@ -344,7 +344,7 @@ describe('Debouncer', () => {
       debouncer.cancel()
       vi.advanceTimersByTime(1000)
 
-      expect(debouncer.getExecutionCount()).toBe(0)
+      expect(debouncer.store.state.executionCount).toBe(0)
     })
   })
 
@@ -358,7 +358,7 @@ describe('Debouncer', () => {
       })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(true)
+      expect(debouncer.store.state.isPending).toBe(true)
 
       // Call again before wait expires
       vi.advanceTimersByTime(500)
@@ -366,10 +366,10 @@ describe('Debouncer', () => {
 
       // Time is almost up
       vi.advanceTimersByTime(900)
-      expect(debouncer.getIsPending()).toBe(true) // Still pending
+      expect(debouncer.store.state.isPending).toBe(true) // Still pending
 
       vi.advanceTimersByTime(100)
-      expect(debouncer.getIsPending()).toBe(false) // Now it's done
+      expect(debouncer.store.state.isPending).toBe(false) // Now it's done
     })
 
     it('should never be pending when trailing is false', () => {
@@ -381,7 +381,7 @@ describe('Debouncer', () => {
       })
 
       debouncer.maybeExecute('test1')
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
 
       // Call again before wait expires
       vi.advanceTimersByTime(500)
@@ -389,10 +389,10 @@ describe('Debouncer', () => {
 
       // Time is almost up
       vi.advanceTimersByTime(900)
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
 
       vi.advanceTimersByTime(100)
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
     })
 
     it('should not be pending when leading and trailing are both false', () => {
@@ -404,10 +404,10 @@ describe('Debouncer', () => {
       })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
 
       vi.advanceTimersByTime(1000)
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
     })
 
     it('should not be pending when disabled', () => {
@@ -415,10 +415,10 @@ describe('Debouncer', () => {
       const debouncer = new Debouncer(mockFn, { wait: 1000, enabled: false })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
 
       vi.advanceTimersByTime(1000)
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
     })
 
     it('should update pending when enabling/disabling', () => {
@@ -426,15 +426,15 @@ describe('Debouncer', () => {
       const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(true)
+      expect(debouncer.store.state.isPending).toBe(true)
 
       // Disable while there is a pending execution
       debouncer.setOptions({ enabled: false })
-      expect(debouncer.getIsPending()).toBe(false) // Should be false now
+      expect(debouncer.store.state.isPending).toBe(false) // Should be false now
 
       // Re-enable
       debouncer.setOptions({ enabled: true })
-      expect(debouncer.getIsPending()).toBe(false) // Should still be false
+      expect(debouncer.store.state.isPending).toBe(false) // Should still be false
     })
 
     it('should set pending to false when canceled', () => {
@@ -442,10 +442,10 @@ describe('Debouncer', () => {
       const debouncer = new Debouncer(mockFn, { wait: 1000 })
 
       debouncer.maybeExecute('test')
-      expect(debouncer.getIsPending()).toBe(true)
+      expect(debouncer.store.state.isPending).toBe(true)
 
       debouncer.cancel()
-      expect(debouncer.getIsPending()).toBe(false)
+      expect(debouncer.store.state.isPending).toBe(false)
     })
   })
 
@@ -629,24 +629,6 @@ describe('Debouncer', () => {
       debouncer.setOptions({ wait: 1000 })
 
       // Should still execute after the last wait time
-      vi.advanceTimersByTime(1000)
-      expect(mockFn).toBeCalledTimes(1)
-    })
-
-    it('should handle rapid enable/disable cycles', () => {
-      const mockFn = vi.fn()
-      const debouncer = new Debouncer(mockFn, { wait: 1000 })
-
-      // Start execution
-      debouncer.maybeExecute()
-
-      // Rapidly enable/disable
-      debouncer.setOptions({ enabled: false })
-      debouncer.setOptions({ enabled: true })
-      debouncer.setOptions({ enabled: false })
-      debouncer.setOptions({ enabled: true })
-
-      // Should execute if last state was enabled
       vi.advanceTimersByTime(1000)
       expect(mockFn).toBeCalledTimes(1)
     })

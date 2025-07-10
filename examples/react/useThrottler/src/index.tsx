@@ -10,8 +10,8 @@ function App1() {
   // Lower-level useThrottler hook - requires you to manage your own state
   const setCountThrottler = useThrottler(setThrottledCount, {
     wait: 1000,
-    leading: false,
-    // trailing: true,
+    // leading: true, // default
+    // trailing: true, // default
     // enabled: () => instantCount > 2,
   })
 
@@ -31,7 +31,7 @@ function App1() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setCountThrottler.getExecutionCount()}</td>
+            <td>{setCountThrottler.state.executionCount}</td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -45,7 +45,16 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
+        <button
+          onClick={() => setCountThrottler.flush()}
+          style={{ marginLeft: '10px' }}
+        >
+          Flush
+        </button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setCountThrottler.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -83,7 +92,7 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{setSearchThrottler.getExecutionCount()}</td>
+            <td>{setSearchThrottler.state.executionCount}</td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -95,6 +104,12 @@ function App2() {
           </tr>
         </tbody>
       </table>
+      <div>
+        <button onClick={() => setSearchThrottler.flush()}>Flush</button>
+      </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setSearchThrottler.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -107,7 +122,8 @@ function App3() {
   // Lower-level useThrottler hook - requires you to manage your own state
   const setValueThrottler = useThrottler(setThrottledValue, {
     wait: 250,
-    leading: false,
+    // leading: true, // default
+    // trailing: true, // default
   })
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -160,16 +176,16 @@ function App3() {
           </tr>
           <tr>
             <td>Throttled Execution Count:</td>
-            <td>{setValueThrottler.getExecutionCount()}</td>
+            <td>{setValueThrottler.state.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
             <td>
-              {instantExecutionCount - setValueThrottler.getExecutionCount()} (
+              {instantExecutionCount - setValueThrottler.state.executionCount} (
               {instantExecutionCount > 0
                 ? (
                     ((instantExecutionCount -
-                      setValueThrottler.getExecutionCount()) /
+                      setValueThrottler.state.executionCount) /
                       instantExecutionCount) *
                     100
                   ).toFixed(2)
@@ -182,6 +198,12 @@ function App3() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Throttled to 1 update per 250ms (trailing edge)</p>
       </div>
+      <div>
+        <button onClick={() => setValueThrottler.flush()}>Flush</button>
+      </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setValueThrottler.state, null, 2)}
+      </pre>
     </div>
   )
 }

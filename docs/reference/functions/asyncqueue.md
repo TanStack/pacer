@@ -8,10 +8,10 @@ title: asyncQueue
 # Function: asyncQueue()
 
 ```ts
-function asyncQueue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => void
+function asyncQueue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean
 ```
 
-Defined in: [async-queuer.ts:612](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L612)
+Defined in: [async-queuer.ts:733](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L733)
 
 Creates a new AsyncQueuer instance and returns a bound addItem function for adding tasks.
 The queuer is started automatically and ready to process items.
@@ -22,6 +22,19 @@ Error Handling:
 - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
 - Both onError and throwOnError can be used together; the handler will be called before any error is thrown
 - The error state can be checked using the underlying AsyncQueuer instance
+
+State Management:
+- Uses TanStack Store for reactive state management
+- Use `initialState` to provide initial state values when creating the async queuer
+- Use `onSuccess` callback to react to successful task execution and implement custom logic
+- Use `onError` callback to react to task execution errors and implement custom error handling
+- Use `onSettled` callback to react to task execution completion (success or error) and implement custom logic
+- Use `onItemsChange` callback to react to items being added or removed from the queue
+- Use `onExpire` callback to react to items expiring and implement custom logic
+- Use `onReject` callback to react to items being rejected when the queue is full
+- The state includes error count, expiration count, rejection count, running status, and success/settle counts
+- State can be accessed via the underlying AsyncQueuer instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 Example usage:
 ```ts
@@ -57,7 +70,7 @@ Items can be inserted based on priority or at the front/back depending on config
 
 #### item
 
-`TValue` & `object`
+`TValue`
 
 #### position
 
@@ -69,7 +82,7 @@ Items can be inserted based on priority or at the front/back depending on config
 
 ### Returns
 
-`void`
+`boolean`
 
 ### Example
 

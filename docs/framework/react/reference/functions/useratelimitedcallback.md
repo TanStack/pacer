@@ -8,10 +8,13 @@ title: useRateLimitedCallback
 # Function: useRateLimitedCallback()
 
 ```ts
-function useRateLimitedCallback<TFn, TArgs>(fn, options): (...args) => boolean
+function useRateLimitedCallback<TFn, TSelected>(
+   fn, 
+   options, 
+   selector): (...args) => boolean
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimitedCallback.ts:59](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedCallback.ts#L59)
+Defined in: [react-pacer/src/rate-limiter/useRateLimitedCallback.ts:62](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedCallback.ts#L62)
 
 A React hook that creates a rate-limited version of a callback function.
 This hook is essentially a wrapper around the basic `rateLimiter` function
@@ -51,7 +54,7 @@ Consider using the `useRateLimiter` hook instead.
 
 • **TFn** *extends* `AnyFunction`
 
-• **TArgs** *extends* `any`[]
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -63,6 +66,10 @@ Consider using the `useRateLimiter` hook instead.
 
 `RateLimiterOptions`\<`TFn`\>
 
+### selector
+
+(`state`) => `TSelected`
+
 ## Returns
 
 `Function`
@@ -71,7 +78,7 @@ Consider using the `useRateLimiter` hook instead.
 
 #### args
 
-...`TArgs`
+...`Parameters`\<`TFn`\>
 
 ### Returns
 

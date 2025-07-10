@@ -18,15 +18,15 @@ function App1() {
   return (
     <div>
       <h1>TanStack Pacer createQueuer Example 1</h1>
-      <div>Queue Size: {queuer.size()}</div>
+      <div>Queue Size: {queuer.state().size}</div>
       <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {queuer.isFull() ? 'Yes' : 'No'}</div>
-      <div>Queue Peek: {queuer.nextItem()}</div>
-      <div>Queue Empty: {queuer.isEmpty() ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer.isIdle() ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer.isRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.executionCount()}</div>
-      <div>Queue Items: {queuer.allItems().join(', ')}</div>
+      <div>Queue Full: {queuer.state().isFull ? 'Yes' : 'No'}</div>
+      <div>Queue Peek: {queuer.peekNextItem()}</div>
+      <div>Queue Empty: {queuer.state().isEmpty ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {queuer.state().isIdle ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {queuer.state().status}</div>
+      <div>Items Processed: {queuer.state().executionCount}</div>
+      <div>Queue Items: {queuer.state().items.join(', ')}</div>
       <div
         style={{
           display: 'grid',
@@ -38,17 +38,17 @@ function App1() {
       >
         <button
           onClick={() => {
-            const nextNumber = queuer.allItems().length
-              ? queuer.allItems()[queuer.allItems().length - 1] + 1
+            const nextNumber = queuer.state().items.length
+              ? queuer.state().items[queuer.state().items.length - 1] + 1
               : 1
             queuer.addItem(nextNumber)
           }}
-          disabled={queuer.isFull()}
+          disabled={queuer.state().isFull}
         >
           Add Number
         </button>
         <button
-          disabled={queuer.isEmpty()}
+          disabled={queuer.state().isEmpty}
           onClick={() => {
             const item = queuer.getNextItem()
             console.log('getNextItem item', item)
@@ -56,16 +56,28 @@ function App1() {
         >
           Process Next
         </button>
-        <button onClick={() => queuer.clear()} disabled={queuer.isEmpty()}>
+        <button
+          onClick={() => queuer.clear()}
+          disabled={queuer.state().isEmpty}
+        >
           Clear Queue
         </button>
-        <button onClick={() => queuer.reset()} disabled={queuer.isEmpty()}>
+        <button
+          onClick={() => queuer.reset()}
+          disabled={queuer.state().isEmpty}
+        >
           Reset Queue
         </button>
-        <button onClick={() => queuer.start()} disabled={queuer.isRunning()}>
+        <button
+          onClick={() => queuer.start()}
+          disabled={queuer.state().isRunning}
+        >
           Start Processing
         </button>
-        <button onClick={() => queuer.stop()} disabled={!queuer.isRunning()}>
+        <button
+          onClick={() => queuer.stop()}
+          disabled={!queuer.state().isRunning}
+        >
           Stop Processing
         </button>
       </div>
@@ -115,15 +127,15 @@ function App2() {
           </tr>
           <tr>
             <td>Queue Size:</td>
-            <td>{queuer.size()}</td>
+            <td>{queuer.state().size}</td>
           </tr>
           <tr>
             <td>Items Processed:</td>
-            <td>{queuer.executionCount()}</td>
+            <td>{queuer.state().executionCount}</td>
           </tr>
           <tr>
             <td>Queue Items:</td>
-            <td>{queuer.allItems().join(', ')}</td>
+            <td>{queuer.state().items.join(', ')}</td>
           </tr>
         </tbody>
       </table>
@@ -136,16 +148,28 @@ function App2() {
           margin: '16px 0',
         }}
       >
-        <button onClick={() => queuer.clear()} disabled={queuer.isEmpty()}>
+        <button
+          onClick={() => queuer.clear()}
+          disabled={queuer.state().isEmpty}
+        >
           Clear Queue
         </button>
-        <button onClick={() => queuer.reset()} disabled={queuer.isEmpty()}>
+        <button
+          onClick={() => queuer.reset()}
+          disabled={queuer.state().isEmpty}
+        >
           Reset Queue
         </button>
-        <button onClick={() => queuer.start()} disabled={queuer.isRunning()}>
+        <button
+          onClick={() => queuer.start()}
+          disabled={queuer.state().isRunning}
+        >
           Start Processing
         </button>
-        <button onClick={() => queuer.stop()} disabled={!queuer.isRunning()}>
+        <button
+          onClick={() => queuer.stop()}
+          disabled={!queuer.state().isRunning}
+        >
           Stop Processing
         </button>
       </div>
@@ -215,19 +239,19 @@ function App3() {
           </tr>
           <tr>
             <td>Queue Size:</td>
-            <td>{queuer.size()}</td>
+            <td>{queuer.state().size}</td>
           </tr>
           <tr>
             <td>Queue Full:</td>
-            <td>{queuer.isFull() ? 'Yes' : 'No'}</td>
+            <td>{queuer.state().isFull ? 'Yes' : 'No'}</td>
           </tr>
           <tr>
             <td>Queue Empty:</td>
-            <td>{queuer.isEmpty() ? 'Yes' : 'No'}</td>
+            <td>{queuer.state().isEmpty ? 'Yes' : 'No'}</td>
           </tr>
           <tr>
             <td>Items Processed:</td>
-            <td>{queuer.executionCount()}</td>
+            <td>{queuer.state().executionCount}</td>
           </tr>
           <tr>
             <td>% Saved:</td>
@@ -235,7 +259,7 @@ function App3() {
               {instantExecutionCount() === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount() - queuer.executionCount()) /
+                    ((instantExecutionCount() - queuer.state().executionCount) /
                       instantExecutionCount()) *
                       100,
                   )}
@@ -244,7 +268,7 @@ function App3() {
           </tr>
           <tr>
             <td>Queue Items:</td>
-            <td>{queuer.allItems().join(', ')}</td>
+            <td>{queuer.state().items.join(', ')}</td>
           </tr>
         </tbody>
       </table>
@@ -257,16 +281,28 @@ function App3() {
           margin: '16px 0',
         }}
       >
-        <button onClick={() => queuer.clear()} disabled={queuer.isEmpty()}>
+        <button
+          onClick={() => queuer.clear()}
+          disabled={queuer.state().isEmpty}
+        >
           Clear Queue
         </button>
-        <button onClick={() => queuer.reset()} disabled={queuer.isEmpty()}>
+        <button
+          onClick={() => queuer.reset()}
+          disabled={queuer.state().isEmpty}
+        >
           Reset Queue
         </button>
-        <button onClick={() => queuer.start()} disabled={queuer.isRunning()}>
+        <button
+          onClick={() => queuer.start()}
+          disabled={queuer.state().isRunning}
+        >
           Start Processing
         </button>
-        <button onClick={() => queuer.stop()} disabled={!queuer.isRunning()}>
+        <button
+          onClick={() => queuer.stop()}
+          disabled={!queuer.state().isRunning}
+        >
           Stop Processing
         </button>
       </div>

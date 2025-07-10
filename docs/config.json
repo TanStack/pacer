@@ -81,6 +81,10 @@
         {
           "label": "Batching Guide",
           "to": "guides/batching"
+        },
+        {
+          "label": "Async Batching Guide",
+          "to": "guides/async-batching"
         }
       ]
     },
@@ -119,16 +123,28 @@
       "label": "Debouncer API Reference",
       "children": [
         {
-          "label": "Debouncer Options",
+          "label": "DebouncerOptions",
           "to": "reference/interfaces/debounceroptions"
         },
         {
-          "label": "AsyncDebouncer Options",
+          "label": "DebouncerState",
+          "to": "reference/interfaces/debouncerstate"
+        },
+        {
+          "label": "AsyncDebouncerOptions",
           "to": "reference/interfaces/asyncdebounceroptions"
+        },
+        {
+          "label": "AsyncDebouncerState",
+          "to": "reference/interfaces/asyncdebouncerstate"
         },
         {
           "label": "debounce",
           "to": "reference/functions/debounce"
+        },
+        {
+          "label": "asyncDebounce",
+          "to": "reference/functions/asyncdebounce"
         },
         {
           "label": "Debouncer",
@@ -143,6 +159,14 @@
         {
           "label": "react",
           "children": [
+            {
+              "label": "ReactDebouncer",
+              "to": "framework/react/reference/interfaces/reactdebouncer"
+            },
+            {
+              "label": "ReactAsyncDebouncer",
+              "to": "framework/react/reference/interfaces/reactasyncdebouncer"
+            },
             {
               "label": "useDebouncer",
               "to": "framework/react/reference/functions/usedebouncer"
@@ -162,6 +186,10 @@
             {
               "label": "useAsyncDebouncer",
               "to": "framework/react/reference/functions/useasyncdebouncer"
+            },
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/react/reference/functions/useasyncdebouncedcallback"
             }
           ]
         },
@@ -173,11 +201,15 @@
               "to": "framework/solid/reference/interfaces/soliddebouncer"
             },
             {
+              "label": "SolidAsyncDebouncer",
+              "to": "framework/solid/reference/interfaces/solidasyncdebouncer"
+            },
+            {
               "label": "createDebouncer",
               "to": "framework/solid/reference/functions/createdebouncer"
             },
             {
-              "label": "createDebouncedState",
+              "label": "createDebouncedSignal",
               "to": "framework/solid/reference/functions/createdebouncedsignal"
             },
             {
@@ -198,16 +230,28 @@
       "label": "Throttler API Reference",
       "children": [
         {
-          "label": "Throttler Options",
+          "label": "ThrottlerOptions",
           "to": "reference/interfaces/throttleroptions"
         },
         {
-          "label": "AsyncThrottler Options",
+          "label": "ThrottlerState",
+          "to": "reference/interfaces/throttlerstate"
+        },
+        {
+          "label": "AsyncThrottlerOptions",
           "to": "reference/interfaces/asyncthrottleroptions"
+        },
+        {
+          "label": "AsyncThrottlerState",
+          "to": "reference/interfaces/asyncthrottlerstate"
         },
         {
           "label": "throttle",
           "to": "reference/functions/throttle"
+        },
+        {
+          "label": "asyncThrottle",
+          "to": "reference/functions/asyncthrottle"
         },
         {
           "label": "Throttler",
@@ -222,6 +266,14 @@
         {
           "label": "react",
           "children": [
+            {
+              "label": "ReactThrottler",
+              "to": "framework/react/reference/interfaces/reactthrottler"
+            },
+            {
+              "label": "ReactAsyncThrottler",
+              "to": "framework/react/reference/interfaces/reactasyncthrottler"
+            },
             {
               "label": "useThrottler",
               "to": "framework/react/reference/functions/usethrottler"
@@ -241,6 +293,10 @@
             {
               "label": "useAsyncThrottler",
               "to": "framework/react/reference/functions/useasyncthrottler"
+            },
+            {
+              "label": "useAsyncThrottledCallback",
+              "to": "framework/react/reference/functions/useasyncthrottledcallback"
             }
           ]
         },
@@ -250,6 +306,10 @@
             {
               "label": "SolidThrottler",
               "to": "framework/solid/reference/interfaces/solidthrottler"
+            },
+            {
+              "label": "SolidAsyncThrottler",
+              "to": "framework/solid/reference/interfaces/solidasyncthrottler"
             },
             {
               "label": "createThrottler",
@@ -281,8 +341,16 @@
           "to": "reference/interfaces/ratelimiteroptions"
         },
         {
+          "label": "RateLimiterState",
+          "to": "reference/interfaces/ratelimiterstate"
+        },
+        {
           "label": "AsyncRateLimiterOptions",
           "to": "reference/interfaces/asyncratelimiteroptions"
+        },
+        {
+          "label": "AsyncRateLimiterState",
+          "to": "reference/interfaces/asyncratelimiterstate"
         },
         {
           "label": "rateLimit",
@@ -306,8 +374,20 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactRateLimiter",
+              "to": "framework/react/reference/interfaces/reactratelimiter"
+            },
+            {
+              "label": "ReactAsyncRateLimiter",
+              "to": "framework/react/reference/interfaces/reactasyncratelimiter"
+            },
+            {
               "label": "useRateLimiter",
               "to": "framework/react/reference/functions/useratelimiter"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/react/reference/functions/useratelimitedcallback"
             },
             {
               "label": "useRateLimitedState",
@@ -320,6 +400,10 @@
             {
               "label": "useAsyncRateLimiter",
               "to": "framework/react/reference/functions/useasyncratelimiter"
+            },
+            {
+              "label": "useAsyncRateLimitedCallback",
+              "to": "framework/react/reference/functions/useasyncratelimitedcallback"
             }
           ]
         },
@@ -331,11 +415,15 @@
               "to": "framework/solid/reference/interfaces/solidratelimiter"
             },
             {
+              "label": "SolidAsyncRateLimiter",
+              "to": "framework/solid/reference/interfaces/solidasyncratelimiter"
+            },
+            {
               "label": "createRateLimiter",
               "to": "framework/solid/reference/functions/createratelimiter"
             },
             {
-              "label": "createRateLimitedState",
+              "label": "createRateLimitedSignal",
               "to": "framework/solid/reference/functions/createratelimitedsignal"
             },
             {
@@ -360,16 +448,16 @@
           "to": "reference/interfaces/queueroptions"
         },
         {
+          "label": "QueuerState",
+          "to": "reference/interfaces/queuerstate"
+        },
+        {
           "label": "AsyncQueuerOptions",
           "to": "reference/interfaces/asyncqueueroptions"
         },
         {
-          "label": "Queuer",
-          "to": "reference/classes/queuer"
-        },
-        {
-          "label": "AsyncQueuer",
-          "to": "reference/classes/asyncqueuer"
+          "label": "AsyncQueuerState",
+          "to": "reference/interfaces/asyncqueuerstate"
         },
         {
           "label": "queue",
@@ -378,6 +466,14 @@
         {
           "label": "asyncQueue",
           "to": "reference/functions/asyncqueue"
+        },
+        {
+          "label": "Queuer",
+          "to": "reference/classes/queuer"
+        },
+        {
+          "label": "AsyncQueuer",
+          "to": "reference/classes/asyncqueuer"
         }
       ],
       "frameworks": [
@@ -385,16 +481,32 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactQueuer",
+              "to": "framework/react/reference/interfaces/reactqueuer"
+            },
+            {
+              "label": "ReactAsyncQueuer",
+              "to": "framework/react/reference/interfaces/reactasyncqueuer"
+            },
+            {
               "label": "useQueuer",
               "to": "framework/react/reference/functions/usequeuer"
             },
             {
               "label": "useQueuedState",
-              "to": "framework/react/reference/functions/usequeuerstate"
+              "to": "framework/react/reference/functions/usequeuedstate"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/react/reference/functions/usequeuedvalue"
             },
             {
               "label": "useAsyncQueuer",
               "to": "framework/react/reference/functions/useasyncqueuer"
+            },
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/react/reference/functions/useasyncqueuedstate"
             }
           ]
         },
@@ -404,6 +516,10 @@
             {
               "label": "SolidQueuer",
               "to": "framework/solid/reference/interfaces/solidqueuer"
+            },
+            {
+              "label": "SolidAsyncQueuer",
+              "to": "framework/solid/reference/interfaces/solidasyncqueuer"
             },
             {
               "label": "createQueuer",
@@ -427,8 +543,32 @@
           "to": "reference/interfaces/batcheroptions"
         },
         {
+          "label": "BatcherState",
+          "to": "reference/interfaces/batcherstate"
+        },
+        {
+          "label": "AsyncBatcherOptions",
+          "to": "reference/interfaces/asyncbatcheroptions"
+        },
+        {
+          "label": "AsyncBatcherState",
+          "to": "reference/interfaces/asyncbatcherstate"
+        },
+        {
+          "label": "batch",
+          "to": "reference/functions/batch"
+        },
+        {
+          "label": "asyncBatch",
+          "to": "reference/functions/asyncbatch"
+        },
+        {
           "label": "Batcher",
           "to": "reference/classes/batcher"
+        },
+        {
+          "label": "AsyncBatcher",
+          "to": "reference/classes/asyncbatcher"
         }
       ],
       "frameworks": [
@@ -436,8 +576,20 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactBatcher",
+              "to": "framework/react/reference/interfaces/reactbatcher"
+            },
+            {
+              "label": "ReactAsyncBatcher",
+              "to": "framework/react/reference/interfaces/reactasyncbatcher"
+            },
+            {
               "label": "useBatcher",
               "to": "framework/react/reference/functions/usebatcher"
+            },
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/react/reference/functions/useasyncbatcher"
             }
           ]
         },
@@ -449,8 +601,16 @@
               "to": "framework/solid/reference/interfaces/solidbatcher"
             },
             {
+              "label": "SolidAsyncBatcher",
+              "to": "framework/solid/reference/interfaces/solidasyncbatcher"
+            },
+            {
               "label": "createBatcher",
               "to": "framework/solid/reference/functions/createbatcher"
+            },
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/solid/reference/functions/createasyncbatcher"
             }
           ]
         }
@@ -726,6 +886,10 @@
             {
               "label": "useBatcher",
               "to": "framework/react/examples/useBatcher"
+            },
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/react/examples/useAsyncBatcher"
             }
           ]
         },
@@ -739,6 +903,10 @@
             {
               "label": "createBatcher",
               "to": "framework/solid/examples/createBatcher"
+            },
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/solid/examples/createAsyncBatcher"
             }
           ]
         }

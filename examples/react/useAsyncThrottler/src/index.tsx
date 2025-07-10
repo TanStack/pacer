@@ -40,8 +40,8 @@ function App() {
 
   // hook that gives you an async throttler instance
   const setSearchAsyncThrottler = useAsyncThrottler(handleSearch, {
-    // leading: false,
-    // trailing: false,
+    // leading: true, // default
+    // trailing: true, // default
     wait: 1000, // Wait 1 second between API calls
     onError: (error) => {
       // optional error handler
@@ -76,9 +76,12 @@ function App() {
           autoComplete="new-password"
         />
       </div>
+      <div style={{ marginTop: '10px' }}>
+        <button onClick={() => setSearchAsyncThrottler.flush()}>Flush</button>
+      </div>
       {error && <div>Error: {error.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncThrottler.getSuccessCount()}</p>
+        <p>API calls made: {setSearchAsyncThrottler.state.successCount}</p>
         {results.length > 0 && (
           <ul>
             {results.map((item) => (
@@ -86,11 +89,14 @@ function App() {
             ))}
           </ul>
         )}
-        {setSearchAsyncThrottler.getIsPending() ? (
+        {setSearchAsyncThrottler.state.isPending ? (
           <p>Pending...</p>
-        ) : setSearchAsyncThrottler.getIsExecuting() ? (
+        ) : setSearchAsyncThrottler.state.isExecuting ? (
           <p>Executing...</p>
         ) : null}
+        <pre style={{ marginTop: '20px' }}>
+          {JSON.stringify(setSearchAsyncThrottler.state, null, 2)}
+        </pre>
       </div>
     </div>
   )
@@ -103,7 +109,7 @@ root.render(<App />)
 
 // demo unmounting and cancellation
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
+  if (e.shiftKey && e.key === 'Enter') {
     mounted = !mounted
     root.render(mounted ? <App /> : null)
   }

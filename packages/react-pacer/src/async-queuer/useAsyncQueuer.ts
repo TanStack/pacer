@@ -1,7 +1,20 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
+import { useStore } from '@tanstack/react-store'
+import type {
+  AsyncQueuerOptions,
+  AsyncQueuerState,
+} from '@tanstack/pacer/async-queuer'
+
+export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
+  extends Omit<AsyncQueuer<TValue>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the queuer state changes
+   *
+   * Use this instead of `queuer.store.state`
+   */
+  readonly state: Readonly<TSelected>
+}
 
 /**
  * A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
@@ -48,15 +61,23 @@ import type { AsyncQueuerOptions } from '@tanstack/pacer/async-queuer'
  * asyncQueuer.start();
  * ```
  */
-export function useAsyncQueuer<TValue>(
+export function useAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>(
   fn: (value: TValue) => Promise<any>,
   options: AsyncQueuerOptions<TValue> = {},
-): AsyncQueuer<TValue> {
-  const [asyncQueuer] = useState(() =>
-    bindInstanceMethods(new AsyncQueuer<TValue>(fn, options)),
-  )
+  selector?: (state: AsyncQueuerState<TValue>) => TSelected,
+): ReactAsyncQueuer<TValue, TSelected> {
+  const [asyncQueuer] = useState(() => new AsyncQueuer<TValue>(fn, options))
+
+  const state = useStore(asyncQueuer.store, selector)
 
   asyncQueuer.setOptions(options)
 
-  return asyncQueuer
+  return useMemo(
+    () =>
+      ({
+        ...asyncQueuer,
+        state,
+      }) as unknown as ReactAsyncQueuer<TValue, TSelected>, // omit `store` in favor of `state`
+    [asyncQueuer, state],
+  )
 }

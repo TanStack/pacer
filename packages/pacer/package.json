@@ -37,6 +37,16 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./async-batcher": {
+      "import": {
+        "types": "./dist/esm/async-batcher.d.ts",
+        "default": "./dist/esm/async-batcher.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-batcher.d.cts",
+        "default": "./dist/cjs/async-batcher.cjs"
+      }
+    },
     "./async-debouncer": {
       "import": {
         "types": "./dist/esm/async-debouncer.d.ts",
@@ -85,16 +95,6 @@
       "require": {
         "types": "./dist/cjs/batcher.d.cts",
         "default": "./dist/cjs/batcher.cjs"
-      }
-    },
-    "./compare": {
-      "import": {
-        "types": "./dist/esm/compare.d.ts",
-        "default": "./dist/esm/compare.js"
-      },
-      "require": {
-        "types": "./dist/cjs/compare.d.cts",
-        "default": "./dist/cjs/compare.cjs"
       }
     },
     "./debouncer": {
@@ -169,5 +169,8 @@
     "test:types": "tsc",
     "test:build": "publint --strict",
     "build": "vite build"
+  },
+  "dependencies": {
+    "@tanstack/store": "^0.7.2"
   }
 }

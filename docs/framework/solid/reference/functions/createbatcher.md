@@ -8,10 +8,13 @@ title: createBatcher
 # Function: createBatcher()
 
 ```ts
-function createBatcher<TValue>(fn, initialOptions): SolidBatcher<TValue>
+function createBatcher<TValue, TSelected>(
+   fn, 
+   initialOptions, 
+selector?): SolidBatcher<TValue, TSelected>
 ```
 
-Defined in: [batcher/createBatcher.ts:90](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L90)
+Defined in: [batcher/createBatcher.ts:63](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L63)
 
 Creates a Solid-compatible Batcher instance for managing batches of items, exposing Solid signals for all stateful properties.
 
@@ -55,13 +58,15 @@ console.log('Items:', batcher.allItems());
 console.log('Size:', batcher.size());
 console.log('Is empty:', batcher.isEmpty());
 console.log('Is running:', batcher.isRunning());
-console.log('Batch count:', batcher.batchExecutionCount());
-console.log('Item count:', batcher.itemExecutionCount());
+console.log('Batch count:', batcher.executionCount());
+console.log('Item count:', batcher.totalItemsProcessed());
 ```
 
 ## Type Parameters
 
 • **TValue**
+
+• **TSelected** = `BatcherState`\<`TValue`\>
 
 ## Parameters
 
@@ -73,6 +78,10 @@ console.log('Item count:', batcher.itemExecutionCount());
 
 `BatcherOptions`\<`TValue`\> = `{}`
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-[`SolidBatcher`](../../interfaces/solidbatcher.md)\<`TValue`\>
+[`SolidBatcher`](../../interfaces/solidbatcher.md)\<`TValue`, `TSelected`\>

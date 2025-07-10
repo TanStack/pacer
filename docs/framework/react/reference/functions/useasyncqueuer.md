@@ -8,10 +8,13 @@ title: useAsyncQueuer
 # Function: useAsyncQueuer()
 
 ```ts
-function useAsyncQueuer<TValue>(fn, options): AsyncQueuer<TValue>
+function useAsyncQueuer<TValue, TSelected>(
+   fn, 
+   options, 
+selector?): ReactAsyncQueuer<TValue, TSelected>
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:51](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L51)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:64](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L64)
 
 A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
@@ -38,6 +41,8 @@ Error Handling:
 
 • **TValue**
 
+• **TSelected** = `AsyncQueuerState`\<`TValue`\>
+
 ## Parameters
 
 ### fn
@@ -48,9 +53,13 @@ Error Handling:
 
 `AsyncQueuerOptions`\<`TValue`\> = `{}`
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-`AsyncQueuer`\<`TValue`\>
+[`ReactAsyncQueuer`](../../interfaces/reactasyncqueuer.md)\<`TValue`, `TSelected`\>
 
 ## Example
 

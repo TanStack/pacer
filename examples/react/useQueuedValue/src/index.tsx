@@ -8,7 +8,6 @@ function App1() {
   // Queuer that processes a single value with delays
   const [value, queuer] = useQueuedValue(instantSearchValue, {
     maxSize: 25,
-    started: false,
     wait: 500, // wait 500ms between processing value changes
   })
 
@@ -17,13 +16,13 @@ function App1() {
       <h1>TanStack Pacer useQueuedValue Example 1</h1>
       <div>Current Value: {value}</div>
       <hr />
-      <div>Queue Size: {queuer.getSize()}</div>
-      <div>Queue Full: {queuer.getIsFull() ? 'Yes' : 'No'}</div>
+      <div>Queue Size: {queuer.state.size}</div>
+      <div>Queue Full: {queuer.state.isFull ? 'Yes' : 'No'}</div>
       <div>Queue Peek: {queuer.peekNextItem()}</div>
-      <div>Queue Empty: {queuer.getIsEmpty() ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer.getIsIdle() ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer.getIsRunning() ? 'Running' : 'Stopped'}</div>
-      <div>Items Processed: {queuer.getExecutionCount()}</div>
+      <div>Queue Empty: {queuer.state.isEmpty ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {queuer.state.isIdle ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {queuer.state.status}</div>
+      <div>Items Processed: {queuer.state.executionCount}</div>
       <div>Queue Items: {queuer.peekAllItems().join(', ')}</div>
       <div
         style={{
@@ -42,29 +41,38 @@ function App1() {
             setInstantSearchValue(e.target.value) // instantly update the local search value
           }}
           placeholder="Enter search term..."
-          disabled={queuer.getIsFull()}
+          disabled={queuer.state.isFull}
         />
         <button
-          disabled={queuer.getIsEmpty()}
+          disabled={queuer.state.isEmpty}
           onClick={() => {
             queuer.execute()
           }}
         >
           Process Next
         </button>
-        <button onClick={() => queuer.clear()} disabled={queuer.getIsEmpty()}>
+        <button onClick={() => queuer.clear()} disabled={queuer.state.isEmpty}>
           Clear Queue
         </button>
-        <button onClick={() => queuer.reset()} disabled={queuer.getIsEmpty()}>
+        <button onClick={() => queuer.reset()} disabled={queuer.state.isEmpty}>
           Reset Queue
         </button>
-        <button onClick={() => queuer.start()} disabled={queuer.getIsRunning()}>
+        <button
+          onClick={() => queuer.start()}
+          disabled={queuer.state.isRunning}
+        >
           Start Processing
         </button>
-        <button onClick={() => queuer.stop()} disabled={!queuer.getIsRunning()}>
+        <button
+          onClick={() => queuer.stop()}
+          disabled={!queuer.state.isRunning}
+        >
           Stop Processing
         </button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(queuer.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -120,23 +128,23 @@ function App2() {
         <tbody>
           <tr>
             <td>Queue Size:</td>
-            <td>{queuer.getSize()}</td>
+            <td>{queuer.state.size}</td>
           </tr>
           <tr>
             <td>Queue Full:</td>
-            <td>{queuer.getIsFull() ? 'Yes' : 'No'}</td>
+            <td>{queuer.state.isFull ? 'Yes' : 'No'}</td>
           </tr>
           <tr>
             <td>Queue Empty:</td>
-            <td>{queuer.getIsEmpty() ? 'Yes' : 'No'}</td>
+            <td>{queuer.state.isEmpty ? 'Yes' : 'No'}</td>
           </tr>
           <tr>
             <td>Queue Idle:</td>
-            <td>{queuer.getIsIdle() ? 'Yes' : 'No'}</td>
+            <td>{queuer.state.isIdle ? 'Yes' : 'No'}</td>
           </tr>
           <tr>
             <td>Queuer Status:</td>
-            <td>{queuer.getIsRunning() ? 'Running' : 'Stopped'}</td>
+            <td>{queuer.state.status}</td>
           </tr>
           <tr>
             <td>Instant Executions:</td>
@@ -144,11 +152,11 @@ function App2() {
           </tr>
           <tr>
             <td>Items Processed:</td>
-            <td>{queuer.getExecutionCount()}</td>
+            <td>{queuer.state.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
-            <td>{instantExecutionCount - queuer.getExecutionCount()}</td>
+            <td>{instantExecutionCount - queuer.state.executionCount}</td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -156,7 +164,7 @@ function App2() {
               {instantExecutionCount === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount - queuer.getExecutionCount()) /
+                    ((instantExecutionCount - queuer.state.executionCount) /
                       instantExecutionCount) *
                       100,
                   )}
@@ -168,6 +176,9 @@ function App2() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Queued with 100ms wait time</p>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(queuer.state, null, 2)}
+      </pre>
     </div>
   )
 }

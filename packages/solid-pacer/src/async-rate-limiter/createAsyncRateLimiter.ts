@@ -1,26 +1,17 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
-import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
+import type {
+  AsyncRateLimiterOptions,
+  AsyncRateLimiterState,
+} from '@tanstack/pacer/async-rate-limiter'
 
-export interface SolidAsyncRateLimiter<TFn extends AnyAsyncFunction>
-  extends Omit<
-    AsyncRateLimiter<TFn>,
-    | 'getSuccessCount'
-    | 'getSettleCount'
-    | 'getErrorCount'
-    | 'getRejectionCount'
-    | 'getRemainingInWindow'
-    | 'getMsUntilNextWindow'
-  > {
-  successCount: Accessor<number>
-  settleCount: Accessor<number>
-  errorCount: Accessor<number>
-  rejectionCount: Accessor<number>
-  remainingInWindow: Accessor<number>
-  msUntilNextWindow: Accessor<number>
+export interface SolidAsyncRateLimiter<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncRateLimiterState<TFn>,
+> extends Omit<AsyncRateLimiter<TFn>, 'store'> {
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**
@@ -85,66 +76,20 @@ export interface SolidAsyncRateLimiter<TFn extends AnyAsyncFunction>
  * );
  * ```
  */
-export function createAsyncRateLimiter<TFn extends AnyAsyncFunction>(
+export function createAsyncRateLimiter<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncRateLimiterState<TFn>,
+>(
   fn: TFn,
   initialOptions: AsyncRateLimiterOptions<TFn>,
-): SolidAsyncRateLimiter<TFn> {
+  selector?: (state: AsyncRateLimiterState<TFn>) => TSelected,
+): SolidAsyncRateLimiter<TFn, TSelected> {
   const asyncRateLimiter = new AsyncRateLimiter<TFn>(fn, initialOptions)
 
-  const [successCount, setSuccessCount] = createSignal(
-    asyncRateLimiter.getSuccessCount(),
-  )
-  const [rejectionCount, setRejectionCount] = createSignal(
-    asyncRateLimiter.getRejectionCount(),
-  )
-  const [errorCount, setErrorCount] = createSignal(
-    asyncRateLimiter.getErrorCount(),
-  )
-  const [settleCount, setSettleCount] = createSignal(
-    asyncRateLimiter.getSettleCount(),
-  )
-  const [remainingInWindow, setRemainingInWindow] = createSignal(
-    asyncRateLimiter.getRemainingInWindow(),
-  )
-  const [msUntilNextWindow, setMsUntilNextWindow] = createSignal(
-    asyncRateLimiter.getMsUntilNextWindow(),
-  )
-
-  function setOptions(newOptions: Partial<AsyncRateLimiterOptions<TFn>>) {
-    asyncRateLimiter.setOptions({
-      ...newOptions,
-      onSettled: (rateLimiter) => {
-        setSuccessCount(rateLimiter.getSuccessCount())
-        setSettleCount(rateLimiter.getSettleCount())
-        setErrorCount(rateLimiter.getErrorCount())
-        setRejectionCount(rateLimiter.getRejectionCount())
-        setRemainingInWindow(rateLimiter.getRemainingInWindow())
-        setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
-
-        const onSettled = newOptions.onSettled ?? initialOptions.onSettled
-        onSettled?.(rateLimiter)
-      },
-      onReject: (rateLimiter) => {
-        setRejectionCount(rateLimiter.getRejectionCount())
-        setRemainingInWindow(rateLimiter.getRemainingInWindow())
-        setMsUntilNextWindow(rateLimiter.getMsUntilNextWindow())
-
-        const onReject = newOptions.onReject ?? initialOptions.onReject
-        onReject?.(rateLimiter)
-      },
-    })
-  }
-
-  setOptions(initialOptions)
+  const state = useStore(asyncRateLimiter.store, selector)
 
   return {
-    ...bindInstanceMethods(asyncRateLimiter),
-    errorCount,
-    remainingInWindow,
-    msUntilNextWindow,
-    rejectionCount,
-    setOptions,
-    settleCount,
-    successCount,
-  } as SolidAsyncRateLimiter<TFn>
+    ...asyncRateLimiter,
+    state,
+  } as SolidAsyncRateLimiter<TFn, TSelected>
 }

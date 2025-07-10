@@ -1,7 +1,17 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Queuer } from '@tanstack/pacer/queuer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import type { QueuerOptions } from '@tanstack/pacer/queuer'
+import { useStore } from '@tanstack/react-store'
+import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+
+export interface ReactQueuer<TValue, TSelected = QueuerState<TValue>>
+  extends Omit<Queuer<TValue>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the queuer state changes
+   *
+   * Use this instead of `queuer.store.state`
+   */
+  readonly state: Readonly<TSelected>
+}
 
 /**
  * A React hook that creates and manages a Queuer instance.
@@ -41,15 +51,23 @@ import type { QueuerOptions } from '@tanstack/pacer/queuer'
  * queue.start(); // Resume processing
  * ```
  */
-export function useQueuer<TValue>(
+export function useQueuer<TValue, TSelected = QueuerState<TValue>>(
   fn: (item: TValue) => void,
   options: QueuerOptions<TValue> = {},
-): Queuer<TValue> {
-  const [queuer] = useState(() =>
-    bindInstanceMethods(new Queuer<TValue>(fn, options)),
-  )
+  selector?: (state: QueuerState<TValue>) => TSelected,
+): ReactQueuer<TValue, TSelected> {
+  const [queuer] = useState(() => new Queuer<TValue>(fn, options))
+
+  const state = useStore(queuer.store, selector)
 
   queuer.setOptions(options)
 
-  return queuer
+  return useMemo(
+    () =>
+      ({
+        ...queuer,
+        state,
+      }) as unknown as ReactQueuer<TValue, TSelected>, // omit `store` in favor of `state`
+    [queuer, state],
+  )
 }

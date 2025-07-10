@@ -1,8 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Throttler } from '@tanstack/pacer/throttler'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/react-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
-import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
+import type {
+  ThrottlerOptions,
+  ThrottlerState,
+} from '@tanstack/pacer/throttler'
+
+export interface ReactThrottler<
+  TFn extends AnyFunction,
+  TSelected = ThrottlerState<TFn>,
+> extends Omit<Throttler<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the throttler state changes
+   *
+   * Use this instead of `throttler.store.state`
+   */
+  readonly state: Readonly<TSelected>
+}
 
 /**
  * A low-level React hook that creates a `Throttler` instance that limits how often the provided function can execute.
@@ -21,13 +36,6 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * const [value, setValue] = useState(0);
  * const throttler = useThrottler(setValue, { wait: 1000 });
  *
- * // With Redux
- * const dispatch = useDispatch();
- * const throttler = useThrottler(
- *   (value) => dispatch(updateAction(value)),
- *   { wait: 1000 }
- * );
- *
  * // With any state manager
  * const throttler = useThrottler(
  *   (value) => stateManager.setState(value),
@@ -39,13 +47,17 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * );
  * ```
  */
-export function useThrottler<TFn extends AnyFunction>(
+export function useThrottler<
+  TFn extends AnyFunction,
+  TSelected = ThrottlerState<TFn>,
+>(
   fn: TFn,
   options: ThrottlerOptions<TFn>,
-): Throttler<TFn> {
-  const [throttler] = useState(() =>
-    bindInstanceMethods(new Throttler<TFn>(fn, options)),
-  )
+  selector?: (state: ThrottlerState<TFn>) => TSelected,
+): ReactThrottler<TFn, TSelected> {
+  const [throttler] = useState(() => new Throttler<TFn>(fn, options))
+
+  const state = useStore(throttler.store, selector)
 
   throttler.setOptions(options)
 
@@ -55,5 +67,12 @@ export function useThrottler<TFn extends AnyFunction>(
     }
   }, [throttler])
 
-  return throttler
+  return useMemo(
+    () =>
+      ({
+        ...throttler,
+        state,
+      }) as ReactThrottler<TFn, TSelected>, // omit `store` in favor of `state`
+    [throttler, state],
+  )
 }

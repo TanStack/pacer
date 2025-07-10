@@ -148,11 +148,11 @@ function App3() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.getExecutionCount()}</td>
+            <td>{rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.getRejectionCount()}</td>
+            <td>{rateLimiter.state.rejectionCount}</td>
           </tr>
           <tr>
             <td>Remaining in Window:</td>
@@ -168,7 +168,7 @@ function App3() {
           </tr>
           <tr>
             <td>Saved Executions:</td>
-            <td>{instantExecutionCount - rateLimiter.getExecutionCount()}</td>
+            <td>{instantExecutionCount - rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -176,7 +176,8 @@ function App3() {
               {instantExecutionCount === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount - rateLimiter.getExecutionCount()) /
+                    ((instantExecutionCount -
+                      rateLimiter.state.executionCount) /
                       instantExecutionCount) *
                       100,
                   )}
@@ -188,6 +189,9 @@ function App3() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Rate limited to 20 updates per 2 seconds</p>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(rateLimiter.state, null, 2)}
+      </pre>
     </div>
   )
 }

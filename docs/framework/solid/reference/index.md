@@ -9,6 +9,7 @@ title: "@tanstack/solid-pacer"
 
 ## Interfaces
 
+- [SolidAsyncBatcher](../interfaces/solidasyncbatcher.md)
 - [SolidAsyncDebouncer](../interfaces/solidasyncdebouncer.md)
 - [SolidAsyncQueuer](../interfaces/solidasyncqueuer.md)
 - [SolidAsyncRateLimiter](../interfaces/solidasyncratelimiter.md)
@@ -21,6 +22,7 @@ title: "@tanstack/solid-pacer"
 
 ## Functions
 
+- [createAsyncBatcher](../functions/createasyncbatcher.md)
 - [createAsyncDebouncer](../functions/createasyncdebouncer.md)
 - [createAsyncQueuer](../functions/createasyncqueuer.md)
 - [createAsyncRateLimiter](../functions/createasyncratelimiter.md)

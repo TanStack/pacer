@@ -8,9 +8,9 @@ function App1() {
   const [debouncedCount, setDebouncedCount] = useState(0)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
-  const setCountDebouncer = useDebouncer(setDebouncedCount, {
-    wait: 500,
-    // enabled: () => instantCount > 2, // optional, defaults to true
+  const debouncer = useDebouncer(setDebouncedCount, {
+    wait: 800,
+    enabled: () => instantCount > 2, // optional, defaults to true
     // leading: true, // optional, defaults to false
   })
 
@@ -18,7 +18,7 @@ function App1() {
     // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => {
       const newInstantCount = c + 1 // common new value for both
-      setCountDebouncer.maybeExecute(newInstantCount) // debounced state update
+      debouncer.maybeExecute(newInstantCount) // debounced state update
       return newInstantCount // instant state update
     })
   }
@@ -29,16 +29,12 @@ function App1() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{setCountDebouncer.getEnabled().toString()}</td>
-          </tr>
-          <tr>
-            <td>Is Pending:</td>
-            <td>{setCountDebouncer.getIsPending().toString()}</td>
+            <td>Status:</td>
+            <td>{debouncer.state.status}</td>
           </tr>
           <tr>
             <td>Execution Count:</td>
-            <td>{setCountDebouncer.getExecutionCount()}</td>
+            <td>{debouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -57,7 +53,16 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
+        <button
+          onClick={() => debouncer.flush()}
+          style={{ marginLeft: '10px' }}
+        >
+          Flush
+        </button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(debouncer.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -94,16 +99,12 @@ function App2() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{setSearchDebouncer.getOptions().enabled.toString()}</td>
-          </tr>
-          <tr>
             <td>Is Pending:</td>
-            <td>{setSearchDebouncer.getIsPending().toString()}</td>
+            <td>{setSearchDebouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
             <td>Execution Count:</td>
-            <td>{setSearchDebouncer.getExecutionCount()}</td>
+            <td>{setSearchDebouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td colSpan={2}>
@@ -120,6 +121,12 @@ function App2() {
           </tr>
         </tbody>
       </table>
+      <div>
+        <button onClick={() => setSearchDebouncer.flush()}>Flush</button>
+      </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setSearchDebouncer.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -175,12 +182,8 @@ function App3() {
       <table>
         <tbody>
           <tr>
-            <td>Enabled:</td>
-            <td>{setValueDebouncer.getEnabled().toString()}</td>
-          </tr>
-          <tr>
             <td>Is Pending:</td>
-            <td>{setValueDebouncer.getIsPending().toString()}</td>
+            <td>{setValueDebouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
             <td>Instant Executions:</td>
@@ -188,12 +191,12 @@ function App3() {
           </tr>
           <tr>
             <td>Debounced Executions:</td>
-            <td>{setValueDebouncer.getExecutionCount()}</td>
+            <td>{setValueDebouncer.state.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
             <td>
-              {instantExecutionCount - setValueDebouncer.getExecutionCount()}
+              {instantExecutionCount - setValueDebouncer.state.executionCount}
             </td>
           </tr>
           <tr>
@@ -203,7 +206,7 @@ function App3() {
                 ? '0'
                 : Math.round(
                     ((instantExecutionCount -
-                      setValueDebouncer.getExecutionCount()) /
+                      setValueDebouncer.state.executionCount) /
                       instantExecutionCount) *
                       100,
                   )}
@@ -215,6 +218,12 @@ function App3() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Debounced to 250ms wait time</p>
       </div>
+      <div>
+        <button onClick={() => setValueDebouncer.flush()}>Flush</button>
+      </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setValueDebouncer.state, null, 2)}
+      </pre>
     </div>
   )
 }

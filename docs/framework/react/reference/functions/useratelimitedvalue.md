@@ -8,10 +8,13 @@ title: useRateLimitedValue
 # Function: useRateLimitedValue()
 
 ```ts
-function useRateLimitedValue<TValue>(value, options): [TValue, RateLimiter<Dispatch<SetStateAction<TValue>>>]
+function useRateLimitedValue<TValue, TSelected>(
+   value, 
+   options, 
+   selector?): [TValue, ReactRateLimiter<Dispatch<SetStateAction<TValue>>, TSelected>]
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L55)
+Defined in: [react-pacer/src/rate-limiter/useRateLimitedValue.ts:56](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedValue.ts#L56)
 
 A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses React's useState internally to manage the rate-limited state.
@@ -43,6 +46,8 @@ consider using the lower-level useRateLimiter hook instead.
 
 • **TValue**
 
+• **TSelected** = `RateLimiterState`
+
 ## Parameters
 
 ### value
@@ -53,9 +58,13 @@ consider using the lower-level useRateLimiter hook instead.
 
 `RateLimiterOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-\[`TValue`, `RateLimiter`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>\]
+\[`TValue`, [`ReactRateLimiter`](../../interfaces/reactratelimiter.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>\]
 
 ## Example
 

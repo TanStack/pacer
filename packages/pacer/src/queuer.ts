@@ -1,4 +1,73 @@
+import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+
+export interface QueuerState<TValue> {
+  /**
+   * Number of items that have been processed by the queuer
+   */
+  executionCount: number
+  /**
+   * Number of items that have been removed from the queue due to expiration
+   */
+  expirationCount: number
+  /**
+   * Whether the queuer has no items to process (items array is empty)
+   */
+  isEmpty: boolean
+  /**
+   * Whether the queuer has reached its maximum capacity
+   */
+  isFull: boolean
+  /**
+   * Whether the queuer is not currently processing any items
+   */
+  isIdle: boolean
+  /**
+   * Whether the queuer is active and will process items automatically
+   */
+  isRunning: boolean
+  /**
+   * Timestamps when items were added to the queue for expiration tracking
+   */
+  itemTimestamps: Array<number>
+  /**
+   * Array of items currently waiting to be processed
+   */
+  items: Array<TValue>
+  /**
+   * Whether the queuer has a pending timeout for processing the next item
+   */
+  pendingTick: boolean
+  /**
+   * Number of items that have been rejected from being added to the queue
+   */
+  rejectionCount: number
+  /**
+   * Number of items currently in the queue
+   */
+  size: number
+  /**
+   * Current processing status - 'idle' when not processing, 'running' when active, 'stopped' when paused
+   */
+  status: 'idle' | 'running' | 'stopped'
+}
+
+function getDefaultQueuerState<TValue>(): QueuerState<TValue> {
+  return {
+    executionCount: 0,
+    expirationCount: 0,
+    isEmpty: true,
+    isFull: false,
+    isIdle: true,
+    isRunning: true,
+    itemTimestamps: [],
+    items: [],
+    pendingTick: false,
+    rejectionCount: 0,
+    size: 0,
+    status: 'idle',
+  }
+}
 
 /**
  * Options for configuring a Queuer instance.
@@ -36,6 +105,10 @@ export interface QueuerOptions<TValue> {
    */
   initialItems?: Array<TValue>
   /**
+   * Initial state for the queuer
+   */
+  initialState?: Partial<QueuerState<TValue>>
+  /**
    * Maximum number of items allowed in the queuer
    */
   maxSize?: number
@@ -47,10 +120,6 @@ export interface QueuerOptions<TValue> {
    * Callback fired whenever an item is removed from the queuer
    */
   onExecute?: (item: TValue, queuer: Queuer<TValue>) => void
-  /**
-   * Callback fired whenever the queuer's running state changes
-   */
-  onIsRunningChange?: (queuer: Queuer<TValue>) => void
   /**
    * Callback fired whenever an item is added or removed from the queuer
    */
@@ -71,7 +140,15 @@ export interface QueuerOptions<TValue> {
   wait?: number | ((queuer: Queuer<TValue>) => number)
 }
 
-const defaultOptions: Required<QueuerOptions<any>> = {
+const defaultOptions: Omit<
+  Required<QueuerOptions<any>>,
+  | 'initialState'
+  | 'onExecute'
+  | 'onIsRunningChange'
+  | 'onItemsChange'
+  | 'onReject'
+  | 'onExpire'
+> = {
   addItemsTo: 'back',
   getItemsFrom: 'front',
   getPriority: (item) => item?.priority ?? 0,
@@ -79,11 +156,6 @@ const defaultOptions: Required<QueuerOptions<any>> = {
   expirationDuration: Infinity,
   initialItems: [],
   maxSize: Infinity,
-  onExecute: () => {},
-  onIsRunningChange: () => {},
-  onItemsChange: () => {},
-  onReject: () => {},
-  onExpire: () => {},
   started: true,
   wait: 0,
 }
@@ -107,7 +179,7 @@ export type QueuePosition = 'front' | 'back'
  * - Callbacks for queue state changes, execution, rejection, and expiration
  *
  * Running behavior:
- * - `start()`: Begins automatically processing items in the queue (defaults to running)
+ * - `start()`: Begins automatically processing items in the queue (defaults to isRunning)
  * - `stop()`: Pauses processing but maintains queue state
  * - `wait`: Configurable delay between processing items
  * - `onItemsChange`/`onExecute`: Callbacks for monitoring queue state
@@ -136,6 +208,17 @@ export type QueuePosition = 'front' | 'back'
  * - `getIsExpired`: Function to override default expiration
  * - `onExpire`: Callback for expired items
  *
+ * State Management:
+ * - Uses TanStack Store for reactive state management
+ * - Use `initialState` to provide initial state values when creating the queuer
+ * - Use `onExecute` callback to react to item execution and implement custom logic
+ * - Use `onItemsChange` callback to react to items being added or removed from the queue
+ * - Use `onExpire` callback to react to items expiring and implement custom logic
+ * - Use `onReject` callback to react to items being rejected when the queue is full
+ * - The state includes execution count, expiration count, rejection count, and isRunning status
+ * - State can be accessed via `queuer.store.state` when using the class directly
+ * - When using framework adapters (React/Solid), state is accessed from `queuer.state`
+ *
  * Example usage:
  * ```ts
  * // Auto-processing queue with wait time
@@ -158,174 +241,112 @@ export type QueuePosition = 'front' | 'back'
  * ```
  */
 export class Queuer<TValue> {
-  private _options: Required<QueuerOptions<TValue>>
-  private _items: Array<TValue> = []
-  private _itemTimestamps: Array<number> = []
-  private _executionCount = 0
-  private _rejectionCount = 0
-  private _expirationCount = 0
-  private _onItemsChanges: Array<(item: TValue) => void> = []
-  private _running: boolean
-  private _pendingTick = false
+  readonly store: Store<Readonly<QueuerState<TValue>>> = new Store(
+    getDefaultQueuerState<TValue>(),
+  )
+  options: QueuerOptions<TValue>
+  #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
     private fn: (item: TValue) => void,
     initialOptions: QueuerOptions<TValue> = {},
   ) {
-    this._options = { ...defaultOptions, ...initialOptions }
-    this._running = this._options.started
+    this.options = {
+      ...defaultOptions,
+      ...initialOptions,
+    }
+    const isInitiallyRunning =
+      this.options.initialState?.isRunning ?? this.options.started ?? true
+    this.#setState({
+      ...this.options.initialState,
+      isRunning: isInitiallyRunning,
+    })
 
-    for (let i = 0; i < this._options.initialItems.length; i++) {
-      const item = this._options.initialItems[i]!
-      const isLast = i === this._options.initialItems.length - 1
-      this.addItem(item, this._options.addItemsTo, isLast)
+    if (this.options.initialState?.items) {
+      if (this.store.state.isRunning) {
+        this.#tick()
+      }
+    } else {
+      for (let i = 0; i < (this.options.initialItems?.length ?? 0); i++) {
+        const item = this.options.initialItems![i]!
+        const isLast = i === (this.options.initialItems?.length ?? 0) - 1
+        this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
+      }
     }
   }
 
   /**
    * Updates the queuer options. New options are merged with existing options.
    */
-  setOptions(newOptions: Partial<QueuerOptions<TValue>>): void {
-    this._options = { ...this._options, ...newOptions }
+  setOptions = (newOptions: Partial<QueuerOptions<TValue>>): void => {
+    this.options = { ...this.options, ...newOptions }
   }
 
-  /**
-   * Returns the current queuer options, including defaults and any overrides.
-   */
-  getOptions(): Required<QueuerOptions<TValue>> {
-    return this._options
+  #setState = (newState: Partial<QueuerState<TValue>>): void => {
+    this.store.setState((state) => {
+      const combinedState = {
+        ...state,
+        ...newState,
+      }
+
+      const { items, isRunning } = combinedState
+
+      const size = items.length
+      const isFull = size >= (this.options.maxSize ?? Infinity)
+      const isEmpty = size === 0
+      const isIdle = isRunning && isEmpty
+
+      const status = isIdle ? 'idle' : isRunning ? 'running' : 'stopped'
+
+      return {
+        ...combinedState,
+        isEmpty,
+        isFull,
+        isIdle,
+        size,
+        status,
+      }
+    })
   }
 
   /**
    * Returns the current wait time (in milliseconds) between processing items.
    * If a function is provided, it is called with the queuer instance.
    */
-  getWait(): number {
-    return parseFunctionOrValue(this._options.wait, this)
+  #getWait = (): number => {
+    return parseFunctionOrValue(this.options.wait ?? 0, this)
   }
 
   /**
    * Processes items in the queue up to the wait interval. Internal use only.
    */
-  private tick() {
-    if (!this._running) {
-      this._pendingTick = false
+  #tick = () => {
+    if (!this.store.state.isRunning) {
+      this.#setState({ pendingTick: false })
       return
     }
 
-    // Check for expired items
-    this.checkExpiredItems()
+    this.#setState({ pendingTick: true })
 
-    while (!this.getIsEmpty()) {
-      const nextItem = this.execute(this._options.getItemsFrom)
+    // Check for expired items
+    this.#checkExpiredItems()
+
+    while (!this.store.state.isEmpty) {
+      const nextItem = this.execute(this.options.getItemsFrom ?? 'front')
       if (nextItem === undefined) {
         break
       }
-      this._onItemsChanges.forEach((cb) => cb(nextItem))
 
-      const wait = this.getWait()
+      const wait = this.#getWait()
       if (wait > 0) {
         // Use setTimeout to wait before processing next item
-        setTimeout(() => this.tick(), wait)
+        this.#timeoutId = setTimeout(() => this.#tick(), wait)
         return
       }
 
-      this.tick()
+      this.#tick()
     }
-    this._pendingTick = false
-  }
-
-  /**
-   * Checks for expired items in the queue and removes them. Calls onExpire for each expired item.
-   * Internal use only.
-   */
-  private checkExpiredItems() {
-    if (
-      this._options.expirationDuration === Infinity &&
-      this._options.getIsExpired === defaultOptions.getIsExpired
-    )
-      return
-
-    const now = Date.now()
-    const expiredIndices: Array<number> = []
-
-    // Find indices of expired items
-    for (let i = 0; i < this._items.length; i++) {
-      const timestamp = this._itemTimestamps[i]
-      if (timestamp === undefined) continue
-
-      const item = this._items[i]
-      if (item === undefined) continue
-
-      const isExpired =
-        this._options.getIsExpired !== defaultOptions.getIsExpired
-          ? this._options.getIsExpired(item, timestamp)
-          : now - timestamp > this._options.expirationDuration
-
-      if (isExpired) {
-        expiredIndices.push(i)
-      }
-    }
-
-    // Remove expired items from back to front to maintain indices
-    for (let i = expiredIndices.length - 1; i >= 0; i--) {
-      const index = expiredIndices[i]
-      if (index === undefined) continue
-
-      const expiredItem = this._items[index]
-      if (expiredItem === undefined) continue
-
-      this._items.splice(index, 1)
-      this._itemTimestamps.splice(index, 1)
-      this._expirationCount++
-      this._options.onExpire(expiredItem, this)
-    }
-
-    if (expiredIndices.length > 0) {
-      this._options.onItemsChange(this)
-    }
-  }
-
-  /**
-   * Stops processing items in the queue. Does not clear the queue.
-   */
-  stop() {
-    this._running = false
-    this._pendingTick = false
-    this._options.onIsRunningChange(this)
-  }
-
-  /**
-   * Starts processing items in the queue. If already running, does nothing.
-   */
-  start() {
-    this._running = true
-    if (!this._pendingTick && !this.getIsEmpty()) {
-      this._pendingTick = true
-      this.tick()
-    }
-    this._options.onIsRunningChange(this)
-  }
-
-  /**
-   * Removes all pending items from the queue. Does not affect items being processed.
-   */
-  clear(): void {
-    this._items = []
-    this._options.onItemsChange(this)
-  }
-
-  /**
-   * Resets the queuer to its initial state. Optionally repopulates with initial items.
-   * Does not affect callbacks or options.
-   */
-  reset(withInitialItems?: boolean): void {
-    this.clear()
-    this._executionCount = 0
-    if (withInitialItems) {
-      this._items = [...this._options.initialItems]
-    }
-    this._running = this._options.started
+    this.#setState({ pendingTick: false })
   }
 
   /**
@@ -340,49 +361,71 @@ export class Queuer<TValue> {
    * queuer.addItem('task2', 'front');
    * ```
    */
-  addItem(
+  addItem = (
     item: TValue,
-    position: QueuePosition = this._options.addItemsTo,
-    runOnUpdate: boolean = true,
-  ): boolean {
-    if (this.getIsFull()) {
-      this._rejectionCount++
-      this._options.onReject(item, this)
+    position: QueuePosition = this.options.addItemsTo ?? 'back',
+    runOnItemsChange: boolean = true,
+  ): boolean => {
+    if (this.store.state.isFull) {
+      this.#setState({
+        rejectionCount: this.store.state.rejectionCount + 1,
+      })
+      this.options.onReject?.(item, this)
       return false
     }
 
-    if (this._options.getPriority !== defaultOptions.getPriority) {
-      // If custom priority function is provided, insert based on priority
-      const priority = this._options.getPriority(item)
-      const insertIndex = this._items.findIndex(
-        (existing) => this._options.getPriority(existing) < priority,
-      )
+    // Get priority either from the function or from getPriority option
+    const priority =
+      this.options.getPriority !== defaultOptions.getPriority
+        ? this.options.getPriority!(item)
+        : (item as any).priority
+
+    const items = this.store.state.items
+    const itemTimestamps = this.store.state.itemTimestamps
+
+    if (priority !== undefined) {
+      // Insert based on priority - higher priority items go to front
+      const insertIndex = items.findIndex((existing) => {
+        const existingPriority: number =
+          this.options.getPriority !== defaultOptions.getPriority
+            ? this.options.getPriority!(existing)
+            : (existing as any).priority
+        return existingPriority < priority
+      })
 
       if (insertIndex === -1) {
-        this._items.push(item)
-        this._itemTimestamps.push(Date.now())
+        items.push(item)
+        itemTimestamps.push(Date.now())
       } else {
-        this._items.splice(insertIndex, 0, item)
-        this._itemTimestamps.splice(insertIndex, 0, Date.now())
+        items.splice(insertIndex, 0, item)
+        itemTimestamps.splice(insertIndex, 0, Date.now())
       }
     } else {
-      // Default FIFO/LIFO behavior
       if (position === 'front') {
-        this._items.unshift(item)
-        this._itemTimestamps.unshift(Date.now())
+        // Default FIFO/LIFO behavior
+        items.unshift(item)
+        itemTimestamps.unshift(Date.now())
       } else {
-        this._items.push(item)
-        this._itemTimestamps.push(Date.now())
+        // LIFO
+        items.push(item)
+        itemTimestamps.push(Date.now())
       }
     }
 
-    if (this._running && !this._pendingTick) {
-      this._pendingTick = true
-      this.tick()
+    this.#setState({
+      items,
+      itemTimestamps,
+    })
+
+    if (runOnItemsChange) {
+      this.options.onItemsChange?.(this)
     }
-    if (runOnUpdate) {
-      this._options.onItemsChange(this)
+
+    if (this.store.state.isRunning && !this.store.state.pendingTick) {
+      this.#setState({ pendingTick: true })
+      this.#tick()
     }
+
     return true
   }
 
@@ -398,21 +441,32 @@ export class Queuer<TValue> {
    * queuer.getNextItem('back');
    * ```
    */
-  getNextItem(
-    position: QueuePosition = this._options.getItemsFrom,
-  ): TValue | undefined {
+  getNextItem = (
+    position: QueuePosition = this.options.getItemsFrom ?? 'front',
+  ): TValue | undefined => {
+    const { items, itemTimestamps } = this.store.state
     let item: TValue | undefined
 
     if (position === 'front') {
-      item = this._items.shift()
-      this._itemTimestamps.shift()
+      item = items[0]
+      if (item !== undefined) {
+        this.#setState({
+          items: items.slice(1),
+          itemTimestamps: itemTimestamps.slice(1),
+        })
+      }
     } else {
-      item = this._items.pop()
-      this._itemTimestamps.pop()
+      item = items[items.length - 1]
+      if (item !== undefined) {
+        this.#setState({
+          items: items.slice(0, -1),
+          itemTimestamps: itemTimestamps.slice(0, -1),
+        })
+      }
     }
 
     if (item !== undefined) {
-      this._options.onItemsChange(this)
+      this.options.onItemsChange?.(this)
     }
 
     return item
@@ -428,14 +482,88 @@ export class Queuer<TValue> {
    * queuer.execute('back');
    * ```
    */
-  execute(position?: QueuePosition): TValue | undefined {
+  execute = (position?: QueuePosition): TValue | undefined => {
     const item = this.getNextItem(position)
     if (item !== undefined) {
       this.fn(item)
-      this._executionCount++
-      this._options.onExecute(item, this)
+      this.#setState({
+        executionCount: this.store.state.executionCount + 1,
+      })
+      this.options.onExecute?.(item, this)
     }
     return item
+  }
+
+  /**
+   * Processes a specified number of items to execute immediately with no wait time
+   * If no numberOfItems is provided, all items will be processed
+   */
+  flush = (
+    numberOfItems: number = this.store.state.items.length,
+    position?: QueuePosition,
+  ): void => {
+    this.#clearTimeout() // clear any pending timeout
+    for (let i = 0; i < numberOfItems; i++) {
+      this.execute(position)
+    }
+  }
+
+  /**
+   * Checks for expired items in the queue and removes them. Calls onExpire for each expired item.
+   * Internal use only.
+   */
+  #checkExpiredItems = (): void => {
+    if (
+      (this.options.expirationDuration ?? Infinity) === Infinity &&
+      this.options.getIsExpired === defaultOptions.getIsExpired
+    ) {
+      return
+    }
+
+    const now = Date.now()
+    const expiredIndices: Array<number> = []
+
+    // Find indices of expired items
+    for (let i = 0; i < this.store.state.items.length; i++) {
+      const timestamp = this.store.state.itemTimestamps[i]
+      if (timestamp === undefined) continue
+
+      const item = this.store.state.items[i]
+      if (item === undefined) continue
+
+      const isExpired =
+        this.options.getIsExpired !== defaultOptions.getIsExpired
+          ? this.options.getIsExpired!(item, timestamp)
+          : now - timestamp > (this.options.expirationDuration ?? Infinity)
+
+      if (isExpired) {
+        expiredIndices.push(i)
+      }
+    }
+
+    // Remove expired items from back to front to maintain indices
+    for (let i = expiredIndices.length - 1; i >= 0; i--) {
+      const index = expiredIndices[i]
+      if (index === undefined) continue
+
+      const expiredItem = this.store.state.items[index]
+      if (expiredItem === undefined) continue
+
+      const newItems = [...this.store.state.items]
+      const newTimestamps = [...this.store.state.itemTimestamps]
+      newItems.splice(index, 1)
+      newTimestamps.splice(index, 1)
+      this.#setState({
+        items: newItems,
+        itemTimestamps: newTimestamps,
+        expirationCount: this.store.state.expirationCount + 1,
+      })
+      this.options.onExpire?.(expiredItem, this)
+    }
+
+    if (expiredIndices.length > 0) {
+      this.options.onItemsChange?.(this)
+    }
   }
 
   /**
@@ -447,76 +575,59 @@ export class Queuer<TValue> {
    * queuer.peekNextItem('back'); // back
    * ```
    */
-  peekNextItem(
-    position: QueuePosition = this._options.getItemsFrom,
-  ): TValue | undefined {
+  peekNextItem = (position: QueuePosition = 'front'): TValue | undefined => {
     if (position === 'front') {
-      return this._items[0]
+      return this.store.state.items[0]
     }
-    return this._items[this._items.length - 1]
-  }
-
-  /**
-   * Returns true if the queue is empty (no pending items).
-   */
-  getIsEmpty(): boolean {
-    return this._items.length === 0
-  }
-
-  /**
-   * Returns true if the queue is full (reached maxSize).
-   */
-  getIsFull(): boolean {
-    return this._items.length >= this._options.maxSize
-  }
-
-  /**
-   * Returns the number of pending items in the queue.
-   */
-  getSize(): number {
-    return this._items.length
+    return this.store.state.items[this.store.state.size - 1]
   }
 
   /**
    * Returns a copy of all items in the queue.
    */
-  peekAllItems(): Array<TValue> {
-    return [...this._items]
+  peekAllItems = (): Array<TValue> => {
+    return [...this.store.state.items]
   }
 
   /**
-   * Returns the number of items that have been processed and removed from the queue.
+   * Starts processing items in the queue. If already isRunning, does nothing.
    */
-  getExecutionCount(): number {
-    return this._executionCount
+  start = () => {
+    this.#setState({ isRunning: true })
+    if (!this.store.state.pendingTick && !this.store.state.isEmpty) {
+      this.#tick()
+    }
   }
 
   /**
-   * Returns the number of items that have been rejected from being added to the queue.
+   * Stops processing items in the queue. Does not clear the queue.
    */
-  getRejectionCount(): number {
-    return this._rejectionCount
+  stop = () => {
+    this.#clearTimeout()
+    this.#setState({ isRunning: false, pendingTick: false })
+  }
+
+  #clearTimeout = (): void => {
+    if (this.#timeoutId) {
+      clearTimeout(this.#timeoutId)
+      this.#timeoutId = null
+    }
   }
 
   /**
-   * Returns the number of items that have expired and been removed from the queue.
+   * Removes all pending items from the queue. Does not affect items being processed.
    */
-  getExpirationCount(): number {
-    return this._expirationCount
+  clear = (): void => {
+    this.#setState({ items: [], itemTimestamps: [] })
+    this.options.onItemsChange?.(this)
   }
 
   /**
-   * Returns true if the queuer is currently running (processing items).
+   * Resets the queuer state to its default values
    */
-  getIsRunning() {
-    return this._running
-  }
-
-  /**
-   * Returns true if the queuer is running but has no items to process.
-   */
-  getIsIdle() {
-    return this._running && this.getIsEmpty()
+  reset = (): void => {
+    this.#setState(getDefaultQueuerState<TValue>())
+    this.options.onItemsChange?.(this)
   }
 }
 
@@ -525,8 +636,19 @@ export class Queuer<TValue> {
  * Items are processed sequentially in FIFO order by default.
  *
  * This is a simplified wrapper around the Queuer class that only exposes the
- * `addItem` method. The queue is always running and will process items as they are added.
+ * `addItem` method. The queue is always isRunning and will process items as they are added.
  * For more control over queue processing, use the Queuer class directly.
+ *
+ * State Management:
+ * - Uses TanStack Store for reactive state management
+ * - Use `initialState` to provide initial state values when creating the queuer
+ * - Use `onExecute` callback to react to item execution and implement custom logic
+ * - Use `onItemsChange` callback to react to items being added or removed from the queue
+ * - Use `onExpire` callback to react to items expiring and implement custom logic
+ * - Use `onReject` callback to react to items being rejected when the queue is full
+ * - The state includes execution count, expiration count, rejection count, and isRunning status
+ * - State can be accessed via the underlying Queuer instance's `store.state` property
+ * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
  * Example usage:
  * ```ts
@@ -548,8 +670,8 @@ export class Queuer<TValue> {
  */
 export function queue<TValue>(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue>,
+  initialOptions: QueuerOptions<TValue>,
 ) {
-  const queuer = new Queuer<TValue>(fn, options)
-  return queuer.addItem.bind(queuer)
+  const queuer = new Queuer<TValue>(fn, initialOptions)
+  return queuer.addItem
 }

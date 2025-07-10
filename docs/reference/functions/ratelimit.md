@@ -11,7 +11,7 @@ title: rateLimit
 function rateLimit<TFn>(fn, initialOptions): (...args) => boolean
 ```
 
-Defined in: [rate-limiter.ts:275](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L275)
+Defined in: [rate-limiter.ts:320](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L320)
 
 Creates a rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
@@ -25,6 +25,15 @@ The rate limiter supports two types of windows:
   towards the limit, and the window resets completely after the period.
 - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
   consistent rate of execution over time.
+
+State Management:
+- Uses TanStack Store for reactive state management
+- Use `initialState` to provide initial state values when creating the rate limiter
+- Use `onExecute` callback to react to function execution and implement custom logic
+- Use `onReject` callback to react to executions being rejected when rate limit is exceeded
+- The state includes execution count, execution times, and rejection count
+- State can be accessed via the underlying RateLimiter instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
 
 Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
 need to enforce a hard limit on the number of executions within a time period.

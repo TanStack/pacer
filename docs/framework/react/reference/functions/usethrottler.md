@@ -8,10 +8,13 @@ title: useThrottler
 # Function: useThrottler()
 
 ```ts
-function useThrottler<TFn>(fn, options): Throttler<TFn>
+function useThrottler<TFn, TSelected>(
+   fn, 
+   options, 
+selector?): ReactThrottler<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L42)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L50)
 
 A low-level React hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
@@ -27,6 +30,8 @@ expensive operations or UI updates.
 
 • **TFn** *extends* `AnyFunction`
 
+• **TSelected** = `ThrottlerState`\<`TFn`\>
+
 ## Parameters
 
 ### fn
@@ -37,9 +42,13 @@ expensive operations or UI updates.
 
 `ThrottlerOptions`\<`TFn`\>
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-`Throttler`\<`TFn`\>
+[`ReactThrottler`](../../interfaces/reactthrottler.md)\<`TFn`, `TSelected`\>
 
 ## Example
 
@@ -47,13 +56,6 @@ expensive operations or UI updates.
 // Basic throttling with custom state
 const [value, setValue] = useState(0);
 const throttler = useThrottler(setValue, { wait: 1000 });
-
-// With Redux
-const dispatch = useDispatch();
-const throttler = useThrottler(
-  (value) => dispatch(updateAction(value)),
-  { wait: 1000 }
-);
 
 // With any state manager
 const throttler = useThrottler(

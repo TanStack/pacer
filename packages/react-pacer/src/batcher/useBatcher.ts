@@ -1,7 +1,17 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Batcher } from '@tanstack/pacer/batcher'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
-import type { BatcherOptions } from '@tanstack/pacer/batcher'
+import { useStore } from '@tanstack/react-store'
+import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
+
+export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
+  extends Omit<Batcher<TValue>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the batcher state changes
+   *
+   * Use this instead of `batcher.store.state`
+   */
+  readonly state: Readonly<TSelected>
+}
 
 /**
  * A React hook that creates and manages a Batcher instance.
@@ -40,15 +50,22 @@ import type { BatcherOptions } from '@tanstack/pacer/batcher'
  * batcher.start(); // Resume batching
  * ```
  */
-export function useBatcher<TValue>(
+export function useBatcher<TValue, TSelected = BatcherState<TValue>>(
   fn: (items: Array<TValue>) => void,
   options: BatcherOptions<TValue> = {},
-): Batcher<TValue> {
-  const [batcher] = useState(() =>
-    bindInstanceMethods(new Batcher<TValue>(fn, options)),
-  )
+  selector?: (state: BatcherState<TValue>) => TSelected,
+): ReactBatcher<TValue, TSelected> {
+  const [batcher] = useState(() => new Batcher<TValue>(fn, options))
+
+  const state = useStore(batcher.store, selector)
 
   batcher.setOptions(options)
 
-  return batcher
+  return useMemo(
+    () => ({
+      ...batcher,
+      state,
+    }),
+    [batcher, state],
+  )
 }

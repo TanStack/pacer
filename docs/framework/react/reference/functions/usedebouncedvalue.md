@@ -8,10 +8,13 @@ title: useDebouncedValue
 # Function: useDebouncedValue()
 
 ```ts
-function useDebouncedValue<TValue>(value, options): [TValue, Debouncer<Dispatch<SetStateAction<TValue>>>]
+function useDebouncedValue<TValue, TSelected>(
+   value, 
+   options, 
+   selector?): [TValue, ReactDebouncer<Dispatch<SetStateAction<TValue>>, TSelected>]
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L41)
+Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L45)
 
 A React hook that creates a debounced value that updates only after a specified delay.
 Unlike useDebouncedState, this hook automatically tracks changes to the input value
@@ -33,6 +36,8 @@ and execution counts.
 
 • **TValue**
 
+• **TSelected** = `DebouncerState`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
+
 ## Parameters
 
 ### value
@@ -43,9 +48,13 @@ and execution counts.
 
 `DebouncerOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-\[`TValue`, `Debouncer`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>\]
+\[`TValue`, [`ReactDebouncer`](../../interfaces/reactdebouncer.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>\]
 
 ## Example
 

@@ -59,7 +59,7 @@ The async throttler provides robust error handling capabilities:
   - When true (default if no onError handler), errors will be thrown
   - When false (default if onError handler provided), errors will be swallowed
   - Can be explicitly set to override these defaults
-- You can track error counts using `getErrorCount()` and check execution state with `getIsExecuting()`
+- You can track error counts using `throttler.store.state.errorCount` and check execution state with `throttler.store.state.isExecuting`
 - The throttler maintains its state and can continue to be used after an error occurs
 
 ### 3. Different Callbacks
@@ -78,11 +78,11 @@ const asyncThrottler = new AsyncThrottler(async (value) => {
   wait: 500,
   onSuccess: (result, throttler) => {
     // Called after each successful execution
-    console.log('Async function executed', throttler.getSuccessCount())
+    console.log('Async function executed', throttler.store.state.successCount)
   },
   onSettled: (throttler) => {
     // Called after each execution attempt
-    console.log('Async function settled', throttler.getSettledCount())
+    console.log('Async function settled', throttler.store.state.settleCount)
   },
   onError: (error) => {
     // Called if the async function throws an error
@@ -104,6 +104,99 @@ Just like the synchronous throttler, the async throttler supports dynamic option
 ## Framework Adapters
 
 Each framework adapter provides hooks that build on top of the core async throttling functionality to integrate with the framework's state management system. Hooks like `createAsyncThrottler`, `useAsyncThrottledCallback`, or similar are available for each framework.
+
+## State Management
+
+The `AsyncThrottler` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and timing information.
+
+### Accessing State
+
+When using the `AsyncThrottler` class directly, access state via the `store.state` property:
+
+```ts
+const asyncThrottler = new AsyncThrottler(asyncFn, { wait: 500 })
+
+// Access current state
+console.log(asyncThrottler.store.state.successCount)
+```
+
+### Framework Adapters
+
+When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+
+```ts
+// React example
+const asyncThrottler = useAsyncThrottler(asyncFn, { wait: 500 })
+
+// Access state directly (reactive)
+console.log(asyncThrottler.state.successCount) // Reactive value
+console.log(asyncThrottler.state.isExecuting) // Reactive value
+```
+
+### Initial State
+
+You can provide initial state values when creating an async throttler:
+
+```ts
+const asyncThrottler = new AsyncThrottler(asyncFn, {
+  wait: 500,
+  initialState: {
+    successCount: 3, // Start with 3 successful executions
+    errorCount: 1, // Start with 1 error
+    lastResult: 'initial-result', // Start with initial result
+    lastExecutionTime: Date.now() - 1000, // Set last execution to 1 second ago
+  }
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const asyncThrottler = new AsyncThrottler(asyncFn, { wait: 500 })
+
+// Subscribe to state changes
+const unsubscribe = asyncThrottler.store.subscribe((state) => {
+  console.log('Success count:', state.successCount)
+  console.log('Error count:', state.errorCount)
+  console.log('Currently executing:', state.isExecuting)
+  console.log('Last execution time:', state.lastExecutionTime)
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+### Available State Properties
+
+The `AsyncThrottlerState` includes:
+
+- `successCount`: Number of successful function executions
+- `errorCount`: Number of failed function executions
+- `settleCount`: Total number of completed executions (success + error)
+- `isExecuting`: Whether the async function is currently executing
+- `isPending`: Whether the throttler is waiting for timeout to trigger execution
+- `status`: Current execution status ('idle' | 'pending' | 'executing' | 'settled')
+- `lastExecutionTime`: Timestamp of the last function execution (in milliseconds)
+- `nextExecutionTime`: Timestamp when the next execution can occur (in milliseconds)
+- `lastResult`: Result from the most recent successful execution
+- `lastArgs`: Arguments from the most recent call to `maybeExecute`
+
+### Flushing Pending Executions
+
+The async throttler supports flushing pending executions to trigger them immediately:
+
+```ts
+const asyncThrottler = new AsyncThrottler(asyncFn, { wait: 1000 })
+
+asyncThrottler.maybeExecute('some-arg')
+console.log(asyncThrottler.store.state.isPending) // true
+
+// Flush immediately instead of waiting
+asyncThrottler.flush()
+console.log(asyncThrottler.store.state.isPending) // false
+```
 
 ---
 

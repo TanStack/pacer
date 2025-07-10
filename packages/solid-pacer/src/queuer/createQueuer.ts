@@ -1,57 +1,16 @@
 import { Queuer } from '@tanstack/pacer/queuer'
-import { createSignal } from 'solid-js'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
-import type { QueuerOptions } from '@tanstack/pacer/queuer'
+import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
-export interface SolidQueuer<TValue>
-  extends Omit<
-    Queuer<TValue>,
-    | 'getExecutionCount'
-    | 'getIsEmpty'
-    | 'getIsFull'
-    | 'getIsIdle'
-    | 'getIsRunning'
-    | 'getSize'
-    | 'peekAllItems'
-    | 'peekNextItem'
-  > {
+export interface SolidQueuer<TValue, TSelected = QueuerState<TValue>>
+  extends Omit<Queuer<TValue>, 'store'> {
   /**
-   * Signal version of `peekAllItems`
+   * Reactive state that will be updated when the queuer state changes
+   *
+   * Use this instead of `queuer.store.state`
    */
-  allItems: Accessor<Array<TValue>>
-  /**
-   * Signal version of `getExecutionCount`
-   */
-  executionCount: Accessor<number>
-  /**
-   * Signal version of `getIsEmpty`
-   */
-  isEmpty: Accessor<boolean>
-  /**
-   * Signal version of `getIsFull`
-   */
-  isFull: Accessor<boolean>
-  /**
-   * Signal version of `getIsIdle`
-   */
-  isIdle: Accessor<boolean>
-  /**
-   * Signal version of `getIsRunning`
-   */
-  isRunning: Accessor<boolean>
-  /**
-   * Signal version of `peekNextItem`
-   */
-  nextItem: Accessor<TValue | undefined>
-  /**
-   * Signal version of `getRejectionCount`
-   */
-  rejectionCount: Accessor<number>
-  /**
-   * Signal version of `getSize`
-   */
-  size: Accessor<number>
+  readonly state: Accessor<Readonly<TSelected>>
 }
 
 /**
@@ -105,76 +64,17 @@ export interface SolidQueuer<TValue>
  * console.log('Next item:', queue.nextItem());
  * ```
  */
-export function createQueuer<TValue>(
+export function createQueuer<TValue, TSelected = QueuerState<TValue>>(
   fn: (item: TValue) => void,
   initialOptions: QueuerOptions<TValue> = {},
-): SolidQueuer<TValue> {
-  const queuer = bindInstanceMethods(new Queuer<TValue>(fn, initialOptions))
+  selector?: (state: QueuerState<TValue>) => TSelected,
+): SolidQueuer<TValue, TSelected> {
+  const queuer = new Queuer(fn, initialOptions)
 
-  const [allItems, setAllItems] = createSignal<Array<TValue>>(
-    queuer.peekAllItems(),
-  )
-  const [executionCount, setExecutionCount] = createSignal(
-    queuer.getExecutionCount(),
-  )
-  const [rejectionCount, setRejectionCount] = createSignal(
-    queuer.getRejectionCount(),
-  )
-  const [isEmpty, setIsEmpty] = createSignal(queuer.getIsEmpty())
-  const [isFull, setIsFull] = createSignal(queuer.getIsFull())
-  const [isIdle, setIsIdle] = createSignal(queuer.getIsIdle())
-  const [isRunning, setIsRunning] = createSignal(queuer.getIsRunning())
-  const [nextItem, setNextItem] = createSignal<TValue | undefined>(
-    queuer.peekNextItem(),
-  )
-  const [size, setSize] = createSignal(queuer.getSize())
-
-  function setOptions(newOptions: Partial<QueuerOptions<TValue>>) {
-    queuer.setOptions({
-      ...newOptions,
-      onItemsChange: (queuer) => {
-        setAllItems(queuer.peekAllItems())
-        setExecutionCount(queuer.getExecutionCount())
-        setIsEmpty(queuer.getIsEmpty())
-        setIsFull(queuer.getIsFull())
-        setIsIdle(queuer.getIsIdle())
-        setNextItem(() => queuer.peekNextItem())
-        setSize(queuer.getSize())
-
-        const onItemsChange =
-          newOptions.onItemsChange ?? initialOptions.onItemsChange
-        onItemsChange?.(queuer)
-      },
-      onIsRunningChange: (queuer) => {
-        setIsRunning(queuer.getIsRunning())
-        setIsIdle(queuer.getIsIdle())
-
-        const onIsRunningChange =
-          newOptions.onIsRunningChange ?? initialOptions.onIsRunningChange
-        onIsRunningChange?.(queuer)
-      },
-      onReject: (item, queuer) => {
-        setRejectionCount(queuer.getRejectionCount())
-
-        const onReject = newOptions.onReject ?? initialOptions.onReject
-        onReject?.(item, queuer)
-      },
-    })
-  }
-
-  setOptions(initialOptions)
+  const state = useStore(queuer.store, selector)
 
   return {
     ...queuer,
-    allItems,
-    executionCount,
-    isEmpty,
-    isFull,
-    isIdle,
-    isRunning,
-    nextItem,
-    rejectionCount,
-    size,
-    setOptions,
-  } as SolidQueuer<TValue>
+    state,
+  } as unknown as SolidQueuer<TValue, TSelected> // omit `store` in favor of `state`
 }

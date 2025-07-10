@@ -7,11 +7,7 @@ const fakeWaitTime = 500
 type Item = number
 
 function App() {
-  // Use your state management library of choice
-  const [queueItems, setQueueItems] = useState<Array<Item>>([])
   const [concurrency, setConcurrency] = useState(2)
-
-  const [, rerender] = useState(0) // demo - rerender when start/stop changes
 
   // The function to process each item (now a number)
   async function processItem(item: Item): Promise<void> {
@@ -19,46 +15,47 @@ function App() {
     console.log(`Processed ${item}`)
   }
 
-  const asyncQueuer = useAsyncQueuer(processItem, {
-    maxSize: 25,
-    initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
-    concurrency, // Process 2 items concurrently
-    started: false,
-    wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
-    onItemsChange: (asyncQueuer) => {
-      setQueueItems(asyncQueuer.peekAllItems())
+  const asyncQueuer = useAsyncQueuer(
+    processItem, // your function to queue/process items
+    {
+      maxSize: 25,
+      initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
+      concurrency, // Process 2 items concurrently
+      started: false,
+      wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
+      onReject: (item, asyncQueuer) => {
+        console.log(
+          'Queue is full, rejecting item',
+          item,
+          asyncQueuer.store.state.rejectionCount,
+        )
+      },
+      onError: (error: unknown, asyncQueuer) => {
+        console.error(
+          'Error processing item',
+          error,
+          asyncQueuer.store.state.errorCount,
+        ) // optionally, handle errors here instead of your own try/catch
+      },
     },
-    onIsRunningChange: (_asyncQueuer) => {
-      rerender((prev) => prev + 1)
-    },
-    onReject: (item: Item, asyncQueuer) => {
-      console.log(
-        'Queue is full, rejecting item',
-        item,
-        asyncQueuer.getRejectionCount(),
-      )
-    },
-    onError: (error: unknown, _asyncQueuer) => {
-      console.error('Error processing item', error, asyncQueuer.getErrorCount()) // optionally, handle errors here instead of your own try/catch
-    },
-  })
+    // optionally, you can select a subset of the state to re-render when it changes
+    // (state) => ({ }),
+  )
 
   return (
     <div>
       <h1>TanStack Pacer useAsyncQueuer Example</h1>
       <div></div>
-      <div>Queue Size: {asyncQueuer.getSize()}</div>
+      <div>Queue Size: {asyncQueuer.state.size}</div>
       <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {asyncQueuer.getIsFull() ? 'Yes' : 'No'}</div>
-      <div>Queue Empty: {asyncQueuer.getIsEmpty() ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {asyncQueuer.getIsIdle() ? 'Yes' : 'No'}</div>
-      <div>
-        Queuer Status: {asyncQueuer.getIsRunning() ? 'Running' : 'Stopped'}
-      </div>
-      <div>Items Processed: {asyncQueuer.getSuccessCount()}</div>
-      <div>Items Rejected: {asyncQueuer.getRejectionCount()}</div>
-      <div>Active Tasks: {asyncQueuer.peekActiveItems().length}</div>
-      <div>Pending Tasks: {asyncQueuer.peekPendingItems().length}</div>
+      <div>Queue Full: {asyncQueuer.state.isFull ? 'Yes' : 'No'}</div>
+      <div>Queue Empty: {asyncQueuer.state.isEmpty ? 'Yes' : 'No'}</div>
+      <div>Queue Idle: {asyncQueuer.state.isIdle ? 'Yes' : 'No'}</div>
+      <div>Queuer Status: {asyncQueuer.state.status}</div>
+      <div>Items Processed: {asyncQueuer.state.successCount}</div>
+      <div>Items Rejected: {asyncQueuer.state.rejectionCount}</div>
+      <div>Active Tasks: {asyncQueuer.state.activeItems.length}</div>
+      <div>Pending Tasks: {asyncQueuer.state.items.length}</div>
       <div>
         Concurrency:{' '}
         <input
@@ -73,7 +70,7 @@ function App() {
       </div>
       <div style={{ minHeight: '250px' }}>
         Queue Items:
-        {queueItems.map((item, index) => (
+        {asyncQueuer.peekAllItems().map((item, index) => (
           <div key={index}>
             {index}: {item}
           </div>
@@ -90,36 +87,45 @@ function App() {
       >
         <button
           onClick={() => {
-            const nextNumber = queueItems.length
-              ? Math.max(...queueItems) + 1
+            const nextNumber = asyncQueuer.peekAllItems().length
+              ? Math.max(...asyncQueuer.peekAllItems()) + 1
               : 1
             asyncQueuer.addItem(nextNumber)
           }}
-          disabled={asyncQueuer.getIsFull()}
+          disabled={asyncQueuer.state.isFull}
         >
           Add Async Task
         </button>
         <button onClick={() => asyncQueuer.getNextItem()}>Get Next Item</button>
         <button
           onClick={() => asyncQueuer.clear()}
-          disabled={asyncQueuer.getIsEmpty()}
+          disabled={asyncQueuer.state.isEmpty}
         >
           Clear Queue
         </button>
-        <button onClick={() => asyncQueuer.reset()}>Reset Queue</button>
+        <button
+          onClick={() => asyncQueuer.flush()}
+          disabled={asyncQueuer.state.isEmpty}
+        >
+          Flush Queue
+        </button>
         <button
           onClick={() => asyncQueuer.start()}
-          disabled={asyncQueuer.getIsRunning()}
+          disabled={asyncQueuer.state.isRunning}
         >
           Start Processing
         </button>
         <button
           onClick={() => asyncQueuer.stop()}
-          disabled={!asyncQueuer.getIsRunning()}
+          disabled={!asyncQueuer.state.isRunning}
         >
           Stop Processing
         </button>
+        <button onClick={() => asyncQueuer.reset()}>Reset Queue</button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(asyncQueuer.state, null, 2)}
+      </pre>
     </div>
   )
 }

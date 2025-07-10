@@ -89,13 +89,13 @@ describe('Throttler', () => {
     const throttler = new Throttler(mockFn, { wait: 100 })
 
     throttler.maybeExecute()
-    expect(throttler.getExecutionCount()).toBe(1)
+    expect(throttler.store.state.executionCount).toBe(1)
 
     throttler.maybeExecute()
-    expect(throttler.getExecutionCount()).toBe(1)
+    expect(throttler.store.state.executionCount).toBe(1)
 
     vi.advanceTimersByTime(100)
-    expect(throttler.getExecutionCount()).toBe(2)
+    expect(throttler.store.state.executionCount).toBe(2)
   })
 
   it('should cancel pending trailing execution', () => {
@@ -146,17 +146,17 @@ describe('Throttler', () => {
     const throttler = new Throttler(mockFn, { wait: 100 })
 
     // Initial state
-    expect(throttler.getLastExecutionTime()).toBe(0)
+    expect(throttler.store.state.lastExecutionTime).toBe(0)
 
     // First execution
     throttler.maybeExecute('first')
-    const firstExecutionTime = throttler.getLastExecutionTime()
+    const firstExecutionTime = throttler.store.state.lastExecutionTime
     expect(firstExecutionTime).toBeGreaterThan(0)
 
     // Wait and execute again
     vi.advanceTimersByTime(100)
     throttler.maybeExecute('second')
-    const secondExecutionTime = throttler.getLastExecutionTime()
+    const secondExecutionTime = throttler.store.state.lastExecutionTime
     expect(secondExecutionTime).toBeGreaterThan(firstExecutionTime)
   })
 

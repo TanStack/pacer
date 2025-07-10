@@ -10,7 +10,7 @@
   "scripts": {
     "build": "nx affected --targets=build --exclude=examples/** && size-limit",
     "build:all": "nx run-many --targets=build --exclude=examples/** && size-limit",
-    "build:core": "nx build @tanstack/pacer && size-limit",
+    "build:core": "nx run-many --targets=build --projects=packages/pacer,packages/persister && size-limit",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
     "changeset:version": "changeset version && pnpm install --no-frozen-lockfile && pnpm prettier:write",
@@ -48,37 +48,39 @@
   "size-limit": [
     {
       "path": "packages/pacer/dist/esm/index.js",
-      "limit": "4 KB"
+      "limit": "8 KB"
     }
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.29.4",
-    "@faker-js/faker": "^9.8.0",
+    "@changesets/cli": "^2.29.5",
+    "@faker-js/faker": "^9.9.0",
     "@size-limit/preset-small-lib": "^11.2.0",
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
-    "@tanstack/config": "0.18.2",
+    "@tanstack/config": "0.19.0",
     "@testing-library/jest-dom": "^6.6.3",
-    "@types/node": "^22.15.30",
-    "eslint": "^9.28.0",
+    "@types/node": "^24.0.13",
+    "eslint": "^9.30.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "fast-glob": "^3.3.3",
     "jsdom": "^26.1.0",
-    "knip": "^5.60.2",
+    "knip": "^5.61.3",
     "markdown-link-extractor": "^4.0.2",
-    "nx": "^21.1.3",
+    "nx": "^21.2.2",
     "premove": "^4.0.0",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.4.0",
     "publint": "^0.3.12",
-    "sherif": "^1.5.0",
+    "sherif": "^1.6.1",
     "size-limit": "^11.2.0",
     "typescript": "5.8.3",
-    "vite": "^6.3.5",
-    "vitest": "^3.2.2"
+    "vite": "^7.0.4",
+    "vitest": "^3.2.4"
   },
   "overrides": {
     "@tanstack/pacer": "workspace:*",
+    "@tanstack/persister": "workspace:*",
     "@tanstack/react-pacer": "workspace:*",
+    "@tanstack/react-persister": "workspace:*",
     "@tanstack/solid-pacer": "workspace:*"
   }
 }

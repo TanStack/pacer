@@ -20,8 +20,6 @@ const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
 function App() {
   const [searchTerm, setSearchTerm] = createSignal('')
   const [results, setResults] = createSignal<Array<SearchResult>>([])
-  const [isLoading, setIsLoading] = createSignal(false)
-  const [error, setError] = createSignal<Error | null>(null)
 
   // The function that will become debounced
   const handleSearch = async (term: string) => {
@@ -32,32 +30,34 @@ function App() {
 
     // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
 
-    if (!results.length) {
-      setIsLoading(true)
-    }
-
     const data = await fakeApi(term)
     setResults(data) // option 1: set results immediately
-    setIsLoading(false)
-    setError(null)
 
     return data // option 2: return data if you need to
   }
 
   // hook that gives you an async debouncer instance
-  const setSearchAsyncDebouncer = createAsyncDebouncer(handleSearch, {
-    // leading: true, // optional leading execution
-    wait: 500, // Wait 500ms between API calls
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setError(error as Error)
-      setResults([])
+  const asyncDebouncer = createAsyncDebouncer(
+    handleSearch,
+    {
+      // leading: true, // optional leading execution
+      wait: 500, // Wait 500ms between API calls
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setResults([])
+      },
     },
-  })
+    // optionally subscribe to only the solid state changes you care about
+    // (state) => ({
+    //   isExecuting: state.isExecuting,
+    //   isPending: state.isPending,
+    //   successCount: state.successCount,
+    // }),
+  )
 
   // get and name our debounced function
-  const handleSearchDebounced = setSearchAsyncDebouncer.maybeExecute
+  const handleSearchDebounced = asyncDebouncer.maybeExecute
 
   // instant event handler that calls both the instant local state setter and the debounced function
   async function onSearchChange(e: Event) {
@@ -81,15 +81,20 @@ function App() {
           autocomplete="new-password"
         />
       </div>
-      {error() && <div>Error: {error()?.message}</div>}
+      {asyncDebouncer.state().errorCount > 0 && (
+        <div>Errors: {asyncDebouncer.state().errorCount}</div>
+      )}
       <div>
-        <p>API calls made: {setSearchAsyncDebouncer.successCount()}</p>
+        <p>API calls made: {asyncDebouncer.state().successCount}</p>
         {results().length > 0 && (
           <ul>
             <For each={results()}>{(item) => <li>{item.title}</li>}</For>
           </ul>
         )}
-        {isLoading() && <p>Loading...</p>}
+        {asyncDebouncer.state().isExecuting && <p>Executing...</p>}
+        {asyncDebouncer.state().isPending && <p>Pending...</p>}
+        <hr />
+        <pre>{JSON.stringify({ state: asyncDebouncer.state() }, null, 2)}</pre>
       </div>
     </div>
   )

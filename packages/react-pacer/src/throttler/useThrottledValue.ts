@@ -1,6 +1,10 @@
 import { useEffect } from 'react'
 import { useThrottledState } from './useThrottledState'
-import type { Throttler, ThrottlerOptions } from '@tanstack/pacer/throttler'
+import type { ReactThrottler } from './useThrottler'
+import type {
+  ThrottlerOptions,
+  ThrottlerState,
+} from '@tanstack/pacer/throttler'
 
 /**
  * A high-level React hook that creates a throttled version of a value that updates at most once within a specified time window.
@@ -29,13 +33,23 @@ import type { Throttler, ThrottlerOptions } from '@tanstack/pacer/throttler'
  * });
  * ```
  */
-export function useThrottledValue<TValue>(
+export function useThrottledValue<
+  TValue,
+  TSelected = ThrottlerState<React.Dispatch<React.SetStateAction<TValue>>>,
+>(
   value: TValue,
   options: ThrottlerOptions<React.Dispatch<React.SetStateAction<TValue>>>,
-): [TValue, Throttler<React.Dispatch<React.SetStateAction<TValue>>>] {
+  selector?: (
+    state: ThrottlerState<React.Dispatch<React.SetStateAction<TValue>>>,
+  ) => TSelected,
+): [
+  TValue,
+  ReactThrottler<React.Dispatch<React.SetStateAction<TValue>>, TSelected>,
+] {
   const [throttledValue, setThrottledValue, throttler] = useThrottledState(
     value,
     options,
+    selector,
   )
 
   useEffect(() => {

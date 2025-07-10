@@ -6,10 +6,11 @@ export * from '@tanstack/pacer'
  */
 
 // async-batcher
-// export * from './async-batcher/useAsyncBatcher'
+export * from './async-batcher/useAsyncBatcher'
 
 // async-debouncer
 export * from './async-debouncer/useAsyncDebouncer'
+export * from './async-debouncer/useAsyncDebouncedCallback'
 
 // async-queuer
 export * from './async-queuer/useAsyncQueuer'
@@ -17,9 +18,11 @@ export * from './async-queuer/useAsyncQueuedState'
 
 // async-rate-limiter
 export * from './async-rate-limiter/useAsyncRateLimiter'
+export * from './async-rate-limiter/useAsyncRateLimitedCallback'
 
 // async-throttler
 export * from './async-throttler/useAsyncThrottler'
+export * from './async-throttler/useAsyncThrottledCallback'
 
 // batcher
 export * from './batcher/useBatcher'

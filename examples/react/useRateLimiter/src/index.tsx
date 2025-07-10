@@ -1,11 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
+import { useStoragePersister } from '@tanstack/react-persister/storage-persister'
+import type { RateLimiterState } from '@tanstack/react-pacer/rate-limiter'
 
 function App1() {
   // Use your state management library of choice
-  const [instantCount, setInstantCount] = useState(0)
-  const [limitedCount, setLimitedCount] = useState(0)
+  const [instantCount, setInstantCount] = useState(0) // not rate-limited
+  const [limitedCount, setLimitedCount] = useState(0) // rate-limited
+
+  const rateLimiterPersister = useStoragePersister<RateLimiterState>({
+    key: 'my-rate-limiter',
+    storage: localStorage,
+    maxAge: 1000 * 60, // 1 minute
+    buster: 'v1',
+  })
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const rateLimiter = useRateLimiter(setLimitedCount, {
@@ -18,7 +27,13 @@ function App1() {
         'Rejected by rate limiter',
         rateLimiter.getMsUntilNextWindow(),
       ),
+    // optional local storage persister to retain state on page refresh
+    initialState: rateLimiterPersister.loadState(),
   })
+
+  useEffect(() => {
+    rateLimiterPersister.saveState(rateLimiter.state)
+  }, [rateLimiter.state])
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -31,16 +46,16 @@ function App1() {
 
   return (
     <div>
-      <h1>TanStack Pacer useRateLimiter Example 1</h1>
+      <h1>TanStack Pacer useRateLimiter Example 1 (with persister)</h1>
       <table>
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.getExecutionCount()}</td>
+            <td>{rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.getRejectionCount()}</td>
+            <td>{rateLimiter.state.rejectionCount}</td>
           </tr>
           <tr>
             <td>Remaining in Window:</td>
@@ -69,6 +84,9 @@ function App1() {
         <button onClick={increment}>Increment</button>
         <button onClick={() => rateLimiter.reset()}>Reset</button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(rateLimiter.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -113,11 +131,11 @@ function App2() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.getExecutionCount()}</td>
+            <td>{rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.getRejectionCount()}</td>
+            <td>{rateLimiter.state.rejectionCount}</td>
           </tr>
           <tr>
             <td>Remaining in Window:</td>
@@ -144,6 +162,9 @@ function App2() {
       <div>
         <button onClick={() => rateLimiter.reset()}>Reset</button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(rateLimiter.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -206,11 +227,11 @@ function App3() {
         <tbody>
           <tr>
             <td>Execution Count:</td>
-            <td>{rateLimiter.getExecutionCount()}</td>
+            <td>{rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>Rejection Count:</td>
-            <td>{rateLimiter.getRejectionCount()}</td>
+            <td>{rateLimiter.state.rejectionCount}</td>
           </tr>
           <tr>
             <td>Remaining in Window:</td>
@@ -226,7 +247,7 @@ function App3() {
           </tr>
           <tr>
             <td>Saved Executions:</td>
-            <td>{instantExecutionCount - rateLimiter.getExecutionCount()}</td>
+            <td>{instantExecutionCount - rateLimiter.state.executionCount}</td>
           </tr>
           <tr>
             <td>% Reduction:</td>
@@ -234,7 +255,8 @@ function App3() {
               {instantExecutionCount === 0
                 ? '0'
                 : Math.round(
-                    ((instantExecutionCount - rateLimiter.getExecutionCount()) /
+                    ((instantExecutionCount -
+                      rateLimiter.state.executionCount) /
                       instantExecutionCount) *
                       100,
                   )}
@@ -246,6 +268,9 @@ function App3() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Rate limited to 20 updates per 2 seconds</p>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(rateLimiter.state, null, 2)}
+      </pre>
     </div>
   )
 }

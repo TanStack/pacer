@@ -210,15 +210,16 @@ The Queuer provides several helpful methods for queue management:
 ```ts
 // Queue inspection
 queue.peekNextItem()           // View next item without removing it
-queue.getSize()           // Get current queue size
-queue.getIsEmpty()        // Check if queue is empty
-queue.getIsFull()         // Check if queue has reached maxSize
-queue.peekAllItems()       // Get copy of all queued items
+queue.store.state.size         // Get current queue size
+queue.store.state.isEmpty      // Check if queue is empty
+queue.store.state.isFull       // Check if queue has reached maxSize
+queue.peekAllItems()           // Get copy of all queued items
 
 // Queue manipulation
-queue.clear()             // Remove all items
-queue.reset()             // Reset to initial state
-queue.getExecutionCount() // Get number of processed items
+queue.clear()                  // Remove all items
+queue.reset()                  // Reset to initial state
+queue.store.state.executionCount // Get number of processed items
+queue.flush()                  // Flush all pending items immediately
 
 // Event handling (use the onItemsChange option, not a method)
 // Example:
@@ -271,7 +272,7 @@ const queue = new Queuer<number>(
 )
 
 // Check expiration statistics
-console.log(queue.getExpirationCount()) // Number of items that have expired
+console.log(queue.store.state.expirationCount) // Number of items that have expired
 ```
 
 Expiration features are particularly useful for:
@@ -302,7 +303,7 @@ queue.addItem(1) // Accepted
 queue.addItem(2) // Accepted
 queue.addItem(3) // Rejected, triggers onReject callback
 
-console.log(queue.getRejectionCount()) // 1
+console.log(queue.store.state.rejectionCount) // 1
 ```
 
 ### Initial Items
@@ -326,7 +327,7 @@ const queue = new Queuer<number>(
 
 ### Dynamic Configuration
 
-The Queuer's options can be modified after creation using `setOptions()` and retrieved using `getOptions()`. Additionally, several options support dynamic values through callback functions:
+The Queuer's options can be modified after creation using `setOptions()`. Additionally, several options support dynamic values through callback functions:
 
 ```ts
 const queue = new Queuer<number>(
@@ -346,9 +347,9 @@ queue.setOptions({
   started: true // Start processing
 })
 
-// Get current configuration
-const options = queue.getOptions()
-console.log(options.wait) // 500
+// Access current state
+console.log(queue.store.state.size) // Current queue size
+console.log(queue.store.state.isRunning) // Whether queue is running
 ```
 
 ### Dynamic Options
@@ -364,7 +365,7 @@ const queue = new Queuer<number>(
   {
     // Dynamic wait time based on queue size
     wait: (queuer) => {
-      return queuer.getSize() > 10 ? 2000 : 1000
+      return queuer.store.state.size > 10 ? 2000 : 1000
     }
   }
 )
@@ -377,7 +378,7 @@ This allows for sophisticated queue behavior that adapts to runtime conditions.
 
 ### Performance Monitoring
 
-The Queuer provides methods to monitor its performance:
+The Queuer provides state properties to monitor its performance:
 
 ```ts
 const queue = new Queuer<number>(
@@ -392,8 +393,110 @@ queue.addItem(1)
 queue.addItem(2)
 queue.addItem(3)
 
-console.log(queue.getExecutionCount()) // Number of items processed
-console.log(queue.getRejectionCount()) // Number of items rejected
+console.log(queue.store.state.rejectionCount) // Number of items processed
+```
+
+## State Management
+
+The `Queuer` class uses TanStack Store for reactive state management, providing real-time access to queue state, processing statistics, and item tracking.
+
+### Accessing State
+
+When using the `Queuer` class directly, access state via the `store.state` property:
+
+```ts
+const queue = new Queuer(processFn, { wait: 1000, maxSize: 10 })
+
+// Access current state
+console.log(queue.store.state.isFull)
+```
+
+### Framework Adapters
+
+When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+
+```ts
+// React example
+const queue = useQueuer(processFn, { wait: 1000, maxSize: 10 })
+
+// Access state directly (reactive)
+console.log(queue.state.executionCount) // Reactive value
+console.log(queue.state.size) // Reactive value
+```
+
+### Initial State
+
+You can provide initial state values when creating a queuer:
+
+```ts
+const queue = new Queuer(processFn, {
+  wait: 1000,
+  maxSize: 10,
+  initialState: {
+    executionCount: 5, // Start with 5 items processed
+    rejectionCount: 2, // Start with 2 rejections
+    isRunning: false, // Start paused
+  }
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const queue = new Queuer(processFn, { wait: 1000, maxSize: 10 })
+
+// Subscribe to state changes
+const unsubscribe = queue.store.subscribe((state) => {
+  console.log('Queue size:', state.size)
+  console.log('Items processed:', state.executionCount)
+  console.log('Is running:', state.isRunning)
+  console.log('Is empty:', state.isEmpty)
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+### Available State Properties
+
+The `QueuerState` includes:
+
+- `executionCount`: Number of items processed
+- `rejectionCount`: Number of items rejected due to maxSize
+- `expirationCount`: Number of items expired
+- `size`: Current number of items in the queue
+- `isEmpty`: Whether the queue has no items
+- `isFull`: Whether the queue has reached maxSize
+- `isIdle`: Whether the queue is not processing any items
+- `isRunning`: Whether the queue is active and processing items
+- `status`: Current processing status ('idle' | 'running' | 'stopped')
+- `items`: Array of items currently in the queue
+- `itemTimestamps`: Array of timestamps when items were added
+- `pendingTick`: Whether the queue has a pending timeout for processing
+
+### Flushing Queue Items
+
+The queuer supports flushing items to process them immediately:
+
+```ts
+const queue = new Queuer(processFn, { wait: 5000 })
+
+queue.addItem('item1')
+queue.addItem('item2')
+console.log(queue.store.state.size) // 2
+
+// Flush all items immediately instead of waiting
+queue.flush()
+console.log(queue.store.state.size) // 0 (items were processed)
+
+// Or flush a specific number of items
+queue.addItem('item3')
+queue.addItem('item4')
+queue.addItem('item5')
+queue.flush(2) // Process only 2 items
+console.log(queue.store.state.size) // 1 (one item remaining)
 ```
 
 ### Asynchronous Queuing

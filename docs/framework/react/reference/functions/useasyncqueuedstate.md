@@ -8,7 +8,10 @@ title: useAsyncQueuedState
 # Function: useAsyncQueuedState()
 
 ```ts
-function useAsyncQueuedState<TValue>(fn, options): [TValue[], AsyncQueuer<TValue>]
+function useAsyncQueuedState<TValue, TSelected>(
+   fn, 
+   options, 
+   selector?): [TValue[], ReactAsyncQueuer<TValue, TSelected>]
 ```
 
 Defined in: [react-pacer/src/async-queuer/useAsyncQueuedState.ts:53](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuedState.ts#L53)
@@ -36,6 +39,8 @@ The state will automatically update whenever items are:
 
 • **TValue**
 
+• **TSelected** *extends* `Pick`\<`AsyncQueuerState`\<`TValue`\>, `"items"`\> = `AsyncQueuerState`\<`TValue`\>
+
 ## Parameters
 
 ### fn
@@ -46,9 +51,13 @@ The state will automatically update whenever items are:
 
 `AsyncQueuerOptions`\<`TValue`\> = `{}`
 
+### selector?
+
+(`state`) => `TSelected`
+
 ## Returns
 
-\[`TValue`[], `AsyncQueuer`\<`TValue`\>\]
+\[`TValue`[], [`ReactAsyncQueuer`](../../interfaces/reactasyncqueuer.md)\<`TValue`, `TSelected`\>\]
 
 ## Example
 

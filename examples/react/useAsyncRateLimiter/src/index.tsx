@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncRateLimiter } from '@tanstack/react-pacer/async-rate-limiter'
+import { useStoragePersister } from '@tanstack/react-persister/storage-persister'
+import type { AsyncRateLimiterState } from '@tanstack/react-pacer/async-rate-limiter'
 
 interface SearchResult {
   id: number
@@ -35,8 +37,17 @@ function App() {
     setResults(data)
     setError(null)
 
-    console.log(setSearchAsyncRateLimiter.getSuccessCount())
+    console.log(setSearchAsyncRateLimiter.state.successCount)
   }
+
+  const rateLimiterPersister = useStoragePersister<
+    AsyncRateLimiterState<typeof handleSearch>
+  >({
+    key: 'my-async-rate-limiter',
+    storage: localStorage,
+    maxAge: 1000 * 60, // 1 minute
+    buster: 'v1',
+  })
 
   // hook that gives you an async rate limiter instance
   const setSearchAsyncRateLimiter = useAsyncRateLimiter(handleSearch, {
@@ -54,7 +65,13 @@ function App() {
       setError(error as Error)
       setResults([])
     },
+    // optionally, you can persist the rate limiter state to localStorage
+    initialState: rateLimiterPersister.loadState(),
   })
+
+  useEffect(() => {
+    rateLimiterPersister.saveState(setSearchAsyncRateLimiter.state)
+  }, [setSearchAsyncRateLimiter.state])
 
   // get and name our rate limited function
   const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute
@@ -94,16 +111,16 @@ function App() {
           <tbody>
             <tr>
               <td>API calls made:</td>
-              <td>{setSearchAsyncRateLimiter.getSuccessCount()}</td>
+              <td>{setSearchAsyncRateLimiter.state.successCount}</td>
             </tr>
             <tr>
               <td>Rejected calls:</td>
-              <td>{setSearchAsyncRateLimiter.getRejectionCount()}</td>
+              <td>{setSearchAsyncRateLimiter.state.rejectionCount}</td>
             </tr>
             <tr>
               <td>Is executing:</td>
               <td>
-                {setSearchAsyncRateLimiter.getIsExecuting() ? 'Yes' : 'No'}
+                {setSearchAsyncRateLimiter.state.isExecuting ? 'Yes' : 'No'}
               </td>
             </tr>
             <tr>
@@ -123,6 +140,9 @@ function App() {
           </tbody>
         </table>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setSearchAsyncRateLimiter.state, null, 2)}
+      </pre>
     </div>
   )
 }

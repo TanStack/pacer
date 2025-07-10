@@ -20,8 +20,6 @@ const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
 function App() {
   const [searchTerm, setSearchTerm] = createSignal('')
   const [results, setResults] = createSignal<Array<SearchResult>>([])
-  const [isLoading, setIsLoading] = createSignal(false)
-  const [error, setError] = createSignal<Error | null>(null)
 
   // The function that will become rate limited
   const handleSearch = async (term: string) => {
@@ -32,16 +30,10 @@ function App() {
 
     // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
 
-    if (!results.length) {
-      setIsLoading(true)
-    }
-
     const data = await fakeApi(term)
     setResults(data)
-    setIsLoading(false)
-    setError(null)
 
-    console.log(setSearchAsyncRateLimiter.successCount())
+    console.log(setSearchAsyncRateLimiter.state().successCount)
   }
 
   // hook that gives you an async rate limiter instance
@@ -51,8 +43,13 @@ function App() {
     onError: (error) => {
       // optional error handler
       console.error('Search failed:', error)
-      setError(error as Error)
       setResults([])
+    },
+    onReject: (rateLimiter) => {
+      console.log(
+        'Rate limit exceeded:',
+        rateLimiter.store.state.rejectionCount,
+      )
     },
   })
 
@@ -80,15 +77,14 @@ function App() {
           autocomplete="new-password"
         />
       </div>
-      {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncRateLimiter.successCount()}</p>
+        <p>API calls made: {setSearchAsyncRateLimiter.state().successCount}</p>
         {results().length > 0 && (
           <ul>
             <For each={results()}>{(item) => <li>{item.title}</li>}</For>
           </ul>
         )}
-        {isLoading() && <p>Loading...</p>}
+        {setSearchAsyncRateLimiter.state().isExecuting && <p>Loading...</p>}
       </div>
     </div>
   )

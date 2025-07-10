@@ -1,8 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { bindInstanceMethods } from '@tanstack/pacer/utils'
+import { useStore } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
-import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
+import type {
+  AsyncDebouncerOptions,
+  AsyncDebouncerState,
+} from '@tanstack/pacer/async-debouncer'
+
+export interface ReactAsyncDebouncer<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncDebouncerState<TFn>,
+> extends Omit<AsyncDebouncer<TFn>, 'store'> {
+  /**
+   * Reactive state that will be updated and re-rendered when the debouncer state changes
+   *
+   * Use this instead of `debouncer.store.state`
+   */
+  readonly state: Readonly<TSelected>
+}
 
 /**
  * A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
@@ -57,13 +72,17 @@ import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
  * );
  * ```
  */
-export function useAsyncDebouncer<TFn extends AnyAsyncFunction>(
+export function useAsyncDebouncer<
+  TFn extends AnyAsyncFunction,
+  TSelected = AsyncDebouncerState<TFn>,
+>(
   fn: TFn,
   options: AsyncDebouncerOptions<TFn>,
-): AsyncDebouncer<TFn> {
-  const [asyncDebouncer] = useState(() =>
-    bindInstanceMethods(new AsyncDebouncer<TFn>(fn, options)),
-  )
+  selector?: (state: AsyncDebouncerState<TFn>) => TSelected,
+): ReactAsyncDebouncer<TFn, TSelected> {
+  const [asyncDebouncer] = useState(() => new AsyncDebouncer<TFn>(fn, options))
+
+  const state = useStore(asyncDebouncer.store, selector)
 
   asyncDebouncer.setOptions(options)
 
@@ -73,5 +92,12 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction>(
     }
   }, [asyncDebouncer])
 
-  return asyncDebouncer
+  return useMemo(
+    () =>
+      ({
+        ...asyncDebouncer,
+        state,
+      }) as unknown as ReactAsyncDebouncer<TFn, TSelected>, // omit `store` in favor of `state`
+    [asyncDebouncer, state],
+  )
 }

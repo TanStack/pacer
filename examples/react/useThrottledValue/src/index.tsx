@@ -134,15 +134,15 @@ function App3() {
           </tr>
           <tr>
             <td>Throttled Execution Count:</td>
-            <td>{throttler.getExecutionCount()}</td>
+            <td>{throttler.state.executionCount}</td>
           </tr>
           <tr>
             <td>Saved Executions:</td>
             <td>
-              {instantExecutionCount - throttler.getExecutionCount()} (
+              {instantExecutionCount - throttler.state.executionCount} (
               {instantExecutionCount > 0
                 ? (
-                    ((instantExecutionCount - throttler.getExecutionCount()) /
+                    ((instantExecutionCount - throttler.state.executionCount) /
                       instantExecutionCount) *
                     100
                   ).toFixed(2)
@@ -155,6 +155,9 @@ function App3() {
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Throttled to 1 update per 250ms</p>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(throttler.state, null, 2)}
+      </pre>
     </div>
   )
 }

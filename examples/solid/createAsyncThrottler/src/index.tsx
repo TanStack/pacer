@@ -76,11 +76,11 @@ function App() {
       </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncThrottler.successCount()}</p>
+        <p>API calls made: {setSearchAsyncThrottler.state().successCount}</p>
         <For each={results()}>{(item) => <li>{item.title}</li>}</For>
-        {setSearchAsyncThrottler.isPending() ? (
+        {setSearchAsyncThrottler.state().isPending ? (
           <p>Pending...</p>
-        ) : setSearchAsyncThrottler.isExecuting() ? (
+        ) : setSearchAsyncThrottler.state().isExecuting ? (
           <p>Executing...</p>
         ) : null}
       </div>

@@ -1,4 +1,10 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src", "eslint.config.js", "vite.config.ts", "tests"]
+  "include": [
+    "src",
+    "eslint.config.js",
+    "vite.config.ts",
+    "tests",
+    "../persister/src/compare.ts"
+  ]
 }
