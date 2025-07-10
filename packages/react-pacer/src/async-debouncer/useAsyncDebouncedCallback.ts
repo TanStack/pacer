@@ -45,7 +45,7 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  */
 export function useAsyncDebouncedCallback<
   TFn extends AnyAsyncFunction,
-  TSelected = AsyncDebouncerState<TFn>,
+  TSelected = {},
 >(
   fn: TFn,
   options: AsyncDebouncerOptions<TFn>,

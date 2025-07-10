@@ -60,7 +60,7 @@ import type {
  */
 export function useAsyncRateLimitedCallback<
   TFn extends AnyAsyncFunction,
-  TSelected = AsyncRateLimiterState<TFn>,
+  TSelected = {},
 >(
   fn: TFn,
   options: AsyncRateLimiterOptions<TFn>,

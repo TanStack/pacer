@@ -42,10 +42,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * />
  * ```
  */
-export function useDebouncedCallback<
-  TFn extends AnyFunction,
-  TSelected = DebouncerState<TFn>,
->(
+export function useDebouncedCallback<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
   options: DebouncerOptions<TFn>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,

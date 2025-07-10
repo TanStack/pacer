@@ -17,7 +17,7 @@ Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of th
 ## Features
 
 > [!NOTE]
-> TanStack Pacer is currently a client-side only library
+> TanStack Pacer is currently mostly a client-side only library, but it is being designed to be able to potentially be used on the server-side as well.
 
 - **Debouncing**
   - Delay execution until after a period of inactivity for when you only care about the last execution in a sequence.
@@ -43,9 +43,10 @@ Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of th
 - **Async or Sync Variations**
   - Choose between synchronous and asynchronous versions of each utility
   - Optional error, success, and settled handling for async variations
-- **Comparison Utilities**
-  - Perform deep equality checks between values
-  - Create custom comparison logic for specific needs
+- **State Management**
+  - Uses TanStack Store under the hood for state management with fine-grained reactivity
+  - Easily integrate with your own state management library of choice
+  - Persist state to local or session storage for some utilities like rate limiting and queuing
 - **Convenient Hooks**
   - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuedState`, and more.
   - Multiple layers of abstraction to choose from depending on your use case.

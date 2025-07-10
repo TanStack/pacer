@@ -59,10 +59,7 @@ import type {
  * );
  * ```
  */
-export function useRateLimitedCallback<
-  TFn extends AnyFunction,
-  TSelected = RateLimiterState,
->(
+export function useRateLimitedCallback<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
   options: RateLimiterOptions<TFn>,
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,

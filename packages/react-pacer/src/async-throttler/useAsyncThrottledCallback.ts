@@ -43,7 +43,7 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  */
 export function useAsyncThrottledCallback<
   TFn extends AnyAsyncFunction,
-  TSelected = AsyncThrottlerState<TFn>,
+  TSelected = {},
 >(
   fn: TFn,
   options: AsyncThrottlerOptions<TFn>,

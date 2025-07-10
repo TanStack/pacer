@@ -43,10 +43,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * }, [handleResize]);
  * ```
  */
-export function useThrottledCallback<
-  TFn extends AnyFunction,
-  TSelected = ThrottlerState<TFn>,
->(
+export function useThrottledCallback<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
   options: ThrottlerOptions<TFn>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
