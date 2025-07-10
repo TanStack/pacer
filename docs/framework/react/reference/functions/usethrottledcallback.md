@@ -11,7 +11,7 @@ title: useThrottledCallback
 function useThrottledCallback<TFn, TSelected>(
    fn, 
    options, 
-   selector?): (...args) => void
+   selector): (...args) => void
 ```
 
 Defined in: [react-pacer/src/throttler/useThrottledCallback.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledCallback.ts#L46)
@@ -52,7 +52,7 @@ Consider using the `useThrottler` hook instead.
 
 `ThrottlerOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 

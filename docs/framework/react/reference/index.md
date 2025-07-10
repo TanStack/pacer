@@ -23,10 +23,13 @@ title: "@tanstack/react-pacer"
 ## Functions
 
 - [useAsyncBatcher](../functions/useasyncbatcher.md)
+- [useAsyncDebouncedCallback](../functions/useasyncdebouncedcallback.md)
 - [useAsyncDebouncer](../functions/useasyncdebouncer.md)
 - [useAsyncQueuedState](../functions/useasyncqueuedstate.md)
 - [useAsyncQueuer](../functions/useasyncqueuer.md)
+- [useAsyncRateLimitedCallback](../functions/useasyncratelimitedcallback.md)
 - [useAsyncRateLimiter](../functions/useasyncratelimiter.md)
+- [useAsyncThrottledCallback](../functions/useasyncthrottledcallback.md)
 - [useAsyncThrottler](../functions/useasyncthrottler.md)
 - [useBatcher](../functions/usebatcher.md)
 - [useDebouncedCallback](../functions/usedebouncedcallback.md)

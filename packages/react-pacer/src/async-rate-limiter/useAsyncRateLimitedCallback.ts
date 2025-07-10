@@ -67,7 +67,11 @@ export function useAsyncRateLimitedCallback<
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): (...args: Parameters<TFn>) => Promise<ReturnType<TFn>> {
-  const asyncRateLimitedFn = useAsyncRateLimiter(fn, options, selector).maybeExecute
+  const asyncRateLimitedFn = useAsyncRateLimiter(
+    fn,
+    options,
+    selector,
+  ).maybeExecute
   return useCallback(
     (...args) => asyncRateLimitedFn(...args) as Promise<ReturnType<TFn>>,
     [asyncRateLimitedFn],

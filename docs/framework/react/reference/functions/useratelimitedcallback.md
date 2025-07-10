@@ -11,7 +11,7 @@ title: useRateLimitedCallback
 function useRateLimitedCallback<TFn, TSelected>(
    fn, 
    options, 
-   selector?): (...args) => boolean
+   selector): (...args) => boolean
 ```
 
 Defined in: [react-pacer/src/rate-limiter/useRateLimitedCallback.ts:62](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedCallback.ts#L62)
@@ -66,7 +66,7 @@ Consider using the `useRateLimiter` hook instead.
 
 `RateLimiterOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
