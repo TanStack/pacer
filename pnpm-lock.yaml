@@ -477,7 +477,7 @@ importers:
         specifier: ^0.9.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: link:../../../packages/react-persister
       react:
         specifier: ^19.1.0
@@ -705,7 +705,7 @@ importers:
         specifier: ^0.9.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: link:../../../packages/react-persister
       react:
         specifier: ^19.1.0
@@ -808,7 +808,7 @@ importers:
         specifier: ^0.9.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: link:../../../packages/react-persister
       react:
         specifier: ^19.1.0
@@ -833,7 +833,7 @@ importers:
   examples/react/useStorageState:
     dependencies:
       '@tanstack/react-persister':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: link:../../../packages/react-persister
       react:
         specifier: ^19.1.0

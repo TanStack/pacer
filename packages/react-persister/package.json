@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/react-persister",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Utilities for persisting state to local storage, session storage, indexedDB, and more.",
   "author": "Tanner Linsley",
   "license": "MIT",

@@ -1,5 +1,14 @@
 # @tanstack/react-persister
 
+## 0.1.1
+
+### Patch Changes
+
+- fix github url for publishing ([#36](https://github.com/TanStack/pacer/pull/36))
+
+- Updated dependencies [[`32f3242`](https://github.com/TanStack/pacer/commit/32f3242743e7c480d9b3fbbce027758382efc4ab)]:
+  - @tanstack/persister@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
