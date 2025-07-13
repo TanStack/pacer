@@ -737,7 +737,7 @@
               "to": "framework/solid/examples/createThrottler"
             },
             {
-              "label": "createThrottledState",
+              "label": "createThrottledSignal",
               "to": "framework/solid/examples/createThrottledSignal"
             },
             {
