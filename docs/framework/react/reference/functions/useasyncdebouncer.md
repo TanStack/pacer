@@ -14,7 +14,7 @@ function useAsyncDebouncer<TFn, TSelected>(
 selector?): ReactAsyncDebouncer<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:75](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L75)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:141](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L141)
 
 A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -38,6 +38,27 @@ Error Handling:
 - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
 - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
 - The error state can be checked using the underlying AsyncDebouncer instance
+
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+to specify which state changes will trigger a re-render, optimizing performance by preventing
+unnecessary re-renders when irrelevant state changes occur.
+
+**By default, all state changes will trigger a re-render.** To optimize performance, you can
+provide a selector function that returns only the specific state values your component needs.
+The component will only re-render when the selected values change.
+
+Available state properties:
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge
+- `errorCount`: Number of function executions that have resulted in errors
+- `isExecuting`: Whether the debounced function is currently executing asynchronously
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `lastResult`: The result from the most recent successful function execution
+- `settleCount`: Number of function executions that have completed (success or error)
+- `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
+- `successCount`: Number of function executions that have completed successfully
 
 ## Type Parameters
 
@@ -66,8 +87,8 @@ Error Handling:
 ## Example
 
 ```tsx
-// Basic API call debouncing
-const { maybeExecute } = useAsyncDebouncer(
+// Basic API call debouncing - re-renders on any state change
+const searchDebouncer = useAsyncDebouncer(
   async (query: string) => {
     const results = await api.search(query);
     return results;
@@ -75,9 +96,51 @@ const { maybeExecute } = useAsyncDebouncer(
   { wait: 500 }
 );
 
+// Only re-render when execution state changes (optimized for loading indicators)
+const searchDebouncer = useAsyncDebouncer(
+  async (query: string) => {
+    const results = await api.search(query);
+    return results;
+  },
+  { wait: 500 },
+  (state) => ({
+    isExecuting: state.isExecuting,
+    isPending: state.isPending
+  })
+);
+
+// Only re-render when results are available (optimized for data display)
+const searchDebouncer = useAsyncDebouncer(
+  async (query: string) => {
+    const results = await api.search(query);
+    return results;
+  },
+  { wait: 500 },
+  (state) => ({
+    lastResult: state.lastResult,
+    successCount: state.successCount
+  })
+);
+
+// Only re-render when error state changes (optimized for error handling)
+const searchDebouncer = useAsyncDebouncer(
+  async (query: string) => {
+    const results = await api.search(query);
+    return results;
+  },
+  {
+    wait: 500,
+    onError: (error) => console.error('Search failed:', error)
+  },
+  (state) => ({
+    errorCount: state.errorCount,
+    status: state.status
+  })
+);
+
 // With state management
 const [results, setResults] = useState([]);
-const { maybeExecute } = useAsyncDebouncer(
+const { maybeExecute, state } = useAsyncDebouncer(
   async (searchTerm) => {
     const data = await searchAPI(searchTerm);
     setResults(data);
@@ -91,4 +154,7 @@ const { maybeExecute } = useAsyncDebouncer(
     }
   }
 );
+
+// Access the selected state
+const { isExecuting, lastResult } = state;
 ```

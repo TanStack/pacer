@@ -40,6 +40,27 @@ import type {
  *
  * Consider using the `useAsyncRateLimiter` hook instead.
  *
+ * ## State Management and Re-renders
+ *
+ * **By default, this callback hook disables re-renders from internal state changes for optimal performance.**
+ * The hook uses TanStack Store internally but doesn't subscribe to state changes, preventing
+ * unnecessary re-renders when the async rate limiter's internal state updates.
+ *
+ * If you need to react to state changes (like showing execution counts or error states),
+ * you can provide a custom `selector` function to opt into specific state updates:
+ *
+ * ```tsx
+ * // Default: No re-renders from state changes (optimal performance)
+ * const rateLimitedCallback = useAsyncRateLimitedCallback(asyncFn, { limit: 5, window: 60000 });
+ *
+ * // Opt-in: Re-render when execution counts change
+ * const rateLimitedCallback = useAsyncRateLimitedCallback(
+ *   asyncFn,
+ *   { limit: 5, window: 60000 },
+ *   (state) => ({ executionCount: state.executionCount, isBlocked: state.isBlocked })
+ * );
+ * ```
+ *
  * @example
  * ```tsx
  * // Rate limit async API calls to maximum 5 calls per minute with a sliding window

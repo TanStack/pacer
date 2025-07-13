@@ -14,7 +14,7 @@ function useThrottledState<TValue, TSelected>(
    selector?): [TValue, Dispatch<SetStateAction<TValue>>, ReactThrottler<Dispatch<SetStateAction<TValue>>, TSelected>]
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottledState.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledState.ts#L44)
+Defined in: [react-pacer/src/throttler/useThrottledState.ts:92](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledState.ts#L92)
 
 A React hook that creates a throttled state value that updates at most once within a specified time window.
 This hook combines React's useState with throttling functionality to provide controlled state updates.
@@ -29,6 +29,24 @@ The hook returns a tuple containing:
 
 For more direct control over throttling without state management,
 consider using the lower-level useThrottler hook instead.
+
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management via the underlying throttler instance.
+The `selector` parameter allows you to specify which throttler state changes will trigger a re-render,
+optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
+
+**By default, all throttler state changes will trigger a re-render.** To optimize performance, you can
+provide a selector function that returns only the specific state values your component needs.
+The component will only re-render when the selected values change.
+
+Available throttler state properties:
+- `executionCount`: Number of function executions that have been completed
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `lastExecutionTime`: Timestamp of the last function execution in milliseconds
+- `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
+- `isPending`: Whether the throttler is waiting for the timeout to trigger execution
+- `status`: Current execution status ('disabled' | 'idle' | 'pending')
 
 ## Type Parameters
 
@@ -57,8 +75,35 @@ consider using the lower-level useThrottler hook instead.
 ## Example
 
 ```tsx
-// Basic throttling - update state at most once per second
+// Basic throttling - update state at most once per second (re-renders on any throttler state change)
 const [value, setValue, throttler] = useThrottledState(0, { wait: 1000 });
+
+// Only re-render when execution count changes (optimized for tracking executions)
+const [value, setValue, throttler] = useThrottledState(
+  0,
+  { wait: 1000 },
+  (state) => ({ executionCount: state.executionCount })
+);
+
+// Only re-render when throttling state changes (optimized for loading indicators)
+const [value, setValue, throttler] = useThrottledState(
+  0,
+  { wait: 1000 },
+  (state) => ({
+    isPending: state.isPending,
+    status: state.status
+  })
+);
+
+// Only re-render when timing information changes (optimized for timing displays)
+const [value, setValue, throttler] = useThrottledState(
+  0,
+  { wait: 1000 },
+  (state) => ({
+    lastExecutionTime: state.lastExecutionTime,
+    nextExecutionTime: state.nextExecutionTime
+  })
+);
 
 // With custom leading/trailing behavior
 const [value, setValue] = useThrottledState(0, {
@@ -72,4 +117,7 @@ const handleReset = () => {
   setValue(0);
   throttler.cancel(); // Cancel any pending updates
 };
+
+// Access the selected throttler state
+const { executionCount, isPending } = throttler.state;
 ```

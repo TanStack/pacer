@@ -25,8 +25,65 @@ export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
  * - Time-based batching (process after X milliseconds)
  * - Custom batch processing logic via getShouldExecute
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+ * to specify which state changes will trigger a re-render, optimizing performance by preventing
+ * unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, all state changes will trigger a re-render.** To optimize performance, you can
+ * provide a selector function that returns only the specific state values your component needs.
+ * The component will only re-render when the selected values change.
+ *
+ * Available state properties:
+ * - `executionCount`: Number of batch executions that have been completed
+ * - `isEmpty`: Whether the batcher has no items to process
+ * - `isPending`: Whether the batcher is waiting for the timeout to trigger batch processing
+ * - `isRunning`: Whether the batcher is active and will process items automatically
+ * - `items`: Array of items currently queued for batch processing
+ * - `size`: Number of items currently in the batch queue
+ * - `status`: Current processing status ('idle' | 'pending')
+ * - `totalItemsProcessed`: Total number of items processed across all batches
+ *
  * @example
  * ```tsx
+ * // Default behavior - re-renders on any state change
+ * const batcher = useBatcher<number>(
+ *   (items) => console.log('Processing batch:', items),
+ *   { maxSize: 5, wait: 2000 }
+ * );
+ *
+ * // Only re-render when batch size changes (optimized for displaying queue size)
+ * const batcher = useBatcher<number>(
+ *   (items) => console.log('Processing batch:', items),
+ *   { maxSize: 5, wait: 2000 },
+ *   (state) => ({
+ *     size: state.size,
+ *     isEmpty: state.isEmpty
+ *   })
+ * );
+ *
+ * // Only re-render when execution metrics change (optimized for stats display)
+ * const batcher = useBatcher<number>(
+ *   (items) => console.log('Processing batch:', items),
+ *   { maxSize: 5, wait: 2000 },
+ *   (state) => ({
+ *     executionCount: state.executionCount,
+ *     totalItemsProcessed: state.totalItemsProcessed
+ *   })
+ * );
+ *
+ * // Only re-render when processing state changes (optimized for loading indicators)
+ * const batcher = useBatcher<number>(
+ *   (items) => console.log('Processing batch:', items),
+ *   { maxSize: 5, wait: 2000 },
+ *   (state) => ({
+ *     isPending: state.isPending,
+ *     isRunning: state.isRunning,
+ *     status: state.status
+ *   })
+ * );
+ *
  * // Example with custom state management and batching
  * const [items, setItems] = useState([]);
  *
@@ -48,6 +105,9 @@ export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
  * // Control the batcher
  * batcher.stop();  // Pause batching
  * batcher.start(); // Resume batching
+ *
+ * // Access the selected state
+ * const { size, isPending } = batcher.state;
  * ```
  */
 export function useBatcher<TValue, TSelected = BatcherState<TValue>>(

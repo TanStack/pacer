@@ -14,7 +14,7 @@ function useDebouncedCallback<TFn, TSelected>(
    selector): (...args) => void
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedCallback.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L45)
+Defined in: [react-pacer/src/debouncer/useDebouncedCallback.ts:60](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedCallback.ts#L60)
 
 A React hook that creates a debounced version of a callback function.
 This hook is essentially a wrapper around the basic `debounce` function
@@ -27,6 +27,13 @@ resets and starts waiting again.
 
 This hook provides a simpler API compared to `useDebouncer`, making it ideal for basic
 debouncing needs. However, it does not expose the underlying Debouncer instance.
+
+## State Management and Re-renders
+
+**By default, this callback hook disables re-renders from internal debouncer state changes**
+for optimal performance. The callback function reference remains stable regardless of
+internal state changes. However, you can opt into re-renders by providing a custom
+`selector` function that returns the specific state values you want to track.
 
 For advanced usage requiring features like:
 - Manual cancellation
@@ -72,12 +79,20 @@ Consider using the `useDebouncer` hook instead.
 ## Example
 
 ```tsx
-// Debounce a search handler
+// Debounce a search handler (no re-renders from internal state)
 const handleSearch = useDebouncedCallback((query: string) => {
   fetchSearchResults(query);
 }, {
   wait: 500 // Wait 500ms between executions
 });
+
+// Opt into re-renders when pending state changes
+const handleSearch = useDebouncedCallback((query: string) => {
+  fetchSearchResults(query);
+},
+{ wait: 500 },
+(state) => ({ isPending: state.isPending })
+);
 
 // Use in an input
 <input

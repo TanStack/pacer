@@ -34,6 +34,13 @@ import type {
  * This hook provides a simpler API compared to `useRateLimiter`, making it ideal for basic
  * rate limiting needs. However, it does not expose the underlying RateLimiter instance.
  *
+ * ## State Management and Re-renders
+ *
+ * **By default, this callback hook disables re-renders from internal rate limiter state changes**
+ * for optimal performance. The callback function reference remains stable regardless of
+ * internal state changes. However, you can opt into re-renders by providing a custom
+ * `selector` function that returns the specific state values you want to track.
+ *
  * For advanced usage requiring features like:
  * - Manual cancellation
  * - Access to execution counts
@@ -43,7 +50,7 @@ import type {
  *
  * @example
  * ```tsx
- * // Rate limit API calls to maximum 5 calls per minute with a sliding window
+ * // Rate limit API calls to maximum 5 calls per minute with a sliding window (no re-renders from internal state)
  * const makeApiCall = useRateLimitedCallback(
  *   (data: ApiData) => {
  *     return fetch('/api/endpoint', { method: 'POST', body: JSON.stringify(data) });
@@ -56,6 +63,15 @@ import type {
  *       console.warn('API rate limit reached. Please wait before trying again.');
  *     }
  *   }
+ * );
+ *
+ * // Opt into re-renders when rejection count changes
+ * const makeApiCall = useRateLimitedCallback(
+ *   (data: ApiData) => {
+ *     return fetch('/api/endpoint', { method: 'POST', body: JSON.stringify(data) });
+ *   },
+ *   { limit: 5, window: 60000, windowType: 'sliding' },
+ *   (state) => ({ rejectionCount: state.rejectionCount })
  * );
  * ```
  */

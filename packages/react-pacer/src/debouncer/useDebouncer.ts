@@ -34,12 +34,54 @@ export interface ReactDebouncer<
  * since the last call. If the function is called again before the wait time expires, the
  * timer resets and starts waiting again.
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+ * to specify which state changes will trigger a re-render, optimizing performance by preventing
+ * unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, all state changes will trigger a re-render.** To optimize performance, you can
+ * provide a selector function that returns only the specific state values your component needs.
+ * The component will only re-render when the selected values change.
+ *
+ * Available state properties:
+ * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
+ * - `executionCount`: Number of function executions that have been completed
+ * - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+ * - `lastArgs`: The arguments from the most recent call to maybeExecute
+ * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+ *
  * @example
  * ```tsx
- * // Debounce a search function to limit API calls
+ * // Default behavior - re-renders on any state change
  * const searchDebouncer = useDebouncer(
  *   (query: string) => fetchSearchResults(query),
- *   { wait: 500 } // Wait 500ms after last keystroke
+ *   { wait: 500 }
+ * );
+ *
+ * // Only re-render when isPending changes (optimized for loading states)
+ * const searchDebouncer = useDebouncer(
+ *   (query: string) => fetchSearchResults(query),
+ *   { wait: 500 },
+ *   (state) => ({ isPending: state.isPending })
+ * );
+ *
+ * // Only re-render when executionCount changes (optimized for tracking execution)
+ * const searchDebouncer = useDebouncer(
+ *   (query: string) => fetchSearchResults(query),
+ *   { wait: 500 },
+ *   (state) => ({ executionCount: state.executionCount })
+ * );
+ *
+ * // Multiple state properties - re-render when any of these change
+ * const searchDebouncer = useDebouncer(
+ *   (query: string) => fetchSearchResults(query),
+ *   { wait: 500 },
+ *   (state) => ({
+ *     isPending: state.isPending,
+ *     executionCount: state.executionCount,
+ *     status: state.status
+ *   })
  * );
  *
  * // In an event handler
@@ -47,11 +89,8 @@ export interface ReactDebouncer<
  *   searchDebouncer.maybeExecute(e.target.value);
  * };
  *
- * // Get number of times the debounced function has executed
- * const executionCount = searchDebouncer.getExecutionCount();
- *
- * // Get the pending state
- * const isPending = searchdebouncer.getState().isPending;
+ * // Access the selected state
+ * const { isPending } = searchDebouncer.state;
  * ```
  */
 export function useDebouncer<

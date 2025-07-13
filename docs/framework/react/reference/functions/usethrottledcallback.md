@@ -14,7 +14,7 @@ function useThrottledCallback<TFn, TSelected>(
    selector): (...args) => void
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottledCallback.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledCallback.ts#L46)
+Defined in: [react-pacer/src/throttler/useThrottledCallback.ts:61](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledCallback.ts#L61)
 
 A React hook that creates a throttled version of a callback function.
 This hook is essentially a wrapper around the basic `throttle` function
@@ -28,6 +28,13 @@ the wait period has elapsed.
 
 This hook provides a simpler API compared to `useThrottler`, making it ideal for basic
 throttling needs. However, it does not expose the underlying Throttler instance.
+
+## State Management and Re-renders
+
+**By default, this callback hook disables re-renders from internal throttler state changes**
+for optimal performance. The callback function reference remains stable regardless of
+internal state changes. However, you can opt into re-renders by providing a custom
+`selector` function that returns the specific state values you want to track.
 
 For advanced usage requiring features like:
 - Manual cancellation
@@ -73,12 +80,20 @@ Consider using the `useThrottler` hook instead.
 ## Example
 
 ```tsx
-// Throttle a window resize handler
+// Throttle a window resize handler (no re-renders from internal state)
 const handleResize = useThrottledCallback(() => {
   updateLayoutMeasurements();
 }, {
   wait: 100 // Execute at most once every 100ms
 });
+
+// Opt into re-renders when execution count changes
+const handleResize = useThrottledCallback(() => {
+  updateLayoutMeasurements();
+},
+{ wait: 100 },
+(state) => ({ executionCount: state.executionCount })
+);
 
 // Use in an event listener
 useEffect(() => {

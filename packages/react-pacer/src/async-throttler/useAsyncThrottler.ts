@@ -40,10 +40,32 @@ export interface ReactAsyncThrottler<
  * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
  * - The error state can be checked using the underlying AsyncThrottler instance
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+ * to specify which state changes will trigger a re-render, optimizing performance by preventing
+ * unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, all state changes will trigger a re-render.** To optimize performance, you can
+ * provide a selector function that returns only the specific state values your component needs.
+ * The component will only re-render when the selected values change.
+ *
+ * Available state properties:
+ * - `errorCount`: Number of function executions that have resulted in errors
+ * - `isExecuting`: Whether the throttled function is currently executing asynchronously
+ * - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
+ * - `lastArgs`: The arguments from the most recent call to maybeExecute
+ * - `lastExecutionTime`: Timestamp of the last function execution in milliseconds
+ * - `lastResult`: The result from the most recent successful function execution
+ * - `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
+ * - `settleCount`: Number of function executions that have completed (success or error)
+ * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
+ * - `successCount`: Number of function executions that have completed successfully
+ *
  * @example
  * ```tsx
- * // Basic API call throttling with return value
- * const { maybeExecute } = useAsyncThrottler(
+ * // Basic API call throttling with return value - re-renders on any state change
+ * const asyncThrottler = useAsyncThrottler(
  *   async (id: string) => {
  *     const data = await api.fetchData(id);
  *     return data; // Return value is preserved
@@ -51,9 +73,66 @@ export interface ReactAsyncThrottler<
  *   { wait: 1000 }
  * );
  *
+ * // Only re-render when execution state changes (optimized for loading indicators)
+ * const asyncThrottler = useAsyncThrottler(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   { wait: 1000 },
+ *   (state) => ({
+ *     isExecuting: state.isExecuting,
+ *     isPending: state.isPending,
+ *     status: state.status
+ *   })
+ * );
+ *
+ * // Only re-render when results are available (optimized for data display)
+ * const asyncThrottler = useAsyncThrottler(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   { wait: 1000 },
+ *   (state) => ({
+ *     lastResult: state.lastResult,
+ *     successCount: state.successCount,
+ *     settleCount: state.settleCount
+ *   })
+ * );
+ *
+ * // Only re-render when error state changes (optimized for error handling)
+ * const asyncThrottler = useAsyncThrottler(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   {
+ *     wait: 1000,
+ *     onError: (error) => console.error('API call failed:', error)
+ *   },
+ *   (state) => ({
+ *     errorCount: state.errorCount,
+ *     status: state.status
+ *   })
+ * );
+ *
+ * // Only re-render when timing information changes (optimized for timing displays)
+ * const asyncThrottler = useAsyncThrottler(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   { wait: 1000 },
+ *   (state) => ({
+ *     lastExecutionTime: state.lastExecutionTime,
+ *     nextExecutionTime: state.nextExecutionTime
+ *   })
+ * );
+ *
  * // With state management and return value
  * const [data, setData] = useState(null);
- * const { maybeExecute } = useAsyncThrottler(
+ * const { maybeExecute, state } = useAsyncThrottler(
  *   async (query) => {
  *     const result = await searchAPI(query);
  *     setData(result);
@@ -65,6 +144,9 @@ export interface ReactAsyncThrottler<
  *     trailing: false  // Skip trailing edge updates
  *   }
  * );
+ *
+ * // Access the selected state
+ * const { isExecuting, lastResult } = state;
  * ```
  */
 export function useAsyncThrottler<

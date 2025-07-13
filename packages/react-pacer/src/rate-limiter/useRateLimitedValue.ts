@@ -33,14 +33,50 @@ import type {
  * For more direct control over rate limiting behavior without React state management,
  * consider using the lower-level useRateLimiter hook instead.
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management via the underlying rate limiter instance.
+ * The `selector` parameter allows you to specify which rate limiter state changes will trigger a re-render,
+ * optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, all rate limiter state changes will trigger a re-render.** To optimize performance, you can
+ * provide a selector function that returns only the specific state values your component needs.
+ * The component will only re-render when the selected values change.
+ *
+ * Available rate limiter state properties:
+ * - `executionCount`: Number of function executions that have been completed
+ * - `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
+ * - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
+ *
  * @example
  * ```tsx
- * // Basic rate limiting - update at most 5 times per minute with a sliding window
+ * // Basic rate limiting - update at most 5 times per minute with a sliding window (re-renders on any rate limiter state change)
  * const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
  *   limit: 5,
  *   window: 60000,
  *   windowType: 'sliding'
  * });
+ *
+ * // Only re-render when execution count changes (optimized for tracking successful updates)
+ * const [rateLimitedValue, rateLimiter] = useRateLimitedValue(
+ *   rawValue,
+ *   { limit: 5, window: 60000, windowType: 'sliding' },
+ *   (state) => ({ executionCount: state.executionCount })
+ * );
+ *
+ * // Only re-render when rejection count changes (optimized for tracking rate limit violations)
+ * const [rateLimitedValue, rateLimiter] = useRateLimitedValue(
+ *   rawValue,
+ *   { limit: 5, window: 60000, windowType: 'sliding' },
+ *   (state) => ({ rejectionCount: state.rejectionCount })
+ * );
+ *
+ * // Only re-render when execution times change (optimized for window calculations)
+ * const [rateLimitedValue, rateLimiter] = useRateLimitedValue(
+ *   rawValue,
+ *   { limit: 5, window: 60000, windowType: 'sliding' },
+ *   (state) => ({ executionTimes: state.executionTimes })
+ * );
  *
  * // With rejection callback and fixed window
  * const [rateLimitedValue, rateLimiter] = useRateLimitedValue(rawValue, {
@@ -51,6 +87,9 @@ import type {
  *     console.log(`Update rejected. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
  *   }
  * });
+ *
+ * // Access the selected rate limiter state
+ * const { executionCount, rejectionCount } = rateLimiter.state;
  * ```
  */
 export function useRateLimitedValue<TValue, TSelected = RateLimiterState>(

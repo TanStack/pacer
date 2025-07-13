@@ -14,7 +14,7 @@ function useAsyncRateLimitedCallback<TFn, TSelected>(
 selector): (...args) => Promise<ReturnType<TFn>>
 ```
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:61](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L61)
+Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:82](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L82)
 
 A React hook that creates a rate-limited version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncRateLimiter` hook,
@@ -48,6 +48,27 @@ For advanced usage requiring features like:
 - Custom useCallback dependencies
 
 Consider using the `useAsyncRateLimiter` hook instead.
+
+## State Management and Re-renders
+
+**By default, this callback hook disables re-renders from internal state changes for optimal performance.**
+The hook uses TanStack Store internally but doesn't subscribe to state changes, preventing
+unnecessary re-renders when the async rate limiter's internal state updates.
+
+If you need to react to state changes (like showing execution counts or error states),
+you can provide a custom `selector` function to opt into specific state updates:
+
+```tsx
+// Default: No re-renders from state changes (optimal performance)
+const rateLimitedCallback = useAsyncRateLimitedCallback(asyncFn, { limit: 5, window: 60000 });
+
+// Opt-in: Re-render when execution counts change
+const rateLimitedCallback = useAsyncRateLimitedCallback(
+  asyncFn,
+  { limit: 5, window: 60000 },
+  (state) => ({ executionCount: state.executionCount, isBlocked: state.isBlocked })
+);
+```
 
 ## Type Parameters
 

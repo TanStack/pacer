@@ -47,10 +47,29 @@ export interface ReactAsyncRateLimiter<
  * - The error state can be checked using the underlying AsyncRateLimiter instance
  * - Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+ * to specify which state changes will trigger a re-render, optimizing performance by preventing
+ * unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, all state changes will trigger a re-render.** To optimize performance, you can
+ * provide a selector function that returns only the specific state values your component needs.
+ * The component will only re-render when the selected values change.
+ *
+ * Available state properties:
+ * - `errorCount`: Number of function executions that have resulted in errors
+ * - `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
+ * - `isExecuting`: Whether the rate-limited function is currently executing asynchronously
+ * - `lastResult`: The result from the most recent successful function execution
+ * - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
+ * - `settleCount`: Number of function executions that have completed (success or error)
+ * - `successCount`: Number of function executions that have completed successfully
+ *
  * @example
  * ```tsx
- * // Basic API call rate limiting with return value
- * const { maybeExecute } = useAsyncRateLimiter(
+ * // Basic API call rate limiting with return value - re-renders on any state change
+ * const asyncRateLimiter = useAsyncRateLimiter(
  *   async (id: string) => {
  *     const data = await api.fetchData(id);
  *     return data; // Return value is preserved
@@ -58,9 +77,75 @@ export interface ReactAsyncRateLimiter<
  *   { limit: 5, window: 1000 } // 5 calls per second
  * );
  *
+ * // Only re-render when execution state changes (optimized for loading indicators)
+ * const asyncRateLimiter = useAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   { limit: 5, window: 1000 },
+ *   (state) => ({ isExecuting: state.isExecuting })
+ * );
+ *
+ * // Only re-render when results are available (optimized for data display)
+ * const asyncRateLimiter = useAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   { limit: 5, window: 1000 },
+ *   (state) => ({
+ *     lastResult: state.lastResult,
+ *     successCount: state.successCount
+ *   })
+ * );
+ *
+ * // Only re-render when error/rejection state changes (optimized for error handling)
+ * const asyncRateLimiter = useAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   {
+ *     limit: 5,
+ *     window: 1000,
+ *     onError: (error) => console.error('API call failed:', error),
+ *     onReject: (rateLimiter) => console.log('Rate limit exceeded')
+ *   },
+ *   (state) => ({
+ *     errorCount: state.errorCount,
+ *     rejectionCount: state.rejectionCount
+ *   })
+ * );
+ *
+ * // Only re-render when execution metrics change (optimized for stats display)
+ * const asyncRateLimiter = useAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   { limit: 5, window: 1000 },
+ *   (state) => ({
+ *     successCount: state.successCount,
+ *     errorCount: state.errorCount,
+ *     settleCount: state.settleCount,
+ *     rejectionCount: state.rejectionCount
+ *   })
+ * );
+ *
+ * // Only re-render when execution times change (optimized for window calculations)
+ * const asyncRateLimiter = useAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   { limit: 5, window: 1000 },
+ *   (state) => ({ executionTimes: state.executionTimes })
+ * );
+ *
  * // With state management and return value
  * const [data, setData] = useState(null);
- * const { maybeExecute } = useAsyncRateLimiter(
+ * const { maybeExecute, state } = useAsyncRateLimiter(
  *   async (query) => {
  *     const result = await searchAPI(query);
  *     setData(result);
@@ -77,6 +162,9 @@ export interface ReactAsyncRateLimiter<
  *     }
  *   }
  * );
+ *
+ * // Access the selected state
+ * const { isExecuting, lastResult, rejectionCount } = state;
  * ```
  */
 export function useAsyncRateLimiter<

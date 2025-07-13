@@ -14,7 +14,7 @@ function useThrottler<TFn, TSelected>(
 selector?): ReactThrottler<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L50)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:101](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L101)
 
 A low-level React hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
@@ -25,6 +25,24 @@ integrates directly with React's useState, see useThrottledState.
 Throttling ensures a function executes at most once within a specified time window,
 regardless of how many times it is called. This is useful for rate-limiting
 expensive operations or UI updates.
+
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+to specify which state changes will trigger a re-render, optimizing performance by preventing
+unnecessary re-renders when irrelevant state changes occur.
+
+**By default, all state changes will trigger a re-render.** To optimize performance, you can
+provide a selector function that returns only the specific state values your component needs.
+The component will only re-render when the selected values change.
+
+Available state properties:
+- `executionCount`: Number of function executions that have been completed
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `lastExecutionTime`: Timestamp of the last function execution in milliseconds
+- `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
+- `isPending`: Whether the throttler is waiting for the timeout to trigger execution
+- `status`: Current execution status ('disabled' | 'idle' | 'pending')
 
 ## Type Parameters
 
@@ -53,9 +71,39 @@ expensive operations or UI updates.
 ## Example
 
 ```tsx
-// Basic throttling with custom state
+// Basic throttling with custom state - re-renders on any state change
 const [value, setValue] = useState(0);
 const throttler = useThrottler(setValue, { wait: 1000 });
+
+// Only re-render when execution count changes (optimized for tracking executions)
+const [value, setValue] = useState(0);
+const throttler = useThrottler(
+  setValue,
+  { wait: 1000 },
+  (state) => ({ executionCount: state.executionCount })
+);
+
+// Only re-render when throttling state changes (optimized for loading indicators)
+const [value, setValue] = useState(0);
+const throttler = useThrottler(
+  setValue,
+  { wait: 1000 },
+  (state) => ({
+    isPending: state.isPending,
+    status: state.status
+  })
+);
+
+// Only re-render when timing information changes (optimized for timing displays)
+const [value, setValue] = useState(0);
+const throttler = useThrottler(
+  setValue,
+  { wait: 1000 },
+  (state) => ({
+    lastExecutionTime: state.lastExecutionTime,
+    nextExecutionTime: state.nextExecutionTime
+  })
+);
 
 // With any state manager
 const throttler = useThrottler(
@@ -66,4 +114,7 @@ const throttler = useThrottler(
     trailing: false  // Skip trailing edge updates
   }
 );
+
+// Access the selected state
+const { executionCount, isPending } = throttler.state;
 ```

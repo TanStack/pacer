@@ -47,9 +47,90 @@ export interface ReactAsyncBatcher<
  * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
  * - The error state can be checked using the underlying AsyncBatcher instance
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+ * to specify which state changes will trigger a re-render, optimizing performance by preventing
+ * unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, all state changes will trigger a re-render.** To optimize performance, you can
+ * provide a selector function that returns only the specific state values your component needs.
+ * The component will only re-render when the selected values change.
+ *
+ * Available state properties:
+ * - `errorCount`: Number of batch executions that have resulted in errors
+ * - `failedItems`: Array of items that failed during batch processing
+ * - `isEmpty`: Whether the batcher has no items to process
+ * - `isExecuting`: Whether a batch is currently being processed asynchronously
+ * - `isPending`: Whether the batcher is waiting for the timeout to trigger batch processing
+ * - `isRunning`: Whether the batcher is active and will process items automatically
+ * - `items`: Array of items currently queued for batch processing
+ * - `lastResult`: The result from the most recent batch execution
+ * - `settleCount`: Number of batch executions that have completed (success or error)
+ * - `size`: Number of items currently in the batch queue
+ * - `status`: Current processing status ('idle' | 'pending' | 'executing' | 'populated')
+ * - `successCount`: Number of batch executions that have completed successfully
+ * - `totalItemsProcessed`: Total number of items processed across all batches
+ * - `totalItemsFailed`: Total number of items that have failed processing
+ *
  * @example
  * ```tsx
- * // Basic async batcher for API requests
+ * // Basic async batcher for API requests - re-renders on any state change
+ * const asyncBatcher = useAsyncBatcher(
+ *   async (items) => {
+ *     const results = await Promise.all(items.map(item => processItem(item)));
+ *     return results;
+ *   },
+ *   { maxSize: 10, wait: 2000 }
+ * );
+ *
+ * // Only re-render when execution state changes (optimized for loading indicators)
+ * const asyncBatcher = useAsyncBatcher(
+ *   async (items) => {
+ *     const results = await Promise.all(items.map(item => processItem(item)));
+ *     return results;
+ *   },
+ *   { maxSize: 10, wait: 2000 },
+ *   (state) => ({
+ *     isExecuting: state.isExecuting,
+ *     isPending: state.isPending,
+ *     status: state.status
+ *   })
+ * );
+ *
+ * // Only re-render when results are available (optimized for data display)
+ * const asyncBatcher = useAsyncBatcher(
+ *   async (items) => {
+ *     const results = await Promise.all(items.map(item => processItem(item)));
+ *     return results;
+ *   },
+ *   { maxSize: 10, wait: 2000 },
+ *   (state) => ({
+ *     lastResult: state.lastResult,
+ *     successCount: state.successCount,
+ *     totalItemsProcessed: state.totalItemsProcessed
+ *   })
+ * );
+ *
+ * // Only re-render when error state changes (optimized for error handling)
+ * const asyncBatcher = useAsyncBatcher(
+ *   async (items) => {
+ *     const results = await Promise.all(items.map(item => processItem(item)));
+ *     return results;
+ *   },
+ *   {
+ *     maxSize: 10,
+ *     wait: 2000,
+ *     onError: (error) => console.error('Batch processing failed:', error)
+ *   },
+ *   (state) => ({
+ *     errorCount: state.errorCount,
+ *     failedItems: state.failedItems,
+ *     totalItemsFailed: state.totalItemsFailed
+ *   })
+ * );
+ *
+ * // Complete example with all callbacks
  * const asyncBatcher = useAsyncBatcher(
  *   async (items) => {
  *     const results = await Promise.all(items.map(item => processItem(item)));
@@ -72,6 +153,9 @@ export interface ReactAsyncBatcher<
  *
  * // Manually execute batch
  * const result = await asyncBatcher.execute();
+ *
+ * // Access the selected state
+ * const { isExecuting, lastResult, size } = asyncBatcher.state;
  * ```
  */
 export function useAsyncBatcher<TValue, TSelected = AsyncBatcherState<TValue>>(

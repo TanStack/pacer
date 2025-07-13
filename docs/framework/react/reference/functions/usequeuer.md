@@ -14,7 +14,7 @@ function useQueuer<TValue, TSelected>(
 selector?): ReactQueuer<TValue, TSelected>
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L54)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:124](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L124)
 
 A React hook that creates and manages a Queuer instance.
 
@@ -31,6 +31,30 @@ When started, it will process one item per tick, with an optional wait time betw
 
 By default uses FIFO (First In First Out) behavior, but can be configured for LIFO
 (Last In First Out) by specifying 'front' position when adding items.
+
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+to specify which state changes will trigger a re-render, optimizing performance by preventing
+unnecessary re-renders when irrelevant state changes occur.
+
+**By default, all state changes will trigger a re-render.** To optimize performance, you can
+provide a selector function that returns only the specific state values your component needs.
+The component will only re-render when the selected values change.
+
+Available state properties:
+- `executionCount`: Number of items that have been processed by the queuer
+- `expirationCount`: Number of items that have been removed due to expiration
+- `isEmpty`: Whether the queuer has no items to process
+- `isFull`: Whether the queuer has reached its maximum capacity
+- `isIdle`: Whether the queuer is not currently processing any items
+- `isRunning`: Whether the queuer is active and will process items automatically
+- `items`: Array of items currently waiting to be processed
+- `itemTimestamps`: Timestamps when items were added for expiration tracking
+- `pendingTick`: Whether the queuer has a pending timeout for processing the next item
+- `rejectionCount`: Number of items that have been rejected from being added
+- `size`: Number of items currently in the queue
+- `status`: Current processing status ('idle' | 'running' | 'stopped')
 
 ## Type Parameters
 
@@ -59,15 +83,58 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 ## Example
 
 ```tsx
+// Default behavior - re-renders on any state change
+const queue = useQueuer(
+  (item) => console.log('Processing:', item),
+  { started: true, wait: 1000 }
+);
+
+// Only re-render when queue size changes (optimized for displaying queue length)
+const queue = useQueuer(
+  (item) => console.log('Processing:', item),
+  { started: true, wait: 1000 },
+  (state) => ({
+    size: state.size,
+    isEmpty: state.isEmpty,
+    isFull: state.isFull
+  })
+);
+
+// Only re-render when processing state changes (optimized for loading indicators)
+const queue = useQueuer(
+  (item) => console.log('Processing:', item),
+  { started: true, wait: 1000 },
+  (state) => ({
+    isRunning: state.isRunning,
+    isIdle: state.isIdle,
+    status: state.status,
+    pendingTick: state.pendingTick
+  })
+);
+
+// Only re-render when execution metrics change (optimized for stats display)
+const queue = useQueuer(
+  (item) => console.log('Processing:', item),
+  { started: true, wait: 1000 },
+  (state) => ({
+    executionCount: state.executionCount,
+    expirationCount: state.expirationCount,
+    rejectionCount: state.rejectionCount
+  })
+);
+
 // Example with custom state management and scheduling
 const [items, setItems] = useState([]);
 
-const queue = useQueuer({
-  started: true, // Start processing immediately
-  wait: 1000,    // Process one item every second
-  onItemsChange: (queue) => setItems(queue.peekAllItems()),
-  getPriority: (item) => item.priority // Process higher priority items first
-});
+const queue = useQueuer(
+  (item) => console.log('Processing:', item),
+  {
+    started: true, // Start processing immediately
+    wait: 1000,    // Process one item every second
+    onItemsChange: (queue) => setItems(queue.peekAllItems()),
+    getPriority: (item) => item.priority // Process higher priority items first
+  }
+);
 
 // Add items to process - they'll be handled automatically
 queue.addItem('task1');
@@ -76,4 +143,7 @@ queue.addItem('task2');
 // Control the scheduler
 queue.stop();  // Pause processing
 queue.start(); // Resume processing
+
+// Access the selected state
+const { size, isRunning, executionCount } = queue.state;
 ```

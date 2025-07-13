@@ -14,7 +14,7 @@ function useDebouncedState<TValue, TSelected>(
    selector?): [TValue, Dispatch<SetStateAction<TValue>>, ReactDebouncer<Dispatch<SetStateAction<TValue>>, TSelected>]
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L42)
+Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:80](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L80)
 
 A React hook that creates a debounced state value, combining React's useState with debouncing functionality.
 This hook provides both the current debounced value and methods to update it.
@@ -28,6 +28,23 @@ The hook returns a tuple containing:
 - The current debounced value
 - A function to update the debounced value
 - The debouncer instance with additional control methods
+
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management via the underlying debouncer instance.
+The `selector` parameter allows you to specify which debouncer state changes will trigger a re-render,
+optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
+
+**By default, all debouncer state changes will trigger a re-render.** To optimize performance, you can
+provide a selector function that returns only the specific state values your component needs.
+The component will only re-render when the selected values change.
+
+Available debouncer state properties:
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge
+- `executionCount`: Number of function executions that have been completed
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `status`: Current execution status ('disabled' | 'idle' | 'pending')
 
 ## Type Parameters
 
@@ -56,19 +73,40 @@ The hook returns a tuple containing:
 ## Example
 
 ```tsx
-// Debounced search input
+// Debounced search input (re-renders on any debouncer state change)
 const [searchTerm, setSearchTerm, debouncer] = useDebouncedState('', {
   wait: 500 // Wait 500ms after last keystroke
 });
+
+// Only re-render when pending state changes (optimized for loading indicators)
+const [searchTerm, setSearchTerm, debouncer] = useDebouncedState(
+  '',
+  { wait: 500 },
+  (state) => ({ isPending: state.isPending })
+);
+
+// Only re-render when execution count changes (optimized for tracking executions)
+const [searchTerm, setSearchTerm, debouncer] = useDebouncedState(
+  '',
+  { wait: 500 },
+  (state) => ({ executionCount: state.executionCount })
+);
+
+// Only re-render when debouncing status changes (optimized for status display)
+const [searchTerm, setSearchTerm, debouncer] = useDebouncedState(
+  '',
+  { wait: 500 },
+  (state) => ({
+    status: state.status,
+    canLeadingExecute: state.canLeadingExecute
+  })
+);
 
 // Update value - will be debounced
 const handleChange = (e) => {
   setSearchTerm(e.target.value);
 };
 
-// Get number of times the debounced function has executed
-const executionCount = debouncer.getExecutionCount();
-
-// Get the pending state
-const isPending = debouncer.getState().isPending;
+// Access the selected debouncer state
+const { isPending, executionCount } = debouncer.state;
 ```
