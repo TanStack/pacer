@@ -359,7 +359,7 @@ export class AsyncQueuer<TValue> {
     const activeItems = this.store.state.activeItems
     while (
       activeItems.length < this.#getConcurrency() &&
-      !this.store.state.isEmpty
+      this.store.state.items.length > 0
     ) {
       const nextItem = this.peekNextItem()
       if (!nextItem) {
@@ -402,7 +402,7 @@ export class AsyncQueuer<TValue> {
     position: QueuePosition = this.options.addItemsTo ?? 'back',
     runOnItemsChange: boolean = true,
   ): boolean => {
-    if (this.store.state.isFull) {
+    if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,
       })
@@ -578,7 +578,7 @@ export class AsyncQueuer<TValue> {
     const expiredIndices: Array<number> = []
 
     // Find indices of expired items
-    for (let i = 0; i < this.store.state.size; i++) {
+    for (let i = 0; i < this.store.state.items.length; i++) {
       const timestamp = this.store.state.itemTimestamps[i]
       if (timestamp === undefined) continue
 
@@ -633,7 +633,7 @@ export class AsyncQueuer<TValue> {
     if (position === 'front') {
       return this.store.state.items[0]
     }
-    return this.store.state.items[this.store.state.size - 1]
+    return this.store.state.items[this.store.state.items.length - 1]
   }
 
   /**
@@ -662,7 +662,7 @@ export class AsyncQueuer<TValue> {
    */
   start = (): void => {
     this.#setState({ isRunning: true })
-    if (!this.store.state.pendingTick && !this.store.state.isEmpty) {
+    if (!this.store.state.pendingTick && this.store.state.items.length > 0) {
       this.#tick()
     }
   }

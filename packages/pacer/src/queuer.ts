@@ -331,7 +331,7 @@ export class Queuer<TValue> {
     // Check for expired items
     this.#checkExpiredItems()
 
-    while (!this.store.state.isEmpty) {
+    while (this.store.state.items.length > 0) {
       const nextItem = this.execute(this.options.getItemsFrom ?? 'front')
       if (nextItem === undefined) {
         break
@@ -366,7 +366,7 @@ export class Queuer<TValue> {
     position: QueuePosition = this.options.addItemsTo ?? 'back',
     runOnItemsChange: boolean = true,
   ): boolean => {
-    if (this.store.state.isFull) {
+    if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,
       })
@@ -579,7 +579,7 @@ export class Queuer<TValue> {
     if (position === 'front') {
       return this.store.state.items[0]
     }
-    return this.store.state.items[this.store.state.size - 1]
+    return this.store.state.items[this.store.state.items.length - 1]
   }
 
   /**
@@ -594,7 +594,7 @@ export class Queuer<TValue> {
    */
   start = () => {
     this.#setState({ isRunning: true })
-    if (!this.store.state.pendingTick && !this.store.state.isEmpty) {
+    if (!this.store.state.pendingTick && this.store.state.items.length > 0) {
       this.#tick()
     }
   }
