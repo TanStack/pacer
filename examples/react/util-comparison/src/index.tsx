@@ -177,25 +177,35 @@ function ComparisonApp() {
   ] as const
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'system-ui, sans-serif' }}>
-      <h1>TanStack Pacer Utilities Comparison</h1>
+    <div
+      style={{
+        padding: '12px',
+        fontFamily: 'system-ui, sans-serif',
+        maxWidth: '100%',
+      }}
+    >
+      <h1 style={{ fontSize: '1.5em', marginBottom: '15px' }}>
+        TanStack Pacer Utilities Comparison
+      </h1>
 
-      <div style={{ marginBottom: '30px' }}>
-        <h2>Master Control</h2>
-        <div style={{ marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px' }}>
+        <h2 style={{ fontSize: '1.2em', marginBottom: '10px' }}>
+          Master Control (Move the slider to see the utilities in action)
+        </h2>
+        <div style={{ marginBottom: '15px' }}>
           <label>
             <strong>Current Value: {currentValue}</strong>
             <input
               max="100"
               min="0"
               onChange={handleRangeChange}
-              style={{ width: '100%', margin: '10px 0' }}
+              style={{ width: '100%', margin: '8px 0' }}
               type="range"
               value={currentValue}
             />
           </label>
         </div>
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '15px' }}>
           <strong>Total Interactions:</strong> {instantExecutionCount}
         </div>
       </div>
@@ -203,8 +213,8 @@ function ComparisonApp() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '20px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '10px',
           marginBottom: '30px',
         }}
       >
@@ -215,8 +225,8 @@ function ComparisonApp() {
               key={utility.name}
               style={{
                 border: `2px solid ${utility.color}`,
-                borderRadius: '8px',
-                padding: '15px',
+                borderRadius: '6px',
+                padding: '10px',
                 backgroundColor: syncStatus.isPending
                   ? 'rgba(254, 249, 195, 0.4)' // yellowish if pending
                   : syncStatus.isOutOfSync
@@ -225,42 +235,46 @@ function ComparisonApp() {
                 transition: 'background-color 0.2s ease',
               }}
             >
-              <h3 style={{ color: utility.color, margin: '0 0 10px 0' }}>
+              <h3
+                style={{
+                  color: utility.color,
+                  margin: '0 0 8px 0',
+                  fontSize: '1.1em',
+                }}
+              >
                 {utility.name}
               </h3>
               <p
                 style={{
-                  fontSize: '0.9em',
+                  fontSize: '0.85em',
                   color: '#666',
-                  margin: '0 0 15px 0',
+                  margin: '0 0 12px 0',
+                  lineHeight: '1.4',
                 }}
               >
                 {utility.description}
               </p>
 
-              <div style={{ marginBottom: '15px' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginBottom: '5px',
-                  }}
-                >
-                  <strong>Processed Value: {utility.value}</strong>
+              <div style={{ marginBottom: '12px' }}>
+                <div style={{ marginBottom: '4px' }}>
+                  <strong style={{ fontSize: '0.9em' }}>
+                    Value: {utility.value}
+                  </strong>
+                </div>
+                <div style={{ marginBottom: '6px' }}>
                   {syncStatus.isOutOfSync ? (
                     <span
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '4px',
+                        gap: '3px',
                         color: syncStatus.isPending ? '#f59e0b' : '#ef4444',
-                        fontSize: '0.85em',
+                        fontSize: '0.8em',
                         cursor: syncStatus.tooltip ? 'help' : 'default',
                       }}
                       title={syncStatus.tooltip}
                     >
-                      <WarningIcon size={14} />
+                      <WarningIcon size={12} />
                       {syncStatus.statusText}
                     </span>
                   ) : (
@@ -268,12 +282,12 @@ function ComparisonApp() {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '4px',
+                        gap: '3px',
                         color: '#10b981',
-                        fontSize: '0.85em',
+                        fontSize: '0.8em',
                       }}
                     >
-                      <SuccessIcon size={14} />
+                      <SuccessIcon size={12} />
                       {syncStatus.statusText}
                     </span>
                   )}
@@ -286,13 +300,22 @@ function ComparisonApp() {
                   readOnly
                   style={{
                     width: '100%',
-                    margin: '5px 0',
+                    margin: '2px 0',
                     accentColor: utility.color,
                   }}
                 />
+                <span style={{ fontSize: '0.75em', color: '#64748b' }}>
+                  (read-only)
+                </span>
               </div>
 
-              <div style={{ fontSize: '0.9em', marginBottom: '15px' }}>
+              <div
+                style={{
+                  fontSize: '0.8em',
+                  marginBottom: '12px',
+                  lineHeight: '1.3',
+                }}
+              >
                 <div>
                   <strong>Executions:</strong> {utility.state.executionCount}
                 </div>
@@ -343,10 +366,11 @@ function ComparisonApp() {
                     backgroundColor: utility.color,
                     color: 'white',
                     border: 'none',
-                    padding: '8px 16px',
+                    padding: '6px 12px',
                     borderRadius: '4px',
                     cursor: 'pointer',
-                    fontSize: '0.9em',
+                    fontSize: '0.85em',
+                    width: '100%',
                   }}
                 >
                   Flush
@@ -357,26 +381,37 @@ function ComparisonApp() {
         })}
       </div>
 
-      <div style={{ marginTop: '30px' }}>
-        <h2>Detailed States</h2>
+      <div style={{ marginTop: '20px' }}>
+        <h2 style={{ fontSize: '1.2em', marginBottom: '10px' }}>
+          Detailed States
+        </h2>
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '15px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+            gap: '8px',
           }}
         >
           {utilityData.map((utility) => (
             <div key={utility.name}>
-              <h4 style={{ color: utility.color }}>{utility.name} State</h4>
+              <h4
+                style={{
+                  color: utility.color,
+                  margin: '0 0 5px 0',
+                  fontSize: '0.9em',
+                }}
+              >
+                {utility.name} State
+              </h4>
               <pre
                 style={{
-                  fontSize: '0.8em',
+                  fontSize: '0.7em',
                   backgroundColor: '#f5f5f5',
-                  padding: '10px',
+                  padding: '8px',
                   borderRadius: '4px',
                   overflow: 'auto',
-                  maxHeight: '200px',
+                  maxHeight: '150px',
+                  margin: 0,
                 }}
               >
                 {JSON.stringify(utility.state, null, 2)}
@@ -388,14 +423,23 @@ function ComparisonApp() {
 
       <div
         style={{
-          marginTop: '30px',
-          padding: '20px',
+          marginTop: '20px',
+          padding: '15px',
           backgroundColor: '#f0f9ff',
-          borderRadius: '8px',
+          borderRadius: '6px',
         }}
       >
-        <h2>How Each Utility Behaves</h2>
-        <ul style={{ lineHeight: '1.6' }}>
+        <h2 style={{ fontSize: '1.2em', marginBottom: '10px' }}>
+          How Each Utility Behaves
+        </h2>
+        <ul
+          style={{
+            lineHeight: '1.5',
+            fontSize: '0.9em',
+            margin: 0,
+            paddingLeft: '20px',
+          }}
+        >
           <li>
             <strong>Debouncer:</strong> Waits for 600ms of inactivity before
             executing. Great for search inputs.

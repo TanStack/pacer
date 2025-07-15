@@ -58,3 +58,11 @@ Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of th
   - React, Solid, and more
 - **Tree Shaking**
   - We, of course, get tree-shaking right for your applications by default, but we also provide extra deep imports for each utility, making it easier to embed these utilities into your libraries without increasing the bundle-phobia reports of your library.
+
+## Interactive Comparison Demo
+
+Each utility is designed to be used in a specific way, and each utility has its own unique behavior.
+
+See how each utility behaves with this interactive comparison. Move the range slider to observe the differences between debouncing, throttling, rate limiting, queuing, and batching:
+
+<iframe src="https://stackblitz.com/github/TanStack/pacer/tree/main/examples/react/util-comparison?embed=1&view=preview&hideNavigation=1" width="100%" height="1200px" style="border: 1px solid #ccc; border-radius: 4px;"></iframe>
