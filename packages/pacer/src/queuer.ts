@@ -506,6 +506,7 @@ export class Queuer<TValue> {
     for (let i = 0; i < numberOfItems; i++) {
       this.execute(position)
     }
+    this.#tick()
   }
 
   /**
