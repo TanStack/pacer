@@ -205,18 +205,6 @@ function App() {
           <button onClick={() => setErrors([])}>Clear Errors</button>
         </div>
       )}
-
-      <div>
-        <h4>How it works:</h4>
-        <ul>
-          <li>Items are batched up to 5 at a time</li>
-          <li>Batches are processed after 2 seconds if not full</li>
-          <li>Items marked "urgent" trigger immediate processing</li>
-          <li>Processing takes 1 second to simulate async work</li>
-          <li>Each batch returns a result showing what was processed</li>
-          <li>Errors are handled gracefully and don't stop the batcher</li>
-        </ul>
-      </div>
     </div>
   )
 }
