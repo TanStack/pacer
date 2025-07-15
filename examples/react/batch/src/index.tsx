@@ -24,7 +24,7 @@ function App() {
         },
       },
     ),
-    [],
+    [], // must be memoized to avoid re-creating the batcher on every render (consider using useBatcher instead in react)
   )
 
   return (

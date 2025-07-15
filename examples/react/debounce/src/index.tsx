@@ -13,7 +13,7 @@ function App1() {
       wait: 500,
       // leading: true, // optional, defaults to false
     }),
-    [],
+    [], // must be memoized to avoid re-creating the debouncer on every render (consider using useDebouncer instead in react)
   )
 
   function increment() {

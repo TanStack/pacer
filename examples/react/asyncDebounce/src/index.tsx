@@ -36,7 +36,7 @@ function SearchApp() {
         wait: 500,
       },
     ),
-    [],
+    [], // must be memoized to avoid re-creating the debouncer on every render (consider using useAsyncDebouncer instead in react)
   )
 
   return (

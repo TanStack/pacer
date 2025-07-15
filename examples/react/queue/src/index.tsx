@@ -20,7 +20,7 @@ function App1() {
         setProcessedCount(queue.store.state.executionCount)
       },
     }),
-    [],
+    [], // must be memoized to avoid re-creating the queue on every render (consider using useQueuer instead in react)
   )
 
   return (

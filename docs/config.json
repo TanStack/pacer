@@ -884,6 +884,10 @@
               "to": "framework/react/examples/batch"
             },
             {
+              "label": "asyncBatch",
+              "to": "framework/react/examples/asyncBatch"
+            },
+            {
               "label": "useBatcher",
               "to": "framework/react/examples/useBatcher"
             },

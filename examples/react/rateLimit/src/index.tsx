@@ -19,7 +19,7 @@ function App1() {
           rateLimiter.getMsUntilNextWindow(),
         ),
     }),
-    [],
+    [], // must be memoized to avoid re-creating the rate limiter on every render (consider using useRateLimiter instead in react)
   )
 
   function increment() {

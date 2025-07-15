@@ -12,7 +12,7 @@ function App1() {
     throttle(setThrottledCount, {
       wait: 1000,
     }),
-    [],
+    [], // must be memoized to avoid re-creating the throttler on every render (consider using useThrottler instead in react)
   )
 
   function increment() {

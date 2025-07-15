@@ -36,7 +36,7 @@ function SearchApp() {
         wait: 1000,
       },
     ),
-    [],
+    [], // must be memoized to avoid re-creating the throttler on every render (consider using useAsyncThrottler instead in react)
   )
 
   return (

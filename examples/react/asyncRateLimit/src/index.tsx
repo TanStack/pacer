@@ -43,7 +43,7 @@ function SearchApp() {
         },
       },
     ),
-    [],
+    [], // must be memoized to avoid re-creating the rate limiter on every render (consider using useAsyncRateLimit instead in react)
   )
 
   return (
