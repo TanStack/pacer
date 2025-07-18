@@ -74,10 +74,7 @@ function App() {
     },
     onSuccess: (result, batcher) => {
       console.log('AsyncBatcher succeeded:', result)
-      console.log(
-        'Total successful batches:',
-        batcher.store.state.successCount,
-      )
+      console.log('Total successful batches:', batcher.store.state.successCount)
     },
     onError: (error: any, failedItems, batcher) => {
       console.error('AsyncBatcher failed:', error)

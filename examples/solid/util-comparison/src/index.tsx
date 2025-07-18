@@ -134,47 +134,48 @@ function ComparisonApp() {
     </svg>
   )
 
-  const utilityData = () => [
-    {
-      name: 'Debouncer',
-      value: debouncedValue(),
-      state: debouncer.state(),
-      description: `Delays execution until after ${debouncer.options.wait}ms of inactivity`,
-      color: '#3b82f6', // blue
-      flush: () => debouncer.flush(),
-    },
-    {
-      name: 'Throttler',
-      value: throttledValue(),
-      state: throttler.state(),
-      description: `Limits execution to once every ${throttler.options.wait}ms`,
-      color: '#0891b2', // cyan
-      flush: () => throttler.flush(),
-    },
-    {
-      name: 'Rate Limiter',
-      value: rateLimitedValue(),
-      state: rateLimiter.state(),
-      description: `Allows max ${rateLimiter.options.limit} executions per ${rateLimiter.options.window}ms window`,
-      color: '#ea580c', // orange
-    },
-    {
-      name: 'Queuer',
-      value: queuedValue(),
-      state: queuer.state(),
-      description: `Processes items sequentially with ${queuer.options.wait}ms delay`,
-      color: '#db2777', // pink
-      flush: () => queuer.flush(),
-    },
-    {
-      name: 'Batcher',
-      value: batchedValue(),
-      state: batcher.state(),
-      description: `Processes in batches of ${batcher.options.maxSize} or after ${batcher.options.wait}ms`,
-      color: '#8b5cf6', // purple
-      flush: () => batcher.flush(),
-    },
-  ] as const
+  const utilityData = () =>
+    [
+      {
+        name: 'Debouncer',
+        value: debouncedValue(),
+        state: debouncer.state(),
+        description: `Delays execution until after ${debouncer.options.wait}ms of inactivity`,
+        color: '#3b82f6', // blue
+        flush: () => debouncer.flush(),
+      },
+      {
+        name: 'Throttler',
+        value: throttledValue(),
+        state: throttler.state(),
+        description: `Limits execution to once every ${throttler.options.wait}ms`,
+        color: '#0891b2', // cyan
+        flush: () => throttler.flush(),
+      },
+      {
+        name: 'Rate Limiter',
+        value: rateLimitedValue(),
+        state: rateLimiter.state(),
+        description: `Allows max ${rateLimiter.options.limit} executions per ${rateLimiter.options.window}ms window`,
+        color: '#ea580c', // orange
+      },
+      {
+        name: 'Queuer',
+        value: queuedValue(),
+        state: queuer.state(),
+        description: `Processes items sequentially with ${queuer.options.wait}ms delay`,
+        color: '#db2777', // pink
+        flush: () => queuer.flush(),
+      },
+      {
+        name: 'Batcher',
+        value: batchedValue(),
+        state: batcher.state(),
+        description: `Processes in batches of ${batcher.options.maxSize} or after ${batcher.options.wait}ms`,
+        color: '#8b5cf6', // purple
+        flush: () => batcher.flush(),
+      },
+    ] as const
 
   return (
     <div
