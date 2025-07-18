@@ -187,6 +187,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null
+  #rejectPreviousPromise: ((reason?: unknown) => void) | null = null
 
   constructor(
     private fn: TFn,
@@ -287,8 +288,9 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       await this.#execute(...args)
       return this.store.state.lastResult
     } else {
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
         this.#resolvePreviousPromise = resolve
+        this.#rejectPreviousPromise = reject
         // Clear any existing timeout to ensure we use the latest arguments
         this.#clearTimeout()
 
@@ -330,9 +332,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       })
       this.options.onError?.(error, this)
       if (this.options.throwOnError) {
-        throw error
-      } else {
-        console.error(error)
+        this.#rejectPreviousPromiseInternal(error)
       }
     } finally {
       const lastExecutionTime = Date.now()
@@ -353,18 +353,31 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   /**
    * Processes the current pending execution immediately
    */
-  flush = (): void => {
+  flush = async (): Promise<ReturnType<TFn> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
       this.#abortExecution() // abort any current execution
       this.#clearTimeout() // clear any existing timeout
-      this.#execute(...this.store.state.lastArgs)
+      const result = await this.#execute(...this.store.state.lastArgs)
+
+      // Resolve any pending promise from maybeExecute
+      this.#resolvePreviousPromiseInternal()
+
+      return result
     }
+    return undefined
   }
 
   #resolvePreviousPromiseInternal = (): void => {
     if (this.#resolvePreviousPromise) {
       this.#resolvePreviousPromise(this.store.state.lastResult)
       this.#resolvePreviousPromise = null
+    }
+  }
+
+  #rejectPreviousPromiseInternal = (error: unknown): void => {
+    if (this.#rejectPreviousPromise) {
+      this.#rejectPreviousPromise(error)
+      this.#rejectPreviousPromise = null
     }
   }
 

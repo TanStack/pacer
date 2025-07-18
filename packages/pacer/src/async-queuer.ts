@@ -33,13 +33,13 @@ export interface AsyncQueuerState<TValue> {
    */
   isRunning: boolean
   /**
-   * Timestamps when items were added to the queue for expiration tracking
-   */
-  itemTimestamps: Array<number>
-  /**
    * Array of items currently waiting to be processed
    */
   items: Array<TValue>
+  /**
+   * Timestamps when items were added to the queue for expiration tracking
+   */
+  itemTimestamps: Array<number>
   /**
    * The result from the most recent task execution
    */
@@ -507,6 +507,12 @@ export class AsyncQueuer<TValue> {
     return item
   }
 
+  #getAllItems = (): Array<TValue> => {
+    const items = this.peekAllItems()
+    this.clear()
+    return items
+  }
+
   /**
    * Removes and returns the next item from the queue and executes the task function with it.
    *
@@ -552,14 +558,26 @@ export class AsyncQueuer<TValue> {
    * Processes a specified number of items to execute immediately with no wait time
    * If no numberOfItems is provided, all items will be processed
    */
-  flush = (
+  flush = async (
     numberOfItems: number = this.store.state.items.length,
     position?: QueuePosition,
-  ): void => {
+  ): Promise<void> => {
     this.#clearTimeouts() // clear any pending timeouts
-    for (let i = 0; i < numberOfItems; i++) {
-      this.execute(position)
-    }
+    await Promise.all(
+      Array.from({ length: numberOfItems }, () => this.execute(position)),
+    )
+  }
+
+  /**
+   * Processes all items in the queue as a batch using the provided function
+   * The queue is cleared after processing
+   */
+  flushAsBatch = async (
+    batchFunction: (items: Array<TValue>) => Promise<any>,
+  ): Promise<void> => {
+    this.#clearTimeouts() // clear any pending timeouts
+    const items = this.#getAllItems()
+    await batchFunction(items)
   }
 
   /**

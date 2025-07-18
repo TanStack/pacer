@@ -12,6 +12,10 @@ export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
    */
   executionTimes: Array<number>
   /**
+   * Whether the rate limiter has exceeded the limit
+   */
+  isExceeded: boolean
+  /**
    * Whether the rate-limited function is currently executing asynchronously
    */
   isExecuting: boolean
@@ -28,6 +32,10 @@ export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
    */
   settleCount: number
   /**
+   * Current execution status - 'disabled' when not active, 'executing' when executing, 'idle' when not executing, 'exceeded' when rate limit is exceeded
+   */
+  status: 'disabled' | 'executing' | 'exceeded' | 'idle'
+  /**
    * Number of function executions that have completed successfully
    */
   successCount: number
@@ -39,11 +47,13 @@ function getDefaultAsyncRateLimiterState<
   return {
     errorCount: 0,
     executionTimes: [],
+    isExceeded: false,
     isExecuting: false,
     lastResult: undefined,
     rejectionCount: 0,
     settleCount: 0,
     successCount: 0,
+    status: 'idle',
   }
 }
 
@@ -189,6 +199,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     AsyncRateLimiterState<TFn>
   >(getDefaultAsyncRateLimiterState<TFn>())
   options: AsyncRateLimiterOptions<TFn>
+  #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
     private fn: TFn,
@@ -200,6 +211,9 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
     this.#setState(this.options.initialState ?? {})
+    for (const executionTime of this.#getExecutionTimesInWindow()) {
+      this.#setCleanupTimeout(executionTime)
+    }
   }
 
   /**
@@ -215,7 +229,19 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         ...state,
         ...newState,
       }
-      return combinedState
+      const isExceeded = combinedState.executionTimes.length >= this.#getLimit()
+      const status = !this.#getEnabled()
+        ? 'disabled'
+        : combinedState.isExecuting
+          ? 'executing'
+          : isExceeded
+            ? 'exceeded'
+            : 'idle'
+      return {
+        ...combinedState,
+        isExceeded,
+        status,
+      }
     })
   }
 
@@ -270,7 +296,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> => {
     this.#cleanupOldExecutions()
 
-    const relevantExecutionTimes = this.#getRelevantExecutionTimes()
+    const relevantExecutionTimes = this.#getExecutionTimesInWindow()
 
     if (relevantExecutionTimes.length < this.#getLimit()) {
       await this.#execute(...args)
@@ -297,7 +323,8 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     })
 
     try {
-      const result = await this.fn(...args)
+      const result = await this.fn(...args) // EXECUTE!
+      this.#setCleanupTimeout(now)
       this.#setState({
         successCount: this.store.state.successCount + 1,
         lastResult: result,
@@ -322,7 +349,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     return this.store.state.lastResult
   }
 
-  #getRelevantExecutionTimes = (): Array<number> => {
+  #getExecutionTimesInWindow = (): Array<number> => {
     if (this.options.windowType === 'sliding') {
       // For sliding window, return all executions within the current window
       return this.store.state.executionTimes.filter(
@@ -331,22 +358,54 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     } else {
       // For fixed window, return all executions in the current window
       // The window starts from the oldest execution time
+      if (this.store.state.executionTimes.length === 0) {
+        return []
+      }
       const oldestExecution = Math.min(...this.store.state.executionTimes)
       const windowStart = oldestExecution
+      const windowEnd = windowStart + this.#getWindow()
+      const now = Date.now()
+
+      // If the window has expired, return empty array
+      if (now > windowEnd) {
+        return []
+      }
+
+      // Otherwise, return all executions in the current window
       return this.store.state.executionTimes.filter(
-        (time) =>
-          time >= windowStart && time <= windowStart + this.#getWindow(),
+        (time) => time >= windowStart && time <= windowEnd,
       )
     }
   }
 
+  #setCleanupTimeout = (executionTime: number): void => {
+    if (
+      this.options.windowType === 'sliding' ||
+      this.#timeoutIds.size === 0 // new fixed window
+    ) {
+      const now = Date.now()
+      const timeUntilExpiration = executionTime - now + this.#getWindow() + 1
+      const timeoutId = setTimeout(() => {
+        this.#cleanupOldExecutions()
+        this.#clearTimeout(timeoutId)
+      }, timeUntilExpiration)
+      this.#timeoutIds.add(timeoutId)
+    }
+  }
+
+  #clearTimeout = (timeoutId: NodeJS.Timeout): void => {
+    clearTimeout(timeoutId)
+    this.#timeoutIds.delete(timeoutId)
+  }
+
+  #clearTimeouts = (): void => {
+    this.#timeoutIds.forEach((timeoutId) => clearTimeout(timeoutId))
+    this.#timeoutIds.clear()
+  }
+
   #cleanupOldExecutions = (): void => {
-    const now = Date.now()
-    const windowStart = now - this.#getWindow()
     this.#setState({
-      executionTimes: this.store.state.executionTimes.filter(
-        (time) => time > windowStart,
-      ),
+      executionTimes: this.#getExecutionTimesInWindow(),
     })
   }
 
@@ -354,7 +413,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    * Returns the number of remaining executions allowed in the current window
    */
   getRemainingInWindow = (): number => {
-    const relevantExecutionTimes = this.#getRelevantExecutionTimes()
+    const relevantExecutionTimes = this.#getExecutionTimesInWindow()
     return Math.max(0, this.#getLimit() - relevantExecutionTimes.length)
   }
 
@@ -376,6 +435,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    */
   reset = (): void => {
     this.#setState(getDefaultAsyncRateLimiterState())
+    this.#clearTimeouts()
   }
 }
 

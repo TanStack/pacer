@@ -383,4 +383,129 @@ describe('Queuer', () => {
       expect(onExecute).toHaveBeenCalledWith(1, queuer)
     })
   })
+
+  describe('Flush Methods', () => {
+    describe('flush', () => {
+      it('should process all items immediately', () => {
+        const fn = vi.fn()
+        const queuer = new Queuer(fn, { wait: 1000, started: false })
+
+        queuer.addItem(1)
+        queuer.addItem(2)
+        queuer.addItem(3)
+
+        expect(fn).not.toHaveBeenCalled()
+
+        queuer.flush()
+
+        expect(fn).toHaveBeenCalledTimes(3)
+        expect(fn).toHaveBeenNthCalledWith(1, 1)
+        expect(fn).toHaveBeenNthCalledWith(2, 2)
+        expect(fn).toHaveBeenNthCalledWith(3, 3)
+        expect(queuer.store.state.isEmpty).toBe(true)
+      })
+
+      it('should process specified number of items', () => {
+        const fn = vi.fn()
+        const queuer = new Queuer(fn, { started: false })
+
+        queuer.addItem(1)
+        queuer.addItem(2)
+        queuer.addItem(3)
+
+        queuer.flush(2)
+
+        expect(fn).toHaveBeenCalledTimes(2)
+        expect(fn).toHaveBeenNthCalledWith(1, 1)
+        expect(fn).toHaveBeenNthCalledWith(2, 2)
+        expect(queuer.store.state.size).toBe(1)
+        expect(queuer.peekNextItem()).toBe(3)
+      })
+
+      it('should clear pending timeout when flushing', () => {
+        const fn = vi.fn()
+        const queuer = new Queuer(fn, { wait: 1000, started: false })
+
+        queuer.addItem(1)
+        queuer.start()
+
+        // Flush should clear any pending timeout
+        queuer.flush()
+
+        expect(fn).toHaveBeenCalledTimes(1)
+        expect(fn).toHaveBeenCalledWith(1)
+      })
+
+      it('should work with position parameter', () => {
+        const fn = vi.fn()
+        const queuer = new Queuer(fn, { started: false })
+
+        queuer.addItem(1)
+        queuer.addItem(2)
+        queuer.addItem(3)
+
+        queuer.flush(2, 'back')
+
+        expect(fn).toHaveBeenCalledTimes(2)
+        expect(fn).toHaveBeenNthCalledWith(1, 3)
+        expect(fn).toHaveBeenNthCalledWith(2, 2)
+        expect(queuer.store.state.size).toBe(1)
+        expect(queuer.peekNextItem()).toBe(1)
+      })
+
+      it('should do nothing when queue is empty', () => {
+        const fn = vi.fn()
+        const queuer = new Queuer(fn, { started: false })
+
+        queuer.flush()
+        expect(fn).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('flushAsBatch', () => {
+      it('should process all items as a batch', () => {
+        const fn = vi.fn()
+        const batchFn = vi.fn()
+        const queuer = new Queuer(fn, { started: false })
+
+        queuer.addItem(1)
+        queuer.addItem(2)
+        queuer.addItem(3)
+
+        queuer.flushAsBatch(batchFn)
+
+        expect(fn).not.toHaveBeenCalled()
+        expect(batchFn).toHaveBeenCalledTimes(1)
+        expect(batchFn).toHaveBeenCalledWith([1, 2, 3])
+        expect(queuer.store.state.isEmpty).toBe(true)
+      })
+
+      it('should clear queue after batch processing', () => {
+        const fn = vi.fn()
+        const batchFn = vi.fn()
+        const queuer = new Queuer(fn, { started: false })
+
+        queuer.addItem(1)
+        queuer.addItem(2)
+
+        expect(queuer.store.state.size).toBe(2)
+
+        queuer.flushAsBatch(batchFn)
+
+        expect(queuer.store.state.isEmpty).toBe(true)
+        expect(queuer.store.state.size).toBe(0)
+      })
+
+      it('should handle empty queue', () => {
+        const fn = vi.fn()
+        const batchFn = vi.fn()
+        const queuer = new Queuer(fn, { started: false })
+
+        queuer.flushAsBatch(batchFn)
+
+        expect(batchFn).toHaveBeenCalledTimes(1)
+        expect(batchFn).toHaveBeenCalledWith([])
+      })
+    })
+  })
 })

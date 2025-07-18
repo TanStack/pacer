@@ -7,7 +7,7 @@ title: RateLimiterOptions
 
 # Interface: RateLimiterOptions\<TFn\>
 
-Defined in: [rate-limiter.ts:31](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L31)
+Defined in: [rate-limiter.ts:41](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L41)
 
 Options for configuring a rate-limited function
 
@@ -23,7 +23,7 @@ Options for configuring a rate-limited function
 optional enabled: boolean | (rateLimiter) => boolean;
 ```
 
-Defined in: [rate-limiter.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L36)
+Defined in: [rate-limiter.ts:46](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L46)
 
 Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
 Defaults to true.
@@ -36,7 +36,7 @@ Defaults to true.
 optional initialState: Partial<RateLimiterState>;
 ```
 
-Defined in: [rate-limiter.ts:40](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L40)
+Defined in: [rate-limiter.ts:50](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L50)
 
 Initial state for the rate limiter
 
@@ -48,7 +48,7 @@ Initial state for the rate limiter
 limit: number | (rateLimiter) => number;
 ```
 
-Defined in: [rate-limiter.ts:45](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L45)
+Defined in: [rate-limiter.ts:55](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L55)
 
 Maximum number of executions allowed within the time window.
 Can be a number or a callback function that receives the rate limiter instance and returns a number.
@@ -61,7 +61,7 @@ Can be a number or a callback function that receives the rate limiter instance a
 optional onExecute: (rateLimiter) => void;
 ```
 
-Defined in: [rate-limiter.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L49)
+Defined in: [rate-limiter.ts:59](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L59)
 
 Callback function that is called after the function is executed
 
@@ -83,7 +83,7 @@ Callback function that is called after the function is executed
 optional onReject: (rateLimiter) => void;
 ```
 
-Defined in: [rate-limiter.ts:53](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L53)
+Defined in: [rate-limiter.ts:63](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L63)
 
 Optional callback function that is called when an execution is rejected due to rate limiting
 
@@ -105,7 +105,7 @@ Optional callback function that is called when an execution is rejected due to r
 window: number | (rateLimiter) => number;
 ```
 
-Defined in: [rate-limiter.ts:58](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L58)
+Defined in: [rate-limiter.ts:68](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L68)
 
 Time window in milliseconds within which the limit applies.
 Can be a number or a callback function that receives the rate limiter instance and returns a number.
@@ -118,7 +118,7 @@ Can be a number or a callback function that receives the rate limiter instance a
 optional windowType: "fixed" | "sliding";
 ```
 
-Defined in: [rate-limiter.ts:65](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L65)
+Defined in: [rate-limiter.ts:75](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L75)
 
 Type of window to use for rate limiting
 - 'fixed': Uses a fixed window that resets after the window period

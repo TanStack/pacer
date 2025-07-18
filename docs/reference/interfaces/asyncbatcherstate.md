@@ -75,25 +75,13 @@ Whether the batcher is waiting for the timeout to trigger batch processing
 
 ***
 
-### isRunning
-
-```ts
-isRunning: boolean;
-```
-
-Defined in: [async-batcher.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L29)
-
-Whether the batcher is active and will process items automatically
-
-***
-
 ### items
 
 ```ts
 items: TValue[];
 ```
 
-Defined in: [async-batcher.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L33)
+Defined in: [async-batcher.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L29)
 
 Array of items currently queued for batch processing
 
@@ -105,7 +93,7 @@ Array of items currently queued for batch processing
 lastResult: any;
 ```
 
-Defined in: [async-batcher.ts:37](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L37)
+Defined in: [async-batcher.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L33)
 
 The result from the most recent batch execution
 
@@ -117,7 +105,7 @@ The result from the most recent batch execution
 settleCount: number;
 ```
 
-Defined in: [async-batcher.ts:41](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L41)
+Defined in: [async-batcher.ts:37](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L37)
 
 Number of batch executions that have completed (either successfully or with errors)
 
@@ -129,7 +117,7 @@ Number of batch executions that have completed (either successfully or with erro
 size: number;
 ```
 
-Defined in: [async-batcher.ts:45](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L45)
+Defined in: [async-batcher.ts:41](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L41)
 
 Number of items currently in the batch queue
 
@@ -141,7 +129,7 @@ Number of items currently in the batch queue
 status: "idle" | "pending" | "executing" | "populated";
 ```
 
-Defined in: [async-batcher.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L49)
+Defined in: [async-batcher.ts:45](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L45)
 
 Current processing status - 'idle' when not processing, 'pending' when waiting for timeout, 'executing' when processing, 'populated' when items are present, but no wait is configured
 
@@ -153,7 +141,7 @@ Current processing status - 'idle' when not processing, 'pending' when waiting f
 successCount: number;
 ```
 
-Defined in: [async-batcher.ts:53](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L53)
+Defined in: [async-batcher.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L49)
 
 Number of batch executions that have completed successfully
 
@@ -165,7 +153,7 @@ Number of batch executions that have completed successfully
 totalItemsFailed: number;
 ```
 
-Defined in: [async-batcher.ts:61](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L61)
+Defined in: [async-batcher.ts:53](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L53)
 
 Total number of items that have failed processing across all batches
 

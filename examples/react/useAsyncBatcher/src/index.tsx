@@ -93,7 +93,6 @@ function App() {
         <div>Current Batch Size: {asyncBatcher.state.size}</div>
         <div>Max Batch Size: 5</div>
         <div>Is Executing: {asyncBatcher.state.isExecuting ? 'Yes' : 'No'}</div>
-        <div>Is Running: {asyncBatcher.state.isRunning ? 'Yes' : 'No'}</div>
         <div>Status: {asyncBatcher.state.status}</div>
         <div>Successful Batches: {asyncBatcher.state.successCount}</div>
         <div>Failed Batches: {asyncBatcher.state.errorCount}</div>
@@ -147,18 +146,6 @@ function App() {
             }
           >
             Clear Current Batch
-          </button>
-          <button
-            onClick={() => asyncBatcher.stop()}
-            disabled={!asyncBatcher.state.isRunning}
-          >
-            Stop Auto-Processing
-          </button>
-          <button
-            onClick={() => asyncBatcher.start()}
-            disabled={asyncBatcher.state.isRunning}
-          >
-            Start Auto-Processing
           </button>
         </div>
 

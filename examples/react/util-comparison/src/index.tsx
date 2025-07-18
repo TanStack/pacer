@@ -27,12 +27,12 @@ function ComparisonApp() {
   })
 
   const rateLimiter = useRateLimiter(setRateLimitedValue, {
-    limit: 10,
+    limit: 20,
     window: 2000,
   })
 
   const queuer = useQueuer(setQueuedValue, {
-    wait: 200,
+    wait: 100,
     maxSize: 50,
   })
 
@@ -139,7 +139,7 @@ function ComparisonApp() {
       name: 'Debouncer',
       value: debouncedValue,
       state: debouncer.state,
-      description: 'Delays execution until after 600ms of inactivity',
+      description: `Delays execution until after ${debouncer.options.wait}ms of inactivity`,
       color: '#3b82f6', // blue
       flush: () => debouncer.flush(),
     },
@@ -147,7 +147,7 @@ function ComparisonApp() {
       name: 'Throttler',
       value: throttledValue,
       state: throttler.state,
-      description: 'Limits execution to once every 600ms',
+      description: `Limits execution to once every ${throttler.options.wait}ms`,
       color: '#0891b2', // cyan
       flush: () => throttler.flush(),
     },
@@ -155,14 +155,14 @@ function ComparisonApp() {
       name: 'Rate Limiter',
       value: rateLimitedValue,
       state: rateLimiter.state,
-      description: 'Allows max 10 executions per 2000ms window',
+      description: `Allows max ${rateLimiter.options.limit} executions per ${rateLimiter.options.window}ms window`,
       color: '#ea580c', // orange
     },
     {
       name: 'Queuer',
       value: queuedValue,
       state: queuer.state,
-      description: 'Processes items sequentially with 200ms delay',
+      description: `Processes items sequentially with ${queuer.options.wait}ms delay`,
       color: '#db2777', // pink
       flush: () => queuer.flush(),
     },
@@ -170,7 +170,7 @@ function ComparisonApp() {
       name: 'Batcher',
       value: batchedValue,
       state: batcher.state,
-      description: 'Processes in batches of 5 or after 600ms',
+      description: `Processes in batches of ${batcher.options.maxSize} or after ${batcher.options.wait}ms`,
       color: '#8b5cf6', // purple
       flush: () => batcher.flush(),
     },
@@ -190,7 +190,7 @@ function ComparisonApp() {
 
       <div style={{ marginBottom: '20px' }}>
         <h2 style={{ fontSize: '1.2em', marginBottom: '10px' }}>
-          Master Control (Move the slider to see the utilities in action)
+          Instant Slider (Move this slider to see the utilities in action)
         </h2>
         <div style={{ marginBottom: '15px' }}>
           <label>
@@ -293,6 +293,11 @@ function ComparisonApp() {
                   )}
                 </div>
                 <input
+                  onClick={() =>
+                    alert(
+                      'These sliders are read-only. Move the main slider at the top',
+                    )
+                  }
                   type="range"
                   min="0"
                   max="100"
@@ -304,9 +309,6 @@ function ComparisonApp() {
                     accentColor: utility.color,
                   }}
                 />
-                <span style={{ fontSize: '0.75em', color: '#64748b' }}>
-                  (read-only)
-                </span>
               </div>
 
               <div
@@ -342,9 +344,6 @@ function ComparisonApp() {
                     <div>
                       <strong>Queue Size:</strong> {utility.state.size}
                     </div>
-                    <div>
-                      <strong>Status:</strong> {utility.state.status}
-                    </div>
                   </>
                 )}
                 {utility.name === 'Batcher' && (
@@ -358,6 +357,9 @@ function ComparisonApp() {
                     </div>
                   </>
                 )}
+                <div>
+                  <strong>Status:</strong> {utility.state.status}
+                </div>
               </div>
               {'flush' in utility && typeof utility.flush === 'function' && (
                 <button

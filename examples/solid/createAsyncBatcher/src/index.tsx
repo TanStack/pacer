@@ -94,7 +94,6 @@ function App() {
         <div>Current Batch Size: {batcher.state().size}</div>
         <div>Max Batch Size: 5</div>
         <div>Is Executing: {batcher.state().isExecuting ? 'Yes' : 'No'}</div>
-        <div>Is Running: {batcher.state().isRunning ? 'Yes' : 'No'}</div>
         <div>Status: {batcher.state().status}</div>
         <div>Successful Batches: {batcher.state().successCount}</div>
         <div>Failed Batches: {batcher.state().errorCount}</div>
@@ -144,18 +143,6 @@ function App() {
             disabled={batcher.state().size === 0 || batcher.state().isExecuting}
           >
             Clear Current Batch
-          </button>
-          <button
-            onClick={() => batcher.stop()}
-            disabled={!batcher.state().isRunning}
-          >
-            Stop Auto-Processing
-          </button>
-          <button
-            onClick={() => batcher.start()}
-            disabled={batcher.state().isRunning}
-          >
-            Start Auto-Processing
           </button>
         </div>
 

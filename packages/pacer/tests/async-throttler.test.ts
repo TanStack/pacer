@@ -278,4 +278,113 @@ describe('AsyncThrottler', () => {
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenLastCalledWith('first')
   })
+
+  describe('Flush Method', () => {
+    it('should execute pending function immediately', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const throttler = new AsyncThrottler(mockFn, { wait: 1000 })
+
+      // First call should execute immediately (leading execution)
+      const promise1 = throttler.maybeExecute('first')
+      await promise1 // Wait for the first execution to complete
+      expect(mockFn).toHaveBeenCalledTimes(1)
+
+      // Second call should be throttled and return a promise
+      const promise2 = throttler.maybeExecute('second')
+      expect(mockFn).toHaveBeenCalledTimes(1) // Still throttled
+
+      const flushResult = await throttler.flush()
+      expect(mockFn).toHaveBeenCalledTimes(2)
+      expect(mockFn).toHaveBeenLastCalledWith('second')
+      expect(flushResult).toBe('result')
+
+      const result2 = await promise2
+      expect(result2).toBe('result')
+    })
+
+    it('should clear pending timeout when flushing', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const throttler = new AsyncThrottler(mockFn, { wait: 1000 })
+
+      await throttler.maybeExecute('first')
+      const promise2 = throttler.maybeExecute('second')
+
+      await throttler.flush()
+
+      // Advance time to ensure timeout would have fired
+      vi.advanceTimersByTime(1000)
+      await vi.runAllTimersAsync()
+
+      expect(mockFn).toHaveBeenCalledTimes(2)
+      await promise2 // Make sure promise resolves
+    })
+
+    it('should return undefined when no pending execution', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const throttler = new AsyncThrottler(mockFn, { wait: 1000 })
+
+      const result = await throttler.flush()
+      expect(mockFn).not.toHaveBeenCalled()
+      expect(result).toBeUndefined()
+    })
+
+    it('should work with leading and trailing execution', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const throttler = new AsyncThrottler(mockFn, {
+        wait: 1000,
+        leading: true,
+        trailing: true,
+      })
+
+      const promise1 = throttler.maybeExecute('first')
+      await promise1 // Wait for leading execution to complete
+      expect(mockFn).toHaveBeenCalledTimes(1)
+
+      const promise2 = throttler.maybeExecute('second')
+
+      const flushResult = await throttler.flush()
+
+      expect(mockFn).toHaveBeenCalledTimes(2)
+      expect(mockFn).toHaveBeenLastCalledWith('second')
+      expect(flushResult).toBe('result')
+
+      const result2 = await promise2
+      expect(result2).toBe('result')
+    })
+
+    it('should work with trailing-only execution', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const throttler = new AsyncThrottler(mockFn, {
+        wait: 1000,
+        leading: false,
+        trailing: true,
+      })
+
+      const promise = throttler.maybeExecute('first')
+      expect(mockFn).not.toHaveBeenCalled()
+
+      const flushResult = await throttler.flush()
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('first')
+      expect(flushResult).toBe('result')
+      expect(await promise).toBe('result')
+    })
+
+    it('should update state correctly after flush', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const throttler = new AsyncThrottler(mockFn, { wait: 1000 })
+
+      await throttler.maybeExecute('first')
+      const promise2 = throttler.maybeExecute('second')
+
+      expect(throttler.store.state.isPending).toBe(true)
+      expect(throttler.store.state.successCount).toBe(1) // From leading execution
+
+      await throttler.flush()
+      expect(throttler.store.state.isPending).toBe(false)
+      expect(throttler.store.state.successCount).toBe(2)
+
+      await promise2 // Make sure promise resolves
+    })
+  })
 })

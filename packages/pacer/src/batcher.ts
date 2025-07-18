@@ -16,14 +16,6 @@ export interface BatcherState<TValue> {
    */
   isPending: boolean
   /**
-   * Whether the batcher is active and will process items automatically
-   */
-  isRunning: boolean
-  /**
-   * Total number of items that have been processed across all batches
-   */
-  totalItemsProcessed: number
-  /**
    * Array of items currently queued for batch processing
    */
   items: Array<TValue>
@@ -35,6 +27,10 @@ export interface BatcherState<TValue> {
    * Current processing status - 'idle' when not processing, 'pending' when waiting for timeout
    */
   status: 'idle' | 'pending'
+  /**
+   * Total number of items that have been processed across all batches
+   */
+  totalItemsProcessed: number
 }
 
 function getDefaultBatcherState<TValue>(): BatcherState<TValue> {
@@ -42,7 +38,6 @@ function getDefaultBatcherState<TValue>(): BatcherState<TValue> {
     executionCount: 0,
     isEmpty: true,
     isPending: false,
-    isRunning: true,
     totalItemsProcessed: 0,
     items: [],
     size: 0,
@@ -204,7 +199,7 @@ export class Batcher<TValue> {
 
     if (shouldProcess) {
       this.#execute()
-    } else if (this.store.state.isRunning && this.options.wait !== Infinity) {
+    } else if (this.options.wait !== Infinity) {
       this.#clearTimeout() // clear any pending timeout to replace it with a new one
       this.#timeoutId = setTimeout(() => this.#execute(), this.#getWait())
     }
@@ -242,24 +237,6 @@ export class Batcher<TValue> {
   flush = (): void => {
     this.#clearTimeout() // clear any pending timeout
     this.#execute() // execute immediately
-  }
-
-  /**
-   * Stops the batcher from processing batches
-   */
-  stop = (): void => {
-    this.#setState({ isRunning: false })
-    this.#clearTimeout()
-  }
-
-  /**
-   * Starts the batcher and processes any pending items
-   */
-  start = (): void => {
-    this.#setState({ isRunning: true })
-    if (this.store.state.items.length > 0) {
-      this.#execute()
-    }
   }
 
   /**

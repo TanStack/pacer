@@ -209,6 +209,91 @@ describe('Debouncer', () => {
     })
   })
 
+  describe('Flush Method', () => {
+    it('should execute pending function immediately', () => {
+      const mockFn = vi.fn()
+      const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+      debouncer.maybeExecute('test')
+      expect(mockFn).not.toBeCalled()
+
+      debouncer.flush()
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('test')
+    })
+
+    it('should clear pending timeout when flushing', () => {
+      const mockFn = vi.fn()
+      const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+      debouncer.maybeExecute('test')
+      debouncer.flush()
+
+      // Advance time to ensure timeout would have fired
+      vi.advanceTimersByTime(1000)
+
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
+    it('should do nothing when no pending execution', () => {
+      const mockFn = vi.fn()
+      const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+      debouncer.flush()
+      expect(mockFn).not.toBeCalled()
+    })
+
+    it('should work with leading and trailing execution', () => {
+      const mockFn = vi.fn()
+      const debouncer = new Debouncer(mockFn, {
+        wait: 1000,
+        leading: true,
+        trailing: true,
+      })
+
+      debouncer.maybeExecute('first')
+      expect(mockFn).toBeCalledTimes(1)
+
+      debouncer.maybeExecute('second')
+      debouncer.flush()
+
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenLastCalledWith('second')
+    })
+
+    it('should not work with leading-only execution because there would be no trailing execution to flush', () => {
+      const mockFn = vi.fn()
+      const debouncer = new Debouncer(mockFn, {
+        wait: 1000,
+        leading: true,
+        trailing: false,
+      })
+
+      debouncer.maybeExecute('first')
+      expect(mockFn).toBeCalledTimes(1)
+
+      debouncer.maybeExecute('second')
+      debouncer.flush()
+
+      // With leading: true, trailing: false, flush should NOT cause another call
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenLastCalledWith('first')
+    })
+
+    it('should update state correctly after flush', () => {
+      const mockFn = vi.fn()
+      const debouncer = new Debouncer(mockFn, { wait: 1000 })
+
+      debouncer.maybeExecute('test')
+      expect(debouncer.store.state.isPending).toBe(true)
+      expect(debouncer.store.state.executionCount).toBe(0)
+
+      debouncer.flush()
+      expect(debouncer.store.state.isPending).toBe(false)
+      expect(debouncer.store.state.executionCount).toBe(1)
+    })
+  })
+
   describe('Enabled/Disabled State', () => {
     it('should not execute when enabled is false', () => {
       const mockFn = vi.fn()

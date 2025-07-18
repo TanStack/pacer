@@ -93,7 +93,7 @@ Whether the queuer is active and will process items automatically
 items: TValue[];
 ```
 
-Defined in: [queuer.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L36)
+Defined in: [queuer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L32)
 
 Array of items currently waiting to be processed
 
@@ -105,7 +105,7 @@ Array of items currently waiting to be processed
 itemTimestamps: number[];
 ```
 
-Defined in: [queuer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L32)
+Defined in: [queuer.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L36)
 
 Timestamps when items were added to the queue for expiration tracking
 
