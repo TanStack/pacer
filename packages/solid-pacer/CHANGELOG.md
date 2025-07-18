@@ -1,5 +1,21 @@
 # @tanstack/solid-pacer
 
+## 0.10.0
+
+### Minor Changes
+
+- breaking: Removed `isRunning` state from `Batcher` and `AsyncBatcher` utils, and also removed `start` and `stop` methods ([#40](https://github.com/TanStack/pacer/pull/40))
+  breaking: Changed `flush()` method in `AsyncDebouncer`, `AsyncThrottler`, and `AsyncQueuer` to return Promises instead of void
+  feat: Added `flushAsBatch` methods to the `Queuer` and `AsyncQueuer` utils
+  feat: Added `isExceeded` and `status` state properties to `RateLimiter` and `AsyncRateLimiter` for better rate limit tracking
+  feat: Enhanced error handling in `AsyncDebouncer` and `AsyncThrottler` with proper promise rejection support
+  feat: Improved timeout management in rate limiters with automatic cleanup of expired execution times
+
+### Patch Changes
+
+- Updated dependencies [[`d229d42`](https://github.com/TanStack/pacer/commit/d229d42e95d9da3e8a7f301ce47cf738a9a01f1f)]:
+  - @tanstack/pacer@0.10.0
+
 ## 0.9.1
 
 ### Patch Changes
