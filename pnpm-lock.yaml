@@ -1009,7 +1009,7 @@ importers:
     dependencies:
       '@tanstack/solid-pacer':
         specifier: ^0.9.1
-        version: link:../../../packages/solid-pacer
+        version: 0.9.1(solid-js@1.9.7)
       solid-js:
         specifier: ^1.9.7
         version: 1.9.7
@@ -1409,7 +1409,7 @@ importers:
     dependencies:
       '@tanstack/solid-pacer':
         specifier: ^0.9.1
-        version: link:../../../packages/solid-pacer
+        version: 0.9.1(solid-js@1.9.7)
       solid-js:
         specifier: ^1.9.7
         version: 1.9.7
@@ -2468,6 +2468,10 @@ packages:
     resolution: {integrity: sha512-KUJUDvYFaqxekc8IwgokZ7+yJUoR7LPFu788VSfCxtsbqP/wZyppuoaToC/74LIFjBKIHJQN+YdvBFedD2fqJg==}
     engines: {node: '>=18'}
 
+  '@tanstack/pacer@0.9.1':
+    resolution: {integrity: sha512-Y1sMRT9JPE+qZ5jWtBT2jyX2J92N7FzTfL/X2MtWw2IPqgSEk1uz3f+lFlXrRHeTUw0D2qWoNAqbNaKlFl/0OQ==}
+    engines: {node: '>=18'}
+
   '@tanstack/publish-config@0.2.0':
     resolution: {integrity: sha512-RC0yRBFJvGuR58tKQUIkMXVEiATXgESIc+3/NTqoCC7D2YOF4fZGmHGYIanFEPQH7EGfQ5+Bwi+H6BOtKnymtw==}
     engines: {node: '>=18'}
@@ -2494,6 +2498,12 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  '@tanstack/solid-pacer@0.9.1':
+    resolution: {integrity: sha512-Iu/5pY//pP2LYvOUVCyvcrJzPaSdTbRsojdeD8kuunT8E0ONmtIbGABHZ9cB1tHYCNgpYt33DA+PcEsq8EMpwA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      solid-js: '>=1.9.5'
 
   '@tanstack/solid-store@0.7.3':
     resolution: {integrity: sha512-fEdiGQdlzG/eS4lOaIWvKp94hopVZiDZ2IgrQ9ntu5QtLPXOABq/2VDSQI7jkx43e3AdLdvlXVrljxw2BVB9tw==}
@@ -6142,6 +6152,10 @@ snapshots:
       - supports-color
       - typescript
 
+  '@tanstack/pacer@0.9.1':
+    dependencies:
+      '@tanstack/store': 0.7.2
+
   '@tanstack/publish-config@0.2.0':
     dependencies:
       '@commitlint/parse': 19.8.1
@@ -6172,6 +6186,12 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       use-sync-external-store: 1.5.0(react@19.1.0)
+
+  '@tanstack/solid-pacer@0.9.1(solid-js@1.9.7)':
+    dependencies:
+      '@tanstack/pacer': 0.9.1
+      '@tanstack/solid-store': 0.7.3(solid-js@1.9.7)
+      solid-js: 1.9.7
 
   '@tanstack/solid-store@0.7.3(solid-js@1.9.7)':
     dependencies:
