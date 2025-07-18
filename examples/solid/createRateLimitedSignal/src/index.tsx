@@ -3,6 +3,7 @@ import { render } from 'solid-js/web'
 import { createRateLimitedSignal } from '@tanstack/solid-pacer/rate-limiter'
 
 function App1() {
+  const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
   const [instantCount, setInstantCount] = createSignal(0)
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
@@ -11,6 +12,7 @@ function App1() {
     {
       limit: 5,
       window: 5000,
+      windowType: windowType(),
     },
   )
 
@@ -26,6 +28,28 @@ function App1() {
   return (
     <div>
       <h1>TanStack Pacer createRateLimitedState Example 1</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', 'margin-bottom': '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            checked={windowType() === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            checked={windowType() === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <table>
         <tbody>
           <tr>
@@ -53,11 +77,15 @@ function App1() {
         </button>
         <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
       </div>
+      <pre style={{ 'margin-top': '20px' }}>
+        {JSON.stringify(rateLimiter.state(), null, 2)}
+      </pre>
     </div>
   )
 }
 
 function App2() {
+  const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
   const [instantSearch, setInstantSearch] = createSignal('')
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
@@ -65,6 +93,7 @@ function App2() {
     createRateLimitedSignal(instantSearch(), {
       limit: 5,
       window: 5000,
+      windowType: windowType(),
     })
 
   function handleSearchChange(e: Event) {
@@ -77,6 +106,28 @@ function App2() {
   return (
     <div>
       <h1>TanStack Pacer createRateLimitedState Example 2</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', 'margin-bottom': '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType2"
+            value="fixed"
+            checked={windowType() === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType2"
+            value="sliding"
+            checked={windowType() === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div>
         <input
           autofocus
@@ -113,11 +164,15 @@ function App2() {
         </button>
         <button onClick={() => alert(rateLimiter.reset())}>Reset</button>
       </div>
+      <pre style={{ 'margin-top': '20px' }}>
+        {JSON.stringify(rateLimiter.state(), null, 2)}
+      </pre>
     </div>
   )
 }
 
 function App3() {
+  const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
   const [currentValue, setCurrentValue] = createSignal(50)
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
 
@@ -127,7 +182,7 @@ function App3() {
     {
       limit: 20,
       window: 2000,
-      // windowType: 'sliding',
+      windowType: windowType(),
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -147,6 +202,28 @@ function App3() {
   return (
     <div>
       <h1>TanStack Pacer createRateLimitedSignal Example 3</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', 'margin-bottom': '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType3"
+            value="fixed"
+            checked={windowType() === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType3"
+            value="sliding"
+            checked={windowType() === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div style={{ 'margin-bottom': '20px' }}>
         <label>
           Current Range:
@@ -208,6 +285,9 @@ function App3() {
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
         <p>Rate limited to 20 updates per 2 seconds</p>
       </div>
+      <pre style={{ 'margin-top': '20px' }}>
+        {JSON.stringify(rateLimiter.state(), null, 2)}
+      </pre>
     </div>
   )
 }

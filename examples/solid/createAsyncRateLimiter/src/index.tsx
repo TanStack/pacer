@@ -18,6 +18,7 @@ const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
 }
 
 function App() {
+  const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
   const [searchTerm, setSearchTerm] = createSignal('')
   const [results, setResults] = createSignal<Array<SearchResult>>([])
 
@@ -38,6 +39,7 @@ function App() {
 
   // hook that gives you an async rate limiter instance
   const setSearchAsyncRateLimiter = createAsyncRateLimiter(handleSearch, {
+    windowType: windowType(),
     limit: 2, // Maximum 2 requests
     window: 1000, // per 1 second
     onError: (error) => {
@@ -66,6 +68,28 @@ function App() {
   return (
     <div>
       <h1>TanStack Pacer createAsyncRateLimiter Example</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', 'margin-bottom': '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            checked={windowType() === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            checked={windowType() === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div>
         <input
           autofocus
@@ -86,6 +110,9 @@ function App() {
         )}
         {setSearchAsyncRateLimiter.state().isExecuting && <p>Loading...</p>}
       </div>
+      <pre style={{ 'margin-top': '20px' }}>
+        {JSON.stringify(setSearchAsyncRateLimiter.state(), null, 2)}
+      </pre>
     </div>
   )
 }

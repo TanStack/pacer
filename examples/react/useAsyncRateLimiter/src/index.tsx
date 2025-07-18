@@ -20,6 +20,7 @@ const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
 }
 
 function App() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [searchTerm, setSearchTerm] = useState('')
   const [results, setResults] = useState<Array<SearchResult>>([])
   const [error, setError] = useState<Error | null>(null)
@@ -51,7 +52,7 @@ function App() {
 
   // hook that gives you an async rate limiter instance
   const setSearchAsyncRateLimiter = useAsyncRateLimiter(handleSearch, {
-    // windowType: 'sliding', // default is 'fixed'
+    windowType: windowType,
     limit: 3, // Maximum 2 requests
     window: 3000, // per 1 second
     onReject: (rateLimiter) => {
@@ -94,6 +95,28 @@ function App() {
   return (
     <div>
       <h1>TanStack Pacer useAsyncRateLimiter Example</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div>
         <input
           autoFocus

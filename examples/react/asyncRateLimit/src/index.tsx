@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { asyncRateLimit } from '@tanstack/react-pacer/async-rate-limiter'
 
 function SearchApp() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [searchText, setSearchText] = useState('')
   const [rateLimitedSearchText, setRateLimitedSearchText] = useState('')
   const [searchResults, setSearchResults] = useState<Array<string>>([])
@@ -35,7 +36,7 @@ function SearchApp() {
       {
         limit: 5,
         window: 5000,
-        // windowType: 'sliding', // default is 'fixed'
+        windowType: windowType,
         onReject: (rateLimiter) => {
           console.log(
             `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
@@ -43,12 +44,34 @@ function SearchApp() {
         },
       },
     ),
-    [], // must be memoized to avoid re-creating the rate limiter on every render (consider using useAsyncRateLimit instead in react)
+    [windowType], // must be memoized to avoid re-creating the rate limiter on every render (consider using useAsyncRateLimit instead in react)
   )
 
   return (
     <div>
       <h1>TanStack Pacer asyncRateLimit Example</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div>
         <input
           autoFocus

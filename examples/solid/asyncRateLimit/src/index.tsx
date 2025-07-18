@@ -3,6 +3,7 @@ import { render } from 'solid-js/web'
 import { asyncRateLimit } from '@tanstack/solid-pacer/async-rate-limiter'
 
 function SearchApp() {
+  const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
   const [searchText, setSearchText] = createSignal('')
   const [rateLimitedSearchText, setRateLimitedSearchText] = createSignal('')
   const [searchResults, setSearchResults] = createSignal<Array<string>>([])
@@ -34,6 +35,7 @@ function SearchApp() {
     {
       limit: 5,
       window: 5000,
+      windowType: windowType(),
       onReject: (rateLimiter) =>
         console.log(
           `Rate limit exceeded: ${rateLimiter.getMsUntilNextWindow()}ms until next window`,
@@ -44,6 +46,28 @@ function SearchApp() {
   return (
     <div>
       <h1>TanStack Pacer asyncRateLimit Example</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', 'margin-bottom': '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            checked={windowType() === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            checked={windowType() === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div>
         <input
           autofocus

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { rateLimit } from '@tanstack/react-pacer/rate-limiter'
 
 function App1() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
   const [rateLimitedCount, setRateLimitedCount] = useState(0)
@@ -12,14 +13,14 @@ function App1() {
     rateLimit(setRateLimitedCount, {
       limit: 5,
       window: 5000,
-      // windowType: 'sliding', // default is 'fixed'
+      windowType: windowType,
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
           rateLimiter.getMsUntilNextWindow(),
         ),
     }),
-    [], // must be memoized to avoid re-creating the rate limiter on every render (consider using useRateLimiter instead in react)
+    [windowType], // must be memoized to avoid re-creating the rate limiter on every render (consider using useRateLimiter instead in react)
   )
 
   function increment() {
@@ -34,6 +35,28 @@ function App1() {
   return (
     <div>
       <h1>TanStack Pacer rateLimit Example 1</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <table>
         <tbody>
           <tr>
@@ -54,6 +77,7 @@ function App1() {
 }
 
 function App2() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [text, setText] = useState('')
   const [rateLimitedText, setRateLimitedText] = useState('')
 
@@ -62,13 +86,14 @@ function App2() {
     rateLimit(setRateLimitedText, {
       limit: 5,
       window: 5000,
+      windowType: windowType,
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
           rateLimiter.getMsUntilNextWindow(),
         ),
     }),
-    [],
+    [windowType],
   )
 
   function handleTextChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -80,6 +105,28 @@ function App2() {
   return (
     <div>
       <h1>TanStack Pacer rateLimit Example 2</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType2"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType2"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div>
         <input
           autoFocus
@@ -107,6 +154,7 @@ function App2() {
 }
 
 function App3() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [currentValue, setCurrentValue] = useState(50)
   const [rateLimitedValue, setRateLimitedValue] = useState(50)
 
@@ -115,13 +163,14 @@ function App3() {
     rateLimit(setRateLimitedValue, {
       limit: 30,
       window: 2000,
+      windowType: windowType,
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
           rateLimiter.getMsUntilNextWindow(),
         ),
     }),
-    [],
+    [windowType],
   )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -133,6 +182,28 @@ function App3() {
   return (
     <div>
       <h1>TanStack Pacer rateLimit Example 3</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType3"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType3"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div style={{ marginBottom: '20px' }}>
         <label>
           Current Range:

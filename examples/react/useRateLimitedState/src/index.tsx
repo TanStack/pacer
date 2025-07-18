@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { useRateLimitedState } from '@tanstack/react-pacer/rate-limiter'
 
 function App1() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [instantCount, setInstantCount] = useState(0)
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
@@ -12,6 +13,7 @@ function App1() {
       // enabled: () => instantCount > 2, // optional, defaults to true
       limit: 5,
       window: 5000,
+      windowType: windowType,
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -32,6 +34,28 @@ function App1() {
   return (
     <div>
       <h1>TanStack Pacer useRateLimitedState Example 1</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <table>
         <tbody>
           <tr>
@@ -67,6 +91,7 @@ function App1() {
 }
 
 function App2() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [instantSearch, setInstantSearch] = useState('')
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
@@ -76,6 +101,7 @@ function App2() {
       // enabled: instantSearch.length > 2, // optional, defaults to true
       limit: 5,
       window: 5000,
+      windowType: windowType,
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -93,6 +119,28 @@ function App2() {
   return (
     <div>
       <h1>TanStack Pacer useRateLimitedState Example 2</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType2"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType2"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div>
         <input
           autoFocus
@@ -137,6 +185,7 @@ function App2() {
 }
 
 function App3() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [currentValue, setCurrentValue] = useState(50)
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
@@ -146,6 +195,7 @@ function App3() {
     {
       limit: 20,
       window: 2000,
+      windowType: windowType,
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -164,6 +214,28 @@ function App3() {
   return (
     <div>
       <h1>TanStack Pacer useRateLimitedState Example 3</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType3"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType3"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div style={{ marginBottom: '20px' }}>
         <label>
           Current Range:
