@@ -863,4 +863,166 @@ describe('AsyncQueuer', () => {
       expect(onError).toHaveBeenCalledWith(expect.any(Error), asyncQueuer)
     })
   })
+
+  describe('Flush Methods', () => {
+    describe('flush', () => {
+      it('should process all items immediately', async () => {
+        const fn = vi.fn().mockResolvedValue('result')
+        const asyncQueuer = new AsyncQueuer(fn, { wait: 1000, started: false })
+
+        asyncQueuer.addItem(1)
+        asyncQueuer.addItem(2)
+        asyncQueuer.addItem(3)
+
+        expect(fn).not.toHaveBeenCalled()
+
+        await asyncQueuer.flush()
+
+        expect(fn).toHaveBeenCalledTimes(3)
+        expect(fn).toHaveBeenNthCalledWith(1, 1)
+        expect(fn).toHaveBeenNthCalledWith(2, 2)
+        expect(fn).toHaveBeenNthCalledWith(3, 3)
+        expect(asyncQueuer.store.state.isEmpty).toBe(true)
+      })
+
+      it('should process specified number of items', async () => {
+        const fn = vi.fn().mockResolvedValue('result')
+        const asyncQueuer = new AsyncQueuer(fn, { started: false })
+
+        asyncQueuer.addItem(1)
+        asyncQueuer.addItem(2)
+        asyncQueuer.addItem(3)
+
+        await asyncQueuer.flush(2)
+
+        expect(fn).toHaveBeenCalledTimes(2)
+        expect(fn).toHaveBeenNthCalledWith(1, 1)
+        expect(fn).toHaveBeenNthCalledWith(2, 2)
+        expect(asyncQueuer.store.state.size).toBe(1)
+        expect(asyncQueuer.peekNextItem()).toBe(3)
+      })
+
+      it('should clear pending timeouts when flushing', async () => {
+        const fn = vi.fn().mockResolvedValue('result')
+        const asyncQueuer = new AsyncQueuer(fn, { wait: 1000, started: false })
+
+        asyncQueuer.addItem(1)
+        asyncQueuer.start()
+
+        // Flush should clear any pending timeouts
+        await asyncQueuer.flush()
+
+        expect(fn).toHaveBeenCalledTimes(1)
+        expect(fn).toHaveBeenCalledWith(1)
+      })
+
+      it('should work with position parameter', async () => {
+        const fn = vi.fn().mockResolvedValue('result')
+        const asyncQueuer = new AsyncQueuer(fn, { started: false })
+
+        asyncQueuer.addItem(1)
+        asyncQueuer.addItem(2)
+        asyncQueuer.addItem(3)
+
+        await asyncQueuer.flush(2, 'back')
+
+        expect(fn).toHaveBeenCalledTimes(2)
+        expect(fn).toHaveBeenNthCalledWith(1, 3)
+        expect(fn).toHaveBeenNthCalledWith(2, 2)
+        expect(asyncQueuer.store.state.size).toBe(1)
+        expect(asyncQueuer.peekNextItem()).toBe(1)
+      })
+
+      it('should handle async execution errors', async () => {
+        const fn = vi
+          .fn()
+          .mockResolvedValueOnce('success')
+          .mockRejectedValueOnce(new Error('test error'))
+          .mockResolvedValueOnce('success2')
+
+        const asyncQueuer = new AsyncQueuer(fn, {
+          started: false,
+          onError: () => {},
+          throwOnError: false,
+        })
+
+        asyncQueuer.addItem(1)
+        asyncQueuer.addItem(2)
+        asyncQueuer.addItem(3)
+
+        await asyncQueuer.flush()
+
+        expect(fn).toHaveBeenCalledTimes(3)
+        expect(asyncQueuer.store.state.errorCount).toBe(1)
+        expect(asyncQueuer.store.state.successCount).toBe(2)
+      })
+
+      it('should do nothing when queue is empty', async () => {
+        const fn = vi.fn().mockResolvedValue('result')
+        const asyncQueuer = new AsyncQueuer(fn, { started: false })
+
+        await asyncQueuer.flush()
+        expect(fn).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('flushAsBatch', () => {
+      it('should process all items as a batch', async () => {
+        const fn = vi.fn().mockResolvedValue('result')
+        const batchFn = vi.fn().mockResolvedValue('batch-result')
+        const asyncQueuer = new AsyncQueuer(fn, { started: false })
+
+        asyncQueuer.addItem(1)
+        asyncQueuer.addItem(2)
+        asyncQueuer.addItem(3)
+
+        await asyncQueuer.flushAsBatch(batchFn)
+
+        expect(fn).not.toHaveBeenCalled()
+        expect(batchFn).toHaveBeenCalledTimes(1)
+        expect(batchFn).toHaveBeenCalledWith([1, 2, 3])
+        expect(asyncQueuer.store.state.isEmpty).toBe(true)
+      })
+
+      it('should clear timeouts before batch processing', async () => {
+        const fn = vi.fn().mockResolvedValue('result')
+        const batchFn = vi.fn().mockResolvedValue('batch-result')
+        const asyncQueuer = new AsyncQueuer(fn, { wait: 1000, started: false })
+
+        asyncQueuer.addItem(1)
+
+        // flushAsBatch should clear any pending timeouts and process items as batch
+        await asyncQueuer.flushAsBatch(batchFn)
+
+        expect(fn).not.toHaveBeenCalled()
+        expect(batchFn).toHaveBeenCalledTimes(1)
+        expect(batchFn).toHaveBeenCalledWith([1])
+      })
+
+      it('should handle batch function errors', async () => {
+        const fn = vi.fn().mockResolvedValue('result')
+        const batchFn = vi.fn().mockRejectedValue(new Error('batch error'))
+        const asyncQueuer = new AsyncQueuer(fn, { started: false })
+
+        asyncQueuer.addItem(1)
+        asyncQueuer.addItem(2)
+
+        await expect(asyncQueuer.flushAsBatch(batchFn)).rejects.toThrow(
+          'batch error',
+        )
+        expect(batchFn).toHaveBeenCalledWith([1, 2])
+      })
+
+      it('should handle empty queue', async () => {
+        const fn = vi.fn().mockResolvedValue('result')
+        const batchFn = vi.fn().mockResolvedValue('batch-result')
+        const asyncQueuer = new AsyncQueuer(fn, { started: false })
+
+        await asyncQueuer.flushAsBatch(batchFn)
+
+        expect(batchFn).toHaveBeenCalledTimes(1)
+        expect(batchFn).toHaveBeenCalledWith([])
+      })
+    })
+  })
 })

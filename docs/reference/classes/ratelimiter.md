@@ -7,7 +7,7 @@ title: RateLimiter
 
 # Class: RateLimiter\<TFn\>
 
-Defined in: [rate-limiter.ts:122](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L122)
+Defined in: [rate-limiter.ts:132](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L132)
 
 A class that creates a rate-limited function.
 
@@ -65,7 +65,7 @@ rateLimiter.maybeExecute('123');
 new RateLimiter<TFn>(fn, initialOptions): RateLimiter<TFn>
 ```
 
-Defined in: [rate-limiter.ts:127](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L127)
+Defined in: [rate-limiter.ts:138](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L138)
 
 #### Parameters
 
@@ -89,7 +89,7 @@ Defined in: [rate-limiter.ts:127](https://github.com/TanStack/pacer/blob/main/pa
 options: RateLimiterOptions<TFn>;
 ```
 
-Defined in: [rate-limiter.ts:125](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L125)
+Defined in: [rate-limiter.ts:135](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L135)
 
 ***
 
@@ -99,7 +99,7 @@ Defined in: [rate-limiter.ts:125](https://github.com/TanStack/pacer/blob/main/pa
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [rate-limiter.ts:123](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L123)
+Defined in: [rate-limiter.ts:133](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L133)
 
 ## Methods
 
@@ -109,7 +109,7 @@ Defined in: [rate-limiter.ts:123](https://github.com/TanStack/pacer/blob/main/pa
 getMsUntilNextWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:258](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L258)
+Defined in: [rate-limiter.ts:317](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L317)
 
 Returns the number of milliseconds until the next execution will be possible
 
@@ -125,7 +125,7 @@ Returns the number of milliseconds until the next execution will be possible
 getRemainingInWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:250](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L250)
+Defined in: [rate-limiter.ts:309](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L309)
 
 Returns the number of remaining executions allowed in the current window
 
@@ -141,7 +141,7 @@ Returns the number of remaining executions allowed in the current window
 maybeExecute(...args): boolean
 ```
 
-Defined in: [rate-limiter.ts:191](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L191)
+Defined in: [rate-limiter.ts:215](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L215)
 
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
@@ -176,7 +176,7 @@ rateLimiter.maybeExecute('arg1', 'arg2'); // false
 reset(): void
 ```
 
-Defined in: [rate-limiter.ts:269](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L269)
+Defined in: [rate-limiter.ts:328](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L328)
 
 Resets the rate limiter state
 
@@ -192,7 +192,7 @@ Resets the rate limiter state
 setOptions(newOptions): void
 ```
 
-Defined in: [rate-limiter.ts:141](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L141)
+Defined in: [rate-limiter.ts:155](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L155)
 
 Updates the rate limiter options
 

@@ -5,6 +5,8 @@ import { useStoragePersister } from '@tanstack/react-persister/storage-persister
 import type { RateLimiterState } from '@tanstack/react-pacer/rate-limiter'
 
 function App1() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
+
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0) // not rate-limited
   const [limitedCount, setLimitedCount] = useState(0) // rate-limited
@@ -21,7 +23,7 @@ function App1() {
     // enabled: () => instantCount > 2,
     limit: 5,
     window: 5000,
-    // windowType: 'sliding', // default is 'fixed'
+    windowType: windowType,
     onReject: (rateLimiter) =>
       console.log(
         'Rejected by rate limiter',
@@ -47,6 +49,28 @@ function App1() {
   return (
     <div>
       <h1>TanStack Pacer useRateLimiter Example 1 (with persister)</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <table>
         <tbody>
           <tr>

@@ -27,13 +27,13 @@ export interface QueuerState<TValue> {
    */
   isRunning: boolean
   /**
-   * Timestamps when items were added to the queue for expiration tracking
-   */
-  itemTimestamps: Array<number>
-  /**
    * Array of items currently waiting to be processed
    */
   items: Array<TValue>
+  /**
+   * Timestamps when items were added to the queue for expiration tracking
+   */
+  itemTimestamps: Array<number>
   /**
    * Whether the queuer has a pending timeout for processing the next item
    */
@@ -113,13 +113,13 @@ export interface QueuerOptions<TValue> {
    */
   maxSize?: number
   /**
-   * Callback fired whenever an item expires in the queuer
-   */
-  onExpire?: (item: TValue, queuer: Queuer<TValue>) => void
-  /**
    * Callback fired whenever an item is removed from the queuer
    */
   onExecute?: (item: TValue, queuer: Queuer<TValue>) => void
+  /**
+   * Callback fired whenever an item expires in the queuer
+   */
+  onExpire?: (item: TValue, queuer: Queuer<TValue>) => void
   /**
    * Callback fired whenever an item is added or removed from the queuer
    */
@@ -472,6 +472,12 @@ export class Queuer<TValue> {
     return item
   }
 
+  #getAllItems = (): Array<TValue> => {
+    const items = this.peekAllItems()
+    this.clear()
+    return items
+  }
+
   /**
    * Removes and returns the next item from the queue and processes it using the provided function.
    *
@@ -507,6 +513,16 @@ export class Queuer<TValue> {
       this.execute(position)
     }
     this.#tick()
+  }
+
+  /**
+   * Processes all items in the queue as a batch using the provided function
+   * The queue is cleared after processing
+   */
+  flushAsBatch = (batchFunction: (items: Array<TValue>) => void): void => {
+    const items = this.#getAllItems()
+    this.clear()
+    batchFunction(items)
   }
 
   /**

@@ -64,18 +64,6 @@ function App1() {
         >
           Flush Current Batch
         </button>
-        <button
-          onClick={() => batcher.stop()}
-          disabled={!batcher.state.isRunning}
-        >
-          Stop Batching By Time
-        </button>
-        <button
-          onClick={() => batcher.start()}
-          disabled={batcher.state.isRunning}
-        >
-          Start Batching By Time
-        </button>
       </div>
       <pre style={{ marginTop: '20px' }}>
         {JSON.stringify(batcher.state, null, 2)}

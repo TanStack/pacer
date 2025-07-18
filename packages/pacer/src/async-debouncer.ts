@@ -176,6 +176,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null
+  #rejectPreviousPromise: ((reason?: unknown) => void) | null = null
 
   constructor(
     private fn: TFn,
@@ -270,8 +271,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#setState({ isPending: true })
     }
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this.#resolvePreviousPromise = resolve
+      this.#rejectPreviousPromise = reject
       this.#timeoutId = setTimeout(async () => {
         // Execute trailing if enabled
         if (this.options.trailing && this.store.state.lastArgs) {
@@ -305,7 +307,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       })
       this.options.onError?.(error, this)
       if (this.options.throwOnError) {
-        throw error
+        this.#rejectPreviousPromiseInternal(error)
       }
     } finally {
       this.#setState({
@@ -322,11 +324,31 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   /**
    * Processes the current pending execution immediately
    */
-  flush = (): void => {
+  flush = async (): Promise<ReturnType<TFn> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
       this.#abortExecution() // abort any current execution
       this.#clearTimeout() // clear any existing timeout
-      this.#execute(...this.store.state.lastArgs)
+      const result = await this.#execute(...this.store.state.lastArgs)
+
+      // Resolve any pending promise from maybeExecute
+      this.#resolvePreviousPromiseInternal()
+
+      return result
+    }
+    return undefined
+  }
+
+  #resolvePreviousPromiseInternal = (): void => {
+    if (this.#resolvePreviousPromise) {
+      this.#resolvePreviousPromise(this.store.state.lastResult)
+      this.#resolvePreviousPromise = null
+    }
+  }
+
+  #rejectPreviousPromiseInternal = (error: unknown): void => {
+    if (this.#rejectPreviousPromise) {
+      this.#rejectPreviousPromise(error)
+      this.#rejectPreviousPromise = null
     }
   }
 
@@ -339,10 +361,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
 
   #cancelPendingExecution = (): void => {
     this.#clearTimeout()
-    if (this.#resolvePreviousPromise) {
-      this.#resolvePreviousPromise(this.store.state.lastResult)
-      this.#resolvePreviousPromise = null
-    }
+    this.#resolvePreviousPromiseInternal()
     this.#setState({
       isPending: false,
       isExecuting: false,

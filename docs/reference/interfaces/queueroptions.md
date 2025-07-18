@@ -160,7 +160,7 @@ Maximum number of items allowed in the queuer
 optional onExecute: (item, queuer) => void;
 ```
 
-Defined in: [queuer.ts:122](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L122)
+Defined in: [queuer.ts:118](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L118)
 
 Callback fired whenever an item is removed from the queuer
 
@@ -186,7 +186,7 @@ Callback fired whenever an item is removed from the queuer
 optional onExpire: (item, queuer) => void;
 ```
 
-Defined in: [queuer.ts:118](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L118)
+Defined in: [queuer.ts:122](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L122)
 
 Callback fired whenever an item expires in the queuer
 

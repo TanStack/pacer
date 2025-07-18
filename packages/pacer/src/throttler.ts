@@ -8,6 +8,10 @@ export interface ThrottlerState<TFn extends AnyFunction> {
    */
   executionCount: number
   /**
+   * Whether the throttler is waiting for the timeout to trigger execution
+   */
+  isPending: boolean
+  /**
    * The arguments from the most recent call to maybeExecute
    */
   lastArgs: Parameters<TFn> | undefined
@@ -19,10 +23,6 @@ export interface ThrottlerState<TFn extends AnyFunction> {
    * Timestamp when the next execution can occur in milliseconds
    */
   nextExecutionTime: number
-  /**
-   * Whether the throttler is waiting for the timeout to trigger execution
-   */
-  isPending: boolean
   /**
    * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
    */

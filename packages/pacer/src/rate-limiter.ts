@@ -12,16 +12,26 @@ export interface RateLimiterState {
    */
   executionTimes: Array<number>
   /**
+   * Whether the rate limiter has exceeded the limit
+   */
+  isExceeded: boolean
+  /**
    * Number of function executions that have been rejected due to rate limiting
    */
   rejectionCount: number
+  /**
+   * Current execution status - 'disabled' when not active, 'executing' when executing, 'idle' when not executing, 'exceeded' when rate limit is exceeded
+   */
+  status: 'disabled' | 'exceeded' | 'idle'
 }
 
 function getDefaultRateLimiterState(): RateLimiterState {
   return structuredClone({
     executionCount: 0,
     executionTimes: [],
+    isExceeded: false,
     rejectionCount: 0,
+    status: 'idle',
   })
 }
 
@@ -123,6 +133,7 @@ export class RateLimiter<TFn extends AnyFunction> {
   readonly store: Store<Readonly<RateLimiterState>> =
     new Store<RateLimiterState>(getDefaultRateLimiterState())
   options: RateLimiterOptions<TFn>
+  #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
     private fn: TFn,
@@ -133,6 +144,9 @@ export class RateLimiter<TFn extends AnyFunction> {
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
+    for (const executionTime of this.#getExecutionTimesInWindow()) {
+      this.#setCleanupTimeout(executionTime)
+    }
   }
 
   /**
@@ -148,7 +162,17 @@ export class RateLimiter<TFn extends AnyFunction> {
         ...state,
         ...newState,
       }
-      return combinedState
+      const isExceeded = combinedState.executionTimes.length >= this.#getLimit()
+      const status = !this.#getEnabled()
+        ? 'disabled'
+        : isExceeded
+          ? 'exceeded'
+          : 'idle'
+      return {
+        ...combinedState,
+        isExceeded,
+        status,
+      }
     })
   }
 
@@ -191,7 +215,7 @@ export class RateLimiter<TFn extends AnyFunction> {
   maybeExecute = (...args: Parameters<TFn>): boolean => {
     this.#cleanupOldExecutions()
 
-    const relevantExecutionTimes = this.#getRelevantExecutionTimes()
+    const relevantExecutionTimes = this.#getExecutionTimesInWindow()
 
     if (relevantExecutionTimes.length < this.#getLimit()) {
       this.#execute(...args)
@@ -210,13 +234,16 @@ export class RateLimiter<TFn extends AnyFunction> {
     const now = Date.now()
     this.fn(...args) // EXECUTE!
     this.store.state.executionTimes.push(now) // mutate state directly for performance
+
+    this.#setCleanupTimeout(now)
+
     this.#setState({
       executionCount: this.store.state.executionCount + 1,
     })
     this.options.onExecute?.(this)
   }
 
-  #getRelevantExecutionTimes = (): Array<number> => {
+  #getExecutionTimesInWindow = (): Array<number> => {
     if (this.options.windowType === 'sliding') {
       // For sliding window, return all executions within the current window
       return this.store.state.executionTimes.filter(
@@ -225,22 +252,54 @@ export class RateLimiter<TFn extends AnyFunction> {
     } else {
       // For fixed window, return all executions in the current window
       // The window starts from the oldest execution time
+      if (this.store.state.executionTimes.length === 0) {
+        return []
+      }
       const oldestExecution = Math.min(...this.store.state.executionTimes)
       const windowStart = oldestExecution
+      const windowEnd = windowStart + this.#getWindow()
+      const now = Date.now()
+
+      // If the window has expired, return empty array
+      if (now > windowEnd) {
+        return []
+      }
+
+      // Otherwise, return all executions in the current window
       return this.store.state.executionTimes.filter(
-        (time) =>
-          time >= windowStart && time <= windowStart + this.#getWindow(),
+        (time) => time >= windowStart && time <= windowEnd,
       )
     }
   }
 
+  #setCleanupTimeout = (executionTime: number): void => {
+    if (
+      this.options.windowType === 'sliding' ||
+      this.#timeoutIds.size === 0 // new fixed window
+    ) {
+      const now = Date.now()
+      const timeUntilExpiration = executionTime - now + this.#getWindow() + 1
+      const timeoutId = setTimeout(() => {
+        this.#cleanupOldExecutions()
+        this.#clearTimeout(timeoutId)
+      }, timeUntilExpiration)
+      this.#timeoutIds.add(timeoutId)
+    }
+  }
+
+  #clearTimeout = (timeoutId: NodeJS.Timeout): void => {
+    clearTimeout(timeoutId)
+    this.#timeoutIds.delete(timeoutId)
+  }
+
+  #clearTimeouts = (): void => {
+    this.#timeoutIds.forEach((timeoutId) => clearTimeout(timeoutId))
+    this.#timeoutIds.clear()
+  }
+
   #cleanupOldExecutions = (): void => {
-    const now = Date.now()
-    const windowStart = now - this.#getWindow()
     this.#setState({
-      executionTimes: this.store.state.executionTimes.filter(
-        (time) => time > windowStart,
-      ),
+      executionTimes: this.#getExecutionTimesInWindow(),
     })
   }
 
@@ -248,7 +307,7 @@ export class RateLimiter<TFn extends AnyFunction> {
    * Returns the number of remaining executions allowed in the current window
    */
   getRemainingInWindow = (): number => {
-    const relevantExecutionTimes = this.#getRelevantExecutionTimes()
+    const relevantExecutionTimes = this.#getExecutionTimesInWindow()
     return Math.max(0, this.#getLimit() - relevantExecutionTimes.length)
   }
 
@@ -268,6 +327,7 @@ export class RateLimiter<TFn extends AnyFunction> {
    */
   reset = (): void => {
     this.#setState(getDefaultRateLimiterState())
+    this.#clearTimeouts()
   }
 }
 

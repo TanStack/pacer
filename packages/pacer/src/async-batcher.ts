@@ -24,10 +24,6 @@ export interface AsyncBatcherState<TValue> {
    */
   isPending: boolean
   /**
-   * Whether the batcher is active and will process items automatically
-   */
-  isRunning: boolean
-  /**
    * Array of items currently queued for batch processing
    */
   items: Array<TValue>
@@ -52,13 +48,13 @@ export interface AsyncBatcherState<TValue> {
    */
   successCount: number
   /**
-   * Total number of items that have been processed across all batches
-   */
-  totalItemsProcessed: number
-  /**
    * Total number of items that have failed processing across all batches
    */
   totalItemsFailed: number
+  /**
+   * Total number of items that have been processed across all batches
+   */
+  totalItemsProcessed: number
 }
 
 function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
@@ -68,7 +64,6 @@ function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
     isEmpty: true,
     isExecuting: false,
     isPending: false,
-    isRunning: true,
     items: [],
     lastResult: undefined,
     settleCount: 0,
@@ -297,7 +292,7 @@ export class AsyncBatcher<TValue> {
 
     if (shouldProcess) {
       this.#execute()
-    } else if (this.store.state.isRunning && this.options.wait !== Infinity) {
+    } else if (this.options.wait !== Infinity) {
       this.#clearTimeout() // clear any pending timeout to replace it with a new one
       this.#timeoutId = setTimeout(() => this.#execute(), this.#getWait())
     }
@@ -363,24 +358,6 @@ export class AsyncBatcher<TValue> {
   flush = async (): Promise<any> => {
     this.#clearTimeout() // clear any pending timeout
     return await this.#execute()
-  }
-
-  /**
-   * Stops the async batcher from processing batches
-   */
-  stop = (): void => {
-    this.#setState({ isRunning: false })
-    this.#clearTimeout()
-  }
-
-  /**
-   * Starts the async batcher and processes any pending items
-   */
-  start = (): void => {
-    this.#setState({ isRunning: true })
-    if (this.store.state.items.length > 0 && !this.#timeoutId) {
-      this.#timeoutId = setTimeout(() => this.#execute(), this.#getWait())
-    }
   }
 
   /**

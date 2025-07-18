@@ -7,7 +7,7 @@ title: AsyncBatcherOptions
 
 # Interface: AsyncBatcherOptions\<TValue\>
 
-Defined in: [async-batcher.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L86)
+Defined in: [async-batcher.ts:81](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L81)
 
 Options for configuring an AsyncBatcher instance
 
@@ -23,7 +23,7 @@ Options for configuring an AsyncBatcher instance
 optional getShouldExecute: (items, batcher) => boolean;
 ```
 
-Defined in: [async-batcher.ts:91](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L91)
+Defined in: [async-batcher.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L86)
 
 Custom function to determine if a batch should be processed
 Return true to process the batch immediately
@@ -50,7 +50,7 @@ Return true to process the batch immediately
 optional initialState: Partial<AsyncBatcherState<TValue>>;
 ```
 
-Defined in: [async-batcher.ts:98](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L98)
+Defined in: [async-batcher.ts:93](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L93)
 
 Initial state for the async batcher
 
@@ -62,7 +62,7 @@ Initial state for the async batcher
 optional maxSize: number;
 ```
 
-Defined in: [async-batcher.ts:103](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L103)
+Defined in: [async-batcher.ts:98](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L98)
 
 Maximum number of items in a batch
 
@@ -80,7 +80,7 @@ Infinity
 optional onError: (error, failedItems, batcher) => void;
 ```
 
-Defined in: [async-batcher.ts:109](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L109)
+Defined in: [async-batcher.ts:104](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L104)
 
 Optional error handler for when the batch function throws.
 If provided, the handler will be called with the error and batcher instance.
@@ -112,7 +112,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 optional onExecute: (batcher) => void;
 ```
 
-Defined in: [async-batcher.ts:117](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L117)
+Defined in: [async-batcher.ts:112](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L112)
 
 Callback fired after a batch is processed
 
@@ -134,7 +134,7 @@ Callback fired after a batch is processed
 optional onItemsChange: (batcher) => void;
 ```
 
-Defined in: [async-batcher.ts:121](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L121)
+Defined in: [async-batcher.ts:116](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L116)
 
 Callback fired after items are added to the batcher
 
@@ -156,7 +156,7 @@ Callback fired after items are added to the batcher
 optional onSettled: (batcher) => void;
 ```
 
-Defined in: [async-batcher.ts:125](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L125)
+Defined in: [async-batcher.ts:120](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L120)
 
 Optional callback to call when a batch is settled (completed or failed)
 
@@ -178,7 +178,7 @@ Optional callback to call when a batch is settled (completed or failed)
 optional onSuccess: (result, batcher) => void;
 ```
 
-Defined in: [async-batcher.ts:129](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L129)
+Defined in: [async-batcher.ts:124](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L124)
 
 Optional callback to call when a batch succeeds
 
@@ -204,7 +204,7 @@ Optional callback to call when a batch succeeds
 optional started: boolean;
 ```
 
-Defined in: [async-batcher.ts:134](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L134)
+Defined in: [async-batcher.ts:129](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L129)
 
 Whether the batcher should start processing immediately
 
@@ -222,7 +222,7 @@ true
 optional throwOnError: boolean;
 ```
 
-Defined in: [async-batcher.ts:140](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L140)
+Defined in: [async-batcher.ts:135](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L135)
 
 Whether to throw errors when they occur.
 Defaults to true if no onError handler is provided, false if an onError handler is provided.
@@ -236,7 +236,7 @@ Can be explicitly set to override these defaults.
 optional wait: number | (asyncBatcher) => number;
 ```
 
-Defined in: [async-batcher.ts:147](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L147)
+Defined in: [async-batcher.ts:142](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L142)
 
 Maximum time in milliseconds to wait before processing a batch.
 If the wait duration has elapsed, the batch will be processed.
