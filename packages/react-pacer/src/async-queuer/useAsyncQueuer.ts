@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useStore } from '@tanstack/react-store'
+import type { Store } from '@tanstack/react-store'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
-export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
+export interface ReactAsyncQueuer<TValue, TSelected = {}>
   extends Omit<AsyncQueuer<TValue>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the queuer state changes
@@ -14,6 +15,12 @@ export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
    * Use this instead of `queuer.store.state`
    */
   readonly state: Readonly<TSelected>
+  /**
+   * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<AsyncQueuerState<TValue>>>
 }
 
 /**
@@ -44,9 +51,10 @@ export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
  * to specify which state changes will trigger a re-render, optimizing performance by preventing
  * unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available state properties:
  * - `activeItems`: Items currently being processed by the queuer
@@ -68,7 +76,7 @@ export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
  *
  * @example
  * ```tsx
- * // Basic async queuer for API requests - re-renders on any state change
+ * // Default behavior - no reactive state subscriptions
  * const asyncQueuer = useAsyncQueuer(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -77,7 +85,7 @@ export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
  *   { concurrency: 2, maxSize: 100, started: false }
  * );
  *
- * // Only re-render when queue size changes (optimized for displaying queue length)
+ * // Opt-in to re-render when queue size changes (optimized for displaying queue length)
  * const asyncQueuer = useAsyncQueuer(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -91,7 +99,7 @@ export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
  *   })
  * );
  *
- * // Only re-render when processing state changes (optimized for loading indicators)
+ * // Opt-in to re-render when processing state changes (optimized for loading indicators)
  * const asyncQueuer = useAsyncQueuer(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -107,7 +115,7 @@ export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
  *   })
  * );
  *
- * // Only re-render when execution metrics change (optimized for stats display)
+ * // Opt-in to re-render when execution metrics change (optimized for stats display)
  * const asyncQueuer = useAsyncQueuer(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -123,7 +131,7 @@ export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
  *   })
  * );
  *
- * // Only re-render when results are available (optimized for data display)
+ * // Opt-in to re-render when results are available (optimized for data display)
  * const asyncQueuer = useAsyncQueuer(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -152,14 +160,15 @@ export interface ReactAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
  * // Start processing
  * asyncQueuer.start();
  *
- * // Access the selected state
+ * // Access the selected state (will be empty object {} unless selector provided)
  * const { size, isRunning, activeItems } = asyncQueuer.state;
  * ```
  */
-export function useAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>(
+export function useAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
   options: AsyncQueuerOptions<TValue> = {},
-  selector?: (state: AsyncQueuerState<TValue>) => TSelected,
+  selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
+    ({}) as TSelected,
 ): ReactAsyncQueuer<TValue, TSelected> {
   const [asyncQueuer] = useState(() => new AsyncQueuer<TValue>(fn, options))
 
@@ -172,7 +181,7 @@ export function useAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>(
       ({
         ...asyncQueuer,
         state,
-      }) as unknown as ReactAsyncQueuer<TValue, TSelected>, // omit `store` in favor of `state`
+      }) as ReactAsyncQueuer<TValue, TSelected>, // omit `store` in favor of `state`
     [asyncQueuer, state],
   )
 }

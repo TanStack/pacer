@@ -90,7 +90,7 @@ The result from the most recent successful function execution
 ### nextExecutionTime
 
 ```ts
-nextExecutionTime: number;
+nextExecutionTime: undefined | number;
 ```
 
 Defined in: [async-throttler.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L33)

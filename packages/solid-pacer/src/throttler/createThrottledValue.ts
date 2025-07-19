@@ -23,22 +23,50 @@ import type {
  * For more direct control over throttling behavior without Solid state management,
  * consider using the lower-level createThrottler hook instead.
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management via the underlying throttler instance.
+ * The `selector` parameter allows you to specify which throttler state changes will trigger reactive updates,
+ * optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
+ *
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary reactive updates and gives you
+ * full control over when your component subscribes to state changes. Only when you provide a selector will
+ * the reactive system track the selected state values.
+ *
+ * Available throttler state properties:
+ * - `canLeadingExecute`: Whether the throttler can execute on the leading edge
+ * - `canTrailingExecute`: Whether the throttler can execute on the trailing edge
+ * - `executionCount`: Number of function executions that have been completed
+ * - `isPending`: Whether the throttler is waiting for the timeout to trigger trailing execution
+ * - `lastArgs`: The arguments from the most recent call to maybeExecute
+ * - `lastExecutionTime`: Unix timestamp of the last execution
+ * - `nextExecutionTime`: Unix timestamp of the next allowed execution
+ * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+ *
  * @example
  * ```tsx
- * // Basic throttling - update at most once per second
+ * // Default behavior - no reactive state subscriptions
  * const [throttledValue, throttler] = createThrottledValue(rawValue, { wait: 1000 });
+ *
+ * // Opt-in to reactive updates when pending state changes (optimized for loading indicators)
+ * const [throttledValue, throttler] = createThrottledValue(
+ *   rawValue,
+ *   { wait: 1000 },
+ *   (state) => ({ isPending: state.isPending })
+ * );
  *
  * // Use the throttled value
  * console.log(throttledValue()); // Access the current throttled value
+ *
+ * // Access throttler state via signals
+ * console.log('Is pending:', throttler.state().isPending);
  *
  * // Control the throttler
  * throttler.cancel(); // Cancel any pending updates
  * ```
  */
-export function createThrottledValue<
-  TValue,
-  TSelected = ThrottlerState<Setter<TValue>>,
->(
+export function createThrottledValue<TValue, TSelected = {}>(
   value: Accessor<TValue>,
   initialOptions: ThrottlerOptions<Setter<TValue>>,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,

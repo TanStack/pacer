@@ -7,7 +7,7 @@ title: SolidBatcher
 
 # Interface: SolidBatcher\<TValue, TSelected\>
 
-Defined in: [batcher/createBatcher.ts:6](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L6)
+Defined in: [batcher/createBatcher.ts:7](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L7)
 
 ## Extends
 
@@ -17,7 +17,7 @@ Defined in: [batcher/createBatcher.ts:6](https://github.com/TanStack/pacer/blob/
 
 • **TValue**
 
-• **TSelected** = `BatcherState`\<`TValue`\>
+• **TSelected** = \{\}
 
 ## Properties
 
@@ -27,8 +27,24 @@ Defined in: [batcher/createBatcher.ts:6](https://github.com/TanStack/pacer/blob/
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [batcher/createBatcher.ts:13](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L13)
+Defined in: [batcher/createBatcher.ts:14](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L14)
 
 Reactive state that will be updated when the batcher state changes
 
 Use this instead of `batcher.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<BatcherState<TValue>>>;
+```
+
+Defined in: [batcher/createBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L20)
+
+#### Deprecated
+
+Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+Although, you can make the state reactive by using the `useStore` in your own usage.

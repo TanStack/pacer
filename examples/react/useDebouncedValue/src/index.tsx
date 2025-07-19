@@ -10,11 +10,16 @@ function App1() {
   }
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const [debouncedCount] = useDebouncedValue(instantCount, {
-    wait: 500,
-    // enabled: () => instantCount > 2, // optional, defaults to true
-    // leading: true, // optional, defaults to false
-  })
+  const [debouncedCount] = useDebouncedValue(
+    instantCount,
+    {
+      wait: 500,
+      // enabled: () => instantCount > 2, // optional, defaults to true
+      // leading: true, // optional, defaults to false
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (_state) => ({}), // No specific state access needed for this example
+  )
 
   return (
     <div>
@@ -43,10 +48,15 @@ function App2() {
 
   // highest-level hook that watches an instant local state value and returns a debounced value
   // optionally, grab the debouncer from the last index of the returned array
-  const [debouncedSearch] = useDebouncedValue(instantSearch, {
-    wait: 500,
-    enabled: instantSearch.length > 2, // optional, defaults to true
-  })
+  const [debouncedSearch] = useDebouncedValue(
+    instantSearch,
+    {
+      wait: 500,
+      enabled: instantSearch.length > 2, // optional, defaults to true
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (_state) => ({}), // No specific state access needed for this example
+  )
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInstantSearch(e.target.value)
@@ -86,9 +96,17 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const [debouncedValue, debouncer] = useDebouncedValue(currentValue, {
-    wait: 250,
-  })
+  const [debouncedValue, debouncer] = useDebouncedValue(
+    currentValue,
+    {
+      wait: 250,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      isPending: state.isPending,
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)

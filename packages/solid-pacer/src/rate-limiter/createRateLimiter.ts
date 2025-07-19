@@ -1,5 +1,6 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { useStore } from '@tanstack/solid-store'
+import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
@@ -7,16 +8,20 @@ import type {
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
 
-export interface SolidRateLimiter<
-  TFn extends AnyFunction,
-  TSelected = RateLimiterState,
-> extends Omit<RateLimiter<TFn>, 'store'> {
+export interface SolidRateLimiter<TFn extends AnyFunction, TSelected = {}>
+  extends Omit<RateLimiter<TFn>, 'store'> {
   /**
    * Reactive state that will be updated when the rate limiter state changes
    *
    * Use this instead of `rateLimiter.store.state`
    */
   readonly state: Accessor<Readonly<TSelected>>
+  /**
+   * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<RateLimiterState>>
 }
 
 /**
@@ -40,9 +45,27 @@ export interface SolidRateLimiter<
  * - Use debouncing when you want to collapse rapid-fire events (e.g. search input)
  * - Use rate limiting only when you need to enforce hard limits (e.g. API rate limits)
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+ * to specify which state changes will trigger a re-render, optimizing performance by preventing
+ * unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
+ *
+ * Available state properties:
+ * - `executionCount`: Number of function executions that have been completed
+ * - `rejectionCount`: Number of function calls that were rejected due to rate limiting
+ * - `remainingInWindow`: Number of executions remaining in the current window
+ * - `nextWindowTime`: Timestamp when the next window begins
+ * - `currentWindowStart`: Timestamp when the current window started
+ *
  * @example
  * ```tsx
- * // Basic rate limiting - max 5 calls per minute with a sliding window
+ * // Default behavior - no reactive state subscriptions
  * const rateLimiter = createRateLimiter(apiCall, {
  *   limit: 5,
  *   window: 60000,
@@ -52,20 +75,34 @@ export interface SolidRateLimiter<
  *   }
  * });
  *
- * // Access rate limiter state via signals
- * console.log('Executions:', rateLimiter.executionCount());
- * console.log('Rejections:', rateLimiter.rejectionCount());
- * console.log('Remaining:', rateLimiter.remainingInWindow());
- * console.log('Next window in:', rateLimiter.msUntilNextWindow());
+ * // Opt-in to re-render when rate limit state changes (optimized for UI feedback)
+ * const rateLimiter = createRateLimiter(
+ *   apiCall,
+ *   { limit: 5, window: 60000 },
+ *   (state) => ({
+ *     remainingInWindow: state.remainingInWindow,
+ *     rejectionCount: state.rejectionCount
+ *   })
+ * );
+ *
+ * // Opt-in to re-render when execution metrics change (optimized for tracking progress)
+ * const rateLimiter = createRateLimiter(
+ *   apiCall,
+ *   { limit: 5, window: 60000 },
+ *   (state) => ({
+ *     executionCount: state.executionCount,
+ *     nextWindowTime: state.nextWindowTime
+ *   })
+ * );
+ *
+ * // Access the selected state (will be empty object {} unless selector provided)
+ * const { remainingInWindow, rejectionCount } = rateLimiter.state();
  * ```
  */
-export function createRateLimiter<
-  TFn extends AnyFunction,
-  TSelected = RateLimiterState,
->(
+export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
   initialOptions: RateLimiterOptions<TFn>,
-  selector?: (state: RateLimiterState) => TSelected,
+  selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): SolidRateLimiter<TFn, TSelected> {
   const rateLimiter = new RateLimiter<TFn>(fn, initialOptions)
 
@@ -74,5 +111,5 @@ export function createRateLimiter<
   return {
     ...rateLimiter,
     state,
-  } as unknown as SolidRateLimiter<TFn, TSelected> // omit `store` in favor of `state`
+  } as SolidRateLimiter<TFn, TSelected> // omit `store` in favor of `state`
 }

@@ -11,10 +11,10 @@ title: useAsyncThrottler
 function useAsyncThrottler<TFn, TSelected>(
    fn, 
    options, 
-selector?): ReactAsyncThrottler<TFn, TSelected>
+selector): ReactAsyncThrottler<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:152](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L152)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:160](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L160)
 
 A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -42,9 +42,10 @@ The hook uses TanStack Store for reactive state management. The `selector` param
 to specify which state changes will trigger a re-render, optimizing performance by preventing
 unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available state properties:
 - `errorCount`: Number of function executions that have resulted in errors
@@ -62,7 +63,7 @@ Available state properties:
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncThrottlerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -74,7 +75,7 @@ Available state properties:
 
 `AsyncThrottlerOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -85,7 +86,7 @@ Available state properties:
 ## Example
 
 ```tsx
-// Basic API call throttling with return value - re-renders on any state change
+// Default behavior - no reactive state subscriptions
 const asyncThrottler = useAsyncThrottler(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -94,7 +95,7 @@ const asyncThrottler = useAsyncThrottler(
   { wait: 1000 }
 );
 
-// Only re-render when execution state changes (optimized for loading indicators)
+// Opt-in to re-render when execution state changes (optimized for loading indicators)
 const asyncThrottler = useAsyncThrottler(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -108,7 +109,7 @@ const asyncThrottler = useAsyncThrottler(
   })
 );
 
-// Only re-render when results are available (optimized for data display)
+// Opt-in to re-render when results are available (optimized for data display)
 const asyncThrottler = useAsyncThrottler(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -122,7 +123,7 @@ const asyncThrottler = useAsyncThrottler(
   })
 );
 
-// Only re-render when error state changes (optimized for error handling)
+// Opt-in to re-render when error state changes (optimized for error handling)
 const asyncThrottler = useAsyncThrottler(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -138,7 +139,7 @@ const asyncThrottler = useAsyncThrottler(
   })
 );
 
-// Only re-render when timing information changes (optimized for timing displays)
+// Opt-in to re-render when timing information changes (optimized for timing displays)
 const asyncThrottler = useAsyncThrottler(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -166,6 +167,6 @@ const { maybeExecute, state } = useAsyncThrottler(
   }
 );
 
-// Access the selected state
+// Access the selected state (will be empty object {} unless selector provided)
 const { isExecuting, lastResult } = state;
 ```

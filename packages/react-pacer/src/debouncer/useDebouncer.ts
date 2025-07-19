@@ -1,22 +1,27 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { useStore } from '@tanstack/react-store'
+import type { Store } from '@tanstack/react-store'
 import type {
   DebouncerOptions,
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
-export interface ReactDebouncer<
-  TFn extends AnyFunction,
-  TSelected = DebouncerState<TFn>,
-> extends Omit<Debouncer<TFn>, 'store'> {
+export interface ReactDebouncer<TFn extends AnyFunction, TSelected = {}>
+  extends Omit<Debouncer<TFn>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the debouncer state changes
    *
    * Use this instead of `debouncer.store.state`
    */
   readonly state: Readonly<TSelected>
+  /**
+   * @deprecated Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<DebouncerState<TFn>>>
 }
 
 /**
@@ -40,9 +45,10 @@ export interface ReactDebouncer<
  * to specify which state changes will trigger a re-render, optimizing performance by preventing
  * unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available state properties:
  * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -53,20 +59,20 @@ export interface ReactDebouncer<
  *
  * @example
  * ```tsx
- * // Default behavior - re-renders on any state change
+ * // Default behavior - no reactive state subscriptions
  * const searchDebouncer = useDebouncer(
  *   (query: string) => fetchSearchResults(query),
  *   { wait: 500 }
  * );
  *
- * // Only re-render when isPending changes (optimized for loading states)
+ * // Opt-in to re-render when isPending changes (optimized for loading states)
  * const searchDebouncer = useDebouncer(
  *   (query: string) => fetchSearchResults(query),
  *   { wait: 500 },
  *   (state) => ({ isPending: state.isPending })
  * );
  *
- * // Only re-render when executionCount changes (optimized for tracking execution)
+ * // Opt-in to re-render when executionCount changes (optimized for tracking execution)
  * const searchDebouncer = useDebouncer(
  *   (query: string) => fetchSearchResults(query),
  *   { wait: 500 },
@@ -89,17 +95,14 @@ export interface ReactDebouncer<
  *   searchDebouncer.maybeExecute(e.target.value);
  * };
  *
- * // Access the selected state
+ * // Access the selected state (will be empty object {} unless selector provided)
  * const { isPending } = searchDebouncer.state;
  * ```
  */
-export function useDebouncer<
-  TFn extends AnyFunction,
-  TSelected = DebouncerState<TFn>,
->(
+export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
   options: DebouncerOptions<TFn>,
-  selector?: (state: DebouncerState<TFn>) => TSelected,
+  selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): ReactDebouncer<TFn, TSelected> {
   const [debouncer] = useState(() => new Debouncer(fn, options))
 
@@ -118,7 +121,7 @@ export function useDebouncer<
       ({
         ...debouncer,
         state,
-      }) as unknown as ReactDebouncer<TFn, TSelected>, // omit `store` in favor of `state`
+      }) as ReactDebouncer<TFn, TSelected>, // omit `store` in favor of `state`
     [debouncer, state],
   )
 }

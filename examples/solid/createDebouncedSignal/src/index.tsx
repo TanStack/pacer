@@ -14,6 +14,10 @@ function App1() {
       // enabled: () => instantCount() > 2, // optional, defaults to true
       // leading: true, // optional, defaults to false
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
   )
 
   function increment() {
@@ -61,9 +65,16 @@ function App2() {
 
   // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
   const [debouncedSearch, setDebouncedSearch, debouncer] =
-    createDebouncedSignal(instantSearch(), {
-      wait: 500,
-    })
+    createDebouncedSignal(
+      instantSearch(),
+      {
+        wait: 500,
+      },
+      // Optional Selector function to pick the state you want to track and use
+      (state) => ({
+        executionCount: state.executionCount,
+      }),
+    )
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
@@ -120,6 +131,10 @@ function App3() {
     {
       wait: 250,
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
   )
 
   function handleRangeChange(e: Event) {

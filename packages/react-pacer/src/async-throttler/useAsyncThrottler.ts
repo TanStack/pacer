@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { useStore } from '@tanstack/react-store'
+import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncThrottlerOptions,
@@ -9,14 +10,20 @@ import type {
 
 export interface ReactAsyncThrottler<
   TFn extends AnyAsyncFunction,
-  TSelected = AsyncThrottlerState<TFn>,
+  TSelected = {},
 > extends Omit<AsyncThrottler<TFn>, 'store'> {
   /**
-   * Reactive state that will be updated and re-rendered when the debouncer state changes
+   * Reactive state that will be updated and re-rendered when the throttler state changes
    *
-   * Use this instead of `debouncer.store.state`
+   * Use this instead of `throttler.store.state`
    */
   readonly state: Readonly<TSelected>
+  /**
+   * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>
 }
 
 /**
@@ -46,9 +53,10 @@ export interface ReactAsyncThrottler<
  * to specify which state changes will trigger a re-render, optimizing performance by preventing
  * unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available state properties:
  * - `errorCount`: Number of function executions that have resulted in errors
@@ -64,7 +72,7 @@ export interface ReactAsyncThrottler<
  *
  * @example
  * ```tsx
- * // Basic API call throttling with return value - re-renders on any state change
+ * // Default behavior - no reactive state subscriptions
  * const asyncThrottler = useAsyncThrottler(
  *   async (id: string) => {
  *     const data = await api.fetchData(id);
@@ -73,7 +81,7 @@ export interface ReactAsyncThrottler<
  *   { wait: 1000 }
  * );
  *
- * // Only re-render when execution state changes (optimized for loading indicators)
+ * // Opt-in to re-render when execution state changes (optimized for loading indicators)
  * const asyncThrottler = useAsyncThrottler(
  *   async (id: string) => {
  *     const data = await api.fetchData(id);
@@ -87,7 +95,7 @@ export interface ReactAsyncThrottler<
  *   })
  * );
  *
- * // Only re-render when results are available (optimized for data display)
+ * // Opt-in to re-render when results are available (optimized for data display)
  * const asyncThrottler = useAsyncThrottler(
  *   async (id: string) => {
  *     const data = await api.fetchData(id);
@@ -101,7 +109,7 @@ export interface ReactAsyncThrottler<
  *   })
  * );
  *
- * // Only re-render when error state changes (optimized for error handling)
+ * // Opt-in to re-render when error state changes (optimized for error handling)
  * const asyncThrottler = useAsyncThrottler(
  *   async (id: string) => {
  *     const data = await api.fetchData(id);
@@ -117,7 +125,7 @@ export interface ReactAsyncThrottler<
  *   })
  * );
  *
- * // Only re-render when timing information changes (optimized for timing displays)
+ * // Opt-in to re-render when timing information changes (optimized for timing displays)
  * const asyncThrottler = useAsyncThrottler(
  *   async (id: string) => {
  *     const data = await api.fetchData(id);
@@ -145,17 +153,15 @@ export interface ReactAsyncThrottler<
  *   }
  * );
  *
- * // Access the selected state
+ * // Access the selected state (will be empty object {} unless selector provided)
  * const { isExecuting, lastResult } = state;
  * ```
  */
-export function useAsyncThrottler<
-  TFn extends AnyAsyncFunction,
-  TSelected = AsyncThrottlerState<TFn>,
->(
+export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   fn: TFn,
   options: AsyncThrottlerOptions<TFn>,
-  selector?: (state: AsyncThrottlerState<TFn>) => TSelected,
+  selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
+    ({}) as TSelected,
 ): ReactAsyncThrottler<TFn, TSelected> {
   const [asyncThrottler] = useState(() => new AsyncThrottler<TFn>(fn, options))
 
@@ -166,10 +172,11 @@ export function useAsyncThrottler<
   }, [asyncThrottler])
 
   return useMemo(
-    () => ({
-      ...asyncThrottler,
-      state,
-    }),
+    () =>
+      ({
+        ...asyncThrottler,
+        state,
+      }) as ReactAsyncThrottler<TFn, TSelected>, // omit `store` in favor of `state`
     [asyncThrottler, state],
   )
 }

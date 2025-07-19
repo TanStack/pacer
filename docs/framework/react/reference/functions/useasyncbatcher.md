@@ -11,10 +11,10 @@ title: useAsyncBatcher
 function useAsyncBatcher<TValue, TSelected>(
    fn, 
    options, 
-selector?): ReactAsyncBatcher<TValue, TSelected>
+selector): ReactAsyncBatcher<TValue, TSelected>
 ```
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:161](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L161)
+Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:167](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L167)
 
 A React hook that creates an `AsyncBatcher` instance for managing asynchronous batches of items.
 
@@ -50,9 +50,10 @@ The hook uses TanStack Store for reactive state management. The `selector` param
 to specify which state changes will trigger a re-render, optimizing performance by preventing
 unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available state properties:
 - `errorCount`: Number of batch executions that have resulted in errors
@@ -74,7 +75,7 @@ Available state properties:
 
 • **TValue**
 
-• **TSelected** = `AsyncBatcherState`\<`TValue`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -86,7 +87,7 @@ Available state properties:
 
 `AsyncBatcherOptions`\<`TValue`\> = `{}`
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -97,7 +98,7 @@ Available state properties:
 ## Example
 
 ```tsx
-// Basic async batcher for API requests - re-renders on any state change
+// Basic async batcher for API requests - no reactive state subscriptions
 const asyncBatcher = useAsyncBatcher(
   async (items) => {
     const results = await Promise.all(items.map(item => processItem(item)));
@@ -106,7 +107,7 @@ const asyncBatcher = useAsyncBatcher(
   { maxSize: 10, wait: 2000 }
 );
 
-// Only re-render when execution state changes (optimized for loading indicators)
+// Opt-in to re-render when execution state changes (optimized for loading indicators)
 const asyncBatcher = useAsyncBatcher(
   async (items) => {
     const results = await Promise.all(items.map(item => processItem(item)));
@@ -120,7 +121,7 @@ const asyncBatcher = useAsyncBatcher(
   })
 );
 
-// Only re-render when results are available (optimized for data display)
+// Opt-in to re-render when results are available (optimized for data display)
 const asyncBatcher = useAsyncBatcher(
   async (items) => {
     const results = await Promise.all(items.map(item => processItem(item)));
@@ -134,7 +135,7 @@ const asyncBatcher = useAsyncBatcher(
   })
 );
 
-// Only re-render when error state changes (optimized for error handling)
+// Opt-in to re-render when error state changes (optimized for error handling)
 const asyncBatcher = useAsyncBatcher(
   async (items) => {
     const results = await Promise.all(items.map(item => processItem(item)));
@@ -176,6 +177,6 @@ asyncBatcher.addItem(newItem);
 // Manually execute batch
 const result = await asyncBatcher.execute();
 
-// Access the selected state
+// Access the selected state (will be empty object {} unless selector provided)
 const { isExecuting, lastResult, size } = asyncBatcher.state;
 ```

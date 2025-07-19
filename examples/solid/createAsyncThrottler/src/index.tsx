@@ -39,15 +39,24 @@ function App() {
   }
 
   // hook that gives you an async throttler instance
-  const setSearchAsyncThrottler = createAsyncThrottler(handleSearch, {
-    wait: 1000, // Wait 1 second between API calls
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setError(error as Error)
-      setResults([])
+  const setSearchAsyncThrottler = createAsyncThrottler(
+    handleSearch,
+    {
+      wait: 1000, // Wait 1 second between API calls
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setError(error as Error)
+        setResults([])
+      },
     },
-  })
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      successCount: state.successCount,
+      isPending: state.isPending,
+      isExecuting: state.isExecuting,
+    }),
+  )
 
   // get and name our throttled function
   const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute

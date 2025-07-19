@@ -11,10 +11,10 @@ title: useQueuer
 function useQueuer<TValue, TSelected>(
    fn, 
    options, 
-selector?): ReactQueuer<TValue, TSelected>
+selector): ReactQueuer<TValue, TSelected>
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:124](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L124)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:132](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L132)
 
 A React hook that creates and manages a Queuer instance.
 
@@ -38,9 +38,10 @@ The hook uses TanStack Store for reactive state management. The `selector` param
 to specify which state changes will trigger a re-render, optimizing performance by preventing
 unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available state properties:
 - `executionCount`: Number of items that have been processed by the queuer
@@ -60,7 +61,7 @@ Available state properties:
 
 • **TValue**
 
-• **TSelected** = `QueuerState`\<`TValue`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -72,7 +73,7 @@ Available state properties:
 
 `QueuerOptions`\<`TValue`\> = `{}`
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -83,13 +84,13 @@ Available state properties:
 ## Example
 
 ```tsx
-// Default behavior - re-renders on any state change
+// Default behavior - no reactive state subscriptions
 const queue = useQueuer(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 }
 );
 
-// Only re-render when queue size changes (optimized for displaying queue length)
+// Opt-in to re-render when queue size changes (optimized for displaying queue length)
 const queue = useQueuer(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 },
@@ -100,7 +101,7 @@ const queue = useQueuer(
   })
 );
 
-// Only re-render when processing state changes (optimized for loading indicators)
+// Opt-in to re-render when processing state changes (optimized for loading indicators)
 const queue = useQueuer(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 },
@@ -112,7 +113,7 @@ const queue = useQueuer(
   })
 );
 
-// Only re-render when execution metrics change (optimized for stats display)
+// Opt-in to re-render when execution metrics change (optimized for stats display)
 const queue = useQueuer(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 },
@@ -144,6 +145,6 @@ queue.addItem('task2');
 queue.stop();  // Pause processing
 queue.start(); // Resume processing
 
-// Access the selected state
+// Access the selected state (will be empty object {} unless selector provided)
 const { size, isRunning, executionCount } = queue.state;
 ```

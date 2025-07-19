@@ -22,7 +22,7 @@ export interface ThrottlerState<TFn extends AnyFunction> {
   /**
    * Timestamp when the next execution can occur in milliseconds
    */
-  nextExecutionTime: number
+  nextExecutionTime: number | undefined
   /**
    * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
    */
@@ -246,6 +246,11 @@ export class Throttler<TFn extends AnyFunction> {
       lastArgs: undefined,
     })
     this.options.onExecute?.(this)
+    setTimeout(() => {
+      if (!this.store.state.isPending) {
+        this.#setState({ nextExecutionTime: undefined })
+      }
+    }, this.#getWait())
   }
 
   /**

@@ -13,6 +13,10 @@ function App1() {
       wait: 1000,
       // enabled: () => instantCount > 2, // optional, defaults to true
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
   )
 
   function increment() {
@@ -63,6 +67,10 @@ function App2() {
       wait: 1000,
       // enabled: instantSearch.length > 2, // optional, defaults to true
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
   )
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -117,6 +125,10 @@ function App3() {
     {
       wait: 250,
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
   )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {

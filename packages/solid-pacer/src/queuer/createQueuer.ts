@@ -1,9 +1,10 @@
 import { Queuer } from '@tanstack/pacer/queuer'
 import { useStore } from '@tanstack/solid-store'
+import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
-export interface SolidQueuer<TValue, TSelected = QueuerState<TValue>>
+export interface SolidQueuer<TValue, TSelected = {}>
   extends Omit<Queuer<TValue>, 'store'> {
   /**
    * Reactive state that will be updated when the queuer state changes
@@ -11,6 +12,12 @@ export interface SolidQueuer<TValue, TSelected = QueuerState<TValue>>
    * Use this instead of `queuer.store.state`
    */
   readonly state: Accessor<Readonly<TSelected>>
+  /**
+   * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<QueuerState<TValue>>>
 }
 
 /**
@@ -30,11 +37,26 @@ export interface SolidQueuer<TValue, TSelected = QueuerState<TValue>>
  *
  * By default, the queue uses FIFO behavior, but you can configure LIFO or double-ended queueing by specifying the position when adding or removing items.
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+ * to specify which state changes will trigger a re-render, optimizing performance by preventing
+ * unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
+ *
+ * Available state properties:
+ * - `executionCount`: Number of items that have been processed
+ * - `isRunning`: Whether the queuer is currently running (not stopped)
+ * - `items`: Array of items currently queued for processing
+ * - `rejectionCount`: Number of items that were rejected (expired or failed validation)
+ *
  * Example usage:
  * ```tsx
- * // Example with Solid signals and scheduling
- * const [items, setItems] = createSignal([]);
- *
+ * // Default behavior - no reactive state subscriptions
  * const queue = createQueuer(
  *   (item) => {
  *     // process item synchronously
@@ -43,9 +65,25 @@ export interface SolidQueuer<TValue, TSelected = QueuerState<TValue>>
  *   {
  *     started: true, // Start processing immediately
  *     wait: 1000,    // Process one item every second
- *     onItemsChange: (queue) => setItems(queue.peekAllItems()),
  *     getPriority: (item) => item.priority // Process higher priority items first
  *   }
+ * );
+ *
+ * // Opt-in to re-render when items or isRunning changes (optimized for UI updates)
+ * const queue = createQueuer(
+ *   (item) => console.log('Processing', item),
+ *   { started: true, wait: 1000 },
+ *   (state) => ({ items: state.items, isRunning: state.isRunning })
+ * );
+ *
+ * // Opt-in to re-render when execution metrics change (optimized for tracking progress)
+ * const queue = createQueuer(
+ *   (item) => console.log('Processing', item),
+ *   { started: true, wait: 1000 },
+ *   (state) => ({
+ *     executionCount: state.executionCount,
+ *     rejectionCount: state.rejectionCount
+ *   })
  * );
  *
  * // Add items to process - they'll be handled automatically
@@ -56,18 +94,14 @@ export interface SolidQueuer<TValue, TSelected = QueuerState<TValue>>
  * queue.stop();  // Pause processing
  * queue.start(); // Resume processing
  *
- * // Access queue state via signals
- * console.log('Items:', queue.allItems());
- * console.log('Size:', queue.size());
- * console.log('Is empty:', queue.isEmpty());
- * console.log('Is running:', queue.isRunning());
- * console.log('Next item:', queue.nextItem());
+ * // Access the selected state (will be empty object {} unless selector provided)
+ * const { items, isRunning } = queue.state();
  * ```
  */
-export function createQueuer<TValue, TSelected = QueuerState<TValue>>(
+export function createQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
   initialOptions: QueuerOptions<TValue> = {},
-  selector?: (state: QueuerState<TValue>) => TSelected,
+  selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): SolidQueuer<TValue, TSelected> {
   const queuer = new Queuer(fn, initialOptions)
 
@@ -76,5 +110,5 @@ export function createQueuer<TValue, TSelected = QueuerState<TValue>>(
   return {
     ...queuer,
     state,
-  } as unknown as SolidQueuer<TValue, TSelected> // omit `store` in favor of `state`
+  } as SolidQueuer<TValue, TSelected> // omit `store` in favor of `state`
 }

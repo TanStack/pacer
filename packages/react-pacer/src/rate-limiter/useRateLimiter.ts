@@ -1,22 +1,27 @@
 import { useMemo, useState } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { useStore } from '@tanstack/react-store'
+import type { Store } from '@tanstack/react-store'
 import type {
   RateLimiterOptions,
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
-export interface ReactRateLimiter<
-  TFn extends AnyFunction,
-  TSelected = RateLimiterState,
-> extends Omit<RateLimiter<TFn>, 'store'> {
+export interface ReactRateLimiter<TFn extends AnyFunction, TSelected = {}>
+  extends Omit<RateLimiter<TFn>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the rate limiter state changes
    *
    * Use this instead of `rateLimiter.store.state`
    */
   readonly state: Readonly<TSelected>
+  /**
+   * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<RateLimiterState>>
 }
 
 /**
@@ -46,9 +51,10 @@ export interface ReactRateLimiter<
  * to specify which state changes will trigger a re-render, optimizing performance by preventing
  * unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available state properties:
  * - `executionCount`: Number of function executions that have been completed
@@ -64,14 +70,14 @@ export interface ReactRateLimiter<
  *
  * @example
  * ```tsx
- * // Basic rate limiting - max 5 calls per minute with a sliding window (re-renders on any state change)
+ * // Default behavior - no reactive state subscriptions
  * const rateLimiter = useRateLimiter(apiCall, {
  *   limit: 5,
  *   window: 60000,
  *   windowType: 'sliding',
  * });
  *
- * // Only re-render when execution count changes (optimized for tracking successful executions)
+ * // Opt-in to re-render when execution count changes (optimized for tracking successful executions)
  * const rateLimiter = useRateLimiter(
  *   apiCall,
  *   {
@@ -82,7 +88,7 @@ export interface ReactRateLimiter<
  *   (state) => ({ executionCount: state.executionCount })
  * );
  *
- * // Only re-render when rejection count changes (optimized for tracking rate limit violations)
+ * // Opt-in to re-render when rejection count changes (optimized for tracking rate limit violations)
  * const rateLimiter = useRateLimiter(
  *   apiCall,
  *   {
@@ -93,7 +99,7 @@ export interface ReactRateLimiter<
  *   (state) => ({ rejectionCount: state.rejectionCount })
  * );
  *
- * // Only re-render when execution times change (optimized for window calculations)
+ * // Opt-in to re-render when execution times change (optimized for window calculations)
  * const rateLimiter = useRateLimiter(
  *   apiCall,
  *   {
@@ -128,17 +134,14 @@ export interface ReactRateLimiter<
  *   }
  * };
  *
- * // Access the selected state
+ * // Access the selected state (will be empty object {} unless selector provided)
  * const { executionCount, rejectionCount } = rateLimiter.state;
  * ```
  */
-export function useRateLimiter<
-  TFn extends AnyFunction,
-  TSelected = RateLimiterState,
->(
+export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
   options: RateLimiterOptions<TFn>,
-  selector?: (state: RateLimiterState) => TSelected,
+  selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): ReactRateLimiter<TFn, TSelected> {
   const [rateLimiter] = useState(() => new RateLimiter<TFn>(fn, options))
 

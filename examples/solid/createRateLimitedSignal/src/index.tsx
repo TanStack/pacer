@@ -14,6 +14,10 @@ function App1() {
       window: 5000,
       windowType: windowType(),
     },
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
   )
 
   function increment() {
@@ -90,11 +94,18 @@ function App2() {
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
   const [limitedSearch, setLimitedSearch, rateLimiter] =
-    createRateLimitedSignal(instantSearch(), {
-      limit: 5,
-      window: 5000,
-      windowType: windowType(),
-    })
+    createRateLimitedSignal(
+      instantSearch(),
+      {
+        limit: 5,
+        window: 5000,
+        windowType: windowType(),
+      },
+      (state) => ({
+        executionCount: state.executionCount,
+        rejectionCount: state.rejectionCount,
+      }),
+    )
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
@@ -189,6 +200,10 @@ function App3() {
           rateLimiter.getMsUntilNextWindow(),
         ),
     },
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
   )
 
   function handleRangeChange(e: Event) {

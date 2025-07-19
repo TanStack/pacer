@@ -1,21 +1,26 @@
 import { useMemo, useState } from 'react'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { useStore } from '@tanstack/react-store'
+import type { Store } from '@tanstack/react-store'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
 
-export interface ReactAsyncBatcher<
-  TValue,
-  TSelected = AsyncBatcherState<TValue>,
-> extends Omit<AsyncBatcher<TValue>, 'store'> {
+export interface ReactAsyncBatcher<TValue, TSelected = {}>
+  extends Omit<AsyncBatcher<TValue>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the batcher state changes
    *
    * Use this instead of `batcher.store.state`
    */
   readonly state: Readonly<TSelected>
+  /**
+   * @deprecated Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<AsyncBatcherState<TValue>>>
 }
 
 /**
@@ -53,9 +58,10 @@ export interface ReactAsyncBatcher<
  * to specify which state changes will trigger a re-render, optimizing performance by preventing
  * unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available state properties:
  * - `errorCount`: Number of batch executions that have resulted in errors
@@ -75,7 +81,7 @@ export interface ReactAsyncBatcher<
  *
  * @example
  * ```tsx
- * // Basic async batcher for API requests - re-renders on any state change
+ * // Basic async batcher for API requests - no reactive state subscriptions
  * const asyncBatcher = useAsyncBatcher(
  *   async (items) => {
  *     const results = await Promise.all(items.map(item => processItem(item)));
@@ -84,7 +90,7 @@ export interface ReactAsyncBatcher<
  *   { maxSize: 10, wait: 2000 }
  * );
  *
- * // Only re-render when execution state changes (optimized for loading indicators)
+ * // Opt-in to re-render when execution state changes (optimized for loading indicators)
  * const asyncBatcher = useAsyncBatcher(
  *   async (items) => {
  *     const results = await Promise.all(items.map(item => processItem(item)));
@@ -98,7 +104,7 @@ export interface ReactAsyncBatcher<
  *   })
  * );
  *
- * // Only re-render when results are available (optimized for data display)
+ * // Opt-in to re-render when results are available (optimized for data display)
  * const asyncBatcher = useAsyncBatcher(
  *   async (items) => {
  *     const results = await Promise.all(items.map(item => processItem(item)));
@@ -112,7 +118,7 @@ export interface ReactAsyncBatcher<
  *   })
  * );
  *
- * // Only re-render when error state changes (optimized for error handling)
+ * // Opt-in to re-render when error state changes (optimized for error handling)
  * const asyncBatcher = useAsyncBatcher(
  *   async (items) => {
  *     const results = await Promise.all(items.map(item => processItem(item)));
@@ -154,14 +160,15 @@ export interface ReactAsyncBatcher<
  * // Manually execute batch
  * const result = await asyncBatcher.execute();
  *
- * // Access the selected state
+ * // Access the selected state (will be empty object {} unless selector provided)
  * const { isExecuting, lastResult, size } = asyncBatcher.state;
  * ```
  */
-export function useAsyncBatcher<TValue, TSelected = AsyncBatcherState<TValue>>(
+export function useAsyncBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => Promise<any>,
   options: AsyncBatcherOptions<TValue> = {},
-  selector?: (state: AsyncBatcherState<TValue>) => TSelected,
+  selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
+    ({}) as TSelected,
 ): ReactAsyncBatcher<TValue, TSelected> {
   const [asyncBatcher] = useState(() => new AsyncBatcher<TValue>(fn, options))
 
@@ -174,7 +181,7 @@ export function useAsyncBatcher<TValue, TSelected = AsyncBatcherState<TValue>>(
       ({
         ...asyncBatcher,
         state,
-      }) as unknown as ReactAsyncBatcher<TValue, TSelected>, // omit `store` in favor of `state`
+      }) as ReactAsyncBatcher<TValue, TSelected>, // omit `store` in favor of `state`
     [asyncBatcher, state],
   )
 }

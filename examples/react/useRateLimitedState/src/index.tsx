@@ -20,6 +20,11 @@ function App1() {
           rateLimiter.getMsUntilNextWindow(),
         ),
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
   )
 
   function increment() {
@@ -108,6 +113,11 @@ function App2() {
           rateLimiter.getMsUntilNextWindow(),
         ),
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
   )
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -202,6 +212,11 @@ function App3() {
           rateLimiter.getMsUntilNextWindow(),
         ),
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
   )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {

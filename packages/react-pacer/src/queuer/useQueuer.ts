@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { Queuer } from '@tanstack/pacer/queuer'
 import { useStore } from '@tanstack/react-store'
+import type { Store } from '@tanstack/react-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
-export interface ReactQueuer<TValue, TSelected = QueuerState<TValue>>
+export interface ReactQueuer<TValue, TSelected = {}>
   extends Omit<Queuer<TValue>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the queuer state changes
@@ -11,6 +12,12 @@ export interface ReactQueuer<TValue, TSelected = QueuerState<TValue>>
    * Use this instead of `queuer.store.state`
    */
   readonly state: Readonly<TSelected>
+  /**
+   * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<QueuerState<TValue>>>
 }
 
 /**
@@ -36,9 +43,10 @@ export interface ReactQueuer<TValue, TSelected = QueuerState<TValue>>
  * to specify which state changes will trigger a re-render, optimizing performance by preventing
  * unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available state properties:
  * - `executionCount`: Number of items that have been processed by the queuer
@@ -56,13 +64,13 @@ export interface ReactQueuer<TValue, TSelected = QueuerState<TValue>>
  *
  * @example
  * ```tsx
- * // Default behavior - re-renders on any state change
+ * // Default behavior - no reactive state subscriptions
  * const queue = useQueuer(
  *   (item) => console.log('Processing:', item),
  *   { started: true, wait: 1000 }
  * );
  *
- * // Only re-render when queue size changes (optimized for displaying queue length)
+ * // Opt-in to re-render when queue size changes (optimized for displaying queue length)
  * const queue = useQueuer(
  *   (item) => console.log('Processing:', item),
  *   { started: true, wait: 1000 },
@@ -73,7 +81,7 @@ export interface ReactQueuer<TValue, TSelected = QueuerState<TValue>>
  *   })
  * );
  *
- * // Only re-render when processing state changes (optimized for loading indicators)
+ * // Opt-in to re-render when processing state changes (optimized for loading indicators)
  * const queue = useQueuer(
  *   (item) => console.log('Processing:', item),
  *   { started: true, wait: 1000 },
@@ -85,7 +93,7 @@ export interface ReactQueuer<TValue, TSelected = QueuerState<TValue>>
  *   })
  * );
  *
- * // Only re-render when execution metrics change (optimized for stats display)
+ * // Opt-in to re-render when execution metrics change (optimized for stats display)
  * const queue = useQueuer(
  *   (item) => console.log('Processing:', item),
  *   { started: true, wait: 1000 },
@@ -117,14 +125,14 @@ export interface ReactQueuer<TValue, TSelected = QueuerState<TValue>>
  * queue.stop();  // Pause processing
  * queue.start(); // Resume processing
  *
- * // Access the selected state
+ * // Access the selected state (will be empty object {} unless selector provided)
  * const { size, isRunning, executionCount } = queue.state;
  * ```
  */
-export function useQueuer<TValue, TSelected = QueuerState<TValue>>(
+export function useQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
   options: QueuerOptions<TValue> = {},
-  selector?: (state: QueuerState<TValue>) => TSelected,
+  selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): ReactQueuer<TValue, TSelected> {
   const [queuer] = useState(() => new Queuer<TValue>(fn, options))
 
@@ -137,7 +145,7 @@ export function useQueuer<TValue, TSelected = QueuerState<TValue>>(
       ({
         ...queuer,
         state,
-      }) as unknown as ReactQueuer<TValue, TSelected>, // omit `store` in favor of `state`
+      }) as ReactQueuer<TValue, TSelected>, // omit `store` in favor of `state`
     [queuer, state],
   )
 }

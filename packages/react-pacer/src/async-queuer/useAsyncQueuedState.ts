@@ -31,9 +31,10 @@ import type {
  * The `selector` parameter allows you to specify which async queuer state changes will trigger a re-render,
  * optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all async queuer state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available async queuer state properties:
  * - `activeItems`: Items currently being processed by the queuer
@@ -55,7 +56,7 @@ import type {
  *
  * @example
  * ```tsx
- * // Create a queue with state management (re-renders on any async queuer state change)
+ * // Default behavior - no reactive state subscriptions
  * const [queueItems, asyncQueuer] = useAsyncQueuedState(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -68,7 +69,7 @@ import type {
  *   }
  * );
  *
- * // Only re-render when queue contents change (optimized for displaying queue items)
+ * // Opt-in to re-render when queue contents change (optimized for displaying queue items)
  * const [queueItems, asyncQueuer] = useAsyncQueuedState(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -83,7 +84,7 @@ import type {
  *   })
  * );
  *
- * // Only re-render when processing state changes (optimized for loading indicators)
+ * // Opt-in to re-render when processing state changes (optimized for loading indicators)
  * const [queueItems, asyncQueuer] = useAsyncQueuedState(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -99,7 +100,7 @@ import type {
  *   })
  * );
  *
- * // Only re-render when execution metrics change (optimized for stats display)
+ * // Opt-in to re-render when execution metrics change (optimized for stats display)
  * const [queueItems, asyncQueuer] = useAsyncQueuedState(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -115,7 +116,7 @@ import type {
  *   })
  * );
  *
- * // Only re-render when results are available (optimized for data display)
+ * // Opt-in to re-render when results are available (optimized for data display)
  * const [queueItems, asyncQueuer] = useAsyncQueuedState(
  *   async (item) => {
  *     const result = await processItem(item);
@@ -143,16 +144,16 @@ import type {
  * // queueItems reflects current queue state
  * const pendingCount = asyncQueuer.peekPendingItems().length;
  *
- * // Access the selected async queuer state
+ * // Access the selected async queuer state (will be empty object {} unless selector provided)
  * const { size, isRunning, activeItems } = asyncQueuer.state;
  * ```
  */
 export function useAsyncQueuedState<
   TValue,
-  TSelected extends Pick<
+  TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
     AsyncQueuerState<TValue>,
     'items'
-  > = AsyncQueuerState<TValue>,
+  >,
 >(
   fn: (value: TValue) => Promise<any>,
   options: AsyncQueuerOptions<TValue> = {},

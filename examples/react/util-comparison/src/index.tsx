@@ -18,23 +18,40 @@ function ComparisonApp() {
   const [batchedValue, setBatchedValue] = useState(50)
 
   // Initialize each utility
-  const debouncer = useDebouncer(setDebouncedValue, {
-    wait: 600,
-  })
+  const debouncer = useDebouncer(
+    setDebouncedValue,
+    {
+      wait: 600,
+    },
+    (state) => state,
+  )
 
-  const throttler = useThrottler(setThrottledValue, {
-    wait: 600,
-  })
+  const throttler = useThrottler(
+    setThrottledValue,
+    {
+      wait: 600,
+    },
+    (state) => state,
+  )
 
-  const rateLimiter = useRateLimiter(setRateLimitedValue, {
-    limit: 20,
-    window: 2000,
-  })
+  const rateLimiter = useRateLimiter(
+    setRateLimitedValue,
+    {
+      limit: 20,
+      window: 2000,
+      windowType: 'sliding',
+    },
+    (state) => state,
+  )
 
-  const queuer = useQueuer(setQueuedValue, {
-    wait: 100,
-    maxSize: 50,
-  })
+  const queuer = useQueuer(
+    setQueuedValue,
+    {
+      wait: 100,
+      maxSize: 50,
+    },
+    (state) => state,
+  )
 
   const batcher = useBatcher(
     (items: Array<number>) => {
@@ -47,6 +64,7 @@ function ComparisonApp() {
       wait: 600,
       maxSize: 5,
     },
+    (state) => state,
   )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -412,7 +430,7 @@ function ComparisonApp() {
                   padding: '8px',
                   borderRadius: '4px',
                   overflow: 'auto',
-                  maxHeight: '150px',
+                  maxHeight: '500px',
                   margin: 0,
                 }}
               >
@@ -421,48 +439,6 @@ function ComparisonApp() {
             </div>
           ))}
         </div>
-      </div>
-
-      <div
-        style={{
-          marginTop: '20px',
-          padding: '15px',
-          backgroundColor: '#f0f9ff',
-          borderRadius: '6px',
-        }}
-      >
-        <h2 style={{ fontSize: '1.2em', marginBottom: '10px' }}>
-          How Each Utility Behaves
-        </h2>
-        <ul
-          style={{
-            lineHeight: '1.5',
-            fontSize: '0.9em',
-            margin: 0,
-            paddingLeft: '20px',
-          }}
-        >
-          <li>
-            <strong>Debouncer:</strong> Waits for 600ms of inactivity before
-            executing. Great for search inputs.
-          </li>
-          <li>
-            <strong>Throttler:</strong> Executes immediately, then blocks for
-            600ms. Perfect for scroll/resize events.
-          </li>
-          <li>
-            <strong>Rate Limiter:</strong> Allows up to 10 executions per 2
-            seconds, then blocks. Ideal for API calls.
-          </li>
-          <li>
-            <strong>Queuer:</strong> Processes items one by one with a 200ms
-            delay. Useful for sequential operations.
-          </li>
-          <li>
-            <strong>Batcher:</strong> Collects items and processes them in
-            groups of 5 or after 600ms. Efficient for bulk operations.
-          </li>
-        </ul>
       </div>
     </div>
   )

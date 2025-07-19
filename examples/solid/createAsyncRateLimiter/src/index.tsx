@@ -38,22 +38,30 @@ function App() {
   }
 
   // hook that gives you an async rate limiter instance
-  const setSearchAsyncRateLimiter = createAsyncRateLimiter(handleSearch, {
-    windowType: windowType(),
-    limit: 2, // Maximum 2 requests
-    window: 1000, // per 1 second
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setResults([])
+  const setSearchAsyncRateLimiter = createAsyncRateLimiter(
+    handleSearch,
+    {
+      windowType: windowType(),
+      limit: 2, // Maximum 2 requests
+      window: 1000, // per 1 second
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setResults([])
+      },
+      onReject: (rateLimiter) => {
+        console.log(
+          'Rate limit exceeded:',
+          rateLimiter.store.state.rejectionCount,
+        )
+      },
     },
-    onReject: (rateLimiter) => {
-      console.log(
-        'Rate limit exceeded:',
-        rateLimiter.store.state.rejectionCount,
-      )
-    },
-  })
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      successCount: state.successCount,
+      isExecuting: state.isExecuting,
+    }),
+  )
 
   // get and name our rate limited function
   const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute

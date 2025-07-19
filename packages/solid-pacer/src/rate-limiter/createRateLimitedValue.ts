@@ -34,23 +34,53 @@ import type {
  * For more direct control over rate limiting behavior without Solid state management,
  * consider using the lower-level createRateLimiter hook instead.
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management via the underlying rate limiter instance.
+ * The `selector` parameter allows you to specify which rate limiter state changes will trigger reactive updates,
+ * optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
+ *
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary reactive updates and gives you
+ * full control over when your component subscribes to state changes. Only when you provide a selector will
+ * the reactive system track the selected state values.
+ *
+ * Available rate limiter state properties:
+ * - `callsInWindow`: Number of calls made in the current window
+ * - `remainingInWindow`: Number of calls remaining in the current window
+ * - `windowStart`: Unix timestamp when the current window started
+ * - `nextWindowStart`: Unix timestamp when the next window will start
+ * - `msUntilNextWindow`: Milliseconds until the next window starts
+ * - `isAtLimit`: Whether the call limit for the current window has been reached
+ * - `status`: Current status ('disabled' | 'idle' | 'at-limit')
+ *
  * @example
  * ```tsx
- * // Basic rate limiting - update at most 5 times per minute with a sliding window
+ * // Default behavior - no reactive state subscriptions
  * const [rateLimitedValue, rateLimiter] = createRateLimitedValue(rawValue, {
  *   limit: 5,
  *   window: 60000,
  *   windowType: 'sliding'
  * });
  *
+ * // Opt-in to reactive updates when limit state changes (optimized for UI feedback)
+ * const [rateLimitedValue, rateLimiter] = createRateLimitedValue(
+ *   rawValue,
+ *   { limit: 5, window: 60000 },
+ *   (state) => ({ isAtLimit: state.isAtLimit, remainingInWindow: state.remainingInWindow })
+ * );
+ *
  * // Use the rate-limited value
  * console.log(rateLimitedValue()); // Access the current rate-limited value
+ *
+ * // Access rate limiter state via signals
+ * console.log('Is at limit:', rateLimiter.state().isAtLimit);
  *
  * // Control the rate limiter
  * rateLimiter.reset(); // Reset the rate limit window
  * ```
  */
-export function createRateLimitedValue<TValue, TSelected = RateLimiterState>(
+export function createRateLimitedValue<TValue, TSelected = {}>(
   value: Accessor<TValue>,
   initialOptions: RateLimiterOptions<Setter<TValue>>,
   selector?: (state: RateLimiterState) => TSelected,

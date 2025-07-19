@@ -1,10 +1,7 @@
 import { useCallback } from 'react'
 import { useAsyncRateLimiter } from './useAsyncRateLimiter'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
-import type {
-  AsyncRateLimiterOptions,
-  AsyncRateLimiterState,
-} from '@tanstack/pacer/async-rate-limiter'
+import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 
 /**
  * A React hook that creates a rate-limited version of an async callback function.
@@ -40,26 +37,6 @@ import type {
  *
  * Consider using the `useAsyncRateLimiter` hook instead.
  *
- * ## State Management and Re-renders
- *
- * **By default, this callback hook disables re-renders from internal state changes for optimal performance.**
- * The hook uses TanStack Store internally but doesn't subscribe to state changes, preventing
- * unnecessary re-renders when the async rate limiter's internal state updates.
- *
- * If you need to react to state changes (like showing execution counts or error states),
- * you can provide a custom `selector` function to opt into specific state updates:
- *
- * ```tsx
- * // Default: No re-renders from state changes (optimal performance)
- * const rateLimitedCallback = useAsyncRateLimitedCallback(asyncFn, { limit: 5, window: 60000 });
- *
- * // Opt-in: Re-render when execution counts change
- * const rateLimitedCallback = useAsyncRateLimitedCallback(
- *   asyncFn,
- *   { limit: 5, window: 60000 },
- *   (state) => ({ executionCount: state.executionCount, isBlocked: state.isBlocked })
- * );
- * ```
  *
  * @example
  * ```tsx
@@ -79,20 +56,11 @@ import type {
  * );
  * ```
  */
-export function useAsyncRateLimitedCallback<
-  TFn extends AnyAsyncFunction,
-  TSelected = {},
->(
+export function useAsyncRateLimitedCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
   options: AsyncRateLimiterOptions<TFn>,
-  selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
-    ({}) as TSelected,
 ): (...args: Parameters<TFn>) => Promise<ReturnType<TFn>> {
-  const asyncRateLimitedFn = useAsyncRateLimiter(
-    fn,
-    options,
-    selector,
-  ).maybeExecute
+  const asyncRateLimitedFn = useAsyncRateLimiter(fn, options).maybeExecute
   return useCallback(
     (...args) => asyncRateLimitedFn(...args) as Promise<ReturnType<TFn>>,
     [asyncRateLimitedFn],
