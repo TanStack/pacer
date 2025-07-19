@@ -11,10 +11,10 @@ title: useRateLimiter
 function useRateLimiter<TFn, TSelected>(
    fn, 
    options, 
-selector?): ReactRateLimiter<TFn, TSelected>
+selector): ReactRateLimiter<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:135](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L135)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:141](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L141)
 
 A low-level React hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
@@ -42,9 +42,10 @@ The hook uses TanStack Store for reactive state management. The `selector` param
 to specify which state changes will trigger a re-render, optimizing performance by preventing
 unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available state properties:
 - `executionCount`: Number of function executions that have been completed
@@ -62,7 +63,7 @@ The hook returns an object containing:
 
 • **TFn** *extends* `AnyFunction`
 
-• **TSelected** = `RateLimiterState`
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -74,7 +75,7 @@ The hook returns an object containing:
 
 `RateLimiterOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -85,14 +86,14 @@ The hook returns an object containing:
 ## Example
 
 ```tsx
-// Basic rate limiting - max 5 calls per minute with a sliding window (re-renders on any state change)
+// Default behavior - no reactive state subscriptions
 const rateLimiter = useRateLimiter(apiCall, {
   limit: 5,
   window: 60000,
   windowType: 'sliding',
 });
 
-// Only re-render when execution count changes (optimized for tracking successful executions)
+// Opt-in to re-render when execution count changes (optimized for tracking successful executions)
 const rateLimiter = useRateLimiter(
   apiCall,
   {
@@ -103,7 +104,7 @@ const rateLimiter = useRateLimiter(
   (state) => ({ executionCount: state.executionCount })
 );
 
-// Only re-render when rejection count changes (optimized for tracking rate limit violations)
+// Opt-in to re-render when rejection count changes (optimized for tracking rate limit violations)
 const rateLimiter = useRateLimiter(
   apiCall,
   {
@@ -114,7 +115,7 @@ const rateLimiter = useRateLimiter(
   (state) => ({ rejectionCount: state.rejectionCount })
 );
 
-// Only re-render when execution times change (optimized for window calculations)
+// Opt-in to re-render when execution times change (optimized for window calculations)
 const rateLimiter = useRateLimiter(
   apiCall,
   {
@@ -149,6 +150,6 @@ const handleClick = () => {
   }
 };
 
-// Access the selected state
+// Access the selected state (will be empty object {} unless selector provided)
 const { executionCount, rejectionCount } = rateLimiter.state;
 ```

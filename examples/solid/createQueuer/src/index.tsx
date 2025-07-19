@@ -13,6 +13,17 @@ function App1() {
       started: false,
       wait: 1000, // wait 1 second between processing items - wait is optional!
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      status: state.status,
+      executionCount: state.executionCount,
+      items: state.items,
+      isFull: state.isFull,
+      isEmpty: state.isEmpty,
+      isIdle: state.isIdle,
+      isRunning: state.isRunning,
+    }),
   )
 
   return (
@@ -97,6 +108,14 @@ function App2() {
       maxSize: 100,
       wait: 500,
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      executionCount: state.executionCount,
+      items: state.items,
+      isEmpty: state.isEmpty,
+      isRunning: state.isRunning,
+    }),
   )
 
   function handleInputChange(e: Event) {
@@ -190,6 +209,15 @@ function App3() {
       maxSize: 100,
       wait: 100,
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      executionCount: state.executionCount,
+      items: state.items,
+      isFull: state.isFull,
+      isEmpty: state.isEmpty,
+      isRunning: state.isRunning,
+    }),
   )
 
   function handleRangeChange(e: Event) {

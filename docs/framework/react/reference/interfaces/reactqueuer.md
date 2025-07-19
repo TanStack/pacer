@@ -7,7 +7,7 @@ title: ReactQueuer
 
 # Interface: ReactQueuer\<TValue, TSelected\>
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:6](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L6)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:7](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L7)
 
 ## Extends
 
@@ -17,7 +17,7 @@ Defined in: [react-pacer/src/queuer/useQueuer.ts:6](https://github.com/TanStack/
 
 • **TValue**
 
-• **TSelected** = `QueuerState`\<`TValue`\>
+• **TSelected** = \{\}
 
 ## Properties
 
@@ -27,8 +27,24 @@ Defined in: [react-pacer/src/queuer/useQueuer.ts:6](https://github.com/TanStack/
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L13)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L14)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
 Use this instead of `queuer.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<QueuerState<TValue>>>;
+```
+
+Defined in: [react-pacer/src/queuer/useQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L20)
+
+#### Deprecated
+
+Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+Although, you can make the state reactive by using the `useStore` in your own usage.

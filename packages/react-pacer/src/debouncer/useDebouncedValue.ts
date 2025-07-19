@@ -29,9 +29,10 @@ import type {
  * The `selector` parameter allows you to specify which debouncer state changes will trigger a re-render,
  * optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all debouncer state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available debouncer state properties:
  * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -42,27 +43,27 @@ import type {
  *
  * @example
  * ```tsx
- * // Debounce a search query (re-renders on any debouncer state change)
+ * // Default behavior - no reactive state subscriptions
  * const [searchQuery, setSearchQuery] = useState('');
  * const [debouncedQuery, debouncer] = useDebouncedValue(searchQuery, {
  *   wait: 500 // Wait 500ms after last change
  * });
  *
- * // Only re-render when pending state changes (optimized for loading indicators)
+ * // Opt-in to re-render when pending state changes (optimized for loading indicators)
  * const [debouncedQuery, debouncer] = useDebouncedValue(
  *   searchQuery,
  *   { wait: 500 },
  *   (state) => ({ isPending: state.isPending })
  * );
  *
- * // Only re-render when execution count changes (optimized for tracking executions)
+ * // Opt-in to re-render when execution count changes (optimized for tracking executions)
  * const [debouncedQuery, debouncer] = useDebouncedValue(
  *   searchQuery,
  *   { wait: 500 },
  *   (state) => ({ executionCount: state.executionCount })
  * );
  *
- * // Only re-render when debouncing status changes (optimized for status display)
+ * // Opt-in to re-render when debouncing status changes (optimized for status display)
  * const [debouncedQuery, debouncer] = useDebouncedValue(
  *   searchQuery,
  *   { wait: 500 },
@@ -82,7 +83,7 @@ import type {
  *   setSearchQuery(e.target.value);
  * };
  *
- * // Access the selected debouncer state
+ * // Access the selected debouncer state (will be empty object {} unless selector provided)
  * const { isPending, executionCount } = debouncer.state;
  * ```
  */

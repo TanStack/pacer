@@ -11,10 +11,10 @@ title: useAsyncDebouncer
 function useAsyncDebouncer<TFn, TSelected>(
    fn, 
    options, 
-selector?): ReactAsyncDebouncer<TFn, TSelected>
+selector): ReactAsyncDebouncer<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:141](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L141)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:149](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L149)
 
 A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -45,9 +45,10 @@ The hook uses TanStack Store for reactive state management. The `selector` param
 to specify which state changes will trigger a re-render, optimizing performance by preventing
 unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available state properties:
 - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -64,7 +65,7 @@ Available state properties:
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncDebouncerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -76,7 +77,7 @@ Available state properties:
 
 `AsyncDebouncerOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -87,7 +88,7 @@ Available state properties:
 ## Example
 
 ```tsx
-// Basic API call debouncing - re-renders on any state change
+// Default behavior - no reactive state subscriptions
 const searchDebouncer = useAsyncDebouncer(
   async (query: string) => {
     const results = await api.search(query);
@@ -96,7 +97,7 @@ const searchDebouncer = useAsyncDebouncer(
   { wait: 500 }
 );
 
-// Only re-render when execution state changes (optimized for loading indicators)
+// Opt-in to re-render when execution state changes (optimized for loading indicators)
 const searchDebouncer = useAsyncDebouncer(
   async (query: string) => {
     const results = await api.search(query);
@@ -109,7 +110,7 @@ const searchDebouncer = useAsyncDebouncer(
   })
 );
 
-// Only re-render when results are available (optimized for data display)
+// Opt-in to re-render when results are available (optimized for data display)
 const searchDebouncer = useAsyncDebouncer(
   async (query: string) => {
     const results = await api.search(query);
@@ -122,7 +123,7 @@ const searchDebouncer = useAsyncDebouncer(
   })
 );
 
-// Only re-render when error state changes (optimized for error handling)
+// Opt-in to re-render when error state changes (optimized for error handling)
 const searchDebouncer = useAsyncDebouncer(
   async (query: string) => {
     const results = await api.search(query);
@@ -155,6 +156,6 @@ const { maybeExecute, state } = useAsyncDebouncer(
   }
 );
 
-// Access the selected state
+// Access the selected state (will be empty object {} unless selector provided)
 const { isExecuting, lastResult } = state;
 ```

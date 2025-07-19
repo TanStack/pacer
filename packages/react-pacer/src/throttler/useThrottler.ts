@@ -1,22 +1,27 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Throttler } from '@tanstack/pacer/throttler'
 import { useStore } from '@tanstack/react-store'
+import type { Store } from '@tanstack/react-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
 
-export interface ReactThrottler<
-  TFn extends AnyFunction,
-  TSelected = ThrottlerState<TFn>,
-> extends Omit<Throttler<TFn>, 'store'> {
+export interface ReactThrottler<TFn extends AnyFunction, TSelected = {}>
+  extends Omit<Throttler<TFn>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the throttler state changes
    *
    * Use this instead of `throttler.store.state`
    */
   readonly state: Readonly<TSelected>
+  /**
+   * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<ThrottlerState<TFn>>>
 }
 
 /**
@@ -36,9 +41,10 @@ export interface ReactThrottler<
  * to specify which state changes will trigger a re-render, optimizing performance by preventing
  * unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available state properties:
  * - `executionCount`: Number of function executions that have been completed
@@ -50,11 +56,11 @@ export interface ReactThrottler<
  *
  * @example
  * ```tsx
- * // Basic throttling with custom state - re-renders on any state change
+ * // Default behavior - no reactive state subscriptions
  * const [value, setValue] = useState(0);
  * const throttler = useThrottler(setValue, { wait: 1000 });
  *
- * // Only re-render when execution count changes (optimized for tracking executions)
+ * // Opt-in to re-render when execution count changes (optimized for tracking executions)
  * const [value, setValue] = useState(0);
  * const throttler = useThrottler(
  *   setValue,
@@ -62,7 +68,7 @@ export interface ReactThrottler<
  *   (state) => ({ executionCount: state.executionCount })
  * );
  *
- * // Only re-render when throttling state changes (optimized for loading indicators)
+ * // Opt-in to re-render when throttling state changes (optimized for loading indicators)
  * const [value, setValue] = useState(0);
  * const throttler = useThrottler(
  *   setValue,
@@ -73,7 +79,7 @@ export interface ReactThrottler<
  *   })
  * );
  *
- * // Only re-render when timing information changes (optimized for timing displays)
+ * // Opt-in to re-render when timing information changes (optimized for timing displays)
  * const [value, setValue] = useState(0);
  * const throttler = useThrottler(
  *   setValue,
@@ -94,17 +100,14 @@ export interface ReactThrottler<
  *   }
  * );
  *
- * // Access the selected state
+ * // Access the selected state (will be empty object {} unless selector provided)
  * const { executionCount, isPending } = throttler.state;
  * ```
  */
-export function useThrottler<
-  TFn extends AnyFunction,
-  TSelected = ThrottlerState<TFn>,
->(
+export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
   options: ThrottlerOptions<TFn>,
-  selector?: (state: ThrottlerState<TFn>) => TSelected,
+  selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): ReactThrottler<TFn, TSelected> {
   const [throttler] = useState(() => new Throttler<TFn>(fn, options))
 

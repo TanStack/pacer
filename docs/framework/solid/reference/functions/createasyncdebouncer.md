@@ -11,10 +11,10 @@ title: createAsyncDebouncer
 function createAsyncDebouncer<TFn, TSelected>(
    fn, 
    initialOptions, 
-selector?): SolidAsyncDebouncer<TFn, TSelected>
+selector): SolidAsyncDebouncer<TFn, TSelected>
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:76](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L76)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:118](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L118)
 
 A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -39,11 +39,33 @@ Error Handling:
 - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
 - The error state can be checked using the underlying AsyncDebouncer instance
 
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+to specify which state changes will trigger a re-render, optimizing performance by preventing
+unnecessary re-renders when irrelevant state changes occur.
+
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
+
+Available state properties:
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge
+- `executionCount`: Number of function executions that have been completed
+- `hasError`: Whether the last execution resulted in an error
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `isExecuting`: Whether an async function execution is currently in progress
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `lastError`: The error from the most recent failed execution (if any)
+- `lastResult`: The result from the most recent successful execution
+- `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
+
 ## Type Parameters
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncDebouncerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -55,7 +77,7 @@ Error Handling:
 
 `AsyncDebouncerOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -66,7 +88,7 @@ Error Handling:
 ## Example
 
 ```tsx
-// Basic API call debouncing
+// Default behavior - no reactive state subscriptions
 const { maybeExecute } = createAsyncDebouncer(
   async (query: string) => {
     const results = await api.search(query);
@@ -75,12 +97,21 @@ const { maybeExecute } = createAsyncDebouncer(
   { wait: 500 }
 );
 
-// With state management
-const [results, setResults] = createSignal([]);
-const { maybeExecute } = createAsyncDebouncer(
+// Opt-in to re-render when isPending or isExecuting changes (optimized for loading states)
+const debouncer = createAsyncDebouncer(
+  async (query: string) => {
+    const results = await api.search(query);
+    return results;
+  },
+  { wait: 500 },
+  (state) => ({ isPending: state.isPending, isExecuting: state.isExecuting })
+);
+
+// Opt-in to re-render when error state changes (optimized for error handling)
+const debouncer = createAsyncDebouncer(
   async (searchTerm) => {
     const data = await searchAPI(searchTerm);
-    setResults(data);
+    return data;
   },
   {
     wait: 300,
@@ -89,6 +120,10 @@ const { maybeExecute } = createAsyncDebouncer(
     onError: (error) => {
       console.error('API call failed:', error);
     }
-  }
+  },
+  (state) => ({ hasError: state.hasError, lastError: state.lastError })
 );
+
+// Access the selected state (will be empty object {} unless selector provided)
+const { isPending, isExecuting } = debouncer.state();
 ```

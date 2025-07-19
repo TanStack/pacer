@@ -7,7 +7,7 @@ title: ReactAsyncRateLimiter
 
 # Interface: ReactAsyncRateLimiter\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:10](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L10)
+Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:11](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L11)
 
 ## Extends
 
@@ -17,7 +17,7 @@ Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:10](https
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncRateLimiterState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Properties
 
@@ -27,8 +27,24 @@ Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:10](https
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L19)
+Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L20)
 
 Reactive state that will be updated and re-rendered when the rate limiter state changes
 
 Use this instead of `rateLimiter.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>;
+```
+
+Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L26)
+
+#### Deprecated
+
+Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+Although, you can make the state reactive by using the `useStore` in your own usage.

@@ -313,6 +313,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#setState({
         isExecuting: false,
         isPending: false,
+        lastArgs: undefined,
         settleCount: this.store.state.settleCount + 1,
       })
       this.#abortController = null

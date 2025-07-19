@@ -85,9 +85,16 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
 
   // highest-level hook that watches an instant local state value and returns a debounced value
-  const [debouncedValue, debouncer] = createDebouncedValue(currentValue, {
-    wait: 250,
-  })
+  const [debouncedValue, debouncer] = createDebouncedValue(
+    currentValue,
+    {
+      wait: 250,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleRangeChange(e: Event) {
     const target = e.target as HTMLInputElement

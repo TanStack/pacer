@@ -14,7 +14,7 @@ function useQueuedValue<TValue, TSelected>(
    selector?): [TValue, ReactQueuer<TValue, TSelected>]
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuedValue.ts:102](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedValue.ts#L102)
+Defined in: [react-pacer/src/queuer/useQueuedValue.ts:103](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuedValue.ts#L103)
 
 A React hook that creates a queued value that processes state changes in order with an optional delay.
 This hook uses useQueuer internally to manage a queue of state changes and apply them sequentially.
@@ -33,9 +33,10 @@ The hook uses TanStack Store for reactive state management via the underlying qu
 The `selector` parameter allows you to specify which queuer state changes will trigger a re-render,
 optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all queuer state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available queuer state properties:
 - `executionCount`: Number of items that have been processed by the queuer
@@ -55,7 +56,7 @@ Available queuer state properties:
 
 • **TValue**
 
-• **TSelected** *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `QueuerState`\<`TValue`\>
+• **TSelected** *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>
 
 ## Parameters
 
@@ -78,13 +79,13 @@ Available queuer state properties:
 ## Example
 
 ```tsx
-// Queue state changes with a delay between each (re-renders on any queuer state change)
+// Default behavior - no reactive state subscriptions
 const [value, queuer] = useQueuedValue(initialValue, {
   wait: 500, // Wait 500ms between processing each change
   started: true // Start processing immediately
 });
 
-// Only re-render when queue processing state changes (optimized for loading indicators)
+// Opt-in to re-render when queue processing state changes (optimized for loading indicators)
 const [value, queuer] = useQueuedValue(
   initialValue,
   { wait: 500, started: true },
@@ -96,7 +97,7 @@ const [value, queuer] = useQueuedValue(
   })
 );
 
-// Only re-render when queue contents change (optimized for displaying queue status)
+// Opt-in to re-render when queue contents change (optimized for displaying queue status)
 const [value, queuer] = useQueuedValue(
   initialValue,
   { wait: 500, started: true },
@@ -107,7 +108,7 @@ const [value, queuer] = useQueuedValue(
   })
 );
 
-// Only re-render when execution metrics change (optimized for stats display)
+// Opt-in to re-render when execution metrics change (optimized for stats display)
 const [value, queuer] = useQueuedValue(
   initialValue,
   { wait: 500, started: true },
@@ -132,6 +133,6 @@ const resumeProcessing = () => {
   queuer.start();
 };
 
-// Access the selected queuer state
+// Access the selected queuer state (will be empty object {} unless selector provided)
 const { size, isRunning, executionCount } = queuer.state;
 ```

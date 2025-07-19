@@ -8,17 +8,22 @@ function App1() {
 
   // Using useRateLimitedValue with a rate limit of 5 executions per 5 seconds
   // optionally, grab the rate limiter from the last index of the returned array
-  const [limitedCount] = useRateLimitedValue(instantCount, {
-    // enabled: () => instantCount > 2, // optional, defaults to true
-    limit: 5,
-    window: 5000,
-    windowType: windowType,
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
+  const [limitedCount] = useRateLimitedValue(
+    instantCount,
+    {
+      // enabled: () => instantCount > 2, // optional, defaults to true
+      limit: 5,
+      window: 5000,
+      windowType: windowType,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (_state) => ({}), // No specific state access needed for this example
+  )
 
   function increment() {
     setInstantCount((c) => c + 1)
@@ -73,17 +78,22 @@ function App2() {
   const [instantSearch, setInstantSearch] = useState('')
 
   // Using useRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const [limitedSearch] = useRateLimitedValue(instantSearch, {
-    // enabled: instantSearch.length > 2, // optional, defaults to true
-    limit: 5,
-    window: 5000,
-    windowType: windowType,
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
+  const [limitedSearch] = useRateLimitedValue(
+    instantSearch,
+    {
+      // enabled: instantSearch.length > 2, // optional, defaults to true
+      limit: 5,
+      window: 5000,
+      windowType: windowType,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (_state) => ({}), // No specific state access needed for this example
+  )
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInstantSearch(e.target.value)
@@ -146,16 +156,24 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
   // Using useRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const [limitedValue, rateLimiter] = useRateLimitedValue(currentValue, {
-    limit: 20,
-    window: 2000,
-    windowType: windowType,
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
+  const [limitedValue, rateLimiter] = useRateLimitedValue(
+    currentValue,
+    {
+      limit: 20,
+      window: 2000,
+      windowType: windowType,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
+  )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)

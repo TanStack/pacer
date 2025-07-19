@@ -11,10 +11,10 @@ title: useBatcher
 function useBatcher<TValue, TSelected>(
    fn, 
    options, 
-selector?): ReactBatcher<TValue, TSelected>
+selector): ReactBatcher<TValue, TSelected>
 ```
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:113](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L113)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:121](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L121)
 
 A React hook that creates and manages a Batcher instance.
 
@@ -33,9 +33,10 @@ The hook uses TanStack Store for reactive state management. The `selector` param
 to specify which state changes will trigger a re-render, optimizing performance by preventing
 unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available state properties:
 - `executionCount`: Number of batch executions that have been completed
@@ -51,7 +52,7 @@ Available state properties:
 
 • **TValue**
 
-• **TSelected** = `BatcherState`\<`TValue`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -63,7 +64,7 @@ Available state properties:
 
 `BatcherOptions`\<`TValue`\> = `{}`
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -74,13 +75,13 @@ Available state properties:
 ## Example
 
 ```tsx
-// Default behavior - re-renders on any state change
+// Default behavior - no reactive state subscriptions
 const batcher = useBatcher<number>(
   (items) => console.log('Processing batch:', items),
   { maxSize: 5, wait: 2000 }
 );
 
-// Only re-render when batch size changes (optimized for displaying queue size)
+// Opt-in to re-render when batch size changes (optimized for displaying queue size)
 const batcher = useBatcher<number>(
   (items) => console.log('Processing batch:', items),
   { maxSize: 5, wait: 2000 },
@@ -90,7 +91,7 @@ const batcher = useBatcher<number>(
   })
 );
 
-// Only re-render when execution metrics change (optimized for stats display)
+// Opt-in to re-render when execution metrics change (optimized for stats display)
 const batcher = useBatcher<number>(
   (items) => console.log('Processing batch:', items),
   { maxSize: 5, wait: 2000 },
@@ -100,7 +101,7 @@ const batcher = useBatcher<number>(
   })
 );
 
-// Only re-render when processing state changes (optimized for loading indicators)
+// Opt-in to re-render when processing state changes (optimized for loading indicators)
 const batcher = useBatcher<number>(
   (items) => console.log('Processing batch:', items),
   { maxSize: 5, wait: 2000 },
@@ -133,6 +134,6 @@ batcher.addItem(3); // Triggers batch processing
 batcher.stop();  // Pause batching
 batcher.start(); // Resume batching
 
-// Access the selected state
+// Access the selected state (will be empty object {} unless selector provided)
 const { size, isPending } = batcher.state;
 ```

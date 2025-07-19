@@ -14,7 +14,7 @@ function useThrottledValue<TValue, TSelected>(
    selector?): [TValue, ReactThrottler<Dispatch<SetStateAction<TValue>>, TSelected>]
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottledValue.ts:84](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledValue.ts#L84)
+Defined in: [react-pacer/src/throttler/useThrottledValue.ts:85](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottledValue.ts#L85)
 
 A high-level React hook that creates a throttled version of a value that updates at most once within a specified time window.
 This hook uses React's useState internally to manage the throttled state.
@@ -35,9 +35,10 @@ The hook uses TanStack Store for reactive state management via the underlying th
 The `selector` parameter allows you to specify which throttler state changes will trigger a re-render,
 optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all throttler state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available throttler state properties:
 - `executionCount`: Number of function executions that have been completed
@@ -74,17 +75,17 @@ Available throttler state properties:
 ## Example
 
 ```tsx
-// Basic throttling - update at most once per second (re-renders on any throttler state change)
+// Default behavior - no reactive state subscriptions
 const [throttledValue, throttler] = useThrottledValue(rawValue, { wait: 1000 });
 
-// Only re-render when execution count changes (optimized for tracking executions)
+// Opt-in to re-render when execution count changes (optimized for tracking executions)
 const [throttledValue, throttler] = useThrottledValue(
   rawValue,
   { wait: 1000 },
   (state) => ({ executionCount: state.executionCount })
 );
 
-// Only re-render when throttling state changes (optimized for loading indicators)
+// Opt-in to re-render when throttling state changes (optimized for loading indicators)
 const [throttledValue, throttler] = useThrottledValue(
   rawValue,
   { wait: 1000 },
@@ -94,7 +95,7 @@ const [throttledValue, throttler] = useThrottledValue(
   })
 );
 
-// Only re-render when timing information changes (optimized for timing displays)
+// Opt-in to re-render when timing information changes (optimized for timing displays)
 const [throttledValue, throttler] = useThrottledValue(
   rawValue,
   { wait: 1000 },
@@ -111,6 +112,6 @@ const [throttledValue, throttler] = useThrottledValue(rawValue, {
   trailing: false  // Skip trailing edge updates
 });
 
-// Access the selected throttler state
+// Access the selected throttler state (will be empty object {} unless selector provided)
 const { executionCount, isPending } = throttler.state;
 ```

@@ -6,10 +6,24 @@ function App1() {
   const [instantSearchValue, setInstantSearchValue] = useState('')
 
   // Queuer that processes a single value with delays
-  const [value, queuer] = useQueuedValue(instantSearchValue, {
-    maxSize: 25,
-    wait: 500, // wait 500ms between processing value changes
-  })
+  const [value, queuer] = useQueuedValue(
+    instantSearchValue,
+    {
+      maxSize: 25,
+      wait: 500, // wait 500ms between processing value changes
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      isEmpty: state.isEmpty,
+      isFull: state.isFull,
+      isIdle: state.isIdle,
+      isRunning: state.isRunning,
+      items: state.items, // required for useQueuedValue hook
+      size: state.size,
+      status: state.status,
+    }),
+  )
 
   return (
     <div>
@@ -82,10 +96,23 @@ function App2() {
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
   // Queuer that processes a single value with delays
-  const [queuedValue, queuer] = useQueuedValue(currentValue, {
-    maxSize: 100,
-    wait: 100,
-  })
+  const [queuedValue, queuer] = useQueuedValue(
+    currentValue,
+    {
+      maxSize: 100,
+      wait: 100,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      isEmpty: state.isEmpty,
+      isFull: state.isFull,
+      isIdle: state.isIdle,
+      items: state.items, // required for useQueuedValue hook
+      size: state.size,
+      status: state.status,
+    }),
+  )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)

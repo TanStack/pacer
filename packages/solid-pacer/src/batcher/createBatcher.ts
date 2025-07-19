@@ -1,9 +1,10 @@
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/solid-store'
+import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
-export interface SolidBatcher<TValue, TSelected = BatcherState<TValue>>
+export interface SolidBatcher<TValue, TSelected = {}>
   extends Omit<Batcher<TValue>, 'store'> {
   /**
    * Reactive state that will be updated when the batcher state changes
@@ -11,6 +12,12 @@ export interface SolidBatcher<TValue, TSelected = BatcherState<TValue>>
    * Use this instead of `batcher.store.state`
    */
   readonly state: Accessor<Readonly<TSelected>>
+  /**
+   * @deprecated Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<BatcherState<TValue>>>
 }
 
 /**
@@ -28,8 +35,26 @@ export interface SolidBatcher<TValue, TSelected = BatcherState<TValue>>
  * - Time-based batching (process after X milliseconds)
  * - Custom batch processing logic via getShouldExecute
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+ * to specify which state changes will trigger a re-render, optimizing performance by preventing
+ * unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
+ *
+ * Available state properties:
+ * - `executionCount`: Number of batch executions that have been completed
+ * - `isRunning`: Whether the batcher is currently running (not stopped)
+ * - `items`: Array of items currently queued for batching
+ * - `totalItemsProcessed`: Total number of individual items that have been processed across all batches
+ *
  * Example usage:
  * ```tsx
+ * // Default behavior - no reactive state subscriptions
  * const batcher = createBatcher(
  *   (items) => {
  *     // Process batch of items
@@ -43,6 +68,23 @@ export interface SolidBatcher<TValue, TSelected = BatcherState<TValue>>
  *   }
  * );
  *
+ * // Opt-in to re-render when items or isRunning changes (optimized for UI updates)
+ * const batcher = createBatcher(
+ *   (items) => console.log('Processing batch:', items),
+ *   { maxSize: 5, wait: 2000 },
+ *   (state) => ({ items: state.items, isRunning: state.isRunning })
+ * );
+ *
+ * // Opt-in to re-render when execution metrics change (optimized for tracking progress)
+ * const batcher = createBatcher(
+ *   (items) => console.log('Processing batch:', items),
+ *   { maxSize: 5, wait: 2000 },
+ *   (state) => ({
+ *     executionCount: state.executionCount,
+ *     totalItemsProcessed: state.totalItemsProcessed
+ *   })
+ * );
+ *
  * // Add items to batch
  * batcher.addItem('task1');
  * batcher.addItem('task2');
@@ -51,19 +93,15 @@ export interface SolidBatcher<TValue, TSelected = BatcherState<TValue>>
  * batcher.stop();  // Pause processing
  * batcher.start(); // Resume processing
  *
- * // Access batcher state via signals
- * console.log('Items:', batcher.allItems());
- * console.log('Size:', batcher.size());
- * console.log('Is empty:', batcher.isEmpty());
- * console.log('Is running:', batcher.isRunning());
- * console.log('Batch count:', batcher.executionCount());
- * console.log('Item count:', batcher.totalItemsProcessed());
+ * // Access the selected state (will be empty object {} unless selector provided)
+ * const { items, isRunning } = batcher.state();
  * ```
  */
-export function createBatcher<TValue, TSelected = BatcherState<TValue>>(
+export function createBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
   initialOptions: BatcherOptions<TValue> = {},
-  selector?: (state: BatcherState<TValue>) => TSelected,
+  selector: (state: BatcherState<TValue>) => TSelected = () =>
+    ({}) as TSelected,
 ): SolidBatcher<TValue, TSelected> {
   const batcher = new Batcher(fn, initialOptions)
 

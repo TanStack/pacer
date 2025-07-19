@@ -11,10 +11,10 @@ title: useDebouncer
 function useDebouncer<TFn, TSelected>(
    fn, 
    options, 
-selector?): ReactDebouncer<TFn, TSelected>
+selector): ReactDebouncer<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:96](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L96)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:102](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L102)
 
 A React hook that creates and manages a Debouncer instance.
 
@@ -36,9 +36,10 @@ The hook uses TanStack Store for reactive state management. The `selector` param
 to specify which state changes will trigger a re-render, optimizing performance by preventing
 unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available state properties:
 - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -51,7 +52,7 @@ Available state properties:
 
 • **TFn** *extends* `AnyFunction`
 
-• **TSelected** = `DebouncerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -63,7 +64,7 @@ Available state properties:
 
 `DebouncerOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -74,20 +75,20 @@ Available state properties:
 ## Example
 
 ```tsx
-// Default behavior - re-renders on any state change
+// Default behavior - no reactive state subscriptions
 const searchDebouncer = useDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 }
 );
 
-// Only re-render when isPending changes (optimized for loading states)
+// Opt-in to re-render when isPending changes (optimized for loading states)
 const searchDebouncer = useDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 },
   (state) => ({ isPending: state.isPending })
 );
 
-// Only re-render when executionCount changes (optimized for tracking execution)
+// Opt-in to re-render when executionCount changes (optimized for tracking execution)
 const searchDebouncer = useDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 },
@@ -110,6 +111,6 @@ const handleChange = (e) => {
   searchDebouncer.maybeExecute(e.target.value);
 };
 
-// Access the selected state
+// Access the selected state (will be empty object {} unless selector provided)
 const { isPending } = searchDebouncer.state;
 ```

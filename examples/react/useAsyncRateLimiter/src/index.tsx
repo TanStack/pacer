@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncRateLimiter } from '@tanstack/react-pacer/async-rate-limiter'
-import { useStoragePersister } from '@tanstack/react-persister/storage-persister'
-import type { AsyncRateLimiterState } from '@tanstack/react-pacer/async-rate-limiter'
 
 interface SearchResult {
   id: number
@@ -41,38 +39,32 @@ function App() {
     console.log(setSearchAsyncRateLimiter.state.successCount)
   }
 
-  const rateLimiterPersister = useStoragePersister<
-    AsyncRateLimiterState<typeof handleSearch>
-  >({
-    key: 'my-async-rate-limiter',
-    storage: localStorage,
-    maxAge: 1000 * 60, // 1 minute
-    buster: 'v1',
-  })
-
   // hook that gives you an async rate limiter instance
-  const setSearchAsyncRateLimiter = useAsyncRateLimiter(handleSearch, {
-    windowType: windowType,
-    limit: 3, // Maximum 2 requests
-    window: 3000, // per 1 second
-    onReject: (rateLimiter) => {
-      console.log(
-        `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
-      )
+  const setSearchAsyncRateLimiter = useAsyncRateLimiter(
+    handleSearch,
+    {
+      windowType: windowType,
+      limit: 3, // Maximum 2 requests
+      window: 3000, // per 1 second
+      onReject: (rateLimiter) => {
+        console.log(
+          `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
+        )
+      },
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setError(error as Error)
+        setResults([])
+      },
     },
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setError(error as Error)
-      setResults([])
-    },
-    // optionally, you can persist the rate limiter state to localStorage
-    initialState: rateLimiterPersister.loadState(),
-  })
-
-  useEffect(() => {
-    rateLimiterPersister.saveState(setSearchAsyncRateLimiter.state)
-  }, [setSearchAsyncRateLimiter.state])
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      successCount: state.successCount,
+      rejectionCount: state.rejectionCount,
+      isExecuting: state.isExecuting,
+    }),
+  )
 
   // get and name our rate limited function
   const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute

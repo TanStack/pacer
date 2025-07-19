@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
-import { useStoragePersister } from '@tanstack/react-persister/storage-persister'
-import type { RateLimiterState } from '@tanstack/react-pacer/rate-limiter'
 
 function App1() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
@@ -11,31 +9,26 @@ function App1() {
   const [instantCount, setInstantCount] = useState(0) // not rate-limited
   const [limitedCount, setLimitedCount] = useState(0) // rate-limited
 
-  const rateLimiterPersister = useStoragePersister<RateLimiterState>({
-    key: 'my-rate-limiter',
-    storage: localStorage,
-    maxAge: 1000 * 60, // 1 minute
-    buster: 'v1',
-  })
-
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
-  const rateLimiter = useRateLimiter(setLimitedCount, {
-    // enabled: () => instantCount > 2,
-    limit: 5,
-    window: 5000,
-    windowType: windowType,
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-    // optional local storage persister to retain state on page refresh
-    initialState: rateLimiterPersister.loadState(),
-  })
-
-  useEffect(() => {
-    rateLimiterPersister.saveState(rateLimiter.state)
-  }, [rateLimiter.state])
+  const rateLimiter = useRateLimiter(
+    setLimitedCount,
+    {
+      // enabled: () => instantCount > 2,
+      limit: 5,
+      window: 5000,
+      windowType: windowType,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
+  )
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -48,7 +41,7 @@ function App1() {
 
   return (
     <div>
-      <h1>TanStack Pacer useRateLimiter Example 1 (with persister)</h1>
+      <h1>TanStack Pacer useRateLimiter Example 1</h1>
       <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
         <label>
           <input
@@ -120,17 +113,25 @@ function App2() {
   const [limitedSearch, setLimitedSearch] = useState('')
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
-  const rateLimiter = useRateLimiter(setLimitedSearch, {
-    enabled: instantSearch.length > 2, // optional, defaults to true
-    limit: 5,
-    window: 5000,
-    // windowType: 'sliding', // default is 'fixed'
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
+  const rateLimiter = useRateLimiter(
+    setLimitedSearch,
+    {
+      enabled: instantSearch.length > 2, // optional, defaults to true
+      limit: 5,
+      window: 5000,
+      // windowType: 'sliding', // default is 'fixed'
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
+  )
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
@@ -199,15 +200,23 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
-  const rateLimiter = useRateLimiter(setLimitedValue, {
-    limit: 20,
-    window: 2000,
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
+  const rateLimiter = useRateLimiter(
+    setLimitedValue,
+    {
+      limit: 20,
+      window: 2000,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
+  )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)

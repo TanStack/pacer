@@ -14,7 +14,7 @@ function useRateLimitedState<TValue, TSelected>(
    selector?): [TValue, Dispatch<SetStateAction<TValue>>, ReactRateLimiter<Dispatch<SetStateAction<TValue>>, TSelected>]
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimitedState.ts:106](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedState.ts#L106)
+Defined in: [react-pacer/src/rate-limiter/useRateLimitedState.ts:107](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedState.ts#L107)
 
 A React hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
 This hook combines React's useState with rate limiting functionality to provide controlled state updates.
@@ -49,9 +49,10 @@ The hook uses TanStack Store for reactive state management via the underlying ra
 The `selector` parameter allows you to specify which rate limiter state changes will trigger a re-render,
 optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all rate limiter state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available rate limiter state properties:
 - `executionCount`: Number of function executions that have been completed
@@ -85,28 +86,28 @@ Available rate limiter state properties:
 ## Example
 
 ```tsx
-// Basic rate limiting - update state at most 5 times per minute with a sliding window (re-renders on any rate limiter state change)
+// Default behavior - no reactive state subscriptions
 const [value, setValue, rateLimiter] = useRateLimitedState(0, {
   limit: 5,
   window: 60000,
   windowType: 'sliding'
 });
 
-// Only re-render when execution count changes (optimized for tracking successful updates)
+// Opt-in to re-render when execution count changes (optimized for tracking successful updates)
 const [value, setValue, rateLimiter] = useRateLimitedState(
   0,
   { limit: 5, window: 60000, windowType: 'sliding' },
   (state) => ({ executionCount: state.executionCount })
 );
 
-// Only re-render when rejection count changes (optimized for tracking rate limit violations)
+// Opt-in to re-render when rejection count changes (optimized for tracking rate limit violations)
 const [value, setValue, rateLimiter] = useRateLimitedState(
   0,
   { limit: 5, window: 60000, windowType: 'sliding' },
   (state) => ({ rejectionCount: state.rejectionCount })
 );
 
-// Only re-render when execution times change (optimized for window calculations)
+// Opt-in to re-render when execution times change (optimized for window calculations)
 const [value, setValue, rateLimiter] = useRateLimitedState(
   0,
   { limit: 5, window: 60000, windowType: 'sliding' },
@@ -133,6 +134,6 @@ const handleSubmit = () => {
   }
 };
 
-// Access the selected rate limiter state
+// Access the selected rate limiter state (will be empty object {} unless selector provided)
 const { executionCount, rejectionCount } = rateLimiter.state;
 ```

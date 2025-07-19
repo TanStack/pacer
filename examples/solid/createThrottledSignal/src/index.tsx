@@ -13,6 +13,9 @@ function App1() {
       wait: 1000,
       // enabled: () => instantCount() > 2, // optional, defaults to true
     },
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
   )
 
   function increment() {
@@ -55,10 +58,16 @@ function App2() {
 
   // higher-level hook that uses React.createSignal with the state setter automatically throttled
   const [throttledSearch, setThrottledSearch, throttler] =
-    createThrottledSignal(instantSearch(), {
-      wait: 1000,
-      // enabled: () => instantSearch().length > 2, // optional, defaults to true
-    })
+    createThrottledSignal(
+      instantSearch(),
+      {
+        wait: 1000,
+        // enabled: () => instantSearch().length > 2, // optional, defaults to true
+      },
+      (state) => ({
+        executionCount: state.executionCount,
+      }),
+    )
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
@@ -110,6 +119,9 @@ function App3() {
     {
       wait: 250,
     },
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
   )
 
   function handleRangeChange(e: Event) {

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { useStore } from '@tanstack/react-store'
+import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncDebouncerOptions,
@@ -9,7 +10,7 @@ import type {
 
 export interface ReactAsyncDebouncer<
   TFn extends AnyAsyncFunction,
-  TSelected = AsyncDebouncerState<TFn>,
+  TSelected = {},
 > extends Omit<AsyncDebouncer<TFn>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the debouncer state changes
@@ -17,6 +18,12 @@ export interface ReactAsyncDebouncer<
    * Use this instead of `debouncer.store.state`
    */
   readonly state: Readonly<TSelected>
+  /**
+   * @deprecated Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>
 }
 
 /**
@@ -49,9 +56,10 @@ export interface ReactAsyncDebouncer<
  * to specify which state changes will trigger a re-render, optimizing performance by preventing
  * unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available state properties:
  * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -66,7 +74,7 @@ export interface ReactAsyncDebouncer<
  *
  * @example
  * ```tsx
- * // Basic API call debouncing - re-renders on any state change
+ * // Default behavior - no reactive state subscriptions
  * const searchDebouncer = useAsyncDebouncer(
  *   async (query: string) => {
  *     const results = await api.search(query);
@@ -75,7 +83,7 @@ export interface ReactAsyncDebouncer<
  *   { wait: 500 }
  * );
  *
- * // Only re-render when execution state changes (optimized for loading indicators)
+ * // Opt-in to re-render when execution state changes (optimized for loading indicators)
  * const searchDebouncer = useAsyncDebouncer(
  *   async (query: string) => {
  *     const results = await api.search(query);
@@ -88,7 +96,7 @@ export interface ReactAsyncDebouncer<
  *   })
  * );
  *
- * // Only re-render when results are available (optimized for data display)
+ * // Opt-in to re-render when results are available (optimized for data display)
  * const searchDebouncer = useAsyncDebouncer(
  *   async (query: string) => {
  *     const results = await api.search(query);
@@ -101,7 +109,7 @@ export interface ReactAsyncDebouncer<
  *   })
  * );
  *
- * // Only re-render when error state changes (optimized for error handling)
+ * // Opt-in to re-render when error state changes (optimized for error handling)
  * const searchDebouncer = useAsyncDebouncer(
  *   async (query: string) => {
  *     const results = await api.search(query);
@@ -134,17 +142,15 @@ export interface ReactAsyncDebouncer<
  *   }
  * );
  *
- * // Access the selected state
+ * // Access the selected state (will be empty object {} unless selector provided)
  * const { isExecuting, lastResult } = state;
  * ```
  */
-export function useAsyncDebouncer<
-  TFn extends AnyAsyncFunction,
-  TSelected = AsyncDebouncerState<TFn>,
->(
+export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   fn: TFn,
   options: AsyncDebouncerOptions<TFn>,
-  selector?: (state: AsyncDebouncerState<TFn>) => TSelected,
+  selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
+    ({}) as TSelected,
 ): ReactAsyncDebouncer<TFn, TSelected> {
   const [asyncDebouncer] = useState(() => new AsyncDebouncer<TFn>(fn, options))
 
@@ -163,7 +169,7 @@ export function useAsyncDebouncer<
       ({
         ...asyncDebouncer,
         state,
-      }) as unknown as ReactAsyncDebouncer<TFn, TSelected>, // omit `store` in favor of `state`
+      }) as ReactAsyncDebouncer<TFn, TSelected>, // omit `store` in favor of `state`
     [asyncDebouncer, state],
   )
 }

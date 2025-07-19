@@ -9,11 +9,19 @@ function App1() {
   const [limitedCount, setLimitedCount] = createSignal(0)
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
-  const rateLimiter = createRateLimiter(setLimitedCount, {
-    limit: 5,
-    window: 5000,
-    windowType: windowType(),
-  })
+  const rateLimiter = createRateLimiter(
+    setLimitedCount,
+    {
+      limit: 5,
+      window: 5000,
+      windowType: windowType(),
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
+  )
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -89,11 +97,19 @@ function App2() {
   const [limitedSearch, setLimitedSearch] = createSignal('')
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
-  const rateLimiter = createRateLimiter(setLimitedSearch, {
-    limit: 5,
-    window: 5000,
-    windowType: windowType(),
-  })
+  const rateLimiter = createRateLimiter(
+    setLimitedSearch,
+    {
+      limit: 5,
+      window: 5000,
+      windowType: windowType(),
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
+  )
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
@@ -177,16 +193,24 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
-  const rateLimiter = createRateLimiter(setLimitedValue, {
-    limit: 20,
-    window: 2000,
-    windowType: windowType(),
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
+  const rateLimiter = createRateLimiter(
+    setLimitedValue,
+    {
+      limit: 20,
+      window: 2000,
+      windowType: windowType(),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+      rejectionCount: state.rejectionCount,
+    }),
+  )
 
   function handleRangeChange(e: Event) {
     const target = e.target as HTMLInputElement
