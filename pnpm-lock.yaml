@@ -1405,22 +1405,6 @@ importers:
         specifier: ^2.11.7
         version: 2.11.7(@testing-library/jest-dom@6.6.3)(solid-js@1.9.7)(vite@7.0.4(@types/node@24.0.13)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
 
-  examples/solid/util-comparison:
-    dependencies:
-      '@tanstack/solid-pacer':
-        specifier: ^0.9.1
-        version: 0.9.1(solid-js@1.9.7)
-      solid-js:
-        specifier: ^1.9.7
-        version: 1.9.7
-    devDependencies:
-      vite:
-        specifier: ^7.0.4
-        version: 7.0.4(@types/node@24.0.13)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vite-plugin-solid:
-        specifier: ^2.11.7
-        version: 2.11.7(@testing-library/jest-dom@6.6.3)(solid-js@1.9.7)(vite@7.0.4(@types/node@24.0.13)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
-
   packages/pacer:
     dependencies:
       '@tanstack/store':
