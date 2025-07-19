@@ -1,5 +1,12 @@
 # @tanstack/pacer
 
+## 0.11.0
+
+### Minor Changes
+
+- fix: lastArgs in `Debouncer` and `AsyncDebouncer` not getting set to undefined after execution ([#43](https://github.com/TanStack/pacer/pull/43))
+  fix: `nextExecution` in `Throttler` and `AsyncThrottler` not getting set to undefined after timestamp has passed
+
 ## 0.10.0
 
 ### Minor Changes

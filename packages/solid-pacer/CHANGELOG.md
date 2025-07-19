@@ -1,5 +1,16 @@
 # @tanstack/solid-pacer
 
+## 0.11.0
+
+### Minor Changes
+
+- breaking: selectors are required in react and solid adapters in order to read state changes with reactivity ([#43](https://github.com/TanStack/pacer/pull/43))
+
+### Patch Changes
+
+- Updated dependencies [[`7969682`](https://github.com/TanStack/pacer/commit/7969682be3bf8745822baf646d74e17ddb64afac)]:
+  - @tanstack/pacer@0.11.0
+
 ## 0.10.0
 
 ### Minor Changes
