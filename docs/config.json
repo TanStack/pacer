@@ -772,6 +772,10 @@
               "to": "framework/react/examples/useRateLimiter"
             },
             {
+              "label": "useRateLimiterWithPersister",
+              "to": "framework/react/examples/useRateLimiterWithPersister"
+            },
+            {
               "label": "useRateLimitedCallback",
               "to": "framework/react/examples/useRateLimitedCallback"
             },
@@ -786,6 +790,10 @@
             {
               "label": "useAsyncRateLimiter",
               "to": "framework/react/examples/useAsyncRateLimiter"
+            },
+            {
+              "label": "useAsyncRateLimiterWithPersister",
+              "to": "framework/react/examples/useAsyncRateLimiterWithPersister"
             }
           ]
         },
@@ -834,6 +842,10 @@
             {
               "label": "useQueuer",
               "to": "framework/react/examples/useQueuer"
+            },
+            {
+              "label": "useQueuerWithPersister",
+              "to": "framework/react/examples/useQueuerWithPersister"
             },
             {
               "label": "useQueuedState",

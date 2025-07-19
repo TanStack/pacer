@@ -16,7 +16,7 @@ function App() {
     console.log(`Processed ${item}`)
   }
 
-  const queuer = createAsyncQueuer<Item>(
+  const queuer = createAsyncQueuer(
     processItem,
     {
       maxSize: 25,
@@ -39,8 +39,19 @@ function App() {
         ) // optionally, handle errors here instead of your own try/catch
       },
     },
-    // optionally, you can select a subset of the state to re-render when it changes
-    // (state) => ({}),
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      status: state.status,
+      successCount: state.successCount,
+      items: state.items,
+      isFull: state.isFull,
+      isEmpty: state.isEmpty,
+      isIdle: state.isIdle,
+      rejectionCount: state.rejectionCount,
+      activeItems: state.activeItems,
+      isRunning: state.isRunning,
+    }),
   )
 
   return (

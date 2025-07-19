@@ -1,19 +1,26 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useStore } from '@tanstack/solid-store'
+import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
-export interface SolidAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
+export interface SolidAsyncQueuer<TValue, TSelected = {}>
   extends Omit<AsyncQueuer<TValue>, 'store'> {
   /**
-   * Reactive state that will be updated and re-rendered when the queuer state changes
+   * Reactive state that will be updated when the queuer state changes
    *
    * Use this instead of `queuer.store.state`
    */
   readonly state: Accessor<Readonly<TSelected>>
+  /**
+   * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<AsyncQueuerState<TValue>>>
 }
 
 /**
@@ -39,9 +46,29 @@ export interface SolidAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
  * - Both onError and throwOnError can be used together; the handler will be called before any error is thrown
  * - The error state can be checked using the underlying AsyncQueuer instance
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+ * to specify which state changes will trigger a re-render, optimizing performance by preventing
+ * unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
+ *
+ * Available state properties:
+ * - `activeItems`: Array of items currently being processed
+ * - `errorCount`: Number of items that failed processing
+ * - `isRunning`: Whether the queuer is currently running (not stopped)
+ * - `pendingItems`: Array of items waiting to be processed
+ * - `rejectionCount`: Number of items that were rejected (expired or failed validation)
+ * - `settleCount`: Number of items that have completed processing (successful or failed)
+ * - `successCount`: Number of items that were processed successfully
+ *
  * Example usage:
  * ```tsx
- * // Basic async queuer for API requests
+ * // Default behavior - no reactive state subscriptions
  * const asyncQueuer = createAsyncQueuer(async (item) => {
  *   // process item
  *   return await fetchData(item);
@@ -58,20 +85,43 @@ export interface SolidAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>
  *   }
  * });
  *
+ * // Opt-in to re-render when queue state changes (optimized for UI updates)
+ * const asyncQueuer = createAsyncQueuer(
+ *   async (item) => await fetchData(item),
+ *   { concurrency: 2, started: true },
+ *   (state) => ({
+ *     pendingItems: state.pendingItems,
+ *     activeItems: state.activeItems,
+ *     isRunning: state.isRunning
+ *   })
+ * );
+ *
+ * // Opt-in to re-render when processing metrics change (optimized for tracking progress)
+ * const asyncQueuer = createAsyncQueuer(
+ *   async (item) => await fetchData(item),
+ *   { concurrency: 2, started: true },
+ *   (state) => ({
+ *     successCount: state.successCount,
+ *     errorCount: state.errorCount,
+ *     settleCount: state.settleCount
+ *   })
+ * );
+ *
  * // Add items to queue
  * asyncQueuer.addItem(newItem);
  *
  * // Start processing
  * asyncQueuer.start();
  *
- * // Use Solid signals in your UI
- * const pending = asyncQueuer.pendingItems();
+ * // Access the selected state (will be empty object {} unless selector provided)
+ * const { pendingItems, activeItems } = asyncQueuer.state();
  * ```
  */
-export function createAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>(
+export function createAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
   initialOptions: AsyncQueuerOptions<TValue> = {},
-  selector?: (state: AsyncQueuerState<TValue>) => TSelected,
+  selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
+    ({}) as TSelected,
 ): SolidAsyncQueuer<TValue, TSelected> {
   const asyncQueuer = new AsyncQueuer<TValue>(fn, initialOptions)
 
@@ -80,5 +130,5 @@ export function createAsyncQueuer<TValue, TSelected = AsyncQueuerState<TValue>>(
   return {
     ...asyncQueuer,
     state,
-  } as unknown as SolidAsyncQueuer<TValue, TSelected> // omit `store` in favor of `state`
+  } as SolidAsyncQueuer<TValue, TSelected> // omit `store` in favor of `state`
 }

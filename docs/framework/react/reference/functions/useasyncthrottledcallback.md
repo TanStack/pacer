@@ -8,13 +8,10 @@ title: useAsyncThrottledCallback
 # Function: useAsyncThrottledCallback()
 
 ```ts
-function useAsyncThrottledCallback<TFn, TSelected>(
-   fn, 
-   options, 
-selector): (...args) => Promise<ReturnType<TFn>>
+function useAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottledCallback.ts:65](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L65)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottledCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L42)
 
 A React hook that creates a throttled version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncThrottler` hook,
@@ -36,32 +33,9 @@ For advanced usage requiring features like:
 
 Consider using the `useAsyncThrottler` hook instead.
 
-## State Management and Re-renders
-
-**By default, this callback hook disables re-renders from internal state changes for optimal performance.**
-The hook uses TanStack Store internally but doesn't subscribe to state changes, preventing
-unnecessary re-renders when the async throttler's internal state updates.
-
-If you need to react to state changes (like showing loading indicators or error states),
-you can provide a custom `selector` function to opt into specific state updates:
-
-```tsx
-// Default: No re-renders from state changes (optimal performance)
-const throttledCallback = useAsyncThrottledCallback(asyncFn, { wait: 1000 });
-
-// Opt-in: Re-render when execution state changes
-const throttledCallback = useAsyncThrottledCallback(
-  asyncFn,
-  { wait: 1000 },
-  (state) => ({ isExecuting: state.isExecuting, lastError: state.lastError })
-);
-```
-
 ## Type Parameters
 
 • **TFn** *extends* `AnyAsyncFunction`
-
-• **TSelected** = \{\}
 
 ## Parameters
 
@@ -72,10 +46,6 @@ const throttledCallback = useAsyncThrottledCallback(
 ### options
 
 `AsyncThrottlerOptions`\<`TFn`\>
-
-### selector
-
-(`state`) => `TSelected`
 
 ## Returns
 

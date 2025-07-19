@@ -11,10 +11,10 @@ title: createAsyncQueuer
 function createAsyncQueuer<TValue, TSelected>(
    fn, 
    initialOptions, 
-selector?): SolidAsyncQueuer<TValue, TSelected>
+selector): SolidAsyncQueuer<TValue, TSelected>
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:71](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L71)
+Defined in: [async-queuer/createAsyncQueuer.ts:120](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L120)
 
 Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 
@@ -38,9 +38,29 @@ Error Handling:
 - Both onError and throwOnError can be used together; the handler will be called before any error is thrown
 - The error state can be checked using the underlying AsyncQueuer instance
 
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+to specify which state changes will trigger a re-render, optimizing performance by preventing
+unnecessary re-renders when irrelevant state changes occur.
+
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
+
+Available state properties:
+- `activeItems`: Array of items currently being processed
+- `errorCount`: Number of items that failed processing
+- `isRunning`: Whether the queuer is currently running (not stopped)
+- `pendingItems`: Array of items waiting to be processed
+- `rejectionCount`: Number of items that were rejected (expired or failed validation)
+- `settleCount`: Number of items that have completed processing (successful or failed)
+- `successCount`: Number of items that were processed successfully
+
 Example usage:
 ```tsx
-// Basic async queuer for API requests
+// Default behavior - no reactive state subscriptions
 const asyncQueuer = createAsyncQueuer(async (item) => {
   // process item
   return await fetchData(item);
@@ -57,21 +77,43 @@ const asyncQueuer = createAsyncQueuer(async (item) => {
   }
 });
 
+// Opt-in to re-render when queue state changes (optimized for UI updates)
+const asyncQueuer = createAsyncQueuer(
+  async (item) => await fetchData(item),
+  { concurrency: 2, started: true },
+  (state) => ({
+    pendingItems: state.pendingItems,
+    activeItems: state.activeItems,
+    isRunning: state.isRunning
+  })
+);
+
+// Opt-in to re-render when processing metrics change (optimized for tracking progress)
+const asyncQueuer = createAsyncQueuer(
+  async (item) => await fetchData(item),
+  { concurrency: 2, started: true },
+  (state) => ({
+    successCount: state.successCount,
+    errorCount: state.errorCount,
+    settleCount: state.settleCount
+  })
+);
+
 // Add items to queue
 asyncQueuer.addItem(newItem);
 
 // Start processing
 asyncQueuer.start();
 
-// Use Solid signals in your UI
-const pending = asyncQueuer.pendingItems();
+// Access the selected state (will be empty object {} unless selector provided)
+const { pendingItems, activeItems } = asyncQueuer.state();
 ```
 
 ## Type Parameters
 
 • **TValue**
 
-• **TSelected** = `AsyncQueuerState`\<`TValue`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -83,7 +125,7 @@ const pending = asyncQueuer.pendingItems();
 
 `AsyncQueuerOptions`\<`TValue`\> = `{}`
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 

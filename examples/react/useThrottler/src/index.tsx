@@ -8,12 +8,17 @@ function App1() {
   const [throttledCount, setThrottledCount] = useState(0)
 
   // Lower-level useThrottler hook - requires you to manage your own state
-  const setCountThrottler = useThrottler(setThrottledCount, {
-    wait: 1000,
-    // leading: true, // default
-    // trailing: true, // default
-    // enabled: () => instantCount > 2,
-  })
+  const setCountThrottler = useThrottler(
+    setThrottledCount,
+    {
+      wait: 1000,
+      // leading: true, // default
+      // trailing: true, // default
+      // enabled: () => instantCount > 2,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({ executionCount: state.executionCount }),
+  )
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -64,10 +69,16 @@ function App2() {
   const [throttledSearch, setThrottledSearch] = useState('')
 
   // Lower-level useThrottler hook - requires you to manage your own state
-  const setSearchThrottler = useThrottler(setThrottledSearch, {
-    wait: 1000,
-    enabled: instantSearch.length > 2,
-  })
+  const setSearchThrottler = useThrottler(
+    setThrottledSearch,
+    {
+      wait: 1000,
+      enabled: instantSearch.length > 2,
+    },
+    // Optional Selector function to pick the state you want to track and use
+
+    (state) => ({ executionCount: state.executionCount }),
+  )
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
@@ -120,11 +131,16 @@ function App3() {
   const [throttledValue, setThrottledValue] = useState(50)
 
   // Lower-level useThrottler hook - requires you to manage your own state
-  const setValueThrottler = useThrottler(setThrottledValue, {
-    wait: 250,
-    // leading: true, // default
-    // trailing: true, // default
-  })
+  const setValueThrottler = useThrottler(
+    setThrottledValue,
+    {
+      wait: 250,
+      // leading: true, // default
+      // trailing: true, // default
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({ executionCount: state.executionCount }),
+  )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)

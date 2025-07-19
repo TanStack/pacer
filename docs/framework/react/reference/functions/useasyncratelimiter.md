@@ -11,10 +11,10 @@ title: useAsyncRateLimiter
 function useAsyncRateLimiter<TFn, TSelected>(
    fn, 
    options, 
-selector?): ReactAsyncRateLimiter<TFn, TSelected>
+selector): ReactAsyncRateLimiter<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:170](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L170)
+Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:178](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L178)
 
 A low-level React hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -49,9 +49,10 @@ The hook uses TanStack Store for reactive state management. The `selector` param
 to specify which state changes will trigger a re-render, optimizing performance by preventing
 unnecessary re-renders when irrelevant state changes occur.
 
-**By default, all state changes will trigger a re-render.** To optimize performance, you can
-provide a selector function that returns only the specific state values your component needs.
-The component will only re-render when the selected values change.
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
 
 Available state properties:
 - `errorCount`: Number of function executions that have resulted in errors
@@ -66,7 +67,7 @@ Available state properties:
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncRateLimiterState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -78,7 +79,7 @@ Available state properties:
 
 `AsyncRateLimiterOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -89,7 +90,7 @@ Available state properties:
 ## Example
 
 ```tsx
-// Basic API call rate limiting with return value - re-renders on any state change
+// Default behavior - no reactive state subscriptions
 const asyncRateLimiter = useAsyncRateLimiter(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -98,7 +99,7 @@ const asyncRateLimiter = useAsyncRateLimiter(
   { limit: 5, window: 1000 } // 5 calls per second
 );
 
-// Only re-render when execution state changes (optimized for loading indicators)
+// Opt-in to re-render when execution state changes (optimized for loading indicators)
 const asyncRateLimiter = useAsyncRateLimiter(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -108,7 +109,7 @@ const asyncRateLimiter = useAsyncRateLimiter(
   (state) => ({ isExecuting: state.isExecuting })
 );
 
-// Only re-render when results are available (optimized for data display)
+// Opt-in to re-render when results are available (optimized for data display)
 const asyncRateLimiter = useAsyncRateLimiter(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -121,7 +122,7 @@ const asyncRateLimiter = useAsyncRateLimiter(
   })
 );
 
-// Only re-render when error/rejection state changes (optimized for error handling)
+// Opt-in to re-render when error/rejection state changes (optimized for error handling)
 const asyncRateLimiter = useAsyncRateLimiter(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -139,7 +140,7 @@ const asyncRateLimiter = useAsyncRateLimiter(
   })
 );
 
-// Only re-render when execution metrics change (optimized for stats display)
+// Opt-in to re-render when execution metrics change (optimized for stats display)
 const asyncRateLimiter = useAsyncRateLimiter(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -154,7 +155,7 @@ const asyncRateLimiter = useAsyncRateLimiter(
   })
 );
 
-// Only re-render when execution times change (optimized for window calculations)
+// Opt-in to re-render when execution times change (optimized for window calculations)
 const asyncRateLimiter = useAsyncRateLimiter(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -184,6 +185,6 @@ const { maybeExecute, state } = useAsyncRateLimiter(
   }
 );
 
-// Access the selected state
+// Access the selected state (will be empty object {} unless selector provided)
 const { isExecuting, lastResult, rejectionCount } = state;
 ```

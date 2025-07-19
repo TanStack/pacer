@@ -38,8 +38,19 @@ function App() {
         ) // optionally, handle errors here instead of your own try/catch
       },
     },
-    // optionally, you can select a subset of the state to re-render when it changes
-    // (state) => ({ }),
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      isFull: state.isFull,
+      isEmpty: state.isEmpty,
+      isIdle: state.isIdle,
+      status: state.status,
+      successCount: state.successCount,
+      rejectionCount: state.rejectionCount,
+      activeItems: state.activeItems,
+      items: state.items,
+      isRunning: state.isRunning,
+    }),
   )
 
   return (

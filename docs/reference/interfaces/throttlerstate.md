@@ -66,7 +66,7 @@ Timestamp of the last function execution in milliseconds
 ### nextExecutionTime
 
 ```ts
-nextExecutionTime: number;
+nextExecutionTime: undefined | number;
 ```
 
 Defined in: [throttler.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L25)

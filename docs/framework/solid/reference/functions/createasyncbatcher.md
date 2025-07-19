@@ -11,10 +11,10 @@ title: createAsyncBatcher
 function createAsyncBatcher<TValue, TSelected>(
    fn, 
    initialOptions, 
-selector?): SolidAsyncBatcher<TValue, TSelected>
+selector): SolidAsyncBatcher<TValue, TSelected>
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:82](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L82)
+Defined in: [async-batcher/createAsyncBatcher.ts:128](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L128)
 
 Creates a Solid-compatible AsyncBatcher instance for managing asynchronous batches of items, exposing Solid signals for all stateful properties.
 
@@ -45,9 +45,31 @@ Error Handling:
 - Both onError and throwOnError can be used together; the handler will be called before any error is thrown
 - The error state can be checked using the underlying AsyncBatcher instance
 
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+to specify which state changes will trigger a re-render, optimizing performance by preventing
+unnecessary re-renders when irrelevant state changes occur.
+
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
+
+Available state properties:
+- `errorCount`: Number of failed batch executions
+- `executionCount`: Total number of batch execution attempts (successful + failed)
+- `hasError`: Whether the last batch execution resulted in an error
+- `isExecuting`: Whether a batch execution is currently in progress
+- `items`: Array of items currently queued for batching
+- `lastError`: The error from the most recent failed batch execution (if any)
+- `lastResult`: The result from the most recent successful batch execution
+- `settleCount`: Number of batch executions that have completed (successful or failed)
+- `successCount`: Number of successful batch executions
+
 Example usage:
 ```tsx
-// Basic async batcher for API requests
+// Default behavior - no reactive state subscriptions
 const asyncBatcher = createAsyncBatcher(
   async (items) => {
     const results = await Promise.all(items.map(item => processItem(item)));
@@ -65,22 +87,41 @@ const asyncBatcher = createAsyncBatcher(
   }
 );
 
+// Opt-in to re-render when items or isExecuting changes (optimized for UI updates)
+const asyncBatcher = createAsyncBatcher(
+  async (items) => {
+    const results = await Promise.all(items.map(item => processItem(item)));
+    return results;
+  },
+  { maxSize: 10, wait: 2000 },
+  (state) => ({ items: state.items, isExecuting: state.isExecuting })
+);
+
+// Opt-in to re-render when error state changes (optimized for error handling)
+const asyncBatcher = createAsyncBatcher(
+  async (items) => {
+    const results = await Promise.all(items.map(item => processItem(item)));
+    return results;
+  },
+  { maxSize: 10, wait: 2000 },
+  (state) => ({ hasError: state.hasError, lastError: state.lastError })
+);
+
 // Add items to batch
 asyncBatcher.addItem(newItem);
 
 // Manually execute batch
 const result = await asyncBatcher.execute();
 
-// Use Solid signals in your UI
-const items = asyncBatcher.state().items;
-const isExecuting = asyncBatcher.state().isExecuting;
+// Access the selected state (will be empty object {} unless selector provided)
+const { items, isExecuting } = asyncBatcher.state();
 ```
 
 ## Type Parameters
 
 • **TValue**
 
-• **TSelected** = `AsyncBatcherState`\<`TValue`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -92,7 +133,7 @@ const isExecuting = asyncBatcher.state().isExecuting;
 
 `AsyncBatcherOptions`\<`TValue`\> = `{}`
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 

@@ -1,3 +1,55 @@
 packages:
   - 'examples/**/*'
   - 'packages/*'
+catalog:
+  '@tanstack/react-pacer': ^0.10.0
+  '@tanstack/react-persister': ^0.1.1
+  '@types/react': ^19.1.8
+  '@types/react-dom': ^19.1.6
+  '@typescript-eslint/eslint-plugin': ^6.14.0
+  '@typescript-eslint/parser': ^6.14.0
+  '@vitejs/plugin-react': ^4.7.0
+  eslint: ^8.55.0
+  eslint-plugin-react-hooks: ^4.6.0
+  eslint-plugin-react-refresh: ^0.4.5
+  react: ^19.1.0
+  react-dom: ^19.1.0
+  typescript: ^5.2.2
+  vite: ^7.0.5
+catalogs:
+  conflicts_react_h18_2_0:
+    react: ^18.2.0
+  conflicts_react-dom_h18_2_0:
+    react-dom: ^18.2.0
+  conflicts_@types/react_h18_2_43:
+    '@types/react': ^18.2.43
+  conflicts_@types/react-dom_h18_2_17:
+    '@types/react-dom': ^18.2.17
+  conflicts_@vitejs/plugin-react_h4_2_1:
+    '@vitejs/plugin-react': ^4.2.1
+  conflicts_vite_h5_0_8:
+    vite: ^5.0.8
+  conflicts_conflicts_react_h18_2_0_h19_1_0:
+    react: ^19.1.0
+  conflicts_conflicts_react-dom_h18_2_0_h19_1_0:
+    react-dom: ^19.1.0
+  conflicts_conflicts_@types/react_h18_2_43_h19_1_8:
+    '@types/react': ^19.1.8
+  conflicts_conflicts_@types/react-dom_h18_2_17_h19_1_6:
+    '@types/react-dom': ^19.1.6
+  conflicts_@typescript-eslint/eslint-plugin_h8_37_0:
+    '@typescript-eslint/eslint-plugin': ^8.37.0
+  conflicts_@typescript-eslint/parser_h8_37_0:
+    '@typescript-eslint/parser': ^8.37.0
+  conflicts_conflicts_@vitejs/plugin-react_h4_2_1_h4_7_0:
+    '@vitejs/plugin-react': ^4.7.0
+  conflicts_eslint_h9_31_0:
+    eslint: ^9.31.0
+  conflicts_eslint-plugin-react-hooks_h5_2_0:
+    eslint-plugin-react-hooks: ^5.2.0
+  conflicts_eslint-plugin-react-refresh_h0_4_20:
+    eslint-plugin-react-refresh: ^0.4.20
+  conflicts_typescript_h5_8_3:
+    typescript: ^5.8.3
+  conflicts_conflicts_vite_h5_0_8_h7_0_5:
+    vite: ^7.0.5

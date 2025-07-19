@@ -30,7 +30,7 @@ export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
   /**
    * Timestamp when the next execution can occur in milliseconds
    */
-  nextExecutionTime: number
+  nextExecutionTime: number | undefined
   /**
    * Number of function executions that have completed (either successfully or with errors)
    */
@@ -55,7 +55,7 @@ function getDefaultAsyncThrottlerState<
     lastArgs: undefined,
     lastExecutionTime: 0,
     lastResult: undefined,
-    nextExecutionTime: 0,
+    nextExecutionTime: undefined,
     settleCount: 0,
     status: 'idle',
     successCount: 0,
@@ -346,6 +346,11 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       })
       this.#abortController = null
       this.options.onSettled?.(this)
+      setTimeout(() => {
+        if (!this.store.state.isPending) {
+          this.#setState({ nextExecutionTime: undefined })
+        }
+      }, this.#getWait())
     }
     return this.store.state.lastResult
   }

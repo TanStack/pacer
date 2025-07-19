@@ -7,7 +7,7 @@ title: ReactAsyncDebouncer
 
 # Interface: ReactAsyncDebouncer\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L10)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L11)
 
 ## Extends
 
@@ -17,7 +17,7 @@ Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:10](https://gi
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncDebouncerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Properties
 
@@ -27,8 +27,24 @@ Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:10](https://gi
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L19)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L20)
 
 Reactive state that will be updated and re-rendered when the debouncer state changes
 
 Use this instead of `debouncer.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
+```
+
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L26)
+
+#### Deprecated
+
+Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+Although, you can make the state reactive by using the `useStore` in your own usage.

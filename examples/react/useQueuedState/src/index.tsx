@@ -8,12 +8,26 @@ function App1() {
     console.log('processing item', item)
   }
 
-  const [queueItems, addItem, queuer] = useQueuedState(processItem, {
-    maxSize: 25,
-    initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    started: false,
-    wait: 1000, // wait 1 second between processing items - wait is optional!
-  })
+  const [queueItems, addItem, queuer] = useQueuedState(
+    processItem,
+    {
+      maxSize: 25,
+      initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      started: false,
+      wait: 1000, // wait 1 second between processing items - wait is optional!
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      items: state.items, // required for useQueuedState
+      size: state.size,
+      isFull: state.isFull,
+      isEmpty: state.isEmpty,
+      isIdle: state.isIdle,
+      status: state.status,
+      executionCount: state.executionCount,
+      isRunning: state.isRunning,
+    }),
+  )
 
   return (
     <div>
@@ -87,8 +101,8 @@ function App2() {
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
   // Queuer that processes a single value with delays
-  const [, addItem, queuer] = useQueuedState<number>(
-    (item) => {
+  const [, addItem, queuer] = useQueuedState(
+    (item: number) => {
       setQueuedValue(item)
     },
     {
@@ -96,6 +110,16 @@ function App2() {
       started: true,
       wait: 100,
     },
+    (state) => ({
+      items: state.items, // required for useQueuedState
+      size: state.size,
+      isFull: state.isFull,
+      isEmpty: state.isEmpty,
+      isIdle: state.isIdle,
+      status: state.status,
+      executionCount: state.executionCount,
+      isRunning: state.isRunning,
+    }),
   )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {

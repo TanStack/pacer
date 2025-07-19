@@ -213,8 +213,9 @@ export class Debouncer<TFn extends AnyFunction> {
     if (!this.#getEnabled()) return undefined
     this.fn(...args) // EXECUTE!
     this.#setState({
-      isPending: false,
       executionCount: this.store.state.executionCount + 1,
+      isPending: false,
+      lastArgs: undefined,
     })
     this.options.onExecute?.(this)
   }

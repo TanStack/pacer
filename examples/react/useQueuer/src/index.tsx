@@ -1,38 +1,37 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
-import { useStoragePersister } from '@tanstack/react-persister'
-import type { QueuerState } from '@tanstack/react-pacer/queuer'
 
 function App1() {
-  // optional session storage persister to retain state on page refresh
-  const queuerPersister = useStoragePersister<QueuerState<number>>({
-    key: 'my-queuer',
-    storage: sessionStorage,
-    maxAge: 1000 * 60, // 1 minute
-    buster: 'v1',
-  })
-
   // The function that we will be queuing
   function processItem(item: number) {
     console.log('processing item', item)
   }
 
-  const queuer = useQueuer(processItem, {
-    initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    initialState: queuerPersister.loadState(),
-    maxSize: 25, // optional, defaults to Infinity
-    started: false, // optional, defaults to true
-    wait: 1000, // wait 1 second between processing items - wait is optional!
-  })
-
-  useEffect(() => {
-    queuerPersister.saveState(queuer.state)
-  }, [queuer.state])
+  const queuer = useQueuer(
+    processItem,
+    {
+      initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      maxSize: 25, // optional, defaults to Infinity
+      started: false, // optional, defaults to true
+      wait: 1000, // wait 1 second between processing items - wait is optional!
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      isFull: state.isFull,
+      isEmpty: state.isEmpty,
+      isIdle: state.isIdle,
+      isRunning: state.isRunning,
+      status: state.status,
+      executionCount: state.executionCount,
+      items: state.items,
+    }),
+  )
 
   return (
     <div>
-      <h1>TanStack Pacer useQueuer Example 1 (with persister)</h1>
+      <h1>TanStack Pacer useQueuer Example 1</h1>
       <div>Queue Size: {queuer.state.size}</div>
       <div>Queue Max Size: {25}</div>
       <div>Queue Full: {queuer.state.isFull ? 'Yes' : 'No'}</div>
@@ -109,11 +108,23 @@ function App2() {
     setQueuedValue(item)
   }
 
-  const queuer = useQueuer(processItem, {
-    maxSize: 100,
-    initialItems: [currentValue],
-    wait: 100,
-  })
+  const queuer = useQueuer(
+    processItem,
+    {
+      maxSize: 100,
+      initialItems: [currentValue],
+      wait: 100,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      isFull: state.isFull,
+      isEmpty: state.isEmpty,
+      isIdle: state.isIdle,
+      isRunning: state.isRunning,
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)

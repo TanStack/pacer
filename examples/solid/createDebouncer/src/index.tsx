@@ -8,11 +8,18 @@ function App1() {
   const [debouncedCount, setDebouncedCount] = createSignal(0)
 
   // Lower-level createDebouncer hook - requires you to manage your own state
-  const setCountDebouncer = createDebouncer(setDebouncedCount, {
-    wait: 500,
-    // enabled: () => instantCount() > 2, // optional, defaults to true
-    // leading: true, // optional, defaults to false
-  })
+  const setCountDebouncer = createDebouncer(
+    setDebouncedCount,
+    {
+      wait: 500,
+      // enabled: () => instantCount() > 2, // optional, defaults to true
+      // leading: true, // optional, defaults to false
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -59,10 +66,17 @@ function App2() {
   const [debouncedSearchText, setDebouncedSearchText] = createSignal('')
 
   // Lower-level createDebouncer hook - requires you to manage your own state
-  const setSearchDebouncer = createDebouncer(setDebouncedSearchText, {
-    wait: 500,
-    enabled: () => searchText().length > 2,
-  })
+  const setSearchDebouncer = createDebouncer(
+    setDebouncedSearchText,
+    {
+      wait: 500,
+      enabled: () => searchText().length > 2,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
@@ -115,9 +129,16 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
 
   // Lower-level createDebouncer hook - requires you to manage your own state
-  const setValueDebouncer = createDebouncer(setDebouncedValue, {
-    wait: 250,
-  })
+  const setValueDebouncer = createDebouncer(
+    setDebouncedValue,
+    {
+      wait: 250,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleRangeChange(e: Event) {
     const target = e.target as HTMLInputElement

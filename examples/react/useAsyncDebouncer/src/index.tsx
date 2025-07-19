@@ -47,12 +47,12 @@ function App() {
         setResults([])
       },
     },
-    // optionally subscribe to only the react state re-renders you care about
-    // (state) => ({
-    //   isExecuting: state.isExecuting,
-    //   isPending: state.isPending,
-    //   successCount: state.successCount,
-    // }),
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      isExecuting: state.isExecuting,
+      isPending: state.isPending,
+      successCount: state.successCount,
+    }),
   )
 
   // get and name our debounced function

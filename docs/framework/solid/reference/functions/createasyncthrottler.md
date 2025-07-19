@@ -11,10 +11,10 @@ title: createAsyncThrottler
 function createAsyncThrottler<TFn, TSelected>(
    fn, 
    initialOptions, 
-selector?): SolidAsyncThrottler<TFn, TSelected>
+selector): SolidAsyncThrottler<TFn, TSelected>
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:72](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L72)
+Defined in: [async-throttler/createAsyncThrottler.ts:117](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L117)
 
 A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -36,11 +36,36 @@ Error Handling:
 - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
 - The error state can be checked using the underlying AsyncThrottler instance
 
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+to specify which state changes will trigger a re-render, optimizing performance by preventing
+unnecessary re-renders when irrelevant state changes occur.
+
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
+
+Available state properties:
+- `canLeadingExecute`: Whether the throttler can execute on the leading edge
+- `canTrailingExecute`: Whether the throttler can execute on the trailing edge
+- `executionCount`: Number of function executions that have been completed
+- `hasError`: Whether the last execution resulted in an error
+- `isPending`: Whether the throttler is waiting for the timeout to trigger execution
+- `isExecuting`: Whether an async function execution is currently in progress
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `lastError`: The error from the most recent failed execution (if any)
+- `lastExecutionTime`: Timestamp of the last execution
+- `lastResult`: The result from the most recent successful execution
+- `nextExecutionTime`: Timestamp of the next allowed execution
+- `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
+
 ## Type Parameters
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncThrottlerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -52,7 +77,7 @@ Error Handling:
 
 `AsyncThrottlerOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -63,7 +88,7 @@ Error Handling:
 ## Example
 
 ```tsx
-// Basic API call throttling
+// Default behavior - no reactive state subscriptions
 const { maybeExecute } = createAsyncThrottler(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -72,12 +97,21 @@ const { maybeExecute } = createAsyncThrottler(
   { wait: 1000 }
 );
 
-// With state management
-const [data, setData] = createSignal(null);
-const { maybeExecute } = createAsyncThrottler(
+// Opt-in to re-render when isPending or isExecuting changes (optimized for loading states)
+const throttler = createAsyncThrottler(
   async (query) => {
     const result = await searchAPI(query);
-    setData(result);
+    return result;
+  },
+  { wait: 2000 },
+  (state) => ({ isPending: state.isPending, isExecuting: state.isExecuting })
+);
+
+// Opt-in to re-render when error state changes (optimized for error handling)
+const throttler = createAsyncThrottler(
+  async (query) => {
+    const result = await searchAPI(query);
+    return result;
   },
   {
     wait: 2000,
@@ -86,6 +120,10 @@ const { maybeExecute } = createAsyncThrottler(
     onError: (error) => {
       console.error('API call failed:', error);
     }
-  }
+  },
+  (state) => ({ hasError: state.hasError, lastError: state.lastError })
 );
+
+// Access the selected state (will be empty object {} unless selector provided)
+const { isPending, isExecuting } = throttler.state();
 ```

@@ -11,9 +11,15 @@ function App1() {
 
   // highest-level hook that watches an instant local state value and returns a throttled value
   // optionally, grab the throttler from the last index of the returned array
-  const [throttledCount] = createThrottledValue(instantCount, {
-    wait: 1000,
-  })
+  const [throttledCount] = createThrottledValue(
+    instantCount,
+    {
+      wait: 1000,
+    },
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   return (
     <div>
@@ -83,9 +89,15 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledValue, throttler] = createThrottledValue(currentValue, {
-    wait: 250,
-  })
+  const [throttledValue, throttler] = createThrottledValue(
+    currentValue,
+    {
+      wait: 250,
+    },
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleRangeChange(e: Event) {
     const target = e.target as HTMLInputElement

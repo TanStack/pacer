@@ -40,30 +40,45 @@ function App() {
     return result
   }
 
-  const asyncBatcher = useAsyncBatcher(processBatch, {
-    maxSize: 5, // Process in batches of 5 (if reached before wait time)
-    wait: 4000, // Wait up to 4 seconds before processing a batch
-    getShouldExecute: (items) =>
-      items.some((item) => item.value.includes('urgent')), // Process immediately if any item is marked urgent
-    throwOnError: false, // Don't throw errors, handle them via onError
-    onSuccess: (result, batcher) => {
-      console.log('Batch succeeded:', result)
-      console.log('Total successful batches:', batcher.store.state.successCount)
+  const asyncBatcher = useAsyncBatcher(
+    processBatch,
+    {
+      maxSize: 5, // Process in batches of 5 (if reached before wait time)
+      wait: 4000, // Wait up to 4 seconds before processing a batch
+      getShouldExecute: (items) =>
+        items.some((item) => item.value.includes('urgent')), // Process immediately if any item is marked urgent
+      throwOnError: false, // Don't throw errors, handle them via onError
+      onSuccess: (result, batcher) => {
+        console.log('Batch succeeded:', result)
+        console.log(
+          'Total successful batches:',
+          batcher.store.state.successCount,
+        )
+      },
+      onError: (error: any, _batcher) => {
+        console.error('Batch failed:', error)
+        setErrors((prev) => [
+          ...prev,
+          `Error: ${error.message} (${new Date().toLocaleTimeString()})`,
+        ])
+      },
+      onSettled: (batcher) => {
+        console.log(
+          'Batch settled. Total processed items:',
+          batcher.store.state.totalItemsProcessed,
+        )
+      },
     },
-    onError: (error: any, _batcher) => {
-      console.error('Batch failed:', error)
-      setErrors((prev) => [
-        ...prev,
-        `Error: ${error.message} (${new Date().toLocaleTimeString()})`,
-      ])
-    },
-    onSettled: (batcher) => {
-      console.log(
-        'Batch settled. Total processed items:',
-        batcher.store.state.totalItemsProcessed,
-      )
-    },
-  })
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      isExecuting: state.isExecuting,
+      status: state.status,
+      successCount: state.successCount,
+      errorCount: state.errorCount,
+      totalItemsProcessed: state.totalItemsProcessed,
+    }),
+  )
 
   const addItem = (isUrgent = false) => {
     const nextId = Date.now()

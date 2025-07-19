@@ -11,10 +11,10 @@ title: createAsyncRateLimiter
 function createAsyncRateLimiter<TFn, TSelected>(
    fn, 
    initialOptions, 
-selector?): SolidAsyncRateLimiter<TFn, TSelected>
+selector): SolidAsyncRateLimiter<TFn, TSelected>
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:79](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L79)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:129](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L129)
 
 A low-level Solid hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -50,11 +50,33 @@ Error Handling:
 - The error state can be checked using the underlying AsyncRateLimiter instance
 - Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
 
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
+to specify which state changes will trigger a re-render, optimizing performance by preventing
+unnecessary re-renders when irrelevant state changes occur.
+
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+full control over when your component updates. Only when you provide a selector will the
+component re-render when the selected state values change.
+
+Available state properties:
+- `currentWindowStart`: Timestamp when the current window started
+- `executionCount`: Number of function executions that have been completed
+- `hasError`: Whether the last execution resulted in an error
+- `isExecuting`: Whether an async function execution is currently in progress
+- `lastError`: The error from the most recent failed execution (if any)
+- `lastResult`: The result from the most recent successful execution
+- `nextWindowTime`: Timestamp when the next window begins
+- `rejectionCount`: Number of function calls that were rejected due to rate limiting
+- `remainingInWindow`: Number of executions remaining in the current window
+
 ## Type Parameters
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncRateLimiterState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Parameters
 
@@ -66,7 +88,7 @@ Error Handling:
 
 `AsyncRateLimiterOptions`\<`TFn`\>
 
-### selector?
+### selector
 
 (`state`) => `TSelected`
 
@@ -77,7 +99,7 @@ Error Handling:
 ## Example
 
 ```tsx
-// Basic API call rate limiting with return value
+// Default behavior - no reactive state subscriptions
 const { maybeExecute } = createAsyncRateLimiter(
   async (id: string) => {
     const data = await api.fetchData(id);
@@ -86,18 +108,34 @@ const { maybeExecute } = createAsyncRateLimiter(
   { limit: 5, window: 1000 } // 5 calls per second
 );
 
-// With state management and return value
-const [data, setData] = createSignal(null);
-const { maybeExecute } = createAsyncRateLimiter(
+// Opt-in to re-render when rate limit and execution state changes (optimized for UI feedback)
+const rateLimiter = createAsyncRateLimiter(
   async (query) => {
     const result = await searchAPI(query);
-    setData(result);
-    return result; // Return value can be used by the caller
+    return result;
+  },
+  { limit: 10, window: 60000 },
+  (state) => ({
+    remainingInWindow: state.remainingInWindow,
+    isExecuting: state.isExecuting,
+    rejectionCount: state.rejectionCount
+  })
+);
+
+// Opt-in to re-render when error state changes (optimized for error handling)
+const rateLimiter = createAsyncRateLimiter(
+  async (query) => {
+    const result = await searchAPI(query);
+    return result;
   },
   {
     limit: 10,
     window: 60000, // 10 calls per minute
     onReject: (info) => console.log(`Rate limit exceeded: ${info.nextValidTime - Date.now()}ms until next window`)
-  }
+  },
+  (state) => ({ hasError: state.hasError, lastError: state.lastError })
 );
+
+// Access the selected state (will be empty object {} unless selector provided)
+const { remainingInWindow, isExecuting } = rateLimiter.state();
 ```

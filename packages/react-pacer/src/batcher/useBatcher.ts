@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/react-store'
+import type { Store } from '@tanstack/react-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
-export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
+export interface ReactBatcher<TValue, TSelected = {}>
   extends Omit<Batcher<TValue>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the batcher state changes
@@ -11,6 +12,12 @@ export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
    * Use this instead of `batcher.store.state`
    */
   readonly state: Readonly<TSelected>
+  /**
+   * @deprecated Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   */
+  readonly store: Store<Readonly<BatcherState<TValue>>>
 }
 
 /**
@@ -31,9 +38,10 @@ export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
  * to specify which state changes will trigger a re-render, optimizing performance by preventing
  * unnecessary re-renders when irrelevant state changes occur.
  *
- * **By default, all state changes will trigger a re-render.** To optimize performance, you can
- * provide a selector function that returns only the specific state values your component needs.
- * The component will only re-render when the selected values change.
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
  *
  * Available state properties:
  * - `executionCount`: Number of batch executions that have been completed
@@ -47,13 +55,13 @@ export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
  *
  * @example
  * ```tsx
- * // Default behavior - re-renders on any state change
+ * // Default behavior - no reactive state subscriptions
  * const batcher = useBatcher<number>(
  *   (items) => console.log('Processing batch:', items),
  *   { maxSize: 5, wait: 2000 }
  * );
  *
- * // Only re-render when batch size changes (optimized for displaying queue size)
+ * // Opt-in to re-render when batch size changes (optimized for displaying queue size)
  * const batcher = useBatcher<number>(
  *   (items) => console.log('Processing batch:', items),
  *   { maxSize: 5, wait: 2000 },
@@ -63,7 +71,7 @@ export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
  *   })
  * );
  *
- * // Only re-render when execution metrics change (optimized for stats display)
+ * // Opt-in to re-render when execution metrics change (optimized for stats display)
  * const batcher = useBatcher<number>(
  *   (items) => console.log('Processing batch:', items),
  *   { maxSize: 5, wait: 2000 },
@@ -73,7 +81,7 @@ export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
  *   })
  * );
  *
- * // Only re-render when processing state changes (optimized for loading indicators)
+ * // Opt-in to re-render when processing state changes (optimized for loading indicators)
  * const batcher = useBatcher<number>(
  *   (items) => console.log('Processing batch:', items),
  *   { maxSize: 5, wait: 2000 },
@@ -106,14 +114,15 @@ export interface ReactBatcher<TValue, TSelected = BatcherState<TValue>>
  * batcher.stop();  // Pause batching
  * batcher.start(); // Resume batching
  *
- * // Access the selected state
+ * // Access the selected state (will be empty object {} unless selector provided)
  * const { size, isPending } = batcher.state;
  * ```
  */
-export function useBatcher<TValue, TSelected = BatcherState<TValue>>(
+export function useBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
   options: BatcherOptions<TValue> = {},
-  selector?: (state: BatcherState<TValue>) => TSelected,
+  selector: (state: BatcherState<TValue>) => TSelected = () =>
+    ({}) as TSelected,
 ): ReactBatcher<TValue, TSelected> {
   const [batcher] = useState(() => new Batcher<TValue>(fn, options))
 
@@ -122,10 +131,11 @@ export function useBatcher<TValue, TSelected = BatcherState<TValue>>(
   batcher.setOptions(options)
 
   return useMemo(
-    () => ({
-      ...batcher,
-      state,
-    }),
+    () =>
+      ({
+        ...batcher,
+        state,
+      }) as ReactBatcher<TValue, TSelected>, // omit `store` in favor of `state`
     [batcher, state],
   )
 }

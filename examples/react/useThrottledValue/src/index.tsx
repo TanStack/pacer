@@ -11,10 +11,15 @@ function App1() {
 
   // highest-level hook that watches an instant local state value and returns a throttled value
   // optionally, grab the throttler from the last index of the returned array
-  const [throttledCount] = useThrottledValue(instantCount, {
-    wait: 1000,
-    // enabled: () => instantCount > 2, // optional, defaults to true
-  })
+  const [throttledCount] = useThrottledValue(
+    instantCount,
+    {
+      wait: 1000,
+      // enabled: () => instantCount > 2, // optional, defaults to true
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (_state) => ({}), // No specific state access needed for this example
+  )
 
   return (
     <div>
@@ -42,10 +47,15 @@ function App2() {
   const [instantSearch, setInstantSearch] = useState('')
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledSearch] = useThrottledValue(instantSearch, {
-    wait: 1000,
-    // enabled: instantSearch.length > 2, // optional, defaults to true
-  })
+  const [throttledSearch] = useThrottledValue(
+    instantSearch,
+    {
+      wait: 1000,
+      // enabled: instantSearch.length > 2, // optional, defaults to true
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (_state) => ({}), // No specific state access needed for this example
+  )
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInstantSearch(e.target.value)
@@ -85,9 +95,16 @@ function App3() {
   const [currentValue, setCurrentValue] = useState(50)
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledValue, throttler] = useThrottledValue(currentValue, {
-    wait: 250,
-  })
+  const [throttledValue, throttler] = useThrottledValue(
+    currentValue,
+    {
+      wait: 250,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)

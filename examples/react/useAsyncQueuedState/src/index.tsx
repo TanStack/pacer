@@ -39,8 +39,19 @@ function App() {
         ) // optionally, handle errors here instead of your own try/catch
       },
     },
-    // optionally, you can select a subset of the state to re-render when it changes
-    // (state) => ({ }),
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      activeItems: state.activeItems,
+      isEmpty: state.isEmpty,
+      isFull: state.isFull,
+      isIdle: state.isIdle,
+      isRunning: state.isRunning,
+      items: state.items, // required for useAsyncQueuedState hook
+      rejectionCount: state.rejectionCount,
+      size: state.size,
+      status: state.status,
+      successCount: state.successCount,
+    }),
   )
 
   return (
@@ -52,9 +63,7 @@ function App() {
       <div>Queue Full: {asyncQueuer.state.isFull ? 'Yes' : 'No'}</div>
       <div>Queue Empty: {asyncQueuer.state.isEmpty ? 'Yes' : 'No'}</div>
       <div>Queue Idle: {asyncQueuer.state.isIdle ? 'Yes' : 'No'}</div>
-      <div>
-        Queuer Status: {asyncQueuer.state.status ? 'Running' : 'Stopped'}
-      </div>
+      <div>Queuer Status: {asyncQueuer.state.status}</div>
       <div>Items Processed: {asyncQueuer.state.successCount}</div>
       <div>Items Rejected: {asyncQueuer.state.rejectionCount}</div>
       <div>Active Tasks: {asyncQueuer.peekActiveItems().length}</div>

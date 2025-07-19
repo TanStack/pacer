@@ -7,7 +7,7 @@ title: ReactRateLimiter
 
 # Interface: ReactRateLimiter\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:10](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L10)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:11](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L11)
 
 ## Extends
 
@@ -17,7 +17,7 @@ Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:10](https://github.c
 
 • **TFn** *extends* `AnyFunction`
 
-• **TSelected** = `RateLimiterState`
+• **TSelected** = \{\}
 
 ## Properties
 
@@ -27,8 +27,24 @@ Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:10](https://github.c
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L19)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L18)
 
 Reactive state that will be updated and re-rendered when the rate limiter state changes
 
 Use this instead of `rateLimiter.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<RateLimiterState>>;
+```
+
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L24)
+
+#### Deprecated
+
+Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+Although, you can make the state reactive by using the `useStore` in your own usage.

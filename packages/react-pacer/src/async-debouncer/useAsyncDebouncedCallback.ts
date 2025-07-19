@@ -1,9 +1,6 @@
 import { useCallback } from 'react'
 import { useAsyncDebouncer } from './useAsyncDebouncer'
-import type {
-  AsyncDebouncerOptions,
-  AsyncDebouncerState,
-} from '@tanstack/pacer/async-debouncer'
+import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
 /**
@@ -26,26 +23,6 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  *
  * Consider using the `useAsyncDebouncer` hook instead.
  *
- * ## State Management and Re-renders
- *
- * **By default, this callback hook disables re-renders from internal state changes for optimal performance.**
- * The hook uses TanStack Store internally but doesn't subscribe to state changes, preventing
- * unnecessary re-renders when the async debouncer's internal state updates.
- *
- * If you need to react to state changes (like showing loading indicators or error states),
- * you can provide a custom `selector` function to opt into specific state updates:
- *
- * ```tsx
- * // Default: No re-renders from state changes (optimal performance)
- * const debouncedCallback = useAsyncDebouncedCallback(asyncFn, { wait: 500 });
- *
- * // Opt-in: Re-render when execution state changes
- * const debouncedCallback = useAsyncDebouncedCallback(
- *   asyncFn,
- *   { wait: 500 },
- *   (state) => ({ isExecuting: state.isExecuting, lastError: state.lastError })
- * );
- * ```
  *
  * @example
  * ```tsx
@@ -64,16 +41,11 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  * />
  * ```
  */
-export function useAsyncDebouncedCallback<
-  TFn extends AnyAsyncFunction,
-  TSelected = {},
->(
+export function useAsyncDebouncedCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
   options: AsyncDebouncerOptions<TFn>,
-  selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
-    ({}) as TSelected,
 ): (...args: Parameters<TFn>) => Promise<ReturnType<TFn>> {
-  const asyncDebouncedFn = useAsyncDebouncer(fn, options, selector).maybeExecute
+  const asyncDebouncedFn = useAsyncDebouncer(fn, options).maybeExecute
   return useCallback(
     (...args) => asyncDebouncedFn(...args) as Promise<ReturnType<TFn>>,
     [asyncDebouncedFn],

@@ -14,12 +14,21 @@ function App1() {
     console.log('processing batch', items)
   }
 
-  const batcher = useBatcher(processBatch, {
-    // started: false, // true by default
-    maxSize: 5, // Process in batches of 5 (if comes before wait time)
-    wait: 3000, // wait up to 3 seconds before processing a batch (if time elapses before maxSize is reached)
-    getShouldExecute: (items, _batcher) => items.includes(42), // or pass in a custom function to determine if the batch should be processed
-  })
+  const batcher = useBatcher(
+    processBatch,
+    {
+      // started: false, // true by default
+      maxSize: 5, // Process in batches of 5 (if comes before wait time)
+      wait: 3000, // wait up to 3 seconds before processing a batch (if time elapses before maxSize is reached)
+      getShouldExecute: (items, _batcher) => items.includes(42), // or pass in a custom function to determine if the batch should be processed
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      executionCount: state.executionCount,
+      totalItemsProcessed: state.totalItemsProcessed,
+    }),
+  )
 
   return (
     <div>

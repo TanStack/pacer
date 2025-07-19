@@ -8,10 +8,17 @@ function App1() {
   const [throttledCount, setThrottledCount] = createSignal(0)
 
   // Lower-level createThrottler hook - requires you to manage your own state
-  const setCountThrottler = createThrottler(setThrottledCount, {
-    wait: 1000,
-    enabled: () => instantCount() > 2, // optional, defaults to true
-  })
+  const setCountThrottler = createThrottler(
+    setThrottledCount,
+    {
+      wait: 1000,
+      enabled: () => instantCount() > 2, // optional, defaults to true
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -53,10 +60,17 @@ function App2() {
   const [throttledSearch, setThrottledSearch] = createSignal('')
 
   // Lower-level createThrottler hook - requires you to manage your own state
-  const setSearchThrottler = createThrottler(setThrottledSearch, {
-    wait: 1000,
-    // enabled: () => instantSearch().length > 2, // optional, defaults to true
-  })
+  const setSearchThrottler = createThrottler(
+    setThrottledSearch,
+    {
+      wait: 1000,
+      // enabled: () => instantSearch().length > 2, // optional, defaults to true
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
@@ -104,9 +118,16 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
 
   // Lower-level createThrottler hook - requires you to manage your own state
-  const setValueThrottler = createThrottler(setThrottledValue, {
-    wait: 250,
-  })
+  const setValueThrottler = createThrottler(
+    setThrottledValue,
+    {
+      wait: 250,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleRangeChange(e: Event) {
     const target = e.target as HTMLInputElement

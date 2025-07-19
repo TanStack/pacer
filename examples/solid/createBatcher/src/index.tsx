@@ -8,8 +8,8 @@ function App1() {
   >([])
 
   // Create the batcher instance
-  const batcher = createBatcher<number>(
-    (items) => {
+  const batcher = createBatcher(
+    (items: Array<number>) => {
       setProcessedBatches((prev) => [...prev, items])
       console.log('Processing batch', items)
     },
@@ -18,6 +18,13 @@ function App1() {
       wait: 3000,
       getShouldExecute: (items) => items.includes(42),
     },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      size: state.size,
+      items: state.items,
+      executionCount: state.executionCount,
+      totalItemsProcessed: state.totalItemsProcessed,
+    }),
   )
 
   return (

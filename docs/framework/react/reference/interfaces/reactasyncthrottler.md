@@ -7,7 +7,7 @@ title: ReactAsyncThrottler
 
 # Interface: ReactAsyncThrottler\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:10](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L10)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:11](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L11)
 
 ## Extends
 
@@ -17,7 +17,7 @@ Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:10](https://gi
 
 • **TFn** *extends* `AnyAsyncFunction`
 
-• **TSelected** = `AsyncThrottlerState`\<`TFn`\>
+• **TSelected** = \{\}
 
 ## Properties
 
@@ -27,8 +27,24 @@ Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:10](https://gi
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L19)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L20)
 
-Reactive state that will be updated and re-rendered when the debouncer state changes
+Reactive state that will be updated and re-rendered when the throttler state changes
 
-Use this instead of `debouncer.store.state`
+Use this instead of `throttler.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>;
+```
+
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L26)
+
+#### Deprecated
+
+Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+Although, you can make the state reactive by using the `useStore` in your own usage.

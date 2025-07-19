@@ -48,12 +48,13 @@ function App() {
         setResults([])
       },
     },
-    // optionally subscribe to only the solid state changes you care about
-    // (state) => ({
-    //   isExecuting: state.isExecuting,
-    //   isPending: state.isPending,
-    //   successCount: state.successCount,
-    // }),
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      errorCount: state.errorCount,
+      successCount: state.successCount,
+      isExecuting: state.isExecuting,
+      isPending: state.isPending,
+    }),
   )
 
   // get and name our debounced function
