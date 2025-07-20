@@ -156,7 +156,7 @@ function App() {
         </table>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(setSearchAsyncRateLimiter.state, null, 2)}
+        {JSON.stringify(setSearchAsyncRateLimiter.store.state, null, 2)}
       </pre>
     </div>
   )

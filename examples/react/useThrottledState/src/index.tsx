@@ -51,7 +51,7 @@ function App1() {
         <button onClick={increment}>Increment</button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(throttler.state, null, 2)}
+        {JSON.stringify(throttler.store.state, null, 2)}
       </pre>
     </div>
   )
@@ -109,7 +109,7 @@ function App2() {
         </tbody>
       </table>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(throttler.state, null, 2)}
+        {JSON.stringify(throttler.store.state, null, 2)}
       </pre>
     </div>
   )
@@ -199,7 +199,7 @@ function App3() {
         <p>Throttled to 1 update per 250ms</p>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(throttler.state, null, 2)}
+        {JSON.stringify(throttler.store.state, null, 2)}
       </pre>
     </div>
   )

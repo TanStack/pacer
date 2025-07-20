@@ -206,7 +206,7 @@ function App() {
       )}
 
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(asyncBatcher.state, null, 2)}
+        {JSON.stringify(asyncBatcher.store.state, null, 2)}
       </pre>
     </div>
   )

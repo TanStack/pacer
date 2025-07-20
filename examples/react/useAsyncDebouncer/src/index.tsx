@@ -95,7 +95,7 @@ function App() {
         {asyncDebouncer.state.isPending && <p>Pending...</p>}
         {asyncDebouncer.state.isExecuting && <p>Executing...</p>}
         <pre style={{ marginTop: '20px' }}>
-          {JSON.stringify(asyncDebouncer.state, null, 2)}
+          {JSON.stringify(asyncDebouncer.store.state, null, 2)}
         </pre>
       </div>
     </div>

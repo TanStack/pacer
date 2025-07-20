@@ -173,7 +173,7 @@ function App3() {
         <p>Throttled to 1 update per 250ms</p>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(throttler.state, null, 2)}
+        {JSON.stringify(throttler.store.state, null, 2)}
       </pre>
     </div>
   )

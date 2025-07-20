@@ -69,7 +69,7 @@ function App1() {
         </button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(debouncer.state, null, 2)}
+        {JSON.stringify(debouncer.store.state, null, 2)}
       </pre>
     </div>
   )
@@ -141,7 +141,7 @@ function App2() {
         <button onClick={() => setSearchDebouncer.flush()}>Flush</button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(setSearchDebouncer.state, null, 2)}
+        {JSON.stringify(setSearchDebouncer.store.state, null, 2)}
       </pre>
     </div>
   )
@@ -246,7 +246,7 @@ function App3() {
         <button onClick={() => setValueDebouncer.flush()}>Flush</button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(setValueDebouncer.state, null, 2)}
+        {JSON.stringify(setValueDebouncer.store.state, null, 2)}
       </pre>
     </div>
   )

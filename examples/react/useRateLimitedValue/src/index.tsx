@@ -280,7 +280,7 @@ function App3() {
         <p>Rate limited to 20 updates per 2 seconds</p>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(rateLimiter.state, null, 2)}
+        {JSON.stringify(rateLimiter.store.state, null, 2)}
       </pre>
     </div>
   )

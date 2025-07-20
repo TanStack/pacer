@@ -62,7 +62,7 @@ function App1() {
         <button onClick={increment}>Increment</button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(debouncer.state, null, 2)}
+        {JSON.stringify(debouncer.store.state, null, 2)}
       </pre>
     </div>
   )
@@ -130,7 +130,7 @@ function App2() {
         </tbody>
       </table>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(debouncer.state, null, 2)}
+        {JSON.stringify(debouncer.store.state, null, 2)}
       </pre>
     </div>
   )
@@ -228,7 +228,7 @@ function App3() {
         <p>Debounced to 250ms wait time</p>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(debouncer.state, null, 2)}
+        {JSON.stringify(debouncer.store.state, null, 2)}
       </pre>
     </div>
   )

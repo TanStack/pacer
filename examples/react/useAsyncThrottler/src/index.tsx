@@ -104,7 +104,7 @@ function App() {
           <p>Executing...</p>
         ) : null}
         <pre style={{ marginTop: '20px' }}>
-          {JSON.stringify(setSearchAsyncThrottler.state, null, 2)}
+          {JSON.stringify(setSearchAsyncThrottler.store.state, null, 2)}
         </pre>
       </div>
     </div>

@@ -75,7 +75,7 @@ function App1() {
         </button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(batcher.state, null, 2)}
+        {JSON.stringify(batcher.store.state, null, 2)}
       </pre>
     </div>
   )

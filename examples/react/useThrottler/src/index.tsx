@@ -58,7 +58,7 @@ function App1() {
         </button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(setCountThrottler.state, null, 2)}
+        {JSON.stringify(setCountThrottler.store.state, null, 2)}
       </pre>
     </div>
   )
@@ -119,7 +119,7 @@ function App2() {
         <button onClick={() => setSearchThrottler.flush()}>Flush</button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(setSearchThrottler.state, null, 2)}
+        {JSON.stringify(setSearchThrottler.store.state, null, 2)}
       </pre>
     </div>
   )
@@ -218,7 +218,7 @@ function App3() {
         <button onClick={() => setValueThrottler.flush()}>Flush</button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(setValueThrottler.state, null, 2)}
+        {JSON.stringify(setValueThrottler.store.state, null, 2)}
       </pre>
     </div>
   )

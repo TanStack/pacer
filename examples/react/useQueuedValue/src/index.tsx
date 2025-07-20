@@ -85,7 +85,7 @@ function App1() {
         </button>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(queuer.state, null, 2)}
+        {JSON.stringify(queuer.store.state, null, 2)}
       </pre>
     </div>
   )
@@ -204,7 +204,7 @@ function App2() {
         <p>Queued with 100ms wait time</p>
       </div>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(queuer.state, null, 2)}
+        {JSON.stringify(queuer.store.state, null, 2)}
       </pre>
     </div>
   )
