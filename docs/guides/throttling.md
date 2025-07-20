@@ -171,77 +171,6 @@ const throttler = new Throttler(fn, {
 
 The `onExecute` callback is called after each successful execution of the throttled function, making it useful for tracking executions, updating UI state, or performing cleanup operations.
 
-## State Management
-
-The `Throttler` class uses TanStack Store for reactive state management, providing real-time access to execution state and timing information.
-
-### Accessing State
-
-When using the `Throttler` class directly, access state via the `store.state` property:
-
-```ts
-const throttler = new Throttler(fn, { wait: 200 })
-
-// Access current state
-console.log(throttler.store.state.isPending)
-```
-
-### Framework Adapters
-
-When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
-
-```ts
-// React example
-const throttler = useThrottler(fn, { wait: 200 })
-
-// Access state directly (reactive)
-console.log(throttler.state.executionCount) // Reactive value
-console.log(throttler.state.isPending) // Reactive value
-```
-
-### Initial State
-
-You can provide initial state values when creating a throttler:
-
-```ts
-const throttler = new Throttler(fn, {
-  wait: 200,
-  initialState: {
-    executionCount: 10, // Start with 10 executions
-    lastExecutionTime: Date.now() - 1000, // Set last execution to 1 second ago
-  }
-})
-```
-
-### Subscribing to State Changes
-
-The store is reactive and supports subscriptions:
-
-```ts
-const throttler = new Throttler(fn, { wait: 200 })
-
-// Subscribe to state changes
-const unsubscribe = throttler.store.subscribe((state) => {
-  console.log('Execution count:', state.executionCount)
-  console.log('Last execution time:', state.lastExecutionTime)
-  console.log('Is pending:', state.isPending)
-})
-
-// Unsubscribe when done
-unsubscribe()
-```
-
-### Available State Properties
-
-The `ThrottlerState` includes:
-
-- `executionCount`: Number of completed function executions
-- `lastExecutionTime`: Timestamp of the last function execution (in milliseconds)
-- `nextExecutionTime`: Timestamp when the next execution can occur (in milliseconds)
-- `isPending`: Whether the throttler is waiting for timeout to trigger execution
-- `status`: Current execution status ('idle' | 'pending')
-- `lastArgs`: Arguments from the most recent call to `maybeExecute`
-
 ### Flushing Pending Executions
 
 The throttler supports flushing pending executions to trigger them immediately:
@@ -257,6 +186,89 @@ throttler.flush()
 console.log(throttler.store.state.isPending) // false
 ```
 
+## State Management
+
+The `Throttler` class uses TanStack Store for reactive state management, providing real-time access to execution state and timing information. All state is stored in a TanStack Store and can be accessed via `throttler.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `throttler.state` along with providing a selector callback as the 3rd argument to the `useThrottler` hook to opt-in to state tracking as shown below.
+
+### State Selector (Framework Adapters)
+
+Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
+
+**By default, `util.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+
+```ts
+// Default behavior - no reactive state subscriptions
+const throttler = useThrottler(fn, { wait: 200 })
+console.log(throttler.state) // {}
+
+// Opt-in to re-render when isPending changes
+const throttler = useThrottler(
+  fn, 
+  { wait: 200 },
+  (state) => ({ isPending: state.isPending })
+)
+console.log(throttler.state.isPending) // Reactive value
+
+// Multiple state properties
+const throttler = useThrottler(
+  fn,
+  { wait: 200 },
+  (state) => ({
+    isPending: state.isPending,
+    executionCount: state.executionCount,
+    status: state.status
+  })
+)
+```
+
+### Initial State
+
+You can provide initial state values when creating a throttler. This is commonly used to restore state from persistent storage:
+
+```ts
+// Load initial state from localStorage
+const savedState = localStorage.getItem('throttler-state')
+const initialState = savedState ? JSON.parse(savedState) : {}
+
+const throttler = new Throttler(fn, {
+  wait: 200,
+  initialState
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const throttler = new Throttler(fn, { wait: 200 })
+
+// Subscribe to state changes
+const unsubscribe = throttler.store.subscribe((state) => {
+  // do something with the state like persist it to localStorage
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+
+### Available State Properties
+
+The `ThrottlerState` includes:
+
+- `executionCount`: Number of function executions that have been completed
+- `isPending`: Whether the throttler is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to `maybeExecute`
+- `lastExecutionTime`: Timestamp of the last function execution in milliseconds
+- `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
+- `status`: Current execution status ('disabled' | 'idle' | 'pending')
+
+## Framework Adapters
+
+Each framework adapter builds convenient hooks and functions around the throttler classes. Hooks like `useThrottler`, or `createThrottler` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.
+
 ---
 
-For asynchronous throttling (e.g., API calls, async operations), see the [Async Throttling Guide](../async-throttling.md). 
+For asynchronous throttling (e.g., API calls, async operations), see the [Async Throttling Guide](../async-throttling.md).

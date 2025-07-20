@@ -180,75 +180,6 @@ const debouncer = new Debouncer(fn, {
 
 The `onExecute` callback is called after each successful execution of the debounced function, making it useful for tracking executions, updating UI state, or performing cleanup operations.
 
-## State Management
-
-The `Debouncer` class uses TanStack Store for reactive state management, providing real-time access to execution state and statistics.
-
-### Accessing State
-
-When using the `Debouncer` class directly, access state via the `store.state` property:
-
-```ts
-const debouncer = new Debouncer(fn, { wait: 500 })
-
-// Access current state
-console.log(debouncer.store.state.isPending)
-```
-
-### Framework Adapters
-
-When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
-
-```ts
-// React example
-const debouncer = useDebouncer(fn, { wait: 500 })
-
-// Access state directly (reactive)
-console.log(debouncer.state.executionCount) // Reactive value
-console.log(debouncer.state.isPending) // Reactive value
-```
-
-### Initial State
-
-You can provide initial state values when creating a debouncer:
-
-```ts
-const debouncer = new Debouncer(fn, {
-  wait: 500,
-  initialState: {
-    executionCount: 5, // Start with 5 executions
-    canLeadingExecute: false, // Start with leading execution disabled
-  }
-})
-```
-
-### Subscribing to State Changes
-
-The store is reactive and supports subscriptions:
-
-```ts
-const debouncer = new Debouncer(fn, { wait: 500 })
-
-// Subscribe to state changes
-const unsubscribe = debouncer.store.subscribe((state) => {
-  console.log('Execution count:', state.executionCount)
-  console.log('Is pending:', state.isPending)
-})
-
-// Unsubscribe when done
-unsubscribe()
-```
-
-### Available State Properties
-
-The `DebouncerState` includes:
-
-- `executionCount`: Number of completed function executions
-- `isPending`: Whether the debouncer is waiting for timeout to trigger execution
-- `status`: Current execution status ('idle' | 'pending')
-- `canLeadingExecute`: Whether leading edge execution is allowed
-- `lastArgs`: Arguments from the most recent call to `maybeExecute`
-
 ### Flushing Pending Executions
 
 The debouncer supports flushing pending executions to trigger them immediately:
@@ -263,6 +194,88 @@ console.log(debouncer.store.state.isPending) // true
 debouncer.flush()
 console.log(debouncer.store.state.isPending) // false
 ```
+
+## State Management
+
+The `Debouncer` class uses TanStack Store for reactive state management, providing real-time access to execution state and statistics. All state is stored in a TanStack Store and can be accessed via `debouncer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `debouncer.state` along with providing a selector callback as the 3rd argument to the `useDebouncer` hook to opt-in to state tracking as shown below.
+
+### State Selector (Framework Adapters)
+
+Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
+
+**By default, `util.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+
+```ts
+// Default behavior - no reactive state subscriptions
+const debouncer = useDebouncer(fn, { wait: 500 })
+console.log(debouncer.state) // {}
+
+// Opt-in to re-render when isPending changes
+const debouncer = useDebouncer(
+  fn, 
+  { wait: 500 },
+  (state) => ({ isPending: state.isPending })
+)
+console.log(debouncer.state.isPending) // Reactive value
+
+// Multiple state properties
+const debouncer = useDebouncer(
+  fn,
+  { wait: 500 },
+  (state) => ({
+    isPending: state.isPending,
+    executionCount: state.executionCount,
+    status: state.status
+  })
+)
+```
+
+### Initial State
+
+You can provide initial state values when creating a debouncer. This is commonly used to restore state from persistent storage:
+
+```ts
+// Load initial state from localStorage
+const savedState = localStorage.getItem('debouncer-state')
+const initialState = savedState ? JSON.parse(savedState) : {}
+
+const debouncer = new Debouncer(fn, {
+  wait: 500,
+  initialState
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const debouncer = new Debouncer(fn, { wait: 500 })
+
+// Subscribe to state changes
+const unsubscribe = debouncer.store.subscribe((state) => {
+  // do something with the state like persist it to localStorage
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+
+### Available State Properties
+
+The `DebouncerState` includes:
+
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge of the timeout
+- `executionCount`: Number of function executions that have been completed
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to `maybeExecute`
+- `status`: Current execution status ('disabled' | 'idle' | 'pending')
+
+## Framework Adapters
+
+Each framework adapter builds convenient hooks and functions around the debouncer classes. Hooks like `useDebouncer`, or `createDebouncer` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.
 
 ---
 

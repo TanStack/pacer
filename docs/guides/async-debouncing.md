@@ -101,85 +101,6 @@ For example, if you're updating a user's profile and then immediately fetching t
 
 Just like the synchronous debouncer, the async debouncer supports dynamic options for `wait` and `enabled`, which can be functions that receive the debouncer instance. This allows for sophisticated, runtime-adaptive debouncing behavior.
 
-## Framework Adapters
-
-Each framework adapter provides hooks that build on top of the core async debouncing functionality to integrate with the framework's state management system. Hooks like `createAsyncDebouncer`, `useAsyncDebouncedCallback`, or similar are available for each framework.
-
-## State Management
-
-The `AsyncDebouncer` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and execution statistics.
-
-### Accessing State
-
-When using the `AsyncDebouncer` class directly, access state via the `store.state` property:
-
-```ts
-const asyncDebouncer = new AsyncDebouncer(asyncFn, { wait: 500 })
-
-// Access current state
-console.log(asyncDebouncer.store.state.isPending) // Number of successful executions
-```
-
-### Framework Adapters
-
-When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
-
-```ts
-// React example
-const asyncDebouncer = useAsyncDebouncer(asyncFn, { wait: 500 })
-
-// Access state directly (reactive)
-console.log(asyncDebouncer.state.successCount) // Reactive value
-console.log(asyncDebouncer.state.isExecuting) // Reactive value
-```
-
-### Initial State
-
-You can provide initial state values when creating an async debouncer:
-
-```ts
-const asyncDebouncer = new AsyncDebouncer(asyncFn, {
-  wait: 500,
-  initialState: {
-    successCount: 3, // Start with 3 successful executions
-    errorCount: 1, // Start with 1 error
-    lastResult: 'initial-result', // Start with initial result
-  }
-})
-```
-
-### Subscribing to State Changes
-
-The store is reactive and supports subscriptions:
-
-```ts
-const asyncDebouncer = new AsyncDebouncer(asyncFn, { wait: 500 })
-
-// Subscribe to state changes
-const unsubscribe = asyncDebouncer.store.subscribe((state) => {
-  console.log('Success count:', state.successCount)
-  console.log('Error count:', state.errorCount)
-  console.log('Currently executing:', state.isExecuting)
-})
-
-// Unsubscribe when done
-unsubscribe()
-```
-
-### Available State Properties
-
-The `AsyncDebouncerState` includes:
-
-- `successCount`: Number of successful function executions
-- `errorCount`: Number of failed function executions
-- `settleCount`: Total number of completed executions (success + error)
-- `isExecuting`: Whether the async function is currently executing
-- `isPending`: Whether the debouncer is waiting for timeout to trigger execution
-- `status`: Current execution status ('idle' | 'pending' | 'executing' | 'settled')
-- `canLeadingExecute`: Whether leading edge execution is allowed
-- `lastResult`: Result from the most recent successful execution
-- `lastArgs`: Arguments from the most recent call to `maybeExecute`
-
 ### Flushing Pending Executions
 
 The async debouncer supports flushing pending executions to trigger them immediately:
@@ -195,6 +116,92 @@ asyncDebouncer.flush()
 console.log(asyncDebouncer.store.state.isPending) // false
 ```
 
+## State Management
+
+The `AsyncDebouncer` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and execution statistics. All state is stored in a TanStack Store and can be accessed via `asyncDebouncer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `asyncDebouncer.state` along with providing a selector callback as the 3rd argument to the `useAsyncDebouncer` hook to opt-in to state tracking as shown below.
+
+### State Selector (Framework Adapters)
+
+Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
+
+**By default, `util.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+
+```ts
+// Default behavior - no reactive state subscriptions
+const asyncDebouncer = useAsyncDebouncer(asyncFn, { wait: 500 })
+console.log(asyncDebouncer.state) // {}
+
+// Opt-in to re-render when isExecuting changes
+const asyncDebouncer = useAsyncDebouncer(
+  asyncFn, 
+  { wait: 500 },
+  (state) => ({ isExecuting: state.isExecuting })
+)
+console.log(asyncDebouncer.state.isExecuting) // Reactive value
+
+// Multiple state properties
+const asyncDebouncer = useAsyncDebouncer(
+  asyncFn,
+  { wait: 500 },
+  (state) => ({
+    isExecuting: state.isExecuting,
+    successCount: state.successCount,
+    errorCount: state.errorCount
+  })
+)
+```
+
+### Initial State
+
+You can provide initial state values when creating an async debouncer. This is commonly used to restore state from persistent storage:
+
+```ts
+// Load initial state from localStorage
+const savedState = localStorage.getItem('async-debouncer-state')
+const initialState = savedState ? JSON.parse(savedState) : {}
+
+const asyncDebouncer = new AsyncDebouncer(asyncFn, {
+  wait: 500,
+  initialState
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const asyncDebouncer = new AsyncDebouncer(asyncFn, { wait: 500 })
+
+// Subscribe to state changes
+const unsubscribe = asyncDebouncer.store.subscribe((state) => {
+  // do something with the state like persist it to localStorage
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+
+### Available State Properties
+
+The `AsyncDebouncerState` includes:
+
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge of the timeout
+- `errorCount`: Number of function executions that have resulted in errors
+- `isExecuting`: Whether the debounced function is currently executing asynchronously
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to `maybeExecute`
+- `lastResult`: The result from the most recent successful function execution
+- `settleCount`: Number of function executions that have completed (either successfully or with errors)
+- `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
+- `successCount`: Number of function executions that have completed successfully
+
+## Framework Adapters
+
+Each framework adapter provides hooks that build on top of the core async debouncing functionality to integrate with the framework's state management system. Hooks like `createAsyncDebouncer`, `useAsyncDebouncedCallback`, or similar are available for each framework.
+
 ---
 
-For core debouncing concepts and synchronous debouncing, see the [Debouncing Guide](../debouncing.md). 
+For core debouncing concepts and synchronous debouncing, see the [Debouncing Guide](../debouncing.md).

@@ -224,92 +224,6 @@ AsyncQueuer supports expiration and rejection just like the core queuer:
 
 See the [Queuing Guide](../queuing.md) for details and examples.
 
-## State Management
-
-The `AsyncQueuer` class uses TanStack Store for reactive state management, providing real-time access to queue state, processing statistics, and concurrent task tracking.
-
-### Accessing State
-
-When using the `AsyncQueuer` class directly, access state via the `store.state` property:
-
-```ts
-const queue = new AsyncQueuer(processFn, { concurrency: 2, wait: 1000 })
-
-// Access current state
-console.log(queue.store.state.isIdle)
-```
-
-### Framework Adapters
-
-When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
-
-```ts
-// React example
-const queue = useAsyncQueuer(processFn, { concurrency: 2, wait: 1000 })
-
-// Access state directly (reactive)
-console.log(queue.state.successCount) // Reactive value
-console.log(queue.state.activeItems.length) // Reactive value
-```
-
-### Initial State
-
-You can provide initial state values when creating an async queuer:
-
-```ts
-const queue = new AsyncQueuer(processFn, {
-  concurrency: 2,
-  wait: 1000,
-  initialState: {
-    successCount: 10, // Start with 10 successful tasks
-    errorCount: 2, // Start with 2 failed tasks
-    isRunning: false, // Start paused
-    lastResult: 'initial-result', // Start with initial result
-  }
-})
-```
-
-### Subscribing to State Changes
-
-The store is reactive and supports subscriptions:
-
-```ts
-const queue = new AsyncQueuer(processFn, { concurrency: 2, wait: 1000 })
-
-// Subscribe to state changes
-const unsubscribe = queue.store.subscribe((state) => {
-  console.log('Active tasks:', state.activeItems.length)
-  console.log('Success count:', state.successCount)
-  console.log('Error count:', state.errorCount)
-  console.log('Queue size:', state.size)
-  console.log('Is running:', state.isRunning)
-})
-
-// Unsubscribe when done
-unsubscribe()
-```
-
-### Available State Properties
-
-The `AsyncQueuerState` includes all properties from the core queuing guide plus:
-
-- `successCount`: Number of successful task executions
-- `errorCount`: Number of failed task executions
-- `settledCount`: Total number of completed tasks (success + error)
-- `activeItems`: Array of items currently being processed
-- `lastResult`: Result from the most recent successful task execution
-- `rejectionCount`: Number of tasks rejected due to maxSize
-- `expirationCount`: Number of tasks expired
-- `size`: Current number of items in the queue
-- `isEmpty`: Whether the queue has no items
-- `isFull`: Whether the queue has reached maxSize
-- `isIdle`: Whether the queue has no active tasks
-- `isRunning`: Whether the queue is active and processing tasks
-- `status`: Current processing status ('idle' | 'running' | 'stopped')
-- `items`: Array of items waiting to be processed
-- `itemTimestamps`: Array of timestamps when items were added
-- `pendingTick`: Whether the queue has a pending timeout for processing
-
 ### Flushing Queue Items
 
 The async queuer supports flushing items to process them immediately:
@@ -332,6 +246,99 @@ queue.flush(1) // Process 1 more item
 console.log(queue.store.state.activeItems.length) // 3 (all processing concurrently)
 ```
 
+## State Management
+
+The `AsyncQueuer` class uses TanStack Store for reactive state management, providing real-time access to queue state, processing statistics, and concurrent task tracking. All state is stored in a TanStack Store and can be accessed via `asyncQueuer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `asyncQueuer.state` along with providing a selector callback as the 3rd argument to the `useAsyncQueuer` hook to opt-in to state tracking as shown below.
+
+### State Selector (Framework Adapters)
+
+Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
+
+**By default, `asyncQueuer.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+
+```ts
+// Default behavior - no reactive state subscriptions
+const queue = useAsyncQueuer(processFn, { concurrency: 2, wait: 1000 })
+console.log(queue.state) // {}
+
+// Opt-in to re-render when activeItems changes
+const queue = useAsyncQueuer(
+  processFn, 
+  { concurrency: 2, wait: 1000 },
+  (state) => ({ activeItems: state.activeItems })
+)
+console.log(queue.state.activeItems.length) // Reactive value
+
+// Multiple state properties
+const queue = useAsyncQueuer(
+  processFn,
+  { concurrency: 2, wait: 1000 },
+  (state) => ({
+    activeItems: state.activeItems,
+    successCount: state.successCount,
+    errorCount: state.errorCount
+  })
+)
+```
+
+### Initial State
+
+You can provide initial state values when creating an async queuer:
+
+```ts
+const savedState = localStorage.getItem('async-queuer-state')
+const initialState = savedState ? JSON.parse(savedState) : {}
+
+const queue = new AsyncQueuer(processFn, {
+  concurrency: 2,
+  wait: 1000,
+  initialState
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const queue = new AsyncQueuer(processFn, { concurrency: 2, wait: 1000 })
+
+// Subscribe to state changes
+const unsubscribe = queue.store.subscribe((state) => {
+  // do something with the state like persist it to localStorage
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+
+### Available State Properties
+
+The `AsyncQueuerState` includes all properties from the core queuing guide plus:
+
+- `activeItems`: Array of items currently being processed
+- `errorCount`: Number of function executions that have resulted in errors
+- `expirationCount`: Number of items that have been removed from the queue due to expiration
+- `isEmpty`: Whether the queuer has no items to process (items array is empty)
+- `isFull`: Whether the queuer has reached its maximum capacity
+- `isIdle`: Whether the queuer is not currently processing any items
+- `isRunning`: Whether the queuer is active and will process items automatically
+- `items`: Array of items currently waiting to be processed
+- `itemTimestamps`: Timestamps when items were added to the queue for expiration tracking
+- `lastResult`: The result from the most recent successful function execution
+- `pendingTick`: Whether the queuer has a pending timeout for processing the next item
+- `rejectionCount`: Number of items that have been rejected from being added to the queue
+- `settledCount`: Number of function executions that have completed (either successfully or with errors)
+- `size`: Number of items currently in the queue
+- `status`: Current processing status ('idle' | 'running' | 'stopped')
+- `successCount`: Number of function executions that have completed successfully
+
 ### Framework Adapters
 
 Each framework adapter builds convenient hooks and functions around the async queuer classes. Hooks like `useAsyncQueuer` or `useAsyncQueuedState` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.
+
+---
+
+For core queuing concepts and synchronous queuing, see the [Queuing Guide](../queuing.md).

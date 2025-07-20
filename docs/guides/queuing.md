@@ -376,106 +376,6 @@ The following options support dynamic values:
 
 This allows for sophisticated queue behavior that adapts to runtime conditions.
 
-### Performance Monitoring
-
-The Queuer provides state properties to monitor its performance:
-
-```ts
-const queue = new Queuer<number>(
-  (item) => {
-    // Process each item
-    console.log('Processing:', item)
-  }
-)
-
-// Add and process some items
-queue.addItem(1)
-queue.addItem(2)
-queue.addItem(3)
-
-console.log(queue.store.state.rejectionCount) // Number of items processed
-```
-
-## State Management
-
-The `Queuer` class uses TanStack Store for reactive state management, providing real-time access to queue state, processing statistics, and item tracking.
-
-### Accessing State
-
-When using the `Queuer` class directly, access state via the `store.state` property:
-
-```ts
-const queue = new Queuer(processFn, { wait: 1000, maxSize: 10 })
-
-// Access current state
-console.log(queue.store.state.isFull)
-```
-
-### Framework Adapters
-
-When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
-
-```ts
-// React example
-const queue = useQueuer(processFn, { wait: 1000, maxSize: 10 })
-
-// Access state directly (reactive)
-console.log(queue.state.executionCount) // Reactive value
-console.log(queue.state.size) // Reactive value
-```
-
-### Initial State
-
-You can provide initial state values when creating a queuer:
-
-```ts
-const queue = new Queuer(processFn, {
-  wait: 1000,
-  maxSize: 10,
-  initialState: {
-    executionCount: 5, // Start with 5 items processed
-    rejectionCount: 2, // Start with 2 rejections
-    isRunning: false, // Start paused
-  }
-})
-```
-
-### Subscribing to State Changes
-
-The store is reactive and supports subscriptions:
-
-```ts
-const queue = new Queuer(processFn, { wait: 1000, maxSize: 10 })
-
-// Subscribe to state changes
-const unsubscribe = queue.store.subscribe((state) => {
-  console.log('Queue size:', state.size)
-  console.log('Items processed:', state.executionCount)
-  console.log('Is running:', state.isRunning)
-  console.log('Is empty:', state.isEmpty)
-})
-
-// Unsubscribe when done
-unsubscribe()
-```
-
-### Available State Properties
-
-The `QueuerState` includes:
-
-- `executionCount`: Number of items processed
-- `rejectionCount`: Number of items rejected due to maxSize
-- `expirationCount`: Number of items expired
-- `size`: Current number of items in the queue
-- `isEmpty`: Whether the queue has no items
-- `isFull`: Whether the queue has reached maxSize
-- `isIdle`: Whether the queue is not processing any items
-- `isRunning`: Whether the queue is active and processing items
-- `status`: Current processing status ('idle' | 'running' | 'stopped')
-- `items`: Array of items currently in the queue
-- `itemTimestamps`: Array of timestamps when items were added
-- `pendingTick`: Whether the queue has a pending timeout for processing
-
 ### Flushing Queue Items
 
 The queuer supports flushing items to process them immediately:
@@ -499,10 +399,96 @@ queue.flush(2) // Process only 2 items
 console.log(queue.store.state.size) // 1 (one item remaining)
 ```
 
-### Asynchronous Queuing
+## State Management
 
-For handling asynchronous operations with multiple workers, see the [Async Queuing Guide](../async-queuing.md) which covers the `AsyncQueuer` class.
+The `Queuer` class uses TanStack Store for reactive state management, providing real-time access to queue state, processing statistics, and concurrent task tracking. All state is stored in a TanStack Store and can be accessed via `queuer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `queuer.state` along with providing a selector callback as the 3rd argument to the `useQueuer` hook to opt-in to state tracking as shown below.
+
+### State Selector (Framework Adapters)
+
+Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
+
+**By default, `util.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+
+```ts
+// Default behavior - no reactive state subscriptions
+const queue = useQueuer(processFn, { wait: 1000, maxSize: 10 })
+console.log(queue.state) // {}
+
+// Opt-in to re-render when size changes
+const queue = useQueuer(
+  processFn, 
+  { wait: 1000, maxSize: 10 },
+  (state) => ({ size: state.size })
+)
+console.log(queue.state.size) // Reactive value
+
+// Multiple state properties
+const queue = useQueuer(
+  processFn,
+  { wait: 1000, maxSize: 10 },
+  (state) => ({
+    size: state.size,
+    executionCount: state.executionCount,
+    status: state.status
+  })
+)
+```
+
+### Initial State
+
+You can provide initial state values when creating a queuer. This is commonly used to restore state from persistent storage:
+
+```ts
+// Load initial state from localStorage
+const savedState = localStorage.getItem('queuer-state')
+const initialState = savedState ? JSON.parse(savedState) : {}
+
+const queue = new Queuer(processFn, {
+  wait: 1000,
+  maxSize: 10,
+  initialState
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const queue = new Queuer(processFn, { wait: 1000, maxSize: 10 })
+
+// Subscribe to state changes
+const unsubscribe = queue.store.subscribe((state) => {
+  // do something with the state like persist it to localStorage
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+
+### Available State Properties
+
+The `QueuerState` includes:
+
+- `executionCount`: Number of items that have been processed by the queuer
+- `expirationCount`: Number of items that have been removed from the queue due to expiration
+- `isEmpty`: Whether the queuer has no items to process (items array is empty)
+- `isFull`: Whether the queuer has reached its maximum capacity
+- `isIdle`: Whether the queuer is not currently processing any items
+- `isRunning`: Whether the queuer is active and will process items automatically
+- `items`: Array of items currently waiting to be processed
+- `itemTimestamps`: Timestamps when items were added to the queue for expiration tracking
+- `pendingTick`: Whether the queuer has a pending timeout for processing the next item
+- `rejectionCount`: Number of items that have been rejected from being added to the queue
+- `size`: Number of items currently in the queue
+- `status`: Current processing status ('idle' | 'running' | 'stopped')
 
 ### Framework Adapters
 
 Each framework adapter builds convenient hooks and functions around the queuer classes. Hooks like `useQueuer`, `useQueuedState`, and `useQueuedValue` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.
+
+---
+
+For asynchronous queuing, see the [Async Queuing Guide](../async-queuing.md). 

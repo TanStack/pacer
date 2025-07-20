@@ -233,89 +233,6 @@ const batcher = new AsyncBatcher<number>(
 )
 ```
 
-## State Management
-
-The `AsyncBatcher` class uses TanStack Store for reactive state management, providing real-time access to batch execution state, error tracking, and processing statistics.
-
-### Accessing State
-
-When using the `AsyncBatcher` class directly, access state via the `store.state` property:
-
-```ts
-const batcher = new AsyncBatcher(asyncBatchFn, { maxSize: 5, wait: 1000 })
-
-// Access current state
-console.log(batcher.store.state.totalItemsProcessed)
-```
-
-### Framework Adapters
-
-When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
-
-```ts
-// React example
-const batcher = useAsyncBatcher(asyncBatchFn, { maxSize: 5, wait: 1000 })
-
-// Access state directly (reactive)
-console.log(batcher.state.successCount) // Reactive value
-console.log(batcher.state.isExecuting) // Reactive value
-```
-
-### Initial State
-
-You can provide initial state values when creating an async batcher:
-
-```ts
-const batcher = new AsyncBatcher(asyncBatchFn, {
-  maxSize: 5,
-  wait: 1000,
-  initialState: {
-    successCount: 10, // Start with 10 successful batches
-    errorCount: 2, // Start with 2 failed batches
-    totalItemsProcessed: 50, // Start with 50 items processed
-    lastResult: 'initial-result', // Start with initial result
-  }
-})
-```
-
-### Subscribing to State Changes
-
-The store is reactive and supports subscriptions:
-
-```ts
-const batcher = new AsyncBatcher(asyncBatchFn, { maxSize: 5, wait: 1000 })
-
-// Subscribe to state changes
-const unsubscribe = batcher.store.subscribe((state) => {
-  console.log('Success count:', state.successCount)
-  console.log('Error count:', state.errorCount)
-  console.log('Currently executing:', state.isExecuting)
-  console.log('Items processed:', state.totalItemsProcessed)
-})
-
-// Unsubscribe when done
-unsubscribe()
-```
-
-### Available State Properties
-
-The `AsyncBatcherState` includes:
-
-- `successCount`: Number of successful batch executions
-- `errorCount`: Number of failed batch executions
-- `settleCount`: Total batch executions completed (success + error)
-- `isExecuting`: Whether a batch is currently being processed
-- `isPending`: Whether the batcher is waiting for timeout to trigger batch processing
-- `isRunning`: Whether the batcher is active and will process items automatically
-- `isEmpty`: Whether the batcher has no items to process
-- `size`: Number of items currently in the batch queue
-- `status`: Current processing status ('idle' | 'pending' | 'executing' | 'populated')
-- `items`: Array of items currently queued for batch processing
-- `lastResult`: Result from the most recent successful batch execution
-- `failedItems`: Array of items that failed during batch processing
-- `totalItemsProcessed`: Total number of items processed successfully across all batches
-- `totalItemsFailed`: Total number of items that failed processing across all batches
-
 ### Flushing Pending Batches
 
 The async batcher supports flushing pending batches to trigger processing immediately:
@@ -332,6 +249,104 @@ const result = await batcher.flush()
 console.log('Flush result:', result)
 console.log(batcher.store.state.isEmpty) // true (batch was processed)
 ```
+
+## State Management
+
+The `AsyncBatcher` class uses TanStack Store for reactive state management, providing real-time access to batch execution state, error tracking, and processing statistics. All state is stored in a TanStack Store and can be accessed via `asyncBatcher.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `asyncBatcher.state` along with providing a selector callback as the 3rd argument to the `useAsyncBatcher` hook to opt-in to state tracking as shown below.
+
+### State Selector (Framework Adapters)
+
+Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
+
+**By default, `asyncBatcher.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+
+```ts
+// Default behavior - no reactive state subscriptions
+const batcher = useAsyncBatcher(asyncBatchFn, { maxSize: 5, wait: 1000 })
+console.log(batcher.state) // {}
+
+// Opt-in to re-render when isExecuting changes
+const batcher = useAsyncBatcher(
+  asyncBatchFn, 
+  { maxSize: 5, wait: 1000 },
+  (state) => ({ isExecuting: state.isExecuting })
+)
+console.log(batcher.state.isExecuting) // Reactive value
+
+// Multiple state properties
+const batcher = useAsyncBatcher(
+  asyncBatchFn,
+  { maxSize: 5, wait: 1000 },
+  (state) => ({
+    isExecuting: state.isExecuting,
+    successCount: state.successCount,
+    errorCount: state.errorCount
+  })
+)
+```
+
+### Initial State
+
+You can provide initial state values when creating an async batcher. This is commonly used to restore state from persistent storage:
+
+```ts
+// Load initial state from localStorage
+const savedState = localStorage.getItem('async-batcher-state')
+const initialState = savedState ? JSON.parse(savedState) : {}
+
+const batcher = new AsyncBatcher(asyncBatchFn, {
+  maxSize: 5,
+  wait: 1000,
+  initialState
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const batcher = new AsyncBatcher(asyncBatchFn, { maxSize: 5, wait: 1000 })
+
+// Subscribe to state changes
+const unsubscribe = batcher.store.subscribe((state) => {
+  // do something with the state like persist it to localStorage
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+
+```ts
+const batcher = useAsyncBatcher(asyncBatchFn, { maxSize: 5, wait: 1000 })
+
+// you could manually use the `useStore` hook to subscribe to state changes in whatever scope you want
+const state = useStore(batcher.store, (state) => ({
+  successCount: state.successCount,
+}))
+
+console.log(state)
+```
+
+### Available State Properties
+
+The `AsyncBatcherState` includes:
+
+- `errorCount`: Number of batch executions that have resulted in errors
+- `failedItems`: Array of items that failed during batch processing
+- `isEmpty`: Whether the batcher has no items to process (items array is empty)
+- `isExecuting`: Whether a batch is currently being processed asynchronously
+- `isPending`: Whether the batcher is waiting for the timeout to trigger batch processing
+- `items`: Array of items currently queued for batch processing
+- `lastResult`: The result from the most recent batch execution
+- `settleCount`: Number of batch executions that have completed (either successfully or with errors)
+- `size`: Number of items currently in the batch queue
+- `status`: Current processing status ('idle' | 'pending' | 'executing' | 'populated')
+- `successCount`: Number of batch executions that have completed successfully
+- `totalItemsFailed`: Total number of items that have failed processing across all batches
+- `totalItemsProcessed`: Total number of items that have been processed across all batches
 
 ### Monitoring Failed Items
 
@@ -362,4 +377,4 @@ Each framework adapter provides hooks that build on top of the core async batchi
 
 ---
 
-For core batching concepts and synchronous batching, see the [Batching Guide](../batching.md). 
+For core batching concepts and synchronous batching, see the [Batching Guide](../batching.md).

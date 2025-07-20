@@ -109,36 +109,39 @@ For example, if you're updating a user's profile and then immediately fetching t
 
 Just like the synchronous rate limiter, the async rate limiter supports dynamic options for `limit`, `window`, and `enabled`, which can be functions that receive the rate limiter instance. This allows for sophisticated, runtime-adaptive rate limiting behavior.
 
-## Framework Adapters
-
-Each framework adapter provides hooks that build on top of the core async rate limiting functionality to integrate with the framework's state management system. Hooks like `createAsyncRateLimiter`, `useAsyncRateLimitedCallback`, or similar are available for each framework.
-
 ## State Management
 
-The `AsyncRateLimiter` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and rejection statistics.
+The `AsyncRateLimiter` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and rejection statistics. All state is stored in a TanStack Store and can be accessed via `asyncLimiter.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `asyncLimiter.state` along with providing a selector callback as the 3rd argument to the `useAsyncRateLimiter` hook to opt-in to state tracking as shown below.
 
-### Accessing State
+### State Selector (Framework Adapters)
 
-When using the `AsyncRateLimiter` class directly, access state via the `store.state` property:
+Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
 
-```ts
-const asyncLimiter = new AsyncRateLimiter(asyncFn, { limit: 5, window: 1000 })
-
-// Access current state
-console.log(asyncLimiter.store.state.isExecuting)
-```
-
-### Framework Adapters
-
-When using framework adapters like React or Solid, the state is exposed directly as a reactive property:
+**By default, `util.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
 
 ```ts
-// React example
+// Default behavior - no reactive state subscriptions
 const asyncLimiter = useAsyncRateLimiter(asyncFn, { limit: 5, window: 1000 })
+console.log(asyncLimiter.state) // {}
 
-// Access state directly (reactive)
-console.log(asyncLimiter.state.successCount) // Reactive value
+// Opt-in to re-render when isExecuting changes
+const asyncLimiter = useAsyncRateLimiter(
+  asyncFn, 
+  { limit: 5, window: 1000 },
+  (state) => ({ isExecuting: state.isExecuting })
+)
 console.log(asyncLimiter.state.isExecuting) // Reactive value
+
+// Multiple state properties
+const asyncLimiter = useAsyncRateLimiter(
+  asyncFn,
+  { limit: 5, window: 1000 },
+  (state) => ({
+    isExecuting: state.isExecuting,
+    successCount: state.successCount,
+    errorCount: state.errorCount
+  })
+)
 ```
 
 ### Initial State
@@ -146,16 +149,13 @@ console.log(asyncLimiter.state.isExecuting) // Reactive value
 You can provide initial state values when creating an async rate limiter:
 
 ```ts
+const savedState = localStorage.getItem('async-rate-limiter-state')
+const initialState = savedState ? JSON.parse(savedState) : {}
+
 const asyncLimiter = new AsyncRateLimiter(asyncFn, {
   limit: 5,
   window: 1000,
-  initialState: {
-    successCount: 3, // Start with 3 successful executions
-    errorCount: 1, // Start with 1 error
-    rejectionCount: 2, // Start with 2 rejections
-    lastResult: 'initial-result', // Start with initial result
-    executionTimes: [Date.now() - 500], // Start with one execution timestamp
-  }
+  initialState
 })
 ```
 
@@ -168,27 +168,27 @@ const asyncLimiter = new AsyncRateLimiter(asyncFn, { limit: 5, window: 1000 })
 
 // Subscribe to state changes
 const unsubscribe = asyncLimiter.store.subscribe((state) => {
-  console.log('Success count:', state.successCount)
-  console.log('Error count:', state.errorCount)
-  console.log('Rejection count:', state.rejectionCount)
-  console.log('Currently executing:', state.isExecuting)
+  // do something with the state like persist it to localStorage
 })
 
 // Unsubscribe when done
 unsubscribe()
 ```
 
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+
 ### Available State Properties
 
 The `AsyncRateLimiterState` includes:
 
-- `successCount`: Number of successful function executions
-- `errorCount`: Number of failed function executions
-- `settleCount`: Total number of completed executions (success + error)
-- `rejectionCount`: Number of rejected executions due to rate limiting
-- `isExecuting`: Whether the async function is currently executing
-- `lastResult`: Result from the most recent successful execution
-- `executionTimes`: Array of timestamps when executions occurred (used for rate limiting calculations)
+- `errorCount`: Number of function executions that have resulted in errors
+- `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
+- `isExecuting`: Whether the rate-limited function is currently executing asynchronously
+- `lastResult`: The result from the most recent successful function execution
+- `rejectionCount`: Number of function executions that have been rejected due to rate limiting
+- `settledCount`: Number of function executions that have completed (either successfully or with errors)
+- `status`: Current execution status ('disabled' | 'exceeded' | 'idle')
+- `successCount`: Number of function executions that have completed successfully
 
 ### Helper Methods
 
@@ -203,6 +203,10 @@ console.log(asyncLimiter.getMsUntilNextWindow()) // Milliseconds until next wind
 ```
 
 These methods are computed values that use the current state and don't need to be accessed through the store.
+
+## Framework Adapters
+
+Each framework adapter provides hooks that build on top of the core async rate limiting functionality to integrate with the framework's state management system. Hooks like `createAsyncRateLimiter`, `useAsyncRateLimitedCallback`, or similar are available for each framework.
 
 ---
 
