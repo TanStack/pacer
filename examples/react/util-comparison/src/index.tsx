@@ -434,7 +434,7 @@ function ComparisonApp() {
                   margin: 0,
                 }}
               >
-                {JSON.stringify(utility.store.state, null, 2)}
+                {JSON.stringify(utility.state, null, 2)}
               </pre>
             </div>
           ))}
