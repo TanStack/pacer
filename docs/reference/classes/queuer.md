@@ -252,7 +252,7 @@ flushAsBatch(batchFunction): void
 
 Defined in: [queuer.ts:522](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L522)
 
-Processes all items in the queue as a batch using the provided function
+Processes all items in the queue as a batch using the provided function as an argument
 The queue is cleared after processing
 
 #### Parameters

@@ -22,7 +22,7 @@ Unlike the sync batcher, this async version:
 - Has state tracking for when batches are executing
 
 Error Handling:
-- If an `onError` handler is provided, it will be called with the error and batcher instance
+- If an `onError` handler is provided, it will be called with the error, the batch of items that failed, and batcher instance
 - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
 - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
 - Both onError and throwOnError can be used together - the handler will be called before any error is thrown

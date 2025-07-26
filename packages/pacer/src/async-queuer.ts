@@ -161,7 +161,7 @@ export interface AsyncQueuerOptions<TValue> {
   /**
    * Optional callback to call when a task succeeds
    */
-  onSuccess?: (result: TValue, queuer: AsyncQueuer<TValue>) => void
+  onSuccess?: (result: any, queuer: AsyncQueuer<TValue>) => void
   /**
    * Whether the queuer should start processing tasks immediately or not.
    */

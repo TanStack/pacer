@@ -173,7 +173,7 @@ Maximum number of items allowed in the queuer
 ### onError()?
 
 ```ts
-optional onError: (error, queuer) => void;
+optional onError: (error, item, queuer) => void;
 ```
 
 Defined in: [async-queuer.ts:144](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L144)
@@ -187,6 +187,10 @@ This can be used alongside throwOnError - the handler will be called before any 
 ##### error
 
 `unknown`
+
+##### item
+
+`TValue`
 
 ##### queuer
 
@@ -308,7 +312,7 @@ Optional callback to call when a task succeeds
 
 ##### result
 
-`TValue`
+`any`
 
 ##### queuer
 
