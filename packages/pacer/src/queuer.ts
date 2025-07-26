@@ -516,7 +516,7 @@ export class Queuer<TValue> {
   }
 
   /**
-   * Processes all items in the queue as a batch using the provided function
+   * Processes all items in the queue as a batch using the provided function as an argument
    * The queue is cleared after processing
    */
   flushAsBatch = (batchFunction: (items: Array<TValue>) => void): void => {

@@ -86,7 +86,11 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    * If provided, the handler will be called with the error and throttler instance.
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
-  onError?: (error: unknown, asyncThrottler: AsyncThrottler<TFn>) => void
+  onError?: (
+    error: unknown,
+    args: Parameters<TFn>,
+    asyncThrottler: AsyncThrottler<TFn>,
+  ) => void
   /**
    * Optional function to call when the throttled function is executed
    */
@@ -330,7 +334,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.options.onError?.(error, this)
+      this.options.onError?.(error, args, this)
       if (this.options.throwOnError) {
         this.#rejectPreviousPromiseInternal(error)
       }

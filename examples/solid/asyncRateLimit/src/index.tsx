@@ -36,7 +36,7 @@ function SearchApp() {
       limit: 5,
       window: 5000,
       windowType: windowType(),
-      onReject: (rateLimiter) =>
+      onReject: (_args, rateLimiter) =>
         console.log(
           `Rate limit exceeded: ${rateLimiter.getMsUntilNextWindow()}ms until next window`,
         ),

@@ -109,7 +109,7 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
 
     await throttler.maybeExecute()
-    expect(onError).toHaveBeenCalledWith(error, throttler)
+    expect(onError).toHaveBeenCalledWith(error, [], throttler)
   })
 
   it('should continue processing after function throws error if onError is provided', async () => {
@@ -124,6 +124,7 @@ describe('AsyncThrottler', () => {
     await throttler.maybeExecute(1)
     expect(onError).toHaveBeenCalledWith(
       new Error('First call error'),
+      [1],
       throttler,
     )
     // Second call should still execute after wait period

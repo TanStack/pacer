@@ -31,7 +31,7 @@ function App() {
           queuer.store.state.rejectionCount,
         )
       },
-      onError: (error, queuer) => {
+      onError: (error, _item, queuer) => {
         console.error(
           'Error processing item',
           error,

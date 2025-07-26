@@ -258,7 +258,7 @@ describe('AsyncDebouncer', () => {
       // The promise should resolve with undefined, not reject
       const result = await promise
       expect(result).toBeUndefined()
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
     })
 
     it('should maintain execution order of promises', async () => {
@@ -343,7 +343,7 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
 
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
       expect(onSettled).toBeCalledWith(debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
@@ -366,7 +366,7 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -399,7 +399,7 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(onError).toHaveBeenNthCalledWith(1, error1, debouncer)
+      expect(onError).toHaveBeenNthCalledWith(1, error1, [], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -408,7 +408,7 @@ describe('AsyncDebouncer', () => {
       const promise2 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise2
-      expect(onError).toHaveBeenNthCalledWith(2, error2, debouncer)
+      expect(onError).toHaveBeenNthCalledWith(2, error2, [], debouncer)
       expect(debouncer.store.state.errorCount).toBe(2)
       expect(debouncer.store.state.settleCount).toBe(2)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -429,7 +429,7 @@ describe('AsyncDebouncer', () => {
       const promise = debouncer.maybeExecute()
       await vi.advanceTimersByTimeAsync(1000)
       await promise
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
       expect(onSettled).toBeCalledWith(debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
@@ -451,7 +451,7 @@ describe('AsyncDebouncer', () => {
       const promise = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
       expect(onSettled).toBeCalledWith(debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
@@ -527,7 +527,7 @@ describe('AsyncDebouncer', () => {
       await promise
 
       expect(onError).toBeCalledTimes(1)
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
     })
 
     it('should maintain correct callback order', async () => {
@@ -578,7 +578,7 @@ describe('AsyncDebouncer', () => {
       // onSuccess throws, which triggers onError, and onSettled is always called
       expect(onSuccess).toBeCalledTimes(1)
       expect(onError).toBeCalledTimes(1)
-      expect(onError).toBeCalledWith(callbackError, debouncer)
+      expect(onError).toBeCalledWith(callbackError, [], debouncer)
       expect(onSettled).toBeCalledTimes(1)
       expect(onSettled).toBeCalledWith(debouncer)
     })
@@ -1030,7 +1030,7 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
       expect(onError2).toBeCalledTimes(1)
-      expect(onError2).toBeCalledWith(error, debouncer)
+      expect(onError2).toBeCalledWith(error, [], debouncer)
       expect(onSettled2).toBeCalledTimes(1)
       expect(onSettled2).toBeCalledWith(debouncer)
       expect(onError1).not.toBeCalled()

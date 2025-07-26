@@ -46,7 +46,7 @@ function App() {
       windowType: windowType,
       limit: 3, // Maximum 2 requests
       window: 3000, // per 1 second
-      onReject: (rateLimiter) => {
+      onReject: (_args, rateLimiter) => {
         console.log(
           `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
         )

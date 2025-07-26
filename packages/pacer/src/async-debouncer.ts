@@ -81,7 +81,11 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    * If provided, the handler will be called with the error and debouncer instance.
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
-  onError?: (error: unknown, debouncer: AsyncDebouncer<TFn>) => void
+  onError?: (
+    error: unknown,
+    args: Parameters<TFn>,
+    debouncer: AsyncDebouncer<TFn>,
+  ) => void
   /**
    * Optional callback to call when the debounced function is executed
    */
@@ -305,7 +309,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.options.onError?.(error, this)
+      this.options.onError?.(error, args, this)
       if (this.options.throwOnError) {
         this.#rejectPreviousPromiseInternal(error)
       }

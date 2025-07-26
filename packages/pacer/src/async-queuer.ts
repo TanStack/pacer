@@ -141,7 +141,7 @@ export interface AsyncQueuerOptions<TValue> {
    * If provided, the handler will be called with the error and queuer instance.
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
-  onError?: (error: unknown, queuer: AsyncQueuer<TValue>) => void
+  onError?: (error: unknown, item: TValue, queuer: AsyncQueuer<TValue>) => void
   /**
    * Callback fired whenever an item expires in the queuer
    */
@@ -537,7 +537,7 @@ export class AsyncQueuer<TValue> {
         this.#setState({
           errorCount: this.store.state.errorCount + 1,
         })
-        this.options.onError?.(error, this)
+        this.options.onError?.(error, item, this)
         if (this.options.throwOnError) {
           throw error
         }
@@ -569,7 +569,7 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Processes all items in the queue as a batch using the provided function
+   * Processes all items in the queue as a batch using the provided function as an argument
    * The queue is cleared after processing
    */
   flushAsBatch = async (
