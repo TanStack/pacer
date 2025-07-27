@@ -72,7 +72,7 @@ The async rate limiter provides robust error handling capabilities:
 The `AsyncRateLimiter` supports the following callbacks:
 - `onSuccess`: Called after each successful execution, providing the result and rate limiter instance
 - `onSettled`: Called after each execution (success or failure), providing the rate limiter instance
-- `onError`: Called if the async function throws an error, providing both the error and the rate limiter instance
+- `onError`: Called if the async function throws an error, providing the error, the arguments that caused the error, and the rate limiter instance
 
 Both the Async and Synchronous rate limiters support the `onReject` callback for handling blocked executions.
 
