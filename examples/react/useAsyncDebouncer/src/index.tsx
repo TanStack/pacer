@@ -23,6 +23,7 @@ function App() {
 
   // The function that will become debounced
   const handleSearch = async (term: string) => {
+    throw new Error('Test error')
     if (!term) {
       setResults([])
       return
@@ -46,6 +47,7 @@ function App() {
         console.error('Search failed:', error)
         setResults([])
       },
+      // throwOnError: true,
     },
     // Optional Selector function to pick the state you want to track and use
     (state) => ({

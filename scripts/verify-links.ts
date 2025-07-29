@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import path, { resolve } from 'node:path'
 import fg from 'fast-glob'
-// @ts-ignore
+// @ts-ignore - this is a valid import
 import markdownLinkExtractor from 'markdown-link-extractor'
 
 function isRelativeLink(link: string) {

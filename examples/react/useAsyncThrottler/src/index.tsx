@@ -29,7 +29,7 @@ function App() {
       return
     }
 
-    // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
+    throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
 
     const data = await fakeApi(term)
     setResults(data)
@@ -51,6 +51,7 @@ function App() {
         setError(error as Error)
         setResults([])
       },
+      // throwOnError: true,
     },
     // Optional Selector function to pick the state you want to track and use
     (state) => ({
