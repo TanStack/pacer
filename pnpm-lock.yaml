@@ -81,7 +81,7 @@ importers:
   examples/react/asyncBatch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -106,7 +106,7 @@ importers:
   examples/react/asyncDebounce:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -131,7 +131,7 @@ importers:
   examples/react/asyncRateLimit:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -156,7 +156,7 @@ importers:
   examples/react/asyncThrottle:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -181,7 +181,7 @@ importers:
   examples/react/batch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -206,7 +206,7 @@ importers:
   examples/react/debounce:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -231,7 +231,7 @@ importers:
   examples/react/queue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -256,7 +256,7 @@ importers:
   examples/react/rateLimit:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -281,7 +281,7 @@ importers:
   examples/react/react-query-debounced-prefetch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.83.0
@@ -312,7 +312,7 @@ importers:
   examples/react/react-query-queued-prefetch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.83.0
@@ -343,7 +343,7 @@ importers:
   examples/react/react-query-throttled-prefetch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.83.0
@@ -374,7 +374,7 @@ importers:
   examples/react/throttle:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -399,7 +399,7 @@ importers:
   examples/react/useAsyncBatchedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -424,7 +424,7 @@ importers:
   examples/react/useAsyncBatcher:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -449,7 +449,7 @@ importers:
   examples/react/useAsyncDebouncedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -474,7 +474,7 @@ importers:
   examples/react/useAsyncDebouncer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -499,7 +499,7 @@ importers:
   examples/react/useAsyncQueuedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -524,7 +524,7 @@ importers:
   examples/react/useAsyncQueuer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -549,7 +549,7 @@ importers:
   examples/react/useAsyncRateLimiter:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -577,7 +577,7 @@ importers:
   examples/react/useAsyncRateLimiterWithPersister:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -605,7 +605,7 @@ importers:
   examples/react/useAsyncThrottler:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -630,7 +630,7 @@ importers:
   examples/react/useBatchedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -655,7 +655,7 @@ importers:
   examples/react/useBatcher:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -680,7 +680,7 @@ importers:
   examples/react/useDebouncedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -705,7 +705,7 @@ importers:
   examples/react/useDebouncedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -730,7 +730,7 @@ importers:
   examples/react/useDebouncedValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -755,7 +755,7 @@ importers:
   examples/react/useDebouncer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -780,7 +780,7 @@ importers:
   examples/react/useQueuedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -805,7 +805,7 @@ importers:
   examples/react/useQueuedValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -830,7 +830,7 @@ importers:
   examples/react/useQueuer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -858,7 +858,7 @@ importers:
   examples/react/useQueuerWithPersister:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -886,7 +886,7 @@ importers:
   examples/react/useRateLimitedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -911,7 +911,7 @@ importers:
   examples/react/useRateLimitedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -936,7 +936,7 @@ importers:
   examples/react/useRateLimitedValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -961,7 +961,7 @@ importers:
   examples/react/useRateLimiter:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -989,7 +989,7 @@ importers:
   examples/react/useRateLimiterWithPersister:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -1042,7 +1042,7 @@ importers:
   examples/react/useThrottledCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -1067,7 +1067,7 @@ importers:
   examples/react/useThrottledState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -1092,7 +1092,7 @@ importers:
   examples/react/useThrottledValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -1117,7 +1117,7 @@ importers:
   examples/react/useThrottler:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
@@ -1142,7 +1142,7 @@ importers:
   examples/react/util-comparison:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.12.0
+        specifier: ^0.13.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.0
