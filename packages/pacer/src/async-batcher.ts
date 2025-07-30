@@ -308,7 +308,7 @@ export class AsyncBatcher<TValue> {
    * You can also call this method manually to process the current batch at any time.
    *
    * @returns A promise that resolves with the result of the batch function, or undefined if an error occurred and was handled by onError
-   * @throws The error from the batch function if no onError handler is configured
+   * @throws The error from the batch function if no onError handler is configured or throwOnError is true
    */
   #execute = async (): Promise<any> => {
     if (this.store.state.items.length === 0) {
@@ -317,7 +317,7 @@ export class AsyncBatcher<TValue> {
 
     const batch = this.peekAllItems() // copy of the items to be processed (to prevent race conditions)
     this.clear() // Clear items before processing to prevent race conditions
-    this.options.onItemsChange?.(this) // Call onItemsChange to notify listeners that the items have changed
+    this.options.onItemsChange?.(this)
 
     this.#setState({ isExecuting: true })
 

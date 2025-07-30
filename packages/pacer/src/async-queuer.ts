@@ -527,7 +527,7 @@ export class AsyncQueuer<TValue> {
     const item = this.getNextItem(position)
     if (item !== undefined) {
       try {
-        const lastResult = await this.fn(item)
+        const lastResult = await this.fn(item) // EXECUTE!
         this.#setState({
           successCount: this.store.state.successCount + 1,
           lastResult,
