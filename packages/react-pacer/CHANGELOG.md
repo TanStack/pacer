@@ -1,5 +1,11 @@
 # @tanstack/react-pacer
 
+## 0.13.0
+
+### Minor Changes
+
+- Add `useAsyncBatchedCallback` and `useBatchedCallback`, hooks for batching and debouncing async operations in React ([`10fc5e9`](https://github.com/TanStack/pacer/commit/10fc5e917b55f7be6825af50bb5ecd3ca9c678f7))
+
 ## 0.12.0
 
 ### Minor Changes
