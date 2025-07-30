@@ -1,5 +1,17 @@
 # @tanstack/solid-pacer
 
+## 0.12.0
+
+### Minor Changes
+
+- breaking: changed callback signature of `onError` in AsyncDebouncer, AsyncThrottler, AsyncQueuer, AsyncRatelimiter, and AsyncBatcher to include the item that caused the error ([#45](https://github.com/TanStack/pacer/pull/45))
+  fix: Fixed Error Handling in Async Debouncer and Throttler by properly resolving and rejecting returned promises from `maybeExecute`
+
+### Patch Changes
+
+- Updated dependencies [[`0303238`](https://github.com/TanStack/pacer/commit/030323846f34af4683335383d796144f39308106)]:
+  - @tanstack/pacer@0.12.0
+
 ## 0.11.0
 
 ### Minor Changes
