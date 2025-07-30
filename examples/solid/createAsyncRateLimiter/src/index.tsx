@@ -49,7 +49,7 @@ function App() {
         console.error('Search failed:', error)
         setResults([])
       },
-      onReject: (rateLimiter) => {
+      onReject: (_args, rateLimiter) => {
         console.log(
           'Rate limit exceeded:',
           rateLimiter.store.state.rejectionCount,

@@ -86,7 +86,11 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    * If provided, the handler will be called with the error and throttler instance.
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
-  onError?: (error: unknown, asyncThrottler: AsyncThrottler<TFn>) => void
+  onError?: (
+    error: unknown,
+    args: Parameters<TFn>,
+    asyncThrottler: AsyncThrottler<TFn>,
+  ) => void
   /**
    * Optional function to call when the throttled function is executed
    */
@@ -187,7 +191,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null
-  #rejectPreviousPromise: ((reason?: unknown) => void) | null = null
 
   constructor(
     private fn: TFn,
@@ -290,7 +293,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     } else {
       return new Promise((resolve, reject) => {
         this.#resolvePreviousPromise = resolve
-        this.#rejectPreviousPromise = reject
         // Clear any existing timeout to ensure we use the latest arguments
         this.#clearTimeout()
 
@@ -303,7 +305,11 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
           this.#setState({ isPending: true })
           this.#timeoutId = setTimeout(async () => {
             if (this.store.state.lastArgs !== undefined) {
-              await this.#execute(...this.store.state.lastArgs)
+              try {
+                await this.#execute(...this.store.state.lastArgs) // EXECUTE!
+              } catch (error) {
+                reject(error)
+              }
             }
             this.#resolvePreviousPromise = null
             resolve(this.store.state.lastResult)
@@ -330,9 +336,9 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.options.onError?.(error, this)
+      this.options.onError?.(error, args, this)
       if (this.options.throwOnError) {
-        this.#rejectPreviousPromiseInternal(error)
+        throw error
       }
     } finally {
       const lastExecutionTime = Date.now()
@@ -379,13 +385,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
   }
 
-  #rejectPreviousPromiseInternal = (error: unknown): void => {
-    if (this.#rejectPreviousPromise) {
-      this.#rejectPreviousPromise(error)
-      this.#rejectPreviousPromise = null
-    }
-  }
-
   #clearTimeout = (): void => {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
@@ -396,7 +395,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   #cancelPendingExecution = (): void => {
     this.#clearTimeout()
     if (this.#resolvePreviousPromise) {
-      this.#resolvePreviousPromise(this.store.state.lastResult)
+      this.#resolvePreviousPromiseInternal()
       this.#resolvePreviousPromise = null
     }
     this.#setState({

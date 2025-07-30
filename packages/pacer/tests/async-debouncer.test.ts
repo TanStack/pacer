@@ -258,7 +258,7 @@ describe('AsyncDebouncer', () => {
       // The promise should resolve with undefined, not reject
       const result = await promise
       expect(result).toBeUndefined()
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
     })
 
     it('should maintain execution order of promises', async () => {
@@ -343,7 +343,7 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
 
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
       expect(onSettled).toBeCalledWith(debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
@@ -366,7 +366,7 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -399,7 +399,7 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(onError).toHaveBeenNthCalledWith(1, error1, debouncer)
+      expect(onError).toHaveBeenNthCalledWith(1, error1, [], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -408,7 +408,7 @@ describe('AsyncDebouncer', () => {
       const promise2 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise2
-      expect(onError).toHaveBeenNthCalledWith(2, error2, debouncer)
+      expect(onError).toHaveBeenNthCalledWith(2, error2, [], debouncer)
       expect(debouncer.store.state.errorCount).toBe(2)
       expect(debouncer.store.state.settleCount).toBe(2)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -429,7 +429,7 @@ describe('AsyncDebouncer', () => {
       const promise = debouncer.maybeExecute()
       await vi.advanceTimersByTimeAsync(1000)
       await promise
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
       expect(onSettled).toBeCalledWith(debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
@@ -451,7 +451,7 @@ describe('AsyncDebouncer', () => {
       const promise = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
       expect(onSettled).toBeCalledWith(debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
@@ -477,6 +477,220 @@ describe('AsyncDebouncer', () => {
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
       expect(debouncer.store.state.isPending).toBe(false)
+    })
+
+    describe('Promise Rejection Behavior', () => {
+      it('should reject promise when throwOnError is true and no onError handler', async () => {
+        const error = new Error('test error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          throwOnError: true,
+        })
+
+        const promise = debouncer.maybeExecute()
+        vi.advanceTimersByTime(1000)
+
+        await expect(promise).rejects.toThrow('test error')
+        expect(debouncer.store.state.errorCount).toBe(1)
+      })
+
+      it('should reject promise when throwOnError is true with onError handler', async () => {
+        const error = new Error('test error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          throwOnError: true,
+          onError,
+        })
+
+        const promise = debouncer.maybeExecute()
+        vi.advanceTimersByTime(1000)
+
+        await expect(promise).rejects.toThrow('test error')
+        expect(onError).toBeCalledWith(error, [], debouncer)
+        expect(debouncer.store.state.errorCount).toBe(1)
+      })
+
+      it('should reject promise during leading execution with throwOnError=true', async () => {
+        const error = new Error('leading error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          leading: true,
+          throwOnError: true,
+        })
+
+        const promise = debouncer.maybeExecute()
+        await expect(promise).rejects.toThrow('leading error')
+        expect(debouncer.store.state.errorCount).toBe(1)
+      })
+
+      it('should reject promise during trailing execution with throwOnError=true', async () => {
+        const error = new Error('trailing error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          trailing: true,
+          throwOnError: true,
+        })
+
+        const promise = debouncer.maybeExecute()
+        vi.advanceTimersByTime(1000)
+
+        await expect(promise).rejects.toThrow('trailing error')
+        expect(debouncer.store.state.errorCount).toBe(1)
+      })
+
+      it('should reject promise when both leading and trailing are enabled with throwOnError=true', async () => {
+        const error = new Error('execution error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          leading: true,
+          trailing: true,
+          throwOnError: true,
+        })
+
+        // Leading execution should reject immediately
+        const promise1 = debouncer.maybeExecute()
+        await expect(promise1).rejects.toThrow('execution error')
+        expect(debouncer.store.state.errorCount).toBe(1)
+
+        // Trailing execution should also reject
+        const promise2 = debouncer.maybeExecute()
+        vi.advanceTimersByTime(1000)
+        await expect(promise2).rejects.toThrow('execution error')
+        expect(debouncer.store.state.errorCount).toBe(2)
+      })
+
+      it('should resolve with undefined when throwOnError is false', async () => {
+        const error = new Error('test error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          throwOnError: false,
+          onError,
+        })
+
+        const promise = debouncer.maybeExecute()
+        vi.advanceTimersByTime(1000)
+
+        const result = await promise
+        expect(result).toBeUndefined()
+        expect(onError).toBeCalledWith(error, [], debouncer)
+        expect(debouncer.store.state.errorCount).toBe(1)
+      })
+
+      it('should resolve with undefined during leading execution when throwOnError=false', async () => {
+        const error = new Error('leading error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          leading: true,
+          throwOnError: false,
+          onError,
+        })
+
+        const promise = debouncer.maybeExecute()
+        const result = await promise
+        expect(result).toBeUndefined()
+        expect(onError).toBeCalledWith(error, [], debouncer)
+        expect(debouncer.store.state.errorCount).toBe(1)
+      })
+    })
+
+    describe('Flush Error Handling', () => {
+      it('should handle errors during flush with throwOnError=true', async () => {
+        const error = new Error('flush error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          throwOnError: true,
+        })
+
+        debouncer.maybeExecute()
+        expect(debouncer.store.state.isPending).toBe(true)
+
+        await expect(debouncer.flush()).rejects.toThrow('flush error')
+        expect(debouncer.store.state.errorCount).toBe(1)
+        expect(debouncer.store.state.isPending).toBe(false)
+      })
+
+      it('should handle errors during flush with throwOnError=false', async () => {
+        const error = new Error('flush error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          throwOnError: false,
+          onError,
+        })
+
+        debouncer.maybeExecute()
+        expect(debouncer.store.state.isPending).toBe(true)
+
+        const result = await debouncer.flush()
+        expect(result).toBeUndefined()
+        expect(onError).toBeCalledWith(error, [], debouncer)
+        expect(debouncer.store.state.errorCount).toBe(1)
+        expect(debouncer.store.state.isPending).toBe(false)
+      })
+
+      it('should resolve pending promise after flush error', async () => {
+        const error = new Error('flush error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          onError,
+        })
+
+        const promise = debouncer.maybeExecute()
+        await debouncer.flush()
+
+        const result = await promise
+        expect(result).toBeUndefined()
+        expect(onError).toBeCalledWith(error, [], debouncer)
+      })
+    })
+
+    describe('Error Handling with Disabled State', () => {
+      it('should not execute and return undefined when disabled, even with pending errors', async () => {
+        const error = new Error('should not execute')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          enabled: false,
+        })
+
+        const result = await debouncer.maybeExecute()
+        expect(result).toBeUndefined()
+        expect(mockFn).not.toBeCalled()
+        expect(debouncer.store.state.errorCount).toBe(0)
+      })
+    })
+
+    describe('Multiple Promise Error Scenarios', () => {
+      it('should handle cancellation of erroring promises', async () => {
+        const error = new Error('cancelled error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const debouncer = new AsyncDebouncer(mockFn, {
+          wait: 1000,
+          throwOnError: true,
+        })
+
+        const promise = debouncer.maybeExecute()
+        debouncer.cancel()
+
+        const result = await promise
+        expect(result).toBeUndefined()
+        expect(mockFn).not.toBeCalled()
+        expect(debouncer.store.state.errorCount).toBe(0)
+      })
     })
   })
 
@@ -527,7 +741,7 @@ describe('AsyncDebouncer', () => {
       await promise
 
       expect(onError).toBeCalledTimes(1)
-      expect(onError).toBeCalledWith(error, debouncer)
+      expect(onError).toBeCalledWith(error, [], debouncer)
     })
 
     it('should maintain correct callback order', async () => {
@@ -578,7 +792,7 @@ describe('AsyncDebouncer', () => {
       // onSuccess throws, which triggers onError, and onSettled is always called
       expect(onSuccess).toBeCalledTimes(1)
       expect(onError).toBeCalledTimes(1)
-      expect(onError).toBeCalledWith(callbackError, debouncer)
+      expect(onError).toBeCalledWith(callbackError, [], debouncer)
       expect(onSettled).toBeCalledTimes(1)
       expect(onSettled).toBeCalledWith(debouncer)
     })
@@ -1030,7 +1244,7 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
       expect(onError2).toBeCalledTimes(1)
-      expect(onError2).toBeCalledWith(error, debouncer)
+      expect(onError2).toBeCalledWith(error, [], debouncer)
       expect(onSettled2).toBeCalledTimes(1)
       expect(onSettled2).toBeCalledWith(debouncer)
       expect(onError1).not.toBeCalled()

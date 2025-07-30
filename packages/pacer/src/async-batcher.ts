@@ -98,12 +98,12 @@ export interface AsyncBatcherOptions<TValue> {
   maxSize?: number
   /**
    * Optional error handler for when the batch function throws.
-   * If provided, the handler will be called with the error and batcher instance.
+   * If provided, the handler will be called with the error, the batch of items that failed, and batcher instance.
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (
     error: unknown,
-    failedItems: Array<TValue>,
+    batch: Array<TValue>,
     batcher: AsyncBatcher<TValue>,
   ) => void
   /**
@@ -180,7 +180,7 @@ const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
  * - Error handling for failed batch operations
  *
  * Error Handling:
- * - If an `onError` handler is provided, it will be called with the error and batcher instance
+ * - If an `onError` handler is provided, it will be called with the error, the batch of items that failed, and batcher instance
  * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
  * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
  * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
@@ -308,7 +308,7 @@ export class AsyncBatcher<TValue> {
    * You can also call this method manually to process the current batch at any time.
    *
    * @returns A promise that resolves with the result of the batch function, or undefined if an error occurred and was handled by onError
-   * @throws The error from the batch function if no onError handler is configured
+   * @throws The error from the batch function if no onError handler is configured or throwOnError is true
    */
   #execute = async (): Promise<any> => {
     if (this.store.state.items.length === 0) {
@@ -317,7 +317,7 @@ export class AsyncBatcher<TValue> {
 
     const batch = this.peekAllItems() // copy of the items to be processed (to prevent race conditions)
     this.clear() // Clear items before processing to prevent race conditions
-    this.options.onItemsChange?.(this) // Call onItemsChange to notify listeners that the items have changed
+    this.options.onItemsChange?.(this)
 
     this.#setState({ isExecuting: true })
 
@@ -404,7 +404,7 @@ export class AsyncBatcher<TValue> {
  * - Has state tracking for when batches are executing
  *
  * Error Handling:
- * - If an `onError` handler is provided, it will be called with the error and batcher instance
+ * - If an `onError` handler is provided, it will be called with the error, the batch of items that failed, and batcher instance
  * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
  * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
  * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown

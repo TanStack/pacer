@@ -231,7 +231,7 @@ flushAsBatch(batchFunction): Promise<void>
 
 Defined in: [async-queuer.ts:575](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L575)
 
-Processes all items in the queue as a batch using the provided function
+Processes all items in the queue as a batch using the provided function as an argument
 The queue is cleared after processing
 
 #### Parameters

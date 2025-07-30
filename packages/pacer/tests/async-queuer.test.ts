@@ -614,7 +614,7 @@ describe('AsyncQueuer', () => {
       })
       asyncQueuer.addItem('test')
       await asyncQueuer.execute()
-      expect(onError).toHaveBeenCalledWith(error, asyncQueuer)
+      expect(onError).toHaveBeenCalledWith(error, 'test', asyncQueuer)
     })
 
     it('should call onSettled after a task is settled', async () => {
@@ -841,7 +841,11 @@ describe('AsyncQueuer', () => {
       asyncQueuer.addItem('test')
       await asyncQueuer.start()
       expect(onError).toHaveBeenCalledTimes(1)
-      expect(onError).toHaveBeenCalledWith(expect.any(Error), asyncQueuer)
+      expect(onError).toHaveBeenCalledWith(
+        expect.any(Error),
+        'test',
+        asyncQueuer,
+      )
     })
 
     it('should call onError before throwing if both are set', async () => {
@@ -860,7 +864,11 @@ describe('AsyncQueuer', () => {
       asyncQueuer.addItem('test')
       await expect(asyncQueuer.execute()).rejects.toThrow('test error')
       expect(onError).toHaveBeenCalledTimes(1)
-      expect(onError).toHaveBeenCalledWith(expect.any(Error), asyncQueuer)
+      expect(onError).toHaveBeenCalledWith(
+        expect.any(Error),
+        'test',
+        asyncQueuer,
+      )
     })
   })
 

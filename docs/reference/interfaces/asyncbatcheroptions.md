@@ -77,13 +77,13 @@ Infinity
 ### onError()?
 
 ```ts
-optional onError: (error, failedItems, batcher) => void;
+optional onError: (error, batch, batcher) => void;
 ```
 
 Defined in: [async-batcher.ts:104](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L104)
 
 Optional error handler for when the batch function throws.
-If provided, the handler will be called with the error and batcher instance.
+If provided, the handler will be called with the error, the batch of items that failed, and batcher instance.
 This can be used alongside throwOnError - the handler will be called before any error is thrown.
 
 #### Parameters
@@ -92,7 +92,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 `unknown`
 
-##### failedItems
+##### batch
 
 `TValue`[]
 

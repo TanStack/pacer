@@ -41,9 +41,9 @@ const processAsyncBatch = asyncBatch<number>(
       console.log('Batch completed successfully:', results)
       console.log('Total successes:', batcher.store.state.successCount)
     },
-    onError: (error, failedItems, batcher) => {
+    onError: (error, batch, batcher) => {
       console.error('Batch failed:', error)
-      console.log('Failed items:', failedItems)
+      console.log('Failed batch:', batch)
       console.log('Total errors:', batcher.store.state.errorCount)
     }
   }
@@ -76,9 +76,9 @@ const batcher = new AsyncBatcher<number>(
     onSuccess: (results, batcher) => {
       console.log('Batch succeeded:', results)
     },
-    onError: (error, failedItems, batcher) => {
+    onError: (error, batch, batcher) => {
       console.error('Batch failed:', error)
-      console.log('Failed items:', failedItems)
+      console.log('Failed batch:', batch)
     }
   }
 )
@@ -133,10 +133,10 @@ const batcher = new AsyncBatcher<number>(
   },
   {
     maxSize: 3,
-    onError: (error, failedItems, batcher) => {
+    onError: (error, batch, batcher) => {
       // Handle batch errors
       console.error('Batch processing failed:', error)
-      console.log('Items that failed:', failedItems)
+      console.log('Items that failed:', batch)
       console.log('Total error count:', batcher.store.state.errorCount)
     },
     throwOnError: false, // Don't throw errors, just handle them
@@ -179,7 +179,7 @@ const batcher = new AsyncBatcher<number>(
 The `AsyncBatcher` supports these async-specific callbacks:
 
 - `onSuccess`: Called after each successful batch execution, providing the result and batcher instance
-- `onError`: Called when a batch execution fails, providing the error, failed items, and batcher instance
+- `onError`: Called when a batch execution fails, providing the error, the batch of items that failed, and batcher instance
 - `onSettled`: Called after each batch execution (success or failure), providing the batcher instance
 - `onExecute`: Called after each batch execution (same as synchronous batcher)
 - `onItemsChange`: Called when items are added or the batch is processed
@@ -196,7 +196,7 @@ const batcher = new AsyncBatcher<number>(
   },
   {
     maxSize: 3,
-    onError: (error, failedItems, batcher) => {
+    onError: (error, batch, batcher) => {
       console.error('Handling error:', error)
     },
     throwOnError: true, // Will throw errors even with onError handler
@@ -208,7 +208,7 @@ const batcher = new AsyncBatcher<number>(
 
 - **Default behavior**: `throwOnError` is `true` if no `onError` handler is provided, `false` if an `onError` handler is provided
 - **With `onError` handler**: The handler is called first, then the error is thrown if `throwOnError` is `true`
-- **Error state**: Failed items are tracked in `failedItems` array and can be accessed via `peekFailedItems()`
+- **Error state**: Failed items are tracked in `failedItems` array and can be accessed via `peekFailedItems()`. The `onError` callback receives the batch of items that failed, not the accumulated failed items.
 
 ## Dynamic Options
 
@@ -363,8 +363,8 @@ const batcher = new AsyncBatcher<number>(
   },
   {
     maxSize: 3,
-    onError: (error, failedItems, batcher) => {
-      console.log('Failed items:', failedItems)
+    onError: (error, batch, batcher) => {
+      console.log('Failed batch:', batch)
       console.log('All failed items:', batcher.peekFailedItems())
     }
   }

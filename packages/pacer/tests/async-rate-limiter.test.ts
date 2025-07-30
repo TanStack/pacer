@@ -270,7 +270,7 @@ describe('AsyncRateLimiter', () => {
 
       await rateLimiter.maybeExecute().catch(() => {})
       expect(onError).toHaveBeenCalledTimes(1)
-      expect(onError).toHaveBeenCalledWith(error, rateLimiter)
+      expect(onError).toHaveBeenCalledWith(error, [], rateLimiter)
     })
 
     it('should call onSettled callback after execution completes', async () => {
@@ -299,7 +299,7 @@ describe('AsyncRateLimiter', () => {
       await rateLimiter.maybeExecute()
       await rateLimiter.maybeExecute()
       expect(onReject).toHaveBeenCalledTimes(1)
-      expect(onReject).toHaveBeenCalledWith(rateLimiter)
+      expect(onReject).toHaveBeenCalledWith([], rateLimiter)
     })
 
     it('should update options with setOptions', () => {
@@ -511,7 +511,7 @@ describe('AsyncRateLimiter', () => {
       })
 
       await expect(rateLimiter.maybeExecute()).rejects.toThrow('test error')
-      expect(onError).toHaveBeenCalledWith(error, rateLimiter)
+      expect(onError).toHaveBeenCalledWith(error, [], rateLimiter)
     })
   })
 

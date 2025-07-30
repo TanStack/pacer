@@ -81,11 +81,15 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    * If provided, the handler will be called with the error and rate limiter instance.
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
-  onError?: (error: unknown, rateLimiter: AsyncRateLimiter<TFn>) => void
+  onError?: (
+    error: unknown,
+    args: Parameters<TFn>,
+    rateLimiter: AsyncRateLimiter<TFn>,
+  ) => void
   /**
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
-  onReject?: (rateLimiter: AsyncRateLimiter<TFn>) => void
+  onReject?: (args: Parameters<TFn>, rateLimiter: AsyncRateLimiter<TFn>) => void
   /**
    * Optional function to call when the rate-limited function is executed
    */
@@ -306,7 +310,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     this.#setState({
       rejectionCount: this.store.state.rejectionCount + 1,
     })
-    this.options.onReject?.(this)
+    this.options.onReject?.(args, this)
     return undefined
   }
 
@@ -334,7 +338,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.options.onError?.(error, this)
+      this.options.onError?.(error, args, this)
       if (this.options.throwOnError) {
         throw error
       }

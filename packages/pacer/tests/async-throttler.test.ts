@@ -109,7 +109,7 @@ describe('AsyncThrottler', () => {
     const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
 
     await throttler.maybeExecute()
-    expect(onError).toHaveBeenCalledWith(error, throttler)
+    expect(onError).toHaveBeenCalledWith(error, [], throttler)
   })
 
   it('should continue processing after function throws error if onError is provided', async () => {
@@ -124,6 +124,7 @@ describe('AsyncThrottler', () => {
     await throttler.maybeExecute(1)
     expect(onError).toHaveBeenCalledWith(
       new Error('First call error'),
+      [1],
       throttler,
     )
     // Second call should still execute after wait period
@@ -385,6 +386,555 @@ describe('AsyncThrottler', () => {
       expect(throttler.store.state.successCount).toBe(2)
 
       await promise2 // Make sure promise resolves
+    })
+  })
+
+  describe('Comprehensive Error Handling', () => {
+    describe('Basic Error Scenarios', () => {
+      it('should track error count correctly', async () => {
+        const error = new Error('test error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
+
+        await throttler.maybeExecute()
+        expect(throttler.store.state.errorCount).toBe(1)
+        expect(throttler.store.state.successCount).toBe(0)
+        expect(throttler.store.state.settleCount).toBe(1)
+      })
+
+      it('should call onSettled after error', async () => {
+        const error = new Error('test error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const onSettled = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          onError,
+          onSettled,
+        })
+
+        await throttler.maybeExecute()
+        expect(onError).toHaveBeenCalledWith(error, [], throttler)
+        expect(onSettled).toHaveBeenCalledWith(throttler)
+      })
+
+      it('should not break throttling chain after error', async () => {
+        const error = new Error('test error')
+        const mockFn = vi
+          .fn()
+          .mockRejectedValueOnce(error)
+          .mockResolvedValueOnce('success')
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
+
+        // First call throws
+        await throttler.maybeExecute('first')
+        expect(onError).toHaveBeenCalledWith(error, ['first'], throttler)
+        expect(throttler.store.state.errorCount).toBe(1)
+
+        // Second call should succeed after wait period
+        vi.advanceTimersByTime(100)
+        await throttler.maybeExecute('second')
+        expect(mockFn).toHaveBeenCalledTimes(2)
+        expect(throttler.store.state.successCount).toBe(1)
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+
+      it('should handle multiple consecutive errors', async () => {
+        const error1 = new Error('error 1')
+        const error2 = new Error('error 2')
+        const error3 = new Error('error 3')
+        const mockFn = vi
+          .fn()
+          .mockRejectedValueOnce(error1)
+          .mockRejectedValueOnce(error2)
+          .mockRejectedValueOnce(error3)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
+
+        await throttler.maybeExecute('first')
+        expect(onError).toHaveBeenNthCalledWith(1, error1, ['first'], throttler)
+
+        vi.advanceTimersByTime(100)
+        await throttler.maybeExecute('second')
+        expect(onError).toHaveBeenNthCalledWith(
+          2,
+          error2,
+          ['second'],
+          throttler,
+        )
+
+        vi.advanceTimersByTime(100)
+        await throttler.maybeExecute('third')
+        expect(onError).toHaveBeenNthCalledWith(3, error3, ['third'], throttler)
+
+        expect(throttler.store.state.errorCount).toBe(3)
+        expect(throttler.store.state.successCount).toBe(0)
+        expect(throttler.store.state.settleCount).toBe(3)
+      })
+
+      it('should maintain last result after error', async () => {
+        const error = new Error('test error')
+        const mockFn = vi
+          .fn()
+          .mockResolvedValueOnce('success')
+          .mockRejectedValueOnce(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
+
+        // First execution - success
+        await throttler.maybeExecute('first')
+        expect(throttler.store.state.lastResult).toBe('success')
+
+        // Second execution - error
+        vi.advanceTimersByTime(100)
+        await throttler.maybeExecute('second')
+        expect(throttler.store.state.lastResult).toBe('success') // Should maintain last successful result
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+    })
+
+    describe('Promise Rejection/Resolution Behavior', () => {
+      it('should reject promise when throwOnError is true and no onError handler', async () => {
+        const error = new Error('test error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          throwOnError: true,
+        })
+
+        await expect(throttler.maybeExecute()).rejects.toThrow('test error')
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+
+      it('should reject promise when throwOnError is true with onError handler', async () => {
+        const error = new Error('test error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          throwOnError: true,
+          onError,
+        })
+
+        await expect(throttler.maybeExecute()).rejects.toThrow('test error')
+        expect(onError).toHaveBeenCalledWith(error, [], throttler)
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+
+      it('should resolve with undefined when throwOnError is false', async () => {
+        const error = new Error('test error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          throwOnError: false,
+          onError,
+        })
+
+        const result = await throttler.maybeExecute()
+        expect(result).toBeUndefined()
+        expect(onError).toHaveBeenCalledWith(error, [], throttler)
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+
+      it('should reject promise during leading execution with throwOnError=true', async () => {
+        const error = new Error('leading error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          leading: true,
+          throwOnError: true,
+        })
+
+        await expect(throttler.maybeExecute()).rejects.toThrow('leading error')
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+
+      it('should reject promise during trailing execution with throwOnError=true', async () => {
+        const error = new Error('trailing error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          leading: false,
+          trailing: true,
+          throwOnError: true,
+        })
+
+        const promise = throttler.maybeExecute()
+        vi.advanceTimersByTime(100)
+        await expect(promise).rejects.toThrow('trailing error')
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+
+      it('should handle errors with both leading and trailing enabled', async () => {
+        const error = new Error('execution error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          leading: true,
+          trailing: true,
+          throwOnError: true,
+        })
+
+        // Leading execution should reject immediately
+        await expect(throttler.maybeExecute('first')).rejects.toThrow(
+          'execution error',
+        )
+        expect(throttler.store.state.errorCount).toBe(1)
+
+        // Trailing execution should also reject
+        const promise = throttler.maybeExecute('second')
+        vi.advanceTimersByTime(100)
+        await expect(promise).rejects.toThrow('execution error')
+        expect(throttler.store.state.errorCount).toBe(2)
+      })
+
+      it('should resolve with undefined during leading execution when throwOnError=false', async () => {
+        const error = new Error('leading error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          leading: true,
+          throwOnError: false,
+          onError,
+        })
+
+        const result = await throttler.maybeExecute()
+        expect(result).toBeUndefined()
+        expect(onError).toHaveBeenCalledWith(error, [], throttler)
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+
+      it('should resolve with undefined during trailing execution when throwOnError=false', async () => {
+        const error = new Error('trailing error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          leading: false,
+          trailing: true,
+          throwOnError: false,
+          onError,
+        })
+
+        const promise = throttler.maybeExecute()
+        vi.advanceTimersByTime(100)
+        const result = await promise
+        expect(result).toBeUndefined()
+        expect(onError).toHaveBeenCalledWith(error, [], throttler)
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+    })
+
+    describe('Flush Error Handling', () => {
+      it('should handle errors during flush with throwOnError=true', async () => {
+        const error = new Error('flush error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          throwOnError: true,
+        })
+
+        await expect(throttler.maybeExecute('first')).rejects.toThrow(
+          'flush error',
+        ) // Leading execution will throw
+        throttler.maybeExecute('second') // This will be pending
+        expect(throttler.store.state.isPending).toBe(true)
+
+        await expect(throttler.flush()).rejects.toThrow('flush error')
+        expect(throttler.store.state.errorCount).toBe(2) // One from leading, one from flush
+        expect(throttler.store.state.isPending).toBe(false)
+      })
+
+      it('should handle errors during flush with throwOnError=false', async () => {
+        const error = new Error('flush error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          throwOnError: false,
+          onError,
+        })
+
+        const result1 = await throttler.maybeExecute('first') // Leading execution
+        expect(result1).toBeUndefined()
+        throttler.maybeExecute('second') // This will be pending
+        expect(throttler.store.state.isPending).toBe(true)
+
+        const result = await throttler.flush()
+        expect(result).toBeUndefined()
+        expect(onError).toHaveBeenCalledTimes(2) // Once for leading, once for flush
+        expect(throttler.store.state.errorCount).toBe(2)
+        expect(throttler.store.state.isPending).toBe(false)
+      })
+
+      it('should resolve pending promise after flush error', async () => {
+        const error = new Error('flush error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          onError,
+        })
+
+        await throttler.maybeExecute('first')
+        const promise = throttler.maybeExecute('second')
+        await throttler.flush()
+
+        const result = await promise
+        expect(result).toBeUndefined()
+        expect(onError).toHaveBeenCalledTimes(2)
+      })
+
+      it('should handle flush when no pending execution and function would error', async () => {
+        const error = new Error('should not execute')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const throttler = new AsyncThrottler(mockFn, { wait: 100 })
+
+        const result = await throttler.flush()
+        expect(result).toBeUndefined()
+        expect(mockFn).not.toHaveBeenCalled()
+        expect(throttler.store.state.errorCount).toBe(0)
+      })
+    })
+
+    describe('Error Handling with Different Leading/Trailing Combinations', () => {
+      it('should handle errors with leading=false, trailing=true', async () => {
+        const error = new Error('trailing error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          leading: false,
+          trailing: true,
+          onError,
+        })
+
+        const promise = throttler.maybeExecute()
+        expect(mockFn).not.toHaveBeenCalled()
+        expect(throttler.store.state.isPending).toBe(true)
+
+        vi.advanceTimersByTime(100)
+        await promise
+        expect(onError).toHaveBeenCalledWith(error, [], throttler)
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+
+      it('should handle errors with leading=true, trailing=false', async () => {
+        const error = new Error('leading error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          leading: true,
+          trailing: false,
+          onError,
+        })
+
+        await throttler.maybeExecute()
+        expect(onError).toHaveBeenCalledWith(error, [], throttler)
+        expect(throttler.store.state.errorCount).toBe(1)
+
+        // Second call within wait period should not execute
+        throttler.maybeExecute()
+        expect(mockFn).toHaveBeenCalledTimes(1)
+      })
+    })
+
+    describe('Error Handling During Cancellation', () => {
+      it('should handle cancellation of erroring promises', async () => {
+        const error = new Error('cancelled error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          throwOnError: false,
+          onError,
+        })
+
+        const result1 = await throttler.maybeExecute('first') // This will error but not throw due to throwOnError=false
+        expect(result1).toBeUndefined()
+        const promise = throttler.maybeExecute('second')
+        throttler.cancel()
+
+        const result = await promise
+        expect(result).toBeUndefined()
+        expect(mockFn).toHaveBeenCalledTimes(1) // Only first call executed
+        expect(throttler.store.state.errorCount).toBe(1)
+      })
+
+      it('should cancel pending execution that would error', async () => {
+        const error = new Error('pending error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          onError,
+        })
+
+        await throttler.maybeExecute('first') // Leading execution errors
+        const promise = throttler.maybeExecute('second') // Pending execution
+        throttler.cancel()
+
+        const result = await promise
+        expect(result).toBeUndefined()
+        expect(mockFn).toHaveBeenCalledTimes(1)
+        expect(throttler.store.state.errorCount).toBe(1) // Only from leading execution
+      })
+    })
+
+    describe('Error Handling with Disabled State', () => {
+      it('should not execute and return undefined when disabled, even with pending errors', async () => {
+        const error = new Error('should not execute')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          enabled: false,
+        })
+
+        const result = await throttler.maybeExecute()
+        expect(result).toBeUndefined()
+        expect(mockFn).not.toHaveBeenCalled()
+        expect(throttler.store.state.errorCount).toBe(0)
+      })
+
+      it('should cancel execution when disabled mid-wait and function would error', async () => {
+        const error = new Error('should not execute')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          onError,
+        })
+
+        await throttler.maybeExecute('first') // Leading execution errors
+        const promise = throttler.maybeExecute('second') // Pending execution
+        throttler.setOptions({ enabled: false })
+
+        const result = await promise
+        expect(result).toBeUndefined()
+        expect(mockFn).toHaveBeenCalledTimes(1)
+        expect(throttler.store.state.errorCount).toBe(1) // Only from leading execution
+      })
+    })
+
+    describe('Multiple Promise Error Scenarios', () => {
+      it('should handle errors when multiple promises are waiting', async () => {
+        const error = new Error('multiple promise error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          throwOnError: true,
+        })
+
+        await expect(throttler.maybeExecute('first')).rejects.toThrow(
+          'multiple promise error',
+        )
+
+        const promise1 = throttler.maybeExecute('second')
+        const promise2 = throttler.maybeExecute('third')
+        const promise3 = throttler.maybeExecute('fourth')
+
+        vi.advanceTimersByTime(100)
+
+        // Only the last promise (promise3) will reject from the trailing execution
+        // The earlier promises (promise1, promise2) get resolved by #resolvePreviousPromiseInternal
+        const result1 = await promise1
+        const result2 = await promise2
+        await expect(promise3).rejects.toThrow('multiple promise error')
+
+        expect(result1).toBeUndefined() // Resolved by #resolvePreviousPromiseInternal
+        expect(result2).toBeUndefined() // Resolved by #resolvePreviousPromiseInternal
+        expect(mockFn).toHaveBeenCalledTimes(2) // Leading + trailing
+        expect(mockFn).toHaveBeenLastCalledWith('fourth') // Should use last arguments
+      })
+
+      it('should resolve multiple promises when throwOnError=false', async () => {
+        const error = new Error('multiple promise error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, {
+          wait: 100,
+          throwOnError: false,
+          onError,
+        })
+
+        const result1 = await throttler.maybeExecute('first')
+        expect(result1).toBeUndefined()
+
+        const promise1 = throttler.maybeExecute('second')
+        const promise2 = throttler.maybeExecute('third')
+        const promise3 = throttler.maybeExecute('fourth')
+
+        vi.advanceTimersByTime(100)
+
+        const result2 = await promise1
+        const result3 = await promise2
+        const result4 = await promise3
+
+        expect(result2).toBeUndefined()
+        expect(result3).toBeUndefined()
+        expect(result4).toBeUndefined()
+        expect(onError).toHaveBeenCalledTimes(2) // Leading + trailing
+        expect(throttler.store.state.errorCount).toBe(2)
+      })
+    })
+
+    describe('Error State Tracking', () => {
+      it('should correctly track error and success counts', async () => {
+        const mockFn = vi
+          .fn()
+          .mockRejectedValueOnce(new Error('error 1'))
+          .mockResolvedValueOnce('success 1')
+          .mockRejectedValueOnce(new Error('error 2'))
+          .mockResolvedValueOnce('success 2')
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
+
+        // First call - error
+        await throttler.maybeExecute()
+        expect(throttler.store.state.errorCount).toBe(1)
+        expect(throttler.store.state.successCount).toBe(0)
+        expect(throttler.store.state.settleCount).toBe(1)
+
+        // Second call - success
+        vi.advanceTimersByTime(100)
+        await throttler.maybeExecute()
+        expect(throttler.store.state.errorCount).toBe(1)
+        expect(throttler.store.state.successCount).toBe(1)
+        expect(throttler.store.state.settleCount).toBe(2)
+
+        // Third call - error
+        vi.advanceTimersByTime(100)
+        await throttler.maybeExecute()
+        expect(throttler.store.state.errorCount).toBe(2)
+        expect(throttler.store.state.successCount).toBe(1)
+        expect(throttler.store.state.settleCount).toBe(3)
+
+        // Fourth call - success
+        vi.advanceTimersByTime(100)
+        await throttler.maybeExecute()
+        expect(throttler.store.state.errorCount).toBe(2)
+        expect(throttler.store.state.successCount).toBe(2)
+        expect(throttler.store.state.settleCount).toBe(4)
+      })
+
+      it('should maintain correct status after errors', async () => {
+        const error = new Error('status error')
+        const mockFn = vi.fn().mockRejectedValue(error)
+        const onError = vi.fn()
+        const throttler = new AsyncThrottler(mockFn, { wait: 100, onError })
+
+        expect(throttler.store.state.status).toBe('idle')
+
+        await throttler.maybeExecute()
+        expect(throttler.store.state.status).toBe('settled')
+        expect(throttler.store.state.isExecuting).toBe(false)
+        expect(throttler.store.state.isPending).toBe(false)
+      })
     })
   })
 })

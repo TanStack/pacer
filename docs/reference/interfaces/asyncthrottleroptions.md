@@ -59,7 +59,7 @@ Defaults to true
 ### onError()?
 
 ```ts
-optional onError: (error, asyncThrottler) => void;
+optional onError: (error, args, asyncThrottler) => void;
 ```
 
 Defined in: [async-throttler.ts:89](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L89)
@@ -73,6 +73,10 @@ This can be used alongside throwOnError - the handler will be called before any 
 ##### error
 
 `unknown`
+
+##### args
+
+`Parameters`\<`TFn`\>
 
 ##### asyncThrottler
 
@@ -90,7 +94,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 optional onSettled: (asyncThrottler) => void;
 ```
 
-Defined in: [async-throttler.ts:93](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L93)
+Defined in: [async-throttler.ts:97](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L97)
 
 Optional function to call when the throttled function is executed
 
@@ -112,7 +116,7 @@ Optional function to call when the throttled function is executed
 optional onSuccess: (result, asyncThrottler) => void;
 ```
 
-Defined in: [async-throttler.ts:97](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L97)
+Defined in: [async-throttler.ts:101](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L101)
 
 Optional function to call when the throttled function is executed
 
@@ -138,7 +142,7 @@ Optional function to call when the throttled function is executed
 optional throwOnError: boolean;
 ```
 
-Defined in: [async-throttler.ts:106](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L106)
+Defined in: [async-throttler.ts:110](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L110)
 
 Whether to throw errors when they occur.
 Defaults to true if no onError handler is provided, false if an onError handler is provided.
@@ -152,7 +156,7 @@ Can be explicitly set to override these defaults.
 optional trailing: boolean;
 ```
 
-Defined in: [async-throttler.ts:111](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L111)
+Defined in: [async-throttler.ts:115](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L115)
 
 Whether to execute the function on the trailing edge of the wait period
 Defaults to true
@@ -165,7 +169,7 @@ Defaults to true
 wait: number | (throttler) => number;
 ```
 
-Defined in: [async-throttler.ts:117](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L117)
+Defined in: [async-throttler.ts:121](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L121)
 
 Time window in milliseconds during which the function can only be executed once.
 Can be a number or a function that returns a number.

@@ -59,7 +59,7 @@ Can be a number or a function that returns a number.
 ### onError()?
 
 ```ts
-optional onError: (error, rateLimiter) => void;
+optional onError: (error, args, rateLimiter) => void;
 ```
 
 Defined in: [async-rate-limiter.ts:84](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L84)
@@ -74,6 +74,10 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 `unknown`
 
+##### args
+
+`Parameters`\<`TFn`\>
+
 ##### rateLimiter
 
 [`AsyncRateLimiter`](../../classes/asyncratelimiter.md)\<`TFn`\>
@@ -87,14 +91,18 @@ This can be used alongside throwOnError - the handler will be called before any 
 ### onReject()?
 
 ```ts
-optional onReject: (rateLimiter) => void;
+optional onReject: (args, rateLimiter) => void;
 ```
 
-Defined in: [async-rate-limiter.ts:88](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L88)
+Defined in: [async-rate-limiter.ts:92](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L92)
 
 Optional callback function that is called when an execution is rejected due to rate limiting
 
 #### Parameters
+
+##### args
+
+`Parameters`\<`TFn`\>
 
 ##### rateLimiter
 
@@ -112,7 +120,7 @@ Optional callback function that is called when an execution is rejected due to r
 optional onSettled: (rateLimiter) => void;
 ```
 
-Defined in: [async-rate-limiter.ts:92](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L92)
+Defined in: [async-rate-limiter.ts:96](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L96)
 
 Optional function to call when the rate-limited function is executed
 
@@ -134,7 +142,7 @@ Optional function to call when the rate-limited function is executed
 optional onSuccess: (result, rateLimiter) => void;
 ```
 
-Defined in: [async-rate-limiter.ts:96](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L96)
+Defined in: [async-rate-limiter.ts:100](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L100)
 
 Optional function to call when the rate-limited function is executed
 
@@ -160,7 +168,7 @@ Optional function to call when the rate-limited function is executed
 optional throwOnError: boolean;
 ```
 
-Defined in: [async-rate-limiter.ts:105](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L105)
+Defined in: [async-rate-limiter.ts:109](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L109)
 
 Whether to throw errors when they occur.
 Defaults to true if no onError handler is provided, false if an onError handler is provided.
@@ -174,7 +182,7 @@ Can be explicitly set to override these defaults.
 window: number | (rateLimiter) => number;
 ```
 
-Defined in: [async-rate-limiter.ts:110](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L110)
+Defined in: [async-rate-limiter.ts:114](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L114)
 
 Time window in milliseconds within which the limit applies.
 Can be a number or a function that returns a number.
@@ -187,7 +195,7 @@ Can be a number or a function that returns a number.
 optional windowType: "fixed" | "sliding";
 ```
 
-Defined in: [async-rate-limiter.ts:117](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L117)
+Defined in: [async-rate-limiter.ts:121](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L121)
 
 Type of window to use for rate limiting
 - 'fixed': Uses a fixed window that resets after the window period

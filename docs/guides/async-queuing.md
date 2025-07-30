@@ -102,8 +102,9 @@ const queue = new AsyncQueuer(
 
 // Add error and success handlers via options
 queue.setOptions({
-  onError: (error, queuer) => {
+  onError: (error, item, queuer) => {
     console.error('Task failed:', error)
+    console.log('Failed item:', item)
     // You can access queue state here
     console.log('Error count:', queuer.store.state.errorCount)
   },
@@ -161,8 +162,9 @@ const queue = new AsyncQueuer(
     return await processTask(item)
   },
   {
-    onError: (error, queuer) => {
+    onError: (error, item, queuer) => {
       console.error('Task failed:', error)
+      console.log('Failed item:', item)
       // You can access queue state here
       console.log('Error count:', queuer.store.state.errorCount)
     },

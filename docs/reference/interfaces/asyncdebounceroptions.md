@@ -59,7 +59,7 @@ Defaults to false.
 ### onError()?
 
 ```ts
-optional onError: (error, debouncer) => void;
+optional onError: (error, args, debouncer) => void;
 ```
 
 Defined in: [async-debouncer.ts:84](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L84)
@@ -73,6 +73,10 @@ This can be used alongside throwOnError - the handler will be called before any 
 ##### error
 
 `unknown`
+
+##### args
+
+`Parameters`\<`TFn`\>
 
 ##### debouncer
 
@@ -90,7 +94,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 optional onSettled: (debouncer) => void;
 ```
 
-Defined in: [async-debouncer.ts:88](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L88)
+Defined in: [async-debouncer.ts:92](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L92)
 
 Optional callback to call when the debounced function is executed
 
@@ -112,7 +116,7 @@ Optional callback to call when the debounced function is executed
 optional onSuccess: (result, debouncer) => void;
 ```
 
-Defined in: [async-debouncer.ts:92](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L92)
+Defined in: [async-debouncer.ts:96](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L96)
 
 Optional callback to call when the debounced function is executed
 
@@ -138,7 +142,7 @@ Optional callback to call when the debounced function is executed
 optional throwOnError: boolean;
 ```
 
-Defined in: [async-debouncer.ts:98](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L98)
+Defined in: [async-debouncer.ts:102](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L102)
 
 Whether to throw errors when they occur.
 Defaults to true if no onError handler is provided, false if an onError handler is provided.
@@ -152,7 +156,7 @@ Can be explicitly set to override these defaults.
 optional trailing: boolean;
 ```
 
-Defined in: [async-debouncer.ts:103](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L103)
+Defined in: [async-debouncer.ts:107](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L107)
 
 Whether to execute on the trailing edge of the timeout.
 Defaults to true.
@@ -165,7 +169,7 @@ Defaults to true.
 wait: number | (debouncer) => number;
 ```
 
-Defined in: [async-debouncer.ts:109](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L109)
+Defined in: [async-debouncer.ts:113](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L113)
 
 Delay in milliseconds to wait after the last call before executing.
 Can be a number or a function that returns a number.
