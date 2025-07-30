@@ -314,7 +314,7 @@ const unsubscribe = queue.store.subscribe((state) => {
 unsubscribe()
 ```
 
-> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `queuer.store.state` into reactive state with a custom selector wherever you want if necessary.
 
 ### Available State Properties
 

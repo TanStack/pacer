@@ -590,6 +590,14 @@
             {
               "label": "useAsyncBatcher",
               "to": "framework/react/reference/functions/useasyncbatcher"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/react/reference/functions/usebatchedcallback"
+            },
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/react/reference/functions/useasyncbatchedcallback"
             }
           ]
         },
@@ -650,6 +658,10 @@
             {
               "label": "useAsyncDebouncer",
               "to": "framework/react/examples/useAsyncDebouncer"
+            },
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/react/examples/useAsyncDebouncedCallback"
             }
           ]
         },
@@ -906,6 +918,14 @@
             {
               "label": "useAsyncBatcher",
               "to": "framework/react/examples/useAsyncBatcher"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/react/examples/useBatchedCallback"
+            },
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/react/examples/useAsyncBatchedCallback"
             }
           ]
         },

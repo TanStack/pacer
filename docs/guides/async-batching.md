@@ -55,6 +55,8 @@ processAsyncBatch(2)
 processAsyncBatch(3) // Triggers batch processing
 ```
 
+> **Note:** When using React, prefer `useAsyncBatchedCallback` hook over the `asyncBatch` function for better integration with React's lifecycle and automatic cleanup.
+
 ### Advanced Usage with `AsyncBatcher` Class
 
 For more control over async batch behavior, use the `AsyncBatcher` class directly:
@@ -317,7 +319,7 @@ const unsubscribe = batcher.store.subscribe((state) => {
 unsubscribe()
 ```
 
-> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `batcher.store.state` into reactive state with a custom selector wherever you want if necessary.
 
 ```ts
 const batcher = useAsyncBatcher(asyncBatchFn, { maxSize: 5, wait: 1000 })

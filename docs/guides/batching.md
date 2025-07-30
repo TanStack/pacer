@@ -78,6 +78,8 @@ processBatch(4)
 // Or wait 2 seconds for the next batch to process
 ```
 
+> **Note:** When using React, prefer `useBatchedCallback` hook over the `batch` function for better integration with React's lifecycle and automatic cleanup.
+
 The `batch` function returns a function that adds items to the batch. Batches are processed automatically based on your configuration.
 
 ### Advanced Usage with `Batcher` Class
@@ -186,7 +188,7 @@ The `Batcher` class uses TanStack Store for reactive state management, providing
 
 Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
 
-**By default, `util.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+**By default, `batcher.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
 
 ```ts
 // Default behavior - no reactive state subscriptions
@@ -245,7 +247,7 @@ const unsubscribe = batcher.store.subscribe((state) => {
 unsubscribe()
 ```
 
-> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `batcher.store.state` into reactive state with a custom selector wherever you want if necessary.
 
 ### Available State Properties
 

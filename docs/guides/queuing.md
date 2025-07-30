@@ -71,6 +71,7 @@ processItems(2) // Processed after 1 second
 processItems(3) // Processed after 2 seconds
 ```
 
+
 While the `queue` function is simple to use, it only provides a basic always-running queue through the `addItem` method. For most use cases, you'll want the additional control and features provided by the `Queuer` class.
 
 ### Advanced Usage with `Queuer` Class
@@ -407,7 +408,7 @@ The `Queuer` class uses TanStack Store for reactive state management, providing 
 
 Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
 
-**By default, `util.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+**By default, `queuer.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
 
 ```ts
 // Default behavior - no reactive state subscriptions
@@ -466,7 +467,7 @@ const unsubscribe = queue.store.subscribe((state) => {
 unsubscribe()
 ```
 
-> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `util.store.state` into reactive state with a custom selector wherever you want if necessary.
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `queuer.store.state` into reactive state with a custom selector wherever you want if necessary.
 
 ### Available State Properties
 
