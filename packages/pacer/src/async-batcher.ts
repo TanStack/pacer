@@ -107,21 +107,21 @@ export interface AsyncBatcherOptions<TValue> {
     batcher: AsyncBatcher<TValue>,
   ) => void
   /**
-   * Callback fired after a batch is processed
-   */
-  onExecute?: (batcher: AsyncBatcher<TValue>) => void
-  /**
    * Callback fired after items are added to the batcher
    */
   onItemsChange?: (batcher: AsyncBatcher<TValue>) => void
   /**
    * Optional callback to call when a batch is settled (completed or failed)
    */
-  onSettled?: (batcher: AsyncBatcher<TValue>) => void
+  onSettled?: (batch: Array<TValue>, batcher: AsyncBatcher<TValue>) => void
   /**
    * Optional callback to call when a batch succeeds
    */
-  onSuccess?: (result: any, batcher: AsyncBatcher<TValue>) => void
+  onSuccess?: (
+    result: any,
+    batch: Array<TValue>,
+    batcher: AsyncBatcher<TValue>,
+  ) => void
   /**
    * Whether the batcher should start processing immediately
    * @default true
@@ -144,12 +144,7 @@ export interface AsyncBatcherOptions<TValue> {
 
 type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<AsyncBatcherOptions<TValue>>,
-  | 'initialState'
-  | 'onError'
-  | 'onExecute'
-  | 'onItemsChange'
-  | 'onSettled'
-  | 'onSuccess'
+  'initialState' | 'onError' | 'onItemsChange' | 'onSettled' | 'onSuccess'
 >
 
 const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
@@ -329,7 +324,7 @@ export class AsyncBatcher<TValue> {
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result, this)
+      this.options.onSuccess?.(result, batch, this)
       return result
     } catch (error) {
       this.#setState({
@@ -347,8 +342,7 @@ export class AsyncBatcher<TValue> {
         isExecuting: false,
         settleCount: this.store.state.settleCount + 1,
       })
-      this.options.onSettled?.(this)
-      this.options.onExecute?.(this)
+      this.options.onSettled?.(batch, this)
     }
   }
 

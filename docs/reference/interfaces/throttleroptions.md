@@ -59,7 +59,7 @@ Defaults to true.
 ### onExecute()?
 
 ```ts
-optional onExecute: (throttler) => void;
+optional onExecute: (args, throttler) => void;
 ```
 
 Defined in: [throttler.ts:67](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L67)
@@ -67,6 +67,10 @@ Defined in: [throttler.ts:67](https://github.com/TanStack/pacer/blob/main/packag
 Callback function that is called after the function is executed
 
 #### Parameters
+
+##### args
+
+`Parameters`\<`TFn`\>
 
 ##### throttler
 

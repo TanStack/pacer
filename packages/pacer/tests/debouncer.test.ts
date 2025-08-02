@@ -548,7 +548,7 @@ describe('Debouncer', () => {
 
       vi.advanceTimersByTime(1000)
       expect(onExecute).toBeCalledTimes(1)
-      expect(onExecute).toBeCalledWith(debouncer)
+      expect(onExecute).toBeCalledWith([], debouncer)
     })
 
     it('should call onExecute callback with leading execution', () => {
@@ -562,7 +562,7 @@ describe('Debouncer', () => {
 
       debouncer.maybeExecute()
       expect(onExecute).toBeCalledTimes(1)
-      expect(onExecute).toBeCalledWith(debouncer)
+      expect(onExecute).toBeCalledWith([], debouncer)
 
       vi.advanceTimersByTime(1000)
       expect(onExecute).toBeCalledTimes(1) // Should not be called again
@@ -606,8 +606,8 @@ describe('Debouncer', () => {
 
       debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
-      expect(onExecute).toBeCalledWith(debouncer)
-      expect(onExecute.mock.calls[0]?.[0]).toBe(debouncer)
+      expect(onExecute).toBeCalledWith([], debouncer)
+      expect(onExecute.mock.calls[0]?.[1]).toBe(debouncer)
     })
 
     it('should call onExecute callback after each execution', () => {

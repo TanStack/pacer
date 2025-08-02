@@ -142,7 +142,7 @@ describe('Batcher', () => {
       const batcher = new Batcher(mockFn, { maxSize: 1, onExecute })
 
       batcher.addItem(1)
-      expect(onExecute).toHaveBeenCalledWith(batcher)
+      expect(onExecute).toHaveBeenCalledWith([1], batcher)
     })
 
     it('should call onItemsChange callback when items change', () => {

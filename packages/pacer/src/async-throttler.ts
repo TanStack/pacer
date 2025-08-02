@@ -94,12 +94,16 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   /**
    * Optional function to call when the throttled function is executed
    */
-  onSettled?: (asyncThrottler: AsyncThrottler<TFn>) => void
+  onSettled?: (
+    args: Parameters<TFn>,
+    asyncThrottler: AsyncThrottler<TFn>,
+  ) => void
   /**
    * Optional function to call when the throttled function is executed
    */
   onSuccess?: (
     result: ReturnType<TFn>,
+    args: Parameters<TFn>,
     asyncThrottler: AsyncThrottler<TFn>,
   ) => void
   /**
@@ -331,7 +335,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result, this)
+      this.options.onSuccess?.(result, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
@@ -351,7 +355,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         nextExecutionTime,
       })
       this.#abortController = null
-      this.options.onSettled?.(this)
+      this.options.onSettled?.(args, this)
       setTimeout(() => {
         if (!this.store.state.isPending) {
           this.#setState({ nextExecutionTime: undefined })

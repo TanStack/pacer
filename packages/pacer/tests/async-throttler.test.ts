@@ -416,7 +416,7 @@ describe('AsyncThrottler', () => {
 
         await throttler.maybeExecute()
         expect(onError).toHaveBeenCalledWith(error, [], throttler)
-        expect(onSettled).toHaveBeenCalledWith(throttler)
+        expect(onSettled).toHaveBeenCalledWith([], throttler)
       })
 
       it('should not break throttling chain after error', async () => {

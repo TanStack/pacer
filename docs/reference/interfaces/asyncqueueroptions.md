@@ -279,7 +279,7 @@ Callback fired whenever an item is rejected from being added to the queuer
 ### onSettled()?
 
 ```ts
-optional onSettled: (queuer) => void;
+optional onSettled: (item, queuer) => void;
 ```
 
 Defined in: [async-queuer.ts:160](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L160)
@@ -287,6 +287,10 @@ Defined in: [async-queuer.ts:160](https://github.com/TanStack/pacer/blob/main/pa
 Optional callback to call when a task is settled
 
 #### Parameters
+
+##### item
+
+`TValue`
 
 ##### queuer
 
@@ -301,7 +305,7 @@ Optional callback to call when a task is settled
 ### onSuccess()?
 
 ```ts
-optional onSuccess: (result, queuer) => void;
+optional onSuccess: (result, item, queuer) => void;
 ```
 
 Defined in: [async-queuer.ts:164](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L164)
@@ -313,6 +317,10 @@ Optional callback to call when a task succeeds
 ##### result
 
 `any`
+
+##### item
+
+`TValue`
 
 ##### queuer
 

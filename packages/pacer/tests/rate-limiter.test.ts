@@ -164,7 +164,7 @@ describe('RateLimiter', () => {
 
       rateLimiter.maybeExecute()
       expect(onExecute).toHaveBeenCalledTimes(1)
-      expect(onExecute).toHaveBeenCalledWith(rateLimiter)
+      expect(onExecute).toHaveBeenCalledWith([], rateLimiter)
     })
 
     it('should call onReject callback when execution is rejected', () => {

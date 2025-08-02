@@ -25,8 +25,9 @@ const debouncedSearch = asyncDebounce(
   },
   {
     wait: 500,
-    onSuccess: (results, debouncer) => {
+    onSuccess: (results, args, debouncer) => {
       console.log('Search succeeded:', results)
+      console.log('Search arguments:', args)
     },
       onError: (error, args, debouncer) => {
     console.error('Search failed:', error)
@@ -68,8 +69,8 @@ The async debouncer provides robust error handling capabilities:
 ### 3. Different Callbacks
 
 The `AsyncDebouncer` supports the following callbacks:
-- `onSuccess`: Called after each successful execution, providing the result and debouncer instance
-- `onSettled`: Called after each execution (success or failure), providing the debouncer instance
+- `onSuccess`: Called after each successful execution, providing the result, the arguments that were executed, and debouncer instance
+- `onSettled`: Called after each execution (success or failure), providing the arguments that were executed and debouncer instance
 - `onError`: Called if the async function throws an error, providing the error, the arguments that caused the error, and the debouncer instance
 
 Example:
@@ -79,13 +80,15 @@ const asyncDebouncer = new AsyncDebouncer(async (value) => {
   await saveToAPI(value)
 }, {
   wait: 500,
-  onSuccess: (result, debouncer) => {
+  onSuccess: (result, args, debouncer) => {
     // Called after each successful execution
     console.log('Async function executed', debouncer.store.state.successCount)
+    console.log('Executed arguments:', args)
   },
-  onSettled: (debouncer) => {
+  onSettled: (args, debouncer) => {
     // Called after each execution attempt
     console.log('Async function settled', debouncer.store.state.settleCount)
+    console.log('Settled arguments:', args)
   },
   onError: (error) => {
     // Called if the async function throws an error

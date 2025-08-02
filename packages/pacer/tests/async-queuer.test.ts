@@ -602,7 +602,7 @@ describe('AsyncQueuer', () => {
       )
       asyncQueuer.addItem('test')
       await asyncQueuer.execute()
-      expect(onSuccess).toHaveBeenCalledWith('test', asyncQueuer)
+      expect(onSuccess).toHaveBeenCalledWith('test', 'test', asyncQueuer)
     })
 
     it('should call onError when a task throws', async () => {
@@ -625,7 +625,7 @@ describe('AsyncQueuer', () => {
       )
       asyncQueuer.addItem('test')
       await asyncQueuer.execute()
-      expect(onSettled).toHaveBeenCalledWith(asyncQueuer)
+      expect(onSettled).toHaveBeenCalledWith('test', asyncQueuer)
     })
 
     it('should call onExpire when an item expires', async () => {

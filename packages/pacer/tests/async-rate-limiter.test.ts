@@ -255,7 +255,7 @@ describe('AsyncRateLimiter', () => {
 
       await rateLimiter.maybeExecute()
       expect(onSuccess).toHaveBeenCalledTimes(1)
-      expect(onSuccess).toHaveBeenCalledWith('result', rateLimiter)
+      expect(onSuccess).toHaveBeenCalledWith('result', [], rateLimiter)
     })
 
     it('should call onError callback when execution fails', async () => {
@@ -284,7 +284,7 @@ describe('AsyncRateLimiter', () => {
 
       await rateLimiter.maybeExecute()
       expect(onSettled).toHaveBeenCalledTimes(1)
-      expect(onSettled).toHaveBeenCalledWith(rateLimiter)
+      expect(onSettled).toHaveBeenCalledWith([], rateLimiter)
     })
 
     it('should call onReject callback when execution is rejected', async () => {

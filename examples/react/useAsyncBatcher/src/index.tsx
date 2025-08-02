@@ -48,8 +48,9 @@ function App() {
       getShouldExecute: (items) =>
         items.some((item) => item.value.includes('urgent')), // Process immediately if any item is marked urgent
       throwOnError: false, // Don't throw errors, handle them via onError
-      onSuccess: (result, batcher) => {
+      onSuccess: (result, batch, batcher) => {
         console.log('Batch succeeded:', result)
+        console.log('Processed batch:', batch)
         console.log(
           'Total successful batches:',
           batcher.store.state.successCount,
@@ -62,9 +63,10 @@ function App() {
           `Error: ${error.message} (${new Date().toLocaleTimeString()})`,
         ])
       },
-      onSettled: (batcher) => {
+      onSettled: (batch, batcher) => {
+        console.log('Batch settled:', batch)
         console.log(
-          'Batch settled. Total processed items:',
+          'Total processed items:',
           batcher.store.state.totalItemsProcessed,
         )
       },

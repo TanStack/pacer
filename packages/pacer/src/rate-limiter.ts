@@ -56,7 +56,7 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
   /**
    * Callback function that is called after the function is executed
    */
-  onExecute?: (rateLimiter: RateLimiter<TFn>) => void
+  onExecute?: (args: Parameters<TFn>, rateLimiter: RateLimiter<TFn>) => void
   /**
    * Optional callback function that is called when an execution is rejected due to rate limiting
    */
@@ -240,7 +240,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     this.#setState({
       executionCount: this.store.state.executionCount + 1,
     })
-    this.options.onExecute?.(this)
+    this.options.onExecute?.(args, this)
   }
 
   #getExecutionTimesInWindow = (): Array<number> => {

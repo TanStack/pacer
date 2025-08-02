@@ -25,8 +25,9 @@ const throttledSearch = asyncThrottle(
   },
   {
     wait: 500,
-    onSuccess: (results, throttler) => {
+    onSuccess: (results, args, throttler) => {
       console.log('Search succeeded:', results)
+      console.log('Search arguments:', args)
     },
     onError: (error, args, throttler) => {
       console.error('Search failed:', error)
@@ -68,8 +69,8 @@ The async throttler provides robust error handling capabilities:
 ### 3. Different Callbacks
 
 The `AsyncThrottler` supports the following callbacks:
-- `onSuccess`: Called after each successful execution, providing the result and throttler instance
-- `onSettled`: Called after each execution (success or failure), providing the throttler instance
+- `onSuccess`: Called after each successful execution, providing the result, the arguments that were executed, and throttler instance
+- `onSettled`: Called after each execution (success or failure), providing the arguments that were executed and throttler instance
 - `onError`: Called if the async function throws an error, providing the error, the arguments that caused the error, and the throttler instance
 
 Example:
@@ -79,13 +80,15 @@ const asyncThrottler = new AsyncThrottler(async (value) => {
   await saveToAPI(value)
 }, {
   wait: 500,
-  onSuccess: (result, throttler) => {
+  onSuccess: (result, args, throttler) => {
     // Called after each successful execution
     console.log('Async function executed', throttler.store.state.successCount)
+    console.log('Executed arguments:', args)
   },
-  onSettled: (throttler) => {
+  onSettled: (args, throttler) => {
     // Called after each execution attempt
     console.log('Async function settled', throttler.store.state.settleCount)
+    console.log('Settled arguments:', args)
   },
   onError: (error, args, throttler) => {
     // Called if the async function throws an error

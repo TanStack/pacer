@@ -89,11 +89,15 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
   /**
    * Optional callback to call when the debounced function is executed
    */
-  onSettled?: (debouncer: AsyncDebouncer<TFn>) => void
+  onSettled?: (args: Parameters<TFn>, debouncer: AsyncDebouncer<TFn>) => void
   /**
    * Optional callback to call when the debounced function is executed
    */
-  onSuccess?: (result: ReturnType<TFn>, debouncer: AsyncDebouncer<TFn>) => void
+  onSuccess?: (
+    result: ReturnType<TFn>,
+    args: Parameters<TFn>,
+    debouncer: AsyncDebouncer<TFn>,
+  ) => void
   /**
    * Whether to throw errors when they occur.
    * Defaults to true if no onError handler is provided, false if an onError handler is provided.
@@ -307,7 +311,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result, this)
+      this.options.onSuccess?.(result, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
@@ -324,7 +328,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         settleCount: this.store.state.settleCount + 1,
       })
       this.#abortController = null
-      this.options.onSettled?.(this)
+      this.options.onSettled?.(args, this)
     }
     return this.store.state.lastResult
   }

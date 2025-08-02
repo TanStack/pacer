@@ -93,12 +93,16 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   /**
    * Optional function to call when the rate-limited function is executed
    */
-  onSettled?: (rateLimiter: AsyncRateLimiter<TFn>) => void
+  onSettled?: (
+    args: Parameters<TFn>,
+    rateLimiter: AsyncRateLimiter<TFn>,
+  ) => void
   /**
    * Optional function to call when the rate-limited function is executed
    */
   onSuccess?: (
     result: ReturnType<TFn>,
+    args: Parameters<TFn>,
     rateLimiter: AsyncRateLimiter<TFn>,
   ) => void
   /**
@@ -333,7 +337,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         successCount: this.store.state.successCount + 1,
         lastResult: result,
       })
-      this.options.onSuccess?.(result, this)
+      this.options.onSuccess?.(result, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
@@ -347,7 +351,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         isExecuting: false,
         settleCount: this.store.state.settleCount + 1,
       })
-      this.options.onSettled?.(this)
+      this.options.onSettled?.(args, this)
     }
 
     return this.store.state.lastResult

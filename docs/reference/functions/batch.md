@@ -53,7 +53,7 @@ const batchItems = batch<number>(
   (items) => console.log('Processing:', items),
   {
     maxSize: 3,
-    onExecute: (batcher) => console.log('Batch executed')
+    onExecute: (batch, batcher) => console.log('Batch executed:', batch)
   }
 );
 

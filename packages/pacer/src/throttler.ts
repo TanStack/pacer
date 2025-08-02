@@ -64,7 +64,7 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
   /**
    * Callback function that is called after the function is executed
    */
-  onExecute?: (throttler: Throttler<TFn>) => void
+  onExecute?: (args: Parameters<TFn>, throttler: Throttler<TFn>) => void
   /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
@@ -245,7 +245,7 @@ export class Throttler<TFn extends AnyFunction> {
       isPending: false,
       lastArgs: undefined,
     })
-    this.options.onExecute?.(this)
+    this.options.onExecute?.(args, this)
     setTimeout(() => {
       if (!this.store.state.isPending) {
         this.#setState({ nextExecutionTime: undefined })

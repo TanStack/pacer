@@ -36,7 +36,7 @@ const batcher = new Batcher<number>(
   {
     maxSize: 5,
     wait: 2000,
-    onExecute: (batcher) => console.log('Batch executed:', batcher.peekAllItems())
+    onExecute: (batch, batcher) => console.log('Batch executed:', batch)
   }
 );
 

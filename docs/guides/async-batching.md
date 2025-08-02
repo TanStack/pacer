@@ -37,8 +37,9 @@ const processAsyncBatch = asyncBatch<number>(
   {
     maxSize: 3,
     wait: 2000,
-    onSuccess: (results, batcher) => {
+    onSuccess: (results, batch, batcher) => {
       console.log('Batch completed successfully:', results)
+      console.log('Processed batch:', batch)
       console.log('Total successes:', batcher.store.state.successCount)
     },
     onError: (error, batch, batcher) => {
@@ -75,8 +76,9 @@ const batcher = new AsyncBatcher<number>(
   {
     maxSize: 5,
     wait: 3000,
-    onSuccess: (results, batcher) => {
+    onSuccess: (results, batch, batcher) => {
       console.log('Batch succeeded:', results)
+      console.log('Processed batch:', batch)
     },
     onError: (error, batch, batcher) => {
       console.error('Batch failed:', error)
@@ -114,9 +116,10 @@ const batcher = new AsyncBatcher<string>(
   },
   {
     maxSize: 5,
-    onSuccess: (results, batcher) => {
+    onSuccess: (results, batch, batcher) => {
       // Handle the returned results
       console.log('Batch results:', results)
+      console.log('Processed batch:', batch)
     }
   }
 )
@@ -142,13 +145,15 @@ const batcher = new AsyncBatcher<number>(
       console.log('Total error count:', batcher.store.state.errorCount)
     },
     throwOnError: false, // Don't throw errors, just handle them
-    onSuccess: (results, batcher) => {
+    onSuccess: (results, batch, batcher) => {
       console.log('Batch succeeded:', results)
+      console.log('Processed batch:', batch)
       console.log('Total success count:', batcher.store.state.successCount)
     },
-    onSettled: (batcher) => {
+    onSettled: (batch, batcher) => {
       // Called after every batch (success or failure)
-      console.log('Batch settled. Total batches:', batcher.store.state.settleCount)
+      console.log('Batch settled:', batch)
+      console.log('Total batches:', batcher.store.state.settleCount)
     }
   }
 )
@@ -180,10 +185,10 @@ const batcher = new AsyncBatcher<number>(
 
 The `AsyncBatcher` supports these async-specific callbacks:
 
-- `onSuccess`: Called after each successful batch execution, providing the result and batcher instance
+- `onSuccess`: Called after each successful batch execution, providing the result, the batch of items processed, and batcher instance
 - `onError`: Called when a batch execution fails, providing the error, the batch of items that failed, and batcher instance
-- `onSettled`: Called after each batch execution (success or failure), providing the batcher instance
-- `onExecute`: Called after each batch execution (same as synchronous batcher)
+- `onSettled`: Called after each batch execution (success or failure), providing the batch of items processed and batcher instance
+- `onExecute`: Called after each batch execution, providing the batch of items processed and batcher instance (same as synchronous batcher)
 - `onItemsChange`: Called when items are added or the batch is processed
 
 ## Error Handling Options

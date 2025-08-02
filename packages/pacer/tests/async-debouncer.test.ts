@@ -344,7 +344,7 @@ describe('AsyncDebouncer', () => {
       await promise
 
       expect(onError).toBeCalledWith(error, [], debouncer)
-      expect(onSettled).toBeCalledWith(debouncer)
+      expect(onSettled).toBeCalledWith([], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -430,7 +430,7 @@ describe('AsyncDebouncer', () => {
       await vi.advanceTimersByTimeAsync(1000)
       await promise
       expect(onError).toBeCalledWith(error, [], debouncer)
-      expect(onSettled).toBeCalledWith(debouncer)
+      expect(onSettled).toBeCalledWith([], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -452,7 +452,7 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
       expect(onError).toBeCalledWith(error, [], debouncer)
-      expect(onSettled).toBeCalledWith(debouncer)
+      expect(onSettled).toBeCalledWith([], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -708,7 +708,7 @@ describe('AsyncDebouncer', () => {
       await promise
 
       expect(onSuccess).toBeCalledTimes(1)
-      expect(onSuccess).toBeCalledWith('success', debouncer)
+      expect(onSuccess).toBeCalledWith('success', [], debouncer)
     })
 
     it('should call onSettled after execution completes', async () => {
@@ -724,7 +724,7 @@ describe('AsyncDebouncer', () => {
       await promise
 
       expect(onSettled).toBeCalledTimes(1)
-      expect(onSettled).toBeCalledWith(debouncer)
+      expect(onSettled).toBeCalledWith([], debouncer)
     })
 
     it('should call onError when execution fails', async () => {
@@ -794,7 +794,7 @@ describe('AsyncDebouncer', () => {
       expect(onError).toBeCalledTimes(1)
       expect(onError).toBeCalledWith(callbackError, [], debouncer)
       expect(onSettled).toBeCalledTimes(1)
-      expect(onSettled).toBeCalledWith(debouncer)
+      expect(onSettled).toBeCalledWith([], debouncer)
     })
   })
 
@@ -1147,7 +1147,7 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
       expect(onSuccess).toBeCalledTimes(1)
-      expect(onSuccess).toBeCalledWith('result', debouncer)
+      expect(onSuccess).toBeCalledWith('result', [], debouncer)
     })
 
     it('should maintain state across option changes', async () => {
@@ -1246,7 +1246,7 @@ describe('AsyncDebouncer', () => {
       expect(onError2).toBeCalledTimes(1)
       expect(onError2).toBeCalledWith(error, [], debouncer)
       expect(onSettled2).toBeCalledTimes(1)
-      expect(onSettled2).toBeCalledWith(debouncer)
+      expect(onSettled2).toBeCalledWith([], debouncer)
       expect(onError1).not.toBeCalled()
       expect(onSettled1).not.toBeCalled()
     })

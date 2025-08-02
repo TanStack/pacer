@@ -60,7 +60,7 @@ Defaults to false.
 ### onExecute()?
 
 ```ts
-optional onExecute: (debouncer) => void;
+optional onExecute: (args, debouncer) => void;
 ```
 
 Defined in: [debouncer.ts:63](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L63)
@@ -68,6 +68,10 @@ Defined in: [debouncer.ts:63](https://github.com/TanStack/pacer/blob/main/packag
 Callback function that is called after the function is executed
 
 #### Parameters
+
+##### args
+
+`Parameters`\<`TFn`\>
 
 ##### debouncer
 

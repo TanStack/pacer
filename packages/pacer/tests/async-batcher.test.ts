@@ -198,7 +198,7 @@ describe('AsyncBatcher', () => {
       batcher.addItem(1)
       await vi.runAllTimersAsync()
 
-      expect(onSuccess).toHaveBeenCalledWith('test-result', batcher)
+      expect(onSuccess).toHaveBeenCalledWith('test-result', [1], batcher)
     })
 
     it('should call onError callback after failed execution', async () => {
@@ -230,7 +230,7 @@ describe('AsyncBatcher', () => {
       successBatcher.addItem(1)
       await vi.runAllTimersAsync()
 
-      expect(onSettled).toHaveBeenCalledWith(successBatcher)
+      expect(onSettled).toHaveBeenCalledWith([1], successBatcher)
 
       // Test with failed execution
       onSettled.mockClear()
@@ -245,18 +245,7 @@ describe('AsyncBatcher', () => {
       errorBatcher.addItem(1)
       await vi.runAllTimersAsync()
 
-      expect(onSettled).toHaveBeenCalledWith(errorBatcher)
-    })
-
-    it('should call onExecute callback after execution', async () => {
-      const mockFn = vi.fn().mockResolvedValue('result')
-      const onExecute = vi.fn()
-      const batcher = new AsyncBatcher(mockFn, { maxSize: 1, onExecute })
-
-      batcher.addItem(1)
-      await vi.runAllTimersAsync()
-
-      expect(onExecute).toHaveBeenCalledWith(batcher)
+      expect(onSettled).toHaveBeenCalledWith([1], errorBatcher)
     })
 
     it('should call onItemsChange callback when items change', () => {

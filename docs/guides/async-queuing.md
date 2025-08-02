@@ -108,13 +108,15 @@ queue.setOptions({
     // You can access queue state here
     console.log('Error count:', queuer.store.state.errorCount)
   },
-  onSuccess: (result, queuer) => {
+  onSuccess: (result, item, queuer) => {
     console.log('Task completed:', result)
+    console.log('Completed item:', item)
     // You can access queue state here
     console.log('Success count:', queuer.store.state.successCount)
   },
-  onSettled: (queuer) => {
+  onSettled: (item, queuer) => {
     // Called after each execution (success or failure)
+    console.log('Task settled:', item)
     console.log('Total settled:', queuer.store.state.settledCount)
   }
 })
@@ -169,13 +171,15 @@ const queue = new AsyncQueuer(
       console.log('Error count:', queuer.store.state.errorCount)
     },
     throwOnError: true, // Will throw errors even with onError handler
-    onSuccess: (result, queuer) => {
+    onSuccess: (result, item, queuer) => {
       console.log('Task succeeded:', result)
+      console.log('Succeeded item:', item)
       // You can access queue state here
       console.log('Success count:', queuer.store.state.successCount)
     },
-    onSettled: (queuer) => {
+    onSettled: (item, queuer) => {
       // Called after each execution (success or failure)
+      console.log('Task settled:', item)
       console.log('Total settled:', queuer.store.state.settledCount)
     }
   }

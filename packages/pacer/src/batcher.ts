@@ -66,7 +66,7 @@ export interface BatcherOptions<TValue> {
   /**
    * Callback fired after a batch is processed
    */
-  onExecute?: (batcher: Batcher<TValue>) => void
+  onExecute?: (batch: Array<TValue>, batcher: Batcher<TValue>) => void
   /**
    * Callback fired after items are added to the batcher
    */
@@ -124,7 +124,7 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  *   {
  *     maxSize: 5,
  *     wait: 2000,
- *     onExecute: (batcher) => console.log('Batch executed:', batcher.peekAllItems())
+ *     onExecute: (batch, batcher) => console.log('Batch executed:', batch)
  *   }
  * );
  *
@@ -228,7 +228,7 @@ export class Batcher<TValue> {
       executionCount: this.store.state.executionCount + 1,
       totalItemsProcessed: this.store.state.totalItemsProcessed + batch.length,
     })
-    this.options.onExecute?.(this)
+    this.options.onExecute?.(batch, this)
   }
 
   /**
@@ -278,7 +278,7 @@ export class Batcher<TValue> {
  *   (items) => console.log('Processing:', items),
  *   {
  *     maxSize: 3,
- *     onExecute: (batcher) => console.log('Batch executed')
+ *     onExecute: (batch, batcher) => console.log('Batch executed:', batch)
  *   }
  * );
  *

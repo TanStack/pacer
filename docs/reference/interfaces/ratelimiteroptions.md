@@ -58,7 +58,7 @@ Can be a number or a callback function that receives the rate limiter instance a
 ### onExecute()?
 
 ```ts
-optional onExecute: (rateLimiter) => void;
+optional onExecute: (args, rateLimiter) => void;
 ```
 
 Defined in: [rate-limiter.ts:59](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L59)
@@ -66,6 +66,10 @@ Defined in: [rate-limiter.ts:59](https://github.com/TanStack/pacer/blob/main/pac
 Callback function that is called after the function is executed
 
 #### Parameters
+
+##### args
+
+`Parameters`\<`TFn`\>
 
 ##### rateLimiter
 

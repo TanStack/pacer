@@ -157,11 +157,11 @@ export interface AsyncQueuerOptions<TValue> {
   /**
    * Optional callback to call when a task is settled
    */
-  onSettled?: (queuer: AsyncQueuer<TValue>) => void
+  onSettled?: (item: TValue, queuer: AsyncQueuer<TValue>) => void
   /**
    * Optional callback to call when a task succeeds
    */
-  onSuccess?: (result: any, queuer: AsyncQueuer<TValue>) => void
+  onSuccess?: (result: any, item: TValue, queuer: AsyncQueuer<TValue>) => void
   /**
    * Whether the queuer should start processing tasks immediately or not.
    */
@@ -532,7 +532,7 @@ export class AsyncQueuer<TValue> {
           successCount: this.store.state.successCount + 1,
           lastResult,
         })
-        this.options.onSuccess?.(lastResult, this)
+        this.options.onSuccess?.(lastResult, item, this)
       } catch (error) {
         this.#setState({
           errorCount: this.store.state.errorCount + 1,
@@ -548,7 +548,7 @@ export class AsyncQueuer<TValue> {
           ),
           settledCount: this.store.state.settledCount + 1,
         })
-        this.options.onSettled?.(this)
+        this.options.onSettled?.(item, this)
       }
     }
     return item

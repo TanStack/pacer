@@ -76,8 +76,9 @@ function App() {
       onItemsChange: (batcher) => {
         setPendingItems(batcher.peekAllItems())
       },
-      onSuccess: (result, batcher) => {
+      onSuccess: (result, batch, batcher) => {
         console.log('AsyncBatcher succeeded:', result)
+        console.log('Processed batch:', batch)
         console.log(
           'Total successful batches:',
           batcher.store.state.successCount,
@@ -88,9 +89,10 @@ function App() {
         console.log('Failed items:', failedItems)
         console.log('Total failed batches:', batcher.store.state.errorCount)
       },
-      onSettled: (batcher) => {
+      onSettled: (batch, batcher) => {
+        console.log('Batch settled:', batch)
         console.log(
-          'Batch settled. Total processed items:',
+          'Total processed items:',
           batcher.store.state.totalItemsProcessed,
         )
       },

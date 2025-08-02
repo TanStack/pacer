@@ -77,7 +77,7 @@ Infinity
 ### onExecute()?
 
 ```ts
-optional onExecute: (batcher) => void;
+optional onExecute: (batch, batcher) => void;
 ```
 
 Defined in: [batcher.ts:69](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L69)
@@ -85,6 +85,10 @@ Defined in: [batcher.ts:69](https://github.com/TanStack/pacer/blob/main/packages
 Callback fired after a batch is processed
 
 #### Parameters
+
+##### batch
+
+`TValue`[]
 
 ##### batcher
 

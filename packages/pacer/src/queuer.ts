@@ -225,7 +225,7 @@ export type QueuePosition = 'front' | 'back'
  * const autoQueue = new Queuer<number>((n) => console.log(n), {
  *   started: true, // Begin processing immediately
  *   wait: 1000, // Wait 1s between items
- *   onExecute: (item) => console.log(`Processed ${item}`)
+ *   onExecute: (item, queuer) => console.log(`Processed ${item}`)
  * });
  * autoQueue.addItem(1); // Will process after 1s
  * autoQueue.addItem(2); // Will process 1s after first item

@@ -106,35 +106,13 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 ***
 
-### onExecute()?
-
-```ts
-optional onExecute: (batcher) => void;
-```
-
-Defined in: [async-batcher.ts:112](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L112)
-
-Callback fired after a batch is processed
-
-#### Parameters
-
-##### batcher
-
-[`AsyncBatcher`](../../classes/asyncbatcher.md)\<`TValue`\>
-
-#### Returns
-
-`void`
-
-***
-
 ### onItemsChange()?
 
 ```ts
 optional onItemsChange: (batcher) => void;
 ```
 
-Defined in: [async-batcher.ts:116](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L116)
+Defined in: [async-batcher.ts:112](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L112)
 
 Callback fired after items are added to the batcher
 
@@ -153,14 +131,18 @@ Callback fired after items are added to the batcher
 ### onSettled()?
 
 ```ts
-optional onSettled: (batcher) => void;
+optional onSettled: (batch, batcher) => void;
 ```
 
-Defined in: [async-batcher.ts:120](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L120)
+Defined in: [async-batcher.ts:116](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L116)
 
 Optional callback to call when a batch is settled (completed or failed)
 
 #### Parameters
+
+##### batch
+
+`TValue`[]
 
 ##### batcher
 
@@ -175,10 +157,10 @@ Optional callback to call when a batch is settled (completed or failed)
 ### onSuccess()?
 
 ```ts
-optional onSuccess: (result, batcher) => void;
+optional onSuccess: (result, batch, batcher) => void;
 ```
 
-Defined in: [async-batcher.ts:124](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L124)
+Defined in: [async-batcher.ts:120](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L120)
 
 Optional callback to call when a batch succeeds
 
@@ -187,6 +169,10 @@ Optional callback to call when a batch succeeds
 ##### result
 
 `any`
+
+##### batch
+
+`TValue`[]
 
 ##### batcher
 

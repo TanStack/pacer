@@ -60,7 +60,7 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
   /**
    * Callback function that is called after the function is executed
    */
-  onExecute?: (debouncer: Debouncer<TFn>) => void
+  onExecute?: (args: Parameters<TFn>, debouncer: Debouncer<TFn>) => void
   /**
    * Whether to execute on the trailing edge of the timeout.
    * Defaults to true.
@@ -217,7 +217,7 @@ export class Debouncer<TFn extends AnyFunction> {
       isPending: false,
       lastArgs: undefined,
     })
-    this.options.onExecute?.(this)
+    this.options.onExecute?.(args, this)
   }
 
   /**
