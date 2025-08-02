@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.13.0
+
+### Minor Changes
+
+- breaking: added items/batch/args as params to onSuccess, onSettled, and onExecute callbacks ([`e92923b`](https://github.com/TanStack/pacer/commit/e92923b764c6eb42b76bd5edaaac446c4f6a13f9))
+
 ## 0.12.0
 
 ### Minor Changes
