@@ -93,7 +93,6 @@ check_framework() {
     
     # Get actual hooks from packages
     local package_path="packages/$framework-pacer/src"
-    local persister_path="packages/$framework-persister/src"
     
     # Create temporary files
     local temp_dir=$(mktemp -d)
@@ -105,7 +104,6 @@ check_framework() {
     # Collect all hooks
     {
         extract_hooks_from_package "$package_path" "$hook_prefix"
-        extract_hooks_from_package "$persister_path" "$hook_prefix"
     } | sort -u > "$actual_hooks_file"
     
     # Get actual examples

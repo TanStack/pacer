@@ -78,9 +78,7 @@
   },
   "overrides": {
     "@tanstack/pacer": "workspace:*",
-    "@tanstack/persister": "workspace:*",
     "@tanstack/react-pacer": "workspace:*",
-    "@tanstack/react-persister": "workspace:*",
     "@tanstack/solid-pacer": "workspace:*"
   }
 }
