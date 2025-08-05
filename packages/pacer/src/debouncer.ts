@@ -123,7 +123,7 @@ export class Debouncer<TFn extends AnyFunction> {
   #timeoutId: NodeJS.Timeout | undefined
 
   constructor(
-    private fn: TFn,
+    public fn: TFn,
     initialOptions: DebouncerOptions<TFn>,
   ) {
     this.options = {

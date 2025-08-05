@@ -1,5 +1,7 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
@@ -62,6 +64,10 @@ function getDefaultAsyncDebouncerState<
  */
 export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<TFn>
+  /**
    * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
    * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
@@ -123,6 +129,9 @@ type AsyncDebouncerOptionsWithOptionalCallbacks = OptionalKeys<
 >
 
 const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   enabled: true,
   leading: false,
   trailing: true,
@@ -179,6 +188,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     AsyncDebouncerState<TFn>
   >(getDefaultAsyncDebouncerState<TFn>())
   options: AsyncDebouncerOptions<TFn>
+  asyncRetryer: AsyncRetryer<TFn>
   #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
@@ -186,7 +196,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     | null = null
 
   constructor(
-    private fn: TFn,
+    public fn: TFn,
     initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
     this.options = {
@@ -194,6 +204,10 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     this.#setState(this.options.initialState ?? {})
   }
 
@@ -306,12 +320,12 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     this.#abortController = new AbortController()
     try {
       this.#setState({ isExecuting: true })
-      const result = await this.fn(...args) // EXECUTE!
+      const result = await this.asyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result, args, this)
+      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,

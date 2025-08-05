@@ -248,7 +248,7 @@ export class Queuer<TValue> {
   #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
-    private fn: (item: TValue) => void,
+    public fn: (item: TValue) => void,
     initialOptions: QueuerOptions<TValue> = {},
   ) {
     this.options = {

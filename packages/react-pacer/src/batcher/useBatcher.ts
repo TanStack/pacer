@@ -128,6 +128,7 @@ export function useBatcher<TValue, TSelected = {}>(
 
   const state = useStore(batcher.store, selector)
 
+  batcher.fn = fn
   batcher.setOptions(options)
 
   return useMemo(

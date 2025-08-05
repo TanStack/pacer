@@ -1,5 +1,7 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
@@ -92,6 +94,10 @@ function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
 }
 
 export interface AsyncQueuerOptions<TValue> {
+  /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<(item: TValue) => Promise<any>>
   /**
    * Default position to add items to the queuer
    * @default 'back'
@@ -194,6 +200,9 @@ type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
 
 const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
   addItemsTo: 'back',
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   concurrency: 1,
   expirationDuration: Infinity,
   getIsExpired: () => false,
@@ -261,10 +270,11 @@ export class AsyncQueuer<TValue> {
     AsyncQueuerState<TValue>
   >(getDefaultAsyncQueuerState<TValue>())
   options: AsyncQueuerOptions<TValue>
+  asyncRetryer: AsyncRetryer<(item: TValue) => Promise<any>>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
-    private fn: (item: TValue) => Promise<any>,
+    public fn: (item: TValue) => Promise<any>,
     initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
     this.options = {
@@ -272,6 +282,10 @@ export class AsyncQueuer<TValue> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     const isInitiallyRunning =
       this.options.initialState?.isRunning ?? this.options.started ?? true
     this.#setState({
@@ -527,7 +541,7 @@ export class AsyncQueuer<TValue> {
     const item = this.getNextItem(position)
     if (item !== undefined) {
       try {
-        const lastResult = await this.fn(item) // EXECUTE!
+        const lastResult = await this.asyncRetryer.execute(item) // EXECUTE!
         this.#setState({
           successCount: this.store.state.successCount + 1,
           lastResult,

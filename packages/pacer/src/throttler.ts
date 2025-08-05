@@ -131,7 +131,7 @@ export class Throttler<TFn extends AnyFunction> {
   #timeoutId: NodeJS.Timeout | undefined
 
   constructor(
-    private fn: TFn,
+    public fn: TFn,
     initialOptions: ThrottlerOptions<TFn>,
   ) {
     this.options = {

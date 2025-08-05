@@ -138,6 +138,7 @@ export function useQueuer<TValue, TSelected = {}>(
 
   const state = useStore(queuer.store, selector)
 
+  queuer.fn = fn
   queuer.setOptions(options)
 
   return useMemo(

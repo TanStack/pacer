@@ -136,7 +136,7 @@ export class RateLimiter<TFn extends AnyFunction> {
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
-    private fn: TFn,
+    public fn: TFn,
     initialOptions: RateLimiterOptions<TFn>,
   ) {
     this.options = {

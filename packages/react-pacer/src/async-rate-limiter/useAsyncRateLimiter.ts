@@ -190,6 +190,7 @@ export function useAsyncRateLimiter<
 
   const state = useStore(asyncRateLimiter.store, selector)
 
+  asyncRateLimiter.fn = fn
   asyncRateLimiter.setOptions(options)
 
   return useMemo(
