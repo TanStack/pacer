@@ -111,7 +111,13 @@ describe('AsyncRetryer', () => {
         .mockResolvedValue('success')
       const retryer = new AsyncRetryer(mockFn, { baseWait: 100, throwOnError: 'last' })
 
-      const result = await retryer.execute('arg1')
+      const executePromise = retryer.execute('arg1')
+
+      // Let the retry timer run
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(100)
+
+      const result = await executePromise
 
       expect(result).toBe('success')
       expect(mockFn).toHaveBeenCalledTimes(2)
@@ -177,10 +183,21 @@ describe('AsyncRetryer', () => {
         throwOnError: false
       })
 
-      const result = await retryer.execute()
-      
-      expect(result).toBeUndefined()
+      const executePromise = retryer.execute()
+
+      // First retry: wait 100ms (100 * 2^0)
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(100)
+
+      // Second retry: wait 200ms (100 * 2^1)
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(200)
+
+      // Third attempt will not retry, just finish
+      await executePromise
+
       expect(mockFn).toHaveBeenCalledTimes(3)
+      expect(retryer.store.state.currentAttempt).toBe(3)
     })
 
     it('should use linear backoff', async () => {
@@ -346,8 +363,19 @@ describe('AsyncRetryer', () => {
         .mockResolvedValue('success')
       const retryer = new AsyncRetryer(mockFn, { baseWait: 100, throwOnError: false })
 
-      const result = await retryer.execute()
+      // Start execution but do not await yet
+      const executePromise = retryer.execute()
 
+      // After first rejection, status should be 'retrying'
+      // Fast-forward timers to trigger retry wait
+      await vi.runOnlyPendingTimersAsync()
+      expect(retryer.store.state.status).toBe('retrying')
+
+      // Fast-forward the retry wait time
+      vi.advanceTimersByTime(100)
+      await executePromise
+
+      // After completion, status should be 'idle'
       expect(retryer.store.state.status).toBe('idle')
     })
 

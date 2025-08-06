@@ -21,6 +21,9 @@ export * from './async-queuer/useAsyncQueuedState'
 export * from './async-rate-limiter/useAsyncRateLimiter'
 export * from './async-rate-limiter/useAsyncRateLimitedCallback'
 
+// async-retryer
+export * from './async-retryer/useAsyncRetryer'
+
 // async-throttler
 export * from './async-throttler/useAsyncThrottler'
 export * from './async-throttler/useAsyncThrottledCallback'

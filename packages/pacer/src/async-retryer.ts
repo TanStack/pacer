@@ -304,93 +304,65 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
       lastError: undefined,
     })
 
-    try {
-      let isLastAttempt = false
-      for (let attempt = 1; attempt <= this.#getMaxAttempts(); attempt++) {
-        isLastAttempt = attempt === this.#getMaxAttempts()
-        this.#setState({ currentAttempt: attempt })
+    let isLastAttempt = false
+    for (let attempt = 1; attempt <= this.#getMaxAttempts(); attempt++) {
+      isLastAttempt = attempt === this.#getMaxAttempts()
+      this.#setState({ currentAttempt: attempt })
 
-        try {
-          // Check if cancelled before executing
-          if (signal.aborted) {
-            throw new Error('Retry cancelled')
-          }
+      try {
+        result = (await this.fn(...args)) as ReturnType<TFn>
 
-          result = (await this.fn(...args)) as ReturnType<TFn>
+        const totalTime = Date.now() - startTime
+        this.#setState({
+          executionCount: this.store.state.executionCount + 1,
+          isExecuting: false,
+          lastExecutionTime: Date.now(),
+          totalExecutionTime: totalTime,
+          currentAttempt: 0,
+          lastResult: result,
+        })
 
-          const totalTime = Date.now() - startTime
-          this.#setState({
-            executionCount: this.store.state.executionCount + 1,
-            isExecuting: false,
-            lastExecutionTime: Date.now(),
-            totalExecutionTime: totalTime,
-            currentAttempt: 0,
-            lastResult: result,
-          })
+        this.options.onSuccess?.(result, args, this)
 
-          this.options.onSuccess?.(result, args, this)
+        return result
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error))
+        this.#setState({ lastError })
 
-          return result
-        } catch (error) {
-          lastError = error instanceof Error ? error : new Error(String(error))
-          this.#setState({ lastError })
+        if (attempt < this.#getMaxAttempts()) {
+          this.options.onRetry?.(attempt, lastError, this)
 
-          if (attempt < this.#getMaxAttempts()) {
-            this.options.onRetry?.(attempt, lastError, this)
-
-            const wait = this.#calculateWait(attempt)
-            if (wait > 0) {
-              await new Promise<void>((resolve, reject) => {
-                const timeout = setTimeout(resolve, wait)
-                signal.addEventListener('abort', () => {
-                  clearTimeout(timeout)
-                  reject(new Error('Retry cancelled'))
-                })
+          const wait = this.#calculateWait(attempt)
+          if (wait > 0) {
+            await new Promise<void>((resolve, reject) => {
+              const timeout = setTimeout(resolve, wait)
+              signal.addEventListener('abort', () => {
+                clearTimeout(timeout)
+                reject(new Error('Retry cancelled'))
               })
-            }
+            })
           }
-        } finally {
-          this.options.onSettled?.(args, this)
         }
+      } finally {
+        this.options.onSettled?.(args, this)
+        this.#setState({
+          isExecuting: false,
+        })
       }
-
-      this.#setState({
-        isExecuting: false,
-        currentAttempt: 0,
-      })
-
-      this.options.onLastError?.(lastError!, this)
-      this.options.onError?.(lastError!, args, this)
-      this.options.onSettled?.(args, this)
-
-      if (
-        (this.options.throwOnError === 'last' && isLastAttempt) ||
-        this.options.throwOnError === true
-      ) {
-        throw lastError
-      }
-
-      return undefined as any
-    } catch (error) {
-      // Don't rethrow if the error was from cancellation
-      if (error instanceof Error && error.message === 'Retry cancelled') {
-        return undefined
-      }
-
-      this.#setState({
-        isExecuting: false,
-        currentAttempt: 0,
-      })
-
-      const errorToHandle =
-        error instanceof Error ? error : new Error(String(error))
-      this.options.onError?.(errorToHandle, args, this)
-      this.options.onSettled?.(args, this)
-
-      throw error
-    } finally {
-      this.#abortController = null
     }
+
+    this.options.onLastError?.(lastError!, this)
+    this.options.onError?.(lastError!, args, this)
+    this.options.onSettled?.(args, this)
+
+    if (
+      (this.options.throwOnError === 'last' && isLastAttempt) ||
+      this.options.throwOnError === true
+    ) {
+      throw lastError
+    }
+
+    return undefined as any
   }
 
   /**

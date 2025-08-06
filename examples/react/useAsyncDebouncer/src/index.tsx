@@ -23,7 +23,6 @@ function App() {
 
   // The function that will become debounced
   const handleSearch = async (term: string) => {
-    throw new Error('Test error')
     if (!term) {
       setResults([])
       return

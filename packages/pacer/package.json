@@ -77,6 +77,16 @@
         "default": "./dist/cjs/async-rate-limiter.cjs"
       }
     },
+    "./async-retryer": {
+      "import": {
+        "types": "./dist/esm/async-retryer.d.ts",
+        "default": "./dist/esm/async-retryer.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-retryer.d.cts",
+        "default": "./dist/cjs/async-retryer.cjs"
+      }
+    },
     "./async-throttler": {
       "import": {
         "types": "./dist/esm/async-throttler.d.ts",
