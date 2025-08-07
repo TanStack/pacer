@@ -224,7 +224,7 @@ export class AsyncBatcher<TValue> {
   #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
-    private fn: (items: Array<TValue>) => Promise<any>,
+    public fn: (items: Array<TValue>) => Promise<any>,
     initialOptions: AsyncBatcherOptions<TValue>,
   ) {
     this.options = {

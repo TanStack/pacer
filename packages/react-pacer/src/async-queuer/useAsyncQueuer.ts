@@ -174,6 +174,7 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
 
   const state = useStore(asyncQueuer.store, selector)
 
+  asyncQueuer.fn = fn
   asyncQueuer.setOptions(options)
 
   return useMemo(

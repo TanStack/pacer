@@ -83,6 +83,16 @@ Defined in: [rate-limiter.ts:138](https://github.com/TanStack/pacer/blob/main/pa
 
 ## Properties
 
+### fn
+
+```ts
+fn: TFn;
+```
+
+Defined in: [rate-limiter.ts:139](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L139)
+
+***
+
 ### options
 
 ```ts

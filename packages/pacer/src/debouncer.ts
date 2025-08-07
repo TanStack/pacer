@@ -28,13 +28,13 @@ export interface DebouncerState<TFn extends AnyFunction> {
 function getDefaultDebouncerState<
   TFn extends AnyFunction,
 >(): DebouncerState<TFn> {
-  return structuredClone({
+  return {
     canLeadingExecute: true,
     executionCount: 0,
     isPending: false,
     lastArgs: undefined,
     status: 'idle',
-  })
+  }
 }
 
 /**
@@ -123,7 +123,7 @@ export class Debouncer<TFn extends AnyFunction> {
   #timeoutId: NodeJS.Timeout | undefined
 
   constructor(
-    private fn: TFn,
+    public fn: TFn,
     initialOptions: DebouncerOptions<TFn>,
   ) {
     this.options = {

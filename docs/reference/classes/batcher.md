@@ -77,6 +77,26 @@ Defined in: [batcher.ts:145](https://github.com/TanStack/pacer/blob/main/package
 
 ## Properties
 
+### fn()
+
+```ts
+fn: (items) => void;
+```
+
+Defined in: [batcher.ts:146](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L146)
+
+#### Parameters
+
+##### items
+
+`TValue`[]
+
+#### Returns
+
+`void`
+
+***
+
 ### options
 
 ```ts

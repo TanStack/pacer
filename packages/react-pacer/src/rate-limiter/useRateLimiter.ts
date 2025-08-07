@@ -147,6 +147,7 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
 
   const state = useStore(rateLimiter.store, selector)
 
+  rateLimiter.fn = fn
   rateLimiter.setOptions(options)
 
   return useMemo(

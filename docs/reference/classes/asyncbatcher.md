@@ -100,6 +100,26 @@ Defined in: [async-batcher.ts:226](https://github.com/TanStack/pacer/blob/main/p
 
 ## Properties
 
+### fn()
+
+```ts
+fn: (items) => Promise<any>;
+```
+
+Defined in: [async-batcher.ts:227](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L227)
+
+#### Parameters
+
+##### items
+
+`TValue`[]
+
+#### Returns
+
+`Promise`\<`any`\>
+
+***
+
 ### options
 
 ```ts

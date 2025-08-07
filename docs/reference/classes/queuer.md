@@ -110,6 +110,26 @@ Defined in: [queuer.ts:250](https://github.com/TanStack/pacer/blob/main/packages
 
 ## Properties
 
+### fn()
+
+```ts
+fn: (item) => void;
+```
+
+Defined in: [queuer.ts:251](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L251)
+
+#### Parameters
+
+##### item
+
+`TValue`
+
+#### Returns
+
+`void`
+
+***
+
 ### options
 
 ```ts

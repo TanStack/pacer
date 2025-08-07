@@ -108,6 +108,7 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   const state = useStore(debouncer.store, selector)
 
+  debouncer.fn = fn
   debouncer.setOptions(options)
 
   useEffect(() => {

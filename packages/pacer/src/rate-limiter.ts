@@ -26,13 +26,13 @@ export interface RateLimiterState {
 }
 
 function getDefaultRateLimiterState(): RateLimiterState {
-  return structuredClone({
+  return {
     executionCount: 0,
     executionTimes: [],
     isExceeded: false,
     rejectionCount: 0,
     status: 'idle',
-  })
+  }
 }
 
 /**
@@ -136,7 +136,7 @@ export class RateLimiter<TFn extends AnyFunction> {
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
-    private fn: TFn,
+    public fn: TFn,
     initialOptions: RateLimiterOptions<TFn>,
   ) {
     this.options = {

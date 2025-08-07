@@ -174,6 +174,7 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
 
   const state = useStore(asyncBatcher.store, selector)
 
+  asyncBatcher.fn = fn
   asyncBatcher.setOptions(options)
 
   return useMemo(

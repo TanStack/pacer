@@ -143,7 +143,7 @@ export class Batcher<TValue> {
   #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
-    private fn: (items: Array<TValue>) => void,
+    public fn: (items: Array<TValue>) => void,
     initialOptions: BatcherOptions<TValue>,
   ) {
     this.options = {

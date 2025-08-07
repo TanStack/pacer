@@ -156,6 +156,7 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
 
   const state = useStore(asyncDebouncer.store, selector)
 
+  asyncDebouncer.fn = fn
   asyncDebouncer.setOptions(options)
 
   useEffect(() => {

@@ -71,7 +71,7 @@ export interface AsyncQueuerState<TValue> {
 }
 
 function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
-  return structuredClone({
+  return {
     activeItems: [],
     errorCount: 0,
     expirationCount: 0,
@@ -88,7 +88,7 @@ function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
     size: 0,
     status: 'idle',
     successCount: 0,
-  })
+  }
 }
 
 export interface AsyncQueuerOptions<TValue> {
@@ -264,7 +264,7 @@ export class AsyncQueuer<TValue> {
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
-    private fn: (item: TValue) => Promise<any>,
+    public fn: (item: TValue) => Promise<any>,
     initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
     this.options = {

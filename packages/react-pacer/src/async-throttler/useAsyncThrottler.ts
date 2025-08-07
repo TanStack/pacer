@@ -167,6 +167,9 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
 
   const state = useStore(asyncThrottler.store, selector)
 
+  asyncThrottler.fn = fn
+  asyncThrottler.setOptions(options)
+
   useEffect(() => {
     return () => asyncThrottler.cancel()
   }, [asyncThrottler])

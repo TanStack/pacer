@@ -210,7 +210,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
-    private fn: TFn,
+    public fn: TFn,
     initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
     this.options = {

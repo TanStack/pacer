@@ -113,6 +113,7 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
 
   const state = useStore(throttler.store, selector)
 
+  throttler.fn = fn
   throttler.setOptions(options)
 
   useEffect(() => {
