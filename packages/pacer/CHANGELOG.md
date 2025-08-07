@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.14.0
+
+### Minor Changes
+
+- fix: remove unneeded structuredClone for state resets ([`98ae22c`](https://github.com/TanStack/pacer/commit/98ae22c5836aca9ff6a404770d7f210e686e098c))
+
 ## 0.13.0
 
 ### Minor Changes
