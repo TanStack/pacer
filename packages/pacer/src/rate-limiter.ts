@@ -26,13 +26,13 @@ export interface RateLimiterState {
 }
 
 function getDefaultRateLimiterState(): RateLimiterState {
-  return structuredClone({
+  return {
     executionCount: 0,
     executionTimes: [],
     isExceeded: false,
     rejectionCount: 0,
     status: 'idle',
-  })
+  }
 }
 
 /**

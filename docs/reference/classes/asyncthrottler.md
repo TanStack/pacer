@@ -87,6 +87,16 @@ Defined in: [async-throttler.ts:199](https://github.com/TanStack/pacer/blob/main
 
 ## Properties
 
+### fn
+
+```ts
+fn: TFn;
+```
+
+Defined in: [async-throttler.ts:200](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L200)
+
+***
+
 ### options
 
 ```ts

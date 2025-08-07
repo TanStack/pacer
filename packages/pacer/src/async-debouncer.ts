@@ -46,7 +46,7 @@ export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
 function getDefaultAsyncDebouncerState<
   TFn extends AnyAsyncFunction,
 >(): AsyncDebouncerState<TFn> {
-  return structuredClone({
+  return {
     canLeadingExecute: true,
     errorCount: 0,
     isExecuting: false,
@@ -56,7 +56,7 @@ function getDefaultAsyncDebouncerState<
     settleCount: 0,
     successCount: 0,
     status: 'idle',
-  })
+  }
 }
 
 /**

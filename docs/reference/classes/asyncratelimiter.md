@@ -105,6 +105,16 @@ Defined in: [async-rate-limiter.ts:212](https://github.com/TanStack/pacer/blob/m
 
 ## Properties
 
+### fn
+
+```ts
+fn: TFn;
+```
+
+Defined in: [async-rate-limiter.ts:213](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L213)
+
+***
+
 ### options
 
 ```ts

@@ -28,13 +28,13 @@ export interface DebouncerState<TFn extends AnyFunction> {
 function getDefaultDebouncerState<
   TFn extends AnyFunction,
 >(): DebouncerState<TFn> {
-  return structuredClone({
+  return {
     canLeadingExecute: true,
     executionCount: 0,
     isPending: false,
     lastArgs: undefined,
     status: 'idle',
-  })
+  }
 }
 
 /**

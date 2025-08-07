@@ -74,6 +74,16 @@ Defined in: [throttler.ts:133](https://github.com/TanStack/pacer/blob/main/packa
 
 ## Properties
 
+### fn
+
+```ts
+fn: TFn;
+```
+
+Defined in: [throttler.ts:134](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L134)
+
+***
+
 ### options
 
 ```ts

@@ -73,7 +73,7 @@ export interface AsyncQueuerState<TValue> {
 }
 
 function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
-  return structuredClone({
+  return {
     activeItems: [],
     errorCount: 0,
     expirationCount: 0,
@@ -90,7 +90,7 @@ function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
     size: 0,
     status: 'idle',
     successCount: 0,
-  })
+  }
 }
 
 export interface AsyncQueuerOptions<TValue> {

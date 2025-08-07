@@ -89,6 +89,26 @@ Defined in: [async-queuer.ts:266](https://github.com/TanStack/pacer/blob/main/pa
 
 ## Properties
 
+### fn()
+
+```ts
+fn: (item) => Promise<any>;
+```
+
+Defined in: [async-queuer.ts:267](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L267)
+
+#### Parameters
+
+##### item
+
+`TValue`
+
+#### Returns
+
+`Promise`\<`any`\>
+
+***
+
 ### options
 
 ```ts

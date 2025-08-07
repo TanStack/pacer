@@ -70,6 +70,16 @@ Defined in: [debouncer.ts:125](https://github.com/TanStack/pacer/blob/main/packa
 
 ## Properties
 
+### fn
+
+```ts
+fn: TFn;
+```
+
+Defined in: [debouncer.ts:126](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L126)
+
+***
+
 ### options
 
 ```ts

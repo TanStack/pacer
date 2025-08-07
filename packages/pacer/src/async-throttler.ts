@@ -50,7 +50,7 @@ export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
 function getDefaultAsyncThrottlerState<
   TFn extends AnyAsyncFunction,
 >(): AsyncThrottlerState<TFn> {
-  return structuredClone({
+  return {
     errorCount: 0,
     isExecuting: false,
     isPending: false,
@@ -61,7 +61,7 @@ function getDefaultAsyncThrottlerState<
     settleCount: 0,
     status: 'idle',
     successCount: 0,
-  })
+  }
 }
 
 /**

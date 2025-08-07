@@ -1,5 +1,16 @@
 # @tanstack/react-pacer
 
+## 0.15.0
+
+### Minor Changes
+
+- fix: sync passed function for all utils on every render instead of only on mount to fix closure issues ([`98ae22c`](https://github.com/TanStack/pacer/commit/98ae22c5836aca9ff6a404770d7f210e686e098c))
+
+### Patch Changes
+
+- Updated dependencies [[`98ae22c`](https://github.com/TanStack/pacer/commit/98ae22c5836aca9ff6a404770d7f210e686e098c)]:
+  - @tanstack/pacer@0.14.0
+
 ## 0.14.0
 
 ### Minor Changes

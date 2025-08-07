@@ -32,14 +32,14 @@ export interface ThrottlerState<TFn extends AnyFunction> {
 function getDefaultThrottlerState<
   TFn extends AnyFunction,
 >(): ThrottlerState<TFn> {
-  return structuredClone({
+  return {
     executionCount: 0,
     isPending: false,
     lastArgs: undefined,
     lastExecutionTime: 0,
     nextExecutionTime: 0,
     status: 'idle',
-  })
+  }
 }
 
 /**
