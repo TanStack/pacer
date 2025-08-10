@@ -7,6 +7,7 @@ import type {
   AsyncRetryerOptions,
   AsyncRetryerState,
 } from '@tanstack/pacer/async-retryer'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactAsyncRetryer<TFn extends AnyAsyncFunction, TSelected = {}>
   extends Omit<AsyncRetryer<TFn>, 'store'> {
@@ -154,12 +155,19 @@ export function useAsyncRetryer<TFn extends AnyAsyncFunction, TSelected = {}>(
   selector: (state: AsyncRetryerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncRetryer<TFn, TSelected> {
-  const [asyncRetryer] = useState(() => new AsyncRetryer<TFn>(fn, options))
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncRetryer,
+    ...options,
+  } as AsyncRetryerOptions<TFn>
 
-  const state = useStore(asyncRetryer.store, selector)
+  const [asyncRetryer] = useState(
+    () => new AsyncRetryer<TFn>(fn, mergedOptions),
+  )
 
   asyncRetryer.fn = fn
-  asyncRetryer.setOptions(options)
+  asyncRetryer.setOptions(mergedOptions)
+
+  const state = useStore(asyncRetryer.store, selector)
 
   useEffect(() => {
     return () => {

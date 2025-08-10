@@ -298,12 +298,6 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     this.#abortController = new AbortController()
     const signal = this.#abortController.signal
 
-    const createAbortError = (): Error => {
-      const error = new Error('Aborted')
-      ;(error as any).name = 'AbortError'
-      return error
-    }
-
     this.#setState({
       isExecuting: true,
       currentAttempt: 0,

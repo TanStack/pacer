@@ -7,6 +7,7 @@ import type {
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactRateLimiter<TFn extends AnyFunction, TSelected = {}>
   extends Omit<RateLimiter<TFn>, 'store'> {
@@ -143,12 +144,17 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   options: RateLimiterOptions<TFn>,
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): ReactRateLimiter<TFn, TSelected> {
-  const [rateLimiter] = useState(() => new RateLimiter<TFn>(fn, options))
+  const mergedOptions = {
+    ...useDefaultPacerOptions().rateLimiter,
+    ...options,
+  } as RateLimiterOptions<TFn>
 
-  const state = useStore(rateLimiter.store, selector)
+  const [rateLimiter] = useState(() => new RateLimiter<TFn>(fn, mergedOptions))
 
   rateLimiter.fn = fn
-  rateLimiter.setOptions(options)
+  rateLimiter.setOptions(mergedOptions)
+
+  const state = useStore(rateLimiter.store, selector)
 
   return useMemo(
     () =>

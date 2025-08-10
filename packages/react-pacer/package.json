@@ -137,6 +137,16 @@
         "default": "./dist/cjs/rate-limiter/index.cjs"
       }
     },
+    "./provider": {
+      "import": {
+        "types": "./dist/esm/provider/index.d.ts",
+        "default": "./dist/esm/provider/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/provider/index.d.cts",
+        "default": "./dist/cjs/provider/index.cjs"
+      }
+    },
     "./throttler": {
       "import": {
         "types": "./dist/esm/throttler/index.d.ts",

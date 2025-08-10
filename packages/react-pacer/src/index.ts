@@ -1,6 +1,9 @@
 // re-export everything from the core pacer package
 export * from '@tanstack/pacer'
 
+// provider
+export * from './provider/PacerProvider'
+
 /**
  * Export every hook individually - DON'T export from barrel files
  */

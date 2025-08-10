@@ -6,6 +6,7 @@ import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactAsyncBatcher<TValue, TSelected = {}>
   extends Omit<AsyncBatcher<TValue>, 'store'> {
@@ -170,12 +171,19 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncBatcher<TValue, TSelected> {
-  const [asyncBatcher] = useState(() => new AsyncBatcher<TValue>(fn, options))
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncBatcher,
+    ...options,
+  } as AsyncBatcherOptions<TValue>
 
-  const state = useStore(asyncBatcher.store, selector)
+  const [asyncBatcher] = useState(
+    () => new AsyncBatcher<TValue>(fn, mergedOptions),
+  )
 
   asyncBatcher.fn = fn
-  asyncBatcher.setOptions(options)
+  asyncBatcher.setOptions(mergedOptions)
+
+  const state = useStore(asyncBatcher.store, selector)
 
   return useMemo(
     () =>

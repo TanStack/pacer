@@ -6,6 +6,7 @@ import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactAsyncQueuer<TValue, TSelected = {}>
   extends Omit<AsyncQueuer<TValue>, 'store'> {
@@ -170,12 +171,19 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncQueuer<TValue, TSelected> {
-  const [asyncQueuer] = useState(() => new AsyncQueuer<TValue>(fn, options))
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncQueuer,
+    ...options,
+  } as AsyncQueuerOptions<TValue>
 
-  const state = useStore(asyncQueuer.store, selector)
+  const [asyncQueuer] = useState(
+    () => new AsyncQueuer<TValue>(fn, mergedOptions),
+  )
 
   asyncQueuer.fn = fn
-  asyncQueuer.setOptions(options)
+  asyncQueuer.setOptions(mergedOptions)
+
+  const state = useStore(asyncQueuer.store, selector)
 
   return useMemo(
     () =>
