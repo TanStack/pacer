@@ -189,7 +189,6 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   >(getDefaultAsyncDebouncerState<TFn>())
   options: AsyncDebouncerOptions<TFn>
   asyncRetryer: AsyncRetryer<TFn>
-  #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
@@ -317,7 +316,6 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
-    this.#abortController = new AbortController()
     try {
       this.#setState({ isExecuting: true })
       const result = await this.asyncRetryer.execute(...args) // EXECUTE!
@@ -341,7 +339,6 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         lastArgs: undefined,
         settleCount: this.store.state.settleCount + 1,
       })
-      this.#abortController = null
       this.options.onSettled?.(args, this)
     }
     return this.store.state.lastResult
@@ -389,10 +386,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   #abortExecution = (): void => {
-    if (this.#abortController) {
-      this.#abortController.abort()
-      this.#abortController = null
-    }
+    this.asyncRetryer.cancel()
   }
 
   /**

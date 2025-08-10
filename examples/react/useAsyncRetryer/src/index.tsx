@@ -11,16 +11,16 @@ interface UserData {
 // Simulate API call with fake data that fails randomly
 const fakeApi = async (userId: string): Promise<UserData> => {
   await new Promise((resolve) => setTimeout(resolve, 800)) // Simulate network delay
-  
+
   // Randomly fail 60% of the time to demonstrate retry functionality
   if (Math.random() < 0.6) {
     throw new Error(`Network error fetching user ${userId}`)
   }
-  
+
   return {
     id: parseInt(userId),
     name: `User ${userId}`,
-    email: `user${userId}@example.com`
+    email: `user${userId}@example.com`,
   }
 }
 
@@ -90,33 +90,65 @@ function App() {
           {asyncRetryer.state.isExecuting ? 'Fetching...' : 'Fetch User'}
         </button>
       </div>
-      
+
       <div style={{ marginTop: '10px' }}>
         <button onClick={() => asyncRetryer.cancel()}>Cancel</button>
-        <button onClick={() => asyncRetryer.reset()} style={{ marginLeft: '10px' }}>Reset</button>
+        <button
+          onClick={() => asyncRetryer.reset()}
+          style={{ marginLeft: '10px' }}
+        >
+          Reset
+        </button>
       </div>
 
       <div style={{ marginTop: '20px' }}>
-        <p><strong>Status:</strong> {asyncRetryer.state.status}</p>
+        <p>
+          <strong>Status:</strong> {asyncRetryer.state.status}
+        </p>
         {asyncRetryer.state.currentAttempt > 0 && (
-          <p><strong>Current Attempt:</strong> {asyncRetryer.state.currentAttempt}</p>
+          <p>
+            <strong>Current Attempt:</strong>{' '}
+            {asyncRetryer.state.currentAttempt}
+          </p>
         )}
-        <p><strong>Total Executions:</strong> {asyncRetryer.state.executionCount}</p>
+        <p>
+          <strong>Total Executions:</strong> {asyncRetryer.state.executionCount}
+        </p>
         {asyncRetryer.state.lastError && (
-          <p style={{ color: 'red' }}><strong>Last Error:</strong> {asyncRetryer.state.lastError.message}</p>
+          <p style={{ color: 'red' }}>
+            <strong>Last Error:</strong> {asyncRetryer.state.lastError.message}
+          </p>
         )}
       </div>
 
       {userData && (
-        <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
+        <div
+          style={{
+            marginTop: '20px',
+            padding: '10px',
+            border: '1px solid #ccc',
+          }}
+        >
           <h3>User Data:</h3>
-          <p><strong>ID:</strong> {userData.id}</p>
-          <p><strong>Name:</strong> {userData.name}</p>
-          <p><strong>Email:</strong> {userData.email}</p>
+          <p>
+            <strong>ID:</strong> {userData.id}
+          </p>
+          <p>
+            <strong>Name:</strong> {userData.name}
+          </p>
+          <p>
+            <strong>Email:</strong> {userData.email}
+          </p>
         </div>
       )}
 
-      <pre style={{ marginTop: '20px', backgroundColor: '#f5f5f5', padding: '10px' }}>
+      <pre
+        style={{
+          marginTop: '20px',
+          backgroundColor: '#f5f5f5',
+          padding: '10px',
+        }}
+      >
         {JSON.stringify(asyncRetryer.store.state, null, 2)}
       </pre>
     </div>

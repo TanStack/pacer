@@ -298,6 +298,12 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     this.#abortController = new AbortController()
     const signal = this.#abortController.signal
 
+    const createAbortError = (): Error => {
+      const error = new Error('Aborted')
+      ;(error as any).name = 'AbortError'
+      return error
+    }
+
     this.#setState({
       isExecuting: true,
       currentAttempt: 0,
@@ -310,7 +316,14 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
       this.#setState({ currentAttempt: attempt })
 
       try {
+        if (signal.aborted) {
+          return undefined as any
+        }
         result = (await this.fn(...args)) as ReturnType<TFn>
+
+        if (signal.aborted) {
+          return undefined as any
+        }
 
         const totalTime = Date.now() - startTime
         this.#setState({
@@ -326,6 +339,10 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 
         return result
       } catch (error) {
+        // Treat abort as a non-error cancellation outcome
+        if ((error as any)?.name === 'AbortError') {
+          return undefined as any
+        }
         lastError = error instanceof Error ? error : new Error(String(error))
         this.#setState({ lastError })
 
@@ -334,23 +351,36 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 
           const wait = this.#calculateWait(attempt)
           if (wait > 0) {
-            await new Promise<void>((resolve, reject) => {
-              const timeout = setTimeout(resolve, wait)
-              signal.addEventListener('abort', () => {
+            // Eagerly reflect retrying status during the wait window
+            this.#setState({ isExecuting: true, currentAttempt: attempt + 1 })
+            await new Promise<void>((resolve) => {
+              const timeout = setTimeout(() => {
+                signal.removeEventListener('abort', onAbort)
+                resolve()
+              }, wait)
+              const onAbort = () => {
                 clearTimeout(timeout)
-                reject(new Error('Retry cancelled'))
-              })
+                signal.removeEventListener('abort', onAbort)
+                resolve()
+              }
+              signal.addEventListener('abort', onAbort)
             })
+            if (signal.aborted) {
+              // When cancelled during retry wait, surface the last error exactly once
+              if (lastError) {
+                this.options.onError?.(lastError, args, this)
+              }
+              return undefined as any
+            }
           }
         }
       } finally {
         this.options.onSettled?.(args, this)
-        this.#setState({
-          isExecuting: false,
-        })
       }
     }
 
+    // Exhausted retries - finalize state
+    this.#setState({ isExecuting: false })
     this.options.onLastError?.(lastError!, this)
     this.options.onError?.(lastError!, args, this)
     this.options.onSettled?.(args, this)

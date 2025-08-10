@@ -200,7 +200,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   >(getDefaultAsyncThrottlerState<TFn>())
   options: AsyncThrottlerOptions<TFn>
   asyncRetryer: AsyncRetryer<TFn>
-  #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
@@ -341,7 +340,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled() || this.store.state.isExecuting) return undefined
-    this.#abortController = new AbortController()
     try {
       this.#setState({ isExecuting: true })
       const result = await this.asyncRetryer.execute(...args) // EXECUTE!
@@ -368,7 +366,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         lastExecutionTime,
         nextExecutionTime,
       })
-      this.#abortController = null
       this.options.onSettled?.(args, this)
       setTimeout(() => {
         if (!this.store.state.isPending) {
@@ -424,10 +421,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   }
 
   #abortExecution = (): void => {
-    if (this.#abortController) {
-      this.#abortController.abort()
-      this.#abortController = null
-    }
+    this.asyncRetryer.cancel()
   }
 
   /**

@@ -8,10 +8,8 @@ import type {
   AsyncRetryerState,
 } from '@tanstack/pacer/async-retryer'
 
-export interface ReactAsyncRetryer<
-  TFn extends AnyAsyncFunction,
-  TSelected = {},
-> extends Omit<AsyncRetryer<TFn>, 'store'> {
+export interface ReactAsyncRetryer<TFn extends AnyAsyncFunction, TSelected = {}>
+  extends Omit<AsyncRetryer<TFn>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the retryer state changes
    *
