@@ -1,17 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  PacerDevtoolsCore,
-} from '@tanstack/pacer-devtools'
+import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
 
-export interface PacerDevtoolsReactInit {
-
-}
-
+export interface PacerDevtoolsReactInit {}
 
 export const PacerDevtoolsPanel = (_props?: PacerDevtoolsReactInit) => {
   const devToolRef = useRef<HTMLDivElement>(null)
 
-  const [devtools] = useState(() => new PacerDevtoolsCore({}),)
+  const [devtools] = useState(() => new PacerDevtoolsCore({}))
   useEffect(() => {
     if (devToolRef.current) {
       devtools.mount(devToolRef.current)
@@ -20,7 +15,5 @@ export const PacerDevtoolsPanel = (_props?: PacerDevtoolsReactInit) => {
     return () => devtools.unmount()
   }, [devtools])
 
-  return (
-    <div ref={devToolRef} />
-  )
+  return <div ref={devToolRef} />
 }

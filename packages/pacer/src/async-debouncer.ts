@@ -229,7 +229,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
                 ? 'settled'
                 : 'idle',
       } as const
-      pacerEventClient.emit("async-debouncer-state", finalState)
+      pacerEventClient.emit('async-debouncer-state', finalState)
       return finalState
     })
   }

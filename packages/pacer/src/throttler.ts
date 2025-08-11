@@ -169,7 +169,7 @@ export class Throttler<TFn extends AnyFunction> {
             ? 'pending'
             : 'idle',
       } as const
-      pacerEventClient.emit("throttler-state", finalState)
+      pacerEventClient.emit('throttler-state', finalState)
       return finalState
     })
   }

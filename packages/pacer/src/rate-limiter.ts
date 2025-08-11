@@ -174,7 +174,7 @@ export class RateLimiter<TFn extends AnyFunction> {
         isExceeded,
         status,
       } as const
-      pacerEventClient.emit("rate-limiter-state", finalState)
+      pacerEventClient.emit('rate-limiter-state', finalState)
       return finalState
     })
   }

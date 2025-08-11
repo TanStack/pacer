@@ -16,6 +16,7 @@ title: "@tanstack/pacer"
 - [AsyncThrottler](../classes/asyncthrottler.md)
 - [Batcher](../classes/batcher.md)
 - [Debouncer](../classes/debouncer.md)
+- [PacerEventClient](../classes/pacereventclient.md)
 - [Queuer](../classes/queuer.md)
 - [RateLimiter](../classes/ratelimiter.md)
 - [Throttler](../classes/throttler.md)
@@ -36,6 +37,7 @@ title: "@tanstack/pacer"
 - [BatcherState](../interfaces/batcherstate.md)
 - [DebouncerOptions](../interfaces/debounceroptions.md)
 - [DebouncerState](../interfaces/debouncerstate.md)
+- [PacerEventMap](../interfaces/pacereventmap.md)
 - [QueuerOptions](../interfaces/queueroptions.md)
 - [QueuerState](../interfaces/queuerstate.md)
 - [RateLimiterOptions](../interfaces/ratelimiteroptions.md)
@@ -49,6 +51,10 @@ title: "@tanstack/pacer"
 - [AnyFunction](../type-aliases/anyfunction.md)
 - [OptionalKeys](../type-aliases/optionalkeys.md)
 - [QueuePosition](../type-aliases/queueposition.md)
+
+## Variables
+
+- [pacerEventClient](../variables/pacereventclient.md)
 
 ## Functions
 

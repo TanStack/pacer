@@ -170,14 +170,14 @@ export class Batcher<TValue> {
       const { isPending, items } = combinedState
       const size = items.length
       const isEmpty = size === 0
-      const finalState =  {
+      const finalState = {
         ...combinedState,
         isEmpty,
         size,
         status: isPending ? 'pending' : 'idle',
       } as const
 
-      pacerEventClient.emit("batcher-state", finalState)
+      pacerEventClient.emit('batcher-state', finalState)
       return finalState
     })
   }

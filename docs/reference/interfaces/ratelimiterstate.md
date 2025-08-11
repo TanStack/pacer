@@ -7,7 +7,7 @@ title: RateLimiterState
 
 # Interface: RateLimiterState
 
-Defined in: [rate-limiter.ts:5](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L5)
+Defined in: [packages/pacer/src/rate-limiter.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L6)
 
 ## Properties
 
@@ -17,7 +17,7 @@ Defined in: [rate-limiter.ts:5](https://github.com/TanStack/pacer/blob/main/pack
 executionCount: number;
 ```
 
-Defined in: [rate-limiter.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L9)
+Defined in: [packages/pacer/src/rate-limiter.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L10)
 
 Number of function executions that have been completed
 
@@ -29,7 +29,7 @@ Number of function executions that have been completed
 executionTimes: number[];
 ```
 
-Defined in: [rate-limiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L13)
+Defined in: [packages/pacer/src/rate-limiter.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L14)
 
 Array of timestamps when executions occurred for rate limiting calculations
 
@@ -41,7 +41,7 @@ Array of timestamps when executions occurred for rate limiting calculations
 isExceeded: boolean;
 ```
 
-Defined in: [rate-limiter.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L17)
+Defined in: [packages/pacer/src/rate-limiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L18)
 
 Whether the rate limiter has exceeded the limit
 
@@ -53,7 +53,7 @@ Whether the rate limiter has exceeded the limit
 rejectionCount: number;
 ```
 
-Defined in: [rate-limiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L21)
+Defined in: [packages/pacer/src/rate-limiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L22)
 
 Number of function executions that have been rejected due to rate limiting
 
@@ -62,9 +62,9 @@ Number of function executions that have been rejected due to rate limiting
 ### status
 
 ```ts
-status: "idle" | "disabled" | "exceeded";
+status: "disabled" | "idle" | "exceeded";
 ```
 
-Defined in: [rate-limiter.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L25)
+Defined in: [packages/pacer/src/rate-limiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L26)
 
 Current execution status - 'disabled' when not active, 'executing' when executing, 'idle' when not executing, 'exceeded' when rate limit is exceeded

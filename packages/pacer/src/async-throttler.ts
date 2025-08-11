@@ -240,7 +240,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
                 ? 'settled'
                 : 'idle',
       } as const
-      pacerEventClient.emit("async-throttler-state", finalState)
+      pacerEventClient.emit('async-throttler-state', finalState)
       return finalState
     })
   }

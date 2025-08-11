@@ -7,7 +7,7 @@ title: ThrottlerOptions
 
 # Interface: ThrottlerOptions\<TFn\>
 
-Defined in: [throttler.ts:48](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L48)
+Defined in: [packages/pacer/src/throttler.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L49)
 
 Options for configuring a throttled function
 
@@ -23,7 +23,7 @@ Options for configuring a throttled function
 optional enabled: boolean | (throttler) => boolean;
 ```
 
-Defined in: [throttler.ts:54](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L54)
+Defined in: [packages/pacer/src/throttler.ts:55](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L55)
 
 Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
 Can be a boolean or a function that returns a boolean.
@@ -37,7 +37,7 @@ Defaults to true.
 optional initialState: Partial<ThrottlerState<TFn>>;
 ```
 
-Defined in: [throttler.ts:58](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L58)
+Defined in: [packages/pacer/src/throttler.ts:59](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L59)
 
 Initial state for the throttler
 
@@ -49,7 +49,7 @@ Initial state for the throttler
 optional leading: boolean;
 ```
 
-Defined in: [throttler.ts:63](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L63)
+Defined in: [packages/pacer/src/throttler.ts:64](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L64)
 
 Whether to execute on the leading edge of the timeout.
 Defaults to true.
@@ -62,7 +62,7 @@ Defaults to true.
 optional onExecute: (args, throttler) => void;
 ```
 
-Defined in: [throttler.ts:67](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L67)
+Defined in: [packages/pacer/src/throttler.ts:68](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L68)
 
 Callback function that is called after the function is executed
 
@@ -88,7 +88,7 @@ Callback function that is called after the function is executed
 optional trailing: boolean;
 ```
 
-Defined in: [throttler.ts:72](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L72)
+Defined in: [packages/pacer/src/throttler.ts:73](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L73)
 
 Whether to execute on the trailing edge of the timeout.
 Defaults to true.
@@ -101,7 +101,7 @@ Defaults to true.
 wait: number | (throttler) => number;
 ```
 
-Defined in: [throttler.ts:78](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L78)
+Defined in: [packages/pacer/src/throttler.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L79)
 
 Time window in milliseconds during which the function can only be executed once.
 Can be a number or a function that returns a number.

@@ -264,7 +264,7 @@ export class AsyncBatcher<TValue> {
               ? 'idle'
               : 'populated',
       } as const
-      pacerEventClient.emit("async-batcher-state", finalState)
+      pacerEventClient.emit('async-batcher-state', finalState)
       return finalState
     })
   }
