@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 function App1() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
@@ -310,11 +311,20 @@ function App3() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
-  <div>
-    <App1 />
-    <hr />
-    <App2 />
-    <hr />
-    <App3 />
-  </div>,
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // options={{
+  //   rateLimiter: {
+  //     limit: 10,
+  //   },
+  // }}
+  >
+    <div>
+      <App1 />
+      <hr />
+      <App2 />
+      <hr />
+      <App3 />
+    </div>
+  </PacerProvider>,
 )

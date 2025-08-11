@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncRateLimiter } from '@tanstack/react-pacer/async-rate-limiter'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 interface SearchResult {
   id: number
@@ -165,12 +166,36 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 
 let mounted = true
-root.render(<App />)
+root.render(
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // options={{
+  //   rateLimiter: {
+  //     limit: 5,
+  //   },
+  // }}
+  >
+    <App />
+  </PacerProvider>,
+)
 
 // demo unmounting and cancellation
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     mounted = !mounted
-    root.render(mounted ? <App /> : null)
+    root.render(
+      mounted ? (
+        // optionally, provide default options to an optional PacerProvider
+        <PacerProvider
+        // options={{
+        //   rateLimiter: {
+        //     limit: 5,
+        //   },
+        // }}
+        >
+          <App />
+        </PacerProvider>
+      ) : null,
+    )
   }
 })
