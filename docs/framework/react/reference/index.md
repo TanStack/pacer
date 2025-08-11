@@ -9,10 +9,13 @@ title: "@tanstack/react-pacer"
 
 ## Interfaces
 
+- [PacerProviderOptions](../interfaces/pacerprovideroptions.md)
+- [PacerProviderProps](../interfaces/pacerproviderprops.md)
 - [ReactAsyncBatcher](../interfaces/reactasyncbatcher.md)
 - [ReactAsyncDebouncer](../interfaces/reactasyncdebouncer.md)
 - [ReactAsyncQueuer](../interfaces/reactasyncqueuer.md)
 - [ReactAsyncRateLimiter](../interfaces/reactasyncratelimiter.md)
+- [ReactAsyncRetryer](../interfaces/reactasyncretryer.md)
 - [ReactAsyncThrottler](../interfaces/reactasyncthrottler.md)
 - [ReactBatcher](../interfaces/reactbatcher.md)
 - [ReactDebouncer](../interfaces/reactdebouncer.md)
@@ -22,6 +25,7 @@ title: "@tanstack/react-pacer"
 
 ## Functions
 
+- [PacerProvider](../functions/pacerprovider.md)
 - [useAsyncBatchedCallback](../functions/useasyncbatchedcallback.md)
 - [useAsyncBatcher](../functions/useasyncbatcher.md)
 - [useAsyncDebouncedCallback](../functions/useasyncdebouncedcallback.md)
@@ -30,6 +34,7 @@ title: "@tanstack/react-pacer"
 - [useAsyncQueuer](../functions/useasyncqueuer.md)
 - [useAsyncRateLimitedCallback](../functions/useasyncratelimitedcallback.md)
 - [useAsyncRateLimiter](../functions/useasyncratelimiter.md)
+- [useAsyncRetryer](../functions/useasyncretryer.md)
 - [useAsyncThrottledCallback](../functions/useasyncthrottledcallback.md)
 - [useAsyncThrottler](../functions/useasyncthrottler.md)
 - [useBatchedCallback](../functions/usebatchedcallback.md)
@@ -38,6 +43,8 @@ title: "@tanstack/react-pacer"
 - [useDebouncedState](../functions/usedebouncedstate.md)
 - [useDebouncedValue](../functions/usedebouncedvalue.md)
 - [useDebouncer](../functions/usedebouncer.md)
+- [useDefaultPacerOptions](../functions/usedefaultpaceroptions.md)
+- [usePacerContext](../functions/usepacercontext.md)
 - [useQueuedState](../functions/usequeuedstate.md)
 - [useQueuedValue](../functions/usequeuedvalue.md)
 - [useQueuer](../functions/usequeuer.md)

@@ -78,7 +78,7 @@ Timestamp when the next execution can occur in milliseconds
 ### status
 
 ```ts
-status: "idle" | "pending" | "disabled";
+status: "disabled" | "idle" | "pending";
 ```
 
 Defined in: [throttler.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L29)

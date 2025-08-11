@@ -62,7 +62,7 @@ Number of function executions that have been rejected due to rate limiting
 ### status
 
 ```ts
-status: "idle" | "disabled" | "exceeded";
+status: "disabled" | "idle" | "exceeded";
 ```
 
 Defined in: [rate-limiter.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L25)

@@ -66,7 +66,7 @@ The arguments from the most recent call to maybeExecute
 ### status
 
 ```ts
-status: "idle" | "pending" | "disabled";
+status: "disabled" | "idle" | "pending";
 ```
 
 Defined in: [debouncer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L25)
