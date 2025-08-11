@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
 
-interface PacerDevtoolsReactInit { }
+interface PacerDevtoolsReactInit {}
 
 export const PacerDevtoolsPanel = (_props?: PacerDevtoolsReactInit) => {
   const devToolRef = useRef<HTMLDivElement>(null)
