@@ -2,7 +2,7 @@
 import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 
-export interface PacerDevtoolsSolidInit {
+interface PacerDevtoolsSolidInit {
 
 }
 

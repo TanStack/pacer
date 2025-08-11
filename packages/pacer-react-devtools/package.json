@@ -67,9 +67,9 @@
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
+    "@eslint-react/eslint-plugin": "^1.52.3",
     "@vitejs/plugin-react": "^4.7.0",
-    "@eslint-react/eslint-plugin": "^1.48.5",
-    "eslint-plugin-react-compiler": "19.1.0-rc.1",
+    "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^5.2.0"
   }
 }

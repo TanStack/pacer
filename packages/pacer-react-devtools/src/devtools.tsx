@@ -3,7 +3,7 @@ import {
   PacerDevtoolsCore,
 } from '@tanstack/pacer-devtools'
 
-export interface PacerDevtoolsReactInit {
+interface PacerDevtoolsReactInit {
 
 }
 
