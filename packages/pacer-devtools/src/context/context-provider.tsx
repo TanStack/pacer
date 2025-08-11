@@ -6,48 +6,46 @@ import type { PacerContextType } from './context'
 
 export function PacerContextProvider(props: { children: any }) {
   const [store, setStore] = createStore<PacerContextType>(initialStore)
-  const updateStore = (newState: Partial<PacerContextType>) => {
-    setStore((prev) => ({ ...prev, ...newState }))
-  }
+
   createEffect(() => {
     const cleanup = pacerEventClient.onAllPluginEvents((e) => {
       switch (e.type) {
         case 'pacer:async-batcher-state':
-          updateStore({ asyncBatcherState: e.payload })
+          setStore({ asyncBatcherState: e.payload })
           break
         case 'pacer:async-debouncer-state':
-          updateStore({ asyncDebouncerState: e.payload })
+          setStore({ asyncDebouncerState: e.payload })
           break
         case 'pacer:async-queuer-state':
-          updateStore({ asyncQueuerState: e.payload })
+          setStore({ asyncQueuerState: e.payload })
           break
         case 'pacer:async-rate-limiter-state':
-          updateStore({ asyncRateLimiterState: e.payload })
+          setStore({ asyncRateLimiterState: e.payload })
           break
         case 'pacer:async-throttler-state':
-          updateStore({ asyncThrottlerState: e.payload })
+          setStore({ asyncThrottlerState: e.payload })
           break
         case 'pacer:batcher-state':
-          updateStore({ batcherState: e.payload })
+          setStore({ batcherState: e.payload })
           break
         case 'pacer:debouncer-state':
-          updateStore({ debouncerState: e.payload })
+          setStore({ debouncerState: e.payload })
           break
         case 'pacer:queuer-state':
-          updateStore({ queuerState: e.payload })
+          setStore({ queuerState: e.payload })
           break
         case 'pacer:rate-limiter-state':
-          updateStore({ rateLimiterState: e.payload })
+          setStore({ rateLimiterState: e.payload })
           break
         case 'pacer:throttler-state':
-          updateStore({ throttlerState: e.payload })
+          setStore({ throttlerState: e.payload })
           break
       }
     })
     onCleanup(cleanup)
   })
   return (
-    <PacerContext.Provider value={[store, updateStore]}>
+    <PacerContext.Provider value={[store, setStore]}>
       {props.children}
     </PacerContext.Provider>
   )
