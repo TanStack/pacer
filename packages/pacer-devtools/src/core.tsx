@@ -1,17 +1,14 @@
 import { lazy } from 'solid-js'
 import { Portal, render } from 'solid-js/web'
 
-export interface PacerDevtoolsInit {
-
-}
+export interface PacerDevtoolsInit {}
 
 export class PacerDevtoolsCore {
   #isMounted = false
   #dispose?: () => void
   #Component: any
 
-
-  constructor(_init?: PacerDevtoolsInit | undefined) { }
+  constructor(_init?: PacerDevtoolsInit | undefined) {}
 
   mount<T extends HTMLElement>(el: T) {
     if (this.#isMounted) {

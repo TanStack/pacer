@@ -323,7 +323,7 @@ export class AsyncQueuer<TValue> {
         size,
         status,
       } as const
-      pacerEventClient.emit("async-queuer-state", finalState)
+      pacerEventClient.emit('async-queuer-state', finalState)
       return finalState
     })
   }

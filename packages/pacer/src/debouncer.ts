@@ -161,7 +161,7 @@ export class Debouncer<TFn extends AnyFunction> {
             ? 'pending'
             : 'idle',
       } as const
-      pacerEventClient.emit("debouncer-state", finalState)
+      pacerEventClient.emit('debouncer-state', finalState)
       return finalState
     })
   }

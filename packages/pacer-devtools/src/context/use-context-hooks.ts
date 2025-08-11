@@ -1,5 +1,5 @@
-import { useContext } from "solid-js"
-import { PacerContext } from "./context"
+import { useContext } from 'solid-js'
+import { PacerContext } from './context'
 
 const usePacerContext = () => {
   const context = useContext(PacerContext)

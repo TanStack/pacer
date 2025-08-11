@@ -1,6 +1,5 @@
-
-import { usePacerState } from "./context/use-context-hooks"
-import { PacerContextProvider } from "./context/context-provider"
+import { usePacerState } from './context/use-context-hooks'
+import { PacerContextProvider } from './context/context-provider'
 
 function Shell() {
   const state = usePacerState()

@@ -246,12 +246,12 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
           : isExceeded
             ? 'exceeded'
             : 'idle'
-            const finalState = {
+      const finalState = {
         ...combinedState,
         isExceeded,
         status,
       } as const
-      pacerEventClient.emit("async-rate-limiter-state", finalState)
+      pacerEventClient.emit('async-rate-limiter-state', finalState)
       return finalState
     })
   }

@@ -305,8 +305,8 @@ export class Queuer<TValue> {
         isIdle,
         size,
         status,
-      } as const 
-      pacerEventClient.emit("queuer-state", finalState)
+      } as const
+      pacerEventClient.emit('queuer-state', finalState)
       return finalState
     })
   }

@@ -2,6 +2,6 @@
   "extends": "../../tsconfig.json",
   "include": ["src", "eslint.config.js", "vite.config.ts", "tests"],
   "compilerOptions": {
-    "jsx": "react", 
+    "jsx": "react"
   }
 }

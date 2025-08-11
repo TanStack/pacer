@@ -1,6 +1,16 @@
-
-import { createContext } from "solid-js";
-import type { AsyncBatcherState, AsyncDebouncerState, AsyncQueuerState, AsyncRateLimiterState, AsyncThrottlerState, BatcherState, DebouncerState, QueuerState, RateLimiterState, ThrottlerState } from "@tanstack/pacer";
+import { createContext } from 'solid-js'
+import type {
+  AsyncBatcherState,
+  AsyncDebouncerState,
+  AsyncQueuerState,
+  AsyncRateLimiterState,
+  AsyncThrottlerState,
+  BatcherState,
+  DebouncerState,
+  QueuerState,
+  RateLimiterState,
+  ThrottlerState,
+} from '@tanstack/pacer'
 
 export interface PacerContextType {
   asyncBatcherState: AsyncBatcherState<any> | undefined
@@ -25,7 +35,9 @@ export const initialStore = {
   debouncerState: undefined,
   queuerState: undefined,
   rateLimiterState: undefined,
-  throttlerState: undefined
+  throttlerState: undefined,
 }
 
-export const PacerContext = createContext<[PacerContextType, (newState: Partial<PacerContextType>) => void]>([initialStore, () => { }])
+export const PacerContext = createContext<
+  [PacerContextType, (newState: Partial<PacerContextType>) => void]
+>([initialStore, () => {}])

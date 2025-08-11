@@ -1,1 +1,1 @@
-export { PacerDevtoolsPanel } from "./devtools"
+export { PacerDevtoolsPanel } from './devtools'
