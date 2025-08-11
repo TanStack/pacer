@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { pacerEventClient } from './event-client'
 
 export interface QueuerState<TValue> {
   /**
@@ -297,15 +298,16 @@ export class Queuer<TValue> {
       const isIdle = isRunning && isEmpty
 
       const status = isIdle ? 'idle' : isRunning ? 'running' : 'stopped'
-
-      return {
+      const finalState = {
         ...combinedState,
         isEmpty,
         isFull,
         isIdle,
         size,
         status,
-      }
+      } as const 
+      pacerEventClient.emit("queuer-state", finalState)
+      return finalState
     })
   }
 

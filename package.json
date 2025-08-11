@@ -79,6 +79,9 @@
   "overrides": {
     "@tanstack/pacer": "workspace:*",
     "@tanstack/react-pacer": "workspace:*",
-    "@tanstack/solid-pacer": "workspace:*"
+    "@tanstack/solid-pacer": "workspace:*",
+    "@tanstack/pacer-devtools": "workspace:*",
+    "@tanstack/pacer-solid-devtools": "workspace:*",
+    "@tanstack/pacer-react-devtools": "workspace:*"
   }
 }

@@ -240,6 +240,12 @@ importers:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
     devDependencies:
+      '@tanstack/pacer-react-devtools':
+        specifier: 0.14.0
+        version: link:../../../packages/pacer-react-devtools
+      '@tanstack/react-devtools':
+        specifier: 0.2.2
+        version: 0.2.2(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(csstype@3.1.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(solid-js@1.9.7)
       '@types/react':
         specifier: ^19.1.9
         version: 19.1.9
@@ -1541,9 +1547,69 @@ importers:
 
   packages/pacer:
     dependencies:
+      '@tanstack/devtools-event-client':
+        specifier: ^0.2.1
+        version: 0.2.1
       '@tanstack/store':
         specifier: ^0.7.2
         version: 0.7.2
+
+  packages/pacer-devtools:
+    dependencies:
+      '@tanstack/pacer':
+        specifier: '>=0.14.0'
+        version: link:../pacer
+      solid-js:
+        specifier: ^1.9.7
+        version: 1.9.7
+    devDependencies:
+      vite-plugin-solid:
+        specifier: ^2.11.6
+        version: 2.11.8(@testing-library/jest-dom@6.6.4)(solid-js@1.9.7)(vite@7.0.6(@types/node@24.1.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.8.0))
+
+  packages/pacer-react-devtools:
+    dependencies:
+      '@tanstack/pacer-devtools':
+        specifier: workspace:*
+        version: link:../pacer-devtools
+      '@types/react':
+        specifier: '>=16.8'
+        version: 19.1.9
+      '@types/react-dom':
+        specifier: '>=16.8'
+        version: 19.1.7(@types/react@19.1.9)
+      react:
+        specifier: '>=16.8'
+        version: 19.1.1
+      react-dom:
+        specifier: '>=16.8'
+        version: 19.1.1(react@19.1.1)
+    devDependencies:
+      '@eslint-react/eslint-plugin':
+        specifier: ^1.48.5
+        version: 1.52.3(eslint@9.32.0(jiti@2.4.2))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
+      '@vitejs/plugin-react':
+        specifier: ^4.7.0
+        version: 4.7.0(vite@7.0.6(@types/node@24.1.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.8.0))
+      eslint-plugin-react-compiler:
+        specifier: 19.1.0-rc.1
+        version: 19.1.0-rc.1(eslint@9.32.0(jiti@2.4.2))
+      eslint-plugin-react-hooks:
+        specifier: ^5.2.0
+        version: 5.2.0(eslint@9.32.0(jiti@2.4.2))
+
+  packages/pacer-solid-devtools:
+    dependencies:
+      '@tanstack/pacer-devtools':
+        specifier: workspace:*
+        version: link:../pacer-devtools
+      solid-js:
+        specifier: '>=1.9.7'
+        version: 1.9.7
+    devDependencies:
+      vite-plugin-solid:
+        specifier: ^2.11.8
+        version: 2.11.8(@testing-library/jest-dom@6.6.4)(solid-js@1.9.7)(vite@7.0.6(@types/node@24.1.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.8.0))
 
   packages/react-pacer:
     dependencies:
@@ -1743,11 +1809,6 @@ packages:
   '@babel/helpers@7.27.6':
     resolution: {integrity: sha512-muE8Tt8M22638HU31A3CgfSUciwz1fhATfoVai05aPXGor//CdWDCbnlY1yvBPo07njuVOCNGCSp/GTt12lIug==}
     engines: {node: '>=6.9.0'}
-
-  '@babel/parser@7.26.9':
-    resolution: {integrity: sha512-81NWa1njQblgZbQHxWHpxxCzNsa3ZwvFqpUg7P+NNUU6f3UU2jBEg4OlF/J6rl8+PQGh1q6/zWScd001YwcA5A==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
 
   '@babel/parser@7.27.0':
     resolution: {integrity: sha512-iaepho73/2Pz7w2eMS0Q5f83+0RKI7i4xmiYeBmDzfRVbQtTOG7Ts0S4HzJVsTMGI9keU8rNfuZr8DKfSt7Yyg==}
@@ -2544,6 +2605,26 @@ packages:
     peerDependencies:
       size-limit: 11.2.0
 
+  '@solid-primitives/event-listener@2.4.3':
+    resolution: {integrity: sha512-h4VqkYFv6Gf+L7SQj+Y6puigL/5DIi7x5q07VZET7AWcS+9/G3WfIE9WheniHWJs51OEkRB43w6lDys5YeFceg==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/keyboard@1.3.3':
+    resolution: {integrity: sha512-9dQHTTgLBqyAI7aavtO+HnpTVJgWQA1ghBSrmLtMu1SMxLPDuLfuNr+Tk5udb4AL4Ojg7h9JrKOGEEDqsJXWJA==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/rootless@1.5.2':
+    resolution: {integrity: sha512-9HULb0QAzL2r47CCad0M+NKFtQ+LrGGNHZfteX/ThdGvKIg2o2GYhBooZubTCd/RTu2l2+Nw4s+dEfiDGvdrrQ==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/utils@6.3.2':
+    resolution: {integrity: sha512-hZ/M/qr25QOCcwDPOHtGjxTD8w2mNyVAYvcfgwzBHq2RwNqHNdDNsMZYap20+ruRwW4A3Cdkczyoz0TSxLCAPQ==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
   '@stylistic/eslint-plugin@5.2.0':
     resolution: {integrity: sha512-RCEdbREv9EBiToUBQTlRhVYKG093I6ZnnQ990j08eJ6uRZh71DXkOnoxtTLfDQ6utVCVQzrhZFHZP0zfrfOIjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -2563,6 +2644,26 @@ packages:
     resolution: {integrity: sha512-q6P0aYj7X65biWDKkKFQ4feQoxF8Bcxd3U3CU5zjBt9sgUrc/w8kEfHoGy0cHtgsTSMLfPrzaAtvp6hTbofZmw==}
     engines: {node: '>=18'}
 
+  '@tanstack/devtools-event-bus@0.2.1':
+    resolution: {integrity: sha512-JMq3AmrQR2LH9P8Rcj1MTq8Iq/mPk/PyuqSw1L0hO2Wl8G1oz5ue31fS8u8lIgOCVR/mGdJah18p+Pj5OosRJA==}
+    engines: {node: '>=18'}
+
+  '@tanstack/devtools-event-client@0.2.1':
+    resolution: {integrity: sha512-78AAfg9KfSDE+pQLRJo20bxX3A40ea14kFqNmzuMb7zFJNfR5L87kAEOju6QXu7cbk9r2r7EEV2a8PgHOsD7Kg==}
+    engines: {node: '>=18'}
+
+  '@tanstack/devtools-ui@0.2.2':
+    resolution: {integrity: sha512-G2gRyoGpjtr25w9BqQzPbefiJ9WALWYLOVxVr+NoqOLDA680nUO5KJjp7oLZMfnKssWxACgulaQ3DUmGGJuysQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      solid-js: '>=1.9.7'
+
+  '@tanstack/devtools@0.3.0':
+    resolution: {integrity: sha512-uxj3MM2/ZlQDlhnBoUSlJC8oneJ+sPh6hK0kgiKZAEgrlUvZfUNgKGhrmMHZaAGl/WEglhZoxXwvvo9HAFT8yw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      solid-js: '>=1.9.7'
+
   '@tanstack/eslint-config@0.3.0':
     resolution: {integrity: sha512-7OsrYscWEPojIRqh9byyyv2W+jm/3WaDckVnuQgf7a86YPhtN93fHa3hsKquJE/IbMX/FK0EDHi+DPAXwvZ5ZA==}
     engines: {node: '>=18'}
@@ -2580,6 +2681,15 @@ packages:
 
   '@tanstack/query-devtools@5.84.0':
     resolution: {integrity: sha512-fbF3n+z1rqhvd9EoGp5knHkv3p5B2Zml1yNRjh7sNXklngYI5RVIWUrUjZ1RIcEoscarUb0+bOvIs5x9dwzOXQ==}
+
+  '@tanstack/react-devtools@0.2.2':
+    resolution: {integrity: sha512-Ig8ZYqUPJ+nwRvF/RpkQHPbgEkrL3b2PjeYBgXgT5OemyRUlmG12UutvMBV+bJuBsSOKHrNf29IvzC0Vw9Bt1A==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      '@types/react-dom': '>=16.8'
+      react: '>=16.8'
+      react-dom: '>=16.8'
 
   '@tanstack/react-persister@0.1.1':
     resolution: {integrity: sha512-bERMba9+dDOWKJLV5dR6+pKq+xRYyuCsK1Te5Ygs2WiXdvAVLMnNjJIOkIhZ9uihbQvyBIbYPAlb9sCfSgvYWg==}
@@ -3392,6 +3502,12 @@ packages:
     peerDependencies:
       eslint: ^9.0.0
 
+  eslint-plugin-react-compiler@19.1.0-rc.1:
+    resolution: {integrity: sha512-3umw5eqZXapBl7aQGmvcjheKhUbsElb9jTETxRZg371e1LG4EPs/zCHt2JzP+wNcdaZWzjU/R730zPUJblY2zw==}
+    engines: {node: ^14.17.0 || ^16.0.0 || >= 18.0.0}
+    peerDependencies:
+      eslint: '>=7'
+
   eslint-plugin-react-compiler@19.1.0-rc.2:
     resolution: {integrity: sha512-oKalwDGcD+RX9mf3NEO4zOoUMeLvjSvcbbEOpquzmzqEEM2MQdp7/FY/Hx9NzmUwFzH1W9SKTz5fihfMldpEYw==}
     engines: {node: ^14.17.0 || ^16.0.0 || >= 18.0.0}
@@ -3709,6 +3825,11 @@ packages:
 
   globrex@0.1.2:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+
+  goober@2.1.16:
+    resolution: {integrity: sha512-erjk19y1U33+XAMe1VTvIONHYoSqE4iS7BYUZfHaqeohLmnC0FdxEh7rQU+6MZ4OajItzjZFSRtVANrQwNq6/g==}
+    peerDependencies:
+      csstype: ^3.0.10
 
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
@@ -5033,6 +5154,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.18.3:
+    resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xml-name-validator@5.0.0:
     resolution: {integrity: sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg==}
     engines: {node: '>=18'}
@@ -5169,7 +5302,7 @@ snapshots:
 
   '@babel/generator@7.26.9':
     dependencies:
-      '@babel/parser': 7.26.9
+      '@babel/parser': 7.28.0
       '@babel/types': 7.26.9
       '@jridgewell/gen-mapping': 0.3.8
       '@jridgewell/trace-mapping': 0.3.25
@@ -5177,7 +5310,7 @@ snapshots:
 
   '@babel/generator@7.27.0':
     dependencies:
-      '@babel/parser': 7.27.0
+      '@babel/parser': 7.28.0
       '@babel/types': 7.27.0
       '@jridgewell/gen-mapping': 0.3.8
       '@jridgewell/trace-mapping': 0.3.25
@@ -5218,6 +5351,19 @@ snapshots:
       '@babel/helper-member-expression-to-functions': 7.25.9
       '@babel/helper-optimise-call-expression': 7.25.9
       '@babel/helper-replace-supers': 7.26.5(@babel/core@7.26.10)
+      '@babel/helper-skip-transparent-expression-wrappers': 7.25.9
+      '@babel/traverse': 7.27.0
+      semver: 6.3.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@babel/helper-create-class-features-plugin@7.27.0(@babel/core@7.28.0)':
+    dependencies:
+      '@babel/core': 7.28.0
+      '@babel/helper-annotate-as-pure': 7.25.9
+      '@babel/helper-member-expression-to-functions': 7.25.9
+      '@babel/helper-optimise-call-expression': 7.25.9
+      '@babel/helper-replace-supers': 7.26.5(@babel/core@7.28.0)
       '@babel/helper-skip-transparent-expression-wrappers': 7.25.9
       '@babel/traverse': 7.27.0
       semver: 6.3.1
@@ -5286,6 +5432,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@babel/helper-replace-supers@7.26.5(@babel/core@7.28.0)':
+    dependencies:
+      '@babel/core': 7.28.0
+      '@babel/helper-member-expression-to-functions': 7.25.9
+      '@babel/helper-optimise-call-expression': 7.25.9
+      '@babel/traverse': 7.27.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@babel/helper-skip-transparent-expression-wrappers@7.25.9':
     dependencies:
       '@babel/traverse': 7.27.0
@@ -5315,10 +5470,6 @@ snapshots:
       '@babel/template': 7.27.2
       '@babel/types': 7.28.0
 
-  '@babel/parser@7.26.9':
-    dependencies:
-      '@babel/types': 7.26.9
-
   '@babel/parser@7.27.0':
     dependencies:
       '@babel/types': 7.27.0
@@ -5331,6 +5482,14 @@ snapshots:
     dependencies:
       '@babel/core': 7.26.10
       '@babel/helper-create-class-features-plugin': 7.27.0(@babel/core@7.26.10)
+      '@babel/helper-plugin-utils': 7.26.5
+    transitivePeerDependencies:
+      - supports-color
+
+  '@babel/plugin-proposal-private-methods@7.18.6(@babel/core@7.28.0)':
+    dependencies:
+      '@babel/core': 7.28.0
+      '@babel/helper-create-class-features-plugin': 7.27.0(@babel/core@7.28.0)
       '@babel/helper-plugin-utils': 7.26.5
     transitivePeerDependencies:
       - supports-color
@@ -5357,13 +5516,13 @@ snapshots:
   '@babel/template@7.26.9':
     dependencies:
       '@babel/code-frame': 7.26.2
-      '@babel/parser': 7.26.9
+      '@babel/parser': 7.28.0
       '@babel/types': 7.26.9
 
   '@babel/template@7.27.0':
     dependencies:
       '@babel/code-frame': 7.26.2
-      '@babel/parser': 7.27.0
+      '@babel/parser': 7.28.0
       '@babel/types': 7.27.0
 
   '@babel/template@7.27.2':
@@ -5376,7 +5535,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.26.2
       '@babel/generator': 7.26.9
-      '@babel/parser': 7.26.9
+      '@babel/parser': 7.28.0
       '@babel/template': 7.26.9
       '@babel/types': 7.26.9
       debug: 4.4.1
@@ -5388,7 +5547,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.26.2
       '@babel/generator': 7.27.0
-      '@babel/parser': 7.27.0
+      '@babel/parser': 7.28.0
       '@babel/template': 7.27.0
       '@babel/types': 7.27.0
       debug: 4.4.1
@@ -6183,6 +6342,27 @@ snapshots:
       '@size-limit/file': 11.2.0(size-limit@11.2.0)
       size-limit: 11.2.0
 
+  '@solid-primitives/event-listener@2.4.3(solid-js@1.9.7)':
+    dependencies:
+      '@solid-primitives/utils': 6.3.2(solid-js@1.9.7)
+      solid-js: 1.9.7
+
+  '@solid-primitives/keyboard@1.3.3(solid-js@1.9.7)':
+    dependencies:
+      '@solid-primitives/event-listener': 2.4.3(solid-js@1.9.7)
+      '@solid-primitives/rootless': 1.5.2(solid-js@1.9.7)
+      '@solid-primitives/utils': 6.3.2(solid-js@1.9.7)
+      solid-js: 1.9.7
+
+  '@solid-primitives/rootless@1.5.2(solid-js@1.9.7)':
+    dependencies:
+      '@solid-primitives/utils': 6.3.2(solid-js@1.9.7)
+      solid-js: 1.9.7
+
+  '@solid-primitives/utils@6.3.2(solid-js@1.9.7)':
+    dependencies:
+      solid-js: 1.9.7
+
   '@stylistic/eslint-plugin@5.2.0(eslint@9.32.0(jiti@2.4.2))':
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@9.32.0(jiti@2.4.2))
@@ -6220,6 +6400,35 @@ snapshots:
       - typescript
       - vite
 
+  '@tanstack/devtools-event-bus@0.2.1':
+    dependencies:
+      ws: 8.18.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@tanstack/devtools-event-client@0.2.1': {}
+
+  '@tanstack/devtools-ui@0.2.2(csstype@3.1.3)(solid-js@1.9.7)':
+    dependencies:
+      goober: 2.1.16(csstype@3.1.3)
+      solid-js: 1.9.7
+    transitivePeerDependencies:
+      - csstype
+
+  '@tanstack/devtools@0.3.0(csstype@3.1.3)(solid-js@1.9.7)':
+    dependencies:
+      '@solid-primitives/keyboard': 1.3.3(solid-js@1.9.7)
+      '@tanstack/devtools-event-bus': 0.2.1
+      '@tanstack/devtools-ui': 0.2.2(csstype@3.1.3)(solid-js@1.9.7)
+      clsx: 2.1.1
+      goober: 2.1.16(csstype@3.1.3)
+      solid-js: 1.9.7
+    transitivePeerDependencies:
+      - bufferutil
+      - csstype
+      - utf-8-validate
+
   '@tanstack/eslint-config@0.3.0(@typescript-eslint/utils@8.37.0(eslint@9.32.0(jiti@2.4.2))(typescript@5.9.2))(eslint-import-resolver-node@0.3.9)(eslint@9.32.0(jiti@2.4.2))(typescript@5.9.2)':
     dependencies:
       '@eslint/js': 9.31.0
@@ -6253,6 +6462,19 @@ snapshots:
   '@tanstack/query-core@5.83.1': {}
 
   '@tanstack/query-devtools@5.84.0': {}
+
+  '@tanstack/react-devtools@0.2.2(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(csstype@3.1.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(solid-js@1.9.7)':
+    dependencies:
+      '@tanstack/devtools': 0.3.0(csstype@3.1.3)(solid-js@1.9.7)
+      '@types/react': 19.1.9
+      '@types/react-dom': 19.1.7(@types/react@19.1.9)
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+    transitivePeerDependencies:
+      - bufferutil
+      - csstype
+      - solid-js
+      - utf-8-validate
 
   '@tanstack/react-persister@0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
@@ -6341,7 +6563,7 @@ snapshots:
 
   '@types/babel__template@7.4.4':
     dependencies:
-      '@babel/parser': 7.27.0
+      '@babel/parser': 7.28.0
       '@babel/types': 7.27.0
 
   '@types/babel__traverse@7.20.6':
@@ -7149,6 +7371,18 @@ snapshots:
       tinyglobby: 0.2.14
       yaml-eslint-parser: 1.3.0
 
+  eslint-plugin-react-compiler@19.1.0-rc.1(eslint@9.32.0(jiti@2.4.2)):
+    dependencies:
+      '@babel/core': 7.28.0
+      '@babel/parser': 7.28.0
+      '@babel/plugin-proposal-private-methods': 7.18.6(@babel/core@7.28.0)
+      eslint: 9.32.0(jiti@2.4.2)
+      hermes-parser: 0.25.1
+      zod: 3.25.72
+      zod-validation-error: 3.4.0(zod@3.25.72)
+    transitivePeerDependencies:
+      - supports-color
+
   eslint-plugin-react-compiler@19.1.0-rc.2(eslint@9.32.0(jiti@2.4.2)):
     dependencies:
       '@babel/core': 7.26.10
@@ -7543,6 +7777,10 @@ snapshots:
       slash: 3.0.0
 
   globrex@0.1.2: {}
+
+  goober@2.1.16(csstype@3.1.3):
+    dependencies:
+      csstype: 3.1.3
 
   gopd@1.2.0: {}
 
@@ -8851,6 +9089,8 @@ snapshots:
   wrappy@1.0.2: {}
 
   ws@8.18.1: {}
+
+  ws@8.18.3: {}
 
   xml-name-validator@5.0.0: {}
 

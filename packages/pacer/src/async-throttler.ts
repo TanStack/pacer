@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { pacerEventClient } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
@@ -227,7 +228,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         ...newState,
       }
       const { isPending, isExecuting, settleCount } = combinedState
-      return {
+      const finalState = {
         ...combinedState,
         status: !this.#getEnabled()
           ? 'disabled'
@@ -238,7 +239,9 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
               : settleCount > 0
                 ? 'settled'
                 : 'idle',
-      }
+      } as const
+      pacerEventClient.emit("async-throttler-state", finalState)
+      return finalState
     })
   }
 

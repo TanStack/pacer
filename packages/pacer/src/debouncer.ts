@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface DebouncerState<TFn extends AnyFunction> {
@@ -152,14 +153,16 @@ export class Debouncer<TFn extends AnyFunction> {
         ...newState,
       }
       const { isPending } = combinedState
-      return {
+      const finalState = {
         ...combinedState,
         status: !this.#getEnabled()
           ? 'disabled'
           : isPending
             ? 'pending'
             : 'idle',
-      }
+      } as const
+      pacerEventClient.emit("debouncer-state", finalState)
+      return finalState
     })
   }
 

@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { pacerEventClient } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
@@ -216,7 +217,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         ...newState,
       }
       const { isPending, isExecuting, settleCount } = combinedState
-      return {
+      const finalState = {
         ...combinedState,
         status: !this.#getEnabled()
           ? 'disabled'
@@ -227,7 +228,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
               : settleCount > 0
                 ? 'settled'
                 : 'idle',
-      }
+      } as const
+      pacerEventClient.emit("async-debouncer-state", finalState)
+      return finalState
     })
   }
 

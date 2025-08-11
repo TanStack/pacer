@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
@@ -314,15 +315,16 @@ export class AsyncQueuer<TValue> {
       const isIdle = isRunning && isEmpty && activeItems.length === 0
 
       const status = isIdle ? 'idle' : isRunning ? 'running' : 'stopped'
-
-      return {
+      const finalState = {
         ...combinedState,
         isEmpty,
         isFull,
         isIdle,
         size,
         status,
-      }
+      } as const
+      pacerEventClient.emit("async-queuer-state", finalState)
+      return finalState
     })
   }
 

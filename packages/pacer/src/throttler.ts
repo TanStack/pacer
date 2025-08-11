@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface ThrottlerState<TFn extends AnyFunction> {
@@ -160,14 +161,16 @@ export class Throttler<TFn extends AnyFunction> {
         ...newState,
       }
       const { isPending } = combinedState
-      return {
+      const finalState = {
         ...combinedState,
         status: !this.#getEnabled()
           ? 'disabled'
           : isPending
             ? 'pending'
             : 'idle',
-      }
+      } as const
+      pacerEventClient.emit("throttler-state", finalState)
+      return finalState
     })
   }
 

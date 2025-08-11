@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { pacerEventClient } from './event-client'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
@@ -245,11 +246,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
           : isExceeded
             ? 'exceeded'
             : 'idle'
-      return {
+            const finalState = {
         ...combinedState,
         isExceeded,
         status,
-      }
+      } as const
+      pacerEventClient.emit("async-rate-limiter-state", finalState)
+      return finalState
     })
   }
 

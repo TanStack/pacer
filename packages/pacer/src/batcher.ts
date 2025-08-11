@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
+import { pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 
 export interface BatcherState<TValue> {
@@ -169,12 +170,15 @@ export class Batcher<TValue> {
       const { isPending, items } = combinedState
       const size = items.length
       const isEmpty = size === 0
-      return {
+      const finalState =  {
         ...combinedState,
         isEmpty,
         size,
         status: isPending ? 'pending' : 'idle',
-      }
+      } as const
+
+      pacerEventClient.emit("batcher-state", finalState)
+      return finalState
     })
   }
 
