@@ -7,7 +7,7 @@ title: RateLimiter
 
 # Class: RateLimiter\<TFn\>
 
-Defined in: [rate-limiter.ts:133](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L133)
+Defined in: [rate-limiter.ts:138](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L138)
 
 A class that creates a rate-limited function.
 
@@ -65,7 +65,7 @@ rateLimiter.maybeExecute('123');
 new RateLimiter<TFn>(fn, initialOptions): RateLimiter<TFn>
 ```
 
-Defined in: [rate-limiter.ts:140](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L140)
+Defined in: [rate-limiter.ts:145](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L145)
 
 #### Parameters
 
@@ -89,6 +89,16 @@ Defined in: [rate-limiter.ts:140](https://github.com/TanStack/pacer/blob/main/pa
 fn: TFn;
 ```
 
+Defined in: [rate-limiter.ts:146](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L146)
+
+***
+
+### key
+
+```ts
+key: string;
+```
+
 Defined in: [rate-limiter.ts:141](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L141)
 
 ***
@@ -99,7 +109,7 @@ Defined in: [rate-limiter.ts:141](https://github.com/TanStack/pacer/blob/main/pa
 options: RateLimiterOptions<TFn>;
 ```
 
-Defined in: [rate-limiter.ts:136](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L136)
+Defined in: [rate-limiter.ts:142](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L142)
 
 ***
 
@@ -109,7 +119,7 @@ Defined in: [rate-limiter.ts:136](https://github.com/TanStack/pacer/blob/main/pa
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [rate-limiter.ts:134](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L134)
+Defined in: [rate-limiter.ts:139](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L139)
 
 ## Methods
 
@@ -119,7 +129,7 @@ Defined in: [rate-limiter.ts:134](https://github.com/TanStack/pacer/blob/main/pa
 getMsUntilNextWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:325](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L325)
+Defined in: [rate-limiter.ts:330](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L330)
 
 Returns the number of milliseconds until the next execution will be possible
 
@@ -135,7 +145,7 @@ Returns the number of milliseconds until the next execution will be possible
 getRemainingInWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:317](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L317)
+Defined in: [rate-limiter.ts:322](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L322)
 
 Returns the number of remaining executions allowed in the current window
 
@@ -151,7 +161,7 @@ Returns the number of remaining executions allowed in the current window
 maybeExecute(...args): boolean
 ```
 
-Defined in: [rate-limiter.ts:223](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L223)
+Defined in: [rate-limiter.ts:228](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L228)
 
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
@@ -186,7 +196,7 @@ rateLimiter.maybeExecute('arg1', 'arg2'); // false
 reset(): void
 ```
 
-Defined in: [rate-limiter.ts:336](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L336)
+Defined in: [rate-limiter.ts:341](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L341)
 
 Resets the rate limiter state
 
@@ -202,7 +212,7 @@ Resets the rate limiter state
 setOptions(newOptions): void
 ```
 
-Defined in: [rate-limiter.ts:158](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L158)
+Defined in: [rate-limiter.ts:163](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L163)
 
 Updates the rate limiter options
 

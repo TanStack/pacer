@@ -56,13 +56,26 @@ Initial state for the batcher
 
 ***
 
+### key?
+
+```ts
+optional key: string;
+```
+
+Defined in: [batcher.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L66)
+
+Optional key to identify this batcher instance.
+If provided, the batcher will be identified by this key in the devtools and PacerProvider if applicable.
+
+***
+
 ### maxSize?
 
 ```ts
 optional maxSize: number;
 ```
 
-Defined in: [batcher.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L66)
+Defined in: [batcher.ts:71](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L71)
 
 Maximum number of items in a batch
 
@@ -80,7 +93,7 @@ Infinity
 optional onExecute: (batch, batcher) => void;
 ```
 
-Defined in: [batcher.ts:70](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L70)
+Defined in: [batcher.ts:75](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L75)
 
 Callback fired after a batch is processed
 
@@ -106,7 +119,7 @@ Callback fired after a batch is processed
 optional onItemsChange: (batcher) => void;
 ```
 
-Defined in: [batcher.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L74)
+Defined in: [batcher.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L79)
 
 Callback fired after items are added to the batcher
 
@@ -128,7 +141,7 @@ Callback fired after items are added to the batcher
 optional started: boolean;
 ```
 
-Defined in: [batcher.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L79)
+Defined in: [batcher.ts:84](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L84)
 
 Whether the batcher should start processing immediately
 
@@ -146,7 +159,7 @@ true
 optional wait: number | (batcher) => number;
 ```
 
-Defined in: [batcher.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L86)
+Defined in: [batcher.ts:91](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L91)
 
 Maximum time in milliseconds to wait before processing a batch.
 If the wait duration has elapsed, the batch will be processed.

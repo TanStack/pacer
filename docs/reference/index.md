@@ -63,6 +63,7 @@ title: "@tanstack/pacer"
 - [asyncRateLimit](../functions/asyncratelimit.md)
 - [asyncThrottle](../functions/asyncthrottle.md)
 - [batch](../functions/batch.md)
+- [createKey](../functions/createkey.md)
 - [debounce](../functions/debounce.md)
 - [isFunction](../functions/isfunction.md)
 - [parseFunctionOrValue](../functions/parsefunctionorvalue.md)
