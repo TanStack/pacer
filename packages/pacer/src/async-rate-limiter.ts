@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange } from './event-client'
 import type { AnyAsyncFunction } from './types'
 
@@ -73,6 +73,11 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    */
   initialState?: Partial<AsyncRateLimiterState<TFn>>
   /**
+   * Optional key to identify this async rate limiter instance.
+   * If provided, the async rate limiter will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum number of executions allowed within the time window.
    * Can be a number or a function that returns a number.
    */
@@ -128,7 +133,7 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
 
 const defaultOptions: Omit<
   Required<AsyncRateLimiterOptions<any>>,
-  'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess'
+  'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess' | 'key'
 > = {
   enabled: true,
   limit: 1,
@@ -207,14 +212,15 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>> = new Store<
     AsyncRateLimiterState<TFn>
   >(getDefaultAsyncRateLimiterState<TFn>())
+  key: string
   options: AsyncRateLimiterOptions<TFn>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
-  #uuid: string
+
   constructor(
     public fn: TFn,
     initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
-    this.#uuid = crypto.randomUUID()
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -254,7 +260,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       } as const
       emitChange('async-rate-limiter-state', {
         ...finalState,
-        uuid: this.#uuid,
+        key: this.key,
       })
       return finalState
     })

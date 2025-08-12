@@ -4,11 +4,11 @@ import { pacerEventClient } from '@tanstack/pacer'
 import { PacerContext, initialStore } from './context'
 import type { PacerContextType } from './context'
 
-const updateOrAddToArray = <T extends { uuid: string }>(
+const updateOrAddToArray = <T extends { key: string }>(
   oldArray: Array<T>,
   newItem: T,
 ) => {
-  const index = oldArray.findIndex((item) => item.uuid === newItem.uuid)
+  const index = oldArray.findIndex((item) => item.key === newItem.key)
   if (index !== -1) {
     // Update existing item
     return oldArray.map((item, i) => (i === index ? newItem : item))

@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange } from './event-client'
 import type { OptionalKeys } from './types'
 
@@ -93,6 +93,11 @@ export interface AsyncBatcherOptions<TValue> {
    */
   initialState?: Partial<AsyncBatcherState<TValue>>
   /**
+   * Optional key to identify this async batcher instance.
+   * If provided, the async batcher will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum number of items in a batch
    * @default Infinity
    */
@@ -145,7 +150,12 @@ export interface AsyncBatcherOptions<TValue> {
 
 type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<AsyncBatcherOptions<TValue>>,
-  'initialState' | 'onError' | 'onItemsChange' | 'onSettled' | 'onSuccess'
+  | 'initialState'
+  | 'onError'
+  | 'onItemsChange'
+  | 'onSettled'
+  | 'onSuccess'
+  | 'key'
 >
 
 const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
@@ -221,14 +231,15 @@ export class AsyncBatcher<TValue> {
   readonly store: Store<Readonly<AsyncBatcherState<TValue>>> = new Store(
     getDefaultAsyncBatcherState<TValue>(),
   )
+  key: string
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
   #timeoutId: NodeJS.Timeout | null = null
-  #uuid: string
+
   constructor(
     public fn: (items: Array<TValue>) => Promise<any>,
     initialOptions: AsyncBatcherOptions<TValue>,
   ) {
-    this.#uuid = crypto.randomUUID()
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -267,7 +278,7 @@ export class AsyncBatcher<TValue> {
       } as const
       emitChange('async-batcher-state', {
         ...finalState,
-        uuid: this.#uuid,
+        key: this.key,
       })
       return finalState
     })

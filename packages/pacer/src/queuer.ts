@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange } from './event-client'
 
 export interface QueuerState<TValue> {
@@ -82,6 +82,11 @@ export interface QueuerOptions<TValue> {
    */
   addItemsTo?: QueuePosition
   /**
+   * Optional key to identify this queuer instance.
+   * If provided, the queuer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum time in milliseconds that an item can stay in the queue
    * If not provided, items will never expire
    */
@@ -149,6 +154,7 @@ const defaultOptions: Omit<
   | 'onItemsChange'
   | 'onReject'
   | 'onExpire'
+  | 'key'
 > = {
   addItemsTo: 'back',
   getItemsFrom: 'front',
@@ -245,14 +251,15 @@ export class Queuer<TValue> {
   readonly store: Store<Readonly<QueuerState<TValue>>> = new Store(
     getDefaultQueuerState<TValue>(),
   )
+  key: string
   options: QueuerOptions<TValue>
   #timeoutId: NodeJS.Timeout | null = null
-  #uuid: string
+
   constructor(
     public fn: (item: TValue) => void,
     initialOptions: QueuerOptions<TValue> = {},
   ) {
-    this.#uuid = crypto.randomUUID()
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -309,7 +316,7 @@ export class Queuer<TValue> {
       } as const
       emitChange('queuer-state', {
         ...finalState,
-        uuid: this.#uuid,
+        key: this.key,
       })
       return finalState
     })

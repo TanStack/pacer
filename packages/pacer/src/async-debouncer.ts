@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
@@ -73,6 +73,11 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    */
   initialState?: Partial<AsyncDebouncerState<TFn>>
   /**
+   * Optional key to identify this async debouncer instance.
+   * If provided, the async debouncer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to false.
    */
@@ -120,7 +125,7 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
 
 type AsyncDebouncerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncDebouncerOptions<any>,
-  'initialState' | 'onError' | 'onSettled' | 'onSuccess'
+  'initialState' | 'onError' | 'onSettled' | 'onSuccess' | 'key'
 >
 
 const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
@@ -179,18 +184,19 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncDebouncerState<TFn>>> = new Store<
     AsyncDebouncerState<TFn>
   >(getDefaultAsyncDebouncerState<TFn>())
+  key: string
   options: AsyncDebouncerOptions<TFn>
   #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null
-  #uuid: string
+
   constructor(
     public fn: TFn,
     initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
-    this.#uuid = crypto.randomUUID()
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -232,7 +238,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       } as const
       emitChange('async-debouncer-state', {
         ...finalState,
-        uuid: this.#uuid,
+        key: this.key,
       })
       return finalState
     })

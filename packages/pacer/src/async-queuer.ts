@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange } from './event-client'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
@@ -99,6 +99,11 @@ export interface AsyncQueuerOptions<TValue> {
    */
   addItemsTo?: QueuePosition
   /**
+   * Optional key to identify this async queuer instance.
+   * If provided, the async queuer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum number of concurrent tasks to process.
    * Can be a number or a function that returns a number.
    * @default 1
@@ -191,6 +196,7 @@ type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
   | 'onItemsChange'
   | 'onExpire'
   | 'onError'
+  | 'key'
 >
 
 const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
@@ -261,14 +267,15 @@ export class AsyncQueuer<TValue> {
   readonly store: Store<Readonly<AsyncQueuerState<TValue>>> = new Store<
     AsyncQueuerState<TValue>
   >(getDefaultAsyncQueuerState<TValue>())
+  key: string
   options: AsyncQueuerOptions<TValue>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
-  #uuid: string
+
   constructor(
     public fn: (item: TValue) => Promise<any>,
     initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
-    this.#uuid = crypto.randomUUID()
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -326,7 +333,7 @@ export class AsyncQueuer<TValue> {
       } as const
       emitChange('async-queuer-state', {
         ...finalState,
-        uuid: this.#uuid,
+        key: this.key,
       })
       return finalState
     })

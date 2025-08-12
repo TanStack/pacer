@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
@@ -77,6 +77,11 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    * Initial state for the async throttler
    */
   initialState?: Partial<AsyncThrottlerState<TFn>>
+  /**
+   * Optional key to identify this async throttler instance.
+   * If provided, the async throttler will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Whether to execute the function immediately when called
    * Defaults to true
@@ -190,18 +195,19 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncThrottlerState<TFn>>> = new Store<
     AsyncThrottlerState<TFn>
   >(getDefaultAsyncThrottlerState<TFn>())
+  key: string
   options: AsyncThrottlerOptions<TFn>
   #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null
-  #uuid: string
+
   constructor(
     public fn: TFn,
     initialOptions: AsyncThrottlerOptions<TFn>,
   ) {
-    this.#uuid = crypto.randomUUID()
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -243,7 +249,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       } as const
       emitChange('async-throttler-state', {
         ...finalState,
-        uuid: this.#uuid,
+        key: this.key,
       })
       return finalState
     })

@@ -14,7 +14,7 @@ Defined in: [event-client.ts:15](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:async-batcher-state
 
 ```ts
-pacer:async-batcher-state: WithUuid<AsyncBatcherState<any>>;
+pacer:async-batcher-state: WithKey<AsyncBatcherState<any>>;
 ```
 
 Defined in: [event-client.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L16)
@@ -24,7 +24,7 @@ Defined in: [event-client.ts:16](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:async-debouncer-state
 
 ```ts
-pacer:async-debouncer-state: WithUuid<AsyncDebouncerState<any>>;
+pacer:async-debouncer-state: WithKey<AsyncDebouncerState<any>>;
 ```
 
 Defined in: [event-client.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L17)
@@ -34,7 +34,7 @@ Defined in: [event-client.ts:17](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:async-queuer-state
 
 ```ts
-pacer:async-queuer-state: WithUuid<AsyncQueuerState<any>>;
+pacer:async-queuer-state: WithKey<AsyncQueuerState<any>>;
 ```
 
 Defined in: [event-client.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L18)
@@ -44,7 +44,7 @@ Defined in: [event-client.ts:18](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:async-rate-limiter-state
 
 ```ts
-pacer:async-rate-limiter-state: WithUuid<AsyncRateLimiterState<any>>;
+pacer:async-rate-limiter-state: WithKey<AsyncRateLimiterState<any>>;
 ```
 
 Defined in: [event-client.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L19)
@@ -54,7 +54,7 @@ Defined in: [event-client.ts:19](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:async-throttler-state
 
 ```ts
-pacer:async-throttler-state: WithUuid<AsyncThrottlerState<any>>;
+pacer:async-throttler-state: WithKey<AsyncThrottlerState<any>>;
 ```
 
 Defined in: [event-client.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L20)
@@ -64,7 +64,7 @@ Defined in: [event-client.ts:20](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:batcher-state
 
 ```ts
-pacer:batcher-state: WithUuid<BatcherState<any>>;
+pacer:batcher-state: WithKey<BatcherState<any>>;
 ```
 
 Defined in: [event-client.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L21)
@@ -74,7 +74,7 @@ Defined in: [event-client.ts:21](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:debouncer-state
 
 ```ts
-pacer:debouncer-state: WithUuid<DebouncerState<any>>;
+pacer:debouncer-state: WithKey<DebouncerState<any>>;
 ```
 
 Defined in: [event-client.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L22)
@@ -84,7 +84,7 @@ Defined in: [event-client.ts:22](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:queuer-state
 
 ```ts
-pacer:queuer-state: WithUuid<QueuerState<any>>;
+pacer:queuer-state: WithKey<QueuerState<any>>;
 ```
 
 Defined in: [event-client.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L23)
@@ -94,7 +94,7 @@ Defined in: [event-client.ts:23](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:rate-limiter-state
 
 ```ts
-pacer:rate-limiter-state: WithUuid<RateLimiterState>;
+pacer:rate-limiter-state: WithKey<RateLimiterState>;
 ```
 
 Defined in: [event-client.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L24)
@@ -104,7 +104,7 @@ Defined in: [event-client.ts:24](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:throttler-state
 
 ```ts
-pacer:throttler-state: WithUuid<ThrottlerState<any>>;
+pacer:throttler-state: WithKey<ThrottlerState<any>>;
 ```
 
 Defined in: [event-client.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L25)

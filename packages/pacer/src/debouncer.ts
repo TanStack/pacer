@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange } from './event-client'
 import type { AnyFunction } from './types'
 
@@ -49,6 +49,11 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    */
   enabled?: boolean | ((debouncer: Debouncer<TFn>) => boolean)
   /**
+   * A key to identify the debouncer.
+   * If provided, the debouncer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Initial state for the debouncer
    */
   initialState?: Partial<DebouncerState<TFn>>
@@ -77,7 +82,7 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<DebouncerOptions<any>>,
-  'initialState' | 'onExecute'
+  'initialState' | 'onExecute' | 'key'
 > = {
   enabled: true,
   leading: false,
@@ -120,14 +125,15 @@ export class Debouncer<TFn extends AnyFunction> {
   readonly store: Store<Readonly<DebouncerState<TFn>>> = new Store(
     getDefaultDebouncerState<TFn>(),
   )
+  key: string
   options: DebouncerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
-  #uuid: string
+
   constructor(
     public fn: TFn,
     initialOptions: DebouncerOptions<TFn>,
   ) {
-    this.#uuid = crypto.randomUUID()
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -164,7 +170,7 @@ export class Debouncer<TFn extends AnyFunction> {
       } as const
       emitChange('debouncer-state', {
         ...finalState,
-        uuid: this.#uuid,
+        key: this.key,
       })
       return finalState
     })

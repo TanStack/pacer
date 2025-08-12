@@ -10,19 +10,19 @@ import type { QueuerState } from './queuer'
 import type { RateLimiterState } from './rate-limiter'
 import type { ThrottlerState } from './throttler'
 
-type WithUuid<T> = T & { uuid: string }
+type WithKey<T> = T & { key: string }
 
 export interface PacerEventMap {
-  'pacer:async-batcher-state': WithUuid<AsyncBatcherState<any>>
-  'pacer:async-debouncer-state': WithUuid<AsyncDebouncerState<any>>
-  'pacer:async-queuer-state': WithUuid<AsyncQueuerState<any>>
-  'pacer:async-rate-limiter-state': WithUuid<AsyncRateLimiterState<any>>
-  'pacer:async-throttler-state': WithUuid<AsyncThrottlerState<any>>
-  'pacer:batcher-state': WithUuid<BatcherState<any>>
-  'pacer:debouncer-state': WithUuid<DebouncerState<any>>
-  'pacer:queuer-state': WithUuid<QueuerState<any>>
-  'pacer:rate-limiter-state': WithUuid<RateLimiterState>
-  'pacer:throttler-state': WithUuid<ThrottlerState<any>>
+  'pacer:async-batcher-state': WithKey<AsyncBatcherState<any>>
+  'pacer:async-debouncer-state': WithKey<AsyncDebouncerState<any>>
+  'pacer:async-queuer-state': WithKey<AsyncQueuerState<any>>
+  'pacer:async-rate-limiter-state': WithKey<AsyncRateLimiterState<any>>
+  'pacer:async-throttler-state': WithKey<AsyncThrottlerState<any>>
+  'pacer:batcher-state': WithKey<BatcherState<any>>
+  'pacer:debouncer-state': WithKey<DebouncerState<any>>
+  'pacer:queuer-state': WithKey<QueuerState<any>>
+  'pacer:rate-limiter-state': WithKey<RateLimiterState>
+  'pacer:throttler-state': WithKey<ThrottlerState<any>>
 }
 
 class PacerEventClient extends EventClient<PacerEventMap> {
@@ -43,7 +43,7 @@ export const emitChange = <
     : never,
 >(
   event: TSuffix,
-  payload: PacerEventMap[`pacer:${TSuffix}`] & { uuid: string },
+  payload: PacerEventMap[`pacer:${TSuffix}`] & { key: string },
 ) => {
   pacerEventClient.emit(event, payload)
 }

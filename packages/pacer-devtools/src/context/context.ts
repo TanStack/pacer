@@ -12,19 +12,19 @@ import type {
   ThrottlerState,
 } from '@tanstack/pacer'
 
-type WithUuid<T> = T & { uuid: string }
+type WithKey<T> = T & { key: string }
 
 export interface PacerContextType {
-  asyncBatcherState: Array<WithUuid<AsyncBatcherState<any>>>
-  asyncDebouncerState: Array<WithUuid<AsyncDebouncerState<any>>>
-  asyncQueuerState: Array<WithUuid<AsyncQueuerState<any>>>
-  asyncRateLimiterState: Array<WithUuid<AsyncRateLimiterState<any>>>
-  asyncThrottlerState: Array<WithUuid<AsyncThrottlerState<any>>>
-  batcherState: Array<WithUuid<BatcherState<any>>>
-  debouncerState: Array<WithUuid<DebouncerState<any>>>
-  queuerState: Array<WithUuid<QueuerState<any>>>
-  rateLimiterState: Array<WithUuid<RateLimiterState>>
-  throttlerState: Array<WithUuid<ThrottlerState<any>>>
+  asyncBatcherState: Array<WithKey<AsyncBatcherState<any>>>
+  asyncDebouncerState: Array<WithKey<AsyncDebouncerState<any>>>
+  asyncQueuerState: Array<WithKey<AsyncQueuerState<any>>>
+  asyncRateLimiterState: Array<WithKey<AsyncRateLimiterState<any>>>
+  asyncThrottlerState: Array<WithKey<AsyncThrottlerState<any>>>
+  batcherState: Array<WithKey<BatcherState<any>>>
+  debouncerState: Array<WithKey<DebouncerState<any>>>
+  queuerState: Array<WithKey<QueuerState<any>>>
+  rateLimiterState: Array<WithKey<RateLimiterState>>
+  throttlerState: Array<WithKey<ThrottlerState<any>>>
 }
 
 export const initialStore = {

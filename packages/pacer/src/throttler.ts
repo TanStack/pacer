@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange } from './event-client'
 import type { AnyFunction } from './types'
 
@@ -58,6 +58,11 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
    */
   initialState?: Partial<ThrottlerState<TFn>>
   /**
+   * A key to identify the throttler.
+   * If provided, the throttler will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to true.
    */
@@ -81,7 +86,7 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<ThrottlerOptions<any>>,
-  'initialState' | 'onExecute'
+  'initialState' | 'onExecute' | 'key'
 > = {
   enabled: true,
   leading: true,
@@ -128,14 +133,15 @@ export class Throttler<TFn extends AnyFunction> {
   readonly store: Store<Readonly<ThrottlerState<TFn>>> = new Store(
     getDefaultThrottlerState(),
   )
+  key: string | undefined
   options: ThrottlerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
-  #uuid = crypto.randomUUID()
 
   constructor(
     public fn: TFn,
     initialOptions: ThrottlerOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -172,7 +178,7 @@ export class Throttler<TFn extends AnyFunction> {
       } as const
       emitChange('throttler-state', {
         ...finalState,
-        uuid: this.#uuid,
+        key: this.key ?? '',
       })
       return finalState
     })
