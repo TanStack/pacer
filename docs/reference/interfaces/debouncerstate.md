@@ -7,7 +7,7 @@ title: DebouncerState
 
 # Interface: DebouncerState\<TFn\>
 
-Defined in: [packages/pacer/src/debouncer.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L6)
+Defined in: [debouncer.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L6)
 
 ## Type Parameters
 
@@ -21,7 +21,7 @@ Defined in: [packages/pacer/src/debouncer.ts:6](https://github.com/TanStack/pace
 canLeadingExecute: boolean;
 ```
 
-Defined in: [packages/pacer/src/debouncer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L10)
+Defined in: [debouncer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L10)
 
 Whether the debouncer can execute on the leading edge of the timeout
 
@@ -33,7 +33,7 @@ Whether the debouncer can execute on the leading edge of the timeout
 executionCount: number;
 ```
 
-Defined in: [packages/pacer/src/debouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L14)
+Defined in: [debouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L14)
 
 Number of function executions that have been completed
 
@@ -45,7 +45,7 @@ Number of function executions that have been completed
 isPending: boolean;
 ```
 
-Defined in: [packages/pacer/src/debouncer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L18)
+Defined in: [debouncer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L18)
 
 Whether the debouncer is waiting for the timeout to trigger execution
 
@@ -57,7 +57,7 @@ Whether the debouncer is waiting for the timeout to trigger execution
 lastArgs: undefined | Parameters<TFn>;
 ```
 
-Defined in: [packages/pacer/src/debouncer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L22)
+Defined in: [debouncer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L22)
 
 The arguments from the most recent call to maybeExecute
 
@@ -69,6 +69,6 @@ The arguments from the most recent call to maybeExecute
 status: "disabled" | "idle" | "pending";
 ```
 
-Defined in: [packages/pacer/src/debouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L26)
+Defined in: [debouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L26)
 
 Current execution status - 'idle' when not active, 'pending' when waiting for timeout

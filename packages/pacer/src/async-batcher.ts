@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { emitChange, } from './event-client'
+import { emitChange } from './event-client'
 import type { OptionalKeys } from './types'
 
 export interface AsyncBatcherState<TValue> {

@@ -16,7 +16,6 @@ title: "@tanstack/pacer"
 - [AsyncThrottler](../classes/asyncthrottler.md)
 - [Batcher](../classes/batcher.md)
 - [Debouncer](../classes/debouncer.md)
-- [PacerEventClient](../classes/pacereventclient.md)
 - [Queuer](../classes/queuer.md)
 - [RateLimiter](../classes/ratelimiter.md)
 - [Throttler](../classes/throttler.md)

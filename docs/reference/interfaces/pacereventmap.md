@@ -7,104 +7,104 @@ title: PacerEventMap
 
 # Interface: PacerEventMap
 
-Defined in: [packages/pacer/src/event-client.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L13)
+Defined in: [event-client.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L15)
 
 ## Properties
 
 ### pacer:async-batcher-state
 
 ```ts
-pacer:async-batcher-state: AsyncBatcherState<any>;
+pacer:async-batcher-state: WithUuid<AsyncBatcherState<any>>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L14)
+Defined in: [event-client.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L16)
 
 ***
 
 ### pacer:async-debouncer-state
 
 ```ts
-pacer:async-debouncer-state: AsyncDebouncerState<any>;
+pacer:async-debouncer-state: WithUuid<AsyncDebouncerState<any>>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L15)
+Defined in: [event-client.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L17)
 
 ***
 
 ### pacer:async-queuer-state
 
 ```ts
-pacer:async-queuer-state: AsyncQueuerState<any>;
+pacer:async-queuer-state: WithUuid<AsyncQueuerState<any>>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L16)
+Defined in: [event-client.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L18)
 
 ***
 
 ### pacer:async-rate-limiter-state
 
 ```ts
-pacer:async-rate-limiter-state: AsyncRateLimiterState<any>;
+pacer:async-rate-limiter-state: WithUuid<AsyncRateLimiterState<any>>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L17)
+Defined in: [event-client.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L19)
 
 ***
 
 ### pacer:async-throttler-state
 
 ```ts
-pacer:async-throttler-state: AsyncThrottlerState<any>;
+pacer:async-throttler-state: WithUuid<AsyncThrottlerState<any>>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L18)
+Defined in: [event-client.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L20)
 
 ***
 
 ### pacer:batcher-state
 
 ```ts
-pacer:batcher-state: BatcherState<any>;
+pacer:batcher-state: WithUuid<BatcherState<any>>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L19)
+Defined in: [event-client.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L21)
 
 ***
 
 ### pacer:debouncer-state
 
 ```ts
-pacer:debouncer-state: DebouncerState<any>;
+pacer:debouncer-state: WithUuid<DebouncerState<any>>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L20)
+Defined in: [event-client.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L22)
 
 ***
 
 ### pacer:queuer-state
 
 ```ts
-pacer:queuer-state: QueuerState<any>;
+pacer:queuer-state: WithUuid<QueuerState<any>>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L21)
+Defined in: [event-client.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L23)
 
 ***
 
 ### pacer:rate-limiter-state
 
 ```ts
-pacer:rate-limiter-state: RateLimiterState;
+pacer:rate-limiter-state: WithUuid<RateLimiterState>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L22)
+Defined in: [event-client.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L24)
 
 ***
 
 ### pacer:throttler-state
 
 ```ts
-pacer:throttler-state: ThrottlerState<any>;
+pacer:throttler-state: WithUuid<ThrottlerState<any>>;
 ```
 
-Defined in: [packages/pacer/src/event-client.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L23)
+Defined in: [event-client.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L25)

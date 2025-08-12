@@ -7,7 +7,7 @@ title: AsyncBatcherState
 
 # Interface: AsyncBatcherState\<TValue\>
 
-Defined in: [packages/pacer/src/async-batcher.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L6)
+Defined in: [async-batcher.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L6)
 
 ## Type Parameters
 
@@ -21,7 +21,7 @@ Defined in: [packages/pacer/src/async-batcher.ts:6](https://github.com/TanStack/
 errorCount: number;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L10)
+Defined in: [async-batcher.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L10)
 
 Number of batch executions that have resulted in errors
 
@@ -33,7 +33,7 @@ Number of batch executions that have resulted in errors
 failedItems: TValue[];
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L14)
+Defined in: [async-batcher.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L14)
 
 Array of items that failed during batch processing
 
@@ -45,7 +45,7 @@ Array of items that failed during batch processing
 isEmpty: boolean;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L18)
+Defined in: [async-batcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L18)
 
 Whether the batcher has no items to process (items array is empty)
 
@@ -57,7 +57,7 @@ Whether the batcher has no items to process (items array is empty)
 isExecuting: boolean;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L22)
+Defined in: [async-batcher.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L22)
 
 Whether a batch is currently being processed asynchronously
 
@@ -69,7 +69,7 @@ Whether a batch is currently being processed asynchronously
 isPending: boolean;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L26)
+Defined in: [async-batcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L26)
 
 Whether the batcher is waiting for the timeout to trigger batch processing
 
@@ -81,7 +81,7 @@ Whether the batcher is waiting for the timeout to trigger batch processing
 items: TValue[];
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L30)
+Defined in: [async-batcher.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L30)
 
 Array of items currently queued for batch processing
 
@@ -93,7 +93,7 @@ Array of items currently queued for batch processing
 lastResult: any;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L34)
+Defined in: [async-batcher.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L34)
 
 The result from the most recent batch execution
 
@@ -105,7 +105,7 @@ The result from the most recent batch execution
 settleCount: number;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:38](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L38)
+Defined in: [async-batcher.ts:38](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L38)
 
 Number of batch executions that have completed (either successfully or with errors)
 
@@ -117,7 +117,7 @@ Number of batch executions that have completed (either successfully or with erro
 size: number;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L42)
+Defined in: [async-batcher.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L42)
 
 Number of items currently in the batch queue
 
@@ -129,7 +129,7 @@ Number of items currently in the batch queue
 status: "idle" | "pending" | "executing" | "populated";
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:46](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L46)
+Defined in: [async-batcher.ts:46](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L46)
 
 Current processing status - 'idle' when not processing, 'pending' when waiting for timeout, 'executing' when processing, 'populated' when items are present, but no wait is configured
 
@@ -141,7 +141,7 @@ Current processing status - 'idle' when not processing, 'pending' when waiting f
 successCount: number;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:50](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L50)
+Defined in: [async-batcher.ts:50](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L50)
 
 Number of batch executions that have completed successfully
 
@@ -153,7 +153,7 @@ Number of batch executions that have completed successfully
 totalItemsFailed: number;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:54](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L54)
+Defined in: [async-batcher.ts:54](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L54)
 
 Total number of items that have failed processing across all batches
 
@@ -165,6 +165,6 @@ Total number of items that have failed processing across all batches
 totalItemsProcessed: number;
 ```
 
-Defined in: [packages/pacer/src/async-batcher.ts:58](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L58)
+Defined in: [async-batcher.ts:58](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L58)
 
 Total number of items that have been processed across all batches

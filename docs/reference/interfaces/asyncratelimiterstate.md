@@ -7,7 +7,7 @@ title: AsyncRateLimiterState
 
 # Interface: AsyncRateLimiterState\<TFn\>
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L6)
+Defined in: [async-rate-limiter.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L6)
 
 ## Type Parameters
 
@@ -21,7 +21,7 @@ Defined in: [packages/pacer/src/async-rate-limiter.ts:6](https://github.com/TanS
 errorCount: number;
 ```
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L10)
+Defined in: [async-rate-limiter.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L10)
 
 Number of function executions that have resulted in errors
 
@@ -33,7 +33,7 @@ Number of function executions that have resulted in errors
 executionTimes: number[];
 ```
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L14)
+Defined in: [async-rate-limiter.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L14)
 
 Array of timestamps when executions occurred for rate limiting calculations
 
@@ -45,7 +45,7 @@ Array of timestamps when executions occurred for rate limiting calculations
 isExceeded: boolean;
 ```
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L18)
+Defined in: [async-rate-limiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L18)
 
 Whether the rate limiter has exceeded the limit
 
@@ -57,7 +57,7 @@ Whether the rate limiter has exceeded the limit
 isExecuting: boolean;
 ```
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L22)
+Defined in: [async-rate-limiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L22)
 
 Whether the rate-limited function is currently executing asynchronously
 
@@ -69,7 +69,7 @@ Whether the rate-limited function is currently executing asynchronously
 lastResult: undefined | ReturnType<TFn>;
 ```
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L26)
+Defined in: [async-rate-limiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L26)
 
 The result from the most recent successful function execution
 
@@ -81,7 +81,7 @@ The result from the most recent successful function execution
 rejectionCount: number;
 ```
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L30)
+Defined in: [async-rate-limiter.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L30)
 
 Number of function executions that have been rejected due to rate limiting
 
@@ -93,7 +93,7 @@ Number of function executions that have been rejected due to rate limiting
 settleCount: number;
 ```
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L34)
+Defined in: [async-rate-limiter.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L34)
 
 Number of function executions that have completed (either successfully or with errors)
 
@@ -105,7 +105,7 @@ Number of function executions that have completed (either successfully or with e
 status: "disabled" | "idle" | "executing" | "exceeded";
 ```
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:38](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L38)
+Defined in: [async-rate-limiter.ts:38](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L38)
 
 Current execution status - 'disabled' when not active, 'executing' when executing, 'idle' when not executing, 'exceeded' when rate limit is exceeded
 
@@ -117,6 +117,6 @@ Current execution status - 'disabled' when not active, 'executing' when executin
 successCount: number;
 ```
 
-Defined in: [packages/pacer/src/async-rate-limiter.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L42)
+Defined in: [async-rate-limiter.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L42)
 
 Number of function executions that have completed successfully

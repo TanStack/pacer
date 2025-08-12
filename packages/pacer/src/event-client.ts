@@ -34,9 +34,16 @@ class PacerEventClient extends EventClient<PacerEventMap> {
   }
 }
 
-export const emitChange = <TSuffix extends Extract<keyof PacerEventMap, `${string}:${string}`> extends `${string}:${infer S}` ? S : never>(
+export const emitChange = <
+  TSuffix extends Extract<
+    keyof PacerEventMap,
+    `${string}:${string}`
+  > extends `${string}:${infer S}`
+    ? S
+    : never,
+>(
   event: TSuffix,
-  payload: PacerEventMap[`pacer:${TSuffix}`] & { uuid: string }
+  payload: PacerEventMap[`pacer:${TSuffix}`] & { uuid: string },
 ) => {
   pacerEventClient.emit(event, payload)
 }

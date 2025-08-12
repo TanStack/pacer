@@ -2,11 +2,10 @@ import * as goober from 'goober'
 import { createSignal } from 'solid-js'
 import { tokens } from './tokens'
 
-
 const stylesFactory = () => {
-  const { colors, font, size, alpha, border } = tokens;
-  const { fontFamily, size: fontSize } = font;
-  const css = goober.css;
+  const { colors, font, size, alpha, border } = tokens
+  const { fontFamily, size: fontSize } = font
+  const css = goober.css
 
   return {
     devtoolsPanel: css`
@@ -85,12 +84,17 @@ const stylesFactory = () => {
       color: ${colors.gray[100]};
       font-family: ${fontFamily.mono};
       overflow-x: auto;
-      transition: box-shadow 0.3s, background 0.3s;
+      transition:
+        box-shadow 0.3s,
+        background 0.3s;
     `,
-    flash: (isFlashing: boolean) => isFlashing ? css`
-      box-shadow: 0 0 0 2px ${colors.blue[400]};
-      background: ${colors.blue[600]};
-    ` : css``,
+    flash: (isFlashing: boolean) =>
+      isFlashing
+        ? css`
+            box-shadow: 0 0 0 2px ${colors.blue[400]};
+            background: ${colors.blue[600]};
+          `
+        : css``,
     valueString: css`
       color: ${colors.green[400]};
     `,
@@ -113,8 +117,8 @@ const stylesFactory = () => {
     valueContainer: css`
       display: block;
       margin-left: 1rem;
-    `
-  };
+    `,
+  }
 }
 
 export function useStyles() {

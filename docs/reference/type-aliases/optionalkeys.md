@@ -11,7 +11,7 @@ title: OptionalKeys
 type OptionalKeys<T, TKey> = Omit<T, TKey> & Partial<Pick<T, TKey>>;
 ```
 
-Defined in: [packages/pacer/src/types.ts:11](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/types.ts#L11)
+Defined in: [types.ts:11](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/types.ts#L11)
 
 ## Type Parameters
 

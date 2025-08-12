@@ -7,7 +7,7 @@ title: RateLimiter
 
 # Class: RateLimiter\<TFn\>
 
-Defined in: [packages/pacer/src/rate-limiter.ts:133](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L133)
+Defined in: [rate-limiter.ts:133](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L133)
 
 A class that creates a rate-limited function.
 
@@ -65,7 +65,7 @@ rateLimiter.maybeExecute('123');
 new RateLimiter<TFn>(fn, initialOptions): RateLimiter<TFn>
 ```
 
-Defined in: [packages/pacer/src/rate-limiter.ts:139](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L139)
+Defined in: [rate-limiter.ts:140](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L140)
 
 #### Parameters
 
@@ -89,7 +89,7 @@ Defined in: [packages/pacer/src/rate-limiter.ts:139](https://github.com/TanStack
 fn: TFn;
 ```
 
-Defined in: [packages/pacer/src/rate-limiter.ts:140](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L140)
+Defined in: [rate-limiter.ts:141](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L141)
 
 ***
 
@@ -99,7 +99,7 @@ Defined in: [packages/pacer/src/rate-limiter.ts:140](https://github.com/TanStack
 options: RateLimiterOptions<TFn>;
 ```
 
-Defined in: [packages/pacer/src/rate-limiter.ts:136](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L136)
+Defined in: [rate-limiter.ts:136](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L136)
 
 ***
 
@@ -109,7 +109,7 @@ Defined in: [packages/pacer/src/rate-limiter.ts:136](https://github.com/TanStack
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [packages/pacer/src/rate-limiter.ts:134](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L134)
+Defined in: [rate-limiter.ts:134](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L134)
 
 ## Methods
 
@@ -119,7 +119,7 @@ Defined in: [packages/pacer/src/rate-limiter.ts:134](https://github.com/TanStack
 getMsUntilNextWindow(): number
 ```
 
-Defined in: [packages/pacer/src/rate-limiter.ts:320](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L320)
+Defined in: [rate-limiter.ts:325](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L325)
 
 Returns the number of milliseconds until the next execution will be possible
 
@@ -135,7 +135,7 @@ Returns the number of milliseconds until the next execution will be possible
 getRemainingInWindow(): number
 ```
 
-Defined in: [packages/pacer/src/rate-limiter.ts:312](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L312)
+Defined in: [rate-limiter.ts:317](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L317)
 
 Returns the number of remaining executions allowed in the current window
 
@@ -151,7 +151,7 @@ Returns the number of remaining executions allowed in the current window
 maybeExecute(...args): boolean
 ```
 
-Defined in: [packages/pacer/src/rate-limiter.ts:218](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L218)
+Defined in: [rate-limiter.ts:223](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L223)
 
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
@@ -186,7 +186,7 @@ rateLimiter.maybeExecute('arg1', 'arg2'); // false
 reset(): void
 ```
 
-Defined in: [packages/pacer/src/rate-limiter.ts:331](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L331)
+Defined in: [rate-limiter.ts:336](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L336)
 
 Resets the rate limiter state
 
@@ -202,7 +202,7 @@ Resets the rate limiter state
 setOptions(newOptions): void
 ```
 
-Defined in: [packages/pacer/src/rate-limiter.ts:156](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L156)
+Defined in: [rate-limiter.ts:158](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L158)
 
 Updates the rate limiter options
 

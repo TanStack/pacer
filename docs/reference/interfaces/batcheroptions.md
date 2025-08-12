@@ -7,7 +7,7 @@ title: BatcherOptions
 
 # Interface: BatcherOptions\<TValue\>
 
-Defined in: [packages/pacer/src/batcher.ts:52](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L52)
+Defined in: [batcher.ts:52](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L52)
 
 Options for configuring a Batcher instance
 
@@ -23,7 +23,7 @@ Options for configuring a Batcher instance
 optional getShouldExecute: (items, batcher) => boolean;
 ```
 
-Defined in: [packages/pacer/src/batcher.ts:57](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L57)
+Defined in: [batcher.ts:57](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L57)
 
 Custom function to determine if a batch should be processed
 Return true to process the batch immediately
@@ -50,7 +50,7 @@ Return true to process the batch immediately
 optional initialState: Partial<BatcherState<TValue>>;
 ```
 
-Defined in: [packages/pacer/src/batcher.ts:61](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L61)
+Defined in: [batcher.ts:61](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L61)
 
 Initial state for the batcher
 
@@ -62,7 +62,7 @@ Initial state for the batcher
 optional maxSize: number;
 ```
 
-Defined in: [packages/pacer/src/batcher.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L66)
+Defined in: [batcher.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L66)
 
 Maximum number of items in a batch
 
@@ -80,7 +80,7 @@ Infinity
 optional onExecute: (batch, batcher) => void;
 ```
 
-Defined in: [packages/pacer/src/batcher.ts:70](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L70)
+Defined in: [batcher.ts:70](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L70)
 
 Callback fired after a batch is processed
 
@@ -106,7 +106,7 @@ Callback fired after a batch is processed
 optional onItemsChange: (batcher) => void;
 ```
 
-Defined in: [packages/pacer/src/batcher.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L74)
+Defined in: [batcher.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L74)
 
 Callback fired after items are added to the batcher
 
@@ -128,7 +128,7 @@ Callback fired after items are added to the batcher
 optional started: boolean;
 ```
 
-Defined in: [packages/pacer/src/batcher.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L79)
+Defined in: [batcher.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L79)
 
 Whether the batcher should start processing immediately
 
@@ -146,7 +146,7 @@ true
 optional wait: number | (batcher) => number;
 ```
 
-Defined in: [packages/pacer/src/batcher.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L86)
+Defined in: [batcher.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L86)
 
 Maximum time in milliseconds to wait before processing a batch.
 If the wait duration has elapsed, the batch will be processed.

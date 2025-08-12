@@ -1,10 +1,9 @@
-
-import { For, } from 'solid-js';
-import clsx from 'clsx';
-import { usePacerState } from './context/use-context-hooks';
-import { PacerContextProvider } from './context/context-provider';
-import { useStyles } from './styles/use-styles';
-import { JsonTree } from './tree';
+import { For } from 'solid-js'
+import clsx from 'clsx'
+import { usePacerState } from './context/use-context-hooks'
+import { PacerContextProvider } from './context/context-provider'
+import { useStyles } from './styles/use-styles'
+import { JsonTree } from './tree'
 
 type StateKey =
   | 'asyncBatcherState'
@@ -16,7 +15,7 @@ type StateKey =
   | 'debouncerState'
   | 'queuerState'
   | 'rateLimiterState'
-  | 'throttlerState';
+  | 'throttlerState'
 
 const CONTEXT_SECTIONS: Array<{ key: StateKey; label: string }> = [
   { key: 'asyncBatcherState', label: 'Async Batcher State' },
@@ -29,12 +28,11 @@ const CONTEXT_SECTIONS: Array<{ key: StateKey; label: string }> = [
   { key: 'queuerState', label: 'Queuer State' },
   { key: 'rateLimiterState', label: 'Rate Limiter State' },
   { key: 'throttlerState', label: 'Throttler State' },
-];
-
+]
 
 function Section({ key, label }: { key: StateKey; label: string }) {
-  const state = usePacerState();
-  const styles = useStyles();
+  const state = usePacerState()
+  const styles = useStyles()
 
   return (
     <>
@@ -42,44 +40,41 @@ function Section({ key, label }: { key: StateKey; label: string }) {
         <section class={styles().section}>
           <div class={styles().sectionHeader}>{label}</div>
           <div class={styles().instanceList}>
-            <For each={state[key]}>{(inst) =>
-              <AnimatedInstanceCard value={inst} />
-            }</For>
+            <For each={state[key]}>
+              {(inst) => <AnimatedInstanceCard value={inst} />}
+            </For>
           </div>
         </section>
       )}
     </>
-  );
+  )
 }
 
 function Shell() {
-  const styles = useStyles();
+  const styles = useStyles()
 
   return (
     <div class={styles().devtoolsPanel}>
       <div class={styles().stickyHeader}>TanStack Pacer</div>
 
       <div class={styles().sectionContainer}>
-        <For each={CONTEXT_SECTIONS}>{({ key, label }) =>
-          <Section key={key} label={label} />
-        }</For>
+        <For each={CONTEXT_SECTIONS}>
+          {({ key, label }) => <Section key={key} label={label} />}
+        </For>
       </div>
     </div>
-  );
+  )
 }
 
-function AnimatedInstanceCard(props: { value: any; }) {
-
-  const styles = useStyles();
-
+function AnimatedInstanceCard(props: { value: any }) {
+  const styles = useStyles()
 
   return (
-    <div class={clsx(styles().instanceCard,)}>
+    <div class={clsx(styles().instanceCard)}>
       <JsonTree value={props.value} />
     </div>
-  );
+  )
 }
-
 
 export default function Devtools() {
   return (

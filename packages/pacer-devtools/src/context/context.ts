@@ -42,4 +42,4 @@ export const initialStore = {
 
 export const PacerContext = createContext<
   [PacerContextType, (newState: Partial<PacerContextType>) => void]
->([initialStore, () => { }])
+>([initialStore, () => {}])

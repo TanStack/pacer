@@ -7,7 +7,7 @@ title: ThrottlerState
 
 # Interface: ThrottlerState\<TFn\>
 
-Defined in: [packages/pacer/src/throttler.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L6)
+Defined in: [throttler.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L6)
 
 ## Type Parameters
 
@@ -21,7 +21,7 @@ Defined in: [packages/pacer/src/throttler.ts:6](https://github.com/TanStack/pace
 executionCount: number;
 ```
 
-Defined in: [packages/pacer/src/throttler.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L10)
+Defined in: [throttler.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L10)
 
 Number of function executions that have been completed
 
@@ -33,7 +33,7 @@ Number of function executions that have been completed
 isPending: boolean;
 ```
 
-Defined in: [packages/pacer/src/throttler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L14)
+Defined in: [throttler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L14)
 
 Whether the throttler is waiting for the timeout to trigger execution
 
@@ -45,7 +45,7 @@ Whether the throttler is waiting for the timeout to trigger execution
 lastArgs: undefined | Parameters<TFn>;
 ```
 
-Defined in: [packages/pacer/src/throttler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L18)
+Defined in: [throttler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L18)
 
 The arguments from the most recent call to maybeExecute
 
@@ -57,7 +57,7 @@ The arguments from the most recent call to maybeExecute
 lastExecutionTime: number;
 ```
 
-Defined in: [packages/pacer/src/throttler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L22)
+Defined in: [throttler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L22)
 
 Timestamp of the last function execution in milliseconds
 
@@ -69,7 +69,7 @@ Timestamp of the last function execution in milliseconds
 nextExecutionTime: undefined | number;
 ```
 
-Defined in: [packages/pacer/src/throttler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L26)
+Defined in: [throttler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L26)
 
 Timestamp when the next execution can occur in milliseconds
 
@@ -81,6 +81,6 @@ Timestamp when the next execution can occur in milliseconds
 status: "disabled" | "idle" | "pending";
 ```
 
-Defined in: [packages/pacer/src/throttler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L30)
+Defined in: [throttler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L30)
 
 Current execution status - 'idle' when not active, 'pending' when waiting for timeout
