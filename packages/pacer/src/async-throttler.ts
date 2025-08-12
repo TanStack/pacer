@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { pacerEventClient } from './event-client'
+import { emitChange } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
@@ -196,11 +196,12 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null
-
+  #uuid: string
   constructor(
     public fn: TFn,
     initialOptions: AsyncThrottlerOptions<TFn>,
   ) {
+    this.#uuid = crypto.randomUUID()
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -240,7 +241,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
                 ? 'settled'
                 : 'idle',
       } as const
-      pacerEventClient.emit('async-throttler-state', finalState)
+      emitChange('async-throttler-state', {
+        ...finalState,
+        uuid: this.#uuid,
+      })
       return finalState
     })
   }

@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { pacerEventClient } from './event-client'
+import { emitChange } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface RateLimiterState {
@@ -135,11 +135,13 @@ export class RateLimiter<TFn extends AnyFunction> {
     new Store<RateLimiterState>(getDefaultRateLimiterState())
   options: RateLimiterOptions<TFn>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
+  #uuid: string
 
   constructor(
     public fn: TFn,
     initialOptions: RateLimiterOptions<TFn>,
   ) {
+    this.#uuid = crypto.randomUUID()
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -174,7 +176,10 @@ export class RateLimiter<TFn extends AnyFunction> {
         isExceeded,
         status,
       } as const
-      pacerEventClient.emit('rate-limiter-state', finalState)
+      emitChange('rate-limiter-state', {
+        ...finalState,
+        uuid: this.#uuid,
+      })
       return finalState
     })
   }

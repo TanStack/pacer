@@ -12,32 +12,34 @@ import type {
   ThrottlerState,
 } from '@tanstack/pacer'
 
+type WithUuid<T> = T & { uuid: string }
+
 export interface PacerContextType {
-  asyncBatcherState: AsyncBatcherState<any> | undefined
-  asyncDebouncerState: AsyncDebouncerState<any> | undefined
-  asyncQueuerState: AsyncQueuerState<any> | undefined
-  asyncRateLimiterState: AsyncRateLimiterState<any> | undefined
-  asyncThrottlerState: AsyncThrottlerState<any> | undefined
-  batcherState: BatcherState<any> | undefined
-  debouncerState: DebouncerState<any> | undefined
-  queuerState: QueuerState<any> | undefined
-  rateLimiterState: RateLimiterState | undefined
-  throttlerState: ThrottlerState<any> | undefined
+  asyncBatcherState: Array<WithUuid<AsyncBatcherState<any>>>
+  asyncDebouncerState: Array<WithUuid<AsyncDebouncerState<any>>>
+  asyncQueuerState: Array<WithUuid<AsyncQueuerState<any>>>
+  asyncRateLimiterState: Array<WithUuid<AsyncRateLimiterState<any>>>
+  asyncThrottlerState: Array<WithUuid<AsyncThrottlerState<any>>>
+  batcherState: Array<WithUuid<BatcherState<any>>>
+  debouncerState: Array<WithUuid<DebouncerState<any>>>
+  queuerState: Array<WithUuid<QueuerState<any>>>
+  rateLimiterState: Array<WithUuid<RateLimiterState>>
+  throttlerState: Array<WithUuid<ThrottlerState<any>>>
 }
 
 export const initialStore = {
-  asyncBatcherState: undefined,
-  asyncDebouncerState: undefined,
-  asyncQueuerState: undefined,
-  asyncRateLimiterState: undefined,
-  asyncThrottlerState: undefined,
-  batcherState: undefined,
-  debouncerState: undefined,
-  queuerState: undefined,
-  rateLimiterState: undefined,
-  throttlerState: undefined,
+  asyncBatcherState: [],
+  asyncDebouncerState: [],
+  asyncQueuerState: [],
+  asyncRateLimiterState: [],
+  asyncThrottlerState: [],
+  batcherState: [],
+  debouncerState: [],
+  queuerState: [],
+  rateLimiterState: [],
+  throttlerState: [],
 }
 
 export const PacerContext = createContext<
   [PacerContextType, (newState: Partial<PacerContextType>) => void]
->([initialStore, () => {}])
+>([initialStore, () => { }])

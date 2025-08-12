@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { pacerEventClient } from './event-client'
+import { emitChange } from './event-client'
 
 export interface QueuerState<TValue> {
   /**
@@ -247,11 +247,12 @@ export class Queuer<TValue> {
   )
   options: QueuerOptions<TValue>
   #timeoutId: NodeJS.Timeout | null = null
-
+  #uuid: string
   constructor(
     public fn: (item: TValue) => void,
     initialOptions: QueuerOptions<TValue> = {},
   ) {
+    this.#uuid = crypto.randomUUID()
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -306,7 +307,10 @@ export class Queuer<TValue> {
         size,
         status,
       } as const
-      pacerEventClient.emit('queuer-state', finalState)
+      emitChange('queuer-state', {
+        ...finalState,
+        uuid: this.#uuid,
+      })
       return finalState
     })
   }

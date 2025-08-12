@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { pacerEventClient } from './event-client'
+import { emitChange } from './event-client'
 import type { OptionalKeys } from './types'
 
 export interface BatcherState<TValue> {
@@ -142,11 +142,12 @@ export class Batcher<TValue> {
   )
   options: BatcherOptionsWithOptionalCallbacks<TValue>
   #timeoutId: NodeJS.Timeout | null = null
-
+  #uuid: string
   constructor(
     public fn: (items: Array<TValue>) => void,
     initialOptions: BatcherOptions<TValue>,
   ) {
+    this.#uuid = crypto.randomUUID()
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -177,7 +178,10 @@ export class Batcher<TValue> {
         status: isPending ? 'pending' : 'idle',
       } as const
 
-      pacerEventClient.emit('batcher-state', finalState)
+      emitChange('batcher-state', {
+        ...finalState,
+        uuid: this.#uuid,
+      })
       return finalState
     })
   }

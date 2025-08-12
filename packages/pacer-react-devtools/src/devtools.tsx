@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
 
-interface PacerDevtoolsReactInit {}
+interface PacerDevtoolsReactInit { }
 
 export const PacerDevtoolsPanel = (_props?: PacerDevtoolsReactInit) => {
   const devToolRef = useRef<HTMLDivElement>(null)
@@ -15,5 +15,5 @@ export const PacerDevtoolsPanel = (_props?: PacerDevtoolsReactInit) => {
     return () => devtools.unmount()
   }, [devtools])
 
-  return <div ref={devToolRef} />
+  return <div style={{ height: "100%" }} ref={devToolRef} />
 }

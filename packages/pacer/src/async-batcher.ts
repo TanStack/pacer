@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { pacerEventClient } from './event-client'
+import { emitChange, } from './event-client'
 import type { OptionalKeys } from './types'
 
 export interface AsyncBatcherState<TValue> {
@@ -223,11 +223,12 @@ export class AsyncBatcher<TValue> {
   )
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
   #timeoutId: NodeJS.Timeout | null = null
-
+  #uuid: string
   constructor(
     public fn: (items: Array<TValue>) => Promise<any>,
     initialOptions: AsyncBatcherOptions<TValue>,
   ) {
+    this.#uuid = crypto.randomUUID()
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -264,7 +265,10 @@ export class AsyncBatcher<TValue> {
               ? 'idle'
               : 'populated',
       } as const
-      pacerEventClient.emit('async-batcher-state', finalState)
+      emitChange('async-batcher-state', {
+        ...finalState,
+        uuid: this.#uuid,
+      })
       return finalState
     })
   }

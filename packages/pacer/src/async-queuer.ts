@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { pacerEventClient } from './event-client'
+import { emitChange } from './event-client'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
@@ -263,11 +263,12 @@ export class AsyncQueuer<TValue> {
   >(getDefaultAsyncQueuerState<TValue>())
   options: AsyncQueuerOptions<TValue>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
-
+  #uuid: string
   constructor(
     public fn: (item: TValue) => Promise<any>,
     initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
+    this.#uuid = crypto.randomUUID()
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -323,7 +324,10 @@ export class AsyncQueuer<TValue> {
         size,
         status,
       } as const
-      pacerEventClient.emit('async-queuer-state', finalState)
+      emitChange('async-queuer-state', {
+        ...finalState,
+        uuid: this.#uuid,
+      })
       return finalState
     })
   }
@@ -371,19 +375,19 @@ export class AsyncQueuer<TValue> {
       this.#setState({
         activeItems,
       })
-      ;(async () => {
-        const result = await this.execute()
-        this.#setState({ lastResult: result })
+        ; (async () => {
+          const result = await this.execute()
+          this.#setState({ lastResult: result })
 
-        const wait = this.#getWait()
-        if (wait > 0) {
-          const timeoutId = setTimeout(() => this.#tick(), wait)
-          this.#timeoutIds.add(timeoutId)
-          return
-        }
+          const wait = this.#getWait()
+          if (wait > 0) {
+            const timeoutId = setTimeout(() => this.#tick(), wait)
+            this.#timeoutIds.add(timeoutId)
+            return
+          }
 
-        this.#tick()
-      })()
+          this.#tick()
+        })()
     }
 
     this.#setState({ pendingTick: false })

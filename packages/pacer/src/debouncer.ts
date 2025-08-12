@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { pacerEventClient } from './event-client'
+import { emitChange } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface DebouncerState<TFn extends AnyFunction> {
@@ -122,11 +122,12 @@ export class Debouncer<TFn extends AnyFunction> {
   )
   options: DebouncerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
-
+  #uuid: string
   constructor(
     public fn: TFn,
     initialOptions: DebouncerOptions<TFn>,
   ) {
+    this.#uuid = crypto.randomUUID()
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -161,7 +162,10 @@ export class Debouncer<TFn extends AnyFunction> {
             ? 'pending'
             : 'idle',
       } as const
-      pacerEventClient.emit('debouncer-state', finalState)
+      emitChange('debouncer-state', {
+        ...finalState,
+        uuid: this.#uuid,
+      })
       return finalState
     })
   }

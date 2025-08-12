@@ -1,7 +1,7 @@
 import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 
-interface PacerDevtoolsSolidInit {}
+interface PacerDevtoolsSolidInit { }
 
 export const PacerDevtoolsPanel = (_props?: PacerDevtoolsSolidInit) => {
   let devToolRef: HTMLDivElement | undefined
@@ -16,5 +16,5 @@ export const PacerDevtoolsPanel = (_props?: PacerDevtoolsSolidInit) => {
     }
   })
 
-  return <div ref={devToolRef} />
+  return <div style={{ height: "100%" }} ref={devToolRef} />
 }

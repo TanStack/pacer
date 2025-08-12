@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { pacerEventClient } from './event-client'
+import { emitChange } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface ThrottlerState<TFn extends AnyFunction> {
@@ -130,6 +130,7 @@ export class Throttler<TFn extends AnyFunction> {
   )
   options: ThrottlerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
+  #uuid = crypto.randomUUID()
 
   constructor(
     public fn: TFn,
@@ -169,7 +170,10 @@ export class Throttler<TFn extends AnyFunction> {
             ? 'pending'
             : 'idle',
       } as const
-      pacerEventClient.emit('throttler-state', finalState)
+      emitChange('throttler-state', {
+        ...finalState,
+        uuid: this.#uuid,
+      })
       return finalState
     })
   }

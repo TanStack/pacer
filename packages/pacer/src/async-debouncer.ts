@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { pacerEventClient } from './event-client'
+import { emitChange, } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
@@ -185,11 +185,12 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null
-
+  #uuid: string
   constructor(
     public fn: TFn,
     initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
+    this.#uuid = crypto.randomUUID()
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -229,7 +230,10 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
                 ? 'settled'
                 : 'idle',
       } as const
-      pacerEventClient.emit('async-debouncer-state', finalState)
+      emitChange('async-debouncer-state', {
+        ...finalState,
+        uuid: this.#uuid,
+      })
       return finalState
     })
   }
