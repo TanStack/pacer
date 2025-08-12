@@ -8,7 +8,7 @@
   "packageManager": "pnpm@10.2.1",
   "type": "module",
   "scripts": {
-    "build": "nx affected --targets=build --exclude=examples/** && size-limit",
+    "build": "nx affected --skip-nx-cache --targets=build --exclude=examples/** && size-limit",
     "build:all": "nx run-many --targets=build --exclude=examples/** && size-limit",
     "build:core": "nx run-many --targets=build --projects=packages/pacer,packages/persister && size-limit",
     "changeset": "changeset",

@@ -88,37 +88,7 @@ const stylesFactory = () => {
         box-shadow 0.3s,
         background 0.3s;
     `,
-    flash: (isFlashing: boolean) =>
-      isFlashing
-        ? css`
-            box-shadow: 0 0 0 2px ${colors.blue[400]};
-            background: ${colors.blue[600]};
-          `
-        : css``,
-    valueString: css`
-      color: ${colors.green[400]};
-    `,
-    valueNumber: css`
-      color: ${colors.yellow[400]};
-    `,
-    valueBoolean: css`
-      color: ${colors.pink[400]};
-    `,
-    valueNull: css`
-      color: ${colors.gray[400]};
-      font-style: italic;
-    `,
-    valueKey: css`
-      color: ${colors.blue[300]};
-    `,
-    valueBraces: css`
-      color: ${colors.gray[500]};
-    `,
-    valueContainer: css`
-      display: block;
-      margin-left: 1rem;
-    `,
-  }
+  };
 }
 
 export function useStyles() {
