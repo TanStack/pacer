@@ -1,10 +1,9 @@
-
-import { For, } from 'solid-js';
-import clsx from 'clsx';
-import { JsonTree } from "@tanstack/devtools-ui"
-import { usePacerState } from './context/use-context-hooks';
-import { PacerContextProvider } from './context/context-provider';
-import { useStyles } from './styles/use-styles';
+import { For } from 'solid-js'
+import clsx from 'clsx'
+import { JsonTree } from '@tanstack/devtools-ui'
+import { usePacerState } from './context/use-context-hooks'
+import { PacerContextProvider } from './context/context-provider'
+import { useStyles } from './styles/use-styles'
 
 type StateKey =
   | 'asyncBatcherState'

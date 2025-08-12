@@ -88,7 +88,7 @@ const stylesFactory = () => {
         box-shadow 0.3s,
         background 0.3s;
     `,
-  };
+  }
 }
 
 export function useStyles() {
