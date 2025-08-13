@@ -12,13 +12,13 @@ const stylesFactory = () => {
       background: ${colors.darkGray[900]};
       color: ${colors.gray[100]};
       font-family: ${fontFamily.sans};
-      font-size: ${fontSize.md};
+      font-size: ${fontSize.sm};
       min-height: 100vh;
-      padding: ${size[4]};
+      padding: ${size[2]};
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: ${size[6]};
+      gap: ${size[3]};
       width: 100%;
       height: 100vh;
       overflow: hidden;
@@ -28,9 +28,9 @@ const stylesFactory = () => {
       top: 0;
       z-index: 10;
       background: ${colors.darkGray[900]};
-      padding-bottom: ${size[3]};
-      margin-bottom: ${size[2]};
-      font-size: ${fontSize.xl};
+      padding-bottom: ${size[2]};
+      margin-bottom: ${size[1]};
+      font-size: ${fontSize.lg};
       font-weight: ${font.weight.bold};
       color: #84cc16;
       letter-spacing: 0.04em;
@@ -41,7 +41,7 @@ const stylesFactory = () => {
     mainContainer: css`
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: ${size[4]};
+      gap: ${size[2]};
       flex: 1;
       min-height: 0;
       overflow: hidden;
@@ -65,30 +65,30 @@ const stylesFactory = () => {
       min-height: 0;
     `,
     panelHeader: css`
-      font-size: ${fontSize.lg};
+      font-size: ${fontSize.md};
       font-weight: ${font.weight.bold};
       color: ${colors.blue[400]};
-      padding: ${size[4]};
+      padding: ${size[2]};
       border-bottom: 1px solid ${colors.darkGray[700]};
       background: ${colors.darkGray[800]};
     `,
     utilList: css`
       flex: 1;
       overflow-y: auto;
-      padding: ${size[2]};
+      padding: ${size[1]};
       min-height: 0;
     `,
     utilGroup: css`
-      margin-bottom: ${size[4]};
+      margin-bottom: ${size[2]};
     `,
     utilGroupHeader: css`
-      font-size: ${fontSize.sm};
+      font-size: ${fontSize.xs};
       font-weight: ${font.weight.semibold};
       color: ${colors.gray[400]};
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: ${size[2]};
-      padding: ${size[2]} ${size[3]};
+      margin-bottom: ${size[1]};
+      padding: ${size[1]} ${size[2]};
       background: ${colors.darkGray[700]};
       border-radius: ${border.radius.md};
     `,
@@ -96,7 +96,7 @@ const stylesFactory = () => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: ${size[3]};
+      padding: ${size[2]};
       margin-bottom: ${size[1]};
       background: ${colors.darkGray[700]};
       border-radius: ${border.radius.md};
@@ -116,7 +116,7 @@ const stylesFactory = () => {
     `,
     utilKey: css`
       font-family: ${fontFamily.mono};
-      font-size: ${fontSize.sm};
+      font-size: ${fontSize.xs};
       color: ${colors.gray[100]};
       flex: 1;
       overflow: hidden;
@@ -128,38 +128,38 @@ const stylesFactory = () => {
       color: ${colors.gray[400]};
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      padding: ${size[1]} ${size[2]};
+      padding: ${size[1]} ${size[1]};
       background: ${colors.darkGray[600]};
       border-radius: ${border.radius.sm};
-      margin-left: ${size[2]};
+      margin-left: ${size[1]};
     `,
     stateDetails: css`
       flex: 1;
       overflow-y: auto;
-      padding: ${size[4]};
+      padding: ${size[2]};
       min-height: 0;
     `,
     stateHeader: css`
-      margin-bottom: ${size[4]};
-      padding-bottom: ${size[3]};
+      margin-bottom: ${size[2]};
+      padding-bottom: ${size[2]};
       border-bottom: 1px solid ${colors.darkGray[700]};
     `,
     stateTitle: css`
-      font-size: ${fontSize.lg};
+      font-size: ${fontSize.md};
       font-weight: ${font.weight.bold};
       color: ${colors.blue[400]};
       margin-bottom: ${size[1]};
     `,
     stateKey: css`
       font-family: ${fontFamily.mono};
-      font-size: ${fontSize.sm};
+      font-size: ${fontSize.xs};
       color: ${colors.gray[400]};
       word-break: break-all;
     `,
     stateContent: css`
       background: ${colors.darkGray[700]};
       border-radius: ${border.radius.md};
-      padding: ${size[3]};
+      padding: ${size[2]};
       border: 1px solid ${colors.darkGray[600]};
     `,
     noSelection: css`
@@ -170,7 +170,7 @@ const stylesFactory = () => {
       color: ${colors.gray[500]};
       font-style: italic;
       text-align: center;
-      padding: ${size[8]};
+      padding: ${size[4]};
     `,
     // Keep existing styles for backward compatibility
     sectionContainer: css`

@@ -23,6 +23,7 @@ function ComparisonApp() {
   const debouncer = useDebouncer(
     setDebouncedValue,
     {
+      key: 'my-debouncer',
       wait: 600,
     },
     (state) => state,
@@ -31,6 +32,7 @@ function ComparisonApp() {
   const throttler = useThrottler(
     setThrottledValue,
     {
+      key: 'my-throttler',
       wait: 600,
     },
     (state) => state,
@@ -39,6 +41,7 @@ function ComparisonApp() {
   const rateLimiter = useRateLimiter(
     setRateLimitedValue,
     {
+      key: 'my-rate-limiter',
       limit: 20,
       window: 2000,
       windowType: 'sliding',
@@ -49,6 +52,7 @@ function ComparisonApp() {
   const queuer = useQueuer(
     setQueuedValue,
     {
+      key: 'my-queuer',
       wait: 100,
       maxSize: 50,
     },
@@ -63,6 +67,7 @@ function ComparisonApp() {
       }
     },
     {
+      key: 'my-batcher',
       wait: 600,
       maxSize: 5,
     },
