@@ -81,7 +81,7 @@
     "@tanstack/react-pacer": "workspace:*",
     "@tanstack/solid-pacer": "workspace:*",
     "@tanstack/pacer-devtools": "workspace:*",
-    "@tanstack/pacer-solid-devtools": "workspace:*",
-    "@tanstack/pacer-react-devtools": "workspace:*"
+    "@tanstack/solid-pacer-devtools": "workspace:*",
+    "@tanstack/react-pacer-devtools": "workspace:*"
   }
 }

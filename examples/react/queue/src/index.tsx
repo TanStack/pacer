@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { PacerDevtoolsPanel } from '@tanstack/pacer-react-devtools'
+import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
 import { TanstackDevtools } from '@tanstack/react-devtools'
 import { queue } from '@tanstack/react-pacer/queuer'
 

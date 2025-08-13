@@ -5,7 +5,7 @@ import { useThrottler } from '@tanstack/react-pacer/throttler'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
 import { useBatcher } from '@tanstack/react-pacer/batcher'
-import { PacerDevtoolsPanel } from '@tanstack/pacer-react-devtools'
+import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
 import { TanstackDevtools } from '@tanstack/react-devtools'
 
 function ComparisonApp() {
