@@ -285,6 +285,11 @@ export class Queuer<TValue> {
   }
 
   /**
+   * Emits a change event for the queuer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('queuer', this)
+
+  /**
    * Updates the queuer options. New options are merged with existing options.
    */
   setOptions = (newOptions: Partial<QueuerOptions<TValue>>): void => {
@@ -316,7 +321,7 @@ export class Queuer<TValue> {
         status,
       }
     })
-    emitChange('queuer', this)
+    this._emit()
   }
 
   /**

@@ -182,6 +182,61 @@ const stylesFactory = () => {
       text-transform: uppercase;
       letter-spacing: 0.04em;
     `,
+    actionsRow: css`
+      display: flex;
+      flex-wrap: wrap;
+      gap: ${size[2]};
+    `,
+    actionButton: css`
+      display: inline-flex;
+      align-items: center;
+      gap: ${size[1]};
+      padding: ${size[1]} ${size[2]};
+      border-radius: ${border.radius.md};
+      border: 1px solid ${colors.darkGray[500]};
+      background: ${colors.darkGray[600]};
+      color: ${colors.gray[100]};
+      font-size: ${fontSize.xs};
+      cursor: pointer;
+      user-select: none;
+      transition:
+        background 0.15s,
+        border-color 0.15s;
+      &:hover {
+        background: ${colors.darkGray[500]};
+        border-color: ${colors.darkGray[400]};
+      }
+    `,
+    actionDotBlue: css`
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: ${colors.blue[400]};
+    `,
+    actionDotGreen: css`
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: ${colors.green[400]};
+    `,
+    actionDotRed: css`
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: ${colors.red[400]};
+    `,
+    actionDotYellow: css`
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: ${colors.yellow[400]};
+    `,
+    actionDotOrange: css`
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: ${colors.pink[400]};
+    `,
     infoGrid: css`
       display: grid;
       grid-template-columns: auto 1fr;

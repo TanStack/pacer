@@ -1,8 +1,53 @@
 import { createStore } from 'solid-js/store'
-import { createEffect, onCleanup } from 'solid-js'
-import { pacerEventClient } from '@tanstack/pacer'
-import { PacerContext, initialStore } from './context'
-import type { PacerContextType } from './context'
+import { createContext, createEffect, onCleanup, useContext } from 'solid-js'
+import { pacerEventClient } from '@tanstack/pacer/event-client'
+import type {
+  AsyncBatcher,
+  AsyncDebouncer,
+  AsyncQueuer,
+  AsyncRateLimiter,
+  AsyncThrottler,
+  Batcher,
+  Debouncer,
+  Queuer,
+  RateLimiter,
+  Throttler,
+} from '@tanstack/pacer'
+
+interface PacerDevtoolsContextType {
+  asyncBatchers: Array<AsyncBatcher<any>>
+  asyncDebouncers: Array<AsyncDebouncer<any>>
+  asyncQueuers: Array<AsyncQueuer<any>>
+  asyncRateLimiters: Array<AsyncRateLimiter<any>>
+  asyncThrottlers: Array<AsyncThrottler<any>>
+  batchers: Array<Batcher<any>>
+  debouncers: Array<Debouncer<any>>
+  queuers: Array<Queuer<any>>
+  rateLimiters: Array<RateLimiter<any>>
+  throttlers: Array<Throttler<any>>
+  lastUpdatedByKey: Record<string, number>
+}
+
+const initialPacerDevtoolsStore = {
+  asyncBatchers: [],
+  asyncDebouncers: [],
+  asyncQueuers: [],
+  asyncRateLimiters: [],
+  asyncThrottlers: [],
+  batchers: [],
+  debouncers: [],
+  queuers: [],
+  rateLimiters: [],
+  throttlers: [],
+  lastUpdatedByKey: {},
+}
+
+const PacerDevtoolsContext = createContext<
+  [
+    PacerDevtoolsContextType,
+    (newState: Partial<PacerDevtoolsContextType>) => void,
+  ]
+>([initialPacerDevtoolsStore, () => {}])
 
 const updateOrAddToArray = <T extends { key: string }>(
   oldArray: Array<T>,
@@ -18,7 +63,9 @@ const updateOrAddToArray = <T extends { key: string }>(
 }
 
 export function PacerContextProvider(props: { children: any }) {
-  const [store, setStore] = createStore<PacerContextType>(initialStore)
+  const [store, setStore] = createStore<PacerDevtoolsContextType>(
+    initialPacerDevtoolsStore,
+  )
 
   createEffect(() => {
     const cleanup = pacerEventClient.onAllPluginEvents((_e) => {
@@ -138,8 +185,19 @@ export function PacerContextProvider(props: { children: any }) {
     onCleanup(cleanup)
   })
   return (
-    <PacerContext.Provider value={[store, setStore]}>
+    <PacerDevtoolsContext.Provider value={[store, setStore]}>
       {props.children}
-    </PacerContext.Provider>
+    </PacerDevtoolsContext.Provider>
   )
+}
+
+const usePacerDevtoolsContext = () => {
+  const context = useContext(PacerDevtoolsContext)
+
+  return context
+}
+
+export const usePacerDevtoolsState = () => {
+  const [state] = usePacerDevtoolsContext()
+  return state
 }

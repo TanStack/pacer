@@ -1,8 +1,10 @@
 import { For, createMemo, createSignal } from 'solid-js'
 import clsx from 'clsx'
 import { JsonTree } from '@tanstack/devtools-ui'
-import { usePacerState } from './context/use-context-hooks'
-import { PacerContextProvider } from './context/context-provider'
+import {
+  PacerContextProvider,
+  usePacerDevtoolsState,
+} from './PacerContextProvider'
 import { useStyles } from './styles/use-styles'
 
 type StateKey =
@@ -62,7 +64,7 @@ const UTIL_GROUPS: Array<UtilGroup> = [
 
 function Shell() {
   const styles = useStyles()
-  const state = usePacerState()
+  const state = usePacerDevtoolsState()
   const [selectedKey, setSelectedKey] = createSignal<string | null>(null)
   const getGroupItems = (key: StateKey) =>
     (state as unknown as Record<StateKey, Array<any>>)[key]
@@ -152,7 +154,120 @@ function Shell() {
                   <div class={styles().detailsGrid}>
                     <div class={styles().detailSection}>
                       <div class={styles().detailSectionHeader}>Actions</div>
-                      <div class={styles().sectionEmpty}>No actions yet</div>
+                      {(() => {
+                        const inst: any = entry.instance
+                        const state = inst?.store?.state
+                        const hasPending = state && 'isPending' in state
+                        const hasEmpty = state && 'isEmpty' in state
+                        const isPending = hasPending ? !!state.isPending : false
+                        const isEmpty = hasEmpty ? state.isEmpty : undefined
+
+                        // Check which methods are available
+                        const hasFlush = typeof inst.flush === 'function'
+                        const hasCancel = typeof inst.cancel === 'function'
+                        const hasReset = typeof inst.reset === 'function'
+                        const hasClear = typeof inst.clear === 'function'
+
+                        // Determine if this is a debouncer/throttler (has isPending)
+                        const isDebounceThrottleLike = hasPending
+
+                        // No actions if no methods available
+                        if (
+                          !hasPending &&
+                          !hasFlush &&
+                          !hasCancel &&
+                          !hasReset &&
+                          !hasClear
+                        ) {
+                          return (
+                            <div class={styles().sectionEmpty}>
+                              No actions available for this util
+                            </div>
+                          )
+                        }
+
+                        const togglePending = () => {
+                          const next = !isPending
+                          inst.store.setState((prev: any) => ({
+                            ...prev,
+                            isPending: next,
+                          }))
+                        }
+
+                        return (
+                          <div class={styles().actionsRow}>
+                            {hasPending && (
+                              <button
+                                class={styles().actionButton}
+                                onClick={() => {
+                                  togglePending()
+                                  inst._emit()
+                                }}
+                              >
+                                <span class={styles().actionDotBlue} />
+                                {isPending
+                                  ? 'Restore Pending'
+                                  : 'Trigger Pending'}
+                              </button>
+                            )}
+                            {hasFlush && (
+                              <button
+                                class={styles().actionButton}
+                                onClick={() => {
+                                  inst.flush()
+                                  inst._emit()
+                                }}
+                                disabled={
+                                  isDebounceThrottleLike ? !isPending : isEmpty
+                                }
+                              >
+                                <span class={styles().actionDotGreen} />
+                                Flush
+                              </button>
+                            )}
+                            {hasCancel && (
+                              <button
+                                class={styles().actionButton}
+                                onClick={() => {
+                                  inst.cancel()
+                                  inst._emit()
+                                }}
+                                disabled={
+                                  isDebounceThrottleLike ? !isPending : false
+                                }
+                              >
+                                <span class={styles().actionDotRed} />
+                                Cancel
+                              </button>
+                            )}
+                            {hasReset && (
+                              <button
+                                class={styles().actionButton}
+                                onClick={() => {
+                                  inst.reset()
+                                  inst._emit()
+                                }}
+                              >
+                                <span class={styles().actionDotYellow} />
+                                Reset
+                              </button>
+                            )}
+                            {hasClear && (
+                              <button
+                                class={styles().actionButton}
+                                onClick={() => {
+                                  inst.clear()
+                                  inst._emit()
+                                }}
+                                disabled={isEmpty}
+                              >
+                                <span class={styles().actionDotOrange} />
+                                Clear
+                              </button>
+                            )}
+                          </div>
+                        )
+                      })()}
                     </div>
 
                     <div class={styles().detailSection}>
@@ -183,7 +298,7 @@ function Shell() {
   )
 }
 
-export default function Devtools() {
+export default function PacerDevtools() {
   return (
     <PacerContextProvider>
       <Shell />

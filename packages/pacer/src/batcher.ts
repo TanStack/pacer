@@ -162,6 +162,11 @@ export class Batcher<TValue> {
   }
 
   /**
+   * Emits a change event for the batcher instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('batcher', this)
+
+  /**
    * Updates the batcher options
    */
   setOptions = (newOptions: Partial<BatcherOptions<TValue>>): void => {
@@ -184,7 +189,7 @@ export class Batcher<TValue> {
         status: isPending ? 'pending' : 'idle',
       }
     })
-    emitChange('batcher', this)
+    this._emit()
   }
 
   #getWait = (): number => {

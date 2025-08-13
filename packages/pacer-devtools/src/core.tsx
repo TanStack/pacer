@@ -16,7 +16,7 @@ export class PacerDevtoolsCore {
     }
     const mountTo = el
     const dispose = render(() => {
-      this.#Component = lazy(() => import('./devtools'))
+      this.#Component = lazy(() => import('./PacerDevtools'))
       const Devtools = this.#Component
 
       return (

@@ -302,6 +302,11 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
+   * Emits a change event for the async queuer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('async-queuer', this)
+
+  /**
    * Updates the queuer options. New options are merged with existing options.
    */
   setOptions = (newOptions: Partial<AsyncQueuerOptions<TValue>>): void => {
@@ -333,7 +338,7 @@ export class AsyncQueuer<TValue> {
         status,
       }
     })
-    emitChange('async-queuer', this)
+    this._emit()
   }
 
   /**
