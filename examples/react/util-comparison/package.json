@@ -14,8 +14,8 @@
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
-    "@tanstack/react-pacer-devtools": "0.14.0",
     "@tanstack/react-devtools": "0.2.2",
+    "@tanstack/react-pacer-devtools": "0.14.0",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^4.7.0",
