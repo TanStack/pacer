@@ -177,19 +177,14 @@ export class Batcher<TValue> {
       const { isPending, items } = combinedState
       const size = items.length
       const isEmpty = size === 0
-      const finalState = {
+      return {
         ...combinedState,
         isEmpty,
         size,
         status: isPending ? 'pending' : 'idle',
-      } as const
-
-      emitChange('batcher-state', {
-        ...finalState,
-        key: this.key,
-      })
-      return finalState
+      }
     })
+    emitChange('batcher', this)
   }
 
   #getWait = (): number => {

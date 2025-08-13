@@ -176,17 +176,13 @@ export class RateLimiter<TFn extends AnyFunction> {
         : isExceeded
           ? 'exceeded'
           : 'idle'
-      const finalState = {
+      return {
         ...combinedState,
         isExceeded,
         status,
-      } as const
-      emitChange('rate-limiter-state', {
-        ...finalState,
-        key: this.key,
-      })
-      return finalState
+      }
     })
+    emitChange('rate-limiter', this)
   }
 
   /**

@@ -1,28 +1,26 @@
 import { EventClient } from '@tanstack/devtools-event-client'
-import type { AsyncBatcherState } from './async-batcher'
-import type { AsyncDebouncerState } from './async-debouncer'
-import type { AsyncQueuerState } from './async-queuer'
-import type { AsyncRateLimiterState } from './async-rate-limiter'
-import type { AsyncThrottlerState } from './async-throttler'
-import type { DebouncerState } from './debouncer'
-import type { BatcherState } from './batcher'
-import type { QueuerState } from './queuer'
-import type { RateLimiterState } from './rate-limiter'
-import type { ThrottlerState } from './throttler'
-
-type WithKey<T> = T & { key: string }
+import type { AsyncBatcher } from './async-batcher'
+import type { AsyncDebouncer } from './async-debouncer'
+import type { AsyncQueuer } from './async-queuer'
+import type { AsyncRateLimiter } from './async-rate-limiter'
+import type { AsyncThrottler } from './async-throttler'
+import type { Debouncer } from './debouncer'
+import type { Batcher } from './batcher'
+import type { Queuer } from './queuer'
+import type { RateLimiter } from './rate-limiter'
+import type { Throttler } from './throttler'
 
 export interface PacerEventMap {
-  'pacer:async-batcher-state': WithKey<AsyncBatcherState<any>>
-  'pacer:async-debouncer-state': WithKey<AsyncDebouncerState<any>>
-  'pacer:async-queuer-state': WithKey<AsyncQueuerState<any>>
-  'pacer:async-rate-limiter-state': WithKey<AsyncRateLimiterState<any>>
-  'pacer:async-throttler-state': WithKey<AsyncThrottlerState<any>>
-  'pacer:batcher-state': WithKey<BatcherState<any>>
-  'pacer:debouncer-state': WithKey<DebouncerState<any>>
-  'pacer:queuer-state': WithKey<QueuerState<any>>
-  'pacer:rate-limiter-state': WithKey<RateLimiterState>
-  'pacer:throttler-state': WithKey<ThrottlerState<any>>
+  'pacer:async-batcher': AsyncBatcher<any>
+  'pacer:async-debouncer': AsyncDebouncer<any>
+  'pacer:async-queuer': AsyncQueuer<any>
+  'pacer:async-rate-limiter': AsyncRateLimiter<any>
+  'pacer:async-throttler': AsyncThrottler<any>
+  'pacer:batcher': Batcher<any>
+  'pacer:debouncer': Debouncer<any>
+  'pacer:queuer': Queuer<any>
+  'pacer:rate-limiter': RateLimiter<any>
+  'pacer:throttler': Throttler<any>
 }
 
 class PacerEventClient extends EventClient<PacerEventMap> {
@@ -43,7 +41,7 @@ export const emitChange = <
     : never,
 >(
   event: TSuffix,
-  payload: PacerEventMap[`pacer:${TSuffix}`] & { key: string },
+  payload: PacerEventMap[`pacer:${TSuffix}`],
 ) => {
   pacerEventClient.emit(event, payload)
 }

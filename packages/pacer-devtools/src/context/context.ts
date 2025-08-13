@@ -1,43 +1,43 @@
 import { createContext } from 'solid-js'
 import type {
-  AsyncBatcherState,
-  AsyncDebouncerState,
-  AsyncQueuerState,
-  AsyncRateLimiterState,
-  AsyncThrottlerState,
-  BatcherState,
-  DebouncerState,
-  QueuerState,
-  RateLimiterState,
-  ThrottlerState,
+  AsyncBatcher,
+  AsyncDebouncer,
+  AsyncQueuer,
+  AsyncRateLimiter,
+  AsyncThrottler,
+  Batcher,
+  Debouncer,
+  Queuer,
+  RateLimiter,
+  Throttler,
 } from '@tanstack/pacer'
 
-type WithKey<T> = T & { key: string }
-
 export interface PacerContextType {
-  asyncBatcherState: Array<WithKey<AsyncBatcherState<any>>>
-  asyncDebouncerState: Array<WithKey<AsyncDebouncerState<any>>>
-  asyncQueuerState: Array<WithKey<AsyncQueuerState<any>>>
-  asyncRateLimiterState: Array<WithKey<AsyncRateLimiterState<any>>>
-  asyncThrottlerState: Array<WithKey<AsyncThrottlerState<any>>>
-  batcherState: Array<WithKey<BatcherState<any>>>
-  debouncerState: Array<WithKey<DebouncerState<any>>>
-  queuerState: Array<WithKey<QueuerState<any>>>
-  rateLimiterState: Array<WithKey<RateLimiterState>>
-  throttlerState: Array<WithKey<ThrottlerState<any>>>
+  asyncBatchers: Array<AsyncBatcher<any>>
+  asyncDebouncers: Array<AsyncDebouncer<any>>
+  asyncQueuers: Array<AsyncQueuer<any>>
+  asyncRateLimiters: Array<AsyncRateLimiter<any>>
+  asyncThrottlers: Array<AsyncThrottler<any>>
+  batchers: Array<Batcher<any>>
+  debouncers: Array<Debouncer<any>>
+  queuers: Array<Queuer<any>>
+  rateLimiters: Array<RateLimiter<any>>
+  throttlers: Array<Throttler<any>>
+  lastUpdatedByKey: Record<string, number>
 }
 
 export const initialStore = {
-  asyncBatcherState: [],
-  asyncDebouncerState: [],
-  asyncQueuerState: [],
-  asyncRateLimiterState: [],
-  asyncThrottlerState: [],
-  batcherState: [],
-  debouncerState: [],
-  queuerState: [],
-  rateLimiterState: [],
-  throttlerState: [],
+  asyncBatchers: [],
+  asyncDebouncers: [],
+  asyncQueuers: [],
+  asyncRateLimiters: [],
+  asyncThrottlers: [],
+  batchers: [],
+  debouncers: [],
+  queuers: [],
+  rateLimiters: [],
+  throttlers: [],
+  lastUpdatedByKey: {},
 }
 
 export const PacerContext = createContext<

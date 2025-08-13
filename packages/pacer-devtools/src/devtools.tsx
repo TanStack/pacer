@@ -1,4 +1,4 @@
-import { For, createSignal } from 'solid-js'
+import { For, createMemo, createSignal } from 'solid-js'
 import clsx from 'clsx'
 import { JsonTree } from '@tanstack/devtools-ui'
 import { usePacerState } from './context/use-context-hooks'
@@ -6,16 +6,16 @@ import { PacerContextProvider } from './context/context-provider'
 import { useStyles } from './styles/use-styles'
 
 type StateKey =
-  | 'asyncBatcherState'
-  | 'asyncDebouncerState'
-  | 'asyncQueuerState'
-  | 'asyncRateLimiterState'
-  | 'asyncThrottlerState'
-  | 'batcherState'
-  | 'debouncerState'
-  | 'queuerState'
-  | 'rateLimiterState'
-  | 'throttlerState'
+  | 'asyncBatchers'
+  | 'asyncDebouncers'
+  | 'asyncQueuers'
+  | 'asyncRateLimiters'
+  | 'asyncThrottlers'
+  | 'batchers'
+  | 'debouncers'
+  | 'queuers'
+  | 'rateLimiters'
+  | 'throttlers'
 
 type UtilGroup = {
   key: StateKey
@@ -24,37 +24,37 @@ type UtilGroup = {
 }
 
 const UTIL_GROUPS: Array<UtilGroup> = [
-  { key: 'debouncerState', label: 'Debouncers', displayName: 'Debouncer' },
-  { key: 'throttlerState', label: 'Throttlers', displayName: 'Throttler' },
-  { key: 'batcherState', label: 'Batchers', displayName: 'Batcher' },
-  { key: 'queuerState', label: 'Queuers', displayName: 'Queuer' },
+  { key: 'debouncers', label: 'Debouncers', displayName: 'Debouncer' },
+  { key: 'throttlers', label: 'Throttlers', displayName: 'Throttler' },
+  { key: 'batchers', label: 'Batchers', displayName: 'Batcher' },
+  { key: 'queuers', label: 'Queuers', displayName: 'Queuer' },
   {
-    key: 'rateLimiterState',
+    key: 'rateLimiters',
     label: 'Rate Limiters',
     displayName: 'Rate Limiter',
   },
   {
-    key: 'asyncDebouncerState',
+    key: 'asyncDebouncers',
     label: 'Async Debouncers',
     displayName: 'Async Debouncer',
   },
   {
-    key: 'asyncThrottlerState',
+    key: 'asyncThrottlers',
     label: 'Async Throttlers',
     displayName: 'Async Throttler',
   },
   {
-    key: 'asyncBatcherState',
+    key: 'asyncBatchers',
     label: 'Async Batchers',
     displayName: 'Async Batcher',
   },
   {
-    key: 'asyncQueuerState',
+    key: 'asyncQueuers',
     label: 'Async Queuers',
     displayName: 'Async Queuer',
   },
   {
-    key: 'asyncRateLimiterState',
+    key: 'asyncRateLimiters',
     label: 'Async Rate Limiters',
     displayName: 'Async Rate Limiter',
   },
@@ -64,18 +64,26 @@ function Shell() {
   const styles = useStyles()
   const state = usePacerState()
   const [selectedKey, setSelectedKey] = createSignal<string | null>(null)
+  const getGroupItems = (key: StateKey) =>
+    (state as unknown as Record<StateKey, Array<any>>)[key]
 
   // Find the selected instance
-  const selectedInstance = () => {
-    if (!selectedKey()) return null
-
+  const selectedInstance = createMemo(() => {
+    const key = selectedKey()
+    if (!key) return null
     for (const group of UTIL_GROUPS) {
-      const instance = state[group.key].find(
-        (inst) => inst.key === selectedKey(),
-      )
-      if (instance) return { ...instance, type: group.displayName }
+      const instance = getGroupItems(group.key).find((inst) => inst.key === key)
+      if (instance) return { instance, type: group.displayName }
     }
     return null
+  })
+
+  const getStatus = (inst: any) => {
+    try {
+      return inst.store?.state?.status ?? 'unknown'
+    } catch {
+      return 'unknown'
+    }
   }
 
   return (
@@ -85,15 +93,14 @@ function Shell() {
       <div class={styles().mainContainer}>
         {/* Left Panel - Util List */}
         <div class={styles().leftPanel}>
-          <div class={styles().panelHeader}>Utils</div>
           <div class={styles().utilList}>
             <For each={UTIL_GROUPS}>
               {(group) => (
                 <>
-                  {state[group.key].length > 0 && (
+                  {getGroupItems(group.key).length > 0 && (
                     <div class={styles().utilGroup}>
                       <div class={styles().utilGroupHeader}>{group.label}</div>
-                      <For each={state[group.key]}>
+                      <For each={getGroupItems(group.key)}>
                         {(instance) => (
                           <div
                             class={clsx(
@@ -101,11 +108,11 @@ function Shell() {
                               selectedKey() === instance.key &&
                                 styles().utilRowSelected,
                             )}
-                            onClick={() => setSelectedKey(instance.key)}
+                            onClick={() => setSelectedKey(instance.key ?? null)}
                           >
                             <div class={styles().utilKey}>{instance.key}</div>
                             <div class={styles().utilStatus}>
-                              {instance.status}
+                              {getStatus(instance)}
                             </div>
                           </div>
                         )}
@@ -120,18 +127,47 @@ function Shell() {
 
         {/* Right Panel - State Details */}
         <div class={styles().rightPanel}>
-          <div class={styles().panelHeader}>State Details</div>
+          <div class={styles().panelHeader}>Details</div>
           <div class={styles().stateDetails}>
             {(() => {
-              const instance = selectedInstance()
-              return instance !== null ? (
+              const entry = selectedInstance()
+              return entry !== null ? (
                 <>
                   <div class={styles().stateHeader}>
-                    <div class={styles().stateTitle}>{instance.type}</div>
-                    <div class={styles().stateKey}>{instance.key}</div>
+                    <div class={styles().stateTitle}>{entry.type}</div>
+                    <div class={styles().infoGrid}>
+                      <div class={styles().infoLabel}>Key</div>
+                      <div class={styles().infoValueMono}>
+                        {entry.instance.key}
+                      </div>
+                      <div class={styles().infoLabel}>Last Updated</div>
+                      <div class={styles().infoValueMono}>
+                        {new Date(
+                          (state.lastUpdatedByKey as any)[entry.instance.key] ??
+                            Date.now(),
+                        ).toLocaleTimeString()}
+                      </div>
+                    </div>
                   </div>
-                  <div class={styles().stateContent}>
-                    <JsonTree value={instance} />
+                  <div class={styles().detailsGrid}>
+                    <div class={styles().detailSection}>
+                      <div class={styles().detailSectionHeader}>Actions</div>
+                      <div class={styles().sectionEmpty}>No actions yet</div>
+                    </div>
+
+                    <div class={styles().detailSection}>
+                      <div class={styles().detailSectionHeader}>Options</div>
+                      <div class={styles().stateContent}>
+                        <JsonTree value={entry.instance.options} />
+                      </div>
+                    </div>
+
+                    <div class={styles().detailSection}>
+                      <div class={styles().detailSectionHeader}>State</div>
+                      <div class={styles().stateContent}>
+                        <JsonTree value={entry.instance.store?.state} />
+                      </div>
+                    </div>
                   </div>
                 </>
               ) : (

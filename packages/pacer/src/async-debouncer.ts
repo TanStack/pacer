@@ -224,7 +224,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         ...newState,
       }
       const { isPending, isExecuting, settleCount } = combinedState
-      const finalState = {
+      return {
         ...combinedState,
         status: !this.#getEnabled()
           ? 'disabled'
@@ -235,13 +235,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
               : settleCount > 0
                 ? 'settled'
                 : 'idle',
-      } as const
-      emitChange('async-debouncer-state', {
-        ...finalState,
-        key: this.key,
-      })
-      return finalState
+      }
     })
+    emitChange('async-debouncer', this)
   }
 
   /**

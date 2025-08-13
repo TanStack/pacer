@@ -21,68 +21,116 @@ export function PacerContextProvider(props: { children: any }) {
   const [store, setStore] = createStore<PacerContextType>(initialStore)
 
   createEffect(() => {
-    const cleanup = pacerEventClient.onAllPluginEvents((e) => {
+    const cleanup = pacerEventClient.onAllPluginEvents((_e) => {
+      const e = _e as unknown as { type: string; payload: any }
       switch (e.type) {
-        case 'pacer:async-batcher-state': {
-          const newItems = updateOrAddToArray(
-            store.asyncBatcherState,
-            e.payload,
-          )
-          setStore({ asyncBatcherState: newItems })
+        case 'pacer:async-batcher': {
+          setStore({
+            asyncBatchers: updateOrAddToArray(store.asyncBatchers, e.payload),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
-        case 'pacer:async-debouncer-state': {
-          const newItems = updateOrAddToArray(
-            store.asyncDebouncerState,
-            e.payload,
-          )
-          setStore({ asyncDebouncerState: newItems })
+        case 'pacer:async-debouncer': {
+          setStore({
+            asyncDebouncers: updateOrAddToArray(
+              store.asyncDebouncers,
+              e.payload,
+            ),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
-        case 'pacer:async-queuer-state': {
-          const newItems = updateOrAddToArray(store.asyncQueuerState, e.payload)
-          setStore({ asyncQueuerState: newItems })
+        case 'pacer:async-queuer': {
+          setStore({
+            asyncQueuers: updateOrAddToArray(store.asyncQueuers, e.payload),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
-        case 'pacer:async-rate-limiter-state': {
-          const newItems = updateOrAddToArray(
-            store.asyncRateLimiterState,
-            e.payload,
-          )
-          setStore({ asyncRateLimiterState: newItems })
+        case 'pacer:async-rate-limiter': {
+          setStore({
+            asyncRateLimiters: updateOrAddToArray(
+              store.asyncRateLimiters,
+              e.payload,
+            ),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
-        case 'pacer:async-throttler-state': {
-          const newItems = updateOrAddToArray(
-            store.asyncThrottlerState,
-            e.payload,
-          )
-          setStore({ asyncThrottlerState: newItems })
+        case 'pacer:async-throttler': {
+          setStore({
+            asyncThrottlers: updateOrAddToArray(
+              store.asyncThrottlers,
+              e.payload,
+            ),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
-        case 'pacer:batcher-state': {
-          const newItems = updateOrAddToArray(store.batcherState, e.payload)
-          setStore({ batcherState: newItems })
+        case 'pacer:batcher': {
+          setStore({
+            batchers: updateOrAddToArray(store.batchers, e.payload),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
-        case 'pacer:debouncer-state': {
-          const newItems = updateOrAddToArray(store.debouncerState, e.payload)
-          setStore({ debouncerState: newItems })
+        case 'pacer:debouncer': {
+          setStore({
+            debouncers: updateOrAddToArray(store.debouncers, e.payload),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
-        case 'pacer:queuer-state': {
-          const newItems = updateOrAddToArray(store.queuerState, e.payload)
-          setStore({ queuerState: newItems })
+        case 'pacer:queuer': {
+          setStore({
+            queuers: updateOrAddToArray(store.queuers, e.payload),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
-        case 'pacer:rate-limiter-state': {
-          const newItems = updateOrAddToArray(store.rateLimiterState, e.payload)
-          setStore({ rateLimiterState: newItems })
+        case 'pacer:rate-limiter': {
+          setStore({
+            rateLimiters: updateOrAddToArray(store.rateLimiters, e.payload),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
-        case 'pacer:throttler-state': {
-          const newItems = updateOrAddToArray(store.throttlerState, e.payload)
-          setStore({ throttlerState: newItems })
+        case 'pacer:throttler': {
+          setStore({
+            throttlers: updateOrAddToArray(store.throttlers, e.payload),
+            lastUpdatedByKey: {
+              ...store.lastUpdatedByKey,
+              [e.payload.key]: Date.now(),
+            },
+          })
           break
         }
       }

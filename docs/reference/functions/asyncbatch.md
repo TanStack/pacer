@@ -11,7 +11,7 @@ title: asyncBatch
 function asyncBatch<TValue>(fn, options): (item) => void
 ```
 
-Defined in: [async-batcher.ts:458](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L458)
+Defined in: [async-batcher.ts:454](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L454)
 
 Creates an async batcher that processes items in batches
 

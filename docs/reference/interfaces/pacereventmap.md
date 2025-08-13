@@ -7,104 +7,104 @@ title: PacerEventMap
 
 # Interface: PacerEventMap
 
-Defined in: [event-client.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L15)
+Defined in: [event-client.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L13)
 
 ## Properties
 
-### pacer:async-batcher-state
+### pacer:async-batcher
 
 ```ts
-pacer:async-batcher-state: WithKey<AsyncBatcherState<any>>;
+pacer:async-batcher: AsyncBatcher<any>;
+```
+
+Defined in: [event-client.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L14)
+
+***
+
+### pacer:async-debouncer
+
+```ts
+pacer:async-debouncer: AsyncDebouncer<any>;
+```
+
+Defined in: [event-client.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L15)
+
+***
+
+### pacer:async-queuer
+
+```ts
+pacer:async-queuer: AsyncQueuer<any>;
 ```
 
 Defined in: [event-client.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L16)
 
 ***
 
-### pacer:async-debouncer-state
+### pacer:async-rate-limiter
 
 ```ts
-pacer:async-debouncer-state: WithKey<AsyncDebouncerState<any>>;
+pacer:async-rate-limiter: AsyncRateLimiter<any>;
 ```
 
 Defined in: [event-client.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L17)
 
 ***
 
-### pacer:async-queuer-state
+### pacer:async-throttler
 
 ```ts
-pacer:async-queuer-state: WithKey<AsyncQueuerState<any>>;
+pacer:async-throttler: AsyncThrottler<any>;
 ```
 
 Defined in: [event-client.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L18)
 
 ***
 
-### pacer:async-rate-limiter-state
+### pacer:batcher
 
 ```ts
-pacer:async-rate-limiter-state: WithKey<AsyncRateLimiterState<any>>;
+pacer:batcher: Batcher<any>;
 ```
 
 Defined in: [event-client.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L19)
 
 ***
 
-### pacer:async-throttler-state
+### pacer:debouncer
 
 ```ts
-pacer:async-throttler-state: WithKey<AsyncThrottlerState<any>>;
+pacer:debouncer: Debouncer<any>;
 ```
 
 Defined in: [event-client.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L20)
 
 ***
 
-### pacer:batcher-state
+### pacer:queuer
 
 ```ts
-pacer:batcher-state: WithKey<BatcherState<any>>;
+pacer:queuer: Queuer<any>;
 ```
 
 Defined in: [event-client.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L21)
 
 ***
 
-### pacer:debouncer-state
+### pacer:rate-limiter
 
 ```ts
-pacer:debouncer-state: WithKey<DebouncerState<any>>;
+pacer:rate-limiter: RateLimiter<any>;
 ```
 
 Defined in: [event-client.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L22)
 
 ***
 
-### pacer:queuer-state
+### pacer:throttler
 
 ```ts
-pacer:queuer-state: WithKey<QueuerState<any>>;
+pacer:throttler: Throttler<any>;
 ```
 
 Defined in: [event-client.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L23)
-
-***
-
-### pacer:rate-limiter-state
-
-```ts
-pacer:rate-limiter-state: WithKey<RateLimiterState>;
-```
-
-Defined in: [event-client.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L24)
-
-***
-
-### pacer:throttler-state
-
-```ts
-pacer:throttler-state: WithKey<ThrottlerState<any>>;
-```
-
-Defined in: [event-client.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L25)

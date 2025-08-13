@@ -162,6 +162,45 @@ const stylesFactory = () => {
       padding: ${size[2]};
       border: 1px solid ${colors.darkGray[600]};
     `,
+    detailsGrid: css`
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: ${size[2]};
+      align-items: start;
+    `,
+    detailSection: css`
+      background: ${colors.darkGray[700]};
+      border: 1px solid ${colors.darkGray[600]};
+      border-radius: ${border.radius.md};
+      padding: ${size[2]};
+    `,
+    detailSectionHeader: css`
+      font-size: ${fontSize.sm};
+      font-weight: ${font.weight.bold};
+      color: ${colors.gray[200]};
+      margin-bottom: ${size[1]};
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    `,
+    infoGrid: css`
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: ${size[1]};
+      row-gap: ${size[1]};
+      align-items: center;
+    `,
+    infoLabel: css`
+      color: ${colors.gray[400]};
+      font-size: ${fontSize.xs};
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    `,
+    infoValueMono: css`
+      font-family: ${fontFamily.mono};
+      font-size: ${fontSize.xs};
+      color: ${colors.gray[100]};
+      word-break: break-all;
+    `,
     noSelection: css`
       flex: 1;
       display: flex;

@@ -253,17 +253,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
           : isExceeded
             ? 'exceeded'
             : 'idle'
-      const finalState = {
+      return {
         ...combinedState,
         isExceeded,
         status,
-      } as const
-      emitChange('async-rate-limiter-state', {
-        ...finalState,
-        key: this.key,
-      })
-      return finalState
+      }
     })
+    emitChange('async-rate-limiter', this)
   }
 
   /**

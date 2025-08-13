@@ -306,20 +306,17 @@ export class Queuer<TValue> {
       const isIdle = isRunning && isEmpty
 
       const status = isIdle ? 'idle' : isRunning ? 'running' : 'stopped'
-      const finalState = {
+
+      return {
         ...combinedState,
         isEmpty,
         isFull,
         isIdle,
         size,
         status,
-      } as const
-      emitChange('queuer-state', {
-        ...finalState,
-        key: this.key,
-      })
-      return finalState
+      }
     })
+    emitChange('queuer', this)
   }
 
   /**

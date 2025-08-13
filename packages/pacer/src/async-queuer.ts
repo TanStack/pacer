@@ -323,20 +323,17 @@ export class AsyncQueuer<TValue> {
       const isIdle = isRunning && isEmpty && activeItems.length === 0
 
       const status = isIdle ? 'idle' : isRunning ? 'running' : 'stopped'
-      const finalState = {
+
+      return {
         ...combinedState,
         isEmpty,
         isFull,
         isIdle,
         size,
         status,
-      } as const
-      emitChange('async-queuer-state', {
-        ...finalState,
-        key: this.key,
-      })
-      return finalState
+      }
     })
+    emitChange('async-queuer', this)
   }
 
   /**

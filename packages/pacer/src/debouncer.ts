@@ -160,20 +160,16 @@ export class Debouncer<TFn extends AnyFunction> {
         ...newState,
       }
       const { isPending } = combinedState
-      const finalState = {
+      return {
         ...combinedState,
         status: !this.#getEnabled()
           ? 'disabled'
           : isPending
             ? 'pending'
             : 'idle',
-      } as const
-      emitChange('debouncer-state', {
-        ...finalState,
-        key: this.key,
-      })
-      return finalState
+      }
     })
+    emitChange('debouncer', this)
   }
 
   /**

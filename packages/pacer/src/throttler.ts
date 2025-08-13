@@ -168,20 +168,16 @@ export class Throttler<TFn extends AnyFunction> {
         ...newState,
       }
       const { isPending } = combinedState
-      const finalState = {
+      return {
         ...combinedState,
         status: !this.#getEnabled()
           ? 'disabled'
           : isPending
             ? 'pending'
             : 'idle',
-      } as const
-      emitChange('throttler-state', {
-        ...finalState,
-        key: this.key ?? '',
-      })
-      return finalState
+      }
     })
+    emitChange('throttler', this)
   }
 
   #getEnabled = (): boolean => {

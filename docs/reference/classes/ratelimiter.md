@@ -129,7 +129,7 @@ Defined in: [rate-limiter.ts:139](https://github.com/TanStack/pacer/blob/main/pa
 getMsUntilNextWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:330](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L330)
+Defined in: [rate-limiter.ts:326](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L326)
 
 Returns the number of milliseconds until the next execution will be possible
 
@@ -145,7 +145,7 @@ Returns the number of milliseconds until the next execution will be possible
 getRemainingInWindow(): number
 ```
 
-Defined in: [rate-limiter.ts:322](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L322)
+Defined in: [rate-limiter.ts:318](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L318)
 
 Returns the number of remaining executions allowed in the current window
 
@@ -161,7 +161,7 @@ Returns the number of remaining executions allowed in the current window
 maybeExecute(...args): boolean
 ```
 
-Defined in: [rate-limiter.ts:228](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L228)
+Defined in: [rate-limiter.ts:224](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L224)
 
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
@@ -196,7 +196,7 @@ rateLimiter.maybeExecute('arg1', 'arg2'); // false
 reset(): void
 ```
 
-Defined in: [rate-limiter.ts:341](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L341)
+Defined in: [rate-limiter.ts:337](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L337)
 
 Resets the rate limiter state
 

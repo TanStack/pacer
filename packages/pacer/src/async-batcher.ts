@@ -264,7 +264,7 @@ export class AsyncBatcher<TValue> {
       const { isExecuting, isPending, items } = combinedState
       const size = items.length
       const isEmpty = size === 0
-      const finalState = {
+      return {
         ...combinedState,
         isEmpty,
         size,
@@ -275,13 +275,9 @@ export class AsyncBatcher<TValue> {
             : isEmpty
               ? 'idle'
               : 'populated',
-      } as const
-      emitChange('async-batcher-state', {
-        ...finalState,
-        key: this.key,
-      })
-      return finalState
+      }
     })
+    emitChange('async-batcher', this)
   }
 
   #getWait = (): number => {
