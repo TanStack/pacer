@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { createKey, parseFunctionOrValue } from './utils'
-import { emitChange } from './event-client'
+import { emitChange, pacerEventClient } from './event-client'
 
 export interface QueuerState<TValue> {
   /**
@@ -282,12 +282,18 @@ export class Queuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-Queuer') {
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
 
   /**
    * Emits a change event for the queuer instance. Mostly useful for devtools.
    */
-  _emit = () => emitChange('queuer', this)
+  _emit = () => emitChange('Queuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.
@@ -523,6 +529,7 @@ export class Queuer<TValue> {
     numberOfItems: number = this.store.state.items.length,
     position?: QueuePosition,
   ): void => {
+    console.log('flush from queuer')
     this.#clearTimeout() // clear any pending timeout
     for (let i = 0; i < numberOfItems; i++) {
       this.execute(position)

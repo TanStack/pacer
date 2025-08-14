@@ -71,7 +71,7 @@ export function PacerContextProvider(props: { children: any }) {
     const cleanup = pacerEventClient.onAllPluginEvents((_e) => {
       const e = _e as unknown as { type: string; payload: any }
       switch (e.type) {
-        case 'pacer:async-batcher': {
+        case 'pacer:AsyncBatcher': {
           setStore({
             asyncBatchers: updateOrAddToArray(store.asyncBatchers, e.payload),
             lastUpdatedByKey: {
@@ -81,7 +81,7 @@ export function PacerContextProvider(props: { children: any }) {
           })
           break
         }
-        case 'pacer:async-debouncer': {
+        case 'pacer:AsyncDebouncer': {
           setStore({
             asyncDebouncers: updateOrAddToArray(
               store.asyncDebouncers,
@@ -94,7 +94,7 @@ export function PacerContextProvider(props: { children: any }) {
           })
           break
         }
-        case 'pacer:async-queuer': {
+        case 'pacer:AsyncQueuer': {
           setStore({
             asyncQueuers: updateOrAddToArray(store.asyncQueuers, e.payload),
             lastUpdatedByKey: {
@@ -104,7 +104,7 @@ export function PacerContextProvider(props: { children: any }) {
           })
           break
         }
-        case 'pacer:async-rate-limiter': {
+        case 'pacer:AsyncRateLimiter': {
           setStore({
             asyncRateLimiters: updateOrAddToArray(
               store.asyncRateLimiters,
@@ -117,7 +117,7 @@ export function PacerContextProvider(props: { children: any }) {
           })
           break
         }
-        case 'pacer:async-throttler': {
+        case 'pacer:AsyncThrottler': {
           setStore({
             asyncThrottlers: updateOrAddToArray(
               store.asyncThrottlers,
@@ -130,7 +130,7 @@ export function PacerContextProvider(props: { children: any }) {
           })
           break
         }
-        case 'pacer:batcher': {
+        case 'pacer:Batcher': {
           setStore({
             batchers: updateOrAddToArray(store.batchers, e.payload),
             lastUpdatedByKey: {
@@ -140,7 +140,7 @@ export function PacerContextProvider(props: { children: any }) {
           })
           break
         }
-        case 'pacer:debouncer': {
+        case 'pacer:Debouncer': {
           setStore({
             debouncers: updateOrAddToArray(store.debouncers, e.payload),
             lastUpdatedByKey: {
@@ -150,7 +150,7 @@ export function PacerContextProvider(props: { children: any }) {
           })
           break
         }
-        case 'pacer:queuer': {
+        case 'pacer:Queuer': {
           setStore({
             queuers: updateOrAddToArray(store.queuers, e.payload),
             lastUpdatedByKey: {
@@ -160,7 +160,7 @@ export function PacerContextProvider(props: { children: any }) {
           })
           break
         }
-        case 'pacer:rate-limiter': {
+        case 'pacer:RateLimiter': {
           setStore({
             rateLimiters: updateOrAddToArray(store.rateLimiters, e.payload),
             lastUpdatedByKey: {
@@ -170,7 +170,7 @@ export function PacerContextProvider(props: { children: any }) {
           })
           break
         }
-        case 'pacer:throttler': {
+        case 'pacer:Throttler': {
           setStore({
             throttlers: updateOrAddToArray(store.throttlers, e.payload),
             lastUpdatedByKey: {

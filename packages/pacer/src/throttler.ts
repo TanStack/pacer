@@ -152,7 +152,7 @@ export class Throttler<TFn extends AnyFunction> {
   /**
    * Emits a change event for the throttler instance. Mostly useful for devtools.
    */
-  _emit = () => emitChange('throttler', this)
+  _emit = () => emitChange('Throttler', this)
 
   /**
    * Updates the throttler options

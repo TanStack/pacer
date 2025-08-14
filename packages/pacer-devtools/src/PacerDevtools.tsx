@@ -1,6 +1,7 @@
 import { For, createMemo, createSignal } from 'solid-js'
 import clsx from 'clsx'
 import { JsonTree } from '@tanstack/devtools-ui'
+import { pacerEventClient } from '@tanstack/pacer'
 import {
   PacerContextProvider,
   usePacerDevtoolsState,
@@ -155,7 +156,10 @@ function Shell() {
                     <div class={styles().detailSection}>
                       <div class={styles().detailSectionHeader}>Actions</div>
                       {(() => {
-                        const inst: any = entry.instance
+                        const util = entry.instance
+                        const utilName = entry.type
+                        const emitName = `d-${utilName}` as any
+                        const inst: any = util
                         const state = inst?.store?.state
                         const hasPending = state && 'isPending' in state
                         const hasEmpty = state && 'isEmpty' in state
@@ -167,9 +171,14 @@ function Shell() {
                         const hasCancel = typeof inst.cancel === 'function'
                         const hasReset = typeof inst.reset === 'function'
                         const hasClear = typeof inst.clear === 'function'
+                        const hasStart = typeof inst.start === 'function'
+                        const hasStop = typeof inst.stop === 'function'
+                        const hasStartStop = hasStart && hasStop
+
+                        // Get running state if available
+                        const isRunning = state?.isRunning ?? true
 
                         // Determine if this is a debouncer/throttler (has isPending)
-                        const isDebounceThrottleLike = hasPending
 
                         // No actions if no methods available
                         if (
@@ -201,7 +210,7 @@ function Shell() {
                                 class={styles().actionButton}
                                 onClick={() => {
                                   togglePending()
-                                  inst._emit()
+                                  pacerEventClient.emit(emitName, inst)
                                 }}
                               >
                                 <span class={styles().actionDotBlue} />
@@ -215,10 +224,15 @@ function Shell() {
                                 class={styles().actionButton}
                                 onClick={() => {
                                   inst.flush()
-                                  inst._emit()
+                                  pacerEventClient.emit(emitName, inst)
                                 }}
                                 disabled={
-                                  isDebounceThrottleLike ? !isPending : isEmpty
+                                  (['Debouncer', 'Throttler'].includes(
+                                    utilName,
+                                  ) &&
+                                    !isPending) ||
+                                  (['Batcher', 'Queuer'].includes(utilName) &&
+                                    isEmpty)
                                 }
                               >
                                 <span class={styles().actionDotGreen} />
@@ -230,10 +244,15 @@ function Shell() {
                                 class={styles().actionButton}
                                 onClick={() => {
                                   inst.cancel()
-                                  inst._emit()
+                                  pacerEventClient.emit(emitName, inst)
                                 }}
                                 disabled={
-                                  isDebounceThrottleLike ? !isPending : false
+                                  (['Debouncer', 'Throttler'].includes(
+                                    utilName,
+                                  ) &&
+                                    !isPending) ||
+                                  (['Batcher', 'Queuer'].includes(utilName) &&
+                                    isEmpty)
                                 }
                               >
                                 <span class={styles().actionDotRed} />
@@ -245,7 +264,7 @@ function Shell() {
                                 class={styles().actionButton}
                                 onClick={() => {
                                   inst.reset()
-                                  inst._emit()
+                                  pacerEventClient.emit(emitName, inst)
                                 }}
                               >
                                 <span class={styles().actionDotYellow} />
@@ -257,12 +276,31 @@ function Shell() {
                                 class={styles().actionButton}
                                 onClick={() => {
                                   inst.clear()
-                                  inst._emit()
+                                  pacerEventClient.emit(emitName, inst)
                                 }}
-                                disabled={isEmpty}
+                                disabled={
+                                  ['Batcher', 'Queuer'].includes(utilName) &&
+                                  isEmpty
+                                }
                               >
                                 <span class={styles().actionDotOrange} />
                                 Clear
+                              </button>
+                            )}
+                            {hasStartStop && (
+                              <button
+                                class={styles().actionButton}
+                                onClick={() => {
+                                  if (isRunning) {
+                                    inst.stop()
+                                  } else {
+                                    inst.start()
+                                  }
+                                  pacerEventClient.emit(emitName, inst)
+                                }}
+                              >
+                                <span class={styles().actionDotPurple} />
+                                {isRunning ? 'Stop' : 'Start'}
                               </button>
                             )}
                           </div>

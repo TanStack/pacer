@@ -304,7 +304,7 @@ export class AsyncQueuer<TValue> {
   /**
    * Emits a change event for the async queuer instance. Mostly useful for devtools.
    */
-  _emit = () => emitChange('async-queuer', this)
+  _emit = () => emitChange('AsyncQueuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.

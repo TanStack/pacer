@@ -208,7 +208,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   /**
    * Emits a change event for the async debouncer instance. Mostly useful for devtools.
    */
-  _emit = () => emitChange('async-debouncer', this)
+  _emit = () => emitChange('AsyncDebouncer', this)
 
   /**
    * Updates the async debouncer options

@@ -237,6 +237,12 @@ const stylesFactory = () => {
       border-radius: 9999px;
       background: ${colors.pink[400]};
     `,
+    actionDotPurple: css`
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: ${colors.purple[400]};
+    `,
     infoGrid: css`
       display: grid;
       grid-template-columns: auto 1fr;

@@ -144,7 +144,7 @@ export class Debouncer<TFn extends AnyFunction> {
   /**
    * Emits a change event for the debouncer instance. Mostly useful for devtools.
    */
-  _emit = () => emitChange('debouncer', this)
+  _emit = () => emitChange('Debouncer', this)
 
   /**
    * Updates the debouncer options

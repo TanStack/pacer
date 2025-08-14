@@ -251,7 +251,7 @@ export class AsyncBatcher<TValue> {
   /**
    * Emits a change event for the async batcher instance. Mostly useful for devtools.
    */
-  _emit = () => emitChange('async-batcher', this)
+  _emit = () => emitChange('AsyncBatcher', this)
 
   /**
    * Updates the async batcher options

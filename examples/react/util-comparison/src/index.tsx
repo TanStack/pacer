@@ -6,7 +6,7 @@ import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
 import { useBatcher } from '@tanstack/react-pacer/batcher'
 import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
-import { TanstackDevtools } from '@tanstack/react-devtools'
+import { TanStackDevtools } from '@tanstack/react-devtools'
 
 function ComparisonApp() {
   const [currentValue, setCurrentValue] = useState(50)
@@ -447,7 +447,7 @@ function ComparisonApp() {
           ))}
         </div>
       </div>
-      <TanstackDevtools
+      <TanStackDevtools
         eventBusConfig={{
           debug: false,
         }}

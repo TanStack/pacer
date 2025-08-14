@@ -235,7 +235,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   /**
    * Emits a change event for the async rate limiter instance. Mostly useful for devtools.
    */
-  _emit = () => emitChange('async-rate-limiter', this)
+  _emit = () => emitChange('AsyncRateLimiter', this)
 
   /**
    * Updates the async rate limiter options
