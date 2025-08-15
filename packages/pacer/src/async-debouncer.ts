@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
@@ -72,6 +73,11 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    */
   initialState?: Partial<AsyncDebouncerState<TFn>>
   /**
+   * Optional key to identify this async debouncer instance.
+   * If provided, the async debouncer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to false.
    */
@@ -119,7 +125,7 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
 
 type AsyncDebouncerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncDebouncerOptions<any>,
-  'initialState' | 'onError' | 'onSettled' | 'onSuccess'
+  'initialState' | 'onError' | 'onSettled' | 'onSuccess' | 'key'
 >
 
 const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
@@ -178,6 +184,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncDebouncerState<TFn>>> = new Store<
     AsyncDebouncerState<TFn>
   >(getDefaultAsyncDebouncerState<TFn>())
+  key: string
   options: AsyncDebouncerOptions<TFn>
   #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
@@ -189,13 +196,26 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncDebouncer') {
+        this.#setState(event.payload.store.state as AsyncDebouncerState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the async debouncer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncDebouncer', this)
 
   /**
    * Updates the async debouncer options
@@ -229,6 +249,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
                 : 'idle',
       }
     })
+    this._emit()
   }
 
   /**

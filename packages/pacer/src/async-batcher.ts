@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 
 export interface AsyncBatcherState<TValue> {
@@ -92,6 +93,11 @@ export interface AsyncBatcherOptions<TValue> {
    */
   initialState?: Partial<AsyncBatcherState<TValue>>
   /**
+   * Optional key to identify this async batcher instance.
+   * If provided, the async batcher will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum number of items in a batch
    * @default Infinity
    */
@@ -144,7 +150,12 @@ export interface AsyncBatcherOptions<TValue> {
 
 type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<AsyncBatcherOptions<TValue>>,
-  'initialState' | 'onError' | 'onItemsChange' | 'onSettled' | 'onSuccess'
+  | 'initialState'
+  | 'onError'
+  | 'onItemsChange'
+  | 'onSettled'
+  | 'onSuccess'
+  | 'key'
 >
 
 const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
@@ -220,6 +231,7 @@ export class AsyncBatcher<TValue> {
   readonly store: Store<Readonly<AsyncBatcherState<TValue>>> = new Store(
     getDefaultAsyncBatcherState<TValue>(),
   )
+  key: string
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -227,13 +239,26 @@ export class AsyncBatcher<TValue> {
     public fn: (items: Array<TValue>) => Promise<any>,
     initialOptions: AsyncBatcherOptions<TValue>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncBatcher') {
+        this.#setState(event.payload.store.state as AsyncBatcherState<TValue>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the async batcher instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncBatcher', this)
 
   /**
    * Updates the async batcher options
@@ -264,6 +289,7 @@ export class AsyncBatcher<TValue> {
               : 'populated',
       }
     })
+    this._emit()
   }
 
   #getWait = (): number => {
