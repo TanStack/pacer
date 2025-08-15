@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 function App1() {
   // The function that we will be queuing
@@ -228,9 +229,18 @@ function App2() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
-  <div>
-    <App1 />
-    <hr />
-    <App2 />
-  </div>,
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // options={{
+  //   queuer: {
+  //     maxSize: 50,
+  //   },
+  // }}
+  >
+    <div>
+      <App1 />
+      <hr />
+      <App2 />
+    </div>
+  </PacerProvider>,
 )

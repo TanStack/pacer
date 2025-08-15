@@ -1,5 +1,8 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
@@ -62,6 +65,10 @@ function getDefaultAsyncRateLimiterState<
  */
 export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<TFn>
+  /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
@@ -71,6 +78,11 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    * Initial state for the rate limiter
    */
   initialState?: Partial<AsyncRateLimiterState<TFn>>
+  /**
+   * Optional key to identify this async rate limiter instance.
+   * If provided, the async rate limiter will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Maximum number of executions allowed within the time window.
    * Can be a number or a function that returns a number.
@@ -127,8 +139,11 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
 
 const defaultOptions: Omit<
   Required<AsyncRateLimiterOptions<any>>,
-  'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess'
+  'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess' | 'key'
 > = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   enabled: true,
   limit: 1,
   window: 0,
@@ -206,23 +221,42 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>> = new Store<
     AsyncRateLimiterState<TFn>
   >(getDefaultAsyncRateLimiterState<TFn>())
+  key: string
   options: AsyncRateLimiterOptions<TFn>
+  asyncRetryer: AsyncRetryer<TFn>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
     public fn: TFn,
     initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     this.#setState(this.options.initialState ?? {})
     for (const executionTime of this.#getExecutionTimesInWindow()) {
       this.#setCleanupTimeout(executionTime)
     }
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncRateLimiter') {
+        this.#setState(event.payload.store.state as AsyncRateLimiterState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the async rate limiter instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncRateLimiter', this)
 
   /**
    * Updates the async rate limiter options
@@ -251,6 +285,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         status,
       }
     })
+    this._emit()
   }
 
   /**
@@ -331,13 +366,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     })
 
     try {
-      const result = await this.fn(...args) // EXECUTE!
+      const result = await this.asyncRetryer.execute(...args) // EXECUTE!
       this.#setCleanupTimeout(now)
       this.#setState({
         successCount: this.store.state.successCount + 1,
         lastResult: result,
       })
-      this.options.onSuccess?.(result, args, this)
+      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,

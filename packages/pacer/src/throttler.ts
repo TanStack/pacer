@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface ThrottlerState<TFn extends AnyFunction> {
@@ -57,6 +58,11 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
    */
   initialState?: Partial<ThrottlerState<TFn>>
   /**
+   * A key to identify the throttler.
+   * If provided, the throttler will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to true.
    */
@@ -80,7 +86,7 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<ThrottlerOptions<any>>,
-  'initialState' | 'onExecute'
+  'initialState' | 'onExecute' | 'key'
 > = {
   enabled: true,
   leading: true,
@@ -127,6 +133,7 @@ export class Throttler<TFn extends AnyFunction> {
   readonly store: Store<Readonly<ThrottlerState<TFn>>> = new Store(
     getDefaultThrottlerState(),
   )
+  key: string | undefined
   options: ThrottlerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
 
@@ -134,12 +141,25 @@ export class Throttler<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: ThrottlerOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-Throttler') {
+        this.#setState(event.payload.store.state as ThrottlerState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the throttler instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('Throttler', this)
 
   /**
    * Updates the throttler options
@@ -169,6 +189,7 @@ export class Throttler<TFn extends AnyFunction> {
             : 'idle',
       }
     })
+    this._emit()
   }
 
   #getEnabled = (): boolean => {

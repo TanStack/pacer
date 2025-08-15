@@ -5,6 +5,8 @@ import { useThrottler } from '@tanstack/react-pacer/throttler'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
 import { useBatcher } from '@tanstack/react-pacer/batcher'
+import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
+import { TanStackDevtools } from '@tanstack/react-devtools'
 
 function ComparisonApp() {
   const [currentValue, setCurrentValue] = useState(50)
@@ -21,6 +23,7 @@ function ComparisonApp() {
   const debouncer = useDebouncer(
     setDebouncedValue,
     {
+      key: 'my-debouncer',
       wait: 600,
     },
     (state) => state,
@@ -29,6 +32,7 @@ function ComparisonApp() {
   const throttler = useThrottler(
     setThrottledValue,
     {
+      key: 'my-throttler',
       wait: 600,
     },
     (state) => state,
@@ -37,6 +41,7 @@ function ComparisonApp() {
   const rateLimiter = useRateLimiter(
     setRateLimitedValue,
     {
+      key: 'my-rate-limiter',
       limit: 20,
       window: 2000,
       windowType: 'sliding',
@@ -47,6 +52,7 @@ function ComparisonApp() {
   const queuer = useQueuer(
     setQueuedValue,
     {
+      key: 'my-queuer',
       wait: 100,
       maxSize: 50,
     },
@@ -61,6 +67,7 @@ function ComparisonApp() {
       }
     },
     {
+      key: 'my-batcher',
       wait: 600,
       maxSize: 5,
     },
@@ -440,6 +447,12 @@ function ComparisonApp() {
           ))}
         </div>
       </div>
+      <TanStackDevtools
+        eventBusConfig={{
+          debug: false,
+        }}
+        plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
+      />
     </div>
   )
 }

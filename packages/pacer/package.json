@@ -77,6 +77,16 @@
         "default": "./dist/cjs/async-rate-limiter.cjs"
       }
     },
+    "./async-retryer": {
+      "import": {
+        "types": "./dist/esm/async-retryer.d.ts",
+        "default": "./dist/esm/async-retryer.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-retryer.d.cts",
+        "default": "./dist/cjs/async-retryer.cjs"
+      }
+    },
     "./async-throttler": {
       "import": {
         "types": "./dist/esm/async-throttler.d.ts",
@@ -150,6 +160,16 @@
         "default": "./dist/cjs/utils.cjs"
       }
     },
+    "./event-client": {
+      "import": {
+        "types": "./dist/esm/event-client.d.ts",
+        "default": "./dist/esm/event-client.js"
+      },
+      "require": {
+        "types": "./dist/cjs/event-client.d.cts",
+        "default": "./dist/cjs/event-client.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -171,6 +191,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@tanstack/devtools-event-client": "^0.2.1",
     "@tanstack/store": "^0.7.2"
   }
 }

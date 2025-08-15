@@ -1,5 +1,8 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
@@ -62,6 +65,10 @@ function getDefaultAsyncDebouncerState<
  */
 export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<TFn>
+  /**
    * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
    * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
@@ -71,6 +78,11 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    * Initial state for the async debouncer
    */
   initialState?: Partial<AsyncDebouncerState<TFn>>
+  /**
+   * Optional key to identify this async debouncer instance.
+   * If provided, the async debouncer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to false.
@@ -119,10 +131,13 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
 
 type AsyncDebouncerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncDebouncerOptions<any>,
-  'initialState' | 'onError' | 'onSettled' | 'onSuccess'
+  'initialState' | 'onError' | 'onSettled' | 'onSuccess' | 'key'
 >
 
 const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   enabled: true,
   leading: false,
   trailing: true,
@@ -178,8 +193,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncDebouncerState<TFn>>> = new Store<
     AsyncDebouncerState<TFn>
   >(getDefaultAsyncDebouncerState<TFn>())
+  key: string
   options: AsyncDebouncerOptions<TFn>
-  #abortController: AbortController | null = null
+  asyncRetryer: AsyncRetryer<TFn>
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
@@ -189,13 +205,30 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncDebouncer') {
+        this.#setState(event.payload.store.state as AsyncDebouncerState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the async debouncer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncDebouncer', this)
 
   /**
    * Updates the async debouncer options
@@ -229,6 +262,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
                 : 'idle',
       }
     })
+    this._emit()
   }
 
   /**
@@ -303,15 +337,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
-    this.#abortController = new AbortController()
     try {
       this.#setState({ isExecuting: true })
-      const result = await this.fn(...args) // EXECUTE!
+      const result = await this.asyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result, args, this)
+      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
@@ -327,7 +360,6 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         lastArgs: undefined,
         settleCount: this.store.state.settleCount + 1,
       })
-      this.#abortController = null
       this.options.onSettled?.(args, this)
     }
     return this.store.state.lastResult
@@ -375,10 +407,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   #abortExecution = (): void => {
-    if (this.#abortController) {
-      this.#abortController.abort()
-      this.#abortController = null
-    }
+    this.asyncRetryer.cancel()
   }
 
   /**

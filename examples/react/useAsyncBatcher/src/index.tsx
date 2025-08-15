@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncBatcher } from '@tanstack/react-pacer/async-batcher'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 const fakeProcessingTime = 1000
 
@@ -215,4 +216,15 @@ function App() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
-root.render(<App />)
+root.render(
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // options={{
+  //   batcher: {
+  //     maxSize: 10,
+  //   },
+  // }}
+  >
+    <App />
+  </PacerProvider>,
+)

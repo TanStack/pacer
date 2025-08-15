@@ -10,3 +10,18 @@ export function parseFunctionOrValue<T, TArgs extends Array<any>>(
 ): T {
   return isFunction(value) ? value(...args) : value
 }
+
+export function createKey(key?: string): string {
+  if (key) {
+    return key
+  }
+
+  if (
+    typeof crypto !== 'undefined' &&
+    typeof crypto.randomUUID === 'function'
+  ) {
+    return crypto.randomUUID()
+  }
+
+  return ''
+}

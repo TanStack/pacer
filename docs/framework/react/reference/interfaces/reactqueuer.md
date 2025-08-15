@@ -7,7 +7,7 @@ title: ReactQueuer
 
 # Interface: ReactQueuer\<TValue, TSelected\>
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:7](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L7)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L8)
 
 ## Extends
 
@@ -27,7 +27,7 @@ Defined in: [react-pacer/src/queuer/useQueuer.ts:7](https://github.com/TanStack/
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L14)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L15)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -41,7 +41,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<QueuerState<TValue>>>;
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L20)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L21)
 
 #### Deprecated
 
