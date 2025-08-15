@@ -612,7 +612,7 @@ importers:
     dependencies:
       '@tanstack/react-pacer':
         specifier: ^0.14.0
-        version: link:../../../packages/react-pacer
+        version: 0.14.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react:
         specifier: ^19.1.1
         version: 19.1.1
@@ -621,17 +621,17 @@ importers:
         version: 19.1.1(react@19.1.1)
     devDependencies:
       '@types/react':
-        specifier: ^19.1.9
-        version: 19.1.9
+        specifier: ^19.1.10
+        version: 19.1.10
       '@types/react-dom':
         specifier: ^19.1.7
-        version: 19.1.7(@types/react@19.1.9)
+        version: 19.1.7(@types/react@19.1.10)
       '@vitejs/plugin-react':
-        specifier: ^4.7.0
-        version: 4.7.0(vite@7.0.6(@types/node@24.1.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.8.0))
+        specifier: ^5.0.0
+        version: 5.0.0(vite@7.1.2(@types/node@24.2.1)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.8.0))
       vite:
-        specifier: ^7.0.6
-        version: 7.0.6(@types/node@24.1.0)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.8.0)
+        specifier: ^7.1.2
+        version: 7.1.2(@types/node@24.2.1)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.8.0)
 
   examples/react/useAsyncThrottler:
     dependencies:
@@ -2708,6 +2708,10 @@ packages:
     resolution: {integrity: sha512-7OsrYscWEPojIRqh9byyyv2W+jm/3WaDckVnuQgf7a86YPhtN93fHa3hsKquJE/IbMX/FK0EDHi+DPAXwvZ5ZA==}
     engines: {node: '>=18'}
 
+  '@tanstack/pacer@0.13.0':
+    resolution: {integrity: sha512-eCV3BIn+If4YGMgRbB315CvhyggmBhV85NmBH4uAA2kop6fOJh5GAWsvgsQOqYt0EFhHcjUwQ1eIhqw9aohuOQ==}
+    engines: {node: '>=18'}
+
   '@tanstack/persister@0.1.1':
     resolution: {integrity: sha512-XUewm2+D0K84ZSuWm1oMHfqw/flmO7IzCc+316php/XChgbMe30DStp1cF2Uc4IV0cI0G4hDq2RX3+NTxTIvWg==}
     engines: {node: '>=18'}
@@ -2728,6 +2732,13 @@ packages:
     peerDependencies:
       '@types/react': '>=16.8'
       '@types/react-dom': '>=16.8'
+      react: '>=16.8'
+      react-dom: '>=16.8'
+
+  '@tanstack/react-pacer@0.14.0':
+    resolution: {integrity: sha512-K5wR61esBjnO+o5XnagE4twOUtNmNb6WF0+ARQRs68tViq4mNGwKuDHm0OuqAN+7Vq8k41horjiVAj24d6V1vw==}
+    engines: {node: '>=18'}
+    peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
 
@@ -6502,6 +6513,10 @@ snapshots:
       - supports-color
       - typescript
 
+  '@tanstack/pacer@0.13.0':
+    dependencies:
+      '@tanstack/store': 0.7.2
+
   '@tanstack/persister@0.1.1': {}
 
   '@tanstack/publish-config@0.2.0':
@@ -6530,6 +6545,13 @@ snapshots:
       - solid-js
       - utf-8-validate
 
+  '@tanstack/react-pacer@0.14.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+    dependencies:
+      '@tanstack/pacer': 0.13.0
+      '@tanstack/react-store': 0.7.3(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+
   '@tanstack/react-persister@0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
       '@tanstack/persister': 0.1.1
@@ -6552,6 +6574,13 @@ snapshots:
       '@tanstack/store': 0.7.2
       react: 19.1.1
       react-dom: 19.1.0(react@19.1.1)
+      use-sync-external-store: 1.5.0(react@19.1.1)
+
+  '@tanstack/react-store@0.7.3(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+    dependencies:
+      '@tanstack/store': 0.7.2
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
       use-sync-external-store: 1.5.0(react@19.1.1)
 
   '@tanstack/solid-store@0.7.3(solid-js@1.9.9)':
