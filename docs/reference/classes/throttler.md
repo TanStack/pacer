@@ -120,7 +120,7 @@ Defined in: [throttler.ts:133](https://github.com/TanStack/pacer/blob/main/packa
 _emit(): void
 ```
 
-Defined in: [throttler.ts:155](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L155)
+Defined in: [throttler.ts:162](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L162)
 
 Emits a change event for the throttler instance. Mostly useful for devtools.
 
@@ -136,7 +136,7 @@ Emits a change event for the throttler instance. Mostly useful for devtools.
 cancel(): void
 ```
 
-Defined in: [throttler.ts:295](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L295)
+Defined in: [throttler.ts:302](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L302)
 
 Cancels any pending trailing execution and clears internal state.
 
@@ -158,7 +158,7 @@ Has no effect if there is no pending execution.
 flush(): void
 ```
 
-Defined in: [throttler.ts:273](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L273)
+Defined in: [throttler.ts:280](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L280)
 
 Processes the current pending execution immediately
 
@@ -174,7 +174,7 @@ Processes the current pending execution immediately
 maybeExecute(...args): void
 ```
 
-Defined in: [throttler.ts:218](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L218)
+Defined in: [throttler.ts:225](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L225)
 
 Attempts to execute the throttled function. The execution behavior depends on the throttler options:
 
@@ -216,7 +216,7 @@ throttled.maybeExecute('c', 'd');
 reset(): void
 ```
 
-Defined in: [throttler.ts:306](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L306)
+Defined in: [throttler.ts:313](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L313)
 
 Resets the throttler state to its default values
 
@@ -232,7 +232,7 @@ Resets the throttler state to its default values
 setOptions(newOptions): void
 ```
 
-Defined in: [throttler.ts:160](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L160)
+Defined in: [throttler.ts:167](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L167)
 
 Updates the throttler options
 

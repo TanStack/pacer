@@ -11,7 +11,7 @@ title: batch
 function batch<TValue>(fn, options): (item) => void
 ```
 
-Defined in: [batcher.ts:304](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L304)
+Defined in: [batcher.ts:311](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L311)
 
 Creates a batcher that processes items in batches
 

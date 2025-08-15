@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { createKey, parseFunctionOrValue } from './utils'
-import { emitChange } from './event-client'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface ThrottlerState<TFn extends AnyFunction> {
@@ -147,6 +147,13 @@ export class Throttler<TFn extends AnyFunction> {
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-Throttler') {
+        this.#setState(event.payload.store.state as ThrottlerState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
 
   /**

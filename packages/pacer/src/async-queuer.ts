@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { createKey, parseFunctionOrValue } from './utils'
-import { emitChange } from './event-client'
+import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
@@ -299,6 +299,13 @@ export class AsyncQueuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncQueuer') {
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
 
   /**

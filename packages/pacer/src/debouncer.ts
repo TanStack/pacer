@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { createKey, parseFunctionOrValue } from './utils'
-import { emitChange } from './event-client'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface DebouncerState<TFn extends AnyFunction> {
@@ -139,6 +139,13 @@ export class Debouncer<TFn extends AnyFunction> {
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-Debouncer') {
+        this.#setState(event.payload.store.state as DebouncerState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
 
   /**

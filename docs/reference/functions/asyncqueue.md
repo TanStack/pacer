@@ -11,7 +11,7 @@ title: asyncQueue
 function asyncQueue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean
 ```
 
-Defined in: [async-queuer.ts:766](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L766)
+Defined in: [async-queuer.ts:773](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L773)
 
 Creates a new AsyncQueuer instance and returns a bound addItem function for adding tasks.
 The queuer is started automatically and ready to process items.

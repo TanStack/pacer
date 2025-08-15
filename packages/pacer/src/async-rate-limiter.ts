@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { createKey, parseFunctionOrValue } from './utils'
-import { emitChange } from './event-client'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
@@ -230,6 +230,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     for (const executionTime of this.#getExecutionTimesInWindow()) {
       this.#setCleanupTimeout(executionTime)
     }
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncRateLimiter') {
+        this.#setState(event.payload.store.state as AsyncRateLimiterState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
 
   /**

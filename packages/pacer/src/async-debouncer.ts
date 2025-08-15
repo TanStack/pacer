@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { createKey, parseFunctionOrValue } from './utils'
-import { emitChange } from './event-client'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
@@ -203,6 +203,13 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncDebouncer') {
+        this.#setState(event.payload.store.state as AsyncDebouncerState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
 
   /**

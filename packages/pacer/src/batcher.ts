@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { createKey, parseFunctionOrValue } from './utils'
-import { emitChange } from './event-client'
+import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 
 export interface BatcherState<TValue> {
@@ -159,6 +159,13 @@ export class Batcher<TValue> {
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-Batcher') {
+        this.#setState(event.payload.store.state as BatcherState<TValue>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
 
   /**
