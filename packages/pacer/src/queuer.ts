@@ -529,7 +529,6 @@ export class Queuer<TValue> {
     numberOfItems: number = this.store.state.items.length,
     position?: QueuePosition,
   ): void => {
-    console.log('flush from queuer')
     this.#clearTimeout() // clear any pending timeout
     for (let i = 0; i < numberOfItems; i++) {
       this.execute(position)
