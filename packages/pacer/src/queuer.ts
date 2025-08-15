@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 
 export interface QueuerState<TValue> {
   /**
@@ -81,6 +82,11 @@ export interface QueuerOptions<TValue> {
    */
   addItemsTo?: QueuePosition
   /**
+   * Optional key to identify this queuer instance.
+   * If provided, the queuer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum time in milliseconds that an item can stay in the queue
    * If not provided, items will never expire
    */
@@ -148,6 +154,7 @@ const defaultOptions: Omit<
   | 'onItemsChange'
   | 'onReject'
   | 'onExpire'
+  | 'key'
 > = {
   addItemsTo: 'back',
   getItemsFrom: 'front',
@@ -244,6 +251,7 @@ export class Queuer<TValue> {
   readonly store: Store<Readonly<QueuerState<TValue>>> = new Store(
     getDefaultQueuerState<TValue>(),
   )
+  key: string
   options: QueuerOptions<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -251,6 +259,7 @@ export class Queuer<TValue> {
     public fn: (item: TValue) => void,
     initialOptions: QueuerOptions<TValue> = {},
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -273,7 +282,18 @@ export class Queuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-Queuer') {
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the queuer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('Queuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.
@@ -307,6 +327,7 @@ export class Queuer<TValue> {
         status,
       }
     })
+    this._emit()
   }
 
   /**
@@ -508,6 +529,7 @@ export class Queuer<TValue> {
     numberOfItems: number = this.store.state.items.length,
     position?: QueuePosition,
   ): void => {
+    console.log('flush from queuer')
     this.#clearTimeout() // clear any pending timeout
     for (let i = 0; i < numberOfItems; i++) {
       this.execute(position)

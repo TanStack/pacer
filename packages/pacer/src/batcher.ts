@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 
 export interface BatcherState<TValue> {
@@ -59,6 +60,11 @@ export interface BatcherOptions<TValue> {
    */
   initialState?: Partial<BatcherState<TValue>>
   /**
+   * Optional key to identify this batcher instance.
+   * If provided, the batcher will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum number of items in a batch
    * @default Infinity
    */
@@ -87,7 +93,7 @@ export interface BatcherOptions<TValue> {
 
 type BatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<BatcherOptions<TValue>>,
-  'initialState' | 'onExecute' | 'onItemsChange'
+  'initialState' | 'onExecute' | 'onItemsChange' | 'key'
 >
 
 const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
@@ -139,6 +145,7 @@ export class Batcher<TValue> {
   readonly store: Store<Readonly<BatcherState<TValue>>> = new Store(
     getDefaultBatcherState<TValue>(),
   )
+  key: string
   options: BatcherOptionsWithOptionalCallbacks<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -146,12 +153,25 @@ export class Batcher<TValue> {
     public fn: (items: Array<TValue>) => void,
     initialOptions: BatcherOptions<TValue>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-Batcher') {
+        this.#setState(event.payload.store.state as BatcherState<TValue>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the batcher instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('Batcher', this)
 
   /**
    * Updates the batcher options
@@ -176,6 +196,7 @@ export class Batcher<TValue> {
         status: isPending ? 'pending' : 'idle',
       }
     })
+    this._emit()
   }
 
   #getWait = (): number => {

@@ -1,7 +1,8 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
 import { AsyncRetryer } from './async-retryer'
 import type { AsyncRetryerOptions } from './async-retryer'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
@@ -82,6 +83,11 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    * Initial state for the async throttler
    */
   initialState?: Partial<AsyncThrottlerState<TFn>>
+  /**
+   * Optional key to identify this async throttler instance.
+   * If provided, the async throttler will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Whether to execute the function immediately when called
    * Defaults to true
@@ -198,6 +204,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncThrottlerState<TFn>>> = new Store<
     AsyncThrottlerState<TFn>
   >(getDefaultAsyncThrottlerState<TFn>())
+  key: string
   options: AsyncThrottlerOptions<TFn>
   asyncRetryer: AsyncRetryer<TFn>
   #timeoutId: NodeJS.Timeout | null = null
@@ -209,6 +216,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncThrottlerOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -219,7 +227,19 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this.options.asyncRetryerOptions,
     )
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncThrottler') {
+        this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the async throttler instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncThrottler', this)
 
   /**
    * Updates the async throttler options
@@ -253,6 +273,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
                 : 'idle',
       }
     })
+    this._emit()
   }
 
   /**

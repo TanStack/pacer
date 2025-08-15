@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface DebouncerState<TFn extends AnyFunction> {
@@ -48,6 +49,11 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    */
   enabled?: boolean | ((debouncer: Debouncer<TFn>) => boolean)
   /**
+   * A key to identify the debouncer.
+   * If provided, the debouncer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Initial state for the debouncer
    */
   initialState?: Partial<DebouncerState<TFn>>
@@ -76,7 +82,7 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<DebouncerOptions<any>>,
-  'initialState' | 'onExecute'
+  'initialState' | 'onExecute' | 'key'
 > = {
   enabled: true,
   leading: false,
@@ -119,6 +125,7 @@ export class Debouncer<TFn extends AnyFunction> {
   readonly store: Store<Readonly<DebouncerState<TFn>>> = new Store(
     getDefaultDebouncerState<TFn>(),
   )
+  key: string
   options: DebouncerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
 
@@ -126,12 +133,25 @@ export class Debouncer<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: DebouncerOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-Debouncer') {
+        this.#setState(event.payload.store.state as DebouncerState<TFn>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the debouncer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('Debouncer', this)
 
   /**
    * Updates the debouncer options
@@ -161,6 +181,7 @@ export class Debouncer<TFn extends AnyFunction> {
             : 'idle',
       }
     })
+    this._emit()
   }
 
   /**

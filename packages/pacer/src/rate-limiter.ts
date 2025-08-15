@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface RateLimiterState {
@@ -49,6 +50,11 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
    */
   initialState?: Partial<RateLimiterState>
   /**
+   * Optional key to identify this rate limiter instance.
+   * If provided, the rate limiter will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum number of executions allowed within the time window.
    * Can be a number or a callback function that receives the rate limiter instance and returns a number.
    */
@@ -77,7 +83,7 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<RateLimiterOptions<any>>,
-  'initialState' | 'onExecute' | 'onReject'
+  'initialState' | 'onExecute' | 'onReject' | 'key'
 > = {
   enabled: true,
   limit: 1,
@@ -132,6 +138,7 @@ const defaultOptions: Omit<
 export class RateLimiter<TFn extends AnyFunction> {
   readonly store: Store<Readonly<RateLimiterState>> =
     new Store<RateLimiterState>(getDefaultRateLimiterState())
+  key: string
   options: RateLimiterOptions<TFn>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
@@ -139,6 +146,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: RateLimiterOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -147,7 +155,19 @@ export class RateLimiter<TFn extends AnyFunction> {
     for (const executionTime of this.#getExecutionTimesInWindow()) {
       this.#setCleanupTimeout(executionTime)
     }
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-RateLimiter') {
+        this.#setState(event.payload.store.state as RateLimiterState)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the rate limiter instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('RateLimiter', this)
 
   /**
    * Updates the rate limiter options
@@ -174,6 +194,7 @@ export class RateLimiter<TFn extends AnyFunction> {
         status,
       }
     })
+    this._emit()
   }
 
   /**

@@ -1,7 +1,8 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
 import { AsyncRetryer } from './async-retryer'
 import type { AsyncRetryerOptions } from './async-retryer'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
@@ -104,6 +105,11 @@ export interface AsyncQueuerOptions<TValue> {
    */
   addItemsTo?: QueuePosition
   /**
+   * Optional key to identify this async queuer instance.
+   * If provided, the async queuer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum number of concurrent tasks to process.
    * Can be a number or a function that returns a number.
    * @default 1
@@ -196,6 +202,7 @@ type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
   | 'onItemsChange'
   | 'onExpire'
   | 'onError'
+  | 'key'
 >
 
 const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
@@ -269,6 +276,7 @@ export class AsyncQueuer<TValue> {
   readonly store: Store<Readonly<AsyncQueuerState<TValue>>> = new Store<
     AsyncQueuerState<TValue>
   >(getDefaultAsyncQueuerState<TValue>())
+  key: string
   options: AsyncQueuerOptions<TValue>
   asyncRetryer: AsyncRetryer<(item: TValue) => Promise<any>>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
@@ -277,6 +285,7 @@ export class AsyncQueuer<TValue> {
     public fn: (item: TValue) => Promise<any>,
     initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -304,7 +313,19 @@ export class AsyncQueuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncQueuer') {
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the async queuer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncQueuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.
@@ -338,6 +359,7 @@ export class AsyncQueuer<TValue> {
         status,
       }
     })
+    this._emit()
   }
 
   /**
