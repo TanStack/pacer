@@ -13,14 +13,11 @@ const stylesFactory = () => {
       color: ${colors.gray[100]};
       font-family: ${fontFamily.sans};
       font-size: ${fontSize.sm};
-      min-height: 100vh;
-      padding: ${size[2]};
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: ${size[3]};
       width: 100%;
-      height: 100vh;
+      height: 100%;
       overflow: hidden;
     `,
     stickyHeader: css`
@@ -28,8 +25,7 @@ const stylesFactory = () => {
       top: 0;
       z-index: 10;
       background: ${colors.darkGray[900]};
-      padding-bottom: ${size[2]};
-      margin-bottom: ${size[1]};
+      padding: ${size[2]};
       font-size: ${fontSize.lg};
       font-weight: ${font.weight.bold};
       color: #84cc16;
@@ -37,14 +33,49 @@ const stylesFactory = () => {
       text-transform: uppercase;
       border-bottom: 1px solid ${colors.darkGray[700]};
       box-shadow: 0 2px 8px 0 ${colors.black + alpha[40]};
+      flex-shrink: 0;
     `,
     mainContainer: css`
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: ${size[2]};
+      display: flex;
       flex: 1;
       min-height: 0;
       overflow: hidden;
+      gap: ${size[2]};
+      padding: ${size[2]};
+      padding-top: 0;
+    `,
+    dragHandle: css`
+      width: 4px;
+      background: ${colors.darkGray[600]};
+      cursor: col-resize;
+      position: relative;
+      transition: background 0.2s ease;
+      user-select: none;
+
+      &:hover {
+        background: ${colors.blue[500]};
+      }
+
+      &.dragging {
+        background: ${colors.blue[600]};
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 2px;
+        height: 20px;
+        background: ${colors.darkGray[400]};
+        border-radius: 1px;
+      }
+
+      &:hover::after,
+      &.dragging::after {
+        background: ${colors.blue[300]};
+      }
     `,
     leftPanel: css`
       background: ${colors.darkGray[800]};
@@ -54,6 +85,7 @@ const stylesFactory = () => {
       flex-direction: column;
       overflow: hidden;
       min-height: 0;
+      flex: 1;
     `,
     rightPanel: css`
       background: ${colors.darkGray[800]};
@@ -63,6 +95,7 @@ const stylesFactory = () => {
       flex-direction: column;
       overflow: hidden;
       min-height: 0;
+      flex: 1;
     `,
     panelHeader: css`
       font-size: ${fontSize.md};
@@ -71,6 +104,7 @@ const stylesFactory = () => {
       padding: ${size[2]};
       border-bottom: 1px solid ${colors.darkGray[700]};
       background: ${colors.darkGray[800]};
+      flex-shrink: 0;
     `,
     utilList: css`
       flex: 1;
@@ -205,6 +239,14 @@ const stylesFactory = () => {
       &:hover {
         background: ${colors.darkGray[500]};
         border-color: ${colors.darkGray[400]};
+      }
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        &:hover {
+          background: ${colors.darkGray[600]};
+          border-color: ${colors.darkGray[500]};
+        }
       }
     `,
     actionDotBlue: css`
