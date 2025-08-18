@@ -1,5 +1,8 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 
 export interface AsyncBatcherState<TValue> {
@@ -80,6 +83,12 @@ function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
  */
 export interface AsyncBatcherOptions<TValue> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<
+    (items: Array<TValue>) => Promise<any>
+  >
+  /**
    * Custom function to determine if a batch should be processed
    * Return true to process the batch immediately
    */
@@ -91,6 +100,11 @@ export interface AsyncBatcherOptions<TValue> {
    * Initial state for the async batcher
    */
   initialState?: Partial<AsyncBatcherState<TValue>>
+  /**
+   * Optional key to identify this async batcher instance.
+   * If provided, the async batcher will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Maximum number of items in a batch
    * @default Infinity
@@ -144,10 +158,18 @@ export interface AsyncBatcherOptions<TValue> {
 
 type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<AsyncBatcherOptions<TValue>>,
-  'initialState' | 'onError' | 'onItemsChange' | 'onSettled' | 'onSuccess'
+  | 'initialState'
+  | 'onError'
+  | 'onItemsChange'
+  | 'onSettled'
+  | 'onSuccess'
+  | 'key'
 >
 
 const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   getShouldExecute: () => false,
   maxSize: Infinity,
   started: true,
@@ -220,20 +242,39 @@ export class AsyncBatcher<TValue> {
   readonly store: Store<Readonly<AsyncBatcherState<TValue>>> = new Store(
     getDefaultAsyncBatcherState<TValue>(),
   )
+  key: string
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
+  asyncRetryer: AsyncRetryer<typeof this.fn>
   #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
     public fn: (items: Array<TValue>) => Promise<any>,
     initialOptions: AsyncBatcherOptions<TValue>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncBatcher') {
+        this.#setState(event.payload.store.state as AsyncBatcherState<TValue>)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the async batcher instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncBatcher', this)
 
   /**
    * Updates the async batcher options
@@ -264,6 +305,7 @@ export class AsyncBatcher<TValue> {
               : 'populated',
       }
     })
+    this._emit()
   }
 
   #getWait = (): number => {
@@ -317,7 +359,7 @@ export class AsyncBatcher<TValue> {
     this.#setState({ isExecuting: true })
 
     try {
-      const result = await this.fn(batch) // EXECUTE
+      const result = await this.asyncRetryer.execute(batch) // EXECUTE
       this.#setState({
         totalItemsProcessed:
           this.store.state.totalItemsProcessed + batch.length,

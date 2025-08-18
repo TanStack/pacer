@@ -13,6 +13,7 @@ title: "@tanstack/pacer"
 - [AsyncDebouncer](../classes/asyncdebouncer.md)
 - [AsyncQueuer](../classes/asyncqueuer.md)
 - [AsyncRateLimiter](../classes/asyncratelimiter.md)
+- [AsyncRetryer](../classes/asyncretryer.md)
 - [AsyncThrottler](../classes/asyncthrottler.md)
 - [Batcher](../classes/batcher.md)
 - [Debouncer](../classes/debouncer.md)
@@ -30,12 +31,15 @@ title: "@tanstack/pacer"
 - [AsyncQueuerState](../interfaces/asyncqueuerstate.md)
 - [AsyncRateLimiterOptions](../interfaces/asyncratelimiteroptions.md)
 - [AsyncRateLimiterState](../interfaces/asyncratelimiterstate.md)
+- [AsyncRetryerOptions](../interfaces/asyncretryeroptions.md)
+- [AsyncRetryerState](../interfaces/asyncretryerstate.md)
 - [AsyncThrottlerOptions](../interfaces/asyncthrottleroptions.md)
 - [AsyncThrottlerState](../interfaces/asyncthrottlerstate.md)
 - [BatcherOptions](../interfaces/batcheroptions.md)
 - [BatcherState](../interfaces/batcherstate.md)
 - [DebouncerOptions](../interfaces/debounceroptions.md)
 - [DebouncerState](../interfaces/debouncerstate.md)
+- [PacerEventMap](../interfaces/pacereventmap.md)
 - [QueuerOptions](../interfaces/queueroptions.md)
 - [QueuerState](../interfaces/queuerstate.md)
 - [RateLimiterOptions](../interfaces/ratelimiteroptions.md)
@@ -50,14 +54,20 @@ title: "@tanstack/pacer"
 - [OptionalKeys](../type-aliases/optionalkeys.md)
 - [QueuePosition](../type-aliases/queueposition.md)
 
+## Variables
+
+- [pacerEventClient](../variables/pacereventclient.md)
+
 ## Functions
 
 - [asyncBatch](../functions/asyncbatch.md)
 - [asyncDebounce](../functions/asyncdebounce.md)
 - [asyncQueue](../functions/asyncqueue.md)
 - [asyncRateLimit](../functions/asyncratelimit.md)
+- [asyncRetry](../functions/asyncretry.md)
 - [asyncThrottle](../functions/asyncthrottle.md)
 - [batch](../functions/batch.md)
+- [createKey](../functions/createkey.md)
 - [debounce](../functions/debounce.md)
 - [isFunction](../functions/isfunction.md)
 - [parseFunctionOrValue](../functions/parsefunctionorvalue.md)

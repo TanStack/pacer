@@ -1,5 +1,8 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
@@ -93,10 +96,19 @@ function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
 
 export interface AsyncQueuerOptions<TValue> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<(item: TValue) => Promise<any>>
+  /**
    * Default position to add items to the queuer
    * @default 'back'
    */
   addItemsTo?: QueuePosition
+  /**
+   * Optional key to identify this async queuer instance.
+   * If provided, the async queuer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Maximum number of concurrent tasks to process.
    * Can be a number or a function that returns a number.
@@ -190,10 +202,14 @@ type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
   | 'onItemsChange'
   | 'onExpire'
   | 'onError'
+  | 'key'
 >
 
 const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
   addItemsTo: 'back',
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   concurrency: 1,
   expirationDuration: Infinity,
   getIsExpired: () => false,
@@ -260,18 +276,25 @@ export class AsyncQueuer<TValue> {
   readonly store: Store<Readonly<AsyncQueuerState<TValue>>> = new Store<
     AsyncQueuerState<TValue>
   >(getDefaultAsyncQueuerState<TValue>())
+  key: string
   options: AsyncQueuerOptions<TValue>
+  asyncRetryer: AsyncRetryer<(item: TValue) => Promise<any>>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
     public fn: (item: TValue) => Promise<any>,
     initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     const isInitiallyRunning =
       this.options.initialState?.isRunning ?? this.options.started ?? true
     this.#setState({
@@ -290,7 +313,19 @@ export class AsyncQueuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
+
+    pacerEventClient.onAllPluginEvents((event) => {
+      if (event.type === 'pacer:d-AsyncQueuer') {
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      }
+    })
   }
+
+  /**
+   * Emits a change event for the async queuer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncQueuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.
@@ -324,6 +359,7 @@ export class AsyncQueuer<TValue> {
         status,
       }
     })
+    this._emit()
   }
 
   /**
@@ -527,7 +563,7 @@ export class AsyncQueuer<TValue> {
     const item = this.getNextItem(position)
     if (item !== undefined) {
       try {
-        const lastResult = await this.fn(item) // EXECUTE!
+        const lastResult = await this.asyncRetryer.execute(item) // EXECUTE!
         this.#setState({
           successCount: this.store.state.successCount + 1,
           lastResult,
