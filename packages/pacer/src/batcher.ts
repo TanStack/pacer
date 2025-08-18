@@ -160,11 +160,9 @@ export class Batcher<TValue> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-Batcher') {
-        this.#setState(event.payload.store.state as BatcherState<TValue>)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on("d-Batcher", (event) => {
+      this.#setState(event.payload.store.state)
+      this.setOptions(event.payload.options)
     })
   }
 

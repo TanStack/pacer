@@ -148,11 +148,9 @@ export class Throttler<TFn extends AnyFunction> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-Throttler') {
-        this.#setState(event.payload.store.state as ThrottlerState<TFn>)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on("d-Throttler", (event) => {
+      this.#setState(event.payload.store.state as ThrottlerState<TFn>)
+      this.setOptions(event.payload.options)
     })
   }
 

@@ -214,12 +214,9 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
     this.#setState(this.options.initialState ?? {})
-
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-AsyncThrottler') {
-        this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on("d-AsyncThrottler", (event) => {
+      this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
+      this.setOptions(event.payload.options)
     })
   }
 

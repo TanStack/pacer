@@ -282,11 +282,9 @@ export class Queuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-Queuer') {
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on("d-Queuer", (event) => {
+      this.#setState(event.payload.store.state)
+      this.setOptions(event.payload.options)
     })
   }
 

@@ -1,5 +1,6 @@
 import { pacerEventClient } from '@tanstack/pacer'
 import { useStyles } from '../styles/use-styles'
+import type { PacerEventName } from '@tanstack/pacer';
 
 type ActionButtonsProps = {
   instance: any
@@ -33,7 +34,7 @@ export function ActionButtons(props: ActionButtonsProps) {
     )
   }
 
-  const emitName = `d-${props.utilName}` as any
+  const emitName = `d-${props.utilName}` as PacerEventName
 
   return (
     <div class={styles().actionsRow}>

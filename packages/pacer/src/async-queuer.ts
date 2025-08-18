@@ -300,12 +300,11 @@ export class AsyncQueuer<TValue> {
       }
     }
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-AsyncQueuer') {
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on("d-AsyncQueuer", e => {
+      this.#setState(e.payload.store.state)
+      this.setOptions(e.payload.options)
     })
+
   }
 
   /**
@@ -391,19 +390,19 @@ export class AsyncQueuer<TValue> {
       this.#setState({
         activeItems,
       })
-      ;(async () => {
-        const result = await this.execute()
-        this.#setState({ lastResult: result })
+        ; (async () => {
+          const result = await this.execute()
+          this.#setState({ lastResult: result })
 
-        const wait = this.#getWait()
-        if (wait > 0) {
-          const timeoutId = setTimeout(() => this.#tick(), wait)
-          this.#timeoutIds.add(timeoutId)
-          return
-        }
+          const wait = this.#getWait()
+          if (wait > 0) {
+            const timeoutId = setTimeout(() => this.#tick(), wait)
+            this.#timeoutIds.add(timeoutId)
+            return
+          }
 
-        this.#tick()
-      })()
+          this.#tick()
+        })()
     }
 
     this.#setState({ pendingTick: false })

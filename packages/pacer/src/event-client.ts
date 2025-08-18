@@ -33,6 +33,8 @@ export interface PacerEventMap {
   'pacer:Throttler': Throttler<any>
 }
 
+export type PacerEventName = keyof PacerEventMap extends `pacer:${infer T}` ? T : never;
+
 class PacerEventClient extends EventClient<PacerEventMap> {
   constructor(props?: { debug: boolean }) {
     super({
@@ -47,8 +49,8 @@ export const emitChange = <
     keyof PacerEventMap,
     `${string}:${string}`
   > extends `${string}:${infer S}`
-    ? S
-    : never,
+  ? S
+  : never,
 >(
   event: TSuffix,
   payload: PacerEventMap[`pacer:${TSuffix}`],
