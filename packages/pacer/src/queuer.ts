@@ -282,7 +282,7 @@ export class Queuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
-    pacerEventClient.on("d-Queuer", (event) => {
+    pacerEventClient.on('d-Queuer', (event) => {
       this.#setState(event.payload.store.state)
       this.setOptions(event.payload.options)
     })

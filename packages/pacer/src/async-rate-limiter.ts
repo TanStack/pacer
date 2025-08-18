@@ -231,10 +231,9 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       this.#setCleanupTimeout(executionTime)
     }
 
-    pacerEventClient.on("d-AsyncRateLimiter", (event) => {
+    pacerEventClient.on('d-AsyncRateLimiter', (event) => {
       this.#setState(event.payload.store.state)
       this.setOptions(event.payload.options)
-
     })
   }
 

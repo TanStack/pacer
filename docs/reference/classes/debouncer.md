@@ -116,7 +116,7 @@ Defined in: [debouncer.ts:125](https://github.com/TanStack/pacer/blob/main/packa
 _emit(): void
 ```
 
-Defined in: [debouncer.ts:154](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L154)
+Defined in: [debouncer.ts:152](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L152)
 
 Emits a change event for the debouncer instance. Mostly useful for devtools.
 
@@ -132,7 +132,7 @@ Emits a change event for the debouncer instance. Mostly useful for devtools.
 cancel(): void
 ```
 
-Defined in: [debouncer.ts:264](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L264)
+Defined in: [debouncer.ts:262](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L262)
 
 Cancels any pending execution
 
@@ -148,7 +148,7 @@ Cancels any pending execution
 flush(): void
 ```
 
-Defined in: [debouncer.ts:247](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L247)
+Defined in: [debouncer.ts:245](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L245)
 
 Processes the current pending execution immediately
 
@@ -164,7 +164,7 @@ Processes the current pending execution immediately
 maybeExecute(...args): void
 ```
 
-Defined in: [debouncer.ts:205](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L205)
+Defined in: [debouncer.ts:203](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L203)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued
@@ -187,7 +187,7 @@ If a call is already in progress, it will be queued
 reset(): void
 ```
 
-Defined in: [debouncer.ts:275](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L275)
+Defined in: [debouncer.ts:273](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L273)
 
 Resets the debouncer state to its default values
 
@@ -203,7 +203,7 @@ Resets the debouncer state to its default values
 setOptions(newOptions): void
 ```
 
-Defined in: [debouncer.ts:159](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L159)
+Defined in: [debouncer.ts:157](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L157)
 
 Updates the debouncer options
 

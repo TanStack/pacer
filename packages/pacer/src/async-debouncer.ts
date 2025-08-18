@@ -204,7 +204,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.on("d-AsyncDebouncer", (event) => {
+    pacerEventClient.on('d-AsyncDebouncer', (event) => {
       this.#setState(event.payload.store.state as AsyncDebouncerState<TFn>)
       this.setOptions(event.payload.options)
     })

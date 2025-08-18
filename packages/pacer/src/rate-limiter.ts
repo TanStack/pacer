@@ -156,7 +156,7 @@ export class RateLimiter<TFn extends AnyFunction> {
       this.#setCleanupTimeout(executionTime)
     }
 
-    pacerEventClient.on("d-RateLimiter", (event) => {
+    pacerEventClient.on('d-RateLimiter', (event) => {
       this.#setState(event.payload.store.state)
       this.setOptions(event.payload.options)
     })

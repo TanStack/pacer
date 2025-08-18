@@ -247,7 +247,7 @@ export class AsyncBatcher<TValue> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.on("d-AsyncBatcher", (event) => {
+    pacerEventClient.on('d-AsyncBatcher', (event) => {
       this.#setState(event.payload.store.state)
       this.setOptions(event.payload.options)
     })

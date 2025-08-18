@@ -1,6 +1,6 @@
 import { pacerEventClient } from '@tanstack/pacer'
 import { useStyles } from '../styles/use-styles'
-import type { PacerEventName } from '@tanstack/pacer';
+import type { PacerEventName } from '@tanstack/pacer'
 
 type ActionButtonsProps = {
   instance: any
