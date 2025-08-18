@@ -11,7 +11,7 @@ title: usePacerContext
 function usePacerContext(): null | PacerContextValue
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L55)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:58](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L58)
 
 ## Returns
 
