@@ -257,7 +257,7 @@ const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   // optionally, provide default options to an optional PacerProvider
   <PacerProvider
-  // options={{
+  // defaultOptions={{
   //   debouncer: {
   //     leading: true,
   //   },

@@ -169,7 +169,7 @@ let mounted = true
 root.render(
   // optionally, provide default options to an optional PacerProvider
   <PacerProvider
-  // options={{
+  // defaultOptions={{
   //   rateLimiter: {
   //     limit: 5,
   //   },
@@ -187,7 +187,7 @@ document.addEventListener('keydown', (e) => {
       mounted ? (
         // optionally, provide default options to an optional PacerProvider
         <PacerProvider
-        // options={{
+        // defaultOptions={{
         //   rateLimiter: {
         //     limit: 5,
         //   },

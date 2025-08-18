@@ -30,19 +30,22 @@ export interface PacerProviderOptions {
 }
 
 interface PacerContextValue {
-  options: PacerProviderOptions
+  defaultOptions: PacerProviderOptions
 }
 
 const PacerContext = createContext<PacerContextValue | null>(null)
 
 export interface PacerProviderProps {
   children: ReactNode
-  options?: PacerProviderOptions
+  defaultOptions?: PacerProviderOptions
 }
 
-export function PacerProvider({ children, options = {} }: PacerProviderProps) {
+export function PacerProvider({
+  children,
+  defaultOptions = {},
+}: PacerProviderProps) {
   const contextValue: PacerContextValue = {
-    options,
+    defaultOptions,
   }
 
   return (
@@ -58,5 +61,5 @@ export function usePacerContext() {
 
 export function useDefaultPacerOptions() {
   const context = useContext(PacerContext)
-  return context?.options ?? {}
+  return context?.defaultOptions ?? {}
 }

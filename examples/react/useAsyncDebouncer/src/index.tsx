@@ -106,37 +106,29 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 
-let mounted = true
-root.render(
-  // optionally, provide default options to an optional PacerProvider
-  <PacerProvider
-  // options={{
-  //   debouncer: {
-  //     leading: true,
-  //   },
-  // }}
-  >
-    <App />
-  </PacerProvider>,
-)
+function renderApp(mounted: boolean) {
+  root.render(
+    mounted ? (
+      // defaultOptions can be provided to the PacerProvider to set default options for all instances
+      <PacerProvider
+      // defaultOptions={{
+      //   asyncDebouncer: {
+      //     leading: true,
+      //   },
+      // }}
+      >
+        <App />
+      </PacerProvider>
+    ) : null,
+  )
+}
 
-// demo unmounting and cancellation
+let mounted = true
+renderApp(mounted)
+
 document.addEventListener('keydown', (e) => {
   if (e.shiftKey && e.key === 'Enter') {
     mounted = !mounted
-    root.render(
-      mounted ? (
-        // optionally, provide default options to an optional PacerProvider
-        <PacerProvider
-        // options={{
-        //   debouncer: {
-        //     leading: true,
-        //   },
-        // }}
-        >
-          <App />
-        </PacerProvider>
-      ) : null,
-    )
+    renderApp(mounted)
   }
 })

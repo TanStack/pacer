@@ -119,7 +119,7 @@ let mounted = true
 root.render(
   // optionally, provide default options to an optional PacerProvider
   <PacerProvider
-  // options={{
+  // defaultOptions={{
   //   throttler: {
   //     leading: true,
   //   },
@@ -137,7 +137,7 @@ document.addEventListener('keydown', (e) => {
       mounted ? (
         // optionally, provide default options to an optional PacerProvider
         <PacerProvider
-        // options={{
+        // defaultOptions={{
         //   throttler: {
         //     leading: true,
         //   },
