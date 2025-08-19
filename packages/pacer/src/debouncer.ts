@@ -23,7 +23,7 @@ export interface DebouncerState<TFn extends AnyFunction> {
   /**
    * Number of times maybeExecute has been called (for reduction calculations)
    */
-  maybeExecuteRequestCount: number
+  maybeExecuteCount: number
   /**
    * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
    */
@@ -39,7 +39,7 @@ function getDefaultDebouncerState<
     isPending: false,
     lastArgs: undefined,
     status: 'idle',
-    maybeExecuteRequestCount: 0,
+    maybeExecuteCount: 0,
   }
 }
 
@@ -209,7 +209,7 @@ export class Debouncer<TFn extends AnyFunction> {
     if (!this.#getEnabled()) return undefined
 
     this.#setState({
-      maybeExecuteRequestCount: this.store.state.maybeExecuteRequestCount + 1,
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
     })
 
     let _didLeadingExecute = false

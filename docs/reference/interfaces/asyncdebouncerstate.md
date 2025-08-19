@@ -87,10 +87,10 @@ The result from the most recent successful function execution
 
 ***
 
-### maybeExecuteRequestCount
+### maybeExecuteCount
 
 ```ts
-maybeExecuteRequestCount: number;
+maybeExecuteCount: number;
 ```
 
 Defined in: [async-debouncer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L34)

@@ -65,10 +65,10 @@ export function StateHeader(props: StateHeaderProps) {
     // For other utilities, calculate reduction based on request tracking
     let requestCount = 0
 
-    if (state.maybeExecuteRequestCount !== undefined) {
-      requestCount = state.maybeExecuteRequestCount
-    } else if (state.addItemRequestCount !== undefined) {
-      requestCount = state.addItemRequestCount
+    if (state.maybeExecuteCount !== undefined) {
+      requestCount = state.maybeExecuteCount
+    } else if (state.addItemCount !== undefined) {
+      requestCount = state.addItemCount
     } else {
       // For utilities that don't track requests, show 0%
       return 0

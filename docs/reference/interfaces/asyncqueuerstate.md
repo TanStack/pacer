@@ -27,10 +27,10 @@ Items currently being processed by the queuer
 
 ***
 
-### addItemRequestCount
+### addItemCount
 
 ```ts
-addItemRequestCount: number;
+addItemCount: number;
 ```
 
 Defined in: [async-queuer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L15)

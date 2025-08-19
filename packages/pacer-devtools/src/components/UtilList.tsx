@@ -1,4 +1,4 @@
-import { For } from 'solid-js'
+import { For, createMemo } from 'solid-js'
 import clsx from 'clsx'
 import { useStyles } from '../styles/use-styles'
 import { UTIL_GROUPS } from './util-groups'
@@ -23,21 +23,24 @@ export function UtilList(props: UtilListProps) {
               <div class={styles().utilGroup}>
                 <div class={styles().utilGroupHeader}>{group.label}</div>
                 <For each={props.getGroupItems(group.key)}>
-                  {(instance) => (
-                    <div
-                      class={clsx(
-                        styles().utilRow,
-                        props.selectedKey() === instance.key &&
-                          styles().utilRowSelected,
-                      )}
-                      onClick={() => props.setSelectedKey(instance.key ?? null)}
-                    >
-                      <div class={styles().utilKey}>{instance.key}</div>
-                      <div class={styles().utilStatus}>
-                        {props.getStatus(instance)}
+                  {(instance) => {
+                    const status = createMemo(() => props.getStatus(instance))
+                    return (
+                      <div
+                        class={clsx(
+                          styles().utilRow,
+                          props.selectedKey() === instance.key &&
+                            styles().utilRowSelected,
+                        )}
+                        onClick={() =>
+                          props.setSelectedKey(instance.key ?? null)
+                        }
+                      >
+                        <div class={styles().utilKey}>{instance.key}</div>
+                        <div class={styles().utilStatus}>{status()}</div>
                       </div>
-                    </div>
-                  )}
+                    )
+                  }}
                 </For>
               </div>
             )}

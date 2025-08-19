@@ -12,7 +12,7 @@ export interface AsyncQueuerState<TValue> {
   /**
    * Number of times addItem has been called (for reduction calculations)
    */
-  addItemRequestCount: number
+  addItemCount: number
   /**
    * Number of task executions that have resulted in errors
    */
@@ -78,7 +78,7 @@ export interface AsyncQueuerState<TValue> {
 function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
   return {
     activeItems: [],
-    addItemRequestCount: 0,
+    addItemCount: 0,
     errorCount: 0,
     expirationCount: 0,
     isEmpty: true,
@@ -428,7 +428,7 @@ export class AsyncQueuer<TValue> {
     runOnItemsChange: boolean = true,
   ): boolean => {
     this.#setState({
-      addItemRequestCount: this.store.state.addItemRequestCount + 1,
+      addItemCount: this.store.state.addItemCount + 1,
     })
 
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {

@@ -6,7 +6,7 @@ export interface QueuerState<TValue> {
   /**
    * Number of times addItem has been called (for reduction calculations)
    */
-  addItemRequestCount: number
+  addItemCount: number
   /**
    * Number of items that have been processed by the queuer
    */
@@ -71,7 +71,7 @@ function getDefaultQueuerState<TValue>(): QueuerState<TValue> {
     rejectionCount: 0,
     size: 0,
     status: 'idle',
-    addItemRequestCount: 0,
+    addItemCount: 0,
   }
 }
 
@@ -391,7 +391,7 @@ export class Queuer<TValue> {
     runOnItemsChange: boolean = true,
   ): boolean => {
     this.#setState({
-      addItemRequestCount: this.store.state.addItemRequestCount + 1,
+      addItemCount: this.store.state.addItemCount + 1,
     })
 
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {

@@ -15,10 +15,10 @@ Defined in: [queuer.ts:5](https://github.com/TanStack/pacer/blob/main/packages/p
 
 ## Properties
 
-### addItemRequestCount
+### addItemCount
 
 ```ts
-addItemRequestCount: number;
+addItemCount: number;
 ```
 
 Defined in: [queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L9)

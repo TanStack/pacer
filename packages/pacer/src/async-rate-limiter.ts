@@ -43,7 +43,7 @@ export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
   /**
    * Number of times maybeExecute has been called (for reduction calculations)
    */
-  maybeExecuteRequestCount: number
+  maybeExecuteCount: number
 }
 
 function getDefaultAsyncRateLimiterState<
@@ -55,7 +55,7 @@ function getDefaultAsyncRateLimiterState<
     isExceeded: false,
     isExecuting: false,
     lastResult: undefined,
-    maybeExecuteRequestCount: 0,
+    maybeExecuteCount: 0,
     rejectionCount: 0,
     settleCount: 0,
     status: 'idle',
@@ -327,7 +327,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     this.#setState({
-      maybeExecuteRequestCount: this.store.state.maybeExecuteRequestCount + 1,
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
     })
 
     this.#cleanupOldExecutions()

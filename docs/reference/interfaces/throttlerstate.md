@@ -63,10 +63,10 @@ Timestamp of the last function execution in milliseconds
 
 ***
 
-### maybeExecuteRequestCount
+### maybeExecuteCount
 
 ```ts
-maybeExecuteRequestCount: number;
+maybeExecuteCount: number;
 ```
 
 Defined in: [throttler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L26)

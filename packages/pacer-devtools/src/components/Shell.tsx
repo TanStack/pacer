@@ -1,4 +1,5 @@
 import { createMemo, createSignal, onCleanup, onMount } from 'solid-js'
+import { useStore } from '@tanstack/solid-store'
 import { useStyles } from '../styles/use-styles'
 import { usePacerDevtoolsState } from '../PacerContextProvider'
 import { UTIL_GROUPS } from './util-groups'
@@ -13,8 +14,11 @@ export function Shell() {
   const [leftPanelWidth, setLeftPanelWidth] = createSignal(300)
   const [isDragging, setIsDragging] = createSignal(false)
 
-  const getGroupItems = (key: StateKey) =>
-    (state as unknown as Record<StateKey, Array<any>>)[key]
+  const getGroupItems = (key: StateKey) => {
+    // Access the state to ensure reactivity
+    const currentState = state
+    return (currentState as unknown as Record<StateKey, Array<any>>)[key]
+  }
 
   const selectedInstance = createMemo(() => {
     const key = selectedKey()
@@ -28,7 +32,9 @@ export function Shell() {
 
   const getStatus = (inst: any) => {
     try {
-      return inst.store?.state?.status ?? 'unknown'
+      // Use useStore to make the state reactive and get the current status
+      const statusAccessor = useStore(inst.store, (state: any) => state.status)
+      return statusAccessor() ?? 'unknown'
     } catch {
       return 'unknown'
     }

@@ -87,10 +87,10 @@ The result from the most recent successful function execution
 
 ***
 
-### maybeExecuteRequestCount
+### maybeExecuteCount
 
 ```ts
-maybeExecuteRequestCount: number;
+maybeExecuteCount: number;
 ```
 
 Defined in: [async-throttler.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L34)

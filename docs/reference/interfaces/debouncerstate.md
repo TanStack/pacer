@@ -63,10 +63,10 @@ The arguments from the most recent call to maybeExecute
 
 ***
 
-### maybeExecuteRequestCount
+### maybeExecuteCount
 
 ```ts
-maybeExecuteRequestCount: number;
+maybeExecuteCount: number;
 ```
 
 Defined in: [debouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L26)

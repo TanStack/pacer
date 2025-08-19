@@ -47,10 +47,10 @@ Whether the rate limiter has exceeded the limit
 
 ***
 
-### maybeExecuteRequestCount
+### maybeExecuteCount
 
 ```ts
-maybeExecuteRequestCount: number;
+maybeExecuteCount: number;
 ```
 
 Defined in: [rate-limiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L22)
