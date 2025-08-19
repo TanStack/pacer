@@ -75,6 +75,18 @@ The result from the most recent successful function execution
 
 ***
 
+### maybeExecuteRequestCount
+
+```ts
+maybeExecuteRequestCount: number;
+```
+
+Defined in: [async-rate-limiter.ts:46](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L46)
+
+Number of times maybeExecute has been called (for reduction calculations)
+
+***
+
 ### rejectionCount
 
 ```ts

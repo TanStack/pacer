@@ -63,12 +63,24 @@ The arguments from the most recent call to maybeExecute
 
 ***
 
+### maybeExecuteRequestCount
+
+```ts
+maybeExecuteRequestCount: number;
+```
+
+Defined in: [debouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L26)
+
+Number of times maybeExecute has been called (for reduction calculations)
+
+***
+
 ### status
 
 ```ts
 status: "disabled" | "idle" | "pending";
 ```
 
-Defined in: [debouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L26)
+Defined in: [debouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L30)
 
 Current execution status - 'idle' when not active, 'pending' when waiting for timeout

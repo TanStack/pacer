@@ -87,13 +87,25 @@ The result from the most recent successful function execution
 
 ***
 
+### maybeExecuteRequestCount
+
+```ts
+maybeExecuteRequestCount: number;
+```
+
+Defined in: [async-debouncer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L34)
+
+Number of times maybeExecute has been called (for reduction calculations)
+
+***
+
 ### settleCount
 
 ```ts
 settleCount: number;
 ```
 
-Defined in: [async-debouncer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L34)
+Defined in: [async-debouncer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L38)
 
 Number of function executions that have completed (either successfully or with errors)
 
@@ -105,7 +117,7 @@ Number of function executions that have completed (either successfully or with e
 status: "disabled" | "idle" | "pending" | "executing" | "settled";
 ```
 
-Defined in: [async-debouncer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L38)
+Defined in: [async-debouncer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L42)
 
 Current execution status - 'idle' when not active, 'pending' when waiting, 'executing' when running, 'settled' when completed
 
@@ -117,6 +129,6 @@ Current execution status - 'idle' when not active, 'pending' when waiting, 'exec
 successCount: number;
 ```
 
-Defined in: [async-debouncer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L42)
+Defined in: [async-debouncer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L46)
 
 Number of function executions that have completed successfully

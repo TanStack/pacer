@@ -7,7 +7,7 @@ title: AsyncQueuerOptions
 
 # Interface: AsyncQueuerOptions\<TValue\>
 
-Defined in: [async-queuer.ts:95](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L95)
+Defined in: [async-queuer.ts:100](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L100)
 
 ## Type Parameters
 
@@ -21,7 +21,7 @@ Defined in: [async-queuer.ts:95](https://github.com/TanStack/pacer/blob/main/pac
 optional addItemsTo: QueuePosition;
 ```
 
-Defined in: [async-queuer.ts:100](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L100)
+Defined in: [async-queuer.ts:105](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L105)
 
 Default position to add items to the queuer
 
@@ -164,7 +164,7 @@ Initial state for the async queuer
 optional key: string;
 ```
 
-Defined in: [async-queuer.ts:105](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L105)
+Defined in: [async-queuer.ts:145](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L145)
 
 Optional key to identify this async queuer instance.
 If provided, the async queuer will be identified by this key in the devtools and PacerProvider if applicable.
@@ -177,7 +177,7 @@ If provided, the async queuer will be identified by this key in the devtools and
 optional maxSize: number;
 ```
 
-Defined in: [async-queuer.ts:144](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L144)
+Defined in: [async-queuer.ts:149](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L149)
 
 Maximum number of items allowed in the queuer
 
@@ -189,7 +189,7 @@ Maximum number of items allowed in the queuer
 optional onError: (error, item, queuer) => void;
 ```
 
-Defined in: [async-queuer.ts:150](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L150)
+Defined in: [async-queuer.ts:155](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L155)
 
 Optional error handler for when a task throws.
 If provided, the handler will be called with the error and queuer instance.
@@ -221,7 +221,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 optional onExpire: (item, queuer) => void;
 ```
 
-Defined in: [async-queuer.ts:154](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L154)
+Defined in: [async-queuer.ts:159](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L159)
 
 Callback fired whenever an item expires in the queuer
 
@@ -247,7 +247,7 @@ Callback fired whenever an item expires in the queuer
 optional onItemsChange: (queuer) => void;
 ```
 
-Defined in: [async-queuer.ts:158](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L158)
+Defined in: [async-queuer.ts:163](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L163)
 
 Callback fired whenever an item is added or removed from the queuer
 
@@ -269,7 +269,7 @@ Callback fired whenever an item is added or removed from the queuer
 optional onReject: (item, queuer) => void;
 ```
 
-Defined in: [async-queuer.ts:162](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L162)
+Defined in: [async-queuer.ts:167](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L167)
 
 Callback fired whenever an item is rejected from being added to the queuer
 
@@ -295,7 +295,7 @@ Callback fired whenever an item is rejected from being added to the queuer
 optional onSettled: (item, queuer) => void;
 ```
 
-Defined in: [async-queuer.ts:166](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L166)
+Defined in: [async-queuer.ts:171](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L171)
 
 Optional callback to call when a task is settled
 
@@ -321,7 +321,7 @@ Optional callback to call when a task is settled
 optional onSuccess: (result, item, queuer) => void;
 ```
 
-Defined in: [async-queuer.ts:170](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L170)
+Defined in: [async-queuer.ts:175](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L175)
 
 Optional callback to call when a task succeeds
 
@@ -351,7 +351,7 @@ Optional callback to call when a task succeeds
 optional started: boolean;
 ```
 
-Defined in: [async-queuer.ts:174](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L174)
+Defined in: [async-queuer.ts:179](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L179)
 
 Whether the queuer should start processing tasks immediately or not.
 
@@ -363,7 +363,7 @@ Whether the queuer should start processing tasks immediately or not.
 optional throwOnError: boolean;
 ```
 
-Defined in: [async-queuer.ts:180](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L180)
+Defined in: [async-queuer.ts:185](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L185)
 
 Whether to throw errors when they occur.
 Defaults to true if no onError handler is provided, false if an onError handler is provided.
@@ -377,7 +377,7 @@ Can be explicitly set to override these defaults.
 optional wait: number | (queuer) => number;
 ```
 
-Defined in: [async-queuer.ts:186](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L186)
+Defined in: [async-queuer.ts:191](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L191)
 
 Time in milliseconds to wait between processing items.
 Can be a number or a function that returns a number.
