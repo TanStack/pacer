@@ -21,6 +21,10 @@ export interface ThrottlerState<TFn extends AnyFunction> {
    */
   lastExecutionTime: number
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteRequestCount: number
+  /**
    * Timestamp when the next execution can occur in milliseconds
    */
   nextExecutionTime: number | undefined
@@ -40,6 +44,7 @@ function getDefaultThrottlerState<
     lastExecutionTime: 0,
     nextExecutionTime: 0,
     status: 'idle',
+    maybeExecuteRequestCount: 0,
   }
 }
 
@@ -221,6 +226,10 @@ export class Throttler<TFn extends AnyFunction> {
    * ```
    */
   maybeExecute = (...args: Parameters<TFn>): void => {
+    this.#setState({
+      maybeExecuteRequestCount: this.store.state.maybeExecuteRequestCount + 1,
+    })
+
     const now = Date.now()
     const timeSinceLastExecution = now - this.store.state.lastExecutionTime
     const wait = this.#getWait()

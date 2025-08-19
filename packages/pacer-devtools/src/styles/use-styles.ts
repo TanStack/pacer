@@ -40,24 +40,28 @@ const stylesFactory = () => {
       flex: 1;
       min-height: 0;
       overflow: hidden;
-      gap: ${size[2]};
       padding: ${size[2]};
       padding-top: 0;
     `,
     dragHandle: css`
-      width: 4px;
+      width: 8px;
       background: ${colors.darkGray[600]};
       cursor: col-resize;
       position: relative;
-      transition: background 0.2s ease;
+      transition: all 0.2s ease;
       user-select: none;
+      pointer-events: all;
+      margin: 0 ${size[1]};
+      border-radius: 2px;
 
       &:hover {
         background: ${colors.blue[500]};
+        margin: 0 ${size[1]};
       }
 
       &.dragging {
         background: ${colors.blue[600]};
+        margin: 0 ${size[1]};
       }
 
       &::after {
@@ -70,6 +74,7 @@ const stylesFactory = () => {
         height: 20px;
         background: ${colors.darkGray[400]};
         border-radius: 1px;
+        pointer-events: none;
       }
 
       &:hover::after,
@@ -85,7 +90,7 @@ const stylesFactory = () => {
       flex-direction: column;
       overflow: hidden;
       min-height: 0;
-      flex: 1;
+      flex-shrink: 0;
     `,
     rightPanel: css`
       background: ${colors.darkGray[800]};

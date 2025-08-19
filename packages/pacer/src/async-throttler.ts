@@ -29,6 +29,10 @@ export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
    */
   lastResult: ReturnType<TFn> | undefined
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteRequestCount: number
+  /**
    * Timestamp when the next execution can occur in milliseconds
    */
   nextExecutionTime: number | undefined
@@ -56,6 +60,7 @@ function getDefaultAsyncThrottlerState<
     lastArgs: undefined,
     lastExecutionTime: 0,
     lastResult: undefined,
+    maybeExecuteRequestCount: 0,
     nextExecutionTime: undefined,
     settleCount: 0,
     status: 'idle',
@@ -304,7 +309,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     const timeSinceLastExecution = now - this.store.state.lastExecutionTime
     const wait = this.#getWait()
     // Store the most recent arguments for potential trailing execution
-    this.#setState({ lastArgs: args })
+    this.#setState({
+      lastArgs: args,
+      maybeExecuteRequestCount: this.store.state.maybeExecuteRequestCount + 1,
+    })
 
     this.#resolvePreviousPromiseInternal()
 

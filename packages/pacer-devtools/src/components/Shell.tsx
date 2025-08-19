@@ -39,8 +39,10 @@ export function Shell() {
 
   const handleMouseDown = (e: MouseEvent) => {
     e.preventDefault()
+    e.stopPropagation()
     setIsDragging(true)
     document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
     dragStartX = e.clientX
     dragStartWidth = leftPanelWidth()
   }
@@ -48,6 +50,7 @@ export function Shell() {
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging()) return
 
+    e.preventDefault()
     const deltaX = e.clientX - dragStartX
     const newWidth = Math.max(150, Math.min(800, dragStartWidth + deltaX))
     setLeftPanelWidth(newWidth)
@@ -56,6 +59,7 @@ export function Shell() {
   const handleMouseUp = () => {
     setIsDragging(false)
     document.body.style.cursor = ''
+    document.body.style.userSelect = ''
   }
 
   onMount(() => {
@@ -81,7 +85,6 @@ export function Shell() {
             'max-width': '800px',
           }}
         >
-          <div class={styles().panelHeader}>Utils</div>
           <UtilList
             selectedKey={selectedKey}
             setSelectedKey={setSelectedKey}

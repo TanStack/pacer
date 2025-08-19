@@ -41,7 +41,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasPending && (
         <button
           class={styles().actionButton}
-          onClick={() => {
+          onMouseDown={() => {
             utilInstance._emit() // force to receive fresh instance
             const next = !isPending
             utilInstance.store.setState((prev: any) => ({
@@ -58,7 +58,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasFlush && (
         <button
           class={styles().actionButton}
-          onClick={() => {
+          onMouseDown={() => {
             utilInstance._emit() // force to receive fresh instance
             utilInstance.flush()
             pacerEventClient.emit(emitName, utilInstance)
@@ -79,7 +79,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasCancel && (
         <button
           class={styles().actionButton}
-          onClick={() => {
+          onMouseDown={() => {
             utilInstance.cancel()
             pacerEventClient.emit(emitName, utilInstance)
           }}
@@ -99,7 +99,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasReset && (
         <button
           class={styles().actionButton}
-          onClick={() => {
+          onMouseDown={() => {
             utilInstance._emit() // force to receive fresh instance
             utilInstance.reset()
             pacerEventClient.emit(emitName, utilInstance)
@@ -112,7 +112,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasClear && (
         <button
           class={styles().actionButton}
-          onClick={() => {
+          onMouseDown={() => {
             utilInstance._emit() // force to receive fresh instance
             utilInstance.clear()
             pacerEventClient.emit(emitName, utilInstance)
@@ -129,7 +129,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasStartStop && (
         <button
           class={styles().actionButton}
-          onClick={() => {
+          onMouseDown={() => {
             utilInstance._emit() // force to receive fresh instance
             if (isRunning) {
               utilInstance.stop()

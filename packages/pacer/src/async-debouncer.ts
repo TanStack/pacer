@@ -29,6 +29,10 @@ export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
    */
   lastResult: ReturnType<TFn> | undefined
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteRequestCount: number
+  /**
    * Number of function executions that have completed (either successfully or with errors)
    */
   settleCount: number
@@ -52,9 +56,10 @@ function getDefaultAsyncDebouncerState<
     isPending: false,
     lastArgs: undefined,
     lastResult: undefined,
+    maybeExecuteRequestCount: 0,
     settleCount: 0,
-    successCount: 0,
     status: 'idle',
+    successCount: 0,
   }
 }
 
@@ -283,7 +288,10 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
     this.#cancelPendingExecution()
-    this.#setState({ lastArgs: args })
+    this.#setState({
+      lastArgs: args,
+      maybeExecuteRequestCount: this.store.state.maybeExecuteRequestCount + 1,
+    })
 
     // Handle leading execution
     if (this.options.leading && this.store.state.canLeadingExecute) {

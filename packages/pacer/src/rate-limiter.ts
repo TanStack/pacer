@@ -17,6 +17,10 @@ export interface RateLimiterState {
    */
   isExceeded: boolean
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteRequestCount: number
+  /**
    * Number of function executions that have been rejected due to rate limiting
    */
   rejectionCount: number
@@ -33,6 +37,7 @@ function getDefaultRateLimiterState(): RateLimiterState {
     isExceeded: false,
     rejectionCount: 0,
     status: 'idle',
+    maybeExecuteRequestCount: 0,
   }
 }
 
@@ -232,6 +237,10 @@ export class RateLimiter<TFn extends AnyFunction> {
    * ```
    */
   maybeExecute = (...args: Parameters<TFn>): boolean => {
+    this.#setState({
+      maybeExecuteRequestCount: this.store.state.maybeExecuteRequestCount + 1,
+    })
+
     this.#cleanupOldExecutions()
 
     const relevantExecutionTimes = this.#getExecutionTimesInWindow()

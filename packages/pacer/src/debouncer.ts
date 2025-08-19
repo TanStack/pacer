@@ -21,6 +21,10 @@ export interface DebouncerState<TFn extends AnyFunction> {
    */
   lastArgs: Parameters<TFn> | undefined
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteRequestCount: number
+  /**
    * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
    */
   status: 'disabled' | 'idle' | 'pending'
@@ -35,6 +39,7 @@ function getDefaultDebouncerState<
     isPending: false,
     lastArgs: undefined,
     status: 'idle',
+    maybeExecuteRequestCount: 0,
   }
 }
 
@@ -49,14 +54,14 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    */
   enabled?: boolean | ((debouncer: Debouncer<TFn>) => boolean)
   /**
+   * Initial state for the debouncer
+   */
+  initialState?: Partial<DebouncerState<TFn>>
+  /**
    * A key to identify the debouncer.
    * If provided, the debouncer will be identified by this key in the devtools and PacerProvider if applicable.
    */
   key?: string
-  /**
-   * Initial state for the debouncer
-   */
-  initialState?: Partial<DebouncerState<TFn>>
   /**
    * Whether to execute on the leading edge of the timeout.
    * The first call will execute immediately and the rest will wait the delay.
@@ -202,6 +207,11 @@ export class Debouncer<TFn extends AnyFunction> {
    */
   maybeExecute = (...args: Parameters<TFn>): void => {
     if (!this.#getEnabled()) return undefined
+
+    this.#setState({
+      maybeExecuteRequestCount: this.store.state.maybeExecuteRequestCount + 1,
+    })
+
     let _didLeadingExecute = false
 
     // Handle leading execution

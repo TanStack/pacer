@@ -41,15 +41,64 @@ export function StateHeader(props: StateHeaderProps) {
     return dayjs(updatedAt).fromNow()
   }
 
+  const getReductionPercentage = () => {
+    const state = entry.instance.store?.state || entry.instance.state
+
+    if (!state) return 0
+
+    // Use settleCount for async utilities, executionCount for sync utilities
+    const isAsync = entry.type.toLowerCase().includes('async')
+    const completedExecutions = isAsync
+      ? state.settleCount || 0
+      : state.executionCount || 0
+
+    // For batchers, calculate reduction based on items processed vs executions
+    if (entry.type.toLowerCase().includes('batcher')) {
+      const totalItemsProcessed = state.totalItemsProcessed || 0
+      if (totalItemsProcessed === 0) return 0
+      return Math.round(
+        ((totalItemsProcessed - completedExecutions) / totalItemsProcessed) *
+          100,
+      )
+    }
+
+    // For other utilities, calculate reduction based on request tracking
+    let requestCount = 0
+
+    if (state.maybeExecuteRequestCount !== undefined) {
+      requestCount = state.maybeExecuteRequestCount
+    } else if (state.addItemRequestCount !== undefined) {
+      requestCount = state.addItemRequestCount
+    } else {
+      // For utilities that don't track requests, show 0%
+      return 0
+    }
+
+    if (requestCount === 0) return 0
+
+    const reduction = requestCount - completedExecutions
+    return Math.round((reduction / requestCount) * 100)
+  }
+
+  const reductionPercentage = getReductionPercentage()
+
   return (
     <div class={styles().stateHeader}>
       <div class={styles().stateTitle}>{entry.type}</div>
-      <div class={styles().infoGrid}>
-        <div class={styles().infoLabel}>Key</div>
-        <div class={styles().infoValueMono}>{key}</div>
-        <div class={styles().infoLabel}>Last Updated</div>
-        <div class={styles().infoValueMono}>
-          {new Date(updatedAt).toLocaleTimeString()} ({getRelativeTime()})
+      <div style={{ display: 'flex', 'align-items': 'center', gap: '16px' }}>
+        <div class={styles().infoGrid}>
+          <div class={styles().infoLabel}>Key</div>
+          <div class={styles().infoValueMono}>{key}</div>
+          <div class={styles().infoLabel}>Last Updated</div>
+          <div class={styles().infoValueMono}>
+            {new Date(updatedAt).toLocaleTimeString()} ({getRelativeTime()})
+          </div>
+        </div>
+        <div
+          class={styles().infoValueMono}
+          style={{ 'margin-left': 'auto', 'font-weight': 'bold' }}
+        >
+          {reductionPercentage}% reduction
         </div>
       </div>
     </div>
