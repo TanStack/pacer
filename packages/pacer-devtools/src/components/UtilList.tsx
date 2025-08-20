@@ -1,4 +1,5 @@
-import { For, createMemo } from 'solid-js'
+import { For } from 'solid-js'
+import { useStore } from '@tanstack/solid-store'
 import clsx from 'clsx'
 import { useStyles } from '../styles/use-styles'
 import { UTIL_GROUPS } from './util-groups'
@@ -7,8 +8,7 @@ import type { StateKey } from './util-groups'
 type UtilListProps = {
   selectedKey: () => string | null
   setSelectedKey: (key: string | null) => void
-  getGroupItems: (key: StateKey) => Array<any>
-  getStatus: (inst: any) => string
+  utilState: () => Record<StateKey, Array<any>>
 }
 
 export function UtilList(props: UtilListProps) {
@@ -19,12 +19,22 @@ export function UtilList(props: UtilListProps) {
       <For each={UTIL_GROUPS}>
         {(group) => (
           <>
-            {props.getGroupItems(group.key).length > 0 && (
+            {props.utilState()[group.key].length > 0 && (
               <div class={styles().utilGroup}>
                 <div class={styles().utilGroupHeader}>{group.label}</div>
-                <For each={props.getGroupItems(group.key)}>
+                <For each={props.utilState()[group.key]}>
                   {(instance) => {
-                    const status = createMemo(() => props.getStatus(instance))
+                    const status = (() => {
+                      try {
+                        const statusAccessor = useStore(
+                          instance.store,
+                          (s: any) => s.status,
+                        )
+                        return () => statusAccessor() ?? 'unknown'
+                      } catch {
+                        return () => 'unknown'
+                      }
+                    })()
                     return (
                       <div
                         class={clsx(

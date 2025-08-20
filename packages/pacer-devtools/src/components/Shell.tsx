@@ -1,5 +1,4 @@
 import { createMemo, createSignal, onCleanup, onMount } from 'solid-js'
-import { useStore } from '@tanstack/solid-store'
 import { useStyles } from '../styles/use-styles'
 import { usePacerDevtoolsState } from '../PacerContextProvider'
 import { UTIL_GROUPS } from './util-groups'
@@ -10,35 +9,22 @@ import type { StateKey } from './util-groups'
 export function Shell() {
   const styles = useStyles()
   const state = usePacerDevtoolsState()
+  const utilState = () => state
   const [selectedKey, setSelectedKey] = createSignal<string | null>(null)
   const [leftPanelWidth, setLeftPanelWidth] = createSignal(300)
   const [isDragging, setIsDragging] = createSignal(false)
-
-  const getGroupItems = (key: StateKey) => {
-    // Access the state to ensure reactivity
-    const currentState = state
-    return (currentState as unknown as Record<StateKey, Array<any>>)[key]
-  }
 
   const selectedInstance = createMemo(() => {
     const key = selectedKey()
     if (!key) return null
     for (const group of UTIL_GROUPS) {
-      const instance = getGroupItems(group.key).find((inst) => inst.key === key)
+      const instance = (utilState() as unknown as Record<StateKey, Array<any>>)[
+        group.key
+      ].find((inst) => inst.key === key)
       if (instance) return { instance, type: group.displayName }
     }
     return null
   })
-
-  const getStatus = (inst: any) => {
-    try {
-      // Use useStore to make the state reactive and get the current status
-      const statusAccessor = useStore(inst.store, (state: any) => state.status)
-      return statusAccessor() ?? 'unknown'
-    } catch {
-      return 'unknown'
-    }
-  }
 
   let dragStartX = 0
   let dragStartWidth = 0
@@ -94,8 +80,7 @@ export function Shell() {
           <UtilList
             selectedKey={selectedKey}
             setSelectedKey={setSelectedKey}
-            getGroupItems={getGroupItems}
-            getStatus={getStatus}
+            utilState={utilState}
           />
         </div>
 
@@ -108,7 +93,7 @@ export function Shell() {
           <div class={styles().panelHeader}>Details</div>
           <DetailsPanel
             selectedInstance={selectedInstance}
-            lastUpdatedByKey={() => state.lastUpdatedByKey}
+            utilState={utilState}
           />
         </div>
       </div>

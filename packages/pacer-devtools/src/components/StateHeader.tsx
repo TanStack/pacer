@@ -7,7 +7,7 @@ dayjs.extend(relativeTime)
 
 type StateHeaderProps = {
   selectedInstance: () => { instance: any; type: string } | null
-  lastUpdatedByKey: () => Record<string, number>
+  utilState: () => { lastUpdatedByKey: Record<string, number> }
 }
 
 export function StateHeader(props: StateHeaderProps) {
@@ -28,7 +28,7 @@ export function StateHeader(props: StateHeaderProps) {
   if (!entry) return null
 
   const key = entry.instance.key as string
-  const updatedAt = props.lastUpdatedByKey()[key] ?? Date.now()
+  const updatedAt = props.utilState().lastUpdatedByKey[key] ?? Date.now()
 
   const getRelativeTime = () => {
     const diffMs = now() - updatedAt

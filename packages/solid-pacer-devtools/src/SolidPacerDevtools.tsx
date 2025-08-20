@@ -1,7 +1,7 @@
 import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 
-interface PacerDevtoolsSolidInit {}
+export interface PacerDevtoolsSolidInit {}
 
 export const PacerDevtoolsPanel = (_props?: PacerDevtoolsSolidInit) => {
   let devToolRef: HTMLDivElement | undefined

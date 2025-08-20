@@ -5,7 +5,7 @@ import { StateHeader } from './StateHeader'
 
 type DetailsPanelProps = {
   selectedInstance: () => { instance: any; type: string } | null
-  lastUpdatedByKey: () => Record<string, number>
+  utilState: () => { lastUpdatedByKey: Record<string, number> }
 }
 
 export function DetailsPanel(props: DetailsPanelProps) {
@@ -27,7 +27,7 @@ export function DetailsPanel(props: DetailsPanelProps) {
           <>
             <StateHeader
               selectedInstance={props.selectedInstance}
-              lastUpdatedByKey={props.lastUpdatedByKey}
+              utilState={props.utilState}
             />
 
             <div class={styles().detailsGrid}>

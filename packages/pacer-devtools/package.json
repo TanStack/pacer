@@ -37,6 +37,16 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./production": {
+      "import": {
+        "types": "./dist/esm/production.d.ts",
+        "default": "./dist/esm/production.js"
+      },
+      "require": {
+        "types": "./dist/cjs/production.d.cts",
+        "default": "./dist/cjs/production.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
