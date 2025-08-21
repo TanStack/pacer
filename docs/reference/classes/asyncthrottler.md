@@ -133,7 +133,7 @@ Defined in: [async-throttler.ts:200](https://github.com/TanStack/pacer/blob/main
 _emit(): void
 ```
 
-Defined in: [async-throttler.ts:231](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L231)
+Defined in: [async-throttler.ts:232](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L232)
 
 Emits a change event for the async throttler instance. Mostly useful for devtools.
 
@@ -149,7 +149,7 @@ Emits a change event for the async throttler instance. Mostly useful for devtool
 cancel(): void
 ```
 
-Defined in: [async-throttler.ts:448](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L448)
+Defined in: [async-throttler.ts:449](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L449)
 
 Cancels any pending execution or aborts any execution in progress
 
@@ -165,7 +165,7 @@ Cancels any pending execution or aborts any execution in progress
 flush(): Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-throttler.ts:397](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L397)
+Defined in: [async-throttler.ts:398](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L398)
 
 Processes the current pending execution immediately
 
@@ -181,7 +181,7 @@ Processes the current pending execution immediately
 maybeExecute(...args): Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-throttler.ts:304](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L304)
+Defined in: [async-throttler.ts:305](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L305)
 
 Attempts to execute the throttled function. The execution behavior depends on the throttler options:
 
@@ -223,7 +223,7 @@ await throttled.maybeExecute('c', 'd');
 reset(): void
 ```
 
-Defined in: [async-throttler.ts:456](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L456)
+Defined in: [async-throttler.ts:457](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L457)
 
 Resets the debouncer state to its default values
 
@@ -239,7 +239,7 @@ Resets the debouncer state to its default values
 setOptions(newOptions): void
 ```
 
-Defined in: [async-throttler.ts:236](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L236)
+Defined in: [async-throttler.ts:237](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L237)
 
 Updates the async throttler options
 

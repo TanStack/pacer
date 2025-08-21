@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
+import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
+import { TanStackDevtools } from '@tanstack/react-devtools'
 
 function App1() {
   // The function that we will be queuing
@@ -11,6 +13,7 @@ function App1() {
   const queuer = useQueuer(
     processItem,
     {
+      key: 'Add Number Queue',
       initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       maxSize: 25, // optional, defaults to Infinity
       started: false, // optional, defaults to true
@@ -111,6 +114,7 @@ function App2() {
   const queuer = useQueuer(
     processItem,
     {
+      key: 'Range Queue',
       maxSize: 100,
       initialItems: [currentValue],
       wait: 100,
@@ -232,5 +236,11 @@ root.render(
     <App1 />
     <hr />
     <App2 />
+    <TanStackDevtools
+      eventBusConfig={{
+        debug: false,
+      }}
+      plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
+    />
   </div>,
 )

@@ -220,6 +220,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
     this.#setState(this.options.initialState ?? {})
     pacerEventClient.on('d-AsyncThrottler', (event) => {
+      if (event.payload.key !== this.key) return
       this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
       this.setOptions(event.payload.options)
     })
