@@ -153,11 +153,6 @@ export class Debouncer<TFn extends AnyFunction> {
   }
 
   /**
-   * Emits a change event for the debouncer instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('Debouncer', this)
-
-  /**
    * Updates the debouncer options
    */
   setOptions = (newOptions: Partial<DebouncerOptions<TFn>>): void => {
@@ -185,7 +180,7 @@ export class Debouncer<TFn extends AnyFunction> {
             : 'idle',
       }
     })
-    this._emit()
+    emitChange('Debouncer', this)
   }
 
   /**

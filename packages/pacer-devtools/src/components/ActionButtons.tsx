@@ -42,7 +42,6 @@ export function ActionButtons(props: ActionButtonsProps) {
         <button
           class={styles().actionButton}
           onMouseDown={() => {
-            utilInstance._emit() // force to receive fresh instance
             const next = !isPending
             utilInstance.store.setState((prev: any) => ({
               ...prev,
@@ -59,7 +58,6 @@ export function ActionButtons(props: ActionButtonsProps) {
         <button
           class={styles().actionButton}
           onMouseDown={() => {
-            utilInstance._emit() // force to receive fresh instance
             utilInstance.flush()
             pacerEventClient.emit(emitName, utilInstance)
           }}
@@ -100,7 +98,6 @@ export function ActionButtons(props: ActionButtonsProps) {
         <button
           class={styles().actionButton}
           onMouseDown={() => {
-            utilInstance._emit() // force to receive fresh instance
             utilInstance.reset()
             pacerEventClient.emit(emitName, utilInstance)
           }}
@@ -113,7 +110,6 @@ export function ActionButtons(props: ActionButtonsProps) {
         <button
           class={styles().actionButton}
           onMouseDown={() => {
-            utilInstance._emit() // force to receive fresh instance
             utilInstance.clear()
             pacerEventClient.emit(emitName, utilInstance)
           }}
@@ -130,7 +126,6 @@ export function ActionButtons(props: ActionButtonsProps) {
         <button
           class={styles().actionButton}
           onMouseDown={() => {
-            utilInstance._emit() // force to receive fresh instance
             if (isRunning) {
               utilInstance.stop()
             } else {

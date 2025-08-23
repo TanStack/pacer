@@ -169,11 +169,6 @@ export class RateLimiter<TFn extends AnyFunction> {
   }
 
   /**
-   * Emits a change event for the rate limiter instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('RateLimiter', this)
-
-  /**
    * Updates the rate limiter options
    */
   setOptions = (newOptions: Partial<RateLimiterOptions<TFn>>): void => {
@@ -198,7 +193,7 @@ export class RateLimiter<TFn extends AnyFunction> {
         status,
       }
     })
-    this._emit()
+    emitChange('RateLimiter', this)
   }
 
   /**

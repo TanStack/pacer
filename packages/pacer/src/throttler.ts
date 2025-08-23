@@ -161,11 +161,6 @@ export class Throttler<TFn extends AnyFunction> {
   }
 
   /**
-   * Emits a change event for the throttler instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('Throttler', this)
-
-  /**
    * Updates the throttler options
    */
   setOptions = (newOptions: Partial<ThrottlerOptions<TFn>>): void => {
@@ -193,7 +188,7 @@ export class Throttler<TFn extends AnyFunction> {
             : 'idle',
       }
     })
-    this._emit()
+    emitChange('Throttler', this)
   }
 
   #getEnabled = (): boolean => {

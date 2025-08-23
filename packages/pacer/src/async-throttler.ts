@@ -227,11 +227,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   }
 
   /**
-   * Emits a change event for the async throttler instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('AsyncThrottler', this)
-
-  /**
    * Updates the async throttler options
    */
   setOptions = (newOptions: Partial<AsyncThrottlerOptions<TFn>>): void => {
@@ -263,7 +258,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
                 : 'idle',
       }
     })
-    this._emit()
+    emitChange('AsyncThrottler', this)
   }
 
   /**

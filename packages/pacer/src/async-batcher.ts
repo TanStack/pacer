@@ -255,11 +255,6 @@ export class AsyncBatcher<TValue> {
   }
 
   /**
-   * Emits a change event for the async batcher instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('AsyncBatcher', this)
-
-  /**
    * Updates the async batcher options
    */
   setOptions = (newOptions: Partial<AsyncBatcherOptions<TValue>>): void => {
@@ -288,7 +283,7 @@ export class AsyncBatcher<TValue> {
               : 'populated',
       }
     })
-    this._emit()
+    emitChange('AsyncBatcher', this)
   }
 
   #getWait = (): number => {
