@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer-devtools",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -68,7 +68,7 @@
     "build": "vite build"
   },
   "peerDependencies": {
-    "@tanstack/pacer": ">=0.14.0"
+    "@tanstack/pacer": ">=0.15.0"
   },
   "dependencies": {
     "@tanstack/devtools-ui": "^0.3.1",
