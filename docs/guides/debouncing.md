@@ -243,6 +243,7 @@ const initialState = savedState ? JSON.parse(savedState) : {}
 
 const debouncer = new Debouncer(fn, {
   wait: 500,
+  key: 'search-debouncer',
   initialState
 })
 ```
@@ -273,6 +274,7 @@ The `DebouncerState` includes:
 - `executionCount`: Number of function executions that have been completed
 - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
 - `lastArgs`: The arguments from the most recent call to `maybeExecute`
+- `maybeExecuteCount`: Number of times `maybeExecute` has been called
 - `status`: Current execution status ('disabled' | 'idle' | 'pending')
 
 ## Framework Adapters

@@ -96,7 +96,8 @@ const queue = new AsyncQueuer(
   {
     concurrency: 2, // Process 2 items at once
     wait: 1000,     // Wait 1 second between starting new items
-    started: true   // Start processing immediately
+    started: true,  // Start processing immediately
+    key: 'data-processor' // Identify this queuer in devtools
   }
 )
 
@@ -325,6 +326,7 @@ unsubscribe()
 The `AsyncQueuerState` includes all properties from the core queuing guide plus:
 
 - `activeItems`: Array of items currently being processed
+- `addItemCount`: Number of times addItem has been called (for reduction calculations)
 - `errorCount`: Number of function executions that have resulted in errors
 - `expirationCount`: Number of items that have been removed from the queue due to expiration
 - `isEmpty`: Whether the queuer has no items to process (items array is empty)

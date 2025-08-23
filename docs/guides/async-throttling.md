@@ -201,6 +201,7 @@ The `AsyncThrottlerState` includes:
 - `lastArgs`: The arguments from the most recent call to `maybeExecute`
 - `lastExecutionTime`: Timestamp of the last function execution in milliseconds
 - `lastResult`: The result from the most recent successful function execution
+- `maybeExecuteCount`: Number of times `maybeExecute` has been called
 - `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
 - `settleCount`: Number of function executions that have completed (either successfully or with errors)
 - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')

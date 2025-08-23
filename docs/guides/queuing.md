@@ -473,6 +473,7 @@ unsubscribe()
 
 The `QueuerState` includes:
 
+- `addItemCount`: Number of times addItem has been called (for reduction calculations)
 - `executionCount`: Number of items that have been processed by the queuer
 - `expirationCount`: Number of items that have been removed from the queue due to expiration
 - `isEmpty`: Whether the queuer has no items to process (items array is empty)

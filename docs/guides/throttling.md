@@ -264,6 +264,7 @@ The `ThrottlerState` includes:
 - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
 - `lastArgs`: The arguments from the most recent call to `maybeExecute`
 - `lastExecutionTime`: Timestamp of the last function execution in milliseconds
+- `maybeExecuteCount`: Number of times `maybeExecute` has been called
 - `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
 - `status`: Current execution status ('disabled' | 'idle' | 'pending')
 
