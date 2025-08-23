@@ -1,7 +1,12 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 
 export interface QueuerState<TValue> {
+  /**
+   * Number of times addItem has been called (for reduction calculations)
+   */
+  addItemCount: number
   /**
    * Number of items that have been processed by the queuer
    */
@@ -66,6 +71,7 @@ function getDefaultQueuerState<TValue>(): QueuerState<TValue> {
     rejectionCount: 0,
     size: 0,
     status: 'idle',
+    addItemCount: 0,
   }
 }
 
@@ -109,6 +115,11 @@ export interface QueuerOptions<TValue> {
    */
   initialState?: Partial<QueuerState<TValue>>
   /**
+   * Optional key to identify this queuer instance.
+   * If provided, the queuer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum number of items allowed in the queuer
    */
   maxSize?: number
@@ -148,6 +159,7 @@ const defaultOptions: Omit<
   | 'onItemsChange'
   | 'onReject'
   | 'onExpire'
+  | 'key'
 > = {
   addItemsTo: 'back',
   getItemsFrom: 'front',
@@ -244,6 +256,7 @@ export class Queuer<TValue> {
   readonly store: Store<Readonly<QueuerState<TValue>>> = new Store(
     getDefaultQueuerState<TValue>(),
   )
+  key: string
   options: QueuerOptions<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -251,6 +264,7 @@ export class Queuer<TValue> {
     public fn: (item: TValue) => void,
     initialOptions: QueuerOptions<TValue> = {},
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -273,6 +287,11 @@ export class Queuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
+    pacerEventClient.on('d-Queuer', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state)
+      this.setOptions(event.payload.options)
+    })
   }
 
   /**
@@ -307,6 +326,7 @@ export class Queuer<TValue> {
         status,
       }
     })
+    emitChange('Queuer', this)
   }
 
   /**
@@ -366,6 +386,10 @@ export class Queuer<TValue> {
     position: QueuePosition = this.options.addItemsTo ?? 'back',
     runOnItemsChange: boolean = true,
   ): boolean => {
+    this.#setState({
+      addItemCount: this.store.state.addItemCount + 1,
+    })
+
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,

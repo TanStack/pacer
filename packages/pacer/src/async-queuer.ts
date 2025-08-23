@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
@@ -8,6 +9,10 @@ export interface AsyncQueuerState<TValue> {
    * Items currently being processed by the queuer
    */
   activeItems: Array<TValue>
+  /**
+   * Number of times addItem has been called (for reduction calculations)
+   */
+  addItemCount: number
   /**
    * Number of task executions that have resulted in errors
    */
@@ -73,6 +78,7 @@ export interface AsyncQueuerState<TValue> {
 function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
   return {
     activeItems: [],
+    addItemCount: 0,
     errorCount: 0,
     expirationCount: 0,
     isEmpty: true,
@@ -133,6 +139,11 @@ export interface AsyncQueuerOptions<TValue> {
    */
   initialState?: Partial<AsyncQueuerState<TValue>>
   /**
+   * Optional key to identify this async queuer instance.
+   * If provided, the async queuer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Maximum number of items allowed in the queuer
    */
   maxSize?: number
@@ -190,6 +201,7 @@ type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
   | 'onItemsChange'
   | 'onExpire'
   | 'onError'
+  | 'key'
 >
 
 const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
@@ -260,6 +272,7 @@ export class AsyncQueuer<TValue> {
   readonly store: Store<Readonly<AsyncQueuerState<TValue>>> = new Store<
     AsyncQueuerState<TValue>
   >(getDefaultAsyncQueuerState<TValue>())
+  key: string
   options: AsyncQueuerOptions<TValue>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
@@ -267,6 +280,7 @@ export class AsyncQueuer<TValue> {
     public fn: (item: TValue) => Promise<any>,
     initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -290,6 +304,12 @@ export class AsyncQueuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
+
+    pacerEventClient.on('d-AsyncQueuer', (e) => {
+      if (e.payload.key !== this.key) return
+      this.#setState(e.payload.store.state)
+      this.setOptions(e.payload.options)
+    })
   }
 
   /**
@@ -324,6 +344,7 @@ export class AsyncQueuer<TValue> {
         status,
       }
     })
+    emitChange('AsyncQueuer', this)
   }
 
   /**
@@ -402,6 +423,10 @@ export class AsyncQueuer<TValue> {
     position: QueuePosition = this.options.addItemsTo ?? 'back',
     runOnItemsChange: boolean = true,
   ): boolean => {
+    this.#setState({
+      addItemCount: this.store.state.addItemCount + 1,
+    })
+
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,

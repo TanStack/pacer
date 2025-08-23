@@ -187,6 +187,7 @@ The `AsyncRateLimiterState` includes:
 - `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
 - `isExecuting`: Whether the rate-limited function is currently executing asynchronously
 - `lastResult`: The result from the most recent successful function execution
+- `maybeExecuteCount`: Number of times `maybeExecute` has been called
 - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
 - `settledCount`: Number of function executions that have completed (either successfully or with errors)
 - `status`: Current execution status ('disabled' | 'exceeded' | 'idle')

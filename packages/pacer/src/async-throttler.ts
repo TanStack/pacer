@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
@@ -28,6 +29,10 @@ export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
    */
   lastResult: ReturnType<TFn> | undefined
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
+  /**
    * Timestamp when the next execution can occur in milliseconds
    */
   nextExecutionTime: number | undefined
@@ -55,6 +60,7 @@ function getDefaultAsyncThrottlerState<
     lastArgs: undefined,
     lastExecutionTime: 0,
     lastResult: undefined,
+    maybeExecuteCount: 0,
     nextExecutionTime: undefined,
     settleCount: 0,
     status: 'idle',
@@ -76,6 +82,11 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    * Initial state for the async throttler
    */
   initialState?: Partial<AsyncThrottlerState<TFn>>
+  /**
+   * Optional key to identify this async throttler instance.
+   * If provided, the async throttler will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Whether to execute the function immediately when called
    * Defaults to true
@@ -189,6 +200,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncThrottlerState<TFn>>> = new Store<
     AsyncThrottlerState<TFn>
   >(getDefaultAsyncThrottlerState<TFn>())
+  key: string
   options: AsyncThrottlerOptions<TFn>
   #abortController: AbortController | null = null
   #timeoutId: NodeJS.Timeout | null = null
@@ -200,12 +212,18 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncThrottlerOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
     this.#setState(this.options.initialState ?? {})
+    pacerEventClient.on('d-AsyncThrottler', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
+      this.setOptions(event.payload.options)
+    })
   }
 
   /**
@@ -240,6 +258,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
                 : 'idle',
       }
     })
+    emitChange('AsyncThrottler', this)
   }
 
   /**
@@ -286,7 +305,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     const timeSinceLastExecution = now - this.store.state.lastExecutionTime
     const wait = this.#getWait()
     // Store the most recent arguments for potential trailing execution
-    this.#setState({ lastArgs: args })
+    this.#setState({
+      lastArgs: args,
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
 
     this.#resolvePreviousPromiseInternal()
 

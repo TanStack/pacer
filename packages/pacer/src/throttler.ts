@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface ThrottlerState<TFn extends AnyFunction> {
@@ -20,6 +21,10 @@ export interface ThrottlerState<TFn extends AnyFunction> {
    */
   lastExecutionTime: number
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
+  /**
    * Timestamp when the next execution can occur in milliseconds
    */
   nextExecutionTime: number | undefined
@@ -39,6 +44,7 @@ function getDefaultThrottlerState<
     lastExecutionTime: 0,
     nextExecutionTime: 0,
     status: 'idle',
+    maybeExecuteCount: 0,
   }
 }
 
@@ -56,6 +62,11 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
    * Initial state for the throttler
    */
   initialState?: Partial<ThrottlerState<TFn>>
+  /**
+   * A key to identify the throttler.
+   * If provided, the throttler will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Whether to execute on the leading edge of the timeout.
    * Defaults to true.
@@ -80,7 +91,7 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<ThrottlerOptions<any>>,
-  'initialState' | 'onExecute'
+  'initialState' | 'onExecute' | 'key'
 > = {
   enabled: true,
   leading: true,
@@ -127,6 +138,7 @@ export class Throttler<TFn extends AnyFunction> {
   readonly store: Store<Readonly<ThrottlerState<TFn>>> = new Store(
     getDefaultThrottlerState(),
   )
+  key: string | undefined
   options: ThrottlerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
 
@@ -134,11 +146,18 @@ export class Throttler<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: ThrottlerOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.on('d-Throttler', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state as ThrottlerState<TFn>)
+      this.setOptions(event.payload.options)
+    })
   }
 
   /**
@@ -169,6 +188,7 @@ export class Throttler<TFn extends AnyFunction> {
             : 'idle',
       }
     })
+    emitChange('Throttler', this)
   }
 
   #getEnabled = (): boolean => {
@@ -202,6 +222,10 @@ export class Throttler<TFn extends AnyFunction> {
    * ```
    */
   maybeExecute = (...args: Parameters<TFn>): void => {
+    this.#setState({
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
+
     const now = Date.now()
     const timeSinceLastExecution = now - this.store.state.lastExecutionTime
     const wait = this.#getWait()

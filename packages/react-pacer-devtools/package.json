@@ -1,0 +1,85 @@
+{
+  "name": "@tanstack/react-pacer-devtools",
+  "version": "0.14.0",
+  "description": "React adapter for devtools for Pacer.",
+  "author": "Tanner Linsley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TanStack/pacer.git",
+    "directory": "packages/pacer"
+  },
+  "homepage": "https://tanstack.com/pacer",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/tannerlinsley"
+  },
+  "keywords": [
+    "debounce",
+    "throttle",
+    "rate-limit",
+    "queuer",
+    "queue",
+    "pacer"
+  ],
+  "type": "module",
+  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./production": {
+      "import": {
+        "types": "./dist/esm/production.d.ts",
+        "default": "./dist/esm/production.js"
+      },
+      "require": {
+        "types": "./dist/cjs/production.d.cts",
+        "default": "./dist/cjs/production.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist/",
+    "src"
+  ],
+  "scripts": {
+    "clean": "premove ./build ./dist",
+    "lint:fix": "eslint ./src --fix",
+    "test:eslint": "eslint ./src",
+    "test:lib": "vitest",
+    "test:lib:dev": "pnpm test:lib --watch",
+    "test:types": "tsc",
+    "test:build": "publint --strict",
+    "build": "vite build"
+  },
+  "peerDependencies": {
+    "@types/react": ">=16.8",
+    "@types/react-dom": ">=16.8",
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
+  },
+  "dependencies": {
+    "@tanstack/pacer-devtools": "workspace:*"
+  },
+  "devDependencies": {
+    "@eslint-react/eslint-plugin": "^1.52.6",
+    "@vitejs/plugin-react": "^5.0.1",
+    "eslint-plugin-react-compiler": "19.1.0-rc.2",
+    "eslint-plugin-react-hooks": "^5.2.0"
+  }
+}

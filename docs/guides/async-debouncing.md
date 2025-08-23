@@ -200,6 +200,7 @@ The `AsyncDebouncerState` includes:
 - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
 - `lastArgs`: The arguments from the most recent call to `maybeExecute`
 - `lastResult`: The result from the most recent successful function execution
+- `maybeExecuteCount`: Number of times `maybeExecute` has been called
 - `settleCount`: Number of function executions that have completed (either successfully or with errors)
 - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
 - `successCount`: Number of function executions that have completed successfully

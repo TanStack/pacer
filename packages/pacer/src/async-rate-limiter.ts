@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
@@ -39,6 +40,10 @@ export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
    * Number of function executions that have completed successfully
    */
   successCount: number
+  /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
 }
 
 function getDefaultAsyncRateLimiterState<
@@ -50,10 +55,11 @@ function getDefaultAsyncRateLimiterState<
     isExceeded: false,
     isExecuting: false,
     lastResult: undefined,
+    maybeExecuteCount: 0,
     rejectionCount: 0,
     settleCount: 0,
-    successCount: 0,
     status: 'idle',
+    successCount: 0,
   }
 }
 
@@ -71,6 +77,11 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    * Initial state for the rate limiter
    */
   initialState?: Partial<AsyncRateLimiterState<TFn>>
+  /**
+   * Optional key to identify this async rate limiter instance.
+   * If provided, the async rate limiter will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Maximum number of executions allowed within the time window.
    * Can be a number or a function that returns a number.
@@ -127,7 +138,7 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
 
 const defaultOptions: Omit<
   Required<AsyncRateLimiterOptions<any>>,
-  'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess'
+  'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess' | 'key'
 > = {
   enabled: true,
   limit: 1,
@@ -206,6 +217,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>> = new Store<
     AsyncRateLimiterState<TFn>
   >(getDefaultAsyncRateLimiterState<TFn>())
+  key: string
   options: AsyncRateLimiterOptions<TFn>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
@@ -213,6 +225,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -222,6 +235,12 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     for (const executionTime of this.#getExecutionTimesInWindow()) {
       this.#setCleanupTimeout(executionTime)
     }
+
+    pacerEventClient.on('d-AsyncRateLimiter', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state)
+      this.setOptions(event.payload.options)
+    })
   }
 
   /**
@@ -251,6 +270,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         status,
       }
     })
+    emitChange('AsyncRateLimiter', this)
   }
 
   /**
@@ -302,6 +322,10 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   maybeExecute = async (
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
+    this.#setState({
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
+
     this.#cleanupOldExecutions()
 
     const relevantExecutionTimes = this.#getExecutionTimesInWindow()

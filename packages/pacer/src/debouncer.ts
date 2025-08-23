@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
 export interface DebouncerState<TFn extends AnyFunction> {
@@ -20,6 +21,10 @@ export interface DebouncerState<TFn extends AnyFunction> {
    */
   lastArgs: Parameters<TFn> | undefined
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
+  /**
    * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
    */
   status: 'disabled' | 'idle' | 'pending'
@@ -34,6 +39,7 @@ function getDefaultDebouncerState<
     isPending: false,
     lastArgs: undefined,
     status: 'idle',
+    maybeExecuteCount: 0,
   }
 }
 
@@ -51,6 +57,11 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    * Initial state for the debouncer
    */
   initialState?: Partial<DebouncerState<TFn>>
+  /**
+   * A key to identify the debouncer.
+   * If provided, the debouncer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Whether to execute on the leading edge of the timeout.
    * The first call will execute immediately and the rest will wait the delay.
@@ -76,7 +87,7 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
 
 const defaultOptions: Omit<
   Required<DebouncerOptions<any>>,
-  'initialState' | 'onExecute'
+  'initialState' | 'onExecute' | 'key'
 > = {
   enabled: true,
   leading: false,
@@ -119,6 +130,7 @@ export class Debouncer<TFn extends AnyFunction> {
   readonly store: Store<Readonly<DebouncerState<TFn>>> = new Store(
     getDefaultDebouncerState<TFn>(),
   )
+  key: string
   options: DebouncerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
 
@@ -126,11 +138,18 @@ export class Debouncer<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: DebouncerOptions<TFn>,
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.on('d-Debouncer', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state as DebouncerState<TFn>)
+      this.setOptions(event.payload.options)
+    })
   }
 
   /**
@@ -161,6 +180,7 @@ export class Debouncer<TFn extends AnyFunction> {
             : 'idle',
       }
     })
+    emitChange('Debouncer', this)
   }
 
   /**
@@ -183,6 +203,11 @@ export class Debouncer<TFn extends AnyFunction> {
    */
   maybeExecute = (...args: Parameters<TFn>): void => {
     if (!this.#getEnabled()) return undefined
+
+    this.#setState({
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
+
     let _didLeadingExecute = false
 
     // Handle leading execution

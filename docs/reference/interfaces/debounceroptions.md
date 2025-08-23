@@ -7,7 +7,7 @@ title: DebouncerOptions
 
 # Interface: DebouncerOptions\<TFn\>
 
-Defined in: [debouncer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L43)
+Defined in: [debouncer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L49)
 
 Options for configuring a debounced function
 
@@ -23,7 +23,7 @@ Options for configuring a debounced function
 optional enabled: boolean | (debouncer) => boolean;
 ```
 
-Defined in: [debouncer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L49)
+Defined in: [debouncer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L55)
 
 Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
 Can be a boolean or a function that returns a boolean.
@@ -37,9 +37,22 @@ Defaults to true.
 optional initialState: Partial<DebouncerState<TFn>>;
 ```
 
-Defined in: [debouncer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L53)
+Defined in: [debouncer.ts:59](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L59)
 
 Initial state for the debouncer
+
+***
+
+### key?
+
+```ts
+optional key: string;
+```
+
+Defined in: [debouncer.ts:64](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L64)
+
+A key to identify the debouncer.
+If provided, the debouncer will be identified by this key in the devtools and PacerProvider if applicable.
 
 ***
 
@@ -49,7 +62,7 @@ Initial state for the debouncer
 optional leading: boolean;
 ```
 
-Defined in: [debouncer.ts:59](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L59)
+Defined in: [debouncer.ts:70](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L70)
 
 Whether to execute on the leading edge of the timeout.
 The first call will execute immediately and the rest will wait the delay.
@@ -63,7 +76,7 @@ Defaults to false.
 optional onExecute: (args, debouncer) => void;
 ```
 
-Defined in: [debouncer.ts:63](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L63)
+Defined in: [debouncer.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L74)
 
 Callback function that is called after the function is executed
 
@@ -89,7 +102,7 @@ Callback function that is called after the function is executed
 optional trailing: boolean;
 ```
 
-Defined in: [debouncer.ts:68](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L68)
+Defined in: [debouncer.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L79)
 
 Whether to execute on the trailing edge of the timeout.
 Defaults to true.
@@ -102,7 +115,7 @@ Defaults to true.
 wait: number | (debouncer) => number;
 ```
 
-Defined in: [debouncer.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L74)
+Defined in: [debouncer.ts:85](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L85)
 
 Delay in milliseconds before executing the function.
 Can be a number or a function that returns a number.
