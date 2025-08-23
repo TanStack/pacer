@@ -7,7 +7,7 @@ export class PacerDevtoolsCore {
   #isMounted = false
   #dispose?: () => void
   #Component: any
-  #portalRef: HTMLDivElement | null = null
+
   constructor(_init?: PacerDevtoolsInit | undefined) {}
 
   mount<T extends HTMLElement>(el: T) {
@@ -20,12 +20,13 @@ export class PacerDevtoolsCore {
       const Devtools = this.#Component
 
       return (
-        <Portal ref={this.#portalRef!} mount={mountTo}>
-          <Devtools />
+        <Portal mount={mountTo}>
+          <div style={{ height: '100%' }}>
+            <Devtools />
+          </div>
         </Portal>
       )
     }, mountTo)
-    this.#portalRef!.style.height = '100%'
     this.#isMounted = true
     this.#dispose = dispose
   }
@@ -34,7 +35,6 @@ export class PacerDevtoolsCore {
     if (!this.#isMounted) {
       throw new Error('Devtools is not mounted')
     }
-    this.#portalRef = null
     this.#dispose?.()
     this.#isMounted = false
   }
