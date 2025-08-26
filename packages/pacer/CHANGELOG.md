@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.15.1
+
+### Patch Changes
+
+- fix: queues with priority always pop from front ([#57](https://github.com/TanStack/pacer/pull/57))
+
 ## 0.15.0
 
 ### Minor Changes
