@@ -371,6 +371,35 @@ describe('AsyncQueuer', () => {
         expect(asyncQueuer.getNextItem()).toBe('medium')
         expect(asyncQueuer.getNextItem()).toBe('low')
       })
+
+      it('should handle priority correctly with LIFO (getItemsFrom: back)', () => {
+        const asyncQueuer = new AsyncQueuer<string>(
+          (item) => Promise.resolve(item),
+          {
+            started: false,
+            addItemsTo: 'back',
+            getItemsFrom: 'back', // LIFO order
+            getPriority: (item) => {
+              if (item.includes('high')) return 3
+              if (item.includes('medium')) return 2
+              if (item.includes('low')) return 1
+              else return 0
+            },
+          },
+        )
+
+        // Add items - this mimics the original issue scenario
+        asyncQueuer.addItem('medium first')
+        asyncQueuer.addItem('high')
+        asyncQueuer.addItem('medium second')
+        asyncQueuer.addItem('low')
+
+        // Even with LIFO setting, priority should override and return highest priority first
+        expect(asyncQueuer.getNextItem()).toBe('high')
+        expect(asyncQueuer.getNextItem()).toBe('medium first')
+        expect(asyncQueuer.getNextItem()).toBe('medium second')
+        expect(asyncQueuer.getNextItem()).toBe('low')
+      })
     })
 
     describe('onItemsChange', () => {

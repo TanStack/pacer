@@ -471,7 +471,12 @@ export class Queuer<TValue> {
     const { items, itemTimestamps } = this.store.state
     let item: TValue | undefined
 
-    if (position === 'front') {
+    // When priority function is provided, always get from front (highest priority)
+    // Priority takes precedence over FIFO/LIFO behavior
+    if (
+      this.options.getPriority !== defaultOptions.getPriority ||
+      position === 'front'
+    ) {
       item = items[0]
       if (item !== undefined) {
         this.#setState({
