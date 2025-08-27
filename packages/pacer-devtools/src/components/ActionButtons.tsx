@@ -1,5 +1,6 @@
 import { pacerEventClient } from '@tanstack/pacer'
 import { useStyles } from '../styles/use-styles'
+import type { PacerEventName } from '@tanstack/pacer'
 
 type ActionButtonsProps = {
   instance: any
@@ -33,15 +34,14 @@ export function ActionButtons(props: ActionButtonsProps) {
     )
   }
 
-  const emitName = `d-${props.utilName}` as any
+  const emitName = `d-${props.utilName}` as PacerEventName
 
   return (
     <div class={styles().actionsRow}>
       {hasPending && (
         <button
           class={styles().actionButton}
-          onClick={() => {
-            utilInstance._emit() // force to receive fresh instance
+          onMouseDown={() => {
             const next = !isPending
             utilInstance.store.setState((prev: any) => ({
               ...prev,
@@ -57,8 +57,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasFlush && (
         <button
           class={styles().actionButton}
-          onClick={() => {
-            utilInstance._emit() // force to receive fresh instance
+          onMouseDown={() => {
             utilInstance.flush()
             pacerEventClient.emit(emitName, utilInstance)
           }}
@@ -78,7 +77,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasCancel && (
         <button
           class={styles().actionButton}
-          onClick={() => {
+          onMouseDown={() => {
             utilInstance.cancel()
             pacerEventClient.emit(emitName, utilInstance)
           }}
@@ -98,8 +97,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasReset && (
         <button
           class={styles().actionButton}
-          onClick={() => {
-            utilInstance._emit() // force to receive fresh instance
+          onMouseDown={() => {
             utilInstance.reset()
             pacerEventClient.emit(emitName, utilInstance)
           }}
@@ -111,8 +109,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasClear && (
         <button
           class={styles().actionButton}
-          onClick={() => {
-            utilInstance._emit() // force to receive fresh instance
+          onMouseDown={() => {
             utilInstance.clear()
             pacerEventClient.emit(emitName, utilInstance)
           }}
@@ -128,8 +125,7 @@ export function ActionButtons(props: ActionButtonsProps) {
       {hasStartStop && (
         <button
           class={styles().actionButton}
-          onClick={() => {
-            utilInstance._emit() // force to receive fresh instance
+          onMouseDown={() => {
             if (isRunning) {
               utilInstance.stop()
             } else {

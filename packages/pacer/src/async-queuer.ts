@@ -12,6 +12,10 @@ export interface AsyncQueuerState<TValue> {
    */
   activeItems: Array<TValue>
   /**
+   * Number of times addItem has been called (for reduction calculations)
+   */
+  addItemCount: number
+  /**
    * Number of task executions that have resulted in errors
    */
   errorCount: number
@@ -76,6 +80,7 @@ export interface AsyncQueuerState<TValue> {
 function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
   return {
     activeItems: [],
+    addItemCount: 0,
     errorCount: 0,
     expirationCount: 0,
     isEmpty: true,
@@ -104,11 +109,6 @@ export interface AsyncQueuerOptions<TValue> {
    * @default 'back'
    */
   addItemsTo?: QueuePosition
-  /**
-   * Optional key to identify this async queuer instance.
-   * If provided, the async queuer will be identified by this key in the devtools and PacerProvider if applicable.
-   */
-  key?: string
   /**
    * Maximum number of concurrent tasks to process.
    * Can be a number or a function that returns a number.
@@ -144,6 +144,11 @@ export interface AsyncQueuerOptions<TValue> {
    * Initial state for the async queuer
    */
   initialState?: Partial<AsyncQueuerState<TValue>>
+  /**
+   * Optional key to identify this async queuer instance.
+   * If provided, the async queuer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Maximum number of items allowed in the queuer
    */
@@ -314,11 +319,10 @@ export class AsyncQueuer<TValue> {
       }
     }
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-AsyncQueuer') {
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on('d-AsyncQueuer', (e) => {
+      if (e.payload.key !== this.key) return
+      this.#setState(e.payload.store.state)
+      this.setOptions(e.payload.options)
     })
   }
 
@@ -359,7 +363,7 @@ export class AsyncQueuer<TValue> {
         status,
       }
     })
-    this._emit()
+    emitChange('AsyncQueuer', this)
   }
 
   /**
@@ -438,6 +442,10 @@ export class AsyncQueuer<TValue> {
     position: QueuePosition = this.options.addItemsTo ?? 'back',
     runOnItemsChange: boolean = true,
   ): boolean => {
+    this.#setState({
+      addItemCount: this.store.state.addItemCount + 1,
+    })
+
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,
@@ -518,7 +526,12 @@ export class AsyncQueuer<TValue> {
     const { items, itemTimestamps } = this.store.state
     let item: TValue | undefined
 
-    if (position === 'front') {
+    // When priority function is provided or position is 'front', always get from front (highest priority)
+    // Priority takes precedence over FIFO/LIFO behavior
+    if (
+      this.options.getPriority !== defaultOptions.getPriority ||
+      position === 'front'
+    ) {
       item = items[0]
       if (item !== undefined) {
         this.#setState({

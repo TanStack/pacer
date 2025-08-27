@@ -63,13 +63,25 @@ Timestamp of the last function execution in milliseconds
 
 ***
 
+### maybeExecuteCount
+
+```ts
+maybeExecuteCount: number;
+```
+
+Defined in: [throttler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L26)
+
+Number of times maybeExecute has been called (for reduction calculations)
+
+***
+
 ### nextExecutionTime
 
 ```ts
 nextExecutionTime: undefined | number;
 ```
 
-Defined in: [throttler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L26)
+Defined in: [throttler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L30)
 
 Timestamp when the next execution can occur in milliseconds
 
@@ -81,6 +93,6 @@ Timestamp when the next execution can occur in milliseconds
 status: "disabled" | "idle" | "pending";
 ```
 
-Defined in: [throttler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L30)
+Defined in: [throttler.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L34)
 
 Current execution status - 'idle' when not active, 'pending' when waiting for timeout

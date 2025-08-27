@@ -42,6 +42,10 @@ export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
    * Number of function executions that have completed successfully
    */
   successCount: number
+  /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
 }
 
 function getDefaultAsyncRateLimiterState<
@@ -53,10 +57,11 @@ function getDefaultAsyncRateLimiterState<
     isExceeded: false,
     isExecuting: false,
     lastResult: undefined,
+    maybeExecuteCount: 0,
     rejectionCount: 0,
     settleCount: 0,
-    successCount: 0,
     status: 'idle',
+    successCount: 0,
   }
 }
 
@@ -245,11 +250,10 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       this.#setCleanupTimeout(executionTime)
     }
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-AsyncRateLimiter') {
-        this.#setState(event.payload.store.state as AsyncRateLimiterState<TFn>)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on('d-AsyncRateLimiter', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state)
+      this.setOptions(event.payload.options)
     })
   }
 
@@ -285,7 +289,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         status,
       }
     })
-    this._emit()
+    emitChange('AsyncRateLimiter', this)
   }
 
   /**
@@ -337,6 +341,10 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   maybeExecute = async (
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
+    this.#setState({
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
+
     this.#cleanupOldExecutions()
 
     const relevantExecutionTimes = this.#getExecutionTimesInWindow()

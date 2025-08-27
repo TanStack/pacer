@@ -31,6 +31,10 @@ export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
    */
   lastResult: ReturnType<TFn> | undefined
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
+  /**
    * Number of function executions that have completed (either successfully or with errors)
    */
   settleCount: number
@@ -54,9 +58,10 @@ function getDefaultAsyncDebouncerState<
     isPending: false,
     lastArgs: undefined,
     lastResult: undefined,
+    maybeExecuteCount: 0,
     settleCount: 0,
-    successCount: 0,
     status: 'idle',
+    successCount: 0,
   }
 }
 
@@ -217,11 +222,10 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     )
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-AsyncDebouncer') {
-        this.#setState(event.payload.store.state as AsyncDebouncerState<TFn>)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on('d-AsyncDebouncer', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state as AsyncDebouncerState<TFn>)
+      this.setOptions(event.payload.options)
     })
   }
 
@@ -262,7 +266,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
                 : 'idle',
       }
     })
-    this._emit()
+    emitChange('AsyncDebouncer', this)
   }
 
   /**
@@ -298,7 +302,10 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
     this.#cancelPendingExecution()
-    this.#setState({ lastArgs: args })
+    this.#setState({
+      lastArgs: args,
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
 
     // Handle leading execution
     if (this.options.leading && this.store.state.canLeadingExecute) {

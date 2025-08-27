@@ -292,6 +292,7 @@ The `RateLimiterState` includes:
 - `executionCount`: Number of function executions that have been completed
 - `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
 - `isExceeded`: Whether the rate limiter has exceeded the limit
+- `maybeExecuteCount`: Number of times `maybeExecute` has been called
 - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
 - `status`: Current execution status ('disabled' | 'exceeded' | 'idle')
 

@@ -230,6 +230,33 @@ describe('Queuer', () => {
           { value: 'low', priority: 1 },
         ])
       })
+
+      it('should handle priority correctly with LIFO (getItemsFrom: back)', () => {
+        const queuer = new Queuer(() => {}, {
+          started: false,
+          addItemsTo: 'back',
+          getItemsFrom: 'back', // LIFO order
+          getPriority: (item: any) => item.priority,
+        })
+
+        // Add items - this mimics the original issue scenario
+        queuer.addItem({ value: 'medium first', priority: 2 })
+        queuer.addItem({ value: 'high', priority: 3 })
+        queuer.addItem({ value: 'medium second', priority: 2 })
+        queuer.addItem({ value: 'low', priority: 1 })
+
+        // Even with LIFO setting, priority should override and return highest priority first
+        expect(queuer.getNextItem()).toEqual({ value: 'high', priority: 3 })
+        expect(queuer.getNextItem()).toEqual({
+          value: 'medium first',
+          priority: 2,
+        })
+        expect(queuer.getNextItem()).toEqual({
+          value: 'medium second',
+          priority: 2,
+        })
+        expect(queuer.getNextItem()).toEqual({ value: 'low', priority: 1 })
+      })
     })
 
     describe('onItemsChange', () => {

@@ -21,6 +21,10 @@ export interface ThrottlerState<TFn extends AnyFunction> {
    */
   lastExecutionTime: number
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
+  /**
    * Timestamp when the next execution can occur in milliseconds
    */
   nextExecutionTime: number | undefined
@@ -40,6 +44,7 @@ function getDefaultThrottlerState<
     lastExecutionTime: 0,
     nextExecutionTime: 0,
     status: 'idle',
+    maybeExecuteCount: 0,
   }
 }
 
@@ -148,11 +153,10 @@ export class Throttler<TFn extends AnyFunction> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-Throttler') {
-        this.#setState(event.payload.store.state as ThrottlerState<TFn>)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on('d-Throttler', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state as ThrottlerState<TFn>)
+      this.setOptions(event.payload.options)
     })
   }
 
@@ -189,7 +193,7 @@ export class Throttler<TFn extends AnyFunction> {
             : 'idle',
       }
     })
-    this._emit()
+    emitChange('Throttler', this)
   }
 
   #getEnabled = (): boolean => {
@@ -223,6 +227,10 @@ export class Throttler<TFn extends AnyFunction> {
    * ```
    */
   maybeExecute = (...args: Parameters<TFn>): void => {
+    this.#setState({
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
+
     const now = Date.now()
     const timeSinceLastExecution = now - this.store.state.lastExecutionTime
     const wait = this.#getWait()

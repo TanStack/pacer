@@ -21,11 +21,12 @@ export class PacerDevtoolsCore {
 
       return (
         <Portal mount={mountTo}>
-          <Devtools />
+          <div style={{ height: '100%' }}>
+            <Devtools />
+          </div>
         </Portal>
       )
     }, mountTo)
-
     this.#isMounted = true
     this.#dispose = dispose
   }
@@ -34,7 +35,6 @@ export class PacerDevtoolsCore {
     if (!this.#isMounted) {
       throw new Error('Devtools is not mounted')
     }
-
     this.#dispose?.()
     this.#isMounted = false
   }

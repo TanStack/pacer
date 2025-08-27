@@ -263,11 +263,10 @@ export class AsyncBatcher<TValue> {
     )
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-AsyncBatcher') {
-        this.#setState(event.payload.store.state as AsyncBatcherState<TValue>)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on('d-AsyncBatcher', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state)
+      this.setOptions(event.payload.options)
     })
   }
 
@@ -305,7 +304,7 @@ export class AsyncBatcher<TValue> {
               : 'populated',
       }
     })
-    this._emit()
+    emitChange('AsyncBatcher', this)
   }
 
   #getWait = (): number => {

@@ -9,38 +9,32 @@ import type { StateKey } from './util-groups'
 export function Shell() {
   const styles = useStyles()
   const state = usePacerDevtoolsState()
+  const utilState = () => state
   const [selectedKey, setSelectedKey] = createSignal<string | null>(null)
   const [leftPanelWidth, setLeftPanelWidth] = createSignal(300)
   const [isDragging, setIsDragging] = createSignal(false)
-
-  const getGroupItems = (key: StateKey) =>
-    (state as unknown as Record<StateKey, Array<any>>)[key]
 
   const selectedInstance = createMemo(() => {
     const key = selectedKey()
     if (!key) return null
     for (const group of UTIL_GROUPS) {
-      const instance = getGroupItems(group.key).find((inst) => inst.key === key)
+      const instance = (utilState() as unknown as Record<StateKey, Array<any>>)[
+        group.key
+      ].find((inst) => inst.key === key)
       if (instance) return { instance, type: group.displayName }
     }
     return null
   })
-
-  const getStatus = (inst: any) => {
-    try {
-      return inst.store?.state?.status ?? 'unknown'
-    } catch {
-      return 'unknown'
-    }
-  }
 
   let dragStartX = 0
   let dragStartWidth = 0
 
   const handleMouseDown = (e: MouseEvent) => {
     e.preventDefault()
+    e.stopPropagation()
     setIsDragging(true)
     document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
     dragStartX = e.clientX
     dragStartWidth = leftPanelWidth()
   }
@@ -48,6 +42,7 @@ export function Shell() {
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging()) return
 
+    e.preventDefault()
     const deltaX = e.clientX - dragStartX
     const newWidth = Math.max(150, Math.min(800, dragStartWidth + deltaX))
     setLeftPanelWidth(newWidth)
@@ -56,6 +51,7 @@ export function Shell() {
   const handleMouseUp = () => {
     setIsDragging(false)
     document.body.style.cursor = ''
+    document.body.style.userSelect = ''
   }
 
   onMount(() => {
@@ -81,12 +77,10 @@ export function Shell() {
             'max-width': '800px',
           }}
         >
-          <div class={styles().panelHeader}>Utils</div>
           <UtilList
             selectedKey={selectedKey}
             setSelectedKey={setSelectedKey}
-            getGroupItems={getGroupItems}
-            getStatus={getStatus}
+            utilState={utilState}
           />
         </div>
 
@@ -99,7 +93,7 @@ export function Shell() {
           <div class={styles().panelHeader}>Details</div>
           <DetailsPanel
             selectedInstance={selectedInstance}
-            lastUpdatedByKey={() => state.lastUpdatedByKey}
+            utilState={utilState}
           />
         </div>
       </div>

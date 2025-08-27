@@ -11,5 +11,6 @@ export * from './rate-limiter'
 export * from './throttler'
 export * from './types'
 export * from './utils'
+
 export { pacerEventClient } from './event-client'
-export type { PacerEventMap } from './event-client'
+export type { PacerEventMap, PacerEventName } from './event-client'

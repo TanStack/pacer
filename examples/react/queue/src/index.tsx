@@ -15,6 +15,7 @@ function App1() {
   // Create the simplified queuer function
   const queueItem = useCallback(
     queue<number>(processQueueItem, {
+      key: 'Add Number Queue',
       maxSize: 25,
       wait: 1000,
       onItemsChange: (queue) => {
@@ -72,6 +73,7 @@ function App2() {
   // Create the simplified queuer function
   const queueTextChange = useCallback(
     queue<string>(processQueueItem, {
+      key: 'Text Change Queue',
       maxSize: 100,
       wait: 500,
       onItemsChange: (queue) => {
@@ -137,6 +139,7 @@ function App3() {
   // Create the simplified queuer function
   const queueValue = useCallback(
     queue<number>(processQueueItem, {
+      key: 'Range Change Queue',
       maxSize: 100,
       wait: 100,
       onItemsChange: (queue) => {
@@ -212,7 +215,6 @@ root.render(
     <App2 />
     <hr />
     <App3 />
-
     <TanStackDevtools
       eventBusConfig={{
         debug: false,

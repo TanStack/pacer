@@ -11,7 +11,7 @@ title: QueuePosition
 type QueuePosition = "front" | "back";
 ```
 
-Defined in: [queuer.ts:176](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L176)
+Defined in: [queuer.ts:181](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L181)
 
 Position type for addItem and getNextItem operations.
 

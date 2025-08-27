@@ -52,6 +52,7 @@ title: "@tanstack/pacer"
 - [AnyAsyncFunction](../type-aliases/anyasyncfunction.md)
 - [AnyFunction](../type-aliases/anyfunction.md)
 - [OptionalKeys](../type-aliases/optionalkeys.md)
+- [PacerEventName](../type-aliases/pacereventname.md)
 - [QueuePosition](../type-aliases/queueposition.md)
 
 ## Variables

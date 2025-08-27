@@ -21,6 +21,10 @@ export interface DebouncerState<TFn extends AnyFunction> {
    */
   lastArgs: Parameters<TFn> | undefined
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
+  /**
    * Current execution status - 'idle' when not active, 'pending' when waiting for timeout
    */
   status: 'disabled' | 'idle' | 'pending'
@@ -35,6 +39,7 @@ function getDefaultDebouncerState<
     isPending: false,
     lastArgs: undefined,
     status: 'idle',
+    maybeExecuteCount: 0,
   }
 }
 
@@ -49,14 +54,14 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    */
   enabled?: boolean | ((debouncer: Debouncer<TFn>) => boolean)
   /**
+   * Initial state for the debouncer
+   */
+  initialState?: Partial<DebouncerState<TFn>>
+  /**
    * A key to identify the debouncer.
    * If provided, the debouncer will be identified by this key in the devtools and PacerProvider if applicable.
    */
   key?: string
-  /**
-   * Initial state for the debouncer
-   */
-  initialState?: Partial<DebouncerState<TFn>>
   /**
    * Whether to execute on the leading edge of the timeout.
    * The first call will execute immediately and the rest will wait the delay.
@@ -140,11 +145,10 @@ export class Debouncer<TFn extends AnyFunction> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-Debouncer') {
-        this.#setState(event.payload.store.state as DebouncerState<TFn>)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on('d-Debouncer', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state as DebouncerState<TFn>)
+      this.setOptions(event.payload.options)
     })
   }
 
@@ -181,7 +185,7 @@ export class Debouncer<TFn extends AnyFunction> {
             : 'idle',
       }
     })
-    this._emit()
+    emitChange('Debouncer', this)
   }
 
   /**
@@ -204,6 +208,11 @@ export class Debouncer<TFn extends AnyFunction> {
    */
   maybeExecute = (...args: Parameters<TFn>): void => {
     if (!this.#getEnabled()) return undefined
+
+    this.#setState({
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
+
     let _didLeadingExecute = false
 
     // Handle leading execution

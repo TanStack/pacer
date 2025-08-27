@@ -4,6 +4,10 @@ import { emitChange, pacerEventClient } from './event-client'
 
 export interface QueuerState<TValue> {
   /**
+   * Number of times addItem has been called (for reduction calculations)
+   */
+  addItemCount: number
+  /**
    * Number of items that have been processed by the queuer
    */
   executionCount: number
@@ -67,6 +71,7 @@ function getDefaultQueuerState<TValue>(): QueuerState<TValue> {
     rejectionCount: 0,
     size: 0,
     status: 'idle',
+    addItemCount: 0,
   }
 }
 
@@ -81,11 +86,6 @@ export interface QueuerOptions<TValue> {
    * @default 'back'
    */
   addItemsTo?: QueuePosition
-  /**
-   * Optional key to identify this queuer instance.
-   * If provided, the queuer will be identified by this key in the devtools and PacerProvider if applicable.
-   */
-  key?: string
   /**
    * Maximum time in milliseconds that an item can stay in the queue
    * If not provided, items will never expire
@@ -114,6 +114,11 @@ export interface QueuerOptions<TValue> {
    * Initial state for the queuer
    */
   initialState?: Partial<QueuerState<TValue>>
+  /**
+   * Optional key to identify this queuer instance.
+   * If provided, the queuer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
   /**
    * Maximum number of items allowed in the queuer
    */
@@ -282,11 +287,11 @@ export class Queuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-Queuer') {
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
-      }
+    
+    pacerEventClient.on('d-Queuer', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state)
+      this.setOptions(event.payload.options)
     })
   }
 
@@ -327,7 +332,7 @@ export class Queuer<TValue> {
         status,
       }
     })
-    this._emit()
+    emitChange('Queuer', this)
   }
 
   /**
@@ -387,6 +392,10 @@ export class Queuer<TValue> {
     position: QueuePosition = this.options.addItemsTo ?? 'back',
     runOnItemsChange: boolean = true,
   ): boolean => {
+    this.#setState({
+      addItemCount: this.store.state.addItemCount + 1,
+    })
+
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,
@@ -468,7 +477,12 @@ export class Queuer<TValue> {
     const { items, itemTimestamps } = this.store.state
     let item: TValue | undefined
 
-    if (position === 'front') {
+    // When priority function is provided, always get from front (highest priority)
+    // Priority takes precedence over FIFO/LIFO behavior
+    if (
+      this.options.getPriority !== defaultOptions.getPriority ||
+      position === 'front'
+    ) {
       item = items[0]
       if (item !== undefined) {
         this.#setState({

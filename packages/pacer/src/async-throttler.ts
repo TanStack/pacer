@@ -31,6 +31,10 @@ export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
    */
   lastResult: ReturnType<TFn> | undefined
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
+  /**
    * Timestamp when the next execution can occur in milliseconds
    */
   nextExecutionTime: number | undefined
@@ -58,6 +62,7 @@ function getDefaultAsyncThrottlerState<
     lastArgs: undefined,
     lastExecutionTime: 0,
     lastResult: undefined,
+    maybeExecuteCount: 0,
     nextExecutionTime: undefined,
     settleCount: 0,
     status: 'idle',
@@ -228,11 +233,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     )
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-AsyncThrottler') {
-        this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on('d-AsyncThrottler', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
+      this.setOptions(event.payload.options)
     })
   }
 
@@ -273,7 +277,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
                 : 'idle',
       }
     })
-    this._emit()
+    emitChange('AsyncThrottler', this)
   }
 
   /**
@@ -320,7 +324,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     const timeSinceLastExecution = now - this.store.state.lastExecutionTime
     const wait = this.#getWait()
     // Store the most recent arguments for potential trailing execution
-    this.#setState({ lastArgs: args })
+    this.#setState({
+      lastArgs: args,
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
 
     this.#resolvePreviousPromiseInternal()
 

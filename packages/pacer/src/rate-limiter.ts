@@ -17,6 +17,10 @@ export interface RateLimiterState {
    */
   isExceeded: boolean
   /**
+   * Number of times maybeExecute has been called (for reduction calculations)
+   */
+  maybeExecuteCount: number
+  /**
    * Number of function executions that have been rejected due to rate limiting
    */
   rejectionCount: number
@@ -33,6 +37,7 @@ function getDefaultRateLimiterState(): RateLimiterState {
     isExceeded: false,
     rejectionCount: 0,
     status: 'idle',
+    maybeExecuteCount: 0,
   }
 }
 
@@ -156,11 +161,10 @@ export class RateLimiter<TFn extends AnyFunction> {
       this.#setCleanupTimeout(executionTime)
     }
 
-    pacerEventClient.onAllPluginEvents((event) => {
-      if (event.type === 'pacer:d-RateLimiter') {
-        this.#setState(event.payload.store.state as RateLimiterState)
-        this.setOptions(event.payload.options)
-      }
+    pacerEventClient.on('d-RateLimiter', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state)
+      this.setOptions(event.payload.options)
     })
   }
 
@@ -194,7 +198,7 @@ export class RateLimiter<TFn extends AnyFunction> {
         status,
       }
     })
-    this._emit()
+    emitChange('RateLimiter', this)
   }
 
   /**
@@ -234,6 +238,10 @@ export class RateLimiter<TFn extends AnyFunction> {
    * ```
    */
   maybeExecute = (...args: Parameters<TFn>): boolean => {
+    this.#setState({
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+    })
+
     this.#cleanupOldExecutions()
 
     const relevantExecutionTimes = this.#getExecutionTimesInWindow()

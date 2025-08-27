@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer-devtools",
-  "version": "0.14.0",
+  "version": "0.1.0",
   "description": "Devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -37,6 +37,16 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./production": {
+      "import": {
+        "types": "./dist/esm/production.d.ts",
+        "default": "./dist/esm/production.js"
+      },
+      "require": {
+        "types": "./dist/cjs/production.d.cts",
+        "default": "./dist/cjs/production.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -58,10 +68,11 @@
     "build": "vite build"
   },
   "peerDependencies": {
-    "@tanstack/pacer": ">=0.14.0"
+    "@tanstack/pacer": ">=0.15.0"
   },
   "dependencies": {
-    "@tanstack/devtools-ui": "^0.3.0",
+    "@tanstack/devtools-ui": "^0.3.1",
+    "@tanstack/solid-store": "^0.7.3",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "goober": "^2.1.16",
