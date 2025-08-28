@@ -1,4 +1,6 @@
 import { Store } from '@tanstack/store'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction } from './types'
@@ -67,6 +69,10 @@ function getDefaultAsyncRateLimiterState<
  * Options for configuring an async rate-limited function
  */
 export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
+  /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<TFn>
   /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Can be a boolean or a function that returns a boolean.
@@ -140,6 +146,9 @@ const defaultOptions: Omit<
   Required<AsyncRateLimiterOptions<any>>,
   'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess' | 'key'
 > = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   enabled: true,
   limit: 1,
   window: 0,
@@ -219,6 +228,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   >(getDefaultAsyncRateLimiterState<TFn>())
   key: string
   options: AsyncRateLimiterOptions<TFn>
+  asyncRetryer: AsyncRetryer<TFn>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
@@ -231,6 +241,10 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     this.#setState(this.options.initialState ?? {})
     for (const executionTime of this.#getExecutionTimesInWindow()) {
       this.#setCleanupTimeout(executionTime)
@@ -242,6 +256,11 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       this.setOptions(event.payload.options)
     })
   }
+
+  /**
+   * Emits a change event for the async rate limiter instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncRateLimiter', this)
 
   /**
    * Updates the async rate limiter options
@@ -355,13 +374,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     })
 
     try {
-      const result = await this.fn(...args) // EXECUTE!
+      const result = await this.asyncRetryer.execute(...args) // EXECUTE!
       this.#setCleanupTimeout(now)
       this.#setState({
         successCount: this.store.state.successCount + 1,
         lastResult: result,
       })
-      this.options.onSuccess?.(result, args, this)
+      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,

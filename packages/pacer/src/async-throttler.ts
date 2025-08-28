@@ -1,4 +1,6 @@
 import { Store } from '@tanstack/store'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
@@ -73,6 +75,10 @@ function getDefaultAsyncThrottlerState<
  */
 export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<TFn>
+  /**
    * Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
    * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
@@ -142,6 +148,9 @@ type AsyncThrottlerOptionsWithOptionalCallbacks = OptionalKeys<
 >
 
 const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   enabled: true,
   leading: true,
   trailing: true,
@@ -202,7 +211,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   >(getDefaultAsyncThrottlerState<TFn>())
   key: string
   options: AsyncThrottlerOptions<TFn>
-  #abortController: AbortController | null = null
+  asyncRetryer: AsyncRetryer<TFn>
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
@@ -218,13 +227,23 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     this.#setState(this.options.initialState ?? {})
+
     pacerEventClient.on('d-AsyncThrottler', (event) => {
       if (event.payload.key !== this.key) return
       this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
       this.setOptions(event.payload.options)
     })
   }
+
+  /**
+   * Emits a change event for the async throttler instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncThrottler', this)
 
   /**
    * Updates the async throttler options
@@ -349,15 +368,14 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled() || this.store.state.isExecuting) return undefined
-    this.#abortController = new AbortController()
     try {
       this.#setState({ isExecuting: true })
-      const result = await this.fn(...args) // EXECUTE!
+      const result = await this.asyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result, args, this)
+      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
@@ -376,7 +394,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         lastExecutionTime,
         nextExecutionTime,
       })
-      this.#abortController = null
       this.options.onSettled?.(args, this)
       setTimeout(() => {
         if (!this.store.state.isPending) {
@@ -432,10 +449,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   }
 
   #abortExecution = (): void => {
-    if (this.#abortController) {
-      this.#abortController.abort()
-      this.#abortController = null
-    }
+    this.asyncRetryer.cancel()
   }
 
   /**
