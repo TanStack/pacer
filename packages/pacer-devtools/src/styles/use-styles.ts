@@ -42,6 +42,7 @@ const stylesFactory = () => {
       overflow: hidden;
       padding: ${size[2]};
       padding-top: 0;
+      margin-top: ${size[2]};
     `,
     dragHandle: css`
       width: 8px;

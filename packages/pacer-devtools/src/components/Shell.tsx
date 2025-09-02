@@ -1,4 +1,5 @@
 import { createMemo, createSignal, onCleanup, onMount } from 'solid-js'
+import { Header, HeaderLogo, MainPanel } from '@tanstack/devtools-ui'
 import { useStyles } from '../styles/use-styles'
 import { usePacerDevtoolsState } from '../PacerContextProvider'
 import { UTIL_GROUPS } from './util-groups'
@@ -65,8 +66,12 @@ export function Shell() {
   })
 
   return (
-    <div class={styles().devtoolsPanel}>
-      <div class={styles().stickyHeader}>TanStack Pacer</div>
+    <MainPanel>
+      <Header>
+        <HeaderLogo flavor={{ light: "#84cc16", dark: "#84cc16" }}>
+          TanStack Pacer
+        </HeaderLogo>
+      </Header>
 
       <div class={styles().mainContainer}>
         <div
@@ -97,6 +102,6 @@ export function Shell() {
           />
         </div>
       </div>
-    </div>
+    </MainPanel>
   )
 }
