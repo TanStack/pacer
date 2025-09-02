@@ -24,27 +24,18 @@
   ],
   "type": "module",
   "types": "dist/esm/index.d.ts",
-  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
-      },
-      "require": {
-        "types": "./dist/cjs/index.d.cts",
-        "default": "./dist/cjs/index.cjs"
       }
     },
     "./production": {
       "import": {
         "types": "./dist/esm/production.d.ts",
         "default": "./dist/esm/production.js"
-      },
-      "require": {
-        "types": "./dist/cjs/production.d.cts",
-        "default": "./dist/cjs/production.cjs"
       }
     },
     "./package.json": "./package.json"
