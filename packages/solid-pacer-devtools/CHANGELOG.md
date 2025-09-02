@@ -1,5 +1,16 @@
 # @tanstack/solid-pacer-devtools
 
+## 0.2.0
+
+### Minor Changes
+
+- Dropped CJS support, added consistency to styling ([#59](https://github.com/TanStack/pacer/pull/59))
+
+### Patch Changes
+
+- Updated dependencies [[`6922ad1`](https://github.com/TanStack/pacer/commit/6922ad12e56a447f76eb9cbfad63fd054354cd80)]:
+  - @tanstack/pacer-devtools@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes
