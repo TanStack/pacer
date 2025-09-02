@@ -68,7 +68,7 @@ export function Shell() {
   return (
     <MainPanel>
       <Header>
-        <HeaderLogo flavor={{ light: "#84cc16", dark: "#84cc16" }}>
+        <HeaderLogo flavor={{ light: '#84cc16', dark: '#84cc16' }}>
           TanStack Pacer
         </HeaderLogo>
       </Header>
