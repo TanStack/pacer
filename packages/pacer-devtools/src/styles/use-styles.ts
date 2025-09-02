@@ -8,33 +8,6 @@ const stylesFactory = () => {
   const css = goober.css
 
   return {
-    devtoolsPanel: css`
-      background: ${colors.darkGray[900]};
-      color: ${colors.gray[100]};
-      font-family: ${fontFamily.sans};
-      font-size: ${fontSize.sm};
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    `,
-    stickyHeader: css`
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: ${colors.darkGray[900]};
-      padding: ${size[2]};
-      font-size: ${fontSize.lg};
-      font-weight: ${font.weight.bold};
-      color: #84cc16;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      border-bottom: 1px solid ${colors.darkGray[700]};
-      box-shadow: 0 2px 8px 0 ${colors.black + alpha[40]};
-      flex-shrink: 0;
-    `,
     mainContainer: css`
       display: flex;
       flex: 1;
