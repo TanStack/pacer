@@ -5,7 +5,7 @@ import { useThrottler } from '@tanstack/react-pacer/throttler'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
 import { useBatcher } from '@tanstack/react-pacer/batcher'
-import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 function ComparisonApp() {
@@ -351,11 +351,11 @@ function ComparisonApp() {
                   {instantExecutionCount === 0
                     ? '0'
                     : Math.round(
-                        ((instantExecutionCount -
-                          utility.state.executionCount) /
-                          instantExecutionCount) *
-                          100,
-                      )}
+                      ((instantExecutionCount -
+                        utility.state.executionCount) /
+                        instantExecutionCount) *
+                      100,
+                    )}
                   %
                 </div>
                 {utility.name === 'Rate Limiter' && (
@@ -451,7 +451,7 @@ function ComparisonApp() {
         eventBusConfig={{
           debug: false,
         }}
-        plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
+        plugins={[pacerDevtoolsPlugin()]}
       />
     </div>
   )

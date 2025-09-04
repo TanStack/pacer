@@ -1,16 +1,17 @@
 import { lazy } from 'solid-js'
 import { Portal, render } from 'solid-js/web'
 
-export interface PacerDevtoolsInit {}
+export interface PacerDevtoolsInit { }
 
 export class PacerDevtoolsCore {
   #isMounted = false
   #dispose?: () => void
   #Component: any
+  #ThemeProvider: any
 
-  constructor(_init?: PacerDevtoolsInit | undefined) {}
+  constructor(_init?: PacerDevtoolsInit | undefined) { }
 
-  mount<T extends HTMLElement>(el: T) {
+  mount<T extends HTMLElement>(el: T, theme: 'light' | 'dark') {
     if (this.#isMounted) {
       throw new Error('Devtools is already mounted')
     }
@@ -18,11 +19,15 @@ export class PacerDevtoolsCore {
     const dispose = render(() => {
       this.#Component = lazy(() => import('./PacerDevtools'))
       const Devtools = this.#Component
+      this.#ThemeProvider = lazy(() => import('@tanstack/devtools-ui').then((mod) => ({ default: mod.ThemeContextProvider })))
+      const ThemeProvider = this.#ThemeProvider
 
       return (
         <Portal mount={mountTo}>
           <div style={{ height: '100%' }}>
-            <Devtools />
+            <ThemeProvider theme={theme}>
+              <Devtools />
+            </ThemeProvider>
           </div>
         </Portal>
       )
