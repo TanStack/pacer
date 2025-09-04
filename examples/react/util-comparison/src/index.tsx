@@ -351,11 +351,11 @@ function ComparisonApp() {
                   {instantExecutionCount === 0
                     ? '0'
                     : Math.round(
-                      ((instantExecutionCount -
-                        utility.state.executionCount) /
-                        instantExecutionCount) *
-                      100,
-                    )}
+                        ((instantExecutionCount -
+                          utility.state.executionCount) /
+                          instantExecutionCount) *
+                          100,
+                      )}
                   %
                 </div>
                 {utility.name === 'Rate Limiter' && (

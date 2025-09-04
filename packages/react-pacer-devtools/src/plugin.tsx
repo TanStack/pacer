@@ -1,5 +1,5 @@
-import React from "react"
-import { PacerDevtoolsPanel } from "./index"
+import React from 'react'
+import { PacerDevtoolsPanel } from './index'
 
 export function pacerDevtoolsPlugin() {
   return {

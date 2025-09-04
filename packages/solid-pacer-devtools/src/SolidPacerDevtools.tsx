@@ -10,7 +10,7 @@ export const PacerDevtoolsPanel = (props?: PacerDevtoolsSolidInit) => {
   const [devtools] = createSignal(new PacerDevtoolsCore({}))
   onMount(() => {
     if (devToolRef) {
-      devtools().mount(devToolRef, props?.theme ?? "dark")
+      devtools().mount(devToolRef, props?.theme ?? 'dark')
 
       onCleanup(() => {
         devtools().unmount()

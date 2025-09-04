@@ -1,4 +1,4 @@
-import { PacerDevtoolsPanel } from "./index"
+import { PacerDevtoolsPanel } from './index'
 
 export function pacerDevtoolsPlugin() {
   return {

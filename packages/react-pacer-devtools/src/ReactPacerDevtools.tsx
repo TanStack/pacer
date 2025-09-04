@@ -11,7 +11,7 @@ export const PacerDevtoolsPanel = (props?: PacerDevtoolsReactInit) => {
   const [devtools] = useState(() => new PacerDevtoolsCore({}))
   useEffect(() => {
     if (devToolRef.current) {
-      devtools.mount(devToolRef.current, props?.theme ?? "dark")
+      devtools.mount(devToolRef.current, props?.theme ?? 'dark')
     }
 
     return () => devtools.unmount()

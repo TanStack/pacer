@@ -1,4 +1,4 @@
-import { PacerDevtoolsPanel } from "./production"
+import { PacerDevtoolsPanel } from './production'
 
 export function pacerDevtoolsPlugin() {
   return {
