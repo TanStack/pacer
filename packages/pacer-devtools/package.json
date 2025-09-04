@@ -62,7 +62,7 @@
     "@tanstack/pacer": ">=0.15.0"
   },
   "dependencies": {
-    "@tanstack/devtools-ui": "^0.3.3",
+    "@tanstack/devtools-ui": "^0.3.4",
     "@tanstack/solid-store": "^0.7.3",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",

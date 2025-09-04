@@ -31,7 +31,7 @@ npm install @tanstack/solid-devtools @tanstack/solid-pacer-devtools
 
 ```tsx
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
 
 function App() {
   return (
@@ -42,7 +42,7 @@ function App() {
         eventBusConfig={{
           debug: false,
         }}
-        plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
+        plugins={[pacerDevtoolsPlugin()]}
       />
     </div>
   )
@@ -53,7 +53,7 @@ function App() {
 
 ```tsx
 import { TanStackDevtools } from '@tanstack/solid-devtools'
-import { PacerDevtoolsPanel } from '@tanstack/solid-pacer-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/solid-pacer-devtools'
 
 function App() {
   return (
@@ -64,7 +64,7 @@ function App() {
         eventBusConfig={{
           debug: false,
         }}
-        plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
+        plugins={[pacerDevtoolsPlugin()]}
       />
     </div>
   )
@@ -77,14 +77,14 @@ By default, devtools are excluded from production builds to minimize bundle size
 
 ```tsx
 // This will be a no-op in production builds
-import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
 ```
 
 If you need to include devtools in production builds (e.g., for debugging production issues), use the production-specific imports:
 
 ```tsx
 // This will include full devtools even in production builds
-import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools/production'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools/production'
 ```
 
 ## Registering Utilities

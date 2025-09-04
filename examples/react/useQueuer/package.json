@@ -15,7 +15,7 @@
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
-    "@tanstack/react-devtools": "0.4.2",
+    "@tanstack/react-devtools": "0.6.3",
     "@tanstack/react-pacer-devtools": "0.2.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
