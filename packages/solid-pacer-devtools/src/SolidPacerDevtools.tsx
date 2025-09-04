@@ -2,7 +2,7 @@ import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 
 export interface PacerDevtoolsSolidInit {
-  theme: 'light' | 'dark'
+  theme?: 'light' | 'dark'
 }
 
 export const PacerDevtoolsPanel = (props?: PacerDevtoolsSolidInit) => {
