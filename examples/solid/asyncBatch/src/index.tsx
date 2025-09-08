@@ -63,7 +63,7 @@ function App() {
   }
 
   // Create the async batcher function
-  const addToBatch = asyncBatch<Item>(processBatch, {
+  const addToBatch = asyncBatch(processBatch, {
     maxSize: 5,
     wait: 3000,
     getShouldExecute: (items) =>

@@ -14,7 +14,7 @@ Defined in: [event-client.ts:13](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:AsyncBatcher
 
 ```ts
-pacer:AsyncBatcher: AsyncBatcher<any>;
+pacer:AsyncBatcher: AsyncBatcher<any, any>;
 ```
 
 Defined in: [event-client.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L24)
@@ -74,7 +74,7 @@ Defined in: [event-client.ts:29](https://github.com/TanStack/pacer/blob/main/pac
 ### pacer:d-AsyncBatcher
 
 ```ts
-pacer:d-AsyncBatcher: AsyncBatcher<any>;
+pacer:d-AsyncBatcher: AsyncBatcher<any, any>;
 ```
 
 Defined in: [event-client.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L14)
