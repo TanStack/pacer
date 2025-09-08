@@ -10,4 +10,6 @@ export const PacerDevtoolsPanel: (typeof Devtools)['PacerDevtoolsPanel'] =
       }
     : Devtools.PacerDevtoolsPanel
 
+export { pacerDevtoolsPlugin } from './plugin'
+
 export type { PacerDevtoolsReactInit } from './ReactPacerDevtools'
