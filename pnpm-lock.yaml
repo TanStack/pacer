@@ -244,7 +244,7 @@ importers:
         specifier: 0.6.3
         version: 0.6.3(@tanstack/devtools-ui@0.3.4(csstype@3.1.3)(solid-js@1.9.9))(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(csstype@3.1.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(solid-js@1.9.9)
       '@tanstack/react-pacer-devtools':
-        specifier: 0.2.0
+        specifier: 0.3.0
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
         specifier: ^19.1.10
@@ -852,7 +852,7 @@ importers:
         specifier: 0.6.3
         version: 0.6.3(@tanstack/devtools-ui@0.3.4(csstype@3.1.3)(solid-js@1.9.9))(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(csstype@3.1.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(solid-js@1.9.9)
       '@tanstack/react-pacer-devtools':
-        specifier: 0.2.0
+        specifier: 0.3.0
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
         specifier: ^19.1.10
@@ -1142,7 +1142,7 @@ importers:
         specifier: 0.6.3
         version: 0.6.3(@tanstack/devtools-ui@0.3.4(csstype@3.1.3)(solid-js@1.9.9))(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(csstype@3.1.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(solid-js@1.9.9)
       '@tanstack/react-pacer-devtools':
-        specifier: 0.2.0
+        specifier: 0.3.0
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
         specifier: ^19.1.10
@@ -1390,7 +1390,7 @@ importers:
         specifier: ^0.14.1
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
-        specifier: 0.2.0
+        specifier: 0.3.0
         version: link:../../../packages/solid-pacer-devtools
       solid-js:
         specifier: ^1.9.9
@@ -1524,7 +1524,7 @@ importers:
         specifier: ^0.14.1
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
-        specifier: 0.2.0
+        specifier: 0.3.0
         version: link:../../../packages/solid-pacer-devtools
       solid-js:
         specifier: ^1.9.9

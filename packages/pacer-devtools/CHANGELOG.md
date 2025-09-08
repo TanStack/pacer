@@ -1,5 +1,11 @@
 # @tanstack/pacer-devtools
 
+## 0.3.0
+
+### Minor Changes
+
+- Added light/dark mode support to Pacer devtools, updated to latest versions of underlying devtools packages and added plugins in favor of users manually defining the panels ([#62](https://github.com/TanStack/pacer/pull/62))
+
 ## 0.2.0
 
 ### Minor Changes
