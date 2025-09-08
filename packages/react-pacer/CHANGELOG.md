@@ -1,5 +1,12 @@
 # @tanstack/react-pacer
 
+## 0.16.2
+
+### Patch Changes
+
+- Updated dependencies [[`1a241bf`](https://github.com/TanStack/pacer/commit/1a241bfa25e68044d38f8ae13456dd68d9caff14)]:
+  - @tanstack/pacer@0.15.2
+
 ## 0.16.1
 
 ### Patch Changes

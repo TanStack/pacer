@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@tanstack/solid-devtools": "0.4.2",
-    "@tanstack/solid-pacer": "^0.14.1",
+    "@tanstack/solid-pacer": "^0.14.2",
     "@tanstack/solid-pacer-devtools": "0.3.0",
     "solid-js": "^1.9.9"
   },
