@@ -182,6 +182,6 @@
   },
   "dependencies": {
     "@tanstack/devtools-event-client": "^0.2.4",
-    "@tanstack/store": "^0.7.2"
+    "@tanstack/store": "^0.7.5"
   }
 }
