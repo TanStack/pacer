@@ -2811,6 +2811,13 @@ packages:
       react: '>=16.8'
       react-dom: '>=16.8'
 
+  '@tanstack/react-pacer@0.14.0':
+    resolution: {integrity: sha512-K5wR61esBjnO+o5XnagE4twOUtNmNb6WF0+ARQRs68tViq4mNGwKuDHm0OuqAN+7Vq8k41horjiVAj24d6V1vw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+
   '@tanstack/react-persister@0.1.1':
     resolution: {integrity: sha512-bERMba9+dDOWKJLV5dR6+pKq+xRYyuCsK1Te5Ygs2WiXdvAVLMnNjJIOkIhZ9uihbQvyBIbYPAlb9sCfSgvYWg==}
     engines: {node: '>=18'}
@@ -2848,6 +2855,9 @@ packages:
 
   '@tanstack/store@0.7.5':
     resolution: {integrity: sha512-qd/OjkjaFRKqKU4Yjipaen/EOB9MyEg6Wr9fW103RBPACf1ZcKhbhcu2S5mj5IgdPib6xFIgCUti/mKVkl+fRw==}
+
+  '@tanstack/store@0.7.4':
+    resolution: {integrity: sha512-F1XqZQici1Aq6WigEfcxJSml92nW+85Om8ElBMokPNg5glCYVOmPkZGIQeieYFxcPiKTfwo0MTOQpUyJtwncrg==}
 
   '@tanstack/typedoc-config@0.2.0':
     resolution: {integrity: sha512-1ak0ZirlLRxd3dNNOFnMoYORBeC83nK4C+OiXpE0dxsO8ZVrBqCtNCKr8SG+W9zICXcWGiFu9qYLsgNKTayOqw==}
@@ -2986,6 +2996,10 @@ packages:
 
   '@typescript-eslint/visitor-keys@8.43.0':
     resolution: {integrity: sha512-T+S1KqRD4sg/bHfLwrpF/K3gQLBM1n7Rp7OjjikjTEssI2YJzQpi5WXoynOaQ93ERIuq3O8RBTOUYDKszUCEHw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@typescript-eslint/visitor-keys@8.41.0':
+    resolution: {integrity: sha512-+GeGMebMCy0elMNg67LRNoVnUFPIm37iu5CmHESVx56/9Jsfdpsvbv605DQ81Pi/x11IdKUsS5nzgTYbCQU9fg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@unrs/resolver-binding-android-arm-eabi@1.11.1':
@@ -6627,6 +6641,10 @@ snapshots:
       - supports-color
       - typescript
 
+  '@tanstack/pacer@0.13.0':
+    dependencies:
+      '@tanstack/store': 0.7.4
+
   '@tanstack/persister@0.1.1': {}
 
   '@tanstack/publish-config@0.2.0':
@@ -6655,6 +6673,13 @@ snapshots:
       - solid-js
       - utf-8-validate
 
+  '@tanstack/react-pacer@0.14.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+    dependencies:
+      '@tanstack/pacer': 0.13.0
+      '@tanstack/react-store': 0.7.3(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+
   '@tanstack/react-persister@0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
       '@tanstack/persister': 0.1.1
@@ -6676,6 +6701,13 @@ snapshots:
     dependencies:
       '@tanstack/store': 0.7.5
       react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+      use-sync-external-store: 1.5.0(react@19.1.1)
+
+  '@tanstack/react-store@0.7.4(react-dom@19.1.0(react@19.1.1))(react@19.1.1)':
+    dependencies:
+      '@tanstack/store': 0.7.4
+      react: 19.1.1
       react-dom: 19.1.0(react@19.1.1)
       use-sync-external-store: 1.5.0(react@19.1.1)
 
@@ -6694,6 +6726,8 @@ snapshots:
       solid-js: 1.9.9
 
   '@tanstack/store@0.7.5': {}
+
+  '@tanstack/store@0.7.4': {}
 
   '@tanstack/typedoc-config@0.2.0(typescript@5.9.2)':
     dependencies:
@@ -6833,6 +6867,7 @@ snapshots:
       '@typescript-eslint/tsconfig-utils': 8.43.0(typescript@5.9.2)
       '@typescript-eslint/types': 8.43.0
       debug: 4.4.1
+      eslint: 9.34.0(jiti@2.5.1)
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
@@ -6855,8 +6890,6 @@ snapshots:
       eslint: 9.35.0(jiti@2.5.1)
       ts-api-utils: 2.1.0(typescript@5.9.2)
       typescript: 5.9.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@typescript-eslint/types@8.39.1': {}
 
@@ -6892,6 +6925,11 @@ snapshots:
   '@typescript-eslint/visitor-keys@8.43.0':
     dependencies:
       '@typescript-eslint/types': 8.43.0
+      eslint-visitor-keys: 4.2.1
+
+  '@typescript-eslint/visitor-keys@8.41.0':
+    dependencies:
+      '@typescript-eslint/types': 8.41.0
       eslint-visitor-keys: 4.2.1
 
   '@unrs/resolver-binding-android-arm-eabi@1.11.1':

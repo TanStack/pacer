@@ -7,7 +7,7 @@ title: ReactThrottler
 
 # Interface: ReactThrottler\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:11](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L11)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:12](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L12)
 
 ## Extends
 
@@ -27,7 +27,7 @@ Defined in: [react-pacer/src/throttler/useThrottler.ts:11](https://github.com/Ta
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L18)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L19)
 
 Reactive state that will be updated and re-rendered when the throttler state changes
 
@@ -41,7 +41,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L24)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:25](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L25)
 
 #### Deprecated
 
