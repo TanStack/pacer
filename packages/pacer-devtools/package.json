@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer-devtools",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -24,27 +24,18 @@
   ],
   "type": "module",
   "types": "dist/esm/index.d.ts",
-  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
-      },
-      "require": {
-        "types": "./dist/cjs/index.d.cts",
-        "default": "./dist/cjs/index.cjs"
       }
     },
     "./production": {
       "import": {
         "types": "./dist/esm/production.d.ts",
         "default": "./dist/esm/production.js"
-      },
-      "require": {
-        "types": "./dist/cjs/production.d.cts",
-        "default": "./dist/cjs/production.cjs"
       }
     },
     "./package.json": "./package.json"
@@ -71,10 +62,10 @@
     "@tanstack/pacer": ">=0.15.0"
   },
   "dependencies": {
-    "@tanstack/devtools-ui": "^0.3.2",
-    "@tanstack/solid-store": "^0.7.4",
+    "@tanstack/devtools-ui": "^0.3.4",
+    "@tanstack/solid-store": "^0.7.5",
     "clsx": "^2.1.1",
-    "dayjs": "^1.11.15",
+    "dayjs": "^1.11.18",
     "goober": "^2.1.16",
     "solid-js": "^1.9.9"
   },

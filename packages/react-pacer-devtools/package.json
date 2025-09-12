@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/react-pacer-devtools",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "React adapter for devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -24,27 +24,18 @@
   ],
   "type": "module",
   "types": "dist/esm/index.d.ts",
-  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
-      },
-      "require": {
-        "types": "./dist/cjs/index.d.cts",
-        "default": "./dist/cjs/index.cjs"
       }
     },
     "./production": {
       "import": {
         "types": "./dist/esm/production.d.ts",
         "default": "./dist/esm/production.js"
-      },
-      "require": {
-        "types": "./dist/cjs/production.d.cts",
-        "default": "./dist/cjs/production.cjs"
       }
     },
     "./package.json": "./package.json"
@@ -77,7 +68,7 @@
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^1.52.6",
+    "@eslint-react/eslint-plugin": "^1.53.1",
     "@vitejs/plugin-react": "^5.0.2",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^5.2.0"

@@ -1,40 +1,15 @@
 import * as goober from 'goober'
-import { createSignal } from 'solid-js'
+import { createEffect, createSignal } from 'solid-js'
+import { useTheme } from '@tanstack/devtools-ui'
 import { tokens } from './tokens'
 
-const stylesFactory = () => {
+const stylesFactory = (theme: 'light' | 'dark') => {
   const { colors, font, size, alpha, border } = tokens
   const { fontFamily, size: fontSize } = font
   const css = goober.css
+  const t = (light: string, dark: string) => (theme === 'light' ? light : dark)
 
   return {
-    devtoolsPanel: css`
-      background: ${colors.darkGray[900]};
-      color: ${colors.gray[100]};
-      font-family: ${fontFamily.sans};
-      font-size: ${fontSize.sm};
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    `,
-    stickyHeader: css`
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: ${colors.darkGray[900]};
-      padding: ${size[2]};
-      font-size: ${fontSize.lg};
-      font-weight: ${font.weight.bold};
-      color: #84cc16;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      border-bottom: 1px solid ${colors.darkGray[700]};
-      box-shadow: 0 2px 8px 0 ${colors.black + alpha[40]};
-      flex-shrink: 0;
-    `,
     mainContainer: css`
       display: flex;
       flex: 1;
@@ -42,10 +17,11 @@ const stylesFactory = () => {
       overflow: hidden;
       padding: ${size[2]};
       padding-top: 0;
+      margin-top: ${size[2]};
     `,
     dragHandle: css`
       width: 8px;
-      background: ${colors.darkGray[600]};
+      background: ${t(colors.gray[300], colors.darkGray[600])};
       cursor: col-resize;
       position: relative;
       transition: all 0.2s ease;
@@ -55,12 +31,12 @@ const stylesFactory = () => {
       border-radius: 2px;
 
       &:hover {
-        background: ${colors.blue[500]};
+        background: ${t(colors.blue[600], colors.blue[500])};
         margin: 0 ${size[1]};
       }
 
       &.dragging {
-        background: ${colors.blue[600]};
+        background: ${t(colors.blue[700], colors.blue[600])};
         margin: 0 ${size[1]};
       }
 
@@ -72,20 +48,20 @@ const stylesFactory = () => {
         transform: translate(-50%, -50%);
         width: 2px;
         height: 20px;
-        background: ${colors.darkGray[400]};
+        background: ${t(colors.gray[400], colors.darkGray[400])};
         border-radius: 1px;
         pointer-events: none;
       }
 
       &:hover::after,
       &.dragging::after {
-        background: ${colors.blue[300]};
+        background: ${t(colors.blue[500], colors.blue[300])};
       }
     `,
     leftPanel: css`
-      background: ${colors.darkGray[800]};
+      background: ${t(colors.gray[100], colors.darkGray[800])};
       border-radius: ${border.radius.lg};
-      border: 1px solid ${colors.darkGray[700]};
+      border: 1px solid ${t(colors.gray[200], colors.darkGray[700])};
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -93,9 +69,9 @@ const stylesFactory = () => {
       flex-shrink: 0;
     `,
     rightPanel: css`
-      background: ${colors.darkGray[800]};
+      background: ${t(colors.gray[100], colors.darkGray[800])};
       border-radius: ${border.radius.lg};
-      border: 1px solid ${colors.darkGray[700]};
+      border: 1px solid ${t(colors.gray[200], colors.darkGray[700])};
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -105,10 +81,10 @@ const stylesFactory = () => {
     panelHeader: css`
       font-size: ${fontSize.md};
       font-weight: ${font.weight.bold};
-      color: ${colors.blue[400]};
+      color: ${t(colors.blue[700], colors.blue[400])};
       padding: ${size[2]};
-      border-bottom: 1px solid ${colors.darkGray[700]};
-      background: ${colors.darkGray[800]};
+      border-bottom: 1px solid ${t(colors.gray[200], colors.darkGray[700])};
+      background: ${t(colors.gray[100], colors.darkGray[800])};
       flex-shrink: 0;
     `,
     utilList: css`
@@ -123,12 +99,12 @@ const stylesFactory = () => {
     utilGroupHeader: css`
       font-size: ${fontSize.xs};
       font-weight: ${font.weight.semibold};
-      color: ${colors.gray[400]};
+      color: ${t(colors.gray[600], colors.gray[400])};
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: ${size[1]};
       padding: ${size[1]} ${size[2]};
-      background: ${colors.darkGray[700]};
+      background: ${t(colors.gray[200], colors.darkGray[700])};
       border-radius: ${border.radius.md};
     `,
     utilRow: css`
@@ -137,26 +113,27 @@ const stylesFactory = () => {
       align-items: center;
       padding: ${size[2]};
       margin-bottom: ${size[1]};
-      background: ${colors.darkGray[700]};
+      background: ${t(colors.gray[200], colors.darkGray[700])};
       border-radius: ${border.radius.md};
       cursor: pointer;
       transition: all 0.2s ease;
       border: 1px solid transparent;
 
       &:hover {
-        background: ${colors.darkGray[600]};
-        border-color: ${colors.darkGray[500]};
+        background: ${t(colors.gray[300], colors.darkGray[600])};
+        border-color: ${t(colors.gray[400], colors.darkGray[500])};
       }
     `,
     utilRowSelected: css`
-      background: ${colors.blue[900] + alpha[20]};
-      border-color: ${colors.blue[500]};
-      box-shadow: 0 0 0 1px ${colors.blue[500] + alpha[30]};
+      background: ${t(colors.blue[100], colors.blue[900] + alpha[20])};
+      border-color: ${t(colors.blue[600], colors.blue[500])};
+      box-shadow: 0 0 0 1px
+        ${t(colors.blue[600] + alpha[30], colors.blue[500] + alpha[30])};
     `,
     utilKey: css`
       font-family: ${fontFamily.mono};
       font-size: ${fontSize.xs};
-      color: ${colors.gray[100]};
+      color: ${t(colors.gray[900], colors.gray[100])};
       flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -164,11 +141,11 @@ const stylesFactory = () => {
     `,
     utilStatus: css`
       font-size: ${fontSize.xs};
-      color: ${colors.gray[400]};
+      color: ${t(colors.gray[600], colors.gray[400])};
       text-transform: uppercase;
       letter-spacing: 0.05em;
       padding: ${size[1]} ${size[1]};
-      background: ${colors.darkGray[600]};
+      background: ${t(colors.gray[300], colors.darkGray[600])};
       border-radius: ${border.radius.sm};
       margin-left: ${size[1]};
     `,
@@ -181,25 +158,25 @@ const stylesFactory = () => {
     stateHeader: css`
       margin-bottom: ${size[2]};
       padding-bottom: ${size[2]};
-      border-bottom: 1px solid ${colors.darkGray[700]};
+      border-bottom: 1px solid ${t(colors.gray[200], colors.darkGray[700])};
     `,
     stateTitle: css`
       font-size: ${fontSize.md};
       font-weight: ${font.weight.bold};
-      color: ${colors.blue[400]};
+      color: ${t(colors.blue[700], colors.blue[400])};
       margin-bottom: ${size[1]};
     `,
     stateKey: css`
       font-family: ${fontFamily.mono};
       font-size: ${fontSize.xs};
-      color: ${colors.gray[400]};
+      color: ${t(colors.gray[600], colors.gray[400])};
       word-break: break-all;
     `,
     stateContent: css`
-      background: ${colors.darkGray[700]};
+      background: ${t(colors.gray[100], colors.darkGray[700])};
       border-radius: ${border.radius.md};
       padding: ${size[2]};
-      border: 1px solid ${colors.darkGray[600]};
+      border: 1px solid ${t(colors.gray[300], colors.darkGray[600])};
     `,
     detailsGrid: css`
       display: grid;
@@ -208,15 +185,15 @@ const stylesFactory = () => {
       align-items: start;
     `,
     detailSection: css`
-      background: ${colors.darkGray[700]};
-      border: 1px solid ${colors.darkGray[600]};
+      background: ${t(colors.white, colors.darkGray[700])};
+      border: 1px solid ${t(colors.gray[300], colors.darkGray[600])};
       border-radius: ${border.radius.md};
       padding: ${size[2]};
     `,
     detailSectionHeader: css`
       font-size: ${fontSize.sm};
       font-weight: ${font.weight.bold};
-      color: ${colors.gray[200]};
+      color: ${t(colors.gray[800], colors.gray[200])};
       margin-bottom: ${size[1]};
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -232,9 +209,9 @@ const stylesFactory = () => {
       gap: ${size[1]};
       padding: ${size[1]} ${size[2]};
       border-radius: ${border.radius.md};
-      border: 1px solid ${colors.darkGray[500]};
-      background: ${colors.darkGray[600]};
-      color: ${colors.gray[100]};
+      border: 1px solid ${t(colors.gray[300], colors.darkGray[500])};
+      background: ${t(colors.gray[200], colors.darkGray[600])};
+      color: ${t(colors.gray[900], colors.gray[100])};
       font-size: ${fontSize.xs};
       cursor: pointer;
       user-select: none;
@@ -242,15 +219,15 @@ const stylesFactory = () => {
         background 0.15s,
         border-color 0.15s;
       &:hover {
-        background: ${colors.darkGray[500]};
-        border-color: ${colors.darkGray[400]};
+        background: ${t(colors.gray[300], colors.darkGray[500])};
+        border-color: ${t(colors.gray[400], colors.darkGray[400])};
       }
       &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
         &:hover {
-          background: ${colors.darkGray[600]};
-          border-color: ${colors.darkGray[500]};
+          background: ${t(colors.gray[200], colors.darkGray[600])};
+          border-color: ${t(colors.gray[300], colors.darkGray[500])};
         }
       }
     `,
@@ -298,7 +275,7 @@ const stylesFactory = () => {
       align-items: center;
     `,
     infoLabel: css`
-      color: ${colors.gray[400]};
+      color: ${t(colors.gray[600], colors.gray[400])};
       font-size: ${fontSize.xs};
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -306,7 +283,7 @@ const stylesFactory = () => {
     infoValueMono: css`
       font-family: ${fontFamily.mono};
       font-size: ${fontSize.xs};
-      color: ${colors.gray[100]};
+      color: ${t(colors.gray[900], colors.gray[100])};
       word-break: break-all;
     `,
     noSelection: css`
@@ -314,7 +291,7 @@ const stylesFactory = () => {
       display: flex;
       align-items: center;
       justify-content: center;
-      color: ${colors.gray[500]};
+      color: ${t(colors.gray[500], colors.gray[500])};
       font-style: italic;
       text-align: center;
       padding: ${size[4]};
@@ -326,12 +303,14 @@ const stylesFactory = () => {
       gap: ${size[4]};
     `,
     section: css`
-      background: ${colors.darkGray[800]};
+      background: ${t(colors.gray[100], colors.darkGray[800])};
       border-radius: ${border.radius.lg};
-      box-shadow: ${tokens.shadow.md(colors.black + alpha[80])};
+      box-shadow: ${tokens.shadow.md(
+        t(colors.gray[400] + alpha[80], colors.black + alpha[80]),
+      )};
       padding: ${size[4]};
       margin-bottom: ${size[4]};
-      border: 1px solid ${colors.darkGray[700]};
+      border: 1px solid ${t(colors.gray[200], colors.darkGray[700])};
       min-width: 0;
       max-width: 33%;
       max-height: fit-content;
@@ -340,14 +319,14 @@ const stylesFactory = () => {
       font-size: ${fontSize.lg};
       font-weight: ${font.weight.bold};
       margin-bottom: ${size[2]};
-      color: ${colors.blue[400]};
+      color: ${t(colors.blue[600], colors.blue[400])};
       letter-spacing: 0.01em;
       display: flex;
       align-items: center;
       gap: ${size[2]};
     `,
     sectionEmpty: css`
-      color: ${colors.gray[500]};
+      color: ${t(colors.gray[500], colors.gray[500])};
       font-size: ${fontSize.sm};
       font-style: italic;
       margin: ${size[2]} 0;
@@ -356,14 +335,16 @@ const stylesFactory = () => {
       display: flex;
       flex-direction: column;
       gap: ${size[2]};
+      background: ${t(colors.gray[200], colors.darkGray[700])};
+      border: 1px solid ${t(colors.gray[300], colors.darkGray[600])};
     `,
     instanceCard: css`
-      background: ${colors.darkGray[700]};
+      background: ${t(colors.gray[200], colors.darkGray[700])};
       border-radius: ${border.radius.md};
       padding: ${size[3]};
-      border: 1px solid ${colors.darkGray[600]};
+      border: 1px solid ${t(colors.gray[300], colors.darkGray[600])};
       font-size: ${fontSize.sm};
-      color: ${colors.gray[100]};
+      color: ${t(colors.gray[900], colors.gray[100])};
       font-family: ${fontFamily.mono};
       overflow-x: auto;
       transition:
@@ -374,6 +355,10 @@ const stylesFactory = () => {
 }
 
 export function useStyles() {
-  const [_styles] = createSignal(stylesFactory())
-  return _styles
+  const { theme } = useTheme()
+  const [styles, setStyles] = createSignal(stylesFactory(theme()))
+  createEffect(() => {
+    setStyles(stylesFactory(theme()))
+  })
+  return styles
 }
