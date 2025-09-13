@@ -11,7 +11,7 @@ import type { RateLimiter } from './rate-limiter'
 import type { Throttler } from './throttler'
 
 export interface PacerEventMap {
-  'pacer:d-AsyncBatcher': AsyncBatcher<any>
+  'pacer:d-AsyncBatcher': AsyncBatcher<any, any>
   'pacer:d-AsyncDebouncer': AsyncDebouncer<any>
   'pacer:d-AsyncQueuer': AsyncQueuer<any>
   'pacer:d-AsyncRateLimiter': AsyncRateLimiter<any>
@@ -21,7 +21,7 @@ export interface PacerEventMap {
   'pacer:d-Queuer': Queuer<any>
   'pacer:d-RateLimiter': RateLimiter<any>
   'pacer:d-Throttler': Throttler<any>
-  'pacer:AsyncBatcher': AsyncBatcher<any>
+  'pacer:AsyncBatcher': AsyncBatcher<any, any>
   'pacer:AsyncDebouncer': AsyncDebouncer<any>
   'pacer:AsyncQueuer': AsyncQueuer<any>
   'pacer:AsyncRateLimiter': AsyncRateLimiter<any>

@@ -3,7 +3,7 @@ import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 
-export interface AsyncBatcherState<TValue> {
+export interface AsyncBatcherState<TValue, TResult> {
   /**
    * Number of batch executions that have resulted in errors
    */
@@ -31,7 +31,7 @@ export interface AsyncBatcherState<TValue> {
   /**
    * The result from the most recent batch execution
    */
-  lastResult: any
+  lastResult: TResult | undefined
   /**
    * Number of batch executions that have completed (either successfully or with errors)
    */
@@ -58,7 +58,10 @@ export interface AsyncBatcherState<TValue> {
   totalItemsProcessed: number
 }
 
-function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
+function getDefaultAsyncBatcherState<TValue, TResult>(): AsyncBatcherState<
+  TValue,
+  TResult
+> {
   return {
     errorCount: 0,
     failedItems: [],
@@ -79,19 +82,19 @@ function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
 /**
  * Options for configuring an AsyncBatcher instance
  */
-export interface AsyncBatcherOptions<TValue> {
+export interface AsyncBatcherOptions<TValue, TResult> {
   /**
    * Custom function to determine if a batch should be processed
    * Return true to process the batch immediately
    */
   getShouldExecute?: (
     items: Array<TValue>,
-    batcher: AsyncBatcher<TValue>,
+    batcher: AsyncBatcher<TValue, TResult>,
   ) => boolean
   /**
    * Initial state for the async batcher
    */
-  initialState?: Partial<AsyncBatcherState<TValue>>
+  initialState?: Partial<AsyncBatcherState<TValue, TResult>>
   /**
    * Optional key to identify this async batcher instance.
    * If provided, the async batcher will be identified by this key in the devtools and PacerProvider if applicable.
@@ -110,23 +113,26 @@ export interface AsyncBatcherOptions<TValue> {
   onError?: (
     error: unknown,
     batch: Array<TValue>,
-    batcher: AsyncBatcher<TValue>,
+    batcher: AsyncBatcher<TValue, TResult>,
   ) => void
   /**
    * Callback fired after items are added to the batcher
    */
-  onItemsChange?: (batcher: AsyncBatcher<TValue>) => void
+  onItemsChange?: (batcher: AsyncBatcher<TValue, TResult>) => void
   /**
    * Optional callback to call when a batch is settled (completed or failed)
    */
-  onSettled?: (batch: Array<TValue>, batcher: AsyncBatcher<TValue>) => void
+  onSettled?: (
+    batch: Array<TValue>,
+    batcher: AsyncBatcher<TValue, TResult>,
+  ) => void
   /**
    * Optional callback to call when a batch succeeds
    */
   onSuccess?: (
-    result: any,
+    result: TResult,
     batch: Array<TValue>,
-    batcher: AsyncBatcher<TValue>,
+    batcher: AsyncBatcher<TValue, TResult>,
   ) => void
   /**
    * Whether the batcher should start processing immediately
@@ -145,11 +151,11 @@ export interface AsyncBatcherOptions<TValue> {
    * If not provided, the batch will not be triggered by a timeout.
    * @default Infinity
    */
-  wait?: number | ((asyncBatcher: AsyncBatcher<TValue>) => number)
+  wait?: number | ((asyncBatcher: AsyncBatcher<TValue, TResult>) => number)
 }
 
-type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
-  Required<AsyncBatcherOptions<TValue>>,
+type AsyncBatcherOptionsWithOptionalCallbacks<TValue, TResult> = OptionalKeys<
+  Required<AsyncBatcherOptions<TValue, TResult>>,
   | 'initialState'
   | 'onError'
   | 'onItemsChange'
@@ -158,7 +164,7 @@ type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   | 'key'
 >
 
-const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
+const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any, any> = {
   getShouldExecute: () => false,
   maxSize: Infinity,
   started: true,
@@ -227,17 +233,16 @@ const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
  * // batcher.execute() // manually trigger a batch
  * ```
  */
-export class AsyncBatcher<TValue> {
-  readonly store: Store<Readonly<AsyncBatcherState<TValue>>> = new Store(
-    getDefaultAsyncBatcherState<TValue>(),
-  )
+export class AsyncBatcher<TValue, TResult> {
+  readonly store: Store<Readonly<AsyncBatcherState<TValue, TResult>>> =
+    new Store(getDefaultAsyncBatcherState<TValue, TResult>())
   key: string
-  options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
+  options: AsyncBatcherOptionsWithOptionalCallbacks<TValue, TResult>
   #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
-    public fn: (items: Array<TValue>) => Promise<any>,
-    initialOptions: AsyncBatcherOptions<TValue>,
+    public fn: (items: Array<TValue>) => Promise<TResult>,
+    initialOptions: AsyncBatcherOptions<TValue, TResult>,
   ) {
     this.key = createKey(initialOptions.key)
     this.options = {
@@ -257,11 +262,13 @@ export class AsyncBatcher<TValue> {
   /**
    * Updates the async batcher options
    */
-  setOptions = (newOptions: Partial<AsyncBatcherOptions<TValue>>): void => {
+  setOptions = (
+    newOptions: Partial<AsyncBatcherOptions<TValue, TResult>>,
+  ): void => {
     this.options = { ...this.options, ...newOptions }
   }
 
-  #setState = (newState: Partial<AsyncBatcherState<TValue>>): void => {
+  #setState = (newState: Partial<AsyncBatcherState<TValue, TResult>>): void => {
     this.store.setState((state) => {
       const combinedState = {
         ...state,
@@ -325,7 +332,7 @@ export class AsyncBatcher<TValue> {
    * @returns A promise that resolves with the result of the batch function, or undefined if an error occurred and was handled by onError
    * @throws The error from the batch function if no onError handler is configured or throwOnError is true
    */
-  #execute = async (): Promise<any> => {
+  #execute = async (): Promise<TResult | undefined> => {
     if (this.store.state.items.length === 0) {
       return undefined
     }
@@ -369,7 +376,7 @@ export class AsyncBatcher<TValue> {
   /**
    * Processes the current batch of items immediately
    */
-  flush = async (): Promise<any> => {
+  flush = async (): Promise<TResult | undefined> => {
     this.#clearTimeout() // clear any pending timeout
     return await this.#execute()
   }
@@ -403,7 +410,7 @@ export class AsyncBatcher<TValue> {
    * Resets the async batcher state to its default values
    */
   reset = (): void => {
-    this.#setState(getDefaultAsyncBatcherState<TValue>())
+    this.#setState(getDefaultAsyncBatcherState<TValue, TResult>())
     this.options.onItemsChange?.(this)
   }
 }
@@ -438,8 +445,8 @@ export class AsyncBatcher<TValue> {
  *
  * @example
  * ```ts
- * const batchItems = asyncBatch<number>(
- *   async (items) => {
+ * const batchItems = asyncBatch(
+ *   async (items: number[]) => {
  *     const result = await processApiCall(items);
  *     console.log('Processing:', items);
  *     return result;
@@ -457,10 +464,10 @@ export class AsyncBatcher<TValue> {
  * batchItems(3); // Triggers batch processing
  * ```
  */
-export function asyncBatch<TValue>(
-  fn: (items: Array<TValue>) => Promise<any>,
-  options: AsyncBatcherOptions<TValue>,
+export function asyncBatch<TValue, TResult>(
+  fn: (items: Array<TValue>) => Promise<TResult>,
+  options: AsyncBatcherOptions<TValue, TResult>,
 ) {
-  const batcher = new AsyncBatcher<TValue>(fn, options)
+  const batcher = new AsyncBatcher<TValue, TResult>(fn, options)
   return batcher.addItem
 }

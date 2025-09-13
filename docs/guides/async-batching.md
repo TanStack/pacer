@@ -26,8 +26,8 @@ The `asyncBatch` function provides a simple way to create an async batching func
 ```ts
 import { asyncBatch } from '@tanstack/pacer'
 
-const processAsyncBatch = asyncBatch<number>(
-  async (items) => {
+const processAsyncBatch = asyncBatch(
+  async (items: number[]) => {
     // Process the batch asynchronously
     const results = await Promise.all(
       items.map(item => processApiCall(item))
@@ -65,8 +65,8 @@ For more control over async batch behavior, use the `AsyncBatcher` class directl
 ```ts
 import { AsyncBatcher } from '@tanstack/pacer'
 
-const batcher = new AsyncBatcher<number>(
-  async (items) => {
+const batcher = new AsyncBatcher(
+  async (items: number[]) => {
     // Process the batch asynchronously
     const results = await Promise.all(
       items.map(item => processApiCall(item))
@@ -109,8 +109,8 @@ batcher.start() // Resume processing
 Unlike the synchronous batcher which returns void, the async version allows you to capture and use the return value from your batch function:
 
 ```ts
-const batcher = new AsyncBatcher<string>(
-  async (items) => {
+const batcher = new AsyncBatcher(
+  async (items: string[]) => {
     const results = await processBatch(items)
     return results
   },
@@ -130,8 +130,8 @@ const batcher = new AsyncBatcher<string>(
 The async batcher provides comprehensive error handling capabilities:
 
 ```ts
-const batcher = new AsyncBatcher<number>(
-  async (items) => {
+const batcher = new AsyncBatcher(
+  async (items: number[]) => {
     // This might throw an error
     const results = await riskyBatchOperation(items)
     return results
@@ -164,8 +164,8 @@ const batcher = new AsyncBatcher<number>(
 The async batcher tracks when batches are actively executing:
 
 ```ts
-const batcher = new AsyncBatcher<number>(
-  async (items) => {
+const batcher = new AsyncBatcher(
+  async (items: number[]) => {
     console.log('Starting batch execution...')
     const results = await longRunningBatchOperation(items)
     console.log('Batch execution completed')
@@ -196,8 +196,8 @@ The `AsyncBatcher` supports these async-specific callbacks:
 The async batcher provides flexible error handling through the `throwOnError` option:
 
 ```ts
-const batcher = new AsyncBatcher<number>(
-  async (items) => {
+const batcher = new AsyncBatcher(
+  async (items: number[]) => {
     // This might throw an error
     throw new Error('Batch processing failed')
   },
@@ -222,8 +222,8 @@ const batcher = new AsyncBatcher<number>(
 Like the synchronous batcher, the async batcher supports dynamic options:
 
 ```ts
-const batcher = new AsyncBatcher<number>(
-  async (items) => {
+const batcher = new AsyncBatcher(
+  async (items: number[]) => {
     return await processBatch(items)
   },
   {
@@ -360,8 +360,8 @@ The `AsyncBatcherState` includes:
 The async batcher tracks items that failed during batch processing:
 
 ```ts
-const batcher = new AsyncBatcher<number>(
-  async (items) => {
+const batcher = new AsyncBatcher(
+  async (items: number[]) => {
     // This might fail for some items
     if (items.some(item => item < 0)) {
       throw new Error('Negative numbers not allowed')
