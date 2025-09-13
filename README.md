@@ -3,7 +3,7 @@
 </div>
 
 <br />
-<div align="center">
+
 <div align="center">
 	<a href="https://www.npmjs.com/package/@tanstack/pacer" target="\_parent">
 	  <img alt="" src="https://img.shields.io/npm/dm/@tanstack/pacer.svg" alt="npm downloads" />
@@ -28,11 +28,9 @@
 	</a>
 </div>
 
-<div align="center" >
-
+<div align="center">
+  
 ### [Become a Sponsor!](https://github.com/sponsors/tannerlinsley/)
-
-</div>
 </div>
 
 # TanStack Pacer
@@ -93,7 +91,7 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
 <p>
 We're looking for TanStack Pacer Partners to join our mission! Partner with us to push the boundaries of TanStack Pacer and build amazing things together.
 </p>
-<a href="mailto:partners@tanstack.com?subject=TanStack Pacer Partnership" font-size="30"><b>LET'S CHAT</b></a>
+<a href="mailto:partners@tanstack.com?subject=TanStack Pacer Partnership"><b>LET'S CHAT</b></a>
 </div>
 
 </div>
