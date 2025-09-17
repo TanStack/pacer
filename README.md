@@ -68,22 +68,33 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
 <table align="center">
   <tr>
     <td>
-        <a href="https://www.coderabbit.ai/?via=tanstack&dub_id=aCcEEdAOqqutX6OS">
-          <img src="https://tanstack.com/assets/coderabbit-light-DVMJ2jHi.svg" height="40" padding="20px" alt="Code Rabbit"/>
-        </a>
+      <a href="https://www.coderabbit.ai/?via=tanstack&dub_id=aCcEEdAOqqutX6OS" >
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://tanstack.com/assets/coderabbit-dark-CMcuvjEy.svg" height="40" />
+          <source media="(prefers-color-scheme: light)" srcset="https://tanstack.com/assets/coderabbit-light-DVMJ2jHi.svg" height="40" />
+          <img src="https://tanstack.com/assets/coderabbit-light-DVMJ2jHi.svg" height="40" alt="CodeRabbit" />
+        </picture>
+      </a>
     </td>
-    <td padding="20">
+    <td>
       <a href="https://www.cloudflare.com?utm_source=tanstack">
-         <img src="https://tanstack.com/assets/cloudflare-black-CPufaW0B.svg" height="70" alt="Cloudflare"/>
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://tanstack.com/assets/cloudflare-white-DQDB7UaL.svg" height="60" />
+          <source media="(prefers-color-scheme: light)" srcset="https://tanstack.com/assets/cloudflare-black-CPufaW0B.svg" height="60" />
+          <img src="https://tanstack.com/assets/cloudflare-black-CPufaW0B.svg" height="60" alt="Cloudflare" />
+        </picture>
       </a>
     </td>
     <td>
       <a href="https://www.unkey.com/?utm_source=tanstack">
-         <img src="./media/unkey_logo.svg" height="60" alt="Unkey"/>
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="./media/unkey_dark.svg" height="60" />
+          <source media="(prefers-color-scheme: light)" srcset="./media/unkey_logo.svg" height="60" />
+          <img src="./media/unkey_logo.svg" height="60" alt="Unkey"/>
+        </picture>
       </a>
     </td>
   </tr>
-  
 </table>
 
 <div align="center">
