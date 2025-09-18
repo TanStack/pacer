@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.15.3
+
+### Patch Changes
+
+- update event client version to support react native ([#73](https://github.com/TanStack/pacer/pull/73))
+
 ## 0.15.2
 
 ### Patch Changes
