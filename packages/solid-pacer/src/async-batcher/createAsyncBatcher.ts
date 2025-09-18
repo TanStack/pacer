@@ -7,8 +7,8 @@ import type {
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
 
-export interface SolidAsyncBatcher<TValue, TSelected = {}>
-  extends Omit<AsyncBatcher<TValue>, 'store'> {
+export interface SolidAsyncBatcher<TValue, TResult, TSelected = {}>
+  extends Omit<AsyncBatcher<TValue, TResult>, 'store'> {
   /**
    * Reactive state that will be updated when the batcher state changes
    *
@@ -20,7 +20,7 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}>
    * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
    * Although, you can make the state reactive by using the `useStore` in your own usage.
    */
-  readonly store: Store<Readonly<AsyncBatcherState<TValue>>>
+  readonly store: Store<Readonly<AsyncBatcherState<TValue, TResult>>>
 }
 
 /**
@@ -79,7 +79,7 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}>
  * ```tsx
  * // Default behavior - no reactive state subscriptions
  * const asyncBatcher = createAsyncBatcher(
- *   async (items) => {
+ *   async (items: Item[]) => {
  *     const results = await Promise.all(items.map(item => processItem(item)));
  *     return results;
  *   },
@@ -97,7 +97,7 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}>
  *
  * // Opt-in to re-render when items or isExecuting changes (optimized for UI updates)
  * const asyncBatcher = createAsyncBatcher(
- *   async (items) => {
+ *   async (items: Item[]) => {
  *     const results = await Promise.all(items.map(item => processItem(item)));
  *     return results;
  *   },
@@ -107,7 +107,7 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}>
  *
  * // Opt-in to re-render when error state changes (optimized for error handling)
  * const asyncBatcher = createAsyncBatcher(
- *   async (items) => {
+ *   async (items: Item[]) => {
  *     const results = await Promise.all(items.map(item => processItem(item)));
  *     return results;
  *   },
@@ -125,18 +125,18 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}>
  * const { items, isExecuting } = asyncBatcher.state();
  * ```
  */
-export function createAsyncBatcher<TValue, TSelected = {}>(
-  fn: (items: Array<TValue>) => Promise<any>,
-  initialOptions: AsyncBatcherOptions<TValue> = {},
-  selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
+export function createAsyncBatcher<TValue, TResult, TSelected = {}>(
+  fn: (items: Array<TValue>) => Promise<TResult>,
+  initialOptions: AsyncBatcherOptions<TValue, TResult> = {},
+  selector: (state: AsyncBatcherState<TValue, TResult>) => TSelected = () =>
     ({}) as TSelected,
-): SolidAsyncBatcher<TValue, TSelected> {
-  const asyncBatcher = new AsyncBatcher<TValue>(fn, initialOptions)
+): SolidAsyncBatcher<TValue, TResult, TSelected> {
+  const asyncBatcher = new AsyncBatcher<TValue, TResult>(fn, initialOptions)
 
   const state = useStore(asyncBatcher.store, selector)
 
   return {
     ...asyncBatcher,
     state,
-  } as SolidAsyncBatcher<TValue, TSelected> // omit `store` in favor of `state`
+  } as SolidAsyncBatcher<TValue, TResult, TSelected> // omit `store` in favor of `state`
 }
