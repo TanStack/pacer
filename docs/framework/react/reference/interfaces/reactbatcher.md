@@ -7,7 +7,7 @@ title: ReactBatcher
 
 # Interface: ReactBatcher\<TValue, TSelected\>
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:7](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L7)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:8](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L8)
 
 ## Extends
 
@@ -27,7 +27,7 @@ Defined in: [react-pacer/src/batcher/useBatcher.ts:7](https://github.com/TanStac
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:14](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L14)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:15](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L15)
 
 Reactive state that will be updated and re-rendered when the batcher state changes
 
@@ -41,7 +41,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L20)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L21)
 
 #### Deprecated
 

@@ -1,4 +1,6 @@
 import { Store } from '@tanstack/store'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
@@ -81,6 +83,12 @@ function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
  */
 export interface AsyncBatcherOptions<TValue> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<
+    (items: Array<TValue>) => Promise<any>
+  >
+  /**
    * Custom function to determine if a batch should be processed
    * Return true to process the batch immediately
    */
@@ -159,6 +167,9 @@ type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
 >
 
 const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   getShouldExecute: () => false,
   maxSize: Infinity,
   started: true,
@@ -233,6 +244,7 @@ export class AsyncBatcher<TValue> {
   )
   key: string
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
+  asyncRetryer: AsyncRetryer<typeof this.fn>
   #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
@@ -245,6 +257,10 @@ export class AsyncBatcher<TValue> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     this.#setState(this.options.initialState ?? {})
 
     pacerEventClient.on('d-AsyncBatcher', (event) => {
@@ -253,6 +269,11 @@ export class AsyncBatcher<TValue> {
       this.setOptions(event.payload.options)
     })
   }
+
+  /**
+   * Emits a change event for the async batcher instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncBatcher', this)
 
   /**
    * Updates the async batcher options
@@ -337,7 +358,7 @@ export class AsyncBatcher<TValue> {
     this.#setState({ isExecuting: true })
 
     try {
-      const result = await this.fn(batch) // EXECUTE
+      const result = await this.asyncRetryer.execute(batch) // EXECUTE
       this.#setState({
         totalItemsProcessed:
           this.store.state.totalItemsProcessed + batch.length,

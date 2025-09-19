@@ -168,6 +168,11 @@ export class Batcher<TValue> {
   }
 
   /**
+   * Emits a change event for the batcher instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('Batcher', this)
+
+  /**
    * Updates the batcher options
    */
   setOptions = (newOptions: Partial<BatcherOptions<TValue>>): void => {

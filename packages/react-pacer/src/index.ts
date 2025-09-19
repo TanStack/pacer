@@ -1,6 +1,9 @@
 // re-export everything from the core pacer package
 export * from '@tanstack/pacer'
 
+// provider
+export * from './provider/PacerProvider'
+
 /**
  * Export every hook individually - DON'T export from barrel files
  */
@@ -20,6 +23,9 @@ export * from './async-queuer/useAsyncQueuedState'
 // async-rate-limiter
 export * from './async-rate-limiter/useAsyncRateLimiter'
 export * from './async-rate-limiter/useAsyncRateLimitedCallback'
+
+// async-retryer
+export * from './async-retryer/useAsyncRetryer'
 
 // async-throttler
 export * from './async-throttler/useAsyncThrottler'

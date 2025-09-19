@@ -77,6 +77,16 @@
         "default": "./dist/cjs/async-rate-limiter/index.cjs"
       }
     },
+    "./async-retryer": {
+      "import": {
+        "types": "./dist/esm/async-retryer/index.d.ts",
+        "default": "./dist/esm/async-retryer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-retryer/index.d.cts",
+        "default": "./dist/cjs/async-retryer/index.cjs"
+      }
+    },
     "./async-throttler": {
       "import": {
         "types": "./dist/esm/async-throttler/index.d.ts",
@@ -125,6 +135,16 @@
       "require": {
         "types": "./dist/cjs/rate-limiter/index.d.cts",
         "default": "./dist/cjs/rate-limiter/index.cjs"
+      }
+    },
+    "./provider": {
+      "import": {
+        "types": "./dist/esm/provider/index.d.ts",
+        "default": "./dist/esm/provider/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/provider/index.d.cts",
+        "default": "./dist/cjs/provider/index.cjs"
       }
     },
     "./throttler": {
