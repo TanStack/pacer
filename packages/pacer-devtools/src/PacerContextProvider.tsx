@@ -15,7 +15,7 @@ import type {
 } from '@tanstack/pacer'
 
 interface PacerDevtoolsContextType {
-  asyncBatchers: Array<AsyncBatcher<any>>
+  asyncBatchers: Array<AsyncBatcher<any, any>>
   asyncDebouncers: Array<AsyncDebouncer<any>>
   asyncQueuers: Array<AsyncQueuer<any>>
   asyncRateLimiters: Array<AsyncRateLimiter<any>>
