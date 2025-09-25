@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.15.4
+
+### Patch Changes
+
+- bump event client version ([#81](https://github.com/TanStack/pacer/pull/81))
+
 ## 0.15.3
 
 ### Patch Changes

@@ -9,7 +9,7 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/react-pacer": "^0.16.3",
+    "@tanstack/react-pacer": "^0.16.4",
     "@tanstack/react-persister": "^0.1.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
