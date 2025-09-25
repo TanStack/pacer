@@ -1,7 +1,5 @@
 'use client'
 
-import * as Devtools from './core'
-
-export const PacerDevtoolsCore = Devtools.PacerDevtoolsCore
+export { PacerDevtoolsCore } from './core'
 
 export type { PacerDevtoolsInit } from './core'

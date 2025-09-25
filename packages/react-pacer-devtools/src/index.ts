@@ -1,15 +1,16 @@
 'use client'
 
-import React from 'react'
 import * as Devtools from './ReactPacerDevtools'
+import * as plugin from './plugin'
 
-export const PacerDevtoolsPanel: (typeof Devtools)['PacerDevtoolsPanel'] =
+export const PacerDevtoolsPanel =
   process.env.NODE_ENV !== 'development'
-    ? function () {
-        return React.createElement('div')
-      }
+    ? Devtools.PacerDevtoolsPanelNoOp
     : Devtools.PacerDevtoolsPanel
 
-export { pacerDevtoolsPlugin } from './plugin'
+export const pacerDevtoolsPlugin =
+  process.env.NODE_ENV !== 'development'
+    ? plugin.pacerDevtoolsNoOpPlugin
+    : plugin.pacerDevtoolsPlugin
 
 export type { PacerDevtoolsReactInit } from './ReactPacerDevtools'
