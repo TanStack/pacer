@@ -1,7 +1,7 @@
 import { render } from 'solid-js/web'
 import { createQueuer } from '@tanstack/solid-pacer/queuer'
 import { createSignal } from 'solid-js'
-import { PacerDevtoolsPanel } from '@tanstack/solid-pacer-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/solid-pacer-devtools'
 import { TanStackDevtools } from '@tanstack/solid-devtools'
 
 function App1() {
@@ -352,7 +352,7 @@ render(
         eventBusConfig={{
           debug: false,
         }}
-        plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
+        plugins={[pacerDevtoolsPlugin()]}
       />
     </div>
   ),

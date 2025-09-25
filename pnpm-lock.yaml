@@ -1572,8 +1572,8 @@ importers:
   packages/pacer:
     dependencies:
       '@tanstack/devtools-event-client':
-        specifier: ^0.2.5
-        version: 0.2.5
+        specifier: ^0.3.2
+        version: 0.3.2
       '@tanstack/store':
         specifier: ^0.7.5
         version: 0.7.5
@@ -2640,8 +2640,8 @@ packages:
     resolution: {integrity: sha512-yJT2As/drc+Epu0nsqCsJaKaLcaNGufiNxSlp/+/oeTD0jsBxF9/PJBfh66XVpYXkKr97b8689mSu7QMef0Rrw==}
     engines: {node: '>=18'}
 
-  '@tanstack/devtools-event-client@0.2.5':
-    resolution: {integrity: sha512-iVdqw879KETXyyPHc3gQR5Ld0GjlPLk7bKenBUhzr3+z1FiQZvsbfgYfRRokTSPcgwANAV7aA2Uv05nx5xWT8A==}
+  '@tanstack/devtools-event-client@0.3.2':
+    resolution: {integrity: sha512-gkvph/YMCFUfAca75EsJBJnhbKitDGix7vdEcT/3lAV+eyGSv+uECYG43apVQN4yLJKnV6mzcNvGzOhDhb72gg==}
     engines: {node: '>=18'}
 
   '@tanstack/devtools-ui@0.3.4':
@@ -6182,7 +6182,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@tanstack/devtools-event-client@0.2.5': {}
+  '@tanstack/devtools-event-client@0.3.2': {}
 
   '@tanstack/devtools-ui@0.3.4(csstype@3.1.3)(solid-js@1.9.9)':
     dependencies:
