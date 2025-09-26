@@ -7,7 +7,7 @@ title: ReactAsyncDebouncer
 
 # Interface: ReactAsyncDebouncer\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L11)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L12)
 
 ## Extends
 
@@ -27,7 +27,7 @@ Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:11](https://gi
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L20)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L21)
 
 Reactive state that will be updated and re-rendered when the debouncer state changes
 
@@ -41,7 +41,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L26)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L27)
 
 #### Deprecated
 

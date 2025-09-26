@@ -287,12 +287,18 @@ export class Queuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
+
     pacerEventClient.on('d-Queuer', (event) => {
       if (event.payload.key !== this.key) return
       this.#setState(event.payload.store.state)
       this.setOptions(event.payload.options)
     })
   }
+
+  /**
+   * Emits a change event for the queuer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('Queuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.

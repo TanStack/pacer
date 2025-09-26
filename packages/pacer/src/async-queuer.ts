@@ -1,4 +1,6 @@
 import { Store } from '@tanstack/store'
+import { AsyncRetryer } from './async-retryer'
+import type { AsyncRetryerOptions } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
@@ -98,6 +100,10 @@ function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
 }
 
 export interface AsyncQueuerOptions<TValue> {
+  /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<(item: TValue) => Promise<any>>
   /**
    * Default position to add items to the queuer
    * @default 'back'
@@ -206,6 +212,9 @@ type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
 
 const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
   addItemsTo: 'back',
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   concurrency: 1,
   expirationDuration: Infinity,
   getIsExpired: () => false,
@@ -274,6 +283,7 @@ export class AsyncQueuer<TValue> {
   >(getDefaultAsyncQueuerState<TValue>())
   key: string
   options: AsyncQueuerOptions<TValue>
+  asyncRetryer: AsyncRetryer<(item: TValue) => Promise<any>>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
@@ -286,6 +296,10 @@ export class AsyncQueuer<TValue> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
+    this.asyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
     const isInitiallyRunning =
       this.options.initialState?.isRunning ?? this.options.started ?? true
     this.#setState({
@@ -311,6 +325,11 @@ export class AsyncQueuer<TValue> {
       this.setOptions(e.payload.options)
     })
   }
+
+  /**
+   * Emits a change event for the async queuer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncQueuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.
@@ -557,7 +576,7 @@ export class AsyncQueuer<TValue> {
     const item = this.getNextItem(position)
     if (item !== undefined) {
       try {
-        const lastResult = await this.fn(item) // EXECUTE!
+        const lastResult = await this.asyncRetryer.execute(item) // EXECUTE!
         this.#setState({
           successCount: this.store.state.successCount + 1,
           lastResult,

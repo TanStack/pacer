@@ -7,7 +7,7 @@ title: ReactAsyncBatcher
 
 # Interface: ReactAsyncBatcher\<TValue, TSelected\>
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:10](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L10)
+Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:11](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L11)
 
 ## Extends
 
@@ -27,7 +27,7 @@ Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:10](https://github
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L17)
+Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L18)
 
 Reactive state that will be updated and re-rendered when the batcher state changes
 
@@ -41,7 +41,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L23)
+Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L24)
 
 #### Deprecated
 
