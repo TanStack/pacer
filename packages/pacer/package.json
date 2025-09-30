@@ -191,7 +191,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@tanstack/devtools-event-client": "^0.2.5",
-    "@tanstack/store": "^0.7.5"
+    "@tanstack/devtools-event-client": "^0.3.2",
+    "@tanstack/store": "^0.7.7"
   }
 }
