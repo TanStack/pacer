@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/solid-pacer",
-  "version": "0.14.3",
+  "version": "0.14.4",
   "description": "Utilities for debouncing and throttling functions in Solid.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -172,7 +172,7 @@
   },
   "dependencies": {
     "@tanstack/pacer": "workspace:*",
-    "@tanstack/solid-store": "^0.7.5"
+    "@tanstack/solid-store": "^0.7.7"
   },
   "devDependencies": {
     "solid-js": "^1.9.9",
