@@ -1,4 +1,3 @@
-
 export { PacerDevtoolsPanel } from './SolidPacerDevtools'
 
 export type { PacerDevtoolsSolidInit } from './SolidPacerDevtools'
