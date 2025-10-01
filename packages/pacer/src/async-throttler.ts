@@ -1,8 +1,8 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import type { AsyncRetryerOptions } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
@@ -104,7 +104,7 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (
-    error: unknown,
+    error: Error,
     args: Parameters<TFn>,
     asyncThrottler: AsyncThrottler<TFn>,
   ) => void
@@ -380,7 +380,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.options.onError?.(error, args, this)
+      this.options.onError?.(error as Error, args, this)
       if (this.options.throwOnError) {
         throw error
       }

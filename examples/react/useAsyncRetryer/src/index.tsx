@@ -43,13 +43,13 @@ function App() {
       backoff: 'exponential', // Exponential backoff (1s, 2s, 4s, 8s, 16s)
       baseWait: 1000, // Start with 1 second wait
       onRetry: (attempt, error) => {
-        console.log(`Retry attempt ${attempt} after error:`, error.message)
+        console.log(`Retry attempt ${attempt} after error:`, error)
       },
       onError: (error) => {
-        console.error('Request failed:', error.message)
+        console.error('Request failed:', error)
       },
       onLastError: (error) => {
-        console.error('All retries failed:', error.message)
+        console.error('All retries failed:', error)
         setUserData(null)
       },
       onSuccess: (result) => {

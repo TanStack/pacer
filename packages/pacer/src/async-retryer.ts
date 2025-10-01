@@ -88,7 +88,7 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
    * Callback invoked when any error occurs during execution (including retries)
    */
   onError?: (
-    error: unknown,
+    error: Error,
     args: Parameters<TFn>,
     retryer: AsyncRetryer<TFn>,
   ) => void
@@ -315,6 +315,8 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         }
         result = (await this.fn(...args)) as ReturnType<TFn>
 
+        // Check if cancelled during execution
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (signal.aborted) {
           return undefined as any
         }
@@ -361,9 +363,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
             })
             if (signal.aborted) {
               // When cancelled during retry wait, surface the last error exactly once
-              if (lastError) {
-                this.options.onError?.(lastError, args, this)
-              }
+              this.options.onError?.(lastError, args, this)
               return undefined as any
             }
           }
@@ -375,8 +375,8 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 
     // Exhausted retries - finalize state
     this.#setState({ isExecuting: false })
-    this.options.onLastError?.(lastError!, this)
-    this.options.onError?.(lastError!, args, this)
+    this.options.onLastError?.(lastError as Error, this)
+    this.options.onError?.(lastError as Error, args, this)
     this.options.onSettled?.(args, this)
 
     if (

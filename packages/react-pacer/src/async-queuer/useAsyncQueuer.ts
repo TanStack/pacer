@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactAsyncQueuer<TValue, TSelected = {}>
   extends Omit<AsyncQueuer<TValue>, 'store'> {

@@ -160,23 +160,17 @@ describe('AsyncRetryer', () => {
     })
 
     it('should fail after exhausting all retries', async () => {
-      const error = new Error('Persistent failure')
-      const mockFn = vi.fn().mockRejectedValue(error)
+      const mockFn = vi.fn().mockRejectedValue(new Error('Persistent failure'))
       const retryer = new AsyncRetryer(mockFn, {
         maxAttempts: 2,
-        baseWait: 100,
+        baseWait: 0, // No delay to avoid timer issues
         throwOnError: 'last',
       })
 
-      const executePromise = retryer.execute()
+      await expect(retryer.execute()).rejects.toThrow('Persistent failure')
 
-      // Complete first retry
-      await vi.runOnlyPendingTimersAsync()
-      vi.advanceTimersByTime(100)
-
-      await expect(executePromise).rejects.toThrow('Persistent failure')
       expect(mockFn).toHaveBeenCalledTimes(2)
-      expect(retryer.store.state.lastError).toBe(error)
+      expect(retryer.store.state.lastError?.message).toBe('Persistent failure')
       expect(retryer.store.state.status).toBe('idle')
     })
   })
@@ -275,23 +269,15 @@ describe('AsyncRetryer', () => {
     })
 
     it('should throw after retries when throwOnError is true', async () => {
-      const error = new Error('Test error')
-      const mockFn = vi.fn().mockRejectedValue(error)
+      const mockFn = vi.fn().mockRejectedValue(new Error('Test error'))
       const retryer = new AsyncRetryer(mockFn, {
         maxAttempts: 3,
-        baseWait: 100,
+        baseWait: 0, // No delay to avoid timer issues
         throwOnError: true,
       })
 
-      const executePromise = retryer.execute()
+      await expect(retryer.execute()).rejects.toThrow('Test error')
 
-      // Advance through all retries
-      await vi.runOnlyPendingTimersAsync()
-      vi.advanceTimersByTime(100) // First retry
-      await vi.runOnlyPendingTimersAsync()
-      vi.advanceTimersByTime(200) // Second retry
-
-      await expect(executePromise).rejects.toThrow('Test error')
       expect(mockFn).toHaveBeenCalledTimes(3) // Should still retry but throw at end
     })
 

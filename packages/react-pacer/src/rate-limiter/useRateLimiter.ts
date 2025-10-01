@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type {
   RateLimiterOptions,
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactRateLimiter<TFn extends AnyFunction, TSelected = {}>
   extends Omit<RateLimiter<TFn>, 'store'> {

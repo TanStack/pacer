@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncRetryer } from '@tanstack/pacer/async-retryer'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncRetryerOptions,
   AsyncRetryerState,
 } from '@tanstack/pacer/async-retryer'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactAsyncRetryer<TFn extends AnyAsyncFunction, TSelected = {}>
   extends Omit<AsyncRetryer<TFn>, 'store'> {

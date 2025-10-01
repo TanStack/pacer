@@ -1,8 +1,8 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import type { AsyncRetryerOptions } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
@@ -158,7 +158,7 @@ export interface AsyncQueuerOptions<TValue> {
    * If provided, the handler will be called with the error and queuer instance.
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
-  onError?: (error: unknown, item: TValue, queuer: AsyncQueuer<TValue>) => void
+  onError?: (error: Error, item: TValue, queuer: AsyncQueuer<TValue>) => void
   /**
    * Callback fired whenever an item expires in the queuer
    */
@@ -586,7 +586,7 @@ export class AsyncQueuer<TValue> {
         this.#setState({
           errorCount: this.store.state.errorCount + 1,
         })
-        this.options.onError?.(error, item, this)
+        this.options.onError?.(error as Error, item, this)
         if (this.options.throwOnError) {
           throw error
         }

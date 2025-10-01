@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncDebouncerOptions,
   AsyncDebouncerState,
 } from '@tanstack/pacer/async-debouncer'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactAsyncDebouncer<
   TFn extends AnyAsyncFunction,

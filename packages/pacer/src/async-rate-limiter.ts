@@ -1,8 +1,8 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import type { AsyncRetryerOptions } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
@@ -99,7 +99,7 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (
-    error: unknown,
+    error: Error,
     args: Parameters<TFn>,
     rateLimiter: AsyncRateLimiter<TFn>,
   ) => void
@@ -228,7 +228,6 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   >(getDefaultAsyncRateLimiterState<TFn>())
   key: string
   options: AsyncRateLimiterOptions<TFn>
-  asyncRetryer: AsyncRetryer<TFn>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
@@ -241,10 +240,6 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.asyncRetryer = new AsyncRetryer(
-      this.fn,
-      this.options.asyncRetryerOptions,
-    )
     this.#setState(this.options.initialState ?? {})
     for (const executionTime of this.#getExecutionTimesInWindow()) {
       this.#setCleanupTimeout(executionTime)
@@ -374,7 +369,12 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     })
 
     try {
-      const result = await this.asyncRetryer.execute(...args) // EXECUTE!
+      // Create a new AsyncRetryer for this execution to avoid cancelling concurrent executions
+      const asyncRetryer = new AsyncRetryer(
+        this.fn,
+        this.options.asyncRetryerOptions,
+      )
+      const result = await asyncRetryer.execute(...args) // EXECUTE!
       this.#setCleanupTimeout(now)
       this.#setState({
         successCount: this.store.state.successCount + 1,
@@ -385,7 +385,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.options.onError?.(error, args, this)
+      this.options.onError?.(error as Error, args, this)
       if (this.options.throwOnError) {
         throw error
       }

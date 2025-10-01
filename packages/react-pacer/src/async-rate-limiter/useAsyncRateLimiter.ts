@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactAsyncRateLimiter<
   TFn extends AnyAsyncFunction,

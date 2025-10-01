@@ -1,4 +1,5 @@
-import React, { createContext, useContext, ReactNode } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
+import type { ReactNode } from 'react'
 import type {
   AnyAsyncFunction,
   AnyFunction,
@@ -40,13 +41,18 @@ export interface PacerProviderProps {
   defaultOptions?: PacerProviderOptions
 }
 
+const DEFAULT_OPTIONS: PacerProviderOptions = {}
+
 export function PacerProvider({
   children,
-  defaultOptions = {},
+  defaultOptions = DEFAULT_OPTIONS,
 }: PacerProviderProps) {
-  const contextValue: PacerContextValue = {
-    defaultOptions,
-  }
+  const contextValue: PacerContextValue = useMemo(
+    () => ({
+      defaultOptions,
+    }),
+    [defaultOptions],
+  )
 
   return (
     <PacerContext.Provider value={contextValue}>

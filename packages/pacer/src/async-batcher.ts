@@ -1,8 +1,8 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import type { AsyncRetryerOptions } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { OptionalKeys } from './types'
 
 export interface AsyncBatcherState<TValue> {
@@ -116,7 +116,7 @@ export interface AsyncBatcherOptions<TValue> {
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (
-    error: unknown,
+    error: Error,
     batch: Array<TValue>,
     batcher: AsyncBatcher<TValue>,
   ) => void
@@ -314,8 +314,12 @@ export class AsyncBatcher<TValue> {
   /**
    * Adds an item to the async batcher
    * If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
+   *
+   * @returns The result from the batch function, or undefined if an error occurred and was handled by onError
+   *
+   * @throws The error from the batch function if no onError handler is configured or throwOnError is true
    */
-  addItem = (item: TValue): void => {
+  addItem = async (item: TValue): Promise<any> => {
     this.#setState({
       items: [...this.store.state.items, item],
       isPending: this.options.wait !== Infinity,
@@ -327,10 +331,11 @@ export class AsyncBatcher<TValue> {
       this.options.getShouldExecute(this.store.state.items, this)
 
     if (shouldProcess) {
-      this.#execute()
+      return await this.#execute()
     } else if (this.options.wait !== Infinity) {
       this.#clearTimeout() // clear any pending timeout to replace it with a new one
       this.#timeoutId = setTimeout(() => this.#execute(), this.#getWait())
+      await new Promise((resolve) => setTimeout(resolve, this.#getWait()))
     }
   }
 
@@ -373,7 +378,7 @@ export class AsyncBatcher<TValue> {
         failedItems: [...this.store.state.failedItems, ...batch],
         totalItemsFailed: this.store.state.totalItemsFailed + batch.length,
       })
-      this.options.onError?.(error, batch, this)
+      this.options.onError?.(error as Error, batch, this)
       if (this.options.throwOnError) {
         throw error
       }

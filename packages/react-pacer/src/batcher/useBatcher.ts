@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
 
 export interface ReactBatcher<TValue, TSelected = {}>
   extends Omit<Batcher<TValue>, 'store'> {

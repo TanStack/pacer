@@ -31,7 +31,7 @@ function App() {
           asyncQueuer.store.state.rejectionCount,
         )
       },
-      onError: (error: unknown, item: Item, asyncQueuer) => {
+      onError: (error, item: Item, asyncQueuer) => {
         console.error(
           `Error processing item: ${item}`,
           error,
