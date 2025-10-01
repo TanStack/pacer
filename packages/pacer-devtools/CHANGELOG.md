@@ -1,5 +1,11 @@
 # @tanstack/pacer-devtools
 
+## 0.3.1
+
+### Patch Changes
+
+- update pacer devtools to use devtools-utils to avoid common issues in user projects ([#80](https://github.com/TanStack/pacer/pull/80))
+
 ## 0.3.0
 
 ### Minor Changes
