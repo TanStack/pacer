@@ -179,10 +179,10 @@ Emits a change event for the async batcher instance. Mostly useful for devtools.
 ### addItem()
 
 ```ts
-addItem(item): void
+addItem(item): Promise<any>
 ```
 
-Defined in: [async-batcher.ts:318](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L318)
+Defined in: [async-batcher.ts:322](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L322)
 
 Adds an item to the async batcher
 If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
@@ -195,7 +195,13 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 
 #### Returns
 
-`void`
+`Promise`\<`any`\>
+
+The result from the batch function, or undefined if an error occurred and was handled by onError
+
+#### Throws
+
+The error from the batch function if no onError handler is configured or throwOnError is true
 
 ***
 
@@ -205,7 +211,7 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 clear(): void
 ```
 
-Defined in: [async-batcher.ts:419](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L419)
+Defined in: [async-batcher.ts:424](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L424)
 
 Removes all items from the async batcher
 
@@ -221,7 +227,7 @@ Removes all items from the async batcher
 flush(): Promise<any>
 ```
 
-Defined in: [async-batcher.ts:393](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L393)
+Defined in: [async-batcher.ts:398](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L398)
 
 Processes the current batch of items immediately
 
@@ -237,7 +243,7 @@ Processes the current batch of items immediately
 peekAllItems(): TValue[]
 ```
 
-Defined in: [async-batcher.ts:401](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L401)
+Defined in: [async-batcher.ts:406](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L406)
 
 Returns a copy of all items in the async batcher
 
@@ -253,7 +259,7 @@ Returns a copy of all items in the async batcher
 peekFailedItems(): TValue[]
 ```
 
-Defined in: [async-batcher.ts:405](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L405)
+Defined in: [async-batcher.ts:410](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L410)
 
 #### Returns
 
@@ -267,7 +273,7 @@ Defined in: [async-batcher.ts:405](https://github.com/TanStack/pacer/blob/main/p
 reset(): void
 ```
 
-Defined in: [async-batcher.ts:426](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L426)
+Defined in: [async-batcher.ts:431](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L431)
 
 Resets the async batcher state to its default values
 

@@ -116,7 +116,7 @@ Callback invoked when any error occurs during execution (including retries)
 
 ##### error
 
-`unknown`
+`Error`
 
 ##### args
 

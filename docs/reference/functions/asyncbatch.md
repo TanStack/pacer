@@ -8,10 +8,10 @@ title: asyncBatch
 # Function: asyncBatch()
 
 ```ts
-function asyncBatch<TValue>(fn, options): (item) => void
+function asyncBatch<TValue>(fn, options): (item) => Promise<any>
 ```
 
-Defined in: [async-batcher.ts:481](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L481)
+Defined in: [async-batcher.ts:486](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L486)
 
 Creates an async batcher that processes items in batches
 
@@ -69,7 +69,13 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 
 ### Returns
 
-`void`
+`Promise`\<`any`\>
+
+The result from the batch function, or undefined if an error occurred and was handled by onError
+
+### Throws
+
+The error from the batch function if no onError handler is configured or throwOnError is true
 
 ## Example
 

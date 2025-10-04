@@ -211,7 +211,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 ##### error
 
-`unknown`
+`Error`
 
 ##### item
 
