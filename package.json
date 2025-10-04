@@ -58,7 +58,7 @@
     "@size-limit/preset-small-lib": "^11.2.0",
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
     "@tanstack/config": "0.20.3",
-    "@testing-library/jest-dom": "^6.9.0",
+    "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "^24.6.1",
     "eslint": "^9.36.0",
     "eslint-plugin-unused-imports": "^4.2.0",

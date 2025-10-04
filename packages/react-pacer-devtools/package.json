@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/react-pacer-devtools",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "React adapter for devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -65,6 +65,7 @@
     "react-dom": ">=16.8"
   },
   "dependencies": {
+    "@tanstack/devtools-utils": "^0.0.3",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {

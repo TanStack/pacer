@@ -1,5 +1,14 @@
 # @tanstack/solid-pacer-devtools
 
+## 0.3.1
+
+### Patch Changes
+
+- update pacer devtools to use devtools-utils to avoid common issues in user projects ([#80](https://github.com/TanStack/pacer/pull/80))
+
+- Updated dependencies [[`4dfd562`](https://github.com/TanStack/pacer/commit/4dfd5628da366d82fc0264ba9d98c02c30a2508d)]:
+  - @tanstack/pacer-devtools@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes
