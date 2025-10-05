@@ -414,7 +414,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   #abortExecution = (): void => {
-    this.asyncRetryer.cancel()
+    this.asyncRetryer.abort()
   }
 
   /**

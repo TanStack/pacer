@@ -30,7 +30,7 @@ function App() {
       return
     }
 
-    throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
+    // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
 
     const data = await fakeApi(term)
     setResults(data)
@@ -55,11 +55,7 @@ function App() {
       // throwOnError: true,
     },
     // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      successCount: state.successCount,
-      isPending: state.isPending,
-      isExecuting: state.isExecuting,
-    }),
+    (state) => state,
   )
 
   // get and name our throttled function
@@ -115,9 +111,8 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 
-let mounted = true
+// optionally, provide default options to an optional PacerProvider
 root.render(
-  // optionally, provide default options to an optional PacerProvider
   <PacerProvider
   // defaultOptions={{
   //   throttler: {
@@ -128,24 +123,3 @@ root.render(
     <App />
   </PacerProvider>,
 )
-
-// demo unmounting and cancellation
-document.addEventListener('keydown', (e) => {
-  if (e.shiftKey && e.key === 'Enter') {
-    mounted = !mounted
-    root.render(
-      mounted ? (
-        // optionally, provide default options to an optional PacerProvider
-        <PacerProvider
-        // defaultOptions={{
-        //   throttler: {
-        //     leading: true,
-        //   },
-        // }}
-        >
-          <App />
-        </PacerProvider>
-      ) : null,
-    )
-  }
-})

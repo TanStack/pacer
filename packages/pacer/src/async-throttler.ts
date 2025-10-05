@@ -320,56 +320,83 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
+
     const now = Date.now()
     const timeSinceLastExecution = now - this.store.state.lastExecutionTime
     const wait = this.#getWait()
-    // Store the most recent arguments for potential trailing execution
+
     this.#setState({
-      lastArgs: args,
       maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+      lastArgs: args, // store the arguments for potential trailing execution
     })
+
+    const thisMaybeExecuteNumber = this.store.state.maybeExecuteCount
 
     this.#resolvePreviousPromiseInternal()
 
-    // Handle leading execution
-    if (this.options.leading && timeSinceLastExecution >= wait) {
-      await this.#execute(...args)
-      return this.store.state.lastResult
-    } else {
+    // Wait for the wait period for the previous execution to complete if it's still running
+    for (
+      let maxNumIterations = wait / 10;
+      this.store.state.isExecuting && maxNumIterations > 0;
+      maxNumIterations--
+    ) {
+      await new Promise((resolve) => setTimeout(resolve, 10))
+      if (this.store.state.maybeExecuteCount !== thisMaybeExecuteNumber) {
+        // cancel the current maybeExecute loop because a new maybeExecute call was made
+        return this.store.state.lastResult
+      }
+    }
+
+    if (
+      this.options.leading &&
+      !this.store.state.isPending &&
+      timeSinceLastExecution >= wait
+    ) {
+      await this.#execute(...args) // Leading EXECUTE!
+    } else if (this.options.trailing) {
+      // replace old pending execution with a new one
+      this.#cancelPendingExecution()
+      this.#setState({
+        isPending: true,
+      })
+
+      // Set up new trailing execution
       return new Promise((resolve, reject) => {
         this.#resolvePreviousPromise = resolve
-        // Clear any existing timeout to ensure we use the latest arguments
-        this.#clearTimeout()
 
-        // Set up trailing execution if enabled
-        if (this.options.trailing) {
-          const _timeSinceLastExecution = this.store.state.lastExecutionTime
-            ? now - this.store.state.lastExecutionTime
-            : 0
-          const timeoutDuration = wait - _timeSinceLastExecution
-          this.#setState({ isPending: true })
-          this.#timeoutId = setTimeout(async () => {
-            if (this.store.state.lastArgs !== undefined) {
-              try {
-                await this.#execute(...this.store.state.lastArgs) // EXECUTE!
-              } catch (error) {
-                reject(error)
-              }
+        const newTimeSinceLastExecution = this.store.state.lastExecutionTime
+          ? now - this.store.state.lastExecutionTime
+          : 0
+        const timeoutDuration = Math.max(0, wait - newTimeSinceLastExecution)
+
+        this.#timeoutId = setTimeout(async () => {
+          this.#clearTimeout()
+          if (this.store.state.lastArgs !== undefined) {
+            try {
+              await this.#execute(...this.store.state.lastArgs) // Trailing EXECUTE!
+            } catch (error) {
+              reject(error)
             }
-            this.#resolvePreviousPromise = null
-            resolve(this.store.state.lastResult)
-          }, timeoutDuration)
-        }
+          }
+          this.#resolvePreviousPromise = null
+          resolve(this.store.state.lastResult)
+        }, timeoutDuration)
       })
     }
+    return this.store.state.lastResult
   }
 
   #execute = async (
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
-    if (!this.#getEnabled() || this.store.state.isExecuting) return undefined
+    if (!this.#getEnabled()) return undefined
+
     try {
       this.#setState({ isExecuting: true })
+      this.asyncRetryer = new AsyncRetryer(
+        this.fn,
+        this.options.asyncRetryerOptions,
+      )
       const result = await this.asyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
@@ -386,10 +413,11 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       }
     } finally {
       const lastExecutionTime = Date.now()
-      const nextExecutionTime = lastExecutionTime + this.#getWait()
+      const wait = this.#getWait()
+      const nextExecutionTime = lastExecutionTime + wait
       this.#setState({
         isExecuting: false,
-        isPending: false,
+        isPending: !!this.#timeoutId,
         settleCount: this.store.state.settleCount + 1,
         lastExecutionTime,
         nextExecutionTime,
@@ -397,9 +425,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this.options.onSettled?.(args, this)
       setTimeout(() => {
         if (!this.store.state.isPending) {
+          // clear nextExecutionTime if there is no pending execution
           this.#setState({ nextExecutionTime: undefined })
         }
-      }, this.#getWait())
+      }, wait)
     }
     return this.store.state.lastResult
   }
@@ -409,12 +438,8 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    */
   flush = async (): Promise<ReturnType<TFn> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
-      this.#abortExecution() // abort any current execution
-      this.#clearTimeout() // clear any existing timeout
+      this.cancel() // cancel any current execution
       const result = await this.#execute(...this.store.state.lastArgs)
-
-      // Resolve any pending promise from maybeExecute
-      this.#resolvePreviousPromiseInternal()
 
       return result
     }
@@ -443,13 +468,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
     this.#setState({
       isPending: false,
-      isExecuting: false,
-      lastArgs: undefined,
     })
-  }
-
-  #abortExecution = (): void => {
-    this.asyncRetryer.cancel()
   }
 
   /**
@@ -457,7 +476,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    */
   cancel = (): void => {
     this.#cancelPendingExecution()
-    this.#abortExecution()
+    this.asyncRetryer.abort() // abort
+    this.#setState({
+      isExecuting: false,
+    })
   }
 
   /**

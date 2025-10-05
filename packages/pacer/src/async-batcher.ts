@@ -363,6 +363,10 @@ export class AsyncBatcher<TValue> {
     this.#setState({ isExecuting: true })
 
     try {
+      this.asyncRetryer = new AsyncRetryer(
+        this.fn,
+        this.options.asyncRetryerOptions,
+      )
       const result = await this.asyncRetryer.execute(batch) // EXECUTE
       this.#setState({
         totalItemsProcessed:

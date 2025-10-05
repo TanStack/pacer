@@ -467,7 +467,7 @@ describe('AsyncRetryer', () => {
 
       // Start and immediately cancel
       const executePromise1 = retryer.execute()
-      retryer.cancel()
+      retryer.abort()
 
       const result1 = await executePromise1
       expect(result1).toBeUndefined()
@@ -495,7 +495,7 @@ describe('AsyncRetryer', () => {
       await Promise.resolve()
 
       // Cancel during retry delay
-      retryer.cancel()
+      retryer.abort()
 
       const result = await executePromise
       expect(result).toBeUndefined()

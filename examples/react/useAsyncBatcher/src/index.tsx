@@ -16,7 +16,6 @@ function App() {
     Array<{ items: Array<Item>; result: string; timestamp: number }>
   >([])
   const [errors, setErrors] = useState<Array<string>>([])
-  const [shouldFail, setShouldFail] = useState(false)
 
   // The async function that will process a batch of items
   async function processBatch(items: Array<Item>): Promise<string> {
@@ -26,9 +25,8 @@ function App() {
     await new Promise((resolve) => setTimeout(resolve, fakeProcessingTime))
 
     // Simulate occasional failures for demo purposes
-    if (shouldFail && Math.random() < 0.3) {
-      throw new Error(`Processing failed for batch with ${items.length} items`)
-    }
+
+    // throw new Error(`Processing failed for batch with ${items.length} items`)
 
     // Return a result from the batch processing
     const result = `Processed ${items.length} items: ${items.map((item) => item.value).join(', ')}`
@@ -165,17 +163,6 @@ function App() {
           >
             Clear Current Batch
           </button>
-        </div>
-
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={shouldFail}
-              onChange={(e) => setShouldFail(e.target.checked)}
-            />{' '}
-            Simulate random failures (30% chance)
-          </label>
         </div>
       </div>
 

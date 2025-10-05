@@ -80,6 +80,11 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
    */
   initialState?: Partial<AsyncRetryerState<TFn>>
   /**
+   * Jitter percentage to add to retry delays (0-1). Adds randomness to prevent thundering herd.
+   * @default 0
+   */
+  jitter?: number
+  /**
    * Maximum number of retry attempts, or a function that returns the max attempts
    * @default 3
    */
@@ -134,6 +139,7 @@ const defaultOptions: Omit<
   backoff: 'exponential',
   baseWait: 1000,
   enabled: true,
+  jitter: 0,
   maxAttempts: 3,
   throwOnError: 'last',
 }
@@ -152,6 +158,8 @@ const defaultOptions: Omit<
  *   - `'exponential'`: Wait time doubles with each attempt (1s, 2s, 4s, ...) - **DEFAULT**
  *   - `'linear'`: Wait time increases linearly (1s, 2s, 3s, ...)
  *   - `'fixed'`: Waits a constant amount of time (`baseWait`) between each attempt
+ * - **Jitter**: Adds randomness to retry delays to prevent thundering herd problems (default: `0`).
+ *   Set to a value between 0-1 to apply that percentage of random variation to each delay.
  * - **Abort & Cancellation**: Supports cancellation via an internal `AbortController`. If cancelled, retries are stopped.
  * - **State Management**: Tracks execution status, current attempt, last error, and result using TanStack Store.
  * - **Callbacks**: Provides hooks for handling success, error, retry, and settled events.
@@ -174,16 +182,17 @@ const defaultOptions: Omit<
  *
  * ## Usage
  * - Use for async operations that may fail transiently and benefit from retrying.
- * - Configure `maxAttempts`, `backoff`, and `baseWait` to control retry behavior.
+ * - Configure `maxAttempts`, `backoff`, `baseWait`, and `jitter` to control retry behavior.
  * - Use `onRetry`, `onSuccess`, `onError`, and `onSettled` for custom side effects.
  *
  * @example
  * ```typescript
- * // Retry a fetch operation up to 5 times with exponential backoff
+ * // Retry a fetch operation up to 5 times with exponential backoff and jitter
  * const retryer = new AsyncRetryer(fetchData, {
  *   maxAttempts: 5,
  *   backoff: 'exponential',
  *   baseWait: 1000,
+ *   jitter: 0.1, // Add 10% random variation to prevent thundering herd
  *   onRetry: (attempt, error) => console.log(`Retry attempt ${attempt} after error:`, error),
  *   onSuccess: (result) => console.log('Success:', result),
  *   onError: (error) => console.error('Error:', error),
@@ -261,18 +270,45 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     return parseFunctionOrValue(this.options.baseWait, this)
   }
 
+  #calculateJitter = (waitTime: number): number => {
+    const jitterAmount = this.options.jitter
+    if (jitterAmount <= 0) return 0
+
+    try {
+      const crypto =
+        typeof globalThis !== 'undefined' ? globalThis.crypto : undefined
+      if (crypto?.getRandomValues) {
+        const array = new Uint32Array(1)
+        crypto.getRandomValues(array)
+        // Convert to 0-1 range and apply jitter percentage
+        const randomFactor = (array[0]! / 0xffffffff) * 2 - 1 // -1 to 1
+        return Math.floor(waitTime * jitterAmount * randomFactor)
+      }
+    } catch {
+      // No crypto available
+    }
+    return 0
+  }
+
   #calculateWait = (attempt: number): number => {
     const baseWait = this.#getBaseWait()
+    let waitTime: number
 
     switch (this.options.backoff) {
       case 'linear':
-        return baseWait * attempt
+        waitTime = baseWait * attempt
+        break
       case 'exponential':
-        return baseWait * Math.pow(2, attempt - 1)
+        waitTime = baseWait * Math.pow(2, attempt - 1)
+        break
       case 'fixed':
       default:
-        return baseWait
+        waitTime = baseWait
+        break
     }
+
+    const jitter = this.#calculateJitter(waitTime)
+    return Math.max(0, waitTime + jitter)
   }
 
   /**
@@ -289,7 +325,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     }
 
     // Cancel any existing execution
-    this.cancel()
+    this.abort()
 
     const startTime = Date.now()
     let lastError: Error | undefined
@@ -311,14 +347,14 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 
       try {
         if (signal.aborted) {
-          return undefined as any
+          return undefined
         }
         result = (await this.fn(...args)) as ReturnType<TFn>
 
         // Check if cancelled during execution
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (signal.aborted) {
-          return undefined as any
+          return undefined
         }
 
         const totalTime = Date.now() - startTime
@@ -336,8 +372,8 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         return result
       } catch (error) {
         // Treat abort as a non-error cancellation outcome
-        if ((error as any)?.name === 'AbortError') {
-          return undefined as any
+        if ((error as Error)?.name === 'AbortError') {
+          return undefined
         }
         lastError = error instanceof Error ? error : new Error(String(error))
         this.#setState({ lastError })
@@ -364,7 +400,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
             if (signal.aborted) {
               // When cancelled during retry wait, surface the last error exactly once
               this.options.onError?.(lastError, args, this)
-              return undefined as any
+              return undefined
             }
           }
         }
@@ -386,19 +422,18 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
       throw lastError
     }
 
-    return undefined as any
+    return undefined
   }
 
   /**
    * Cancels the current execution and any pending retries
    */
-  cancel = (): void => {
+  abort = (): void => {
     if (this.#abortController) {
       this.#abortController.abort()
       this.#abortController = null
       this.#setState({
         isExecuting: false,
-        currentAttempt: 0,
       })
     }
   }
@@ -407,7 +442,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
    * Resets the retryer to its initial state and cancels any ongoing execution
    */
   reset = (): void => {
-    this.cancel()
+    this.abort()
     this.#setState(getDefaultAsyncRetryerState<TFn>())
   }
 }
