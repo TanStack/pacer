@@ -166,6 +166,23 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 
 ***
 
+### cancel()
+
+```ts
+cancel(): void
+```
+
+Defined in: [batcher.ts:287](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L287)
+
+Cancels any pending execution that was scheduled.
+Does NOT clear out the items.
+
+#### Returns
+
+`void`
+
+***
+
 ### clear()
 
 ```ts
@@ -220,7 +237,7 @@ Returns a copy of all items in the batcher
 reset(): void
 ```
 
-Defined in: [batcher.ts:286](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L286)
+Defined in: [batcher.ts:295](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L295)
 
 Resets the batcher state to its default values
 

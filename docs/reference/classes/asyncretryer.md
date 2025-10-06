@@ -7,7 +7,7 @@ title: AsyncRetryer
 
 # Class: AsyncRetryer\<TFn\>
 
-Defined in: [async-retryer.ts:198](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L198)
+Defined in: [async-retryer.ts:214](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L214)
 
 Provides robust retry functionality for asynchronous functions, supporting configurable backoff strategies,
 attempt limits, and detailed state management. The AsyncRetryer class is designed to help you reliably
@@ -22,6 +22,8 @@ by automatically retrying them according to your chosen policy.
   - `'exponential'`: Wait time doubles with each attempt (1s, 2s, 4s, ...) - **DEFAULT**
   - `'linear'`: Wait time increases linearly (1s, 2s, 3s, ...)
   - `'fixed'`: Waits a constant amount of time (`baseWait`) between each attempt
+- **Jitter**: Adds randomness to retry delays to prevent thundering herd problems (default: `0`).
+  Set to a value between 0-1 to apply that percentage of random variation to each delay.
 - **Abort & Cancellation**: Supports cancellation via an internal `AbortController`. If cancelled, retries are stopped.
 - **State Management**: Tracks execution status, current attempt, last error, and result using TanStack Store.
 - **Callbacks**: Provides hooks for handling success, error, retry, and settled events.
@@ -44,17 +46,18 @@ Additional error handling:
 
 ## Usage
 - Use for async operations that may fail transiently and benefit from retrying.
-- Configure `maxAttempts`, `backoff`, and `baseWait` to control retry behavior.
+- Configure `maxAttempts`, `backoff`, `baseWait`, and `jitter` to control retry behavior.
 - Use `onRetry`, `onSuccess`, `onError`, and `onSettled` for custom side effects.
 
 ## Example
 
 ```typescript
-// Retry a fetch operation up to 5 times with exponential backoff
+// Retry a fetch operation up to 5 times with exponential backoff and jitter
 const retryer = new AsyncRetryer(fetchData, {
   maxAttempts: 5,
   backoff: 'exponential',
   baseWait: 1000,
+  jitter: 0.1, // Add 10% random variation to prevent thundering herd
   onRetry: (attempt, error) => console.log(`Retry attempt ${attempt} after error:`, error),
   onSuccess: (result) => console.log('Success:', result),
   onError: (error) => console.error('Error:', error),
@@ -78,7 +81,7 @@ The async function type to be retried.
 new AsyncRetryer<TFn>(fn, initialOptions): AsyncRetryer<TFn>
 ```
 
-Defined in: [async-retryer.ts:210](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L210)
+Defined in: [async-retryer.ts:227](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L227)
 
 Creates a new AsyncRetryer instance
 
@@ -108,9 +111,19 @@ Configuration options for the retryer
 fn: TFn;
 ```
 
-Defined in: [async-retryer.ts:211](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L211)
+Defined in: [async-retryer.ts:228](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L228)
 
 The async function to retry
+
+***
+
+### key
+
+```ts
+key: string;
+```
+
+Defined in: [async-retryer.ts:218](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L218)
 
 ***
 
@@ -120,13 +133,14 @@ The async function to retry
 options: AsyncRetryerOptions<TFn> & Omit<Required<AsyncRetryerOptions<any>>, 
   | "initialState"
   | "onError"
-  | "onLastError"
-  | "onRetry"
   | "onSettled"
-| "onSuccess">;
+  | "onSuccess"
+  | "key"
+  | "onLastError"
+| "onRetry">;
 ```
 
-Defined in: [async-retryer.ts:202](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L202)
+Defined in: [async-retryer.ts:219](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L219)
 
 ***
 
@@ -136,17 +150,33 @@ Defined in: [async-retryer.ts:202](https://github.com/TanStack/pacer/blob/main/p
 readonly store: Store<Readonly<AsyncRetryerState<TFn>>>;
 ```
 
-Defined in: [async-retryer.ts:199](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L199)
+Defined in: [async-retryer.ts:215](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L215)
 
 ## Methods
 
-### cancel()
+### \_emit()
 
 ```ts
-cancel(): void
+_emit(): void
 ```
 
-Defined in: [async-retryer.ts:395](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L395)
+Defined in: [async-retryer.ts:251](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L251)
+
+Emits a change event for the async retryer instance. Mostly useful for devtools.
+
+#### Returns
+
+`void`
+
+***
+
+### abort()
+
+```ts
+abort(): void
+```
+
+Defined in: [async-retryer.ts:452](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L452)
 
 Cancels the current execution and any pending retries
 
@@ -162,7 +192,7 @@ Cancels the current execution and any pending retries
 execute(...args): Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-retryer.ts:284](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L284)
+Defined in: [async-retryer.ts:341](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L341)
 
 Executes the function with retry logic
 
@@ -192,7 +222,7 @@ The last error if throwOnError is true and all retries fail
 reset(): void
 ```
 
-Defined in: [async-retryer.ts:409](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L409)
+Defined in: [async-retryer.ts:465](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L465)
 
 Resets the retryer to its initial state and cancels any ongoing execution
 
@@ -208,7 +238,7 @@ Resets the retryer to its initial state and cancels any ongoing execution
 setOptions(newOptions): void
 ```
 
-Defined in: [async-retryer.ts:228](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L228)
+Defined in: [async-retryer.ts:257](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L257)
 
 Updates the retryer options
 

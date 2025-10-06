@@ -114,7 +114,7 @@ Number of function executions that have completed (either successfully or with e
 ### status
 
 ```ts
-status: "disabled" | "idle" | "executing" | "pending" | "settled";
+status: "disabled" | "idle" | "pending" | "executing" | "settled";
 ```
 
 Defined in: [async-debouncer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L44)
