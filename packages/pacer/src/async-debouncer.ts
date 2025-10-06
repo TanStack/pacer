@@ -200,7 +200,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   >(getDefaultAsyncDebouncerState<TFn>())
   key: string
   options: AsyncDebouncerOptions<TFn>
-  asyncRetryer: AsyncRetryer<TFn>
+  asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
@@ -216,10 +216,6 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.asyncRetryer = new AsyncRetryer(
-      this.fn,
-      this.options.asyncRetryerOptions,
-    )
     this.#setState(this.options.initialState ?? {})
 
     pacerEventClient.on('d-AsyncDebouncer', (event) => {
@@ -344,9 +340,16 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
+    const currentMaybeExecuteCount = this.store.state.maybeExecuteCount + 1
+
     try {
       this.#setState({ isExecuting: true })
-      const result = await this.asyncRetryer.execute(...args) // EXECUTE!
+      const currentAsyncRetryer = new AsyncRetryer(this.fn, {
+        ...this.options.asyncRetryerOptions,
+        key: `${this.key}-retryer-${currentMaybeExecuteCount}`,
+      })
+      this.asyncRetryers.set(currentMaybeExecuteCount, currentAsyncRetryer)
+      const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
         successCount: this.store.state.successCount + 1,
@@ -361,6 +364,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         throw error
       }
     } finally {
+      this.asyncRetryers.delete(currentMaybeExecuteCount) // dispose retryer
       this.#setState({
         isExecuting: false,
         isPending: false,
@@ -377,14 +381,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    */
   flush = async (): Promise<ReturnType<TFn> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
-      this.#abortExecution() // abort any current execution
-      this.#clearTimeout() // clear any existing timeout
-      const result = await this.#execute(...this.store.state.lastArgs)
-
-      // Resolve any pending promise from maybeExecute
-      this.#resolvePreviousPromiseInternal()
-
-      return result
+      const { lastArgs } = this.store.state
+      this.#cancelPendingExecution()
+      return await this.#execute(...lastArgs)
     }
     return undefined
   }
@@ -403,26 +402,36 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     }
   }
 
+  /**
+   * Internal cancel without resetting the leading execute state
+   */
   #cancelPendingExecution = (): void => {
     this.#clearTimeout()
     this.#resolvePreviousPromiseInternal()
     this.#setState({
       isPending: false,
-      isExecuting: false,
       lastArgs: undefined,
     })
   }
 
-  #abortExecution = (): void => {
-    this.asyncRetryer.abort()
+  /**
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT cancel any pending execution that have not started yet.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({
+      isExecuting: false,
+    })
   }
 
   /**
-   * Cancels any pending execution or aborts any execution in progress
+   * Cancels any pending execution that have not started yet.
+   * Does NOT abort any execution already in progress.
    */
   cancel = (): void => {
     this.#cancelPendingExecution()
-    this.#abortExecution()
     this.#setState({ canLeadingExecute: true })
   }
 

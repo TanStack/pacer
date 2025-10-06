@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
+import { createKey, parseFunctionOrValue } from './utils'
+import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRetryerState<TFn extends AnyAsyncFunction> {
@@ -80,6 +81,11 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
    */
   initialState?: Partial<AsyncRetryerState<TFn>>
   /**
+   * Optional key to identify this async retryer instance.
+   * If provided, the async retryer will be identified by this key in the devtools and PacerProvider if applicable.
+   */
+  key?: string
+  /**
    * Jitter percentage to add to retry delays (0-1). Adds randomness to prevent thundering herd.
    * @default 0
    */
@@ -130,6 +136,7 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
 const defaultOptions: Omit<
   Required<AsyncRetryerOptions<any>>,
   | 'initialState'
+  | 'key'
   | 'onError'
   | 'onLastError'
   | 'onRetry'
@@ -208,6 +215,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncRetryerState<TFn>>> = new Store(
     getDefaultAsyncRetryerState<TFn>(),
   )
+  key: string
   options: AsyncRetryerOptions<TFn> & typeof defaultOptions
   #abortController: AbortController | null = null
 
@@ -220,6 +228,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncRetryerOptions<TFn> = {},
   ) {
+    this.key = createKey(initialOptions.key)
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -228,7 +237,18 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         (initialOptions.onError ? false : defaultOptions.throwOnError),
     }
     this.#setState(this.options.initialState ?? {})
+
+    pacerEventClient.on('d-AsyncRetryer', (event) => {
+      if (event.payload.key !== this.key) return
+      this.#setState(event.payload.store.state as AsyncRetryerState<TFn>)
+      this.setOptions(event.payload.options)
+    })
   }
+
+  /**
+   * Emits a change event for the async retryer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncRetryer', this)
 
   /**
    * Updates the retryer options
@@ -256,6 +276,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
               : 'idle',
       }
     })
+    emitChange('AsyncRetryer', this)
   }
 
   #getEnabled = (): boolean => {
@@ -372,7 +393,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         return result
       } catch (error) {
         // Treat abort as a non-error cancellation outcome
-        if ((error as Error)?.name === 'AbortError') {
+        if ((error as Error).name === 'AbortError') {
           return undefined
         }
         lastError = error instanceof Error ? error : new Error(String(error))

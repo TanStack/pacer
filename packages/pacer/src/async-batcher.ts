@@ -11,6 +11,10 @@ export interface AsyncBatcherState<TValue> {
    */
   errorCount: number
   /**
+   * Number of batch executions that have been executed
+   */
+  executeCount: number
+  /**
    * Array of items that failed during batch processing
    */
   failedItems: Array<TValue>
@@ -63,6 +67,7 @@ export interface AsyncBatcherState<TValue> {
 function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
   return {
     errorCount: 0,
+    executeCount: 0,
     failedItems: [],
     isEmpty: true,
     isExecuting: false,
@@ -244,7 +249,10 @@ export class AsyncBatcher<TValue> {
   )
   key: string
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
-  asyncRetryer: AsyncRetryer<typeof this.fn>
+  asyncRetryers = new Map<
+    number,
+    AsyncRetryer<(items: Array<TValue>) => Promise<any>>
+  >()
   #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
@@ -257,10 +265,6 @@ export class AsyncBatcher<TValue> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.asyncRetryer = new AsyncRetryer(
-      this.fn,
-      this.options.asyncRetryerOptions,
-    )
     this.#setState(this.options.initialState ?? {})
 
     pacerEventClient.on('d-AsyncBatcher', (event) => {
@@ -356,18 +360,20 @@ export class AsyncBatcher<TValue> {
       return undefined
     }
 
+    const currentExecuteCount = this.store.state.executeCount + 1
     const batch = this.peekAllItems() // copy of the items to be processed (to prevent race conditions)
     this.clear() // Clear items before processing to prevent race conditions
     this.options.onItemsChange?.(this)
 
-    this.#setState({ isExecuting: true })
+    this.#setState({ isExecuting: true, executeCount: currentExecuteCount })
 
     try {
-      this.asyncRetryer = new AsyncRetryer(
+      const currentAsyncRetryer = new AsyncRetryer(
         this.fn,
         this.options.asyncRetryerOptions,
       )
-      const result = await this.asyncRetryer.execute(batch) // EXECUTE
+      this.asyncRetryers.set(currentExecuteCount, currentAsyncRetryer)
+      const result = await currentAsyncRetryer.execute(batch) // EXECUTE
       this.#setState({
         totalItemsProcessed:
           this.store.state.totalItemsProcessed + batch.length,
@@ -388,6 +394,7 @@ export class AsyncBatcher<TValue> {
       }
       return undefined
     } finally {
+      this.asyncRetryers.delete(currentExecuteCount) // dispose retryer
       this.#setState({
         isExecuting: false,
         settleCount: this.store.state.settleCount + 1,
@@ -427,6 +434,31 @@ export class AsyncBatcher<TValue> {
    */
   clear = (): void => {
     this.#setState({ items: [], failedItems: [], isPending: false })
+  }
+
+  /**
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT cancel any pending execution that have not started yet.
+   * Does NOT clear out the items.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({
+      isExecuting: false,
+    })
+  }
+
+  /**
+   * Cancels any pending execution that have not started yet.
+   * Does NOT abort any execution already in progress.
+   * Does NOT clear out the items.
+   */
+  cancel = (): void => {
+    this.#clearTimeout()
+    this.#setState({
+      isPending: false,
+    })
   }
 
   /**

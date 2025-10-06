@@ -281,6 +281,15 @@ export class Batcher<TValue> {
   }
 
   /**
+   * Cancels any pending execution that was scheduled.
+   * Does NOT clear out the items.
+   */
+  cancel = (): void => {
+    this.#clearTimeout()
+    this.#setState({ isPending: false })
+  }
+
+  /**
    * Resets the batcher state to its default values
    */
   reset = (): void => {

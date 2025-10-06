@@ -171,7 +171,7 @@ export function useAsyncRetryer<TFn extends AnyAsyncFunction, TSelected = {}>(
 
   useEffect(() => {
     return () => {
-      asyncRetryer.cancel()
+      asyncRetryer.abort()
     }
   }, [asyncRetryer])
 

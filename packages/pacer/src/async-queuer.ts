@@ -20,6 +20,10 @@ export interface AsyncQueuerState<TValue> {
    */
   errorCount: number
   /**
+   * Number of times execute has been called
+   */
+  executeCount: number
+  /**
    * Number of items that have been removed from the queue due to expiration
    */
   expirationCount: number
@@ -27,6 +31,10 @@ export interface AsyncQueuerState<TValue> {
    * Whether the queuer has no items to process (items array is empty)
    */
   isEmpty: boolean
+  /**
+   * Whether the queuer is currently executing
+   */
+  isExecuting: boolean
   /**
    * Whether the queuer has reached its maximum capacity
    */
@@ -82,8 +90,10 @@ function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
     activeItems: [],
     addItemCount: 0,
     errorCount: 0,
+    executeCount: 0,
     expirationCount: 0,
     isEmpty: true,
+    isExecuting: false,
     isFull: false,
     isIdle: true,
     isRunning: true,
@@ -283,7 +293,10 @@ export class AsyncQueuer<TValue> {
   >(getDefaultAsyncQueuerState<TValue>())
   key: string
   options: AsyncQueuerOptions<TValue>
-  asyncRetryer: AsyncRetryer<(item: TValue) => Promise<any>>
+  asyncRetryers = new Map<
+    number,
+    AsyncRetryer<(item: TValue) => Promise<any>>
+  >()
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
@@ -296,10 +309,6 @@ export class AsyncQueuer<TValue> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.asyncRetryer = new AsyncRetryer(
-      this.fn,
-      this.options.asyncRetryerOptions,
-    )
     const isInitiallyRunning =
       this.options.initialState?.isRunning ?? this.options.started ?? true
     this.#setState({
@@ -574,9 +583,20 @@ export class AsyncQueuer<TValue> {
    */
   execute = async (position?: QueuePosition): Promise<any> => {
     const item = this.getNextItem(position)
+
     if (item !== undefined) {
+      const currentExecuteCount = this.store.state.executeCount + 1
+      this.#setState({
+        executeCount: currentExecuteCount,
+        isExecuting: true,
+      })
       try {
-        const lastResult = await this.asyncRetryer.execute(item) // EXECUTE!
+        const currentAsyncRetryer = new AsyncRetryer(this.fn, {
+          ...this.options.asyncRetryerOptions,
+          key: `${this.key}-retryer-${currentExecuteCount}`,
+        })
+        this.asyncRetryers.set(currentExecuteCount, currentAsyncRetryer)
+        const lastResult = await currentAsyncRetryer.execute(item) // EXECUTE!
         this.#setState({
           successCount: this.store.state.successCount + 1,
           lastResult,
@@ -591,10 +611,12 @@ export class AsyncQueuer<TValue> {
           throw error
         }
       } finally {
+        this.asyncRetryers.delete(currentExecuteCount) // dispose retryer
         this.#setState({
           activeItems: this.store.state.activeItems.filter(
             (activeItem) => activeItem !== item,
           ),
+          isExecuting: false,
           settledCount: this.store.state.settledCount + 1,
         })
         this.options.onSettled?.(item, this)
@@ -748,11 +770,24 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Removes all pending items from the queue. Does not affect active tasks.
+   * Removes all pending items from the queue.
+   * Does NOT affect active tasks.
    */
   clear = (): void => {
     this.#setState({ items: [], itemTimestamps: [] })
     this.options.onItemsChange?.(this)
+  }
+
+  /**
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT clear out the items.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({
+      isExecuting: false,
+    })
   }
 
   /**

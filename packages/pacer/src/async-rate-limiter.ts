@@ -228,6 +228,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   >(getDefaultAsyncRateLimiterState<TFn>())
   key: string
   options: AsyncRateLimiterOptions<TFn>
+  asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
@@ -361,6 +362,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return
 
+    const currentMaybeExecute = this.store.state.maybeExecuteCount
     const now = Date.now()
     const executionTimes = [...this.store.state.executionTimes, now]
     this.#setState({
@@ -370,11 +372,11 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
 
     try {
       // Create a new AsyncRetryer for this execution to avoid cancelling concurrent executions
-      const asyncRetryer = new AsyncRetryer(
-        this.fn,
-        this.options.asyncRetryerOptions,
-      )
-      const result = await asyncRetryer.execute(...args) // EXECUTE!
+      const currentAsyncRetryer = new AsyncRetryer(this.fn, {
+        ...this.options.asyncRetryerOptions,
+        key: `${this.key}-retryer-${currentMaybeExecute}`,
+      })
+      const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setCleanupTimeout(now)
       this.#setState({
         successCount: this.store.state.successCount + 1,
@@ -390,6 +392,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         throw error
       }
     } finally {
+      this.asyncRetryers.delete(currentMaybeExecute) // dispose retryer
       this.#setState({
         isExecuting: false,
         settleCount: this.store.state.settleCount + 1,
@@ -479,6 +482,18 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     }
     const oldestExecution = this.store.state.executionTimes[0] ?? Infinity
     return oldestExecution + this.#getWindow() - Date.now()
+  }
+
+  /**
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT clear out the execution times or reset the rate limiter.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({
+      isExecuting: false,
+    })
   }
 
   /**

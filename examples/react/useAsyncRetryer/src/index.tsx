@@ -92,7 +92,7 @@ function App() {
       </div>
 
       <div style={{ marginTop: '10px' }}>
-        <button onClick={() => asyncRetryer.cancel()}>Cancel</button>
+        <button onClick={() => asyncRetryer.abort()}>Cancel</button>
         <button
           onClick={() => asyncRetryer.reset()}
           style={{ marginLeft: '10px' }}

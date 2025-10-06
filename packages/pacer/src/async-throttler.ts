@@ -211,7 +211,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   >(getDefaultAsyncThrottlerState<TFn>())
   key: string
   options: AsyncThrottlerOptions<TFn>
-  asyncRetryer: AsyncRetryer<TFn>
+  asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
@@ -227,10 +227,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
-    this.asyncRetryer = new AsyncRetryer(
-      this.fn,
-      this.options.asyncRetryerOptions,
-    )
     this.#setState(this.options.initialState ?? {})
 
     pacerEventClient.on('d-AsyncThrottler', (event) => {
@@ -355,7 +351,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       await this.#execute(...args) // Leading EXECUTE!
     } else if (this.options.trailing) {
       // replace old pending execution with a new one
-      this.#cancelPendingExecution()
+      this.cancel()
       this.#setState({
         isPending: true,
       })
@@ -391,13 +387,16 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
 
+    const currentMaybeExecute = this.store.state.maybeExecuteCount
+
     try {
       this.#setState({ isExecuting: true })
-      this.asyncRetryer = new AsyncRetryer(
-        this.fn,
-        this.options.asyncRetryerOptions,
-      )
-      const result = await this.asyncRetryer.execute(...args) // EXECUTE!
+      const currentAsyncRetryer = new AsyncRetryer(this.fn, {
+        ...this.options.asyncRetryerOptions,
+        key: `${this.key}-retryer-${currentMaybeExecute}`,
+      })
+      this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
+      const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
         successCount: this.store.state.successCount + 1,
@@ -412,6 +411,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         throw error
       }
     } finally {
+      this.asyncRetryers.delete(currentMaybeExecute) // dispose retryer
       const lastExecutionTime = Date.now()
       const wait = this.#getWait()
       const nextExecutionTime = lastExecutionTime + wait
@@ -438,8 +438,21 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    */
   flush = async (): Promise<ReturnType<TFn> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
-      this.cancel() // cancel any current execution
+      // Store the pending promise resolver before clearing timeout
+      const resolvePromise = this.#resolvePreviousPromise
+
+      // Clear timeout and state without resolving the promise
+      this.#clearTimeout()
+      this.#setState({
+        isPending: false,
+      })
+
       const result = await this.#execute(...this.store.state.lastArgs)
+
+      // Resolve the pending promise with the result
+      if (resolvePromise) {
+        resolvePromise(result)
+      }
 
       return result
     }
@@ -460,7 +473,21 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
   }
 
-  #cancelPendingExecution = (): void => {
+  /**
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT cancel any pending execution that have not started yet.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({ isExecuting: false })
+  }
+
+  /**
+   * Cancels any pending execution that have not started yet.
+   * Does NOT abort any execution already in progress.
+   */
+  cancel = (): void => {
     this.#clearTimeout()
     if (this.#resolvePreviousPromise) {
       this.#resolvePreviousPromiseInternal()
@@ -468,17 +495,6 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
     this.#setState({
       isPending: false,
-    })
-  }
-
-  /**
-   * Cancels any pending execution or aborts any execution in progress
-   */
-  cancel = (): void => {
-    this.#cancelPendingExecution()
-    this.asyncRetryer.abort() // abort
-    this.#setState({
-      isExecuting: false,
     })
   }
 
