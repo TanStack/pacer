@@ -317,18 +317,15 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
 
-    const now = Date.now()
-    const timeSinceLastExecution = now - this.store.state.lastExecutionTime
-    const wait = this.#getWait()
+    this.#resolvePreviousPromiseInternal()
 
     this.#setState({
       maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
       lastArgs: args, // store the arguments for potential trailing execution
     })
 
+    const wait = this.#getWait()
     const thisMaybeExecuteNumber = this.store.state.maybeExecuteCount
-
-    this.#resolvePreviousPromiseInternal()
 
     // Wait for the wait period for the previous execution to complete if it's still running
     for (
@@ -342,6 +339,9 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
         return this.store.state.lastResult
       }
     }
+
+    const now = Date.now()
+    const timeSinceLastExecution = now - this.store.state.lastExecutionTime
 
     if (
       this.options.leading &&

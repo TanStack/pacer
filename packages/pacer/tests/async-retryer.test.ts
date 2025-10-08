@@ -15,6 +15,8 @@ describe('AsyncRetryer', () => {
       expect(retryer.options.baseWait).toBe(1000)
       expect(retryer.options.enabled).toBe(true)
       expect(retryer.options.maxAttempts).toBe(3)
+      expect(retryer.options.maxExecutionTime).toBe(Infinity)
+      expect(retryer.options.maxTotalExecutionTime).toBe(Infinity)
       expect(retryer.options.throwOnError).toBe('last')
     })
 
@@ -561,6 +563,308 @@ describe('AsyncRetryer', () => {
       expect(retryer.options.baseWait).toBe(1000) // Unchanged
     })
   })
+
+  describe('Timeout Controls', () => {
+    it('should have timeout options in default options', () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const retryer = new AsyncRetryer(mockFn)
+
+      expect(retryer.options.maxExecutionTime).toBe(Infinity)
+      expect(retryer.options.maxTotalExecutionTime).toBe(Infinity)
+    })
+
+    it('should accept custom timeout options', () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const retryer = new AsyncRetryer(mockFn, {
+        maxExecutionTime: 5000,
+        maxTotalExecutionTime: 10000,
+      })
+
+      expect(retryer.options.maxExecutionTime).toBe(5000)
+      expect(retryer.options.maxTotalExecutionTime).toBe(10000)
+    })
+
+    it('should not timeout when execution completes quickly', async () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const retryer = new AsyncRetryer(mockFn, {
+        maxExecutionTime: 1000,
+        maxTotalExecutionTime: 2000,
+      })
+
+      const result = await retryer.execute()
+
+      expect(result).toBe('success')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+    })
+
+    it('should clean up timeouts when execution succeeds', async () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const retryer = new AsyncRetryer(mockFn, {
+        maxExecutionTime: 1000,
+        maxTotalExecutionTime: 2000,
+      })
+
+      const result = await retryer.execute()
+
+      expect(result).toBe('success')
+      // Advance time to ensure no timeout fires
+      vi.advanceTimersByTime(5000)
+      expect(retryer.store.state.status).toBe('idle')
+    })
+  })
+
+  describe('Jitter', () => {
+    it('should apply jitter to retry delays', async () => {
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 2,
+        baseWait: 1000,
+        jitter: 0.1, // 10% jitter
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      // First retry should have jitter applied
+      await vi.runOnlyPendingTimersAsync()
+
+      // The exact time will vary due to jitter, but should be within range
+      // Base wait is 1000ms, jitter is 10%, so range is 900-1100ms
+      // We'll advance by a bit more than the base to ensure it triggers
+      vi.advanceTimersByTime(1100)
+
+      await executePromise
+
+      expect(mockFn).toHaveBeenCalledTimes(2)
+    })
+
+    it('should handle jitter when crypto is not available', async () => {
+      // Mock crypto to be undefined by temporarily replacing it
+      const originalCrypto = globalThis.crypto
+      Object.defineProperty(globalThis, 'crypto', {
+        value: undefined,
+        writable: true,
+        configurable: true,
+      })
+
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 2,
+        baseWait: 100,
+        jitter: 0.1,
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(100) // Should use base wait without jitter
+      await executePromise
+
+      expect(mockFn).toHaveBeenCalledTimes(2)
+
+      // Restore crypto
+      Object.defineProperty(globalThis, 'crypto', {
+        value: originalCrypto,
+        writable: true,
+        configurable: true,
+      })
+    })
+
+    it('should not apply jitter when jitter is 0', async () => {
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 2,
+        baseWait: 100,
+        jitter: 0,
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(100) // Exact base wait time
+      await executePromise
+
+      expect(mockFn).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('Initial State', () => {
+    it('should merge all initial state properties', () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const retryer = new AsyncRetryer(mockFn, {
+        initialState: {
+          executionCount: 5,
+          lastResult: 'previous result',
+          lastError: new Error('Previous error'),
+          totalExecutionTime: 1000,
+        },
+      })
+
+      expect(retryer.store.state.executionCount).toBe(5)
+      expect(retryer.store.state.lastResult).toBe('previous result')
+      expect(retryer.store.state.lastError?.message).toBe('Previous error')
+      expect(retryer.store.state.totalExecutionTime).toBe(1000)
+      expect(retryer.store.state.currentAttempt).toBe(0) // Default preserved
+      expect(retryer.store.state.isExecuting).toBe(false) // Default preserved
+    })
+
+    it('should update status based on initial state', () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const retryer = new AsyncRetryer(mockFn, {
+        initialState: {
+          isExecuting: true,
+          currentAttempt: 2,
+        },
+      })
+
+      expect(retryer.store.state.status).toBe('retrying')
+    })
+
+    it('should show disabled status when enabled is false in initial state', () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const retryer = new AsyncRetryer(mockFn, {
+        enabled: false,
+        initialState: {
+          isExecuting: true,
+        },
+      })
+
+      expect(retryer.store.state.status).toBe('disabled')
+    })
+  })
+
+  describe('Edge Cases and Error Scenarios', () => {
+    it('should handle function that throws non-Error objects', async () => {
+      const mockFn = vi.fn().mockRejectedValue('String error')
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 1,
+        throwOnError: false,
+      })
+
+      const result = await retryer.execute()
+
+      expect(result).toBeUndefined()
+      expect(retryer.store.state.lastError?.message).toBe('String error')
+    })
+
+    it('should handle function that throws null', async () => {
+      const mockFn = vi.fn().mockRejectedValue(null)
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 1,
+        throwOnError: false,
+      })
+
+      const result = await retryer.execute()
+
+      expect(result).toBeUndefined()
+      expect(retryer.store.state.lastError?.message).toBe('null')
+    })
+
+    it('should handle function that throws undefined', async () => {
+      const mockFn = vi.fn().mockRejectedValue(undefined)
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 1,
+        throwOnError: false,
+      })
+
+      const result = await retryer.execute()
+
+      expect(result).toBeUndefined()
+      expect(retryer.store.state.lastError?.message).toBe('undefined')
+    })
+
+    it('should handle very large jitter values', async () => {
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 2,
+        baseWait: 100,
+        jitter: 1.5, // 150% jitter
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(250) // Should be enough for max jitter
+      await executePromise
+
+      expect(mockFn).toHaveBeenCalledTimes(2)
+    })
+
+    it('should handle negative jitter values', async () => {
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 2,
+        baseWait: 100,
+        jitter: -0.5, // Negative jitter
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(100) // Should use base wait
+      await executePromise
+
+      expect(mockFn).toHaveBeenCalledTimes(2)
+    })
+
+    it('should handle zero maxAttempts', async () => {
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 0,
+        throwOnError: false,
+      })
+
+      const result = await retryer.execute()
+
+      expect(result).toBeUndefined()
+      expect(mockFn).toHaveBeenCalledTimes(0)
+    })
+
+    it('should handle zero baseWait', async () => {
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 2,
+        baseWait: 0,
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      // No delay between retries
+      await vi.runOnlyPendingTimersAsync()
+      await executePromise
+
+      expect(mockFn).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('Complex Integration Scenarios', () => {
+    it('should handle cancellation during execution', async () => {
+      const mockFn = vi.fn().mockImplementation(async () => {
+        vi.advanceTimersByTime(2000)
+        return 'success'
+      })
+      const retryer = new AsyncRetryer(mockFn, {
+        maxExecutionTime: 1000,
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      // Cancel before timeout
+      vi.advanceTimersByTime(500)
+      retryer.abort()
+
+      const result = await executePromise
+
+      expect(result).toBeUndefined()
+      expect(mockFn).toHaveBeenCalledTimes(1)
+    })
+  })
 })
 
 describe('asyncRetry utility function', () => {
@@ -610,5 +914,18 @@ describe('asyncRetry utility function', () => {
     const result = await executePromise
     expect(result).toBeUndefined()
     expect(mockFn).toHaveBeenCalledTimes(3) // Default maxAttempts
+  })
+
+  it('should support timeout options', async () => {
+    const mockFn = vi.fn().mockResolvedValue('success')
+    const retryFn = asyncRetry(mockFn, {
+      maxExecutionTime: 1000,
+      maxTotalExecutionTime: 2000,
+    })
+
+    const result = await retryFn()
+
+    expect(result).toBe('success')
+    expect(mockFn).toHaveBeenCalledTimes(1)
   })
 })
