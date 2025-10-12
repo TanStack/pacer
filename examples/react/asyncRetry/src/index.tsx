@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useAsyncRetryer } from '@tanstack/react-pacer/async-retryer'
+import { asyncRetry } from '@tanstack/react-pacer/async-retryer'
 
 interface UserData {
   id: number
@@ -30,10 +30,14 @@ const fakeApi = async (
 function App() {
   const [userId, setUserId] = useState('123')
   const [userData, setUserData] = useState<UserData | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [currentAttempt, setCurrentAttempt] = useState(0)
   const [scenario, setScenario] = useState<
     'default' | 'timeout' | 'jitter' | 'linear'
   >('default')
   const [logs, setLogs] = useState<string[]>([])
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   const addLog = (message: string) => {
     setLogs((prev) => [
@@ -42,35 +46,30 @@ function App() {
     ])
   }
 
-  // The function that will be retried
-  const fetchUser = async (id: string) => {
-    addLog(`Attempting to fetch user ${id}`)
-    const data = await fakeApi(id, {
-      shouldTimeout: scenario === 'timeout',
-    })
-    setUserData(data)
-    return data
-  }
-
   // Get options based on selected scenario
   const getOptions = () => {
     const baseOptions = {
       onRetry: (attempt: number, error: Error) => {
         addLog(`Retry attempt ${attempt} after error: ${error.message}`)
+        setCurrentAttempt(attempt + 1)
       },
       onError: (error: Error) => {
         addLog(`Request failed: ${error.message}`)
       },
       onLastError: (error: Error) => {
         addLog(`All retries exhausted: ${error.message}`)
+        setError(error.message)
         setUserData(null)
       },
       onSuccess: async (result: Promise<UserData>) => {
         const data = await result
         addLog(`Request succeeded for user ${data.id}`)
+        setUserData(data)
+        setError(null)
       },
       onSettled: () => {
         addLog('Request settled')
+        setCurrentAttempt(0)
       },
     }
 
@@ -112,42 +111,61 @@ function App() {
     }
   }
 
-  // Hook that gives you an async retryer instance
-  const asyncRetryer = useAsyncRetryer(
-    fetchUser,
-    getOptions(),
-    // Selector function to pick the state you want to track
-    (state) => ({
-      isExecuting: state.isExecuting,
-      currentAttempt: state.currentAttempt,
-      executionCount: state.executionCount,
-      lastError: state.lastError,
-      lastResult: state.lastResult,
-      status: state.status,
-      totalExecutionTime: state.totalExecutionTime,
-      lastExecutionTime: state.lastExecutionTime,
-    }),
-  )
+  // Create the retry-wrapped function
+  const fetchUserWithRetry = asyncRetry(async (id: string) => {
+    addLog(`Attempting to fetch user ${id}`)
+    return await fakeApi(id, {
+      shouldTimeout: scenario === 'timeout',
+    })
+  }, getOptions())
 
-  // Event handler that calls the retry function
+  // Handle fetch with abort support
   async function onFetchUser() {
     setLogs([])
+    setIsLoading(true)
+    setError(null)
+    setCurrentAttempt(1)
     addLog('Starting fetch operation')
+
+    // Create abort controller
+    abortControllerRef.current = new AbortController()
+
     try {
-      const result = await asyncRetryer.execute(userId)
+      const result = await fetchUserWithRetry(userId)
       addLog(`Final result: ${result ? `User ${result.id}` : 'undefined'}`)
     } catch (error) {
       addLog(
         `Caught error: ${error instanceof Error ? error.message : 'Unknown error'}`,
       )
+      setError(error instanceof Error ? error.message : 'Unknown error')
+    } finally {
+      setIsLoading(false)
+      abortControllerRef.current = null
     }
+  }
+
+  function onAbort() {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+      addLog('Operation aborted by user')
+      setIsLoading(false)
+      setCurrentAttempt(0)
+    }
+  }
+
+  function onReset() {
+    setUserData(null)
+    setError(null)
+    setLogs([])
+    setCurrentAttempt(0)
+    addLog('State reset')
   }
 
   return (
     <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-      <h1>TanStack Pacer useAsyncRetryer Example</h1>
+      <h1>TanStack Pacer asyncRetry Example</h1>
       <p>
-        Demonstrates async retry functionality with configurable backoff
+        Demonstrates the asyncRetry utility function with configurable backoff
         strategies, timeouts, jitter, and error handling.
       </p>
 
@@ -169,6 +187,7 @@ function App() {
               value={scenario}
               onChange={(e) => setScenario(e.target.value as typeof scenario)}
               style={{ padding: '5px', width: '100%' }}
+              disabled={isLoading}
             >
               <option value="default">Default (Exponential Backoff)</option>
               <option value="timeout">With Timeouts</option>
@@ -187,6 +206,7 @@ function App() {
               onChange={(e) => setUserId(e.target.value)}
               placeholder="Enter user ID..."
               style={{ padding: '5px', width: '100%' }}
+              disabled={isLoading}
             />
           </div>
 
@@ -199,30 +219,19 @@ function App() {
           >
             <button
               onClick={onFetchUser}
-              disabled={asyncRetryer.state.isExecuting}
+              disabled={isLoading}
               style={{ padding: '10px' }}
             >
-              {asyncRetryer.state.isExecuting ? 'Fetching...' : 'Fetch User'}
+              {isLoading ? 'Fetching...' : 'Fetch User'}
             </button>
             <button
-              onClick={() => {
-                asyncRetryer.abort()
-                addLog('Operation aborted')
-              }}
-              disabled={!asyncRetryer.state.isExecuting}
+              onClick={onAbort}
+              disabled={!isLoading}
               style={{ padding: '10px' }}
             >
               Abort
             </button>
-            <button
-              onClick={() => {
-                asyncRetryer.reset()
-                setUserData(null)
-                setLogs([])
-                addLog('Retryer reset')
-              }}
-              style={{ padding: '10px' }}
-            >
+            <button onClick={onReset} style={{ padding: '10px' }}>
               Reset
             </button>
           </div>
@@ -237,20 +246,27 @@ function App() {
           >
             <h4>Current Options:</h4>
             <pre style={{ fontSize: '12px', margin: 0 }}>
-              {JSON.stringify(
-                {
-                  maxAttempts: asyncRetryer.options.maxAttempts,
-                  backoff: asyncRetryer.options.backoff,
-                  baseWait: asyncRetryer.options.baseWait,
-                  jitter: asyncRetryer.options.jitter,
-                  maxExecutionTime: asyncRetryer.options.maxExecutionTime,
-                  maxTotalExecutionTime:
-                    asyncRetryer.options.maxTotalExecutionTime,
-                  throwOnError: asyncRetryer.options.throwOnError,
-                },
-                null,
-                2,
-              )}
+              {(() => {
+                const opts = getOptions()
+                return JSON.stringify(
+                  {
+                    maxAttempts: opts.maxAttempts,
+                    backoff: opts.backoff,
+                    baseWait: opts.baseWait,
+                    jitter: opts.jitter,
+                    maxExecutionTime:
+                      'maxExecutionTime' in opts
+                        ? opts.maxExecutionTime
+                        : Infinity,
+                    maxTotalExecutionTime:
+                      'maxTotalExecutionTime' in opts
+                        ? opts.maxTotalExecutionTime
+                        : Infinity,
+                  },
+                  null,
+                  2,
+                )
+              })()}
             </pre>
           </div>
         </div>
@@ -270,47 +286,30 @@ function App() {
                 style={{
                   padding: '2px 8px',
                   borderRadius: '3px',
-                  backgroundColor:
-                    asyncRetryer.state.status === 'executing'
-                      ? '#ffd700'
-                      : asyncRetryer.state.status === 'retrying'
-                        ? '#ff8c00'
-                        : asyncRetryer.state.status === 'disabled'
-                          ? '#ccc'
-                          : '#90ee90',
+                  backgroundColor: isLoading
+                    ? currentAttempt > 1
+                      ? '#ff8c00'
+                      : '#ffd700'
+                    : '#90ee90',
                 }}
               >
-                {asyncRetryer.state.status}
+                {isLoading
+                  ? currentAttempt > 1
+                    ? 'retrying'
+                    : 'executing'
+                  : 'idle'}
               </span>
             </div>
-            {asyncRetryer.state.currentAttempt > 0 && (
+            {currentAttempt > 0 && (
               <p>
-                <strong>Current Attempt:</strong>{' '}
-                {asyncRetryer.state.currentAttempt} /{' '}
-                {typeof asyncRetryer.options.maxAttempts === 'function'
-                  ? asyncRetryer.options.maxAttempts(asyncRetryer as any)
-                  : asyncRetryer.options.maxAttempts}
+                <strong>Current Attempt:</strong> {currentAttempt} /{' '}
+                {(() => {
+                  const opts = getOptions()
+                  return opts.maxAttempts
+                })()}
               </p>
             )}
-            <p>
-              <strong>Total Executions:</strong>{' '}
-              {asyncRetryer.state.executionCount}
-            </p>
-            {asyncRetryer.state.totalExecutionTime > 0 && (
-              <p>
-                <strong>Total Execution Time:</strong>{' '}
-                {asyncRetryer.state.totalExecutionTime}ms
-              </p>
-            )}
-            {asyncRetryer.state.lastExecutionTime > 0 && (
-              <p>
-                <strong>Last Execution:</strong>{' '}
-                {new Date(
-                  asyncRetryer.state.lastExecutionTime,
-                ).toLocaleTimeString()}
-              </p>
-            )}
-            {asyncRetryer.state.lastError && (
+            {error && (
               <div
                 style={{
                   marginTop: '10px',
@@ -320,9 +319,9 @@ function App() {
                   color: '#d32f2f',
                 }}
               >
-                <strong>Last Error:</strong>
+                <strong>Error:</strong>
                 <br />
-                {asyncRetryer.state.lastError.message}
+                {error}
               </div>
             )}
           </div>
@@ -376,51 +375,50 @@ function App() {
         </div>
       </div>
 
-      <div style={{ marginTop: '20px' }}>
-        <details>
-          <summary style={{ cursor: 'pointer', fontWeight: 'bold' }}>
-            Full State (Debug)
-          </summary>
-          <pre
-            style={{
-              marginTop: '10px',
-              backgroundColor: '#f5f5f5',
-              padding: '15px',
-              borderRadius: '5px',
-              fontSize: '12px',
-              overflowX: 'auto',
-            }}
-          >
-            {JSON.stringify(asyncRetryer.store.state, null, 2)}
-          </pre>
-        </details>
-      </div>
-
       <div
         style={{
           marginTop: '20px',
           padding: '15px',
           backgroundColor: '#fff3cd',
           borderRadius: '5px',
+          fontSize: '14px',
+        }}
+      >
+        <strong>Note:</strong> This example uses the <code>asyncRetry</code>{' '}
+        utility function, which is a lightweight wrapper that creates a
+        retry-enabled version of your async function. For React integration with
+        hooks and reactive state, check out the <code>useAsyncRetryer</code>{' '}
+        example.
+      </div>
+
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '15px',
+          backgroundColor: '#e3f2fd',
+          borderRadius: '5px',
           fontSize: '12px',
         }}
       >
-        <strong>Tip:</strong> Press <kbd>Shift + Enter</kbd> to toggle component
-        mounting (demonstrates cleanup)
+        <strong>Key Differences:</strong>
+        <ul style={{ marginTop: '10px', marginBottom: 0 }}>
+          <li>
+            <code>asyncRetry</code> - Functional utility that wraps an async
+            function with retry logic
+          </li>
+          <li>
+            <code>useAsyncRetryer</code> - React hook that provides reactive
+            state and lifecycle management
+          </li>
+          <li>
+            <code>AsyncRetryer</code> - Low-level class for advanced use cases
+            with fine-grained control
+          </li>
+        </ul>
       </div>
     </div>
   )
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
-
-let mounted = true
 root.render(<App />)
-
-// Demo unmounting and cancellation
-document.addEventListener('keydown', (e) => {
-  if (e.shiftKey && e.key === 'Enter') {
-    mounted = !mounted
-    root.render(mounted ? <App /> : null)
-  }
-})

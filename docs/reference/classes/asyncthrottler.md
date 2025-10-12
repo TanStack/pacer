@@ -159,7 +159,7 @@ Emits a change event for the async throttler instance. Mostly useful for devtool
 abort(): void
 ```
 
-Defined in: [async-throttler.ts:480](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L480)
+Defined in: [async-throttler.ts:510](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L510)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT cancel any pending execution that have not started yet.
@@ -176,7 +176,7 @@ Does NOT cancel any pending execution that have not started yet.
 cancel(): void
 ```
 
-Defined in: [async-throttler.ts:490](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L490)
+Defined in: [async-throttler.ts:520](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L520)
 
 Cancels any pending execution that have not started yet.
 Does NOT abort any execution already in progress.
@@ -200,6 +200,51 @@ Processes the current pending execution immediately
 #### Returns
 
 `Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
+
+***
+
+### getAbortSignal()
+
+```ts
+getAbortSignal(maybeExecuteCount?): null | AbortSignal
+```
+
+Defined in: [async-throttler.ts:500](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L500)
+
+Returns the AbortSignal for a specific execution.
+If no maybeExecuteCount is provided, returns the signal for the most recent execution.
+Returns null if no execution is found or not currently executing.
+
+#### Parameters
+
+##### maybeExecuteCount?
+
+`number`
+
+Optional specific execution to get signal for
+
+#### Returns
+
+`null` \| `AbortSignal`
+
+#### Example
+
+```typescript
+const throttler = new AsyncThrottler(
+  async (data: string) => {
+    const signal = throttler.getAbortSignal()
+    if (signal) {
+      const response = await fetch('/api/save', {
+        method: 'POST',
+        body: data,
+        signal
+      })
+      return response.json()
+    }
+  },
+  { wait: 1000 }
+)
+```
 
 ***
 
@@ -251,7 +296,7 @@ await throttled.maybeExecute('c', 'd');
 reset(): void
 ```
 
-Defined in: [async-throttler.ts:504](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L504)
+Defined in: [async-throttler.ts:534](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L534)
 
 Resets the debouncer state to its default values
 

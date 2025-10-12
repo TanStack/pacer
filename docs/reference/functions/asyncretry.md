@@ -11,7 +11,7 @@ title: asyncRetry
 function asyncRetry<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-retryer.ts:488](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L488)
+Defined in: [async-retryer.ts:596](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L596)
 
 Creates a retry-enabled version of an async function
 
@@ -54,7 +54,7 @@ A new function that executes the original with retry logic
 ```typescript
 const retryFetch = asyncRetry(fetch, {
   maxAttempts: 3,
-  backoff: 'exponential'
+  backoff: 'exponential' // default
 })
 
 const response = await retryFetch('/api/data')

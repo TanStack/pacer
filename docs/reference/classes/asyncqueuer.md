@@ -171,7 +171,7 @@ Emits a change event for the async queuer instance. Mostly useful for devtools.
 abort(): void
 ```
 
-Defined in: [async-queuer.ts:785](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L785)
+Defined in: [async-queuer.ts:811](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L811)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT clear out the items.
@@ -320,6 +320,47 @@ The queue is cleared after processing
 
 ***
 
+### getAbortSignal()
+
+```ts
+getAbortSignal(executeCount?): null | AbortSignal
+```
+
+Defined in: [async-queuer.ts:801](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L801)
+
+Returns the AbortSignal for a specific execution.
+If no executeCount is provided, returns the signal for the most recent execution.
+Returns null if no execution is found or not currently executing.
+
+#### Parameters
+
+##### executeCount?
+
+`number`
+
+Optional specific execution to get signal for
+
+#### Returns
+
+`null` \| `AbortSignal`
+
+#### Example
+
+```typescript
+const queuer = new AsyncQueuer(
+  async (item: string) => {
+    const signal = queuer.getAbortSignal()
+    if (signal) {
+      const response = await fetch(`/api/process/${item}`, { signal })
+      return response.json()
+    }
+  },
+  { concurrency: 2 }
+)
+```
+
+***
+
 ### getNextItem()
 
 ```ts
@@ -435,7 +476,7 @@ Returns the items waiting to be processed (pending tasks).
 reset(): void
 ```
 
-Defined in: [async-queuer.ts:796](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L796)
+Defined in: [async-queuer.ts:822](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L822)
 
 Resets the queuer state to its default values
 

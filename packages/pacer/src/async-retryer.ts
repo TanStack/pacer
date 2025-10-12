@@ -182,31 +182,44 @@ const defaultOptions: Omit<
  * - **Timeout Controls**: Set limits on execution time to prevent hanging operations:
  *   - `maxExecutionTime`: Maximum time for a single function call (default: `Infinity`)
  *   - `maxTotalExecutionTime`: Maximum time for the entire retry operation (default: `Infinity`)
- * - **Abort & Cancellation**: Supports cancellation via an internal `AbortController`. If cancelled, retries are stopped.
- * - **State Management**: Tracks execution status, current attempt, last error, and result using TanStack Store.
- * - **Callbacks**: Provides hooks for handling success, error, retry, and settled events.
+ * - **Abort & Cancellation**: Supports cancellation via an internal `AbortController`. Call `abort()` to stop retries.
  *
  * ## State Management
- * - Uses TanStack Store for fine-grained reactivity.
- * - State includes: `isExecuting`, `currentAttempt`, `lastError`, `lastResult`, and `status` (`idle`, `executing`, `retrying`, `disabled`).
- * - State can be accessed via the `store.state` property.
+ *
+ * Uses TanStack Store for fine-grained reactivity. State can be accessed via the `store.state` property.
+ *
+ * Available state properties:
+ * - `currentAttempt`: The current retry attempt number (0 when not executing)
+ * - `executionCount`: Total number of completed executions (successful or failed)
+ * - `isExecuting`: Whether the retryer is currently executing the function
+ * - `lastError`: The most recent error encountered during execution
+ * - `lastExecutionTime`: Timestamp of the last execution completion in milliseconds
+ * - `lastResult`: The result from the most recent successful execution
+ * - `status`: Current execution status ('disabled' | 'idle' | 'executing' | 'retrying')
+ * - `totalExecutionTime`: Total time spent executing (including retries) in milliseconds
  *
  * ## Error Handling
+ *
  * The `throwOnError` option controls when errors are thrown (default: `'last'`):
  * - `'last'`: Only throws the final error after all retries are exhausted - **DEFAULT**
- * - `true`: Throws every error immediately (no retries)
+ * - `true`: Throws every error immediately (disables retrying)
  * - `false`: Never throws errors, returns `undefined` instead
  *
- * Additional error handling:
+ * Callbacks for error handling:
  * - `onError`: Called for every error (including during retries)
  * - `onLastError`: Called only for the final error after all retries fail
- * - If `onError` is provided but `throwOnError` is not specified, defaults to `'last'`
+ * - `onRetry`: Called before each retry attempt
+ * - `onSuccess`: Called when execution succeeds
+ * - `onSettled`: Called after execution completes (success or failure)
  *
  * ## Usage
+ *
  * - Use for async operations that may fail transiently and benefit from retrying.
  * - Configure `maxAttempts`, `backoff`, `baseWait`, and `jitter` to control retry behavior.
  * - Set `maxExecutionTime` and `maxTotalExecutionTime` to prevent hanging operations.
- * - Use `onRetry`, `onSuccess`, `onError`, and `onSettled` for custom side effects.
+ * - Use `onRetry`, `onSuccess`, `onError`, `onLastError`, and `onSettled` for custom side effects.
+ * - Call `abort()` to cancel ongoing execution and pending retries.
+ * - Call `reset()` to reset state and cancel execution.
  *
  * @example
  * ```typescript
@@ -516,6 +529,29 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     }
 
     return undefined
+  }
+
+  /**
+   * Returns the current AbortSignal for the executing operation.
+   * Use this signal in your async function to make it cancellable.
+   * Returns null when not currently executing.
+   *
+   * @example
+   * ```typescript
+   * const retryer = new AsyncRetryer(async (userId: string) => {
+   *   const signal = retryer.getAbortSignal()
+   *   if (signal) {
+   *     return fetch(`/api/users/${userId}`, { signal })
+   *   }
+   *   return fetch(`/api/users/${userId}`)
+   * })
+   *
+   * // Abort will now actually cancel the fetch
+   * retryer.abort()
+   * ```
+   */
+  getAbortSignal(): AbortSignal | null {
+    return this.#abortController?.signal ?? null
   }
 
   /**

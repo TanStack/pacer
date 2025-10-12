@@ -415,6 +415,32 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   /**
+   * Returns the AbortSignal for a specific execution.
+   * If no maybeExecuteCount is provided, returns the signal for the most recent execution.
+   * Returns null if no execution is found or not currently executing.
+   *
+   * @param maybeExecuteCount - Optional specific execution to get signal for
+   * @example
+   * ```typescript
+   * const debouncer = new AsyncDebouncer(
+   *   async (searchTerm: string) => {
+   *     const signal = debouncer.getAbortSignal()
+   *     if (signal) {
+   *       const response = await fetch(`/api/search?q=${searchTerm}`, { signal })
+   *       return response.json()
+   *     }
+   *   },
+   *   { wait: 300 }
+   * )
+   * ```
+   */
+  getAbortSignal(maybeExecuteCount?: number): AbortSignal | null {
+    const count = maybeExecuteCount ?? this.store.state.maybeExecuteCount
+    const retryer = this.asyncRetryers.get(count)
+    return retryer?.getAbortSignal() ?? null
+  }
+
+  /**
    * Aborts all ongoing executions with the internal abort controllers.
    * Does NOT cancel any pending execution that have not started yet.
    */

@@ -779,6 +779,32 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
+   * Returns the AbortSignal for a specific execution.
+   * If no executeCount is provided, returns the signal for the most recent execution.
+   * Returns null if no execution is found or not currently executing.
+   *
+   * @param executeCount - Optional specific execution to get signal for
+   * @example
+   * ```typescript
+   * const queuer = new AsyncQueuer(
+   *   async (item: string) => {
+   *     const signal = queuer.getAbortSignal()
+   *     if (signal) {
+   *       const response = await fetch(`/api/process/${item}`, { signal })
+   *       return response.json()
+   *     }
+   *   },
+   *   { concurrency: 2 }
+   * )
+   * ```
+   */
+  getAbortSignal(executeCount?: number): AbortSignal | null {
+    const count = executeCount ?? this.store.state.executeCount
+    const retryer = this.asyncRetryers.get(count)
+    return retryer?.getAbortSignal() ?? null
+  }
+
+  /**
    * Aborts all ongoing executions with the internal abort controllers.
    * Does NOT clear out the items.
    */

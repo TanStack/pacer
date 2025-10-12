@@ -14,23 +14,43 @@ function useAsyncRetryer<TFn, TSelected>(
 selector): ReactAsyncRetryer<TFn, TSelected>
 ```
 
-Defined in: [react-pacer/src/async-retryer/useAsyncRetryer.ts:152](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-retryer/useAsyncRetryer.ts#L152)
+Defined in: [react-pacer/src/async-retryer/useAsyncRetryer.ts:194](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-retryer/useAsyncRetryer.ts#L194)
 
 A low-level React hook that creates an `AsyncRetryer` instance to retry execution of an async function.
 
 This hook is designed to be flexible and state-management agnostic - it simply returns a retryer instance that
 you can integrate with any state management solution (useState, Redux, Zustand, Jotai, etc).
 
+## Retrying Concepts
+
 Async retrying automatically re-executes a failed async function up to a specified number of attempts with
 configurable backoff strategies. This is useful for handling transient errors like network failures, temporary
 server issues, or rate limiting where you want to automatically retry the operation.
 
-Error Handling:
-- If an `onError` handler is provided, it will be called for every error during execution
-- If an `onLastError` handler is provided, it will be called only for the final error after all retries fail
-- If `throwOnError` is 'last' (default), only the final error after all retries will be thrown
-- If `throwOnError` is true, every error will be thrown immediately (disables retrying)
-- If `throwOnError` is false, errors are never thrown and undefined is returned instead
+- **Backoff Strategies**: Controls the delay between retry attempts (default: `'exponential'`):
+  - `'exponential'`: Wait time doubles with each attempt (1s, 2s, 4s, ...) - **DEFAULT**
+  - `'linear'`: Wait time increases linearly (1s, 2s, 3s, ...)
+  - `'fixed'`: Waits a constant amount of time (`baseWait`) between each attempt
+- **Jitter**: Adds randomness to retry delays to prevent thundering herd problems (default: `0`).
+  Set to a value between 0-1 to apply that percentage of random variation to each delay.
+- **Timeout Controls**: Set limits on execution time to prevent hanging operations:
+  - `maxExecutionTime`: Maximum time for a single function call (default: `Infinity`)
+  - `maxTotalExecutionTime`: Maximum time for the entire retry operation (default: `Infinity`)
+- **Abort & Cancellation**: Call `abort()` on the retryer to cancel ongoing execution and pending retries.
+
+## Error Handling
+
+The `throwOnError` option controls when errors are thrown (default: `'last'`):
+- `'last'`: Only throws the final error after all retries are exhausted - **DEFAULT**
+- `true`: Throws every error immediately (disables retrying)
+- `false`: Never throws errors, returns `undefined` instead
+
+Callbacks for error handling:
+- `onError`: Called for every error (including during retries)
+- `onLastError`: Called only for the final error after all retries fail
+- `onRetry`: Called before each retry attempt
+- `onSuccess`: Called when execution succeeds
+- `onSettled`: Called after execution completes (success or failure)
 
 ## State Management and Selector
 
@@ -52,6 +72,10 @@ Available state properties:
 - `lastResult`: The result from the most recent successful execution
 - `status`: Current execution status ('disabled' | 'idle' | 'executing' | 'retrying')
 - `totalExecutionTime`: Total time spent executing (including retries) in milliseconds
+
+## Cleanup
+
+The hook automatically calls `abort()` on unmount to cancel any ongoing execution.
 
 ## Type Parameters
 
@@ -88,6 +112,23 @@ const apiRetryer = useAsyncRetryer(
     return response.json();
   },
   { maxAttempts: 3, backoff: 'exponential' }
+);
+
+// With advanced retry configuration
+const apiRetryer = useAsyncRetryer(
+  async (userId: string) => {
+    const response = await fetch(`/api/users/${userId}`);
+    if (!response.ok) throw new Error('Failed to fetch user');
+    return response.json();
+  },
+  {
+    maxAttempts: 5,
+    backoff: 'exponential',
+    baseWait: 1000,
+    jitter: 0.1, // Add 10% random variation to prevent thundering herd
+    maxExecutionTime: 5000, // Abort individual calls after 5 seconds
+    maxTotalExecutionTime: 30000, // Abort entire operation after 30 seconds
+  }
 );
 
 // Opt-in to re-render when execution state changes (optimized for loading indicators)
@@ -129,7 +170,8 @@ const apiRetryer = useAsyncRetryer(
     maxAttempts: 3,
     backoff: 'exponential',
     onError: (error) => console.error('API call failed:', error),
-    onLastError: (error) => console.error('All retries failed:', error)
+    onLastError: (error) => console.error('All retries failed:', error),
+    onRetry: (attempt, error) => console.log(`Retry attempt ${attempt} after error:`, error),
   },
   (state) => ({
     lastError: state.lastError,

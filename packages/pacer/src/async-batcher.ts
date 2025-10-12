@@ -437,6 +437,36 @@ export class AsyncBatcher<TValue> {
   }
 
   /**
+   * Returns the AbortSignal for a specific execution.
+   * If no executeCount is provided, returns the signal for the most recent execution.
+   * Returns null if no execution is found or not currently executing.
+   *
+   * @param executeCount - Optional specific execution to get signal for
+   * @example
+   * ```typescript
+   * const batcher = new AsyncBatcher(
+   *   async (items: string[]) => {
+   *     const signal = batcher.getAbortSignal()
+   *     if (signal) {
+   *       const response = await fetch('/api/batch', {
+   *         method: 'POST',
+   *         body: JSON.stringify(items),
+   *         signal
+   *       })
+   *       return response.json()
+   *     }
+   *   },
+   *   { maxSize: 10, wait: 100 }
+   * )
+   * ```
+   */
+  getAbortSignal(executeCount?: number): AbortSignal | null {
+    const count = executeCount ?? this.store.state.executeCount
+    const retryer = this.asyncRetryers.get(count)
+    return retryer?.getAbortSignal() ?? null
+  }
+
+  /**
    * Aborts all ongoing executions with the internal abort controllers.
    * Does NOT cancel any pending execution that have not started yet.
    * Does NOT clear out the items.

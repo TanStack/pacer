@@ -182,7 +182,7 @@ Emits a change event for the async batcher instance. Mostly useful for devtools.
 abort(): void
 ```
 
-Defined in: [async-batcher.ts:444](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L444)
+Defined in: [async-batcher.ts:474](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L474)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT cancel any pending execution that have not started yet.
@@ -229,7 +229,7 @@ The error from the batch function if no onError handler is configured or throwOn
 cancel(): void
 ```
 
-Defined in: [async-batcher.ts:457](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L457)
+Defined in: [async-batcher.ts:487](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L487)
 
 Cancels any pending execution that have not started yet.
 Does NOT abort any execution already in progress.
@@ -273,6 +273,51 @@ Processes the current batch of items immediately
 
 ***
 
+### getAbortSignal()
+
+```ts
+getAbortSignal(executeCount?): null | AbortSignal
+```
+
+Defined in: [async-batcher.ts:463](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L463)
+
+Returns the AbortSignal for a specific execution.
+If no executeCount is provided, returns the signal for the most recent execution.
+Returns null if no execution is found or not currently executing.
+
+#### Parameters
+
+##### executeCount?
+
+`number`
+
+Optional specific execution to get signal for
+
+#### Returns
+
+`null` \| `AbortSignal`
+
+#### Example
+
+```typescript
+const batcher = new AsyncBatcher(
+  async (items: string[]) => {
+    const signal = batcher.getAbortSignal()
+    if (signal) {
+      const response = await fetch('/api/batch', {
+        method: 'POST',
+        body: JSON.stringify(items),
+        signal
+      })
+      return response.json()
+    }
+  },
+  { maxSize: 10, wait: 100 }
+)
+```
+
+***
+
 ### peekAllItems()
 
 ```ts
@@ -309,7 +354,7 @@ Defined in: [async-batcher.ts:421](https://github.com/TanStack/pacer/blob/main/p
 reset(): void
 ```
 
-Defined in: [async-batcher.ts:467](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L467)
+Defined in: [async-batcher.ts:497](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L497)
 
 Resets the async batcher state to its default values
 

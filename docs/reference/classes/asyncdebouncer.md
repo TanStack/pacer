@@ -156,7 +156,7 @@ Emits a change event for the async debouncer instance. Mostly useful for devtool
 abort(): void
 ```
 
-Defined in: [async-debouncer.ts:421](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L421)
+Defined in: [async-debouncer.ts:447](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L447)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT cancel any pending execution that have not started yet.
@@ -173,7 +173,7 @@ Does NOT cancel any pending execution that have not started yet.
 cancel(): void
 ```
 
-Defined in: [async-debouncer.ts:433](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L433)
+Defined in: [async-debouncer.ts:459](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L459)
 
 Cancels any pending execution that have not started yet.
 Does NOT abort any execution already in progress.
@@ -197,6 +197,47 @@ Processes the current pending execution immediately
 #### Returns
 
 `Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
+
+***
+
+### getAbortSignal()
+
+```ts
+getAbortSignal(maybeExecuteCount?): null | AbortSignal
+```
+
+Defined in: [async-debouncer.ts:437](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L437)
+
+Returns the AbortSignal for a specific execution.
+If no maybeExecuteCount is provided, returns the signal for the most recent execution.
+Returns null if no execution is found or not currently executing.
+
+#### Parameters
+
+##### maybeExecuteCount?
+
+`number`
+
+Optional specific execution to get signal for
+
+#### Returns
+
+`null` \| `AbortSignal`
+
+#### Example
+
+```typescript
+const debouncer = new AsyncDebouncer(
+  async (searchTerm: string) => {
+    const signal = debouncer.getAbortSignal()
+    if (signal) {
+      const response = await fetch(`/api/search?q=${searchTerm}`, { signal })
+      return response.json()
+    }
+  },
+  { wait: 300 }
+)
+```
 
 ***
 
@@ -242,7 +283,7 @@ The error from the debounced function if no onError handler is configured
 reset(): void
 ```
 
-Defined in: [async-debouncer.ts:441](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L441)
+Defined in: [async-debouncer.ts:467](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L467)
 
 Resets the debouncer state to its default values
 

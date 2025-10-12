@@ -376,6 +376,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         ...this.options.asyncRetryerOptions,
         key: `${this.key}-retryer-${currentMaybeExecute}`,
       })
+      this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
       const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setCleanupTimeout(now)
       this.#setState({
@@ -482,6 +483,32 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     }
     const oldestExecution = this.store.state.executionTimes[0] ?? Infinity
     return oldestExecution + this.#getWindow() - Date.now()
+  }
+
+  /**
+   * Returns the AbortSignal for a specific execution.
+   * If no maybeExecuteCount is provided, returns the signal for the most recent execution.
+   * Returns null if no execution is found or not currently executing.
+   *
+   * @param maybeExecuteCount - Optional specific execution to get signal for
+   * @example
+   * ```typescript
+   * const rateLimiter = new AsyncRateLimiter(
+   *   async (userId: string) => {
+   *     const signal = rateLimiter.getAbortSignal()
+   *     if (signal) {
+   *       const response = await fetch(`/api/users/${userId}`, { signal })
+   *       return response.json()
+   *     }
+   *   },
+   *   { limit: 5, window: 1000 }
+   * )
+   * ```
+   */
+  getAbortSignal(maybeExecuteCount?: number): AbortSignal | null {
+    const count = maybeExecuteCount ?? this.store.state.maybeExecuteCount
+    const retryer = this.asyncRetryers.get(count)
+    return retryer?.getAbortSignal() ?? null
   }
 
   /**
