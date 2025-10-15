@@ -61,7 +61,7 @@ function App() {
         console.error('Batch failed:', error)
         setErrors((prev) => [
           ...prev,
-          `Error: ${error.message} (${new Date().toLocaleTimeString()})`,
+          `Error: ${error} (${new Date().toLocaleTimeString()})`,
         ])
       },
       onSettled: (batch, batcher) => {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncDebouncer } from '@tanstack/react-pacer/async-debouncer'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 interface SearchResult {
   id: number
@@ -23,7 +24,6 @@ function App() {
 
   // The function that will become debounced
   const handleSearch = async (term: string) => {
-    throw new Error('Test error')
     if (!term) {
       setResults([])
       return
@@ -106,13 +106,29 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 
-let mounted = true
-root.render(<App />)
+function renderApp(mounted: boolean) {
+  root.render(
+    mounted ? (
+      // defaultOptions can be provided to the PacerProvider to set default options for all instances
+      <PacerProvider
+      // defaultOptions={{
+      //   asyncDebouncer: {
+      //     leading: true,
+      //   },
+      // }}
+      >
+        <App />
+      </PacerProvider>
+    ) : null,
+  )
+}
 
-// demo unmounting and cancellation
+let mounted = true
+renderApp(mounted)
+
 document.addEventListener('keydown', (e) => {
   if (e.shiftKey && e.key === 'Enter') {
     mounted = !mounted
-    root.render(mounted ? <App /> : null)
+    renderApp(mounted)
   }
 })

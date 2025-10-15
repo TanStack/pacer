@@ -71,20 +71,20 @@ describe('AsyncBatcher', () => {
     })
 
     it('should track execution state during async processing', async () => {
-      let resolvePromise: (value: any) => void
-      const promise = new Promise((resolve) => {
-        resolvePromise = resolve
-      })
-      const mockFn = vi.fn().mockReturnValue(promise)
-      const batcher = new AsyncBatcher(mockFn, { maxSize: 1 })
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const batcher = new AsyncBatcher(mockFn, { maxSize: 2 })
 
+      // Add item without triggering execution (since maxSize is 2)
       batcher.addItem(1)
+      expect(batcher.store.state.isExecuting).toBe(false)
+      expect(batcher.store.state.status).toBe('populated')
+
+      // Use flush to trigger execution and wait for completion
+      const executionPromise = batcher.flush()
       expect(batcher.store.state.isExecuting).toBe(true)
       expect(batcher.store.state.status).toBe('executing')
 
-      resolvePromise!('result')
-      await promise
-
+      await executionPromise
       expect(batcher.store.state.isExecuting).toBe(false)
       expect(batcher.store.state.status).toBe('idle')
     })

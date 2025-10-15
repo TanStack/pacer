@@ -53,7 +53,7 @@ function App() {
       } catch (error: any) {
         setErrors((prev) => [
           ...prev,
-          `Error: ${error.message} (${new Date().toLocaleTimeString()})`,
+          `Error: ${error} (${new Date().toLocaleTimeString()})`,
         ])
         setErrorCount((prev) => prev + 1)
         console.error('Batch failed:', error)

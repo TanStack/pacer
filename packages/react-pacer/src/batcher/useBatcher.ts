@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
@@ -124,12 +125,17 @@ export function useBatcher<TValue, TSelected = {}>(
   selector: (state: BatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactBatcher<TValue, TSelected> {
-  const [batcher] = useState(() => new Batcher<TValue>(fn, options))
+  const mergedOptions = {
+    ...useDefaultPacerOptions().batcher,
+    ...options,
+  } as BatcherOptions<TValue>
 
-  const state = useStore(batcher.store, selector)
+  const [batcher] = useState(() => new Batcher<TValue>(fn, mergedOptions))
 
   batcher.fn = fn
-  batcher.setOptions(options)
+  batcher.setOptions(mergedOptions)
+
+  const state = useStore(batcher.store, selector)
 
   return useMemo(
     () =>

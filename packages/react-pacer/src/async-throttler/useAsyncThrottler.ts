@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
@@ -163,12 +164,19 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncThrottler<TFn, TSelected> {
-  const [asyncThrottler] = useState(() => new AsyncThrottler<TFn>(fn, options))
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncThrottler,
+    ...options,
+  } as AsyncThrottlerOptions<TFn>
 
-  const state = useStore(asyncThrottler.store, selector)
+  const [asyncThrottler] = useState(
+    () => new AsyncThrottler<TFn>(fn, mergedOptions),
+  )
 
   asyncThrottler.fn = fn
-  asyncThrottler.setOptions(options)
+  asyncThrottler.setOptions(mergedOptions)
+
+  const state = useStore(asyncThrottler.store, selector)
 
   useEffect(() => {
     return () => asyncThrottler.cancel()

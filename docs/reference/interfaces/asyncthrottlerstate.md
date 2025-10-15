@@ -7,7 +7,7 @@ title: AsyncThrottlerState
 
 # Interface: AsyncThrottlerState\<TFn\>
 
-Defined in: [async-throttler.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L6)
+Defined in: [async-throttler.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L8)
 
 ## Type Parameters
 
@@ -21,7 +21,7 @@ Defined in: [async-throttler.ts:6](https://github.com/TanStack/pacer/blob/main/p
 errorCount: number;
 ```
 
-Defined in: [async-throttler.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L10)
+Defined in: [async-throttler.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L12)
 
 Number of function executions that have resulted in errors
 
@@ -33,7 +33,7 @@ Number of function executions that have resulted in errors
 isExecuting: boolean;
 ```
 
-Defined in: [async-throttler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L14)
+Defined in: [async-throttler.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L16)
 
 Whether the throttled function is currently executing asynchronously
 
@@ -45,7 +45,7 @@ Whether the throttled function is currently executing asynchronously
 isPending: boolean;
 ```
 
-Defined in: [async-throttler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L18)
+Defined in: [async-throttler.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L20)
 
 Whether the throttler is waiting for the timeout to trigger execution
 
@@ -57,7 +57,7 @@ Whether the throttler is waiting for the timeout to trigger execution
 lastArgs: undefined | Parameters<TFn>;
 ```
 
-Defined in: [async-throttler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L22)
+Defined in: [async-throttler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L24)
 
 The arguments from the most recent call to maybeExecute
 
@@ -69,7 +69,7 @@ The arguments from the most recent call to maybeExecute
 lastExecutionTime: number;
 ```
 
-Defined in: [async-throttler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L26)
+Defined in: [async-throttler.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L28)
 
 Timestamp of the last function execution in milliseconds
 
@@ -81,7 +81,7 @@ Timestamp of the last function execution in milliseconds
 lastResult: undefined | ReturnType<TFn>;
 ```
 
-Defined in: [async-throttler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L30)
+Defined in: [async-throttler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L32)
 
 The result from the most recent successful function execution
 
@@ -93,7 +93,7 @@ The result from the most recent successful function execution
 maybeExecuteCount: number;
 ```
 
-Defined in: [async-throttler.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L34)
+Defined in: [async-throttler.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L36)
 
 Number of times maybeExecute has been called (for reduction calculations)
 
@@ -105,7 +105,7 @@ Number of times maybeExecute has been called (for reduction calculations)
 nextExecutionTime: undefined | number;
 ```
 
-Defined in: [async-throttler.ts:38](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L38)
+Defined in: [async-throttler.ts:40](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L40)
 
 Timestamp when the next execution can occur in milliseconds
 
@@ -117,7 +117,7 @@ Timestamp when the next execution can occur in milliseconds
 settleCount: number;
 ```
 
-Defined in: [async-throttler.ts:42](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L42)
+Defined in: [async-throttler.ts:44](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L44)
 
 Number of function executions that have completed (either successfully or with errors)
 
@@ -129,7 +129,7 @@ Number of function executions that have completed (either successfully or with e
 status: "disabled" | "idle" | "pending" | "executing" | "settled";
 ```
 
-Defined in: [async-throttler.ts:46](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L46)
+Defined in: [async-throttler.ts:48](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L48)
 
 Current execution status - 'idle' when not active, 'pending' when waiting, 'executing' when running, 'settled' when completed
 
@@ -141,6 +141,6 @@ Current execution status - 'idle' when not active, 'pending' when waiting, 'exec
 successCount: number;
 ```
 
-Defined in: [async-throttler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L50)
+Defined in: [async-throttler.ts:52](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L52)
 
 Number of function executions that have completed successfully

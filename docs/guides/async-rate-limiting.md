@@ -107,6 +107,69 @@ Since the rate limiter's `maybeExecute` method returns a Promise, you can choose
 
 For example, if you're updating a user's profile and then immediately fetching their updated data, you can await the update operation before starting the fetch.
 
+## Advanced Features: Retry and Abort Support
+
+The async rate limiter includes built-in retry and abort capabilities through integration with `AsyncRetryer`. These features help handle transient failures and provide control over in-flight operations.
+
+### Retry Support
+
+Configure automatic retries for failed rate-limited function executions using the `asyncRetryerOptions`:
+
+```ts
+const rateLimitedApi = asyncRateLimit(
+  async (userId: string) => {
+    // This might fail due to network issues
+    const data = await api.fetchUser(userId)
+    return data
+  },
+  {
+    limit: 5,
+    window: 1000,
+    asyncRetryerOptions: {
+      maxAttempts: 3,
+      backoff: 'exponential',
+      baseWait: 1000,
+      maxWait: 10000,
+      jitter: 0.3
+    }
+  }
+)
+```
+
+For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](./async-retrying.md).
+
+### Abort Support
+
+Cancel in-flight rate-limited executions using the abort functionality:
+
+```ts
+const rateLimiter = new AsyncRateLimiter(
+  async (userId: string) => {
+    // Access the abort signal for this execution
+    const signal = rateLimiter.getAbortSignal()
+    if (signal) {
+      const response = await fetch(`/api/users/${userId}`, { signal })
+      return response.json()
+    }
+  },
+  { limit: 5, window: 1000 }
+)
+
+// Start some operations
+rateLimiter.maybeExecute('user1')
+rateLimiter.maybeExecute('user2')
+
+// Later, abort any in-flight executions
+rateLimiter.abort()
+```
+
+The abort functionality:
+- Cancels all ongoing rate-limited executions using AbortController
+- Does NOT clear execution times or reset the rate limiter
+- Can be used alongside retry support
+
+For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
+
 ## Dynamic Options and Enabling/Disabling
 
 Just like the synchronous rate limiter, the async rate limiter supports dynamic options for `limit`, `window`, and `enabled`, which can be functions that receive the rate limiter instance. This allows for sophisticated, runtime-adaptive rate limiting behavior.

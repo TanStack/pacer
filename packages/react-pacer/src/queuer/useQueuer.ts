@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Queuer } from '@tanstack/pacer/queuer'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
@@ -134,12 +135,17 @@ export function useQueuer<TValue, TSelected = {}>(
   options: QueuerOptions<TValue> = {},
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): ReactQueuer<TValue, TSelected> {
-  const [queuer] = useState(() => new Queuer<TValue>(fn, options))
+  const mergedOptions = {
+    ...useDefaultPacerOptions().queuer,
+    ...options,
+  } as QueuerOptions<TValue>
 
-  const state = useStore(queuer.store, selector)
+  const [queuer] = useState(() => new Queuer<TValue>(fn, mergedOptions))
 
   queuer.fn = fn
-  queuer.setOptions(options)
+  queuer.setOptions(mergedOptions)
+
+  const state = useStore(queuer.store, selector)
 
   return useMemo(
     () =>

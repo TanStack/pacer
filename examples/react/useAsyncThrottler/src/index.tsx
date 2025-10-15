@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncThrottler } from '@tanstack/react-pacer/async-throttler'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 interface SearchResult {
   id: number
@@ -29,7 +30,7 @@ function App() {
       return
     }
 
-    throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
+    // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
 
     const data = await fakeApi(term)
     setResults(data)
@@ -54,11 +55,7 @@ function App() {
       // throwOnError: true,
     },
     // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      successCount: state.successCount,
-      isPending: state.isPending,
-      isExecuting: state.isExecuting,
-    }),
+    (state) => state,
   )
 
   // get and name our throttled function
@@ -114,13 +111,15 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 
-let mounted = true
-root.render(<App />)
-
-// demo unmounting and cancellation
-document.addEventListener('keydown', (e) => {
-  if (e.shiftKey && e.key === 'Enter') {
-    mounted = !mounted
-    root.render(mounted ? <App /> : null)
-  }
-})
+// optionally, provide default options to an optional PacerProvider
+root.render(
+  <PacerProvider
+  // defaultOptions={{
+  //   throttler: {
+  //     leading: true,
+  //   },
+  // }}
+  >
+    <App />
+  </PacerProvider>,
+)

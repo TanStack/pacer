@@ -89,6 +89,10 @@
         {
           "label": "Async Batching Guide",
           "to": "guides/async-batching"
+        },
+        {
+          "label": "Async Retrying Guide",
+          "to": "guides/async-retrying"
         }
       ]
     },

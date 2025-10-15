@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Throttler } from '@tanstack/pacer/throttler'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
@@ -109,12 +110,17 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   options: ThrottlerOptions<TFn>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): ReactThrottler<TFn, TSelected> {
-  const [throttler] = useState(() => new Throttler<TFn>(fn, options))
+  const mergedOptions = {
+    ...useDefaultPacerOptions().throttler,
+    ...options,
+  } as ThrottlerOptions<TFn>
 
-  const state = useStore(throttler.store, selector)
+  const [throttler] = useState(() => new Throttler<TFn>(fn, mergedOptions))
 
   throttler.fn = fn
-  throttler.setOptions(options)
+  throttler.setOptions(mergedOptions)
+
+  const state = useStore(throttler.store, selector)
 
   useEffect(() => {
     return () => {

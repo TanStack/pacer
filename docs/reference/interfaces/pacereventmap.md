@@ -7,7 +7,7 @@ title: PacerEventMap
 
 # Interface: PacerEventMap
 
-Defined in: [event-client.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L13)
+Defined in: [event-client.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L14)
 
 ## Properties
 
@@ -17,7 +17,7 @@ Defined in: [event-client.ts:13](https://github.com/TanStack/pacer/blob/main/pac
 pacer:AsyncBatcher: AsyncBatcher<any>;
 ```
 
-Defined in: [event-client.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L24)
+Defined in: [event-client.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L26)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [event-client.ts:24](https://github.com/TanStack/pacer/blob/main/pac
 pacer:AsyncDebouncer: AsyncDebouncer<any>;
 ```
 
-Defined in: [event-client.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L25)
+Defined in: [event-client.ts:27](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L27)
 
 ***
 
@@ -37,7 +37,7 @@ Defined in: [event-client.ts:25](https://github.com/TanStack/pacer/blob/main/pac
 pacer:AsyncQueuer: AsyncQueuer<any>;
 ```
 
-Defined in: [event-client.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L26)
+Defined in: [event-client.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L28)
 
 ***
 
@@ -47,7 +47,17 @@ Defined in: [event-client.ts:26](https://github.com/TanStack/pacer/blob/main/pac
 pacer:AsyncRateLimiter: AsyncRateLimiter<any>;
 ```
 
-Defined in: [event-client.ts:27](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L27)
+Defined in: [event-client.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L29)
+
+***
+
+### pacer:AsyncRetryer
+
+```ts
+pacer:AsyncRetryer: AsyncRetryer<any>;
+```
+
+Defined in: [event-client.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L30)
 
 ***
 
@@ -57,7 +67,7 @@ Defined in: [event-client.ts:27](https://github.com/TanStack/pacer/blob/main/pac
 pacer:AsyncThrottler: AsyncThrottler<any>;
 ```
 
-Defined in: [event-client.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L28)
+Defined in: [event-client.ts:31](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L31)
 
 ***
 
@@ -67,7 +77,7 @@ Defined in: [event-client.ts:28](https://github.com/TanStack/pacer/blob/main/pac
 pacer:Batcher: Batcher<any>;
 ```
 
-Defined in: [event-client.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L29)
+Defined in: [event-client.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L32)
 
 ***
 
@@ -77,7 +87,7 @@ Defined in: [event-client.ts:29](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-AsyncBatcher: AsyncBatcher<any>;
 ```
 
-Defined in: [event-client.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L14)
+Defined in: [event-client.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L15)
 
 ***
 
@@ -87,7 +97,7 @@ Defined in: [event-client.ts:14](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-AsyncDebouncer: AsyncDebouncer<any>;
 ```
 
-Defined in: [event-client.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L15)
+Defined in: [event-client.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L16)
 
 ***
 
@@ -97,7 +107,7 @@ Defined in: [event-client.ts:15](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-AsyncQueuer: AsyncQueuer<any>;
 ```
 
-Defined in: [event-client.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L16)
+Defined in: [event-client.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L17)
 
 ***
 
@@ -107,7 +117,17 @@ Defined in: [event-client.ts:16](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-AsyncRateLimiter: AsyncRateLimiter<any>;
 ```
 
-Defined in: [event-client.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L17)
+Defined in: [event-client.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L18)
+
+***
+
+### pacer:d-AsyncRetryer
+
+```ts
+pacer:d-AsyncRetryer: AsyncRetryer<any>;
+```
+
+Defined in: [event-client.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L19)
 
 ***
 
@@ -117,7 +137,7 @@ Defined in: [event-client.ts:17](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-AsyncThrottler: AsyncThrottler<any>;
 ```
 
-Defined in: [event-client.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L18)
+Defined in: [event-client.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L20)
 
 ***
 
@@ -127,7 +147,7 @@ Defined in: [event-client.ts:18](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-Batcher: Batcher<any>;
 ```
 
-Defined in: [event-client.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L19)
+Defined in: [event-client.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L21)
 
 ***
 
@@ -137,7 +157,7 @@ Defined in: [event-client.ts:19](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-Debouncer: Debouncer<any>;
 ```
 
-Defined in: [event-client.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L20)
+Defined in: [event-client.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L22)
 
 ***
 
@@ -147,7 +167,7 @@ Defined in: [event-client.ts:20](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-Queuer: Queuer<any>;
 ```
 
-Defined in: [event-client.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L21)
+Defined in: [event-client.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L23)
 
 ***
 
@@ -157,7 +177,7 @@ Defined in: [event-client.ts:21](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-RateLimiter: RateLimiter<any>;
 ```
 
-Defined in: [event-client.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L22)
+Defined in: [event-client.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L24)
 
 ***
 
@@ -167,7 +187,7 @@ Defined in: [event-client.ts:22](https://github.com/TanStack/pacer/blob/main/pac
 pacer:d-Throttler: Throttler<any>;
 ```
 
-Defined in: [event-client.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L23)
+Defined in: [event-client.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L25)
 
 ***
 
@@ -177,7 +197,7 @@ Defined in: [event-client.ts:23](https://github.com/TanStack/pacer/blob/main/pac
 pacer:Debouncer: Debouncer<any>;
 ```
 
-Defined in: [event-client.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L30)
+Defined in: [event-client.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L33)
 
 ***
 
@@ -187,7 +207,7 @@ Defined in: [event-client.ts:30](https://github.com/TanStack/pacer/blob/main/pac
 pacer:Queuer: Queuer<any>;
 ```
 
-Defined in: [event-client.ts:31](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L31)
+Defined in: [event-client.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L34)
 
 ***
 
@@ -197,7 +217,7 @@ Defined in: [event-client.ts:31](https://github.com/TanStack/pacer/blob/main/pac
 pacer:RateLimiter: RateLimiter<any>;
 ```
 
-Defined in: [event-client.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L32)
+Defined in: [event-client.ts:35](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L35)
 
 ***
 
@@ -207,4 +227,4 @@ Defined in: [event-client.ts:32](https://github.com/TanStack/pacer/blob/main/pac
 pacer:Throttler: Throttler<any>;
 ```
 
-Defined in: [event-client.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L33)
+Defined in: [event-client.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L36)
