@@ -7,17 +7,23 @@ title: AsyncBatcher
 
 # Class: AsyncBatcher\<TValue\>
 
-Defined in: [async-batcher.ts:246](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L246)
+Defined in: [async-batcher.ts:252](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L252)
 
 A class that collects items and processes them in batches asynchronously.
 
-This is the async version of the Batcher class. Unlike the sync version, this async batcher:
-- Handles promises and returns results from batch executions
-- Provides error handling with configurable error behavior
-- Tracks success, error, and settle counts separately
-- Has state tracking for when batches are executing
-- Returns the result of the batch function execution
+Async vs Sync Versions:
+The async version provides advanced features over the sync Batcher:
+- Returns promises that can be awaited for batch results
+- Built-in retry support via AsyncRetryer integration
+- Abort support to cancel in-flight batch executions
+- Cancel support to prevent pending batches from starting
+- Comprehensive error handling with onError callbacks and throwOnError control
+- Detailed execution tracking (success/error/settle counts)
 
+The sync Batcher is lighter weight and simpler when you don't need async features,
+return values, or execution control.
+
+What is Batching?
 Batching is a technique for grouping multiple operations together to be processed as a single unit.
 
 The AsyncBatcher provides a flexible way to implement async batching with configurable:
@@ -82,7 +88,7 @@ batcher.addItem(2);
 new AsyncBatcher<TValue>(fn, initialOptions): AsyncBatcher<TValue>
 ```
 
-Defined in: [async-batcher.ts:258](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L258)
+Defined in: [async-batcher.ts:264](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L264)
 
 #### Parameters
 
@@ -106,7 +112,7 @@ Defined in: [async-batcher.ts:258](https://github.com/TanStack/pacer/blob/main/p
 asyncRetryers: Map<number, AsyncRetryer<(items) => Promise<any>>>;
 ```
 
-Defined in: [async-batcher.ts:252](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L252)
+Defined in: [async-batcher.ts:258](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L258)
 
 ***
 
@@ -116,7 +122,7 @@ Defined in: [async-batcher.ts:252](https://github.com/TanStack/pacer/blob/main/p
 fn: (items) => Promise<any>;
 ```
 
-Defined in: [async-batcher.ts:259](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L259)
+Defined in: [async-batcher.ts:265](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L265)
 
 #### Parameters
 
@@ -136,7 +142,7 @@ Defined in: [async-batcher.ts:259](https://github.com/TanStack/pacer/blob/main/p
 key: string;
 ```
 
-Defined in: [async-batcher.ts:250](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L250)
+Defined in: [async-batcher.ts:256](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L256)
 
 ***
 
@@ -146,7 +152,7 @@ Defined in: [async-batcher.ts:250](https://github.com/TanStack/pacer/blob/main/p
 options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>;
 ```
 
-Defined in: [async-batcher.ts:251](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L251)
+Defined in: [async-batcher.ts:257](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L257)
 
 ***
 
@@ -156,7 +162,7 @@ Defined in: [async-batcher.ts:251](https://github.com/TanStack/pacer/blob/main/p
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: [async-batcher.ts:247](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L247)
+Defined in: [async-batcher.ts:253](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L253)
 
 ## Methods
 
@@ -166,7 +172,7 @@ Defined in: [async-batcher.ts:247](https://github.com/TanStack/pacer/blob/main/p
 _emit(): void
 ```
 
-Defined in: [async-batcher.ts:280](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L280)
+Defined in: [async-batcher.ts:286](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L286)
 
 Emits a change event for the async batcher instance. Mostly useful for devtools.
 
@@ -182,7 +188,7 @@ Emits a change event for the async batcher instance. Mostly useful for devtools.
 abort(): void
 ```
 
-Defined in: [async-batcher.ts:474](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L474)
+Defined in: [async-batcher.ts:480](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L480)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT cancel any pending execution that have not started yet.
@@ -200,7 +206,7 @@ Does NOT clear out the items.
 addItem(item): Promise<any>
 ```
 
-Defined in: [async-batcher.ts:326](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L326)
+Defined in: [async-batcher.ts:332](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L332)
 
 Adds an item to the async batcher
 If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
@@ -229,7 +235,7 @@ The error from the batch function if no onError handler is configured or throwOn
 cancel(): void
 ```
 
-Defined in: [async-batcher.ts:487](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L487)
+Defined in: [async-batcher.ts:493](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L493)
 
 Cancels any pending execution that have not started yet.
 Does NOT abort any execution already in progress.
@@ -247,7 +253,7 @@ Does NOT clear out the items.
 clear(): void
 ```
 
-Defined in: [async-batcher.ts:435](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L435)
+Defined in: [async-batcher.ts:441](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L441)
 
 Removes all items from the async batcher
 
@@ -263,7 +269,7 @@ Removes all items from the async batcher
 flush(): Promise<any>
 ```
 
-Defined in: [async-batcher.ts:409](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L409)
+Defined in: [async-batcher.ts:415](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L415)
 
 Processes the current batch of items immediately
 
@@ -279,7 +285,7 @@ Processes the current batch of items immediately
 getAbortSignal(executeCount?): null | AbortSignal
 ```
 
-Defined in: [async-batcher.ts:463](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L463)
+Defined in: [async-batcher.ts:469](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L469)
 
 Returns the AbortSignal for a specific execution.
 If no executeCount is provided, returns the signal for the most recent execution.
@@ -324,7 +330,7 @@ const batcher = new AsyncBatcher(
 peekAllItems(): TValue[]
 ```
 
-Defined in: [async-batcher.ts:417](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L417)
+Defined in: [async-batcher.ts:423](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L423)
 
 Returns a copy of all items in the async batcher
 
@@ -340,7 +346,7 @@ Returns a copy of all items in the async batcher
 peekFailedItems(): TValue[]
 ```
 
-Defined in: [async-batcher.ts:421](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L421)
+Defined in: [async-batcher.ts:427](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L427)
 
 #### Returns
 
@@ -354,7 +360,7 @@ Defined in: [async-batcher.ts:421](https://github.com/TanStack/pacer/blob/main/p
 reset(): void
 ```
 
-Defined in: [async-batcher.ts:497](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L497)
+Defined in: [async-batcher.ts:503](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L503)
 
 Resets the async batcher state to its default values
 
@@ -370,7 +376,7 @@ Resets the async batcher state to its default values
 setOptions(newOptions): void
 ```
 
-Defined in: [async-batcher.ts:285](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L285)
+Defined in: [async-batcher.ts:291](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L291)
 
 Updates the async batcher options
 

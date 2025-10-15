@@ -11,15 +11,31 @@ title: asyncBatch
 function asyncBatch<TValue>(fn, options): (item) => Promise<any>
 ```
 
-Defined in: [async-batcher.ts:552](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L552)
+Defined in: [async-batcher.ts:573](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L573)
 
-Creates an async batcher that processes items in batches
+Creates an async batcher that processes items in batches.
 
-Unlike the sync batcher, this async version:
-- Handles promises and returns results from batch executions
-- Provides error handling with configurable error behavior
-- Tracks success, error, and settle counts separately
-- Has state tracking for when batches are executing
+Async vs Sync Versions:
+The async version provides advanced features over the sync batch function:
+- Returns promises that can be awaited for batch results
+- Built-in retry support via AsyncRetryer integration
+- Abort support to cancel in-flight batch executions
+- Cancel support to prevent pending batches from starting
+- Comprehensive error handling with onError callbacks and throwOnError control
+- Detailed execution tracking (success/error/settle counts)
+
+The sync batch function is lighter weight and simpler when you don't need async features,
+return values, or execution control.
+
+What is Batching?
+Batching is a technique for grouping multiple operations together to be processed as a single unit.
+
+Configuration Options:
+- `maxSize`: Maximum number of items per batch (default: Infinity)
+- `wait`: Time to wait before processing batch (default: Infinity)
+- `getShouldExecute`: Custom logic to trigger batch processing
+- `asyncRetryerOptions`: Configure retry behavior for batch executions
+- `started`: Whether to start processing immediately (default: true)
 
 Error Handling:
 - If an `onError` handler is provided, it will be called with the error, the batch of items that failed, and batcher instance
@@ -34,7 +50,6 @@ State Management:
 - Use `onSuccess` callback to react to successful batch execution and implement custom logic
 - Use `onError` callback to react to batch execution errors and implement custom error handling
 - Use `onSettled` callback to react to batch execution completion (success or error) and implement custom logic
-- Use `onExecute` callback to react to batch execution and implement custom logic
 - Use `onItemsChange` callback to react to items being added or removed from the batcher
 - The state includes total items processed, success/error counts, and execution status
 - State can be accessed via the underlying AsyncBatcher instance's `store.state` property

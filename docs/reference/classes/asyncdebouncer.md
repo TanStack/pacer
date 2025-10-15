@@ -7,20 +7,29 @@ title: AsyncDebouncer
 
 # Class: AsyncDebouncer\<TFn\>
 
-Defined in: [async-debouncer.ts:197](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L197)
+Defined in: [async-debouncer.ts:206](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L206)
 
 A class that creates an async debounced function.
 
+Async vs Sync Versions:
+The async version provides advanced features over the sync Debouncer:
+- Returns promises that can be awaited for debounced function results
+- Built-in retry support via AsyncRetryer integration
+- Abort support to cancel in-flight executions
+- Cancel support to prevent pending executions from starting
+- Comprehensive error handling with onError callbacks and throwOnError control
+- Detailed execution tracking (success/error/settle counts)
+
+The sync Debouncer is lighter weight and simpler when you don't need async features,
+return values, or execution control.
+
+What is Debouncing?
 Debouncing ensures that a function is only executed after a specified delay has passed since its last invocation.
 Each new invocation resets the delay timer. This is useful for handling frequent events like window resizing
 or input changes where you only want to execute the handler after the events have stopped occurring.
 
 Unlike throttling which allows execution at regular intervals, debouncing prevents any execution until
 the function stops being called for the specified delay period.
-
-Unlike the non-async Debouncer, this async version supports returning values from the debounced function,
-making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
-instead of setting the result on a state variable from within the debounced function.
 
 Error Handling:
 - If an `onError` handler is provided, it will be called with the error and debouncer instance
@@ -66,7 +75,7 @@ const results = await asyncDebouncer.maybeExecute(inputElement.value);
 new AsyncDebouncer<TFn>(fn, initialOptions): AsyncDebouncer<TFn>
 ```
 
-Defined in: [async-debouncer.ts:209](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L209)
+Defined in: [async-debouncer.ts:218](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L218)
 
 #### Parameters
 
@@ -90,7 +99,7 @@ Defined in: [async-debouncer.ts:209](https://github.com/TanStack/pacer/blob/main
 asyncRetryers: Map<number, AsyncRetryer<TFn>>;
 ```
 
-Defined in: [async-debouncer.ts:203](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L203)
+Defined in: [async-debouncer.ts:212](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L212)
 
 ***
 
@@ -100,7 +109,7 @@ Defined in: [async-debouncer.ts:203](https://github.com/TanStack/pacer/blob/main
 fn: TFn;
 ```
 
-Defined in: [async-debouncer.ts:210](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L210)
+Defined in: [async-debouncer.ts:219](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L219)
 
 ***
 
@@ -110,7 +119,7 @@ Defined in: [async-debouncer.ts:210](https://github.com/TanStack/pacer/blob/main
 key: string;
 ```
 
-Defined in: [async-debouncer.ts:201](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L201)
+Defined in: [async-debouncer.ts:210](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L210)
 
 ***
 
@@ -120,7 +129,7 @@ Defined in: [async-debouncer.ts:201](https://github.com/TanStack/pacer/blob/main
 options: AsyncDebouncerOptions<TFn>;
 ```
 
-Defined in: [async-debouncer.ts:202](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L202)
+Defined in: [async-debouncer.ts:211](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L211)
 
 ***
 
@@ -130,7 +139,7 @@ Defined in: [async-debouncer.ts:202](https://github.com/TanStack/pacer/blob/main
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [async-debouncer.ts:198](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L198)
+Defined in: [async-debouncer.ts:207](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L207)
 
 ## Methods
 
@@ -140,7 +149,7 @@ Defined in: [async-debouncer.ts:198](https://github.com/TanStack/pacer/blob/main
 _emit(): void
 ```
 
-Defined in: [async-debouncer.ts:231](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L231)
+Defined in: [async-debouncer.ts:240](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L240)
 
 Emits a change event for the async debouncer instance. Mostly useful for devtools.
 
@@ -156,7 +165,7 @@ Emits a change event for the async debouncer instance. Mostly useful for devtool
 abort(): void
 ```
 
-Defined in: [async-debouncer.ts:447](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L447)
+Defined in: [async-debouncer.ts:456](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L456)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT cancel any pending execution that have not started yet.
@@ -173,7 +182,7 @@ Does NOT cancel any pending execution that have not started yet.
 cancel(): void
 ```
 
-Defined in: [async-debouncer.ts:459](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L459)
+Defined in: [async-debouncer.ts:468](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L468)
 
 Cancels any pending execution that have not started yet.
 Does NOT abort any execution already in progress.
@@ -190,7 +199,7 @@ Does NOT abort any execution already in progress.
 flush(): Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:382](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L382)
+Defined in: [async-debouncer.ts:391](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L391)
 
 Processes the current pending execution immediately
 
@@ -206,7 +215,7 @@ Processes the current pending execution immediately
 getAbortSignal(maybeExecuteCount?): null | AbortSignal
 ```
 
-Defined in: [async-debouncer.ts:437](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L437)
+Defined in: [async-debouncer.ts:446](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L446)
 
 Returns the AbortSignal for a specific execution.
 If no maybeExecuteCount is provided, returns the signal for the most recent execution.
@@ -247,7 +256,7 @@ const debouncer = new AsyncDebouncer(
 maybeExecute(...args): Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:296](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L296)
+Defined in: [async-debouncer.ts:305](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L305)
 
 Attempts to execute the debounced function.
 If a call is already in progress, it will be queued.
@@ -283,7 +292,7 @@ The error from the debounced function if no onError handler is configured
 reset(): void
 ```
 
-Defined in: [async-debouncer.ts:467](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L467)
+Defined in: [async-debouncer.ts:476](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L476)
 
 Resets the debouncer state to its default values
 
@@ -299,7 +308,7 @@ Resets the debouncer state to its default values
 setOptions(newOptions): void
 ```
 
-Defined in: [async-debouncer.ts:236](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L236)
+Defined in: [async-debouncer.ts:245](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L245)
 
 Updates the async debouncer options
 

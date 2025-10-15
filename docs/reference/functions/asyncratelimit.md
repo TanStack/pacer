@@ -11,24 +11,54 @@ title: asyncRateLimit
 function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-rate-limiter.ts:600](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L600)
+Defined in: [async-rate-limiter.ts:627](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L627)
 
 Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
 
-Unlike the non-async rate limiter, this async version supports returning values from the rate-limited function,
-making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
-instead of setting the result on a state variable from within the rate-limited function.
+Async vs Sync Versions:
+The async version provides advanced features over the sync rate limit function:
+- Returns promises that can be awaited for rate-limited function results
+- Built-in retry support via AsyncRetryer integration
+- Abort support to cancel in-flight executions
+- Comprehensive error handling with onError callbacks and throwOnError control
+- Detailed execution tracking (success/error/settle counts, rejection counts)
+- More sophisticated window management with automatic cleanup
 
-The rate limiter supports two types of windows:
+The sync rate limit function is lighter weight and simpler when you don't need async features,
+return values, or execution control.
+
+What is Rate Limiting?
+Rate limiting allows a function to execute up to a limit within a time window,
+then blocks all subsequent calls until the window passes. This can lead to "bursty" behavior where
+all executions happen immediately, followed by a complete block.
+
+Window Types:
 - 'fixed': A strict window that resets after the window period. All executions within the window count
   towards the limit, and the window resets completely after the period.
 - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
   consistent rate of execution over time.
 
-Note that rate limiting is a simpler form of execution control compared to throttling or debouncing:
+Configuration Options:
+- `limit`: Maximum number of executions allowed within the window (required)
+- `window`: Time window in milliseconds (required)
+- `windowType`: 'fixed' or 'sliding' (default: 'fixed')
+- `enabled`: Whether the rate limiter is enabled (default: true)
+- `asyncRetryerOptions`: Configure retry behavior for executions
+
+When to Use Rate Limiting:
+Rate limiting is best used for hard API limits or resource constraints. For UI updates or
+smoothing out frequent events, throttling or debouncing usually provide better user experience.
 - A rate limiter will allow all executions until the limit is reached, then block all subsequent calls until the window resets
 - A throttler ensures even spacing between executions, which can be better for consistent performance
 - A debouncer collapses multiple calls into one, which is better for handling bursts of events
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and rate limiter instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncRateLimiter instance
+- Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
 
 State Management:
 - Uses TanStack Store for reactive state management
@@ -41,17 +71,6 @@ State Management:
 - The state includes execution times, success/error counts, and current execution status
 - State can be accessed via the underlying AsyncRateLimiter instance's `store.state` property
 - When using framework adapters (React/Solid), state is accessed from the hook's state property
-
-Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
-need to enforce a hard limit on the number of executions within a time period.
-
-Error Handling:
-- If an `onError` handler is provided, it will be called with the error and rate limiter instance
-- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
-- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
-- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
-- The error state can be checked using the underlying AsyncRateLimiter instance
-- Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
 
 ## Type Parameters
 

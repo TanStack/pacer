@@ -11,9 +11,11 @@ title: throttle
 function throttle<TFn>(fn, initialOptions): (...args) => void
 ```
 
-Defined in: [throttler.ts:360](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L360)
+Defined in: [throttler.ts:363](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L363)
 
 Creates a throttled function that limits how often the provided function can execute.
+
+This synchronous version is lighter weight and often all you need - upgrade to asyncThrottle when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
 
 Throttling ensures a function executes at most once within a specified time window,
 regardless of how many times it is called. This is useful for rate-limiting

@@ -16,9 +16,7 @@ Defined in: [queuer.ts:723](https://github.com/TanStack/pacer/blob/main/packages
 Creates a queue that processes items immediately upon addition.
 Items are processed sequentially in FIFO order by default.
 
-This is a simplified wrapper around the Queuer class that only exposes the
-`addItem` method. The queue is always isRunning and will process items as they are added.
-For more control over queue processing, use the Queuer class directly.
+This synchronous version is lighter weight and often all you need - upgrade to asyncQueue when you need promises, retry support, abort capabilities, concurrent execution, or advanced error handling.
 
 State Management:
 - Uses TanStack Store for reactive state management

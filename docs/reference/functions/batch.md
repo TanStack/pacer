@@ -11,9 +11,11 @@ title: batch
 function batch<TValue>(fn, options): (item) => void
 ```
 
-Defined in: [batcher.ts:319](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L319)
+Defined in: [batcher.ts:322](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L322)
 
-Creates a batcher that processes items in batches
+Creates a batcher that processes items in batches.
+
+This synchronous version is lighter weight and often all you need - upgrade to asyncBatch when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
 
 ## Type Parameters
 
