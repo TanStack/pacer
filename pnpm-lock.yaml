@@ -633,31 +633,6 @@ importers:
         specifier: ^7.1.7
         version: 7.1.7(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
-  examples/react/useAsyncRetryer:
-    dependencies:
-      '@tanstack/react-pacer':
-        specifier: ^0.16.4
-        version: link:../../../packages/react-pacer
-      react:
-        specifier: ^19.1.1
-        version: 19.1.1
-      react-dom:
-        specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
-    devDependencies:
-      '@types/react':
-        specifier: ^19.1.17
-        version: 19.2.0
-      '@types/react-dom':
-        specifier: ^19.1.11
-        version: 19.2.0(@types/react@19.2.0)
-      '@vitejs/plugin-react':
-        specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.7(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
-      vite:
-        specifier: ^7.1.7
-        version: 7.1.7(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
-
   examples/react/useAsyncThrottledCallback:
     dependencies:
       '@tanstack/react-pacer':

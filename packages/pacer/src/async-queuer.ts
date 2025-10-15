@@ -239,17 +239,30 @@ const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
 /**
  * A flexible asynchronous queue for processing tasks with configurable concurrency, priority, and expiration.
  *
- * Features:
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync Queuer:
+ * - Returns promises that can be awaited for task results
+ * - Built-in retry support via AsyncRetryer integration for each queued task
+ * - Abort support to cancel in-flight task executions
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ * - Concurrent execution support (process multiple items simultaneously)
+ *
+ * The sync Queuer is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Queuing?
+ * Queuing is a technique for managing and processing items sequentially or with controlled concurrency.
+ * Tasks are processed up to the configured concurrency limit. When a task completes,
+ * the next pending task is processed if the concurrency limit allows.
+ *
+ * Key Features:
  * - Priority queue support via the getPriority option
  * - Configurable concurrency limit
  * - Callbacks for task success, error, completion, and queue state changes
  * - FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
  * - Pause and resume processing
- * - Task cancellation
  * - Item expiration to remove stale items from the queue
- *
- * Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
- * the next pending task is processed if the concurrency limit allows.
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and queuer instance
@@ -829,6 +842,34 @@ export class AsyncQueuer<TValue> {
  * Creates a new AsyncQueuer instance and returns a bound addItem function for adding tasks.
  * The queuer is started automatically and ready to process items.
  *
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync queue function:
+ * - Returns promises that can be awaited for task results
+ * - Built-in retry support via AsyncRetryer integration for each queued task
+ * - Abort support to cancel in-flight task executions
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ * - Concurrent execution support (process multiple items simultaneously)
+ *
+ * The sync queue function is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Queuing?
+ * Queuing is a technique for managing and processing items sequentially or with controlled concurrency.
+ * Tasks are processed up to the configured concurrency limit. When a task completes,
+ * the next pending task is processed if the concurrency limit allows.
+ *
+ * Configuration Options:
+ * - `concurrency`: Maximum number of concurrent tasks (default: 1)
+ * - `wait`: Time to wait between processing items (default: 0)
+ * - `maxSize`: Maximum number of items allowed in the queue (default: Infinity)
+ * - `getPriority`: Function to determine item priority
+ * - `addItemsTo`: Default position to add items ('back' or 'front', default: 'back')
+ * - `getItemsFrom`: Default position to get items ('front' or 'back', default: 'front')
+ * - `expirationDuration`: Maximum time items can stay in queue
+ * - `started`: Whether to start processing immediately (default: true)
+ * - `asyncRetryerOptions`: Configure retry behavior for task executions
+ *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and queuer instance
  * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
@@ -849,11 +890,15 @@ export class AsyncQueuer<TValue> {
  * - State can be accessed via the underlying AsyncQueuer instance's `store.state` property
  * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
- * Example usage:
+ * @example
  * ```ts
  * const enqueue = asyncQueue<string>(async (item) => {
  *   return item.toUpperCase();
- * }, {...options});
+ * }, {
+ *   concurrency: 2,
+ *   wait: 100,
+ *   onSuccess: (result) => console.log('Processed:', result)
+ * });
  *
  * enqueue('hello');
  * ```

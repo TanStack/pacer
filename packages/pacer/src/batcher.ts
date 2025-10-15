@@ -107,6 +107,7 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * A class that collects items and processes them in batches.
  *
  * Batching is a technique for grouping multiple operations together to be processed as a single unit.
+ * This synchronous version is lighter weight and often all you need - upgrade to AsyncBatcher when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * The Batcher provides a flexible way to implement batching with configurable:
  * - Maximum batch size (number of items per batch)
@@ -299,7 +300,9 @@ export class Batcher<TValue> {
 }
 
 /**
- * Creates a batcher that processes items in batches
+ * Creates a batcher that processes items in batches.
+ *
+ * This synchronous version is lighter weight and often all you need - upgrade to asyncBatch when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * @example
  * ```ts

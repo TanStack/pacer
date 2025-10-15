@@ -102,6 +102,7 @@ const defaultOptions: Omit<
  * Rate limiting is a simple approach that allows a function to execute up to a limit within a time window,
  * then blocks all subsequent calls until the window passes. This can lead to "bursty" behavior where
  * all executions happen immediately, followed by a complete block.
+ * This synchronous version is lighter weight and often all you need - upgrade to AsyncRateLimiter when you need promises, retry support, abort capabilities, or advanced error handling.
  *
  * The rate limiter supports two types of windows:
  * - 'fixed': A strict window that resets after the window period. All executions within the window count
@@ -362,6 +363,8 @@ export class RateLimiter<TFn extends AnyFunction> {
 
 /**
  * Creates a rate-limited function that will execute the provided function up to a maximum number of times within a time window.
+ *
+ * This synchronous version is lighter weight and often all you need - upgrade to asyncRateLimit when you need promises, retry support, abort capabilities, or advanced error handling.
  *
  * Note that rate limiting is a simpler form of execution control compared to throttling or debouncing:
  * - A rate limiter will allow all executions until the limit is reached, then block all subsequent calls until the window resets

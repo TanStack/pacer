@@ -160,13 +160,23 @@ const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {
 /**
  * A class that creates an async throttled function.
  *
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync Throttler:
+ * - Returns promises that can be awaited for throttled function results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight executions
+ * - Cancel support to prevent pending executions from starting
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ * - Waits for ongoing executions to complete before scheduling the next one
+ *
+ * The sync Throttler is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Throttling?
  * Throttling limits how often a function can be executed, allowing only one execution within a specified time window.
  * Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a
  * regular interval regardless of how often it's called.
- *
- * Unlike the non-async Throttler, this async version supports returning values from the throttled function,
- * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
- * instead of setting the result on a state variable from within the throttled function.
  *
  * This is useful for rate-limiting API calls, handling scroll/resize events, or any scenario where you want to
  * ensure a maximum execution frequency.
@@ -541,9 +551,30 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
  * The throttled function will execute at most once per wait period, even if called multiple times.
  * If called while executing, it will wait until execution completes before scheduling the next call.
  *
- * Unlike the non-async Throttler, this async version supports returning values from the throttled function,
- * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
- * instead of setting the result on a state variable from within the throttled function.
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync throttle function:
+ * - Returns promises that can be awaited for throttled function results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight executions
+ * - Cancel support to prevent pending executions from starting
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ * - Waits for ongoing executions to complete before scheduling the next one
+ *
+ * The sync throttle function is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Throttling?
+ * Throttling limits how often a function can be executed, allowing only one execution within a specified time window.
+ * Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a
+ * regular interval regardless of how often it's called.
+ *
+ * Configuration Options:
+ * - `wait`: Time window in milliseconds during which the function can only execute once (required)
+ * - `leading`: Execute immediately when called (default: true)
+ * - `trailing`: Execute on the trailing edge of the wait period (default: true)
+ * - `enabled`: Whether the throttler is enabled (default: true)
+ * - `asyncRetryerOptions`: Configure retry behavior for executions
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and throttler instance
