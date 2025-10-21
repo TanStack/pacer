@@ -58,7 +58,7 @@ searchInput.addEventListener('input', (e) => {
 })
 ```
 
-> **Note:** When using React, prefer `useDebounceCallback` hook over the `debounce` function for better integration with React's lifecycle and automatic cleanup.
+> **Note:** When using React, prefer `useDebouncedCallback` hook over the `debounce` function for better integration with React's lifecycle and automatic cleanup.
 
 ### Advanced Usage with `Debouncer` Class
 
