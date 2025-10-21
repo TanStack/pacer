@@ -8,10 +8,10 @@ title: useAsyncBatchedCallback
 # Function: useAsyncBatchedCallback()
 
 ```ts
-function useAsyncBatchedCallback<TFn>(fn, options): (...args) => Promise<void>
+function useAsyncBatchedCallback<TValue, TResult>(fn, options): (item) => Promise<void>
 ```
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatchedCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatchedCallback.ts#L43)
+Defined in: [react-pacer/src/async-batcher/useAsyncBatchedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatchedCallback.ts#L42)
 
 A React hook that creates a batched version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncBatcher` hook,
@@ -34,17 +34,19 @@ Consider using the `useAsyncBatcher` hook instead.
 
 ## Type Parameters
 
-• **TFn** *extends* `AnyAsyncFunction`
+• **TValue**
+
+• **TResult**
 
 ## Parameters
 
 ### fn
 
-(`items`) => `Promise`\<`any`\>
+(`items`) => `Promise`\<`TResult`\>
 
 ### options
 
-`AsyncBatcherOptions`\<`Parameters`\<`TFn`\>\[`0`\]\>
+`AsyncBatcherOptions`\<`TValue`, `TResult`\>
 
 ## Returns
 
@@ -52,9 +54,9 @@ Consider using the `useAsyncBatcher` hook instead.
 
 ### Parameters
 
-#### args
+#### item
 
-...`Parameters`\<`TFn`\>
+`TValue`
 
 ### Returns
 

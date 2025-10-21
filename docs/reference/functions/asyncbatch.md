@@ -8,10 +8,10 @@ title: asyncBatch
 # Function: asyncBatch()
 
 ```ts
-function asyncBatch<TValue>(fn, options): (item) => void
+function asyncBatch<TValue, TResult>(fn, options): (item) => void
 ```
 
-Defined in: [async-batcher.ts:460](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L460)
+Defined in: [async-batcher.ts:467](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L467)
 
 Creates an async batcher that processes items in batches
 
@@ -44,15 +44,17 @@ State Management:
 
 • **TValue**
 
+• **TResult**
+
 ## Parameters
 
 ### fn
 
-(`items`) => `Promise`\<`any`\>
+(`items`) => `Promise`\<`TResult`\>
 
 ### options
 
-[`AsyncBatcherOptions`](../../interfaces/asyncbatcheroptions.md)\<`TValue`\>
+[`AsyncBatcherOptions`](../../interfaces/asyncbatcheroptions.md)\<`TValue`, `TResult`\>
 
 ## Returns
 
@@ -74,8 +76,8 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 ## Example
 
 ```ts
-const batchItems = asyncBatch<number>(
-  async (items) => {
+const batchItems = asyncBatch(
+  async (items: number[]) => {
     const result = await processApiCall(items);
     console.log('Processing:', items);
     return result;

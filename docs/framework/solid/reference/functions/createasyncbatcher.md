@@ -8,10 +8,10 @@ title: createAsyncBatcher
 # Function: createAsyncBatcher()
 
 ```ts
-function createAsyncBatcher<TValue, TSelected>(
+function createAsyncBatcher<TValue, TResult, TSelected>(
    fn, 
    initialOptions, 
-selector): SolidAsyncBatcher<TValue, TSelected>
+selector): SolidAsyncBatcher<TValue, TResult, TSelected>
 ```
 
 Defined in: [async-batcher/createAsyncBatcher.ts:128](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L128)
@@ -71,7 +71,7 @@ Example usage:
 ```tsx
 // Default behavior - no reactive state subscriptions
 const asyncBatcher = createAsyncBatcher(
-  async (items) => {
+  async (items: Item[]) => {
     const results = await Promise.all(items.map(item => processItem(item)));
     return results;
   },
@@ -89,7 +89,7 @@ const asyncBatcher = createAsyncBatcher(
 
 // Opt-in to re-render when items or isExecuting changes (optimized for UI updates)
 const asyncBatcher = createAsyncBatcher(
-  async (items) => {
+  async (items: Item[]) => {
     const results = await Promise.all(items.map(item => processItem(item)));
     return results;
   },
@@ -99,7 +99,7 @@ const asyncBatcher = createAsyncBatcher(
 
 // Opt-in to re-render when error state changes (optimized for error handling)
 const asyncBatcher = createAsyncBatcher(
-  async (items) => {
+  async (items: Item[]) => {
     const results = await Promise.all(items.map(item => processItem(item)));
     return results;
   },
@@ -121,17 +121,19 @@ const { items, isExecuting } = asyncBatcher.state();
 
 • **TValue**
 
+• **TResult**
+
 • **TSelected** = \{\}
 
 ## Parameters
 
 ### fn
 
-(`items`) => `Promise`\<`any`\>
+(`items`) => `Promise`\<`TResult`\>
 
 ### initialOptions
 
-`AsyncBatcherOptions`\<`TValue`\> = `{}`
+`AsyncBatcherOptions`\<`TValue`, `TResult`\> = `{}`
 
 ### selector
 
@@ -139,4 +141,4 @@ const { items, isExecuting } = asyncBatcher.state();
 
 ## Returns
 
-[`SolidAsyncBatcher`](../../interfaces/solidasyncbatcher.md)\<`TValue`, `TSelected`\>
+[`SolidAsyncBatcher`](../../interfaces/solidasyncbatcher.md)\<`TValue`, `TResult`, `TSelected`\>
