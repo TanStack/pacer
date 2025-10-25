@@ -78,7 +78,7 @@ Timestamp of the last execution completion in milliseconds
 ### lastResult
 
 ```ts
-lastResult: undefined | ReturnType<TFn>;
+lastResult: undefined | Awaited<ReturnType<TFn>>;
 ```
 
 Defined in: [async-retryer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L30)

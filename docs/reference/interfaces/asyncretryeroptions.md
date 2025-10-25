@@ -295,7 +295,7 @@ Callback invoked when execution succeeds
 
 ##### result
 
-`ReturnType`\<`TFn`\>
+`Awaited`\<`ReturnType`\<`TFn`\>\>
 
 ##### args
 

@@ -8,12 +8,13 @@ title: asyncRetry
 # Function: asyncRetry()
 
 ```ts
-function asyncRetry<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
+function asyncRetry<TFn>(fn, initialOptions): (...args) => Promise<undefined | Awaited<ReturnType<TFn>>>
 ```
 
-Defined in: [async-retryer.ts:596](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L596)
+Defined in: [async-retryer.ts:619](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L619)
 
-Creates a retry-enabled version of an async function
+Creates a retry-enabled version of an async function. This is a convenience wrapper
+around the AsyncRetryer class that returns the execute method.
 
 ## Type Parameters
 
@@ -47,15 +48,27 @@ A new function that executes the original with retry logic
 
 ### Returns
 
-`Promise`\<`undefined` \| `ReturnType`\<`TFn`\>\>
+`Promise`\<`undefined` \| `Awaited`\<`ReturnType`\<`TFn`\>\>\>
 
 ## Example
 
 ```typescript
-const retryFetch = asyncRetry(fetch, {
+// Define your async function normally
+async function fetchData(url: string) {
+  const response = await fetch(url)
+  if (!response.ok) throw new Error('Request failed')
+  return response.json()
+}
+
+// Create retry-enabled function
+const fetchWithRetry = asyncRetry(fetchData, {
   maxAttempts: 3,
-  backoff: 'exponential' // default
+  backoff: 'exponential',
+  baseWait: 1000,
+  jitter: 0.1
 })
 
-const response = await retryFetch('/api/data')
+// Call it multiple times
+const data1 = await fetchWithRetry('/api/data1')
+const data2 = await fetchWithRetry('/api/data2')
 ```

@@ -3,40 +3,21 @@ title: Async Retrying Guide
 id: async-retrying
 ---
 
-TanStack Pacer provides its own retrying utility as a standalone `AsyncRetryer` class or a wrapper function `asyncRetry` for convenience. All of the other async utilities from TanStack Pacer use the `AsyncRetryer` class internally to wrap their executions with built-in retrying functionality. The Async Retryer supports features such as different backoff strategies, jitter, max timeouts, aborting, error handling, and more.
+TanStack Pacer provides a simple `asyncRetry` utility function that wraps any async function with retry logic. This is the recommended approach for most use cases, as it creates a new retry-enabled function that can be called multiple times safely. For advanced scenarios requiring state management and reactive updates, TanStack Pacer also provides the `AsyncRetryer` class, though this requires careful usage patterns.
 
-## When to Use Retries
+> [!NOTE] The AsyncRetryer API is in alpha and may change before the 1.0.0 release.
 
-Async retrying is particularly effective when you need to:
-- Handle transient failures in API calls or network requests
-- Implement robust error recovery for flaky operations
-- Deal with rate-limited APIs that may temporarily reject requests
-- Retry database operations that may fail due to temporary connection issues
-- Handle operations that depend on external services with variable reliability
+Adding retry wrappers to your async functions is a great way to add a layer of robustness to your code. However, there are some important considerations to keep in mind. TanStack Pacer includes safe default options such as exponential backoff and low amount of max attempts by default to prevent overwhelming a service.
 
-### When Not to Use Retries
+> [!NOTE] If you are already using TanStack Query, you should use the built-in retry support instead of using the AsyncRetryer from TanStack Pacer.
 
-Avoid async retrying when:
-- The operation is not idempotent (retrying could cause unwanted side effects)
-- Errors are permanent and retrying won't help (e.g., authentication failures, invalid input)
-- The operation is time-sensitive and delays are unacceptable
-- You need immediate feedback on failures without any retry attempts
-
-For operations that need to be queued and processed sequentially, use [Queuing](../queuing.md) instead. For operations that should be delayed until inactivity, use [Debouncing](../debouncing.md) instead.
-
-## Understanding Retry Behavior
+## Danger with Misconfigured Retries
 
 Before implementing retries, understanding the underlying concepts helps you make better decisions about retry strategies and configurations.
 
 ### The Thundering Herd Problem
 
-The thundering herd problem occurs when many clients simultaneously retry failed requests to a recovering service, overwhelming it and preventing recovery. This typically happens when:
-
-- A service experiences a brief outage affecting many clients at once
-- All clients fail simultaneously and begin retrying
-- Without randomization, all clients retry at exactly the same intervals
-- The synchronized retry attempts overwhelm the recovering service
-- The service continues to fail, triggering more synchronized retries
+The thundering herd problem occurs when many clients simultaneously retry failed requests to a recovering service, overwhelming it and preventing recovery. This usually happens when a service has a brief outage affecting many clients at once, causing all clients to fail and begin retrying. Without any randomization, these clients attempt retries at exactly the same intervals. The resulting synchronized retry attempts put heavy load on the recovering service, which reinforces the outage and leads to more simultaneous retry cycles.
 
 **How TanStack Pacer Addresses This:**
 
@@ -81,125 +62,32 @@ Long delays between later retries prevent your application from consuming resour
 // Attempt 5: 8s later (minimal load if service is down)
 ```
 
-### Retry Amplification in Distributed Systems
-
-Retry amplification occurs when retries cascade through multiple layers of a distributed system, multiplying the actual request load. This is a critical concern in microservices architectures.
-
-**The Amplification Effect:**
-
-Consider a system where Service A calls Service B, which calls Service C:
-
-```text
-User → Service A (retries 3x) → Service B (retries 3x) → Service C
-```
-
-If Service C fails, Service B retries 3 times per request. Service A retries 3 times per request to Service B. This means Service C receives up to 9 requests (3 × 3) for a single user request.
-
-With deeper call chains, this grows exponentially:
-- 2 services with 3 retries each: 9 requests
-- 3 services with 3 retries each: 27 requests
-- 4 services with 3 retries each: 81 requests
-
-**Mitigation Strategies:**
-
-1. **Reduce retries at higher layers:**
-```ts
-// Service A (user-facing): more retries for better UX
-const serviceA = new AsyncRetryer(callServiceB, {
-  maxAttempts: 5
-})
-
-// Service B (internal): fewer retries to prevent amplification
-const serviceB = new AsyncRetryer(callServiceC, {
-  maxAttempts: 2
-})
-```
-
-2. **Use timeout budgets to limit total retry time:**
-```ts
-const retryer = new AsyncRetryer(asyncFn, {
-  maxAttempts: 3,
-  maxTotalExecutionTime: 5000 // Limit total time regardless of retries
-})
-```
-
-### Cost Considerations
-
-Retries have real costs that should factor into your retry strategy:
-
-**Network Costs:**
-- Each retry consumes bandwidth
-- Mobile users may have limited or metered data
-- Cloud services may charge for bandwidth
-
-**Time Costs:**
-- Users wait longer for results
-- Longer waits hurt user experience
-- Time spent retrying could be spent on other requests
-
-**Resource Costs:**
-- Memory for pending operations
-- CPU for processing retries
-- Connection pool exhaustion
-- Thread/worker saturation
-
-**Example: Failing Fast Based on Error Type:**
-
-You can use dynamic `maxAttempts` to adjust retry behavior based on error conditions:
-
-```ts
-// Your async function that throws errors with status codes
-async function fetchData(url: string) {
-  const response = await fetch(url)
-  if (!response.ok) {
-    const error = new Error('Request failed')
-    ;(error as any).status = response.status
-    throw error
-  }
-  return response.json()
-}
-
-const retryer = new AsyncRetryer(fetchData, {
-  maxAttempts: (retryer) => {
-    const error = retryer.store.state.lastError as any
-    
-    // Don't retry client errors (400-499)
-    if (error?.status >= 400 && error?.status < 500) {
-      return 1 // No retries
-    }
-    
-    // Retry server errors (500-599)
-    return 3
-  }
-})
-```
-
 ## Async Retrying in TanStack Pacer
 
-TanStack Pacer provides async retrying through the `asyncRetry` function and the more powerful `AsyncRetryer` class.
+TanStack Pacer provides two ways to add retry functionality to async functions: the `asyncRetry` convenience function and the `AsyncRetryer` class.
 
-### Basic Usage with `asyncRetry`
+### Using `asyncRetry` Function
 
-The `asyncRetry` function provides a simple way to add retry functionality to any async function:
+The `asyncRetry` function is a convenience wrapper that creates an `AsyncRetryer` instance and returns its execute method:
 
 ```ts
 import { asyncRetry } from '@tanstack/pacer'
 
-// Create a retry-enabled version of your async function
-const fetchWithRetry = asyncRetry(
-  async (url: string) => {
-    const response = await fetch(url)
-    if (!response.ok) throw new Error('Request failed')
-    return response.json()
-  },
-  {
-    maxAttempts: 3,
-    backoff: 'exponential',
-    baseWait: 1000
-  }
-)
+// Define your async function normally
+async function fetchData(url: string) {
+  const response = await fetch(url)
+  if (!response.ok) throw new Error('Request failed')
+  return response.json()
+}
 
-// Usage
+// Create a retry-enabled version
+const fetchWithRetry = asyncRetry(fetchData, {
+  maxAttempts: 3,
+  backoff: 'exponential',
+  baseWait: 1000
+})
+
+// Call it
 try {
   const data = await fetchWithRetry('/api/data')
   console.log('Success:', data)
@@ -208,11 +96,11 @@ try {
 }
 ```
 
-For more control over retry behavior, use the `AsyncRetryer` class directly.
+### Using `AsyncRetryer` Class
 
-### Advanced Usage with `AsyncRetryer` Class
+> **⚠️ Important:** The `AsyncRetryer` class is designed for single-use execution. If you call `execute()` multiple times on the same instance, previous executions will be aborted. For multiple calls, create a new instance each time.
 
-The `AsyncRetryer` class provides complete control over retry behavior:
+The `AsyncRetryer` class provides complete control over retry behavior, state management, and manual abort control:
 
 ```ts
 import { AsyncRetryer } from '@tanstack/pacer'
@@ -248,9 +136,18 @@ const retryer = new AsyncRetryer(
 
 // Execute the function with retry logic
 const data = await retryer.execute('/api/data')
+
+// Manual abort control - cancel ongoing execution
+retryer.abort()
+
+// ❌ DON'T DO THIS - will abort the previous execution
+// const data2 = await retryer.execute('/api/other-data')
+
+// ✅ DO THIS INSTEAD - create a new instance for each call
+const retryer2 = new AsyncRetryer(asyncFn, options)
+const data2 = await retryer2.execute('/api/other-data')
 ```
 
-> **Note:** When using React, prefer `useAsyncRetryer` hook over the `asyncRetry` function for better integration with React's lifecycle and automatic cleanup.
 
 ## Backoff Strategies
 
@@ -518,19 +415,32 @@ const result = await promise
 console.log(result) // undefined
 ```
 
-### Automatic Cleanup
+### Making Functions Actually Cancellable with `getAbortSignal()`
 
-When using framework adapters, cleanup is handled automatically:
+For `abort()` to actually cancel your async function (like fetch requests), you need to use the abort signal in your function:
 
-```tsx
-// React example
-function MyComponent() {
-  const retryer = useAsyncRetryer(asyncFn, { maxAttempts: 3 })
-  
-  // Automatically calls abort() on unmount
-  return <button onClick={() => retryer.execute()}>Execute</button>
-}
+```ts
+const retryer = new AsyncRetryer(
+  async (url: string) => {
+    const signal = retryer.getAbortSignal()
+    if (signal) {
+      // This fetch will be cancelled when abort() is called
+      return await fetch(url, { signal })
+    }
+    // Fallback for when not executing
+    return await fetch(url)
+  },
+  { maxAttempts: 3 }
+)
+
+// Start execution
+const promise = retryer.execute('/api/data')
+
+// This will now actually cancel the fetch request
+retryer.abort()
 ```
+
+**Important:** Without using `getAbortSignal()`, calling `abort()` will only cancel the retry logic but not the underlying async operation (like a fetch request). The signal ensures your function can be truly cancelled.
 
 ### Reset
 
@@ -551,7 +461,7 @@ console.log(retryer.store.state.lastResult) // undefined
 
 ## State Management
 
-The `AsyncRetryer` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and retry statistics. All state is stored in a TanStack Store and can be accessed via `asyncRetryer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `asyncRetryer.state` along with providing a selector callback as the 3rd argument to the `useAsyncRetryer` hook to opt-in to state tracking as shown below.
+The `AsyncRetryer` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and retry statistics. All state is stored in a TanStack Store and can be accessed via `asyncRetryer.store.state`. Framework adapters provide their own state management patterns for reactive updates.
 
 ### State Selector (Framework Adapters)
 
@@ -560,32 +470,9 @@ Framework adapters support a `selector` argument that allows you to specify whic
 **By default, `retryer.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
 
 ```tsx
-// Default behavior - no reactive state subscriptions
-const retryer = useAsyncRetryer(asyncFn, { maxAttempts: 3 })
-console.log(retryer.state) // {}
-
-// Opt-in to re-render when execution state changes
-const retryer = useAsyncRetryer(
-  asyncFn, 
-  { maxAttempts: 3 },
-  (state) => ({ 
-    isExecuting: state.isExecuting,
-    currentAttempt: state.currentAttempt 
-  })
-)
-console.log(retryer.state.isExecuting) // Reactive value
-console.log(retryer.state.currentAttempt) // Reactive value
-
-// Opt-in to re-render when results are available
-const retryer = useAsyncRetryer(
-  asyncFn,
-  { maxAttempts: 3 },
-  (state) => ({
-    lastResult: state.lastResult,
-    lastError: state.lastError,
-    status: state.status
-  })
-)
+// Example with framework adapter (conceptual)
+// Framework adapters provide their own hooks and state management patterns
+// Check the specific framework adapter documentation for exact usage
 ```
 
 ### Initial State
@@ -620,7 +507,7 @@ const unsubscribe = retryer.store.subscribe((state) => {
 unsubscribe()
 ```
 
-> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `retryer.store.state` into reactive state with a custom selector wherever you want if necessary.
+> **Note:** This is unnecessary when using a framework adapter because the underlying framework hooks already handle this. You can also import and use `useStore` from TanStack Store to turn `retryer.store.state` into reactive state with a custom selector wherever you want if necessary.
 
 ### Available State Properties
 
@@ -643,164 +530,3 @@ The `status` property indicates the current state of the retryer:
 - `'idle'`: Ready to execute, not currently running
 - `'executing'`: Currently executing the first attempt
 - `'retrying'`: Currently executing a retry attempt (attempt > 1)
-
-## Framework Adapters
-
-Each framework adapter provides hooks that build on top of the core async retrying functionality to integrate with the framework's state management system. Hooks like `createAsyncRetryer`, `useAsyncRetryer`, or similar are available for each framework.
-
-### React Example
-
-```tsx
-import { useAsyncRetryer } from '@tanstack/react-pacer'
-
-function DataFetcher() {
-  const retryer = useAsyncRetryer(
-    async (userId: string) => {
-      const response = await fetch(`/api/users/${userId}`)
-      if (!response.ok) throw new Error('Failed to fetch user')
-      return response.json()
-    },
-    {
-      maxAttempts: 5,
-      backoff: 'exponential',
-      baseWait: 1000,
-      jitter: 0.1,
-      maxExecutionTime: 5000,
-      onRetry: (attempt) => console.log(`Retry attempt ${attempt}`)
-    },
-    (state) => ({
-      isExecuting: state.isExecuting,
-      currentAttempt: state.currentAttempt,
-      lastError: state.lastError,
-      lastResult: state.lastResult
-    })
-  )
-
-  const handleFetch = async () => {
-    try {
-      const user = await retryer.execute('user123')
-      console.log('User:', user)
-    } catch (error) {
-      console.error('Failed to fetch user:', error)
-    }
-  }
-
-  return (
-    <div>
-      <button onClick={handleFetch} disabled={retryer.state.isExecuting}>
-        {retryer.state.isExecuting
-          ? `Fetching... (attempt ${retryer.state.currentAttempt})`
-          : 'Fetch User'}
-      </button>
-      {retryer.state.lastError && (
-        <p>Error: {retryer.state.lastError.message}</p>
-      )}
-      {retryer.state.lastResult && (
-        <pre>{JSON.stringify(retryer.state.lastResult, null, 2)}</pre>
-      )}
-    </div>
-  )
-}
-```
-
-## Best Practices
-
-### 1. Choose the Right Backoff Strategy
-
-- Use **exponential** backoff for most scenarios (default)
-- Use **linear** backoff when you want slower growth in wait times
-- Use **fixed** backoff when you have strict timing requirements
-
-### 2. Add Jitter for Distributed Systems
-
-When multiple clients might retry at the same time, add jitter to prevent thundering herd:
-
-```ts
-const retryer = new AsyncRetryer(asyncFn, {
-  backoff: 'exponential',
-  jitter: 0.2 // Add 20% random variation
-})
-```
-
-### 3. Set Appropriate Timeouts
-
-Always set timeouts to prevent hanging operations:
-
-```ts
-const retryer = new AsyncRetryer(asyncFn, {
-  maxExecutionTime: 5000, // Individual call timeout
-  maxTotalExecutionTime: 30000 // Overall operation timeout
-})
-```
-
-### 4. Use Callbacks for Side Effects
-
-Instead of wrapping the retryer in try-catch, use callbacks for cleaner code:
-
-```ts
-const retryer = new AsyncRetryer(asyncFn, {
-  onSuccess: (result) => {
-    // Update UI, cache result, etc.
-  },
-  onError: (error) => {
-    // Log error, show notification, etc.
-  },
-  throwOnError: false // Don't throw, handle via callbacks
-})
-```
-
-### 5. Make Operations Idempotent
-
-Ensure your operations can be safely retried without side effects:
-
-```ts
-// Good: Idempotent operation
-const retryer = new AsyncRetryer(
-  async (userId: string) => {
-    // GET request is idempotent
-    return await fetch(`/api/users/${userId}`)
-  }
-)
-
-// Be careful: Non-idempotent operation
-const retryer = new AsyncRetryer(
-  async (amount: number) => {
-    // POST request that creates a charge
-    // Could charge multiple times if retried!
-    return await fetch('/api/charge', {
-      method: 'POST',
-      body: JSON.stringify({ amount })
-    })
-  }
-)
-```
-
-### 6. Adjust Retry Count Based on Error Type
-
-Some errors should retry more or less than others:
-
-```ts
-const retryer = new AsyncRetryer(
-  async (url: string) => {
-    const response = await fetch(url)
-    if (!response.ok) {
-      const error = new Error('Request failed')
-      error.status = response.status
-      throw error
-    }
-    return response.json()
-  },
-  {
-    maxAttempts: (retryer) => {
-      const lastError = retryer.store.state.lastError
-      // Don't retry 4xx client errors
-      if (lastError?.status >= 400 && lastError?.status < 500) {
-        return 1
-      }
-      // Retry 5xx server errors more times
-      return 5
-    }
-  }
-)
-```
-

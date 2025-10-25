@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { asyncRetry } from '@tanstack/react-pacer/async-retryer'
+import { asyncRetry } from '@tanstack/react-pacer'
 
 interface UserData {
   id: number
@@ -37,7 +37,6 @@ function App() {
     'default' | 'timeout' | 'jitter' | 'linear'
   >('default')
   const [logs, setLogs] = useState<string[]>([])
-  const abortControllerRef = useRef<AbortController | null>(null)
 
   const addLog = (message: string) => {
     setLogs((prev) => [
@@ -61,10 +60,9 @@ function App() {
         setError(error.message)
         setUserData(null)
       },
-      onSuccess: async (result: Promise<UserData>) => {
-        const data = await result
-        addLog(`Request succeeded for user ${data.id}`)
-        setUserData(data)
+      onSuccess: (result: UserData) => {
+        addLog(`Request succeeded for user ${result.id}`)
+        setUserData(result)
         setError(null)
       },
       onSettled: () => {
@@ -111,15 +109,7 @@ function App() {
     }
   }
 
-  // Create the retry-wrapped function
-  const fetchUserWithRetry = asyncRetry(async (id: string) => {
-    addLog(`Attempting to fetch user ${id}`)
-    return await fakeApi(id, {
-      shouldTimeout: scenario === 'timeout',
-    })
-  }, getOptions())
-
-  // Handle fetch with abort support
+  // Handle fetch with retry - following docs pattern
   async function onFetchUser() {
     setLogs([])
     setIsLoading(true)
@@ -127,10 +117,16 @@ function App() {
     setCurrentAttempt(1)
     addLog('Starting fetch operation')
 
-    // Create abort controller
-    abortControllerRef.current = new AbortController()
-
     try {
+      // Create retry-enabled function
+      const fetchUserWithRetry = asyncRetry(async (id: string) => {
+        addLog(`Attempting to fetch user ${id}`)
+        return await fakeApi(id, {
+          shouldTimeout: scenario === 'timeout',
+        })
+      }, getOptions())
+
+      // Call the retry-enabled function
       const result = await fetchUserWithRetry(userId)
       addLog(`Final result: ${result ? `User ${result.id}` : 'undefined'}`)
     } catch (error) {
@@ -140,16 +136,6 @@ function App() {
       setError(error instanceof Error ? error.message : 'Unknown error')
     } finally {
       setIsLoading(false)
-      abortControllerRef.current = null
-    }
-  }
-
-  function onAbort() {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-      addLog('Operation aborted by user')
-      setIsLoading(false)
-      setCurrentAttempt(0)
     }
   }
 
@@ -213,7 +199,7 @@ function App() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr 1fr',
+              gridTemplateColumns: '1fr 1fr',
               gap: '10px',
             }}
           >
@@ -223,13 +209,6 @@ function App() {
               style={{ padding: '10px' }}
             >
               {isLoading ? 'Fetching...' : 'Fetch User'}
-            </button>
-            <button
-              onClick={onAbort}
-              disabled={!isLoading}
-              style={{ padding: '10px' }}
-            >
-              Abort
             </button>
             <button onClick={onReset} style={{ padding: '10px' }}>
               Reset
@@ -385,10 +364,9 @@ function App() {
         }}
       >
         <strong>Note:</strong> This example uses the <code>asyncRetry</code>{' '}
-        utility function, which is a lightweight wrapper that creates a
-        retry-enabled version of your async function. For React integration with
-        hooks and reactive state, check out the <code>useAsyncRetryer</code>{' '}
-        example.
+        utility function, which creates a retry-enabled version of your async
+        function. Each call to the retry-enabled function creates a fresh retry
+        context.
       </div>
 
       <div
@@ -400,19 +378,23 @@ function App() {
           fontSize: '12px',
         }}
       >
-        <strong>Key Differences:</strong>
+        <strong>Key Features:</strong>
         <ul style={{ marginTop: '10px', marginBottom: 0 }}>
           <li>
-            <code>asyncRetry</code> - Functional utility that wraps an async
-            function with retry logic
+            <strong>Exponential Backoff:</strong> Wait time doubles with each
+            retry (1s, 2s, 4s, ...)
           </li>
           <li>
-            <code>useAsyncRetryer</code> - React hook that provides reactive
-            state and lifecycle management
+            <strong>Linear Backoff:</strong> Wait time increases linearly (1s,
+            2s, 3s, ...)
           </li>
           <li>
-            <code>AsyncRetryer</code> - Low-level class for advanced use cases
-            with fine-grained control
+            <strong>Jitter:</strong> Adds randomness to prevent thundering herd
+            problems
+          </li>
+          <li>
+            <strong>Timeouts:</strong> Control individual and total execution
+            time
           </li>
         </ul>
       </div>

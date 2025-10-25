@@ -27,7 +27,7 @@ export interface AsyncRetryerState<TFn extends AnyAsyncFunction> {
   /**
    * The result from the most recent successful execution
    */
-  lastResult: ReturnType<TFn> | undefined
+  lastResult: Awaited<ReturnType<TFn>> | undefined
   /**
    * Current execution status - 'disabled' when not enabled, 'idle' when ready, 'executing' when running
    */
@@ -129,7 +129,7 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
    * Callback invoked when execution succeeds
    */
   onSuccess?: (
-    result: ReturnType<TFn>,
+    result: Awaited<ReturnType<TFn>>,
     args: Parameters<TFn>,
     retryer: AsyncRetryer<TFn>,
   ) => void
@@ -183,6 +183,7 @@ const defaultOptions: Omit<
  *   - `maxExecutionTime`: Maximum time for a single function call (default: `Infinity`)
  *   - `maxTotalExecutionTime`: Maximum time for the entire retry operation (default: `Infinity`)
  * - **Abort & Cancellation**: Supports cancellation via an internal `AbortController`. Call `abort()` to stop retries.
+ *   Use `getAbortSignal()` to make your async function actually cancellable (e.g., with fetch requests).
  *
  * ## State Management
  *
@@ -220,11 +221,20 @@ const defaultOptions: Omit<
  * - Use `onRetry`, `onSuccess`, `onError`, `onLastError`, and `onSettled` for custom side effects.
  * - Call `abort()` to cancel ongoing execution and pending retries.
  * - Call `reset()` to reset state and cancel execution.
+ * - Use `getAbortSignal()` to make your async function cancellable.
+ * - Use dynamic options (functions) for `maxAttempts`, `baseWait`, and `enabled` based on retryer state.
+ *
+ * **Important:** This class is designed for single-use execution. Calling `execute()` multiple times
+ * on the same instance will abort previous executions. For multiple calls, create a new instance
+ * each time.
  *
  * @example
  * ```typescript
  * // Retry a fetch operation up to 5 times with exponential backoff, jitter, and timeouts
- * const retryer = new AsyncRetryer(fetchData, {
+ * const retryer = new AsyncRetryer(async (url: string) => {
+ *   const signal = retryer.getAbortSignal()
+ *   return await fetch(url, { signal })
+ * }, {
  *   maxAttempts: 5,
  *   backoff: 'exponential',
  *   baseWait: 1000,
@@ -237,7 +247,7 @@ const defaultOptions: Omit<
  *   onLastError: (error) => console.error('All retries failed:', error),
  * })
  *
- * const result = await retryer.execute(userId)
+ * const result = await retryer.execute('/api/data')
  * ```
  *
  * @template TFn The async function type to be retried.
@@ -371,7 +381,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
    */
   execute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> => {
+  ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (!this.#getEnabled()) {
       return undefined
     }
@@ -381,7 +391,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 
     const startTime = Date.now()
     let lastError: Error | undefined
-    let result: ReturnType<TFn> | undefined
+    let result: Awaited<ReturnType<TFn>> | undefined
 
     this.#abortController = new AbortController()
     const signal = this.#abortController.signal
@@ -422,7 +432,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 
         // Execute with individual timeout if specified
         if (this.options.maxExecutionTime === Infinity) {
-          result = (await this.fn(...args)) as ReturnType<TFn>
+          result = (await this.fn(...args)) as Awaited<ReturnType<TFn>>
         } else {
           result = (await Promise.race([
             this.fn(...args),
@@ -444,7 +454,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
                 { once: true },
               )
             }),
-          ])) as ReturnType<TFn>
+          ])) as Awaited<ReturnType<TFn>>
         }
 
         // Check if cancelled during execution
@@ -463,7 +473,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
           lastResult: result,
         })
 
-        this.options.onSuccess?.(result, args, this)
+        this.options.onSuccess?.(result as Awaited<ReturnType<TFn>>, args, this)
 
         return result
       } catch (error) {
@@ -577,7 +587,8 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 }
 
 /**
- * Creates a retry-enabled version of an async function
+ * Creates a retry-enabled version of an async function. This is a convenience wrapper
+ * around the AsyncRetryer class that returns the execute method.
  *
  * @param fn The async function to add retry functionality to
  * @param initialOptions Configuration options for the retry behavior
@@ -585,18 +596,30 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
  *
  * @example
  * ```typescript
- * const retryFetch = asyncRetry(fetch, {
+ * // Define your async function normally
+ * async function fetchData(url: string) {
+ *   const response = await fetch(url)
+ *   if (!response.ok) throw new Error('Request failed')
+ *   return response.json()
+ * }
+ *
+ * // Create retry-enabled function
+ * const fetchWithRetry = asyncRetry(fetchData, {
  *   maxAttempts: 3,
- *   backoff: 'exponential' // default
+ *   backoff: 'exponential',
+ *   baseWait: 1000,
+ *   jitter: 0.1
  * })
  *
- * const response = await retryFetch('/api/data')
+ * // Call it multiple times
+ * const data1 = await fetchWithRetry('/api/data1')
+ * const data2 = await fetchWithRetry('/api/data2')
  * ```
  */
 export function asyncRetry<TFn extends AnyAsyncFunction>(
   fn: TFn,
   initialOptions: AsyncRetryerOptions<TFn> = {},
-): (...args: Parameters<TFn>) => Promise<ReturnType<TFn> | undefined> {
+): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const retryer = new AsyncRetryer(fn, initialOptions)
   return retryer.execute
 }
