@@ -67,7 +67,7 @@ function App() {
 
   // Create the async batcher function using useCallback
   const addToBatch = useCallback(
-    asyncBatch<Item>(processBatch, {
+    asyncBatch(processBatch, {
       maxSize: 5,
       wait: 3000,
       getShouldExecute: (items) =>

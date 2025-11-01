@@ -8,10 +8,10 @@ title: useAsyncBatcher
 # Function: useAsyncBatcher()
 
 ```ts
-function useAsyncBatcher<TValue, TSelected>(
+function useAsyncBatcher<TValue, TResult, TSelected>(
    fn, 
    options, 
-selector): ReactAsyncBatcher<TValue, TSelected>
+selector): ReactAsyncBatcher<TValue, TResult, TSelected>
 ```
 
 Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:167](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L167)
@@ -75,17 +75,19 @@ Available state properties:
 
 • **TValue**
 
+• **TResult**
+
 • **TSelected** = \{\}
 
 ## Parameters
 
 ### fn
 
-(`items`) => `Promise`\<`any`\>
+(`items`) => `Promise`\<`TResult`\>
 
 ### options
 
-`AsyncBatcherOptions`\<`TValue`\> = `{}`
+`AsyncBatcherOptions`\<`TValue`, `TResult`\> = `{}`
 
 ### selector
 
@@ -93,14 +95,14 @@ Available state properties:
 
 ## Returns
 
-[`ReactAsyncBatcher`](../../interfaces/reactasyncbatcher.md)\<`TValue`, `TSelected`\>
+[`ReactAsyncBatcher`](../../interfaces/reactasyncbatcher.md)\<`TValue`, `TResult`, `TSelected`\>
 
 ## Example
 
 ```tsx
 // Basic async batcher for API requests - no reactive state subscriptions
 const asyncBatcher = useAsyncBatcher(
-  async (items) => {
+  async (items: Item[]) => {
     const results = await Promise.all(items.map(item => processItem(item)));
     return results;
   },
@@ -109,7 +111,7 @@ const asyncBatcher = useAsyncBatcher(
 
 // Opt-in to re-render when execution state changes (optimized for loading indicators)
 const asyncBatcher = useAsyncBatcher(
-  async (items) => {
+  async (items: Item[]) => {
     const results = await Promise.all(items.map(item => processItem(item)));
     return results;
   },
@@ -123,7 +125,7 @@ const asyncBatcher = useAsyncBatcher(
 
 // Opt-in to re-render when results are available (optimized for data display)
 const asyncBatcher = useAsyncBatcher(
-  async (items) => {
+  async (items: Item[]) => {
     const results = await Promise.all(items.map(item => processItem(item)));
     return results;
   },
@@ -137,7 +139,7 @@ const asyncBatcher = useAsyncBatcher(
 
 // Opt-in to re-render when error state changes (optimized for error handling)
 const asyncBatcher = useAsyncBatcher(
-  async (items) => {
+  async (items: Item[]) => {
     const results = await Promise.all(items.map(item => processItem(item)));
     return results;
   },
@@ -155,7 +157,7 @@ const asyncBatcher = useAsyncBatcher(
 
 // Complete example with all callbacks
 const asyncBatcher = useAsyncBatcher(
-  async (items) => {
+  async (items: Item[]) => {
     const results = await Promise.all(items.map(item => processItem(item)));
     return results;
   },
