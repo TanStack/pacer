@@ -13,7 +13,7 @@ importers:
         version: 2.29.7(@types/node@24.6.1)
       '@faker-js/faker':
         specifier: ^10.0.0
-        version: 10.0.0
+        version: 10.1.0
       '@size-limit/preset-small-lib':
         specifier: ^11.2.0
         version: 11.2.0(size-limit@11.2.0)
@@ -22,34 +22,34 @@ importers:
         version: 1.2.0
       '@tanstack/config':
         specifier: 0.20.3
-        version: 0.20.3(@types/node@24.6.1)(@typescript-eslint/utils@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 0.20.3(@types/node@24.6.1)(@typescript-eslint/utils@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       '@testing-library/jest-dom':
         specifier: ^6.8.0
-        version: 6.9.0
+        version: 6.9.1
       '@types/node':
         specifier: ^24.3.1
         version: 24.6.1
       eslint:
         specifier: ^9.36.0
-        version: 9.38.0(jiti@2.6.0)
+        version: 9.39.0(jiti@2.6.0)
       eslint-plugin-unused-imports:
         specifier: ^4.2.0
-        version: 4.2.0(@typescript-eslint/eslint-plugin@8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))
+        version: 4.3.0(@typescript-eslint/eslint-plugin@8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
       jsdom:
         specifier: ^27.0.0
-        version: 27.0.0(postcss@8.5.6)
+        version: 27.1.0(postcss@8.5.6)
       knip:
         specifier: ^5.64.1
-        version: 5.64.1(@types/node@24.6.1)(typescript@5.9.2)
+        version: 5.66.4(@types/node@24.6.1)(typescript@5.9.2)
       markdown-link-extractor:
         specifier: ^4.0.2
         version: 4.0.2
       nx:
         specifier: ^21.5.3
-        version: 21.6.2
+        version: 21.6.8
       premove:
         specifier: ^4.0.0
         version: 4.0.0
@@ -61,10 +61,10 @@ importers:
         version: 3.4.0(prettier@3.6.2)(svelte@5.39.7)
       publint:
         specifier: ^0.3.13
-        version: 0.3.13
+        version: 0.3.15
       sherif:
         specifier: ^1.6.1
-        version: 1.6.1
+        version: 1.8.0
       size-limit:
         specifier: ^11.2.0
         version: 11.2.0
@@ -73,10 +73,10 @@ importers:
         version: 5.9.2
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vitest:
         specifier: ^3.2.4
-        version: 3.2.4(@types/node@24.6.1)(jiti@2.6.0)(jsdom@27.0.0(postcss@8.5.6))(yaml@2.8.1)
+        version: 3.2.4(@types/node@24.6.1)(jiti@2.6.0)(jsdom@27.1.0(postcss@8.5.6))(yaml@2.8.1)
 
   examples/react/asyncBatch:
     dependencies:
@@ -85,23 +85,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/asyncDebounce:
     dependencies:
@@ -110,23 +110,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/asyncRateLimit:
     dependencies:
@@ -135,23 +135,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/asyncThrottle:
     dependencies:
@@ -160,23 +160,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/batch:
     dependencies:
@@ -185,23 +185,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/debounce:
     dependencies:
@@ -210,23 +210,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/queue:
     dependencies:
@@ -235,29 +235,29 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@tanstack/react-devtools':
         specifier: 0.7.0
-        version: 0.7.0(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(csstype@3.1.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(solid-js@1.9.9)
+        version: 0.7.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(csstype@3.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(solid-js@1.9.10)
       '@tanstack/react-pacer-devtools':
         specifier: 0.3.1
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/rateLimit:
     dependencies:
@@ -266,23 +266,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/react-query-debounced-prefetch:
     dependencies:
@@ -291,29 +291,29 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.90.2
-        version: 5.90.2(react@19.1.1)
+        version: 5.90.5(react@19.2.0)
       '@tanstack/react-query-devtools':
         specifier: ^5.90.2
-        version: 5.90.2(@tanstack/react-query@5.90.2(react@19.1.1))(react@19.1.1)
+        version: 5.90.2(@tanstack/react-query@5.90.5(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/react-query-queued-prefetch:
     dependencies:
@@ -322,29 +322,29 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.90.2
-        version: 5.90.2(react@19.1.1)
+        version: 5.90.5(react@19.2.0)
       '@tanstack/react-query-devtools':
         specifier: ^5.90.2
-        version: 5.90.2(@tanstack/react-query@5.90.2(react@19.1.1))(react@19.1.1)
+        version: 5.90.2(@tanstack/react-query@5.90.5(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/react-query-throttled-prefetch:
     dependencies:
@@ -353,29 +353,29 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.90.2
-        version: 5.90.2(react@19.1.1)
+        version: 5.90.5(react@19.2.0)
       '@tanstack/react-query-devtools':
         specifier: ^5.90.2
-        version: 5.90.2(@tanstack/react-query@5.90.2(react@19.1.1))(react@19.1.1)
+        version: 5.90.2(@tanstack/react-query@5.90.5(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/throttle:
     dependencies:
@@ -384,23 +384,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useAsyncBatchedCallback:
     dependencies:
@@ -409,23 +409,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useAsyncBatcher:
     dependencies:
@@ -434,23 +434,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useAsyncDebouncedCallback:
     dependencies:
@@ -459,23 +459,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useAsyncDebouncer:
     dependencies:
@@ -484,23 +484,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useAsyncQueuedState:
     dependencies:
@@ -509,23 +509,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useAsyncQueuer:
     dependencies:
@@ -534,23 +534,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useAsyncRateLimiter:
     dependencies:
@@ -559,26 +559,26 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useAsyncRateLimiterWithPersister:
     dependencies:
@@ -587,26 +587,26 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useAsyncThrottler:
     dependencies:
@@ -615,23 +615,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useBatchedCallback:
     dependencies:
@@ -640,23 +640,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useBatcher:
     dependencies:
@@ -665,23 +665,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useDebouncedCallback:
     dependencies:
@@ -690,23 +690,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useDebouncedState:
     dependencies:
@@ -715,23 +715,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useDebouncedValue:
     dependencies:
@@ -740,23 +740,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useDebouncer:
     dependencies:
@@ -765,23 +765,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useQueuedState:
     dependencies:
@@ -790,23 +790,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useQueuedValue:
     dependencies:
@@ -815,23 +815,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useQueuer:
     dependencies:
@@ -840,32 +840,32 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@tanstack/react-devtools':
         specifier: 0.7.0
-        version: 0.7.0(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(csstype@3.1.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(solid-js@1.9.9)
+        version: 0.7.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(csstype@3.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(solid-js@1.9.10)
       '@tanstack/react-pacer-devtools':
         specifier: 0.3.1
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useQueuerWithPersister:
     dependencies:
@@ -874,26 +874,26 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useRateLimitedCallback:
     dependencies:
@@ -902,23 +902,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useRateLimitedState:
     dependencies:
@@ -927,23 +927,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useRateLimitedValue:
     dependencies:
@@ -952,23 +952,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useRateLimiter:
     dependencies:
@@ -977,26 +977,26 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useRateLimiterWithPersister:
     dependencies:
@@ -1005,26 +1005,26 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useThrottledCallback:
     dependencies:
@@ -1033,23 +1033,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useThrottledState:
     dependencies:
@@ -1058,23 +1058,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useThrottledValue:
     dependencies:
@@ -1083,23 +1083,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/useThrottler:
     dependencies:
@@ -1108,23 +1108,23 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/react/util-comparison:
     dependencies:
@@ -1133,29 +1133,29 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@tanstack/react-devtools':
         specifier: 0.7.0
-        version: 0.7.0(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(csstype@3.1.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(solid-js@1.9.9)
+        version: 0.7.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(csstype@3.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(solid-js@1.9.10)
       '@tanstack/react-pacer-devtools':
         specifier: 0.3.1
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   examples/solid/asyncBatch:
     dependencies:
@@ -1164,14 +1164,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/asyncDebounce:
     dependencies:
@@ -1180,14 +1180,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/asyncRateLimit:
     dependencies:
@@ -1196,14 +1196,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/asyncThrottle:
     dependencies:
@@ -1212,14 +1212,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/batch:
     dependencies:
@@ -1228,14 +1228,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createAsyncBatcher:
     dependencies:
@@ -1244,14 +1244,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createAsyncDebouncer:
     dependencies:
@@ -1260,14 +1260,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createAsyncQueuer:
     dependencies:
@@ -1276,14 +1276,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createAsyncRateLimiter:
     dependencies:
@@ -1292,14 +1292,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createAsyncThrottler:
     dependencies:
@@ -1308,14 +1308,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createBatcher:
     dependencies:
@@ -1324,14 +1324,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createDebouncedSignal:
     dependencies:
@@ -1340,14 +1340,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createDebouncedValue:
     dependencies:
@@ -1356,14 +1356,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createDebouncer:
     dependencies:
@@ -1372,20 +1372,20 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createQueuer:
     dependencies:
       '@tanstack/solid-devtools':
         specifier: 0.7.0
-        version: 0.7.0(csstype@3.1.3)(solid-js@1.9.9)
+        version: 0.7.0(csstype@3.1.3)(solid-js@1.9.10)
       '@tanstack/solid-pacer':
         specifier: ^0.14.4
         version: link:../../../packages/solid-pacer
@@ -1394,14 +1394,14 @@ importers:
         version: link:../../../packages/solid-pacer-devtools
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createRateLimitedSignal:
     dependencies:
@@ -1410,14 +1410,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createRateLimitedValue:
     dependencies:
@@ -1426,14 +1426,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createRateLimiter:
     dependencies:
@@ -1442,14 +1442,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createThrottledSignal:
     dependencies:
@@ -1458,14 +1458,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createThrottledValue:
     dependencies:
@@ -1474,14 +1474,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/createThrottler:
     dependencies:
@@ -1490,14 +1490,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/debounce:
     dependencies:
@@ -1506,20 +1506,20 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/queue:
     dependencies:
       '@tanstack/solid-devtools':
         specifier: 0.7.0
-        version: 0.7.0(csstype@3.1.3)(solid-js@1.9.9)
+        version: 0.7.0(csstype@3.1.3)(solid-js@1.9.10)
       '@tanstack/solid-pacer':
         specifier: ^0.14.4
         version: link:../../../packages/solid-pacer
@@ -1528,14 +1528,14 @@ importers:
         version: link:../../../packages/solid-pacer-devtools
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/rateLimit:
     dependencies:
@@ -1544,14 +1544,14 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   examples/solid/throttle:
     dependencies:
@@ -1560,20 +1560,20 @@ importers:
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite:
         specifier: ^7.1.7
-        version: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+        version: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   packages/pacer:
     dependencies:
       '@tanstack/devtools-event-client':
         specifier: ^0.3.2
-        version: 0.3.2
+        version: 0.3.4
       '@tanstack/store':
         specifier: ^0.7.7
         version: 0.7.7
@@ -1582,32 +1582,32 @@ importers:
     dependencies:
       '@tanstack/devtools-ui':
         specifier: ^0.3.5
-        version: 0.3.5(csstype@3.1.3)(solid-js@1.9.9)
+        version: 0.3.5(csstype@3.1.3)(solid-js@1.9.10)
       '@tanstack/devtools-utils':
         specifier: ^0.0.3
-        version: 0.0.3(@types/react@19.1.16)(csstype@3.1.3)(react@19.1.1)(solid-js@1.9.9)
+        version: 0.0.3(@types/react@19.2.2)(csstype@3.1.3)(react@19.2.0)(solid-js@1.9.10)
       '@tanstack/pacer':
         specifier: '>=0.15.0'
         version: link:../pacer
       '@tanstack/solid-store':
         specifier: ^0.7.7
-        version: 0.7.7(solid-js@1.9.9)
+        version: 0.7.7(solid-js@1.9.10)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
       dayjs:
         specifier: ^1.11.18
-        version: 1.11.18
+        version: 1.11.19
       goober:
         specifier: ^2.1.16
-        version: 2.1.16(csstype@3.1.3)
+        version: 2.1.18(csstype@3.1.3)
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   packages/react-pacer:
     dependencies:
@@ -1616,63 +1616,63 @@ importers:
         version: link:../pacer
       '@tanstack/react-store':
         specifier: ^0.7.7
-        version: 0.7.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.7.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react-dom:
         specifier: '>=16.8'
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@eslint-react/eslint-plugin':
         specifier: ^1.53.1
-        version: 1.53.1(eslint@9.38.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
+        version: 1.53.1(eslint@9.39.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
       '@types/react':
         specifier: ^19.1.15
-        version: 19.1.16
+        version: 19.2.2
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       eslint-plugin-react-compiler:
         specifier: 19.1.0-rc.2
-        version: 19.1.0-rc.2(eslint@9.38.0(jiti@2.6.0))
+        version: 19.1.0-rc.2(eslint@9.39.0(jiti@2.6.0))
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
-        version: 5.2.0(eslint@9.38.0(jiti@2.6.0))
+        version: 5.2.0(eslint@9.39.0(jiti@2.6.0))
       react:
         specifier: ^19.1.1
-        version: 19.1.1
+        version: 19.2.0
 
   packages/react-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
         specifier: ^0.0.3
-        version: 0.0.3(@types/react@19.1.16)(csstype@3.1.3)(react@19.1.1)(solid-js@1.9.9)
+        version: 0.0.3(@types/react@19.2.2)(csstype@3.1.3)(react@19.2.0)(solid-js@1.9.10)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
       '@types/react':
         specifier: '>=16.8'
-        version: 19.1.16
+        version: 19.2.2
       '@types/react-dom':
         specifier: '>=16.8'
-        version: 19.1.9(@types/react@19.1.16)
+        version: 19.2.2(@types/react@19.2.2)
       react:
         specifier: '>=16.8'
-        version: 19.1.1
+        version: 19.2.0
       react-dom:
         specifier: '>=16.8'
-        version: 19.1.1(react@19.1.1)
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@eslint-react/eslint-plugin':
         specifier: ^1.53.1
-        version: 1.53.1(eslint@9.38.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
+        version: 1.53.1(eslint@9.39.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
       '@vitejs/plugin-react':
         specifier: ^5.0.4
-        version: 5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       eslint-plugin-react-compiler:
         specifier: 19.1.0-rc.2
-        version: 19.1.0-rc.2(eslint@9.38.0(jiti@2.6.0))
+        version: 19.1.0-rc.2(eslint@9.39.0(jiti@2.6.0))
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
-        version: 5.2.0(eslint@9.38.0(jiti@2.6.0))
+        version: 5.2.0(eslint@9.39.0(jiti@2.6.0))
 
   packages/solid-pacer:
     dependencies:
@@ -1681,32 +1681,35 @@ importers:
         version: link:../pacer
       '@tanstack/solid-store':
         specifier: ^0.7.7
-        version: 0.7.7(solid-js@1.9.9)
+        version: 0.7.7(solid-js@1.9.10)
     devDependencies:
       solid-js:
         specifier: ^1.9.9
-        version: 1.9.9
+        version: 1.9.10
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
   packages/solid-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
         specifier: ^0.0.3
-        version: 0.0.3(@types/react@19.1.16)(csstype@3.1.3)(react@19.1.1)(solid-js@1.9.9)
+        version: 0.0.3(@types/react@19.2.2)(csstype@3.1.3)(react@19.2.0)(solid-js@1.9.10)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
       solid-js:
         specifier: '>=1.9.7'
-        version: 1.9.9
+        version: 1.9.10
     devDependencies:
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
 
 packages:
+
+  '@acemir/cssom@0.9.19':
+    resolution: {integrity: sha512-Pp2gAQXPZ2o7lt4j0IMwNRXqQ3pagxtDj5wctL5U2Lz4oV0ocDNlkgx4DpxfyKav4S/bePuI+SMqcBSUHLy9kg==}
 
   '@adobe/css-tools@4.4.4':
     resolution: {integrity: sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==}
@@ -1714,8 +1717,8 @@ packages:
   '@asamuzakjp/css-color@4.0.5':
     resolution: {integrity: sha512-lMrXidNhPGsDjytDy11Vwlb6OIGrT3CmLg3VWNFyWkLWtijKl7xjvForlh8vuj0SHGjgl4qZEQzUmYTeQA2JFQ==}
 
-  '@asamuzakjp/dom-selector@6.5.7':
-    resolution: {integrity: sha512-cvdTPsi2qC1c22UppvuVmx/PDwuc6+QQkwt9OnwQD6Uotbh//tb2XDF0OoK2V0F4b8d02LIwNp3BieaDMAhIhA==}
+  '@asamuzakjp/dom-selector@6.7.4':
+    resolution: {integrity: sha512-buQDjkm+wDPXd6c13534URWZqbz0RP5PAhXZ+LIoa5LgwInT9HVJvGIJivg75vi8I13CxDGdTnz+aY5YUJlIAA==}
 
   '@asamuzakjp/nwsapi@2.3.9':
     resolution: {integrity: sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==}
@@ -2165,32 +2168,32 @@ packages:
     resolution: {integrity: sha512-aw1gNayWpdI/jSYVgzN5pL0cfzU02GT3NBpeT/DXbx1/1x7ZKxFPd9bwrzygx/qiwIQiJ1sw/zD8qY/kRvlGHA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/config-helpers@0.4.1':
-    resolution: {integrity: sha512-csZAzkNhsgwb0I/UAV6/RGFTbiakPCf0ZrGmrIxQpYvGZ00PhTkSnyKNolphgIvmnJeGw6rcGVEXfTzUnFuEvw==}
+  '@eslint/config-helpers@0.4.2':
+    resolution: {integrity: sha512-gBrxN88gOIf3R7ja5K9slwNayVcZgK6SOUORm2uBzTeIEfeVaIhOpCtTox3P6R7o2jLFwLFTLnC7kU/RGcYEgw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/core@0.16.0':
-    resolution: {integrity: sha512-nmC8/totwobIiFcGkDza3GIKfAw1+hLiYVrh3I1nIomQ8PEr5cxg34jnkmGawul/ep52wGRAcyeDCNtWKSOj4Q==}
+  '@eslint/core@0.17.0':
+    resolution: {integrity: sha512-yL/sLrpmtDaFEiUj1osRP4TI2MDz1AddJL+jZ7KSqvBuliN4xqYY54IfdN8qD8Toa6g1iloph1fxQNkjOxrrpQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/eslintrc@3.3.1':
     resolution: {integrity: sha512-gtF186CXhIl1p4pJNGZw8Yc6RlshoePRvE0X91oPGb3vZ8pM3qOS9W9NGPat9LziaBV7XrJWGylNQXkGcnM3IQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/js@9.38.0':
-    resolution: {integrity: sha512-UZ1VpFvXf9J06YG9xQBdnzU+kthors6KjhMAl6f4gH4usHyh31rUf2DLGInT8RFYIReYXNSydgPY0V2LuWgl7A==}
+  '@eslint/js@9.39.0':
+    resolution: {integrity: sha512-BIhe0sW91JGPiaF1mOuPy5v8NflqfjIcDNpC+LbW9f609WVRX1rArrhi6Z2ymvrAry9jw+5POTj4t2t62o8Bmw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/object-schema@2.1.7':
     resolution: {integrity: sha512-VtAOaymWVfZcmZbp6E2mympDIHvyjXs/12LqWYjVw6qjrfF+VK+fyG33kChz3nnK+SU5/NeHOqrTEHS8sXO3OA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/plugin-kit@0.4.0':
-    resolution: {integrity: sha512-sB5uyeq+dwCWyPi31B2gQlVlo+j5brPlWx4yZBrEaRo/nhdDE8Xke1gsGgtiBdaBTxuTkceLVuVt/pclrasb0A==}
+  '@eslint/plugin-kit@0.4.1':
+    resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@faker-js/faker@10.0.0':
-    resolution: {integrity: sha512-UollFEUkVXutsaP+Vndjxar40Gs5JL2HeLcl8xO1QAjJgOdhc3OmBFWyEylS+RddWaaBiAzH+5/17PLQJwDiLw==}
+  '@faker-js/faker@10.1.0':
+    resolution: {integrity: sha512-C3mrr3b5dRVlKPJdfrAXS8+dq+rq8Qm5SNRazca0JKgw1HQERFmrVb0towvMmw5uu8hHKNiQasMaR/tydf3Zsg==}
     engines: {node: ^20.19.0 || ^22.13.0 || ^23.5.0 || >=24.0.0, npm: '>=10'}
 
   '@gerrit0/mini-shiki@1.27.2':
@@ -2288,8 +2291,8 @@ packages:
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
 
-  '@napi-rs/wasm-runtime@1.0.5':
-    resolution: {integrity: sha512-TBr9Cf9onSAS2LQ2+QHx6XcC6h9+RIzJgbqG3++9TUZSH204AwEy5jg3BTQ0VATsyoGj4ee49tN/y6rvaOOtcg==}
+  '@napi-rs/wasm-runtime@1.0.7':
+    resolution: {integrity: sha512-SeDnOO0Tk7Okiq6DbXmmBODgOAb9dp9gjlphokTUxmt8U3liIP1ZsozBahH69j/RJv+Rfs6IwUKHTgQYJ/HBAw==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2303,148 +2306,148 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@nx/nx-darwin-arm64@21.6.2':
-    resolution: {integrity: sha512-Iwf7gxWMeDdrNqXYkVOib6PlDYwLw51+nMiFm1UW5nKxbQyVYHp7lhQNHsZrQ7Oqo84m9swWgzE7bhs21HkbYQ==}
+  '@nx/nx-darwin-arm64@21.6.8':
+    resolution: {integrity: sha512-MG5bhSYhG49r+e0mLuztQVHz1sEy7cs8BvZJ56mm7JNQ1VfbaTyLAR7VcNw8O/1mJA8jYcg9fmxOIZOUnY1cEQ==}
     cpu: [arm64]
     os: [darwin]
 
-  '@nx/nx-darwin-x64@21.6.2':
-    resolution: {integrity: sha512-A+q5AULxNEk15ol8ELmnOIUQuwBV5n9vK/vpzpfmTQqsMAUC6ksdBOI8N7I6+YVWLV0vUHWoRp9iH7I2IecERQ==}
+  '@nx/nx-darwin-x64@21.6.8':
+    resolution: {integrity: sha512-e9oXVTd6U6RFEc3k22PGoe5OSy40fyyytl+svSJQmK+5rxZalvAUna/mXtFcQC9m6No2daqqpfAZlyN5nG6WHw==}
     cpu: [x64]
     os: [darwin]
 
-  '@nx/nx-freebsd-x64@21.6.2':
-    resolution: {integrity: sha512-Hw6eOsdtD21j/B514eRJzgX03ew8ErFCfxWtjLwl7wB31Dw4nZbScj2FNDTc0xtg6oXCkw5Gt5uFKI5QFQUVfg==}
+  '@nx/nx-freebsd-x64@21.6.8':
+    resolution: {integrity: sha512-gK3rsTXQj0hHCyaAvZmPZeCPkb3jzesgtkXuZf+7pCm5b4wiEA1i22ufp1UzwaTmWgbub/6NVMEDOGsVcay8mA==}
     cpu: [x64]
     os: [freebsd]
 
-  '@nx/nx-linux-arm-gnueabihf@21.6.2':
-    resolution: {integrity: sha512-fzFyOioyO0G+NqThTwqn6YRcVZOHdsdN7M/lGSgjgfOChNuf3A0eTQzy2jh/8j868YpKV/esPlBphq3CGXWPmg==}
+  '@nx/nx-linux-arm-gnueabihf@21.6.8':
+    resolution: {integrity: sha512-TXt3HTFhM4kuL9larxBuo3XpSngoA1JCtHavfYLRC3A8knACi7LwNQwnF5RWAcYgKMVE3/8IAhV8LuemXrPKKw==}
     cpu: [arm]
     os: [linux]
 
-  '@nx/nx-linux-arm64-gnu@21.6.2':
-    resolution: {integrity: sha512-daRHdZzJWtzuEkrN+jDKdN59K2nPsXIHbWZq/4bIxvz/hszRX4hQZcrpVgtr0YV6jHY+/gKZCJsKnr2yYdaF3w==}
+  '@nx/nx-linux-arm64-gnu@21.6.8':
+    resolution: {integrity: sha512-QwZREYIhqhDVEIf+KAv2VFipxMUoULXXS3qyLX3/q/4u8Y32fyM5wd+FXpv89cRCiveVsZp8io2W178R6lfKng==}
     cpu: [arm64]
     os: [linux]
 
-  '@nx/nx-linux-arm64-musl@21.6.2':
-    resolution: {integrity: sha512-pB67mhywxV+WrVCiYV/+DgK2lfen3dv8PPgmBN/7qHQUgHqTJSLw7f9upiLlApuVN20qyCaktNT6Nq41Q88NCg==}
+  '@nx/nx-linux-arm64-musl@21.6.8':
+    resolution: {integrity: sha512-UZJyrZ6utU8g1W7E31iHDhWj1SjMidmDNyrVP4xK6IUrotx6qGrwfwWqzqvphhc1cA7w4Zz9N/rCCPQkdHzjLw==}
     cpu: [arm64]
     os: [linux]
 
-  '@nx/nx-linux-x64-gnu@21.6.2':
-    resolution: {integrity: sha512-pavN0n/VdQP2qKxdjdL8lt0fJWK5N3AvH3veSM5UROZ06HZVURcqEt3T74vLUGRiRnIPbFO/YEJGt2cO2THwXg==}
+  '@nx/nx-linux-x64-gnu@21.6.8':
+    resolution: {integrity: sha512-HXINTg4P0/Yj76vsvqBAb7MNlLpkH1pl9JF2blXScOFXWzNoStd7b6xyrpCROdmi0Hk8y3UEwc8OIyLFIfixJg==}
     cpu: [x64]
     os: [linux]
 
-  '@nx/nx-linux-x64-musl@21.6.2':
-    resolution: {integrity: sha512-nEEkb3fBuqL18q6q7oqC1PpRiP8LMCmLf7UkGl6owDzCPy48K36Nept2YjHzABdUN2Wv5kojCWjNpGqhnTZSiw==}
+  '@nx/nx-linux-x64-musl@21.6.8':
+    resolution: {integrity: sha512-2YbXLhuSlElCtQTR1Ib94O3T4fX9uzSIkUMYGL3n04agG0HemXoxJa91TWwwOUMbEZffkhcPsJBOh2S5l47s9Q==}
     cpu: [x64]
     os: [linux]
 
-  '@nx/nx-win32-arm64-msvc@21.6.2':
-    resolution: {integrity: sha512-FnVZbMHN4PeaNdyPDNKyUWCK1+XKBi3A15jb0VdiJHTv+6jzNxBfPZfsI6RkAjSag3TeVC/Lgz0asWTW3LDyXA==}
+  '@nx/nx-win32-arm64-msvc@21.6.8':
+    resolution: {integrity: sha512-/VSGtqa1oGHo5n24R39ZuGxMrGyf7pxFuCtL5hAzBHdTxFg/VZomPGd7BeV5VN5SbIw+fie+nTGkC5q3TOPGXw==}
     cpu: [arm64]
     os: [win32]
 
-  '@nx/nx-win32-x64-msvc@21.6.2':
-    resolution: {integrity: sha512-7xzDBz7TgaCfAxFa1Z1V+1YXNiCBHSUzLOeWAQYZ1McBltuxjEddK4w4FcHMVvjs7NUUTja+5fDxE42rUp9IQw==}
+  '@nx/nx-win32-x64-msvc@21.6.8':
+    resolution: {integrity: sha512-xeBL7PcDqHH/Zw4d2A2qP7eLImzzcMO3hiKs5G42Wi92ACejAdUqpIduTL4RpArsXIHm5VEbE4KvHNii1mMU1A==}
     cpu: [x64]
     os: [win32]
 
-  '@oxc-resolver/binding-android-arm-eabi@11.8.4':
-    resolution: {integrity: sha512-6BjMji0TcvQfJ4EoSunOSyu/SiyHKficBD0V3Y0NxF0beaNnnZ7GYEi2lHmRNnRCuIPK8IuVqQ6XizYau+CkKw==}
+  '@oxc-resolver/binding-android-arm-eabi@11.12.0':
+    resolution: {integrity: sha512-/IfGWLNdmS1kVYM2g+Xw4qXNWtCPZ/i5YMprflA8FC3vAjT4N0VucQcDxUPHxatQwre4qnhbFFWqRa1mz6Cgkw==}
     cpu: [arm]
     os: [android]
 
-  '@oxc-resolver/binding-android-arm64@11.8.4':
-    resolution: {integrity: sha512-SxF4X6rzCBS9XNPXKZGoIHIABjfGmtQpEgRBDzpDHx5VTuLAUmwLTHXnVBAZoX5bmnhF79RiMElavzFdJ2cA1A==}
+  '@oxc-resolver/binding-android-arm64@11.12.0':
+    resolution: {integrity: sha512-H3Ehyinfx2VO8F5TwdaD/WY686Ia6J1H3LP0tgpNjlPGH2TrTniPERiwjqtOm/xHEef0KJvb/yfmUKLbHudhCA==}
     cpu: [arm64]
     os: [android]
 
-  '@oxc-resolver/binding-darwin-arm64@11.8.4':
-    resolution: {integrity: sha512-8zWeERrzgscAniE6kh1TQ4E7GJyglYsvdoKrHYLBCbHWD+0/soffiwAYxZuckKEQSc2RXMSPjcu+JTCALaY0Dw==}
+  '@oxc-resolver/binding-darwin-arm64@11.12.0':
+    resolution: {integrity: sha512-hmm+A/0WdEtIeBrPtUHoSTzJefrZkhGSrmv5pwELKiqNqd+/gctzmTlt6wWrU8BMIryDMT9fWqLSQ3+NYfqAEA==}
     cpu: [arm64]
     os: [darwin]
 
-  '@oxc-resolver/binding-darwin-x64@11.8.4':
-    resolution: {integrity: sha512-BUwggKz8Hi5uEQ0AeVTSun1+sp4lzNcItn+L7fDsHu5Cx0Zueuo10BtVm+dIwmYVVPL5oGYOeD0fS7MKAazKiw==}
+  '@oxc-resolver/binding-darwin-x64@11.12.0':
+    resolution: {integrity: sha512-g1tVu53EMfuRKs67o0PZR0+y/WXl/Tfn3d2ggjK3Hj17pQPcb9x1+Y6W7n4EjIDttwLZbCPCEr06X+aC03I45A==}
     cpu: [x64]
     os: [darwin]
 
-  '@oxc-resolver/binding-freebsd-x64@11.8.4':
-    resolution: {integrity: sha512-fPO5TQhnn8gA6yP4o49lc4Gn8KeDwAp9uYd4PlE3Q00JVqU6cY9WecDhYHrWtiFcyoZ8UVBlIxuhRqT/DP4Z4A==}
+  '@oxc-resolver/binding-freebsd-x64@11.12.0':
+    resolution: {integrity: sha512-TiMatzvcVMSOiAx8sbnAw7UCfQpZDlm91ItywZrSHlQIJqDBipOmjIEYUMc2p823Y+fJ2ADL5UBjUB2kfqpedw==}
     cpu: [x64]
     os: [freebsd]
 
-  '@oxc-resolver/binding-linux-arm-gnueabihf@11.8.4':
-    resolution: {integrity: sha512-QuNbdUaVGiP0W0GrXsvCDZjqeL4lZGU7aXlx/S2tCvyTk3wh6skoiLJgqUf/eeqXfUPnzTfntYqyfolzCAyBYA==}
+  '@oxc-resolver/binding-linux-arm-gnueabihf@11.12.0':
+    resolution: {integrity: sha512-zU+9UgxPIvfReqmRr/dqZt3387HPgcH0hA4u0QGE+280EFjBYYL2rxGDxK0L+keO6vc2+ITWVDXm9KIj+alofg==}
     cpu: [arm]
     os: [linux]
 
-  '@oxc-resolver/binding-linux-arm-musleabihf@11.8.4':
-    resolution: {integrity: sha512-p/zLMfza8OsC4BDKxqeZ9Qel+4eA/oiMSyKLRkMrTgt6OWQq1d5nHntjfG35Abcw4ev6Q9lRU3NOW5hj0xlUbw==}
+  '@oxc-resolver/binding-linux-arm-musleabihf@11.12.0':
+    resolution: {integrity: sha512-dfO1rrOeELYWD/BewMCp81k1I3pOdtAi2VCKg/A1I8z0uI4OR6cThb5dV9fpHkj7zlb0Y5iZFPe+NTbI/u1MgQ==}
     cpu: [arm]
     os: [linux]
 
-  '@oxc-resolver/binding-linux-arm64-gnu@11.8.4':
-    resolution: {integrity: sha512-bvJF9wWxF1+a5YZATlS5JojpOMC7OsnTatA6sXVHoOb7MIigjledYB5ZMAeRrnWWexRMiEX3YSaA46oSfOzmOg==}
+  '@oxc-resolver/binding-linux-arm64-gnu@11.12.0':
+    resolution: {integrity: sha512-JJNyN1ueryETKTUsG57+u0GDbtHKVcwcUoC6YyJmDdWE0o/3twXtHuS+F/121a2sVK8PKlROqGAev+STx3AuuQ==}
     cpu: [arm64]
     os: [linux]
 
-  '@oxc-resolver/binding-linux-arm64-musl@11.8.4':
-    resolution: {integrity: sha512-gf4nwGBfu+EFwOn5p7/T7VF4jmIdfodwJS9MRkOBHvuAm3LQgCX7O6d3Y80mm0TV7ZMRD/trfW628rHfd5++vQ==}
+  '@oxc-resolver/binding-linux-arm64-musl@11.12.0':
+    resolution: {integrity: sha512-rQHoxL0H0WwYUuukPUscLyzWwTl/hyogptYsY+Ye6AggJEOuvgJxMum2glY7etGIGOXxrfjareHnNO1tNY7WYg==}
     cpu: [arm64]
     os: [linux]
 
-  '@oxc-resolver/binding-linux-ppc64-gnu@11.8.4':
-    resolution: {integrity: sha512-T120R5GIzRd41rYWWKCI6cSYrZjmRQzf3X4xeE1WX396Uabz5DX8KU7RnVHihSK+KDxccCVOFBxcH3ITd+IEpw==}
+  '@oxc-resolver/binding-linux-ppc64-gnu@11.12.0':
+    resolution: {integrity: sha512-XPUZSctO+FrC0314Tcth+GrTtzy2yaYqyl8weBMAbKFMwuV8VnR2SHg9dmtI9vkukmM3auOLj0Kqjpl3YXwXiw==}
     cpu: [ppc64]
     os: [linux]
 
-  '@oxc-resolver/binding-linux-riscv64-gnu@11.8.4':
-    resolution: {integrity: sha512-PVG7SxBFFjAaQ76p9O/0Xt5mTBlziRwpck+6cRNhy/hbWY/hSt8BFfPqw0EDSfnl40Uuh+NPsHFMnaWWyxbQEg==}
+  '@oxc-resolver/binding-linux-riscv64-gnu@11.12.0':
+    resolution: {integrity: sha512-AmMjcP+6zHLF1JNq/p3yPEcXmZW/Xw5Xl19Zd0eBCSyGORJRuUOkcnyC8bwMO43b/G7PtausB83fclnFL5KZ3w==}
     cpu: [riscv64]
     os: [linux]
 
-  '@oxc-resolver/binding-linux-riscv64-musl@11.8.4':
-    resolution: {integrity: sha512-L0OklUhM2qLGaKvPSyKmwWpoijfc++VJtPyVgz031ShOXyo0WjD0ZGzusyJMsA1a/gdulAmN6CQ/0Sf4LGXEcw==}
+  '@oxc-resolver/binding-linux-riscv64-musl@11.12.0':
+    resolution: {integrity: sha512-K2/yFBqFQOKyVwQxYDAKqDtk2kS4g58aGyj/R1bvYPr2P7v7971aUG/5m2WD5u2zSqWBfu1o4PdhX0lsqvA3vQ==}
     cpu: [riscv64]
     os: [linux]
 
-  '@oxc-resolver/binding-linux-s390x-gnu@11.8.4':
-    resolution: {integrity: sha512-18Ajz5hqO4cRGuoHzLFUsIPod9GIaIRDiXFg2m6CS3NgVdHx7iCZscplYH7KtjdE42M8nGWYMyyq5BOk7QVgPw==}
+  '@oxc-resolver/binding-linux-s390x-gnu@11.12.0':
+    resolution: {integrity: sha512-uSl4jo78tONGZtwsOA4ldT/OI7/hoHJhSMlGYE4Z/lzwMjkAaBdX4soAK5P/rL+U2yCJlRMnnoUckhXlZvDbSw==}
     cpu: [s390x]
     os: [linux]
 
-  '@oxc-resolver/binding-linux-x64-gnu@11.8.4':
-    resolution: {integrity: sha512-uHvH4RyYBdQ/lFGV9H+R1ScHg6EBnAhE3mnX+u+mO/btnalvg7j80okuHf8Qw0tLQiP5P1sEBoVeE6zviXY9IA==}
+  '@oxc-resolver/binding-linux-x64-gnu@11.12.0':
+    resolution: {integrity: sha512-YjL8VAkbPyQ1kUuR6pOBk1O+EkxOoLROTa+ia1/AmFLuXYNltLGI1YxOY14i80cKpOf0Z59IXnlrY3coAI9NDQ==}
     cpu: [x64]
     os: [linux]
 
-  '@oxc-resolver/binding-linux-x64-musl@11.8.4':
-    resolution: {integrity: sha512-X5z44qh5DdJfVhcqXAQFTDFUpcxdpf6DT/lHL5CFcdQGIZxatjc7gFUy05IXPI9xwfq39RValjJBvFovUk9XBw==}
+  '@oxc-resolver/binding-linux-x64-musl@11.12.0':
+    resolution: {integrity: sha512-qpHPU0qqeJXh7cPzA+I+WWA6RxtRArfmSrhTXidbiQ08G5A1e55YQwExWkitB2rSqN6YFxnpfhHKo9hyhpyfSg==}
     cpu: [x64]
     os: [linux]
 
-  '@oxc-resolver/binding-wasm32-wasi@11.8.4':
-    resolution: {integrity: sha512-z3906y+cd8RRhBGNwHRrRAFxnKjXsBeL3+rdQjZpBrUyrhhsaV5iKD/ROx64FNJ9GjL/9mfon8A5xx/McYIqHA==}
+  '@oxc-resolver/binding-wasm32-wasi@11.12.0':
+    resolution: {integrity: sha512-oqg80bERZAagWLqYmngnesE0/2miv4lST7+wiiZniD6gyb1SoRckwEkbTsytGutkudFtw7O61Pon6pNlOvyFaA==}
     engines: {node: '>=14.0.0'}
     cpu: [wasm32]
 
-  '@oxc-resolver/binding-win32-arm64-msvc@11.8.4':
-    resolution: {integrity: sha512-70vXFs74uA3X5iYOkpclbkWlQEF+MI325uAQ+Or2n8HJip2T0SEmuBlyw/sRL2E8zLC4oocb+1g25fmzlDVkmg==}
+  '@oxc-resolver/binding-win32-arm64-msvc@11.12.0':
+    resolution: {integrity: sha512-qKH816ycEN9yR/TX91CP1/i6xyVNHKX9VEOYa3XzQROPVtcYG2F6A3ng/PhwpJvS1cmL/DlilhglZe9KWkhNjg==}
     cpu: [arm64]
     os: [win32]
 
-  '@oxc-resolver/binding-win32-ia32-msvc@11.8.4':
-    resolution: {integrity: sha512-SEOUAzTvr+nyMia3nx1dMtD7YUxZwuhQ3QAPnxy21261Lj0yT3JY4EIfwWH54lAWWfMdRSRRMFuGeF/dq7XjEw==}
+  '@oxc-resolver/binding-win32-ia32-msvc@11.12.0':
+    resolution: {integrity: sha512-3bgxubTlhzF6BwBnhGz5BTboarl1upuanEr6i0dncjfEcU+Z9xAOgbtA7Ip3G3EKDjE1objRKK+ny8PKJZ3b7Q==}
     cpu: [ia32]
     os: [win32]
 
-  '@oxc-resolver/binding-win32-x64-msvc@11.8.4':
-    resolution: {integrity: sha512-1gARIQsOPOU7LJ7jvMyPmZEVMapL/PymeG3J7naOdLZDrIZKX6CTvgawJmETYKt+8icP8M6KbBinrVkKVqFd+A==}
+  '@oxc-resolver/binding-win32-x64-msvc@11.12.0':
+    resolution: {integrity: sha512-rbiWYQWxwy+x7+KgNAoAGYIPB3xUclQlFVV3L5lwfsbp4PQPomJohHowlWgi3GRAEybM5+ZL9xny0YfpJOsthA==}
     cpu: [x64]
     os: [win32]
 
@@ -2452,8 +2455,8 @@ packages:
     resolution: {integrity: sha512-S+9ANAvUmjutrshV4jZjaiG8XQyuJIZ8a4utWmN/vW1sgQ9IfBnPndwkmQYw53QmouOIytT874u65HEmu6H5jw==}
     engines: {node: '>=18'}
 
-  '@rolldown/pluginutils@1.0.0-beta.38':
-    resolution: {integrity: sha512-N/ICGKleNhA5nc9XXQG/kkKHJ7S55u0x0XUJbbkmdCnFuoRkM1Il12q9q0eX19+M7KKUEPw/daUPIRnxhcxAIw==}
+  '@rolldown/pluginutils@1.0.0-beta.43':
+    resolution: {integrity: sha512-5Uxg7fQUCmfhax7FJke2+8B6cqgeUJUD9o2uXIKXhD+mG0mL6NObmVoi9wXEU1tY89mZKgAYA6fTbftx3q2ZPQ==}
 
   '@rollup/pluginutils@5.3.0':
     resolution: {integrity: sha512-5EdhGZtnu3V88ces7s53hhfK5KSASnJZv8Lulpc04cWO3REESroJXg73DFsOmgbU2BhwV0E20bu2IDZb3VKW4Q==}
@@ -2668,8 +2671,8 @@ packages:
     resolution: {integrity: sha512-yJT2As/drc+Epu0nsqCsJaKaLcaNGufiNxSlp/+/oeTD0jsBxF9/PJBfh66XVpYXkKr97b8689mSu7QMef0Rrw==}
     engines: {node: '>=18'}
 
-  '@tanstack/devtools-event-client@0.3.2':
-    resolution: {integrity: sha512-gkvph/YMCFUfAca75EsJBJnhbKitDGix7vdEcT/3lAV+eyGSv+uECYG43apVQN4yLJKnV6mzcNvGzOhDhb72gg==}
+  '@tanstack/devtools-event-client@0.3.4':
+    resolution: {integrity: sha512-eq+PpuutUyubXu+ycC1GIiVwBs86NF/8yYJJAKSpPcJLWl6R/761F1H4F/9ziX6zKezltFUH1ah3Cz8Ah+KJrw==}
     engines: {node: '>=18'}
 
   '@tanstack/devtools-ui@0.3.5':
@@ -2711,8 +2714,8 @@ packages:
     resolution: {integrity: sha512-URVXmXwlZXL75AFyvyOORef1tv2f16dEaFntwLYnBHoKLQMxyWYRzQrnXooxO1xf+GidJuDSZSC6Rc9UX1aK7g==}
     engines: {node: '>=18'}
 
-  '@tanstack/query-core@5.90.2':
-    resolution: {integrity: sha512-k/TcR3YalnzibscALLwxeiLUub6jN5EDLwKDiO7q5f4ICEoptJ+n9+7vcEFy5/x/i6Q+Lb/tXrsKCggf5uQJXQ==}
+  '@tanstack/query-core@5.90.5':
+    resolution: {integrity: sha512-wLamYp7FaDq6ZnNehypKI5fNvxHPfTYylE0m/ZpuuzJfJqhR5Pxg9gvGBHZx4n7J+V5Rg5mZxHHTlv25Zt5u+w==}
 
   '@tanstack/query-devtools@5.90.1':
     resolution: {integrity: sha512-GtINOPjPUH0OegJExZ70UahT9ykmAhmtNVcmtdnOZbxLwT7R5OmRztR5Ahe3/Cu7LArEmR6/588tAycuaWb1xQ==}
@@ -2739,8 +2742,8 @@ packages:
       '@tanstack/react-query': ^5.90.2
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.90.2':
-    resolution: {integrity: sha512-CLABiR+h5PYfOWr/z+vWFt5VsOA2ekQeRQBFSKlcoW6Ndx/f8rfyVmq4LbgOM4GG2qtxAxjLYLOpCNTYm4uKzw==}
+  '@tanstack/react-query@5.90.5':
+    resolution: {integrity: sha512-pN+8UWpxZkEJ/Rnnj2v2Sxpx1WFlaa9L6a4UO89p6tTQbeo+m0MS8oYDjbggrR8QcTyjKoYWKS3xJQGr3ExT8Q==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -2772,8 +2775,8 @@ packages:
     resolution: {integrity: sha512-p1HuuSD3OUoVMYHfjkzUJqVBUurp1BDrGwT3302GRpSjpBHiJvZex3+NzRIXdG9NdjeJ0mT7DYpNMoii7GVROQ==}
     engines: {node: '>=18'}
 
-  '@testing-library/jest-dom@6.9.0':
-    resolution: {integrity: sha512-QHdxYMJ0YPGKYofMc6zYvo7LOViVhdc6nPg/OtM2cf9MQrwEcTxFCs7d/GJ5eSyPkHzOiBkc/KfLdFJBHzldtQ==}
+  '@testing-library/jest-dom@6.9.1':
+    resolution: {integrity: sha512-zIcONa+hVtVSSep9UT3jZ5rizo2BsxgyDYU7WFD5eICBE7no3881HGeb/QkGfsJs6JTkY1aQhT7rIPC7e+0nnA==}
     engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
 
   '@tybys/wasm-util@0.10.1':
@@ -2821,13 +2824,13 @@ packages:
   '@types/node@24.6.1':
     resolution: {integrity: sha512-ljvjjs3DNXummeIaooB4cLBKg2U6SPI6Hjra/9rRIy7CpM0HpLtG9HptkMKAb4HYWy5S7HUvJEuWgr/y0U8SHw==}
 
-  '@types/react-dom@19.1.9':
-    resolution: {integrity: sha512-qXRuZaOsAdXKFyOhRBg6Lqqc0yay13vN7KrIg4L7N4aaHN68ma9OK3NE1BoDFgFOTfM7zg+3/8+2n8rLUH3OKQ==}
+  '@types/react-dom@19.2.2':
+    resolution: {integrity: sha512-9KQPoO6mZCi7jcIStSnlOWn2nEF3mNmyr3rIAsGnAbQKYbRLyqmeSc39EVgtxXVia+LMT8j3knZLAZAh+xLmrw==}
     peerDependencies:
-      '@types/react': ^19.0.0
+      '@types/react': ^19.2.0
 
-  '@types/react@19.1.16':
-    resolution: {integrity: sha512-WBM/nDbEZmDUORKnh5i1bTnAz6vTohUf9b8esSMu+b24+srbaxa04UbJgWx78CVfNXA20sNu0odEIluZDFdCog==}
+  '@types/react@19.2.2':
+    resolution: {integrity: sha512-6mDvHUFSjyT2B2yeNx2nUgMxh9LtOWvkhIU3uePn2I2oyNymUAX1NIsdgviM4CH+JSrp2D2hsMvJOkxY+0wNRA==}
 
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
@@ -2986,8 +2989,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@vitejs/plugin-react@5.0.4':
-    resolution: {integrity: sha512-La0KD0vGkVkSk6K+piWDKRUyg8Rl5iAIKRMH0vMJI0Eg47bq1eOxmoObAaQG37WMW9MSyk7Cs8EIWwJC1PtzKA==}
+  '@vitejs/plugin-react@5.1.0':
+    resolution: {integrity: sha512-4LuWrg7EKWgQaMJfnN+wcmbAW+VSsCmqGohftWjuct47bv8uE4n/nPpq4XjJPsxgq00GGG5J8dvBczp8uxScew==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
@@ -3342,8 +3345,8 @@ packages:
   css.escape@1.5.1:
     resolution: {integrity: sha512-YUifsXXuknHlUsmlgyY0PKzgPOr7/FjCePfHNt0jxm83wHZi44VDMQ7/fGNkjY3/jV1MC+1CmZbaHzugyeRtpg==}
 
-  cssstyle@5.3.1:
-    resolution: {integrity: sha512-g5PC9Aiph9eiczFpcgUhd9S4UUO3F+LHGRIi5NUMZ+4xtoIYbHNZwZnWA2JsFGe8OU8nl4WyaEFiZuGuxlutJQ==}
+  cssstyle@5.3.2:
+    resolution: {integrity: sha512-zDMqXh8Vs1CdRYZQ2M633m/SFgcjlu8RB8b/1h82i+6vpArF507NSYIWJHGlJaTWoS+imcnctmEz43txhbVkOw==}
     engines: {node: '>=20'}
 
   csstype@3.1.3:
@@ -3356,8 +3359,8 @@ packages:
   dataloader@1.4.0:
     resolution: {integrity: sha512-68s5jYdlvasItOJnCuI2Q9s4q98g0pCyL3HrcKJu8KNugUl8ahgmZYg38ysLTgQjjXX3H8CJLkAvWrclWfcalw==}
 
-  dayjs@1.11.18:
-    resolution: {integrity: sha512-zFBQ7WFRvVRhKcWoUh+ZA1g2HVgUbsZm9sbddh8EC5iv93sui8DVVz1Npvz+r6meo9VKfa8NyLWBsQK1VvIKPA==}
+  dayjs@1.11.19:
+    resolution: {integrity: sha512-t5EcLVS6QPBNqM2z8fakk/NKel+Xzshgt8FFKAn+qwlD1pzZWxh0nVCrvFK7ZDb6XucZeF9z8C7CBWTRIVApAw==}
 
   de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
@@ -3619,8 +3622,8 @@ packages:
       typescript:
         optional: true
 
-  eslint-plugin-unused-imports@4.2.0:
-    resolution: {integrity: sha512-hLbJ2/wnjKq4kGA9AUaExVFIbNzyxYdVo49QZmKCnhk5pc9wcYRbfgLHvWJ8tnsdcseGhoUAddm9gn/lt+d74w==}
+  eslint-plugin-unused-imports@4.3.0:
+    resolution: {integrity: sha512-ZFBmXMGBYfHttdRtOG9nFFpmUvMtbHSjsKrS20vdWdbfiVYsO3yA2SGYy9i9XmZJDfMGBflZGBCm70SEnFQtOA==}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': ^8.0.0-0 || ^7.0.0 || ^6.0.0 || ^5.0.0
       eslint: ^9.0.0 || ^8.0.0
@@ -3640,8 +3643,8 @@ packages:
     resolution: {integrity: sha512-Uhdk5sfqcee/9H/rCOJikYz67o0a2Tw2hGRPOG2Y1R2dg7brRe1uG0yaNQDHu+TO/uQPF/5eCapvYSmHUjt7JQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  eslint@9.38.0:
-    resolution: {integrity: sha512-t5aPOpmtJcZcz5UJyY2GbvpDlsK5E8JqRqoKtfiKE3cNh437KIqfJr3A3AKf5k64NPx6d0G3dno6XDY05PqPtw==}
+  eslint@9.39.0:
+    resolution: {integrity: sha512-iy2GE3MHrYTL5lrCtMZ0X1KLEKKUjmK0kzwcnefhR66txcEmXZD2YWgR5GNdcEwkNx3a0siYkSvl0vIC+Svjmg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     hasBin: true
     peerDependencies:
@@ -3839,8 +3842,8 @@ packages:
   globrex@0.1.2:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
 
-  goober@2.1.16:
-    resolution: {integrity: sha512-erjk19y1U33+XAMe1VTvIONHYoSqE4iS7BYUZfHaqeohLmnC0FdxEh7rQU+6MZ4OajItzjZFSRtVANrQwNq6/g==}
+  goober@2.1.18:
+    resolution: {integrity: sha512-2vFqsaDVIT9Gz7N6kAL++pLpp41l3PfDuusHcjnGLfR6+huZkl6ziX+zgVC3ZxpqWhzH6pyDdGrCeDhMIvwaxw==}
     peerDependencies:
       csstype: ^3.0.10
 
@@ -4040,9 +4043,9 @@ packages:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
 
-  jsdom@27.0.0:
-    resolution: {integrity: sha512-lIHeR1qlIRrIN5VMccd8tI2Sgw6ieYXSVktcSHaNe3Z5nE/tcPQYQWOq00wxMvYOsz+73eAkNenVvmPC6bba9A==}
-    engines: {node: '>=20'}
+  jsdom@27.1.0:
+    resolution: {integrity: sha512-Pcfm3eZ+eO4JdZCXthW9tCDT3nF4K+9dmeZ+5X39n+Kqz0DDIABRP5CAEOHRFZk8RGuC2efksTJxrjp8EXCunQ==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
       canvas: ^3.0.0
     peerDependenciesMeta:
@@ -4087,8 +4090,8 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  knip@5.64.1:
-    resolution: {integrity: sha512-80XnLsyeXuyxj1F4+NBtQFHxaRH0xWRw8EKwfQ6EkVZZ0bSz/kqqan08k/Qg8ajWsFPhFq+0S2RbLCBGIQtuOg==}
+  knip@5.66.4:
+    resolution: {integrity: sha512-HmTnxdmoHAvwKmFktRGY1++tXRI8J36eVrOpfj/ybTVVT1QBKBlbBEN1s3cJBx9UL+hXTZDNQif+gs7fUKldbw==}
     engines: {node: '>=18.18.0'}
     hasBin: true
     peerDependencies:
@@ -4292,8 +4295,8 @@ packages:
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
-  nx@21.6.2:
-    resolution: {integrity: sha512-bFZgAsB838vn9kk1vI6a1A9sStKyOA7Q9Ifsx7fYPth3D0GafHKu7X2/YbsC4h1TpmuejkJCPWUw2WtCOQy6IQ==}
+  nx@21.6.8:
+    resolution: {integrity: sha512-NilGEk1Cngs3Se9JW+f9cDeN6RBvmABhpEtgMvOK8RAAZszq6B380oCzKcQljhnrbQ6+v6j/Vb7hBPTCvXb0Ng==}
     hasBin: true
     peerDependencies:
       '@swc-node/register': ^1.8.0
@@ -4326,8 +4329,8 @@ packages:
   outdent@0.5.0:
     resolution: {integrity: sha512-/jHxFIzoMXdqPzTaCpFzAAWhpkSjZPF4Vsn6jAfNpmbH/ymsmd7Qc6VE9BGn0L6YMj6uwpQLxCECpus4ukKS9Q==}
 
-  oxc-resolver@11.8.4:
-    resolution: {integrity: sha512-qpimS3tHHEf+kgESMAme+q+rj7aCzMya00u9YdKOKyX2o7q4lozjPo6d7ZTTi979KHEcVOPWdNTueAKdeNq72w==}
+  oxc-resolver@11.12.0:
+    resolution: {integrity: sha512-zmS2q2txiB+hS2u0aiIwmvITIJN8c8ThlWoWB762Wx5nUw8WBlttp0rzt8nnuP1cGIq9YJ7sGxfsgokm+SQk5Q==}
 
   p-filter@2.1.0:
     resolution: {integrity: sha512-ZBxxZ5sL2HghephhpGAQdoskxplTwr7ICaehZwLIlfL6acuVgZPm8yBNuRAFBGEqtD/hmUeq9eqLg2ys9Xr/yw==}
@@ -4375,6 +4378,9 @@ packages:
 
   parse5@7.3.0:
     resolution: {integrity: sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==}
+
+  parse5@8.0.0:
+    resolution: {integrity: sha512-9m4m5GSgXjL4AjumKzq1Fgfp3Z8rsvjRNbnkVwfu2ImRqE5D0LnY2QfDen18FSY9C573YU5XxSapdHZTZ2WolA==}
 
   path-browserify@1.0.1:
     resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
@@ -4455,8 +4461,8 @@ packages:
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
-  publint@0.3.13:
-    resolution: {integrity: sha512-NC+lph09+BRO9LJgKlIy3WQXyu6/6WDQ0dCA60KALUwdKVf3PfGuC6fY8I+oKB/5kEPh50aOSUz+6yWy1n4EfA==}
+  publint@0.3.15:
+    resolution: {integrity: sha512-xPbRAPW+vqdiaKy5sVVY0uFAu3LaviaPO3pZ9FaRx59l9+U/RKR1OEbLhkug87cwiVKxPXyB4txsv5cad67u+A==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -4474,20 +4480,20 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  react-dom@19.1.1:
-    resolution: {integrity: sha512-Dlq/5LAZgF0Gaz6yiqZCf6VCcZs1ghAJyrsu84Q/GT0gV+mCxbfmKNoGRKBYMJ8IEdGPqu49YWXD02GCknEDkw==}
+  react-dom@19.2.0:
+    resolution: {integrity: sha512-UlbRu4cAiGaIewkPyiRGJk0imDN2T3JjieT6spoL2UeSf5od4n5LB/mQ4ejmxhCFT1tYe8IvaFulzynWovsEFQ==}
     peerDependencies:
-      react: ^19.1.1
+      react: ^19.2.0
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react-refresh@0.17.0:
-    resolution: {integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==}
+  react-refresh@0.18.0:
+    resolution: {integrity: sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==}
     engines: {node: '>=0.10.0'}
 
-  react@19.1.1:
-    resolution: {integrity: sha512-w8nqGImo45dmMIfljjMwOGtbmC/mk4CMYhWIicdSflH91J9TyCyczcPFXJzrZ/ZXcgGRFeP6BU0BEJTw6tZdfQ==}
+  react@19.2.0:
+    resolution: {integrity: sha512-tmbWg6W31tQLeB5cdIBOicJDJRR2KzXsV7uSK9iNfLWQ5bIZfxuPEHp7M8wiHyHnn0DD1i7w3Zmin0FtkrwoCQ==}
     engines: {node: '>=0.10.0'}
 
   read-yaml-file@1.1.0:
@@ -4552,9 +4558,6 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  rrweb-cssom@0.8.0:
-    resolution: {integrity: sha512-guoltQEx+9aMf2gDZ0s62EcV8lsXR+0w8915TC3ITdn2YueuNjdAYh/levpU9nFaoChh9RUS5ZdQMrKfVEN9tw==}
-
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
@@ -4572,8 +4575,8 @@ packages:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
 
-  scheduler@0.26.0:
-    resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
+  scheduler@0.27.0:
+    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
 
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
@@ -4607,38 +4610,48 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  sherif-darwin-arm64@1.6.1:
-    resolution: {integrity: sha512-J15oBJcrnCAZ0rQE8WbMShYw3204A18akCH6C/uZrILTwX/vZyJIqi7lAt5L00LzsadA3HcyQqVjLNNCvuihoQ==}
+  sherif-darwin-arm64@1.8.0:
+    resolution: {integrity: sha512-by2H02Wd9DfL9rEpJ0XIINkvuQYrQNHNAZeakUD0yZFxywlpD8Z0ljAkyhTFDzjRFNyfNwzLXYy/nxg8efgi8A==}
     cpu: [arm64]
     os: [darwin]
 
-  sherif-darwin-x64@1.6.1:
-    resolution: {integrity: sha512-oLA/GtvUasi+qCl35LczOhQ4g/xY2mxE5/eiTYQGT3Ow7FKLscnkE6v5l28bgkFeR/uke0AgZ/CgHhozAf0ulg==}
+  sherif-darwin-x64@1.8.0:
+    resolution: {integrity: sha512-DE1Rpq7oK2J37V4RfYdyiRYe102WYeXyV8gjSODXygoXYzYA1JyRhWlVY2HmU2Pg0fdxycwdsORPqu5lk9xBcA==}
     cpu: [x64]
     os: [darwin]
 
-  sherif-linux-arm64@1.6.1:
-    resolution: {integrity: sha512-OoltlucT7v9BZdkYZRbs1QU0DYMCQ5qgpMqQdMW1Rq3w3amr7+oEiV9NHntD83udOo8xRxKq0uPXfNYu+VptJw==}
+  sherif-linux-arm64-musl@1.8.0:
+    resolution: {integrity: sha512-0t8I9J3QzmSR/oXI6gzSLMkQkzim28shV2hcqZma6ZxfqKlB9+5Z6Qribyx1/T81h17b/KCF0/vRhwr41voZIQ==}
     cpu: [arm64]
     os: [linux]
 
-  sherif-linux-x64@1.6.1:
-    resolution: {integrity: sha512-qyDyYqpi3ABGkRuCnjnxN3OMT8DxMiiLzhS9p9xC05Y9nr5hjkxvqP4DdJ4e5opm4E7vzRAS7VQoZ6m7h6tsgQ==}
+  sherif-linux-arm64@1.8.0:
+    resolution: {integrity: sha512-ULyR55ARC3uYfkUKlSjbVqOinTlcJd4alGipPb9Ii9Ar6ML8KfhS5sHVvgqnqYkfMf7OqRtJANSxF/kD6e1ijA==}
+    cpu: [arm64]
+    os: [linux]
+
+  sherif-linux-x64-musl@1.8.0:
+    resolution: {integrity: sha512-lXxQOh5Ix2JNwfDUYpUBdq6ndCK/vRL2U3MZ9wfD6c9pOurCbdlAoIIYyHXlP/t458YqeGrRj4xSttGI99lnmg==}
     cpu: [x64]
     os: [linux]
 
-  sherif-windows-arm64@1.6.1:
-    resolution: {integrity: sha512-wAbCiqP//lo7bZUlHmZUV3/sGjnJxo6QB5/fqhz5/GUeWh4CTyvlSacJKZxLnXnzpiUSeFnWutquWnHkRov5Ug==}
+  sherif-linux-x64@1.8.0:
+    resolution: {integrity: sha512-9E9M1fQxY1dAsOlv9kebRe26E+4zV+de9aqWReLM6vZdfoeR5nPzlwjOK79rvH2KTsMWIozXnXTAAPjLQjrgnQ==}
+    cpu: [x64]
+    os: [linux]
+
+  sherif-windows-arm64@1.8.0:
+    resolution: {integrity: sha512-xEKBqRCvK8jSCYOf+yBeEc+NMpDuMRRlvecPPjFKe/U0UNBcECJKToek2WVD8uIlR82osT1I/SDXU4w1iPmrRA==}
     cpu: [arm64]
     os: [win32]
 
-  sherif-windows-x64@1.6.1:
-    resolution: {integrity: sha512-2r0qMxZGCMO2aq8Hlq7npxtAsUFVDsEFtUM/6dFo1npa/jHe2mbU7ii/Ymy0bloSa/qw/azrSfRV6GLU7Gjtxg==}
+  sherif-windows-x64@1.8.0:
+    resolution: {integrity: sha512-IJpmQsv0RLRzzj5sv4a1HhAabeDEDaFdICPzgBb/23KKL6gfYTub82XxP4B2tqe3vMHhbMO2GXQnofvZaMZaRg==}
     cpu: [x64]
     os: [win32]
 
-  sherif@1.6.1:
-    resolution: {integrity: sha512-ZnwyTnmXoUOPClkOA37JWIyFxCoozMGHmhk/p7XbTREI554XXCnBAn3BMX8UsqkhSzQ9eNQsq4U+jnImEIppsQ==}
+  sherif@1.8.0:
+    resolution: {integrity: sha512-UFCWT1StP477dK8u2Lg17ynTif9mYIi0EgJoIWlU2ErScxctbd4IWrHbpopgwwloANkR2fnloMTjEfKVHTv37Q==}
     hasBin: true
 
   siginfo@2.0.0:
@@ -4667,8 +4680,8 @@ packages:
     resolution: {integrity: sha512-rInDH6lCNiEyn3+hH8KVGFdbjc099j47+OSgbMrfDYX1CmXLfdKd7qi6IfcWj2wFxvSVkuI46M+wPGYfEOEj6g==}
     engines: {node: '>= 18'}
 
-  solid-js@1.9.9:
-    resolution: {integrity: sha512-A0ZBPJQldAeGCTW0YRYJmt7RCeh5rbFfPZ2aOttgYnctHE7HgKeHCBB/PVc2P7eOfmNXqMFFFoYYdm3S4dcbkA==}
+  solid-js@1.9.10:
+    resolution: {integrity: sha512-Coz956cos/EPDlhs6+jsdTxKuJDPT7B5SVIWgABwROyxjY7Xbr8wkzD68Et+NxnV7DLJ3nJdAC2r9InuV/4Jew==}
 
   solid-refresh@0.6.3:
     resolution: {integrity: sha512-F3aPsX6hVw9ttm5LYlth8Q15x6MlI/J3Dn+o3EQyRTtTxidepSTwAYdozt01/YA+7ObcciagGEyXIopGZzQtbA==}
@@ -4933,8 +4946,8 @@ packages:
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
 
-  use-sync-external-store@1.5.0:
-    resolution: {integrity: sha512-Rb46I4cGGVBmjamjphe8L/UnvJD+uPPtTkNvX5mZgqdbavhI4EbgIWJiIHXJ8bc/i9EQGPRh4DwEURJ552Do0A==}
+  use-sync-external-store@1.6.0:
+    resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -4964,8 +4977,8 @@ packages:
     peerDependencies:
       vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
 
-  vite-plugin-solid@2.11.8:
-    resolution: {integrity: sha512-hFrCxBfv3B1BmFqnJF4JOCYpjrmi/zwyeKjcomQ0khh8HFyQ8SbuBWQ7zGojfrz6HUOBFrJBNySDi/JgAHytWg==}
+  vite-plugin-solid@2.11.10:
+    resolution: {integrity: sha512-Yr1dQybmtDtDAHkii6hXuc1oVH9CPcS/Zb2jN/P36qqcrkNnVPsMTzQ06jyzFPFjj3U1IYKMVt/9ZqcwGCEbjw==}
     peerDependencies:
       '@testing-library/jest-dom': ^5.16.6 || ^5.17.0 || ^6.*
       solid-js: ^1.7.2
@@ -4982,8 +4995,8 @@ packages:
       vite:
         optional: true
 
-  vite@7.1.11:
-    resolution: {integrity: sha512-uzcxnSDVjAopEUjljkWh8EIrg6tlzrjFUfMcR1EVsRDGwf/ccef0qQPRyOrROwhrTDaApueq+ja+KLPlzR/zdg==}
+  vite@7.1.12:
+    resolution: {integrity: sha512-ZWyE8YXEXqJrrSLvYgrRP7p62OziLW7xI5HYGWFzOvupfAlrLvURSzv/FyGyy0eidogEM3ujU+kUG1zuHgb6Ug==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -5184,6 +5197,8 @@ packages:
 
 snapshots:
 
+  '@acemir/cssom@0.9.19': {}
+
   '@adobe/css-tools@4.4.4': {}
 
   '@asamuzakjp/css-color@4.0.5':
@@ -5194,7 +5209,7 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 11.2.2
 
-  '@asamuzakjp/dom-selector@6.5.7':
+  '@asamuzakjp/dom-selector@6.7.4':
     dependencies:
       '@asamuzakjp/nwsapi': 2.3.9
       bidi-js: 1.0.3
@@ -5656,19 +5671,19 @@ snapshots:
   '@esbuild/win32-x64@0.25.11':
     optional: true
 
-  '@eslint-community/eslint-utils@4.9.0(eslint@9.38.0(jiti@2.6.0))':
+  '@eslint-community/eslint-utils@4.9.0(eslint@9.39.0(jiti@2.6.0))':
     dependencies:
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       eslint-visitor-keys: 3.4.3
 
   '@eslint-community/regexpp@4.12.1': {}
 
-  '@eslint-react/ast@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@eslint-react/ast@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
       '@eslint-react/eff': 1.53.1
       '@typescript-eslint/types': 8.45.0
       '@typescript-eslint/typescript-estree': 8.45.0(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       string-ts: 2.2.1
       ts-pattern: 5.8.0
     transitivePeerDependencies:
@@ -5676,17 +5691,17 @@ snapshots:
       - supports-color
       - typescript
 
-  '@eslint-react/core@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@eslint-react/core@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
-      '@eslint-react/ast': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/ast': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@eslint-react/eff': 1.53.1
-      '@eslint-react/kit': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/shared': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/var': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/kit': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/shared': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/var': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.45.0
-      '@typescript-eslint/type-utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/types': 8.45.0
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       birecord: 0.1.1
       ts-pattern: 5.8.0
     transitivePeerDependencies:
@@ -5696,32 +5711,32 @@ snapshots:
 
   '@eslint-react/eff@1.53.1': {}
 
-  '@eslint-react/eslint-plugin@1.53.1(eslint@9.38.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)':
+  '@eslint-react/eslint-plugin@1.53.1(eslint@9.39.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)':
     dependencies:
       '@eslint-react/eff': 1.53.1
-      '@eslint-react/kit': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/shared': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/kit': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/shared': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.45.0
-      '@typescript-eslint/type-utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/types': 8.45.0
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint: 9.38.0(jiti@2.6.0)
-      eslint-plugin-react-debug: 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint-plugin-react-dom: 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint-plugin-react-hooks-extra: 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint-plugin-react-naming-convention: 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint-plugin-react-web-api: 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint-plugin-react-x: 1.53.1(eslint@9.38.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint: 9.39.0(jiti@2.6.0)
+      eslint-plugin-react-debug: 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint-plugin-react-dom: 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint-plugin-react-hooks-extra: 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint-plugin-react-naming-convention: 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint-plugin-react-web-api: 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint-plugin-react-x: 1.53.1(eslint@9.39.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
     optionalDependencies:
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
       - ts-api-utils
 
-  '@eslint-react/kit@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@eslint-react/kit@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
       '@eslint-react/eff': 1.53.1
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       ts-pattern: 5.8.0
       zod: 4.1.11
     transitivePeerDependencies:
@@ -5729,11 +5744,11 @@ snapshots:
       - supports-color
       - typescript
 
-  '@eslint-react/shared@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@eslint-react/shared@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
       '@eslint-react/eff': 1.53.1
-      '@eslint-react/kit': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/kit': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       ts-pattern: 5.8.0
       zod: 4.1.11
     transitivePeerDependencies:
@@ -5741,13 +5756,13 @@ snapshots:
       - supports-color
       - typescript
 
-  '@eslint-react/var@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@eslint-react/var@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
-      '@eslint-react/ast': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/ast': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@eslint-react/eff': 1.53.1
       '@typescript-eslint/scope-manager': 8.45.0
       '@typescript-eslint/types': 8.45.0
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       string-ts: 2.2.1
       ts-pattern: 5.8.0
     transitivePeerDependencies:
@@ -5763,11 +5778,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint/config-helpers@0.4.1':
+  '@eslint/config-helpers@0.4.2':
     dependencies:
-      '@eslint/core': 0.16.0
+      '@eslint/core': 0.17.0
 
-  '@eslint/core@0.16.0':
+  '@eslint/core@0.17.0':
     dependencies:
       '@types/json-schema': 7.0.15
 
@@ -5785,16 +5800,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint/js@9.38.0': {}
+  '@eslint/js@9.39.0': {}
 
   '@eslint/object-schema@2.1.7': {}
 
-  '@eslint/plugin-kit@0.4.0':
+  '@eslint/plugin-kit@0.4.1':
     dependencies:
-      '@eslint/core': 0.16.0
+      '@eslint/core': 0.17.0
       levn: 0.4.1
 
-  '@faker-js/faker@10.0.0': {}
+  '@faker-js/faker@10.1.0': {}
 
   '@gerrit0/mini-shiki@1.27.2':
     dependencies:
@@ -5925,7 +5940,7 @@ snapshots:
       '@emnapi/runtime': 1.5.0
       '@tybys/wasm-util': 0.9.0
 
-  '@napi-rs/wasm-runtime@1.0.5':
+  '@napi-rs/wasm-runtime@1.0.7':
     dependencies:
       '@emnapi/core': 1.5.0
       '@emnapi/runtime': 1.5.0
@@ -5944,98 +5959,98 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@nx/nx-darwin-arm64@21.6.2':
+  '@nx/nx-darwin-arm64@21.6.8':
     optional: true
 
-  '@nx/nx-darwin-x64@21.6.2':
+  '@nx/nx-darwin-x64@21.6.8':
     optional: true
 
-  '@nx/nx-freebsd-x64@21.6.2':
+  '@nx/nx-freebsd-x64@21.6.8':
     optional: true
 
-  '@nx/nx-linux-arm-gnueabihf@21.6.2':
+  '@nx/nx-linux-arm-gnueabihf@21.6.8':
     optional: true
 
-  '@nx/nx-linux-arm64-gnu@21.6.2':
+  '@nx/nx-linux-arm64-gnu@21.6.8':
     optional: true
 
-  '@nx/nx-linux-arm64-musl@21.6.2':
+  '@nx/nx-linux-arm64-musl@21.6.8':
     optional: true
 
-  '@nx/nx-linux-x64-gnu@21.6.2':
+  '@nx/nx-linux-x64-gnu@21.6.8':
     optional: true
 
-  '@nx/nx-linux-x64-musl@21.6.2':
+  '@nx/nx-linux-x64-musl@21.6.8':
     optional: true
 
-  '@nx/nx-win32-arm64-msvc@21.6.2':
+  '@nx/nx-win32-arm64-msvc@21.6.8':
     optional: true
 
-  '@nx/nx-win32-x64-msvc@21.6.2':
+  '@nx/nx-win32-x64-msvc@21.6.8':
     optional: true
 
-  '@oxc-resolver/binding-android-arm-eabi@11.8.4':
+  '@oxc-resolver/binding-android-arm-eabi@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-android-arm64@11.8.4':
+  '@oxc-resolver/binding-android-arm64@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-darwin-arm64@11.8.4':
+  '@oxc-resolver/binding-darwin-arm64@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-darwin-x64@11.8.4':
+  '@oxc-resolver/binding-darwin-x64@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-freebsd-x64@11.8.4':
+  '@oxc-resolver/binding-freebsd-x64@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-arm-gnueabihf@11.8.4':
+  '@oxc-resolver/binding-linux-arm-gnueabihf@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-arm-musleabihf@11.8.4':
+  '@oxc-resolver/binding-linux-arm-musleabihf@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-arm64-gnu@11.8.4':
+  '@oxc-resolver/binding-linux-arm64-gnu@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-arm64-musl@11.8.4':
+  '@oxc-resolver/binding-linux-arm64-musl@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-ppc64-gnu@11.8.4':
+  '@oxc-resolver/binding-linux-ppc64-gnu@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-riscv64-gnu@11.8.4':
+  '@oxc-resolver/binding-linux-riscv64-gnu@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-riscv64-musl@11.8.4':
+  '@oxc-resolver/binding-linux-riscv64-musl@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-s390x-gnu@11.8.4':
+  '@oxc-resolver/binding-linux-s390x-gnu@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-x64-gnu@11.8.4':
+  '@oxc-resolver/binding-linux-x64-gnu@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-linux-x64-musl@11.8.4':
+  '@oxc-resolver/binding-linux-x64-musl@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-wasm32-wasi@11.8.4':
+  '@oxc-resolver/binding-wasm32-wasi@11.12.0':
     dependencies:
-      '@napi-rs/wasm-runtime': 1.0.5
+      '@napi-rs/wasm-runtime': 1.0.7
     optional: true
 
-  '@oxc-resolver/binding-win32-arm64-msvc@11.8.4':
+  '@oxc-resolver/binding-win32-arm64-msvc@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-win32-ia32-msvc@11.8.4':
+  '@oxc-resolver/binding-win32-ia32-msvc@11.12.0':
     optional: true
 
-  '@oxc-resolver/binding-win32-x64-msvc@11.8.4':
+  '@oxc-resolver/binding-win32-x64-msvc@11.12.0':
     optional: true
 
   '@publint/pack@0.1.2': {}
 
-  '@rolldown/pluginutils@1.0.0-beta.38': {}
+  '@rolldown/pluginutils@1.0.0-beta.43': {}
 
   '@rollup/pluginutils@5.3.0(rollup@4.52.5)':
     dependencies:
@@ -6175,32 +6190,32 @@ snapshots:
       '@size-limit/file': 11.2.0(size-limit@11.2.0)
       size-limit: 11.2.0
 
-  '@solid-primitives/event-listener@2.4.3(solid-js@1.9.9)':
+  '@solid-primitives/event-listener@2.4.3(solid-js@1.9.10)':
     dependencies:
-      '@solid-primitives/utils': 6.3.2(solid-js@1.9.9)
-      solid-js: 1.9.9
+      '@solid-primitives/utils': 6.3.2(solid-js@1.9.10)
+      solid-js: 1.9.10
 
-  '@solid-primitives/keyboard@1.3.3(solid-js@1.9.9)':
+  '@solid-primitives/keyboard@1.3.3(solid-js@1.9.10)':
     dependencies:
-      '@solid-primitives/event-listener': 2.4.3(solid-js@1.9.9)
-      '@solid-primitives/rootless': 1.5.2(solid-js@1.9.9)
-      '@solid-primitives/utils': 6.3.2(solid-js@1.9.9)
-      solid-js: 1.9.9
+      '@solid-primitives/event-listener': 2.4.3(solid-js@1.9.10)
+      '@solid-primitives/rootless': 1.5.2(solid-js@1.9.10)
+      '@solid-primitives/utils': 6.3.2(solid-js@1.9.10)
+      solid-js: 1.9.10
 
-  '@solid-primitives/rootless@1.5.2(solid-js@1.9.9)':
+  '@solid-primitives/rootless@1.5.2(solid-js@1.9.10)':
     dependencies:
-      '@solid-primitives/utils': 6.3.2(solid-js@1.9.9)
-      solid-js: 1.9.9
+      '@solid-primitives/utils': 6.3.2(solid-js@1.9.10)
+      solid-js: 1.9.10
 
-  '@solid-primitives/utils@6.3.2(solid-js@1.9.9)':
+  '@solid-primitives/utils@6.3.2(solid-js@1.9.10)':
     dependencies:
-      solid-js: 1.9.9
+      solid-js: 1.9.10
 
-  '@stylistic/eslint-plugin@5.4.0(eslint@9.38.0(jiti@2.6.0))':
+  '@stylistic/eslint-plugin@5.4.0(eslint@9.39.0(jiti@2.6.0))':
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@9.38.0(jiti@2.6.0))
+      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.0(jiti@2.6.0))
       '@typescript-eslint/types': 8.45.0
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
       estraverse: 5.3.0
@@ -6217,12 +6232,12 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@tanstack/config@0.20.3(@types/node@24.6.1)(@typescript-eslint/utils@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))':
+  '@tanstack/config@0.20.3(@types/node@24.6.1)(@typescript-eslint/utils@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))':
     dependencies:
-      '@tanstack/eslint-config': 0.3.2(@typescript-eslint/utils@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@tanstack/eslint-config': 0.3.2(@typescript-eslint/utils@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@tanstack/publish-config': 0.2.1
       '@tanstack/typedoc-config': 0.2.1(typescript@5.9.2)
-      '@tanstack/vite-config': 0.3.0(@types/node@24.6.1)(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+      '@tanstack/vite-config': 0.3.0(@types/node@24.6.1)(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
     transitivePeerDependencies:
       - '@types/node'
       - '@typescript-eslint/utils'
@@ -6240,48 +6255,48 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@tanstack/devtools-event-client@0.3.2': {}
+  '@tanstack/devtools-event-client@0.3.4': {}
 
-  '@tanstack/devtools-ui@0.3.5(csstype@3.1.3)(solid-js@1.9.9)':
+  '@tanstack/devtools-ui@0.3.5(csstype@3.1.3)(solid-js@1.9.10)':
     dependencies:
       clsx: 2.1.1
-      goober: 2.1.16(csstype@3.1.3)
-      solid-js: 1.9.9
+      goober: 2.1.18(csstype@3.1.3)
+      solid-js: 1.9.10
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools-utils@0.0.3(@types/react@19.1.16)(csstype@3.1.3)(react@19.1.1)(solid-js@1.9.9)':
+  '@tanstack/devtools-utils@0.0.3(@types/react@19.2.2)(csstype@3.1.3)(react@19.2.0)(solid-js@1.9.10)':
     dependencies:
-      '@tanstack/devtools-ui': 0.3.5(csstype@3.1.3)(solid-js@1.9.9)
+      '@tanstack/devtools-ui': 0.3.5(csstype@3.1.3)(solid-js@1.9.10)
     optionalDependencies:
-      '@types/react': 19.1.16
-      react: 19.1.1
-      solid-js: 1.9.9
+      '@types/react': 19.2.2
+      react: 19.2.0
+      solid-js: 1.9.10
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools@0.6.14(csstype@3.1.3)(solid-js@1.9.9)':
+  '@tanstack/devtools@0.6.14(csstype@3.1.3)(solid-js@1.9.10)':
     dependencies:
-      '@solid-primitives/keyboard': 1.3.3(solid-js@1.9.9)
+      '@solid-primitives/keyboard': 1.3.3(solid-js@1.9.10)
       '@tanstack/devtools-event-bus': 0.3.2
-      '@tanstack/devtools-ui': 0.3.5(csstype@3.1.3)(solid-js@1.9.9)
+      '@tanstack/devtools-ui': 0.3.5(csstype@3.1.3)(solid-js@1.9.10)
       clsx: 2.1.1
-      goober: 2.1.16(csstype@3.1.3)
-      solid-js: 1.9.9
+      goober: 2.1.18(csstype@3.1.3)
+      solid-js: 1.9.10
     transitivePeerDependencies:
       - bufferutil
       - csstype
       - utf-8-validate
 
-  '@tanstack/eslint-config@0.3.2(@typescript-eslint/utils@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@tanstack/eslint-config@0.3.2(@typescript-eslint/utils@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
-      '@eslint/js': 9.38.0
-      '@stylistic/eslint-plugin': 5.4.0(eslint@9.38.0(jiti@2.6.0))
-      eslint-plugin-import-x: 4.16.1(@typescript-eslint/utils@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))
-      eslint-plugin-n: 17.23.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint/js': 9.39.0
+      '@stylistic/eslint-plugin': 5.4.0(eslint@9.39.0(jiti@2.6.0))
+      eslint-plugin-import-x: 4.16.1(@typescript-eslint/utils@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))
+      eslint-plugin-n: 17.23.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       globals: 16.4.0
-      typescript-eslint: 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      vue-eslint-parser: 10.2.0(eslint@9.38.0(jiti@2.6.0))
+      typescript-eslint: 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      vue-eslint-parser: 10.2.0(eslint@9.39.0(jiti@2.6.0))
     transitivePeerDependencies:
       - '@typescript-eslint/utils'
       - eslint
@@ -6300,60 +6315,60 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tanstack/query-core@5.90.2': {}
+  '@tanstack/query-core@5.90.5': {}
 
   '@tanstack/query-devtools@5.90.1': {}
 
-  '@tanstack/react-devtools@0.7.0(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(csstype@3.1.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(solid-js@1.9.9)':
+  '@tanstack/react-devtools@0.7.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(csstype@3.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(solid-js@1.9.10)':
     dependencies:
-      '@tanstack/devtools': 0.6.14(csstype@3.1.3)(solid-js@1.9.9)
-      '@types/react': 19.1.16
-      '@types/react-dom': 19.1.9(@types/react@19.1.16)
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
+      '@tanstack/devtools': 0.6.14(csstype@3.1.3)(solid-js@1.9.10)
+      '@types/react': 19.2.2
+      '@types/react-dom': 19.2.2(@types/react@19.2.2)
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
     transitivePeerDependencies:
       - bufferutil
       - csstype
       - solid-js
       - utf-8-validate
 
-  '@tanstack/react-persister@0.1.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@tanstack/react-persister@0.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@tanstack/persister': 0.1.1
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
 
-  '@tanstack/react-query-devtools@5.90.2(@tanstack/react-query@5.90.2(react@19.1.1))(react@19.1.1)':
+  '@tanstack/react-query-devtools@5.90.2(@tanstack/react-query@5.90.5(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@tanstack/query-devtools': 5.90.1
-      '@tanstack/react-query': 5.90.2(react@19.1.1)
-      react: 19.1.1
+      '@tanstack/react-query': 5.90.5(react@19.2.0)
+      react: 19.2.0
 
-  '@tanstack/react-query@5.90.2(react@19.1.1)':
+  '@tanstack/react-query@5.90.5(react@19.2.0)':
     dependencies:
-      '@tanstack/query-core': 5.90.2
-      react: 19.1.1
+      '@tanstack/query-core': 5.90.5
+      react: 19.2.0
 
-  '@tanstack/react-store@0.7.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@tanstack/react-store@0.7.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@tanstack/store': 0.7.7
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-      use-sync-external-store: 1.5.0(react@19.1.1)
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+      use-sync-external-store: 1.6.0(react@19.2.0)
 
-  '@tanstack/solid-devtools@0.7.0(csstype@3.1.3)(solid-js@1.9.9)':
+  '@tanstack/solid-devtools@0.7.0(csstype@3.1.3)(solid-js@1.9.10)':
     dependencies:
-      '@tanstack/devtools': 0.6.14(csstype@3.1.3)(solid-js@1.9.9)
-      solid-js: 1.9.9
+      '@tanstack/devtools': 0.6.14(csstype@3.1.3)(solid-js@1.9.10)
+      solid-js: 1.9.10
     transitivePeerDependencies:
       - bufferutil
       - csstype
       - utf-8-validate
 
-  '@tanstack/solid-store@0.7.7(solid-js@1.9.9)':
+  '@tanstack/solid-store@0.7.7(solid-js@1.9.10)':
     dependencies:
       '@tanstack/store': 0.7.7
-      solid-js: 1.9.9
+      solid-js: 1.9.10
 
   '@tanstack/store@0.7.7': {}
 
@@ -6365,12 +6380,12 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@tanstack/vite-config@0.3.0(@types/node@24.6.1)(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))':
+  '@tanstack/vite-config@0.3.0(@types/node@24.6.1)(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))':
     dependencies:
       rollup-plugin-preserve-directives: 0.4.0(rollup@4.52.5)
-      vite-plugin-dts: 4.2.3(@types/node@24.6.1)(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
-      vite-plugin-externalize-deps: 0.9.0(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
-      vite-tsconfig-paths: 5.1.4(typescript@5.9.2)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+      vite-plugin-dts: 4.2.3(@types/node@24.6.1)(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+      vite-plugin-externalize-deps: 0.9.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+      vite-tsconfig-paths: 5.1.4(typescript@5.9.2)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
     transitivePeerDependencies:
       - '@types/node'
       - rollup
@@ -6378,7 +6393,7 @@ snapshots:
       - typescript
       - vite
 
-  '@testing-library/jest-dom@6.9.0':
+  '@testing-library/jest-dom@6.9.1':
     dependencies:
       '@adobe/css-tools': 4.4.4
       aria-query: 5.3.2
@@ -6443,25 +6458,25 @@ snapshots:
     dependencies:
       undici-types: 7.13.0
 
-  '@types/react-dom@19.1.9(@types/react@19.1.16)':
+  '@types/react-dom@19.2.2(@types/react@19.2.2)':
     dependencies:
-      '@types/react': 19.1.16
+      '@types/react': 19.2.2
 
-  '@types/react@19.1.16':
+  '@types/react@19.2.2':
     dependencies:
       csstype: 3.1.3
 
   '@types/unist@3.0.3': {}
 
-  '@typescript-eslint/eslint-plugin@8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@typescript-eslint/eslint-plugin@8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/parser': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.45.0
-      '@typescript-eslint/type-utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/visitor-keys': 8.45.0
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       graphemer: 1.4.0
       ignore: 7.0.5
       natural-compare: 1.4.0
@@ -6470,14 +6485,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@typescript-eslint/parser@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.45.0
       '@typescript-eslint/types': 8.45.0
       '@typescript-eslint/typescript-estree': 8.45.0(typescript@5.9.2)
       '@typescript-eslint/visitor-keys': 8.45.0
       debug: 4.4.3
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
@@ -6500,13 +6515,13 @@ snapshots:
     dependencies:
       typescript: 5.9.2
 
-  '@typescript-eslint/type-utils@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@typescript-eslint/type-utils@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
       '@typescript-eslint/types': 8.45.0
       '@typescript-eslint/typescript-estree': 8.45.0(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       debug: 4.4.3
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       ts-api-utils: 2.1.0(typescript@5.9.2)
       typescript: 5.9.2
     transitivePeerDependencies:
@@ -6530,13 +6545,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)':
+  '@typescript-eslint/utils@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@9.38.0(jiti@2.6.0))
+      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.0(jiti@2.6.0))
       '@typescript-eslint/scope-manager': 8.45.0
       '@typescript-eslint/types': 8.45.0
       '@typescript-eslint/typescript-estree': 8.45.0(typescript@5.9.2)
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
@@ -6605,15 +6620,15 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vitejs/plugin-react@5.0.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))':
+  '@vitejs/plugin-react@5.1.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.4)
       '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.28.4)
-      '@rolldown/pluginutils': 1.0.0-beta.38
+      '@rolldown/pluginutils': 1.0.0-beta.43
       '@types/babel__core': 7.20.5
-      react-refresh: 0.17.0
-      vite: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+      react-refresh: 0.18.0
+      vite: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -6625,13 +6640,13 @@ snapshots:
       chai: 5.3.3
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@3.2.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))':
+  '@vitest/mocker@3.2.4(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))':
     dependencies:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
       magic-string: 0.30.19
     optionalDependencies:
-      vite: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+      vite: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
   '@vitest/pretty-format@3.2.4':
     dependencies:
@@ -6803,12 +6818,12 @@ snapshots:
       parse5: 7.3.0
       validate-html-nesting: 1.2.3
 
-  babel-preset-solid@1.9.9(@babel/core@7.28.4)(solid-js@1.9.9):
+  babel-preset-solid@1.9.9(@babel/core@7.28.4)(solid-js@1.9.10):
     dependencies:
       '@babel/core': 7.28.4
       babel-plugin-jsx-dom-expressions: 0.40.1(@babel/core@7.28.4)
     optionalDependencies:
-      solid-js: 1.9.9
+      solid-js: 1.9.10
 
   balanced-match@1.0.2: {}
 
@@ -6998,7 +7013,7 @@ snapshots:
 
   css.escape@1.5.1: {}
 
-  cssstyle@5.3.1(postcss@8.5.6):
+  cssstyle@5.3.2(postcss@8.5.6):
     dependencies:
       '@asamuzakjp/css-color': 4.0.5
       '@csstools/css-syntax-patches-for-csstree': 1.0.14(postcss@8.5.6)
@@ -7015,7 +7030,7 @@ snapshots:
 
   dataloader@1.4.0: {}
 
-  dayjs@1.11.18: {}
+  dayjs@1.11.19: {}
 
   de-indent@1.0.2: {}
 
@@ -7164,9 +7179,9 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-compat-utils@0.5.1(eslint@9.38.0(jiti@2.6.0)):
+  eslint-compat-utils@0.5.1(eslint@9.39.0(jiti@2.6.0)):
     dependencies:
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       semver: 7.7.2
 
   eslint-import-context@0.1.9(unrs-resolver@1.11.1):
@@ -7176,19 +7191,19 @@ snapshots:
     optionalDependencies:
       unrs-resolver: 1.11.1
 
-  eslint-plugin-es-x@7.8.0(eslint@9.38.0(jiti@2.6.0)):
+  eslint-plugin-es-x@7.8.0(eslint@9.39.0(jiti@2.6.0)):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@9.38.0(jiti@2.6.0))
+      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.0(jiti@2.6.0))
       '@eslint-community/regexpp': 4.12.1
-      eslint: 9.38.0(jiti@2.6.0)
-      eslint-compat-utils: 0.5.1(eslint@9.38.0(jiti@2.6.0))
+      eslint: 9.39.0(jiti@2.6.0)
+      eslint-compat-utils: 0.5.1(eslint@9.39.0(jiti@2.6.0))
 
-  eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0)):
+  eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0)):
     dependencies:
       '@typescript-eslint/types': 8.45.0
       comment-parser: 1.4.1
       debug: 4.4.3
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       eslint-import-context: 0.1.9(unrs-resolver@1.11.1)
       is-glob: 4.0.3
       minimatch: 10.0.3
@@ -7196,16 +7211,16 @@ snapshots:
       stable-hash-x: 0.2.0
       unrs-resolver: 1.11.1
     optionalDependencies:
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-n@17.23.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2):
+  eslint-plugin-n@17.23.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@9.38.0(jiti@2.6.0))
+      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.0(jiti@2.6.0))
       enhanced-resolve: 5.18.3
-      eslint: 9.38.0(jiti@2.6.0)
-      eslint-plugin-es-x: 7.8.0(eslint@9.38.0(jiti@2.6.0))
+      eslint: 9.39.0(jiti@2.6.0)
+      eslint-plugin-es-x: 7.8.0(eslint@9.39.0(jiti@2.6.0))
       get-tsconfig: 4.10.1
       globals: 15.15.0
       globrex: 0.1.2
@@ -7215,31 +7230,31 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  eslint-plugin-react-compiler@19.1.0-rc.2(eslint@9.38.0(jiti@2.6.0)):
+  eslint-plugin-react-compiler@19.1.0-rc.2(eslint@9.39.0(jiti@2.6.0)):
     dependencies:
       '@babel/core': 7.28.4
       '@babel/parser': 7.28.4
       '@babel/plugin-proposal-private-methods': 7.18.6(@babel/core@7.28.4)
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       hermes-parser: 0.25.1
       zod: 3.25.76
       zod-validation-error: 3.5.3(zod@3.25.76)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-debug@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2):
+  eslint-plugin-react-debug@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2):
     dependencies:
-      '@eslint-react/ast': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/core': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/ast': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/core': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@eslint-react/eff': 1.53.1
-      '@eslint-react/kit': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/shared': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/var': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/kit': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/shared': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/var': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.45.0
-      '@typescript-eslint/type-utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/types': 8.45.0
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint: 9.38.0(jiti@2.6.0)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint: 9.39.0(jiti@2.6.0)
       string-ts: 2.2.1
       ts-pattern: 5.8.0
     optionalDependencies:
@@ -7247,19 +7262,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-dom@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2):
+  eslint-plugin-react-dom@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2):
     dependencies:
-      '@eslint-react/ast': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/core': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/ast': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/core': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@eslint-react/eff': 1.53.1
-      '@eslint-react/kit': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/shared': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/var': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/kit': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/shared': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/var': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.45.0
       '@typescript-eslint/types': 8.45.0
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       compare-versions: 6.1.1
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       string-ts: 2.2.1
       ts-pattern: 5.8.0
     optionalDependencies:
@@ -7267,19 +7282,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-hooks-extra@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2):
+  eslint-plugin-react-hooks-extra@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2):
     dependencies:
-      '@eslint-react/ast': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/core': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/ast': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/core': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@eslint-react/eff': 1.53.1
-      '@eslint-react/kit': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/shared': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/var': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/kit': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/shared': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/var': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.45.0
-      '@typescript-eslint/type-utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/types': 8.45.0
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint: 9.38.0(jiti@2.6.0)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint: 9.39.0(jiti@2.6.0)
       string-ts: 2.2.1
       ts-pattern: 5.8.0
     optionalDependencies:
@@ -7287,23 +7302,23 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-hooks@5.2.0(eslint@9.38.0(jiti@2.6.0)):
+  eslint-plugin-react-hooks@5.2.0(eslint@9.39.0(jiti@2.6.0)):
     dependencies:
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
 
-  eslint-plugin-react-naming-convention@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2):
+  eslint-plugin-react-naming-convention@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2):
     dependencies:
-      '@eslint-react/ast': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/core': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/ast': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/core': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@eslint-react/eff': 1.53.1
-      '@eslint-react/kit': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/shared': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/var': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/kit': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/shared': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/var': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.45.0
-      '@typescript-eslint/type-utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/types': 8.45.0
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint: 9.38.0(jiti@2.6.0)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint: 9.39.0(jiti@2.6.0)
       string-ts: 2.2.1
       ts-pattern: 5.8.0
     optionalDependencies:
@@ -7311,18 +7326,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-web-api@1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2):
+  eslint-plugin-react-web-api@1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2):
     dependencies:
-      '@eslint-react/ast': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/core': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/ast': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/core': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@eslint-react/eff': 1.53.1
-      '@eslint-react/kit': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/shared': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/var': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/kit': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/shared': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/var': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.45.0
       '@typescript-eslint/types': 8.45.0
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint: 9.38.0(jiti@2.6.0)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint: 9.39.0(jiti@2.6.0)
       string-ts: 2.2.1
       ts-pattern: 5.8.0
     optionalDependencies:
@@ -7330,21 +7345,21 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-x@1.53.1(eslint@9.38.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2):
+  eslint-plugin-react-x@1.53.1(eslint@9.39.0(jiti@2.6.0))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2):
     dependencies:
-      '@eslint-react/ast': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/core': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/ast': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/core': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@eslint-react/eff': 1.53.1
-      '@eslint-react/kit': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/shared': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@eslint-react/var': 1.53.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/kit': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/shared': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@eslint-react/var': 1.53.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.45.0
-      '@typescript-eslint/type-utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/types': 8.45.0
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       compare-versions: 6.1.1
-      eslint: 9.38.0(jiti@2.6.0)
-      is-immutable-type: 5.0.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint: 9.39.0(jiti@2.6.0)
+      is-immutable-type: 5.0.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       string-ts: 2.2.1
       ts-pattern: 5.8.0
     optionalDependencies:
@@ -7353,11 +7368,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-unused-imports@4.2.0(@typescript-eslint/eslint-plugin@8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0)):
+  eslint-plugin-unused-imports@4.3.0(@typescript-eslint/eslint-plugin@8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0)):
     dependencies:
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
     optionalDependencies:
-      '@typescript-eslint/eslint-plugin': 8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
 
   eslint-scope@8.4.0:
     dependencies:
@@ -7368,16 +7383,16 @@ snapshots:
 
   eslint-visitor-keys@4.2.1: {}
 
-  eslint@9.38.0(jiti@2.6.0):
+  eslint@9.39.0(jiti@2.6.0):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@9.38.0(jiti@2.6.0))
+      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.0(jiti@2.6.0))
       '@eslint-community/regexpp': 4.12.1
       '@eslint/config-array': 0.21.1
-      '@eslint/config-helpers': 0.4.1
-      '@eslint/core': 0.16.0
+      '@eslint/config-helpers': 0.4.2
+      '@eslint/core': 0.17.0
       '@eslint/eslintrc': 3.3.1
-      '@eslint/js': 9.38.0
-      '@eslint/plugin-kit': 0.4.0
+      '@eslint/js': 9.39.0
+      '@eslint/plugin-kit': 0.4.1
       '@humanfs/node': 0.16.7
       '@humanwhocodes/module-importer': 1.0.1
       '@humanwhocodes/retry': 0.4.3
@@ -7590,7 +7605,7 @@ snapshots:
 
   globrex@0.1.2: {}
 
-  goober@2.1.16(csstype@3.1.3):
+  goober@2.1.18(csstype@3.1.3):
     dependencies:
       csstype: 3.1.3
 
@@ -7694,10 +7709,10 @@ snapshots:
     dependencies:
       is-extglob: 2.1.1
 
-  is-immutable-type@5.0.1(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2):
+  is-immutable-type@5.0.1(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2):
     dependencies:
-      '@typescript-eslint/type-utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint: 9.38.0(jiti@2.6.0)
+      '@typescript-eslint/type-utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint: 9.39.0(jiti@2.6.0)
       ts-api-utils: 2.1.0(typescript@5.9.2)
       ts-declaration-location: 1.0.7(typescript@5.9.2)
       typescript: 5.9.2
@@ -7760,18 +7775,18 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jsdom@27.0.0(postcss@8.5.6):
+  jsdom@27.1.0(postcss@8.5.6):
     dependencies:
-      '@asamuzakjp/dom-selector': 6.5.7
-      cssstyle: 5.3.1(postcss@8.5.6)
+      '@acemir/cssom': 0.9.19
+      '@asamuzakjp/dom-selector': 6.7.4
+      cssstyle: 5.3.2(postcss@8.5.6)
       data-urls: 6.0.0
       decimal.js: 10.6.0
       html-encoding-sniffer: 4.0.0
       http-proxy-agent: 7.0.2
       https-proxy-agent: 7.0.6
       is-potential-custom-element-name: 1.0.1
-      parse5: 7.3.0
-      rrweb-cssom: 0.8.0
+      parse5: 8.0.0
       saxes: 6.0.0
       symbol-tree: 3.2.4
       tough-cookie: 6.0.0
@@ -7818,7 +7833,7 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  knip@5.64.1(@types/node@24.6.1)(typescript@5.9.2):
+  knip@5.66.4(@types/node@24.6.1)(typescript@5.9.2):
     dependencies:
       '@nodelib/fs.walk': 1.2.8
       '@types/node': 24.6.1
@@ -7827,7 +7842,7 @@ snapshots:
       jiti: 2.6.0
       js-yaml: 4.1.0
       minimist: 1.2.8
-      oxc-resolver: 11.8.4
+      oxc-resolver: 11.12.0
       picocolors: 1.1.1
       picomatch: 4.0.3
       smol-toml: 1.4.2
@@ -8002,7 +8017,7 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  nx@21.6.2:
+  nx@21.6.8:
     dependencies:
       '@napi-rs/wasm-runtime': 0.2.4
       '@yarnpkg/lockfile': 1.1.0
@@ -8040,16 +8055,16 @@ snapshots:
       yargs: 17.7.2
       yargs-parser: 21.1.1
     optionalDependencies:
-      '@nx/nx-darwin-arm64': 21.6.2
-      '@nx/nx-darwin-x64': 21.6.2
-      '@nx/nx-freebsd-x64': 21.6.2
-      '@nx/nx-linux-arm-gnueabihf': 21.6.2
-      '@nx/nx-linux-arm64-gnu': 21.6.2
-      '@nx/nx-linux-arm64-musl': 21.6.2
-      '@nx/nx-linux-x64-gnu': 21.6.2
-      '@nx/nx-linux-x64-musl': 21.6.2
-      '@nx/nx-win32-arm64-msvc': 21.6.2
-      '@nx/nx-win32-x64-msvc': 21.6.2
+      '@nx/nx-darwin-arm64': 21.6.8
+      '@nx/nx-darwin-x64': 21.6.8
+      '@nx/nx-freebsd-x64': 21.6.8
+      '@nx/nx-linux-arm-gnueabihf': 21.6.8
+      '@nx/nx-linux-arm64-gnu': 21.6.8
+      '@nx/nx-linux-arm64-musl': 21.6.8
+      '@nx/nx-linux-x64-gnu': 21.6.8
+      '@nx/nx-linux-x64-musl': 21.6.8
+      '@nx/nx-win32-arm64-msvc': 21.6.8
+      '@nx/nx-win32-x64-msvc': 21.6.8
     transitivePeerDependencies:
       - debug
 
@@ -8089,29 +8104,27 @@ snapshots:
 
   outdent@0.5.0: {}
 
-  oxc-resolver@11.8.4:
-    dependencies:
-      napi-postinstall: 0.3.3
+  oxc-resolver@11.12.0:
     optionalDependencies:
-      '@oxc-resolver/binding-android-arm-eabi': 11.8.4
-      '@oxc-resolver/binding-android-arm64': 11.8.4
-      '@oxc-resolver/binding-darwin-arm64': 11.8.4
-      '@oxc-resolver/binding-darwin-x64': 11.8.4
-      '@oxc-resolver/binding-freebsd-x64': 11.8.4
-      '@oxc-resolver/binding-linux-arm-gnueabihf': 11.8.4
-      '@oxc-resolver/binding-linux-arm-musleabihf': 11.8.4
-      '@oxc-resolver/binding-linux-arm64-gnu': 11.8.4
-      '@oxc-resolver/binding-linux-arm64-musl': 11.8.4
-      '@oxc-resolver/binding-linux-ppc64-gnu': 11.8.4
-      '@oxc-resolver/binding-linux-riscv64-gnu': 11.8.4
-      '@oxc-resolver/binding-linux-riscv64-musl': 11.8.4
-      '@oxc-resolver/binding-linux-s390x-gnu': 11.8.4
-      '@oxc-resolver/binding-linux-x64-gnu': 11.8.4
-      '@oxc-resolver/binding-linux-x64-musl': 11.8.4
-      '@oxc-resolver/binding-wasm32-wasi': 11.8.4
-      '@oxc-resolver/binding-win32-arm64-msvc': 11.8.4
-      '@oxc-resolver/binding-win32-ia32-msvc': 11.8.4
-      '@oxc-resolver/binding-win32-x64-msvc': 11.8.4
+      '@oxc-resolver/binding-android-arm-eabi': 11.12.0
+      '@oxc-resolver/binding-android-arm64': 11.12.0
+      '@oxc-resolver/binding-darwin-arm64': 11.12.0
+      '@oxc-resolver/binding-darwin-x64': 11.12.0
+      '@oxc-resolver/binding-freebsd-x64': 11.12.0
+      '@oxc-resolver/binding-linux-arm-gnueabihf': 11.12.0
+      '@oxc-resolver/binding-linux-arm-musleabihf': 11.12.0
+      '@oxc-resolver/binding-linux-arm64-gnu': 11.12.0
+      '@oxc-resolver/binding-linux-arm64-musl': 11.12.0
+      '@oxc-resolver/binding-linux-ppc64-gnu': 11.12.0
+      '@oxc-resolver/binding-linux-riscv64-gnu': 11.12.0
+      '@oxc-resolver/binding-linux-riscv64-musl': 11.12.0
+      '@oxc-resolver/binding-linux-s390x-gnu': 11.12.0
+      '@oxc-resolver/binding-linux-x64-gnu': 11.12.0
+      '@oxc-resolver/binding-linux-x64-musl': 11.12.0
+      '@oxc-resolver/binding-wasm32-wasi': 11.12.0
+      '@oxc-resolver/binding-win32-arm64-msvc': 11.12.0
+      '@oxc-resolver/binding-win32-ia32-msvc': 11.12.0
+      '@oxc-resolver/binding-win32-x64-msvc': 11.12.0
 
   p-filter@2.1.0:
     dependencies:
@@ -8157,6 +8170,10 @@ snapshots:
       parse5: 7.3.0
 
   parse5@7.3.0:
+    dependencies:
+      entities: 6.0.1
+
+  parse5@8.0.0:
     dependencies:
       entities: 6.0.1
 
@@ -8215,7 +8232,7 @@ snapshots:
 
   proxy-from-env@1.1.0: {}
 
-  publint@0.3.13:
+  publint@0.3.15:
     dependencies:
       '@publint/pack': 0.1.2
       package-manager-detector: 1.3.0
@@ -8230,16 +8247,16 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  react-dom@19.1.1(react@19.1.1):
+  react-dom@19.2.0(react@19.2.0):
     dependencies:
-      react: 19.1.1
-      scheduler: 0.26.0
+      react: 19.2.0
+      scheduler: 0.27.0
 
   react-is@18.3.1: {}
 
-  react-refresh@0.17.0: {}
+  react-refresh@0.18.0: {}
 
-  react@19.1.1: {}
+  react@19.2.0: {}
 
   read-yaml-file@1.1.0:
     dependencies:
@@ -8320,8 +8337,6 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.52.5
       fsevents: 2.3.3
 
-  rrweb-cssom@0.8.0: {}
-
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
@@ -8338,7 +8353,7 @@ snapshots:
     dependencies:
       xmlchars: 2.2.0
 
-  scheduler@0.26.0: {}
+  scheduler@0.27.0: {}
 
   semver@6.3.1: {}
 
@@ -8360,32 +8375,40 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  sherif-darwin-arm64@1.6.1:
+  sherif-darwin-arm64@1.8.0:
     optional: true
 
-  sherif-darwin-x64@1.6.1:
+  sherif-darwin-x64@1.8.0:
     optional: true
 
-  sherif-linux-arm64@1.6.1:
+  sherif-linux-arm64-musl@1.8.0:
     optional: true
 
-  sherif-linux-x64@1.6.1:
+  sherif-linux-arm64@1.8.0:
     optional: true
 
-  sherif-windows-arm64@1.6.1:
+  sherif-linux-x64-musl@1.8.0:
     optional: true
 
-  sherif-windows-x64@1.6.1:
+  sherif-linux-x64@1.8.0:
     optional: true
 
-  sherif@1.6.1:
+  sherif-windows-arm64@1.8.0:
+    optional: true
+
+  sherif-windows-x64@1.8.0:
+    optional: true
+
+  sherif@1.8.0:
     optionalDependencies:
-      sherif-darwin-arm64: 1.6.1
-      sherif-darwin-x64: 1.6.1
-      sherif-linux-arm64: 1.6.1
-      sherif-linux-x64: 1.6.1
-      sherif-windows-arm64: 1.6.1
-      sherif-windows-x64: 1.6.1
+      sherif-darwin-arm64: 1.8.0
+      sherif-darwin-x64: 1.8.0
+      sherif-linux-arm64: 1.8.0
+      sherif-linux-arm64-musl: 1.8.0
+      sherif-linux-x64: 1.8.0
+      sherif-linux-x64-musl: 1.8.0
+      sherif-windows-arm64: 1.8.0
+      sherif-windows-x64: 1.8.0
 
   siginfo@2.0.0: {}
 
@@ -8415,18 +8438,18 @@ snapshots:
 
   smol-toml@1.4.2: {}
 
-  solid-js@1.9.9:
+  solid-js@1.9.10:
     dependencies:
       csstype: 3.1.3
       seroval: 1.3.2
       seroval-plugins: 1.3.3(seroval@1.3.2)
 
-  solid-refresh@0.6.3(solid-js@1.9.9):
+  solid-refresh@0.6.3(solid-js@1.9.10):
     dependencies:
       '@babel/generator': 7.28.3
       '@babel/helper-module-imports': 7.27.1
       '@babel/types': 7.28.4
-      solid-js: 1.9.9
+      solid-js: 1.9.10
     transitivePeerDependencies:
       - supports-color
 
@@ -8610,13 +8633,13 @@ snapshots:
       typescript: 5.9.2
       yaml: 2.8.1
 
-  typescript-eslint@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2):
+  typescript-eslint@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      '@typescript-eslint/parser': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.45.0(@typescript-eslint/parser@8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2))(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      '@typescript-eslint/parser': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
       '@typescript-eslint/typescript-estree': 8.45.0(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.45.0(eslint@9.38.0(jiti@2.6.0))(typescript@5.9.2)
-      eslint: 9.38.0(jiti@2.6.0)
+      '@typescript-eslint/utils': 8.45.0(eslint@9.39.0(jiti@2.6.0))(typescript@5.9.2)
+      eslint: 9.39.0(jiti@2.6.0)
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
@@ -8671,9 +8694,9 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-sync-external-store@1.5.0(react@19.1.1):
+  use-sync-external-store@1.6.0(react@19.2.0):
     dependencies:
-      react: 19.1.1
+      react: 19.2.0
 
   util-deprecate@1.0.2: {}
 
@@ -8685,7 +8708,7 @@ snapshots:
       debug: 4.4.3
       es-module-lexer: 1.7.0
       pathe: 2.0.3
-      vite: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+      vite: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -8700,7 +8723,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite-plugin-dts@4.2.3(@types/node@24.6.1)(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
+  vite-plugin-dts@4.2.3(@types/node@24.6.1)(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
     dependencies:
       '@microsoft/api-extractor': 7.47.7(@types/node@24.6.1)
       '@rollup/pluginutils': 5.3.0(rollup@4.52.5)
@@ -8713,43 +8736,43 @@ snapshots:
       magic-string: 0.30.19
       typescript: 5.9.2
     optionalDependencies:
-      vite: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+      vite: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - '@types/node'
       - rollup
       - supports-color
 
-  vite-plugin-externalize-deps@0.9.0(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
+  vite-plugin-externalize-deps@0.9.0(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
     dependencies:
-      vite: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+      vite: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
-  vite-plugin-solid@2.11.8(@testing-library/jest-dom@6.9.0)(solid-js@1.9.9)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
+  vite-plugin-solid@2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
     dependencies:
       '@babel/core': 7.28.4
       '@types/babel__core': 7.20.5
-      babel-preset-solid: 1.9.9(@babel/core@7.28.4)(solid-js@1.9.9)
+      babel-preset-solid: 1.9.9(@babel/core@7.28.4)(solid-js@1.9.10)
       merge-anything: 5.1.7
-      solid-js: 1.9.9
-      solid-refresh: 0.6.3(solid-js@1.9.9)
-      vite: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
-      vitefu: 1.1.1(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+      solid-js: 1.9.10
+      solid-refresh: 0.6.3(solid-js@1.9.10)
+      vite: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+      vitefu: 1.1.1(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
     optionalDependencies:
-      '@testing-library/jest-dom': 6.9.0
+      '@testing-library/jest-dom': 6.9.1
     transitivePeerDependencies:
       - supports-color
 
-  vite-tsconfig-paths@5.1.4(typescript@5.9.2)(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
+  vite-tsconfig-paths@5.1.4(typescript@5.9.2)(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
     dependencies:
       debug: 4.4.3
       globrex: 0.1.2
       tsconfck: 3.1.6(typescript@5.9.2)
     optionalDependencies:
-      vite: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+      vite: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1):
+  vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.11
       fdir: 6.5.0(picomatch@4.0.3)
@@ -8763,15 +8786,15 @@ snapshots:
       jiti: 2.6.0
       yaml: 2.8.1
 
-  vitefu@1.1.1(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
+  vitefu@1.1.1(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)):
     optionalDependencies:
-      vite: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+      vite: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
 
-  vitest@3.2.4(@types/node@24.6.1)(jiti@2.6.0)(jsdom@27.0.0(postcss@8.5.6))(yaml@2.8.1):
+  vitest@3.2.4(@types/node@24.6.1)(jiti@2.6.0)(jsdom@27.1.0(postcss@8.5.6))(yaml@2.8.1):
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.4
-      '@vitest/mocker': 3.2.4(vite@7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
+      '@vitest/mocker': 3.2.4(vite@7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1))
       '@vitest/pretty-format': 3.2.4
       '@vitest/runner': 3.2.4
       '@vitest/snapshot': 3.2.4
@@ -8789,12 +8812,12 @@ snapshots:
       tinyglobby: 0.2.15
       tinypool: 1.1.1
       tinyrainbow: 2.0.0
-      vite: 7.1.11(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
+      vite: 7.1.12(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       vite-node: 3.2.4(@types/node@24.6.1)(jiti@2.6.0)(yaml@2.8.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.6.1
-      jsdom: 27.0.0(postcss@8.5.6)
+      jsdom: 27.1.0(postcss@8.5.6)
     transitivePeerDependencies:
       - jiti
       - less
@@ -8811,10 +8834,10 @@ snapshots:
 
   vscode-uri@3.1.0: {}
 
-  vue-eslint-parser@10.2.0(eslint@9.38.0(jiti@2.6.0)):
+  vue-eslint-parser@10.2.0(eslint@9.39.0(jiti@2.6.0)):
     dependencies:
       debug: 4.4.3
-      eslint: 9.38.0(jiti@2.6.0)
+      eslint: 9.39.0(jiti@2.6.0)
       eslint-scope: 8.4.0
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
