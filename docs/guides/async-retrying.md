@@ -130,6 +130,15 @@ const retryer = new AsyncRetryer(
     },
     onLastError: (error, retryer) => {
       console.error('All retries exhausted:', error)
+    },
+    onExecutionTimeout: (retryer) => {
+      console.log('Execution attempt timed out')
+    },
+    onTotalExecutionTimeout: (retryer) => {
+      console.log('Total execution time exceeded')
+    },
+    onAbort: (reason, retryer) => {
+      console.log('Execution aborted:', reason)
     }
   }
 )
@@ -231,11 +240,14 @@ The `maxExecutionTime` option sets the maximum time for a single function call:
 
 ```ts
 const retryer = new AsyncRetryer(asyncFn, {
-  maxExecutionTime: 5000 // Abort individual calls after 5 seconds
+  maxExecutionTime: 5000, // Abort individual calls after 5 seconds
+  onExecutionTimeout: (retryer) => {
+    console.log('Execution attempt timed out, retrying...')
+  }
 })
 ```
 
-If a single execution exceeds this time, it will be aborted and retried (if attempts remain).
+If a single execution exceeds this time, `onExecutionTimeout` is called, followed by `onAbort('execution-timeout')`, and the attempt will be aborted and retried (if attempts remain).
 
 ### Total Execution Timeout
 
@@ -245,11 +257,14 @@ The `maxTotalExecutionTime` option sets the maximum time for the entire retry op
 const retryer = new AsyncRetryer(asyncFn, {
   maxAttempts: 5,
   baseWait: 1000,
-  maxTotalExecutionTime: 30000 // Abort entire operation after 30 seconds
+  maxTotalExecutionTime: 30000, // Abort entire operation after 30 seconds
+  onTotalExecutionTimeout: (retryer) => {
+    console.log('Total execution time exceeded, aborting...')
+  }
 })
 ```
 
-If the total time across all attempts exceeds this limit, the retry operation will be aborted.
+If the total time across all attempts exceeds this limit, `onTotalExecutionTimeout` is called, followed by `onAbort('total-timeout')`, and the retry operation will be aborted.
 
 ### Combining Timeouts
 
@@ -323,6 +338,26 @@ const retryer = new AsyncRetryer(asyncFn, {
     // Called after execution completes (success or failure)
     console.log('Execution settled')
     console.log('Total executions:', retryer.store.state.executionCount)
+  },
+  onAbort: (reason, retryer) => {
+    // Called when execution is aborted (manually or due to timeouts)
+    // reason can be: 'manual', 'execution-timeout', 'total-timeout', or 'new-execution'
+    console.log('Execution aborted:', reason)
+    if (reason === 'execution-timeout') {
+      console.log('Single execution timed out')
+    } else if (reason === 'total-timeout') {
+      console.log('Total execution time exceeded')
+    }
+  },
+  onExecutionTimeout: (retryer) => {
+    // Called when a single execution attempt times out (maxExecutionTime exceeded)
+    console.log('Execution attempt timed out')
+    console.log('Current attempt:', retryer.store.state.currentAttempt)
+  },
+  onTotalExecutionTimeout: (retryer) => {
+    // Called when the total execution time times out (maxTotalExecutionTime exceeded)
+    console.log('Total execution time exceeded')
+    console.log('Total time:', retryer.store.state.totalExecutionTime)
   }
 })
 ```
@@ -334,11 +369,29 @@ The callbacks are executed in the following order:
 ```text
 1. execute() called
 2. Try attempt 1
+   └─ If execution times out (maxExecutionTime):
+      ├─ onExecutionTimeout() called
+      ├─ onAbort('execution-timeout') called
+      └─ Retry if attempts remain
    └─ If fails:
+      ├─ onError(error) called
       ├─ onRetry(1, error) called
       └─ Wait for backoff
+   └─ If succeeds:
+      ├─ onSuccess(result) called
+      ├─ onSettled() called
+      └─ Return result
 3. Try attempt 2
+   └─ If total time exceeds (maxTotalExecutionTime):
+      ├─ onTotalExecutionTimeout() called
+      ├─ onAbort('total-timeout') called
+      └─ Execution aborted
+   └─ If execution times out:
+      ├─ onExecutionTimeout() called
+      ├─ onAbort('execution-timeout') called
+      └─ Retry if attempts remain
    └─ If fails:
+      ├─ onError(error) called
       ├─ onRetry(2, error) called
       └─ Wait for backoff
 4. Try attempt 3 (last attempt)
@@ -351,6 +404,8 @@ The callbacks are executed in the following order:
       ├─ onSuccess(result) called
       ├─ onSettled() called
       └─ Return result
+5. Manual abort or new execution:
+   └─ onAbort('manual') or onAbort('new-execution') called
 ```
 
 ## Dynamic Options and Enabling/Disabling
@@ -401,7 +456,11 @@ The async retryer supports manual cancellation of ongoing execution and pending 
 ```ts
 const retryer = new AsyncRetryer(longRunningAsyncFn, {
   maxAttempts: 5,
-  baseWait: 1000
+  baseWait: 1000,
+  onAbort: (reason, retryer) => {
+    console.log('Execution aborted:', reason)
+    // reason will be 'manual' when abort() is called
+  }
 })
 
 // Start execution
@@ -411,6 +470,7 @@ const promise = retryer.execute()
 retryer.abort()
 
 // The promise will resolve to undefined
+// onAbort('manual') is called
 const result = await promise
 console.log(result) // undefined
 ```

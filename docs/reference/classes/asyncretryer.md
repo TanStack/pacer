@@ -7,7 +7,7 @@ title: AsyncRetryer
 
 # Class: AsyncRetryer\<TFn\>
 
-Defined in: [async-retryer.ts:255](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L255)
+Defined in: [async-retryer.ts:276](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L276)
 
 Provides robust retry functionality for asynchronous functions, supporting configurable backoff strategies,
 attempt limits, timeout controls, and detailed state management. The AsyncRetryer class is designed to help you reliably
@@ -51,19 +51,22 @@ The `throwOnError` option controls when errors are thrown (default: `'last'`):
 - `true`: Throws every error immediately (disables retrying)
 - `false`: Never throws errors, returns `undefined` instead
 
-Callbacks for error handling:
+Callbacks for lifecycle management:
+- `onAbort`: Called when execution is aborted (manually or due to timeouts)
 - `onError`: Called for every error (including during retries)
 - `onLastError`: Called only for the final error after all retries fail
 - `onRetry`: Called before each retry attempt
+- `onSettled`: Called after execution completes (success or failure) of each attempt
 - `onSuccess`: Called when execution succeeds
-- `onSettled`: Called after execution completes (success or failure)
+- `onExecutionTimeout`: Called when a single execution attempt times out
+- `onTotalExecutionTimeout`: Called when the total execution time times out
 
 ## Usage
 
 - Use for async operations that may fail transiently and benefit from retrying.
 - Configure `maxAttempts`, `backoff`, `baseWait`, and `jitter` to control retry behavior.
 - Set `maxExecutionTime` and `maxTotalExecutionTime` to prevent hanging operations.
-- Use `onRetry`, `onSuccess`, `onError`, `onLastError`, and `onSettled` for custom side effects.
+- Use `onAbort`, `onError`, `onLastError`, `onRetry`, `onSettled`, `onSuccess`, `onExecutionTimeout`, and `onTotalExecutionTimeout` for custom side effects.
 - Call `abort()` to cancel ongoing execution and pending retries.
 - Call `reset()` to reset state and cancel execution.
 - Use `getAbortSignal()` to make your async function cancellable.
@@ -110,7 +113,7 @@ The async function type to be retried.
 new AsyncRetryer<TFn>(fn, initialOptions): AsyncRetryer<TFn>
 ```
 
-Defined in: [async-retryer.ts:268](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L268)
+Defined in: [async-retryer.ts:289](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L289)
 
 Creates a new AsyncRetryer instance
 
@@ -140,7 +143,7 @@ Configuration options for the retryer
 fn: TFn;
 ```
 
-Defined in: [async-retryer.ts:269](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L269)
+Defined in: [async-retryer.ts:290](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L290)
 
 The async function to retry
 
@@ -152,7 +155,7 @@ The async function to retry
 key: string;
 ```
 
-Defined in: [async-retryer.ts:259](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L259)
+Defined in: [async-retryer.ts:280](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L280)
 
 ***
 
@@ -165,11 +168,14 @@ options: AsyncRetryerOptions<TFn> & Omit<Required<AsyncRetryerOptions<any>>,
   | "onSettled"
   | "onSuccess"
   | "key"
+  | "onAbort"
   | "onLastError"
-| "onRetry">;
+  | "onRetry"
+  | "onExecutionTimeout"
+| "onTotalExecutionTimeout">;
 ```
 
-Defined in: [async-retryer.ts:260](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L260)
+Defined in: [async-retryer.ts:281](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L281)
 
 ***
 
@@ -179,7 +185,7 @@ Defined in: [async-retryer.ts:260](https://github.com/TanStack/pacer/blob/main/p
 readonly store: Store<Readonly<AsyncRetryerState<TFn>>>;
 ```
 
-Defined in: [async-retryer.ts:256](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L256)
+Defined in: [async-retryer.ts:277](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L277)
 
 ## Methods
 
@@ -189,7 +195,7 @@ Defined in: [async-retryer.ts:256](https://github.com/TanStack/pacer/blob/main/p
 _emit(): void
 ```
 
-Defined in: [async-retryer.ts:292](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L292)
+Defined in: [async-retryer.ts:313](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L313)
 
 Emits a change event for the async retryer instance. Mostly useful for devtools.
 
@@ -202,12 +208,20 @@ Emits a change event for the async retryer instance. Mostly useful for devtools.
 ### abort()
 
 ```ts
-abort(): void
+abort(reason): void
 ```
 
-Defined in: [async-retryer.ts:570](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L570)
+Defined in: [async-retryer.ts:596](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L596)
 
 Cancels the current execution and any pending retries
+
+#### Parameters
+
+##### reason
+
+The reason for the abort (defaults to 'manual')
+
+`"manual"` | `"execution-timeout"` | `"total-timeout"` | `"new-execution"`
 
 #### Returns
 
@@ -221,7 +235,7 @@ Cancels the current execution and any pending retries
 execute(...args): Promise<undefined | Awaited<ReturnType<TFn>>>
 ```
 
-Defined in: [async-retryer.ts:382](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L382)
+Defined in: [async-retryer.ts:403](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L403)
 
 Executes the function with retry logic
 
@@ -251,7 +265,7 @@ The last error if throwOnError is true and all retries fail
 getAbortSignal(): null | AbortSignal
 ```
 
-Defined in: [async-retryer.ts:563](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L563)
+Defined in: [async-retryer.ts:588](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L588)
 
 Returns the current AbortSignal for the executing operation.
 Use this signal in your async function to make it cancellable.
@@ -284,9 +298,9 @@ retryer.abort()
 reset(): void
 ```
 
-Defined in: [async-retryer.ts:583](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L583)
+Defined in: [async-retryer.ts:616](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L616)
 
-Resets the retryer to its initial state and cancels any ongoing execution
+Resets the retryer to its initial state
 
 #### Returns
 
@@ -300,7 +314,7 @@ Resets the retryer to its initial state and cancels any ongoing execution
 setOptions(newOptions): void
 ```
 
-Defined in: [async-retryer.ts:298](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L298)
+Defined in: [async-retryer.ts:319](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L319)
 
 Updates the retryer options
 

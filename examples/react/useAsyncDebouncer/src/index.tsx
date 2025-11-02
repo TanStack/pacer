@@ -10,7 +10,7 @@ interface SearchResult {
 
 // Simulate API call with fake data
 const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 1500)) // Simulate network delay
   return [
     { id: 1, title: `${term} result ${Math.floor(Math.random() * 100)}` },
     { id: 2, title: `${term} result ${Math.floor(Math.random() * 100)}` },
@@ -48,6 +48,10 @@ function App() {
         setResults([])
       },
       // throwOnError: true,
+      asyncRetryerOptions: {
+        maxAttempts: 3,
+        maxExecutionTime: 1000,
+      },
     },
     // Optional Selector function to pick the state you want to track and use
     (state) => ({

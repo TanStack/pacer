@@ -835,6 +835,7 @@ export class AsyncQueuer<TValue> {
   reset = (): void => {
     this.#setState(getDefaultAsyncQueuerState<TValue>())
     this.options.onItemsChange?.(this)
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 

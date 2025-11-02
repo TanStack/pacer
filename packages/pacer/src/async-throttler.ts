@@ -543,6 +543,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    */
   reset = (): void => {
     this.#setState(getDefaultAsyncThrottlerState<TFn>())
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 

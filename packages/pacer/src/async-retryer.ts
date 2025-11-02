@@ -81,15 +81,20 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
    */
   initialState?: Partial<AsyncRetryerState<TFn>>
   /**
+   * Jitter percentage to add to retry delays (0-1). Adds randomness to prevent thundering herd.
+   * @default 0
+   */
+  jitter?: number
+  /**
    * Optional key to identify this async retryer instance.
    * If provided, the async retryer will be identified by this key in the devtools and PacerProvider if applicable.
    */
   key?: string
   /**
-   * Jitter percentage to add to retry delays (0-1). Adds randomness to prevent thundering herd.
-   * @default 0
+   * Maximum number of retry attempts, or a function that returns the max attempts
+   * @default 3
    */
-  jitter?: number
+  maxAttempts?: number | ((retryer: AsyncRetryer<TFn>) => number)
   /**
    * Maximum execution time in milliseconds for a single function call before aborting
    * @default Infinity
@@ -101,10 +106,12 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
    */
   maxTotalExecutionTime?: number
   /**
-   * Maximum number of retry attempts, or a function that returns the max attempts
-   * @default 3
+   * Callback invoked when the execution is aborted (manually or due to timeouts)
    */
-  maxAttempts?: number | ((retryer: AsyncRetryer<TFn>) => number)
+  onAbort?: (
+    reason: 'manual' | 'execution-timeout' | 'total-timeout' | 'new-execution',
+    retryer: AsyncRetryer<TFn>,
+  ) => void
   /**
    * Callback invoked when any error occurs during execution (including retries)
    */
@@ -122,7 +129,7 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
    */
   onRetry?: (attempt: number, error: Error, retryer: AsyncRetryer<TFn>) => void
   /**
-   * Callback invoked after execution completes (success or failure)
+   * Callback invoked after execution completes (success or failure) of each attempt
    */
   onSettled?: (args: Parameters<TFn>, retryer: AsyncRetryer<TFn>) => void
   /**
@@ -133,6 +140,14 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
     args: Parameters<TFn>,
     retryer: AsyncRetryer<TFn>,
   ) => void
+  /**
+   * Callback invoked when a single execution attempt times out (maxExecutionTime exceeded)
+   */
+  onExecutionTimeout?: (retryer: AsyncRetryer<TFn>) => void
+  /**
+   * Callback invoked when the total execution time times out (maxTotalExecutionTime exceeded)
+   */
+  onTotalExecutionTimeout?: (retryer: AsyncRetryer<TFn>) => void
   /**
    * Controls when errors are thrown:
    * - 'last': Only throw the final error after all retries are exhausted
@@ -147,11 +162,14 @@ const defaultOptions: Omit<
   Required<AsyncRetryerOptions<any>>,
   | 'initialState'
   | 'key'
+  | 'onAbort'
   | 'onError'
   | 'onLastError'
   | 'onRetry'
   | 'onSettled'
   | 'onSuccess'
+  | 'onExecutionTimeout'
+  | 'onTotalExecutionTimeout'
 > = {
   backoff: 'exponential',
   baseWait: 1000,
@@ -206,19 +224,22 @@ const defaultOptions: Omit<
  * - `true`: Throws every error immediately (disables retrying)
  * - `false`: Never throws errors, returns `undefined` instead
  *
- * Callbacks for error handling:
+ * Callbacks for lifecycle management:
+ * - `onAbort`: Called when execution is aborted (manually or due to timeouts)
  * - `onError`: Called for every error (including during retries)
  * - `onLastError`: Called only for the final error after all retries fail
  * - `onRetry`: Called before each retry attempt
+ * - `onSettled`: Called after execution completes (success or failure) of each attempt
  * - `onSuccess`: Called when execution succeeds
- * - `onSettled`: Called after execution completes (success or failure)
+ * - `onExecutionTimeout`: Called when a single execution attempt times out
+ * - `onTotalExecutionTimeout`: Called when the total execution time times out
  *
  * ## Usage
  *
  * - Use for async operations that may fail transiently and benefit from retrying.
  * - Configure `maxAttempts`, `backoff`, `baseWait`, and `jitter` to control retry behavior.
  * - Set `maxExecutionTime` and `maxTotalExecutionTime` to prevent hanging operations.
- * - Use `onRetry`, `onSuccess`, `onError`, `onLastError`, and `onSettled` for custom side effects.
+ * - Use `onAbort`, `onError`, `onLastError`, `onRetry`, `onSettled`, `onSuccess`, `onExecutionTimeout`, and `onTotalExecutionTimeout` for custom side effects.
  * - Call `abort()` to cancel ongoing execution and pending retries.
  * - Call `reset()` to reset state and cancel execution.
  * - Use `getAbortSignal()` to make your async function cancellable.
@@ -387,7 +408,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     }
 
     // Cancel any existing execution
-    this.abort()
+    this.abort('new-execution')
 
     const startTime = Date.now()
     let lastError: Error | undefined
@@ -406,7 +427,8 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     let totalTimeoutId: NodeJS.Timeout | undefined
     if (this.options.maxTotalExecutionTime !== Infinity) {
       totalTimeoutId = setTimeout(() => {
-        this.abort()
+        this.options.onTotalExecutionTimeout?.(this)
+        this.abort('total-timeout')
       }, this.options.maxTotalExecutionTime)
     }
 
@@ -426,7 +448,8 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
           this.options.maxTotalExecutionTime !== Infinity &&
           currentTotalTime >= this.options.maxTotalExecutionTime
         ) {
-          this.abort()
+          this.options.onTotalExecutionTimeout?.(this)
+          this.abort('total-timeout')
           return undefined
         }
 
@@ -438,6 +461,8 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
             this.fn(...args),
             new Promise<never>((_, reject) => {
               const timeout = setTimeout(() => {
+                this.options.onExecutionTimeout?.(this)
+                this.abort('execution-timeout')
                 reject(
                   new Error(
                     `Execution timeout: ${this.options.maxExecutionTime}ms exceeded`,
@@ -489,6 +514,9 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         lastError = error instanceof Error ? error : new Error(String(error))
         this.#setState({ lastError })
 
+        // Call onError for every error (including during retries)
+        this.options.onError?.(lastError, args, this)
+
         if (attempt < this.#getMaxAttempts()) {
           this.options.onRetry?.(attempt, lastError, this)
 
@@ -509,8 +537,6 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
               signal.addEventListener('abort', onAbort)
             })
             if (signal.aborted) {
-              // When cancelled during retry wait, surface the last error exactly once
-              this.options.onError?.(lastError, args, this)
               return undefined
             }
           }
@@ -528,7 +554,6 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     // Exhausted retries - finalize state
     this.#setState({ isExecuting: false })
     this.options.onLastError?.(lastError as Error, this)
-    this.options.onError?.(lastError as Error, args, this)
     this.options.onSettled?.(args, this)
 
     if (
@@ -566,22 +591,29 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 
   /**
    * Cancels the current execution and any pending retries
+   * @param reason The reason for the abort (defaults to 'manual')
    */
-  abort = (): void => {
+  abort = (
+    reason:
+      | 'manual'
+      | 'execution-timeout'
+      | 'total-timeout'
+      | 'new-execution' = 'manual',
+  ): void => {
     if (this.#abortController) {
       this.#abortController.abort()
       this.#abortController = null
       this.#setState({
         isExecuting: false,
       })
+      this.options.onAbort?.(reason, this)
     }
   }
 
   /**
-   * Resets the retryer to its initial state and cancels any ongoing execution
+   * Resets the retryer to its initial state
    */
   reset = (): void => {
-    this.abort()
     this.#setState(getDefaultAsyncRetryerState<TFn>())
   }
 }

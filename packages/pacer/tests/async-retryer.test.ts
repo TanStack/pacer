@@ -300,7 +300,7 @@ describe('AsyncRetryer', () => {
       vi.advanceTimersByTime(100)
       await executePromise
 
-      expect(onError).toHaveBeenCalledTimes(1) // Only called once at the end after all retries fail
+      expect(onError).toHaveBeenCalledTimes(2)
       expect(onError).toHaveBeenCalledWith(error, ['arg1'], retryer)
     })
 
@@ -408,6 +408,117 @@ describe('AsyncRetryer', () => {
       expect(onSettled).toHaveBeenCalledTimes(2)
       expect(onSettled).toHaveBeenCalledWith(['arg1'], retryer)
     })
+
+    it('should call onAbort when manually aborted', async () => {
+      const mockFn = vi.fn().mockImplementation(async () => {
+        vi.advanceTimersByTime(1000)
+        return 'success'
+      })
+      const onAbort = vi.fn()
+      const retryer = new AsyncRetryer(mockFn, { onAbort })
+
+      const executePromise = retryer.execute()
+      retryer.abort()
+
+      await executePromise
+
+      expect(onAbort).toHaveBeenCalledTimes(1)
+      expect(onAbort).toHaveBeenCalledWith('manual', retryer)
+    })
+
+    it('should call onAbort when aborted during retry wait', async () => {
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const onAbort = vi.fn()
+      const retryer = new AsyncRetryer(mockFn, {
+        baseWait: 1000,
+        onAbort,
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      // Wait for first attempt to fail
+      await Promise.resolve()
+
+      // Abort during retry delay
+      retryer.abort()
+
+      await executePromise
+
+      expect(onAbort).toHaveBeenCalledTimes(1)
+      expect(onAbort).toHaveBeenCalledWith('manual', retryer)
+    })
+
+    it('should call onTotalExecutionTimeout and onAbort when maxTotalExecutionTime is exceeded', async () => {
+      const mockFn = vi.fn().mockImplementation(async () => {
+        vi.advanceTimersByTime(2000)
+        return 'success'
+      })
+      const onTotalExecutionTimeout = vi.fn()
+      const onAbort = vi.fn()
+      const retryer = new AsyncRetryer(mockFn, {
+        maxTotalExecutionTime: 1000,
+        onTotalExecutionTimeout,
+        onAbort,
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      // Advance past the total timeout
+      vi.advanceTimersByTime(1001)
+
+      await executePromise
+
+      expect(onTotalExecutionTimeout).toHaveBeenCalledTimes(1)
+      expect(onTotalExecutionTimeout).toHaveBeenCalledWith(retryer)
+      expect(onAbort).toHaveBeenCalledTimes(1)
+      expect(onAbort).toHaveBeenCalledWith('total-timeout', retryer)
+    })
+
+    it('should call onExecutionTimeout and onAbort when maxExecutionTime is exceeded', async () => {
+      const mockFn = vi.fn().mockImplementation(async () => {
+        // Simulate a long-running operation using fake timers
+        vi.advanceTimersByTime(2000)
+        return 'success'
+      })
+      const onExecutionTimeout = vi.fn()
+      const onAbort = vi.fn()
+      const retryer = new AsyncRetryer(mockFn, {
+        maxExecutionTime: 1000,
+        onExecutionTimeout,
+        onAbort,
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      // Advance past the execution timeout
+      vi.advanceTimersByTime(1001)
+
+      await executePromise
+
+      expect(onExecutionTimeout).toHaveBeenCalledTimes(1)
+      expect(onExecutionTimeout).toHaveBeenCalledWith(retryer)
+      expect(onAbort).toHaveBeenCalledTimes(1)
+      expect(onAbort).toHaveBeenCalledWith('execution-timeout', retryer)
+    })
+
+    it('should not call onAbort for AbortError exceptions', async () => {
+      const mockFn = vi
+        .fn()
+        .mockRejectedValue(new DOMException('Aborted', 'AbortError'))
+      const onAbort = vi.fn()
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 1,
+        onAbort,
+        throwOnError: false,
+      })
+
+      await retryer.execute()
+
+      expect(onAbort).not.toHaveBeenCalled()
+    })
   })
 
   describe('Dynamic Options', () => {
@@ -465,7 +576,12 @@ describe('AsyncRetryer', () => {
     it('should allow new executions after cancel and resolve undefined without error', async () => {
       const mockFn = vi.fn().mockResolvedValue('success')
       const onError = vi.fn()
-      const retryer = new AsyncRetryer(mockFn, { onError, throwOnError: false })
+      const onAbort = vi.fn()
+      const retryer = new AsyncRetryer(mockFn, {
+        onError,
+        onAbort,
+        throwOnError: false,
+      })
 
       // Start and immediately cancel
       const executePromise1 = retryer.execute()
@@ -474,6 +590,8 @@ describe('AsyncRetryer', () => {
       const result1 = await executePromise1
       expect(result1).toBeUndefined()
       expect(onError).not.toHaveBeenCalled()
+      expect(onAbort).toHaveBeenCalledTimes(1)
+      expect(onAbort).toHaveBeenCalledWith('manual', retryer)
 
       // Should be able to execute again after cancel
       const result2 = await retryer.execute()
@@ -485,10 +603,12 @@ describe('AsyncRetryer', () => {
     it('should cancel retry delays without error', async () => {
       const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
       const onError = vi.fn()
+      const onAbort = vi.fn()
       const retryer = new AsyncRetryer(mockFn, {
         baseWait: 1000,
         throwOnError: false,
         onError,
+        onAbort,
       })
 
       const executePromise = retryer.execute()
@@ -503,6 +623,8 @@ describe('AsyncRetryer', () => {
       expect(result).toBeUndefined()
       expect(mockFn).toHaveBeenCalledTimes(1) // Only first attempt
       expect(onError).toHaveBeenCalledTimes(1) // only final onError after loop completion before cancel
+      expect(onAbort).toHaveBeenCalledTimes(1)
+      expect(onAbort).toHaveBeenCalledWith('manual', retryer)
     })
   })
 
@@ -529,8 +651,11 @@ describe('AsyncRetryer', () => {
       })
     })
 
-    it('should cancel ongoing execution when resetting', async () => {
-      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+    it('should reset state but not cancel ongoing execution', async () => {
+      const mockFn = vi
+        .fn()
+        .mockRejectedValueOnce(new Error('Failure'))
+        .mockResolvedValue('success')
       const retryer = new AsyncRetryer(mockFn, {
         baseWait: 1000,
         throwOnError: false,
@@ -541,11 +666,26 @@ describe('AsyncRetryer', () => {
       // Wait for first attempt to fail and retry wait to be scheduled
       await Promise.resolve()
 
+      // State should show retrying
+      expect(retryer.store.state.isExecuting).toBe(true)
+      expect(retryer.store.state.currentAttempt).toBeGreaterThan(0)
+
       retryer.reset()
 
+      // State should be reset
+      expect(retryer.store.state.isExecuting).toBe(false)
+      expect(retryer.store.state.currentAttempt).toBe(0)
+      expect(retryer.store.state.status).toBe('idle')
+
+      // But execution continues in background
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(1000)
+
       const result = await executePromise
-      expect(result).toBeUndefined()
-      expect(mockFn).toHaveBeenCalledTimes(1) // Only first attempt before reset
+
+      // Execution still completes
+      expect(result).toBe('success')
+      expect(mockFn).toHaveBeenCalledTimes(2) // Both attempts run
     })
   })
 

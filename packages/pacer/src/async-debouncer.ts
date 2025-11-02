@@ -475,6 +475,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    */
   reset = (): void => {
     this.#setState(getDefaultAsyncDebouncerState<TFn>())
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 

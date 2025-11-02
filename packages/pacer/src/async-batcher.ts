@@ -503,6 +503,7 @@ export class AsyncBatcher<TValue> {
   reset = (): void => {
     this.#setState(getDefaultAsyncBatcherState<TValue>())
     this.options.onItemsChange?.(this)
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 

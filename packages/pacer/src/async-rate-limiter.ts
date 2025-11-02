@@ -537,6 +537,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   reset = (): void => {
     this.#setState(getDefaultAsyncRateLimiterState())
     this.#clearTimeouts()
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 
