@@ -5,7 +5,7 @@ id: async-retrying
 
 TanStack Pacer provides a simple `asyncRetry` utility function that wraps any async function with retry logic. This is the recommended approach for most use cases, as it creates a new retry-enabled function that can be called multiple times safely. For advanced scenarios requiring state management and reactive updates, TanStack Pacer also provides the `AsyncRetryer` class, though this requires careful usage patterns.
 
-> [!NOTE] The AsyncRetryer API is in alpha and may change before the 1.0.0 release.
+> [!NOTE] The AsyncRetryer API is in alpha and may change before the 1.0.0 release. The ergonomics of the API are currently suited for internal use of TanStack Pacer's other async utilities, but we have a goal of making it more ergonomic for external use as well.
 
 Adding retry wrappers to your async functions is a great way to add a layer of robustness to your code. However, there are some important considerations to keep in mind. TanStack Pacer includes safe default options such as exponential backoff and low amount of max attempts by default to prevent overwhelming a service.
 
@@ -137,6 +137,9 @@ const retryer = new AsyncRetryer(
     onTotalExecutionTimeout: (retryer) => {
       console.log('Total execution time exceeded')
     },
+    onSettled: (args, retryer) => {
+      console.log('Execution settled')
+    },
     onAbort: (reason, retryer) => {
       console.log('Execution aborted:', reason)
     }
@@ -157,6 +160,23 @@ const retryer2 = new AsyncRetryer(asyncFn, options)
 const data2 = await retryer2.execute('/api/other-data')
 ```
 
+### Sharing Options Between Instances
+
+Use `asyncRetryerOptions` to share common options between different `AsyncRetryer` instances:
+
+```ts
+import { asyncRetryerOptions, AsyncRetryer } from '@tanstack/pacer'
+
+const sharedOptions = asyncRetryerOptions({
+  maxAttempts: 3,
+  backoff: 'exponential',
+  baseWait: 1000,
+  onSuccess: (result, args, retryer) => console.log('Success')
+})
+
+const retryer1 = new AsyncRetryer(fn1, { ...sharedOptions, key: 'retryer1' })
+const retryer2 = new AsyncRetryer(fn2, { ...sharedOptions, maxAttempts: 5 })
+```
 
 ## Backoff Strategies
 
@@ -335,7 +355,7 @@ const retryer = new AsyncRetryer(asyncFn, {
     console.log('Attempts used:', retryer.store.state.currentAttempt)
   },
   onSettled: (args, retryer) => {
-    // Called after execution completes (success or failure)
+    // Called after each attempt completes (success or failure), including after all retries are exhausted
     console.log('Execution settled')
     console.log('Total executions:', retryer.store.state.executionCount)
   },
@@ -372,14 +392,15 @@ The callbacks are executed in the following order:
    └─ If execution times out (maxExecutionTime):
       ├─ onExecutionTimeout() called
       ├─ onAbort('execution-timeout') called
-      └─ Retry if attempts remain
+      └─ onSettled() called (in finally block)
    └─ If fails:
       ├─ onError(error) called
       ├─ onRetry(1, error) called
+      ├─ onSettled() called (in finally block)
       └─ Wait for backoff
    └─ If succeeds:
       ├─ onSuccess(result) called
-      ├─ onSettled() called
+      ├─ onSettled() called (in finally block)
       └─ Return result
 3. Try attempt 2
    └─ If total time exceeds (maxTotalExecutionTime):
@@ -389,20 +410,22 @@ The callbacks are executed in the following order:
    └─ If execution times out:
       ├─ onExecutionTimeout() called
       ├─ onAbort('execution-timeout') called
-      └─ Retry if attempts remain
+      └─ onSettled() called (in finally block)
    └─ If fails:
       ├─ onError(error) called
       ├─ onRetry(2, error) called
+      ├─ onSettled() called (in finally block)
       └─ Wait for backoff
 4. Try attempt 3 (last attempt)
    └─ If fails:
-      ├─ onLastError(error) called
       ├─ onError(error) called
-      ├─ onSettled() called
+      ├─ onSettled() called (in finally block)
+      ├─ onLastError(error) called (after loop exits)
+      ├─ onSettled() called (after all retries exhausted)
       └─ Throw error (if throwOnError is 'last' or true)
    └─ If succeeds:
       ├─ onSuccess(result) called
-      ├─ onSettled() called
+      ├─ onSettled() called (in finally block)
       └─ Return result
 5. Manual abort or new execution:
    └─ onAbort('manual') or onAbort('new-execution') called

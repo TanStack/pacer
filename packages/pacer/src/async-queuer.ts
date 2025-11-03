@@ -207,6 +207,18 @@ export interface AsyncQueuerOptions<TValue> {
   wait?: number | ((queuer: AsyncQueuer<TValue>) => number)
 }
 
+/**
+ * Utility function for sharing common `AsyncQueuerOptions` options between different `AsyncQueuer` instances.
+ */
+export function asyncQueuerOptions<
+  TValue = any,
+  TOptions extends Partial<AsyncQueuerOptions<TValue>> = Partial<
+    AsyncQueuerOptions<TValue>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
   Required<AsyncQueuerOptions<any>>,
   | 'initialState'

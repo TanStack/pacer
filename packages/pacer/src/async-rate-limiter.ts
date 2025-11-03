@@ -142,6 +142,18 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   windowType?: 'fixed' | 'sliding'
 }
 
+/**
+ * Utility function for sharing common `AsyncRateLimiterOptions` options between different `AsyncRateLimiter` instances.
+ */
+export function asyncRateLimiterOptions<
+  TFn extends AnyAsyncFunction = AnyAsyncFunction,
+  TOptions extends Partial<AsyncRateLimiterOptions<TFn>> = Partial<
+    AsyncRateLimiterOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<AsyncRateLimiterOptions<any>>,
   'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess' | 'key'

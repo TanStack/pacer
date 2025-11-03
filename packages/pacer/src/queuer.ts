@@ -151,6 +151,18 @@ export interface QueuerOptions<TValue> {
   wait?: number | ((queuer: Queuer<TValue>) => number)
 }
 
+/**
+ * Utility function for sharing common `QueuerOptions` options between different `Queuer` instances.
+ */
+export function queuerOptions<
+  TValue = any,
+  TOptions extends Partial<QueuerOptions<TValue>> = Partial<
+    QueuerOptions<TValue>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<QueuerOptions<any>>,
   | 'initialState'

@@ -134,6 +134,18 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
   wait: number | ((debouncer: AsyncDebouncer<TFn>) => number)
 }
 
+/**
+ * Utility function for sharing common `AsyncDebouncerOptions` options between different `AsyncDebouncer` instances.
+ */
+export function asyncDebouncerOptions<
+  TFn extends AnyAsyncFunction = AnyAsyncFunction,
+  TOptions extends Partial<AsyncDebouncerOptions<TFn>> = Partial<
+    AsyncDebouncerOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 type AsyncDebouncerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncDebouncerOptions<any>,
   'initialState' | 'onError' | 'onSettled' | 'onSuccess' | 'key'

@@ -89,6 +89,18 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
   wait: number | ((throttler: Throttler<TFn>) => number)
 }
 
+/**
+ * Utility function for sharing common `ThrottlerOptions` options between different `Throttler` instances.
+ */
+export function throttlerOptions<
+  TFn extends AnyFunction = AnyFunction,
+  TOptions extends Partial<ThrottlerOptions<TFn>> = Partial<
+    ThrottlerOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<ThrottlerOptions<any>>,
   'initialState' | 'onExecute' | 'key'

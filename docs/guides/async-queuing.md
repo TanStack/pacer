@@ -316,6 +316,23 @@ The abort functionality:
 
 For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
+### Sharing Options Between Instances
+
+Use `asyncQueuerOptions` to share common options between different `AsyncQueuer` instances:
+
+```ts
+import { asyncQueuerOptions, AsyncQueuer } from '@tanstack/pacer'
+
+const sharedOptions = asyncQueuerOptions({
+  concurrency: 2,
+  wait: 1000,
+  onSuccess: (result, item, queuer) => console.log('Success')
+})
+
+const queuer1 = new AsyncQueuer(fn1, { ...sharedOptions, key: 'queuer1' })
+const queuer2 = new AsyncQueuer(fn2, { ...sharedOptions, concurrency: 4 })
+```
+
 ## State Management
 
 The `AsyncQueuer` class uses TanStack Store for reactive state management, providing real-time access to queue state, processing statistics, and concurrent task tracking. All state is stored in a TanStack Store and can be accessed via `asyncQueuer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `asyncQueuer.state` along with providing a selector callback as the 3rd argument to the `useAsyncQueuer` hook to opt-in to state tracking as shown below.

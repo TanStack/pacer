@@ -7,7 +7,7 @@ title: PacerProviderProps
 
 # Interface: PacerProviderProps
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:39](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L39)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:37](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L37)
 
 ## Properties
 
@@ -17,7 +17,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:39](https://github.com/T
 children: ReactNode;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L40)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:38](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L38)
 
 ***
 
@@ -27,4 +27,4 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:40](https://github.com/T
 optional defaultOptions: PacerProviderOptions;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L41)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:39](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L39)

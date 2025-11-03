@@ -170,6 +170,23 @@ The abort functionality:
 
 For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
+### Sharing Options Between Instances
+
+Use `asyncRateLimiterOptions` to share common options between different `AsyncRateLimiter` instances:
+
+```ts
+import { asyncRateLimiterOptions, AsyncRateLimiter } from '@tanstack/pacer'
+
+const sharedOptions = asyncRateLimiterOptions({
+  limit: 5,
+  window: 1000,
+  onSuccess: (result, args, limiter) => console.log('Success')
+})
+
+const limiter1 = new AsyncRateLimiter(fn1, { ...sharedOptions, key: 'limiter1' })
+const limiter2 = new AsyncRateLimiter(fn2, { ...sharedOptions, onError: (error) => console.error('Error') })
+```
+
 ## Dynamic Options and Enabling/Disabling
 
 Just like the synchronous rate limiter, the async rate limiter supports dynamic options for `limit`, `window`, and `enabled`, which can be functions that receive the rate limiter instance. This allows for sophisticated, runtime-adaptive rate limiting behavior.

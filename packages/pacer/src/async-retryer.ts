@@ -158,6 +158,18 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
   throwOnError?: boolean | 'last'
 }
 
+/**
+ * Utility function for sharing common `AsyncRetryerOptions` options between different `AsyncRetryer` instances.
+ */
+export function asyncRetryerOptions<
+  TFn extends AnyAsyncFunction = AnyAsyncFunction,
+  TOptions extends Partial<AsyncRetryerOptions<TFn>> = Partial<
+    AsyncRetryerOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<AsyncRetryerOptions<any>>,
   | 'initialState'

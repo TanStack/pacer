@@ -86,6 +86,18 @@ export interface RateLimiterOptions<TFn extends AnyFunction> {
   windowType?: 'fixed' | 'sliding'
 }
 
+/**
+ * Utility function for sharing common `RateLimiterOptions` options between different `RateLimiter` instances.
+ */
+export function rateLimiterOptions<
+  TFn extends AnyFunction = AnyFunction,
+  TOptions extends Partial<RateLimiterOptions<TFn>> = Partial<
+    RateLimiterOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<RateLimiterOptions<any>>,
   'initialState' | 'onExecute' | 'onReject' | 'key'

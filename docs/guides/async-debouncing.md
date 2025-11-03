@@ -163,6 +163,24 @@ The abort functionality:
 
 For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
+### Sharing Options Between Instances
+
+Use `asyncDebouncerOptions` to share common options between different `AsyncDebouncer` instances:
+
+```ts
+import { asyncDebouncerOptions, AsyncDebouncer } from '@tanstack/pacer'
+
+const sharedOptions = asyncDebouncerOptions({
+  wait: 500,
+  leading: false,
+  trailing: true,
+  onSuccess: (result, args, debouncer) => console.log('Success')
+})
+
+const debouncer1 = new AsyncDebouncer(fn1, { ...sharedOptions, key: 'debouncer1' })
+const debouncer2 = new AsyncDebouncer(fn2, { ...sharedOptions, onError: (error) => console.error('Error') })
+```
+
 ## Dynamic Options and Enabling/Disabling
 
 Just like the synchronous debouncer, the async debouncer supports dynamic options for `wait` and `enabled`, which can be functions that receive the debouncer instance. This allows for sophisticated, runtime-adaptive debouncing behavior.

@@ -85,6 +85,18 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
   wait: number | ((debouncer: Debouncer<TFn>) => number)
 }
 
+/**
+ * Utility function for sharing common `DebouncerOptions` options between different `Debouncer` instances.
+ */
+export function debouncerOptions<
+  TFn extends AnyFunction = AnyFunction,
+  TOptions extends Partial<DebouncerOptions<TFn>> = Partial<
+    DebouncerOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<DebouncerOptions<any>>,
   'initialState' | 'onExecute' | 'key'

@@ -7,7 +7,7 @@ title: PacerProviderOptions
 
 # Interface: PacerProviderOptions
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L19)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:18](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L18)
 
 ## Properties
 
@@ -17,7 +17,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:19](https://github.com/T
 optional asyncBatcher: Partial<AsyncBatcherOptions<any>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L20)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L19)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:20](https://github.com/T
 optional asyncDebouncer: Partial<AsyncDebouncerOptions<AnyAsyncFunction>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L21)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L20)
 
 ***
 
@@ -37,7 +37,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:21](https://github.com/T
 optional asyncQueuer: Partial<AsyncQueuerOptions<any>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:22](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L22)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L21)
 
 ***
 
@@ -47,17 +47,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:22](https://github.com/T
 optional asyncRateLimiter: Partial<AsyncRateLimiterOptions<AnyAsyncFunction>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:23](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L23)
-
-***
-
-### asyncRetryer?
-
-```ts
-optional asyncRetryer: Partial<AsyncRetryerOptions<AnyAsyncFunction>>;
-```
-
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L24)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:22](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L22)
 
 ***
 
@@ -67,7 +57,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:24](https://github.com/T
 optional asyncThrottler: Partial<AsyncThrottlerOptions<AnyAsyncFunction>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:25](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L25)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:23](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L23)
 
 ***
 
@@ -77,7 +67,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:25](https://github.com/T
 optional batcher: Partial<BatcherOptions<any>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:26](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L26)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L24)
 
 ***
 
@@ -87,7 +77,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:26](https://github.com/T
 optional debouncer: Partial<DebouncerOptions<AnyFunction>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:27](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L27)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:25](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L25)
 
 ***
 
@@ -97,7 +87,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:27](https://github.com/T
 optional queuer: Partial<QueuerOptions<any>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:28](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L28)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:26](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L26)
 
 ***
 
@@ -107,7 +97,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:28](https://github.com/T
 optional rateLimiter: Partial<RateLimiterOptions<AnyFunction>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:29](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L29)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:27](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L27)
 
 ***
 
@@ -117,4 +107,4 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:29](https://github.com/T
 optional throttler: Partial<ThrottlerOptions<AnyFunction>>;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:30](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L30)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:28](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L28)

@@ -142,6 +142,18 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   wait: number | ((throttler: AsyncThrottler<TFn>) => number)
 }
 
+/**
+ * Utility function for sharing common `AsyncThrottlerOptions` options between different `AsyncThrottler` instances.
+ */
+export function asyncThrottlerOptions<
+  TFn extends AnyAsyncFunction = AnyAsyncFunction,
+  TOptions extends Partial<AsyncThrottlerOptions<TFn>> = Partial<
+    AsyncThrottlerOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 type AsyncThrottlerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncThrottlerOptions<any>,
   'initialState' | 'onError' | 'onSettled' | 'onSuccess'

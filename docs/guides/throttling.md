@@ -112,6 +112,23 @@ Common patterns:
 - `{ leading: false, trailing: true }` - Delay all executions
 - `{ leading: true, trailing: false }` - Skip queued executions
 
+### Sharing Options Between Instances
+
+Use `throttlerOptions` to share common options between different `Throttler` instances:
+
+```ts
+import { throttlerOptions, Throttler } from '@tanstack/pacer'
+
+const sharedOptions = throttlerOptions({
+  wait: 200,
+  leading: true,
+  trailing: true
+})
+
+const throttler1 = new Throttler(fn1, { ...sharedOptions, key: 'throttler1' })
+const throttler2 = new Throttler(fn2, { ...sharedOptions, wait: 300 })
+```
+
 ### Enabling/Disabling
 
 The `Throttler` class supports enabling/disabling via the `enabled` option. Using the `setOptions` method, you can enable/disable the throttler at any time:

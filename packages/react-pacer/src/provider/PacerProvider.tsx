@@ -7,7 +7,6 @@ import type {
   AsyncDebouncerOptions,
   AsyncQueuerOptions,
   AsyncRateLimiterOptions,
-  AsyncRetryerOptions,
   AsyncThrottlerOptions,
   BatcherOptions,
   DebouncerOptions,
@@ -21,7 +20,6 @@ export interface PacerProviderOptions {
   asyncDebouncer?: Partial<AsyncDebouncerOptions<AnyAsyncFunction>>
   asyncQueuer?: Partial<AsyncQueuerOptions<any>>
   asyncRateLimiter?: Partial<AsyncRateLimiterOptions<AnyAsyncFunction>>
-  asyncRetryer?: Partial<AsyncRetryerOptions<AnyAsyncFunction>>
   asyncThrottler?: Partial<AsyncThrottlerOptions<AnyAsyncFunction>>
   batcher?: Partial<BatcherOptions<any>>
   debouncer?: Partial<DebouncerOptions<AnyFunction>>

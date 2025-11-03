@@ -11,7 +11,7 @@ title: PacerProvider
 function PacerProvider(__namedParameters): Element
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L46)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L44)
 
 ## Parameters
 

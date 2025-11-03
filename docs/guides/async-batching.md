@@ -258,6 +258,23 @@ The abort functionality:
 
 For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
+### Sharing Options Between Instances
+
+Use `asyncBatcherOptions` to share common options between different `AsyncBatcher` instances:
+
+```ts
+import { asyncBatcherOptions, AsyncBatcher } from '@tanstack/pacer'
+
+const sharedOptions = asyncBatcherOptions({
+  maxSize: 5,
+  wait: 2000,
+  onSuccess: (results, batch, batcher) => console.log('Success')
+})
+
+const batcher1 = new AsyncBatcher(fn1, { ...sharedOptions, key: 'batcher1' })
+const batcher2 = new AsyncBatcher(fn2, { ...sharedOptions, maxSize: 10 })
+```
+
 ## Error Handling Options
 
 The async batcher provides flexible error handling through the `throwOnError` option:

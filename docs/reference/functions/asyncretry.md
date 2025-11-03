@@ -11,7 +11,7 @@ title: asyncRetry
 function asyncRetry<TFn>(fn, initialOptions): (...args) => Promise<undefined | Awaited<ReturnType<TFn>>>
 ```
 
-Defined in: [async-retryer.ts:651](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L651)
+Defined in: [async-retryer.ts:661](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L661)
 
 Creates a retry-enabled version of an async function. This is a convenience wrapper
 around the AsyncRetryer class that returns the execute method.

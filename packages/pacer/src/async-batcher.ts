@@ -161,6 +161,19 @@ export interface AsyncBatcherOptions<TValue> {
   wait?: number | ((asyncBatcher: AsyncBatcher<TValue>) => number)
 }
 
+/**
+ * Utility function for sharing common `AsyncBatcherOptions` options between different `AsyncBatcher` instances.
+ *
+ */
+export function asyncBatcherOptions<
+  TValue = any,
+  TOptions extends Partial<AsyncBatcherOptions<TValue>> = Partial<
+    AsyncBatcherOptions<TValue>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<AsyncBatcherOptions<TValue>>,
   | 'initialState'

@@ -168,6 +168,24 @@ The abort functionality:
 
 For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
+### Sharing Options Between Instances
+
+Use `asyncThrottlerOptions` to share common options between different `AsyncThrottler` instances:
+
+```ts
+import { asyncThrottlerOptions, AsyncThrottler } from '@tanstack/pacer'
+
+const sharedOptions = asyncThrottlerOptions({
+  wait: 500,
+  leading: true,
+  trailing: true,
+  onSuccess: (result, args, throttler) => console.log('Success')
+})
+
+const throttler1 = new AsyncThrottler(fn1, { ...sharedOptions, key: 'throttler1' })
+const throttler2 = new AsyncThrottler(fn2, { ...sharedOptions, wait: 1000 })
+```
+
 ## Dynamic Options and Enabling/Disabling
 
 Just like the synchronous throttler, the async throttler supports dynamic options for `wait` and `enabled`, which can be functions that receive the throttler instance. This allows for sophisticated, runtime-adaptive throttling behavior.
