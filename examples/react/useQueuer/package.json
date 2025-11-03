@@ -15,10 +15,10 @@
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
-    "@tanstack/react-devtools": "0.7.0",
+    "@tanstack/react-devtools": "0.7.1",
     "@tanstack/react-pacer-devtools": "0.3.1",
-    "@types/react": "^19.1.15",
-    "@types/react-dom": "^19.1.9",
+    "@types/react": "^19.1.17",
+    "@types/react-dom": "^19.1.11",
     "@vitejs/plugin-react": "^5.0.4",
     "vite": "^7.1.7"
   },

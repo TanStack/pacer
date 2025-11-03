@@ -85,6 +85,18 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
   wait: number | ((debouncer: Debouncer<TFn>) => number)
 }
 
+/**
+ * Utility function for sharing common `DebouncerOptions` options between different `Debouncer` instances.
+ */
+export function debouncerOptions<
+  TFn extends AnyFunction = AnyFunction,
+  TOptions extends Partial<DebouncerOptions<TFn>> = Partial<
+    DebouncerOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<DebouncerOptions<any>>,
   'initialState' | 'onExecute' | 'key'
@@ -101,6 +113,7 @@ const defaultOptions: Omit<
  * Debouncing ensures that a function is only executed after a certain amount of time has passed
  * since its last invocation. This is useful for handling frequent events like window resizing,
  * scroll events, or input changes where you want to limit the rate of execution.
+ * This synchronous version is lighter weight and often all you need - upgrade to AsyncDebouncer when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * The debounced function can be configured to execute either at the start of the delay period
  * (leading edge) or at the end (trailing edge, default). Each new call during the wait period
@@ -151,6 +164,11 @@ export class Debouncer<TFn extends AnyFunction> {
       this.setOptions(event.payload.options)
     })
   }
+
+  /**
+   * Emits a change event for the debouncer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('Debouncer', this)
 
   /**
    * Updates the debouncer options
@@ -285,8 +303,7 @@ export class Debouncer<TFn extends AnyFunction> {
  * Creates a debounced function that delays invoking the provided function until after a specified wait time.
  * Multiple calls during the wait period will cancel previous pending invocations and reset the timer.
  *
- * This the the simple function wrapper implementation pulled from the Debouncer class. If you need
- * more control over the debouncing behavior, use the Debouncer class directly.
+ * This synchronous version is lighter weight and often all you need - upgrade to asyncDebounce when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * If leading option is true, the function will execute immediately on the first call, then wait the delay
  * before allowing another execution.

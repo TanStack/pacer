@@ -1,6 +1,8 @@
 import { Store } from '@tanstack/store'
+import { AsyncRetryer } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { OptionalKeys } from './types'
 import type { QueuePosition } from './queuer'
 
@@ -18,6 +20,10 @@ export interface AsyncQueuerState<TValue> {
    */
   errorCount: number
   /**
+   * Number of times execute has been called
+   */
+  executeCount: number
+  /**
    * Number of items that have been removed from the queue due to expiration
    */
   expirationCount: number
@@ -25,6 +31,10 @@ export interface AsyncQueuerState<TValue> {
    * Whether the queuer has no items to process (items array is empty)
    */
   isEmpty: boolean
+  /**
+   * Whether the queuer is currently executing
+   */
+  isExecuting: boolean
   /**
    * Whether the queuer has reached its maximum capacity
    */
@@ -80,8 +90,10 @@ function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
     activeItems: [],
     addItemCount: 0,
     errorCount: 0,
+    executeCount: 0,
     expirationCount: 0,
     isEmpty: true,
+    isExecuting: false,
     isFull: false,
     isIdle: true,
     isRunning: true,
@@ -98,6 +110,10 @@ function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
 }
 
 export interface AsyncQueuerOptions<TValue> {
+  /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<(item: TValue) => Promise<any>>
   /**
    * Default position to add items to the queuer
    * @default 'back'
@@ -152,7 +168,7 @@ export interface AsyncQueuerOptions<TValue> {
    * If provided, the handler will be called with the error and queuer instance.
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
-  onError?: (error: unknown, item: TValue, queuer: AsyncQueuer<TValue>) => void
+  onError?: (error: Error, item: TValue, queuer: AsyncQueuer<TValue>) => void
   /**
    * Callback fired whenever an item expires in the queuer
    */
@@ -191,6 +207,18 @@ export interface AsyncQueuerOptions<TValue> {
   wait?: number | ((queuer: AsyncQueuer<TValue>) => number)
 }
 
+/**
+ * Utility function for sharing common `AsyncQueuerOptions` options between different `AsyncQueuer` instances.
+ */
+export function asyncQueuerOptions<
+  TValue = any,
+  TOptions extends Partial<AsyncQueuerOptions<TValue>> = Partial<
+    AsyncQueuerOptions<TValue>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
   Required<AsyncQueuerOptions<any>>,
   | 'initialState'
@@ -206,6 +234,9 @@ type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
 
 const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
   addItemsTo: 'back',
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   concurrency: 1,
   expirationDuration: Infinity,
   getIsExpired: () => false,
@@ -220,17 +251,30 @@ const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {
 /**
  * A flexible asynchronous queue for processing tasks with configurable concurrency, priority, and expiration.
  *
- * Features:
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync Queuer:
+ * - Returns promises that can be awaited for task results
+ * - Built-in retry support via AsyncRetryer integration for each queued task
+ * - Abort support to cancel in-flight task executions
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ * - Concurrent execution support (process multiple items simultaneously)
+ *
+ * The sync Queuer is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Queuing?
+ * Queuing is a technique for managing and processing items sequentially or with controlled concurrency.
+ * Tasks are processed up to the configured concurrency limit. When a task completes,
+ * the next pending task is processed if the concurrency limit allows.
+ *
+ * Key Features:
  * - Priority queue support via the getPriority option
  * - Configurable concurrency limit
  * - Callbacks for task success, error, completion, and queue state changes
  * - FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
  * - Pause and resume processing
- * - Task cancellation
  * - Item expiration to remove stale items from the queue
- *
- * Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
- * the next pending task is processed if the concurrency limit allows.
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and queuer instance
@@ -274,6 +318,10 @@ export class AsyncQueuer<TValue> {
   >(getDefaultAsyncQueuerState<TValue>())
   key: string
   options: AsyncQueuerOptions<TValue>
+  asyncRetryers = new Map<
+    number,
+    AsyncRetryer<(item: TValue) => Promise<any>>
+  >()
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
@@ -311,6 +359,11 @@ export class AsyncQueuer<TValue> {
       this.setOptions(e.payload.options)
     })
   }
+
+  /**
+   * Emits a change event for the async queuer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncQueuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.
@@ -555,9 +608,20 @@ export class AsyncQueuer<TValue> {
    */
   execute = async (position?: QueuePosition): Promise<any> => {
     const item = this.getNextItem(position)
+
     if (item !== undefined) {
+      const currentExecuteCount = this.store.state.executeCount + 1
+      this.#setState({
+        executeCount: currentExecuteCount,
+        isExecuting: true,
+      })
       try {
-        const lastResult = await this.fn(item) // EXECUTE!
+        const currentAsyncRetryer = new AsyncRetryer(this.fn, {
+          ...this.options.asyncRetryerOptions,
+          key: `${this.key}-retryer-${currentExecuteCount}`,
+        })
+        this.asyncRetryers.set(currentExecuteCount, currentAsyncRetryer)
+        const lastResult = await currentAsyncRetryer.execute(item) // EXECUTE!
         this.#setState({
           successCount: this.store.state.successCount + 1,
           lastResult,
@@ -567,15 +631,17 @@ export class AsyncQueuer<TValue> {
         this.#setState({
           errorCount: this.store.state.errorCount + 1,
         })
-        this.options.onError?.(error, item, this)
+        this.options.onError?.(error as Error, item, this)
         if (this.options.throwOnError) {
           throw error
         }
       } finally {
+        this.asyncRetryers.delete(currentExecuteCount) // dispose retryer
         this.#setState({
           activeItems: this.store.state.activeItems.filter(
             (activeItem) => activeItem !== item,
           ),
+          isExecuting: false,
           settledCount: this.store.state.settledCount + 1,
         })
         this.options.onSettled?.(item, this)
@@ -729,11 +795,50 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Removes all pending items from the queue. Does not affect active tasks.
+   * Removes all pending items from the queue.
+   * Does NOT affect active tasks.
    */
   clear = (): void => {
     this.#setState({ items: [], itemTimestamps: [] })
     this.options.onItemsChange?.(this)
+  }
+
+  /**
+   * Returns the AbortSignal for a specific execution.
+   * If no executeCount is provided, returns the signal for the most recent execution.
+   * Returns null if no execution is found or not currently executing.
+   *
+   * @param executeCount - Optional specific execution to get signal for
+   * @example
+   * ```typescript
+   * const queuer = new AsyncQueuer(
+   *   async (item: string) => {
+   *     const signal = queuer.getAbortSignal()
+   *     if (signal) {
+   *       const response = await fetch(`/api/process/${item}`, { signal })
+   *       return response.json()
+   *     }
+   *   },
+   *   { concurrency: 2 }
+   * )
+   * ```
+   */
+  getAbortSignal(executeCount?: number): AbortSignal | null {
+    const count = executeCount ?? this.store.state.executeCount
+    const retryer = this.asyncRetryers.get(count)
+    return retryer?.getAbortSignal() ?? null
+  }
+
+  /**
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT clear out the items.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({
+      isExecuting: false,
+    })
   }
 
   /**
@@ -742,12 +847,41 @@ export class AsyncQueuer<TValue> {
   reset = (): void => {
     this.#setState(getDefaultAsyncQueuerState<TValue>())
     this.options.onItemsChange?.(this)
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 
 /**
  * Creates a new AsyncQueuer instance and returns a bound addItem function for adding tasks.
  * The queuer is started automatically and ready to process items.
+ *
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync queue function:
+ * - Returns promises that can be awaited for task results
+ * - Built-in retry support via AsyncRetryer integration for each queued task
+ * - Abort support to cancel in-flight task executions
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ * - Concurrent execution support (process multiple items simultaneously)
+ *
+ * The sync queue function is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Queuing?
+ * Queuing is a technique for managing and processing items sequentially or with controlled concurrency.
+ * Tasks are processed up to the configured concurrency limit. When a task completes,
+ * the next pending task is processed if the concurrency limit allows.
+ *
+ * Configuration Options:
+ * - `concurrency`: Maximum number of concurrent tasks (default: 1)
+ * - `wait`: Time to wait between processing items (default: 0)
+ * - `maxSize`: Maximum number of items allowed in the queue (default: Infinity)
+ * - `getPriority`: Function to determine item priority
+ * - `addItemsTo`: Default position to add items ('back' or 'front', default: 'back')
+ * - `getItemsFrom`: Default position to get items ('front' or 'back', default: 'front')
+ * - `expirationDuration`: Maximum time items can stay in queue
+ * - `started`: Whether to start processing immediately (default: true)
+ * - `asyncRetryerOptions`: Configure retry behavior for task executions
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and queuer instance
@@ -769,11 +903,15 @@ export class AsyncQueuer<TValue> {
  * - State can be accessed via the underlying AsyncQueuer instance's `store.state` property
  * - When using framework adapters (React/Solid), state is accessed from the hook's state property
  *
- * Example usage:
+ * @example
  * ```ts
  * const enqueue = asyncQueue<string>(async (item) => {
  *   return item.toUpperCase();
- * }, {...options});
+ * }, {
+ *   concurrency: 2,
+ *   wait: 100,
+ *   onSuccess: (result) => console.log('Processed:', result)
+ * });
  *
  * enqueue('hello');
  * ```

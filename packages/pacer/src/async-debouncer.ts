@@ -1,6 +1,8 @@
 import { Store } from '@tanstack/store'
+import { AsyncRetryer } from './async-retryer'
 import { createKey, parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
@@ -68,6 +70,10 @@ function getDefaultAsyncDebouncerState<
  */
 export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<TFn>
+  /**
    * Whether the debouncer is enabled. When disabled, maybeExecute will not trigger any executions.
    * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
@@ -93,7 +99,7 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (
-    error: unknown,
+    error: Error,
     args: Parameters<TFn>,
     debouncer: AsyncDebouncer<TFn>,
   ) => void
@@ -128,12 +134,27 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
   wait: number | ((debouncer: AsyncDebouncer<TFn>) => number)
 }
 
+/**
+ * Utility function for sharing common `AsyncDebouncerOptions` options between different `AsyncDebouncer` instances.
+ */
+export function asyncDebouncerOptions<
+  TFn extends AnyAsyncFunction = AnyAsyncFunction,
+  TOptions extends Partial<AsyncDebouncerOptions<TFn>> = Partial<
+    AsyncDebouncerOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 type AsyncDebouncerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncDebouncerOptions<any>,
   'initialState' | 'onError' | 'onSettled' | 'onSuccess' | 'key'
 >
 
 const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   enabled: true,
   leading: false,
   trailing: true,
@@ -143,16 +164,25 @@ const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {
 /**
  * A class that creates an async debounced function.
  *
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync Debouncer:
+ * - Returns promises that can be awaited for debounced function results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight executions
+ * - Cancel support to prevent pending executions from starting
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ *
+ * The sync Debouncer is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Debouncing?
  * Debouncing ensures that a function is only executed after a specified delay has passed since its last invocation.
  * Each new invocation resets the delay timer. This is useful for handling frequent events like window resizing
  * or input changes where you only want to execute the handler after the events have stopped occurring.
  *
  * Unlike throttling which allows execution at regular intervals, debouncing prevents any execution until
  * the function stops being called for the specified delay period.
- *
- * Unlike the non-async Debouncer, this async version supports returning values from the debounced function,
- * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
- * instead of setting the result on a state variable from within the debounced function.
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and debouncer instance
@@ -191,7 +221,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   >(getDefaultAsyncDebouncerState<TFn>())
   key: string
   options: AsyncDebouncerOptions<TFn>
-  #abortController: AbortController | null = null
+  asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
@@ -215,6 +245,11 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.setOptions(event.payload.options)
     })
   }
+
+  /**
+   * Emits a change event for the async debouncer instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('AsyncDebouncer', this)
 
   /**
    * Updates the async debouncer options
@@ -326,31 +361,37 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
-    this.#abortController = new AbortController()
+    const currentMaybeExecuteCount = this.store.state.maybeExecuteCount + 1
+
     try {
       this.#setState({ isExecuting: true })
-      const result = await this.fn(...args) // EXECUTE!
+      const currentAsyncRetryer = new AsyncRetryer(this.fn, {
+        ...this.options.asyncRetryerOptions,
+        key: `${this.key}-retryer-${currentMaybeExecuteCount}`,
+      })
+      this.asyncRetryers.set(currentMaybeExecuteCount, currentAsyncRetryer)
+      const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result, args, this)
+      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.options.onError?.(error, args, this)
+      this.options.onError?.(error as Error, args, this)
       if (this.options.throwOnError) {
         throw error
       }
     } finally {
+      this.asyncRetryers.delete(currentMaybeExecuteCount) // dispose retryer
       this.#setState({
         isExecuting: false,
         isPending: false,
         lastArgs: undefined,
         settleCount: this.store.state.settleCount + 1,
       })
-      this.#abortController = null
       this.options.onSettled?.(args, this)
     }
     return this.store.state.lastResult
@@ -361,14 +402,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    */
   flush = async (): Promise<ReturnType<TFn> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
-      this.#abortExecution() // abort any current execution
-      this.#clearTimeout() // clear any existing timeout
-      const result = await this.#execute(...this.store.state.lastArgs)
-
-      // Resolve any pending promise from maybeExecute
-      this.#resolvePreviousPromiseInternal()
-
-      return result
+      const { lastArgs } = this.store.state
+      this.#cancelPendingExecution()
+      return await this.#execute(...lastArgs)
     }
     return undefined
   }
@@ -387,29 +423,62 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     }
   }
 
+  /**
+   * Internal cancel without resetting the leading execute state
+   */
   #cancelPendingExecution = (): void => {
     this.#clearTimeout()
     this.#resolvePreviousPromiseInternal()
     this.#setState({
       isPending: false,
-      isExecuting: false,
       lastArgs: undefined,
     })
   }
 
-  #abortExecution = (): void => {
-    if (this.#abortController) {
-      this.#abortController.abort()
-      this.#abortController = null
-    }
+  /**
+   * Returns the AbortSignal for a specific execution.
+   * If no maybeExecuteCount is provided, returns the signal for the most recent execution.
+   * Returns null if no execution is found or not currently executing.
+   *
+   * @param maybeExecuteCount - Optional specific execution to get signal for
+   * @example
+   * ```typescript
+   * const debouncer = new AsyncDebouncer(
+   *   async (searchTerm: string) => {
+   *     const signal = debouncer.getAbortSignal()
+   *     if (signal) {
+   *       const response = await fetch(`/api/search?q=${searchTerm}`, { signal })
+   *       return response.json()
+   *     }
+   *   },
+   *   { wait: 300 }
+   * )
+   * ```
+   */
+  getAbortSignal(maybeExecuteCount?: number): AbortSignal | null {
+    const count = maybeExecuteCount ?? this.store.state.maybeExecuteCount
+    const retryer = this.asyncRetryers.get(count)
+    return retryer?.getAbortSignal() ?? null
   }
 
   /**
-   * Cancels any pending execution or aborts any execution in progress
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT cancel any pending execution that have not started yet.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({
+      isExecuting: false,
+    })
+  }
+
+  /**
+   * Cancels any pending execution that have not started yet.
+   * Does NOT abort any execution already in progress.
    */
   cancel = (): void => {
     this.#cancelPendingExecution()
-    this.#abortExecution()
     this.#setState({ canLeadingExecute: true })
   }
 
@@ -418,6 +487,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    */
   reset = (): void => {
     this.#setState(getDefaultAsyncDebouncerState<TFn>())
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 
@@ -426,9 +496,29 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
  * The debounced function will only execute once the wait period has elapsed without any new calls.
  * If called again during the wait period, the timer resets and a new wait period begins.
  *
- * Unlike the non-async Debouncer, this async version supports returning values from the debounced function,
- * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
- * instead of setting the result on a state variable from within the debounced function.
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync debounce function:
+ * - Returns promises that can be awaited for debounced function results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight executions
+ * - Cancel support to prevent pending executions from starting
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ *
+ * The sync debounce function is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Debouncing?
+ * Debouncing ensures that a function is only executed after a specified delay has passed since its last invocation.
+ * Each new invocation resets the delay timer. This is useful for handling frequent events like window resizing
+ * or input changes where you only want to execute the handler after the events have stopped occurring.
+ *
+ * Configuration Options:
+ * - `wait`: Delay in milliseconds to wait after the last call (required)
+ * - `leading`: Execute on the leading edge of the timeout (default: false)
+ * - `trailing`: Execute on the trailing edge of the timeout (default: true)
+ * - `enabled`: Whether the debouncer is enabled (default: true)
+ * - `asyncRetryerOptions`: Configure retry behavior for executions
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and debouncer instance

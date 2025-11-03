@@ -107,6 +107,7 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * A class that collects items and processes them in batches.
  *
  * Batching is a technique for grouping multiple operations together to be processed as a single unit.
+ * This synchronous version is lighter weight and often all you need - upgrade to AsyncBatcher when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * The Batcher provides a flexible way to implement batching with configurable:
  * - Maximum batch size (number of items per batch)
@@ -166,6 +167,11 @@ export class Batcher<TValue> {
       this.setOptions(event.payload.options)
     })
   }
+
+  /**
+   * Emits a change event for the batcher instance. Mostly useful for devtools.
+   */
+  _emit = () => emitChange('Batcher', this)
 
   /**
    * Updates the batcher options
@@ -276,6 +282,15 @@ export class Batcher<TValue> {
   }
 
   /**
+   * Cancels any pending execution that was scheduled.
+   * Does NOT clear out the items.
+   */
+  cancel = (): void => {
+    this.#clearTimeout()
+    this.#setState({ isPending: false })
+  }
+
+  /**
    * Resets the batcher state to its default values
    */
   reset = (): void => {
@@ -285,7 +300,9 @@ export class Batcher<TValue> {
 }
 
 /**
- * Creates a batcher that processes items in batches
+ * Creates a batcher that processes items in batches.
+ *
+ * This synchronous version is lighter weight and often all you need - upgrade to asyncBatch when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * @example
  * ```ts

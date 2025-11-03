@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
@@ -232,15 +233,24 @@ function App2() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
-  <div>
-    <App1 />
-    <hr />
-    <App2 />
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // defaultOptions={{
+  //   queuer: {
+  //     maxSize: 50,
+  //   },
+  // }}
+  >
+    <div>
+      <App1 />
+      <hr />
+      <App2 />
+    </div>
     <TanStackDevtools
       eventBusConfig={{
         debug: false,
       }}
       plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
     />
-  </div>,
+  </PacerProvider>,
 )

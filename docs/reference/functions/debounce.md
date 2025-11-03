@@ -11,13 +11,12 @@ title: debounce
 function debounce<TFn>(fn, initialOptions): (...args) => void
 ```
 
-Defined in: [debouncer.ts:312](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L312)
+Defined in: [debouncer.ts:329](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L329)
 
 Creates a debounced function that delays invoking the provided function until after a specified wait time.
 Multiple calls during the wait period will cancel previous pending invocations and reset the timer.
 
-This the the simple function wrapper implementation pulled from the Debouncer class. If you need
-more control over the debouncing behavior, use the Debouncer class directly.
+This synchronous version is lighter weight and often all you need - upgrade to asyncDebounce when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
 
 If leading option is true, the function will execute immediately on the first call, then wait the delay
 before allowing another execution.

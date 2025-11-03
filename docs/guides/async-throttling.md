@@ -104,6 +104,88 @@ Since the throttler's `maybeExecute` method returns a Promise, you can choose to
 
 For example, if you're updating a user's profile and then immediately fetching their updated data, you can await the update operation before starting the fetch.
 
+## Advanced Features: Retry and Abort Support
+
+The async throttler includes built-in retry and abort capabilities through integration with `AsyncRetryer`. These features help handle transient failures and provide control over in-flight operations.
+
+### Retry Support
+
+Configure automatic retries for failed throttled function executions using the `asyncRetryerOptions`:
+
+```ts
+const throttledSave = asyncThrottle(
+  async (data: string) => {
+    // This might fail due to network issues
+    await api.save(data)
+  },
+  {
+    wait: 1000,
+    asyncRetryerOptions: {
+      maxAttempts: 3,
+      backoff: 'exponential',
+      baseWait: 1000,
+      maxWait: 10000,
+      jitter: 0.3
+    }
+  }
+)
+```
+
+For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](./async-retrying.md).
+
+### Abort Support
+
+Cancel in-flight throttled executions using the abort functionality:
+
+```ts
+const throttler = new AsyncThrottler(
+  async (data: string) => {
+    // Access the abort signal for this execution
+    const signal = throttler.getAbortSignal()
+    if (signal) {
+      const response = await fetch('/api/save', {
+        method: 'POST',
+        body: data,
+        signal
+      })
+      return response.json()
+    }
+  },
+  { wait: 1000 }
+)
+
+// Start an operation
+throttler.maybeExecute('data')
+
+// Later, abort any in-flight execution
+throttler.abort()
+```
+
+The abort functionality:
+- Cancels all ongoing throttled executions using AbortController
+- Does NOT cancel pending executions that haven't started yet (use `cancel()` for that)
+- Can be used alongside retry support
+
+For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
+
+### Sharing Options Between Instances
+
+Use `asyncThrottlerOptions` to share common options between different `AsyncThrottler` instances:
+
+```ts
+import { asyncThrottlerOptions, AsyncThrottler } from '@tanstack/pacer'
+
+const sharedOptions = asyncThrottlerOptions({
+  wait: 500,
+  leading: true,
+  trailing: true,
+  onSuccess: (result, args, throttler) => console.log('Success')
+})
+
+const throttler1 = new AsyncThrottler(fn1, { ...sharedOptions, key: 'throttler1' })
+const throttler2 = new AsyncThrottler(fn2, { ...sharedOptions, wait: 1000 })
+```
+
 ## Dynamic Options and Enabling/Disabling
 
 Just like the synchronous throttler, the async throttler supports dynamic options for `wait` and `enabled`, which can be functions that receive the throttler instance. This allows for sophisticated, runtime-adaptive throttling behavior.

@@ -11,9 +11,11 @@ title: rateLimit
 function rateLimit<TFn>(fn, initialOptions): (...args) => boolean
 ```
 
-Defined in: [rate-limiter.ts:404](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L404)
+Defined in: [rate-limiter.ts:424](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L424)
 
 Creates a rate-limited function that will execute the provided function up to a maximum number of times within a time window.
+
+This synchronous version is lighter weight and often all you need - upgrade to asyncRateLimit when you need promises, retry support, abort capabilities, or advanced error handling.
 
 Note that rate limiting is a simpler form of execution control compared to throttling or debouncing:
 - A rate limiter will allow all executions until the limit is reached, then block all subsequent calls until the window resets

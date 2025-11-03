@@ -191,6 +191,90 @@ The `AsyncBatcher` supports these async-specific callbacks:
 - `onExecute`: Called after each batch execution, providing the batch of items processed and batcher instance (same as synchronous batcher)
 - `onItemsChange`: Called when items are added or the batch is processed
 
+## Advanced Features: Retry and Abort Support
+
+The async batcher includes built-in retry and abort capabilities through integration with `AsyncRetryer`. These features help handle transient failures and provide control over in-flight operations.
+
+### Retry Support
+
+Configure automatic retries for failed batch executions using the `asyncRetryerOptions`:
+
+```ts
+const batcher = new AsyncBatcher<number>(
+  async (items) => {
+    // This might fail due to network issues
+    const results = await apiCall(items)
+    return results
+  },
+  {
+    maxSize: 5,
+    asyncRetryerOptions: {
+      maxAttempts: 3,
+      backoff: 'exponential',
+      baseWait: 1000,
+      maxWait: 10000,
+      jitter: 0.3
+    }
+  }
+)
+```
+
+For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](./async-retrying.md).
+
+### Abort Support
+
+Cancel in-flight batch executions using the abort functionality:
+
+```ts
+const batcher = new AsyncBatcher<number>(
+  async (items) => {
+    // Access the abort signal for this execution
+    const signal = batcher.getAbortSignal()
+    if (signal) {
+      const response = await fetch('/api/batch', {
+        method: 'POST',
+        body: JSON.stringify(items),
+        signal // Pass signal to fetch for cancellation support
+      })
+      return response.json()
+    }
+  },
+  { maxSize: 10 }
+)
+
+// Add items
+batcher.addItem(1)
+batcher.addItem(2)
+
+// Later, abort any in-flight batch executions
+batcher.abort()
+```
+
+The abort functionality:
+- Cancels all ongoing batch executions using AbortController
+- Does NOT cancel pending batches that haven't started yet (use `cancel()` for that)
+- Does NOT clear items from the batcher
+- Can be used alongside retry support
+
+For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
+
+### Sharing Options Between Instances
+
+Use `asyncBatcherOptions` to share common options between different `AsyncBatcher` instances:
+
+```ts
+import { asyncBatcherOptions, AsyncBatcher } from '@tanstack/pacer'
+
+const sharedOptions = asyncBatcherOptions({
+  maxSize: 5,
+  wait: 2000,
+  onSuccess: (results, batch, batcher) => console.log('Success')
+})
+
+const batcher1 = new AsyncBatcher(fn1, { ...sharedOptions, key: 'batcher1' })
+const batcher2 = new AsyncBatcher(fn2, { ...sharedOptions, maxSize: 10 })
+```
+
 ## Error Handling Options
 
 The async batcher provides flexible error handling through the `throwOnError` option:

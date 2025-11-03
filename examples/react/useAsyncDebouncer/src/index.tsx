@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncDebouncer } from '@tanstack/react-pacer/async-debouncer'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 interface SearchResult {
   id: number
@@ -9,7 +10,7 @@ interface SearchResult {
 
 // Simulate API call with fake data
 const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 1500)) // Simulate network delay
   return [
     { id: 1, title: `${term} result ${Math.floor(Math.random() * 100)}` },
     { id: 2, title: `${term} result ${Math.floor(Math.random() * 100)}` },
@@ -23,7 +24,6 @@ function App() {
 
   // The function that will become debounced
   const handleSearch = async (term: string) => {
-    throw new Error('Test error')
     if (!term) {
       setResults([])
       return
@@ -48,6 +48,10 @@ function App() {
         setResults([])
       },
       // throwOnError: true,
+      asyncRetryerOptions: {
+        maxAttempts: 3,
+        maxExecutionTime: 1000,
+      },
     },
     // Optional Selector function to pick the state you want to track and use
     (state) => ({
@@ -106,13 +110,29 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 
-let mounted = true
-root.render(<App />)
+function renderApp(mounted: boolean) {
+  root.render(
+    mounted ? (
+      // defaultOptions can be provided to the PacerProvider to set default options for all instances
+      <PacerProvider
+      // defaultOptions={{
+      //   asyncDebouncer: {
+      //     leading: true,
+      //   },
+      // }}
+      >
+        <App />
+      </PacerProvider>
+    ) : null,
+  )
+}
 
-// demo unmounting and cancellation
+let mounted = true
+renderApp(mounted)
+
 document.addEventListener('keydown', (e) => {
   if (e.shiftKey && e.key === 'Enter') {
     mounted = !mounted
-    root.render(mounted ? <App /> : null)
+    renderApp(mounted)
   }
 })

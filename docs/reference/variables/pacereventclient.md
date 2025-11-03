@@ -11,4 +11,4 @@ title: pacerEventClient
 const pacerEventClient: PacerEventClient;
 ```
 
-Defined in: [event-client.ts:63](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L63)
+Defined in: [event-client.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L66)

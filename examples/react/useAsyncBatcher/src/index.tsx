@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncBatcher } from '@tanstack/react-pacer/async-batcher'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 const fakeProcessingTime = 1000
 
@@ -15,7 +16,6 @@ function App() {
     Array<{ items: Array<Item>; result: string; timestamp: number }>
   >([])
   const [errors, setErrors] = useState<Array<string>>([])
-  const [shouldFail, setShouldFail] = useState(false)
 
   // The async function that will process a batch of items
   async function processBatch(items: Array<Item>): Promise<string> {
@@ -25,9 +25,8 @@ function App() {
     await new Promise((resolve) => setTimeout(resolve, fakeProcessingTime))
 
     // Simulate occasional failures for demo purposes
-    if (shouldFail && Math.random() < 0.3) {
-      throw new Error(`Processing failed for batch with ${items.length} items`)
-    }
+
+    // throw new Error(`Processing failed for batch with ${items.length} items`)
 
     // Return a result from the batch processing
     const result = `Processed ${items.length} items: ${items.map((item) => item.value).join(', ')}`
@@ -60,7 +59,7 @@ function App() {
         console.error('Batch failed:', error)
         setErrors((prev) => [
           ...prev,
-          `Error: ${error.message} (${new Date().toLocaleTimeString()})`,
+          `Error: ${error} (${new Date().toLocaleTimeString()})`,
         ])
       },
       onSettled: (batch, batcher) => {
@@ -165,17 +164,6 @@ function App() {
             Clear Current Batch
           </button>
         </div>
-
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={shouldFail}
-              onChange={(e) => setShouldFail(e.target.checked)}
-            />{' '}
-            Simulate random failures (30% chance)
-          </label>
-        </div>
       </div>
 
       <div>
@@ -215,4 +203,15 @@ function App() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
-root.render(<App />)
+root.render(
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // defaultOptions={{
+  //   batcher: {
+  //     maxSize: 10,
+  //   },
+  // }}
+  >
+    <App />
+  </PacerProvider>,
+)

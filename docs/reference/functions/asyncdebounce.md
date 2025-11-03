@@ -11,15 +11,35 @@ title: asyncDebounce
 function asyncDebounce<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-debouncer.ts:468](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L468)
+Defined in: [async-debouncer.ts:558](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L558)
 
 Creates an async debounced function that delays execution until after a specified wait time.
 The debounced function will only execute once the wait period has elapsed without any new calls.
 If called again during the wait period, the timer resets and a new wait period begins.
 
-Unlike the non-async Debouncer, this async version supports returning values from the debounced function,
-making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
-instead of setting the result on a state variable from within the debounced function.
+Async vs Sync Versions:
+The async version provides advanced features over the sync debounce function:
+- Returns promises that can be awaited for debounced function results
+- Built-in retry support via AsyncRetryer integration
+- Abort support to cancel in-flight executions
+- Cancel support to prevent pending executions from starting
+- Comprehensive error handling with onError callbacks and throwOnError control
+- Detailed execution tracking (success/error/settle counts)
+
+The sync debounce function is lighter weight and simpler when you don't need async features,
+return values, or execution control.
+
+What is Debouncing?
+Debouncing ensures that a function is only executed after a specified delay has passed since its last invocation.
+Each new invocation resets the delay timer. This is useful for handling frequent events like window resizing
+or input changes where you only want to execute the handler after the events have stopped occurring.
+
+Configuration Options:
+- `wait`: Delay in milliseconds to wait after the last call (required)
+- `leading`: Execute on the leading edge of the timeout (default: false)
+- `trailing`: Execute on the trailing edge of the timeout (default: true)
+- `enabled`: Whether the debouncer is enabled (default: true)
+- `asyncRetryerOptions`: Configure retry behavior for executions
 
 Error Handling:
 - If an `onError` handler is provided, it will be called with the error and debouncer instance

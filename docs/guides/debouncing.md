@@ -113,6 +113,23 @@ Common patterns:
 
 The TanStack Pacer Debouncer purposely does NOT have a `maxWait` option like other debouncing libraries. If you need to let executions run over a more spread out period of time, consider using the [throttling](../throttling.md) technique instead.
 
+### Sharing Options Between Instances
+
+Use `debouncerOptions` to share common options between different `Debouncer` instances:
+
+```ts
+import { debouncerOptions, Debouncer } from '@tanstack/pacer'
+
+const sharedOptions = debouncerOptions({
+  wait: 500,
+  leading: false,
+  trailing: true
+})
+
+const debouncer1 = new Debouncer(fn1, { ...sharedOptions, key: 'debouncer1' })
+const debouncer2 = new Debouncer(fn2, { ...sharedOptions, wait: 1000 })
+```
+
 ### Enabling/Disabling
 
 The `Debouncer` class supports enabling/disabling via the `enabled` option. Using the `setOptions` method, you can enable/disable the debouncer at any time:

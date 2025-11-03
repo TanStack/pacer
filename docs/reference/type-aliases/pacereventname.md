@@ -11,4 +11,4 @@ title: PacerEventName
 type PacerEventName = keyof PacerEventMap extends `pacer:${infer T}` ? T : never;
 ```
 
-Defined in: [event-client.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L36)
+Defined in: [event-client.ts:39](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L39)
