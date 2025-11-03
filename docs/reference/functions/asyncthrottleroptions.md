@@ -19,7 +19,7 @@ Utility function for sharing common `AsyncThrottlerOptions` options between diff
 
 • **TFn** *extends* [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md) = [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md)
 
-• **TOptions** *extends* [`AsyncThrottlerOptions`](../../interfaces/asyncthrottleroptions.md)\<`TFn`\> = [`AsyncThrottlerOptions`](../../interfaces/asyncthrottleroptions.md)\<`TFn`\>
+• **TOptions** *extends* `Partial`\<[`AsyncThrottlerOptions`](../../interfaces/asyncthrottleroptions.md)\<`TFn`\>\> = `Partial`\<[`AsyncThrottlerOptions`](../../interfaces/asyncthrottleroptions.md)\<`TFn`\>\>
 
 ## Parameters
 

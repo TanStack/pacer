@@ -19,7 +19,7 @@ Utility function for sharing common `RateLimiterOptions` options between differe
 
 • **TFn** *extends* [`AnyFunction`](../../type-aliases/anyfunction.md) = [`AnyFunction`](../../type-aliases/anyfunction.md)
 
-• **TOptions** *extends* [`RateLimiterOptions`](../../interfaces/ratelimiteroptions.md)\<`TFn`\> = [`RateLimiterOptions`](../../interfaces/ratelimiteroptions.md)\<`TFn`\>
+• **TOptions** *extends* `Partial`\<[`RateLimiterOptions`](../../interfaces/ratelimiteroptions.md)\<`TFn`\>\> = `Partial`\<[`RateLimiterOptions`](../../interfaces/ratelimiteroptions.md)\<`TFn`\>\>
 
 ## Parameters
 

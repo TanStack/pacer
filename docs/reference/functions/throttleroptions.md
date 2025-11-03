@@ -19,7 +19,7 @@ Utility function for sharing common `ThrottlerOptions` options between different
 
 • **TFn** *extends* [`AnyFunction`](../../type-aliases/anyfunction.md) = [`AnyFunction`](../../type-aliases/anyfunction.md)
 
-• **TOptions** *extends* [`ThrottlerOptions`](../../interfaces/throttleroptions.md)\<`TFn`\> = [`ThrottlerOptions`](../../interfaces/throttleroptions.md)\<`TFn`\>
+• **TOptions** *extends* `Partial`\<[`ThrottlerOptions`](../../interfaces/throttleroptions.md)\<`TFn`\>\> = `Partial`\<[`ThrottlerOptions`](../../interfaces/throttleroptions.md)\<`TFn`\>\>
 
 ## Parameters
 

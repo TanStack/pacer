@@ -19,7 +19,7 @@ Utility function for sharing common `AsyncRateLimiterOptions` options between di
 
 • **TFn** *extends* [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md) = [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md)
 
-• **TOptions** *extends* [`AsyncRateLimiterOptions`](../../interfaces/asyncratelimiteroptions.md)\<`TFn`\> = [`AsyncRateLimiterOptions`](../../interfaces/asyncratelimiteroptions.md)\<`TFn`\>
+• **TOptions** *extends* `Partial`\<[`AsyncRateLimiterOptions`](../../interfaces/asyncratelimiteroptions.md)\<`TFn`\>\> = `Partial`\<[`AsyncRateLimiterOptions`](../../interfaces/asyncratelimiteroptions.md)\<`TFn`\>\>
 
 ## Parameters
 

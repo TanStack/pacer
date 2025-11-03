@@ -19,7 +19,7 @@ Utility function for sharing common `AsyncRetryerOptions` options between differ
 
 • **TFn** *extends* [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md) = [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md)
 
-• **TOptions** *extends* [`AsyncRetryerOptions`](../../interfaces/asyncretryeroptions.md)\<`TFn`\> = [`AsyncRetryerOptions`](../../interfaces/asyncretryeroptions.md)\<`TFn`\>
+• **TOptions** *extends* `Partial`\<[`AsyncRetryerOptions`](../../interfaces/asyncretryeroptions.md)\<`TFn`\>\> = `Partial`\<[`AsyncRetryerOptions`](../../interfaces/asyncretryeroptions.md)\<`TFn`\>\>
 
 ## Parameters
 

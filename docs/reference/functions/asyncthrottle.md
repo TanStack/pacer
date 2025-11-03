@@ -11,7 +11,7 @@ title: asyncThrottle
 function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-throttler.ts:624](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L624)
+Defined in: [async-throttler.ts:626](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L626)
 
 Creates an async throttled function that limits how often the function can execute.
 The throttled function will execute at most once per wait period, even if called multiple times.

@@ -19,7 +19,7 @@ Utility function for sharing common `AsyncBatcherOptions` options between differ
 
 • **TValue** = `any`
 
-• **TOptions** *extends* [`AsyncBatcherOptions`](../../interfaces/asyncbatcheroptions.md)\<`TValue`\> = [`AsyncBatcherOptions`](../../interfaces/asyncbatcheroptions.md)\<`TValue`\>
+• **TOptions** *extends* `Partial`\<[`AsyncBatcherOptions`](../../interfaces/asyncbatcheroptions.md)\<`TValue`\>\> = `Partial`\<[`AsyncBatcherOptions`](../../interfaces/asyncbatcheroptions.md)\<`TValue`\>\>
 
 ## Parameters
 

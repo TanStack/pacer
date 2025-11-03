@@ -19,7 +19,7 @@ Utility function for sharing common `AsyncQueuerOptions` options between differe
 
 • **TValue** = `any`
 
-• **TOptions** *extends* [`AsyncQueuerOptions`](../../interfaces/asyncqueueroptions.md)\<`TValue`\> = [`AsyncQueuerOptions`](../../interfaces/asyncqueueroptions.md)\<`TValue`\>
+• **TOptions** *extends* `Partial`\<[`AsyncQueuerOptions`](../../interfaces/asyncqueueroptions.md)\<`TValue`\>\> = `Partial`\<[`AsyncQueuerOptions`](../../interfaces/asyncqueueroptions.md)\<`TValue`\>\>
 
 ## Parameters
 

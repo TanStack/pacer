@@ -19,7 +19,7 @@ Utility function for sharing common `AsyncDebouncerOptions` options between diff
 
 • **TFn** *extends* [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md) = [`AnyAsyncFunction`](../../type-aliases/anyasyncfunction.md)
 
-• **TOptions** *extends* [`AsyncDebouncerOptions`](../../interfaces/asyncdebounceroptions.md)\<`TFn`\> = [`AsyncDebouncerOptions`](../../interfaces/asyncdebounceroptions.md)\<`TFn`\>
+• **TOptions** *extends* `Partial`\<[`AsyncDebouncerOptions`](../../interfaces/asyncdebounceroptions.md)\<`TFn`\>\> = `Partial`\<[`AsyncDebouncerOptions`](../../interfaces/asyncdebounceroptions.md)\<`TFn`\>\>
 
 ## Parameters
 

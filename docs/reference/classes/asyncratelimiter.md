@@ -7,7 +7,7 @@ title: AsyncRateLimiter
 
 # Class: AsyncRateLimiter\<TFn\>
 
-Defined in: [async-rate-limiter.ts:243](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L243)
+Defined in: [async-rate-limiter.ts:245](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L245)
 
 A class that creates an async rate-limited function.
 
@@ -95,7 +95,7 @@ const data = await rateLimiter.maybeExecute('123');
 new AsyncRateLimiter<TFn>(fn, initialOptions): AsyncRateLimiter<TFn>
 ```
 
-Defined in: [async-rate-limiter.ts:252](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L252)
+Defined in: [async-rate-limiter.ts:254](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L254)
 
 #### Parameters
 
@@ -119,7 +119,7 @@ Defined in: [async-rate-limiter.ts:252](https://github.com/TanStack/pacer/blob/m
 asyncRetryers: Map<number, AsyncRetryer<TFn>>;
 ```
 
-Defined in: [async-rate-limiter.ts:249](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L249)
+Defined in: [async-rate-limiter.ts:251](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L251)
 
 ***
 
@@ -129,7 +129,7 @@ Defined in: [async-rate-limiter.ts:249](https://github.com/TanStack/pacer/blob/m
 fn: TFn;
 ```
 
-Defined in: [async-rate-limiter.ts:253](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L253)
+Defined in: [async-rate-limiter.ts:255](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L255)
 
 ***
 
@@ -139,7 +139,7 @@ Defined in: [async-rate-limiter.ts:253](https://github.com/TanStack/pacer/blob/m
 key: string;
 ```
 
-Defined in: [async-rate-limiter.ts:247](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L247)
+Defined in: [async-rate-limiter.ts:249](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L249)
 
 ***
 
@@ -149,7 +149,7 @@ Defined in: [async-rate-limiter.ts:247](https://github.com/TanStack/pacer/blob/m
 options: AsyncRateLimiterOptions<TFn>;
 ```
 
-Defined in: [async-rate-limiter.ts:248](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L248)
+Defined in: [async-rate-limiter.ts:250](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L250)
 
 ***
 
@@ -159,7 +159,7 @@ Defined in: [async-rate-limiter.ts:248](https://github.com/TanStack/pacer/blob/m
 readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>;
 ```
 
-Defined in: [async-rate-limiter.ts:244](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L244)
+Defined in: [async-rate-limiter.ts:246](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L246)
 
 ## Methods
 
@@ -169,7 +169,7 @@ Defined in: [async-rate-limiter.ts:244](https://github.com/TanStack/pacer/blob/m
 _emit(): void
 ```
 
-Defined in: [async-rate-limiter.ts:277](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L277)
+Defined in: [async-rate-limiter.ts:279](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L279)
 
 Emits a change event for the async rate limiter instance. Mostly useful for devtools.
 
@@ -185,7 +185,7 @@ Emits a change event for the async rate limiter instance. Mostly useful for devt
 abort(): void
 ```
 
-Defined in: [async-rate-limiter.ts:536](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L536)
+Defined in: [async-rate-limiter.ts:538](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L538)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT clear out the execution times or reset the rate limiter.
@@ -202,7 +202,7 @@ Does NOT clear out the execution times or reset the rate limiter.
 getAbortSignal(maybeExecuteCount?): null | AbortSignal
 ```
 
-Defined in: [async-rate-limiter.ts:526](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L526)
+Defined in: [async-rate-limiter.ts:528](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L528)
 
 Returns the AbortSignal for a specific execution.
 If no maybeExecuteCount is provided, returns the signal for the most recent execution.
@@ -243,7 +243,7 @@ const rateLimiter = new AsyncRateLimiter(
 getMsUntilNextWindow(): number
 ```
 
-Defined in: [async-rate-limiter.ts:498](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L498)
+Defined in: [async-rate-limiter.ts:500](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L500)
 
 Returns the number of milliseconds until the next execution will be possible
 For fixed windows, this is the time until the current window resets
@@ -261,7 +261,7 @@ For sliding windows, this is the time until the oldest execution expires
 getRemainingInWindow(): number
 ```
 
-Defined in: [async-rate-limiter.ts:488](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L488)
+Defined in: [async-rate-limiter.ts:490](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L490)
 
 Returns the number of remaining executions allowed in the current window
 
@@ -277,7 +277,7 @@ Returns the number of remaining executions allowed in the current window
 maybeExecute(...args): Promise<undefined | ReturnType<TFn>>
 ```
 
-Defined in: [async-rate-limiter.ts:355](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L355)
+Defined in: [async-rate-limiter.ts:357](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L357)
 
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
@@ -325,7 +325,7 @@ const result2 = await rateLimiter.maybeExecute('arg1', 'arg2'); // undefined
 reset(): void
 ```
 
-Defined in: [async-rate-limiter.ts:547](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L547)
+Defined in: [async-rate-limiter.ts:549](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L549)
 
 Resets the rate limiter state
 
@@ -341,7 +341,7 @@ Resets the rate limiter state
 setOptions(newOptions): void
 ```
 
-Defined in: [async-rate-limiter.ts:282](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L282)
+Defined in: [async-rate-limiter.ts:284](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L284)
 
 Updates the async rate limiter options
 
