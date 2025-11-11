@@ -1,0 +1,130 @@
+---
+id: asyncThrottle
+title: asyncThrottle
+---
+
+# Function: asyncThrottle()
+
+```ts
+function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<ReturnType<TFn> | undefined>;
+```
+
+Defined in: [async-throttler.ts:626](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L626)
+
+Creates an async throttled function that limits how often the function can execute.
+The throttled function will execute at most once per wait period, even if called multiple times.
+If called while executing, it will wait until execution completes before scheduling the next call.
+
+Async vs Sync Versions:
+The async version provides advanced features over the sync throttle function:
+- Returns promises that can be awaited for throttled function results
+- Built-in retry support via AsyncRetryer integration
+- Abort support to cancel in-flight executions
+- Cancel support to prevent pending executions from starting
+- Comprehensive error handling with onError callbacks and throwOnError control
+- Detailed execution tracking (success/error/settle counts)
+- Waits for ongoing executions to complete before scheduling the next one
+
+The sync throttle function is lighter weight and simpler when you don't need async features,
+return values, or execution control.
+
+What is Throttling?
+Throttling limits how often a function can be executed, allowing only one execution within a specified time window.
+Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a
+regular interval regardless of how often it's called.
+
+Configuration Options:
+- `wait`: Time window in milliseconds during which the function can only execute once (required)
+- `leading`: Execute immediately when called (default: true)
+- `trailing`: Execute on the trailing edge of the wait period (default: true)
+- `enabled`: Whether the throttler is enabled (default: true)
+- `asyncRetryerOptions`: Configure retry behavior for executions
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and throttler instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncThrottler instance
+
+State Management:
+- Uses TanStack Store for reactive state management
+- Use `initialState` to provide initial state values when creating the async throttler
+- Use `onSuccess` callback to react to successful function execution and implement custom logic
+- Use `onError` callback to react to function execution errors and implement custom error handling
+- Use `onSettled` callback to react to function execution completion (success or error) and implement custom logic
+- The state includes error count, execution status, last execution time, and success/settle counts
+- State can be accessed via the underlying AsyncThrottler instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
+
+## Type Parameters
+
+### TFn
+
+`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+
+## Parameters
+
+### fn
+
+`TFn`
+
+### initialOptions
+
+[`AsyncThrottlerOptions`](../../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>
+
+## Returns
+
+```ts
+(...args): Promise<ReturnType<TFn> | undefined>;
+```
+
+Attempts to execute the throttled function. The execution behavior depends on the throttler options:
+
+- If enough time has passed since the last execution (>= wait period):
+  - With leading=true: Executes immediately
+  - With leading=false: Waits for the next trailing execution
+
+- If within the wait period:
+  - With trailing=true: Schedules execution for end of wait period
+  - With trailing=false: Drops the execution
+
+### Parameters
+
+#### args
+
+...`Parameters`\<`TFn`\>
+
+### Returns
+
+`Promise`\<`ReturnType`\<`TFn`\> \| `undefined`\>
+
+### Example
+
+```ts
+const throttled = new AsyncThrottler(fn, { wait: 1000 });
+
+// First call executes immediately
+await throttled.maybeExecute('a', 'b');
+
+// Call during wait period - gets throttled
+await throttled.maybeExecute('c', 'd');
+```
+
+## Example
+
+```ts
+const throttled = asyncThrottle(async (value: string) => {
+  const result = await saveToAPI(value);
+  return result; // Return value is preserved
+}, {
+  wait: 1000,
+  onError: (error) => {
+    console.error('API call failed:', error);
+  }
+});
+
+// This will execute at most once per second
+// Returns the API response directly
+const result = await throttled(inputElement.value);
+```

@@ -1,0 +1,98 @@
+---
+id: ThrottlerState
+title: ThrottlerState
+---
+
+# Interface: ThrottlerState\<TFn\>
+
+Defined in: [throttler.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L6)
+
+## Type Parameters
+
+### TFn
+
+`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+
+## Properties
+
+### executionCount
+
+```ts
+executionCount: number;
+```
+
+Defined in: [throttler.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L10)
+
+Number of function executions that have been completed
+
+***
+
+### isPending
+
+```ts
+isPending: boolean;
+```
+
+Defined in: [throttler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L14)
+
+Whether the throttler is waiting for the timeout to trigger execution
+
+***
+
+### lastArgs
+
+```ts
+lastArgs: Parameters<TFn> | undefined;
+```
+
+Defined in: [throttler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L18)
+
+The arguments from the most recent call to maybeExecute
+
+***
+
+### lastExecutionTime
+
+```ts
+lastExecutionTime: number;
+```
+
+Defined in: [throttler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L22)
+
+Timestamp of the last function execution in milliseconds
+
+***
+
+### maybeExecuteCount
+
+```ts
+maybeExecuteCount: number;
+```
+
+Defined in: [throttler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L26)
+
+Number of times maybeExecute has been called (for reduction calculations)
+
+***
+
+### nextExecutionTime
+
+```ts
+nextExecutionTime: number | undefined;
+```
+
+Defined in: [throttler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L30)
+
+Timestamp when the next execution can occur in milliseconds
+
+***
+
+### status
+
+```ts
+status: "disabled" | "idle" | "pending";
+```
+
+Defined in: [throttler.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L34)
+
+Current execution status - 'idle' when not active, 'pending' when waiting for timeout

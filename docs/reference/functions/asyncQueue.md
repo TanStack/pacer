@@ -1,0 +1,130 @@
+---
+id: asyncQueue
+title: asyncQueue
+---
+
+# Function: asyncQueue()
+
+```ts
+function asyncQueue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean;
+```
+
+Defined in: [async-queuer.ts:919](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L919)
+
+Creates a new AsyncQueuer instance and returns a bound addItem function for adding tasks.
+The queuer is started automatically and ready to process items.
+
+Async vs Sync Versions:
+The async version provides advanced features over the sync queue function:
+- Returns promises that can be awaited for task results
+- Built-in retry support via AsyncRetryer integration for each queued task
+- Abort support to cancel in-flight task executions
+- Comprehensive error handling with onError callbacks and throwOnError control
+- Detailed execution tracking (success/error/settle counts)
+- Concurrent execution support (process multiple items simultaneously)
+
+The sync queue function is lighter weight and simpler when you don't need async features,
+return values, or execution control.
+
+What is Queuing?
+Queuing is a technique for managing and processing items sequentially or with controlled concurrency.
+Tasks are processed up to the configured concurrency limit. When a task completes,
+the next pending task is processed if the concurrency limit allows.
+
+Configuration Options:
+- `concurrency`: Maximum number of concurrent tasks (default: 1)
+- `wait`: Time to wait between processing items (default: 0)
+- `maxSize`: Maximum number of items allowed in the queue (default: Infinity)
+- `getPriority`: Function to determine item priority
+- `addItemsTo`: Default position to add items ('back' or 'front', default: 'back')
+- `getItemsFrom`: Default position to get items ('front' or 'back', default: 'front')
+- `expirationDuration`: Maximum time items can stay in queue
+- `started`: Whether to start processing immediately (default: true)
+- `asyncRetryerOptions`: Configure retry behavior for task executions
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and queuer instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together; the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncQueuer instance
+
+State Management:
+- Uses TanStack Store for reactive state management
+- Use `initialState` to provide initial state values when creating the async queuer
+- Use `onSuccess` callback to react to successful task execution and implement custom logic
+- Use `onError` callback to react to task execution errors and implement custom error handling
+- Use `onSettled` callback to react to task execution completion (success or error) and implement custom logic
+- Use `onItemsChange` callback to react to items being added or removed from the queue
+- Use `onExpire` callback to react to items expiring and implement custom logic
+- Use `onReject` callback to react to items being rejected when the queue is full
+- The state includes error count, expiration count, rejection count, running status, and success/settle counts
+- State can be accessed via the underlying AsyncQueuer instance's `store.state` property
+- When using framework adapters (React/Solid), state is accessed from the hook's state property
+
+## Type Parameters
+
+### TValue
+
+`TValue`
+
+## Parameters
+
+### fn
+
+(`value`) => `Promise`\<`any`\>
+
+### initialOptions
+
+[`AsyncQueuerOptions`](../../interfaces/AsyncQueuerOptions.md)\<`TValue`\>
+
+## Returns
+
+```ts
+(
+   item, 
+   position, 
+   runOnItemsChange): boolean;
+```
+
+Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
+Items can be inserted based on priority or at the front/back depending on configuration.
+
+### Parameters
+
+#### item
+
+`TValue`
+
+#### position
+
+[`QueuePosition`](../../type-aliases/QueuePosition.md) = `...`
+
+#### runOnItemsChange
+
+`boolean` = `true`
+
+### Returns
+
+`boolean`
+
+### Example
+
+```ts
+queuer.addItem({ value: 'task', priority: 10 });
+queuer.addItem('task2', 'front');
+```
+
+## Example
+
+```ts
+const enqueue = asyncQueue<string>(async (item) => {
+  return item.toUpperCase();
+}, {
+  concurrency: 2,
+  wait: 100,
+  onSuccess: (result) => console.log('Processed:', result)
+});
+
+enqueue('hello');
+```
