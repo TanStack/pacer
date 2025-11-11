@@ -62,15 +62,15 @@
     "@tanstack/pacer": ">=0.16.0"
   },
   "dependencies": {
-    "@tanstack/devtools-ui": "^0.3.5",
-    "@tanstack/devtools-utils": "^0.0.3",
-    "@tanstack/solid-store": "^0.7.7",
+    "@tanstack/devtools-ui": "^0.4.4",
+    "@tanstack/devtools-utils": "^0.0.6",
+    "@tanstack/solid-store": "^0.8.0",
     "clsx": "^2.1.1",
-    "dayjs": "^1.11.18",
-    "goober": "^2.1.16",
-    "solid-js": "^1.9.9"
+    "dayjs": "^1.11.19",
+    "goober": "^2.1.18",
+    "solid-js": "^1.9.10"
   },
   "devDependencies": {
-    "vite-plugin-solid": "^2.11.9"
+    "vite-plugin-solid": "^2.11.10"
   }
 }

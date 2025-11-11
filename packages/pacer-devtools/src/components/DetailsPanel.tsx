@@ -42,14 +42,14 @@ export function DetailsPanel(props: DetailsPanelProps) {
               <div class={styles().detailSection}>
                 <div class={styles().detailSectionHeader}>State</div>
                 <div class={styles().stateContent}>
-                  <JsonTree value={entry.instance.store?.state} />
+                  <JsonTree value={entry.instance.store?.state as unknown} />
                 </div>
               </div>
 
               <div class={styles().detailSection}>
                 <div class={styles().detailSectionHeader}>Options</div>
                 <div class={styles().stateContent}>
-                  <JsonTree value={entry.instance.options} />
+                  <JsonTree value={entry.instance.options as unknown} />
                 </div>
               </div>
             </div>
