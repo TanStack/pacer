@@ -63,7 +63,7 @@
     "eslint": "^9.39.1",
     "eslint-plugin-unused-imports": "^4.3.0",
     "fast-glob": "^3.3.3",
-    "happy-dom": "^15.11.7",
+    "happy-dom": "^20.0.0",
     "knip": "^5.68.0",
     "markdown-link-extractor": "^4.0.2",
     "nx": "^22.0.3",
