@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.16.1
+
+### Patch Changes
+
+- Removed auto-uuid key generation for devtools. Now in order for pacer devtools to detect a util, you must define a key option ([#94](https://github.com/TanStack/pacer/pull/94))
+
 ## 0.16.0
 
 ### Minor Changes
