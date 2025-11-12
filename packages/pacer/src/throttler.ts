@@ -151,7 +151,7 @@ export class Throttler<TFn extends AnyFunction> {
   readonly store: Store<Readonly<ThrottlerState<TFn>>> = new Store(
     getDefaultThrottlerState(),
   )
-  key: string | undefined | undefined
+  key: string | undefined
   options: ThrottlerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
 

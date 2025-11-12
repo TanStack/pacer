@@ -266,7 +266,7 @@ export class AsyncBatcher<TValue> {
   readonly store: Store<Readonly<AsyncBatcherState<TValue>>> = new Store(
     getDefaultAsyncBatcherState<TValue>(),
   )
-  key: string | undefined | undefined
+  key: string | undefined
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
   asyncRetryers = new Map<
     number,
