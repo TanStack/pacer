@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
@@ -164,7 +164,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: RateLimiterOptions<TFn>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key ?? ''
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -180,11 +180,6 @@ export class RateLimiter<TFn extends AnyFunction> {
       this.setOptions(event.payload.options)
     })
   }
-
-  /**
-   * Emits a change event for the rate limiter instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('RateLimiter', this)
 
   /**
    * Updates the rate limiter options

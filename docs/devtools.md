@@ -89,11 +89,11 @@ import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools/production'
 
 ## Registering Utilities
 
-Each utility should automatically be detected and displayed in the devtools. However, if you don't provide a `key` option to the utility, it will show with a uuid for its name. Give it an identifiable name with the `key` option.
+Pacer utilities only register with the devtools when you pass a `key`. Keys are no longer generated automatically, so leave the option out if you do not want an instance to appear in the panels.
 
 ```tsx
 const debouncer = new Debouncer(myDebounceFn, {
-  key: 'My Debouncer', // friendly name for the utility instead of auto-generated uuid
+  key: 'My Debouncer', // friendly name shown in the devtools
   wait: 1000,
 })
 ```

@@ -60,7 +60,9 @@ export const emitChange = <
   event: TSuffix,
   payload: PacerEventMap[`pacer:${TSuffix}`],
 ) => {
-  pacerEventClient.emit(event, payload)
+  if (payload.key) {
+    pacerEventClient.emit(event, payload)
+  }
 }
 
 export const pacerEventClient = new PacerEventClient()

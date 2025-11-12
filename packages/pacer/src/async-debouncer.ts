@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
@@ -231,7 +231,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key ?? ''
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -245,11 +245,6 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.setOptions(event.payload.options)
     })
   }
-
-  /**
-   * Emits a change event for the async debouncer instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('AsyncDebouncer', this)
 
   /**
    * Updates the async debouncer options

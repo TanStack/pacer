@@ -72,7 +72,6 @@ title: "@tanstack/pacer"
 - [asyncThrottle](../functions/asyncThrottle.md)
 - [asyncThrottlerOptions](../functions/asyncThrottlerOptions.md)
 - [batch](../functions/batch.md)
-- [createKey](../functions/createKey.md)
 - [debounce](../functions/debounce.md)
 - [debouncerOptions](../functions/debouncerOptions.md)
 - [isFunction](../functions/isFunction.md)
