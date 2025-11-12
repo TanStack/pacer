@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
@@ -159,7 +159,7 @@ export class Throttler<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: ThrottlerOptions<TFn>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -172,11 +172,6 @@ export class Throttler<TFn extends AnyFunction> {
       this.setOptions(event.payload.options)
     })
   }
-
-  /**
-   * Emits a change event for the throttler instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('Throttler', this)
 
   /**
    * Updates the throttler options

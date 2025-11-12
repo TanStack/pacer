@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AsyncRetryerOptions } from './async-retryer'
 import type { OptionalKeys } from './types'
@@ -316,7 +316,7 @@ export class AsyncQueuer<TValue> {
   readonly store: Store<Readonly<AsyncQueuerState<TValue>>> = new Store<
     AsyncQueuerState<TValue>
   >(getDefaultAsyncQueuerState<TValue>())
-  key: string
+  key: string | undefined
   options: AsyncQueuerOptions<TValue>
   asyncRetryers = new Map<
     number,
@@ -328,7 +328,7 @@ export class AsyncQueuer<TValue> {
     public fn: (item: TValue) => Promise<any>,
     initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -359,11 +359,6 @@ export class AsyncQueuer<TValue> {
       this.setOptions(e.payload.options)
     })
   }
-
-  /**
-   * Emits a change event for the async queuer instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('AsyncQueuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.

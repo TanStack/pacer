@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AsyncRetryerOptions } from './async-retryer'
 import type { OptionalKeys } from './types'
@@ -266,7 +266,7 @@ export class AsyncBatcher<TValue> {
   readonly store: Store<Readonly<AsyncBatcherState<TValue>>> = new Store(
     getDefaultAsyncBatcherState<TValue>(),
   )
-  key: string
+  key: string | undefined
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
   asyncRetryers = new Map<
     number,
@@ -278,7 +278,7 @@ export class AsyncBatcher<TValue> {
     public fn: (items: Array<TValue>) => Promise<any>,
     initialOptions: AsyncBatcherOptions<TValue>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -292,11 +292,6 @@ export class AsyncBatcher<TValue> {
       this.setOptions(event.payload.options)
     })
   }
-
-  /**
-   * Emits a change event for the async batcher instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('AsyncBatcher', this)
 
   /**
    * Updates the async batcher options

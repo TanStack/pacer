@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction } from './types'
@@ -246,7 +246,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>> = new Store<
     AsyncRateLimiterState<TFn>
   >(getDefaultAsyncRateLimiterState<TFn>())
-  key: string
+  key: string | undefined
   options: AsyncRateLimiterOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
@@ -255,7 +255,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -272,11 +272,6 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       this.setOptions(event.payload.options)
     })
   }
-
-  /**
-   * Emits a change event for the async rate limiter instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('AsyncRateLimiter', this)
 
   /**
    * Updates the async rate limiter options

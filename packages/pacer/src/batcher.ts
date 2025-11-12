@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 
@@ -146,7 +146,7 @@ export class Batcher<TValue> {
   readonly store: Store<Readonly<BatcherState<TValue>>> = new Store(
     getDefaultBatcherState<TValue>(),
   )
-  key: string
+  key: string | undefined
   options: BatcherOptionsWithOptionalCallbacks<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -154,7 +154,7 @@ export class Batcher<TValue> {
     public fn: (items: Array<TValue>) => void,
     initialOptions: BatcherOptions<TValue>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -167,11 +167,6 @@ export class Batcher<TValue> {
       this.setOptions(event.payload.options)
     })
   }
-
-  /**
-   * Emits a change event for the batcher instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('Batcher', this)
 
   /**
    * Updates the batcher options

@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 
 export interface QueuerState<TValue> {
@@ -270,7 +270,7 @@ export class Queuer<TValue> {
   readonly store: Store<Readonly<QueuerState<TValue>>> = new Store(
     getDefaultQueuerState<TValue>(),
   )
-  key: string
+  key: string | undefined
   options: QueuerOptions<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -278,7 +278,7 @@ export class Queuer<TValue> {
     public fn: (item: TValue) => void,
     initialOptions: QueuerOptions<TValue> = {},
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -308,11 +308,6 @@ export class Queuer<TValue> {
       this.setOptions(event.payload.options)
     })
   }
-
-  /**
-   * Emits a change event for the queuer instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('Queuer', this)
 
   /**
    * Updates the queuer options. New options are merged with existing options.

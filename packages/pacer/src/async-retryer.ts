@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction } from './types'
 
@@ -289,7 +289,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncRetryerState<TFn>>> = new Store(
     getDefaultAsyncRetryerState<TFn>(),
   )
-  key: string
+  key: string | undefined
   options: AsyncRetryerOptions<TFn> & typeof defaultOptions
   #abortController: AbortController | null = null
 
@@ -302,7 +302,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncRetryerOptions<TFn> = {},
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -318,11 +318,6 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
       this.setOptions(event.payload.options)
     })
   }
-
-  /**
-   * Emits a change event for the async retryer instance. Mostly useful for devtools.
-   */
-  _emit = () => emitChange('AsyncRetryer', this)
 
   /**
    * Updates the retryer options
