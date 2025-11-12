@@ -120,7 +120,7 @@ Defined in: [async-throttler.ts:243](https://github.com/TanStack/pacer/blob/main
 ### key
 
 ```ts
-key: string;
+key: string | undefined;
 ```
 
 Defined in: [async-throttler.ts:234](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L234)

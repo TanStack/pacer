@@ -266,7 +266,7 @@ export class AsyncBatcher<TValue> {
   readonly store: Store<Readonly<AsyncBatcherState<TValue>>> = new Store(
     getDefaultAsyncBatcherState<TValue>(),
   )
-  key: string
+  key: string | undefined | undefined
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
   asyncRetryers = new Map<
     number,
@@ -278,7 +278,7 @@ export class AsyncBatcher<TValue> {
     public fn: (items: Array<TValue>) => Promise<any>,
     initialOptions: AsyncBatcherOptions<TValue>,
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

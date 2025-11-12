@@ -231,7 +231,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncThrottlerState<TFn>>> = new Store<
     AsyncThrottlerState<TFn>
   >(getDefaultAsyncThrottlerState<TFn>())
-  key: string
+  key: string | undefined
   options: AsyncThrottlerOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: NodeJS.Timeout | null = null
@@ -243,7 +243,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncThrottlerOptions<TFn>,
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

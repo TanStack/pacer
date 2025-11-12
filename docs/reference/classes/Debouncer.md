@@ -84,7 +84,7 @@ Defined in: [debouncer.ts:151](https://github.com/TanStack/pacer/blob/main/packa
 ### key
 
 ```ts
-key: string;
+key: string | undefined;
 ```
 
 Defined in: [debouncer.ts:146](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L146)

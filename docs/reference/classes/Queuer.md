@@ -135,7 +135,7 @@ Defined in: [queuer.ts:278](https://github.com/TanStack/pacer/blob/main/packages
 ### key
 
 ```ts
-key: string;
+key: string | undefined;
 ```
 
 Defined in: [queuer.ts:273](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L273)

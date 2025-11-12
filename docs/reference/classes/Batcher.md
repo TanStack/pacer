@@ -101,7 +101,7 @@ Defined in: [batcher.ts:154](https://github.com/TanStack/pacer/blob/main/package
 ### key
 
 ```ts
-key: string;
+key: string | undefined;
 ```
 
 Defined in: [batcher.ts:149](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L149)

@@ -289,7 +289,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncRetryerState<TFn>>> = new Store(
     getDefaultAsyncRetryerState<TFn>(),
   )
-  key: string
+  key: string | undefined
   options: AsyncRetryerOptions<TFn> & typeof defaultOptions
   #abortController: AbortController | null = null
 
@@ -302,7 +302,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncRetryerOptions<TFn> = {},
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

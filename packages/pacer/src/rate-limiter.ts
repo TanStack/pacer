@@ -156,7 +156,7 @@ const defaultOptions: Omit<
 export class RateLimiter<TFn extends AnyFunction> {
   readonly store: Store<Readonly<RateLimiterState>> =
     new Store<RateLimiterState>(getDefaultRateLimiterState())
-  key: string
+  key: string | undefined
   options: RateLimiterOptions<TFn>
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
@@ -164,7 +164,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: RateLimiterOptions<TFn>,
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

@@ -97,7 +97,7 @@ Defined in: [rate-limiter.ts:164](https://github.com/TanStack/pacer/blob/main/pa
 ### key
 
 ```ts
-key: string;
+key: string | undefined;
 ```
 
 Defined in: [rate-limiter.ts:159](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L159)

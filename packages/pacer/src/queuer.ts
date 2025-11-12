@@ -270,7 +270,7 @@ export class Queuer<TValue> {
   readonly store: Store<Readonly<QueuerState<TValue>>> = new Store(
     getDefaultQueuerState<TValue>(),
   )
-  key: string
+  key: string | undefined
   options: QueuerOptions<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -278,7 +278,7 @@ export class Queuer<TValue> {
     public fn: (item: TValue) => void,
     initialOptions: QueuerOptions<TValue> = {},
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

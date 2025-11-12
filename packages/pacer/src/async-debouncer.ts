@@ -219,7 +219,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncDebouncerState<TFn>>> = new Store<
     AsyncDebouncerState<TFn>
   >(getDefaultAsyncDebouncerState<TFn>())
-  key: string
+  key: string | undefined
   options: AsyncDebouncerOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: NodeJS.Timeout | null = null
@@ -231,7 +231,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncDebouncerOptions<TFn>,
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

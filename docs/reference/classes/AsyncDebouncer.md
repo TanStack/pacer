@@ -116,7 +116,7 @@ Defined in: [async-debouncer.ts:231](https://github.com/TanStack/pacer/blob/main
 ### key
 
 ```ts
-key: string;
+key: string | undefined;
 ```
 
 Defined in: [async-debouncer.ts:222](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L222)

@@ -152,7 +152,7 @@ The async function to retry
 ### key
 
 ```ts
-key: string;
+key: string | undefined;
 ```
 
 Defined in: [async-retryer.ts:292](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L292)

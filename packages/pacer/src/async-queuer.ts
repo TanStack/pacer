@@ -316,7 +316,7 @@ export class AsyncQueuer<TValue> {
   readonly store: Store<Readonly<AsyncQueuerState<TValue>>> = new Store<
     AsyncQueuerState<TValue>
   >(getDefaultAsyncQueuerState<TValue>())
-  key: string
+  key: string | undefined
   options: AsyncQueuerOptions<TValue>
   asyncRetryers = new Map<
     number,
@@ -328,7 +328,7 @@ export class AsyncQueuer<TValue> {
     public fn: (item: TValue) => Promise<any>,
     initialOptions: AsyncQueuerOptions<TValue> = {},
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

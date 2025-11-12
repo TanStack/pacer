@@ -146,7 +146,7 @@ export class Batcher<TValue> {
   readonly store: Store<Readonly<BatcherState<TValue>>> = new Store(
     getDefaultBatcherState<TValue>(),
   )
-  key: string
+  key: string | undefined
   options: BatcherOptionsWithOptionalCallbacks<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -154,7 +154,7 @@ export class Batcher<TValue> {
     public fn: (items: Array<TValue>) => void,
     initialOptions: BatcherOptions<TValue>,
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

@@ -143,7 +143,7 @@ export class Debouncer<TFn extends AnyFunction> {
   readonly store: Store<Readonly<DebouncerState<TFn>>> = new Store(
     getDefaultDebouncerState<TFn>(),
   )
-  key: string
+  key: string | undefined
   options: DebouncerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
 
@@ -151,7 +151,7 @@ export class Debouncer<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: DebouncerOptions<TFn>,
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

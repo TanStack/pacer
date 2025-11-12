@@ -139,7 +139,7 @@ Defined in: [async-batcher.ts:278](https://github.com/TanStack/pacer/blob/main/p
 ### key
 
 ```ts
-key: string;
+key: string | undefined;
 ```
 
 Defined in: [async-batcher.ts:269](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L269)

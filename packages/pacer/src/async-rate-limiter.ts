@@ -246,7 +246,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>> = new Store<
     AsyncRateLimiterState<TFn>
   >(getDefaultAsyncRateLimiterState<TFn>())
-  key: string
+  key: string | undefined
   options: AsyncRateLimiterOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
@@ -255,7 +255,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
-    this.key = initialOptions.key ?? ''
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,

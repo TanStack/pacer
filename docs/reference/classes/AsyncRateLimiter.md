@@ -136,7 +136,7 @@ Defined in: [async-rate-limiter.ts:255](https://github.com/TanStack/pacer/blob/m
 ### key
 
 ```ts
-key: string;
+key: string | undefined;
 ```
 
 Defined in: [async-rate-limiter.ts:249](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L249)
