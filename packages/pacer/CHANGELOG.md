@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.16.2
+
+### Patch Changes
+
+- fix devtools visibility issue ([#96](https://github.com/TanStack/pacer/pull/96))
+
 ## 0.16.1
 
 ### Patch Changes
