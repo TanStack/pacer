@@ -1,5 +1,12 @@
 # @tanstack/react-pacer
 
+## 0.17.1
+
+### Patch Changes
+
+- Updated dependencies [[`64db505`](https://github.com/TanStack/pacer/commit/64db5057c65837836fed053708e7465987fbcb11)]:
+  - @tanstack/pacer@0.16.1
+
 ## 0.17.0
 
 ### Minor Changes

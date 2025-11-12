@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/react-pacer",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "description": "Utilities for debouncing and throttling functions in React.",
   "author": "Tanner Linsley",
   "license": "MIT",
