@@ -312,11 +312,13 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.on('d-AsyncRetryer', (event) => {
-      if (event.payload.key !== this.key) return
-      this.#setState(event.payload.store.state as AsyncRetryerState<TFn>)
-      this.setOptions(event.payload.options)
-    })
+    if (this.key) {
+      pacerEventClient.on('d-AsyncRetryer', (event) => {
+        if (event.payload.key !== this.key) return
+        this.#setState(event.payload.store.state as AsyncRetryerState<TFn>)
+        this.setOptions(event.payload.options)
+      })
+    }
   }
 
   /**

@@ -134,7 +134,7 @@ Defined in: [batcher.ts:146](https://github.com/TanStack/pacer/blob/main/package
 addItem(item): void;
 ```
 
-Defined in: [batcher.ts:205](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L205)
+Defined in: [batcher.ts:207](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L207)
 
 Adds an item to the batcher
 If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
@@ -157,7 +157,7 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 cancel(): void;
 ```
 
-Defined in: [batcher.ts:283](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L283)
+Defined in: [batcher.ts:285](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L285)
 
 Cancels any pending execution that was scheduled.
 Does NOT clear out the items.
@@ -174,7 +174,7 @@ Does NOT clear out the items.
 clear(): void;
 ```
 
-Defined in: [batcher.ts:275](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L275)
+Defined in: [batcher.ts:277](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L277)
 
 Removes all items from the batcher
 
@@ -190,7 +190,7 @@ Removes all items from the batcher
 flush(): void;
 ```
 
-Defined in: [batcher.ts:253](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L253)
+Defined in: [batcher.ts:255](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L255)
 
 Processes the current batch of items immediately
 
@@ -206,7 +206,7 @@ Processes the current batch of items immediately
 peekAllItems(): TValue[];
 ```
 
-Defined in: [batcher.ts:261](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L261)
+Defined in: [batcher.ts:263](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L263)
 
 Returns a copy of all items in the batcher
 
@@ -222,7 +222,7 @@ Returns a copy of all items in the batcher
 reset(): void;
 ```
 
-Defined in: [batcher.ts:291](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L291)
+Defined in: [batcher.ts:293](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L293)
 
 Resets the batcher state to its default values
 
@@ -238,7 +238,7 @@ Resets the batcher state to its default values
 setOptions(newOptions): void;
 ```
 
-Defined in: [batcher.ts:174](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L174)
+Defined in: [batcher.ts:176](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L176)
 
 Updates the batcher options
 

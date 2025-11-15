@@ -195,7 +195,7 @@ Defined in: [async-retryer.ts:289](https://github.com/TanStack/pacer/blob/main/p
 abort(reason): void;
 ```
 
-Defined in: [async-retryer.ts:603](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L603)
+Defined in: [async-retryer.ts:605](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L605)
 
 Cancels the current execution and any pending retries
 
@@ -219,7 +219,7 @@ The reason for the abort (defaults to 'manual')
 execute(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [async-retryer.ts:410](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L410)
+Defined in: [async-retryer.ts:412](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L412)
 
 Executes the function with retry logic
 
@@ -249,7 +249,7 @@ The last error if throwOnError is true and all retries fail
 getAbortSignal(): AbortSignal | null;
 ```
 
-Defined in: [async-retryer.ts:595](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L595)
+Defined in: [async-retryer.ts:597](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L597)
 
 Returns the current AbortSignal for the executing operation.
 Use this signal in your async function to make it cancellable.
@@ -282,7 +282,7 @@ retryer.abort()
 reset(): void;
 ```
 
-Defined in: [async-retryer.ts:623](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L623)
+Defined in: [async-retryer.ts:625](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L625)
 
 Resets the retryer to its initial state
 
@@ -298,7 +298,7 @@ Resets the retryer to its initial state
 setOptions(newOptions): void;
 ```
 
-Defined in: [async-retryer.ts:326](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L326)
+Defined in: [async-retryer.ts:328](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L328)
 
 Updates the retryer options
 

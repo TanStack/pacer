@@ -171,7 +171,7 @@ addItem(
    runOnItemsChange): boolean;
 ```
 
-Defined in: [queuer.ts:399](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L399)
+Defined in: [queuer.ts:401](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L401)
 
 Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
 Items can be inserted based on priority or at the front/back depending on configuration.
@@ -210,7 +210,7 @@ queuer.addItem('task2', 'front');
 clear(): void;
 ```
 
-Defined in: [queuer.ts:681](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L681)
+Defined in: [queuer.ts:683](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L683)
 
 Removes all pending items from the queue. Does not affect items being processed.
 
@@ -226,7 +226,7 @@ Removes all pending items from the queue. Does not affect items being processed.
 execute(position?): TValue | undefined;
 ```
 
-Defined in: [queuer.ts:535](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L535)
+Defined in: [queuer.ts:537](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L537)
 
 Removes and returns the next item from the queue and processes it using the provided function.
 
@@ -255,7 +255,7 @@ queuer.execute('back');
 flush(numberOfItems, position?): void;
 ```
 
-Defined in: [queuer.ts:551](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L551)
+Defined in: [queuer.ts:553](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L553)
 
 Processes a specified number of items to execute immediately with no wait time
 If no numberOfItems is provided, all items will be processed
@@ -282,7 +282,7 @@ If no numberOfItems is provided, all items will be processed
 flushAsBatch(batchFunction): void;
 ```
 
-Defined in: [queuer.ts:566](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L566)
+Defined in: [queuer.ts:568](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L568)
 
 Processes all items in the queue as a batch using the provided function as an argument
 The queue is cleared after processing
@@ -305,7 +305,7 @@ The queue is cleared after processing
 getNextItem(position): TValue | undefined;
 ```
 
-Defined in: [queuer.ts:483](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L483)
+Defined in: [queuer.ts:485](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L485)
 
 Removes and returns the next item from the queue without executing the function.
 Use for manual queue management. Normally, use execute() to process items.
@@ -336,7 +336,7 @@ queuer.getNextItem('back');
 peekAllItems(): TValue[];
 ```
 
-Defined in: [queuer.ts:649](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L649)
+Defined in: [queuer.ts:651](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L651)
 
 Returns a copy of all items in the queue.
 
@@ -352,7 +352,7 @@ Returns a copy of all items in the queue.
 peekNextItem(position): TValue | undefined;
 ```
 
-Defined in: [queuer.ts:639](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L639)
+Defined in: [queuer.ts:641](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L641)
 
 Returns the next item in the queue without removing it.
 
@@ -380,7 +380,7 @@ queuer.peekNextItem('back'); // back
 reset(): void;
 ```
 
-Defined in: [queuer.ts:689](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L689)
+Defined in: [queuer.ts:691](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L691)
 
 Resets the queuer state to its default values
 
@@ -396,7 +396,7 @@ Resets the queuer state to its default values
 setOptions(newOptions): void;
 ```
 
-Defined in: [queuer.ts:315](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L315)
+Defined in: [queuer.ts:317](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L317)
 
 Updates the queuer options. New options are merged with existing options.
 
@@ -418,7 +418,7 @@ Updates the queuer options. New options are merged with existing options.
 start(): void;
 ```
 
-Defined in: [queuer.ts:656](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L656)
+Defined in: [queuer.ts:658](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L658)
 
 Starts processing items in the queue. If already isRunning, does nothing.
 
@@ -434,7 +434,7 @@ Starts processing items in the queue. If already isRunning, does nothing.
 stop(): void;
 ```
 
-Defined in: [queuer.ts:666](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L666)
+Defined in: [queuer.ts:668](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L668)
 
 Stops processing items in the queue. Does not clear the queue.
 

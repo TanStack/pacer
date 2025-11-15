@@ -286,11 +286,13 @@ export class AsyncBatcher<TValue> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.on('d-AsyncBatcher', (event) => {
-      if (event.payload.key !== this.key) return
-      this.#setState(event.payload.store.state)
-      this.setOptions(event.payload.options)
-    })
+    if (this.key) {
+      pacerEventClient.on('d-AsyncBatcher', (event) => {
+        if (event.payload.key !== this.key) return
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      })
+    }
   }
 
   /**

@@ -353,11 +353,13 @@ export class AsyncQueuer<TValue> {
       }
     }
 
-    pacerEventClient.on('d-AsyncQueuer', (e) => {
-      if (e.payload.key !== this.key) return
-      this.#setState(e.payload.store.state)
-      this.setOptions(e.payload.options)
-    })
+    if (this.key) {
+      pacerEventClient.on('d-AsyncQueuer', (e) => {
+        if (e.payload.key !== this.key) return
+        this.#setState(e.payload.store.state)
+        this.setOptions(e.payload.options)
+      })
+    }
   }
 
   /**

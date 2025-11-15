@@ -302,11 +302,13 @@ export class Queuer<TValue> {
       }
     }
 
-    pacerEventClient.on('d-Queuer', (event) => {
-      if (event.payload.key !== this.key) return
-      this.#setState(event.payload.store.state)
-      this.setOptions(event.payload.options)
-    })
+    if (this.key) {
+      pacerEventClient.on('d-Queuer', (event) => {
+        if (event.payload.key !== this.key) return
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      })
+    }
   }
 
   /**
