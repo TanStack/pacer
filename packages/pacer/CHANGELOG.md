@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.16.3
+
+### Patch Changes
+
+- fix: ignore eventClient when no key is specified ([`9893832`](https://github.com/TanStack/pacer/commit/98938323f0bc1a6ab87bce72287c6d4a7264cb93))
+
 ## 0.16.2
 
 ### Patch Changes
