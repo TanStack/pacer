@@ -1622,7 +1622,7 @@ importers:
   examples/vanilla/LiteBatcher:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
@@ -1632,7 +1632,7 @@ importers:
   examples/vanilla/LiteDebouncer:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
@@ -1642,7 +1642,7 @@ importers:
   examples/vanilla/LiteQueuer:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
@@ -1652,7 +1652,7 @@ importers:
   examples/vanilla/LiteRateLimiter:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
@@ -1662,7 +1662,7 @@ importers:
   examples/vanilla/LiteThrottler:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
@@ -1672,7 +1672,7 @@ importers:
   examples/vanilla/liteBatch:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
@@ -1682,7 +1682,7 @@ importers:
   examples/vanilla/liteDebounce:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
@@ -1692,7 +1692,7 @@ importers:
   examples/vanilla/liteQueue:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
@@ -1702,7 +1702,7 @@ importers:
   examples/vanilla/liteRateLimit:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
@@ -1712,7 +1712,7 @@ importers:
   examples/vanilla/liteThrottle:
     dependencies:
       '@tanstack/pacer-lite':
-        specifier: workspace:*
+        specifier: 0.0.1
         version: link:../../../packages/pacer-lite
     devDependencies:
       vite:
