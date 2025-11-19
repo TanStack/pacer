@@ -1,0 +1,17 @@
+{
+  "name": "@tanstack/pacer-example-vanilla-lite-rate-limiter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port=3005",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:types": "tsc"
+  },
+  "dependencies": {
+    "@tanstack/pacer-lite": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^7.2.2"
+  }
+}

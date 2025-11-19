@@ -634,7 +634,16 @@
     },
     {
       "label": "Debouncer Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteDebounce",
+          "to": "examples/vanilla/liteDebounce"
+        },
+        {
+          "label": "LiteDebouncer",
+          "to": "examples/vanilla/LiteDebouncer"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
@@ -706,7 +715,16 @@
     },
     {
       "label": "Throttler Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteThrottle",
+          "to": "examples/vanilla/liteThrottle"
+        },
+        {
+          "label": "LiteThrottler",
+          "to": "examples/vanilla/LiteThrottler"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
