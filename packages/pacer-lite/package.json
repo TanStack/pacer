@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer-lite",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Lightweight utilities for debouncing, throttling, and more - designed for npm packages.",
   "author": "Tanner Linsley",
   "license": "MIT",
