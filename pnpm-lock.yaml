@@ -1619,6 +1619,106 @@ importers:
         specifier: ^2.11.10
         version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1))
 
+  examples/vanilla/LiteBatcher:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
+  examples/vanilla/LiteDebouncer:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
+  examples/vanilla/LiteQueuer:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
+  examples/vanilla/LiteRateLimiter:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
+  examples/vanilla/LiteThrottler:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
+  examples/vanilla/liteBatch:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
+  examples/vanilla/liteDebounce:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
+  examples/vanilla/liteQueue:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
+  examples/vanilla/liteRateLimit:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
+  examples/vanilla/liteThrottle:
+    dependencies:
+      '@tanstack/pacer-lite':
+        specifier: 0.0.1
+        version: link:../../../packages/pacer-lite
+    devDependencies:
+      vite:
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1)
+
   packages/pacer:
     dependencies:
       '@tanstack/devtools-event-client':
@@ -1658,6 +1758,12 @@ importers:
       vite-plugin-solid:
         specifier: ^2.11.10
         version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.0)(yaml@2.8.1))
+
+  packages/pacer-lite:
+    devDependencies:
+      '@tanstack/pacer':
+        specifier: workspace:*
+        version: link:../pacer
 
   packages/react-pacer:
     dependencies:

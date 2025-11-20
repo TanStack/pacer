@@ -1,0 +1,113 @@
+{
+  "name": "@tanstack/pacer-lite",
+  "version": "0.0.1",
+  "description": "Lightweight utilities for debouncing, throttling, and more - designed for npm packages.",
+  "author": "Tanner Linsley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanStack/pacer.git",
+    "directory": "packages/pacer-lite"
+  },
+  "homepage": "https://tanstack.com/pacer",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/tannerlinsley"
+  },
+  "keywords": [
+    "debounce",
+    "throttle",
+    "rate-limit",
+    "pacer",
+    "lightweight",
+    "minimal"
+  ],
+  "type": "module",
+  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./lite-debouncer": {
+      "import": {
+        "types": "./dist/esm/lite-debouncer.d.ts",
+        "default": "./dist/esm/lite-debouncer.js"
+      },
+      "require": {
+        "types": "./dist/cjs/lite-debouncer.d.cts",
+        "default": "./dist/cjs/lite-debouncer.cjs"
+      }
+    },
+    "./lite-throttler": {
+      "import": {
+        "types": "./dist/esm/lite-throttler.d.ts",
+        "default": "./dist/esm/lite-throttler.js"
+      },
+      "require": {
+        "types": "./dist/cjs/lite-throttler.d.cts",
+        "default": "./dist/cjs/lite-throttler.cjs"
+      }
+    },
+    "./lite-rate-limiter": {
+      "import": {
+        "types": "./dist/esm/lite-rate-limiter.d.ts",
+        "default": "./dist/esm/lite-rate-limiter.js"
+      },
+      "require": {
+        "types": "./dist/cjs/lite-rate-limiter.d.cts",
+        "default": "./dist/cjs/lite-rate-limiter.cjs"
+      }
+    },
+    "./lite-queuer": {
+      "import": {
+        "types": "./dist/esm/lite-queuer.d.ts",
+        "default": "./dist/esm/lite-queuer.js"
+      },
+      "require": {
+        "types": "./dist/cjs/lite-queuer.d.cts",
+        "default": "./dist/cjs/lite-queuer.cjs"
+      }
+    },
+    "./lite-batcher": {
+      "import": {
+        "types": "./dist/esm/lite-batcher.d.ts",
+        "default": "./dist/esm/lite-batcher.js"
+      },
+      "require": {
+        "types": "./dist/cjs/lite-batcher.d.cts",
+        "default": "./dist/cjs/lite-batcher.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist/",
+    "src"
+  ],
+  "scripts": {
+    "clean": "premove ./build ./dist",
+    "lint:fix": "eslint ./src --fix",
+    "test:eslint": "eslint ./src",
+    "test:lib": "vitest",
+    "test:lib:dev": "pnpm test:lib --watch",
+    "test:types": "tsc",
+    "test:build": "publint --strict",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@tanstack/pacer": "workspace:*"
+  }
+}

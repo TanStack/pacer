@@ -51,40 +51,44 @@
       "label": "Guides",
       "children": [
         {
-          "label": "Debouncing Guide",
-          "to": "guides/debouncing"
+          "label": "Which Utility Should I Choose?",
+          "to": "guides/which-pacer-utility-should-i-choose"
         },
         {
-          "label": "Async Debouncing Guide",
-          "to": "guides/async-debouncing"
+          "label": "Debouncing Guide",
+          "to": "guides/debouncing"
         },
         {
           "label": "Throttling Guide",
           "to": "guides/throttling"
         },
         {
-          "label": "Async Throttling Guide",
-          "to": "guides/async-throttling"
-        },
-        {
           "label": "Rate Limiting Guide",
           "to": "guides/rate-limiting"
-        },
-        {
-          "label": "Async Rate Limiting Guide",
-          "to": "guides/async-rate-limiting"
         },
         {
           "label": "Queuing Guide",
           "to": "guides/queuing"
         },
         {
-          "label": "Async Queuing Guide",
-          "to": "guides/async-queuing"
-        },
-        {
           "label": "Batching Guide",
           "to": "guides/batching"
+        },
+        {
+          "label": "Async Debouncing Guide",
+          "to": "guides/async-debouncing"
+        },
+        {
+          "label": "Async Throttling Guide",
+          "to": "guides/async-throttling"
+        },
+        {
+          "label": "Async Rate Limiting Guide",
+          "to": "guides/async-rate-limiting"
+        },
+        {
+          "label": "Async Queuing Guide",
+          "to": "guides/async-queuing"
         },
         {
           "label": "Async Batching Guide",
@@ -634,7 +638,16 @@
     },
     {
       "label": "Debouncer Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteDebounce",
+          "to": "examples/vanilla/liteDebounce"
+        },
+        {
+          "label": "LiteDebouncer",
+          "to": "examples/vanilla/LiteDebouncer"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
@@ -706,7 +719,16 @@
     },
     {
       "label": "Throttler Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteThrottle",
+          "to": "examples/vanilla/liteThrottle"
+        },
+        {
+          "label": "LiteThrottler",
+          "to": "examples/vanilla/LiteThrottler"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
@@ -774,7 +796,16 @@
     },
     {
       "label": "Rate Limiter Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteRateLimit",
+          "to": "examples/vanilla/liteRateLimit"
+        },
+        {
+          "label": "LiteRateLimiter",
+          "to": "examples/vanilla/LiteRateLimiter"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
@@ -850,7 +881,16 @@
     },
     {
       "label": "Queue Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteQueue",
+          "to": "examples/vanilla/liteQueue"
+        },
+        {
+          "label": "LiteQueuer",
+          "to": "examples/vanilla/LiteQueuer"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
@@ -906,7 +946,16 @@
     },
     {
       "label": "Batcher Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteBatch",
+          "to": "examples/vanilla/liteBatch"
+        },
+        {
+          "label": "LiteBatcher",
+          "to": "examples/vanilla/LiteBatcher"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
