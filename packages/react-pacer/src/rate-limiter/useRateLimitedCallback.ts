@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { useRateLimiter } from './useRateLimiter'
-import type { RateLimiterOptions } from '@tanstack/pacer'
+import type { AnyFunction } from '@tanstack/pacer/types'
+import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 
 /**
  * A React hook that creates a rate-limited version of a callback function.
@@ -13,6 +14,12 @@ import type { RateLimiterOptions } from '@tanstack/pacer'
  * or debouncing, it does not attempt to space out or intelligently collapse calls.
  * This can lead to bursts of rapid executions followed by periods where all calls
  * are blocked.
+ *
+ * The rate limiter supports two types of windows:
+ * - 'fixed': A strict window that resets after the window period. All executions within the window count
+ *   towards the limit, and the window resets completely after the period.
+ * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
+ *   consistent rate of execution over time.
  *
  * For smoother execution patterns, consider:
  * - useThrottledCallback: When you want consistent spacing between executions (e.g. UI updates)
@@ -33,7 +40,7 @@ import type { RateLimiterOptions } from '@tanstack/pacer'
  *
  * @example
  * ```tsx
- * // Rate limit API calls to maximum 5 calls per minute
+ * // Rate limit API calls to maximum 5 calls per minute with a sliding window
  * const makeApiCall = useRateLimitedCallback(
  *   (data: ApiData) => {
  *     return fetch('/api/endpoint', { method: 'POST', body: JSON.stringify(data) });
@@ -41,6 +48,7 @@ import type { RateLimiterOptions } from '@tanstack/pacer'
  *   {
  *     limit: 5,
  *     window: 60000, // 1 minute
+ *     windowType: 'sliding',
  *     onReject: () => {
  *       console.warn('API rate limit reached. Please wait before trying again.');
  *     }
@@ -48,13 +56,10 @@ import type { RateLimiterOptions } from '@tanstack/pacer'
  * );
  * ```
  */
-export function useRateLimitedCallback<
-  TFn extends (...args: Array<any>) => any,
-  TArgs extends Parameters<TFn>,
->(fn: TFn, options: RateLimiterOptions) {
-  const rateLimitedFn = useRateLimiter<TFn, TArgs>(fn, options).maybeExecute
-  return useCallback(
-    (...args: TArgs) => rateLimitedFn(...args),
-    [rateLimitedFn],
-  )
+export function useRateLimitedCallback<TFn extends AnyFunction>(
+  fn: TFn,
+  options: RateLimiterOptions<TFn>,
+): (...args: Parameters<TFn>) => boolean {
+  const rateLimitedFn = useRateLimiter(fn, options).maybeExecute
+  return useCallback((...args) => rateLimitedFn(...args), [rateLimitedFn])
 }

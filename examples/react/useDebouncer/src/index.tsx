@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useDebouncer } from '@tanstack/react-pacer/debouncer'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 function App1() {
   // Use your state management library of choice
@@ -8,16 +9,25 @@ function App1() {
   const [debouncedCount, setDebouncedCount] = useState(0)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
-  const setCountDebouncer = useDebouncer(setDebouncedCount, {
-    wait: 500,
-    enabled: instantCount > 2, // optional, defaults to true
-  })
+  const debouncer = useDebouncer(
+    setDebouncedCount,
+    {
+      wait: 800,
+      enabled: () => instantCount > 2, // optional, defaults to true
+      // leading: true, // optional, defaults to false
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      status: state.status,
+      executionCount: state.executionCount,
+    }),
+  )
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
     setInstantCount((c) => {
       const newInstantCount = c + 1 // common new value for both
-      setCountDebouncer.maybeExecute(newInstantCount) // debounced state update
+      debouncer.maybeExecute(newInstantCount) // debounced state update
       return newInstantCount // instant state update
     })
   }
@@ -28,12 +38,17 @@ function App1() {
       <table>
         <tbody>
           <tr>
-            <td>Execution Count:</td>
-            <td>{setCountDebouncer.getExecutionCount()}</td>
+            <td>Status:</td>
+            <td>{debouncer.state.status}</td>
           </tr>
           <tr>
-            <td>Is Pending:</td>
-            <td>{setCountDebouncer.getIsPending().toString()}</td>
+            <td>Execution Count:</td>
+            <td>{debouncer.state.executionCount}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Count:</td>
@@ -47,7 +62,16 @@ function App1() {
       </table>
       <div>
         <button onClick={increment}>Increment</button>
+        <button
+          onClick={() => debouncer.flush()}
+          style={{ marginLeft: '10px' }}
+        >
+          Flush
+        </button>
       </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(debouncer.store.state, null, 2)}
+      </pre>
     </div>
   )
 }
@@ -55,16 +79,20 @@ function App1() {
 function App2() {
   const [searchText, setSearchText] = useState('')
   const [debouncedSearchText, setDebouncedSearchText] = useState('')
-  const [leading, setLeading] = useState(false)
-  const [trailing, setTrailing] = useState(true)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
-  const setSearchDebouncer = useDebouncer(setDebouncedSearchText, {
-    wait: 500,
-    enabled: searchText.length > 2, // optional, defaults to true
-    leading,
-    trailing,
-  })
+  const setSearchDebouncer = useDebouncer(
+    setDebouncedSearchText,
+    {
+      wait: 500,
+      enabled: () => searchText.length > 2, // optional, defaults to true
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      isPending: state.isPending,
+      executionCount: state.executionCount,
+    }),
+  )
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
@@ -77,40 +105,28 @@ function App2() {
       <h1>TanStack Pacer useDebouncer Example 2</h1>
       <div>
         <input
-          type="checkbox"
-          name="leading"
-          id="leading"
-          checked={leading}
-          onChange={() => setLeading((t) => !t)}
-        />
-        <label htmlFor="leading">Leading</label>
-        <input
-          type="checkbox"
-          name="trailing"
-          id="trailing"
-          checked={trailing}
-          onChange={() => setTrailing((t) => !t)}
-        />
-        <label htmlFor="trailing">Trailing</label>
-      </div>
-      <div>
-        <input
-          type="text"
+          autoFocus
+          type="search"
           value={searchText}
           onChange={handleSearchChange}
           placeholder="Type to search..."
-          style={{ width: '100%' }}
+          style={{ width: '100%', marginBottom: '1rem' }}
         />
       </div>
       <table>
         <tbody>
           <tr>
-            <td>Execution Count:</td>
-            <td>{setSearchDebouncer.getExecutionCount()}</td>
+            <td>Is Pending:</td>
+            <td>{setSearchDebouncer.state.isPending.toString()}</td>
           </tr>
           <tr>
-            <td>Is Pending:</td>
-            <td>{setSearchDebouncer.getIsPending().toString()}</td>
+            <td>Execution Count:</td>
+            <td>{setSearchDebouncer.state.executionCount}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr />
+            </td>
           </tr>
           <tr>
             <td>Instant Search:</td>
@@ -122,15 +138,138 @@ function App2() {
           </tr>
         </tbody>
       </table>
+      <div>
+        <button onClick={() => setSearchDebouncer.flush()}>Flush</button>
+      </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setSearchDebouncer.store.state, null, 2)}
+      </pre>
+    </div>
+  )
+}
+
+function App3() {
+  const [currentValue, setCurrentValue] = useState(50)
+  const [debouncedValue, setDebouncedValue] = useState(50)
+  const [instantExecutionCount, setInstantExecutionCount] = useState(0)
+
+  // Lower-level useDebouncer hook - requires you to manage your own state
+  const setValueDebouncer = useDebouncer(
+    setDebouncedValue,
+    {
+      wait: 250,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => ({
+      isPending: state.isPending,
+      executionCount: state.executionCount,
+    }),
+  )
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setCurrentValue(newValue)
+    setInstantExecutionCount((c) => c + 1)
+    setValueDebouncer.maybeExecute(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer useDebouncer Example 3</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Debounced Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={debouncedValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{debouncedValue}</span>
+        </label>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Is Pending:</td>
+            <td>{setValueDebouncer.state.isPending.toString()}</td>
+          </tr>
+          <tr>
+            <td>Instant Executions:</td>
+            <td>{instantExecutionCount}</td>
+          </tr>
+          <tr>
+            <td>Debounced Executions:</td>
+            <td>{setValueDebouncer.state.executionCount}</td>
+          </tr>
+          <tr>
+            <td>Saved Executions:</td>
+            <td>
+              {instantExecutionCount - setValueDebouncer.state.executionCount}
+            </td>
+          </tr>
+          <tr>
+            <td>% Reduction:</td>
+            <td>
+              {instantExecutionCount === 0
+                ? '0'
+                : Math.round(
+                    ((instantExecutionCount -
+                      setValueDebouncer.state.executionCount) /
+                      instantExecutionCount) *
+                      100,
+                  )}
+              %
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style={{ color: '#666', fontSize: '0.9em' }}>
+        <p>Debounced to 250ms wait time</p>
+      </div>
+      <div>
+        <button onClick={() => setValueDebouncer.flush()}>Flush</button>
+      </div>
+      <pre style={{ marginTop: '20px' }}>
+        {JSON.stringify(setValueDebouncer.store.state, null, 2)}
+      </pre>
     </div>
   )
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
-  <div>
-    <App1 />
-    <hr />
-    <App2 />
-  </div>,
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // defaultOptions={{
+  //   debouncer: {
+  //     leading: true,
+  //   },
+  // }}
+  >
+    <div>
+      <App1 />
+      <hr />
+      <App2 />
+      <hr />
+      <App3 />
+    </div>
+    ,
+  </PacerProvider>,
 )

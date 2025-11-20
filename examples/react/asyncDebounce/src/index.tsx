@@ -36,7 +36,7 @@ function SearchApp() {
         wait: 500,
       },
     ),
-    [],
+    [], // must be memoized to avoid re-creating the debouncer on every render (consider using useAsyncDebouncer instead in react)
   )
 
   return (
@@ -44,7 +44,8 @@ function SearchApp() {
       <h1>TanStack Pacer asyncDebounce Example</h1>
       <div>
         <input
-          type="text"
+          autoFocus
+          type="search"
           value={searchText}
           onChange={(e) => {
             const newValue = e.target.value

@@ -14,16 +14,16 @@
           "to": "overview"
         },
         {
-          "label": "Installation",
-          "to": "installation"
-        },
-        {
           "label": "Quick Start",
           "to": "quick-start"
         },
         {
-          "label": "API Reference TOC",
-          "to": "reference/index"
+          "label": "Installation",
+          "to": "installation"
+        },
+        {
+          "label": "Devtools",
+          "to": "devtools"
         }
       ],
       "frameworks": [
@@ -33,10 +33,15 @@
             {
               "label": "React Adapter",
               "to": "framework/react/adapter"
-            },
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
             {
-              "label": "React Hooks",
-              "to": "framework/react/reference/index"
+              "label": "Solid Adapter",
+              "to": "framework/solid/adapter"
             }
           ]
         }
@@ -45,6 +50,10 @@
     {
       "label": "Guides",
       "children": [
+        {
+          "label": "Which Utility Should I Choose?",
+          "to": "guides/which-pacer-utility-should-i-choose"
+        },
         {
           "label": "Debouncing Guide",
           "to": "guides/debouncing"
@@ -58,12 +67,65 @@
           "to": "guides/rate-limiting"
         },
         {
-          "label": "Queueing Guide",
-          "to": "guides/queueing"
+          "label": "Queuing Guide",
+          "to": "guides/queuing"
         },
         {
-          "label": "Async Queueing Guide",
-          "to": "guides/async-queueing"
+          "label": "Batching Guide",
+          "to": "guides/batching"
+        },
+        {
+          "label": "Async Debouncing Guide",
+          "to": "guides/async-debouncing"
+        },
+        {
+          "label": "Async Throttling Guide",
+          "to": "guides/async-throttling"
+        },
+        {
+          "label": "Async Rate Limiting Guide",
+          "to": "guides/async-rate-limiting"
+        },
+        {
+          "label": "Async Queuing Guide",
+          "to": "guides/async-queuing"
+        },
+        {
+          "label": "Async Batching Guide",
+          "to": "guides/async-batching"
+        },
+        {
+          "label": "Async Retrying Guide",
+          "to": "guides/async-retrying"
+        }
+      ]
+    },
+    {
+      "label": "API Reference",
+      "children": [
+        {
+          "label": "Core API Reference",
+          "to": "reference/index"
+        }
+      ],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "React Hooks",
+              "to": "framework/react/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "Solid Hooks",
+              "to": "framework/solid/reference/index"
+            }
+          ]
         }
       ]
     },
@@ -73,24 +135,36 @@
       "label": "Debouncer API Reference",
       "children": [
         {
-          "label": "Debouncer Options",
-          "to": "reference/interfaces/debounceroptions"
+          "label": "DebouncerOptions",
+          "to": "reference/interfaces/DebouncerOptions"
         },
         {
-          "label": "AsyncDebouncer Options",
-          "to": "reference/interfaces/asyncdebounceroptions"
+          "label": "DebouncerState",
+          "to": "reference/interfaces/DebouncerState"
+        },
+        {
+          "label": "AsyncDebouncerOptions",
+          "to": "reference/interfaces/AsyncDebouncerOptions"
+        },
+        {
+          "label": "AsyncDebouncerState",
+          "to": "reference/interfaces/AsyncDebouncerState"
         },
         {
           "label": "debounce",
           "to": "reference/functions/debounce"
         },
         {
-          "label": "Debouncer",
-          "to": "reference/classes/debouncer"
+          "label": "asyncDebounce",
+          "to": "reference/functions/asyncDebounce"
         },
         {
-          "label": "AsyncDebouncer", 
-          "to": "reference/classes/asyncdebouncer"
+          "label": "Debouncer",
+          "to": "reference/classes/Debouncer"
+        },
+        {
+          "label": "AsyncDebouncer",
+          "to": "reference/classes/AsyncDebouncer"
         }
       ],
       "frameworks": [
@@ -98,24 +172,65 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactDebouncer",
+              "to": "framework/react/reference/interfaces/ReactDebouncer"
+            },
+            {
+              "label": "ReactAsyncDebouncer",
+              "to": "framework/react/reference/interfaces/ReactAsyncDebouncer"
+            },
+            {
               "label": "useDebouncer",
-              "to": "framework/react/reference/functions/usedebouncer"
+              "to": "framework/react/reference/functions/useDebouncer"
             },
             {
               "label": "useDebouncedCallback",
-              "to": "framework/react/reference/functions/usedebouncedcallback"
+              "to": "framework/react/reference/functions/useDebouncedCallback"
             },
             {
               "label": "useDebouncedState",
-              "to": "framework/react/reference/functions/usedebouncedstate"
+              "to": "framework/react/reference/functions/useDebouncedState"
             },
             {
               "label": "useDebouncedValue",
-              "to": "framework/react/reference/functions/usedebouncedvalue"
+              "to": "framework/react/reference/functions/useDebouncedValue"
             },
             {
               "label": "useAsyncDebouncer",
-              "to": "framework/react/reference/functions/useasyncdebouncer"
+              "to": "framework/react/reference/functions/useAsyncDebouncer"
+            },
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/react/reference/functions/useAsyncDebouncedCallback"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "SolidDebouncer",
+              "to": "framework/solid/reference/interfaces/SolidDebouncer"
+            },
+            {
+              "label": "SolidAsyncDebouncer",
+              "to": "framework/solid/reference/interfaces/SolidAsyncDebouncer"
+            },
+            {
+              "label": "createDebouncer",
+              "to": "framework/solid/reference/functions/createDebouncer"
+            },
+            {
+              "label": "createDebouncedSignal",
+              "to": "framework/solid/reference/functions/createDebouncedSignal"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/solid/reference/functions/createDebouncedValue"
+            },
+            {
+              "label": "createAsyncDebouncer",
+              "to": "framework/solid/reference/functions/createAsyncDebouncer"
             }
           ]
         }
@@ -127,49 +242,102 @@
       "label": "Throttler API Reference",
       "children": [
         {
-          "label": "Throttler Options",
-          "to": "reference/interfaces/throttleroptions"
+          "label": "ThrottlerOptions",
+          "to": "reference/interfaces/ThrottlerOptions"
         },
         {
-          "label": "AsyncThrottler Options",
-          "to": "reference/interfaces/asyncthrottleroptions"
+          "label": "ThrottlerState",
+          "to": "reference/interfaces/ThrottlerState"
+        },
+        {
+          "label": "AsyncThrottlerOptions",
+          "to": "reference/interfaces/AsyncThrottlerOptions"
+        },
+        {
+          "label": "AsyncThrottlerState",
+          "to": "reference/interfaces/AsyncThrottlerState"
         },
         {
           "label": "throttle",
           "to": "reference/functions/throttle"
         },
         {
+          "label": "asyncThrottle",
+          "to": "reference/functions/asyncThrottle"
+        },
+        {
           "label": "Throttler",
-          "to": "reference/classes/throttler"
+          "to": "reference/classes/Throttler"
         },
         {
           "label": "AsyncThrottler",
-          "to": "reference/classes/asyncthrottler"
+          "to": "reference/classes/AsyncThrottler"
         }
       ],
       "frameworks": [
         {
-          "label": "react", 
+          "label": "react",
           "children": [
             {
+              "label": "ReactThrottler",
+              "to": "framework/react/reference/interfaces/ReactThrottler"
+            },
+            {
+              "label": "ReactAsyncThrottler",
+              "to": "framework/react/reference/interfaces/ReactAsyncThrottler"
+            },
+            {
               "label": "useThrottler",
-              "to": "framework/react/reference/functions/usethrottler"
+              "to": "framework/react/reference/functions/useThrottler"
             },
             {
               "label": "useThrottledCallback",
-              "to": "framework/react/reference/functions/usethrottledcallback"
+              "to": "framework/react/reference/functions/useThrottledCallback"
             },
             {
               "label": "useThrottledState",
-              "to": "framework/react/reference/functions/usethrottledstate"
+              "to": "framework/react/reference/functions/useThrottledState"
             },
             {
               "label": "useThrottledValue",
-              "to": "framework/react/reference/functions/usethrottledvalue"
+              "to": "framework/react/reference/functions/useThrottledValue"
             },
             {
               "label": "useAsyncThrottler",
-              "to": "framework/react/reference/functions/useasyncthrottler"
+              "to": "framework/react/reference/functions/useAsyncThrottler"
+            },
+            {
+              "label": "useAsyncThrottledCallback",
+              "to": "framework/react/reference/functions/useAsyncThrottledCallback"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "SolidThrottler",
+              "to": "framework/solid/reference/interfaces/SolidThrottler"
+            },
+            {
+              "label": "SolidAsyncThrottler",
+              "to": "framework/solid/reference/interfaces/SolidAsyncThrottler"
+            },
+            {
+              "label": "createThrottler",
+              "to": "framework/solid/reference/functions/createThrottler"
+            },
+            {
+              "label": "createThrottledSignal",
+              "to": "framework/solid/reference/functions/createThrottledSignal"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/solid/reference/functions/createThrottledValue"
+            },
+            {
+              "label": "createAsyncThrottler",
+              "to": "framework/solid/reference/functions/createAsyncThrottler"
             }
           ]
         }
@@ -182,27 +350,35 @@
       "children": [
         {
           "label": "RateLimiterOptions",
-          "to": "reference/interfaces/ratelimiteroptions"
+          "to": "reference/interfaces/RateLimiterOptions"
+        },
+        {
+          "label": "RateLimiterState",
+          "to": "reference/interfaces/RateLimiterState"
         },
         {
           "label": "AsyncRateLimiterOptions",
-          "to": "reference/interfaces/asyncratelimiteroptions"
+          "to": "reference/interfaces/AsyncRateLimiterOptions"
+        },
+        {
+          "label": "AsyncRateLimiterState",
+          "to": "reference/interfaces/AsyncRateLimiterState"
         },
         {
           "label": "rateLimit",
-          "to": "reference/functions/ratelimit"
+          "to": "reference/functions/rateLimit"
         },
         {
           "label": "asyncRateLimit",
-          "to": "reference/functions/asyncratelimit"
+          "to": "reference/functions/asyncRateLimit"
         },
         {
           "label": "RateLimiter",
-          "to": "reference/classes/ratelimiter"
+          "to": "reference/classes/RateLimiter"
         },
         {
           "label": "AsyncRateLimiter",
-          "to": "reference/classes/asyncratelimiter"
+          "to": "reference/classes/AsyncRateLimiter"
         }
       ],
       "frameworks": [
@@ -210,24 +386,65 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactRateLimiter",
+              "to": "framework/react/reference/interfaces/ReactRateLimiter"
+            },
+            {
+              "label": "ReactAsyncRateLimiter",
+              "to": "framework/react/reference/interfaces/ReactAsyncRateLimiter"
+            },
+            {
               "label": "useRateLimiter",
-              "to": "framework/react/reference/functions/useratelimiter"
+              "to": "framework/react/reference/functions/useRateLimiter"
             },
             {
               "label": "useRateLimitedCallback",
-              "to": "framework/react/reference/functions/useratelimitedcallback"
+              "to": "framework/react/reference/functions/useRateLimitedCallback"
             },
             {
               "label": "useRateLimitedState",
-              "to": "framework/react/reference/functions/useratelimitedstate"
+              "to": "framework/react/reference/functions/useRateLimitedState"
             },
             {
               "label": "useRateLimitedValue",
-              "to": "framework/react/reference/functions/useratelimitedvalue"
+              "to": "framework/react/reference/functions/useRateLimitedValue"
             },
             {
               "label": "useAsyncRateLimiter",
-              "to": "framework/react/reference/functions/useasyncratelimiter"
+              "to": "framework/react/reference/functions/useAsyncRateLimiter"
+            },
+            {
+              "label": "useAsyncRateLimitedCallback",
+              "to": "framework/react/reference/functions/useAsyncRateLimitedCallback"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "SolidRateLimiter",
+              "to": "framework/solid/reference/interfaces/SolidRateLimiter"
+            },
+            {
+              "label": "SolidAsyncRateLimiter",
+              "to": "framework/solid/reference/interfaces/SolidAsyncRateLimiter"
+            },
+            {
+              "label": "createRateLimiter",
+              "to": "framework/solid/reference/functions/createRateLimiter"
+            },
+            {
+              "label": "createRateLimitedSignal",
+              "to": "framework/solid/reference/functions/createRateLimitedSignal"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/solid/reference/functions/createRateLimitedValue"
+            },
+            {
+              "label": "createAsyncRateLimiter",
+              "to": "framework/solid/reference/functions/createAsyncRateLimiter"
             }
           ]
         }
@@ -240,19 +457,35 @@
       "children": [
         {
           "label": "QueuerOptions",
-          "to": "reference/interfaces/queueroptions"
+          "to": "reference/interfaces/QueuerOptions"
+        },
+        {
+          "label": "QueuerState",
+          "to": "reference/interfaces/QueuerState"
         },
         {
           "label": "AsyncQueuerOptions",
-          "to": "reference/interfaces/asyncqueueroptions"
+          "to": "reference/interfaces/AsyncQueuerOptions"
+        },
+        {
+          "label": "AsyncQueuerState",
+          "to": "reference/interfaces/AsyncQueuerState"
+        },
+        {
+          "label": "queue",
+          "to": "reference/functions/queue"
+        },
+        {
+          "label": "asyncQueue",
+          "to": "reference/functions/asyncQueue"
         },
         {
           "label": "Queuer",
-          "to": "reference/classes/queuer"
+          "to": "reference/classes/Queuer"
         },
         {
           "label": "AsyncQueuer",
-          "to": "reference/classes/asyncqueuer"
+          "to": "reference/classes/AsyncQueuer"
         }
       ],
       "frameworks": [
@@ -260,16 +493,144 @@
           "label": "react",
           "children": [
             {
-              "label": "useQueuer",
-              "to": "framework/react/reference/functions/usequeuer"
+              "label": "ReactQueuer",
+              "to": "framework/react/reference/interfaces/ReactQueuer"
             },
             {
-              "label": "useQueuerState",
-              "to": "framework/react/reference/functions/usequeuerstate"
+              "label": "ReactAsyncQueuer",
+              "to": "framework/react/reference/interfaces/ReactAsyncQueuer"
+            },
+            {
+              "label": "useQueuer",
+              "to": "framework/react/reference/functions/useQueuer"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/react/reference/functions/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/react/reference/functions/useQueuedValue"
             },
             {
               "label": "useAsyncQueuer",
-              "to": "framework/react/reference/functions/useasyncqueuer"
+              "to": "framework/react/reference/functions/useAsyncQueuer"
+            },
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/react/reference/functions/useAsyncQueuedState"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "SolidQueuer",
+              "to": "framework/solid/reference/interfaces/SolidQueuer"
+            },
+            {
+              "label": "SolidAsyncQueuer",
+              "to": "framework/solid/reference/interfaces/SolidAsyncQueuer"
+            },
+            {
+              "label": "createQueuer",
+              "to": "framework/solid/reference/functions/createQueuer"
+            },
+            {
+              "label": "createAsyncQueuer",
+              "to": "framework/solid/reference/functions/createAsyncQueuer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "collapsible": true,
+      "defaultCollapsed": true,
+      "label": "Batcher API Reference",
+      "children": [
+        {
+          "label": "BatcherOptions",
+          "to": "reference/interfaces/BatcherOptions"
+        },
+        {
+          "label": "BatcherState",
+          "to": "reference/interfaces/BatcherState"
+        },
+        {
+          "label": "AsyncBatcherOptions",
+          "to": "reference/interfaces/AsyncBatcherOptions"
+        },
+        {
+          "label": "AsyncBatcherState",
+          "to": "reference/interfaces/AsyncBatcherState"
+        },
+        {
+          "label": "batch",
+          "to": "reference/functions/batch"
+        },
+        {
+          "label": "asyncBatch",
+          "to": "reference/functions/asyncBatch"
+        },
+        {
+          "label": "Batcher",
+          "to": "reference/classes/Batcher"
+        },
+        {
+          "label": "AsyncBatcher",
+          "to": "reference/classes/AsyncBatcher"
+        }
+      ],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "ReactBatcher",
+              "to": "framework/react/reference/interfaces/ReactBatcher"
+            },
+            {
+              "label": "ReactAsyncBatcher",
+              "to": "framework/react/reference/interfaces/ReactAsyncBatcher"
+            },
+            {
+              "label": "useBatcher",
+              "to": "framework/react/reference/functions/useBatcher"
+            },
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/react/reference/functions/useAsyncBatcher"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/react/reference/functions/useBatchedCallback"
+            },
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/react/reference/functions/useAsyncBatchedCallback"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "SolidBatcher",
+              "to": "framework/solid/reference/interfaces/SolidBatcher"
+            },
+            {
+              "label": "SolidAsyncBatcher",
+              "to": "framework/solid/reference/interfaces/SolidAsyncBatcher"
+            },
+            {
+              "label": "createBatcher",
+              "to": "framework/solid/reference/functions/createBatcher"
+            },
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/solid/reference/functions/createAsyncBatcher"
             }
           ]
         }
@@ -277,7 +638,16 @@
     },
     {
       "label": "Debouncer Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteDebounce",
+          "to": "examples/vanilla/liteDebounce"
+        },
+        {
+          "label": "LiteDebouncer",
+          "to": "examples/vanilla/LiteDebouncer"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
@@ -309,6 +679,39 @@
             {
               "label": "useAsyncDebouncer",
               "to": "framework/react/examples/useAsyncDebouncer"
+            },
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/react/examples/useAsyncDebouncedCallback"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "debounce",
+              "to": "framework/solid/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/solid/examples/asyncDebounce"
+            },
+            {
+              "label": "createDebouncer",
+              "to": "framework/solid/examples/createDebouncer"
+            },
+            {
+              "label": "createDebouncedSignal",
+              "to": "framework/solid/examples/createDebouncedSignal"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/solid/examples/createDebouncedValue"
+            },
+            {
+              "label": "createAsyncDebouncer",
+              "to": "framework/solid/examples/createAsyncDebouncer"
             }
           ]
         }
@@ -316,7 +719,16 @@
     },
     {
       "label": "Throttler Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteThrottle",
+          "to": "examples/vanilla/liteThrottle"
+        },
+        {
+          "label": "LiteThrottler",
+          "to": "examples/vanilla/LiteThrottler"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
@@ -350,12 +762,50 @@
               "to": "framework/react/examples/useAsyncThrottler"
             }
           ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "throttle",
+              "to": "framework/solid/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/solid/examples/asyncThrottle"
+            },
+            {
+              "label": "createThrottler",
+              "to": "framework/solid/examples/createThrottler"
+            },
+            {
+              "label": "createThrottledSignal",
+              "to": "framework/solid/examples/createThrottledSignal"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/solid/examples/createThrottledValue"
+            },
+            {
+              "label": "createAsyncThrottler",
+              "to": "framework/solid/examples/createAsyncThrottler"
+            }
+          ]
         }
       ]
     },
     {
       "label": "Rate Limiter Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteRateLimit",
+          "to": "examples/vanilla/liteRateLimit"
+        },
+        {
+          "label": "LiteRateLimiter",
+          "to": "examples/vanilla/LiteRateLimiter"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
@@ -373,6 +823,10 @@
               "to": "framework/react/examples/useRateLimiter"
             },
             {
+              "label": "useRateLimiterWithPersister",
+              "to": "framework/react/examples/useRateLimiterWithPersister"
+            },
+            {
               "label": "useRateLimitedCallback",
               "to": "framework/react/examples/useRateLimitedCallback"
             },
@@ -387,6 +841,39 @@
             {
               "label": "useAsyncRateLimiter",
               "to": "framework/react/examples/useAsyncRateLimiter"
+            },
+            {
+              "label": "useAsyncRateLimiterWithPersister",
+              "to": "framework/react/examples/useAsyncRateLimiterWithPersister"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "rateLimit",
+              "to": "framework/solid/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/solid/examples/asyncRateLimit"
+            },
+            {
+              "label": "createRateLimiter",
+              "to": "framework/solid/examples/createRateLimiter"
+            },
+            {
+              "label": "createRateLimitedSignal",
+              "to": "framework/solid/examples/createRateLimitedSignal"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/solid/examples/createRateLimitedValue"
+            },
+            {
+              "label": "createAsyncRateLimiter",
+              "to": "framework/solid/examples/createAsyncRateLimiter"
             }
           ]
         }
@@ -394,7 +881,16 @@
     },
     {
       "label": "Queue Examples",
-      "children": [],
+      "children": [
+        {
+          "label": "liteQueue",
+          "to": "examples/vanilla/liteQueue"
+        },
+        {
+          "label": "LiteQueuer",
+          "to": "examples/vanilla/LiteQueuer"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
@@ -408,16 +904,125 @@
               "to": "framework/react/examples/useQueuer"
             },
             {
-              "label": "useQueuerState",
-              "to": "framework/react/examples/useQueuerState"
+              "label": "useQueuerWithPersister",
+              "to": "framework/react/examples/useQueuerWithPersister"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/react/examples/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/react/examples/useQueuedValue"
             },
             {
               "label": "useAsyncQueuer",
               "to": "framework/react/examples/useAsyncQueuer"
             },
             {
-              "label": "useAsyncQueuerState",
-              "to": "framework/react/examples/useAsyncQueuerState"
+              "label": "useAsyncQueuedState",
+              "to": "framework/react/examples/useAsyncQueuedState"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "queue",
+              "to": "framework/solid/examples/queue"
+            },
+            {
+              "label": "createQueuer",
+              "to": "framework/solid/examples/createQueuer"
+            },
+            {
+              "label": "createAsyncQueuer",
+              "to": "framework/solid/examples/createAsyncQueuer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Batcher Examples",
+      "children": [
+        {
+          "label": "liteBatch",
+          "to": "examples/vanilla/liteBatch"
+        },
+        {
+          "label": "LiteBatcher",
+          "to": "examples/vanilla/LiteBatcher"
+        }
+      ],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "batch",
+              "to": "framework/react/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/react/examples/asyncBatch"
+            },
+            {
+              "label": "useBatcher",
+              "to": "framework/react/examples/useBatcher"
+            },
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/react/examples/useAsyncBatcher"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/react/examples/useBatchedCallback"
+            },
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/react/examples/useAsyncBatchedCallback"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": [
+            {
+              "label": "batch",
+              "to": "framework/solid/examples/batch"
+            },
+            {
+              "label": "createBatcher",
+              "to": "framework/solid/examples/createBatcher"
+            },
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/solid/examples/createAsyncBatcher"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "TanStack Query Examples",
+      "children": [],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "React Query Debounced Prefetch",
+              "to": "framework/react/examples/react-query-debounced-prefetch"
+            },
+            {
+              "label": "React Query Throttled Prefetch",
+              "to": "framework/react/examples/react-query-throttled-prefetch"
+            },
+            {
+              "label": "React Query Queued Prefetch",
+              "to": "framework/react/examples/react-query-queued-prefetch"
             }
           ]
         }

@@ -40,6 +40,8 @@ stats-react.json
 stats.html
 .vscode/settings.json
 .idea
+.cursor
+.claude
 
 *.log
 .DS_Store

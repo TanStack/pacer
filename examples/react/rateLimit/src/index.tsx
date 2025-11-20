@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { rateLimit } from '@tanstack/react-pacer/rate-limiter'
 
 function App1() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
   const [rateLimitedCount, setRateLimitedCount] = useState(0)
@@ -12,10 +13,14 @@ function App1() {
     rateLimit(setRateLimitedCount, {
       limit: 5,
       window: 5000,
-      onReject: (rejectionInfo) =>
-        console.log('Rejected by rate limiter', rejectionInfo),
+      windowType: windowType,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     }),
-    [],
+    [windowType], // must be memoized to avoid re-creating the rate limiter on every render (consider using useRateLimiter instead in react)
   )
 
   function increment() {
@@ -30,6 +35,28 @@ function App1() {
   return (
     <div>
       <h1>TanStack Pacer rateLimit Example 1</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <table>
         <tbody>
           <tr>
@@ -50,6 +77,7 @@ function App1() {
 }
 
 function App2() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [text, setText] = useState('')
   const [rateLimitedText, setRateLimitedText] = useState('')
 
@@ -58,10 +86,14 @@ function App2() {
     rateLimit(setRateLimitedText, {
       limit: 5,
       window: 5000,
-      onReject: (rejectionInfo) =>
-        console.log('Rejected by rate limiter', rejectionInfo),
+      windowType: windowType,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     }),
-    [],
+    [windowType],
   )
 
   function handleTextChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -73,9 +105,32 @@ function App2() {
   return (
     <div>
       <h1>TanStack Pacer rateLimit Example 2</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType2"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType2"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
       <div>
         <input
-          type="text"
+          autoFocus
+          type="search"
           value={text}
           onChange={handleTextChange}
           placeholder="Type text (rate limited to 3 updates per 5 seconds)..."
@@ -98,11 +153,99 @@ function App2() {
   )
 }
 
+function App3() {
+  const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
+  const [currentValue, setCurrentValue] = useState(50)
+  const [rateLimitedValue, setRateLimitedValue] = useState(50)
+
+  // Create rate-limited setter function - Stable reference required!
+  const rateLimitedSetValue = useCallback(
+    rateLimit(setRateLimitedValue, {
+      limit: 30,
+      window: 2000,
+      windowType: windowType,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    }),
+    [windowType],
+  )
+
+  function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = parseInt(e.target.value, 10)
+    setCurrentValue(newValue)
+    rateLimitedSetValue(newValue)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer rateLimit Example 3</h1>
+      <div style={{ display: 'grid', gap: '0.5rem', marginBottom: '1rem' }}>
+        <label>
+          <input
+            type="radio"
+            name="windowType3"
+            value="fixed"
+            checked={windowType === 'fixed'}
+            onChange={() => setWindowType('fixed')}
+          />
+          Fixed Window
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="windowType3"
+            value="sliding"
+            checked={windowType === 'sliding'}
+            onChange={() => setWindowType('sliding')}
+          />
+          Sliding Window
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Current Range:
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onChange={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          Rate Limited Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={rateLimitedValue}
+            readOnly
+            style={{ width: '100%' }}
+          />
+          <span>{rateLimitedValue}</span>
+        </label>
+      </div>
+      <div style={{ color: '#666', fontSize: '0.9em' }}>
+        <p>Rate limited to 30 updates per 2000ms window</p>
+      </div>
+    </div>
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <div>
     <App1 />
     <hr />
     <App2 />
+    <hr />
+    <App3 />
   </div>,
 )

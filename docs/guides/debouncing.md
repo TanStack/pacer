@@ -28,23 +28,15 @@ Executed:     ❌  ❌  ❌  ❌  ❌     ❌  ❌  ❌  ⏳   ->   ✅     ❌ 
 
 Debouncing is particularly effective when you want to wait for a "pause" in activity before taking action. This makes it ideal for handling user input or other rapidly-firing events where you only care about the final state.
 
-Common use cases include:
-- Search input fields where you want to wait for the user to finish typing
-- Form validation that shouldn't run on every keystroke
-- Window resize calculations that are expensive to compute
-- Auto-saving drafts while editing content
-- API calls that should only happen after user activity settles
-- Any scenario where you only care about the final value after rapid changes
-
 ### When Not to Use Debouncing
 
 Debouncing might not be the best choice when:
-- You need guaranteed execution over a specific time period (use [throttling](../guides/throttling) instead)
-- You can't afford to miss any executions (use [queueing](../guides/queueing) instead)
+- You need guaranteed execution over a specific time period (use [throttling](../throttling.md) instead)
+- You can't afford to miss any executions (use [queuing](../queuing.md) instead)
 
 ## Debouncing in TanStack Pacer
 
-TanStack Pacer provides both synchronous and asynchronous debouncing through the `Debouncer` and `AsyncDebouncer` classes respectively (and their corresponding `debounce` and `asyncDebounce` functions).
+TanStack Pacer provides both synchronous and asynchronous debouncing. This guide covers the synchronous `Debouncer` class and `debounce` function. For async debouncing, see the [Async Debouncing Guide](../async-debouncing.md).
 
 ### Basic Usage with `debounce`
 
@@ -66,6 +58,8 @@ searchInput.addEventListener('input', (e) => {
 })
 ```
 
+> **Note:** When using React, prefer `useDebouncedCallback` hook over the `debounce` function for better integration with React's lifecycle and automatic cleanup.
+
 ### Advanced Usage with `Debouncer` Class
 
 For more control over the debouncing behavior, you can use the `Debouncer` class directly:
@@ -78,14 +72,19 @@ const searchDebouncer = new Debouncer(
   { wait: 500 }
 )
 
-// Get information about current state
-console.log(searchDebouncer.getExecutionCount()) // Number of successful executions
+// Access current state via TanStack Store
+console.log(searchDebouncer.store.state.executionCount) // Number of successful executions
+console.log(searchDebouncer.store.state.isPending) // Whether a call is pending
+console.log(searchDebouncer.store.state.status) // Current execution status
 
 // Update options dynamically
 searchDebouncer.setOptions({ wait: 1000 }) // Increase wait time
 
 // Cancel pending execution
 searchDebouncer.cancel()
+
+// Flush pending execution immediately
+searchDebouncer.flush()
 ```
 
 ### Leading and Trailing Executions
@@ -110,6 +109,27 @@ Common patterns:
 - `{ leading: true, trailing: false }` - Execute immediately, ignore subsequent calls
 - `{ leading: true, trailing: true }` - Execute on both first call and after wait
 
+### Max Wait Time
+
+The TanStack Pacer Debouncer purposely does NOT have a `maxWait` option like other debouncing libraries. If you need to let executions run over a more spread out period of time, consider using the [throttling](../throttling.md) technique instead.
+
+### Sharing Options Between Instances
+
+Use `debouncerOptions` to share common options between different `Debouncer` instances:
+
+```ts
+import { debouncerOptions, Debouncer } from '@tanstack/pacer'
+
+const sharedOptions = debouncerOptions({
+  wait: 500,
+  leading: false,
+  trailing: true
+})
+
+const debouncer1 = new Debouncer(fn1, { ...sharedOptions, key: 'debouncer1' })
+const debouncer2 = new Debouncer(fn2, { ...sharedOptions, wait: 1000 })
+```
+
 ### Enabling/Disabling
 
 The `Debouncer` class supports enabling/disabling via the `enabled` option. Using the `setOptions` method, you can enable/disable the debouncer at any time:
@@ -119,51 +139,165 @@ const debouncer = new Debouncer(fn, { wait: 500, enabled: false }) // Disable by
 debouncer.setOptions({ enabled: true }) // Enable at any time
 ```
 
+The `enabled` option can also be a function that returns a boolean, allowing for dynamic enabling/disabling based on runtime conditions:
+
+```ts
+const debouncer = new Debouncer(fn, {
+  wait: 500,
+  enabled: (debouncer) => {
+    return debouncer.store.state.executionCount < 10 // Disable after 10 executions
+  }
+})
+```
+
 If you are using a framework adapter where the debouncer options are reactive, you can set the `enabled` option to a conditional value to enable/disable the debouncer on the fly:
 
 ```ts
+// React example
 const debouncer = useDebouncer(
   setSearch, 
   { wait: 500, enabled: searchInput.value.length > 3 } // Enable/disable based on input length IF using a framework adapter that supports reactive options
 )
 ```
 
-However, if you are using the `debounce` function or the `Debouncer` class directly, you must use the `setOptions` method to change the `enabled` option, since the options that are passed are actually passed to the constructor of the `Debouncer` class.
+### Dynamic Options
 
-### Asynchronous Debouncing
-
-For async functions or when you need error handling, use the `AsyncDebouncer` or `asyncDebounce`:
+Several options in the Debouncer support dynamic values through callback functions that receive the debouncer instance:
 
 ```ts
-import { asyncDebounce } from '@tanstack/pacer'
-
-const debouncedSearch = asyncDebounce(
-  async (searchTerm: string) => {
-    const results = await fetchSearchResults(searchTerm)
-    updateUI(results)
+const debouncer = new Debouncer(fn, {
+  // Dynamic wait time based on execution count
+  wait: (debouncer) => {
+    return debouncer.store.state.executionCount * 100 // Increase wait time with each execution
   },
-  {
-    wait: 500,
-    onError: (error) => {
-      console.error('Search failed:', error)
-    }
+  // Dynamic enabled state based on execution count
+  enabled: (debouncer) => {
+    return debouncer.store.state.executionCount < 10 // Disable after 10 executions
   }
-)
-
-// Will only make one API call after typing stops
-searchInput.addEventListener('input', async (e) => {
-  await debouncedSearch(e.target.value)
 })
 ```
 
-For most use cases, the normal non-async `Debouncer` is sufficient, but when you need error handling or want to properly handle Promise-based operations, then the async `AsyncDebouncer` is for you.
+The following options support dynamic values:
+- `enabled`: Can be a boolean or a function that returns a boolean
+- `wait`: Can be a number or a function that returns a number
 
-The async version provides:
-- Promise-based execution tracking
-- Error handling through `onError` callback
-- Proper cleanup of pending async operations
-- Awaitable `maybeExecute` method
+This allows for sophisticated debouncing behavior that adapts to runtime conditions.
 
-### Framework Adapters
+### Callback Options
 
-Each framework adapter builds convenient hooks and functions around the debouncer classes. Hooks like `useDebouncedCallback`, `useDebouncedState`, or `useDebouncedValue` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases. 
+The synchronous `Debouncer` supports the following callback:
+
+```ts
+const debouncer = new Debouncer(fn, {
+  wait: 500,
+  onExecute: (debouncer) => {
+    // Called after each successful execution
+    console.log('Function executed', debouncer.store.state.executionCount)
+  }
+})
+```
+
+The `onExecute` callback is called after each successful execution of the debounced function, making it useful for tracking executions, updating UI state, or performing cleanup operations.
+
+### Flushing Pending Executions
+
+The debouncer supports flushing pending executions to trigger them immediately:
+
+```ts
+const debouncer = new Debouncer(fn, { wait: 1000 })
+
+debouncer.maybeExecute('some-arg')
+console.log(debouncer.store.state.isPending) // true
+
+// Flush immediately instead of waiting
+debouncer.flush()
+console.log(debouncer.store.state.isPending) // false
+```
+
+## State Management
+
+The `Debouncer` class uses TanStack Store for reactive state management, providing real-time access to execution state and statistics. All state is stored in a TanStack Store and can be accessed via `debouncer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `debouncer.state` along with providing a selector callback as the 3rd argument to the `useDebouncer` hook to opt-in to state tracking as shown below.
+
+### State Selector (Framework Adapters)
+
+Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
+
+**By default, `debouncer.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+
+```ts
+// Default behavior - no reactive state subscriptions
+const debouncer = useDebouncer(fn, { wait: 500 })
+console.log(debouncer.state) // {}
+
+// Opt-in to re-render when isPending changes
+const debouncer = useDebouncer(
+  fn, 
+  { wait: 500 },
+  (state) => ({ isPending: state.isPending })
+)
+console.log(debouncer.state.isPending) // Reactive value
+
+// Multiple state properties
+const debouncer = useDebouncer(
+  fn,
+  { wait: 500 },
+  (state) => ({
+    isPending: state.isPending,
+    executionCount: state.executionCount,
+    status: state.status
+  })
+)
+```
+
+### Initial State
+
+You can provide initial state values when creating a debouncer. This is commonly used to restore state from persistent storage:
+
+```ts
+// Load initial state from localStorage
+const savedState = localStorage.getItem('debouncer-state')
+const initialState = savedState ? JSON.parse(savedState) : {}
+
+const debouncer = new Debouncer(fn, {
+  wait: 500,
+  key: 'search-debouncer',
+  initialState
+})
+```
+
+### Subscribing to State Changes
+
+The store is reactive and supports subscriptions:
+
+```ts
+const debouncer = new Debouncer(fn, { wait: 500 })
+
+// Subscribe to state changes
+const unsubscribe = debouncer.store.subscribe((state) => {
+  // do something with the state like persist it to localStorage
+})
+
+// Unsubscribe when done
+unsubscribe()
+```
+
+> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `debouncer.store.state` into reactive state with a custom selector wherever you want if necessary.
+
+### Available State Properties
+
+The `DebouncerState` includes:
+
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge of the timeout
+- `executionCount`: Number of function executions that have been completed
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to `maybeExecute`
+- `maybeExecuteCount`: Number of times `maybeExecute` has been called
+- `status`: Current execution status ('disabled' | 'idle' | 'pending')
+
+## Framework Adapters
+
+Each framework adapter builds convenient hooks and functions around the debouncer classes. Hooks like `useDebouncer`, or `createDebouncer` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.
+
+---
+
+For asynchronous debouncing (e.g., API calls, async operations), see the [Async Debouncing Guide](../async-debouncing.md).

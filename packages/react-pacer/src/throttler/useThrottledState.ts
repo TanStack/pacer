@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useThrottler } from './useThrottler'
-import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
+import type { ReactThrottler } from './useThrottler'
+import type {
+  ThrottlerOptions,
+  ThrottlerState,
+} from '@tanstack/pacer/throttler'
 
 /**
  * A React hook that creates a throttled state value that updates at most once within a specified time window.
@@ -17,10 +21,56 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  * For more direct control over throttling without state management,
  * consider using the lower-level useThrottler hook instead.
  *
+ * ## State Management and Selector
+ *
+ * The hook uses TanStack Store for reactive state management via the underlying throttler instance.
+ * The `selector` parameter allows you to specify which throttler state changes will trigger a re-render,
+ * optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
+ *
+ * **By default, there will be no reactive state subscriptions** and you must opt-in to state
+ * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
+ * full control over when your component updates. Only when you provide a selector will the
+ * component re-render when the selected state values change.
+ *
+ * Available throttler state properties:
+ * - `executionCount`: Number of function executions that have been completed
+ * - `lastArgs`: The arguments from the most recent call to maybeExecute
+ * - `lastExecutionTime`: Timestamp of the last function execution in milliseconds
+ * - `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
+ * - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
+ * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+ *
  * @example
  * ```tsx
- * // Basic throttling - update state at most once per second
+ * // Default behavior - no reactive state subscriptions
  * const [value, setValue, throttler] = useThrottledState(0, { wait: 1000 });
+ *
+ * // Opt-in to re-render when execution count changes (optimized for tracking executions)
+ * const [value, setValue, throttler] = useThrottledState(
+ *   0,
+ *   { wait: 1000 },
+ *   (state) => ({ executionCount: state.executionCount })
+ * );
+ *
+ * // Opt-in to re-render when throttling state changes (optimized for loading indicators)
+ * const [value, setValue, throttler] = useThrottledState(
+ *   0,
+ *   { wait: 1000 },
+ *   (state) => ({
+ *     isPending: state.isPending,
+ *     status: state.status
+ *   })
+ * );
+ *
+ * // Opt-in to re-render when timing information changes (optimized for timing displays)
+ * const [value, setValue, throttler] = useThrottledState(
+ *   0,
+ *   { wait: 1000 },
+ *   (state) => ({
+ *     lastExecutionTime: state.lastExecutionTime,
+ *     nextExecutionTime: state.nextExecutionTime
+ *   })
+ * );
  *
  * // With custom leading/trailing behavior
  * const [value, setValue] = useThrottledState(0, {
@@ -34,14 +84,27 @@ import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
  *   setValue(0);
  *   throttler.cancel(); // Cancel any pending updates
  * };
+ *
+ * // Access the selected throttler state (will be empty object {} unless selector provided)
+ * const { executionCount, isPending } = throttler.state;
  * ```
  */
 
-export function useThrottledState<TValue>(
+export function useThrottledState<
+  TValue,
+  TSelected = ThrottlerState<React.Dispatch<React.SetStateAction<TValue>>>,
+>(
   value: TValue,
-  options: ThrottlerOptions,
-) {
+  options: ThrottlerOptions<React.Dispatch<React.SetStateAction<TValue>>>,
+  selector?: (
+    state: ThrottlerState<React.Dispatch<React.SetStateAction<TValue>>>,
+  ) => TSelected,
+): [
+  TValue,
+  React.Dispatch<React.SetStateAction<TValue>>,
+  ReactThrottler<React.Dispatch<React.SetStateAction<TValue>>, TSelected>,
+] {
   const [throttledValue, setThrottledValue] = useState<TValue>(value)
-  const throttler = useThrottler(setThrottledValue, options)
-  return [throttledValue, throttler.maybeExecute, throttler] as const
+  const throttler = useThrottler(setThrottledValue, options, selector)
+  return [throttledValue, throttler.maybeExecute, throttler]
 }

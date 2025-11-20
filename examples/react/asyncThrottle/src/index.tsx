@@ -36,7 +36,7 @@ function SearchApp() {
         wait: 1000,
       },
     ),
-    [],
+    [], // must be memoized to avoid re-creating the throttler on every render (consider using useAsyncThrottler instead in react)
   )
 
   return (
@@ -44,7 +44,8 @@ function SearchApp() {
       <h1>TanStack Pacer asyncThrottle Example</h1>
       <div>
         <input
-          type="text"
+          autoFocus
+          type="search"
           value={searchText}
           onChange={(e) => {
             const newValue = e.target.value

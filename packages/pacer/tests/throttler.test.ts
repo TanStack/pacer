@@ -89,13 +89,13 @@ describe('Throttler', () => {
     const throttler = new Throttler(mockFn, { wait: 100 })
 
     throttler.maybeExecute()
-    expect(throttler.getExecutionCount()).toBe(1)
+    expect(throttler.store.state.executionCount).toBe(1)
 
     throttler.maybeExecute()
-    expect(throttler.getExecutionCount()).toBe(1)
+    expect(throttler.store.state.executionCount).toBe(1)
 
     vi.advanceTimersByTime(100)
-    expect(throttler.getExecutionCount()).toBe(2)
+    expect(throttler.store.state.executionCount).toBe(2)
   })
 
   it('should cancel pending trailing execution', () => {
@@ -146,17 +146,17 @@ describe('Throttler', () => {
     const throttler = new Throttler(mockFn, { wait: 100 })
 
     // Initial state
-    expect(throttler.getLastExecutionTime()).toBe(0)
+    expect(throttler.store.state.lastExecutionTime).toBe(0)
 
     // First execution
     throttler.maybeExecute('first')
-    const firstExecutionTime = throttler.getLastExecutionTime()
+    const firstExecutionTime = throttler.store.state.lastExecutionTime
     expect(firstExecutionTime).toBeGreaterThan(0)
 
     // Wait and execute again
     vi.advanceTimersByTime(100)
     throttler.maybeExecute('second')
-    const secondExecutionTime = throttler.getLastExecutionTime()
+    const secondExecutionTime = throttler.store.state.lastExecutionTime
     expect(secondExecutionTime).toBeGreaterThan(firstExecutionTime)
   })
 
@@ -241,6 +241,93 @@ describe('Throttler', () => {
     throttler.cancel()
     vi.advanceTimersByTime(100)
     expect(mockFn).toBeCalledTimes(2)
+  })
+
+  describe('Flush Method', () => {
+    it('should execute pending function immediately', () => {
+      const mockFn = vi.fn()
+      const throttler = new Throttler(mockFn, { wait: 1000 })
+
+      throttler.maybeExecute('test')
+      expect(mockFn).toBeCalledTimes(1) // Leading execution
+
+      throttler.maybeExecute('pending')
+      expect(mockFn).toBeCalledTimes(1) // Still throttled
+
+      throttler.flush()
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenLastCalledWith('pending')
+    })
+
+    it('should clear pending timeout when flushing', () => {
+      const mockFn = vi.fn()
+      const throttler = new Throttler(mockFn, { wait: 1000 })
+
+      throttler.maybeExecute('first')
+      throttler.maybeExecute('second')
+      throttler.flush()
+
+      // Advance time to ensure timeout would have fired
+      vi.advanceTimersByTime(1000)
+
+      expect(mockFn).toBeCalledTimes(2)
+    })
+
+    it('should do nothing when no pending execution', () => {
+      const mockFn = vi.fn()
+      const throttler = new Throttler(mockFn, { wait: 1000 })
+
+      throttler.flush()
+      expect(mockFn).not.toBeCalled()
+    })
+
+    it('should work with leading and trailing execution', () => {
+      const mockFn = vi.fn()
+      const throttler = new Throttler(mockFn, {
+        wait: 1000,
+        leading: true,
+        trailing: true,
+      })
+
+      throttler.maybeExecute('first')
+      expect(mockFn).toBeCalledTimes(1)
+
+      throttler.maybeExecute('second')
+      throttler.flush()
+
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenLastCalledWith('second')
+    })
+
+    it('should work with trailing-only execution', () => {
+      const mockFn = vi.fn()
+      const throttler = new Throttler(mockFn, {
+        wait: 1000,
+        leading: false,
+        trailing: true,
+      })
+
+      throttler.maybeExecute('first')
+      expect(mockFn).not.toBeCalled()
+
+      throttler.flush()
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('first')
+    })
+
+    it('should update state correctly after flush', () => {
+      const mockFn = vi.fn()
+      const throttler = new Throttler(mockFn, { wait: 1000 })
+
+      throttler.maybeExecute('first')
+      throttler.maybeExecute('second')
+      expect(throttler.store.state.isPending).toBe(true)
+      expect(throttler.store.state.executionCount).toBe(1)
+
+      throttler.flush()
+      expect(throttler.store.state.isPending).toBe(false)
+      expect(throttler.store.state.executionCount).toBe(2)
+    })
   })
 })
 

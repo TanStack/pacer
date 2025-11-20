@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer",
-  "version": "0.1.0",
+  "version": "0.16.3",
   "description": "Utilities for debouncing, throttling, rate-limiting, queuing, and more.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -37,6 +37,16 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./async-batcher": {
+      "import": {
+        "types": "./dist/esm/async-batcher.d.ts",
+        "default": "./dist/esm/async-batcher.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-batcher.d.cts",
+        "default": "./dist/cjs/async-batcher.cjs"
+      }
+    },
     "./async-debouncer": {
       "import": {
         "types": "./dist/esm/async-debouncer.d.ts",
@@ -67,6 +77,16 @@
         "default": "./dist/cjs/async-rate-limiter.cjs"
       }
     },
+    "./async-retryer": {
+      "import": {
+        "types": "./dist/esm/async-retryer.d.ts",
+        "default": "./dist/esm/async-retryer.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-retryer.d.cts",
+        "default": "./dist/cjs/async-retryer.cjs"
+      }
+    },
     "./async-throttler": {
       "import": {
         "types": "./dist/esm/async-throttler.d.ts",
@@ -77,14 +97,14 @@
         "default": "./dist/cjs/async-throttler.cjs"
       }
     },
-    "./compare": {
+    "./batcher": {
       "import": {
-        "types": "./dist/esm/compare.d.ts",
-        "default": "./dist/esm/compare.js"
+        "types": "./dist/esm/batcher.d.ts",
+        "default": "./dist/esm/batcher.js"
       },
       "require": {
-        "types": "./dist/cjs/compare.d.cts",
-        "default": "./dist/cjs/compare.cjs"
+        "types": "./dist/cjs/batcher.d.cts",
+        "default": "./dist/cjs/batcher.cjs"
       }
     },
     "./debouncer": {
@@ -127,6 +147,29 @@
         "default": "./dist/cjs/throttler.cjs"
       }
     },
+    "./types": {
+      "types": "./dist/esm/types.d.ts"
+    },
+    "./utils": {
+      "import": {
+        "types": "./dist/esm/utils.d.ts",
+        "default": "./dist/esm/utils.js"
+      },
+      "require": {
+        "types": "./dist/cjs/utils.d.cts",
+        "default": "./dist/cjs/utils.cjs"
+      }
+    },
+    "./event-client": {
+      "import": {
+        "types": "./dist/esm/event-client.d.ts",
+        "default": "./dist/esm/event-client.js"
+      },
+      "require": {
+        "types": "./dist/cjs/event-client.d.cts",
+        "default": "./dist/cjs/event-client.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -146,5 +189,9 @@
     "test:types": "tsc",
     "test:build": "publint --strict",
     "build": "vite build"
+  },
+  "dependencies": {
+    "@tanstack/devtools-event-client": "^0.3.5",
+    "@tanstack/store": "^0.8.0"
   }
 }

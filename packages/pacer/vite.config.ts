@@ -7,7 +7,7 @@ const config = defineConfig({
     name: packageJson.name,
     dir: './',
     watch: false,
-    environment: 'jsdom',
+    environment: 'happy-dom',
     setupFiles: ['./tests/test-setup.ts'],
     globals: true,
   },

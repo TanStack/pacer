@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { useDebouncer } from './useDebouncer'
-import type { DebouncerOptions } from '@tanstack/pacer'
+import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
+import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
  * A React hook that creates a debounced version of a callback function.
@@ -33,15 +34,15 @@ import type { DebouncerOptions } from '@tanstack/pacer'
  *
  * // Use in an input
  * <input
- *   type="text"
+ *   type="search"
  *   onChange={(e) => handleSearch(e.target.value)}
  * />
  * ```
  */
-export function useDebouncedCallback<
-  TFn extends (...args: Array<any>) => any,
-  TArgs extends Parameters<TFn>,
->(fn: TFn, options: DebouncerOptions) {
-  const debouncedFn = useDebouncer<TFn, TArgs>(fn, options).maybeExecute
-  return useCallback((...args: TArgs) => debouncedFn(...args), [debouncedFn])
+export function useDebouncedCallback<TFn extends AnyFunction>(
+  fn: TFn,
+  options: DebouncerOptions<TFn>,
+): (...args: Parameters<TFn>) => void {
+  const debouncedFn = useDebouncer(fn, options).maybeExecute
+  return useCallback((...args) => debouncedFn(...args), [debouncedFn])
 }
