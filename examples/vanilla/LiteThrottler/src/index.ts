@@ -1,3 +1,9 @@
+/**
+ * Note: @tanstack/pacer-lite is a stripped-down alternative designed for library use.
+ * It does not include TanStack Store, reactivity features, framework adapters, or devtools support
+ * that are available in the core @tanstack/pacer package for app development.
+ * The core version also includes more advanced features in some utilities.
+ */
 import { LiteThrottler } from '@tanstack/pacer-lite/lite-throttler'
 
 function createApp1() {

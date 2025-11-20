@@ -6,7 +6,7 @@ id: overview
 TanStack Pacer is a library focused on providing high-quality utilities for controlling function execution timing in your applications. While similar utilities exist elsewhere, we aim to get all the important details right - including ***type-safety***, ***tree-shaking***, and a consistent and ***intuitive API***. By focusing on these fundamentals and making them available in a ***framework agnostic*** way, we hope to make these utilities and patterns more commonplace in your applications. Proper execution control is often an afterthought in application development, leading to performance issues, race conditions, and poor user experiences that could have been prevented. TanStack Pacer helps you implement these critical patterns correctly from the start!
 
 > [!IMPORTANT]
-> TanStack Pacer is currently in **alpha** and its API is subject to change.
+> TanStack Pacer is currently in **beta** and its API is still subject to change.
 >
 > The scope of this library may grow, but we hope to keep the bundle size of each individual utility lean and focused.
 
@@ -43,6 +43,7 @@ Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of th
 - **Async or Sync Variations**
   - Choose between synchronous and asynchronous versions of each utility
   - Optional error, success, and settled handling for async variations
+  - Retry and Abort support for async variations
 - **State Management**
   - Uses TanStack Store under the hood for state management with fine-grained reactivity
   - Easily integrate with your own state management library of choice
@@ -66,3 +67,7 @@ Each utility is designed to be used in a specific way, and each utility has its 
 See how each utility behaves with this interactive comparison. Move the range slider to observe the differences between debouncing, throttling, rate limiting, queuing, and batching:
 
 <iframe src="https://stackblitz.com/github/TanStack/pacer/tree/main/examples/react/util-comparison?embed=1&view=preview&hideNavigation=1" width="100%" height="1200px" style="border: 1px solid #ccc; border-radius: 4px;"></iframe>
+
+## Pacer Lite
+
+Pacer Lite (`@tanstack/pacer-lite`) is a stripped down version of the core TanStack Pacer library. It is designed to be used in libraries and npm packages that need minimal overhead, and no reactivity features. The Lite version of each utility has the same core functionality of its core counterpart, but is stripped down to have a slightly smaller API surface and a smaller bundle size. Pacer Lite lacks reactivity features, framework adapters, devtools support, and some of the advanced options that the core utilities have. If that sounds interesting to you, you can 
