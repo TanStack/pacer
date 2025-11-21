@@ -34,3 +34,173 @@ Or import a core Pacer class/function that is re-exported from the React Adapter
 import { debounce, Debouncer } from '@tanstack/react-pacer' // no need to install the core package separately
 ```
 
+## Option Helpers
+
+If you want a type-safe way to define common options for pacer utilities, TanStack Pacer provides option helpers for each utility. These helpers can be used with React hooks.
+
+### Debouncer Options
+
+```tsx
+import { useDebouncer } from '@tanstack/react-pacer'
+import { debouncerOptions } from '@tanstack/pacer'
+
+const commonDebouncerOptions = debouncerOptions({
+  wait: 1000,
+  leading: false,
+  trailing: true,
+})
+
+const debouncer = useDebouncer(
+  (query: string) => fetchSearchResults(query),
+  { ...commonDebouncerOptions, key: 'searchDebouncer' }
+)
+```
+
+### Queuer Options
+
+```tsx
+import { useQueuer } from '@tanstack/react-pacer'
+import { queuerOptions } from '@tanstack/pacer'
+
+const commonQueuerOptions = queuerOptions({
+  concurrency: 3,
+  addItemsTo: 'back',
+})
+
+const queuer = useQueuer(
+  (item: string) => processItem(item),
+  { ...commonQueuerOptions, key: 'itemQueuer' }
+)
+```
+
+### Rate Limiter Options
+
+```tsx
+import { useRateLimiter } from '@tanstack/react-pacer'
+import { rateLimiterOptions } from '@tanstack/pacer'
+
+const commonRateLimiterOptions = rateLimiterOptions({
+  limit: 5,
+  window: 60000,
+  windowType: 'sliding',
+})
+
+const rateLimiter = useRateLimiter(
+  (data: string) => sendApiRequest(data),
+  { ...commonRateLimiterOptions, key: 'apiRateLimiter' }
+)
+```
+
+## Provider
+
+The React Adapter provides a `PacerProvider` component that you can use to provide default options to all instances of pacer utilities within your component tree.
+
+```tsx
+import { PacerProvider } from '@tanstack/react-pacer'
+
+// Set default options for react-pacer instances
+<PacerProvider
+  defaultOptions={{
+    debouncer: { wait: 1000 },
+    queuer: { concurrency: 3 },
+    rateLimiter: { limit: 5, window: 60000 },
+  }}
+>
+  <App />
+</PacerProvider>
+```
+
+All hooks within the provider will automatically use these default options, which can be overridden on a per-hook basis.
+
+## Examples
+
+### Debouncer Example
+
+```tsx
+import { useDebouncer } from '@tanstack/react-pacer'
+
+function SearchComponent() {
+  const debouncer = useDebouncer(
+    (query: string) => {
+      console.log('Searching for:', query)
+      // Perform search
+    },
+    { wait: 500 }
+  )
+
+  return (
+    <input
+      onChange={(e) => debouncer.maybeExecute(e.target.value)}
+      placeholder="Search..."
+    />
+  )
+}
+```
+
+### Queuer Example
+
+```tsx
+import { useQueuer } from '@tanstack/react-pacer'
+
+function UploadComponent() {
+  const queuer = useQueuer(
+    async (file: File) => {
+      await uploadFile(file)
+    },
+    { concurrency: 3 }
+  )
+
+  const handleFileSelect = (files: FileList) => {
+    Array.from(files).forEach((file) => {
+      queuer.add(file)
+    })
+  }
+
+  return (
+    <input
+      type="file"
+      multiple
+      onChange={(e) => {
+        if (e.target.files) {
+          handleFileSelect(e.target.files)
+        }
+      }}
+    />
+  )
+}
+```
+
+### Rate Limiter Example
+
+```tsx
+import { useRateLimiter } from '@tanstack/react-pacer'
+
+function ApiComponent() {
+  const rateLimiter = useRateLimiter(
+    (data: string) => {
+      return fetch('/api/endpoint', {
+        method: 'POST',
+        body: JSON.stringify({ data }),
+      })
+    },
+    {
+      limit: 5,
+      window: 60000,
+      windowType: 'sliding',
+      onReject: () => {
+        alert('Rate limit reached. Please try again later.')
+      },
+    }
+  )
+
+  const handleSubmit = () => {
+    const remaining = rateLimiter.getRemainingInWindow()
+    if (remaining > 0) {
+      rateLimiter.maybeExecute('some data')
+    }
+  }
+
+  return <button onClick={handleSubmit}>Submit</button>
+}
+```
+
