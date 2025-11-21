@@ -7,7 +7,8 @@ What? My debouncer can have dedicated devtools? Yep!
 
 TanStack Pacer provides devtools for debugging and monitoring all your utilities in real-time. The devtools integrate seamlessly within the new [TanStack Devtools](https://tanstack.com/devtools) multi-panel UI.
 
-> [!NOTE] By default, the TanStack Devtools and TanStack Pacer Devtools will only be included in development mode. This helps keep your production bundle size minimal. If you need to include devtools in production builds (e.g., for debugging production issues), you can use the alternative "production" imports.
+> [!NOTE] 
+> By default, the TanStack Devtools and TanStack Pacer Devtools will only be included in development mode. This helps keep your production bundle size minimal. If you need to include devtools in production builds (e.g., for debugging production issues), you can use the alternative "production" imports.
 
 ## Installation
 
