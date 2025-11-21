@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AnyFunction } from './types'
 
@@ -89,6 +89,18 @@ export interface ThrottlerOptions<TFn extends AnyFunction> {
   wait: number | ((throttler: Throttler<TFn>) => number)
 }
 
+/**
+ * Utility function for sharing common `ThrottlerOptions` options between different `Throttler` instances.
+ */
+export function throttlerOptions<
+  TFn extends AnyFunction = AnyFunction,
+  TOptions extends Partial<ThrottlerOptions<TFn>> = Partial<
+    ThrottlerOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<ThrottlerOptions<any>>,
   'initialState' | 'onExecute' | 'key'
@@ -105,6 +117,7 @@ const defaultOptions: Omit<
  * Throttling ensures a function is called at most once within a specified time window.
  * Unlike debouncing which waits for a pause in calls, throttling guarantees consistent
  * execution timing regardless of call frequency.
+ * This synchronous version is lighter weight and often all you need - upgrade to AsyncThrottler when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * Supports both leading and trailing edge execution:
  * - Leading: Execute immediately on first call (default: true)
@@ -146,18 +159,20 @@ export class Throttler<TFn extends AnyFunction> {
     public fn: TFn,
     initialOptions: ThrottlerOptions<TFn>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.on('d-Throttler', (event) => {
-      if (event.payload.key !== this.key) return
-      this.#setState(event.payload.store.state as ThrottlerState<TFn>)
-      this.setOptions(event.payload.options)
-    })
+    if (this.key) {
+      pacerEventClient.on('d-Throttler', (event) => {
+        if (event.payload.key !== this.key) return
+        this.#setState(event.payload.store.state as ThrottlerState<TFn>)
+        this.setOptions(event.payload.options)
+      })
+    }
   }
 
   /**
@@ -320,6 +335,8 @@ export class Throttler<TFn extends AnyFunction> {
 
 /**
  * Creates a throttled function that limits how often the provided function can execute.
+ *
+ * This synchronous version is lighter weight and often all you need - upgrade to asyncThrottle when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * Throttling ensures a function executes at most once within a specified time window,
  * regardless of how many times it is called. This is useful for rate-limiting

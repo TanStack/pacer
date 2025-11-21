@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type {
   DebouncerOptions,
@@ -104,18 +105,23 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   options: DebouncerOptions<TFn>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): ReactDebouncer<TFn, TSelected> {
-  const [debouncer] = useState(() => new Debouncer(fn, options))
+  const mergedOptions = {
+    ...useDefaultPacerOptions().debouncer,
+    ...options,
+  } as DebouncerOptions<TFn>
 
-  const state = useStore(debouncer.store, selector)
+  const [debouncer] = useState(() => new Debouncer(fn, mergedOptions))
 
   debouncer.fn = fn
-  debouncer.setOptions(options)
+  debouncer.setOptions(mergedOptions)
 
   useEffect(() => {
     return () => {
       debouncer.cancel()
     }
   }, [debouncer])
+
+  const state = useStore(debouncer.store, selector)
 
   return useMemo(
     () =>

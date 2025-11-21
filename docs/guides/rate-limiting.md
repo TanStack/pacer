@@ -137,6 +137,23 @@ limiter.setOptions({ limit: 10 }) // Increase the limit
 limiter.reset()
 ```
 
+### Sharing Options Between Instances
+
+Use `rateLimiterOptions` to share common options between different `RateLimiter` instances:
+
+```ts
+import { rateLimiterOptions, RateLimiter } from '@tanstack/pacer'
+
+const sharedOptions = rateLimiterOptions({
+  limit: 5,
+  window: 1000,
+  onExecute: (limiter) => console.log('Executed')
+})
+
+const limiter1 = new RateLimiter(fn1, { ...sharedOptions, key: 'limiter1' })
+const limiter2 = new RateLimiter(fn2, { ...sharedOptions, onReject: (limiter) => console.log('Rejected') })
+```
+
 ### Enabling/Disabling
 
 The `RateLimiter` class supports enabling/disabling via the `enabled` option. Using the `setOptions` method, you can enable/disable the rate limiter at any time:

@@ -253,6 +253,86 @@ queue.flush(1) // Process 1 more item
 console.log(queue.store.state.activeItems.length) // 3 (all processing concurrently)
 ```
 
+## Advanced Features: Retry and Abort Support
+
+The async queuer includes built-in retry and abort capabilities through integration with `AsyncRetryer`. These features help handle transient failures and provide control over in-flight task executions.
+
+### Retry Support
+
+Configure automatic retries for failed task executions using the `asyncRetryerOptions`. Each queued item's execution will be retried according to these settings:
+
+```ts
+const queuer = new AsyncQueuer<string>(
+  async (item) => {
+    // This might fail due to network issues
+    await api.processItem(item)
+  },
+  {
+    concurrency: 2,
+    asyncRetryerOptions: {
+      maxAttempts: 3,
+      backoff: 'exponential',
+      baseWait: 1000,
+      maxWait: 10000,
+      jitter: 0.3
+    }
+  }
+)
+```
+
+For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](./async-retrying.md).
+
+### Abort Support
+
+Cancel in-flight task executions using the abort functionality:
+
+```ts
+const queuer = new AsyncQueuer<string>(
+  async (item) => {
+    // Access the abort signal for this execution
+    const signal = queuer.getAbortSignal()
+    if (signal) {
+      const response = await fetch(`/api/process/${item}`, { signal })
+      return response.json()
+    }
+  },
+  { concurrency: 2 }
+)
+
+// Add items to the queue
+queuer.addItem('task1')
+queuer.addItem('task2')
+queuer.addItem('task3')
+
+// Later, abort any in-flight task executions
+queuer.abort()
+```
+
+The abort functionality:
+- Cancels all ongoing task executions using AbortController
+- Does NOT clear items from the queue (pending tasks remain queued)
+- Works with concurrent executions - aborts all active tasks
+- Can be used alongside retry support
+
+For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
+
+### Sharing Options Between Instances
+
+Use `asyncQueuerOptions` to share common options between different `AsyncQueuer` instances:
+
+```ts
+import { asyncQueuerOptions, AsyncQueuer } from '@tanstack/pacer'
+
+const sharedOptions = asyncQueuerOptions({
+  concurrency: 2,
+  wait: 1000,
+  onSuccess: (result, item, queuer) => console.log('Success')
+})
+
+const queuer1 = new AsyncQueuer(fn1, { ...sharedOptions, key: 'queuer1' })
+const queuer2 = new AsyncQueuer(fn2, { ...sharedOptions, concurrency: 4 })
+```
+
 ## State Management
 
 The `AsyncQueuer` class uses TanStack Store for reactive state management, providing real-time access to queue state, processing statistics, and concurrent task tracking. All state is stored in a TanStack Store and can be accessed via `asyncQueuer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `asyncQueuer.state` along with providing a selector callback as the 3rd argument to the `useAsyncQueuer` hook to opt-in to state tracking as shown below.

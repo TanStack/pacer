@@ -1,0 +1,53 @@
+---
+id: SolidAsyncThrottler
+title: SolidAsyncThrottler
+---
+
+# Interface: SolidAsyncThrottler\<TFn, TSelected\>
+
+Defined in: [async-throttler/createAsyncThrottler.ts:11](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L11)
+
+## Extends
+
+- `Omit`\<`AsyncThrottler`\<`TFn`\>, `"store"`\>
+
+## Type Parameters
+
+### TFn
+
+`TFn` *extends* `AnyAsyncFunction`
+
+### TSelected
+
+`TSelected` = \{
+\}
+
+## Properties
+
+### state
+
+```ts
+readonly state: Accessor<Readonly<TSelected>>;
+```
+
+Defined in: [async-throttler/createAsyncThrottler.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L20)
+
+Reactive state that will be updated when the throttler state changes
+
+Use this instead of `throttler.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>;
+```
+
+Defined in: [async-throttler/createAsyncThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L26)
+
+#### Deprecated
+
+Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
+Although, you can make the state reactive by using the `useStore` in your own usage.

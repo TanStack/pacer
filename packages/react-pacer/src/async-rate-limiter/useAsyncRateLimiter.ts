@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { useStore } from '@tanstack/react-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
@@ -184,14 +185,19 @@ export function useAsyncRateLimiter<
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncRateLimiter<TFn, TSelected> {
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncRateLimiter,
+    ...options,
+  } as AsyncRateLimiterOptions<TFn>
+
   const [asyncRateLimiter] = useState(
-    () => new AsyncRateLimiter<TFn>(fn, options),
+    () => new AsyncRateLimiter<TFn>(fn, mergedOptions),
   )
 
-  const state = useStore(asyncRateLimiter.store, selector)
-
   asyncRateLimiter.fn = fn
-  asyncRateLimiter.setOptions(options)
+  asyncRateLimiter.setOptions(mergedOptions)
+
+  const state = useStore(asyncRateLimiter.store, selector)
 
   return useMemo(
     () =>

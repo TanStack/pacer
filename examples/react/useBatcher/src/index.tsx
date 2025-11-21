@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useBatcher } from '@tanstack/react-pacer/batcher'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 function App1() {
   // Use your state management library of choice
@@ -83,8 +84,17 @@ function App1() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
-  <div>
-    <App1 />
-    <hr />
-  </div>,
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // defaultOptions={{
+  //   batcher: {
+  //     maxSize: 10,
+  //   },
+  // }}
+  >
+    <div>
+      <App1 />
+      <hr />
+    </div>
+  </PacerProvider>,
 )

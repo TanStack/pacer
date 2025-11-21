@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useAsyncQueuer } from '@tanstack/react-pacer/async-queuer'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 const fakeWaitTime = 500
 
@@ -30,7 +31,7 @@ function App() {
           asyncQueuer.store.state.rejectionCount,
         )
       },
-      onError: (error: unknown, item: Item, asyncQueuer) => {
+      onError: (error, item: Item, asyncQueuer) => {
         console.error(
           `Error processing item: ${item}`,
           error,
@@ -142,4 +143,15 @@ function App() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
-root.render(<App />)
+root.render(
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // defaultOptions={{
+  //   queuer: {
+  //     maxSize: 50,
+  //   },
+  // }}
+  >
+    <App />
+  </PacerProvider>,
+)

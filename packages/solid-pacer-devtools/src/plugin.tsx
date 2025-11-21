@@ -1,10 +1,9 @@
-import { PacerDevtoolsPanel } from './index'
+import { createSolidPlugin } from '@tanstack/devtools-utils/solid'
+import { PacerDevtoolsPanel } from './SolidPacerDevtools'
 
-export function pacerDevtoolsPlugin() {
-  return {
-    name: 'TanStack Pacer',
-    render: (_el: HTMLElement, theme: 'light' | 'dark') => {
-      return <PacerDevtoolsPanel theme={theme} />
-    },
-  }
-}
+const [pacerDevtoolsPlugin, pacerDevtoolsNoOpPlugin] = createSolidPlugin({
+  name: 'TanStack Pacer',
+  Component: PacerDevtoolsPanel,
+})
+
+export { pacerDevtoolsPlugin, pacerDevtoolsNoOpPlugin }

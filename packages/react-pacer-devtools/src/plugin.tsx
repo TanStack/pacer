@@ -1,11 +1,9 @@
-import React from 'react'
-import { PacerDevtoolsPanel } from './index'
+import { createReactPlugin } from '@tanstack/devtools-utils/react'
+import { PacerDevtoolsPanel } from './ReactPacerDevtools'
 
-export function pacerDevtoolsPlugin() {
-  return {
-    name: 'TanStack Pacer',
-    render: (_el: HTMLElement, theme: 'light' | 'dark') => {
-      return <PacerDevtoolsPanel theme={theme} />
-    },
-  }
-}
+const [pacerDevtoolsPlugin, pacerDevtoolsNoOpPlugin] = createReactPlugin({
+  name: 'TanStack Pacer',
+  Component: PacerDevtoolsPanel,
+})
+
+export { pacerDevtoolsPlugin, pacerDevtoolsNoOpPlugin }

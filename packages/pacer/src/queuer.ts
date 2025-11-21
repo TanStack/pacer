@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 
 export interface QueuerState<TValue> {
@@ -151,6 +151,18 @@ export interface QueuerOptions<TValue> {
   wait?: number | ((queuer: Queuer<TValue>) => number)
 }
 
+/**
+ * Utility function for sharing common `QueuerOptions` options between different `Queuer` instances.
+ */
+export function queuerOptions<
+  TValue = any,
+  TOptions extends Partial<QueuerOptions<TValue>> = Partial<
+    QueuerOptions<TValue>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<QueuerOptions<any>>,
   | 'initialState'
@@ -182,6 +194,8 @@ export type QueuePosition = 'front' | 'back'
 
 /**
  * A flexible queue that processes items with configurable wait times, expiration, and priority.
+ *
+ * This synchronous version is lighter weight and often all you need - upgrade to AsyncQueuer when you need promises, retry support, abort capabilities, concurrent execution, or advanced error handling.
  *
  * Features:
  * - Automatic or manual processing of items
@@ -256,7 +270,7 @@ export class Queuer<TValue> {
   readonly store: Store<Readonly<QueuerState<TValue>>> = new Store(
     getDefaultQueuerState<TValue>(),
   )
-  key: string
+  key: string | undefined
   options: QueuerOptions<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -264,7 +278,7 @@ export class Queuer<TValue> {
     public fn: (item: TValue) => void,
     initialOptions: QueuerOptions<TValue> = {},
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -287,11 +301,14 @@ export class Queuer<TValue> {
         this.addItem(item, this.options.addItemsTo ?? 'back', isLast)
       }
     }
-    pacerEventClient.on('d-Queuer', (event) => {
-      if (event.payload.key !== this.key) return
-      this.#setState(event.payload.store.state)
-      this.setOptions(event.payload.options)
-    })
+
+    if (this.key) {
+      pacerEventClient.on('d-Queuer', (event) => {
+        if (event.payload.key !== this.key) return
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      })
+    }
   }
 
   /**
@@ -681,9 +698,7 @@ export class Queuer<TValue> {
  * Creates a queue that processes items immediately upon addition.
  * Items are processed sequentially in FIFO order by default.
  *
- * This is a simplified wrapper around the Queuer class that only exposes the
- * `addItem` method. The queue is always isRunning and will process items as they are added.
- * For more control over queue processing, use the Queuer class directly.
+ * This synchronous version is lighter weight and often all you need - upgrade to asyncQueue when you need promises, retry support, abort capabilities, concurrent execution, or advanced error handling.
  *
  * State Management:
  * - Uses TanStack Store for reactive state management

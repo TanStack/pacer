@@ -1,6 +1,8 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { AsyncRetryer } from './async-retryer'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
@@ -68,6 +70,10 @@ function getDefaultAsyncRateLimiterState<
  */
 export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<TFn>
+  /**
    * Whether the rate limiter is enabled. When disabled, maybeExecute will not trigger any executions.
    * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
@@ -93,7 +99,7 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (
-    error: unknown,
+    error: Error,
     args: Parameters<TFn>,
     rateLimiter: AsyncRateLimiter<TFn>,
   ) => void
@@ -136,10 +142,25 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
   windowType?: 'fixed' | 'sliding'
 }
 
+/**
+ * Utility function for sharing common `AsyncRateLimiterOptions` options between different `AsyncRateLimiter` instances.
+ */
+export function asyncRateLimiterOptions<
+  TFn extends AnyAsyncFunction = AnyAsyncFunction,
+  TOptions extends Partial<AsyncRateLimiterOptions<TFn>> = Partial<
+    AsyncRateLimiterOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 const defaultOptions: Omit<
   Required<AsyncRateLimiterOptions<any>>,
   'initialState' | 'onError' | 'onReject' | 'onSettled' | 'onSuccess' | 'key'
 > = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   enabled: true,
   limit: 1,
   window: 0,
@@ -150,26 +171,34 @@ const defaultOptions: Omit<
 /**
  * A class that creates an async rate-limited function.
  *
- * Rate limiting is a simple approach that allows a function to execute up to a limit within a time window,
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync RateLimiter:
+ * - Returns promises that can be awaited for rate-limited function results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight executions
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts, rejection counts)
+ * - More sophisticated window management with automatic cleanup
+ *
+ * The sync RateLimiter is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Rate Limiting?
+ * Rate limiting allows a function to execute up to a limit within a time window,
  * then blocks all subsequent calls until the window passes. This can lead to "bursty" behavior where
  * all executions happen immediately, followed by a complete block.
  *
- * The rate limiter supports two types of windows:
+ * Window Types:
  * - 'fixed': A strict window that resets after the window period. All executions within the window count
  *   towards the limit, and the window resets completely after the period.
  * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
  *   consistent rate of execution over time.
  *
- * Unlike the non-async RateLimiter, this async version supports returning values from the rate-limited function,
- * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
- * instead of setting the result on a state variable from within the rate-limited function.
- *
- * For smoother execution patterns, consider using:
- * - Throttling: Ensures consistent spacing between executions (e.g. max once per 200ms)
- * - Debouncing: Waits for a pause in calls before executing (e.g. after 500ms of no calls)
- *
+ * When to Use Rate Limiting:
  * Rate limiting is best used for hard API limits or resource constraints. For UI updates or
  * smoothing out frequent events, throttling or debouncing usually provide better user experience.
+ * - Throttling: Ensures consistent spacing between executions (e.g. max once per 200ms)
+ * - Debouncing: Waits for a pause in calls before executing (e.g. after 500ms of no calls)
  *
  * State Management:
  * - Uses TanStack Store for reactive state management
@@ -217,15 +246,16 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>> = new Store<
     AsyncRateLimiterState<TFn>
   >(getDefaultAsyncRateLimiterState<TFn>())
-  key: string
+  key: string | undefined
   options: AsyncRateLimiterOptions<TFn>
+  asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutIds: Set<NodeJS.Timeout> = new Set()
 
   constructor(
     public fn: TFn,
     initialOptions: AsyncRateLimiterOptions<TFn>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -236,11 +266,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       this.#setCleanupTimeout(executionTime)
     }
 
-    pacerEventClient.on('d-AsyncRateLimiter', (event) => {
-      if (event.payload.key !== this.key) return
-      this.#setState(event.payload.store.state)
-      this.setOptions(event.payload.options)
-    })
+    if (this.key) {
+      pacerEventClient.on('d-AsyncRateLimiter', (event) => {
+        if (event.payload.key !== this.key) return
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      })
+    }
   }
 
   /**
@@ -347,6 +379,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return
 
+    const currentMaybeExecute = this.store.state.maybeExecuteCount
     const now = Date.now()
     const executionTimes = [...this.store.state.executionTimes, now]
     this.#setState({
@@ -355,22 +388,29 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     })
 
     try {
-      const result = await this.fn(...args) // EXECUTE!
+      // Create a new AsyncRetryer for this execution to avoid cancelling concurrent executions
+      const currentAsyncRetryer = new AsyncRetryer(this.fn, {
+        ...this.options.asyncRetryerOptions,
+        key: `${this.key}-retryer-${currentMaybeExecute}`,
+      })
+      this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
+      const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setCleanupTimeout(now)
       this.#setState({
         successCount: this.store.state.successCount + 1,
         lastResult: result,
       })
-      this.options.onSuccess?.(result, args, this)
+      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.options.onError?.(error, args, this)
+      this.options.onError?.(error as Error, args, this)
       if (this.options.throwOnError) {
         throw error
       }
     } finally {
+      this.asyncRetryers.delete(currentMaybeExecute) // dispose retryer
       this.#setState({
         isExecuting: false,
         settleCount: this.store.state.settleCount + 1,
@@ -463,31 +503,100 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   }
 
   /**
+   * Returns the AbortSignal for a specific execution.
+   * If no maybeExecuteCount is provided, returns the signal for the most recent execution.
+   * Returns null if no execution is found or not currently executing.
+   *
+   * @param maybeExecuteCount - Optional specific execution to get signal for
+   * @example
+   * ```typescript
+   * const rateLimiter = new AsyncRateLimiter(
+   *   async (userId: string) => {
+   *     const signal = rateLimiter.getAbortSignal()
+   *     if (signal) {
+   *       const response = await fetch(`/api/users/${userId}`, { signal })
+   *       return response.json()
+   *     }
+   *   },
+   *   { limit: 5, window: 1000 }
+   * )
+   * ```
+   */
+  getAbortSignal(maybeExecuteCount?: number): AbortSignal | null {
+    const count = maybeExecuteCount ?? this.store.state.maybeExecuteCount
+    const retryer = this.asyncRetryers.get(count)
+    return retryer?.getAbortSignal() ?? null
+  }
+
+  /**
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT clear out the execution times or reset the rate limiter.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({
+      isExecuting: false,
+    })
+  }
+
+  /**
    * Resets the rate limiter state
    */
   reset = (): void => {
     this.#setState(getDefaultAsyncRateLimiterState())
     this.#clearTimeouts()
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 
 /**
  * Creates an async rate-limited function that will execute the provided function up to a maximum number of times within a time window.
  *
- * Unlike the non-async rate limiter, this async version supports returning values from the rate-limited function,
- * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
- * instead of setting the result on a state variable from within the rate-limited function.
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync rate limit function:
+ * - Returns promises that can be awaited for rate-limited function results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight executions
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts, rejection counts)
+ * - More sophisticated window management with automatic cleanup
  *
- * The rate limiter supports two types of windows:
+ * The sync rate limit function is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Rate Limiting?
+ * Rate limiting allows a function to execute up to a limit within a time window,
+ * then blocks all subsequent calls until the window passes. This can lead to "bursty" behavior where
+ * all executions happen immediately, followed by a complete block.
+ *
+ * Window Types:
  * - 'fixed': A strict window that resets after the window period. All executions within the window count
  *   towards the limit, and the window resets completely after the period.
  * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
  *   consistent rate of execution over time.
  *
- * Note that rate limiting is a simpler form of execution control compared to throttling or debouncing:
+ * Configuration Options:
+ * - `limit`: Maximum number of executions allowed within the window (required)
+ * - `window`: Time window in milliseconds (required)
+ * - `windowType`: 'fixed' or 'sliding' (default: 'fixed')
+ * - `enabled`: Whether the rate limiter is enabled (default: true)
+ * - `asyncRetryerOptions`: Configure retry behavior for executions
+ *
+ * When to Use Rate Limiting:
+ * Rate limiting is best used for hard API limits or resource constraints. For UI updates or
+ * smoothing out frequent events, throttling or debouncing usually provide better user experience.
  * - A rate limiter will allow all executions until the limit is reached, then block all subsequent calls until the window resets
  * - A throttler ensures even spacing between executions, which can be better for consistent performance
  * - A debouncer collapses multiple calls into one, which is better for handling bursts of events
+ *
+ * Error Handling:
+ * - If an `onError` handler is provided, it will be called with the error and rate limiter instance
+ * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+ * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+ * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
+ * - The error state can be checked using the underlying AsyncRateLimiter instance
+ * - Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
  *
  * State Management:
  * - Uses TanStack Store for reactive state management
@@ -500,17 +609,6 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
  * - The state includes execution times, success/error counts, and current execution status
  * - State can be accessed via the underlying AsyncRateLimiter instance's `store.state` property
  * - When using framework adapters (React/Solid), state is accessed from the hook's state property
- *
- * Consider using throttle() or debounce() if you need more intelligent execution control. Use rate limiting when you specifically
- * need to enforce a hard limit on the number of executions within a time period.
- *
- * Error Handling:
- * - If an `onError` handler is provided, it will be called with the error and rate limiter instance
- * - If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
- * - If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
- * - Both onError and throwOnError can be used together - the handler will be called before any error is thrown
- * - The error state can be checked using the underlying AsyncRateLimiter instance
- * - Rate limit rejections (when limit is exceeded) are handled separately from execution errors via the `onReject` handler
  *
  * @example
  * ```ts

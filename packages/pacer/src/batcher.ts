@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { OptionalKeys } from './types'
 
@@ -107,6 +107,7 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * A class that collects items and processes them in batches.
  *
  * Batching is a technique for grouping multiple operations together to be processed as a single unit.
+ * This synchronous version is lighter weight and often all you need - upgrade to AsyncBatcher when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * The Batcher provides a flexible way to implement batching with configurable:
  * - Maximum batch size (number of items per batch)
@@ -145,7 +146,7 @@ export class Batcher<TValue> {
   readonly store: Store<Readonly<BatcherState<TValue>>> = new Store(
     getDefaultBatcherState<TValue>(),
   )
-  key: string
+  key: string | undefined
   options: BatcherOptionsWithOptionalCallbacks<TValue>
   #timeoutId: NodeJS.Timeout | null = null
 
@@ -153,18 +154,20 @@ export class Batcher<TValue> {
     public fn: (items: Array<TValue>) => void,
     initialOptions: BatcherOptions<TValue>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.on('d-Batcher', (event) => {
-      if (event.payload.key !== this.key) return
-      this.#setState(event.payload.store.state)
-      this.setOptions(event.payload.options)
-    })
+    if (this.key) {
+      pacerEventClient.on('d-Batcher', (event) => {
+        if (event.payload.key !== this.key) return
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      })
+    }
   }
 
   /**
@@ -276,6 +279,15 @@ export class Batcher<TValue> {
   }
 
   /**
+   * Cancels any pending execution that was scheduled.
+   * Does NOT clear out the items.
+   */
+  cancel = (): void => {
+    this.#clearTimeout()
+    this.#setState({ isPending: false })
+  }
+
+  /**
    * Resets the batcher state to its default values
    */
   reset = (): void => {
@@ -285,7 +297,9 @@ export class Batcher<TValue> {
 }
 
 /**
- * Creates a batcher that processes items in batches
+ * Creates a batcher that processes items in batches.
+ *
+ * This synchronous version is lighter weight and often all you need - upgrade to asyncBatch when you need promises, retry support, abort/cancel capabilities, or advanced error handling.
  *
  * @example
  * ```ts

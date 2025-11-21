@@ -204,6 +204,23 @@ queue.getNextItem() // Get next item
 queue.getNextItem() // Get next item
 ```
 
+### Sharing Options Between Instances
+
+Use `queuerOptions` to share common options between different `Queuer` instances:
+
+```ts
+import { queuerOptions, Queuer } from '@tanstack/pacer'
+
+const sharedOptions = queuerOptions({
+  wait: 1000,
+  maxSize: 10,
+  onItemsChange: (queuer) => console.log('Items changed')
+})
+
+const queuer1 = new Queuer(fn1, { ...sharedOptions, key: 'queuer1' })
+const queuer2 = new Queuer(fn2, { ...sharedOptions, wait: 2000 })
+```
+
 ### Additional Features
 
 The Queuer provides several helpful methods for queue management:

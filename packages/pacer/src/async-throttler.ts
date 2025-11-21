@@ -1,6 +1,8 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { AsyncRetryer } from './async-retryer'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
 export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
@@ -73,6 +75,10 @@ function getDefaultAsyncThrottlerState<
  */
 export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<TFn>
+  /**
    * Whether the throttler is enabled. When disabled, maybeExecute will not trigger any executions.
    * Can be a boolean or a function that returns a boolean.
    * Defaults to true.
@@ -98,7 +104,7 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (
-    error: unknown,
+    error: Error,
     args: Parameters<TFn>,
     asyncThrottler: AsyncThrottler<TFn>,
   ) => void
@@ -136,12 +142,27 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
   wait: number | ((throttler: AsyncThrottler<TFn>) => number)
 }
 
+/**
+ * Utility function for sharing common `AsyncThrottlerOptions` options between different `AsyncThrottler` instances.
+ */
+export function asyncThrottlerOptions<
+  TFn extends AnyAsyncFunction = AnyAsyncFunction,
+  TOptions extends Partial<AsyncThrottlerOptions<TFn>> = Partial<
+    AsyncThrottlerOptions<TFn>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 type AsyncThrottlerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncThrottlerOptions<any>,
   'initialState' | 'onError' | 'onSettled' | 'onSuccess'
 >
 
 const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   enabled: true,
   leading: true,
   trailing: true,
@@ -151,13 +172,23 @@ const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {
 /**
  * A class that creates an async throttled function.
  *
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync Throttler:
+ * - Returns promises that can be awaited for throttled function results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight executions
+ * - Cancel support to prevent pending executions from starting
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ * - Waits for ongoing executions to complete before scheduling the next one
+ *
+ * The sync Throttler is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Throttling?
  * Throttling limits how often a function can be executed, allowing only one execution within a specified time window.
  * Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a
  * regular interval regardless of how often it's called.
- *
- * Unlike the non-async Throttler, this async version supports returning values from the throttled function,
- * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
- * instead of setting the result on a state variable from within the throttled function.
  *
  * This is useful for rate-limiting API calls, handling scroll/resize events, or any scenario where you want to
  * ensure a maximum execution frequency.
@@ -200,9 +231,9 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   readonly store: Store<Readonly<AsyncThrottlerState<TFn>>> = new Store<
     AsyncThrottlerState<TFn>
   >(getDefaultAsyncThrottlerState<TFn>())
-  key: string
+  key: string | undefined
   options: AsyncThrottlerOptions<TFn>
-  #abortController: AbortController | null = null
+  asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
@@ -212,18 +243,21 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     public fn: TFn,
     initialOptions: AsyncThrottlerOptions<TFn>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
       throwOnError: initialOptions.throwOnError ?? !initialOptions.onError,
     }
     this.#setState(this.options.initialState ?? {})
-    pacerEventClient.on('d-AsyncThrottler', (event) => {
-      if (event.payload.key !== this.key) return
-      this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
-      this.setOptions(event.payload.options)
-    })
+
+    if (this.key) {
+      pacerEventClient.on('d-AsyncThrottler', (event) => {
+        if (event.payload.key !== this.key) return
+        this.#setState(event.payload.store.state as AsyncThrottlerState<TFn>)
+        this.setOptions(event.payload.options)
+      })
+    }
   }
 
   /**
@@ -301,88 +335,119 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
-    const now = Date.now()
-    const timeSinceLastExecution = now - this.store.state.lastExecutionTime
-    const wait = this.#getWait()
-    // Store the most recent arguments for potential trailing execution
-    this.#setState({
-      lastArgs: args,
-      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
-    })
 
     this.#resolvePreviousPromiseInternal()
 
-    // Handle leading execution
-    if (this.options.leading && timeSinceLastExecution >= wait) {
-      await this.#execute(...args)
-      return this.store.state.lastResult
-    } else {
+    this.#setState({
+      maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
+      lastArgs: args, // store the arguments for potential trailing execution
+    })
+
+    const wait = this.#getWait()
+    const thisMaybeExecuteNumber = this.store.state.maybeExecuteCount
+
+    // Wait for the wait period for the previous execution to complete if it's still running
+    for (
+      let maxNumIterations = wait / 10;
+      this.store.state.isExecuting && maxNumIterations > 0;
+      maxNumIterations--
+    ) {
+      await new Promise((resolve) => setTimeout(resolve, 10))
+      if (this.store.state.maybeExecuteCount !== thisMaybeExecuteNumber) {
+        // cancel the current maybeExecute loop because a new maybeExecute call was made
+        return this.store.state.lastResult
+      }
+    }
+
+    const now = Date.now()
+    const timeSinceLastExecution = now - this.store.state.lastExecutionTime
+
+    if (
+      this.options.leading &&
+      !this.store.state.isPending &&
+      timeSinceLastExecution >= wait
+    ) {
+      await this.#execute(...args) // Leading EXECUTE!
+    } else if (this.options.trailing) {
+      // replace old pending execution with a new one
+      this.cancel()
+      this.#setState({
+        isPending: true,
+      })
+
+      // Set up new trailing execution
       return new Promise((resolve, reject) => {
         this.#resolvePreviousPromise = resolve
-        // Clear any existing timeout to ensure we use the latest arguments
-        this.#clearTimeout()
 
-        // Set up trailing execution if enabled
-        if (this.options.trailing) {
-          const _timeSinceLastExecution = this.store.state.lastExecutionTime
-            ? now - this.store.state.lastExecutionTime
-            : 0
-          const timeoutDuration = wait - _timeSinceLastExecution
-          this.#setState({ isPending: true })
-          this.#timeoutId = setTimeout(async () => {
-            if (this.store.state.lastArgs !== undefined) {
-              try {
-                await this.#execute(...this.store.state.lastArgs) // EXECUTE!
-              } catch (error) {
-                reject(error)
-              }
+        const newTimeSinceLastExecution = this.store.state.lastExecutionTime
+          ? now - this.store.state.lastExecutionTime
+          : 0
+        const timeoutDuration = Math.max(0, wait - newTimeSinceLastExecution)
+
+        this.#timeoutId = setTimeout(async () => {
+          this.#clearTimeout()
+          if (this.store.state.lastArgs !== undefined) {
+            try {
+              await this.#execute(...this.store.state.lastArgs) // Trailing EXECUTE!
+            } catch (error) {
+              reject(error)
             }
-            this.#resolvePreviousPromise = null
-            resolve(this.store.state.lastResult)
-          }, timeoutDuration)
-        }
+          }
+          this.#resolvePreviousPromise = null
+          resolve(this.store.state.lastResult)
+        }, timeoutDuration)
       })
     }
+    return this.store.state.lastResult
   }
 
   #execute = async (
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
-    if (!this.#getEnabled() || this.store.state.isExecuting) return undefined
-    this.#abortController = new AbortController()
+    if (!this.#getEnabled()) return undefined
+
+    const currentMaybeExecute = this.store.state.maybeExecuteCount
+
     try {
       this.#setState({ isExecuting: true })
-      const result = await this.fn(...args) // EXECUTE!
+      const currentAsyncRetryer = new AsyncRetryer(this.fn, {
+        ...this.options.asyncRetryerOptions,
+        key: `${this.key}-retryer-${currentMaybeExecute}`,
+      })
+      this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
+      const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result, args, this)
+      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
       })
-      this.options.onError?.(error, args, this)
+      this.options.onError?.(error as Error, args, this)
       if (this.options.throwOnError) {
         throw error
       }
     } finally {
+      this.asyncRetryers.delete(currentMaybeExecute) // dispose retryer
       const lastExecutionTime = Date.now()
-      const nextExecutionTime = lastExecutionTime + this.#getWait()
+      const wait = this.#getWait()
+      const nextExecutionTime = lastExecutionTime + wait
       this.#setState({
         isExecuting: false,
-        isPending: false,
+        isPending: !!this.#timeoutId,
         settleCount: this.store.state.settleCount + 1,
         lastExecutionTime,
         nextExecutionTime,
       })
-      this.#abortController = null
       this.options.onSettled?.(args, this)
       setTimeout(() => {
         if (!this.store.state.isPending) {
+          // clear nextExecutionTime if there is no pending execution
           this.#setState({ nextExecutionTime: undefined })
         }
-      }, this.#getWait())
+      }, wait)
     }
     return this.store.state.lastResult
   }
@@ -392,12 +457,21 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    */
   flush = async (): Promise<ReturnType<TFn> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
-      this.#abortExecution() // abort any current execution
-      this.#clearTimeout() // clear any existing timeout
+      // Store the pending promise resolver before clearing timeout
+      const resolvePromise = this.#resolvePreviousPromise
+
+      // Clear timeout and state without resolving the promise
+      this.#clearTimeout()
+      this.#setState({
+        isPending: false,
+      })
+
       const result = await this.#execute(...this.store.state.lastArgs)
 
-      // Resolve any pending promise from maybeExecute
-      this.#resolvePreviousPromiseInternal()
+      // Resolve the pending promise with the result
+      if (resolvePromise) {
+        resolvePromise(result)
+      }
 
       return result
     }
@@ -418,7 +492,51 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
   }
 
-  #cancelPendingExecution = (): void => {
+  /**
+   * Returns the AbortSignal for a specific execution.
+   * If no maybeExecuteCount is provided, returns the signal for the most recent execution.
+   * Returns null if no execution is found or not currently executing.
+   *
+   * @param maybeExecuteCount - Optional specific execution to get signal for
+   * @example
+   * ```typescript
+   * const throttler = new AsyncThrottler(
+   *   async (data: string) => {
+   *     const signal = throttler.getAbortSignal()
+   *     if (signal) {
+   *       const response = await fetch('/api/save', {
+   *         method: 'POST',
+   *         body: data,
+   *         signal
+   *       })
+   *       return response.json()
+   *     }
+   *   },
+   *   { wait: 1000 }
+   * )
+   * ```
+   */
+  getAbortSignal(maybeExecuteCount?: number): AbortSignal | null {
+    const count = maybeExecuteCount ?? this.store.state.maybeExecuteCount
+    const retryer = this.asyncRetryers.get(count)
+    return retryer?.getAbortSignal() ?? null
+  }
+
+  /**
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT cancel any pending execution that have not started yet.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({ isExecuting: false })
+  }
+
+  /**
+   * Cancels any pending execution that have not started yet.
+   * Does NOT abort any execution already in progress.
+   */
+  cancel = (): void => {
     this.#clearTimeout()
     if (this.#resolvePreviousPromise) {
       this.#resolvePreviousPromiseInternal()
@@ -426,24 +544,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
     this.#setState({
       isPending: false,
-      isExecuting: false,
-      lastArgs: undefined,
     })
-  }
-
-  #abortExecution = (): void => {
-    if (this.#abortController) {
-      this.#abortController.abort()
-      this.#abortController = null
-    }
-  }
-
-  /**
-   * Cancels any pending execution or aborts any execution in progress
-   */
-  cancel = (): void => {
-    this.#cancelPendingExecution()
-    this.#abortExecution()
   }
 
   /**
@@ -451,6 +552,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    */
   reset = (): void => {
     this.#setState(getDefaultAsyncThrottlerState<TFn>())
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 
@@ -459,9 +561,30 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
  * The throttled function will execute at most once per wait period, even if called multiple times.
  * If called while executing, it will wait until execution completes before scheduling the next call.
  *
- * Unlike the non-async Throttler, this async version supports returning values from the throttled function,
- * making it ideal for API calls and other async operations where you want the result of the `maybeExecute` call
- * instead of setting the result on a state variable from within the throttled function.
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync throttle function:
+ * - Returns promises that can be awaited for throttled function results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight executions
+ * - Cancel support to prevent pending executions from starting
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ * - Waits for ongoing executions to complete before scheduling the next one
+ *
+ * The sync throttle function is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Throttling?
+ * Throttling limits how often a function can be executed, allowing only one execution within a specified time window.
+ * Unlike debouncing which resets the delay timer on each call, throttling ensures the function executes at a
+ * regular interval regardless of how often it's called.
+ *
+ * Configuration Options:
+ * - `wait`: Time window in milliseconds during which the function can only execute once (required)
+ * - `leading`: Execute immediately when called (default: true)
+ * - `trailing`: Execute on the trailing edge of the wait period (default: true)
+ * - `enabled`: Whether the throttler is enabled (default: true)
+ * - `asyncRetryerOptions`: Configure retry behavior for executions
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error and throttler instance

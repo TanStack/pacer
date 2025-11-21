@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useDebouncer } from '@tanstack/react-pacer/debouncer'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 
 function App1() {
   // Use your state management library of choice
@@ -254,11 +255,21 @@ function App3() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
-  <div>
-    <App1 />
-    <hr />
-    <App2 />
-    <hr />
-    <App3 />
-  </div>,
+  // optionally, provide default options to an optional PacerProvider
+  <PacerProvider
+  // defaultOptions={{
+  //   debouncer: {
+  //     leading: true,
+  //   },
+  // }}
+  >
+    <div>
+      <App1 />
+      <hr />
+      <App2 />
+      <hr />
+      <App3 />
+    </div>
+    ,
+  </PacerProvider>,
 )

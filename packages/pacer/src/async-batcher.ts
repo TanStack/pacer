@@ -1,6 +1,8 @@
 import { Store } from '@tanstack/store'
-import { createKey, parseFunctionOrValue } from './utils'
+import { AsyncRetryer } from './async-retryer'
+import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import type { AsyncRetryerOptions } from './async-retryer'
 import type { OptionalKeys } from './types'
 
 export interface AsyncBatcherState<TValue> {
@@ -8,6 +10,10 @@ export interface AsyncBatcherState<TValue> {
    * Number of batch executions that have resulted in errors
    */
   errorCount: number
+  /**
+   * Number of batch executions that have been executed
+   */
+  executeCount: number
   /**
    * Array of items that failed during batch processing
    */
@@ -61,6 +67,7 @@ export interface AsyncBatcherState<TValue> {
 function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
   return {
     errorCount: 0,
+    executeCount: 0,
     failedItems: [],
     isEmpty: true,
     isExecuting: false,
@@ -80,6 +87,12 @@ function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
  * Options for configuring an AsyncBatcher instance
  */
 export interface AsyncBatcherOptions<TValue> {
+  /**
+   * Options for configuring the underlying async retryer
+   */
+  asyncRetryerOptions?: AsyncRetryerOptions<
+    (items: Array<TValue>) => Promise<any>
+  >
   /**
    * Custom function to determine if a batch should be processed
    * Return true to process the batch immediately
@@ -108,7 +121,7 @@ export interface AsyncBatcherOptions<TValue> {
    * This can be used alongside throwOnError - the handler will be called before any error is thrown.
    */
   onError?: (
-    error: unknown,
+    error: Error,
     batch: Array<TValue>,
     batcher: AsyncBatcher<TValue>,
   ) => void
@@ -148,6 +161,19 @@ export interface AsyncBatcherOptions<TValue> {
   wait?: number | ((asyncBatcher: AsyncBatcher<TValue>) => number)
 }
 
+/**
+ * Utility function for sharing common `AsyncBatcherOptions` options between different `AsyncBatcher` instances.
+ *
+ */
+export function asyncBatcherOptions<
+  TValue = any,
+  TOptions extends Partial<AsyncBatcherOptions<TValue>> = Partial<
+    AsyncBatcherOptions<TValue>
+  >,
+>(options: TOptions): TOptions {
+  return options
+}
+
 type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<AsyncBatcherOptions<TValue>>,
   | 'initialState'
@@ -159,6 +185,9 @@ type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
 >
 
 const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
+  asyncRetryerOptions: {
+    maxAttempts: 1,
+  },
   getShouldExecute: () => false,
   maxSize: Infinity,
   started: true,
@@ -169,13 +198,19 @@ const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
 /**
  * A class that collects items and processes them in batches asynchronously.
  *
- * This is the async version of the Batcher class. Unlike the sync version, this async batcher:
- * - Handles promises and returns results from batch executions
- * - Provides error handling with configurable error behavior
- * - Tracks success, error, and settle counts separately
- * - Has state tracking for when batches are executing
- * - Returns the result of the batch function execution
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync Batcher:
+ * - Returns promises that can be awaited for batch results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight batch executions
+ * - Cancel support to prevent pending batches from starting
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
  *
+ * The sync Batcher is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Batching?
  * Batching is a technique for grouping multiple operations together to be processed as a single unit.
  *
  * The AsyncBatcher provides a flexible way to implement async batching with configurable:
@@ -231,15 +266,19 @@ export class AsyncBatcher<TValue> {
   readonly store: Store<Readonly<AsyncBatcherState<TValue>>> = new Store(
     getDefaultAsyncBatcherState<TValue>(),
   )
-  key: string
+  key: string | undefined
   options: AsyncBatcherOptionsWithOptionalCallbacks<TValue>
+  asyncRetryers = new Map<
+    number,
+    AsyncRetryer<(items: Array<TValue>) => Promise<any>>
+  >()
   #timeoutId: NodeJS.Timeout | null = null
 
   constructor(
     public fn: (items: Array<TValue>) => Promise<any>,
     initialOptions: AsyncBatcherOptions<TValue>,
   ) {
-    this.key = createKey(initialOptions.key)
+    this.key = initialOptions.key
     this.options = {
       ...defaultOptions,
       ...initialOptions,
@@ -247,11 +286,13 @@ export class AsyncBatcher<TValue> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    pacerEventClient.on('d-AsyncBatcher', (event) => {
-      if (event.payload.key !== this.key) return
-      this.#setState(event.payload.store.state)
-      this.setOptions(event.payload.options)
-    })
+    if (this.key) {
+      pacerEventClient.on('d-AsyncBatcher', (event) => {
+        if (event.payload.key !== this.key) return
+        this.#setState(event.payload.store.state)
+        this.setOptions(event.payload.options)
+      })
+    }
   }
 
   /**
@@ -293,8 +334,12 @@ export class AsyncBatcher<TValue> {
   /**
    * Adds an item to the async batcher
    * If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
+   *
+   * @returns The result from the batch function, or undefined if an error occurred and was handled by onError
+   *
+   * @throws The error from the batch function if no onError handler is configured or throwOnError is true
    */
-  addItem = (item: TValue): void => {
+  addItem = async (item: TValue): Promise<any> => {
     this.#setState({
       items: [...this.store.state.items, item],
       isPending: this.options.wait !== Infinity,
@@ -306,10 +351,11 @@ export class AsyncBatcher<TValue> {
       this.options.getShouldExecute(this.store.state.items, this)
 
     if (shouldProcess) {
-      this.#execute()
+      return await this.#execute()
     } else if (this.options.wait !== Infinity) {
       this.#clearTimeout() // clear any pending timeout to replace it with a new one
       this.#timeoutId = setTimeout(() => this.#execute(), this.#getWait())
+      await new Promise((resolve) => setTimeout(resolve, this.#getWait()))
     }
   }
 
@@ -330,14 +376,20 @@ export class AsyncBatcher<TValue> {
       return undefined
     }
 
+    const currentExecuteCount = this.store.state.executeCount + 1
     const batch = this.peekAllItems() // copy of the items to be processed (to prevent race conditions)
     this.clear() // Clear items before processing to prevent race conditions
     this.options.onItemsChange?.(this)
 
-    this.#setState({ isExecuting: true })
+    this.#setState({ isExecuting: true, executeCount: currentExecuteCount })
 
     try {
-      const result = await this.fn(batch) // EXECUTE
+      const currentAsyncRetryer = new AsyncRetryer(
+        this.fn,
+        this.options.asyncRetryerOptions,
+      )
+      this.asyncRetryers.set(currentExecuteCount, currentAsyncRetryer)
+      const result = await currentAsyncRetryer.execute(batch) // EXECUTE
       this.#setState({
         totalItemsProcessed:
           this.store.state.totalItemsProcessed + batch.length,
@@ -352,12 +404,13 @@ export class AsyncBatcher<TValue> {
         failedItems: [...this.store.state.failedItems, ...batch],
         totalItemsFailed: this.store.state.totalItemsFailed + batch.length,
       })
-      this.options.onError?.(error, batch, this)
+      this.options.onError?.(error as Error, batch, this)
       if (this.options.throwOnError) {
         throw error
       }
       return undefined
     } finally {
+      this.asyncRetryers.delete(currentExecuteCount) // dispose retryer
       this.#setState({
         isExecuting: false,
         settleCount: this.store.state.settleCount + 1,
@@ -400,22 +453,94 @@ export class AsyncBatcher<TValue> {
   }
 
   /**
+   * Returns the AbortSignal for a specific execution.
+   * If no executeCount is provided, returns the signal for the most recent execution.
+   * Returns null if no execution is found or not currently executing.
+   *
+   * @param executeCount - Optional specific execution to get signal for
+   * @example
+   * ```typescript
+   * const batcher = new AsyncBatcher(
+   *   async (items: string[]) => {
+   *     const signal = batcher.getAbortSignal()
+   *     if (signal) {
+   *       const response = await fetch('/api/batch', {
+   *         method: 'POST',
+   *         body: JSON.stringify(items),
+   *         signal
+   *       })
+   *       return response.json()
+   *     }
+   *   },
+   *   { maxSize: 10, wait: 100 }
+   * )
+   * ```
+   */
+  getAbortSignal(executeCount?: number): AbortSignal | null {
+    const count = executeCount ?? this.store.state.executeCount
+    const retryer = this.asyncRetryers.get(count)
+    return retryer?.getAbortSignal() ?? null
+  }
+
+  /**
+   * Aborts all ongoing executions with the internal abort controllers.
+   * Does NOT cancel any pending execution that have not started yet.
+   * Does NOT clear out the items.
+   */
+  abort = (): void => {
+    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.asyncRetryers.clear()
+    this.#setState({
+      isExecuting: false,
+    })
+  }
+
+  /**
+   * Cancels any pending execution that have not started yet.
+   * Does NOT abort any execution already in progress.
+   * Does NOT clear out the items.
+   */
+  cancel = (): void => {
+    this.#clearTimeout()
+    this.#setState({
+      isPending: false,
+    })
+  }
+
+  /**
    * Resets the async batcher state to its default values
    */
   reset = (): void => {
     this.#setState(getDefaultAsyncBatcherState<TValue>())
     this.options.onItemsChange?.(this)
+    this.asyncRetryers.forEach((retryer) => retryer.reset())
   }
 }
 
 /**
- * Creates an async batcher that processes items in batches
+ * Creates an async batcher that processes items in batches.
  *
- * Unlike the sync batcher, this async version:
- * - Handles promises and returns results from batch executions
- * - Provides error handling with configurable error behavior
- * - Tracks success, error, and settle counts separately
- * - Has state tracking for when batches are executing
+ * Async vs Sync Versions:
+ * The async version provides advanced features over the sync batch function:
+ * - Returns promises that can be awaited for batch results
+ * - Built-in retry support via AsyncRetryer integration
+ * - Abort support to cancel in-flight batch executions
+ * - Cancel support to prevent pending batches from starting
+ * - Comprehensive error handling with onError callbacks and throwOnError control
+ * - Detailed execution tracking (success/error/settle counts)
+ *
+ * The sync batch function is lighter weight and simpler when you don't need async features,
+ * return values, or execution control.
+ *
+ * What is Batching?
+ * Batching is a technique for grouping multiple operations together to be processed as a single unit.
+ *
+ * Configuration Options:
+ * - `maxSize`: Maximum number of items per batch (default: Infinity)
+ * - `wait`: Time to wait before processing batch (default: Infinity)
+ * - `getShouldExecute`: Custom logic to trigger batch processing
+ * - `asyncRetryerOptions`: Configure retry behavior for batch executions
+ * - `started`: Whether to start processing immediately (default: true)
  *
  * Error Handling:
  * - If an `onError` handler is provided, it will be called with the error, the batch of items that failed, and batcher instance
@@ -430,7 +555,6 @@ export class AsyncBatcher<TValue> {
  * - Use `onSuccess` callback to react to successful batch execution and implement custom logic
  * - Use `onError` callback to react to batch execution errors and implement custom error handling
  * - Use `onSettled` callback to react to batch execution completion (success or error) and implement custom logic
- * - Use `onExecute` callback to react to batch execution and implement custom logic
  * - Use `onItemsChange` callback to react to items being added or removed from the batcher
  * - The state includes total items processed, success/error counts, and execution status
  * - State can be accessed via the underlying AsyncBatcher instance's `store.state` property

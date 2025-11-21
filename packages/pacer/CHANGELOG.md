@@ -1,5 +1,45 @@
 # @tanstack/pacer
 
+## 0.16.3
+
+### Patch Changes
+
+- fix: ignore eventClient when no key is specified ([`9893832`](https://github.com/TanStack/pacer/commit/98938323f0bc1a6ab87bce72287c6d4a7264cb93))
+
+## 0.16.2
+
+### Patch Changes
+
+- fix devtools visibility issue ([#96](https://github.com/TanStack/pacer/pull/96))
+
+## 0.16.1
+
+### Patch Changes
+
+- Removed auto-uuid key generation for devtools. Now in order for pacer devtools to detect a util, you must define a key option ([#94](https://github.com/TanStack/pacer/pull/94))
+
+## 0.16.0
+
+### Minor Changes
+
+- - feat:Added `AsyncRetryer` class and `asyncRetry` function with exponential/linear/fixed backoff strategies, jitter support, timeout controls (`maxExecutionTime`, `maxTotalExecutionTime`), lifecycle callbacks (`onRetry`, `onSuccess`, `onError`, `onLastError`, `onSettled`, `onAbort`, `onExecutionTimeout`, `onTotalExecutionTimeout`), dynamic options, and built-in retry integration via `asyncRetryerOptions` for all async utilities (`AsyncBatcher`, `AsyncDebouncer`, `AsyncQueuer`, `AsyncRateLimiter`, `AsyncThrottler`) ([#54](https://github.com/TanStack/pacer/pull/54))
+  - feat: Added `getAbortSignal()` method to all async utilities (`AsyncRetryer`, `AsyncBatcher`, `AsyncDebouncer`, `AsyncQueuer`, `AsyncRateLimiter`, `AsyncThrottler`) to enable true cancellation of underlying async operations (like fetch requests) when `abort()` is called
+  - feat: Added `asyncBatcherOptions`, `asyncDebouncerOptions`, `asyncQueuerOptions`, `asyncRateLimiterOptions`, `asyncRetryerOptions`, `asyncThrottlerOptions`, `debouncerOptions`, `queuerOptions`, `rateLimiterOptions`, `throttlerOptions` utility functions for sharing common options between different pacer utilities
+  - fix: Fixed async-throtter trailing edge behavior when long executions were awaited.
+  - breaking: standardized `reset`, `cancel` and `abort` API behaviors with consistent naming and behavior across all async utilities. Canceling no longer aborts, new dedicated `abort` method is provided for aborting ongoing executions.
+
+## 0.15.4
+
+### Patch Changes
+
+- bump event client version ([#81](https://github.com/TanStack/pacer/pull/81))
+
+## 0.15.3
+
+### Patch Changes
+
+- update event client version to support react native ([#73](https://github.com/TanStack/pacer/pull/73))
+
 ## 0.15.2
 
 ### Patch Changes

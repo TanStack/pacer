@@ -1,5 +1,55 @@
 # @tanstack/solid-pacer
 
+## 0.15.3
+
+### Patch Changes
+
+- Updated dependencies [[`9893832`](https://github.com/TanStack/pacer/commit/98938323f0bc1a6ab87bce72287c6d4a7264cb93)]:
+  - @tanstack/pacer@0.16.3
+
+## 0.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`f841198`](https://github.com/TanStack/pacer/commit/f8411985a742eb556b26b2f00fad4058df3e2d07)]:
+  - @tanstack/pacer@0.16.2
+
+## 0.15.1
+
+### Patch Changes
+
+- Updated dependencies [[`64db505`](https://github.com/TanStack/pacer/commit/64db5057c65837836fed053708e7465987fbcb11)]:
+  - @tanstack/pacer@0.16.1
+
+## 0.15.0
+
+### Minor Changes
+
+- - feat:Added `AsyncRetryer` class and `asyncRetry` function with exponential/linear/fixed backoff strategies, jitter support, timeout controls (`maxExecutionTime`, `maxTotalExecutionTime`), lifecycle callbacks (`onRetry`, `onSuccess`, `onError`, `onLastError`, `onSettled`, `onAbort`, `onExecutionTimeout`, `onTotalExecutionTimeout`), dynamic options, and built-in retry integration via `asyncRetryerOptions` for all async utilities (`AsyncBatcher`, `AsyncDebouncer`, `AsyncQueuer`, `AsyncRateLimiter`, `AsyncThrottler`) ([#54](https://github.com/TanStack/pacer/pull/54))
+  - feat: Added `getAbortSignal()` method to all async utilities (`AsyncRetryer`, `AsyncBatcher`, `AsyncDebouncer`, `AsyncQueuer`, `AsyncRateLimiter`, `AsyncThrottler`) to enable true cancellation of underlying async operations (like fetch requests) when `abort()` is called
+  - feat: Added `asyncBatcherOptions`, `asyncDebouncerOptions`, `asyncQueuerOptions`, `asyncRateLimiterOptions`, `asyncRetryerOptions`, `asyncThrottlerOptions`, `debouncerOptions`, `queuerOptions`, `rateLimiterOptions`, `throttlerOptions` utility functions for sharing common options between different pacer utilities
+  - fix: Fixed async-throtter trailing edge behavior when long executions were awaited.
+  - breaking: standardized `reset`, `cancel` and `abort` API behaviors with consistent naming and behavior across all async utilities. Canceling no longer aborts, new dedicated `abort` method is provided for aborting ongoing executions.
+
+### Patch Changes
+
+- Updated dependencies [[`3124ea3`](https://github.com/TanStack/pacer/commit/3124ea34cab13dd69f286a6836c585aaf6f083c4)]:
+  - @tanstack/pacer@0.16.0
+
+## 0.14.4
+
+### Patch Changes
+
+- Updated dependencies [[`129de42`](https://github.com/TanStack/pacer/commit/129de427cb34bcf81d4f1a3c8e26637004aff6b0)]:
+  - @tanstack/pacer@0.15.4
+
+## 0.14.3
+
+### Patch Changes
+
+- Updated dependencies [[`8f5d2cb`](https://github.com/TanStack/pacer/commit/8f5d2cb68f0e05c952c1fa8272382d58a6914e28)]:
+  - @tanstack/pacer@0.15.3
+
 ## 0.14.2
 
 ### Patch Changes
