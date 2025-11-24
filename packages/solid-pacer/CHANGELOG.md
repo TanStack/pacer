@@ -1,5 +1,13 @@
 # @tanstack/solid-pacer
 
+## 0.16.0
+
+### Minor Changes
+
+- Add new Solid hooks for queue management and provider ([#105](https://github.com/TanStack/pacer/pull/105))
+  - Add `createQueuedSignal` - Solid equivalent of `useQueuedState` with signal-based queue item tracking
+  - Add `PacerProvider` - Context provider for setting default pacer options in Solid apps
+
 ## 0.15.3
 
 ### Patch Changes
