@@ -1,6 +1,7 @@
 import { Throttler } from '@tanstack/pacer/throttler'
 import { createEffect, onCleanup } from 'solid-js'
 import { useStore } from '@tanstack/solid-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -98,10 +99,15 @@ export interface SolidThrottler<TFn extends AnyFunction, TSelected = {}>
  */
 export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  initialOptions: ThrottlerOptions<TFn>,
+  options: ThrottlerOptions<TFn>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): SolidThrottler<TFn, TSelected> {
-  const asyncThrottler = new Throttler<TFn>(fn, initialOptions)
+  const mergedOptions = {
+    ...useDefaultPacerOptions().throttler,
+    ...options,
+  } as ThrottlerOptions<TFn>
+
+  const asyncThrottler = new Throttler<TFn>(fn, mergedOptions)
 
   const state = useStore(asyncThrottler.store, selector)
 

@@ -5,7 +5,7 @@ title: SolidAsyncDebouncer
 
 # Interface: SolidAsyncDebouncer\<TFn, TSelected\>
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L12)
+Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:12](https://github.com/TanS
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L21)
+Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L22)
 
 Reactive state that will be updated when the debouncer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L27)
+Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L28)
 
 #### Deprecated
 

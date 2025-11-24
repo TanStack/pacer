@@ -1,5 +1,6 @@
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { useStore } from '@tanstack/solid-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -119,11 +120,16 @@ export function createAsyncThrottler<
   TSelected = {},
 >(
   fn: TFn,
-  initialOptions: AsyncThrottlerOptions<TFn>,
+  options: AsyncThrottlerOptions<TFn>,
   selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncThrottler<TFn, TSelected> {
-  const asyncThrottler = new AsyncThrottler(fn, initialOptions)
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncThrottler,
+    ...options,
+  } as AsyncThrottlerOptions<TFn>
+
+  const asyncThrottler = new AsyncThrottler(fn, mergedOptions)
 
   const state = useStore(asyncThrottler.store, selector)
 

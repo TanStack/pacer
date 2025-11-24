@@ -1,5 +1,6 @@
 import { Queuer } from '@tanstack/pacer/queuer'
 import { useStore } from '@tanstack/solid-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
@@ -100,10 +101,15 @@ export interface SolidQueuer<TValue, TSelected = {}>
  */
 export function createQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
-  initialOptions: QueuerOptions<TValue> = {},
+  options: QueuerOptions<TValue> = {},
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): SolidQueuer<TValue, TSelected> {
-  const queuer = new Queuer(fn, initialOptions)
+  const mergedOptions = {
+    ...useDefaultPacerOptions().queuer,
+    ...options,
+  } as QueuerOptions<TValue>
+
+  const queuer = new Queuer(fn, mergedOptions)
 
   const state = useStore(queuer.store, selector)
 

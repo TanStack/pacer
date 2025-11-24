@@ -1,5 +1,6 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { useStore } from '@tanstack/solid-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -101,10 +102,15 @@ export interface SolidRateLimiter<TFn extends AnyFunction, TSelected = {}>
  */
 export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  initialOptions: RateLimiterOptions<TFn>,
+  options: RateLimiterOptions<TFn>,
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): SolidRateLimiter<TFn, TSelected> {
-  const rateLimiter = new RateLimiter<TFn>(fn, initialOptions)
+  const mergedOptions = {
+    ...useDefaultPacerOptions().rateLimiter,
+    ...options,
+  } as RateLimiterOptions<TFn>
+
+  const rateLimiter = new RateLimiter<TFn>(fn, mergedOptions)
 
   const state = useStore(rateLimiter.store, selector)
 

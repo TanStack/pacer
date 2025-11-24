@@ -1,5 +1,5 @@
 {
-  "name": "@tanstack/pacer-example-react-use-async-debounced-callback",
+  "name": "@tanstack/pacer-example-solid-create-queued-signal",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,15 +9,14 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/react-pacer": "^0.17.3",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "@tanstack/solid-devtools": "0.7.14",
+    "@tanstack/solid-pacer": "^0.15.3",
+    "@tanstack/solid-pacer-devtools": "0.4.0",
+    "solid-js": "^1.9.10"
   },
   "devDependencies": {
-    "@types/react": "^19.2.5",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "vite": "^7.2.2"
+    "vite": "^7.2.2",
+    "vite-plugin-solid": "^2.11.10"
   },
   "browserslist": {
     "production": [

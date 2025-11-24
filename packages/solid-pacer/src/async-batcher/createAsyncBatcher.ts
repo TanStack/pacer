@@ -1,5 +1,6 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { useStore } from '@tanstack/solid-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type {
@@ -127,11 +128,16 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}>
  */
 export function createAsyncBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => Promise<any>,
-  initialOptions: AsyncBatcherOptions<TValue> = {},
+  options: AsyncBatcherOptions<TValue> = {},
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncBatcher<TValue, TSelected> {
-  const asyncBatcher = new AsyncBatcher<TValue>(fn, initialOptions)
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncBatcher,
+    ...options,
+  } as AsyncBatcherOptions<TValue>
+
+  const asyncBatcher = new AsyncBatcher<TValue>(fn, mergedOptions)
 
   const state = useStore(asyncBatcher.store, selector)
 
