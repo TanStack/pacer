@@ -4,6 +4,7 @@
 import { tanstackConfig } from '@tanstack/config/eslint'
 import unusedImports from 'eslint-plugin-unused-imports'
 
+/** @type {import('eslint').Linter.Config[]} */
 export default [
   ...tanstackConfig,
   {
