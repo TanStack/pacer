@@ -1210,7 +1210,7 @@ importers:
   examples/solid/asyncBatch:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1226,7 +1226,7 @@ importers:
   examples/solid/asyncDebounce:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1242,7 +1242,7 @@ importers:
   examples/solid/asyncRateLimit:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1258,7 +1258,7 @@ importers:
   examples/solid/asyncThrottle:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1274,7 +1274,7 @@ importers:
   examples/solid/batch:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1290,7 +1290,7 @@ importers:
   examples/solid/createAsyncBatcher:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1306,7 +1306,7 @@ importers:
   examples/solid/createAsyncDebouncer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1322,7 +1322,7 @@ importers:
   examples/solid/createAsyncQueuer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1338,7 +1338,7 @@ importers:
   examples/solid/createAsyncRateLimiter:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1354,7 +1354,7 @@ importers:
   examples/solid/createAsyncThrottler:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1370,7 +1370,7 @@ importers:
   examples/solid/createBatcher:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1386,7 +1386,7 @@ importers:
   examples/solid/createDebouncedSignal:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1402,7 +1402,7 @@ importers:
   examples/solid/createDebouncedValue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1418,7 +1418,7 @@ importers:
   examples/solid/createDebouncer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1437,7 +1437,7 @@ importers:
         specifier: 0.7.14
         version: 0.7.14(csstype@3.1.3)(solid-js@1.9.10)
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
         specifier: 0.4.0
@@ -1459,7 +1459,7 @@ importers:
         specifier: 0.7.14
         version: 0.7.14(csstype@3.1.3)(solid-js@1.9.10)
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
         specifier: 0.4.0
@@ -1478,7 +1478,7 @@ importers:
   examples/solid/createRateLimitedSignal:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1494,7 +1494,7 @@ importers:
   examples/solid/createRateLimitedValue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1510,7 +1510,7 @@ importers:
   examples/solid/createRateLimiter:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1526,7 +1526,7 @@ importers:
   examples/solid/createThrottledSignal:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1542,7 +1542,7 @@ importers:
   examples/solid/createThrottledValue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1558,7 +1558,7 @@ importers:
   examples/solid/createThrottler:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1574,7 +1574,7 @@ importers:
   examples/solid/debounce:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1593,7 +1593,7 @@ importers:
         specifier: 0.7.14
         version: 0.7.14(csstype@3.1.3)(solid-js@1.9.10)
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
         specifier: 0.4.0
@@ -1612,7 +1612,7 @@ importers:
   examples/solid/rateLimit:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
@@ -1628,7 +1628,7 @@ importers:
   examples/solid/throttle:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.15.3
+        specifier: ^0.16.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.10
