@@ -46,13 +46,9 @@ import type {
  * the reactive system track the selected state values.
  *
  * Available rate limiter state properties:
- * - `callsInWindow`: Number of calls made in the current window
- * - `remainingInWindow`: Number of calls remaining in the current window
- * - `windowStart`: Unix timestamp when the current window started
- * - `nextWindowStart`: Unix timestamp when the next window will start
- * - `msUntilNextWindow`: Milliseconds until the next window starts
- * - `isAtLimit`: Whether the call limit for the current window has been reached
- * - `status`: Current status ('disabled' | 'idle' | 'at-limit')
+ * - `executionCount`: Number of function executions that have been completed
+ * - `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
+ * - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
  *
  * @example
  * ```tsx
@@ -63,21 +59,39 @@ import type {
  *   windowType: 'sliding'
  * });
  *
- * // Opt-in to reactive updates when limit state changes (optimized for UI feedback)
+ * // Opt-in to reactive updates when execution count changes (optimized for tracking successful updates)
  * const [rateLimitedValue, rateLimiter] = createRateLimitedValue(
  *   rawValue,
- *   { limit: 5, window: 60000 },
- *   (state) => ({ isAtLimit: state.isAtLimit, remainingInWindow: state.remainingInWindow })
+ *   { limit: 5, window: 60000, windowType: 'sliding' },
+ *   (state) => ({ executionCount: state.executionCount })
  * );
  *
- * // Use the rate-limited value
- * console.log(rateLimitedValue()); // Access the current rate-limited value
+ * // Opt-in to reactive updates when rejection count changes (optimized for tracking rate limit violations)
+ * const [rateLimitedValue, rateLimiter] = createRateLimitedValue(
+ *   rawValue,
+ *   { limit: 5, window: 60000, windowType: 'sliding' },
+ *   (state) => ({ rejectionCount: state.rejectionCount })
+ * );
  *
- * // Access rate limiter state via signals
- * console.log('Is at limit:', rateLimiter.state().isAtLimit);
+ * // Opt-in to reactive updates when execution times change (optimized for window calculations)
+ * const [rateLimitedValue, rateLimiter] = createRateLimitedValue(
+ *   rawValue,
+ *   { limit: 5, window: 60000, windowType: 'sliding' },
+ *   (state) => ({ executionTimes: state.executionTimes })
+ * );
  *
- * // Control the rate limiter
- * rateLimiter.reset(); // Reset the rate limit window
+ * // With rejection callback and fixed window
+ * const [rateLimitedValue, rateLimiter] = createRateLimitedValue(rawValue, {
+ *   limit: 3,
+ *   window: 5000,
+ *   windowType: 'fixed',
+ *   onReject: (rateLimiter) => {
+ *     console.log(`Update rejected. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
+ *   }
+ * });
+ *
+ * // Access the selected rate limiter state (will be empty object {} unless selector provided)
+ * const { executionCount, rejectionCount } = rateLimiter.state;
  * ```
  */
 export function createRateLimitedValue<TValue, TSelected = {}>(

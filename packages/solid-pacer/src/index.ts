@@ -1,6 +1,9 @@
 // re-export everything from the core pacer package
 export * from '@tanstack/pacer'
 
+// provider
+export * from './provider/PacerProvider'
+
 /**
  * Export every hook individually - DON'T export from barrel files
  */
@@ -30,6 +33,7 @@ export * from './debouncer/createDebouncer'
 
 // queuer
 export * from './queuer/createQueuer'
+export * from './queuer/createQueuedSignal'
 
 // rate-limiter
 export * from './rate-limiter/createRateLimiter'

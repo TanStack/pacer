@@ -5,7 +5,7 @@ title: SolidAsyncBatcher
 
 # Interface: SolidAsyncBatcher\<TValue, TSelected\>
 
-Defined in: [async-batcher/createAsyncBatcher.ts:10](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L10)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:10](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L10)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [async-batcher/createAsyncBatcher.ts:10](https://github.com/TanStack
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L17)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L17)
 
 Reactive state that will be updated when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L23)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L23)
 
 #### Deprecated
 

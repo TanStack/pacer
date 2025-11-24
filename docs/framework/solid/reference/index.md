@@ -7,6 +7,8 @@ title: "@tanstack/solid-pacer"
 
 ## Interfaces
 
+- [PacerProviderOptions](../interfaces/PacerProviderOptions.md)
+- [PacerProviderProps](../interfaces/PacerProviderProps.md)
 - [SolidAsyncBatcher](../interfaces/SolidAsyncBatcher.md)
 - [SolidAsyncDebouncer](../interfaces/SolidAsyncDebouncer.md)
 - [SolidAsyncQueuer](../interfaces/SolidAsyncQueuer.md)
@@ -29,6 +31,7 @@ title: "@tanstack/solid-pacer"
 - [createDebouncedSignal](../functions/createDebouncedSignal.md)
 - [createDebouncedValue](../functions/createDebouncedValue.md)
 - [createDebouncer](../functions/createDebouncer.md)
+- [createQueuedSignal](../functions/createQueuedSignal.md)
 - [createQueuer](../functions/createQueuer.md)
 - [createRateLimitedSignal](../functions/createRateLimitedSignal.md)
 - [createRateLimitedValue](../functions/createRateLimitedValue.md)
@@ -36,3 +39,6 @@ title: "@tanstack/solid-pacer"
 - [createThrottledSignal](../functions/createThrottledSignal.md)
 - [createThrottledValue](../functions/createThrottledValue.md)
 - [createThrottler](../functions/createThrottler.md)
+- [PacerProvider](../functions/PacerProvider.md)
+- [useDefaultPacerOptions](../functions/useDefaultPacerOptions.md)
+- [usePacerContext](../functions/usePacerContext.md)

@@ -12,7 +12,7 @@ function createThrottler<TFn, TSelected>(
 selector): SolidThrottler<TFn, TSelected>;
 ```
 
-Defined in: [throttler/createThrottler.ts:99](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L99)
+Defined in: [solid-pacer/src/throttler/createThrottler.ts:99](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L99)
 
 A low-level Solid hook that creates a `Throttler` instance that limits how often the provided function can execute.
 

@@ -540,6 +540,10 @@
             {
               "label": "createAsyncQueuer",
               "to": "framework/solid/reference/functions/createAsyncQueuer"
+            },
+            {
+              "label": "createQueuedSignal",
+              "to": "framework/solid/reference/functions/createQueuedSignal"
             }
           ]
         }
@@ -939,6 +943,10 @@
             {
               "label": "createAsyncQueuer",
               "to": "framework/solid/examples/createAsyncQueuer"
+            },
+            {
+              "label": "createQueuedSignal",
+              "to": "framework/solid/examples/createQueuedSignal"
             }
           ]
         }
