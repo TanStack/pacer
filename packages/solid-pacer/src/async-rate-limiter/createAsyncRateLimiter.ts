@@ -1,5 +1,6 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { useStore } from '@tanstack/solid-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -131,11 +132,16 @@ export function createAsyncRateLimiter<
   TSelected = {},
 >(
   fn: TFn,
-  initialOptions: AsyncRateLimiterOptions<TFn>,
+  options: AsyncRateLimiterOptions<TFn>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncRateLimiter<TFn, TSelected> {
-  const asyncRateLimiter = new AsyncRateLimiter<TFn>(fn, initialOptions)
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncRateLimiter,
+    ...options,
+  } as AsyncRateLimiterOptions<TFn>
+
+  const asyncRateLimiter = new AsyncRateLimiter<TFn>(fn, mergedOptions)
 
   const state = useStore(asyncRateLimiter.store, selector)
 

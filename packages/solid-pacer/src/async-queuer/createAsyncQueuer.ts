@@ -1,5 +1,6 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useStore } from '@tanstack/solid-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type {
@@ -119,11 +120,16 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}>
  */
 export function createAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
-  initialOptions: AsyncQueuerOptions<TValue> = {},
+  options: AsyncQueuerOptions<TValue> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncQueuer<TValue, TSelected> {
-  const asyncQueuer = new AsyncQueuer<TValue>(fn, initialOptions)
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncQueuer,
+    ...options,
+  } as AsyncQueuerOptions<TValue>
+
+  const asyncQueuer = new AsyncQueuer<TValue>(fn, mergedOptions)
 
   const state = useStore(asyncQueuer.store, selector)
 

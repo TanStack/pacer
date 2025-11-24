@@ -1,5 +1,6 @@
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/solid-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
@@ -99,11 +100,16 @@ export interface SolidBatcher<TValue, TSelected = {}>
  */
 export function createBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
-  initialOptions: BatcherOptions<TValue> = {},
+  options: BatcherOptions<TValue> = {},
   selector: (state: BatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidBatcher<TValue, TSelected> {
-  const batcher = new Batcher(fn, initialOptions)
+  const mergedOptions = {
+    ...useDefaultPacerOptions().batcher,
+    ...options,
+  } as BatcherOptions<TValue>
+
+  const batcher = new Batcher(fn, mergedOptions)
 
   const state = useStore(batcher.store, selector)
   return {

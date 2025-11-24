@@ -1,6 +1,7 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { useStore } from '@tanstack/solid-store'
 import { createEffect, onCleanup } from 'solid-js'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type {
@@ -120,11 +121,16 @@ export function createAsyncDebouncer<
   TSelected = {},
 >(
   fn: TFn,
-  initialOptions: AsyncDebouncerOptions<TFn>,
+  options: AsyncDebouncerOptions<TFn>,
   selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncDebouncer<TFn, TSelected> {
-  const asyncDebouncer = new AsyncDebouncer<TFn>(fn, initialOptions)
+  const mergedOptions = {
+    ...useDefaultPacerOptions().asyncDebouncer,
+    ...options,
+  } as AsyncDebouncerOptions<TFn>
+
+  const asyncDebouncer = new AsyncDebouncer<TFn>(fn, mergedOptions)
 
   const state = useStore(asyncDebouncer.store, selector)
 

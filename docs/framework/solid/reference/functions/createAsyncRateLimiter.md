@@ -8,11 +8,11 @@ title: createAsyncRateLimiter
 ```ts
 function createAsyncRateLimiter<TFn, TSelected>(
    fn, 
-   initialOptions, 
+   options, 
 selector): SolidAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:129](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L129)
+Defined in: [solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:130](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L130)
 
 A low-level Solid hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -87,7 +87,7 @@ Available state properties:
 
 `TFn`
 
-### initialOptions
+### options
 
 `AsyncRateLimiterOptions`\<`TFn`\>
 
