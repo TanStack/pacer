@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:11](https://github.c
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L18)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L20)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L24)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L26)
 
 #### Deprecated
 

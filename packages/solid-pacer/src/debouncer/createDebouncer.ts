@@ -10,8 +10,10 @@ import type {
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
 
-export interface SolidDebouncer<TFn extends AnyFunction, TSelected = {}>
-  extends Omit<Debouncer<TFn>, 'store'> {
+export interface SolidDebouncer<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends Omit<Debouncer<TFn>, 'store'> {
   /**
    * Reactive state that will be updated when the debouncer state changes
    *

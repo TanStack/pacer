@@ -8,8 +8,10 @@ import type {
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
 
-export interface ReactAsyncBatcher<TValue, TSelected = {}>
-  extends Omit<AsyncBatcher<TValue>, 'store'> {
+export interface ReactAsyncBatcher<TValue, TSelected = {}> extends Omit<
+  AsyncBatcher<TValue>,
+  'store'
+> {
   /**
    * Reactive state that will be updated and re-rendered when the batcher state changes
    *

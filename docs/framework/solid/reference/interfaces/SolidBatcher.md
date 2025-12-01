@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/batcher/createBatcher.ts:8](https://github.com/TanS
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:15](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L15)
+Defined in: [solid-pacer/src/batcher/createBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L17)
 
 Reactive state that will be updated when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L21)
+Defined in: [solid-pacer/src/batcher/createBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L23)
 
 #### Deprecated
 

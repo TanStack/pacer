@@ -8,8 +8,10 @@ import type {
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
-export interface ReactAsyncQueuer<TValue, TSelected = {}>
-  extends Omit<AsyncQueuer<TValue>, 'store'> {
+export interface ReactAsyncQueuer<TValue, TSelected = {}> extends Omit<
+  AsyncQueuer<TValue>,
+  'store'
+> {
   /**
    * Reactive state that will be updated and re-rendered when the queuer state changes
    *

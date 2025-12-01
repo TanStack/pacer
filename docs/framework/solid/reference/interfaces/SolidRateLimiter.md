@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:12](https://githu
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L19)
+Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L21)
 
 Reactive state that will be updated when the rate limiter state changes
 
@@ -44,7 +44,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:25](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L25)
+Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:27](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L27)
 
 #### Deprecated
 

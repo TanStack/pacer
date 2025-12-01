@@ -9,8 +9,10 @@ import type {
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
 
-export interface SolidRateLimiter<TFn extends AnyFunction, TSelected = {}>
-  extends Omit<RateLimiter<TFn>, 'store'> {
+export interface SolidRateLimiter<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends Omit<RateLimiter<TFn>, 'store'> {
   /**
    * Reactive state that will be updated when the rate limiter state changes
    *

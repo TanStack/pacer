@@ -5,8 +5,10 @@ import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
-export interface ReactBatcher<TValue, TSelected = {}>
-  extends Omit<Batcher<TValue>, 'store'> {
+export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
+  Batcher<TValue>,
+  'store'
+> {
   /**
    * Reactive state that will be updated and re-rendered when the batcher state changes
    *
