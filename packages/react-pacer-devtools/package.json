@@ -65,11 +65,11 @@
     "react-dom": ">=16.8"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.0.7",
+    "@tanstack/devtools-utils": "^0.0.8",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^2.3.7",
+    "@eslint-react/eslint-plugin": "^2.3.9",
     "@vitejs/plugin-react": "^5.1.1",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^7.0.1"
