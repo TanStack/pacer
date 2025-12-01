@@ -5,8 +5,10 @@ import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
-export interface SolidBatcher<TValue, TSelected = {}>
-  extends Omit<Batcher<TValue>, 'store'> {
+export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
+  Batcher<TValue>,
+  'store'
+> {
   /**
    * Reactive state that will be updated when the batcher state changes
    *

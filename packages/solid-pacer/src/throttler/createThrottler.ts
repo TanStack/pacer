@@ -10,8 +10,10 @@ import type {
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
 
-export interface SolidThrottler<TFn extends AnyFunction, TSelected = {}>
-  extends Omit<Throttler<TFn>, 'store'> {
+export interface SolidThrottler<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends Omit<Throttler<TFn>, 'store'> {
   /**
    * Reactive state that will be updated when the throttler state changes
    *

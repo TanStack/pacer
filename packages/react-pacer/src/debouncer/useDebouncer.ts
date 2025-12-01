@@ -9,8 +9,10 @@ import type {
 } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
-export interface ReactDebouncer<TFn extends AnyFunction, TSelected = {}>
-  extends Omit<Debouncer<TFn>, 'store'> {
+export interface ReactDebouncer<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends Omit<Debouncer<TFn>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the debouncer state changes
    *

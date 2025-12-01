@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:12](https://github.c
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L19)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L21)
 
 Reactive state that will be updated and re-rendered when the rate limiter state changes
 
@@ -44,7 +44,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:25](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L25)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:27](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L27)
 
 #### Deprecated
 

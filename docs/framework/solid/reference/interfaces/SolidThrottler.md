@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/throttler/createThrottler.ts:13](https://github.com
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/throttler/createThrottler.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L20)
+Defined in: [solid-pacer/src/throttler/createThrottler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L22)
 
 Reactive state that will be updated when the throttler state changes
 
@@ -44,7 +44,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: [solid-pacer/src/throttler/createThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L26)
+Defined in: [solid-pacer/src/throttler/createThrottler.ts:28](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L28)
 
 #### Deprecated
 

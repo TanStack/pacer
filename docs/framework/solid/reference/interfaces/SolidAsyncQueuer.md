@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:11](https://githu
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L18)
+Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L20)
 
 Reactive state that will be updated when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L24)
+Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L26)
 
 #### Deprecated
 

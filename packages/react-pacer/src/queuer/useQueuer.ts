@@ -5,8 +5,10 @@ import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
-export interface ReactQueuer<TValue, TSelected = {}>
-  extends Omit<Queuer<TValue>, 'store'> {
+export interface ReactQueuer<TValue, TSelected = {}> extends Omit<
+  Queuer<TValue>,
+  'store'
+> {
   /**
    * Reactive state that will be updated and re-rendered when the queuer state changes
    *
