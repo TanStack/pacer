@@ -9,8 +9,10 @@ import type {
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
 
-export interface ReactThrottler<TFn extends AnyFunction, TSelected = {}>
-  extends Omit<Throttler<TFn>, 'store'> {
+export interface ReactThrottler<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends Omit<Throttler<TFn>, 'store'> {
   /**
    * Reactive state that will be updated and re-rendered when the throttler state changes
    *

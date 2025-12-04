@@ -5,8 +5,10 @@ import type { Store } from '@tanstack/solid-store'
 import type { Accessor } from 'solid-js'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
-export interface SolidQueuer<TValue, TSelected = {}>
-  extends Omit<Queuer<TValue>, 'store'> {
+export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
+  Queuer<TValue>,
+  'store'
+> {
   /**
    * Reactive state that will be updated when the queuer state changes
    *

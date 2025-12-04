@@ -12,7 +12,7 @@ function createBatcher<TValue, TSelected>(
 selector): SolidBatcher<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:101](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L101)
+Defined in: [solid-pacer/src/batcher/createBatcher.ts:103](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L103)
 
 Creates a Solid-compatible Batcher instance for managing batches of items, exposing Solid signals for all stateful properties.
 

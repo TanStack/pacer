@@ -12,7 +12,7 @@ function useDebouncer<TFn, TSelected>(
 selector): ReactDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:103](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L103)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:105](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L105)
 
 A React hook that creates and manages a Debouncer instance.
 
