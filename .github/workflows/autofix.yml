@@ -24,7 +24,7 @@ jobs:
       - name: Fix formatting
         run: pnpm prettier:write
       - name: Regenerate docs
-        run: pnpm build:all && pnpm docs:generate
+        run: pnpm build:all && pnpm generate-docs
       - name: Apply fixes
         uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
         with:

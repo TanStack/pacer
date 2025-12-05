@@ -19,8 +19,8 @@
     "clean:all": "pnpm run clean && pnpm run clean:node_modules",
     "copy:readme": "cp README.md packages/pacer/README.md && cp README.md packages/pacer-devtools/README.md && cp README.md packages/pacer-lite/README.md && cp README.md packages/react-pacer/README.md && cp README.md packages/react-pacer-devtools/README.md && cp README.md packages/solid-pacer/README.md && cp README.md packages/solid-pacer-devtools/README.md",
     "dev": "pnpm run watch",
-    "docs:generate": "node scripts/generateDocs.js",
     "format": "pnpm run prettier:write",
+    "generate-docs": "node scripts/generate-docs.ts",
     "lint:fix": "nx affected --target=lint:fix --exclude=examples/**",
     "lint:fix:all": "pnpm run format && nx run-many --targets=lint --fix",
     "preinstall": "node -e \"if(process.env.CI == 'true') {console.log('Skipping preinstall...'); process.exit(1)}\" || npx -y only-allow pnpm",
@@ -29,20 +29,21 @@
     "size": "size-limit",
     "test": "pnpm run test:ci",
     "test:build": "nx affected --target=test:build --exclude=examples/**",
-    "test:ci": "nx run-many --targets=test:format,test:eslint,test:sherif,test:knip,test:lib,test:types,test:build,test:verify-links",
+    "test:ci": "nx run-many --targets=test:format,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,test:build,build",
     "test:eslint": "nx affected --target=test:eslint --exclude=examples/**",
+    "test:docs": "node scripts/verify-links.ts",
     "test:format": "pnpm run prettier --check",
     "test:knip": "knip",
     "test:lib": "nx affected --targets=test:lib --exclude=examples/**",
     "test:lib:dev": "pnpm test:lib && nx watch --all -- pnpm test:lib",
-    "test:pr": "nx affected --targets=test:format,test:eslint,test:sherif,test:knip,test:lib,test:types,test:build,build",
+    "test:pr": "nx affected --targets=test:format,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,test:build,build",
     "test:sherif": "sherif",
     "test:types": "nx affected --targets=test:types --exclude=examples/**",
-    "test:verify-links": "node scripts/verify-links.ts",
     "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all"
   },
   "nx": {
     "includedScripts": [
+      "test:docs",
       "test:knip",
       "test:sherif"
     ]

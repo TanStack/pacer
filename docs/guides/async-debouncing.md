@@ -130,7 +130,7 @@ const debouncedSave = asyncDebounce(
 )
 ```
 
-For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](./async-retrying.md).
+For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](../async-retrying.md).
 
 ### Abort Support
 
@@ -161,7 +161,7 @@ The abort functionality:
 - Does NOT cancel pending executions that haven't started yet (use `cancel()` for that)
 - Can be used alongside retry support
 
-For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
+For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](../async-retrying.md).
 
 ### Sharing Options Between Instances
 
