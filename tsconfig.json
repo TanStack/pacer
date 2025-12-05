@@ -24,10 +24,5 @@
     "target": "ES2020",
     "noErrorTruncation": true
   },
-  "include": [
-    "prettier.config.js",
-    "scripts",
-    "eslint.config.js",
-    "vitest.workspace.js"
-  ]
+  "include": ["scripts", "*.config.*", "vitest.workspace.js"]
 }

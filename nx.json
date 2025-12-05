@@ -1,11 +1,12 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "main",
+  "nxCloudId": "6932bc70f7d82526902f62fa",
+  "useInferencePlugins": false,
+  "parallel": 5,
   "tui": {
     "enabled": false
   },
-  "defaultBase": "main",
-  "useInferencePlugins": false,
-  "parallel": 5,
   "namedInputs": {
     "sharedGlobals": [
       "{workspaceRoot}/.nvmrc",
@@ -50,6 +51,10 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
       "outputs": ["{projectRoot}/build", "{projectRoot}/dist"]
+    },
+    "test:docs": {
+      "cache": true,
+      "inputs": ["{workspaceRoot}/docs/**/*"]
     },
     "test:knip": {
       "cache": true,

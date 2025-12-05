@@ -136,7 +136,7 @@ const rateLimitedApi = asyncRateLimit(
 )
 ```
 
-For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](./async-retrying.md).
+For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](../async-retrying.md).
 
 ### Abort Support
 
@@ -168,7 +168,7 @@ The abort functionality:
 - Does NOT clear execution times or reset the rate limiter
 - Can be used alongside retry support
 
-For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
+For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](../async-retrying.md).
 
 ### Sharing Options Between Instances
 
