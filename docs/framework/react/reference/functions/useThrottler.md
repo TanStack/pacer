@@ -70,7 +70,7 @@ Available state properties:
 
 ## Returns
 
-[`ReactThrottler`](../../interfaces/ReactThrottler.md)\<`TFn`, `TSelected`\>
+[`ReactThrottler`](../interfaces/ReactThrottler.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

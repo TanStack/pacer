@@ -86,7 +86,7 @@ Available state properties:
 
 ## Returns
 
-[`SolidAsyncThrottler`](../../interfaces/SolidAsyncThrottler.md)\<`TFn`, `TSelected`\>
+[`SolidAsyncThrottler`](../interfaces/SolidAsyncThrottler.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

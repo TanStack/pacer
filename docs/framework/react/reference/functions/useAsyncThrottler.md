@@ -84,7 +84,7 @@ Available state properties:
 
 ## Returns
 
-[`ReactAsyncThrottler`](../../interfaces/ReactAsyncThrottler.md)\<`TFn`, `TSelected`\>
+[`ReactAsyncThrottler`](../interfaces/ReactAsyncThrottler.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

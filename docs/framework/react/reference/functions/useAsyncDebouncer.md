@@ -86,7 +86,7 @@ Available state properties:
 
 ## Returns
 
-[`ReactAsyncDebouncer`](../../interfaces/ReactAsyncDebouncer.md)\<`TFn`, `TSelected`\>
+[`ReactAsyncDebouncer`](../interfaces/ReactAsyncDebouncer.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

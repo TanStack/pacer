@@ -79,7 +79,7 @@ Available queuer state properties:
 
 ## Returns
 
-\[`TValue`[], (`item`, `position?`, `runOnItemsChange?`) => `boolean`, [`ReactQueuer`](../../interfaces/ReactQueuer.md)\<`TValue`, `TSelected`\>\]
+\[`TValue`[], (`item`, `position?`, `runOnItemsChange?`) => `boolean`, [`ReactQueuer`](../interfaces/ReactQueuer.md)\<`TValue`, `TSelected`\>\]
 
 ## Example
 

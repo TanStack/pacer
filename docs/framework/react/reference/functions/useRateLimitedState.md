@@ -83,7 +83,7 @@ Available rate limiter state properties:
 
 ## Returns
 
-\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, [`ReactRateLimiter`](../../interfaces/ReactRateLimiter.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>\]
+\[`TValue`, `Dispatch`\<`SetStateAction`\<`TValue`\>\>, [`ReactRateLimiter`](../interfaces/ReactRateLimiter.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>\]
 
 ## Example
 

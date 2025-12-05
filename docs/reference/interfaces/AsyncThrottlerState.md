@@ -11,7 +11,7 @@ Defined in: [async-throttler.ts:8](https://github.com/TanStack/pacer/blob/main/p
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Properties
 

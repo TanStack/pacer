@@ -13,7 +13,7 @@ Options for configuring an async throttled function
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Properties
 
@@ -105,7 +105,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 ##### asyncThrottler
 
-[`AsyncThrottler`](../../classes/AsyncThrottler.md)\<`TFn`\>
+[`AsyncThrottler`](../classes/AsyncThrottler.md)\<`TFn`\>
 
 #### Returns
 
@@ -131,7 +131,7 @@ Optional function to call when the throttled function is executed
 
 ##### asyncThrottler
 
-[`AsyncThrottler`](../../classes/AsyncThrottler.md)\<`TFn`\>
+[`AsyncThrottler`](../classes/AsyncThrottler.md)\<`TFn`\>
 
 #### Returns
 
@@ -161,7 +161,7 @@ Optional function to call when the throttled function is executed
 
 ##### asyncThrottler
 
-[`AsyncThrottler`](../../classes/AsyncThrottler.md)\<`TFn`\>
+[`AsyncThrottler`](../classes/AsyncThrottler.md)\<`TFn`\>
 
 #### Returns
 

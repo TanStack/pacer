@@ -85,7 +85,7 @@ const data = await rateLimiter.maybeExecute('123');
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Constructors
 
@@ -105,7 +105,7 @@ Defined in: [async-rate-limiter.ts:254](https://github.com/TanStack/pacer/blob/m
 
 ##### initialOptions
 
-[`AsyncRateLimiterOptions`](../../interfaces/AsyncRateLimiterOptions.md)\<`TFn`\>
+[`AsyncRateLimiterOptions`](../interfaces/AsyncRateLimiterOptions.md)\<`TFn`\>
 
 #### Returns
 
@@ -333,7 +333,7 @@ Updates the async rate limiter options
 
 ##### newOptions
 
-`Partial`\<[`AsyncRateLimiterOptions`](../../interfaces/AsyncRateLimiterOptions.md)\<`TFn`\>\>
+`Partial`\<[`AsyncRateLimiterOptions`](../interfaces/AsyncRateLimiterOptions.md)\<`TFn`\>\>
 
 #### Returns
 

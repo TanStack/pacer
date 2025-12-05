@@ -47,7 +47,7 @@ throttler.maybeExecute('123'); // Throttled
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Constructors
 
@@ -67,7 +67,7 @@ Defined in: [throttler.ts:158](https://github.com/TanStack/pacer/blob/main/packa
 
 ##### initialOptions
 
-[`ThrottlerOptions`](../../interfaces/ThrottlerOptions.md)\<`TFn`\>
+[`ThrottlerOptions`](../interfaces/ThrottlerOptions.md)\<`TFn`\>
 
 #### Returns
 
@@ -225,7 +225,7 @@ Updates the throttler options
 
 ##### newOptions
 
-`Partial`\<[`ThrottlerOptions`](../../interfaces/ThrottlerOptions.md)\<`TFn`\>\>
+`Partial`\<[`ThrottlerOptions`](../interfaces/ThrottlerOptions.md)\<`TFn`\>\>
 
 #### Returns
 

@@ -94,7 +94,7 @@ Defined in: [async-queuer.ts:327](https://github.com/TanStack/pacer/blob/main/pa
 
 ##### initialOptions
 
-[`AsyncQueuerOptions`](../../interfaces/AsyncQueuerOptions.md)\<`TValue`\> = `{}`
+[`AsyncQueuerOptions`](../interfaces/AsyncQueuerOptions.md)\<`TValue`\> = `{}`
 
 #### Returns
 
@@ -201,7 +201,7 @@ Items can be inserted based on priority or at the front/back depending on config
 
 ##### position
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md) = `...`
+[`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
 ##### runOnItemsChange
 
@@ -251,7 +251,7 @@ Removes and returns the next item from the queue and executes the task function 
 
 ##### position?
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md)
+[`QueuePosition`](../type-aliases/QueuePosition.md)
 
 #### Returns
 
@@ -286,7 +286,7 @@ If no numberOfItems is provided, all items will be processed
 
 ##### position?
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md)
+[`QueuePosition`](../type-aliases/QueuePosition.md)
 
 #### Returns
 
@@ -373,7 +373,7 @@ Use for manual queue management. Normally, use execute() to process items.
 
 ##### position
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md) = `...`
+[`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
 #### Returns
 
@@ -436,7 +436,7 @@ Returns the next item in the queue without removing it.
 
 ##### position
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md) = `'front'`
+[`QueuePosition`](../type-aliases/QueuePosition.md) = `'front'`
 
 #### Returns
 
@@ -497,7 +497,7 @@ Updates the queuer options. New options are merged with existing options.
 
 ##### newOptions
 
-`Partial`\<[`AsyncQueuerOptions`](../../interfaces/AsyncQueuerOptions.md)\<`TValue`\>\>
+`Partial`\<[`AsyncQueuerOptions`](../interfaces/AsyncQueuerOptions.md)\<`TValue`\>\>
 
 #### Returns
 

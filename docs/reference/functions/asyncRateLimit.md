@@ -74,7 +74,7 @@ State Management:
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Parameters
 
@@ -84,7 +84,7 @@ State Management:
 
 ### initialOptions
 
-[`AsyncRateLimiterOptions`](../../interfaces/AsyncRateLimiterOptions.md)\<`TFn`\>
+[`AsyncRateLimiterOptions`](../interfaces/AsyncRateLimiterOptions.md)\<`TFn`\>
 
 ## Returns
 

@@ -29,7 +29,7 @@ This synchronous version is lighter weight and often all you need - upgrade to a
 
 ### options
 
-[`BatcherOptions`](../../interfaces/BatcherOptions.md)\<`TValue`\>
+[`BatcherOptions`](../interfaces/BatcherOptions.md)\<`TValue`\>
 
 ## Returns
 

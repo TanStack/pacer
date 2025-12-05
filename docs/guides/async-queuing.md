@@ -3,9 +3,9 @@ title: Asynchronous Queuing Guide
 id: async-queuing
 ---
 
-> **Note:** All core queuing concepts from the [Queuing Guide](../queuing) also apply to AsyncQueuer. AsyncQueuer extends these concepts with advanced features like concurrency (multiple tasks at once) and robust error handling. If you are new to queuing, start with the [Queuing Guide](../queuing) to learn about FIFO/LIFO, priority, expiration, rejection, and queue management. This guide focuses on what makes AsyncQueuer unique and powerful for asynchronous and concurrent task processing.
+> **Note:** All core queuing concepts from the [Queuing Guide](./queuing) also apply to AsyncQueuer. AsyncQueuer extends these concepts with advanced features like concurrency (multiple tasks at once) and robust error handling. If you are new to queuing, start with the [Queuing Guide](./queuing) to learn about FIFO/LIFO, priority, expiration, rejection, and queue management. This guide focuses on what makes AsyncQueuer unique and powerful for asynchronous and concurrent task processing.
 
-While the [Queuer](../queuing.md) provides synchronous queuing with timing controls, the `AsyncQueuer` is designed specifically for handling concurrent asynchronous operations. It implements what is traditionally known as a "task pool" or "worker pool" pattern, allowing multiple operations to be processed simultaneously while maintaining control over concurrency and timing. The implementation is mostly copied from [Swimmer](https://github.com/tannerlinsley/swimmer), Tanner's original task pooling utility that has been serving the JavaScript community since 2017.
+While the [Queuer](./queuing.md) provides synchronous queuing with timing controls, the `AsyncQueuer` is designed specifically for handling concurrent asynchronous operations. It implements what is traditionally known as a "task pool" or "worker pool" pattern, allowing multiple operations to be processed simultaneously while maintaining control over concurrency and timing. The implementation is mostly copied from [Swimmer](https://github.com/tannerlinsley/swimmer), Tanner's original task pooling utility that has been serving the JavaScript community since 2017.
 
 ## Async Queuing Concept
 
@@ -39,9 +39,9 @@ Async queuing is particularly effective when you need to:
 
 ### When Not to Use Async Queuing
 
-The AsyncQueuer is very versatile and can be used in many situations. If you don't need concurrent processing, use [Queuing](../queuing.md) instead. If you don't need all executions that are queued to go through, use [Throttling](../throttling.md) instead.
+The AsyncQueuer is very versatile and can be used in many situations. If you don't need concurrent processing, use [Queuing](./queuing.md) instead. If you don't need all executions that are queued to go through, use [Throttling](./throttling.md) instead.
 
-If you want to group operations together, use [Batching](../batching.md) instead.
+If you want to group operations together, use [Batching](./batching.md) instead.
 
 ## Async Queuing in TanStack Pacer
 
@@ -129,7 +129,7 @@ queue.addItem(2)
 
 ### Async-Specific Features
 
-All queue types and ordering strategies (FIFO, LIFO, priority, etc.) are supported—see the [Queuing Guide](../queuing) for details. AsyncQueuer adds:
+All queue types and ordering strategies (FIFO, LIFO, priority, etc.) are supported—see the [Queuing Guide](./queuing) for details. AsyncQueuer adds:
 - **Concurrency:** Multiple items can be processed at once, controlled by the `concurrency` option (can be dynamic).
 - **Async error handling:** Use `onError`, `onSuccess`, and `onSettled` for robust error and result tracking.
 - **Active and pending task tracking:** Use `peekActiveItems()` and `peekPendingItems()` to monitor queue state.
@@ -221,7 +221,7 @@ AsyncQueuer provides all the queue management and monitoring methods from the co
 - `queuer.store.state.size` — Current queue size
 - `start()`, `stop()`, `clear()`, `reset()`, `flush()`, etc.
 
-See the [Queuing Guide](../queuing) for more on queue management concepts.
+See the [Queuing Guide](./queuing) for more on queue management concepts.
 
 ### Task Expiration and Rejection
 
@@ -229,7 +229,7 @@ AsyncQueuer supports expiration and rejection just like the core queuer:
 - Use `expirationDuration`, `getIsExpired`, and `onExpire` for expiring tasks
 - Use `maxSize` and `onReject` for handling queue overflow
 
-See the [Queuing Guide](../queuing.md) for details and examples.
+See the [Queuing Guide](./queuing.md) for details and examples.
 
 ### Flushing Queue Items
 
@@ -280,7 +280,7 @@ const queuer = new AsyncQueuer<string>(
 )
 ```
 
-For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](../async-retrying.md).
+For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](./async-retrying.md).
 
 ### Abort Support
 
@@ -314,7 +314,7 @@ The abort functionality:
 - Works with concurrent executions - aborts all active tasks
 - Can be used alongside retry support
 
-For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](../async-retrying.md).
+For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
 ### Sharing Options Between Instances
 
@@ -429,4 +429,4 @@ Each framework adapter builds convenient hooks and functions around the async qu
 
 ---
 
-For core queuing concepts and synchronous queuing, see the [Queuing Guide](../queuing.md).
+For core queuing concepts and synchronous queuing, see the [Queuing Guide](./queuing.md).

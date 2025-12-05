@@ -76,7 +76,7 @@ State Management:
 
 ### initialOptions
 
-[`AsyncQueuerOptions`](../../interfaces/AsyncQueuerOptions.md)\<`TValue`\>
+[`AsyncQueuerOptions`](../interfaces/AsyncQueuerOptions.md)\<`TValue`\>
 
 ## Returns
 
@@ -98,7 +98,7 @@ Items can be inserted based on priority or at the front/back depending on config
 
 #### position
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md) = `...`
+[`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
 #### runOnItemsChange
 

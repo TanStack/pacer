@@ -88,7 +88,7 @@ Available state properties:
 
 ## Returns
 
-[`ReactAsyncRateLimiter`](../../interfaces/ReactAsyncRateLimiter.md)\<`TFn`, `TSelected`\>
+[`ReactAsyncRateLimiter`](../interfaces/ReactAsyncRateLimiter.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

@@ -82,7 +82,7 @@ Available state properties:
 
 ## Returns
 
-[`ReactQueuer`](../../interfaces/ReactQueuer.md)\<`TValue`, `TSelected`\>
+[`ReactQueuer`](../interfaces/ReactQueuer.md)\<`TValue`, `TSelected`\>
 
 ## Example
 

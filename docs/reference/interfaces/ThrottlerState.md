@@ -11,7 +11,7 @@ Defined in: [throttler.ts:6](https://github.com/TanStack/pacer/blob/main/package
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Properties
 

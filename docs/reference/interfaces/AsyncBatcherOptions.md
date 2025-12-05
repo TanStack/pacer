@@ -48,7 +48,7 @@ Return true to process the batch immediately
 
 ##### batcher
 
-[`AsyncBatcher`](../../classes/AsyncBatcher.md)\<`TValue`\>
+[`AsyncBatcher`](../classes/AsyncBatcher.md)\<`TValue`\>
 
 #### Returns
 
@@ -123,7 +123,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 ##### batcher
 
-[`AsyncBatcher`](../../classes/AsyncBatcher.md)\<`TValue`\>
+[`AsyncBatcher`](../classes/AsyncBatcher.md)\<`TValue`\>
 
 #### Returns
 
@@ -145,7 +145,7 @@ Callback fired after items are added to the batcher
 
 ##### batcher
 
-[`AsyncBatcher`](../../classes/AsyncBatcher.md)\<`TValue`\>
+[`AsyncBatcher`](../classes/AsyncBatcher.md)\<`TValue`\>
 
 #### Returns
 
@@ -171,7 +171,7 @@ Optional callback to call when a batch is settled (completed or failed)
 
 ##### batcher
 
-[`AsyncBatcher`](../../classes/AsyncBatcher.md)\<`TValue`\>
+[`AsyncBatcher`](../classes/AsyncBatcher.md)\<`TValue`\>
 
 #### Returns
 
@@ -201,7 +201,7 @@ Optional callback to call when a batch succeeds
 
 ##### batcher
 
-[`AsyncBatcher`](../../classes/AsyncBatcher.md)\<`TValue`\>
+[`AsyncBatcher`](../classes/AsyncBatcher.md)\<`TValue`\>
 
 #### Returns
 

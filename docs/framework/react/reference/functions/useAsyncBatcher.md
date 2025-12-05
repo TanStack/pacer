@@ -96,7 +96,7 @@ Available state properties:
 
 ## Returns
 
-[`ReactAsyncBatcher`](../../interfaces/ReactAsyncBatcher.md)\<`TValue`, `TSelected`\>
+[`ReactAsyncBatcher`](../interfaces/ReactAsyncBatcher.md)\<`TValue`, `TSelected`\>
 
 ## Example
 

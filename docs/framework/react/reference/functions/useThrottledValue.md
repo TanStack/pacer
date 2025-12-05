@@ -72,7 +72,7 @@ Available throttler state properties:
 
 ## Returns
 
-\[`TValue`, [`ReactThrottler`](../../interfaces/ReactThrottler.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>\]
+\[`TValue`, [`ReactThrottler`](../interfaces/ReactThrottler.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>\]
 
 ## Example
 

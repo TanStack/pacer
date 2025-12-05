@@ -88,7 +88,7 @@ Available async queuer state properties:
 
 ## Returns
 
-\[`TValue`[], [`ReactAsyncQueuer`](../../interfaces/ReactAsyncQueuer.md)\<`TValue`, `TSelected`\>\]
+\[`TValue`[], [`ReactAsyncQueuer`](../interfaces/ReactAsyncQueuer.md)\<`TValue`, `TSelected`\>\]
 
 ## Example
 

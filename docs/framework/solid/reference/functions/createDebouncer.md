@@ -73,7 +73,7 @@ Available state properties:
 
 ## Returns
 
-[`SolidDebouncer`](../../interfaces/SolidDebouncer.md)\<`TFn`, `TSelected`\>
+[`SolidDebouncer`](../interfaces/SolidDebouncer.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

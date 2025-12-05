@@ -61,7 +61,7 @@ State Management:
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Parameters
 
@@ -71,7 +71,7 @@ State Management:
 
 ### initialOptions
 
-[`AsyncThrottlerOptions`](../../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>
+[`AsyncThrottlerOptions`](../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>
 
 ## Returns
 

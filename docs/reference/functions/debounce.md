@@ -31,7 +31,7 @@ State Management:
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Parameters
 
@@ -41,7 +41,7 @@ State Management:
 
 ### initialOptions
 
-[`DebouncerOptions`](../../interfaces/DebouncerOptions.md)\<`TFn`\>
+[`DebouncerOptions`](../interfaces/DebouncerOptions.md)\<`TFn`\>
 
 ## Returns
 

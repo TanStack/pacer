@@ -17,11 +17,11 @@ Utility function for sharing common `ThrottlerOptions` options between different
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md) = [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md) = [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ### TOptions
 
-`TOptions` *extends* `Partial`\<[`ThrottlerOptions`](../../interfaces/ThrottlerOptions.md)\<`TFn`\>\> = `Partial`\<[`ThrottlerOptions`](../../interfaces/ThrottlerOptions.md)\<`TFn`\>\>
+`TOptions` *extends* `Partial`\<[`ThrottlerOptions`](../interfaces/ThrottlerOptions.md)\<`TFn`\>\> = `Partial`\<[`ThrottlerOptions`](../interfaces/ThrottlerOptions.md)\<`TFn`\>\>
 
 ## Parameters
 

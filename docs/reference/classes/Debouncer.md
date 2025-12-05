@@ -43,7 +43,7 @@ inputElement.addEventListener('input', () => {
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Constructors
 
@@ -63,7 +63,7 @@ Defined in: [debouncer.ts:150](https://github.com/TanStack/pacer/blob/main/packa
 
 ##### initialOptions
 
-[`DebouncerOptions`](../../interfaces/DebouncerOptions.md)\<`TFn`\>
+[`DebouncerOptions`](../interfaces/DebouncerOptions.md)\<`TFn`\>
 
 #### Returns
 
@@ -196,7 +196,7 @@ Updates the debouncer options
 
 ##### newOptions
 
-`Partial`\<[`DebouncerOptions`](../../interfaces/DebouncerOptions.md)\<`TFn`\>\>
+`Partial`\<[`DebouncerOptions`](../interfaces/DebouncerOptions.md)\<`TFn`\>\>
 
 #### Returns
 

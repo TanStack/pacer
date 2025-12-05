@@ -91,7 +91,7 @@ Available state properties:
 
 ## Returns
 
-[`ReactAsyncQueuer`](../../interfaces/ReactAsyncQueuer.md)\<`TValue`, `TSelected`\>
+[`ReactAsyncQueuer`](../interfaces/ReactAsyncQueuer.md)\<`TValue`, `TSelected`\>
 
 ## Example
 

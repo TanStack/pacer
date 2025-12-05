@@ -73,7 +73,7 @@ Available state properties:
 
 ## Returns
 
-[`ReactDebouncer`](../../interfaces/ReactDebouncer.md)\<`TFn`, `TSelected`\>
+[`ReactDebouncer`](../interfaces/ReactDebouncer.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

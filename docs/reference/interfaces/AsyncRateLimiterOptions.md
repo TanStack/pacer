@@ -13,7 +13,7 @@ Options for configuring an async rate-limited function
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Properties
 
@@ -105,7 +105,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 ##### rateLimiter
 
-[`AsyncRateLimiter`](../../classes/AsyncRateLimiter.md)\<`TFn`\>
+[`AsyncRateLimiter`](../classes/AsyncRateLimiter.md)\<`TFn`\>
 
 #### Returns
 
@@ -131,7 +131,7 @@ Optional callback function that is called when an execution is rejected due to r
 
 ##### rateLimiter
 
-[`AsyncRateLimiter`](../../classes/AsyncRateLimiter.md)\<`TFn`\>
+[`AsyncRateLimiter`](../classes/AsyncRateLimiter.md)\<`TFn`\>
 
 #### Returns
 
@@ -157,7 +157,7 @@ Optional function to call when the rate-limited function is executed
 
 ##### rateLimiter
 
-[`AsyncRateLimiter`](../../classes/AsyncRateLimiter.md)\<`TFn`\>
+[`AsyncRateLimiter`](../classes/AsyncRateLimiter.md)\<`TFn`\>
 
 #### Returns
 
@@ -187,7 +187,7 @@ Optional function to call when the rate-limited function is executed
 
 ##### rateLimiter
 
-[`AsyncRateLimiter`](../../classes/AsyncRateLimiter.md)\<`TFn`\>
+[`AsyncRateLimiter`](../classes/AsyncRateLimiter.md)\<`TFn`\>
 
 #### Returns
 

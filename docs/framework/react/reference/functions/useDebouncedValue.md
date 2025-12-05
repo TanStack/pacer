@@ -74,7 +74,7 @@ Available debouncer state properties:
 
 ## Returns
 
-\[`TValue`, [`ReactDebouncer`](../../interfaces/ReactDebouncer.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>\]
+\[`TValue`, [`ReactDebouncer`](../interfaces/ReactDebouncer.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>\]
 
 ## Example
 

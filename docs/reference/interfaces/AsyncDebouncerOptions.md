@@ -13,7 +13,7 @@ Options for configuring an async debounced function
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Properties
 
@@ -105,7 +105,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 ##### debouncer
 
-[`AsyncDebouncer`](../../classes/AsyncDebouncer.md)\<`TFn`\>
+[`AsyncDebouncer`](../classes/AsyncDebouncer.md)\<`TFn`\>
 
 #### Returns
 
@@ -131,7 +131,7 @@ Optional callback to call when the debounced function is executed
 
 ##### debouncer
 
-[`AsyncDebouncer`](../../classes/AsyncDebouncer.md)\<`TFn`\>
+[`AsyncDebouncer`](../classes/AsyncDebouncer.md)\<`TFn`\>
 
 #### Returns
 
@@ -161,7 +161,7 @@ Optional callback to call when the debounced function is executed
 
 ##### debouncer
 
-[`AsyncDebouncer`](../../classes/AsyncDebouncer.md)\<`TFn`\>
+[`AsyncDebouncer`](../classes/AsyncDebouncer.md)\<`TFn`\>
 
 #### Returns
 

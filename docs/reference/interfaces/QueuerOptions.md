@@ -185,7 +185,7 @@ Callback fired whenever an item is removed from the queuer
 
 ##### queuer
 
-[`Queuer`](../../classes/Queuer.md)\<`TValue`\>
+[`Queuer`](../classes/Queuer.md)\<`TValue`\>
 
 #### Returns
 
@@ -211,7 +211,7 @@ Callback fired whenever an item expires in the queuer
 
 ##### queuer
 
-[`Queuer`](../../classes/Queuer.md)\<`TValue`\>
+[`Queuer`](../classes/Queuer.md)\<`TValue`\>
 
 #### Returns
 
@@ -233,7 +233,7 @@ Callback fired whenever an item is added or removed from the queuer
 
 ##### queuer
 
-[`Queuer`](../../classes/Queuer.md)\<`TValue`\>
+[`Queuer`](../classes/Queuer.md)\<`TValue`\>
 
 #### Returns
 
@@ -259,7 +259,7 @@ Callback fired whenever an item is rejected from being added to the queuer
 
 ##### queuer
 
-[`Queuer`](../../classes/Queuer.md)\<`TValue`\>
+[`Queuer`](../classes/Queuer.md)\<`TValue`\>
 
 #### Returns
 

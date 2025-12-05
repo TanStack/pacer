@@ -65,7 +65,7 @@ const results = await asyncDebouncer.maybeExecute(inputElement.value);
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Constructors
 
@@ -85,7 +85,7 @@ Defined in: [async-debouncer.ts:230](https://github.com/TanStack/pacer/blob/main
 
 ##### initialOptions
 
-[`AsyncDebouncerOptions`](../../interfaces/AsyncDebouncerOptions.md)\<`TFn`\>
+[`AsyncDebouncerOptions`](../interfaces/AsyncDebouncerOptions.md)\<`TFn`\>
 
 #### Returns
 
@@ -300,7 +300,7 @@ Updates the async debouncer options
 
 ##### newOptions
 
-`Partial`\<[`AsyncDebouncerOptions`](../../interfaces/AsyncDebouncerOptions.md)\<`TFn`\>\>
+`Partial`\<[`AsyncDebouncerOptions`](../interfaces/AsyncDebouncerOptions.md)\<`TFn`\>\>
 
 #### Returns
 

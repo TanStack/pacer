@@ -36,7 +36,7 @@ Return true to process the batch immediately
 
 ##### batcher
 
-[`Batcher`](../../classes/Batcher.md)\<`TValue`\>
+[`Batcher`](../classes/Batcher.md)\<`TValue`\>
 
 #### Returns
 
@@ -105,7 +105,7 @@ Callback fired after a batch is processed
 
 ##### batcher
 
-[`Batcher`](../../classes/Batcher.md)\<`TValue`\>
+[`Batcher`](../classes/Batcher.md)\<`TValue`\>
 
 #### Returns
 
@@ -127,7 +127,7 @@ Callback fired after items are added to the batcher
 
 ##### batcher
 
-[`Batcher`](../../classes/Batcher.md)\<`TValue`\>
+[`Batcher`](../classes/Batcher.md)\<`TValue`\>
 
 #### Returns
 
