@@ -59,9 +59,9 @@
     "@faker-js/faker": "^10.1.0",
     "@size-limit/preset-small-lib": "^12.0.0",
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
-    "@tanstack/eslint-config": "0.3.3",
+    "@tanstack/eslint-config": "0.3.4",
     "@tanstack/typedoc-config": "0.3.2",
-    "@tanstack/vite-config": "0.4.1",
+    "@tanstack/vite-config": "0.4.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "^24.10.1",
     "eslint": "^9.39.1",
@@ -83,11 +83,12 @@
   },
   "overrides": {
     "@tanstack/pacer": "workspace:*",
-    "@tanstack/pacer-lite": "workspace:*",
-    "@tanstack/react-pacer": "workspace:*",
-    "@tanstack/solid-pacer": "workspace:*",
     "@tanstack/pacer-devtools": "workspace:*",
-    "@tanstack/solid-pacer-devtools": "workspace:*",
-    "@tanstack/react-pacer-devtools": "workspace:*"
+    "@tanstack/pacer-lite": "workspace:*",
+    "@tanstack/preact-pacer": "workspace:*",
+    "@tanstack/react-pacer": "workspace:*",
+    "@tanstack/react-pacer-devtools": "workspace:*",
+    "@tanstack/solid-pacer": "workspace:*",
+    "@tanstack/solid-pacer-devtools": "workspace:*"
   }
 }
