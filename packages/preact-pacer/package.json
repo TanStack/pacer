@@ -1,0 +1,205 @@
+{
+  "name": "@tanstack/preact-pacer",
+  "version": "0.17.3",
+  "description": "Utilities for debouncing and throttling functions in Preact.",
+  "author": "Tanner Linsley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TanStack/pacer.git",
+    "directory": "packages/preact-pacer"
+  },
+  "homepage": "https://tanstack.com/pacer",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/tannerlinsley"
+  },
+  "keywords": [
+    "preact",
+    "debounce",
+    "throttle",
+    "rate-limit",
+    "queue",
+    "async"
+  ],
+  "type": "module",
+  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./async-batcher": {
+      "import": {
+        "types": "./dist/esm/async-batcher/index.d.ts",
+        "default": "./dist/esm/async-batcher/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-batcher/index.d.cts",
+        "default": "./dist/cjs/async-batcher/index.cjs"
+      }
+    },
+    "./async-debouncer": {
+      "import": {
+        "types": "./dist/esm/async-debouncer/index.d.ts",
+        "default": "./dist/esm/async-debouncer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-debouncer/index.d.cts",
+        "default": "./dist/cjs/async-debouncer/index.cjs"
+      }
+    },
+    "./async-queuer": {
+      "import": {
+        "types": "./dist/esm/async-queuer/index.d.ts",
+        "default": "./dist/esm/async-queuer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-queuer/index.d.cts",
+        "default": "./dist/cjs/async-queuer/index.cjs"
+      }
+    },
+    "./async-rate-limiter": {
+      "import": {
+        "types": "./dist/esm/async-rate-limiter/index.d.ts",
+        "default": "./dist/esm/async-rate-limiter/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-rate-limiter/index.d.cts",
+        "default": "./dist/cjs/async-rate-limiter/index.cjs"
+      }
+    },
+    "./async-retryer": {
+      "import": {
+        "types": "./dist/esm/async-retryer/index.d.ts",
+        "default": "./dist/esm/async-retryer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-retryer/index.d.cts",
+        "default": "./dist/cjs/async-retryer/index.cjs"
+      }
+    },
+    "./async-throttler": {
+      "import": {
+        "types": "./dist/esm/async-throttler/index.d.ts",
+        "default": "./dist/esm/async-throttler/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/async-throttler/index.d.cts",
+        "default": "./dist/cjs/async-throttler/index.cjs"
+      }
+    },
+    "./batcher": {
+      "import": {
+        "types": "./dist/esm/batcher/index.d.ts",
+        "default": "./dist/esm/batcher/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/batcher/index.d.cts",
+        "default": "./dist/cjs/batcher/index.cjs"
+      }
+    },
+    "./debouncer": {
+      "import": {
+        "types": "./dist/esm/debouncer/index.d.ts",
+        "default": "./dist/esm/debouncer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/debouncer/index.d.cts",
+        "default": "./dist/cjs/debouncer/index.cjs"
+      }
+    },
+    "./queuer": {
+      "import": {
+        "types": "./dist/esm/queuer/index.d.ts",
+        "default": "./dist/esm/queuer/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/queuer/index.d.cts",
+        "default": "./dist/cjs/queuer/index.cjs"
+      }
+    },
+    "./rate-limiter": {
+      "import": {
+        "types": "./dist/esm/rate-limiter/index.d.ts",
+        "default": "./dist/esm/rate-limiter/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/rate-limiter/index.d.cts",
+        "default": "./dist/cjs/rate-limiter/index.cjs"
+      }
+    },
+    "./provider": {
+      "import": {
+        "types": "./dist/esm/provider/index.d.ts",
+        "default": "./dist/esm/provider/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/provider/index.d.cts",
+        "default": "./dist/cjs/provider/index.cjs"
+      }
+    },
+    "./throttler": {
+      "import": {
+        "types": "./dist/esm/throttler/index.d.ts",
+        "default": "./dist/esm/throttler/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/throttler/index.d.cts",
+        "default": "./dist/cjs/throttler/index.cjs"
+      }
+    },
+    "./types": {
+      "types": "./dist/esm/types/index.d.ts",
+      "default": "./dist/esm/types/index.js"
+    },
+    "./utils": {
+      "import": {
+        "types": "./dist/esm/utils/index.d.ts",
+        "default": "./dist/esm/utils/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/utils/index.d.cts",
+        "default": "./dist/cjs/utils/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "clean": "premove ./build ./dist",
+    "test:eslint": "eslint ./src",
+    "test:lib": "vitest --passWithNoTests",
+    "test:lib:dev": "pnpm test:lib --watch",
+    "test:types": "tsc",
+    "test:build": "publint --strict",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@tanstack/pacer": "workspace:*",
+    "@tanstack/preact-store": "^0.10.1"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.2",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "preact": "^10.28.0"
+  },
+  "peerDependencies": {
+    "preact": ">=10.0.0"
+  }
+}

@@ -44,6 +44,15 @@
               "to": "framework/solid/adapter"
             }
           ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "Preact Adapter",
+              "to": "framework/preact/adapter"
+            }
+          ]
         }
       ]
     },
@@ -124,6 +133,15 @@
             {
               "label": "Solid Hooks",
               "to": "framework/solid/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "Preact Hooks",
+              "to": "framework/preact/reference/index"
             }
           ]
         }
@@ -233,6 +251,43 @@
               "to": "framework/solid/reference/functions/createAsyncDebouncer"
             }
           ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "PreactDebouncer",
+              "to": "framework/preact/reference/interfaces/PreactDebouncer"
+            },
+            {
+              "label": "PreactAsyncDebouncer",
+              "to": "framework/preact/reference/interfaces/PreactAsyncDebouncer"
+            },
+            {
+              "label": "useDebouncer",
+              "to": "framework/preact/reference/functions/useDebouncer"
+            },
+            {
+              "label": "useDebouncedCallback",
+              "to": "framework/preact/reference/functions/useDebouncedCallback"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/preact/reference/functions/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/preact/reference/functions/useDebouncedValue"
+            },
+            {
+              "label": "useAsyncDebouncer",
+              "to": "framework/preact/reference/functions/useAsyncDebouncer"
+            },
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/preact/reference/functions/useAsyncDebouncedCallback"
+            }
+          ]
         }
       ]
     },
@@ -338,6 +393,43 @@
             {
               "label": "createAsyncThrottler",
               "to": "framework/solid/reference/functions/createAsyncThrottler"
+            }
+          ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "PreactThrottler",
+              "to": "framework/preact/reference/interfaces/PreactThrottler"
+            },
+            {
+              "label": "PreactAsyncThrottler",
+              "to": "framework/preact/reference/interfaces/PreactAsyncThrottler"
+            },
+            {
+              "label": "useThrottler",
+              "to": "framework/preact/reference/functions/useThrottler"
+            },
+            {
+              "label": "useThrottledCallback",
+              "to": "framework/preact/reference/functions/useThrottledCallback"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/preact/reference/functions/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/preact/reference/functions/useThrottledValue"
+            },
+            {
+              "label": "useAsyncThrottler",
+              "to": "framework/preact/reference/functions/useAsyncThrottler"
+            },
+            {
+              "label": "useAsyncThrottledCallback",
+              "to": "framework/preact/reference/functions/useAsyncThrottledCallback"
             }
           ]
         }
@@ -447,6 +539,43 @@
               "to": "framework/solid/reference/functions/createAsyncRateLimiter"
             }
           ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "PreactRateLimiter",
+              "to": "framework/preact/reference/interfaces/PreactRateLimiter"
+            },
+            {
+              "label": "PreactAsyncRateLimiter",
+              "to": "framework/preact/reference/interfaces/PreactAsyncRateLimiter"
+            },
+            {
+              "label": "useRateLimiter",
+              "to": "framework/preact/reference/functions/useRateLimiter"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/preact/reference/functions/useRateLimitedCallback"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/preact/reference/functions/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/preact/reference/functions/useRateLimitedValue"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/preact/reference/functions/useAsyncRateLimiter"
+            },
+            {
+              "label": "useAsyncRateLimitedCallback",
+              "to": "framework/preact/reference/functions/useAsyncRateLimitedCallback"
+            }
+          ]
         }
       ]
     },
@@ -546,6 +675,39 @@
               "to": "framework/solid/reference/functions/createQueuedSignal"
             }
           ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "PreactQueuer",
+              "to": "framework/preact/reference/interfaces/PreactQueuer"
+            },
+            {
+              "label": "PreactAsyncQueuer",
+              "to": "framework/preact/reference/interfaces/PreactAsyncQueuer"
+            },
+            {
+              "label": "useQueuer",
+              "to": "framework/preact/reference/functions/useQueuer"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/preact/reference/functions/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/preact/reference/functions/useQueuedValue"
+            },
+            {
+              "label": "useAsyncQueuer",
+              "to": "framework/preact/reference/functions/useAsyncQueuer"
+            },
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/preact/reference/functions/useAsyncQueuedState"
+            }
+          ]
         }
       ]
     },
@@ -637,6 +799,35 @@
               "to": "framework/solid/reference/functions/createAsyncBatcher"
             }
           ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "PreactBatcher",
+              "to": "framework/preact/reference/interfaces/PreactBatcher"
+            },
+            {
+              "label": "PreactAsyncBatcher",
+              "to": "framework/preact/reference/interfaces/PreactAsyncBatcher"
+            },
+            {
+              "label": "useBatcher",
+              "to": "framework/preact/reference/functions/useBatcher"
+            },
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/preact/reference/functions/useAsyncBatcher"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/preact/reference/functions/useBatchedCallback"
+            },
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/preact/reference/functions/useAsyncBatchedCallback"
+            }
+          ]
         }
       ]
     },
@@ -718,6 +909,43 @@
               "to": "framework/solid/examples/createAsyncDebouncer"
             }
           ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "debounce",
+              "to": "framework/preact/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/preact/examples/asyncDebounce"
+            },
+            {
+              "label": "useDebouncer",
+              "to": "framework/preact/examples/useDebouncer"
+            },
+            {
+              "label": "useDebouncedCallback",
+              "to": "framework/preact/examples/useDebouncedCallback"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/preact/examples/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/preact/examples/useDebouncedValue"
+            },
+            {
+              "label": "useAsyncDebouncer",
+              "to": "framework/preact/examples/useAsyncDebouncer"
+            },
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/preact/examples/useAsyncDebouncedCallback"
+            }
+          ]
         }
       ]
     },
@@ -793,6 +1021,43 @@
             {
               "label": "createAsyncThrottler",
               "to": "framework/solid/examples/createAsyncThrottler"
+            }
+          ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "throttle",
+              "to": "framework/preact/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/preact/examples/asyncThrottle"
+            },
+            {
+              "label": "useThrottler",
+              "to": "framework/preact/examples/useThrottler"
+            },
+            {
+              "label": "useThrottledCallback",
+              "to": "framework/preact/examples/useThrottledCallback"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/preact/examples/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/preact/examples/useThrottledValue"
+            },
+            {
+              "label": "useAsyncThrottler",
+              "to": "framework/preact/examples/useAsyncThrottler"
+            },
+            {
+              "label": "useAsyncThrottledCallback",
+              "to": "framework/preact/examples/useAsyncThrottledCallback"
             }
           ]
         }
@@ -880,6 +1145,47 @@
               "to": "framework/solid/examples/createAsyncRateLimiter"
             }
           ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "rateLimit",
+              "to": "framework/preact/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/preact/examples/asyncRateLimit"
+            },
+            {
+              "label": "useRateLimiter",
+              "to": "framework/preact/examples/useRateLimiter"
+            },
+            {
+              "label": "useRateLimiterWithPersister",
+              "to": "framework/preact/examples/useRateLimiterWithPersister"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/preact/examples/useRateLimitedCallback"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/preact/examples/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/preact/examples/useRateLimitedValue"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/preact/examples/useAsyncRateLimiter"
+            },
+            {
+              "label": "useAsyncRateLimiterWithPersister",
+              "to": "framework/preact/examples/useAsyncRateLimiterWithPersister"
+            }
+          ]
         }
       ]
     },
@@ -949,6 +1255,39 @@
               "to": "framework/solid/examples/createQueuedSignal"
             }
           ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "queue",
+              "to": "framework/preact/examples/queue"
+            },
+            {
+              "label": "useQueuer",
+              "to": "framework/preact/examples/useQueuer"
+            },
+            {
+              "label": "useQueuerWithPersister",
+              "to": "framework/preact/examples/useQueuerWithPersister"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/preact/examples/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/preact/examples/useQueuedValue"
+            },
+            {
+              "label": "useAsyncQueuer",
+              "to": "framework/preact/examples/useAsyncQueuer"
+            },
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/preact/examples/useAsyncQueuedState"
+            }
+          ]
         }
       ]
     },
@@ -1008,6 +1347,35 @@
             {
               "label": "createAsyncBatcher",
               "to": "framework/solid/examples/createAsyncBatcher"
+            }
+          ]
+        },
+        {
+          "label": "preact",
+          "children": [
+            {
+              "label": "batch",
+              "to": "framework/preact/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/preact/examples/asyncBatch"
+            },
+            {
+              "label": "useBatcher",
+              "to": "framework/preact/examples/useBatcher"
+            },
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/preact/examples/useAsyncBatcher"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/preact/examples/useBatchedCallback"
+            },
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/preact/examples/useAsyncBatchedCallback"
             }
           ]
         }

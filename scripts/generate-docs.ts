@@ -13,6 +13,18 @@ await generateReferenceDocs({
       outputDir: resolve(__dirname, '../docs/reference'),
     },
     {
+      name: 'preact-pacer',
+      entryPoints: [
+        resolve(__dirname, '../packages/preact-pacer/src/index.ts'),
+      ],
+      tsconfig: resolve(
+        __dirname,
+        '../packages/preact-pacer/tsconfig.docs.json',
+      ),
+      outputDir: resolve(__dirname, '../docs/framework/preact/reference'),
+      exclude: ['packages/pacer/**/*'],
+    },
+    {
       name: 'react-pacer',
       entryPoints: [resolve(__dirname, '../packages/react-pacer/src/index.ts')],
       tsconfig: resolve(
