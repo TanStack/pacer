@@ -5,7 +5,7 @@ title: PreactThrottler
 
 # Interface: PreactThrottler\<TFn, TSelected\>
 
-Defined in: preact-pacer/src/throttler/useThrottler.ts:12
+Defined in: [preact-pacer/src/throttler/useThrottler.ts:12](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L12)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: preact-pacer/src/throttler/useThrottler.ts:12
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: preact-pacer/src/throttler/useThrottler.ts:21
+Defined in: [preact-pacer/src/throttler/useThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L21)
 
 Reactive state that will be updated and re-rendered when the throttler state changes
 
@@ -44,7 +44,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: preact-pacer/src/throttler/useThrottler.ts:27
+Defined in: [preact-pacer/src/throttler/useThrottler.ts:27](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L27)
 
 #### Deprecated
 

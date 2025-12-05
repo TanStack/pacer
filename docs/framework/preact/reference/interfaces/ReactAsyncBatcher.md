@@ -5,7 +5,7 @@ title: ReactAsyncBatcher
 
 # Interface: ReactAsyncBatcher\<TValue, TSelected\>
 
-Defined in: preact-pacer/src/async-batcher/useAsyncBatcher.ts:11
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:11](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L11)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: preact-pacer/src/async-batcher/useAsyncBatcher.ts:11
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: preact-pacer/src/async-batcher/useAsyncBatcher.ts:20
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L20)
 
 Reactive state that will be updated and re-rendered when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: preact-pacer/src/async-batcher/useAsyncBatcher.ts:26
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L26)
 
 #### Deprecated
 

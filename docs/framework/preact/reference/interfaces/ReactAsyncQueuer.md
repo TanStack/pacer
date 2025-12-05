@@ -5,7 +5,7 @@ title: ReactAsyncQueuer
 
 # Interface: ReactAsyncQueuer\<TValue, TSelected\>
 
-Defined in: preact-pacer/src/async-queuer/useAsyncQueuer.ts:11
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L11)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: preact-pacer/src/async-queuer/useAsyncQueuer.ts:11
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: preact-pacer/src/async-queuer/useAsyncQueuer.ts:20
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L20)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: preact-pacer/src/async-queuer/useAsyncQueuer.ts:26
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L26)
 
 #### Deprecated
 

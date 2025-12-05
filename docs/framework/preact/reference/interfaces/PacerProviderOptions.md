@@ -5,7 +5,7 @@ title: PacerProviderOptions
 
 # Interface: PacerProviderOptions
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:19
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:19](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L19)
 
 ## Properties
 
@@ -15,7 +15,7 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:19
 optional asyncBatcher: Partial<AsyncBatcherOptions<any>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:20
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:20](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L20)
 
 ***
 
@@ -25,7 +25,7 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:20
 optional asyncDebouncer: Partial<AsyncDebouncerOptions<AnyAsyncFunction>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:21
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:21](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L21)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:21
 optional asyncQueuer: Partial<AsyncQueuerOptions<any>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:22
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:22](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L22)
 
 ***
 
@@ -45,7 +45,7 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:22
 optional asyncRateLimiter: Partial<AsyncRateLimiterOptions<AnyAsyncFunction>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:23
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:23](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L23)
 
 ***
 
@@ -55,7 +55,7 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:23
 optional asyncThrottler: Partial<AsyncThrottlerOptions<AnyAsyncFunction>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:24
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L24)
 
 ***
 
@@ -65,7 +65,7 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:24
 optional batcher: Partial<BatcherOptions<any>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:25
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:25](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L25)
 
 ***
 
@@ -75,7 +75,7 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:25
 optional debouncer: Partial<DebouncerOptions<AnyFunction>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:26
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:26](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L26)
 
 ***
 
@@ -85,7 +85,7 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:26
 optional queuer: Partial<QueuerOptions<any>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:27
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:27](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L27)
 
 ***
 
@@ -95,7 +95,7 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:27
 optional rateLimiter: Partial<RateLimiterOptions<AnyFunction>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:28
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:28](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L28)
 
 ***
 
@@ -105,4 +105,4 @@ Defined in: preact-pacer/src/provider/PacerProvider.tsx:28
 optional throttler: Partial<ThrottlerOptions<AnyFunction>>;
 ```
 
-Defined in: preact-pacer/src/provider/PacerProvider.tsx:29
+Defined in: [preact-pacer/src/provider/PacerProvider.tsx:29](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L29)
