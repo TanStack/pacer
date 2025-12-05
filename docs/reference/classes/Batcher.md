@@ -70,7 +70,7 @@ Defined in: [batcher.ts:153](https://github.com/TanStack/pacer/blob/main/package
 
 ##### initialOptions
 
-[`BatcherOptions`](../../interfaces/BatcherOptions.md)\<`TValue`\>
+[`BatcherOptions`](../interfaces/BatcherOptions.md)\<`TValue`\>
 
 #### Returns
 
@@ -246,7 +246,7 @@ Updates the batcher options
 
 ##### newOptions
 
-`Partial`\<[`BatcherOptions`](../../interfaces/BatcherOptions.md)\<`TValue`\>\>
+`Partial`\<[`BatcherOptions`](../interfaces/BatcherOptions.md)\<`TValue`\>\>
 
 #### Returns
 

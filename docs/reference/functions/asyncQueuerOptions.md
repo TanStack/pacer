@@ -21,7 +21,7 @@ Utility function for sharing common `AsyncQueuerOptions` options between differe
 
 ### TOptions
 
-`TOptions` *extends* `Partial`\<[`AsyncQueuerOptions`](../../interfaces/AsyncQueuerOptions.md)\<`TValue`\>\> = `Partial`\<[`AsyncQueuerOptions`](../../interfaces/AsyncQueuerOptions.md)\<`TValue`\>\>
+`TOptions` *extends* `Partial`\<[`AsyncQueuerOptions`](../interfaces/AsyncQueuerOptions.md)\<`TValue`\>\> = `Partial`\<[`AsyncQueuerOptions`](../interfaces/AsyncQueuerOptions.md)\<`TValue`\>\>
 
 ## Parameters
 

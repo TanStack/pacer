@@ -5,17 +5,17 @@ id: which-pacer-utility-should-i-choose
 
 TanStack Pacer provides 5 core utilities for controlling function execution frequency. Here is a one-sentence summary of each utility:
 
- - [**Debouncer**](../debouncing.md) - Executes a function after a period of inactivity. (Rejects other calls during activity)
- - [**Throttler**](../throttling.md) - Executes a function at regular intervals. (Rejects all but one call during each interval)
- - [**Rate Limiter**](../rate-limiting.md) - Prevents a function from being called too frequently. (Rejects calls when the limit is reached)
- - [**Queuer**](../queuing.md) - Processes all calls to a function in order. (Only rejects calls if the queue is full)
- - [**Batcher**](../batching.md) - Groups multiple function calls into a single batch. (No rejections)
+ - [**Debouncer**](./debouncing.md) - Executes a function after a period of inactivity. (Rejects other calls during activity)
+ - [**Throttler**](./throttling.md) - Executes a function at regular intervals. (Rejects all but one call during each interval)
+ - [**Rate Limiter**](./rate-limiting.md) - Prevents a function from being called too frequently. (Rejects calls when the limit is reached)
+ - [**Queuer**](./queuing.md) - Processes all calls to a function in order. (Only rejects calls if the queue is full)
+ - [**Batcher**](./batching.md) - Groups multiple function calls into a single batch. (No rejections)
 
 After choosing which strategy fits your needs, there are additional variations and decisions to consider. This guide provides quick clarifications on the most common decisions you'll need to make.
 
 ## Synchronous vs Asynchronous
 
-You may see both a [Debouncer](../debouncing.md) and an [Async Debouncer](../async-debouncing.md) when first exploring TanStack Pacer. Which one should you use?
+You may see both a [Debouncer](./debouncing.md) and an [Async Debouncer](./async-debouncing.md) when first exploring TanStack Pacer. Which one should you use?
 
 Each utility comes in both synchronous and asynchronous versions. For most use cases, the simpler synchronous version is sufficient. However, if you need these utilities to handle async logic for you, the complexity of each utility increases significantly. The bundle size of the asynchronous versions of each utility is often more than double the size of the synchronous versions. If you actually need and use some of these additional APIs, the extra complexity is worth it, but don't choose the asynchronous version of a utility unless you actually end up using these features.
 
@@ -49,10 +49,10 @@ We will use the Debouncer utility as the main example, but the same principles a
 
 If you are using a framework adapter like React, you will see that there are lots of examples with multiple hook variations. For example, for debouncing you will see:
 
-- [`useDebouncer`](../../framework/react/examples/useDebouncer)
-- [`useDebouncedCallback`](../../framework/react/examples/useDebouncedCallback)
-- [`useDebouncedState`](../../framework/react/examples/useDebouncedState)
-- [`useDebouncedValue`](../../framework/react/examples/useDebouncedValue)
+- [`useDebouncer`](../framework/react/examples/useDebouncer)
+- [`useDebouncedCallback`](../framework/react/examples/useDebouncedCallback)
+- [`useDebouncedState`](../framework/react/examples/useDebouncedState)
+- [`useDebouncedValue`](../framework/react/examples/useDebouncedValue)
 
 You will also probably see that you can use the core `Debouncer` class directly or the core `debounce` function directly without using a hook.
 
@@ -62,7 +62,7 @@ The answer is: It Depends! 🤷‍♂️
 
 But also: It doesn't really matter too much. They all do essentially the same thing. It's mostly a matter of personal preference and how you want to interact with the utility. Under the hood, a `Debouncer` instance is created no matter what you choose.
 
-You can start with the [`useDebouncer`](../../framework/react/examples/useDebouncer) hook if you don't know which one to use. All of the others wrap the `useDebouncer` hook with different argument and return value signatures.
+You can start with the [`useDebouncer`](../framework/react/examples/useDebouncer) hook if you don't know which one to use. All of the others wrap the `useDebouncer` hook with different argument and return value signatures.
 
 ```tsx
 import { useDebouncer } from '@tanstack/react-pacer'
@@ -75,7 +75,7 @@ debouncer.cancel() // use Debouncer APIs with full access to the debouncer insta
 debouncer.flush()
 ```
 
-If you only need to create a debounced function and don't need access to the debouncer instance to call methods or use its extra features, use the [`useDebouncedCallback`](../../framework/react/examples/useDebouncedCallback) hook. The `*Callback` versions of the hooks are actually most similar to calling the core functions directly (like `debounce`) but with the memoization setup taken care of for you.
+If you only need to create a debounced function and don't need access to the debouncer instance to call methods or use its extra features, use the [`useDebouncedCallback`](../framework/react/examples/useDebouncedCallback) hook. The `*Callback` versions of the hooks are actually most similar to calling the core functions directly (like `debounce`) but with the memoization setup taken care of for you.
 
 ```tsx
 import { useDebouncedCallback } from '@tanstack/react-pacer'
@@ -86,7 +86,7 @@ debouncedFn(args) // execute the debounced function
 //...
 ```
 
-The other variations are convenience hooks that wrap the `useDebouncer` hook with different argument and return value signatures. For example, the [`useDebouncedState`](../../framework/react/examples/useDebouncedState) hook is useful when you need to debounce a state value.
+The other variations are convenience hooks that wrap the `useDebouncer` hook with different argument and return value signatures. For example, the [`useDebouncedState`](../framework/react/examples/useDebouncedState) hook is useful when you need to debounce a state value.
 
 ```tsx
 import { useDebouncedState } from '@tanstack/react-pacer'
@@ -97,7 +97,7 @@ setDebouncedValue(newValue) // set the debounced value (will be debounced state 
 //...
 ```
 
-The [`useDebouncedValue`](../../framework/react/examples/useDebouncedValue) hook is useful when your debounced value is derived from an instant value that changes frequently.
+The [`useDebouncedValue`](../framework/react/examples/useDebouncedValue) hook is useful when your debounced value is derived from an instant value that changes frequently.
 
 ```tsx
 import { useDebouncedValue } from '@tanstack/react-pacer'

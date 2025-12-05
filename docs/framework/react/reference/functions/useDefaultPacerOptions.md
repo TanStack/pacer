@@ -13,4 +13,4 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:66](https://github.com/T
 
 ## Returns
 
-[`PacerProviderOptions`](../../interfaces/PacerProviderOptions.md)
+[`PacerProviderOptions`](../interfaces/PacerProviderOptions.md)

@@ -104,7 +104,7 @@ Defined in: [queuer.ts:277](https://github.com/TanStack/pacer/blob/main/packages
 
 ##### initialOptions
 
-[`QueuerOptions`](../../interfaces/QueuerOptions.md)\<`TValue`\> = `{}`
+[`QueuerOptions`](../interfaces/QueuerOptions.md)\<`TValue`\> = `{}`
 
 #### Returns
 
@@ -192,7 +192,7 @@ queuer.addItem('task2', 'front');
 
 ##### position
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md) = `...`
+[`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
 ##### runOnItemsChange
 
@@ -241,7 +241,7 @@ queuer.execute('back');
 
 ##### position?
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md)
+[`QueuePosition`](../type-aliases/QueuePosition.md)
 
 #### Returns
 
@@ -268,7 +268,7 @@ If no numberOfItems is provided, all items will be processed
 
 ##### position?
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md)
+[`QueuePosition`](../type-aliases/QueuePosition.md)
 
 #### Returns
 
@@ -322,7 +322,7 @@ queuer.getNextItem('back');
 
 ##### position
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md) = `...`
+[`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
 #### Returns
 
@@ -366,7 +366,7 @@ queuer.peekNextItem('back'); // back
 
 ##### position
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md) = `'front'`
+[`QueuePosition`](../type-aliases/QueuePosition.md) = `'front'`
 
 #### Returns
 
@@ -404,7 +404,7 @@ Updates the queuer options. New options are merged with existing options.
 
 ##### newOptions
 
-`Partial`\<[`QueuerOptions`](../../interfaces/QueuerOptions.md)\<`TValue`\>\>
+`Partial`\<[`QueuerOptions`](../interfaces/QueuerOptions.md)\<`TValue`\>\>
 
 #### Returns
 

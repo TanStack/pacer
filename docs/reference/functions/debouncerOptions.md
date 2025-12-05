@@ -17,11 +17,11 @@ Utility function for sharing common `DebouncerOptions` options between different
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md) = [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md) = [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ### TOptions
 
-`TOptions` *extends* `Partial`\<[`DebouncerOptions`](../../interfaces/DebouncerOptions.md)\<`TFn`\>\> = `Partial`\<[`DebouncerOptions`](../../interfaces/DebouncerOptions.md)\<`TFn`\>\>
+`TOptions` *extends* `Partial`\<[`DebouncerOptions`](../interfaces/DebouncerOptions.md)\<`TFn`\>\> = `Partial`\<[`DebouncerOptions`](../interfaces/DebouncerOptions.md)\<`TFn`\>\>
 
 ## Parameters
 

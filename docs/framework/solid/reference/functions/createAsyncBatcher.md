@@ -142,4 +142,4 @@ const { items, isExecuting } = asyncBatcher.state();
 
 ## Returns
 
-[`SolidAsyncBatcher`](../../interfaces/SolidAsyncBatcher.md)\<`TValue`, `TSelected`\>
+[`SolidAsyncBatcher`](../interfaces/SolidAsyncBatcher.md)\<`TValue`, `TSelected`\>

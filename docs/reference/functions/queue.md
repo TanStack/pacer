@@ -59,7 +59,7 @@ processPriority(3); // Processed before 1
 
 ### initialOptions
 
-[`QueuerOptions`](../../interfaces/QueuerOptions.md)\<`TValue`\>
+[`QueuerOptions`](../interfaces/QueuerOptions.md)\<`TValue`\>
 
 ## Returns
 
@@ -89,7 +89,7 @@ queuer.addItem('task2', 'front');
 
 #### position
 
-[`QueuePosition`](../../type-aliases/QueuePosition.md) = `...`
+[`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
 #### runOnItemsChange
 

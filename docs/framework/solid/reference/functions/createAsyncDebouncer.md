@@ -86,7 +86,7 @@ Available state properties:
 
 ## Returns
 
-[`SolidAsyncDebouncer`](../../interfaces/SolidAsyncDebouncer.md)\<`TFn`, `TSelected`\>
+[`SolidAsyncDebouncer`](../interfaces/SolidAsyncDebouncer.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

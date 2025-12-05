@@ -37,7 +37,7 @@ State Management:
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Parameters
 
@@ -47,7 +47,7 @@ State Management:
 
 ### initialOptions
 
-[`ThrottlerOptions`](../../interfaces/ThrottlerOptions.md)\<`TFn`\>
+[`ThrottlerOptions`](../interfaces/ThrottlerOptions.md)\<`TFn`\>
 
 ## Returns
 

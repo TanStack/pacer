@@ -60,7 +60,7 @@ State Management:
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Parameters
 
@@ -70,7 +70,7 @@ State Management:
 
 ### initialOptions
 
-[`AsyncDebouncerOptions`](../../interfaces/AsyncDebouncerOptions.md)\<`TFn`\>
+[`AsyncDebouncerOptions`](../interfaces/AsyncDebouncerOptions.md)\<`TFn`\>
 
 ## Returns
 

@@ -67,7 +67,7 @@ State Management:
 
 ### options
 
-[`AsyncBatcherOptions`](../../interfaces/AsyncBatcherOptions.md)\<`TValue`\>
+[`AsyncBatcherOptions`](../interfaces/AsyncBatcherOptions.md)\<`TValue`\>
 
 ## Returns
 

@@ -88,7 +88,7 @@ Available rate limiter state properties:
 
 ## Returns
 
-\[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, [`SolidRateLimiter`](../../interfaces/SolidRateLimiter.md)\<`Setter`\<`TValue`\>, `TSelected`\>\]
+\[`Accessor`\<`TValue`\>, `Setter`\<`TValue`\>, [`SolidRateLimiter`](../interfaces/SolidRateLimiter.md)\<`Setter`\<`TValue`\>, `TSelected`\>\]
 
 ## Example
 

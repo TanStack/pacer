@@ -69,7 +69,7 @@ const result = await throttler.maybeExecute(inputElement.value);
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Constructors
 
@@ -89,7 +89,7 @@ Defined in: [async-throttler.ts:242](https://github.com/TanStack/pacer/blob/main
 
 ##### initialOptions
 
-[`AsyncThrottlerOptions`](../../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>
+[`AsyncThrottlerOptions`](../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>
 
 #### Returns
 
@@ -314,7 +314,7 @@ Updates the async throttler options
 
 ##### newOptions
 
-`Partial`\<[`AsyncThrottlerOptions`](../../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>\>
+`Partial`\<[`AsyncThrottlerOptions`](../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>\>
 
 #### Returns
 

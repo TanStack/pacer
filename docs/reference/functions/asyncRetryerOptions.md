@@ -17,11 +17,11 @@ Utility function for sharing common `AsyncRetryerOptions` options between differ
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md) = [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md) = [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ### TOptions
 
-`TOptions` *extends* `Partial`\<[`AsyncRetryerOptions`](../../interfaces/AsyncRetryerOptions.md)\<`TFn`\>\> = `Partial`\<[`AsyncRetryerOptions`](../../interfaces/AsyncRetryerOptions.md)\<`TFn`\>\>
+`TOptions` *extends* `Partial`\<[`AsyncRetryerOptions`](../interfaces/AsyncRetryerOptions.md)\<`TFn`\>\> = `Partial`\<[`AsyncRetryerOptions`](../interfaces/AsyncRetryerOptions.md)\<`TFn`\>\>
 
 ## Parameters
 

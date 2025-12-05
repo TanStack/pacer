@@ -42,7 +42,7 @@ need to enforce a hard limit on the number of executions within a time period.
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Parameters
 
@@ -52,7 +52,7 @@ need to enforce a hard limit on the number of executions within a time period.
 
 ### initialOptions
 
-[`RateLimiterOptions`](../../interfaces/RateLimiterOptions.md)\<`TFn`\>
+[`RateLimiterOptions`](../interfaces/RateLimiterOptions.md)\<`TFn`\>
 
 ## Returns
 

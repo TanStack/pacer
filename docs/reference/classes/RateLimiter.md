@@ -56,7 +56,7 @@ rateLimiter.maybeExecute('123');
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Constructors
 
@@ -76,7 +76,7 @@ Defined in: [rate-limiter.ts:163](https://github.com/TanStack/pacer/blob/main/pa
 
 ##### initialOptions
 
-[`RateLimiterOptions`](../../interfaces/RateLimiterOptions.md)\<`TFn`\>
+[`RateLimiterOptions`](../interfaces/RateLimiterOptions.md)\<`TFn`\>
 
 #### Returns
 
@@ -221,7 +221,7 @@ Updates the rate limiter options
 
 ##### newOptions
 
-`Partial`\<[`RateLimiterOptions`](../../interfaces/RateLimiterOptions.md)\<`TFn`\>\>
+`Partial`\<[`RateLimiterOptions`](../interfaces/RateLimiterOptions.md)\<`TFn`\>\>
 
 #### Returns
 

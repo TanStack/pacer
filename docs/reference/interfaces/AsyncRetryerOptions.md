@@ -11,7 +11,7 @@ Defined in: [async-retryer.ts:60](https://github.com/TanStack/pacer/blob/main/pa
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Properties
 
@@ -187,7 +187,7 @@ Callback invoked when the execution is aborted (manually or due to timeouts)
 
 ##### retryer
 
-[`AsyncRetryer`](../../classes/AsyncRetryer.md)\<`TFn`\>
+[`AsyncRetryer`](../classes/AsyncRetryer.md)\<`TFn`\>
 
 #### Returns
 
@@ -217,7 +217,7 @@ Callback invoked when any error occurs during execution (including retries)
 
 ##### retryer
 
-[`AsyncRetryer`](../../classes/AsyncRetryer.md)\<`TFn`\>
+[`AsyncRetryer`](../classes/AsyncRetryer.md)\<`TFn`\>
 
 #### Returns
 
@@ -239,7 +239,7 @@ Callback invoked when a single execution attempt times out (maxExecutionTime exc
 
 ##### retryer
 
-[`AsyncRetryer`](../../classes/AsyncRetryer.md)\<`TFn`\>
+[`AsyncRetryer`](../classes/AsyncRetryer.md)\<`TFn`\>
 
 #### Returns
 
@@ -265,7 +265,7 @@ Callback invoked when the final error occurs after all retries are exhausted
 
 ##### retryer
 
-[`AsyncRetryer`](../../classes/AsyncRetryer.md)\<`TFn`\>
+[`AsyncRetryer`](../classes/AsyncRetryer.md)\<`TFn`\>
 
 #### Returns
 
@@ -295,7 +295,7 @@ Callback invoked before each retry attempt
 
 ##### retryer
 
-[`AsyncRetryer`](../../classes/AsyncRetryer.md)\<`TFn`\>
+[`AsyncRetryer`](../classes/AsyncRetryer.md)\<`TFn`\>
 
 #### Returns
 
@@ -321,7 +321,7 @@ Callback invoked after execution completes (success or failure) of each attempt
 
 ##### retryer
 
-[`AsyncRetryer`](../../classes/AsyncRetryer.md)\<`TFn`\>
+[`AsyncRetryer`](../classes/AsyncRetryer.md)\<`TFn`\>
 
 #### Returns
 
@@ -351,7 +351,7 @@ Callback invoked when execution succeeds
 
 ##### retryer
 
-[`AsyncRetryer`](../../classes/AsyncRetryer.md)\<`TFn`\>
+[`AsyncRetryer`](../classes/AsyncRetryer.md)\<`TFn`\>
 
 #### Returns
 
@@ -373,7 +373,7 @@ Callback invoked when the total execution time times out (maxTotalExecutionTime 
 
 ##### retryer
 
-[`AsyncRetryer`](../../classes/AsyncRetryer.md)\<`TFn`\>
+[`AsyncRetryer`](../classes/AsyncRetryer.md)\<`TFn`\>
 
 #### Returns
 

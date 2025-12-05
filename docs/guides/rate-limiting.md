@@ -58,16 +58,16 @@ Rate Limiting is particularly important when dealing with front-end operations t
 
 ### When Not to Use Rate Limiting
 
-Rate Limiting is the most naive approach to controlling function execution frequency. It is the least flexible and most restrictive of the three techniques. Consider using [throttling](../throttling.md) or [debouncing](../debouncing.md) instead for more spaced out executions.
+Rate Limiting is the most naive approach to controlling function execution frequency. It is the least flexible and most restrictive of the three techniques. Consider using [throttling](./throttling.md) or [debouncing](./debouncing.md) instead for more spaced out executions.
 
 > [!TIP]
-> You most likely don't want to use "rate limiting" for most use cases. Consider using [throttling](../throttling.md) or [debouncing](../debouncing.md) instead. 
+> You most likely don't want to use "rate limiting" for most use cases. Consider using [throttling](./throttling.md) or [debouncing](./debouncing.md) instead. 
 
-Rate Limiting's "lossy" nature also means that some executions will be rejected and lost. This can be a problem if you need to ensure that all executions are always successful. Consider using [queuing](../queuing.md) if you need to ensure that all executions are queued up to be executed, but with a throttled delay to slow down the rate of execution.
+Rate Limiting's "lossy" nature also means that some executions will be rejected and lost. This can be a problem if you need to ensure that all executions are always successful. Consider using [queuing](./queuing.md) if you need to ensure that all executions are queued up to be executed, but with a throttled delay to slow down the rate of execution.
 
 ## Rate Limiting in TanStack Pacer
 
-TanStack Pacer provides both synchronous and asynchronous rate limiting. This guide covers the synchronous `RateLimiter` class and `rateLimit` function. For async rate limiting, see the [Async Rate Limiting Guide](../async-rate-limiting.md).
+TanStack Pacer provides both synchronous and asynchronous rate limiting. This guide covers the synchronous `RateLimiter` class and `rateLimit` function. For async rate limiting, see the [Async Rate Limiting Guide](./async-rate-limiting.md).
 
 ### Basic Usage with `rateLimit`
 
@@ -333,4 +333,4 @@ Each framework adapter builds convenient hooks and functions around the rate lim
 
 ---
 
-For asynchronous rate limiting (e.g., API calls, async operations), see the [Async Rate Limiting Guide](../async-rate-limiting.md).
+For asynchronous rate limiting (e.g., API calls, async operations), see the [Async Rate Limiting Guide](./async-rate-limiting.md).

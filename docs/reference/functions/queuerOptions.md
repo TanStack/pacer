@@ -21,7 +21,7 @@ Utility function for sharing common `QueuerOptions` options between different `Q
 
 ### TOptions
 
-`TOptions` *extends* `Partial`\<[`QueuerOptions`](../../interfaces/QueuerOptions.md)\<`TValue`\>\> = `Partial`\<[`QueuerOptions`](../../interfaces/QueuerOptions.md)\<`TValue`\>\>
+`TOptions` *extends* `Partial`\<[`QueuerOptions`](../interfaces/QueuerOptions.md)\<`TValue`\>\> = `Partial`\<[`QueuerOptions`](../interfaces/QueuerOptions.md)\<`TValue`\>\>
 
 ## Parameters
 

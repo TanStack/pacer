@@ -3,7 +3,7 @@ title: Async Throttling Guide
 id: async-throttling
 ---
 
-All core concepts from the [Throttling Guide](../throttling.md) apply to async throttling as well.
+All core concepts from the [Throttling Guide](./throttling.md) apply to async throttling as well.
 
 ## When to Use Async Throttling
 
@@ -131,7 +131,7 @@ const throttledSave = asyncThrottle(
 )
 ```
 
-For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](../async-retrying.md).
+For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](./async-retrying.md).
 
 ### Abort Support
 
@@ -166,7 +166,7 @@ The abort functionality:
 - Does NOT cancel pending executions that haven't started yet (use `cancel()` for that)
 - Can be used alongside retry support
 
-For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](../async-retrying.md).
+For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
 ### Sharing Options Between Instances
 
@@ -295,4 +295,4 @@ Each framework adapter provides hooks that build on top of the core async thrott
 
 ---
 
-For core throttling concepts and synchronous throttling, see the [Throttling Guide](../throttling.md). 
+For core throttling concepts and synchronous throttling, see the [Throttling Guide](./throttling.md). 

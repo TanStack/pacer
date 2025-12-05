@@ -84,7 +84,7 @@ The hook returns an object containing:
 
 ## Returns
 
-[`ReactRateLimiter`](../../interfaces/ReactRateLimiter.md)\<`TFn`, `TSelected`\>
+[`ReactRateLimiter`](../interfaces/ReactRateLimiter.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

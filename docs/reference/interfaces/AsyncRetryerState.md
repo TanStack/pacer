@@ -11,7 +11,7 @@ Defined in: [async-retryer.ts:6](https://github.com/TanStack/pacer/blob/main/pac
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Properties
 

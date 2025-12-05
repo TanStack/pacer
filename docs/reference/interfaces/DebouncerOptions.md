@@ -13,7 +13,7 @@ Options for configuring a debounced function
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Properties
 
@@ -88,7 +88,7 @@ Callback function that is called after the function is executed
 
 ##### debouncer
 
-[`Debouncer`](../../classes/Debouncer.md)\<`TFn`\>
+[`Debouncer`](../classes/Debouncer.md)\<`TFn`\>
 
 #### Returns
 

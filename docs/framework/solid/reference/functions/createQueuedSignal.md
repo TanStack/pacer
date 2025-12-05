@@ -79,7 +79,7 @@ Available queuer state properties:
 
 ## Returns
 
-\[() => `TValue`[], (`item`, `position?`, `runOnItemsChange?`) => `boolean`, [`SolidQueuer`](../../interfaces/SolidQueuer.md)\<`TValue`, `TSelected`\>\]
+\[() => `TValue`[], (`item`, `position?`, `runOnItemsChange?`) => `boolean`, [`SolidQueuer`](../interfaces/SolidQueuer.md)\<`TValue`, `TSelected`\>\]
 
 ## Example
 

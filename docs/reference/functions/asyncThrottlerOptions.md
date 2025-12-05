@@ -17,11 +17,11 @@ Utility function for sharing common `AsyncThrottlerOptions` options between diff
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md) = [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md) = [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ### TOptions
 
-`TOptions` *extends* `Partial`\<[`AsyncThrottlerOptions`](../../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>\> = `Partial`\<[`AsyncThrottlerOptions`](../../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>\>
+`TOptions` *extends* `Partial`\<[`AsyncThrottlerOptions`](../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>\> = `Partial`\<[`AsyncThrottlerOptions`](../interfaces/AsyncThrottlerOptions.md)\<`TFn`\>\>
 
 ## Parameters
 

@@ -101,7 +101,7 @@ const result = await retryer.execute('/api/data')
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 The async function type to be retried.
 
@@ -127,7 +127,7 @@ The async function to retry
 
 ##### initialOptions
 
-[`AsyncRetryerOptions`](../../interfaces/AsyncRetryerOptions.md)\<`TFn`\> = `{}`
+[`AsyncRetryerOptions`](../interfaces/AsyncRetryerOptions.md)\<`TFn`\> = `{}`
 
 Configuration options for the retryer
 
@@ -306,7 +306,7 @@ Updates the retryer options
 
 ##### newOptions
 
-`Partial`\<[`AsyncRetryerOptions`](../../interfaces/AsyncRetryerOptions.md)\<`TFn`\>\>
+`Partial`\<[`AsyncRetryerOptions`](../interfaces/AsyncRetryerOptions.md)\<`TFn`\>\>
 
 Partial options to merge with existing options
 

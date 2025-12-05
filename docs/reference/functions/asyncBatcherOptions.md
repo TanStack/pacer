@@ -21,7 +21,7 @@ Utility function for sharing common `AsyncBatcherOptions` options between differ
 
 ### TOptions
 
-`TOptions` *extends* `Partial`\<[`AsyncBatcherOptions`](../../interfaces/AsyncBatcherOptions.md)\<`TValue`\>\> = `Partial`\<[`AsyncBatcherOptions`](../../interfaces/AsyncBatcherOptions.md)\<`TValue`\>\>
+`TOptions` *extends* `Partial`\<[`AsyncBatcherOptions`](../interfaces/AsyncBatcherOptions.md)\<`TValue`\>\> = `Partial`\<[`AsyncBatcherOptions`](../interfaces/AsyncBatcherOptions.md)\<`TValue`\>\>
 
 ## Parameters
 

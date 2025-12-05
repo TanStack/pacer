@@ -15,7 +15,7 @@ Defined in: [utils.ts:3](https://github.com/TanStack/pacer/blob/main/packages/pa
 
 ### T
 
-`T` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`T` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Parameters
 

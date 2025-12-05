@@ -97,7 +97,7 @@ Available state properties:
 
 ## Returns
 
-[`SolidAsyncRateLimiter`](../../interfaces/SolidAsyncRateLimiter.md)\<`TFn`, `TSelected`\>
+[`SolidAsyncRateLimiter`](../interfaces/SolidAsyncRateLimiter.md)\<`TFn`, `TSelected`\>
 
 ## Example
 

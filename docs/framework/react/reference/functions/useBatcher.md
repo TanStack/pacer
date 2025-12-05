@@ -73,7 +73,7 @@ Available state properties:
 
 ## Returns
 
-[`ReactBatcher`](../../interfaces/ReactBatcher.md)\<`TValue`, `TSelected`\>
+[`ReactBatcher`](../interfaces/ReactBatcher.md)\<`TValue`, `TSelected`\>
 
 ## Example
 

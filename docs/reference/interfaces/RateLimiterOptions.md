@@ -13,7 +13,7 @@ Options for configuring a rate-limited function
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Properties
 
@@ -86,7 +86,7 @@ Callback function that is called after the function is executed
 
 ##### rateLimiter
 
-[`RateLimiter`](../../classes/RateLimiter.md)\<`TFn`\>
+[`RateLimiter`](../classes/RateLimiter.md)\<`TFn`\>
 
 #### Returns
 
@@ -108,7 +108,7 @@ Optional callback function that is called when an execution is rejected due to r
 
 ##### rateLimiter
 
-[`RateLimiter`](../../classes/RateLimiter.md)\<`TFn`\>
+[`RateLimiter`](../classes/RateLimiter.md)\<`TFn`\>
 
 #### Returns
 

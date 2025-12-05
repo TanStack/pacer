@@ -219,7 +219,7 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 ##### queuer
 
-[`AsyncQueuer`](../../classes/AsyncQueuer.md)\<`TValue`\>
+[`AsyncQueuer`](../classes/AsyncQueuer.md)\<`TValue`\>
 
 #### Returns
 
@@ -245,7 +245,7 @@ Callback fired whenever an item expires in the queuer
 
 ##### queuer
 
-[`AsyncQueuer`](../../classes/AsyncQueuer.md)\<`TValue`\>
+[`AsyncQueuer`](../classes/AsyncQueuer.md)\<`TValue`\>
 
 #### Returns
 
@@ -267,7 +267,7 @@ Callback fired whenever an item is added or removed from the queuer
 
 ##### queuer
 
-[`AsyncQueuer`](../../classes/AsyncQueuer.md)\<`TValue`\>
+[`AsyncQueuer`](../classes/AsyncQueuer.md)\<`TValue`\>
 
 #### Returns
 
@@ -293,7 +293,7 @@ Callback fired whenever an item is rejected from being added to the queuer
 
 ##### queuer
 
-[`AsyncQueuer`](../../classes/AsyncQueuer.md)\<`TValue`\>
+[`AsyncQueuer`](../classes/AsyncQueuer.md)\<`TValue`\>
 
 #### Returns
 
@@ -319,7 +319,7 @@ Optional callback to call when a task is settled
 
 ##### queuer
 
-[`AsyncQueuer`](../../classes/AsyncQueuer.md)\<`TValue`\>
+[`AsyncQueuer`](../classes/AsyncQueuer.md)\<`TValue`\>
 
 #### Returns
 
@@ -349,7 +349,7 @@ Optional callback to call when a task succeeds
 
 ##### queuer
 
-[`AsyncQueuer`](../../classes/AsyncQueuer.md)\<`TValue`\>
+[`AsyncQueuer`](../classes/AsyncQueuer.md)\<`TValue`\>
 
 #### Returns
 

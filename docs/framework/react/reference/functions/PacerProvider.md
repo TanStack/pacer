@@ -15,7 +15,7 @@ Defined in: [react-pacer/src/provider/PacerProvider.tsx:44](https://github.com/T
 
 ### \_\_namedParameters
 
-[`PacerProviderProps`](../../interfaces/PacerProviderProps.md)
+[`PacerProviderProps`](../interfaces/PacerProviderProps.md)
 
 ## Returns
 

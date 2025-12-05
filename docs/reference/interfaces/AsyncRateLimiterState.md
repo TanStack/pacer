@@ -11,7 +11,7 @@ Defined in: [async-rate-limiter.ts:8](https://github.com/TanStack/pacer/blob/mai
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Properties
 

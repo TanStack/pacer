@@ -5,15 +5,15 @@ id: quick-start
 
 ## Installation
 
-Don't have TanStack Pacer installed yet? See the [Installation](../installation.md) page for instructions.
+Don't have TanStack Pacer installed yet? See the [Installation](./installation.md) page for instructions.
 
 ## Understanding Which Pacer Utility to Use
 
-Still learning what TanStack Pacer is and how it can help your application? See the [Which Pacer Utility Should I Choose?](../guides/which-pacer-utility-should-i-choose.md) guide for help choosing which Pacer utility to use. The TanStack Pacer libraries have 5 core utilities, but also quite a few flexible ways to use each utility. Famarilizing yourself with the above guide will help you choose the right utility for your use case.
+Still learning what TanStack Pacer is and how it can help your application? See the [Which Pacer Utility Should I Choose?](./guides/which-pacer-utility-should-i-choose.md) guide for help choosing which Pacer utility to use. The TanStack Pacer libraries have 5 core utilities, but also quite a few flexible ways to use each utility. Famarilizing yourself with the above guide will help you choose the right utility for your use case.
 
 ## API References
 
-See the [API References](../reference/index.md) page for the full list of API references for each Pacer utility.
+See the [API References](./reference/index.md) page for the full list of API references for each Pacer utility.
 
 ## Basic Usage
 
@@ -86,4 +86,4 @@ import { PacerProvider } from '@tanstack/react-pacer'
 
 ### Devtools
 
-TanStack Pacer provides an official TanStack Devtools integration for each framework adapter. See the [Devtools](../devtools.md) documentation for more information on how to set up and use the Pacer devtools.
+TanStack Pacer provides an official TanStack Devtools integration for each framework adapter. See the [Devtools](./devtools.md) documentation for more information on how to set up and use the Pacer devtools.

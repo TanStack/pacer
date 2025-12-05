@@ -98,7 +98,7 @@ Defined in: [async-batcher.ts:277](https://github.com/TanStack/pacer/blob/main/p
 
 ##### initialOptions
 
-[`AsyncBatcherOptions`](../../interfaces/AsyncBatcherOptions.md)\<`TValue`\>
+[`AsyncBatcherOptions`](../interfaces/AsyncBatcherOptions.md)\<`TValue`\>
 
 #### Returns
 
@@ -368,7 +368,7 @@ Updates the async batcher options
 
 ##### newOptions
 
-`Partial`\<[`AsyncBatcherOptions`](../../interfaces/AsyncBatcherOptions.md)\<`TValue`\>\>
+`Partial`\<[`AsyncBatcherOptions`](../interfaces/AsyncBatcherOptions.md)\<`TValue`\>\>
 
 #### Returns
 

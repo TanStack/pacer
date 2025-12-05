@@ -13,4 +13,4 @@ Defined in: [solid-pacer/src/provider/PacerProvider.tsx:60](https://github.com/T
 
 ## Returns
 
-[`PacerProviderOptions`](../../interfaces/PacerProviderOptions.md)
+[`PacerProviderOptions`](../interfaces/PacerProviderOptions.md)

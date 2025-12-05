@@ -13,7 +13,7 @@ Options for configuring a throttled function
 
 ### TFn
 
-`TFn` *extends* [`AnyFunction`](../../type-aliases/AnyFunction.md)
+`TFn` *extends* [`AnyFunction`](../type-aliases/AnyFunction.md)
 
 ## Properties
 
@@ -87,7 +87,7 @@ Callback function that is called after the function is executed
 
 ##### throttler
 
-[`Throttler`](../../classes/Throttler.md)\<`TFn`\>
+[`Throttler`](../classes/Throttler.md)\<`TFn`\>
 
 #### Returns
 

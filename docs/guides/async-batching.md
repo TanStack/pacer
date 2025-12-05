@@ -3,7 +3,7 @@ title: Async Batching Guide
 id: async-batching
 ---
 
-All core concepts from the [Batching Guide](../batching.md) apply to async batching as well.
+All core concepts from the [Batching Guide](./batching.md) apply to async batching as well.
 
 ## When to Use Async Batching
 
@@ -219,7 +219,7 @@ const batcher = new AsyncBatcher<number>(
 )
 ```
 
-For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](../async-retrying.md).
+For complete documentation on retry strategies, backoff algorithms, jitter, and advanced retry patterns, see the [Async Retrying Guide](./async-retrying.md).
 
 ### Abort Support
 
@@ -256,7 +256,7 @@ The abort functionality:
 - Does NOT clear items from the batcher
 - Can be used alongside retry support
 
-For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](../async-retrying.md).
+For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
 ### Sharing Options Between Instances
 
@@ -468,4 +468,4 @@ Each framework adapter provides hooks that build on top of the core async batchi
 
 ---
 
-For core batching concepts and synchronous batching, see the [Batching Guide](../batching.md).
+For core batching concepts and synchronous batching, see the [Batching Guide](./batching.md).

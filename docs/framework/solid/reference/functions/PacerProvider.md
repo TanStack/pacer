@@ -15,7 +15,7 @@ Defined in: [solid-pacer/src/provider/PacerProvider.tsx:44](https://github.com/T
 
 ### props
 
-[`PacerProviderProps`](../../interfaces/PacerProviderProps.md)
+[`PacerProviderProps`](../interfaces/PacerProviderProps.md)
 
 ## Returns
 

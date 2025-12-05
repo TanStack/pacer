@@ -18,7 +18,7 @@ around the AsyncRetryer class that returns the execute method.
 
 ### TFn
 
-`TFn` *extends* [`AnyAsyncFunction`](../../type-aliases/AnyAsyncFunction.md)
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
 
 ## Parameters
 
@@ -30,7 +30,7 @@ The async function to add retry functionality to
 
 ### initialOptions
 
-[`AsyncRetryerOptions`](../../interfaces/AsyncRetryerOptions.md)\<`TFn`\> = `{}`
+[`AsyncRetryerOptions`](../interfaces/AsyncRetryerOptions.md)\<`TFn`\> = `{}`
 
 Configuration options for the retry behavior
 
