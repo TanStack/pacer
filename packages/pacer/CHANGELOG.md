@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.16.4
+
+### Patch Changes
+
+- build: migrate to tsdown ([#113](https://github.com/TanStack/pacer/pull/113))
+
 ## 0.16.3
 
 ### Patch Changes
