@@ -3,7 +3,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/tanstack/pacer.git"
+    "url": "git+https://github.com/TanStack/pacer.git"
   },
   "packageManager": "pnpm@10.23.0",
   "type": "module",
@@ -23,7 +23,6 @@
     "generate-docs": "node scripts/generate-docs.ts",
     "lint:fix": "nx affected --target=lint:fix --exclude=examples/**",
     "lint:fix:all": "pnpm run format && nx run-many --targets=lint --fix",
-    "preinstall": "node -e \"if(process.env.CI == 'true') {console.log('Skipping preinstall...'); process.exit(1)}\" || npx -y only-allow pnpm",
     "prettier": "prettier --ignore-unknown '**/*'",
     "prettier:write": "pnpm run prettier --write",
     "size": "size-limit",
@@ -78,14 +77,5 @@
     "tsdown": "^0.17.0",
     "typescript": "5.9.3",
     "vitest": "^4.0.15"
-  },
-  "overrides": {
-    "@tanstack/pacer": "workspace:*",
-    "@tanstack/pacer-lite": "workspace:*",
-    "@tanstack/react-pacer": "workspace:*",
-    "@tanstack/solid-pacer": "workspace:*",
-    "@tanstack/pacer-devtools": "workspace:*",
-    "@tanstack/solid-pacer-devtools": "workspace:*",
-    "@tanstack/react-pacer-devtools": "workspace:*"
   }
 }
