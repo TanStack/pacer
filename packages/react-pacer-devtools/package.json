@@ -32,18 +32,12 @@
     "build": "tsdown"
   },
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.js",
-  "types": "./dist/index.d.cts",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
-    },
-    "./production": {
-      "require": "./dist/production.cjs",
-      "import": "./dist/production.js"
-    },
+    ".": "./dist/index.js",
+    "./production": "./dist/production.js",
     "./package.json": "./package.json"
   },
   "sideEffects": false,
