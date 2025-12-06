@@ -1,5 +1,14 @@
 # @tanstack/pacer-devtools
 
+## 1.0.1
+
+### Patch Changes
+
+- build: migrate to tsdown ([#113](https://github.com/TanStack/pacer/pull/113))
+
+- Updated dependencies [[`adc3193`](https://github.com/TanStack/pacer/commit/adc3193e2a8d15de29b89444f775e8e1b0302e3e)]:
+  - @tanstack/pacer@0.16.4
+
 ## 1.0.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @tanstack/pacer-lite
 
+## 0.1.1
+
+### Patch Changes
+
+- build: migrate to tsdown ([#113](https://github.com/TanStack/pacer/pull/113))
+
 ## 0.1.0
 
 ### Minor Changes
