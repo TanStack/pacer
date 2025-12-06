@@ -41,11 +41,6 @@
       "dependsOn": ["^build"],
       "inputs": ["default", "^production"]
     },
-    "test:build": {
-      "cache": true,
-      "dependsOn": ["build"],
-      "inputs": ["production"]
-    },
     "build": {
       "cache": true,
       "dependsOn": ["^build"],

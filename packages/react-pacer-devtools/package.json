@@ -6,8 +6,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TanStack/pacer.git",
-    "directory": "packages/pacer"
+    "url": "git+https://github.com/TanStack/pacer.git",
+    "directory": "packages/react-pacer-devtools"
   },
   "homepage": "https://tanstack.com/pacer",
   "funding": {
@@ -22,22 +22,22 @@
     "queue",
     "pacer"
   ],
+  "scripts": {
+    "clean": "premove ./build ./dist",
+    "lint:fix": "eslint ./src --fix",
+    "test:eslint": "eslint ./src",
+    "test:lib": "vitest",
+    "test:lib:dev": "pnpm test:lib --watch",
+    "test:types": "tsc",
+    "build": "tsdown"
+  },
   "type": "module",
-  "types": "dist/esm/index.d.ts",
-  "module": "dist/esm/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/esm/index.d.ts",
-        "default": "./dist/esm/index.js"
-      }
-    },
-    "./production": {
-      "import": {
-        "types": "./dist/esm/production.d.ts",
-        "default": "./dist/esm/production.js"
-      }
-    },
+    ".": "./dist/index.js",
+    "./production": "./dist/production.js",
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -48,16 +48,6 @@
     "dist/",
     "src"
   ],
-  "scripts": {
-    "clean": "premove ./build ./dist",
-    "lint:fix": "eslint ./src --fix",
-    "test:eslint": "eslint ./src",
-    "test:lib": "vitest",
-    "test:lib:dev": "pnpm test:lib --watch",
-    "test:types": "tsc",
-    "test:build": "publint --strict",
-    "build": "vite build"
-  },
   "peerDependencies": {
     "@types/react": ">=16.8",
     "@types/react-dom": ">=16.8",

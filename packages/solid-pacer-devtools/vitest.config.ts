@@ -1,7 +1,9 @@
 import { defineConfig } from 'vitest/config'
-import packageJson from './package.json' with { type: 'json' }
+import solid from 'vite-plugin-solid'
+import packageJson from './package.json'
 
 export default defineConfig({
+  plugins: [solid()],
   test: {
     name: packageJson.name,
     dir: './',

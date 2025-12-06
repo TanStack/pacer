@@ -1,13 +1,15 @@
 import { defineConfig } from 'vitest/config'
-import packageJson from './package.json' with { type: 'json' }
+import react from '@vitejs/plugin-react'
+import packageJson from './package.json'
 
 export default defineConfig({
+  plugins: [react()],
   test: {
     name: packageJson.name,
-    dir: './',
+    dir: './tests',
     watch: false,
     environment: 'happy-dom',
-    setupFiles: ['./tests/test-setup.ts'],
+    // setupFiles: ['./tests/test-setup.ts'],
     globals: true,
   },
 })

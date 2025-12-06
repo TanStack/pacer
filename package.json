@@ -28,15 +28,14 @@
     "prettier:write": "pnpm run prettier --write",
     "size": "size-limit",
     "test": "pnpm run test:ci",
-    "test:build": "nx affected --target=test:build --exclude=examples/**",
-    "test:ci": "nx run-many --targets=test:format,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,test:build,build",
+    "test:ci": "nx run-many --targets=test:format,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
     "test:eslint": "nx affected --target=test:eslint --exclude=examples/**",
     "test:docs": "node scripts/verify-links.ts",
     "test:format": "pnpm run prettier --check",
     "test:knip": "knip",
     "test:lib": "nx affected --targets=test:lib --exclude=examples/**",
     "test:lib:dev": "pnpm test:lib && nx watch --all -- pnpm test:lib",
-    "test:pr": "nx affected --targets=test:format,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,test:build,build",
+    "test:pr": "nx affected --targets=test:format,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
     "test:sherif": "sherif",
     "test:types": "nx affected --targets=test:types --exclude=examples/**",
     "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all"
@@ -50,7 +49,7 @@
   },
   "size-limit": [
     {
-      "path": "packages/pacer/dist/esm/index.js",
+      "path": "packages/pacer/dist/index.js",
       "limit": "8 KB"
     }
   ],
@@ -61,7 +60,6 @@
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
     "@tanstack/eslint-config": "0.3.3",
     "@tanstack/typedoc-config": "0.3.2",
-    "@tanstack/vite-config": "0.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "^24.10.1",
     "eslint": "^9.39.1",
@@ -77,8 +75,8 @@
     "sherif": "^1.9.0",
     "size-limit": "^12.0.0",
     "tinyglobby": "^0.2.15",
+    "tsdown": "^0.17.0",
     "typescript": "5.9.3",
-    "vite": "^7.2.6",
     "vitest": "^4.0.15"
   },
   "overrides": {
