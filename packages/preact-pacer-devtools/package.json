@@ -24,21 +24,11 @@
     "pacer"
   ],
   "type": "module",
-  "types": "dist/esm/index.d.ts",
-  "module": "dist/esm/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
   "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/esm/index.d.ts",
-        "default": "./dist/esm/index.js"
-      }
-    },
-    "./production": {
-      "import": {
-        "types": "./dist/esm/production.d.ts",
-        "default": "./dist/esm/production.js"
-      }
-    },
+    ".": "./dist/index.js",
+    "./production": "./dist/production.js",
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -57,7 +47,7 @@
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
     "test:build": "publint --strict",
-    "build": "vite build"
+    "build": "tsdown"
   },
   "peerDependencies": {
     "preact": ">=10.0.0"
@@ -70,5 +60,6 @@
     "@preact/preset-vite": "^2.10.2",
     "@testing-library/preact": "^3.2.4",
     "preact": "^10.28.0"
-  }
+  },
+  "main": "./dist/index.js"
 }

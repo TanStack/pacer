@@ -3,7 +3,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/tanstack/pacer.git"
+    "url": "git+https://github.com/TanStack/pacer.git"
   },
   "packageManager": "pnpm@10.23.0",
   "type": "module",
@@ -13,30 +13,25 @@
     "build:core": "nx run-many --targets=build --projects=packages/pacer,packages/persister && size-limit && pnpm run",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
-    "changeset:version": "changeset version && pnpm install --no-frozen-lockfile && pnpm prettier:write",
+    "changeset:version": "changeset version && pnpm install --no-frozen-lockfile && pnpm format",
     "clean": "find . -name 'dist' -type d -prune -exec rm -rf {} +",
     "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf {} +",
     "clean:all": "pnpm run clean && pnpm run clean:node_modules",
     "copy:readme": "cp README.md packages/pacer/README.md && cp README.md packages/pacer-devtools/README.md && cp README.md packages/pacer-lite/README.md && cp README.md packages/react-pacer/README.md && cp README.md packages/react-pacer-devtools/README.md && cp README.md packages/solid-pacer/README.md && cp README.md packages/solid-pacer-devtools/README.md && cp README.md packages/preact-pacer-devtools/README.md",
     "dev": "pnpm run watch",
-    "format": "pnpm run prettier:write",
+    "format": "prettier --experimental-cli --ignore-unknown '**/*' --write",
     "generate-docs": "node scripts/generate-docs.ts && pnpm run copy:readme",
     "lint:fix": "nx affected --target=lint:fix --exclude=examples/**",
-    "lint:fix:all": "pnpm run format && nx run-many --targets=lint --fix",
-    "preinstall": "node -e \"if(process.env.CI == 'true') {console.log('Skipping preinstall...'); process.exit(1)}\" || npx -y only-allow pnpm",
-    "prettier": "prettier --ignore-unknown '**/*'",
-    "prettier:write": "pnpm run prettier --write",
+    "lint:fix:all": "nx run-many --targets=lint --fix",
     "size": "size-limit",
     "test": "pnpm run test:ci",
-    "test:build": "nx affected --target=test:build --exclude=examples/**",
-    "test:ci": "nx run-many --targets=test:format,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,test:build,build",
-    "test:eslint": "nx affected --target=test:eslint --exclude=examples/**",
+    "test:ci": "nx run-many --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
     "test:docs": "node scripts/verify-links.ts",
-    "test:format": "pnpm run prettier --check",
+    "test:eslint": "nx affected --target=test:eslint --exclude=examples/**",
     "test:knip": "knip",
     "test:lib": "nx affected --targets=test:lib --exclude=examples/**",
     "test:lib:dev": "pnpm test:lib && nx watch --all -- pnpm test:lib",
-    "test:pr": "nx affected --targets=test:format,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,test:build,build",
+    "test:pr": "nx affected --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
     "test:sherif": "sherif",
     "test:types": "nx affected --targets=test:types --exclude=examples/**",
     "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all"
@@ -50,7 +45,7 @@
   },
   "size-limit": [
     {
-      "path": "packages/pacer/dist/esm/index.js",
+      "path": "packages/pacer/dist/index.js",
       "limit": "8 KB"
     }
   ],
@@ -61,7 +56,6 @@
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
     "@tanstack/eslint-config": "0.3.4",
     "@tanstack/typedoc-config": "0.3.3",
-    "@tanstack/vite-config": "0.4.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "^24.10.1",
     "eslint": "^9.39.1",
@@ -77,8 +71,8 @@
     "sherif": "^1.9.0",
     "size-limit": "^12.0.0",
     "tinyglobby": "^0.2.15",
+    "tsdown": "^0.17.0",
     "typescript": "5.9.3",
-    "vite": "^7.2.6",
     "vitest": "^4.0.15"
   },
   "overrides": {

@@ -1,5 +1,14 @@
 # @tanstack/react-pacer
 
+## 0.17.4
+
+### Patch Changes
+
+- build: migrate to tsdown ([#113](https://github.com/TanStack/pacer/pull/113))
+
+- Updated dependencies [[`adc3193`](https://github.com/TanStack/pacer/commit/adc3193e2a8d15de29b89444f775e8e1b0302e3e)]:
+  - @tanstack/pacer@0.16.4
+
 ## 0.17.3
 
 ### Patch Changes
