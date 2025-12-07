@@ -6,6 +6,7 @@ export default defineConfig({
       './packages/pacer/vite.config.ts',
       './packages/pacer-lite/vite.config.ts',
       './packages/preact-pacer/vite.config.ts',
+      './packages/preact-pacer-devtools/vite.config.ts',
       './packages/react-pacer/vite.config.ts',
       './packages/react-pacer-devtools/vite.config.ts',
       './packages/solid-pacer/vite.config.ts',

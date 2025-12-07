@@ -6,8 +6,8 @@ import { useThrottler } from '@tanstack/preact-pacer/throttler'
 import { useRateLimiter } from '@tanstack/preact-pacer/rate-limiter'
 import { useQueuer } from '@tanstack/preact-pacer/queuer'
 import { useBatcher } from '@tanstack/preact-pacer/batcher'
-// import { pacerDevtoolsPlugin } from '@tanstack/preact-pacer-devtools'
-// import { TanStackDevtools } from '@tanstack/react-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/preact-pacer-devtools'
+import { TanStackDevtools } from '@tanstack/preact-devtools'
 
 function ComparisonApp() {
   const [currentValue, setCurrentValue] = useState(50)
@@ -448,12 +448,12 @@ function ComparisonApp() {
           ))}
         </div>
       </div>
-      {/* <TanStackDevtools
+      <TanStackDevtools
         eventBusConfig={{
           debug: false,
         }}
         plugins={[pacerDevtoolsPlugin()]}
-      /> */}
+      />
     </div>
   )
 }

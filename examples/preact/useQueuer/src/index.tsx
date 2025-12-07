@@ -3,8 +3,8 @@ import { render } from 'preact'
 import type { JSX } from 'preact'
 import { useQueuer } from '@tanstack/preact-pacer/queuer'
 import { PacerProvider } from '@tanstack/preact-pacer/provider'
-// import { PacerDevtoolsPanel } from '@tanstack/preact-pacer-devtools'
-// import { TanStackDevtools } from '@tanstack/react-devtools'
+import { PacerDevtoolsPanel } from '@tanstack/preact-pacer-devtools'
+import { TanStackDevtools } from '@tanstack/preact-devtools'
 
 function App1() {
   // The function that we will be queuing
@@ -247,12 +247,12 @@ render(
       <hr />
       <App2 />
     </div>
-    {/* <TanStackDevtools
+    <TanStackDevtools
       eventBusConfig={{
         debug: false,
       }}
       plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
-    /> */}
+    />
   </PacerProvider>,
   root,
 )
