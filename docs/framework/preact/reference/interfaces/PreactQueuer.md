@@ -5,7 +5,7 @@ title: PreactQueuer
 
 # Interface: PreactQueuer\<TValue, TSelected\>
 
-Defined in: preact-pacer/src/queuer/useQueuer.ts:8
+Defined in: [preact-pacer/src/queuer/useQueuer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L8)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: preact-pacer/src/queuer/useQueuer.ts:8
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: preact-pacer/src/queuer/useQueuer.ts:17
+Defined in: [preact-pacer/src/queuer/useQueuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L17)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<QueuerState<TValue>>>;
 ```
 
-Defined in: preact-pacer/src/queuer/useQueuer.ts:23
+Defined in: [preact-pacer/src/queuer/useQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L23)
 
 #### Deprecated
 

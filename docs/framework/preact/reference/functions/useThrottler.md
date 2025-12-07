@@ -12,7 +12,7 @@ function useThrottler<TFn, TSelected>(
 selector): PreactThrottler<TFn, TSelected>;
 ```
 
-Defined in: preact-pacer/src/throttler/useThrottler.ts:110
+Defined in: [preact-pacer/src/throttler/useThrottler.ts:110](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L110)
 
 A low-level Preact hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
