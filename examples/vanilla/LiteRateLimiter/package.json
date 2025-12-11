@@ -12,6 +12,6 @@
     "@tanstack/pacer-lite": "0.1.1"
   },
   "devDependencies": {
-    "vite": "^7.2.6"
+    "vite": "^7.2.7"
   }
 }

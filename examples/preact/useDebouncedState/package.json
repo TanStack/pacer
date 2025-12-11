@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.2",
-    "vite": "^7.2.6"
+    "vite": "^7.2.7"
   },
   "browserslist": {
     "production": [
