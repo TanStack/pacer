@@ -2,7 +2,10 @@ import { defineConfig } from 'tsdown'
 import preact from '@preact/preset-vite'
 
 export default defineConfig({
-  plugins: [preact()],
+  // Disable Prefresh for library builds. The consuming app's Vite dev server
+  // will inject its own Prefresh runtime, and double-injection breaks with
+  // "Identifier 'prevRefreshReg' has already been declared".
+  plugins: [preact({ prefreshEnabled: false })],
   entry: [
     './src/index.ts',
     './src/async-batcher/index.ts',
