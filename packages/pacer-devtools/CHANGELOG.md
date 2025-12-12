@@ -1,5 +1,11 @@
 # @tanstack/pacer-devtools
 
+## 1.1.0
+
+### Minor Changes
+
+- feat: add preact adapter\ ([#112](https://github.com/TanStack/pacer/pull/112))
+
 ## 1.0.1
 
 ### Patch Changes

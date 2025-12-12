@@ -1,6 +1,6 @@
-# @tanstack/preact-pacer
+# @tanstack/preact-pacer-devtools
 
-## 0.18.0
+## 0.5.0
 
 ### Minor Changes
 
@@ -9,4 +9,4 @@
 ### Patch Changes
 
 - Updated dependencies [[`2906cd3`](https://github.com/TanStack/pacer/commit/2906cd3ca1a4bc54460cf8558dbff2d8f4089f6c)]:
-  - @tanstack/pacer@0.17.0
+  - @tanstack/pacer-devtools@1.1.0
