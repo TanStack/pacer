@@ -11,4 +11,3 @@
 ---
 
 feat: add preact adapter\
-
