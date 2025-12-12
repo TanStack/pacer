@@ -1,0 +1,127 @@
+import { useState } from 'preact/hooks'
+import { render } from 'preact'
+import type { JSX } from 'preact'
+import { useAsyncThrottler } from '@tanstack/preact-pacer/async-throttler'
+import { PacerProvider } from '@tanstack/preact-pacer/provider'
+
+interface SearchResult {
+  id: number
+  title: string
+}
+
+// Simulate API call with fake data
+const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate network delay
+  return [
+    { id: 1, title: `${term} result ${Math.floor(Math.random() * 100)}` },
+    { id: 2, title: `${term} result ${Math.floor(Math.random() * 100)}` },
+    { id: 3, title: `${term} result ${Math.floor(Math.random() * 100)}` },
+  ]
+}
+
+function App() {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [results, setResults] = useState<Array<SearchResult>>([])
+  const [error, setError] = useState<Error | null>(null)
+
+  // The function that will become throttled
+  const handleSearch = async (term: string) => {
+    if (!term) {
+      setResults([])
+      return
+    }
+
+    // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
+
+    const data = await fakeApi(term)
+    setResults(data)
+    setError(null)
+
+    return data // this could alternatively be a void function without a return
+  }
+
+  // hook that gives you an async throttler instance
+  const setSearchAsyncThrottler = useAsyncThrottler(
+    handleSearch,
+    {
+      // leading: true, // default
+      // trailing: true, // default
+      wait: 1000, // Wait 1 second between API calls
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setError(error as Error)
+        setResults([])
+      },
+      // throwOnError: true,
+    },
+    // Optional Selector function to pick the state you want to track and use
+    (state) => state,
+  )
+
+  // get and name our throttled function
+  const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute
+
+  // instant event handler that calls both the instant local state setter and the throttled function
+  async function onSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+    const newTerm = e.currentTarget.value
+    setSearchTerm(newTerm)
+    const result = await handleSearchThrottled(newTerm) // optionally await if you need to
+    console.log('result', result)
+  }
+
+  return (
+    <div>
+      <h1>TanStack Pacer useAsyncThrottler Example</h1>
+      <div>
+        <input
+          autoFocus
+          type="search"
+          value={searchTerm}
+          onInput={onSearchChange}
+          placeholder="Type to search..."
+          style={{ width: '100%' }}
+          autoComplete="new-password"
+        />
+      </div>
+      <div style={{ marginTop: '10px' }}>
+        <button onClick={() => setSearchAsyncThrottler.flush()}>Flush</button>
+      </div>
+      {error && <div>Error: {error.message}</div>}
+      <div>
+        <p>API calls made: {setSearchAsyncThrottler.state.successCount}</p>
+        {results.length > 0 && (
+          <ul>
+            {results.map((item) => (
+              <li key={item.id}>{item.title}</li>
+            ))}
+          </ul>
+        )}
+        {setSearchAsyncThrottler.state.isPending ? (
+          <p>Pending...</p>
+        ) : setSearchAsyncThrottler.state.isExecuting ? (
+          <p>Executing...</p>
+        ) : null}
+        <pre style={{ marginTop: '20px' }}>
+          {JSON.stringify(setSearchAsyncThrottler.store.state, null, 2)}
+        </pre>
+      </div>
+    </div>
+  )
+}
+
+const root = document.getElementById('root')!
+
+// optionally, provide default options to an optional PacerProvider
+render(
+  <PacerProvider
+  // defaultOptions={{
+  //   throttler: {
+  //     leading: true,
+  //   },
+  // }}
+  >
+    <App />
+  </PacerProvider>,
+  root,
+)
