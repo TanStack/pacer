@@ -103,8 +103,8 @@ const rateLimiter = createRateLimiter(apiCall, {
 
 // Subscribe to state changes deep in component tree using Subscribe component
 <rateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount })}>
-  {({ rejectionCount }) => (
-    <div>Rejections: {rejectionCount}</div>
+  {(state) => (
+    <div>Rejections: {state().rejectionCount}</div>
   )}
 </rateLimiter.Subscribe>
 

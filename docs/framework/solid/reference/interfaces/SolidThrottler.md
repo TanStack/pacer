@@ -93,8 +93,8 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ```ts
 <throttler.Subscribe selector={(state) => ({ isPending: state.isPending })}>
-  {({ isPending }) => (
-    <div>{isPending ? 'Loading...' : 'Ready'}</div>
+  {(state) => (
+    <div>{state().isPending ? 'Loading...' : 'Ready'}</div>
   )}
 </throttler.Subscribe>
 ```

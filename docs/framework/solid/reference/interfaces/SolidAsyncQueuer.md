@@ -93,8 +93,8 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ```ts
 <queuer.Subscribe selector={(state) => ({ pendingItems: state.pendingItems, activeItems: state.activeItems })}>
-  {({ pendingItems, activeItems }) => (
-    <div>Pending: {pendingItems.length}, Active: {activeItems.length}</div>
+  {(state) => (
+    <div>Pending: {state().pendingItems.length}, Active: {state().activeItems.length}</div>
   )}
 </queuer.Subscribe>
 ```

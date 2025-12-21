@@ -123,8 +123,8 @@ const asyncRateLimiter = createAsyncRateLimiter(
 
 // Subscribe to state changes deep in component tree using Subscribe component
 <asyncRateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount, isExecuting: state.isExecuting })}>
-  {({ rejectionCount, isExecuting }) => (
-    <div>Rejected: {rejectionCount}, {isExecuting ? 'Executing' : 'Idle'}</div>
+  {(state) => (
+    <div>Rejected: {state().rejectionCount}, {state().isExecuting ? 'Executing' : 'Idle'}</div>
   )}
 </asyncRateLimiter.Subscribe>
 

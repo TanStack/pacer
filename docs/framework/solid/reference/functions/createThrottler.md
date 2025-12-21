@@ -92,8 +92,8 @@ const throttler = createThrottler(setValue, { wait: 1000 });
 
 // Subscribe to state changes deep in component tree using Subscribe component
 <throttler.Subscribe selector={(state) => ({ isPending: state.isPending })}>
-  {({ isPending }) => (
-    <div>{isPending ? 'Loading...' : 'Ready'}</div>
+  {(state) => (
+    <div>{state().isPending ? 'Loading...' : 'Ready'}</div>
   )}
 </throttler.Subscribe>
 

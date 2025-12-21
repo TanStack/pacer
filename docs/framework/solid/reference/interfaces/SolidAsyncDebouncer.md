@@ -93,8 +93,8 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ```ts
 <debouncer.Subscribe selector={(state) => ({ isPending: state.isPending, isExecuting: state.isExecuting })}>
-  {({ isPending, isExecuting }) => (
-    <div>{isPending ? 'Waiting...' : isExecuting ? 'Executing...' : 'Ready'}</div>
+  {(state) => (
+    <div>{state().isPending ? 'Waiting...' : state().isExecuting ? 'Executing...' : 'Ready'}</div>
   )}
 </debouncer.Subscribe>
 ```

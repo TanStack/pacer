@@ -93,8 +93,8 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ```ts
 <rateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount })}>
-  {({ rejectionCount }) => (
-    <div>Rejections: {rejectionCount}</div>
+  {(state) => (
+    <div>Rejections: {state().rejectionCount}</div>
   )}
 </rateLimiter.Subscribe>
 ```
