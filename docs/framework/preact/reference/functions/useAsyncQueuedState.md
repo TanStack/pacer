@@ -9,7 +9,7 @@ title: useAsyncQueuedState
 function useAsyncQueuedState<TValue, TSelected>(
    fn, 
    options, 
-   selector?): [TValue[], ReactAsyncQueuer<TValue, TSelected>];
+   selector?): [TValue[], PreactAsyncQueuer<TValue, TSelected>];
 ```
 
 Defined in: [preact-pacer/src/async-queuer/useAsyncQueuedState.ts:151](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuedState.ts#L151)
@@ -88,7 +88,7 @@ Available async queuer state properties:
 
 ## Returns
 
-\[`TValue`[], [`ReactAsyncQueuer`](../interfaces/ReactAsyncQueuer.md)\<`TValue`, `TSelected`\>\]
+\[`TValue`[], [`PreactAsyncQueuer`](../interfaces/PreactAsyncQueuer.md)\<`TValue`, `TSelected`\>\]
 
 ## Example
 

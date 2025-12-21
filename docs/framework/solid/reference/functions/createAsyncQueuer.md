@@ -12,7 +12,7 @@ function createAsyncQueuer<TValue, TSelected>(
 selector): SolidAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:123](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L123)
+Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:150](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L150)
 
 Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 
@@ -38,14 +38,24 @@ Error Handling:
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `queuer.Subscribe` component (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger reactive updates
+at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+updates and gives you full control over when your component tracks state changes.
 
 Available state properties:
 - `activeItems`: Array of items currently being processed
@@ -75,7 +85,7 @@ const asyncQueuer = createAsyncQueuer(async (item) => {
   }
 });
 
-// Opt-in to re-render when queue state changes (optimized for UI updates)
+// Opt-in to track queue state changes (optimized for UI updates)
 const asyncQueuer = createAsyncQueuer(
   async (item) => await fetchData(item),
   { concurrency: 2, started: true },
@@ -86,7 +96,7 @@ const asyncQueuer = createAsyncQueuer(
   })
 );
 
-// Opt-in to re-render when processing metrics change (optimized for tracking progress)
+// Opt-in to track processing metrics changes (optimized for tracking progress)
 const asyncQueuer = createAsyncQueuer(
   async (item) => await fetchData(item),
   { concurrency: 2, started: true },

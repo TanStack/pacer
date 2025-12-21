@@ -48,13 +48,8 @@ function App() {
         setResults([])
       },
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      errorCount: state.errorCount,
-      successCount: state.successCount,
-      isExecuting: state.isExecuting,
-      isPending: state.isPending,
-    }),
+    // Alternative to asyncDebouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => state,
   )
 
   // get and name our debounced function
@@ -82,21 +77,37 @@ function App() {
           autocomplete="new-password"
         />
       </div>
-      {asyncDebouncer.state().errorCount > 0 && (
-        <div>Errors: {asyncDebouncer.state().errorCount}</div>
-      )}
-      <div>
-        <p>API calls made: {asyncDebouncer.state().successCount}</p>
-        {results().length > 0 && (
-          <ul>
-            <For each={results()}>{(item) => <li>{item.title}</li>}</For>
-          </ul>
+      <asyncDebouncer.Subscribe
+        selector={(state) => ({
+          errorCount: state.errorCount,
+          successCount: state.successCount,
+          isExecuting: state.isExecuting,
+          isPending: state.isPending,
+        })}
+      >
+        {(state) => (
+          <>
+            {state().errorCount > 0 && <div>Errors: {state().errorCount}</div>}
+            <div>
+              <p>API calls made: {state().successCount}</p>
+              {results().length > 0 && (
+                <ul>
+                  <For each={results()}>{(item) => <li>{item.title}</li>}</For>
+                </ul>
+              )}
+              {state().isExecuting && <p>Executing...</p>}
+              {state().isPending && <p>Pending...</p>}
+            </div>
+          </>
         )}
-        {asyncDebouncer.state().isExecuting && <p>Executing...</p>}
-        {asyncDebouncer.state().isPending && <p>Pending...</p>}
-        <hr />
-        <pre>{JSON.stringify({ state: asyncDebouncer.state() }, null, 2)}</pre>
-      </div>
+      </asyncDebouncer.Subscribe>
+      <asyncDebouncer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state(), null, 2)}
+          </pre>
+        )}
+      </asyncDebouncer.Subscribe>
     </div>
   )
 }

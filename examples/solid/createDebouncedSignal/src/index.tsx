@@ -14,10 +14,10 @@ function App1() {
       // enabled: () => instantCount() > 2, // optional, defaults to true
       // leading: true, // optional, defaults to false
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => ({
+    //   executionCount: state.executionCount,
+    // }),
   )
 
   function increment() {
@@ -34,10 +34,18 @@ function App1() {
       <h1>TanStack Pacer createDebouncedSignal Example 1</h1>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{debouncer.state().executionCount}</td>
-          </tr>
+          <debouncer.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <tr>
+                <td>Execution Count:</td>
+                <td>{state().executionCount}</td>
+              </tr>
+            )}
+          </debouncer.Subscribe>
           <tr>
             <td colSpan={2}>
               <hr />
@@ -70,10 +78,10 @@ function App2() {
       {
         wait: 500,
       },
-      // Optional Selector function to pick the state you want to track and use
-      (state) => ({
-        executionCount: state.executionCount,
-      }),
+      // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+      // (state) => ({
+      //   executionCount: state.executionCount,
+      // }),
     )
 
   function handleSearchChange(e: Event) {
@@ -98,10 +106,18 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{debouncer.state().executionCount}</td>
-          </tr>
+          <debouncer.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <tr>
+                <td>Execution Count:</td>
+                <td>{state().executionCount}</td>
+              </tr>
+            )}
+          </debouncer.Subscribe>
           <tr>
             <td colSpan={2}>
               <hr />
@@ -131,10 +147,10 @@ function App3() {
     {
       wait: 250,
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => ({
+    //   executionCount: state.executionCount,
+    // }),
   )
 
   function handleRangeChange(e: Event) {
@@ -182,30 +198,37 @@ function App3() {
             <td>Instant Executions:</td>
             <td>{instantExecutionCount()}</td>
           </tr>
-          <tr>
-            <td>Debounced Executions:</td>
-            <td>{debouncer.state().executionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>
-              {instantExecutionCount() - debouncer.state().executionCount}
-            </td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount() === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount() -
-                      debouncer.state().executionCount) /
-                      instantExecutionCount()) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <debouncer.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <>
+                <tr>
+                  <td>Debounced Executions:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount() - state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>% Reduction:</td>
+                  <td>
+                    {instantExecutionCount() === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount() - state().executionCount) /
+                            instantExecutionCount()) *
+                            100,
+                        )}
+                    %
+                  </td>
+                </tr>
+              </>
+            )}
+          </debouncer.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>

@@ -20,85 +20,100 @@ function App1() {
       started: false, // optional, defaults to true
       wait: 1000, // wait 1 second between processing items - wait is optional!
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      size: state.size,
-      isFull: state.isFull,
-      isEmpty: state.isEmpty,
-      isIdle: state.isIdle,
-      isRunning: state.isRunning,
-      status: state.status,
-      executionCount: state.executionCount,
-      items: state.items,
-    }),
+    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   return (
     <div>
       <h1>TanStack Pacer useQueuer Example 1</h1>
-      <div>Queue Size: {queuer.state.size}</div>
-      <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {queuer.state.isFull ? 'Yes' : 'No'}</div>
-      <div>Queue Peek: {queuer.peekNextItem()}</div>
-      <div>Queue Empty: {queuer.state.isEmpty ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer.state.isIdle ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer.state.status}</div>
-      <div>Items Processed: {queuer.state.executionCount}</div>
-      <div>Queue Items: {queuer.state.items.join(', ')}</div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '8px',
-          maxWidth: '600px',
-          margin: '16px 0',
-        }}
+      <queuer.Subscribe
+        selector={(state) => ({
+          size: state.size,
+          isFull: state.isFull,
+          isEmpty: state.isEmpty,
+          isIdle: state.isIdle,
+          isRunning: state.isRunning,
+          status: state.status,
+          executionCount: state.executionCount,
+          items: state.items,
+        })}
       >
-        <button
-          onClick={() => {
-            const nextNumber = queuer.state.items.length
-              ? queuer.state.items[queuer.state.items.length - 1] + 1
-              : 1
-            queuer.addItem(nextNumber)
-          }}
-          disabled={queuer.state.isFull}
-        >
-          Add Number
-        </button>
-        <button
-          disabled={queuer.state.isEmpty}
-          onClick={() => {
-            const item = queuer.execute()
-            console.log('getNextItem item', item)
-          }}
-        >
-          Process Next
-        </button>
-        <button onClick={() => queuer.clear()} disabled={queuer.state.isEmpty}>
-          Clear Queue
-        </button>
-        <button onClick={() => queuer.reset()} disabled={queuer.state.isEmpty}>
-          Reset Queue
-        </button>
-        <button
-          onClick={() => queuer.start()}
-          disabled={queuer.state.isRunning}
-        >
-          Start Processing
-        </button>
-        <button
-          onClick={() => queuer.stop()}
-          disabled={!queuer.state.isRunning}
-        >
-          Stop Processing
-        </button>
-        <button onClick={() => queuer.flush()} disabled={queuer.state.isEmpty}>
-          Flush Queue
-        </button>
-      </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(queuer.store.state, null, 2)}
-      </pre>
+        {({
+          size,
+          isFull,
+          isEmpty,
+          isIdle,
+          isRunning,
+          status,
+          executionCount,
+          items,
+        }) => (
+          <>
+            <div>Queue Size: {size}</div>
+            <div>Queue Max Size: {25}</div>
+            <div>Queue Full: {isFull ? 'Yes' : 'No'}</div>
+            <div>Queue Peek: {queuer.peekNextItem()}</div>
+            <div>Queue Empty: {isEmpty ? 'Yes' : 'No'}</div>
+            <div>Queue Idle: {isIdle ? 'Yes' : 'No'}</div>
+            <div>Queuer Status: {status}</div>
+            <div>Items Processed: {executionCount}</div>
+            <div>Queue Items: {items.join(', ')}</div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '8px',
+                maxWidth: '600px',
+                margin: '16px 0',
+              }}
+            >
+              <button
+                onClick={() => {
+                  const nextNumber = items.length
+                    ? items[items.length - 1] + 1
+                    : 1
+                  queuer.addItem(nextNumber)
+                }}
+                disabled={isFull}
+              >
+                Add Number
+              </button>
+              <button
+                disabled={isEmpty}
+                onClick={() => {
+                  const item = queuer.execute()
+                  console.log('getNextItem item', item)
+                }}
+              >
+                Process Next
+              </button>
+              <button onClick={() => queuer.clear()} disabled={isEmpty}>
+                Clear Queue
+              </button>
+              <button onClick={() => queuer.reset()} disabled={isEmpty}>
+                Reset Queue
+              </button>
+              <button onClick={() => queuer.start()} disabled={isRunning}>
+                Start Processing
+              </button>
+              <button onClick={() => queuer.stop()} disabled={!isRunning}>
+                Stop Processing
+              </button>
+              <button onClick={() => queuer.flush()} disabled={isEmpty}>
+                Flush Queue
+              </button>
+            </div>
+          </>
+        )}
+      </queuer.Subscribe>
+      <queuer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </queuer.Subscribe>
     </div>
   )
 }
@@ -120,15 +135,8 @@ function App2() {
       initialItems: [currentValue],
       wait: 100,
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      size: state.size,
-      isFull: state.isFull,
-      isEmpty: state.isEmpty,
-      isIdle: state.isIdle,
-      isRunning: state.isRunning,
-      executionCount: state.executionCount,
-    }),
+    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -171,51 +179,66 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Queue Size:</td>
-            <td>{queuer.state.size}</td>
-          </tr>
-          <tr>
-            <td>Queue Full:</td>
-            <td>{queuer.state.isFull ? 'Yes' : 'No'}</td>
-          </tr>
-          <tr>
-            <td>Queue Empty:</td>
-            <td>{queuer.state.isEmpty ? 'Yes' : 'No'}</td>
-          </tr>
-          <tr>
-            <td>Queue Idle:</td>
-            <td>{queuer.state.isIdle ? 'Yes' : 'No'}</td>
-          </tr>
-          <tr>
-            <td>Queuer Status:</td>
-            <td>{queuer.state.isRunning ? 'Running' : 'Stopped'}</td>
-          </tr>
-          <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount}</td>
-          </tr>
-          <tr>
-            <td>Items Processed:</td>
-            <td>{queuer.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>{instantExecutionCount - queuer.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount - queuer.state.executionCount) /
-                      instantExecutionCount) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <queuer.Subscribe
+            selector={(state) => ({
+              size: state.size,
+              isFull: state.isFull,
+              isEmpty: state.isEmpty,
+              isIdle: state.isIdle,
+              isRunning: state.isRunning,
+              executionCount: state.executionCount,
+            })}
+          >
+            {({ size, isFull, isEmpty, isIdle, isRunning, executionCount }) => (
+              <>
+                <tr>
+                  <td>Queue Size:</td>
+                  <td>{size}</td>
+                </tr>
+                <tr>
+                  <td>Queue Full:</td>
+                  <td>{isFull ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Queue Empty:</td>
+                  <td>{isEmpty ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Queue Idle:</td>
+                  <td>{isIdle ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Queuer Status:</td>
+                  <td>{isRunning ? 'Running' : 'Stopped'}</td>
+                </tr>
+                <tr>
+                  <td>Instant Executions:</td>
+                  <td>{instantExecutionCount}</td>
+                </tr>
+                <tr>
+                  <td>Items Processed:</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount - executionCount}</td>
+                </tr>
+                <tr>
+                  <td>% Reduction:</td>
+                  <td>
+                    {instantExecutionCount === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount - executionCount) /
+                            instantExecutionCount) *
+                            100,
+                        )}
+                    %
+                  </td>
+                </tr>
+              </>
+            )}
+          </queuer.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', fontSize: '0.9em' }}>
@@ -224,9 +247,13 @@ function App2() {
       <div>
         <button onClick={() => queuer.flush()}>Flush Queue</button>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(queuer.store.state, null, 2)}
-      </pre>
+      <queuer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </queuer.Subscribe>
     </div>
   )
 }

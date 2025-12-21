@@ -41,23 +41,21 @@ function App() {
   }
 
   // hook that gives you an async throttler instance
-  const setSearchAsyncThrottler = useAsyncThrottler(
-    handleSearch,
-    {
-      // leading: true, // default
-      // trailing: true, // default
-      wait: 1000, // Wait 1 second between API calls
-      onError: (error) => {
-        // optional error handler
-        console.error('Search failed:', error)
-        setError(error as Error)
-        setResults([])
-      },
-      // throwOnError: true,
+  // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
+  const setSearchAsyncThrottler = useAsyncThrottler(handleSearch, {
+    // leading: true, // default
+    // trailing: true, // default
+    wait: 1000, // Wait 1 second between API calls
+    onError: (error) => {
+      // optional error handler
+      console.error('Search failed:', error)
+      setError(error as Error)
+      setResults([])
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => state,
-  )
+    // throwOnError: true,
+  })
+  // Alternative to setSearchAsyncThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+  // (state) => state,
 
   // get and name our throttled function
   const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute
@@ -88,24 +86,38 @@ function App() {
         <button onClick={() => setSearchAsyncThrottler.flush()}>Flush</button>
       </div>
       {error && <div>Error: {error.message}</div>}
-      <div>
-        <p>API calls made: {setSearchAsyncThrottler.state.successCount}</p>
-        {results.length > 0 && (
-          <ul>
-            {results.map((item) => (
-              <li key={item.id}>{item.title}</li>
-            ))}
-          </ul>
+      <setSearchAsyncThrottler.Subscribe
+        selector={(state) => ({
+          isExecuting: state.isExecuting,
+          isPending: state.isPending,
+          successCount: state.successCount,
+        })}
+      >
+        {({ isExecuting, isPending, successCount }) => (
+          <div>
+            <p>API calls made: {successCount}</p>
+            {results.length > 0 && (
+              <ul>
+                {results.map((item) => (
+                  <li key={item.id}>{item.title}</li>
+                ))}
+              </ul>
+            )}
+            {isPending ? (
+              <p>Pending...</p>
+            ) : isExecuting ? (
+              <p>Executing...</p>
+            ) : null}
+          </div>
         )}
-        {setSearchAsyncThrottler.state.isPending ? (
-          <p>Pending...</p>
-        ) : setSearchAsyncThrottler.state.isExecuting ? (
-          <p>Executing...</p>
-        ) : null}
-        <pre style={{ marginTop: '20px' }}>
-          {JSON.stringify(setSearchAsyncThrottler.store.state, null, 2)}
-        </pre>
-      </div>
+      </setSearchAsyncThrottler.Subscribe>
+      <setSearchAsyncThrottler.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </setSearchAsyncThrottler.Subscribe>
     </div>
   )
 }

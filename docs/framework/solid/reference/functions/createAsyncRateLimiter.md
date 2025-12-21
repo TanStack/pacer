@@ -12,7 +12,7 @@ function createAsyncRateLimiter<TFn, TSelected>(
 selector): SolidAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:130](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L130)
+Defined in: [solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:202](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L202)
 
 A low-level Solid hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -50,14 +50,24 @@ Error Handling:
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `rateLimiter.Subscribe` component (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger reactive updates
+at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+updates and gives you full control over when your component tracks state changes.
 
 Available state properties:
 - `currentWindowStart`: Timestamp when the current window started
@@ -103,7 +113,7 @@ Available state properties:
 
 ```tsx
 // Default behavior - no reactive state subscriptions
-const { maybeExecute } = createAsyncRateLimiter(
+const asyncRateLimiter = createAsyncRateLimiter(
   async (id: string) => {
     const data = await api.fetchData(id);
     return data; // Return value is preserved
@@ -111,34 +121,79 @@ const { maybeExecute } = createAsyncRateLimiter(
   { limit: 5, window: 1000 } // 5 calls per second
 );
 
-// Opt-in to re-render when rate limit and execution state changes (optimized for UI feedback)
-const rateLimiter = createAsyncRateLimiter(
-  async (query) => {
-    const result = await searchAPI(query);
-    return result;
+// Subscribe to state changes deep in component tree using Subscribe component
+<asyncRateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount, isExecuting: state.isExecuting })}>
+  {({ rejectionCount, isExecuting }) => (
+    <div>Rejected: {rejectionCount}, {isExecuting ? 'Executing' : 'Idle'}</div>
+  )}
+</asyncRateLimiter.Subscribe>
+
+// Opt-in to track execution state changes at hook level (optimized for loading indicators)
+const asyncRateLimiter = createAsyncRateLimiter(
+  async (id: string) => {
+    const data = await api.fetchData(id);
+    return data;
   },
-  { limit: 10, window: 60000 },
+  { limit: 5, window: 1000 },
+  (state) => ({ isExecuting: state.isExecuting })
+);
+
+// Opt-in to track results when available (optimized for data display)
+const asyncRateLimiter = createAsyncRateLimiter(
+  async (id: string) => {
+    const data = await api.fetchData(id);
+    return data;
+  },
+  { limit: 5, window: 1000 },
   (state) => ({
-    remainingInWindow: state.remainingInWindow,
-    isExecuting: state.isExecuting,
+    lastResult: state.lastResult,
+    successCount: state.successCount
+  })
+);
+
+// Opt-in to track error/rejection state changes (optimized for error handling)
+const asyncRateLimiter = createAsyncRateLimiter(
+  async (id: string) => {
+    const data = await api.fetchData(id);
+    return data;
+  },
+  {
+    limit: 5,
+    window: 1000,
+    onError: (error) => console.error('API call failed:', error),
+    onReject: (rateLimiter) => console.log('Rate limit exceeded')
+  },
+  (state) => ({
+    errorCount: state.errorCount,
     rejectionCount: state.rejectionCount
   })
 );
 
-// Opt-in to re-render when error state changes (optimized for error handling)
-const rateLimiter = createAsyncRateLimiter(
-  async (query) => {
-    const result = await searchAPI(query);
-    return result;
+// Opt-in to track execution metrics changes (optimized for stats display)
+const asyncRateLimiter = createAsyncRateLimiter(
+  async (id: string) => {
+    const data = await api.fetchData(id);
+    return data;
   },
-  {
-    limit: 10,
-    window: 60000, // 10 calls per minute
-    onReject: (info) => console.log(`Rate limit exceeded: ${info.nextValidTime - Date.now()}ms until next window`)
+  { limit: 5, window: 1000 },
+  (state) => ({
+    successCount: state.successCount,
+    errorCount: state.errorCount,
+    settleCount: state.settleCount,
+    rejectionCount: state.rejectionCount
+  })
+);
+
+// Opt-in to track execution times changes (optimized for window calculations)
+const asyncRateLimiter = createAsyncRateLimiter(
+  async (id: string) => {
+    const data = await api.fetchData(id);
+    return data;
   },
-  (state) => ({ hasError: state.hasError, lastError: state.lastError })
+  { limit: 5, window: 1000 },
+  (state) => ({ executionTimes: state.executionTimes })
 );
 
 // Access the selected state (will be empty object {} unless selector provided)
-const { remainingInWindow, isExecuting } = rateLimiter.state();
+const { isExecuting, lastResult, rejectionCount } = asyncRateLimiter.state();
 ```

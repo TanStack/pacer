@@ -8,11 +8,29 @@ import type {
   AsyncDebouncerOptions,
   AsyncDebouncerState,
 } from '@tanstack/pacer/async-debouncer'
+import type { ComponentChildren } from 'preact'
 
-export interface ReactAsyncDebouncer<
+export interface PreactAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 > extends Omit<AsyncDebouncer<TFn>, 'store'> {
+  /**
+   * A Preact HOC (Higher Order Component) that allows you to subscribe to the async debouncer state.
+   *
+   * This is useful for opting into state re-renders for specific parts of the debouncer state
+   * deep in your component tree without needing to pass a selector to the hook.
+   *
+   * @example
+   * <debouncer.Subscribe selector={(state) => ({ isPending: state.isPending })}>
+   *   {({ isPending }) => (
+   *     <div>{isPending ? 'Loading...' : 'Ready'}</div>
+   *   )}
+   * </debouncer.Subscribe>
+   */
+  Subscribe: <TSelected>(props: {
+    selector: (state: AsyncDebouncerState<TFn>) => TSelected
+    children: ((state: TSelected) => ComponentChildren) | ComponentChildren
+  }) => ComponentChildren
   /**
    * Reactive state that will be updated and re-rendered when the debouncer state changes
    *
@@ -53,14 +71,24 @@ export interface ReactAsyncDebouncer<
  *
  * ## State Management and Selector
  *
- * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
- * to specify which state changes will trigger a re-render, optimizing performance by preventing
- * unnecessary re-renders when irrelevant state changes occur.
+ * The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+ * in two ways:
+ *
+ * **1. Using `debouncer.Subscribe` HOC (Recommended for component tree subscriptions)**
+ *
+ * Use the `Subscribe` HOC to subscribe to state changes deep in your component tree without
+ * needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+ * in child components.
+ *
+ * **2. Using the `selector` parameter (For hook-level subscriptions)**
+ *
+ * The `selector` parameter allows you to specify which state changes will trigger a re-render
+ * at the hook level, optimizing performance by preventing unnecessary re-renders when irrelevant
+ * state changes occur.
  *
  * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
- * full control over when your component updates. Only when you provide a selector will the
- * component re-render when the selected state values change.
+ * tracking by providing a selector function or using the `Subscribe` HOC. This prevents unnecessary
+ * re-renders and gives you full control over when your component updates.
  *
  * Available state properties:
  * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -84,7 +112,14 @@ export interface ReactAsyncDebouncer<
  *   { wait: 500 }
  * );
  *
- * // Opt-in to re-render when execution state changes (optimized for loading indicators)
+ * // Subscribe to state changes deep in component tree using Subscribe HOC
+ * <searchDebouncer.Subscribe selector={(state) => ({ isPending: state.isPending })}>
+ *   {({ isPending }) => (
+ *     <div>{isPending ? 'Searching...' : 'Ready'}</div>
+ *   )}
+ * </searchDebouncer.Subscribe>
+ *
+ * // Opt-in to re-render when execution state changes at hook level (optimized for loading indicators)
  * const searchDebouncer = useAsyncDebouncer(
  *   async (query: string) => {
  *     const results = await api.search(query);
@@ -152,15 +187,31 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   options: AsyncDebouncerOptions<TFn>,
   selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
-): ReactAsyncDebouncer<TFn, TSelected> {
+): PreactAsyncDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncDebouncer,
     ...options,
   } as AsyncDebouncerOptions<TFn>
 
-  const [asyncDebouncer] = useState(
-    () => new AsyncDebouncer<TFn>(fn, mergedOptions),
-  )
+  const [asyncDebouncer] = useState(() => {
+    const debouncerInstance = new AsyncDebouncer<TFn>(
+      fn,
+      mergedOptions,
+    ) as unknown as PreactAsyncDebouncer<TFn, TSelected>
+
+    debouncerInstance.Subscribe = function Subscribe<TSelected>(props: {
+      selector: (state: AsyncDebouncerState<TFn>) => TSelected
+      children: ((state: TSelected) => ComponentChildren) | ComponentChildren
+    }) {
+      const selected = useStore(debouncerInstance.store, props.selector)
+
+      return typeof props.children === 'function'
+        ? props.children(selected)
+        : props.children
+    }
+
+    return debouncerInstance
+  })
 
   asyncDebouncer.fn = fn
   asyncDebouncer.setOptions(mergedOptions)
@@ -178,7 +229,7 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
       ({
         ...asyncDebouncer,
         state,
-      }) as ReactAsyncDebouncer<TFn, TSelected>, // omit `store` in favor of `state`
+      }) as PreactAsyncDebouncer<TFn, TSelected>, // omit `store` in favor of `state`
     [asyncDebouncer, state],
   )
 }

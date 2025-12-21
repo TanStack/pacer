@@ -9,16 +9,16 @@ title: "@tanstack/preact-pacer"
 
 - [PacerProviderOptions](interfaces/PacerProviderOptions.md)
 - [PacerProviderProps](interfaces/PacerProviderProps.md)
+- [PreactAsyncBatcher](interfaces/PreactAsyncBatcher.md)
+- [PreactAsyncDebouncer](interfaces/PreactAsyncDebouncer.md)
+- [PreactAsyncQueuer](interfaces/PreactAsyncQueuer.md)
+- [PreactAsyncRateLimiter](interfaces/PreactAsyncRateLimiter.md)
+- [PreactAsyncThrottler](interfaces/PreactAsyncThrottler.md)
 - [PreactBatcher](interfaces/PreactBatcher.md)
 - [PreactDebouncer](interfaces/PreactDebouncer.md)
 - [PreactQueuer](interfaces/PreactQueuer.md)
 - [PreactRateLimiter](interfaces/PreactRateLimiter.md)
 - [PreactThrottler](interfaces/PreactThrottler.md)
-- [ReactAsyncBatcher](interfaces/ReactAsyncBatcher.md)
-- [ReactAsyncDebouncer](interfaces/ReactAsyncDebouncer.md)
-- [ReactAsyncQueuer](interfaces/ReactAsyncQueuer.md)
-- [ReactAsyncRateLimiter](interfaces/ReactAsyncRateLimiter.md)
-- [ReactAsyncThrottler](interfaces/ReactAsyncThrottler.md)
 
 ## Functions
 

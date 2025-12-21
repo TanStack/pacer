@@ -23,61 +23,75 @@ function App1() {
       wait: 3000, // wait up to 3 seconds before processing a batch (if time elapses before maxSize is reached)
       getShouldExecute: (items, _batcher) => items.includes(42), // or pass in a custom function to determine if the batch should be processed
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      size: state.size,
-      executionCount: state.executionCount,
-      totalItemsProcessed: state.totalItemsProcessed,
-    }),
+    // Alternative to batcher.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   return (
     <div>
       <h1>TanStack Pacer useBatcher Example 1</h1>
-      <div>Batch Size: {batcher.state.size}</div>
-      <div>Batch Max Size: {3}</div>
-      <div>Batch Items: {batcher.peekAllItems().join(', ')}</div>
-      <div>Batches Processed: {batcher.state.executionCount}</div>
-      <div>Items Processed: {batcher.state.totalItemsProcessed}</div>
-      <div>
-        Processed Batches:{' '}
-        {processedBatches.map((b, i) => (
-          <>
-            <span key={i}>[{b.join(', ')}]</span>,{' '}
-          </>
-        ))}
-      </div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '8px',
-          maxWidth: '600px',
-          margin: '16px 0',
-        }}
+      <batcher.Subscribe
+        selector={(state) => ({
+          size: state.size,
+          executionCount: state.executionCount,
+          totalItemsProcessed: state.totalItemsProcessed,
+        })}
       >
-        <button
-          onClick={() => {
-            const nextNumber = batcher.peekAllItems().length
-              ? batcher.peekAllItems()[batcher.peekAllItems().length - 1] + 1
-              : 1
-            batcher.addItem(nextNumber)
-          }}
-        >
-          Add Number
-        </button>
-        <button
-          disabled={batcher.state.size === 0}
-          onClick={() => {
-            batcher.flush()
-          }}
-        >
-          Flush Current Batch
-        </button>
-      </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(batcher.store.state, null, 2)}
-      </pre>
+        {({ size, executionCount, totalItemsProcessed }) => (
+          <>
+            <div>Batch Size: {size}</div>
+            <div>Batch Max Size: {3}</div>
+            <div>Batch Items: {batcher.peekAllItems().join(', ')}</div>
+            <div>Batches Processed: {executionCount}</div>
+            <div>Items Processed: {totalItemsProcessed}</div>
+            <div>
+              Processed Batches:{' '}
+              {processedBatches.map((b, i) => (
+                <>
+                  <span key={i}>[{b.join(', ')}]</span>,{' '}
+                </>
+              ))}
+            </div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '8px',
+                maxWidth: '600px',
+                margin: '16px 0',
+              }}
+            >
+              <button
+                onClick={() => {
+                  const nextNumber = batcher.peekAllItems().length
+                    ? batcher.peekAllItems()[
+                        batcher.peekAllItems().length - 1
+                      ] + 1
+                    : 1
+                  batcher.addItem(nextNumber)
+                }}
+              >
+                Add Number
+              </button>
+              <button
+                disabled={size === 0}
+                onClick={() => {
+                  batcher.flush()
+                }}
+              >
+                Flush Current Batch
+              </button>
+            </div>
+          </>
+        )}
+      </batcher.Subscribe>
+      <batcher.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </batcher.Subscribe>
     </div>
   )
 }

@@ -36,8 +36,6 @@ function App() {
     const data = await fakeApi(term)
     setResults(data)
     setError(null)
-
-    console.log(setSearchAsyncRateLimiter.state.successCount)
   }
 
   // hook that gives you an async rate limiter instance
@@ -59,12 +57,8 @@ function App() {
         setResults([])
       },
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      successCount: state.successCount,
-      rejectionCount: state.rejectionCount,
-      isExecuting: state.isExecuting,
-    }),
+    // Alternative to setSearchAsyncRateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   // get and name our rate limited function
@@ -122,43 +116,55 @@ function App() {
         />
       </div>
       {error && <div>Error: {error.message}</div>}
-      <div>
-        <table>
-          <tbody>
-            <tr>
-              <td>API calls made:</td>
-              <td>{setSearchAsyncRateLimiter.state.successCount}</td>
-            </tr>
-            <tr>
-              <td>Rejected calls:</td>
-              <td>{setSearchAsyncRateLimiter.state.rejectionCount}</td>
-            </tr>
-            <tr>
-              <td>Is executing:</td>
-              <td>
-                {setSearchAsyncRateLimiter.state.isExecuting ? 'Yes' : 'No'}
-              </td>
-            </tr>
-            <tr>
-              <td>Results:</td>
-              <td>
-                {results.length > 0 ? (
-                  <ul>
-                    {results.map((item) => (
-                      <li key={item.id}>{item.title}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  'No results'
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(setSearchAsyncRateLimiter.store.state, null, 2)}
-      </pre>
+      <setSearchAsyncRateLimiter.Subscribe
+        selector={(state) => ({
+          successCount: state.successCount,
+          rejectionCount: state.rejectionCount,
+          isExecuting: state.isExecuting,
+        })}
+      >
+        {({ successCount, rejectionCount, isExecuting }) => (
+          <div>
+            <table>
+              <tbody>
+                <tr>
+                  <td>API calls made:</td>
+                  <td>{successCount}</td>
+                </tr>
+                <tr>
+                  <td>Rejected calls:</td>
+                  <td>{rejectionCount}</td>
+                </tr>
+                <tr>
+                  <td>Is executing:</td>
+                  <td>{isExecuting ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Results:</td>
+                  <td>
+                    {results.length > 0 ? (
+                      <ul>
+                        {results.map((item) => (
+                          <li key={item.id}>{item.title}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      'No results'
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+      </setSearchAsyncRateLimiter.Subscribe>
+      <setSearchAsyncRateLimiter.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </setSearchAsyncRateLimiter.Subscribe>
     </div>
   )
 }

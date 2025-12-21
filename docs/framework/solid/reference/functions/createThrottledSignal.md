@@ -18,7 +18,7 @@ A Solid hook that creates a throttled state value that updates at most once with
 This hook combines Solid's createSignal with throttling functionality to provide controlled state updates.
 
 Throttling ensures state updates occur at a controlled rate regardless of how frequently the setter is called.
-This is useful for rate-limiting expensive re-renders or operations that depend on rapidly changing state.
+This is useful for rate-limiting expensive updates or operations that depend on rapidly changing state.
 
 The hook returns a tuple containing:
 - The throttled state value accessor

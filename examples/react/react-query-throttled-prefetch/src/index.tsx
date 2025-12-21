@@ -42,6 +42,8 @@ function PostList({
   // throttle the hovered post id to avoid excessive prefetches
   const [throttledHoveredPostId] = useThrottledValue(currentHoveredPostId, {
     wait: 100, // adjust this value to see the difference
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   })
 
   // perform the prefetch when the throttled hovered post id changes

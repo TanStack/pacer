@@ -12,7 +12,7 @@ function useDebouncer<TFn, TSelected>(
 selector): PreactDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:105](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L105)
+Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:140](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L140)
 
 A Preact hook that creates and manages a Debouncer instance.
 
@@ -30,14 +30,24 @@ timer resets and starts waiting again.
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `debouncer.Subscribe` HOC (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` HOC to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger a re-render
+at the hook level, optimizing performance by preventing unnecessary re-renders when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` HOC. This prevents unnecessary
+re-renders and gives you full control over when your component updates.
 
 Available state properties:
 - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -84,7 +94,14 @@ const searchDebouncer = useDebouncer(
   { wait: 500 }
 );
 
-// Opt-in to re-render when isPending changes (optimized for loading states)
+// Subscribe to state changes deep in component tree using Subscribe HOC
+<searchDebouncer.Subscribe selector={(state) => ({ isPending: state.isPending })}>
+  {({ isPending }) => (
+    <div>{isPending ? 'Searching...' : 'Ready'}</div>
+  )}
+</searchDebouncer.Subscribe>
+
+// Opt-in to re-render when isPending changes at hook level (optimized for loading states)
 const searchDebouncer = useDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 },

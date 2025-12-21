@@ -5,7 +5,7 @@ title: PreactBatcher
 
 # Interface: PreactBatcher\<TValue, TSelected\>
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:8](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L8)
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:9](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L9)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/batcher/useBatcher.ts:8](https://github.com/TanSta
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L17)
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:35](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L35)
 
 Reactive state that will be updated and re-rendered when the batcher state changes
 
@@ -44,10 +44,57 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L23)
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L41)
 
 #### Deprecated
 
 Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
 The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
 Although, you can make the state reactive by using the `useStore` in your own usage.
+
+***
+
+### Subscribe()
+
+```ts
+Subscribe: <TSelected>(props) => ComponentChildren;
+```
+
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L26)
+
+A Preact HOC (Higher Order Component) that allows you to subscribe to the batcher state.
+
+This is useful for opting into state re-renders for specific parts of the batcher state
+deep in your component tree without needing to pass a selector to the hook.
+
+#### Type Parameters
+
+##### TSelected
+
+`TSelected`
+
+#### Parameters
+
+##### props
+
+###### children
+
+`ComponentChildren` \| (`state`) => `ComponentChildren`
+
+###### selector
+
+(`state`) => `TSelected`
+
+#### Returns
+
+`ComponentChildren`
+
+#### Example
+
+```ts
+<batcher.Subscribe selector={(state) => ({ size: state.size })}>
+  {({ size }) => (
+    <div>Batch Size: {size}</div>
+  )}
+</batcher.Subscribe>
+```

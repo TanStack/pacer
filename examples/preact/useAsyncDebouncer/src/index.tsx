@@ -38,29 +38,23 @@ function App() {
   }
 
   // hook that gives you an async debouncer instance
-  const asyncDebouncer = useAsyncDebouncer(
-    handleSearch,
-    {
-      // leading: true, // optional leading execution
-      wait: 500, // Wait 500ms between API calls
-      onError: (error) => {
-        // optional error handler
-        console.error('Search failed:', error)
-        setResults([])
-      },
-      // throwOnError: true,
-      asyncRetryerOptions: {
-        maxAttempts: 3,
-        maxExecutionTime: 1000,
-      },
+  // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
+  const asyncDebouncer = useAsyncDebouncer(handleSearch, {
+    // leading: true, // optional leading execution
+    wait: 500, // Wait 500ms between API calls
+    onError: (error) => {
+      // optional error handler
+      console.error('Search failed:', error)
+      setResults([])
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      isExecuting: state.isExecuting,
-      isPending: state.isPending,
-      successCount: state.successCount,
-    }),
-  )
+    // throwOnError: true,
+    asyncRetryerOptions: {
+      maxAttempts: 3,
+      maxExecutionTime: 1000,
+    },
+  })
+  // Alternative to asyncDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+  // (state) => state,
 
   // get and name our debounced function
   const handleSearchDebounced = asyncDebouncer.maybeExecute
@@ -90,21 +84,35 @@ function App() {
       <div style={{ marginTop: '10px' }}>
         <button onClick={() => asyncDebouncer.flush()}>Flush</button>
       </div>
-      <div>
-        <p>API calls made: {asyncDebouncer.state.successCount}</p>
-        {results.length > 0 && (
-          <ul>
-            {results.map((item) => (
-              <li key={item.id}>{item.title}</li>
-            ))}
-          </ul>
+      <asyncDebouncer.Subscribe
+        selector={(state) => ({
+          isExecuting: state.isExecuting,
+          isPending: state.isPending,
+          successCount: state.successCount,
+        })}
+      >
+        {({ isExecuting, isPending, successCount }) => (
+          <div>
+            <p>API calls made: {successCount}</p>
+            {results.length > 0 && (
+              <ul>
+                {results.map((item) => (
+                  <li key={item.id}>{item.title}</li>
+                ))}
+              </ul>
+            )}
+            {isPending && <p>Pending...</p>}
+            {isExecuting && <p>Executing...</p>}
+          </div>
         )}
-        {asyncDebouncer.state.isPending && <p>Pending...</p>}
-        {asyncDebouncer.state.isExecuting && <p>Executing...</p>}
-        <pre style={{ marginTop: '20px' }}>
-          {JSON.stringify(asyncDebouncer.store.state, null, 2)}
-        </pre>
-      </div>
+      </asyncDebouncer.Subscribe>
+      <asyncDebouncer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </asyncDebouncer.Subscribe>
     </div>
   )
 }

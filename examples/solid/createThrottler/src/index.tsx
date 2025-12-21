@@ -12,12 +12,12 @@ function App1() {
     setThrottledCount,
     {
       wait: 1000,
-      enabled: () => instantCount() > 2, // optional, defaults to true
+      // leading: true, // default
+      // trailing: true, // default
+      // enabled: () => instantCount() > 2,
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to setCountThrottler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => state,
   )
 
   function increment() {
@@ -34,23 +34,44 @@ function App1() {
       <h1>TanStack Pacer createThrottler Example 1</h1>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{setCountThrottler.state().executionCount}</td>
-          </tr>
-          <tr>
-            <td>Instant Count:</td>
-            <td>{instantCount()}</td>
-          </tr>
-          <tr>
-            <td>Throttled Count:</td>
-            <td>{throttledCount()}</td>
-          </tr>
+          <setCountThrottler.Subscribe
+            selector={(state) => ({ executionCount: state.executionCount })}
+          >
+            {(state) => (
+              <>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Instant Count:</td>
+                  <td>{instantCount()}</td>
+                </tr>
+                <tr>
+                  <td>Throttled Count:</td>
+                  <td>{throttledCount()}</td>
+                </tr>
+              </>
+            )}
+          </setCountThrottler.Subscribe>
         </tbody>
       </table>
       <div>
         <button onClick={increment}>Increment</button>
+        <button
+          onClick={() => setCountThrottler.flush()}
+          style={{ 'margin-left': '10px' }}
+        >
+          Flush
+        </button>
       </div>
+      <setCountThrottler.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </setCountThrottler.Subscribe>
     </div>
   )
 }
@@ -64,12 +85,10 @@ function App2() {
     setThrottledSearch,
     {
       wait: 1000,
-      // enabled: () => instantSearch().length > 2, // optional, defaults to true
+      enabled: instantSearch().length > 2,
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to setSearchThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleSearchChange(e: Event) {
@@ -94,20 +113,38 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{setSearchThrottler.state().executionCount}</td>
-          </tr>
-          <tr>
-            <td>Instant Search:</td>
-            <td>{instantSearch()}</td>
-          </tr>
-          <tr>
-            <td>Throttled Search:</td>
-            <td>{throttledSearch()}</td>
-          </tr>
+          <setSearchThrottler.Subscribe
+            selector={(state) => ({ executionCount: state.executionCount })}
+          >
+            {(state) => (
+              <>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Instant Search:</td>
+                  <td>{instantSearch()}</td>
+                </tr>
+                <tr>
+                  <td>Throttled Search:</td>
+                  <td>{throttledSearch()}</td>
+                </tr>
+              </>
+            )}
+          </setSearchThrottler.Subscribe>
         </tbody>
       </table>
+      <div>
+        <button onClick={() => setSearchThrottler.flush()}>Flush</button>
+      </div>
+      <setSearchThrottler.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </setSearchThrottler.Subscribe>
     </div>
   )
 }
@@ -122,11 +159,11 @@ function App3() {
     setThrottledValue,
     {
       wait: 250,
+      // leading: true, // default
+      // trailing: true, // default
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to setValueThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleRangeChange(e: Event) {
@@ -170,40 +207,51 @@ function App3() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount()}</td>
-          </tr>
-          <tr>
-            <td>Throttled Executions:</td>
-            <td>{setValueThrottler.state().executionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>
-              {instantExecutionCount() -
-                setValueThrottler.state().executionCount}
-            </td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount() === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount() -
-                      setValueThrottler.state().executionCount) /
-                      instantExecutionCount()) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <setValueThrottler.Subscribe
+            selector={(state) => ({ executionCount: state.executionCount })}
+          >
+            {(state) => (
+              <>
+                <tr>
+                  <td>Instant Execution Count:</td>
+                  <td>{instantExecutionCount()}</td>
+                </tr>
+                <tr>
+                  <td>Throttled Execution Count:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>
+                    {instantExecutionCount() - state().executionCount} (
+                    {instantExecutionCount() > 0
+                      ? (
+                          ((instantExecutionCount() - state().executionCount) /
+                            instantExecutionCount()) *
+                          100
+                        ).toFixed(2)
+                      : 0}
+                    % Reduction in execution calls)
+                  </td>
+                </tr>
+              </>
+            )}
+          </setValueThrottler.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
-        <p>Throttled with 250ms wait time</p>
+        <p>Throttled to 1 update per 250ms (trailing edge)</p>
       </div>
+      <div>
+        <button onClick={() => setValueThrottler.flush()}>Flush</button>
+      </div>
+      <setValueThrottler.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </setValueThrottler.Subscribe>
     </div>
   )
 }

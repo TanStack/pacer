@@ -113,6 +113,80 @@ import { PacerProvider } from '@tanstack/preact-pacer'
 
 All hooks within the provider will automatically use these default options, which can be overridden on a per-hook basis.
 
+## Subscribing to State
+
+The Preact Adapter supports subscribing to state changes in two ways:
+
+### Using the Subscribe Component
+
+Use the `Subscribe` component to subscribe to state changes deep in your component tree without needing to pass a selector to the hook. This is ideal when you want to subscribe to state in child components.
+
+```tsx
+import { useRateLimiter } from '@tanstack/preact-pacer'
+
+function ApiComponent() {
+  const rateLimiter = useRateLimiter(
+    (data: string) => {
+      return fetch('/api/endpoint', {
+        method: 'POST',
+        body: JSON.stringify({ data }),
+      })
+    },
+    { limit: 5, window: 60000 }
+  )
+
+  return (
+    <div>
+      <button onClick={() => rateLimiter.maybeExecute('some data')}>
+        Submit
+      </button>
+      
+      <rateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount })}>
+        {({ rejectionCount }) => (
+          <div>Rejections: {rejectionCount}</div>
+        )}
+      </rateLimiter.Subscribe>
+    </div>
+  )
+}
+```
+
+### Using the Selector Parameter
+
+The `selector` parameter allows you to specify which state changes will trigger reactive updates at the hook level, optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+
+**By default, `hook.state` is empty (`{}`) as the selector is empty by default.** You must opt-in to state tracking by providing a selector function.
+
+```tsx
+import { useDebouncer } from '@tanstack/preact-pacer'
+
+function SearchComponent() {
+  // Default behavior - no reactive state subscriptions
+  const debouncer = useDebouncer(
+    (query: string) => fetchSearchResults(query),
+    { wait: 500 }
+  )
+  console.log(debouncer.state) // {}
+
+  // Opt-in to track isPending changes
+  const debouncer = useDebouncer(
+    (query: string) => fetchSearchResults(query),
+    { wait: 500 },
+    (state) => ({ isPending: state.isPending })
+  )
+  console.log(debouncer.state.isPending) // Reactive value
+
+  return (
+    <input
+      onChange={(e) => debouncer.maybeExecute(e.target.value)}
+      placeholder="Search..."
+    />
+  )
+}
+```
+
+For more details on state management and available state properties, see the individual guide pages for each utility (e.g., [Rate Limiting Guide](../../guides/rate-limiting.md), [Debouncing Guide](../../guides/debouncing.md)).
+
 ## Examples
 
 ### Debouncer Example

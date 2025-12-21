@@ -10,19 +10,14 @@ function App1() {
   const [debouncedCount, setDebouncedCount] = useState(0)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
-  const debouncer = useDebouncer(
-    setDebouncedCount,
-    {
-      wait: 800,
-      enabled: () => instantCount > 2, // optional, defaults to true
-      // leading: true, // optional, defaults to false
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      status: state.status,
-      executionCount: state.executionCount,
-    }),
-  )
+  // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
+  const debouncer = useDebouncer(setDebouncedCount, {
+    wait: 800,
+    enabled: () => instantCount > 2, // optional, defaults to true
+    // leading: true, // optional, defaults to false
+  })
+  // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+  // (state) => ({ status: state.status, executionCount: state.executionCount }),
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -38,14 +33,25 @@ function App1() {
       <h1>TanStack Pacer useDebouncer Example 1</h1>
       <table>
         <tbody>
-          <tr>
-            <td>Status:</td>
-            <td>{debouncer.state.status}</td>
-          </tr>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{debouncer.state.executionCount}</td>
-          </tr>
+          <debouncer.Subscribe
+            selector={(state) => ({
+              status: state.status,
+              executionCount: state.executionCount,
+            })}
+          >
+            {({ status, executionCount }) => (
+              <>
+                <tr>
+                  <td>Status:</td>
+                  <td>{status}</td>
+                </tr>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{executionCount}</td>
+                </tr>
+              </>
+            )}
+          </debouncer.Subscribe>
           <tr>
             <td colSpan={2}>
               <hr />
@@ -70,9 +76,13 @@ function App1() {
           Flush
         </button>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(debouncer.store.state, null, 2)}
-      </pre>
+      <debouncer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </debouncer.Subscribe>
     </div>
   )
 }
@@ -82,18 +92,13 @@ function App2() {
   const [debouncedSearchText, setDebouncedSearchText] = useState('')
 
   // Lower-level useDebouncer hook - requires you to manage your own state
-  const setSearchDebouncer = useDebouncer(
-    setDebouncedSearchText,
-    {
-      wait: 500,
-      enabled: () => searchText.length > 2, // optional, defaults to true
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      isPending: state.isPending,
-      executionCount: state.executionCount,
-    }),
-  )
+  // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
+  const setSearchDebouncer = useDebouncer(setDebouncedSearchText, {
+    wait: 500,
+    enabled: () => searchText.length > 2, // optional, defaults to true
+  })
+  // Alternative to setSearchDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+  // (state) => ({ isPending: state.isPending, executionCount: state.executionCount }),
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
@@ -116,14 +121,25 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Is Pending:</td>
-            <td>{setSearchDebouncer.state.isPending.toString()}</td>
-          </tr>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{setSearchDebouncer.state.executionCount}</td>
-          </tr>
+          <setSearchDebouncer.Subscribe
+            selector={(state) => ({
+              isPending: state.isPending,
+              executionCount: state.executionCount,
+            })}
+          >
+            {({ isPending, executionCount }) => (
+              <>
+                <tr>
+                  <td>Is Pending:</td>
+                  <td>{isPending.toString()}</td>
+                </tr>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{executionCount}</td>
+                </tr>
+              </>
+            )}
+          </setSearchDebouncer.Subscribe>
           <tr>
             <td colSpan={2}>
               <hr />
@@ -142,9 +158,13 @@ function App2() {
       <div>
         <button onClick={() => setSearchDebouncer.flush()}>Flush</button>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(setSearchDebouncer.store.state, null, 2)}
-      </pre>
+      <setSearchDebouncer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </setSearchDebouncer.Subscribe>
     </div>
   )
 }
@@ -155,17 +175,12 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
-  const setValueDebouncer = useDebouncer(
-    setDebouncedValue,
-    {
-      wait: 250,
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      isPending: state.isPending,
-      executionCount: state.executionCount,
-    }),
-  )
+  // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
+  const setValueDebouncer = useDebouncer(setDebouncedValue, {
+    wait: 250,
+  })
+  // Alternative to setValueDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+  // (state) => ({ isPending: state.isPending, executionCount: state.executionCount }),
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
@@ -207,38 +222,46 @@ function App3() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Is Pending:</td>
-            <td>{setValueDebouncer.state.isPending.toString()}</td>
-          </tr>
-          <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount}</td>
-          </tr>
-          <tr>
-            <td>Debounced Executions:</td>
-            <td>{setValueDebouncer.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>
-              {instantExecutionCount - setValueDebouncer.state.executionCount}
-            </td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount -
-                      setValueDebouncer.state.executionCount) /
-                      instantExecutionCount) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <setValueDebouncer.Subscribe
+            selector={(state) => ({
+              isPending: state.isPending,
+              executionCount: state.executionCount,
+            })}
+          >
+            {({ isPending, executionCount }) => (
+              <>
+                <tr>
+                  <td>Is Pending:</td>
+                  <td>{isPending.toString()}</td>
+                </tr>
+                <tr>
+                  <td>Instant Executions:</td>
+                  <td>{instantExecutionCount}</td>
+                </tr>
+                <tr>
+                  <td>Debounced Executions:</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount - executionCount}</td>
+                </tr>
+                <tr>
+                  <td>% Reduction:</td>
+                  <td>
+                    {instantExecutionCount === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount - executionCount) /
+                            instantExecutionCount) *
+                            100,
+                        )}
+                    %
+                  </td>
+                </tr>
+              </>
+            )}
+          </setValueDebouncer.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', fontSize: '0.9em' }}>
@@ -247,9 +270,13 @@ function App3() {
       <div>
         <button onClick={() => setValueDebouncer.flush()}>Flush</button>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(setValueDebouncer.store.state, null, 2)}
-      </pre>
+      <setValueDebouncer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </setValueDebouncer.Subscribe>
     </div>
   )
 }

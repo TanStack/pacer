@@ -39,98 +39,111 @@ function App() {
         ) // optionally, handle errors here instead of your own try/catch
       },
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      activeItems: state.activeItems,
-      isEmpty: state.isEmpty,
-      isFull: state.isFull,
-      isIdle: state.isIdle,
-      isRunning: state.isRunning,
-      items: state.items, // required for useAsyncQueuedState hook
-      rejectionCount: state.rejectionCount,
-      size: state.size,
-      status: state.status,
-      successCount: state.successCount,
-    }),
+    // Alternative to asyncQueuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   return (
     <div>
       <h1>TanStack Pacer useAsyncQueuer Example</h1>
-      <div></div>
-      <div>Queue Size: {asyncQueuer.state.size}</div>
-      <div>Queue Max Size: {25}</div>
-      <div>Queue Full: {asyncQueuer.state.isFull ? 'Yes' : 'No'}</div>
-      <div>Queue Empty: {asyncQueuer.state.isEmpty ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {asyncQueuer.state.isIdle ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {asyncQueuer.state.status}</div>
-      <div>Items Processed: {asyncQueuer.state.successCount}</div>
-      <div>Items Rejected: {asyncQueuer.state.rejectionCount}</div>
-      <div>Active Tasks: {asyncQueuer.peekActiveItems().length}</div>
-      <div>Pending Tasks: {asyncQueuer.peekPendingItems().length}</div>
-      <div>
-        Concurrency:{' '}
-        <input
-          type="number"
-          min={1}
-          value={concurrency}
-          onChange={(e) =>
-            setConcurrency(Math.max(1, parseInt(e.target.value) || 1))
-          }
-          style={{ width: '60px' }}
-        />
-      </div>
-      <div style={{ minHeight: '250px' }}>
-        Queue Items:
-        {queueItems.map((item, index) => (
-          <div key={index}>
-            {index}: {item}
-          </div>
-        ))}
-      </div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '8px',
-          maxWidth: '600px',
-          margin: '16px 0',
-        }}
+      <asyncQueuer.Subscribe
+        selector={(state) => ({
+          size: state.size,
+          isFull: state.isFull,
+          isEmpty: state.isEmpty,
+          isIdle: state.isIdle,
+          status: state.status,
+          successCount: state.successCount,
+          rejectionCount: state.rejectionCount,
+          activeItems: state.activeItems,
+          items: state.items,
+          isRunning: state.isRunning,
+        })}
       >
-        <button
-          onClick={() => {
-            const nextNumber = queueItems.length
-              ? Math.max(...queueItems) + 1
-              : 1
-            asyncQueuer.addItem(nextNumber)
-          }}
-          disabled={asyncQueuer.state.isFull}
-        >
-          Add Async Task
-        </button>
-        <button onClick={() => asyncQueuer.getNextItem()}>Get Next Item</button>
-        <button
-          onClick={() => asyncQueuer.clear()}
-          disabled={asyncQueuer.state.isEmpty}
-        >
-          Clear Queue
-        </button>
-        <br />
-        <button
-          onClick={() => asyncQueuer.start()}
-          disabled={asyncQueuer.state.isRunning}
-        >
-          Start Processing
-        </button>
-        <button
-          onClick={() => asyncQueuer.stop()}
-          disabled={!asyncQueuer.state.isRunning}
-        >
-          Stop Processing
-        </button>
-      </div>
+        {({
+          size,
+          isFull,
+          isEmpty,
+          isIdle,
+          status,
+          successCount,
+          rejectionCount,
+          activeItems,
+          isRunning,
+        }) => (
+          <>
+            <div></div>
+            <div>Queue Size: {size}</div>
+            <div>Queue Max Size: {25}</div>
+            <div>Queue Full: {isFull ? 'Yes' : 'No'}</div>
+            <div>Queue Empty: {isEmpty ? 'Yes' : 'No'}</div>
+            <div>Queue Idle: {isIdle ? 'Yes' : 'No'}</div>
+            <div>Queuer Status: {status}</div>
+            <div>Items Processed: {successCount}</div>
+            <div>Items Rejected: {rejectionCount}</div>
+            <div>Active Tasks: {activeItems.length}</div>
+            <div>Pending Tasks: {queueItems.length}</div>
+            <div>
+              Concurrency:{' '}
+              <input
+                type="number"
+                min={1}
+                value={concurrency}
+                onChange={(e) =>
+                  setConcurrency(Math.max(1, parseInt(e.target.value) || 1))
+                }
+                style={{ width: '60px' }}
+              />
+            </div>
+            <div style={{ minHeight: '250px' }}>
+              Queue Items:
+              {queueItems.map((item, index) => (
+                <div key={index}>
+                  {index}: {item}
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '8px',
+                maxWidth: '600px',
+                margin: '16px 0',
+              }}
+            >
+              <button
+                onClick={() => {
+                  const nextNumber = queueItems.length
+                    ? Math.max(...queueItems) + 1
+                    : 1
+                  asyncQueuer.addItem(nextNumber)
+                }}
+                disabled={isFull}
+              >
+                Add Async Task
+              </button>
+              <button onClick={() => asyncQueuer.getNextItem()}>
+                Get Next Item
+              </button>
+              <button onClick={() => asyncQueuer.clear()} disabled={isEmpty}>
+                Clear Queue
+              </button>
+              <br />
+              <button onClick={() => asyncQueuer.start()} disabled={isRunning}>
+                Start Processing
+              </button>
+              <button onClick={() => asyncQueuer.stop()} disabled={!isRunning}>
+                Stop Processing
+              </button>
+            </div>
+          </>
+        )}
+      </asyncQueuer.Subscribe>
       <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(asyncQueuer.store.state, null, 2)}
+        <asyncQueuer.Subscribe selector={(state) => state}>
+          {(state) => JSON.stringify(state, null, 2)}
+        </asyncQueuer.Subscribe>
       </pre>
     </div>
   )

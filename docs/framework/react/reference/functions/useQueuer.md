@@ -12,7 +12,7 @@ function useQueuer<TValue, TSelected>(
 selector): ReactQueuer<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:135](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L135)
+Defined in: [react-pacer/src/queuer/useQueuer.ts:170](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L170)
 
 A React hook that creates and manages a Queuer instance.
 
@@ -32,14 +32,24 @@ By default uses FIFO (First In First Out) behavior, but can be configured for LI
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `queuer.Subscribe` HOC (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` HOC to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger a re-render
+at the hook level, optimizing performance by preventing unnecessary re-renders when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` HOC. This prevents unnecessary
+re-renders and gives you full control over when your component updates.
 
 Available state properties:
 - `executionCount`: Number of items that have been processed by the queuer
@@ -93,7 +103,14 @@ const queue = useQueuer(
   { started: true, wait: 1000 }
 );
 
-// Opt-in to re-render when queue size changes (optimized for displaying queue length)
+// Subscribe to state changes deep in component tree using Subscribe HOC
+<queue.Subscribe selector={(state) => ({ size: state.size, isRunning: state.isRunning })}>
+  {({ size, isRunning }) => (
+    <div>Queue: {size} items, {isRunning ? 'Processing' : 'Idle'}</div>
+  )}
+</queue.Subscribe>
+
+// Opt-in to re-render when queue size changes at hook level (optimized for displaying queue length)
 const queue = useQueuer(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 },

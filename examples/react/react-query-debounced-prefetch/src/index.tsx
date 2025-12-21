@@ -42,6 +42,8 @@ function PostList({
   // debounce the hovered post id to avoid excessive prefetches
   const [debouncedHoveredPostId] = useDebouncedValue(currentHoveredPostId, {
     wait: 100, // adjust this value to see the difference
+    // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   })
 
   // perform the prefetch when the debounced hovered post id changes

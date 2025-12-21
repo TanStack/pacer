@@ -72,16 +72,8 @@ function App() {
         )
       },
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      size: state.size,
-      isExecuting: state.isExecuting,
-      status: state.status,
-      successCount: state.successCount,
-      errorCount: state.errorCount,
-      totalItemsProcessed: state.totalItemsProcessed,
-      items: state.items,
-    }),
+    // Alternative to batcher.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => state,
   )
 
   const addItem = (isUrgent = false) => {
@@ -107,73 +99,89 @@ function App() {
     <div>
       <h1>TanStack Pacer createAsyncBatcher Example</h1>
 
-      <div>
-        <h3>Batch Status</h3>
-        <div>Current Batch Size: {batcher.state().size}</div>
-        <div>Max Batch Size: 5</div>
-        <div>Is Executing: {batcher.state().isExecuting ? 'Yes' : 'No'}</div>
-        <div>Status: {batcher.state().status}</div>
-        <div>Successful Batches: {batcher.state().successCount}</div>
-        <div>Failed Batches: {batcher.state().errorCount}</div>
-        <div>Total Items Processed: {batcher.state().totalItemsProcessed}</div>
-      </div>
+      <batcher.Subscribe
+        selector={(state) => ({
+          size: state.size,
+          isExecuting: state.isExecuting,
+          status: state.status,
+          successCount: state.successCount,
+          errorCount: state.errorCount,
+          totalItemsProcessed: state.totalItemsProcessed,
+          items: state.items,
+        })}
+      >
+        {(state) => (
+          <>
+            <div>
+              <h3>Batch Status</h3>
+              <div>Current Batch Size: {state().size}</div>
+              <div>Max Batch Size: 5</div>
+              <div>Is Executing: {state().isExecuting ? 'Yes' : 'No'}</div>
+              <div>Status: {state().status}</div>
+              <div>Successful Batches: {state().successCount}</div>
+              <div>Failed Batches: {state().errorCount}</div>
+              <div>Total Items Processed: {state().totalItemsProcessed}</div>
+            </div>
+
+            <div>
+              <h3>Current Batch Items</h3>
+              <div style={{ 'min-height': '100px' }}>
+                {state().items.length === 0 ? (
+                  <em>No items in current batch</em>
+                ) : (
+                  <For each={state().items}>
+                    {(item, index) => (
+                      <div>
+                        {index() + 1}: {item.value} (added at{' '}
+                        {new Date(item.timestamp).toLocaleTimeString()})
+                      </div>
+                    )}
+                  </For>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <h3>Controls</h3>
+              <div
+                style={{
+                  display: 'grid',
+                  'grid-template-columns': 'repeat(2, 1fr)',
+                  gap: '8px',
+                  'max-width': '600px',
+                }}
+              >
+                <button onClick={() => addItem(false)}>Add Regular Item</button>
+                <button onClick={() => addItem(true)}>
+                  Add Urgent Item (Processes Immediately)
+                </button>
+                <button
+                  disabled={state().size === 0 || state().isExecuting}
+                  onClick={executeCurrentBatch}
+                >
+                  Process Current Batch Now
+                </button>
+                <button
+                  onClick={() => batcher.clear()}
+                  disabled={state().size === 0 || state().isExecuting}
+                >
+                  Clear Current Batch
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </batcher.Subscribe>
 
       <div>
-        <h3>Current Batch Items</h3>
-        <div style={{ 'min-height': '100px' }}>
-          {batcher.state().items.length === 0 ? (
-            <em>No items in current batch</em>
-          ) : (
-            <For each={batcher.state().items}>
-              {(item, index) => (
-                <div>
-                  {index() + 1}: {item.value} (added at{' '}
-                  {new Date(item.timestamp).toLocaleTimeString()})
-                </div>
-              )}
-            </For>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <h3>Controls</h3>
-        <div
-          style={{
-            display: 'grid',
-            'grid-template-columns': 'repeat(2, 1fr)',
-            gap: '8px',
-            'max-width': '600px',
-          }}
-        >
-          <button onClick={() => addItem(false)}>Add Regular Item</button>
-          <button onClick={() => addItem(true)}>
-            Add Urgent Item (Processes Immediately)
-          </button>
-          <button
-            disabled={batcher.state().size === 0 || batcher.state().isExecuting}
-            onClick={executeCurrentBatch}
-          >
-            Process Current Batch Now
-          </button>
-          <button
-            onClick={() => batcher.clear()}
-            disabled={batcher.state().size === 0 || batcher.state().isExecuting}
-          >
-            Clear Current Batch
-          </button>
-        </div>
-
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={shouldFail()}
-              onChange={(e) => setShouldFail(e.currentTarget.checked)}
-            />{' '}
-            Simulate random failures (30% chance)
-          </label>
-        </div>
+        <label>
+          <input
+            type="checkbox"
+            checked={shouldFail()}
+            onChange={(e) => setShouldFail(e.currentTarget.checked)}
+          />{' '}
+          Simulate random failures (30% chance)
+        </label>
       </div>
 
       <div>
@@ -210,6 +218,13 @@ function App() {
           <button onClick={() => setErrors([])}>Clear Errors</button>
         </div>
       )}
+      <batcher.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </batcher.Subscribe>
     </div>
   )
 }

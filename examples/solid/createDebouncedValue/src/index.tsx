@@ -90,10 +90,10 @@ function App3() {
     {
       wait: 250,
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => ({
+    //   executionCount: state.executionCount,
+    // }),
   )
 
   function handleRangeChange(e: Event) {
@@ -140,30 +140,37 @@ function App3() {
             <td>Instant Executions:</td>
             <td>{instantExecutionCount()}</td>
           </tr>
-          <tr>
-            <td>Debounced Executions:</td>
-            <td>{debouncer.state().executionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>
-              {instantExecutionCount() - debouncer.state().executionCount}
-            </td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount() === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount() -
-                      debouncer.state().executionCount) /
-                      instantExecutionCount()) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <debouncer.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <>
+                <tr>
+                  <td>Debounced Executions:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount() - state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>% Reduction:</td>
+                  <td>
+                    {instantExecutionCount() === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount() - state().executionCount) /
+                            instantExecutionCount()) *
+                            100,
+                        )}
+                    %
+                  </td>
+                </tr>
+              </>
+            )}
+          </debouncer.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>

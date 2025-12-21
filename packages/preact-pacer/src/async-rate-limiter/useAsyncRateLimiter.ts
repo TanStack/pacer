@@ -8,11 +8,29 @@ import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
+import type { ComponentChildren } from 'preact'
 
-export interface ReactAsyncRateLimiter<
+export interface PreactAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 > extends Omit<AsyncRateLimiter<TFn>, 'store'> {
+  /**
+   * A Preact HOC (Higher Order Component) that allows you to subscribe to the async rate limiter state.
+   *
+   * This is useful for opting into state re-renders for specific parts of the rate limiter state
+   * deep in your component tree without needing to pass a selector to the hook.
+   *
+   * @example
+   * <rateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount })}>
+   *   {({ rejectionCount }) => (
+   *     <div>Rejections: {rejectionCount}</div>
+   *   )}
+   * </rateLimiter.Subscribe>
+   */
+  Subscribe: <TSelected>(props: {
+    selector: (state: AsyncRateLimiterState<TFn>) => TSelected
+    children: ((state: TSelected) => ComponentChildren) | ComponentChildren
+  }) => ComponentChildren
   /**
    * Reactive state that will be updated and re-rendered when the rate limiter state changes
    *
@@ -57,14 +75,24 @@ export interface ReactAsyncRateLimiter<
  *
  * ## State Management and Selector
  *
- * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
- * to specify which state changes will trigger a re-render, optimizing performance by preventing
- * unnecessary re-renders when irrelevant state changes occur.
+ * The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+ * in two ways:
+ *
+ * **1. Using `rateLimiter.Subscribe` HOC (Recommended for component tree subscriptions)**
+ *
+ * Use the `Subscribe` HOC to subscribe to state changes deep in your component tree without
+ * needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+ * in child components.
+ *
+ * **2. Using the `selector` parameter (For hook-level subscriptions)**
+ *
+ * The `selector` parameter allows you to specify which state changes will trigger a re-render
+ * at the hook level, optimizing performance by preventing unnecessary re-renders when irrelevant
+ * state changes occur.
  *
  * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
- * full control over when your component updates. Only when you provide a selector will the
- * component re-render when the selected state values change.
+ * tracking by providing a selector function or using the `Subscribe` HOC. This prevents unnecessary
+ * re-renders and gives you full control over when your component updates.
  *
  * Available state properties:
  * - `errorCount`: Number of function executions that have resulted in errors
@@ -86,7 +114,14 @@ export interface ReactAsyncRateLimiter<
  *   { limit: 5, window: 1000 } // 5 calls per second
  * );
  *
- * // Opt-in to re-render when execution state changes (optimized for loading indicators)
+ * // Subscribe to state changes deep in component tree using Subscribe HOC
+ * <asyncRateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount })}>
+ *   {({ rejectionCount }) => (
+ *     <div>Rejections: {rejectionCount}</div>
+ *   )}
+ * </asyncRateLimiter.Subscribe>
+ *
+ * // Opt-in to re-render when execution state changes at hook level (optimized for loading indicators)
  * const asyncRateLimiter = useAsyncRateLimiter(
  *   async (id: string) => {
  *     const data = await api.fetchData(id);
@@ -184,15 +219,31 @@ export function useAsyncRateLimiter<
   options: AsyncRateLimiterOptions<TFn>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
-): ReactAsyncRateLimiter<TFn, TSelected> {
+): PreactAsyncRateLimiter<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncRateLimiter,
     ...options,
   } as AsyncRateLimiterOptions<TFn>
 
-  const [asyncRateLimiter] = useState(
-    () => new AsyncRateLimiter<TFn>(fn, mergedOptions),
-  )
+  const [asyncRateLimiter] = useState(() => {
+    const rateLimiterInstance = new AsyncRateLimiter<TFn>(
+      fn,
+      mergedOptions,
+    ) as unknown as PreactAsyncRateLimiter<TFn, TSelected>
+
+    rateLimiterInstance.Subscribe = function Subscribe<TSelected>(props: {
+      selector: (state: AsyncRateLimiterState<TFn>) => TSelected
+      children: ((state: TSelected) => ComponentChildren) | ComponentChildren
+    }) {
+      const selected = useStore(rateLimiterInstance.store, props.selector)
+
+      return typeof props.children === 'function'
+        ? props.children(selected)
+        : props.children
+    }
+
+    return rateLimiterInstance
+  })
 
   asyncRateLimiter.fn = fn
   asyncRateLimiter.setOptions(mergedOptions)
@@ -204,7 +255,7 @@ export function useAsyncRateLimiter<
       ({
         ...asyncRateLimiter,
         state,
-      }) as ReactAsyncRateLimiter<TFn, TSelected>, // omit `store` in favor of `state`
+      }) as PreactAsyncRateLimiter<TFn, TSelected>, // omit `store` in favor of `state`
     [asyncRateLimiter, state],
   )
 }

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client'
 import { useDebouncer } from '@tanstack/react-pacer/debouncer'
 import { useThrottler } from '@tanstack/react-pacer/throttler'
 import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
-import { useQueuer } from '@tanstack/react-pacer/queuer'
-import { useBatcher } from '@tanstack/react-pacer/batcher'
+import { QueuerState, useQueuer } from '@tanstack/react-pacer/queuer'
+import { BatcherState, useBatcher } from '@tanstack/react-pacer/batcher'
 import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
@@ -26,7 +26,8 @@ function ComparisonApp() {
       key: 'my-debouncer',
       wait: 600,
     },
-    (state) => state,
+    // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   const throttler = useThrottler(
@@ -35,7 +36,8 @@ function ComparisonApp() {
       key: 'my-throttler',
       wait: 600,
     },
-    (state) => state,
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   const rateLimiter = useRateLimiter(
@@ -46,7 +48,8 @@ function ComparisonApp() {
       window: 2000,
       windowType: 'sliding',
     },
-    (state) => state,
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   const queuer = useQueuer(
@@ -56,7 +59,8 @@ function ComparisonApp() {
       wait: 100,
       maxSize: 50,
     },
-    (state) => state,
+    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   const batcher = useBatcher(
@@ -71,7 +75,8 @@ function ComparisonApp() {
       wait: 600,
       maxSize: 5,
     },
-    (state) => state,
+    // Alternative to batcher.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -88,13 +93,18 @@ function ComparisonApp() {
   }
 
   // Helper function to determine sync status
-  function getSyncStatus(processedValue: number, utilityName: string) {
+  // Note: This function will be called from within Subscribe HOCs, so it receives state as parameter
+  function getSyncStatus(
+    processedValue: number,
+    utilityName: string,
+    utilityState?: any,
+  ) {
     const isOutOfSync = processedValue !== currentValue
     const isPending =
-      (utilityName === 'Debouncer' && debouncer.state.status === 'pending') ||
-      (utilityName === 'Throttler' && throttler.state.status === 'pending') ||
-      (utilityName === 'Queuer' && queuer.state.status === 'running') ||
-      (utilityName === 'Batcher' && batcher.state.status === 'pending')
+      (utilityName === 'Debouncer' && utilityState?.status === 'pending') ||
+      (utilityName === 'Throttler' && utilityState?.status === 'pending') ||
+      (utilityName === 'Queuer' && utilityState?.status === 'running') ||
+      (utilityName === 'Batcher' && utilityState?.status === 'pending')
 
     // Tooltip explanations for why certain utilities become out of sync
     const getTooltip = () => {
@@ -126,78 +136,46 @@ function ComparisonApp() {
     }
   }
 
-  // Warning icon SVG
-  const WarningIcon = ({ size = 16 }: { size?: number }) => (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      style={{ display: 'inline-block', verticalAlign: 'middle' }}
-    >
-      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-      <line x1="12" y1="9" x2="12" y2="13" />
-      <line x1="12" y1="17" x2="12.01" y2="17" />
-    </svg>
-  )
-
-  // Success icon SVG
-  const SuccessIcon = ({ size = 16 }: { size?: number }) => (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      style={{ display: 'inline-block', verticalAlign: 'middle' }}
-    >
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-      <polyline points="22,4 12,14.01 9,11.01" />
-    </svg>
-  )
-
-  const utilityData = [
+  // Utility metadata (without state - state will be accessed via Subscribe HOCs)
+  const utilityMetadata = [
     {
       name: 'Debouncer',
       value: debouncedValue,
-      state: debouncer.state,
       description: `Delays execution until after ${debouncer.options.wait}ms of inactivity`,
       color: '#3b82f6', // blue
       flush: () => debouncer.flush(),
+      util: debouncer,
     },
     {
       name: 'Throttler',
       value: throttledValue,
-      state: throttler.state,
       description: `Limits execution to once every ${throttler.options.wait}ms`,
       color: '#0891b2', // cyan
       flush: () => throttler.flush(),
+      util: throttler,
     },
     {
       name: 'Rate Limiter',
       value: rateLimitedValue,
-      state: rateLimiter.state,
       description: `Allows max ${rateLimiter.options.limit} executions per ${rateLimiter.options.window}ms window`,
       color: '#ea580c', // orange
+      util: rateLimiter,
     },
     {
       name: 'Queuer',
       value: queuedValue,
-      state: queuer.state,
       description: `Processes items sequentially with ${queuer.options.wait}ms delay`,
       color: '#db2777', // pink
       flush: () => queuer.flush(),
+      util: queuer,
     },
     {
       name: 'Batcher',
       value: batchedValue,
-      state: batcher.state,
       description: `Processes in batches of ${batcher.options.maxSize} or after ${batcher.options.wait}ms`,
       color: '#8b5cf6', // purple
       flush: () => batcher.flush(),
+      util: batcher,
     },
   ] as const
 
@@ -243,169 +221,181 @@ function ComparisonApp() {
           marginBottom: '30px',
         }}
       >
-        {utilityData.map((utility) => {
-          const syncStatus = getSyncStatus(utility.value, utility.name)
-          return (
-            <div
-              key={utility.name}
-              style={{
-                border: `2px solid ${utility.color}`,
-                borderRadius: '6px',
-                padding: '10px',
-                backgroundColor: syncStatus.isPending
-                  ? 'rgba(254, 249, 195, 0.4)' // yellowish if pending
-                  : syncStatus.isOutOfSync
-                    ? 'rgba(254, 226, 226, 0.4)' // reddish if out of sync
-                    : 'rgba(209, 250, 229, 0.4)', // greenish if synced
-                transition: 'background-color 0.2s ease',
-              }}
-            >
-              <h3
-                style={{
-                  color: utility.color,
-                  margin: '0 0 8px 0',
-                  fontSize: '1.1em',
-                }}
-              >
-                {utility.name}
-              </h3>
-              <p
-                style={{
-                  fontSize: '0.85em',
-                  color: '#666',
-                  margin: '0 0 12px 0',
-                  lineHeight: '1.4',
-                }}
-              >
-                {utility.description}
-              </p>
-
-              <div style={{ marginBottom: '12px' }}>
-                <div style={{ marginBottom: '4px' }}>
-                  <strong style={{ fontSize: '0.9em' }}>
-                    Value: {utility.value}
-                  </strong>
-                </div>
-                <div style={{ marginBottom: '6px' }}>
-                  {syncStatus.isOutOfSync ? (
-                    <span
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '3px',
-                        color: syncStatus.isPending ? '#f59e0b' : '#ef4444',
-                        fontSize: '0.8em',
-                        cursor: syncStatus.tooltip ? 'help' : 'default',
-                      }}
-                      title={syncStatus.tooltip}
-                    >
-                      <WarningIcon size={12} />
-                      {syncStatus.statusText}
-                    </span>
-                  ) : (
-                    <span
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '3px',
-                        color: '#10b981',
-                        fontSize: '0.8em',
-                      }}
-                    >
-                      <SuccessIcon size={12} />
-                      {syncStatus.statusText}
-                    </span>
-                  )}
-                </div>
-                <input
-                  onClick={() =>
-                    alert(
-                      'These sliders are read-only. Move the main slider at the top',
-                    )
-                  }
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={utility.value}
-                  readOnly
+        {utilityMetadata.map((utility) => (
+          <utility.util.Subscribe
+            key={utility.name}
+            selector={(state) => state}
+          >
+            {(state) => {
+              const syncStatus = getSyncStatus(
+                utility.value,
+                utility.name,
+                state,
+              )
+              return (
+                <div
                   style={{
-                    width: '100%',
-                    margin: '2px 0',
-                    accentColor: utility.color,
-                  }}
-                />
-              </div>
-
-              <div
-                style={{
-                  fontSize: '0.8em',
-                  marginBottom: '12px',
-                  lineHeight: '1.3',
-                }}
-              >
-                <div>
-                  <strong>Executions:</strong> {utility.state.executionCount}
-                </div>
-                <div>
-                  <strong>Reduction:</strong>{' '}
-                  {instantExecutionCount === 0
-                    ? '0'
-                    : Math.round(
-                        ((instantExecutionCount -
-                          utility.state.executionCount) /
-                          instantExecutionCount) *
-                          100,
-                      )}
-                  %
-                </div>
-                {utility.name === 'Rate Limiter' && (
-                  <div>
-                    <strong>Rejections:</strong>{' '}
-                    {(utility.state as any).rejectionCount}
-                  </div>
-                )}
-                {utility.name === 'Queuer' && (
-                  <>
-                    <div>
-                      <strong>Queue Size:</strong> {utility.state.size}
-                    </div>
-                  </>
-                )}
-                {utility.name === 'Batcher' && (
-                  <>
-                    <div>
-                      <strong>Batch Size:</strong> {utility.state.size}
-                    </div>
-                    <div>
-                      <strong>Items Processed:</strong>{' '}
-                      {(utility.state as any).totalItemsProcessed}
-                    </div>
-                  </>
-                )}
-                <div>
-                  <strong>Status:</strong> {utility.state.status}
-                </div>
-              </div>
-              {'flush' in utility && typeof utility.flush === 'function' && (
-                <button
-                  onClick={utility.flush}
-                  style={{
-                    backgroundColor: utility.color,
-                    color: 'white',
-                    border: 'none',
-                    padding: '6px 12px',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontSize: '0.85em',
-                    width: '100%',
+                    border: `2px solid ${utility.color}`,
+                    borderRadius: '6px',
+                    padding: '10px',
+                    backgroundColor: syncStatus.isPending
+                      ? 'rgba(254, 249, 195, 0.4)' // yellowish if pending
+                      : syncStatus.isOutOfSync
+                        ? 'rgba(254, 226, 226, 0.4)' // reddish if out of sync
+                        : 'rgba(209, 250, 229, 0.4)', // greenish if synced
+                    transition: 'background-color 0.2s ease',
                   }}
                 >
-                  Flush
-                </button>
-              )}
-            </div>
-          )
-        })}
+                  <h3
+                    style={{
+                      color: utility.color,
+                      margin: '0 0 8px 0',
+                      fontSize: '1.1em',
+                    }}
+                  >
+                    {utility.name}
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: '0.85em',
+                      color: '#666',
+                      margin: '0 0 12px 0',
+                      lineHeight: '1.4',
+                    }}
+                  >
+                    {utility.description}
+                  </p>
+
+                  <div style={{ marginBottom: '12px' }}>
+                    <div style={{ marginBottom: '4px' }}>
+                      <strong style={{ fontSize: '0.9em' }}>
+                        Value: {utility.value}
+                      </strong>
+                    </div>
+                    <div style={{ marginBottom: '6px' }}>
+                      {syncStatus.isOutOfSync ? (
+                        <span
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            color: syncStatus.isPending ? '#f59e0b' : '#ef4444',
+                            fontSize: '0.8em',
+                            cursor: syncStatus.tooltip ? 'help' : 'default',
+                          }}
+                          title={syncStatus.tooltip}
+                        >
+                          <WarningIcon size={12} />
+                          {syncStatus.statusText}
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            color: '#10b981',
+                            fontSize: '0.8em',
+                          }}
+                        >
+                          <SuccessIcon size={12} />
+                          {syncStatus.statusText}
+                        </span>
+                      )}
+                    </div>
+                    <input
+                      onClick={() =>
+                        alert(
+                          'These sliders are read-only. Move the main slider at the top',
+                        )
+                      }
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={utility.value}
+                      readOnly
+                      style={{
+                        width: '100%',
+                        margin: '2px 0',
+                        accentColor: utility.color,
+                      }}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: '0.8em',
+                      marginBottom: '12px',
+                      lineHeight: '1.3',
+                    }}
+                  >
+                    <div>
+                      <strong>Executions:</strong> {state.executionCount}
+                    </div>
+                    <div>
+                      <strong>Reduction:</strong>{' '}
+                      {instantExecutionCount === 0
+                        ? '0'
+                        : Math.round(
+                            ((instantExecutionCount - state.executionCount) /
+                              instantExecutionCount) *
+                              100,
+                          )}
+                      %
+                    </div>
+                    {utility.name === 'Rate Limiter' && (
+                      <div>
+                        <strong>Rejections:</strong>{' '}
+                        {(state as any).rejectionCount}
+                      </div>
+                    )}
+                    {utility.name === 'Queuer' && (
+                      <>
+                        <div>
+                          <strong>Queue Size:</strong>{' '}
+                          {(state as QueuerState<number>).size}
+                        </div>
+                      </>
+                    )}
+                    {utility.name === 'Batcher' && (
+                      <>
+                        <div>
+                          <strong>Batch Size:</strong>{' '}
+                          {(state as BatcherState<number>).size}
+                        </div>
+                        <div>
+                          <strong>Items Processed:</strong>{' '}
+                          {(state as any).totalItemsProcessed}
+                        </div>
+                      </>
+                    )}
+                    <div>
+                      <strong>Status:</strong> {state.status}
+                    </div>
+                  </div>
+                  {'flush' in utility &&
+                    typeof utility.flush === 'function' && (
+                      <button
+                        onClick={utility.flush}
+                        style={{
+                          backgroundColor: utility.color,
+                          color: 'white',
+                          border: 'none',
+                          padding: '6px 12px',
+                          borderRadius: '4px',
+                          cursor: 'pointer',
+                          fontSize: '0.85em',
+                          width: '100%',
+                        }}
+                      >
+                        Flush
+                      </button>
+                    )}
+                </div>
+              )
+            }}
+          </utility.util.Subscribe>
+        ))}
       </div>
 
       <div style={{ marginTop: '20px' }}>
@@ -419,31 +409,38 @@ function ComparisonApp() {
             gap: '8px',
           }}
         >
-          {utilityData.map((utility) => (
-            <div key={utility.name}>
-              <h4
-                style={{
-                  color: utility.color,
-                  margin: '0 0 5px 0',
-                  fontSize: '0.9em',
-                }}
-              >
-                {utility.name} State
-              </h4>
-              <pre
-                style={{
-                  fontSize: '0.7em',
-                  backgroundColor: '#f5f5f5',
-                  padding: '8px',
-                  borderRadius: '4px',
-                  overflow: 'auto',
-                  maxHeight: '500px',
-                  margin: 0,
-                }}
-              >
-                {JSON.stringify(utility.state, null, 2)}
-              </pre>
-            </div>
+          {utilityMetadata.map((utility) => (
+            <utility.util.Subscribe
+              key={utility.name}
+              selector={(state) => state}
+            >
+              {(state) => (
+                <div>
+                  <h4
+                    style={{
+                      color: utility.color,
+                      margin: '0 0 5px 0',
+                      fontSize: '0.9em',
+                    }}
+                  >
+                    {utility.name} State
+                  </h4>
+                  <pre
+                    style={{
+                      fontSize: '0.7em',
+                      backgroundColor: '#f5f5f5',
+                      padding: '8px',
+                      borderRadius: '4px',
+                      overflow: 'auto',
+                      maxHeight: '500px',
+                      margin: 0,
+                    }}
+                  >
+                    {JSON.stringify(state, null, 2)}
+                  </pre>
+                </div>
+              )}
+            </utility.util.Subscribe>
           ))}
         </div>
       </div>
@@ -459,3 +456,36 @@ function ComparisonApp() {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(<ComparisonApp />)
+
+// Warning icon SVG
+const WarningIcon = ({ size = 16 }: { size?: number }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    style={{ display: 'inline-block', verticalAlign: 'middle' }}
+  >
+    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
+)
+
+// Success icon SVG
+const SuccessIcon = ({ size = 16 }: { size?: number }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    style={{ display: 'inline-block', verticalAlign: 'middle' }}
+  >
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+    <polyline points="22,4 12,14.01 9,11.01" />
+  </svg>
+)

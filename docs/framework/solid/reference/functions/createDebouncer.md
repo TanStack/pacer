@@ -12,7 +12,7 @@ function createDebouncer<TFn, TSelected>(
 selector): SolidDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/debouncer/createDebouncer.ts:106](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L106)
+Defined in: [solid-pacer/src/debouncer/createDebouncer.ts:133](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L133)
 
 A Solid hook that creates and manages a Debouncer instance.
 
@@ -30,14 +30,24 @@ timer resets and starts waiting again.
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `debouncer.Subscribe` component (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger reactive updates
+at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+updates and gives you full control over when your component tracks state changes.
 
 Available state properties:
 - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -84,21 +94,21 @@ const debouncer = createDebouncer(
   { wait: 500 }
 );
 
-// Opt-in to re-render when isPending changes (optimized for loading states)
+// Opt-in to track isPending changes (optimized for loading states)
 const debouncer = createDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 },
   (state) => ({ isPending: state.isPending })
 );
 
-// Opt-in to re-render when executionCount changes (optimized for tracking execution)
+// Opt-in to track executionCount changes (optimized for tracking execution)
 const debouncer = createDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 },
   (state) => ({ executionCount: state.executionCount })
 );
 
-// Multiple state properties - re-render when any of these change
+// Multiple state properties - track when any of these change
 const debouncer = createDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 },

@@ -2,7 +2,7 @@ import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useStore } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor } from 'solid-js'
+import type { Accessor, JSX } from 'solid-js'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
@@ -12,6 +12,23 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
   AsyncQueuer<TValue>,
   'store'
 > {
+  /**
+   * A Solid component that allows you to subscribe to the queuer state.
+   *
+   * This is useful for tracking specific parts of the queuer state
+   * deep in your component tree without needing to pass a selector to the hook.
+   *
+   * @example
+   * <queuer.Subscribe selector={(state) => ({ pendingItems: state.pendingItems, activeItems: state.activeItems })}>
+   *   {(state) => (
+   *     <div>Pending: {state().pendingItems.length}, Active: {state().activeItems.length}</div>
+   *   )}
+   * </queuer.Subscribe>
+   */
+  Subscribe: <TSelected>(props: {
+    selector: (state: AsyncQueuerState<TValue>) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) => JSX.Element
   /**
    * Reactive state that will be updated when the queuer state changes
    *
@@ -51,14 +68,24 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
  *
  * ## State Management and Selector
  *
- * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
- * to specify which state changes will trigger a re-render, optimizing performance by preventing
- * unnecessary re-renders when irrelevant state changes occur.
+ * The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+ * in two ways:
+ *
+ * **1. Using `queuer.Subscribe` component (Recommended for component tree subscriptions)**
+ *
+ * Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+ * needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+ * in child components.
+ *
+ * **2. Using the `selector` parameter (For hook-level subscriptions)**
+ *
+ * The `selector` parameter allows you to specify which state changes will trigger reactive updates
+ * at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+ * state changes occur.
  *
  * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
- * full control over when your component updates. Only when you provide a selector will the
- * component re-render when the selected state values change.
+ * tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+ * updates and gives you full control over when your component tracks state changes.
  *
  * Available state properties:
  * - `activeItems`: Array of items currently being processed
@@ -88,7 +115,7 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
  *   }
  * });
  *
- * // Opt-in to re-render when queue state changes (optimized for UI updates)
+ * // Opt-in to track queue state changes (optimized for UI updates)
  * const asyncQueuer = createAsyncQueuer(
  *   async (item) => await fetchData(item),
  *   { concurrency: 2, started: true },
@@ -99,7 +126,7 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
  *   })
  * );
  *
- * // Opt-in to re-render when processing metrics change (optimized for tracking progress)
+ * // Opt-in to track processing metrics changes (optimized for tracking progress)
  * const asyncQueuer = createAsyncQueuer(
  *   async (item) => await fetchData(item),
  *   { concurrency: 2, started: true },
@@ -131,7 +158,21 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
     ...options,
   } as AsyncQueuerOptions<TValue>
 
-  const asyncQueuer = new AsyncQueuer<TValue>(fn, mergedOptions)
+  const asyncQueuer = new AsyncQueuer<TValue>(
+    fn,
+    mergedOptions,
+  ) as unknown as SolidAsyncQueuer<TValue, TSelected>
+
+  asyncQueuer.Subscribe = function Subscribe<TSelected>(props: {
+    selector: (state: AsyncQueuerState<TValue>) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) {
+    const selected = useStore(asyncQueuer.store, props.selector)
+
+    return typeof props.children === 'function'
+      ? props.children(selected)
+      : props.children
+  }
 
   const state = useStore(asyncQueuer.store, selector)
 

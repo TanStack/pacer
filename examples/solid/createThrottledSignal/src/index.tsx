@@ -13,9 +13,10 @@ function App1() {
       wait: 1000,
       // enabled: () => instantCount() > 2, // optional, defaults to true
     },
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => ({
+    //   executionCount: state.executionCount,
+    // }),
   )
 
   function increment() {
@@ -32,10 +33,18 @@ function App1() {
       <h1>TanStack Pacer createThrottledSignal Example 1</h1>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{throttler.state().executionCount}</td>
-          </tr>
+          <throttler.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <tr>
+                <td>Execution Count:</td>
+                <td>{state().executionCount}</td>
+              </tr>
+            )}
+          </throttler.Subscribe>
           <tr>
             <td>Instant Count:</td>
             <td>{instantCount()}</td>
@@ -64,9 +73,10 @@ function App2() {
         wait: 1000,
         // enabled: () => instantSearch().length > 2, // optional, defaults to true
       },
-      (state) => ({
-        executionCount: state.executionCount,
-      }),
+      // Alternative to throttler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+      // (state) => ({
+      //   executionCount: state.executionCount,
+      // }),
     )
 
   function handleSearchChange(e: Event) {
@@ -91,10 +101,18 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{throttler.state().executionCount}</td>
-          </tr>
+          <throttler.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <tr>
+                <td>Execution Count:</td>
+                <td>{state().executionCount}</td>
+              </tr>
+            )}
+          </throttler.Subscribe>
           <tr>
             <td>Instant Search:</td>
             <td>{instantSearch()}</td>
@@ -119,9 +137,10 @@ function App3() {
     {
       wait: 250,
     },
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => ({
+    //   executionCount: state.executionCount,
+    // }),
   )
 
   function handleRangeChange(e: Event) {
@@ -169,30 +188,37 @@ function App3() {
             <td>Instant Executions:</td>
             <td>{instantExecutionCount()}</td>
           </tr>
-          <tr>
-            <td>Throttled Executions:</td>
-            <td>{throttler.state().executionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>
-              {instantExecutionCount() - throttler.state().executionCount}
-            </td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount() === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount() -
-                      throttler.state().executionCount) /
-                      instantExecutionCount()) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <throttler.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <>
+                <tr>
+                  <td>Throttled Executions:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount() - state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>% Reduction:</td>
+                  <td>
+                    {instantExecutionCount() === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount() - state().executionCount) /
+                            instantExecutionCount()) *
+                            100,
+                        )}
+                    %
+                  </td>
+                </tr>
+              </>
+            )}
+          </throttler.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>

@@ -12,7 +12,7 @@ function createRateLimiter<TFn, TSelected>(
 selector): SolidRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:105](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L105)
+Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:173](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L173)
 
 A low-level Solid hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
@@ -36,14 +36,24 @@ For smoother execution patterns:
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `rateLimiter.Subscribe` component (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger reactive updates
+at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+updates and gives you full control over when your component tracks state changes.
 
 Available state properties:
 - `executionCount`: Number of function executions that have been completed
@@ -89,31 +99,72 @@ const rateLimiter = createRateLimiter(apiCall, {
   limit: 5,
   window: 60000,
   windowType: 'sliding',
-  onReject: (rateLimiter) => {
-    console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
-  }
 });
 
-// Opt-in to re-render when rate limit state changes (optimized for UI feedback)
+// Subscribe to state changes deep in component tree using Subscribe component
+<rateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount })}>
+  {({ rejectionCount }) => (
+    <div>Rejections: {rejectionCount}</div>
+  )}
+</rateLimiter.Subscribe>
+
+// Opt-in to track execution count changes at hook level (optimized for tracking successful executions)
 const rateLimiter = createRateLimiter(
   apiCall,
-  { limit: 5, window: 60000 },
+  {
+    limit: 5,
+    window: 60000,
+    windowType: 'sliding',
+  },
+  (state) => ({ executionCount: state.executionCount })
+);
+
+// Opt-in to track rejection count changes (optimized for tracking rate limit violations)
+const rateLimiter = createRateLimiter(
+  apiCall,
+  {
+    limit: 5,
+    window: 60000,
+    windowType: 'sliding',
+  },
+  (state) => ({ rejectionCount: state.rejectionCount })
+);
+
+// Opt-in to track execution times changes (optimized for window calculations)
+const rateLimiter = createRateLimiter(
+  apiCall,
+  {
+    limit: 5,
+    window: 60000,
+    windowType: 'sliding',
+  },
+  (state) => ({ executionTimes: state.executionTimes })
+);
+
+// Multiple state properties - track when any of these change
+const rateLimiter = createRateLimiter(
+  apiCall,
+  {
+    limit: 5,
+    window: 60000,
+    windowType: 'sliding',
+  },
   (state) => ({
-    remainingInWindow: state.remainingInWindow,
+    executionCount: state.executionCount,
     rejectionCount: state.rejectionCount
   })
 );
 
-// Opt-in to re-render when execution metrics change (optimized for tracking progress)
-const rateLimiter = createRateLimiter(
-  apiCall,
-  { limit: 5, window: 60000 },
-  (state) => ({
-    executionCount: state.executionCount,
-    nextWindowTime: state.nextWindowTime
-  })
-);
+// Monitor rate limit status
+const handleClick = () => {
+  const remaining = rateLimiter.getRemainingInWindow();
+  if (remaining > 0) {
+    rateLimiter.maybeExecute(data);
+  } else {
+    showRateLimitWarning();
+  }
+};
 
 // Access the selected state (will be empty object {} unless selector provided)
-const { remainingInWindow, rejectionCount } = rateLimiter.state();
+const { executionCount, rejectionCount } = rateLimiter.state();
 ```

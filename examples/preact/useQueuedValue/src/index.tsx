@@ -7,87 +7,97 @@ function App1() {
   const [instantSearchValue, setInstantSearchValue] = useState('')
 
   // Queuer that processes a single value with delays
-  const [value, queuer] = useQueuedValue(
-    instantSearchValue,
-    {
-      maxSize: 25,
-      wait: 500, // wait 500ms between processing value changes
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-      isEmpty: state.isEmpty,
-      isFull: state.isFull,
-      isIdle: state.isIdle,
-      isRunning: state.isRunning,
-      items: state.items, // required for useQueuedValue hook
-      size: state.size,
-      status: state.status,
-    }),
-  )
+  const [value, queuer] = useQueuedValue(instantSearchValue, {
+    maxSize: 25,
+    wait: 500, // wait 500ms between processing value changes
+    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  })
 
   return (
     <div>
       <h1>TanStack Pacer useQueuedValue Example 1</h1>
       <div>Current Value: {value}</div>
       <hr />
-      <div>Queue Size: {queuer.state.size}</div>
-      <div>Queue Full: {queuer.state.isFull ? 'Yes' : 'No'}</div>
-      <div>Queue Peek: {queuer.peekNextItem()}</div>
-      <div>Queue Empty: {queuer.state.isEmpty ? 'Yes' : 'No'}</div>
-      <div>Queue Idle: {queuer.state.isIdle ? 'Yes' : 'No'}</div>
-      <div>Queuer Status: {queuer.state.status}</div>
-      <div>Items Processed: {queuer.state.executionCount}</div>
-      <div>Queue Items: {queuer.peekAllItems().join(', ')}</div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '8px',
-          maxWidth: '600px',
-          margin: '16px 0',
-        }}
+      <queuer.Subscribe
+        selector={(state) => ({
+          size: state.size,
+          isFull: state.isFull,
+          isEmpty: state.isEmpty,
+          isIdle: state.isIdle,
+          isRunning: state.isRunning,
+          status: state.status,
+          executionCount: state.executionCount,
+        })}
       >
-        <input
-          autoFocus
-          type="search"
-          value={instantSearchValue}
-          onInput={(e) => {
-            setInstantSearchValue(e.currentTarget.value) // instantly update the local search value
-          }}
-          placeholder="Enter search term..."
-          disabled={queuer.state.isFull}
-        />
-        <button
-          disabled={queuer.state.isEmpty}
-          onClick={() => {
-            queuer.execute()
-          }}
-        >
-          Process Next
-        </button>
-        <button onClick={() => queuer.clear()} disabled={queuer.state.isEmpty}>
-          Clear Queue
-        </button>
-        <button onClick={() => queuer.reset()} disabled={queuer.state.isEmpty}>
-          Reset Queue
-        </button>
-        <button
-          onClick={() => queuer.start()}
-          disabled={queuer.state.isRunning}
-        >
-          Start Processing
-        </button>
-        <button
-          onClick={() => queuer.stop()}
-          disabled={!queuer.state.isRunning}
-        >
-          Stop Processing
-        </button>
-      </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(queuer.store.state, null, 2)}
-      </pre>
+        {({
+          size,
+          isFull,
+          isEmpty,
+          isIdle,
+          isRunning,
+          status,
+          executionCount,
+        }) => (
+          <>
+            <div>Queue Size: {size}</div>
+            <div>Queue Full: {isFull ? 'Yes' : 'No'}</div>
+            <div>Queue Peek: {queuer.peekNextItem()}</div>
+            <div>Queue Empty: {isEmpty ? 'Yes' : 'No'}</div>
+            <div>Queue Idle: {isIdle ? 'Yes' : 'No'}</div>
+            <div>Queuer Status: {status}</div>
+            <div>Items Processed: {executionCount}</div>
+            <div>Queue Items: {queuer.peekAllItems().join(', ')}</div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '8px',
+                maxWidth: '600px',
+                margin: '16px 0',
+              }}
+            >
+              <input
+                autoFocus
+                type="search"
+                value={instantSearchValue}
+                onInput={(e) => {
+                  setInstantSearchValue(e.currentTarget.value) // instantly update the local search value
+                }}
+                placeholder="Enter search term..."
+                disabled={isFull}
+              />
+              <button
+                disabled={isEmpty}
+                onClick={() => {
+                  queuer.execute()
+                }}
+              >
+                Process Next
+              </button>
+              <button onClick={() => queuer.clear()} disabled={isEmpty}>
+                Clear Queue
+              </button>
+              <button onClick={() => queuer.reset()} disabled={isEmpty}>
+                Reset Queue
+              </button>
+              <button onClick={() => queuer.start()} disabled={isRunning}>
+                Start Processing
+              </button>
+              <button onClick={() => queuer.stop()} disabled={!isRunning}>
+                Stop Processing
+              </button>
+            </div>
+          </>
+        )}
+      </queuer.Subscribe>
+      <queuer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </queuer.Subscribe>
     </div>
   )
 }
@@ -97,23 +107,12 @@ function App2() {
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
   // Queuer that processes a single value with delays
-  const [queuedValue, queuer] = useQueuedValue(
-    currentValue,
-    {
-      maxSize: 100,
-      wait: 100,
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-      isEmpty: state.isEmpty,
-      isFull: state.isFull,
-      isIdle: state.isIdle,
-      items: state.items, // required for useQueuedValue hook
-      size: state.size,
-      status: state.status,
-    }),
-  )
+  const [queuedValue, queuer] = useQueuedValue(currentValue, {
+    maxSize: 100,
+    wait: 100,
+    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  })
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
@@ -154,59 +153,78 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Queue Size:</td>
-            <td>{queuer.state.size}</td>
-          </tr>
-          <tr>
-            <td>Queue Full:</td>
-            <td>{queuer.state.isFull ? 'Yes' : 'No'}</td>
-          </tr>
-          <tr>
-            <td>Queue Empty:</td>
-            <td>{queuer.state.isEmpty ? 'Yes' : 'No'}</td>
-          </tr>
-          <tr>
-            <td>Queue Idle:</td>
-            <td>{queuer.state.isIdle ? 'Yes' : 'No'}</td>
-          </tr>
-          <tr>
-            <td>Queuer Status:</td>
-            <td>{queuer.state.status}</td>
-          </tr>
-          <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount}</td>
-          </tr>
-          <tr>
-            <td>Items Processed:</td>
-            <td>{queuer.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>{instantExecutionCount - queuer.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount - queuer.state.executionCount) /
-                      instantExecutionCount) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <queuer.Subscribe
+            selector={(state) => ({
+              size: state.size,
+              isFull: state.isFull,
+              isEmpty: state.isEmpty,
+              isIdle: state.isIdle,
+              status: state.status,
+              executionCount: state.executionCount,
+            })}
+          >
+            {({ size, isFull, isEmpty, isIdle, status, executionCount }) => (
+              <>
+                <tr>
+                  <td>Queue Size:</td>
+                  <td>{size}</td>
+                </tr>
+                <tr>
+                  <td>Queue Full:</td>
+                  <td>{isFull ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Queue Empty:</td>
+                  <td>{isEmpty ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Queue Idle:</td>
+                  <td>{isIdle ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Queuer Status:</td>
+                  <td>{status}</td>
+                </tr>
+                <tr>
+                  <td>Instant Executions:</td>
+                  <td>{instantExecutionCount}</td>
+                </tr>
+                <tr>
+                  <td>Items Processed:</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount - executionCount}</td>
+                </tr>
+                <tr>
+                  <td>% Reduction:</td>
+                  <td>
+                    {instantExecutionCount === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount - executionCount) /
+                            instantExecutionCount) *
+                            100,
+                        )}
+                    %
+                  </td>
+                </tr>
+              </>
+            )}
+          </queuer.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Queued with 100ms wait time</p>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(queuer.store.state, null, 2)}
-      </pre>
+      <queuer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </queuer.Subscribe>
     </div>
   )
 }

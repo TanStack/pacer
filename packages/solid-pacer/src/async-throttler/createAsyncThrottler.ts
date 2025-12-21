@@ -2,7 +2,7 @@ import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { useStore } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor } from 'solid-js'
+import type { Accessor, JSX } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncThrottlerOptions,
@@ -13,6 +13,23 @@ export interface SolidAsyncThrottler<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 > extends Omit<AsyncThrottler<TFn>, 'store'> {
+  /**
+   * A Solid component that allows you to subscribe to the throttler state.
+   *
+   * This is useful for tracking specific parts of the throttler state
+   * deep in your component tree without needing to pass a selector to the hook.
+   *
+   * @example
+   * <throttler.Subscribe selector={(state) => ({ isPending: state.isPending, isExecuting: state.isExecuting })}>
+   *   {(state) => (
+   *     <div>{state().isPending ? 'Pending...' : state().isExecuting ? 'Executing...' : 'Ready'}</div>
+   *   )}
+   * </throttler.Subscribe>
+   */
+  Subscribe: <TSelected>(props: {
+    selector: (state: AsyncThrottlerState<TFn>) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) => JSX.Element
   /**
    * Reactive state that will be updated when the throttler state changes
    *
@@ -50,14 +67,24 @@ export interface SolidAsyncThrottler<
  *
  * ## State Management and Selector
  *
- * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
- * to specify which state changes will trigger a re-render, optimizing performance by preventing
- * unnecessary re-renders when irrelevant state changes occur.
+ * The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+ * in two ways:
+ *
+ * **1. Using `throttler.Subscribe` component (Recommended for component tree subscriptions)**
+ *
+ * Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+ * needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+ * in child components.
+ *
+ * **2. Using the `selector` parameter (For hook-level subscriptions)**
+ *
+ * The `selector` parameter allows you to specify which state changes will trigger reactive updates
+ * at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+ * state changes occur.
  *
  * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
- * full control over when your component updates. Only when you provide a selector will the
- * component re-render when the selected state values change.
+ * tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+ * updates and gives you full control over when your component tracks state changes.
  *
  * Available state properties:
  * - `canLeadingExecute`: Whether the throttler can execute on the leading edge
@@ -84,7 +111,7 @@ export interface SolidAsyncThrottler<
  *   { wait: 1000 }
  * );
  *
- * // Opt-in to re-render when isPending or isExecuting changes (optimized for loading states)
+ * // Opt-in to track isPending or isExecuting changes (optimized for loading states)
  * const throttler = createAsyncThrottler(
  *   async (query) => {
  *     const result = await searchAPI(query);
@@ -94,7 +121,7 @@ export interface SolidAsyncThrottler<
  *   (state) => ({ isPending: state.isPending, isExecuting: state.isExecuting })
  * );
  *
- * // Opt-in to re-render when error state changes (optimized for error handling)
+ * // Opt-in to track error state changes (optimized for error handling)
  * const throttler = createAsyncThrottler(
  *   async (query) => {
  *     const result = await searchAPI(query);
@@ -129,7 +156,21 @@ export function createAsyncThrottler<
     ...options,
   } as AsyncThrottlerOptions<TFn>
 
-  const asyncThrottler = new AsyncThrottler(fn, mergedOptions)
+  const asyncThrottler = new AsyncThrottler(
+    fn,
+    mergedOptions,
+  ) as unknown as SolidAsyncThrottler<TFn, TSelected>
+
+  asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
+    selector: (state: AsyncThrottlerState<TFn>) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) {
+    const selected = useStore(asyncThrottler.store, props.selector)
+
+    return typeof props.children === 'function'
+      ? props.children(selected)
+      : props.children
+  }
 
   const state = useStore(asyncThrottler.store, selector)
 

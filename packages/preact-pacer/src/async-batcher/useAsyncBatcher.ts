@@ -7,11 +7,29 @@ import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
+import type { ComponentChildren } from 'preact'
 
-export interface ReactAsyncBatcher<TValue, TSelected = {}> extends Omit<
+export interface PreactAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
   'store'
 > {
+  /**
+   * A Preact HOC (Higher Order Component) that allows you to subscribe to the async batcher state.
+   *
+   * This is useful for opting into state re-renders for specific parts of the batcher state
+   * deep in your component tree without needing to pass a selector to the hook.
+   *
+   * @example
+   * <batcher.Subscribe selector={(state) => ({ size: state.size })}>
+   *   {({ size }) => (
+   *     <div>Batch Size: {size}</div>
+   *   )}
+   * </batcher.Subscribe>
+   */
+  Subscribe: <TSelected>(props: {
+    selector: (state: AsyncBatcherState<TValue>) => TSelected
+    children: ((state: TSelected) => ComponentChildren) | ComponentChildren
+  }) => ComponentChildren
   /**
    * Reactive state that will be updated and re-rendered when the batcher state changes
    *
@@ -57,14 +75,24 @@ export interface ReactAsyncBatcher<TValue, TSelected = {}> extends Omit<
  *
  * ## State Management and Selector
  *
- * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
- * to specify which state changes will trigger a re-render, optimizing performance by preventing
- * unnecessary re-renders when irrelevant state changes occur.
+ * The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+ * in two ways:
+ *
+ * **1. Using `batcher.Subscribe` HOC (Recommended for component tree subscriptions)**
+ *
+ * Use the `Subscribe` HOC to subscribe to state changes deep in your component tree without
+ * needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+ * in child components.
+ *
+ * **2. Using the `selector` parameter (For hook-level subscriptions)**
+ *
+ * The `selector` parameter allows you to specify which state changes will trigger a re-render
+ * at the hook level, optimizing performance by preventing unnecessary re-renders when irrelevant
+ * state changes occur.
  *
  * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
- * full control over when your component updates. Only when you provide a selector will the
- * component re-render when the selected state values change.
+ * tracking by providing a selector function or using the `Subscribe` HOC. This prevents unnecessary
+ * re-renders and gives you full control over when your component updates.
  *
  * Available state properties:
  * - `errorCount`: Number of batch executions that have resulted in errors
@@ -93,7 +121,14 @@ export interface ReactAsyncBatcher<TValue, TSelected = {}> extends Omit<
  *   { maxSize: 10, wait: 2000 }
  * );
  *
- * // Opt-in to re-render when execution state changes (optimized for loading indicators)
+ * // Subscribe to state changes deep in component tree using Subscribe HOC
+ * <asyncBatcher.Subscribe selector={(state) => ({ size: state.size })}>
+ *   {({ size }) => (
+ *     <div>Batch Size: {size}</div>
+ *   )}
+ * </asyncBatcher.Subscribe>
+ *
+ * // Opt-in to re-render when execution state changes at hook level (optimized for loading indicators)
  * const asyncBatcher = useAsyncBatcher(
  *   async (items) => {
  *     const results = await Promise.all(items.map(item => processItem(item)));
@@ -172,15 +207,31 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
   options: AsyncBatcherOptions<TValue> = {},
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
-): ReactAsyncBatcher<TValue, TSelected> {
+): PreactAsyncBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncBatcher,
     ...options,
   } as AsyncBatcherOptions<TValue>
 
-  const [asyncBatcher] = useState(
-    () => new AsyncBatcher<TValue>(fn, mergedOptions),
-  )
+  const [asyncBatcher] = useState(() => {
+    const batcherInstance = new AsyncBatcher<TValue>(
+      fn,
+      mergedOptions,
+    ) as unknown as PreactAsyncBatcher<TValue, TSelected>
+
+    batcherInstance.Subscribe = function Subscribe<TSelected>(props: {
+      selector: (state: AsyncBatcherState<TValue>) => TSelected
+      children: ((state: TSelected) => ComponentChildren) | ComponentChildren
+    }) {
+      const selected = useStore(batcherInstance.store, props.selector)
+
+      return typeof props.children === 'function'
+        ? props.children(selected)
+        : props.children
+    }
+
+    return batcherInstance
+  })
 
   asyncBatcher.fn = fn
   asyncBatcher.setOptions(mergedOptions)
@@ -192,7 +243,7 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
       ({
         ...asyncBatcher,
         state,
-      }) as ReactAsyncBatcher<TValue, TSelected>, // omit `store` in favor of `state`
+      }) as PreactAsyncBatcher<TValue, TSelected>, // omit `store` in favor of `state`
     [asyncBatcher, state],
   )
 }

@@ -12,7 +12,7 @@ function useBatcher<TValue, TSelected>(
 selector): PreactBatcher<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:124](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L124)
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:159](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L159)
 
 A Preact hook that creates and manages a Batcher instance.
 
@@ -27,14 +27,24 @@ The Batcher collects items and processes them in batches based on configurable c
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `batcher.Subscribe` HOC (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` HOC to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger a re-render
+at the hook level, optimizing performance by preventing unnecessary re-renders when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` HOC. This prevents unnecessary
+re-renders and gives you full control over when your component updates.
 
 Available state properties:
 - `executionCount`: Number of batch executions that have been completed
@@ -84,7 +94,14 @@ const batcher = useBatcher<number>(
   { maxSize: 5, wait: 2000 }
 );
 
-// Opt-in to re-render when batch size changes (optimized for displaying queue size)
+// Subscribe to state changes deep in component tree using Subscribe HOC
+<batcher.Subscribe selector={(state) => ({ size: state.size })}>
+  {({ size }) => (
+    <div>Batch Size: {size}</div>
+  )}
+</batcher.Subscribe>
+
+// Opt-in to re-render when batch size changes at hook level (optimized for displaying queue size)
 const batcher = useBatcher<number>(
   (items) => console.log('Processing batch:', items),
   { maxSize: 5, wait: 2000 },

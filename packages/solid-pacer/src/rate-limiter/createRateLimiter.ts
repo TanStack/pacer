@@ -2,7 +2,7 @@ import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { useStore } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor } from 'solid-js'
+import type { Accessor, JSX } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   RateLimiterOptions,
@@ -13,6 +13,23 @@ export interface SolidRateLimiter<
   TFn extends AnyFunction,
   TSelected = {},
 > extends Omit<RateLimiter<TFn>, 'store'> {
+  /**
+   * A Solid component that allows you to subscribe to the rate limiter state.
+   *
+   * This is useful for tracking specific parts of the rate limiter state
+   * deep in your component tree without needing to pass a selector to the hook.
+   *
+   * @example
+   * <rateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount })}>
+   *   {(state) => (
+   *     <div>Rejections: {state().rejectionCount}</div>
+   *   )}
+   * </rateLimiter.Subscribe>
+   */
+  Subscribe: <TSelected>(props: {
+    selector: (state: RateLimiterState) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) => JSX.Element
   /**
    * Reactive state that will be updated when the rate limiter state changes
    *
@@ -50,14 +67,24 @@ export interface SolidRateLimiter<
  *
  * ## State Management and Selector
  *
- * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
- * to specify which state changes will trigger a re-render, optimizing performance by preventing
- * unnecessary re-renders when irrelevant state changes occur.
+ * The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+ * in two ways:
+ *
+ * **1. Using `rateLimiter.Subscribe` component (Recommended for component tree subscriptions)**
+ *
+ * Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+ * needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+ * in child components.
+ *
+ * **2. Using the `selector` parameter (For hook-level subscriptions)**
+ *
+ * The `selector` parameter allows you to specify which state changes will trigger reactive updates
+ * at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+ * state changes occur.
  *
  * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
- * full control over when your component updates. Only when you provide a selector will the
- * component re-render when the selected state values change.
+ * tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+ * updates and gives you full control over when your component tracks state changes.
  *
  * Available state properties:
  * - `executionCount`: Number of function executions that have been completed
@@ -73,33 +100,74 @@ export interface SolidRateLimiter<
  *   limit: 5,
  *   window: 60000,
  *   windowType: 'sliding',
- *   onReject: (rateLimiter) => {
- *     console.log(`Rate limit exceeded. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`);
- *   }
  * });
  *
- * // Opt-in to re-render when rate limit state changes (optimized for UI feedback)
+ * // Subscribe to state changes deep in component tree using Subscribe component
+ * <rateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount })}>
+ *   {(state) => (
+ *     <div>Rejections: {state().rejectionCount}</div>
+ *   )}
+ * </rateLimiter.Subscribe>
+ *
+ * // Opt-in to track execution count changes at hook level (optimized for tracking successful executions)
  * const rateLimiter = createRateLimiter(
  *   apiCall,
- *   { limit: 5, window: 60000 },
+ *   {
+ *     limit: 5,
+ *     window: 60000,
+ *     windowType: 'sliding',
+ *   },
+ *   (state) => ({ executionCount: state.executionCount })
+ * );
+ *
+ * // Opt-in to track rejection count changes (optimized for tracking rate limit violations)
+ * const rateLimiter = createRateLimiter(
+ *   apiCall,
+ *   {
+ *     limit: 5,
+ *     window: 60000,
+ *     windowType: 'sliding',
+ *   },
+ *   (state) => ({ rejectionCount: state.rejectionCount })
+ * );
+ *
+ * // Opt-in to track execution times changes (optimized for window calculations)
+ * const rateLimiter = createRateLimiter(
+ *   apiCall,
+ *   {
+ *     limit: 5,
+ *     window: 60000,
+ *     windowType: 'sliding',
+ *   },
+ *   (state) => ({ executionTimes: state.executionTimes })
+ * );
+ *
+ * // Multiple state properties - track when any of these change
+ * const rateLimiter = createRateLimiter(
+ *   apiCall,
+ *   {
+ *     limit: 5,
+ *     window: 60000,
+ *     windowType: 'sliding',
+ *   },
  *   (state) => ({
- *     remainingInWindow: state.remainingInWindow,
+ *     executionCount: state.executionCount,
  *     rejectionCount: state.rejectionCount
  *   })
  * );
  *
- * // Opt-in to re-render when execution metrics change (optimized for tracking progress)
- * const rateLimiter = createRateLimiter(
- *   apiCall,
- *   { limit: 5, window: 60000 },
- *   (state) => ({
- *     executionCount: state.executionCount,
- *     nextWindowTime: state.nextWindowTime
- *   })
- * );
+ * // Monitor rate limit status
+ * const handleClick = () => {
+ *   const remaining = rateLimiter.getRemainingInWindow();
+ *   if (remaining > 0) {
+ *     rateLimiter.maybeExecute(data);
+ *   } else {
+ *     showRateLimitWarning();
+ *   }
+ * };
  *
  * // Access the selected state (will be empty object {} unless selector provided)
- * const { remainingInWindow, rejectionCount } = rateLimiter.state();
+ * const { executionCount, rejectionCount } = rateLimiter.state();
  * ```
  */
 export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
@@ -112,7 +180,21 @@ export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
     ...options,
   } as RateLimiterOptions<TFn>
 
-  const rateLimiter = new RateLimiter<TFn>(fn, mergedOptions)
+  const rateLimiter = new RateLimiter<TFn>(
+    fn,
+    mergedOptions,
+  ) as unknown as SolidRateLimiter<TFn, TSelected>
+
+  rateLimiter.Subscribe = function Subscribe<TSelected>(props: {
+    selector: (state: RateLimiterState) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) {
+    const selected = useStore(rateLimiter.store, props.selector)
+
+    return typeof props.children === 'function'
+      ? props.children(selected)
+      : props.children
+  }
 
   const state = useStore(rateLimiter.store, selector)
 
