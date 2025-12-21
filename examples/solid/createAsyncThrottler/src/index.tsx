@@ -50,12 +50,8 @@ function App() {
         setResults([])
       },
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      successCount: state.successCount,
-      isPending: state.isPending,
-      isExecuting: state.isExecuting,
-    }),
+    // Alternative to setSearchAsyncThrottler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => state,
   )
 
   // get and name our throttled function
@@ -85,14 +81,33 @@ function App() {
       </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
-        <p>API calls made: {setSearchAsyncThrottler.state().successCount}</p>
-        <For each={results()}>{(item) => <li>{item.title}</li>}</For>
-        {setSearchAsyncThrottler.state().isPending ? (
-          <p>Pending...</p>
-        ) : setSearchAsyncThrottler.state().isExecuting ? (
-          <p>Executing...</p>
-        ) : null}
+        <setSearchAsyncThrottler.Subscribe
+          selector={(state) => ({
+            successCount: state.successCount,
+            isPending: state.isPending,
+            isExecuting: state.isExecuting,
+          })}
+        >
+          {(state) => (
+            <>
+              <p>API calls made: {state().successCount}</p>
+              <For each={results()}>{(item) => <li>{item.title}</li>}</For>
+              {state().isPending ? (
+                <p>Pending...</p>
+              ) : state().isExecuting ? (
+                <p>Executing...</p>
+              ) : null}
+            </>
+          )}
+        </setSearchAsyncThrottler.Subscribe>
       </div>
+      <setSearchAsyncThrottler.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state(), null, 2)}
+          </pre>
+        )}
+      </setSearchAsyncThrottler.Subscribe>
     </div>
   )
 }

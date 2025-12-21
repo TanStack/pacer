@@ -18,7 +18,6 @@ function App1() {
   //   maxAge: 1000 * 60, // 1 minute
   //   buster: 'v1',
   // })
-  // const rateLimiterPersister = undefined as any
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const rateLimiter = useRateLimiter(
@@ -34,15 +33,15 @@ function App1() {
           rateLimiter.getMsUntilNextWindow(),
         ),
       // optional local storage persister to retain state on page refresh
-      // initialState: rateLimiterPersister?.loadState(),
+      // initialState: rateLimiterPersister.loadState(),
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => state, // entire state subscription for persister - don't do this unless you need to
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   // useEffect(() => {
-  //   rateLimiterPersister?.saveState(rateLimiter.state)
-  // }, [rateLimiter.state])
+  //   rateLimiterPersister.saveState(rateLimiter.store.state)
+  // }, [rateLimiter.store.state])
 
   function increment() {
     // this pattern helps avoid common bugs with stale closures and state
@@ -80,44 +79,59 @@ function App1() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{rateLimiter.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>Rejection Count:</td>
-            <td>{rateLimiter.state.rejectionCount}</td>
-          </tr>
-          <tr>
-            <td>Remaining in Window:</td>
-            <td>{rateLimiter.getRemainingInWindow()}</td>
-          </tr>
-          <tr>
-            <td>Ms Until Next Window:</td>
-            <td>{rateLimiter.getMsUntilNextWindow()}</td>
-          </tr>
-          <tr>
-            <td colSpan={2}>
-              <hr />
-            </td>
-          </tr>
-          <tr>
-            <td>Instant Count:</td>
-            <td>{instantCount}</td>
-          </tr>
-          <tr>
-            <td>Rate Limited Count:</td>
-            <td>{limitedCount}</td>
-          </tr>
+          <rateLimiter.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+              rejectionCount: state.rejectionCount,
+            })}
+          >
+            {({ executionCount, rejectionCount }) => (
+              <>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Rejection Count:</td>
+                  <td>{rejectionCount}</td>
+                </tr>
+                <tr>
+                  <td>Remaining in Window:</td>
+                  <td>{rateLimiter.getRemainingInWindow()}</td>
+                </tr>
+                <tr>
+                  <td>Ms Until Next Window:</td>
+                  <td>{rateLimiter.getMsUntilNextWindow()}</td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Instant Count:</td>
+                  <td>{instantCount}</td>
+                </tr>
+                <tr>
+                  <td>Rate Limited Count:</td>
+                  <td>{limitedCount}</td>
+                </tr>
+              </>
+            )}
+          </rateLimiter.Subscribe>
         </tbody>
       </table>
       <div>
         <button onClick={increment}>Increment</button>
         <button onClick={() => rateLimiter.reset()}>Reset</button>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(rateLimiter.store.state, null, 2)}
-      </pre>
+      <rateLimiter.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </rateLimiter.Subscribe>
     </div>
   )
 }
@@ -140,11 +154,8 @@ function App2() {
           rateLimiter.getMsUntilNextWindow(),
         ),
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-      rejectionCount: state.rejectionCount,
-    }),
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
@@ -168,42 +179,57 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{rateLimiter.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>Rejection Count:</td>
-            <td>{rateLimiter.state.rejectionCount}</td>
-          </tr>
-          <tr>
-            <td>Remaining in Window:</td>
-            <td>{rateLimiter.getRemainingInWindow()}</td>
-          </tr>
-          <tr>
-            <td>Ms Until Next Window:</td>
-            <td>{rateLimiter.getMsUntilNextWindow()}</td>
-          </tr>
-          <tr>
-            <td colSpan={2}>
-              <hr />
-            </td>
-          </tr>
-          <tr>
-            <td>Instant Search:</td>
-          </tr>
-          <tr>
-            <td>Rate Limited Search:</td>
-            <td>{limitedSearch}</td>
-          </tr>
+          <rateLimiter.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+              rejectionCount: state.rejectionCount,
+            })}
+          >
+            {({ executionCount, rejectionCount }) => (
+              <>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Rejection Count:</td>
+                  <td>{rejectionCount}</td>
+                </tr>
+                <tr>
+                  <td>Remaining in Window:</td>
+                  <td>{rateLimiter.getRemainingInWindow()}</td>
+                </tr>
+                <tr>
+                  <td>Ms Until Next Window:</td>
+                  <td>{rateLimiter.getMsUntilNextWindow()}</td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Instant Search:</td>
+                </tr>
+                <tr>
+                  <td>Rate Limited Search:</td>
+                  <td>{limitedSearch}</td>
+                </tr>
+              </>
+            )}
+          </rateLimiter.Subscribe>
         </tbody>
       </table>
       <div>
         <button onClick={() => rateLimiter.reset()}>Reset</button>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(rateLimiter.store.state, null, 2)}
-      </pre>
+      <rateLimiter.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </rateLimiter.Subscribe>
     </div>
   )
 }
@@ -225,11 +251,8 @@ function App3() {
           rateLimiter.getMsUntilNextWindow(),
         ),
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-      rejectionCount: state.rejectionCount,
-    }),
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
@@ -272,52 +295,66 @@ function App3() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{rateLimiter.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>Rejection Count:</td>
-            <td>{rateLimiter.state.rejectionCount}</td>
-          </tr>
-          <tr>
-            <td>Remaining in Window:</td>
-            <td>{rateLimiter.getRemainingInWindow()}</td>
-          </tr>
-          <tr>
-            <td>Ms Until Next Window:</td>
-            <td>{rateLimiter.getMsUntilNextWindow()}</td>
-          </tr>
-          <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>{instantExecutionCount - rateLimiter.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount -
-                      rateLimiter.state.executionCount) /
-                      instantExecutionCount) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <rateLimiter.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+              rejectionCount: state.rejectionCount,
+            })}
+          >
+            {({ executionCount, rejectionCount }) => (
+              <>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Rejection Count:</td>
+                  <td>{rejectionCount}</td>
+                </tr>
+                <tr>
+                  <td>Remaining in Window:</td>
+                  <td>{rateLimiter.getRemainingInWindow()}</td>
+                </tr>
+                <tr>
+                  <td>Ms Until Next Window:</td>
+                  <td>{rateLimiter.getMsUntilNextWindow()}</td>
+                </tr>
+                <tr>
+                  <td>Instant Executions:</td>
+                  <td>{instantExecutionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount - executionCount}</td>
+                </tr>
+                <tr>
+                  <td>% Reduction:</td>
+                  <td>
+                    {instantExecutionCount === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount - executionCount) /
+                            instantExecutionCount) *
+                            100,
+                        )}
+                    %
+                  </td>
+                </tr>
+              </>
+            )}
+          </rateLimiter.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Rate limited to 20 updates per 2 seconds</p>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(rateLimiter.store.state, null, 2)}
-      </pre>
+      <rateLimiter.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </rateLimiter.Subscribe>
     </div>
   )
 }

@@ -33,8 +33,6 @@ function App() {
 
     const data = await fakeApi(term)
     setResults(data)
-
-    console.log(setSearchAsyncRateLimiter.state().successCount)
   }
 
   // hook that gives you an async rate limiter instance
@@ -56,11 +54,8 @@ function App() {
         )
       },
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      successCount: state.successCount,
-      isExecuting: state.isExecuting,
-    }),
+    // Alternative to setSearchAsyncRateLimiter.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => state,
   )
 
   // get and name our rate limited function
@@ -110,17 +105,36 @@ function App() {
         />
       </div>
       <div>
-        <p>API calls made: {setSearchAsyncRateLimiter.state().successCount}</p>
-        {results().length > 0 && (
-          <ul>
-            <For each={results()}>{(item) => <li>{item.title}</li>}</For>
-          </ul>
-        )}
-        {setSearchAsyncRateLimiter.state().isExecuting && <p>Loading...</p>}
+        <setSearchAsyncRateLimiter.Subscribe
+          selector={(state) => ({
+            successCount: state.successCount,
+            isExecuting: state.isExecuting,
+            rejectionCount: state.rejectionCount,
+          })}
+        >
+          {(state) => (
+            <>
+              <p>API calls made: {state().successCount}</p>
+              {state().rejectionCount > 0 && (
+                <p>Rate limit rejections: {state().rejectionCount}</p>
+              )}
+              {results().length > 0 && (
+                <ul>
+                  <For each={results()}>{(item) => <li>{item.title}</li>}</For>
+                </ul>
+              )}
+              {state().isExecuting && <p>Loading...</p>}
+            </>
+          )}
+        </setSearchAsyncRateLimiter.Subscribe>
       </div>
-      <pre style={{ 'margin-top': '20px' }}>
-        {JSON.stringify(setSearchAsyncRateLimiter.state(), null, 2)}
-      </pre>
+      <setSearchAsyncRateLimiter.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state(), null, 2)}
+          </pre>
+        )}
+      </setSearchAsyncRateLimiter.Subscribe>
     </div>
   )
 }

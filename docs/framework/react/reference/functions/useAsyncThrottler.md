@@ -12,7 +12,7 @@ function useAsyncThrottler<TFn, TSelected>(
 selector): ReactAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:161](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L161)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:196](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L196)
 
 A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -36,14 +36,24 @@ Error Handling:
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `throttler.Subscribe` HOC (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` HOC to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger a re-render
+at the hook level, optimizing performance by preventing unnecessary re-renders when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` HOC. This prevents unnecessary
+re-renders and gives you full control over when your component updates.
 
 Available state properties:
 - `errorCount`: Number of function executions that have resulted in errors
@@ -98,7 +108,14 @@ const asyncThrottler = useAsyncThrottler(
   { wait: 1000 }
 );
 
-// Opt-in to re-render when execution state changes (optimized for loading indicators)
+// Subscribe to state changes deep in component tree using Subscribe HOC
+<asyncThrottler.Subscribe selector={(state) => ({ isExecuting: state.isExecuting, isPending: state.isPending })}>
+  {({ isExecuting, isPending }) => (
+    <div>{isExecuting || isPending ? 'Loading...' : 'Ready'}</div>
+  )}
+</asyncThrottler.Subscribe>
+
+// Opt-in to re-render when execution state changes at hook level (optimized for loading indicators)
 const asyncThrottler = useAsyncThrottler(
   async (id: string) => {
     const data = await api.fetchData(id);

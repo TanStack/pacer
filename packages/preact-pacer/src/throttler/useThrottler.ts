@@ -8,11 +8,29 @@ import type {
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
+import type { ComponentChildren } from 'preact'
 
 export interface PreactThrottler<
   TFn extends AnyFunction,
   TSelected = {},
 > extends Omit<Throttler<TFn>, 'store'> {
+  /**
+   * A Preact HOC (Higher Order Component) that allows you to subscribe to the throttler state.
+   *
+   * This is useful for opting into state re-renders for specific parts of the throttler state
+   * deep in your component tree without needing to pass a selector to the hook.
+   *
+   * @example
+   * <throttler.Subscribe selector={(state) => ({ isPending: state.isPending })}>
+   *   {({ isPending }) => (
+   *     <div>{isPending ? 'Loading...' : 'Ready'}</div>
+   *   )}
+   * </throttler.Subscribe>
+   */
+  Subscribe: <TSelected>(props: {
+    selector: (state: ThrottlerState<TFn>) => TSelected
+    children: ((state: TSelected) => ComponentChildren) | ComponentChildren
+  }) => ComponentChildren
   /**
    * Reactive state that will be updated and re-rendered when the throttler state changes
    *
@@ -40,14 +58,24 @@ export interface PreactThrottler<
  *
  * ## State Management and Selector
  *
- * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
- * to specify which state changes will trigger a re-render, optimizing performance by preventing
- * unnecessary re-renders when irrelevant state changes occur.
+ * The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+ * in two ways:
+ *
+ * **1. Using `throttler.Subscribe` HOC (Recommended for component tree subscriptions)**
+ *
+ * Use the `Subscribe` HOC to subscribe to state changes deep in your component tree without
+ * needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+ * in child components.
+ *
+ * **2. Using the `selector` parameter (For hook-level subscriptions)**
+ *
+ * The `selector` parameter allows you to specify which state changes will trigger a re-render
+ * at the hook level, optimizing performance by preventing unnecessary re-renders when irrelevant
+ * state changes occur.
  *
  * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
- * full control over when your component updates. Only when you provide a selector will the
- * component re-render when the selected state values change.
+ * tracking by providing a selector function or using the `Subscribe` HOC. This prevents unnecessary
+ * re-renders and gives you full control over when your component updates.
  *
  * Available state properties:
  * - `executionCount`: Number of function executions that have been completed
@@ -63,7 +91,14 @@ export interface PreactThrottler<
  * const [value, setValue] = useState(0);
  * const throttler = useThrottler(setValue, { wait: 1000 });
  *
- * // Opt-in to re-render when execution count changes (optimized for tracking executions)
+ * // Subscribe to state changes deep in component tree using Subscribe HOC
+ * <throttler.Subscribe selector={(state) => ({ isPending: state.isPending })}>
+ *   {({ isPending }) => (
+ *     <div>{isPending ? 'Processing...' : 'Ready'}</div>
+ *   )}
+ * </throttler.Subscribe>
+ *
+ * // Opt-in to re-render when execution count changes at hook level (optimized for tracking executions)
  * const [value, setValue] = useState(0);
  * const throttler = useThrottler(
  *   setValue,
@@ -117,7 +152,25 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
     ...options,
   } as ThrottlerOptions<TFn>
 
-  const [throttler] = useState(() => new Throttler<TFn>(fn, mergedOptions))
+  const [throttler] = useState(() => {
+    const throttlerInstance = new Throttler<TFn>(
+      fn,
+      mergedOptions,
+    ) as unknown as PreactThrottler<TFn, TSelected>
+
+    throttlerInstance.Subscribe = function Subscribe<TSelected>(props: {
+      selector: (state: ThrottlerState<TFn>) => TSelected
+      children: ((state: TSelected) => ComponentChildren) | ComponentChildren
+    }) {
+      const selected = useStore(throttlerInstance.store, props.selector)
+
+      return typeof props.children === 'function'
+        ? props.children(selected)
+        : props.children
+    }
+
+    return throttlerInstance
+  })
 
   throttler.fn = fn
   throttler.setOptions(mergedOptions)

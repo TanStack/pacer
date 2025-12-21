@@ -31,13 +31,13 @@ The primitive returns a tuple containing:
 ## State Management and Selector
 
 The primitive uses Solid's reactive state management via the underlying queuer instance.
-The `selector` parameter allows you to specify which queuer state changes will trigger a re-render,
-optimizing performance by preventing unnecessary re-renders when irrelevant state changes occur.
+The `selector` parameter allows you to specify which queuer state changes will trigger reactive updates,
+optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function. This prevents unnecessary updates and gives you
+full control over when your component tracks state changes. Only when you provide a selector will the
+component track changes to the selected state values.
 
 Available queuer state properties:
 - `executionCount`: Number of items that have been processed by the queuer
@@ -95,7 +95,7 @@ const [items, addItem, queue] = createQueuedSignal(
   }
 );
 
-// Opt-in to re-render when queue contents change (optimized for displaying queue items)
+// Opt-in to track queue contents changes (optimized for displaying queue items)
 const [items, addItem, queue] = createQueuedSignal(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 },
@@ -106,7 +106,7 @@ const [items, addItem, queue] = createQueuedSignal(
   })
 );
 
-// Opt-in to re-render when processing state changes (optimized for loading indicators)
+// Opt-in to track processing state changes (optimized for loading indicators)
 const [items, addItem, queue] = createQueuedSignal(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 },
@@ -118,7 +118,7 @@ const [items, addItem, queue] = createQueuedSignal(
   })
 );
 
-// Opt-in to re-render when execution metrics change (optimized for stats display)
+// Opt-in to track execution metrics changes (optimized for stats display)
 const [items, addItem, queue] = createQueuedSignal(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 },

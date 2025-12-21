@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:12](https:/
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L21)
+Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L38)
 
 Reactive state that will be updated when the throttler state changes
 
@@ -44,10 +44,57 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>;
 ```
 
-Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:27](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L27)
+Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:44](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L44)
 
 #### Deprecated
 
 Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
 The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
 Although, you can make the state reactive by using the `useStore` in your own usage.
+
+***
+
+### Subscribe()
+
+```ts
+Subscribe: <TSelected>(props) => Element;
+```
+
+Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:29](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L29)
+
+A Solid component that allows you to subscribe to the throttler state.
+
+This is useful for tracking specific parts of the throttler state
+deep in your component tree without needing to pass a selector to the hook.
+
+#### Type Parameters
+
+##### TSelected
+
+`TSelected`
+
+#### Parameters
+
+##### props
+
+###### children
+
+`Element` \| (`state`) => `Element`
+
+###### selector
+
+(`state`) => `TSelected`
+
+#### Returns
+
+`Element`
+
+#### Example
+
+```ts
+<throttler.Subscribe selector={(state) => ({ isPending: state.isPending, isExecuting: state.isExecuting })}>
+  {(state) => (
+    <div>{state().isPending ? 'Pending...' : state().isExecuting ? 'Executing...' : 'Ready'}</div>
+  )}
+</throttler.Subscribe>
+```

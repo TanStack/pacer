@@ -46,6 +46,8 @@ function PostList({
     onExpire: (item) => {
       console.log('expired', item)
     },
+    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   })
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { useAsyncQueuer } from './useAsyncQueuer'
-import type { ReactAsyncQueuer } from './useAsyncQueuer'
+import type { PreactAsyncQueuer } from './useAsyncQueuer'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
@@ -158,7 +158,7 @@ export function useAsyncQueuedState<
   fn: (value: TValue) => Promise<any>,
   options: AsyncQueuerOptions<TValue> = {},
   selector?: (state: AsyncQueuerState<TValue>) => TSelected,
-): [Array<TValue>, ReactAsyncQueuer<TValue, TSelected>] {
+): [Array<TValue>, PreactAsyncQueuer<TValue, TSelected>] {
   const asyncQueuer = useAsyncQueuer(fn, options, selector)
 
   return [asyncQueuer.state.items, asyncQueuer]

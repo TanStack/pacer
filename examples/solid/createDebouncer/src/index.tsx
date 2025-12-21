@@ -11,14 +11,12 @@ function App1() {
   const setCountDebouncer = createDebouncer(
     setDebouncedCount,
     {
-      wait: 500,
-      // enabled: () => instantCount() > 2, // optional, defaults to true
+      wait: 800,
+      enabled: () => instantCount() > 2, // optional, defaults to true
       // leading: true, // optional, defaults to false
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to setCountDebouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
+    // (state) => state,
   )
 
   function increment() {
@@ -35,28 +33,56 @@ function App1() {
       <h1>TanStack Pacer createDebouncer Example 1</h1>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{setCountDebouncer.state().executionCount}</td>
-          </tr>
-          <tr>
-            <td colSpan={2}>
-              <hr />
-            </td>
-          </tr>
-          <tr>
-            <td>Instant Count:</td>
-            <td>{instantCount()}</td>
-          </tr>
-          <tr>
-            <td>Debounced Count:</td>
-            <td>{debouncedCount()}</td>
-          </tr>
+          <setCountDebouncer.Subscribe
+            selector={(state) => ({
+              status: state.status,
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <>
+                <tr>
+                  <td>Status:</td>
+                  <td>{state().status}</td>
+                </tr>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Instant Count:</td>
+                  <td>{instantCount()}</td>
+                </tr>
+                <tr>
+                  <td>Debounced Count:</td>
+                  <td>{debouncedCount()}</td>
+                </tr>
+              </>
+            )}
+          </setCountDebouncer.Subscribe>
         </tbody>
       </table>
       <div>
         <button onClick={increment}>Increment</button>
+        <button
+          onClick={() => setCountDebouncer.flush()}
+          style={{ 'margin-left': '10px' }}
+        >
+          Flush
+        </button>
       </div>
+      <setCountDebouncer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state(), null, 2)}
+          </pre>
+        )}
+      </setCountDebouncer.Subscribe>
     </div>
   )
 }
@@ -70,12 +96,10 @@ function App2() {
     setDebouncedSearchText,
     {
       wait: 500,
-      enabled: () => searchText().length > 2,
+      enabled: () => searchText().length > 2, // optional, defaults to true
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to setSearchDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleSearchChange(e: Event) {
@@ -100,25 +124,50 @@ function App2() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{setSearchDebouncer.state().executionCount}</td>
-          </tr>
-          <tr>
-            <td colSpan={2}>
-              <hr />
-            </td>
-          </tr>
-          <tr>
-            <td>Instant Search:</td>
-            <td>{searchText()}</td>
-          </tr>
-          <tr>
-            <td>Debounced Search:</td>
-            <td>{debouncedSearchText()}</td>
-          </tr>
+          <setSearchDebouncer.Subscribe
+            selector={(state) => ({
+              status: state.status,
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <>
+                <tr>
+                  <td>Status:</td>
+                  <td>{state().status}</td>
+                </tr>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Instant Search:</td>
+                  <td>{searchText()}</td>
+                </tr>
+                <tr>
+                  <td>Debounced Search:</td>
+                  <td>{debouncedSearchText()}</td>
+                </tr>
+              </>
+            )}
+          </setSearchDebouncer.Subscribe>
         </tbody>
       </table>
+      <div>
+        <button onClick={() => setSearchDebouncer.flush()}>Flush</button>
+      </div>
+      <setSearchDebouncer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state(), null, 2)}
+          </pre>
+        )}
+      </setSearchDebouncer.Subscribe>
     </div>
   )
 }
@@ -134,10 +183,8 @@ function App3() {
     {
       wait: 250,
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
+    // Alternative to setValueDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleRangeChange(e: Event) {
@@ -181,40 +228,58 @@ function App3() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount()}</td>
-          </tr>
-          <tr>
-            <td>Debounced Executions:</td>
-            <td>{setValueDebouncer.state().executionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>
-              {instantExecutionCount() -
-                setValueDebouncer.state().executionCount}
-            </td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount() === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount() -
-                      setValueDebouncer.state().executionCount) /
-                      instantExecutionCount()) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <setValueDebouncer.Subscribe
+            selector={(state) => ({
+              status: state.status,
+              executionCount: state.executionCount,
+            })}
+          >
+            {(state) => (
+              <>
+                <tr>
+                  <td>Status:</td>
+                  <td>{state().status}</td>
+                </tr>
+                <tr>
+                  <td>Instant Executions:</td>
+                  <td>{instantExecutionCount()}</td>
+                </tr>
+                <tr>
+                  <td>Debounced Executions:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount() - state().executionCount}</td>
+                </tr>
+                <tr>
+                  <td>% Reduction:</td>
+                  <td>
+                    {instantExecutionCount() === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount() - state().executionCount) /
+                            instantExecutionCount()) *
+                            100,
+                        )}
+                    %
+                  </td>
+                </tr>
+              </>
+            )}
+          </setValueDebouncer.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
         <p>Debounced with 250ms wait time</p>
       </div>
+      <setValueDebouncer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state(), null, 2)}
+          </pre>
+        )}
+      </setValueDebouncer.Subscribe>
     </div>
   )
 }

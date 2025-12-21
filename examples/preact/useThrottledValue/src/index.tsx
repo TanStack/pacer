@@ -12,15 +12,12 @@ function App1() {
 
   // highest-level hook that watches an instant local state value and returns a throttled value
   // optionally, grab the throttler from the last index of the returned array
-  const [throttledCount] = useThrottledValue(
-    instantCount,
-    {
-      wait: 1000,
-      // enabled: () => instantCount > 2, // optional, defaults to true
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (_state) => ({}), // No specific state access needed for this example
-  )
+  const [throttledCount] = useThrottledValue(instantCount, {
+    wait: 1000,
+    // enabled: () => instantCount > 2, // optional, defaults to true
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  })
 
   return (
     <div>
@@ -48,15 +45,12 @@ function App2() {
   const [instantSearch, setInstantSearch] = useState('')
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledSearch] = useThrottledValue(
-    instantSearch,
-    {
-      wait: 1000,
-      // enabled: instantSearch.length > 2, // optional, defaults to true
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (_state) => ({}), // No specific state access needed for this example
-  )
+  const [throttledSearch] = useThrottledValue(instantSearch, {
+    wait: 1000,
+    // enabled: instantSearch.length > 2, // optional, defaults to true
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  })
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     setInstantSearch(e.currentTarget.value)
@@ -96,16 +90,11 @@ function App3() {
   const [currentValue, setCurrentValue] = useState(50)
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledValue, throttler] = useThrottledValue(
-    currentValue,
-    {
-      wait: 250,
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-    }),
-  )
+  const [throttledValue, throttler] = useThrottledValue(currentValue, {
+    wait: 250,
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  })
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
@@ -146,36 +135,48 @@ function App3() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Instant Execution Count:</td>
-            <td>{instantExecutionCount}</td>
-          </tr>
-          <tr>
-            <td>Throttled Execution Count:</td>
-            <td>{throttler.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>
-              {instantExecutionCount - throttler.state.executionCount} (
-              {instantExecutionCount > 0
-                ? (
-                    ((instantExecutionCount - throttler.state.executionCount) /
-                      instantExecutionCount) *
-                    100
-                  ).toFixed(2)
-                : 0}
-              % Reduction in execution calls)
-            </td>
-          </tr>
+          <throttler.Subscribe
+            selector={(state) => ({ executionCount: state.executionCount })}
+          >
+            {({ executionCount }) => (
+              <>
+                <tr>
+                  <td>Instant Execution Count:</td>
+                  <td>{instantExecutionCount}</td>
+                </tr>
+                <tr>
+                  <td>Throttled Execution Count:</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>
+                    {instantExecutionCount - executionCount} (
+                    {instantExecutionCount > 0
+                      ? (
+                          ((instantExecutionCount - executionCount) /
+                            instantExecutionCount) *
+                          100
+                        ).toFixed(2)
+                      : 0}
+                    % Reduction in execution calls)
+                  </td>
+                </tr>
+              </>
+            )}
+          </throttler.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Throttled to 1 update per 250ms</p>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(throttler.store.state, null, 2)}
-      </pre>
+      <throttler.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </throttler.Subscribe>
     </div>
   )
 }

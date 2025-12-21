@@ -2,13 +2,30 @@ import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor } from 'solid-js'
+import type { Accessor, JSX } from 'solid-js'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
 export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
   Batcher<TValue>,
   'store'
 > {
+  /**
+   * A Solid component that allows you to subscribe to the batcher state.
+   *
+   * This is useful for tracking specific parts of the batcher state
+   * deep in your component tree without needing to pass a selector to the hook.
+   *
+   * @example
+   * <batcher.Subscribe selector={(state) => ({ size: state.size, isRunning: state.isRunning })}>
+   *   {(state) => (
+   *     <div>Batch: {state().size} items, {state().isRunning ? 'Processing' : 'Idle'}</div>
+   *   )}
+   * </batcher.Subscribe>
+   */
+  Subscribe: <TSelected>(props: {
+    selector: (state: BatcherState<TValue>) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) => JSX.Element
   /**
    * Reactive state that will be updated when the batcher state changes
    *
@@ -40,14 +57,24 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  *
  * ## State Management and Selector
  *
- * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
- * to specify which state changes will trigger a re-render, optimizing performance by preventing
- * unnecessary re-renders when irrelevant state changes occur.
+ * The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+ * in two ways:
+ *
+ * **1. Using `batcher.Subscribe` component (Recommended for component tree subscriptions)**
+ *
+ * Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+ * needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+ * in child components.
+ *
+ * **2. Using the `selector` parameter (For hook-level subscriptions)**
+ *
+ * The `selector` parameter allows you to specify which state changes will trigger reactive updates
+ * at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+ * state changes occur.
  *
  * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
- * full control over when your component updates. Only when you provide a selector will the
- * component re-render when the selected state values change.
+ * tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+ * updates and gives you full control over when your component tracks state changes.
  *
  * Available state properties:
  * - `executionCount`: Number of batch executions that have been completed
@@ -71,14 +98,14 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  *   }
  * );
  *
- * // Opt-in to re-render when items or isRunning changes (optimized for UI updates)
+ * // Opt-in to track items or isRunning changes (optimized for UI updates)
  * const batcher = createBatcher(
  *   (items) => console.log('Processing batch:', items),
  *   { maxSize: 5, wait: 2000 },
  *   (state) => ({ items: state.items, isRunning: state.isRunning })
  * );
  *
- * // Opt-in to re-render when execution metrics change (optimized for tracking progress)
+ * // Opt-in to track execution metrics changes (optimized for tracking progress)
  * const batcher = createBatcher(
  *   (items) => console.log('Processing batch:', items),
  *   { maxSize: 5, wait: 2000 },
@@ -111,7 +138,21 @@ export function createBatcher<TValue, TSelected = {}>(
     ...options,
   } as BatcherOptions<TValue>
 
-  const batcher = new Batcher(fn, mergedOptions)
+  const batcher = new Batcher(fn, mergedOptions) as unknown as SolidBatcher<
+    TValue,
+    TSelected
+  >
+
+  batcher.Subscribe = function Subscribe<TSelected>(props: {
+    selector: (state: BatcherState<TValue>) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) {
+    const selected = useStore(batcher.store, props.selector)
+
+    return typeof props.children === 'function'
+      ? props.children(selected)
+      : props.children
+  }
 
   const state = useStore(batcher.store, selector)
   return {

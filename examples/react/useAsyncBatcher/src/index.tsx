@@ -70,15 +70,8 @@ function App() {
         )
       },
     },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      size: state.size,
-      isExecuting: state.isExecuting,
-      status: state.status,
-      successCount: state.successCount,
-      errorCount: state.errorCount,
-      totalItemsProcessed: state.totalItemsProcessed,
-    }),
+    // Alternative to asyncBatcher.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   const addItem = (isUrgent = false) => {
@@ -104,18 +97,36 @@ function App() {
     <div>
       <h1>TanStack Pacer useAsyncBatcher Example</h1>
 
-      <div>
-        <h3>Batch Status</h3>
-        <div>Current Batch Size: {asyncBatcher.state.size}</div>
-        <div>Max Batch Size: 5</div>
-        <div>Is Executing: {asyncBatcher.state.isExecuting ? 'Yes' : 'No'}</div>
-        <div>Status: {asyncBatcher.state.status}</div>
-        <div>Successful Batches: {asyncBatcher.state.successCount}</div>
-        <div>Failed Batches: {asyncBatcher.state.errorCount}</div>
-        <div>
-          Total Items Processed: {asyncBatcher.state.totalItemsProcessed}
-        </div>
-      </div>
+      <asyncBatcher.Subscribe
+        selector={(state) => ({
+          size: state.size,
+          isExecuting: state.isExecuting,
+          status: state.status,
+          successCount: state.successCount,
+          errorCount: state.errorCount,
+          totalItemsProcessed: state.totalItemsProcessed,
+        })}
+      >
+        {({
+          size,
+          isExecuting,
+          status,
+          successCount,
+          errorCount,
+          totalItemsProcessed,
+        }) => (
+          <div>
+            <h3>Batch Status</h3>
+            <div>Current Batch Size: {size}</div>
+            <div>Max Batch Size: 5</div>
+            <div>Is Executing: {isExecuting ? 'Yes' : 'No'}</div>
+            <div>Status: {status}</div>
+            <div>Successful Batches: {successCount}</div>
+            <div>Failed Batches: {errorCount}</div>
+            <div>Total Items Processed: {totalItemsProcessed}</div>
+          </div>
+        )}
+      </asyncBatcher.Subscribe>
 
       <div>
         <h3>Current Batch Items</h3>
@@ -147,22 +158,29 @@ function App() {
           <button onClick={() => addItem(true)}>
             Add Urgent Item (Processes Immediately)
           </button>
-          <button
-            disabled={
-              asyncBatcher.state.size === 0 || asyncBatcher.state.isExecuting
-            }
-            onClick={executeCurrentBatch}
+          <asyncBatcher.Subscribe
+            selector={(state) => ({
+              size: state.size,
+              isExecuting: state.isExecuting,
+            })}
           >
-            Process Current Batch Now
-          </button>
-          <button
-            onClick={() => asyncBatcher.clear()}
-            disabled={
-              asyncBatcher.state.size === 0 || asyncBatcher.state.isExecuting
-            }
-          >
-            Clear Current Batch
-          </button>
+            {({ size, isExecuting }) => (
+              <>
+                <button
+                  disabled={size === 0 || isExecuting}
+                  onClick={executeCurrentBatch}
+                >
+                  Process Current Batch Now
+                </button>
+                <button
+                  onClick={() => asyncBatcher.clear()}
+                  disabled={size === 0 || isExecuting}
+                >
+                  Clear Current Batch
+                </button>
+              </>
+            )}
+          </asyncBatcher.Subscribe>
         </div>
       </div>
 
@@ -195,9 +213,13 @@ function App() {
         </div>
       )}
 
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(asyncBatcher.store.state, null, 2)}
-      </pre>
+      <asyncBatcher.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </asyncBatcher.Subscribe>
     </div>
   )
 }

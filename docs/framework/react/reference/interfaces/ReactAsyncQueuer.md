@@ -5,7 +5,7 @@ title: ReactAsyncQueuer
 
 # Interface: ReactAsyncQueuer\<TValue, TSelected\>
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L11)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L12)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:11](https://github.c
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L20)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L38)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -44,10 +44,57 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L26)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L44)
 
 #### Deprecated
 
 Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
 The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
 Although, you can make the state reactive by using the `useStore` in your own usage.
+
+***
+
+### Subscribe()
+
+```ts
+Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
+```
+
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L29)
+
+A React HOC (Higher Order Component) that allows you to subscribe to the queuer state.
+
+This is useful for opting into state re-renders for specific parts of the queuer state
+deep in your component tree without needing to pass a selector to the hook.
+
+#### Type Parameters
+
+##### TSelected
+
+`TSelected`
+
+#### Parameters
+
+##### props
+
+###### children
+
+`ReactNode` \| (`state`) => `ReactNode`
+
+###### selector
+
+(`state`) => `TSelected`
+
+#### Returns
+
+`ReactNode` \| `Promise`\<`ReactNode`\>
+
+#### Example
+
+```ts
+<queuer.Subscribe selector={(state) => ({ size: state.size, isRunning: state.isRunning })}>
+  {({ size, isRunning }) => (
+    <div>Queue: {size} items, {isRunning ? 'Processing' : 'Idle'}</div>
+  )}
+</queuer.Subscribe>
+```

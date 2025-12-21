@@ -12,7 +12,7 @@ function createAsyncBatcher<TValue, TSelected>(
 selector): SolidAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:131](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L131)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:158](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L158)
 
 Creates a Solid-compatible AsyncBatcher instance for managing asynchronous batches of items, exposing Solid signals for all stateful properties.
 
@@ -45,14 +45,24 @@ Error Handling:
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `batcher.Subscribe` component (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger reactive updates
+at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+updates and gives you full control over when your component tracks state changes.
 
 Available state properties:
 - `errorCount`: Number of failed batch executions
@@ -85,7 +95,7 @@ const asyncBatcher = createAsyncBatcher(
   }
 );
 
-// Opt-in to re-render when items or isExecuting changes (optimized for UI updates)
+// Opt-in to track items or isExecuting changes (optimized for UI updates)
 const asyncBatcher = createAsyncBatcher(
   async (items) => {
     const results = await Promise.all(items.map(item => processItem(item)));
@@ -95,7 +105,7 @@ const asyncBatcher = createAsyncBatcher(
   (state) => ({ items: state.items, isExecuting: state.isExecuting })
 );
 
-// Opt-in to re-render when error state changes (optimized for error handling)
+// Opt-in to track error state changes (optimized for error handling)
 const asyncBatcher = createAsyncBatcher(
   async (items) => {
     const results = await Promise.all(items.map(item => processItem(item)));

@@ -12,7 +12,7 @@ function useAsyncRateLimiter<TFn, TSelected>(
 selector): ReactAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:179](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L179)
+Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:214](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L214)
 
 A low-level React hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -43,14 +43,24 @@ Error Handling:
 
 ## State Management and Selector
 
-The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
-to specify which state changes will trigger a re-render, optimizing performance by preventing
-unnecessary re-renders when irrelevant state changes occur.
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `rateLimiter.Subscribe` HOC (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` HOC to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger a re-render
+at the hook level, optimizing performance by preventing unnecessary re-renders when irrelevant
+state changes occur.
 
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary re-renders and gives you
-full control over when your component updates. Only when you provide a selector will the
-component re-render when the selected state values change.
+tracking by providing a selector function or using the `Subscribe` HOC. This prevents unnecessary
+re-renders and gives you full control over when your component updates.
 
 Available state properties:
 - `errorCount`: Number of function executions that have resulted in errors
@@ -102,7 +112,14 @@ const asyncRateLimiter = useAsyncRateLimiter(
   { limit: 5, window: 1000 } // 5 calls per second
 );
 
-// Opt-in to re-render when execution state changes (optimized for loading indicators)
+// Subscribe to state changes deep in component tree using Subscribe HOC
+<asyncRateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount, isExecuting: state.isExecuting })}>
+  {({ rejectionCount, isExecuting }) => (
+    <div>Rejected: {rejectionCount}, {isExecuting ? 'Executing' : 'Idle'}</div>
+  )}
+</asyncRateLimiter.Subscribe>
+
+// Opt-in to re-render when execution state changes at hook level (optimized for loading indicators)
 const asyncRateLimiter = useAsyncRateLimiter(
   async (id: string) => {
     const data = await api.fetchData(id);

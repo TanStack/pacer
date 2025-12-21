@@ -211,7 +211,27 @@ The `Throttler` class uses TanStack Store for reactive state management, providi
 
 ### State Selector (Framework Adapters)
 
-Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
+Framework adapters support subscribing to state changes in two ways:
+
+**1. Using `throttler.Subscribe` component (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` component to subscribe to state changes deep in your component tree without needing to pass a selector to the hook. This is ideal when you want to subscribe to state in child components.
+
+```tsx
+// Default behavior - no reactive state subscriptions at hook level
+const throttler = useThrottler(fn, { wait: 200 })
+
+// Subscribe to state changes deep in component tree using Subscribe component
+<throttler.Subscribe selector={(state) => ({ isPending: state.isPending })}>
+  {(state) => (
+    <div>{state.isPending ? 'Waiting...' : 'Ready'}</div>
+  )}
+</throttler.Subscribe>
+```
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger reactive updates at the hook level, optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
 
 **By default, `throttler.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
 

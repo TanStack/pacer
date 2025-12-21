@@ -9,22 +9,19 @@ function App1() {
 
   // Using useRateLimitedValue with a rate limit of 5 executions per 5 seconds
   // optionally, grab the rate limiter from the last index of the returned array
-  const [limitedCount] = useRateLimitedValue(
-    instantCount,
-    {
-      // enabled: () => instantCount > 2, // optional, defaults to true
-      limit: 5,
-      window: 5000,
-      windowType: windowType,
-      onReject: (rateLimiter) =>
-        console.log(
-          'Rejected by rate limiter',
-          rateLimiter.getMsUntilNextWindow(),
-        ),
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (_state) => ({}), // No specific state access needed for this example
-  )
+  const [limitedCount] = useRateLimitedValue(instantCount, {
+    // enabled: () => instantCount > 2, // optional, defaults to true
+    limit: 5,
+    window: 5000,
+    windowType: windowType,
+    onReject: (rateLimiter) =>
+      console.log(
+        'Rejected by rate limiter',
+        rateLimiter.getMsUntilNextWindow(),
+      ),
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  })
 
   function increment() {
     setInstantCount((c) => c + 1)
@@ -79,22 +76,19 @@ function App2() {
   const [instantSearch, setInstantSearch] = useState('')
 
   // Using useRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const [limitedSearch] = useRateLimitedValue(
-    instantSearch,
-    {
-      // enabled: instantSearch.length > 2, // optional, defaults to true
-      limit: 5,
-      window: 5000,
-      windowType: windowType,
-      onReject: (rateLimiter) =>
-        console.log(
-          'Rejected by rate limiter',
-          rateLimiter.getMsUntilNextWindow(),
-        ),
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (_state) => ({}), // No specific state access needed for this example
-  )
+  const [limitedSearch] = useRateLimitedValue(instantSearch, {
+    // enabled: instantSearch.length > 2, // optional, defaults to true
+    limit: 5,
+    window: 5000,
+    windowType: windowType,
+    onReject: (rateLimiter) =>
+      console.log(
+        'Rejected by rate limiter',
+        rateLimiter.getMsUntilNextWindow(),
+      ),
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  })
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     setInstantSearch(e.currentTarget.value)
@@ -157,24 +151,18 @@ function App3() {
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
 
   // Using useRateLimitedValue with a rate limit of 5 executions per 5 seconds
-  const [limitedValue, rateLimiter] = useRateLimitedValue(
-    currentValue,
-    {
-      limit: 20,
-      window: 2000,
-      windowType: windowType,
-      onReject: (rateLimiter) =>
-        console.log(
-          'Rejected by rate limiter',
-          rateLimiter.getMsUntilNextWindow(),
-        ),
-    },
-    // Optional Selector function to pick the state you want to track and use
-    (state) => ({
-      executionCount: state.executionCount,
-      rejectionCount: state.rejectionCount,
-    }),
-  )
+  const [limitedValue, rateLimiter] = useRateLimitedValue(currentValue, {
+    limit: 20,
+    window: 2000,
+    windowType: windowType,
+    onReject: (rateLimiter) =>
+      console.log(
+        'Rejected by rate limiter',
+        rateLimiter.getMsUntilNextWindow(),
+      ),
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  })
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
@@ -237,52 +225,66 @@ function App3() {
       </div>
       <table>
         <tbody>
-          <tr>
-            <td>Execution Count:</td>
-            <td>{rateLimiter.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>Rejection Count:</td>
-            <td>{rateLimiter.state.rejectionCount}</td>
-          </tr>
-          <tr>
-            <td>Remaining in Window:</td>
-            <td>{rateLimiter.getRemainingInWindow()}</td>
-          </tr>
-          <tr>
-            <td>Ms Until Next Window:</td>
-            <td>{rateLimiter.getMsUntilNextWindow()}</td>
-          </tr>
-          <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount}</td>
-          </tr>
-          <tr>
-            <td>Saved Executions:</td>
-            <td>{instantExecutionCount - rateLimiter.state.executionCount}</td>
-          </tr>
-          <tr>
-            <td>% Reduction:</td>
-            <td>
-              {instantExecutionCount === 0
-                ? '0'
-                : Math.round(
-                    ((instantExecutionCount -
-                      rateLimiter.state.executionCount) /
-                      instantExecutionCount) *
-                      100,
-                  )}
-              %
-            </td>
-          </tr>
+          <rateLimiter.Subscribe
+            selector={(state) => ({
+              executionCount: state.executionCount,
+              rejectionCount: state.rejectionCount,
+            })}
+          >
+            {({ executionCount, rejectionCount }) => (
+              <>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Rejection Count:</td>
+                  <td>{rejectionCount}</td>
+                </tr>
+                <tr>
+                  <td>Remaining in Window:</td>
+                  <td>{rateLimiter.getRemainingInWindow()}</td>
+                </tr>
+                <tr>
+                  <td>Ms Until Next Window:</td>
+                  <td>{rateLimiter.getMsUntilNextWindow()}</td>
+                </tr>
+                <tr>
+                  <td>Instant Executions:</td>
+                  <td>{instantExecutionCount}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount - executionCount}</td>
+                </tr>
+                <tr>
+                  <td>% Reduction:</td>
+                  <td>
+                    {instantExecutionCount === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount - executionCount) /
+                            instantExecutionCount) *
+                            100,
+                        )}
+                    %
+                  </td>
+                </tr>
+              </>
+            )}
+          </rateLimiter.Subscribe>
         </tbody>
       </table>
       <div style={{ color: '#666', fontSize: '0.9em' }}>
         <p>Rate limited to 20 updates per 2 seconds</p>
       </div>
-      <pre style={{ marginTop: '20px' }}>
-        {JSON.stringify(rateLimiter.store.state, null, 2)}
-      </pre>
+      <rateLimiter.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </rateLimiter.Subscribe>
     </div>
   )
 }

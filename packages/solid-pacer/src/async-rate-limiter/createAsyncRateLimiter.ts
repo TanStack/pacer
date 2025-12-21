@@ -2,7 +2,7 @@ import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { useStore } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor } from 'solid-js'
+import type { Accessor, JSX } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncRateLimiterOptions,
@@ -13,6 +13,23 @@ export interface SolidAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 > extends Omit<AsyncRateLimiter<TFn>, 'store'> {
+  /**
+   * A Solid component that allows you to subscribe to the rate limiter state.
+   *
+   * This is useful for tracking specific parts of the rate limiter state
+   * deep in your component tree without needing to pass a selector to the hook.
+   *
+   * @example
+   * <rateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount, isExecuting: state.isExecuting })}>
+   *   {(state) => (
+   *     <div>Rejected: {state().rejectionCount}, {state().isExecuting ? 'Executing' : 'Idle'}</div>
+   *   )}
+   * </rateLimiter.Subscribe>
+   */
+  Subscribe: <TSelected>(props: {
+    selector: (state: AsyncRateLimiterState<TFn>) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) => JSX.Element
   /**
    * Reactive state that will be updated when the rate limiter state changes
    *
@@ -64,14 +81,24 @@ export interface SolidAsyncRateLimiter<
  *
  * ## State Management and Selector
  *
- * The hook uses TanStack Store for reactive state management. The `selector` parameter allows you
- * to specify which state changes will trigger a re-render, optimizing performance by preventing
- * unnecessary re-renders when irrelevant state changes occur.
+ * The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+ * in two ways:
+ *
+ * **1. Using `rateLimiter.Subscribe` component (Recommended for component tree subscriptions)**
+ *
+ * Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+ * needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+ * in child components.
+ *
+ * **2. Using the `selector` parameter (For hook-level subscriptions)**
+ *
+ * The `selector` parameter allows you to specify which state changes will trigger reactive updates
+ * at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+ * state changes occur.
  *
  * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary re-renders and gives you
- * full control over when your component updates. Only when you provide a selector will the
- * component re-render when the selected state values change.
+ * tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+ * updates and gives you full control over when your component tracks state changes.
  *
  * Available state properties:
  * - `currentWindowStart`: Timestamp when the current window started
@@ -87,7 +114,7 @@ export interface SolidAsyncRateLimiter<
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
- * const { maybeExecute } = createAsyncRateLimiter(
+ * const asyncRateLimiter = createAsyncRateLimiter(
  *   async (id: string) => {
  *     const data = await api.fetchData(id);
  *     return data; // Return value is preserved
@@ -95,36 +122,81 @@ export interface SolidAsyncRateLimiter<
  *   { limit: 5, window: 1000 } // 5 calls per second
  * );
  *
- * // Opt-in to re-render when rate limit and execution state changes (optimized for UI feedback)
- * const rateLimiter = createAsyncRateLimiter(
- *   async (query) => {
- *     const result = await searchAPI(query);
- *     return result;
+ * // Subscribe to state changes deep in component tree using Subscribe component
+ * <asyncRateLimiter.Subscribe selector={(state) => ({ rejectionCount: state.rejectionCount, isExecuting: state.isExecuting })}>
+ *   {(state) => (
+ *     <div>Rejected: {state().rejectionCount}, {state().isExecuting ? 'Executing' : 'Idle'}</div>
+ *   )}
+ * </asyncRateLimiter.Subscribe>
+ *
+ * // Opt-in to track execution state changes at hook level (optimized for loading indicators)
+ * const asyncRateLimiter = createAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
  *   },
- *   { limit: 10, window: 60000 },
+ *   { limit: 5, window: 1000 },
+ *   (state) => ({ isExecuting: state.isExecuting })
+ * );
+ *
+ * // Opt-in to track results when available (optimized for data display)
+ * const asyncRateLimiter = createAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   { limit: 5, window: 1000 },
  *   (state) => ({
- *     remainingInWindow: state.remainingInWindow,
- *     isExecuting: state.isExecuting,
+ *     lastResult: state.lastResult,
+ *     successCount: state.successCount
+ *   })
+ * );
+ *
+ * // Opt-in to track error/rejection state changes (optimized for error handling)
+ * const asyncRateLimiter = createAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
+ *   },
+ *   {
+ *     limit: 5,
+ *     window: 1000,
+ *     onError: (error) => console.error('API call failed:', error),
+ *     onReject: (rateLimiter) => console.log('Rate limit exceeded')
+ *   },
+ *   (state) => ({
+ *     errorCount: state.errorCount,
  *     rejectionCount: state.rejectionCount
  *   })
  * );
  *
- * // Opt-in to re-render when error state changes (optimized for error handling)
- * const rateLimiter = createAsyncRateLimiter(
- *   async (query) => {
- *     const result = await searchAPI(query);
- *     return result;
+ * // Opt-in to track execution metrics changes (optimized for stats display)
+ * const asyncRateLimiter = createAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
  *   },
- *   {
- *     limit: 10,
- *     window: 60000, // 10 calls per minute
- *     onReject: (info) => console.log(`Rate limit exceeded: ${info.nextValidTime - Date.now()}ms until next window`)
+ *   { limit: 5, window: 1000 },
+ *   (state) => ({
+ *     successCount: state.successCount,
+ *     errorCount: state.errorCount,
+ *     settleCount: state.settleCount,
+ *     rejectionCount: state.rejectionCount
+ *   })
+ * );
+ *
+ * // Opt-in to track execution times changes (optimized for window calculations)
+ * const asyncRateLimiter = createAsyncRateLimiter(
+ *   async (id: string) => {
+ *     const data = await api.fetchData(id);
+ *     return data;
  *   },
- *   (state) => ({ hasError: state.hasError, lastError: state.lastError })
+ *   { limit: 5, window: 1000 },
+ *   (state) => ({ executionTimes: state.executionTimes })
  * );
  *
  * // Access the selected state (will be empty object {} unless selector provided)
- * const { remainingInWindow, isExecuting } = rateLimiter.state();
+ * const { isExecuting, lastResult, rejectionCount } = asyncRateLimiter.state();
  * ```
  */
 export function createAsyncRateLimiter<
@@ -141,7 +213,21 @@ export function createAsyncRateLimiter<
     ...options,
   } as AsyncRateLimiterOptions<TFn>
 
-  const asyncRateLimiter = new AsyncRateLimiter<TFn>(fn, mergedOptions)
+  const asyncRateLimiter = new AsyncRateLimiter<TFn>(
+    fn,
+    mergedOptions,
+  ) as unknown as SolidAsyncRateLimiter<TFn, TSelected>
+
+  asyncRateLimiter.Subscribe = function Subscribe<TSelected>(props: {
+    selector: (state: AsyncRateLimiterState<TFn>) => TSelected
+    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+  }) {
+    const selected = useStore(asyncRateLimiter.store, props.selector)
+
+    return typeof props.children === 'function'
+      ? props.children(selected)
+      : props.children
+  }
 
   const state = useStore(asyncRateLimiter.store, selector)
 
