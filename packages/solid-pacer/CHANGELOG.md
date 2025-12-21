@@ -1,5 +1,11 @@
 # @tanstack/solid-pacer
 
+## 0.18.0
+
+### Minor Changes
+
+- add Subscribe API to all util hooks ([#121](https://github.com/TanStack/pacer/pull/121))
+
 ## 0.17.0
 
 ### Minor Changes
