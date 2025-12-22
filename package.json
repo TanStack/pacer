@@ -5,7 +5,7 @@
     "type": "git",
     "url": "git+https://github.com/TanStack/pacer.git"
   },
-  "packageManager": "pnpm@10.25.0",
+  "packageManager": "pnpm@10.26.1",
   "type": "module",
   "scripts": {
     "build": "nx affected --skip-nx-cache --targets=build --exclude=examples/** && size-limit && pnpm run",
@@ -61,7 +61,7 @@
     "eslint": "^9.39.2",
     "eslint-plugin-unused-imports": "^4.3.0",
     "happy-dom": "^20.0.11",
-    "knip": "^5.76.1",
+    "knip": "^5.76.2",
     "markdown-link-extractor": "^4.0.3",
     "nx": "^22.3.3",
     "premove": "^4.0.0",
