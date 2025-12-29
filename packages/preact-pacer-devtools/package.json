@@ -53,13 +53,13 @@
     "preact": ">=10.0.0"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.1.0",
+    "@tanstack/devtools-utils": "^0.2.0",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.2",
     "@testing-library/preact": "^3.2.4",
-    "preact": "^10.28.0"
+    "preact": "^10.28.1"
   },
   "main": "./dist/index.js"
 }
