@@ -1,5 +1,11 @@
 # @tanstack/pacer-devtools
 
+## 1.1.1
+
+### Patch Changes
+
+- devtools and event-client version bumps ([`17b9704`](https://github.com/TanStack/pacer/commit/17b9704d8b04890665975c09587f035911a2a5cc))
+
 ## 1.1.0
 
 ### Minor Changes
