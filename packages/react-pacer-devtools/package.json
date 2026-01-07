@@ -55,7 +55,7 @@
     "react-dom": ">=16.8"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.2.0",
+    "@tanstack/devtools-utils": "^0.2.3",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {

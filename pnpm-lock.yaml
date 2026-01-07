@@ -2411,8 +2411,8 @@ importers:
         specifier: ^0.4.4
         version: 0.4.4(csstype@3.2.3)(solid-js@1.9.10)
       '@tanstack/devtools-utils':
-        specifier: ^0.2.0
-        version: 0.2.0(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)
+        specifier: ^0.2.3
+        version: 0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/pacer':
         specifier: '>=0.16.4'
         version: link:../pacer
@@ -2464,8 +2464,8 @@ importers:
   packages/preact-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
-        specifier: ^0.2.0
-        version: 0.2.0(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)
+        specifier: ^0.2.3
+        version: 0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -2514,8 +2514,8 @@ importers:
   packages/react-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
-        specifier: ^0.2.0
-        version: 0.2.0(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)
+        specifier: ^0.2.3
+        version: 0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -2564,8 +2564,8 @@ importers:
   packages/solid-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
-        specifier: ^0.2.0
-        version: 0.2.0(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)
+        specifier: ^0.2.3
+        version: 0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -3615,8 +3615,8 @@ packages:
     peerDependencies:
       solid-js: '>=1.9.7'
 
-  '@tanstack/devtools-utils@0.2.0':
-    resolution: {integrity: sha512-8XcJ6baYPK1mpvj+m6BA9uknDMlhQSKzT+9VDQlkbs+Fyj98bbkxV9FGrm+eVZVGk07HcJr9EK8B3YBs+kAI6Q==}
+  '@tanstack/devtools-utils@0.2.3':
+    resolution: {integrity: sha512-Ob7wAGTNs7SfOJWZlV+3fi7JGT8ApgeNKoaKV4trRk3TDjThm0w4EwbNDsfZu5NCvefSOY0sequp2qG8g7zG/g==}
     engines: {node: '>=18'}
     peerDependencies:
       '@types/react': '>=17.0.0'
@@ -4337,8 +4337,8 @@ packages:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
 
-  devalue@5.5.0:
-    resolution: {integrity: sha512-69sM5yrHfFLJt0AZ9QqZXGCPfJ7fQjvpln3Rq5+PS03LD32Ost1Q9N+eEnaQwGRIriKkMImXD56ocjQmfjbV3w==}
+  devalue@5.6.1:
+    resolution: {integrity: sha512-jDwizj+IlEZBunHcOuuFVBnIMPAEHvTsJj0BcIp94xYguLRVBcXO853px/MyIJvbVzWdsGvrRweIUWJw8hBP7A==}
 
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -7214,7 +7214,7 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools-utils@0.2.0(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)':
+  '@tanstack/devtools-utils@0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.1)(react@19.2.3)(solid-js@1.9.10)':
     dependencies:
       '@tanstack/devtools-ui': 0.4.4(csstype@3.2.3)(solid-js@1.9.10)
     optionalDependencies:
@@ -8015,7 +8015,7 @@ snapshots:
 
   detect-indent@6.1.0: {}
 
-  devalue@5.5.0: {}
+  devalue@5.6.1: {}
 
   dir-glob@3.0.1:
     dependencies:
@@ -9560,7 +9560,7 @@ snapshots:
       aria-query: 5.3.2
       axobject-query: 4.1.0
       clsx: 2.1.1
-      devalue: 5.5.0
+      devalue: 5.6.1
       esm-env: 1.2.2
       esrap: 2.2.1
       is-reference: 3.0.3
