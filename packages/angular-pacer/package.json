@@ -1,0 +1,120 @@
+{
+  "name": "@tanstack/angular-pacer",
+  "version": "0.19.1",
+  "description": "Utilities for debouncing and throttling functions in Angular.",
+  "author": "Tanner Linsley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanStack/pacer.git",
+    "directory": "packages/angular-pacer"
+  },
+  "homepage": "https://tanstack.com/pacer",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/tannerlinsley"
+  },
+  "keywords": [
+    "angular",
+    "debounce",
+    "throttle",
+    "rate-limit",
+    "queue",
+    "async",
+    "signals"
+  ],
+  "scripts": {
+    "clean": "premove ./build ./dist",
+    "test:eslint": "eslint ./src",
+    "test:lib": "vitest --passWithNoTests",
+    "test:lib:dev": "pnpm test:lib --watch",
+    "test:types": "tsc",
+    "build": "tsdown"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./async-batcher": {
+      "require": "./dist/async-batcher/index.cjs",
+      "import": "./dist/async-batcher/index.js"
+    },
+    "./async-debouncer": {
+      "require": "./dist/async-debouncer/index.cjs",
+      "import": "./dist/async-debouncer/index.js"
+    },
+    "./async-queuer": {
+      "require": "./dist/async-queuer/index.cjs",
+      "import": "./dist/async-queuer/index.js"
+    },
+    "./async-rate-limiter": {
+      "require": "./dist/async-rate-limiter/index.cjs",
+      "import": "./dist/async-rate-limiter/index.js"
+    },
+    "./async-retryer": {
+      "require": "./dist/async-retryer/index.cjs",
+      "import": "./dist/async-retryer/index.js"
+    },
+    "./async-throttler": {
+      "require": "./dist/async-throttler/index.cjs",
+      "import": "./dist/async-throttler/index.js"
+    },
+    "./batcher": {
+      "require": "./dist/batcher/index.cjs",
+      "import": "./dist/batcher/index.js"
+    },
+    "./debouncer": {
+      "require": "./dist/debouncer/index.cjs",
+      "import": "./dist/debouncer/index.js"
+    },
+    "./provider": {
+      "require": "./dist/provider/index.cjs",
+      "import": "./dist/provider/index.js"
+    },
+    "./queuer": {
+      "require": "./dist/queuer/index.cjs",
+      "import": "./dist/queuer/index.js"
+    },
+    "./rate-limiter": {
+      "require": "./dist/rate-limiter/index.cjs",
+      "import": "./dist/rate-limiter/index.js"
+    },
+    "./throttler": {
+      "require": "./dist/throttler/index.cjs",
+      "import": "./dist/throttler/index.js"
+    },
+    "./types": {
+      "require": "./dist/types/index.cjs",
+      "import": "./dist/types/index.js"
+    },
+    "./utils": {
+      "require": "./dist/utils/index.cjs",
+      "import": "./dist/utils/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@tanstack/pacer": "workspace:*"
+  },
+  "devDependencies": {
+    "@angular/core": "^18.0.0",
+    "@types/node": "^25.0.3"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=16.0.0"
+  }
+}
+
