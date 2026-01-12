@@ -52,7 +52,7 @@
     "solid-js": ">=1.9.7"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.2.3",
+    "@tanstack/devtools-utils": "^0.2.4",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
