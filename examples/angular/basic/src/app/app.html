@@ -1,0 +1,9 @@
+<input
+  type="text"
+  [value]="searchTerm()"
+  (input)="setSearchTerm($any($event.target).value)"
+  placeholder="Type to search..."
+/>
+<p>Debounced: {{ searchTerm() }}</p>
+
+<router-outlet />
