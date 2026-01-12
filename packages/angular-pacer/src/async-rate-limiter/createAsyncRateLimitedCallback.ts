@@ -47,4 +47,3 @@ export function createAsyncRateLimitedCallback<TFn extends AnyAsyncFunction>(
   const rateLimiter = createAsyncRateLimiter(fn, options)
   return (...args: Parameters<TFn>) => rateLimiter.maybeExecute(...args)
 }
-

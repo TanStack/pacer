@@ -81,16 +81,16 @@ import { createDebouncedSignal } from '@tanstack/angular-pacer'
 @Component({
   selector: 'app-search',
   template: `
-    <input 
-      [value]="searchQuery()" 
-      (input)="setSearchQuery($any($event.target).value)" 
+    <input
+      [value]="searchQuery()"
+      (input)="setSearchQuery($any($event.target).value)"
     />
     <p>Debounced: {{ debouncedQuery() }}</p>
-  `
+  `,
 })
 export class SearchComponent {
-  searchQuery = signal('')
-  [debouncedQuery, setSearchQuery] = createDebouncedSignal('', { wait: 500 })
+  searchQuery = (signal('')[(debouncedQuery, setSearchQuery)] =
+    createDebouncedSignal('', { wait: 500 }))
 }
 ```
 
@@ -102,14 +102,15 @@ import { createDebouncedCallback } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-search',
-  template: `
-    <input (input)="handleSearch($any($event.target).value)" />
-  `
+  template: ` <input (input)="handleSearch($any($event.target).value)" /> `,
 })
 export class SearchComponent {
-  handleSearch = createDebouncedCallback((query: string) => {
-    console.log('Searching for:', query)
-  }, { wait: 500 })
+  handleSearch = createDebouncedCallback(
+    (query: string) => {
+      console.log('Searching for:', query)
+    },
+    { wait: 500 },
+  )
 }
 ```
 
@@ -125,7 +126,7 @@ import { createThrottledSignal } from '@tanstack/angular-pacer'
 })
 export class ScrollComponent {
   [scrollY, setScrollY] = createThrottledSignal(0, { wait: 100 })
-  
+
   ngOnInit() {
     window.addEventListener('scroll', () => {
       setScrollY(window.scrollY)
@@ -142,14 +143,17 @@ import { createAsyncDebouncedCallback } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-search',
-  template: `<input (input)="handleSearch($any($event.target).value)" />`
+  template: `<input (input)="handleSearch($any($event.target).value)" />`,
 })
 export class SearchComponent {
-  handleSearch = createAsyncDebouncedCallback(async (query: string) => {
-    const response = await fetch(`/api/search?q=${query}`)
-    return response.json()
-  }, { wait: 500 })
-  
+  handleSearch = createAsyncDebouncedCallback(
+    async (query: string) => {
+      const response = await fetch(`/api/search?q=${query}`)
+      return response.json()
+    },
+    { wait: 500 },
+  )
+
   async onInput(query: string) {
     const results = await this.handleSearch(query)
     console.log('Results:', results)
@@ -201,4 +205,3 @@ See the [examples directory](../../examples) for more usage examples.
 ## License
 
 MIT
-

@@ -40,4 +40,3 @@ export const PACER_OPTIONS = new InjectionToken<PacerProviderOptions>(
 export function useDefaultPacerOptions(): PacerProviderOptions {
   return inject(PACER_OPTIONS) ?? DEFAULT_OPTIONS
 }
-

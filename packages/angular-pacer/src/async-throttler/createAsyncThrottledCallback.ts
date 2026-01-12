@@ -45,4 +45,3 @@ export function createAsyncThrottledCallback<TFn extends AnyAsyncFunction>(
   const throttler = createAsyncThrottler(fn, options)
   return (...args: Parameters<TFn>) => throttler.maybeExecute(...args)
 }
-

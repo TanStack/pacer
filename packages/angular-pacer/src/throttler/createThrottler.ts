@@ -116,4 +116,3 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
     state: stateSignal.asReadonly(),
   } as AngularThrottler<TFn, TSelected>
 }
-

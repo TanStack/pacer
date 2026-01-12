@@ -97,4 +97,3 @@ export function createQueuer<TValue, TSelected = {}>(
     state: stateSignal.asReadonly(),
   } as AngularQueuer<TValue, TSelected>
 }
-

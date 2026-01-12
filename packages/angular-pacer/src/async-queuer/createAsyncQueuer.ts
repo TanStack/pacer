@@ -3,7 +3,10 @@ import { DestroyRef, inject } from '@angular/core'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
 import type { Store } from '@tanstack/store'
-import type { AsyncQueuerOptions, AsyncQueuerState } from '@tanstack/pacer/async-queuer'
+import type {
+  AsyncQueuerOptions,
+  AsyncQueuerState,
+} from '@tanstack/pacer/async-queuer'
 
 export interface AngularAsyncQueuer<TValue, TSelected = {}> extends Omit<
   AsyncQueuer<TValue>,
@@ -98,4 +101,3 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
     state: stateSignal.asReadonly(),
   } as AngularAsyncQueuer<TValue, TSelected>
 }
-

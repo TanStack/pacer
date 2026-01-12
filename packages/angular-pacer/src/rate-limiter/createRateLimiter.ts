@@ -130,4 +130,3 @@ export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
     state: stateSignal.asReadonly(),
   } as AngularRateLimiter<TFn, TSelected>
 }
-

@@ -84,10 +84,11 @@ export function createThrottledSignal<TValue, TSelected = {}>(
     selector,
   )
 
-  const setter: Setter<TValue> = (newValue: TValue | ((prev: TValue) => TValue)) => {
+  const setter: Setter<TValue> = (
+    newValue: TValue | ((prev: TValue) => TValue),
+  ) => {
     throttler.maybeExecute(newValue)
   }
 
   return [throttledValue.asReadonly(), setter, throttler]
 }
-

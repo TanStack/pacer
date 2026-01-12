@@ -1,5 +1,6 @@
-import { signal, Signal, WritableSignal } from '@angular/core'
+import { signal } from '@angular/core'
 import { createDebouncer } from './createDebouncer'
+import type { Signal } from '@angular/core'
 import type { AngularDebouncer } from './createDebouncer'
 import type {
   DebouncerOptions,
@@ -88,10 +89,11 @@ export function createDebouncedSignal<TValue, TSelected = {}>(
     selector,
   )
 
-  const setter: Setter<TValue> = (newValue: TValue | ((prev: TValue) => TValue)) => {
+  const setter: Setter<TValue> = (
+    newValue: TValue | ((prev: TValue) => TValue),
+  ) => {
     debouncer.maybeExecute(newValue)
   }
 
   return [debouncedValue.asReadonly(), setter, debouncer]
 }
-

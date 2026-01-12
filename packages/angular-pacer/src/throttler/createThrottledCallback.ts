@@ -43,4 +43,3 @@ export function createThrottledCallback<TFn extends AnyFunction>(
   const throttler = createThrottler(fn, options)
   return (...args: Parameters<TFn>) => throttler.maybeExecute(...args)
 }
-

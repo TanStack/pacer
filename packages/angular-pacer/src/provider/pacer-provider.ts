@@ -30,12 +30,9 @@ import type { PacerProviderOptions } from './pacer-context'
  * export class AppModule {}
  * ```
  */
-export function providePacerOptions(
-  options: PacerProviderOptions,
-): Provider {
+export function providePacerOptions(options: PacerProviderOptions): Provider {
   return {
     provide: PACER_OPTIONS,
     useValue: options,
   }
 }
-

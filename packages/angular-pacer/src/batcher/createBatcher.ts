@@ -93,4 +93,3 @@ export function createBatcher<TValue, TSelected = {}>(
     state: stateSignal.asReadonly(),
   } as AngularBatcher<TValue, TSelected>
 }
-

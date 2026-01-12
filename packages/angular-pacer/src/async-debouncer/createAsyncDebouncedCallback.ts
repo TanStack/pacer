@@ -44,4 +44,3 @@ export function createAsyncDebouncedCallback<TFn extends AnyAsyncFunction>(
   const debouncer = createAsyncDebouncer(fn, options)
   return (...args: Parameters<TFn>) => debouncer.maybeExecute(...args)
 }
-

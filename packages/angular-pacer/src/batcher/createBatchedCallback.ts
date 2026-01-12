@@ -44,4 +44,3 @@ export function createBatchedCallback<TValue>(
   const batcher = createBatcher(fn, options)
   return (item: TValue) => batcher.addItem(item)
 }
-

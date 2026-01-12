@@ -1,7 +1,10 @@
 import { computed, Signal } from '@angular/core'
 import { createAsyncQueuer } from './createAsyncQueuer'
 import type { AngularAsyncQueuer } from './createAsyncQueuer'
-import type { AsyncQueuerOptions, AsyncQueuerState } from '@tanstack/pacer/async-queuer'
+import type {
+  AsyncQueuerOptions,
+  AsyncQueuerState,
+} from '@tanstack/pacer/async-queuer'
 
 /**
  * An Angular function that creates an async queuer with managed state, combining Angular's signals with async queuing functionality.
@@ -40,10 +43,13 @@ import type { AsyncQueuerOptions, AsyncQueuerState } from '@tanstack/pacer/async
  * queuer.stop();
  * ```
  */
-export function createAsyncQueuedSignal<TValue, TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
-  AsyncQueuerState<TValue>,
-  'items'
->>(
+export function createAsyncQueuedSignal<
+  TValue,
+  TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
+    AsyncQueuerState<TValue>,
+    'items'
+  >,
+>(
   fn: (value: TValue) => Promise<any>,
   options: AsyncQueuerOptions<TValue> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = (state) =>
@@ -59,4 +65,3 @@ export function createAsyncQueuedSignal<TValue, TSelected extends Pick<AsyncQueu
 
   return [items, queuer.addItem.bind(queuer), queuer]
 }
-

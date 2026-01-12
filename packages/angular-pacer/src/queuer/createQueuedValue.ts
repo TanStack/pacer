@@ -54,4 +54,3 @@ export function createQueuedValue<
 
   return [value.asReadonly(), queuer]
 }
-

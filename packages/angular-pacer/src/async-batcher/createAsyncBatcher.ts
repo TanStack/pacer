@@ -3,7 +3,10 @@ import { DestroyRef, inject } from '@angular/core'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
 import type { Store } from '@tanstack/store'
-import type { AsyncBatcherOptions, AsyncBatcherState } from '@tanstack/pacer/async-batcher'
+import type {
+  AsyncBatcherOptions,
+  AsyncBatcherState,
+} from '@tanstack/pacer/async-batcher'
 
 export interface AngularAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
@@ -98,4 +101,3 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
     state: stateSignal.asReadonly(),
   } as AngularAsyncBatcher<TValue, TSelected>
 }
-

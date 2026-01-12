@@ -34,10 +34,13 @@ import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
  * queue.stop();
  * ```
  */
-export function createQueuedSignal<TValue, TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
-  QueuerState<TValue>,
-  'items'
->>(
+export function createQueuedSignal<
+  TValue,
+  TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
+    QueuerState<TValue>,
+    'items'
+  >,
+>(
   fn: (item: TValue) => void,
   options: QueuerOptions<TValue> = {},
   selector: (state: QueuerState<TValue>) => TSelected = (state) =>
@@ -53,4 +56,3 @@ export function createQueuedSignal<TValue, TSelected extends Pick<QueuerState<TV
 
   return [items, queue.addItem.bind(queue), queue]
 }
-

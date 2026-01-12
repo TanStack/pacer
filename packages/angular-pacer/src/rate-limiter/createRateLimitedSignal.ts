@@ -71,10 +71,11 @@ export function createRateLimitedSignal<TValue, TSelected = {}>(
     selector,
   )
 
-  const setter: Setter<TValue> = (newValue: TValue | ((prev: TValue) => TValue)) => {
+  const setter: Setter<TValue> = (
+    newValue: TValue | ((prev: TValue) => TValue),
+  ) => {
     rateLimiter.maybeExecute(newValue)
   }
 
   return [rateLimitedValue.asReadonly(), setter, rateLimiter]
 }
-
