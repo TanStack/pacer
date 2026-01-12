@@ -25,7 +25,6 @@
   ],
   "type": "module",
   "types": "./dist/index.d.ts",
-  "module": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
     "./production": "./dist/production.js",
@@ -60,6 +59,5 @@
     "@preact/preset-vite": "^2.10.2",
     "@testing-library/preact": "^3.2.4",
     "preact": "^10.28.2"
-  },
-  "main": "./dist/index.js"
+  }
 }
