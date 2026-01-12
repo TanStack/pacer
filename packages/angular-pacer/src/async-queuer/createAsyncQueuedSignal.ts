@@ -1,5 +1,6 @@
-import { computed, Signal } from '@angular/core'
+import { computed } from '@angular/core'
 import { createAsyncQueuer } from './createAsyncQueuer'
+import type { Signal } from '@angular/core';
 import type { AngularAsyncQueuer } from './createAsyncQueuer'
 import type {
   AsyncQueuerOptions,

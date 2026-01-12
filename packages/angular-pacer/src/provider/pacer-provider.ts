@@ -1,5 +1,5 @@
-import { Provider } from '@angular/core'
 import { PACER_OPTIONS } from './pacer-context'
+import type { Provider } from '@angular/core'
 import type { PacerProviderOptions } from './pacer-context'
 
 /**

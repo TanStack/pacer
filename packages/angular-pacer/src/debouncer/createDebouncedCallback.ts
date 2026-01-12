@@ -1,5 +1,4 @@
 import { createDebouncer } from './createDebouncer'
-import type { AngularDebouncer } from './createDebouncer'
 import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 

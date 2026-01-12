@@ -1,7 +1,7 @@
-import { signal, Signal } from '@angular/core'
-import { DestroyRef, inject } from '@angular/core'
+import { DestroyRef, inject, signal  } from '@angular/core'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
+import type { Signal } from '@angular/core';
 import type { Store } from '@tanstack/store'
 import type {
   AsyncBatcherOptions,

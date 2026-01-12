@@ -1,4 +1,4 @@
-import { inject, InjectionToken } from '@angular/core'
+import { InjectionToken, inject } from '@angular/core'
 import type {
   AnyAsyncFunction,
   AnyFunction,
@@ -38,5 +38,9 @@ export const PACER_OPTIONS = new InjectionToken<PacerProviderOptions>(
 )
 
 export function useDefaultPacerOptions(): PacerProviderOptions {
-  return inject(PACER_OPTIONS) ?? DEFAULT_OPTIONS
+  try {
+    return inject(PACER_OPTIONS, { optional: true }) ?? DEFAULT_OPTIONS
+  } catch {
+    return DEFAULT_OPTIONS
+  }
 }

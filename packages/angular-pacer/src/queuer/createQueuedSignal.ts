@@ -1,5 +1,6 @@
-import { computed, Signal } from '@angular/core'
+import { computed } from '@angular/core'
 import { createQueuer } from './createQueuer'
+import type { Signal } from '@angular/core';
 import type { AngularQueuer } from './createQueuer'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 

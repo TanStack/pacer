@@ -1,5 +1,6 @@
-import { effect, Signal } from '@angular/core'
+import { effect } from '@angular/core'
 import { createThrottledSignal } from './createThrottledSignal'
+import type { Signal } from '@angular/core';
 import type { AngularThrottler } from './createThrottler'
 import type {
   ThrottlerOptions,

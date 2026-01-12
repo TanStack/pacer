@@ -1,7 +1,7 @@
-import { signal, Signal } from '@angular/core'
-import { DestroyRef, inject } from '@angular/core'
+import { DestroyRef, inject, signal } from '@angular/core'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
+import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
@@ -103,7 +103,12 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
     stateSignal.set(selected as Readonly<TSelected>)
   })
 
-  const destroyRef = inject(DestroyRef, { optional: true })
+  let destroyRef: DestroyRef | null = null
+  try {
+    destroyRef = inject(DestroyRef, { optional: true })
+  } catch {
+    // Not in injection context, skip cleanup registration
+  }
   if (destroyRef) {
     destroyRef.onDestroy(() => {
       unsubscribe()

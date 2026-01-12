@@ -1,5 +1,6 @@
-import { effect, Signal } from '@angular/core'
+import { effect } from '@angular/core'
 import { createDebouncedSignal } from './createDebouncedSignal'
+import type { Signal } from '@angular/core';
 import type { AngularDebouncer } from './createDebouncer'
 import type {
   DebouncerOptions,

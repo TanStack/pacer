@@ -107,7 +107,8 @@
     "src"
   ],
   "dependencies": {
-    "@tanstack/pacer": "workspace:*"
+    "@tanstack/pacer": "workspace:*",
+    "@tanstack/store": "^0.8.0"
   },
   "devDependencies": {
     "@angular/core": "^18.0.0",

@@ -1,7 +1,7 @@
-import { signal, Signal } from '@angular/core'
-import { DestroyRef, inject } from '@angular/core'
+import { DestroyRef, inject, signal  } from '@angular/core'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
+import type { Signal } from '@angular/core';
 import type { Store } from '@tanstack/store'
 import type {
   AsyncQueuerOptions,
