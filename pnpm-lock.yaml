@@ -10,7 +10,7 @@ importers:
     devDependencies:
       '@changesets/cli':
         specifier: ^2.29.8
-        version: 2.29.8(@types/node@25.0.3)
+        version: 2.29.8(@types/node@25.0.7)
       '@faker-js/faker':
         specifier: ^10.2.0
         version: 10.2.0
@@ -22,7 +22,7 @@ importers:
         version: 1.2.0
       '@tanstack/eslint-config':
         specifier: 0.3.4
-        version: 0.3.4(@typescript-eslint/utils@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+        version: 0.3.4(@typescript-eslint/utils@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@tanstack/typedoc-config':
         specifier: 0.3.3
         version: 0.3.3(typescript@5.9.3)
@@ -30,8 +30,8 @@ importers:
         specifier: ^6.9.1
         version: 6.9.1
       '@types/node':
-        specifier: ^25.0.3
-        version: 25.0.3
+        specifier: ^25.0.7
+        version: 25.0.7
       eslint:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)
@@ -39,11 +39,11 @@ importers:
         specifier: ^4.3.0
         version: 4.3.0(@typescript-eslint/eslint-plugin@8.48.1(@typescript-eslint/parser@8.48.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))
       happy-dom:
-        specifier: ^20.0.11
-        version: 20.0.11
+        specifier: ^20.1.0
+        version: 20.1.0
       knip:
-        specifier: ^5.80.0
-        version: 5.80.0(@types/node@25.0.3)(typescript@5.9.3)
+        specifier: ^5.80.2
+        version: 5.80.2(@types/node@25.0.7)(typescript@5.9.3)
       markdown-link-extractor:
         specifier: ^4.0.3
         version: 4.0.3
@@ -72,14 +72,14 @@ importers:
         specifier: ^0.2.15
         version: 0.2.15
       tsdown:
-        specifier: ^0.18.4
-        version: 0.18.4(@arethetypeswrong/core@0.18.2)(oxc-resolver@11.15.0)(publint@0.3.16)(typescript@5.9.3)
+        specifier: ^0.19.0
+        version: 0.19.0(@arethetypeswrong/core@0.18.2)(oxc-resolver@11.15.0)(publint@0.3.16)(typescript@5.9.3)
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vitest:
-        specifier: ^4.0.16
-        version: 4.0.16(@types/node@25.0.3)(happy-dom@20.0.11)(jiti@2.6.1)(yaml@2.8.2)
+        specifier: ^4.0.17
+        version: 4.0.17(@types/node@25.0.7)(happy-dom@20.1.0)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/asyncBatch:
     dependencies:
@@ -92,10 +92,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/asyncDebounce:
     dependencies:
@@ -108,10 +108,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/asyncRateLimit:
     dependencies:
@@ -124,10 +124,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/asyncRetry:
     dependencies:
@@ -140,10 +140,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/asyncThrottle:
     dependencies:
@@ -156,10 +156,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/batch:
     dependencies:
@@ -172,10 +172,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/debounce:
     dependencies:
@@ -188,10 +188,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/queue:
     dependencies:
@@ -204,10 +204,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/rateLimit:
     dependencies:
@@ -220,10 +220,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/throttle:
     dependencies:
@@ -236,10 +236,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncBatchedCallback:
     dependencies:
@@ -252,10 +252,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncBatcher:
     dependencies:
@@ -268,10 +268,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncDebouncedCallback:
     dependencies:
@@ -284,10 +284,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncDebouncer:
     dependencies:
@@ -300,10 +300,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncQueuedState:
     dependencies:
@@ -316,10 +316,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncQueuer:
     dependencies:
@@ -332,10 +332,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncRateLimiter:
     dependencies:
@@ -348,10 +348,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncRateLimiterWithPersister:
     dependencies:
@@ -364,10 +364,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncThrottledCallback:
     dependencies:
@@ -380,10 +380,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useAsyncThrottler:
     dependencies:
@@ -396,10 +396,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useBatchedCallback:
     dependencies:
@@ -412,10 +412,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useBatcher:
     dependencies:
@@ -428,10 +428,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useDebouncedCallback:
     dependencies:
@@ -444,10 +444,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useDebouncedState:
     dependencies:
@@ -460,10 +460,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useDebouncedValue:
     dependencies:
@@ -476,10 +476,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useDebouncer:
     dependencies:
@@ -492,10 +492,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useQueuedState:
     dependencies:
@@ -508,10 +508,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useQueuedValue:
     dependencies:
@@ -524,16 +524,16 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useQueuer:
     dependencies:
       '@tanstack/preact-devtools':
-        specifier: ^0.9.6
-        version: 0.9.6(csstype@3.2.3)(preact@10.28.2)(solid-js@1.9.10)
+        specifier: ^0.9.7
+        version: 0.9.7(csstype@3.2.3)(preact@10.28.2)(solid-js@1.9.10)
       '@tanstack/preact-pacer':
         specifier: ^0.19.1
         version: link:../../../packages/preact-pacer
@@ -546,10 +546,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useQueuerWithPersister:
     dependencies:
@@ -562,10 +562,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useRateLimitedCallback:
     dependencies:
@@ -578,10 +578,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useRateLimitedState:
     dependencies:
@@ -594,10 +594,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useRateLimitedValue:
     dependencies:
@@ -610,10 +610,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useRateLimiter:
     dependencies:
@@ -626,10 +626,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useRateLimiterWithPersister:
     dependencies:
@@ -642,10 +642,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useThrottledCallback:
     dependencies:
@@ -658,10 +658,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useThrottledState:
     dependencies:
@@ -674,10 +674,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useThrottledValue:
     dependencies:
@@ -690,10 +690,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/useThrottler:
     dependencies:
@@ -706,16 +706,16 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/preact/util-comparison:
     dependencies:
       '@tanstack/preact-devtools':
-        specifier: ^0.9.6
-        version: 0.9.6(csstype@3.2.3)(preact@10.28.2)(solid-js@1.9.10)
+        specifier: ^0.9.7
+        version: 0.9.7(csstype@3.2.3)(preact@10.28.2)(solid-js@1.9.10)
       '@tanstack/preact-pacer':
         specifier: ^0.19.1
         version: link:../../../packages/preact-pacer
@@ -728,10 +728,10 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/asyncBatch:
     dependencies:
@@ -746,17 +746,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/asyncDebounce:
     dependencies:
@@ -771,17 +771,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/asyncRateLimit:
     dependencies:
@@ -796,17 +796,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/asyncRetry:
     dependencies:
@@ -821,17 +821,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/asyncThrottle:
     dependencies:
@@ -846,17 +846,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/batch:
     dependencies:
@@ -871,17 +871,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/debounce:
     dependencies:
@@ -896,17 +896,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/queue:
     dependencies:
@@ -921,23 +921,23 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@tanstack/react-devtools':
-        specifier: 0.9.1
-        version: 0.9.1(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10)
+        specifier: 0.9.2
+        version: 0.9.2(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/react-pacer-devtools':
         specifier: 0.5.1
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/rateLimit:
     dependencies:
@@ -952,17 +952,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/react-query-debounced-prefetch:
     dependencies:
@@ -983,17 +983,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/react-query-queued-prefetch:
     dependencies:
@@ -1014,17 +1014,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/react-query-throttled-prefetch:
     dependencies:
@@ -1045,17 +1045,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/throttle:
     dependencies:
@@ -1070,17 +1070,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncBatchedCallback:
     dependencies:
@@ -1095,17 +1095,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncBatcher:
     dependencies:
@@ -1120,17 +1120,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncDebouncedCallback:
     dependencies:
@@ -1145,17 +1145,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncDebouncer:
     dependencies:
@@ -1170,17 +1170,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncQueuedState:
     dependencies:
@@ -1195,17 +1195,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncQueuer:
     dependencies:
@@ -1220,17 +1220,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncRateLimiter:
     dependencies:
@@ -1248,17 +1248,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncRateLimiterWithPersister:
     dependencies:
@@ -1276,17 +1276,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncThrottledCallback:
     dependencies:
@@ -1301,17 +1301,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useAsyncThrottler:
     dependencies:
@@ -1326,17 +1326,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useBatchedCallback:
     dependencies:
@@ -1351,17 +1351,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useBatcher:
     dependencies:
@@ -1376,17 +1376,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useDebouncedCallback:
     dependencies:
@@ -1401,17 +1401,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useDebouncedState:
     dependencies:
@@ -1426,17 +1426,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useDebouncedValue:
     dependencies:
@@ -1451,17 +1451,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useDebouncer:
     dependencies:
@@ -1476,17 +1476,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useQueuedState:
     dependencies:
@@ -1501,17 +1501,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useQueuedValue:
     dependencies:
@@ -1526,17 +1526,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useQueuer:
     dependencies:
@@ -1554,23 +1554,23 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@tanstack/react-devtools':
-        specifier: 0.9.1
-        version: 0.9.1(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10)
+        specifier: 0.9.2
+        version: 0.9.2(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/react-pacer-devtools':
         specifier: 0.5.1
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useQueuerWithPersister:
     dependencies:
@@ -1588,17 +1588,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useRateLimitedCallback:
     dependencies:
@@ -1613,17 +1613,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useRateLimitedState:
     dependencies:
@@ -1638,17 +1638,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useRateLimitedValue:
     dependencies:
@@ -1663,17 +1663,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useRateLimiter:
     dependencies:
@@ -1691,17 +1691,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useRateLimiterWithPersister:
     dependencies:
@@ -1719,17 +1719,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useThrottledCallback:
     dependencies:
@@ -1744,17 +1744,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useThrottledState:
     dependencies:
@@ -1769,17 +1769,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useThrottledValue:
     dependencies:
@@ -1794,17 +1794,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/useThrottler:
     dependencies:
@@ -1819,17 +1819,17 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/react/util-comparison:
     dependencies:
@@ -1844,23 +1844,23 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@tanstack/react-devtools':
-        specifier: 0.9.1
-        version: 0.9.1(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10)
+        specifier: 0.9.2
+        version: 0.9.2(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/react-pacer-devtools':
         specifier: 0.5.1
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
+        version: 19.2.3(@types/react@19.2.8)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/solid/asyncBatch:
     dependencies:
@@ -1873,10 +1873,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/asyncDebounce:
     dependencies:
@@ -1889,10 +1889,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/asyncRateLimit:
     dependencies:
@@ -1905,10 +1905,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/asyncThrottle:
     dependencies:
@@ -1921,10 +1921,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/batch:
     dependencies:
@@ -1937,10 +1937,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createAsyncBatcher:
     dependencies:
@@ -1953,10 +1953,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createAsyncDebouncer:
     dependencies:
@@ -1969,10 +1969,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createAsyncQueuer:
     dependencies:
@@ -1985,10 +1985,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createAsyncRateLimiter:
     dependencies:
@@ -2001,10 +2001,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createAsyncThrottler:
     dependencies:
@@ -2017,10 +2017,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createBatcher:
     dependencies:
@@ -2033,10 +2033,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createDebouncedSignal:
     dependencies:
@@ -2049,10 +2049,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createDebouncedValue:
     dependencies:
@@ -2065,10 +2065,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createDebouncer:
     dependencies:
@@ -2081,16 +2081,16 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createQueuedSignal:
     dependencies:
       '@tanstack/solid-devtools':
-        specifier: 0.7.21
-        version: 0.7.21(csstype@3.2.3)(solid-js@1.9.10)
+        specifier: 0.7.22
+        version: 0.7.22(csstype@3.2.3)(solid-js@1.9.10)
       '@tanstack/solid-pacer':
         specifier: ^0.18.1
         version: link:../../../packages/solid-pacer
@@ -2103,16 +2103,16 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createQueuer:
     dependencies:
       '@tanstack/solid-devtools':
-        specifier: 0.7.21
-        version: 0.7.21(csstype@3.2.3)(solid-js@1.9.10)
+        specifier: 0.7.22
+        version: 0.7.22(csstype@3.2.3)(solid-js@1.9.10)
       '@tanstack/solid-pacer':
         specifier: ^0.18.1
         version: link:../../../packages/solid-pacer
@@ -2125,10 +2125,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createRateLimitedSignal:
     dependencies:
@@ -2141,10 +2141,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createRateLimitedValue:
     dependencies:
@@ -2157,10 +2157,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createRateLimiter:
     dependencies:
@@ -2173,10 +2173,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createThrottledSignal:
     dependencies:
@@ -2189,10 +2189,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createThrottledValue:
     dependencies:
@@ -2205,10 +2205,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/createThrottler:
     dependencies:
@@ -2221,10 +2221,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/debounce:
     dependencies:
@@ -2237,16 +2237,16 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/queue:
     dependencies:
       '@tanstack/solid-devtools':
-        specifier: 0.7.21
-        version: 0.7.21(csstype@3.2.3)(solid-js@1.9.10)
+        specifier: 0.7.22
+        version: 0.7.22(csstype@3.2.3)(solid-js@1.9.10)
       '@tanstack/solid-pacer':
         specifier: ^0.18.1
         version: link:../../../packages/solid-pacer
@@ -2259,10 +2259,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/rateLimit:
     dependencies:
@@ -2275,10 +2275,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/solid/throttle:
     dependencies:
@@ -2291,10 +2291,10 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   examples/vanilla/LiteBatcher:
     dependencies:
@@ -2304,7 +2304,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/vanilla/LiteDebouncer:
     dependencies:
@@ -2314,7 +2314,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/vanilla/LiteQueuer:
     dependencies:
@@ -2324,7 +2324,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/vanilla/LiteRateLimiter:
     dependencies:
@@ -2334,7 +2334,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/vanilla/LiteThrottler:
     dependencies:
@@ -2344,7 +2344,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/vanilla/liteBatch:
     dependencies:
@@ -2354,7 +2354,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/vanilla/liteDebounce:
     dependencies:
@@ -2364,7 +2364,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/vanilla/liteQueue:
     dependencies:
@@ -2374,7 +2374,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/vanilla/liteRateLimit:
     dependencies:
@@ -2384,7 +2384,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   examples/vanilla/liteThrottle:
     dependencies:
@@ -2394,7 +2394,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
   packages/pacer:
     dependencies:
@@ -2411,8 +2411,8 @@ importers:
         specifier: ^0.4.4
         version: 0.4.4(csstype@3.2.3)(solid-js@1.9.10)
       '@tanstack/devtools-utils':
-        specifier: ^0.2.3
-        version: 0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)
+        specifier: ^0.2.4
+        version: 0.2.4(@types/react@19.2.8)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/pacer':
         specifier: '>=0.16.4'
         version: link:../pacer
@@ -2434,7 +2434,7 @@ importers:
     devDependencies:
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   packages/pacer-lite:
     devDependencies:
@@ -2453,7 +2453,7 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       eslint-plugin-react-hooks:
         specifier: ^7.0.1
         version: 7.0.1(eslint@9.39.2(jiti@2.6.1))
@@ -2464,15 +2464,15 @@ importers:
   packages/preact-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
-        specifier: ^0.2.3
-        version: 0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)
+        specifier: ^0.2.4
+        version: 0.2.4(@types/react@19.2.8)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.2
-        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       '@testing-library/preact':
         specifier: ^3.2.4
         version: 3.2.4(preact@10.28.2)
@@ -2493,14 +2493,14 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@eslint-react/eslint-plugin':
-        specifier: ^2.5.1
-        version: 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+        specifier: ^2.5.7
+        version: 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
+        specifier: ^19.2.8
+        version: 19.2.8
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       eslint-plugin-react-compiler:
         specifier: 19.1.0-rc.2
         version: 19.1.0-rc.2(eslint@9.39.2(jiti@2.6.1))
@@ -2514,8 +2514,8 @@ importers:
   packages/react-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
-        specifier: ^0.2.3
-        version: 0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)
+        specifier: ^0.2.4
+        version: 0.2.4(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -2533,11 +2533,11 @@ importers:
         version: 19.2.3(react@19.2.3)
     devDependencies:
       '@eslint-react/eslint-plugin':
-        specifier: ^2.5.1
-        version: 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+        specifier: ^2.5.7
+        version: 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       eslint-plugin-react-compiler:
         specifier: 19.1.0-rc.2
         version: 19.1.0-rc.2(eslint@9.39.2(jiti@2.6.1))
@@ -2559,13 +2559,13 @@ importers:
         version: 1.9.10
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
   packages/solid-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
-        specifier: ^0.2.3
-        version: 0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)
+        specifier: ^0.2.4
+        version: 0.2.4(@types/react@19.2.8)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -2575,7 +2575,7 @@ importers:
     devDependencies:
       vite-plugin-solid:
         specifier: ^2.11.10
-        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
 
 packages:
 
@@ -2975,40 +2975,40 @@ packages:
     resolution: {integrity: sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
 
-  '@eslint-react/ast@2.5.1':
-    resolution: {integrity: sha512-l+pEb3kS/RhFN+8ZOhL5+P5+Yj7iw+ta7+abUBNH+5PMyiixlnAJlJ7Wy+rsTGxjUJtzEff3CzSr06V7qwJuwQ==}
+  '@eslint-react/ast@2.5.7':
+    resolution: {integrity: sha512-yQvKvyIzo9DPKFUOtFSEfpX0He763G1jFf/LQcIY9xoSOWP9pQ2X8ADNE6ZnmIc0L5zZLQ9nF/H0+MGh2NF3fA==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@eslint-react/core@2.5.1':
-    resolution: {integrity: sha512-48YQYhjHga0TAv7FI0uGGT+X3SITec89fJLKSTqIEa7jTLpXTV56B+B/V/IcfZ0s8I0lNVEmtHFTXaibAxmfyw==}
+  '@eslint-react/core@2.5.7':
+    resolution: {integrity: sha512-LqY4YV4Z/uiymdy2OLXkjsEVnoDjoFsxJZI4GWsZ9aBgGWYAsuoKKUG0bdMLp1U9jwMaY0OY9bYgBB5R1ANkoQ==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@eslint-react/eff@2.5.1':
-    resolution: {integrity: sha512-henDz7sTB67Q+YPb+Kiy0UpD7eHLvDtB2nOrRtHLTatS/LFr7wVr4J2muQPkPzY9KFF8pv811nrwW58FuDphPg==}
+  '@eslint-react/eff@2.5.7':
+    resolution: {integrity: sha512-oxd8eP+dykyOUmQUEItnOZhitlKyo9yFq8Ne0k9+CJeV0Pk1db1+lNcDWswWYoeb1IFEloqHo6y63fVxQXvJew==}
     engines: {node: '>=20.19.0'}
 
-  '@eslint-react/eslint-plugin@2.5.1':
-    resolution: {integrity: sha512-zywf6mJCMCkGaQZe2DdavP/7XHhWYBWCZinXvuyT4+qKzRXyT7xyccvLAllozhmrfcJCFcSKCl3XwqIVtGZDmQ==}
-    engines: {node: '>=20.19.0'}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <6.0.0'
-
-  '@eslint-react/shared@2.5.1':
-    resolution: {integrity: sha512-JSTnpZdBu57ZvrJkBwUZXgkBW8iPiQfSiQMYHEjVFR2NHWFgcOd9qYJLX7mJLrdcw/j+GgRQeOAGok0a0xcxGA==}
+  '@eslint-react/eslint-plugin@2.5.7':
+    resolution: {integrity: sha512-oM+jNzhdtO1paSFFxK99hW5FJuKlJuerJ/QWwWF+4aDsZ5eJtB/XTZMicX2zUEXGjbyuYX1gkqKRjIcAV2xTVg==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@eslint-react/var@2.5.1':
-    resolution: {integrity: sha512-O3rbdK8pHKZ4NYPD39Zq7zhWu76dvhyeroqG8nQzf667F/FdHGpGhsCPJOeIU5L/ooYO/3/Qz2vJD1pB5JeROQ==}
+  '@eslint-react/shared@2.5.7':
+    resolution: {integrity: sha512-ZjKO3rNDoLN2ZTn3PxmMcgoASPNiL3umK1BHQvYwCXqqnXlLEouu7sxK6htOvDu1NC+Dbwsqpu4JGUY7t0XQTw==}
+    engines: {node: '>=20.19.0'}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0
+      typescript: '>=4.8.4 <6.0.0'
+
+  '@eslint-react/var@2.5.7':
+    resolution: {integrity: sha512-VWoyZENbK+OV70s/sE9E6T4HD0WO6lsg2CnYjjpKBKBDOBW67SRdIlM7dUPKzqQKsj6p4yNh59eQ5iKaH82LLg==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -3125,9 +3125,6 @@ packages:
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
 
-  '@napi-rs/wasm-runtime@1.1.0':
-    resolution: {integrity: sha512-Fq6DJW+Bb5jaWE69/qOE0D1TUN9+6uWhCeZpdnSBk14pjLcCWR7Q8n49PTSPHazM37JqrsdpEthXy2xn6jWWiA==}
-
   '@napi-rs/wasm-runtime@1.1.1':
     resolution: {integrity: sha512-p64ah1M1ld8xjWv3qbvFwHiFVWrq1yFvV4f7w+mzaqiR4IlSgkqhcRdHwsGgomwzBH51sRY4NEowLxnaBjcW/A==}
 
@@ -3193,11 +3190,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@oxc-project/types@0.103.0':
-    resolution: {integrity: sha512-bkiYX5kaXWwUessFRSoXFkGIQTmc6dLGdxuRTrC+h8PSnIdZyuXHHlLAeTmOue5Br/a0/a7dHH0Gca6eXn9MKg==}
-
-  '@oxc-project/types@0.106.0':
-    resolution: {integrity: sha512-QdsH3rZq480VnOHSHgPYOhjL8O8LBdcnSjM408BpPCCUc0JYYZPG9Gafl9i3OcGk/7137o+gweb4cCv3WAUykg==}
+  '@oxc-project/types@0.107.0':
+    resolution: {integrity: sha512-QFDRbYfV2LVx8tyqtyiah3jQPUj1mK2+RYwxyFWyGoys6XJnwTdlzO6rdNNHOPorHAu5Uo34oWRKcvNpbJarmQ==}
 
   '@oxc-resolver/binding-android-arm-eabi@11.15.0':
     resolution: {integrity: sha512-Q+lWuFfq7whNelNJIP1dhXaVz4zO9Tu77GcQHyxDWh3MaCoO2Bisphgzmsh4ZoUe2zIchQh6OvQL99GlWHg9Tw==}
@@ -3329,156 +3323,79 @@ packages:
   '@quansync/fs@1.0.0':
     resolution: {integrity: sha512-4TJ3DFtlf1L5LDMaM6CanJ/0lckGNtJcMjQ1NAV6zDmA0tEHKZtxNKin8EgPaVX1YzljbxckyT2tJrpQKAtngQ==}
 
-  '@rolldown/binding-android-arm64@1.0.0-beta.57':
-    resolution: {integrity: sha512-GoOVDy8bjw9z1K30Oo803nSzXJS/vWhFijFsW3kzvZCO8IZwFnNa6pGctmbbJstKl3Fv6UBwyjJQN6msejW0IQ==}
+  '@rolldown/binding-android-arm64@1.0.0-beta.59':
+    resolution: {integrity: sha512-6yLLgyswYwiCfls9+hoNFY9F8TQdwo15hpXDHzlAR0X/GojeKF+AuNcXjYNbOJ4zjl/5D6lliE8CbpB5t1OWIQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [android]
 
-  '@rolldown/binding-android-arm64@1.0.0-beta.58':
-    resolution: {integrity: sha512-mWj5eE4Qc8TbPdGGaaLvBb9XfDPvE1EmZkJQgiGKwchkWH4oAJcRAKMTw7ZHnb1L+t7Ah41sBkAecaIsuUgsug==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [arm64]
-    os: [android]
-
-  '@rolldown/binding-darwin-arm64@1.0.0-beta.57':
-    resolution: {integrity: sha512-9c4FOhRGpl+PX7zBK5p17c5efpF9aSpTPgyigv57hXf5NjQUaJOOiejPLAtFiKNBIfm5Uu6yFkvLKzOafNvlTw==}
+  '@rolldown/binding-darwin-arm64@1.0.0-beta.59':
+    resolution: {integrity: sha512-hqGXRc162qCCIOAcHN2Cw4eXiVTwYsMFLOhAy1IG2CxY+dwc/l4Ga+dLPkLor3Ikqy5WDn+7kxHbbh6EmshEpQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [darwin]
 
-  '@rolldown/binding-darwin-arm64@1.0.0-beta.58':
-    resolution: {integrity: sha512-wFxUymI/5R8bH8qZFYDfAxAN9CyISEIYke+95oZPiv6EWo88aa5rskjVcCpKA532R+klFmdqjbbaD56GNmTF4Q==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@rolldown/binding-darwin-x64@1.0.0-beta.57':
-    resolution: {integrity: sha512-6RsB8Qy4LnGqNGJJC/8uWeLWGOvbRL/KG5aJ8XXpSEupg/KQtlBEiFaYU/Ma5Usj1s+bt3ItkqZYAI50kSplBA==}
+  '@rolldown/binding-darwin-x64@1.0.0-beta.59':
+    resolution: {integrity: sha512-ezvvGuhteE15JmMhJW0wS7BaXmhwLy1YHeEwievYaPC1PgGD86wgBKfOpHr9tSKllAXbCe0BeeMvasscWLhKdA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [darwin]
 
-  '@rolldown/binding-darwin-x64@1.0.0-beta.58':
-    resolution: {integrity: sha512-ybp3MkPj23VDV9PhtRwdU5qrGhlViWRV5BjKwO6epaSlUD5lW0WyY+roN3ZAzbma/9RrMTgZ/a/gtQq8YXOcqw==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
-    os: [darwin]
-
-  '@rolldown/binding-freebsd-x64@1.0.0-beta.57':
-    resolution: {integrity: sha512-uA9kG7+MYkHTbqwv67Tx+5GV5YcKd33HCJIi0311iYBd25yuwyIqvJfBdt1VVB8tdOlyTb9cPAgfCki8nhwTQg==}
+  '@rolldown/binding-freebsd-x64@1.0.0-beta.59':
+    resolution: {integrity: sha512-4fhKVJiEYVd5n6no/mrL3LZ9kByfCGwmONOrdtvx8DJGDQhehH/q3RfhG3V/4jGKhpXgbDjpIjkkFdybCTcgew==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [freebsd]
 
-  '@rolldown/binding-freebsd-x64@1.0.0-beta.58':
-    resolution: {integrity: sha512-Evxj3yh7FWvyklUYZa0qTVT9N2zX9TPDqGF056hl8hlCZ9/ndQ2xMv6uw9PD1VlLpukbsqL+/C6M0qwipL0QMg==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
-    os: [freebsd]
-
-  '@rolldown/binding-linux-arm-gnueabihf@1.0.0-beta.57':
-    resolution: {integrity: sha512-3KkS0cHsllT2T+Te+VZMKHNw6FPQihYsQh+8J4jkzwgvAQpbsbXmrqhkw3YU/QGRrD8qgcOvBr6z5y6Jid+rmw==}
+  '@rolldown/binding-linux-arm-gnueabihf@1.0.0-beta.59':
+    resolution: {integrity: sha512-T3Y52sW6JAhvIqArBw+wtjNU1Ieaz4g0NBxyjSJoW971nZJBZygNlSYx78G4cwkCmo1dYTciTPDOnQygLV23pA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm]
     os: [linux]
 
-  '@rolldown/binding-linux-arm-gnueabihf@1.0.0-beta.58':
-    resolution: {integrity: sha512-tYeXprDOrEgVHUbPXH6MPso4cM/c6RTkmJNICMQlYdki4hGMh92aj3yU6CKs+4X5gfG0yj5kVUw/L4M685SYag==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [arm]
-    os: [linux]
-
-  '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.57':
-    resolution: {integrity: sha512-A3/wu1RgsHhqP3rVH2+sM81bpk+Qd2XaHTl8LtX5/1LNR7QVBFBCpAoiXwjTdGnI5cMdBVi7Z1pi52euW760Fw==}
+  '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.59':
+    resolution: {integrity: sha512-NIW40jQDSQap2KDdmm9z3B/4OzWJ6trf8dwx3FD74kcQb3v34ThsBFTtzE5KjDuxnxgUlV+DkAu+XgSMKrgufw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.58':
-    resolution: {integrity: sha512-N78vmZzP6zG967Ohr+MasCjmKtis0geZ1SOVmxrA0/bklTQSzH5kHEjW5Qn+i1taFno6GEre1E40v0wuWsNOQw==}
+  '@rolldown/binding-linux-arm64-musl@1.0.0-beta.59':
+    resolution: {integrity: sha512-CCKEk+H+8c0WGe/8n1E20n85Tq4Pv+HNAbjP1KfUXW+01aCWSMjU56ChNrM2tvHnXicfm7QRNoZyfY8cWh7jLQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-musl@1.0.0-beta.57':
-    resolution: {integrity: sha512-d0kIVezTQtazpyWjiJIn5to8JlwfKITDqwsFv0Xc6s31N16CD2PC/Pl2OtKgS7n8WLOJbfqgIp5ixYzTAxCqMg==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [arm64]
-    os: [linux]
-
-  '@rolldown/binding-linux-arm64-musl@1.0.0-beta.58':
-    resolution: {integrity: sha512-l+p4QVtG72C7wI2SIkNQw/KQtSjuYwS3rV6AKcWrRBF62ClsFUcif5vLaZIEbPrCXu5OFRXigXFJnxYsVVZqdQ==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [arm64]
-    os: [linux]
-
-  '@rolldown/binding-linux-x64-gnu@1.0.0-beta.57':
-    resolution: {integrity: sha512-E199LPijo98yrLjPCmETx8EF43sZf9t3guSrLee/ej1rCCc3zDVTR4xFfN9BRAapGVl7/8hYqbbiQPTkv73kUg==}
+  '@rolldown/binding-linux-x64-gnu@1.0.0-beta.59':
+    resolution: {integrity: sha512-VlfwJ/HCskPmQi8R0JuAFndySKVFX7yPhE658o27cjSDWWbXVtGkSbwaxstii7Q+3Rz87ZXN+HLnb1kd4R9Img==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-gnu@1.0.0-beta.58':
-    resolution: {integrity: sha512-urzJX0HrXxIh0FfxwWRjfPCMeInU9qsImLQxHBgLp5ivji1EEUnOfux8KxPPnRQthJyneBrN2LeqUix9DYrNaQ==}
+  '@rolldown/binding-linux-x64-musl@1.0.0-beta.59':
+    resolution: {integrity: sha512-kuO92hTRyGy0Ts3Nsqll0rfO8eFsEJe9dGQGktkQnZ2hrJrDVN0y419dMgKy/gB2S2o7F2dpWhpfQOBehZPwVA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-musl@1.0.0-beta.57':
-    resolution: {integrity: sha512-++EQDpk/UJ33kY/BNsh7A7/P1sr/jbMuQ8cE554ZIy+tCUWCivo9zfyjDUoiMdnxqX6HLJEqqGnbGQOvzm2OMQ==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
-    os: [linux]
-
-  '@rolldown/binding-linux-x64-musl@1.0.0-beta.58':
-    resolution: {integrity: sha512-7ijfVK3GISnXIwq/1FZo+KyAUJjL3kWPJ7rViAL6MWeEBhEgRzJ0yEd9I8N9aut8Y8ab+EKFJyRNMWZuUBwQ0A==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
-    os: [linux]
-
-  '@rolldown/binding-openharmony-arm64@1.0.0-beta.57':
-    resolution: {integrity: sha512-voDEBcNqxbUv/GeXKFtxXVWA+H45P/8Dec4Ii/SbyJyGvCqV1j+nNHfnFUIiRQ2Q40DwPe/djvgYBs9PpETiMA==}
+  '@rolldown/binding-openharmony-arm64@1.0.0-beta.59':
+    resolution: {integrity: sha512-PXAebvNL4sYfCqi8LdY4qyFRacrRoiPZLo3NoUmiTxm7MPtYYR8CNtBGNokqDmMuZIQIecRaD/jbmFAIDz7DxQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [openharmony]
 
-  '@rolldown/binding-openharmony-arm64@1.0.0-beta.58':
-    resolution: {integrity: sha512-/m7sKZCS+cUULbzyJTIlv8JbjNohxbpAOA6cM+lgWgqVzPee3U6jpwydrib328JFN/gF9A99IZEnuGYqEDJdww==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [arm64]
-    os: [openharmony]
-
-  '@rolldown/binding-wasm32-wasi@1.0.0-beta.57':
-    resolution: {integrity: sha512-bRhcF7NLlCnpkzLVlVhrDEd0KH22VbTPkPTbMjlYvqhSmarxNIq5vtlQS8qmV7LkPKHrNLWyJW/V/sOyFba26Q==}
+  '@rolldown/binding-wasm32-wasi@1.0.0-beta.59':
+    resolution: {integrity: sha512-yJoklQg7XIZq8nAg0bbkEXcDK6sfpjxQGxpg2Nd6ERNtvg+eOaEBRgPww0BVTrYFQzje1pB5qPwC2VnJHT3koQ==}
     engines: {node: '>=14.0.0'}
     cpu: [wasm32]
 
-  '@rolldown/binding-wasm32-wasi@1.0.0-beta.58':
-    resolution: {integrity: sha512-6SZk7zMgv+y3wFFQ9qE5P9NnRHcRsptL1ypmudD26PDY+PvFCvfHRkJNfclWnvacVGxjowr7JOL3a9fd1wWhUw==}
-    engines: {node: '>=14.0.0'}
-    cpu: [wasm32]
-
-  '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.57':
-    resolution: {integrity: sha512-rnDVGRks2FQ2hgJ2g15pHtfxqkGFGjJQUDWzYznEkE8Ra2+Vag9OffxdbJMZqBWXHVM0iS4dv8qSiEn7bO+n1Q==}
+  '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.59':
+    resolution: {integrity: sha512-ljZ4+McmCbIuZwEBaoGtiG8Rq2nJjaXEnLEIx+usWetXn1ECjXY0LAhkELxOV6ytv4ensEmoJJ8nXg47hRMjlw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [win32]
 
-  '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.58':
-    resolution: {integrity: sha512-sFqfYPnBZ6xBhMkadB7UD0yjEDRvs7ipR3nCggblN+N4ODCXY6qhg/bKL39+W+dgQybL7ErD4EGERVbW9DAWvg==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [arm64]
-    os: [win32]
-
-  '@rolldown/binding-win32-x64-msvc@1.0.0-beta.57':
-    resolution: {integrity: sha512-OqIUyNid1M4xTj6VRXp/Lht/qIP8fo25QyAZlCP+p6D2ATCEhyW4ZIFLnC9zAGN/HMbXoCzvwfa8Jjg/8J4YEg==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
-    os: [win32]
-
-  '@rolldown/binding-win32-x64-msvc@1.0.0-beta.58':
-    resolution: {integrity: sha512-AnFWJdAqB8+IDPcGrATYs67Kik/6tnndNJV2jGRmwlbeNiQQ8GhRJU8ETRlINfII0pqi9k4WWLnb00p1QCxw/Q==}
+  '@rolldown/binding-win32-x64-msvc@1.0.0-beta.59':
+    resolution: {integrity: sha512-bMY4tTIwbdZljW+xe/ln1hvs0SRitahQSXfWtvgAtIzgSX9Ar7KqJzU7lRm33YTRFIHLULRi53yNjw9nJGd6uQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [win32]
@@ -3486,11 +3403,8 @@ packages:
   '@rolldown/pluginutils@1.0.0-beta.53':
     resolution: {integrity: sha512-vENRlFU4YbrwVqNDZ7fLvy+JR1CRkyr01jhSiDpE1u6py3OMzQfztQU2jxykW3ALNxO4kSlqIDeYyD0Y9RcQeQ==}
 
-  '@rolldown/pluginutils@1.0.0-beta.57':
-    resolution: {integrity: sha512-aQNelgx14tGA+n2tNSa9x6/jeoCL9fkDeCei7nOKnHx0fEFRRMu5ReiITo+zZD5TzWDGGRjbSYCs93IfRIyTuQ==}
-
-  '@rolldown/pluginutils@1.0.0-beta.58':
-    resolution: {integrity: sha512-qWhDs6yFGR5xDfdrwiSa3CWGIHxD597uGE/A9xGqytBjANvh4rLCTTkq7szhMV4+Ygh+PMS90KVJ8xWG/TkX4w==}
+  '@rolldown/pluginutils@1.0.0-beta.59':
+    resolution: {integrity: sha512-aoh6LAJRyhtazs98ydgpNOYstxUlsOV1KJXcpf/0c0vFcUA8uyd/hwKRhqE/AAPNqAho9RliGsvitCoOzREoVA==}
 
   '@rollup/pluginutils@4.2.1':
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
@@ -3707,8 +3621,8 @@ packages:
     peerDependencies:
       solid-js: '>=1.9.7'
 
-  '@tanstack/devtools-utils@0.2.3':
-    resolution: {integrity: sha512-Ob7wAGTNs7SfOJWZlV+3fi7JGT8ApgeNKoaKV4trRk3TDjThm0w4EwbNDsfZu5NCvefSOY0sequp2qG8g7zG/g==}
+  '@tanstack/devtools-utils@0.2.4':
+    resolution: {integrity: sha512-6Y6JJHxoerWuq/dVLOPLZ1iSpZie1C+3whGjDFCK126qI8dA+Gui3s5jZUD12kvzs7vhRqY+uUlA5S6f85FHqg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@types/react': '>=17.0.0'
@@ -3728,8 +3642,8 @@ packages:
       vue:
         optional: true
 
-  '@tanstack/devtools@0.10.2':
-    resolution: {integrity: sha512-6TPNl3jTrCFpyV3m9lBeHxum6btmiihbv+A3xkDpt3JScRcWP1a8G5rZzKhlOtikzG1QSiceRrbckKnIAvZ7FQ==}
+  '@tanstack/devtools@0.10.3':
+    resolution: {integrity: sha512-M2HnKtaNf3Z8JDTNDq+X7/1gwOqSwTnCyC0GR+TYiRZM9mkY9GpvTqp6p6bx3DT8onu2URJiVxgHD9WK2e3MNQ==}
     engines: {node: '>=18'}
     peerDependencies:
       solid-js: '>=1.9.7'
@@ -3744,8 +3658,8 @@ packages:
     resolution: {integrity: sha512-XUewm2+D0K84ZSuWm1oMHfqw/flmO7IzCc+316php/XChgbMe30DStp1cF2Uc4IV0cI0G4hDq2RX3+NTxTIvWg==}
     engines: {node: '>=18'}
 
-  '@tanstack/preact-devtools@0.9.6':
-    resolution: {integrity: sha512-eOvLrKYtst1NGXGr0TrQgjT0/kweMmVfEigEDs1GreCjFK+F1YHH+bP5nvM55Y/P8p3gUwv8cWFH3HsmA8Q2rA==}
+  '@tanstack/preact-devtools@0.9.7':
+    resolution: {integrity: sha512-QpWvp9egD0j6+dWG1ys7AiQJosbQ9eQsxJBXR8QX0R6PIwuFJmh/OQymX1B+xbyXJX8LdqtacHsWFQYeuwf+LA==}
     engines: {node: '>=18'}
     peerDependencies:
       preact: '>=10.0.0'
@@ -3761,8 +3675,8 @@ packages:
   '@tanstack/query-devtools@5.92.0':
     resolution: {integrity: sha512-N8D27KH1vEpVacvZgJL27xC6yPFUy0Zkezn5gnB3L3gRCxlDeSuiya7fKge8Y91uMTnC8aSxBQhcK6ocY7alpQ==}
 
-  '@tanstack/react-devtools@0.9.1':
-    resolution: {integrity: sha512-ONDMs117FrzWxFD1JQ9Z94QnTx+63RuQ+9Z3ieSS9bHAWmty4PWiLddAZPvyHCbV9iljlpUEkCoKCO1HMywR2Q==}
+  '@tanstack/react-devtools@0.9.2':
+    resolution: {integrity: sha512-JNXvBO3jgq16GzTVm7p65n5zHNfMhnqF6Bm7CawjoqZrjEakxbM6Yvy63aKSIpbrdf+Wun2Xn8P0qD+vp56e1g==}
     engines: {node: '>=18'}
     peerDependencies:
       '@types/react': '>=16.8'
@@ -3794,8 +3708,8 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@tanstack/solid-devtools@0.7.21':
-    resolution: {integrity: sha512-t/95kzaHKwf8Dkda0xQ3+DyAVtBIpluFTesIhyr6knNMqVfBc2uXj6Nyv7DOyqP6RieGMaYj9KI44NUnFxiflw==}
+  '@tanstack/solid-devtools@0.7.22':
+    resolution: {integrity: sha512-H3c7wZiPFf78aGr+XTLsEtnaL6OdvOI9QnTfX8zDHvQ3F59aE5ceYq/ZkMHdGCFHg5F6ITQ3ExvGzMhxmoe0Fg==}
     engines: {node: '>=18'}
     peerDependencies:
       solid-js: '>=1.9.7'
@@ -3868,8 +3782,8 @@ packages:
   '@types/node@20.19.25':
     resolution: {integrity: sha512-ZsJzA5thDQMSQO788d7IocwwQbI8B5OPzmqNvpf3NY/+MHDAS759Wo0gd2WQeXYt5AAAQjzcrTVC6SKCuYgoCQ==}
 
-  '@types/node@25.0.3':
-    resolution: {integrity: sha512-W609buLVRVmeW693xKfzHeIV6nJGGz98uCPfeXI1ELMLXVeKYZ9m15fAMSaUPBHYLGFsVRcMmSCksQOrZV9BYA==}
+  '@types/node@25.0.7':
+    resolution: {integrity: sha512-C/er7DlIZgRJO7WtTdYovjIFzGsz0I95UlMyR9anTb4aCpBSRWe5Jc1/RvLKUfzmOxHPGjSE5+63HgLtndxU4w==}
 
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
@@ -3879,11 +3793,17 @@ packages:
   '@types/react@19.2.7':
     resolution: {integrity: sha512-MWtvHrGZLFttgeEj28VXHxpmwYbor/ATPYbBfSFZEIRK0ecCFLl2Qo55z52Hss+UV9CRN7trSeq1zbgx7YDWWg==}
 
+  '@types/react@19.2.8':
+    resolution: {integrity: sha512-3MbSL37jEchWZz2p2mjntRZtPt837ij10ApxKfgmXCTuHWagYg7iA5bqPw6C8BMPfwidlvfPI/fxOc42HLhcyg==}
+
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
   '@types/whatwg-mimetype@3.0.2':
     resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
+
+  '@types/ws@8.18.1':
+    resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
 
   '@typescript-eslint/eslint-plugin@8.48.1':
     resolution: {integrity: sha512-X63hI1bxl5ohelzr0LY5coufyl0LJNthld+abwxpCoo6Gq+hSqhKwci7MUWkXo67mzgUK6YFByhmaHmUcuBJmA==}
@@ -3906,8 +3826,8 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/project-service@8.52.0':
-    resolution: {integrity: sha512-xD0MfdSdEmeFa3OmVqonHi+Cciab96ls1UhIF/qX/O/gPu5KXD0bY9lu33jj04fjzrXHcuvjBcBC+D3SNSadaw==}
+  '@typescript-eslint/project-service@8.53.0':
+    resolution: {integrity: sha512-Bl6Gdr7NqkqIP5yP9z1JU///Nmes4Eose6L1HwpuVHwScgDPPuEWbUVhvlZmb8hy0vX9syLk5EGNL700WcBlbg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
@@ -3916,8 +3836,8 @@ packages:
     resolution: {integrity: sha512-rj4vWQsytQbLxC5Bf4XwZ0/CKd362DkWMUkviT7DCS057SK64D5lH74sSGzhI6PDD2HCEq02xAP9cX68dYyg1w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@typescript-eslint/scope-manager@8.52.0':
-    resolution: {integrity: sha512-ixxqmmCcc1Nf8S0mS0TkJ/3LKcC8mruYJPOU6Ia2F/zUUR4pApW7LzrpU3JmtePbRUTes9bEqRc1Gg4iyRnDzA==}
+  '@typescript-eslint/scope-manager@8.53.0':
+    resolution: {integrity: sha512-kWNj3l01eOGSdVBnfAF2K1BTh06WS0Yet6JUgb9Cmkqaz3Jlu0fdVUjj9UI8gPidBWSMqDIglmEXifSgDT/D0g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@typescript-eslint/tsconfig-utils@8.48.1':
@@ -3932,8 +3852,8 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/tsconfig-utils@8.52.0':
-    resolution: {integrity: sha512-jl+8fzr/SdzdxWJznq5nvoI7qn2tNYV/ZBAEcaFMVXf+K6jmXvAFrgo/+5rxgnL152f//pDEAYAhhBAZGrVfwg==}
+  '@typescript-eslint/tsconfig-utils@8.53.0':
+    resolution: {integrity: sha512-K6Sc0R5GIG6dNoPdOooQ+KtvT5KCKAvTcY8h2rIuul19vxH5OTQk7ArKkd4yTzkw66WnNY0kPPzzcmWA+XRmiA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
@@ -3945,8 +3865,8 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/type-utils@8.52.0':
-    resolution: {integrity: sha512-JD3wKBRWglYRQkAtsyGz1AewDu3mTc7NtRjR/ceTyGoPqmdS5oCdx/oZMWD5Zuqmo6/MpsYs0wp6axNt88/2EQ==}
+  '@typescript-eslint/type-utils@8.53.0':
+    resolution: {integrity: sha512-BBAUhlx7g4SmcLhn8cnbxoxtmS7hcq39xKCgiutL3oNx1TaIp+cny51s8ewnKMpVUKQUGb41RAUWZ9kxYdovuw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -3960,8 +3880,8 @@ packages:
     resolution: {integrity: sha512-e9k/fneezorUo6WShlQpMxXh8/8wfyc+biu6tnAqA81oWrEic0k21RHzP9uqqpyBBeBKu4T+Bsjy9/b8u7obXQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@typescript-eslint/types@8.52.0':
-    resolution: {integrity: sha512-LWQV1V4q9V4cT4H5JCIx3481iIFxH1UkVk+ZkGGAV1ZGcjGI9IoFOfg3O6ywz8QqCDEp7Inlg6kovMofsNRaGg==}
+  '@typescript-eslint/types@8.53.0':
+    resolution: {integrity: sha512-Bmh9KX31Vlxa13+PqPvt4RzKRN1XORYSLlAE+sO1i28NkisGbTtSLFVB3l7PWdHtR3E0mVMuC7JilWJ99m2HxQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@typescript-eslint/typescript-estree@8.48.1':
@@ -3970,8 +3890,8 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/typescript-estree@8.52.0':
-    resolution: {integrity: sha512-XP3LClsCc0FsTK5/frGjolyADTh3QmsLp6nKd476xNI9CsSsLnmn4f0jrzNoAulmxlmNIpeXuHYeEQv61Q6qeQ==}
+  '@typescript-eslint/typescript-estree@8.53.0':
+    resolution: {integrity: sha512-pw0c0Gdo7Z4xOG987u3nJ8akL9093yEEKv8QTJ+Bhkghj1xyj8cgPaavlr9rq8h7+s6plUJ4QJYw2gCZodqmGw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
@@ -3983,8 +3903,8 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/utils@8.52.0':
-    resolution: {integrity: sha512-wYndVMWkweqHpEpwPhwqE2lnD2DxC6WVLupU/DOt/0/v+/+iQbbzO3jOHjmBMnhu0DgLULvOaU4h4pwHYi2oRQ==}
+  '@typescript-eslint/utils@8.53.0':
+    resolution: {integrity: sha512-XDY4mXTez3Z1iRDI5mbRhH4DFSt46oaIFsLg+Zn97+sYrXACziXSQcSelMybnVZ5pa1P6xYkPr5cMJyunM1ZDA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -3994,8 +3914,8 @@ packages:
     resolution: {integrity: sha512-BmxxndzEWhE4TIEEMBs8lP3MBWN3jFPs/p6gPm/wkv02o41hI6cq9AuSmGAaTTHPtA1FTi2jBre4A9rm5ZmX+Q==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@typescript-eslint/visitor-keys@8.52.0':
-    resolution: {integrity: sha512-ink3/Zofus34nmBsPjow63FP5M7IGff0RKAgqR6+CFpdk22M7aLwC9gOcLGYqr7MczLPzZVERW9hRog3O4n1sQ==}
+  '@typescript-eslint/visitor-keys@8.53.0':
+    resolution: {integrity: sha512-LZ2NqIHFhvFwxG0qZeLL9DvdNAHPGCY5dIRwBhyYeU+LfLhcStE1ImjsuTG/WaVh3XysGaeLW8Rqq7cGkPCFvw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@unrs/resolver-binding-android-arm-eabi@1.11.1':
@@ -4099,11 +4019,11 @@ packages:
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
 
-  '@vitest/expect@4.0.16':
-    resolution: {integrity: sha512-eshqULT2It7McaJkQGLkPjPjNph+uevROGuIMJdG3V+0BSR2w9u6J9Lwu+E8cK5TETlfou8GRijhafIMhXsimA==}
+  '@vitest/expect@4.0.17':
+    resolution: {integrity: sha512-mEoqP3RqhKlbmUmntNDDCJeTDavDR+fVYkSOw8qRwJFaW/0/5zA9zFeTrHqNtcmwh6j26yMmwx2PqUDPzt5ZAQ==}
 
-  '@vitest/mocker@4.0.16':
-    resolution: {integrity: sha512-yb6k4AZxJTB+q9ycAvsoxGn+j/po0UaPgajllBgt1PzoMAAmJGYFdDk0uCcRcxb3BrME34I6u8gHZTQlkqSZpg==}
+  '@vitest/mocker@4.0.17':
+    resolution: {integrity: sha512-+ZtQhLA3lDh1tI2wxe3yMsGzbp7uuJSWBM1iTIKCbppWTSBN09PUC+L+fyNlQApQoR+Ps8twt2pbSSXg2fQVEQ==}
     peerDependencies:
       msw: ^2.4.9
       vite: ^6.0.0 || ^7.0.0-0
@@ -4113,20 +4033,20 @@ packages:
       vite:
         optional: true
 
-  '@vitest/pretty-format@4.0.16':
-    resolution: {integrity: sha512-eNCYNsSty9xJKi/UdVD8Ou16alu7AYiS2fCPRs0b1OdhJiV89buAXQLpTbe+X8V9L6qrs9CqyvU7OaAopJYPsA==}
+  '@vitest/pretty-format@4.0.17':
+    resolution: {integrity: sha512-Ah3VAYmjcEdHg6+MwFE17qyLqBHZ+ni2ScKCiW2XrlSBV4H3Z7vYfPfz7CWQ33gyu76oc0Ai36+kgLU3rfF4nw==}
 
-  '@vitest/runner@4.0.16':
-    resolution: {integrity: sha512-VWEDm5Wv9xEo80ctjORcTQRJ539EGPB3Pb9ApvVRAY1U/WkHXmmYISqU5E79uCwcW7xYUV38gwZD+RV755fu3Q==}
+  '@vitest/runner@4.0.17':
+    resolution: {integrity: sha512-JmuQyf8aMWoo/LmNFppdpkfRVHJcsgzkbCA+/Bk7VfNH7RE6Ut2qxegeyx2j3ojtJtKIbIGy3h+KxGfYfk28YQ==}
 
-  '@vitest/snapshot@4.0.16':
-    resolution: {integrity: sha512-sf6NcrYhYBsSYefxnry+DR8n3UV4xWZwWxYbCJUt2YdvtqzSPR7VfGrY0zsv090DAbjFZsi7ZaMi1KnSRyK1XA==}
+  '@vitest/snapshot@4.0.17':
+    resolution: {integrity: sha512-npPelD7oyL+YQM2gbIYvlavlMVWUfNNGZPcu0aEUQXt7FXTuqhmgiYupPnAanhKvyP6Srs2pIbWo30K0RbDtRQ==}
 
-  '@vitest/spy@4.0.16':
-    resolution: {integrity: sha512-4jIOWjKP0ZUaEmJm00E0cOBLU+5WE0BpeNr3XN6TEF05ltro6NJqHWxXD0kA8/Zc8Nh23AT8WQxwNG+WeROupw==}
+  '@vitest/spy@4.0.17':
+    resolution: {integrity: sha512-I1bQo8QaP6tZlTomQNWKJE6ym4SHf3oLS7ceNjozxxgzavRAgZDc06T7kD8gb9bXKEgcLNt00Z+kZO6KaJ62Ew==}
 
-  '@vitest/utils@4.0.16':
-    resolution: {integrity: sha512-h8z9yYhV3e1LEfaQ3zdypIrnAg/9hguReGZoS7Gl0aBG5xgA410zBqECqmaF/+RkTggRsfnzc1XaAHA6bmUufA==}
+  '@vitest/utils@4.0.17':
+    resolution: {integrity: sha512-RG6iy+IzQpa9SB8HAFHJ9Y+pTzI+h8553MrciN9eC6TFBErqrQaTas4vG+MVj8S4uKk8uTT2p0vgZPnTdxd96w==}
 
   '@yarnpkg/lockfile@1.1.0':
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
@@ -4611,15 +4531,15 @@ packages:
     peerDependencies:
       eslint: '>=7'
 
-  eslint-plugin-react-dom@2.5.1:
-    resolution: {integrity: sha512-7x3k0bQwtTOSxjReH11buYL6aSMopBzSaWr2bU/LPOuy1dDxvqE6HC2Y6QPEyZjLJ1ppUSKwRmcX85uiF0jHAA==}
+  eslint-plugin-react-dom@2.5.7:
+    resolution: {integrity: sha512-KHCU7KRXeLYlrrXKtInpCqHzt+nYhIGpYIuMM4Q0FyGBOcswRS2Gv9PhN+yQqDI9PRBhnjCuRf+q2Y3ZrYWjsw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  eslint-plugin-react-hooks-extra@2.5.1:
-    resolution: {integrity: sha512-LiP8CMsHXLVZXBJVZPAXgr/Gmh8AWVkExcCWk4PhAEhRYDsRQukS5/pSETx20ag4kVvFgr4u486c8U97SVLGCw==}
+  eslint-plugin-react-hooks-extra@2.5.7:
+    resolution: {integrity: sha512-XLhGFxc3dlPMGsZFvVJvbZZvKDXdHthQtFImhk4xHVLQoyBTkBbKljw16EG117m092wlgydA9eLhzGmxIotbwA==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -4631,22 +4551,22 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
 
-  eslint-plugin-react-naming-convention@2.5.1:
-    resolution: {integrity: sha512-/mnrO+olziw9kz57eKqcum5xHkz/m9offRrB7ewAYZDs0T7hqRrcxbtttKl3f12mdEmGtxpbFb1JKjur+Lzawg==}
+  eslint-plugin-react-naming-convention@2.5.7:
+    resolution: {integrity: sha512-Y05hID4C+XQpwzdIVqH4yK9uu7aNbgyOeIC8L5lnAtKLrrJnhWzdk+CGRaHh6cUvAHKH2mDYYSIZDctEc6uZ/A==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  eslint-plugin-react-web-api@2.5.1:
-    resolution: {integrity: sha512-OiDO1qmtxT8jX01dogpbCrD7l19uHIWGK7TTMBQzqGhfLBbCVQaFx5Qq8VBY8BzNWsdR0bkc9t4ijA4vpJMTPw==}
+  eslint-plugin-react-web-api@2.5.7:
+    resolution: {integrity: sha512-dfw4rqcNrtPdQYSZkOkEor62c2WDFBPX7AREBL+6G1GtcO713NH9nwQSZYchOreR+OjFIze1tibMvVrGCyrtyQ==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  eslint-plugin-react-x@2.5.1:
-    resolution: {integrity: sha512-w3KtEG8M7sFRh/psUmep3H+i2O/5Nn9wI8GXjlqzwp8zLb4ax66Ue+1oecLTzY/0j/M1xRfB3hzk5oio54RwLA==}
+  eslint-plugin-react-x@2.5.7:
+    resolution: {integrity: sha512-EU+h7eUHNg9ikLaGOa0Tjsc/o4FO2KdyT3M97TkQmaKc9tzpcy8nlPQp/czBMbUuxAgbj2495wzOvCZ0fEK4mw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -4897,8 +4817,8 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
-  happy-dom@20.0.11:
-    resolution: {integrity: sha512-QsCdAUHAmiDeKeaNojb1OHOPF7NjcWPBR7obdu3NwH2a/oyQaLg5d0aaCy/9My6CdPChYF07dvz5chaXBGaD4g==}
+  happy-dom@20.1.0:
+    resolution: {integrity: sha512-ebvqjBqzenBk2LjzNEAzoj7yhw7rW/R2/wVevMu6Mrq3MXtcI/RUz4+ozpcOcqVLEWPqLfg2v9EAU7fFXZUUJw==}
     engines: {node: '>=20.0.0'}
 
   has-bigints@1.1.0:
@@ -5159,8 +5079,8 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  knip@5.80.0:
-    resolution: {integrity: sha512-K/Ga2f/SHEUXXriVdaw2GfeIUJ5muwdqusHGkCtaG/1qeMmQJiuwZj9KnPxaDbnYPAu8RWjYYh8Nyb+qlJ3d8A==}
+  knip@5.80.2:
+    resolution: {integrity: sha512-Yt7iF8Uzl7pp3mGA6yvum6PZBcbGhjasZYuqIwcIAX1jsIhGRUAK0icP0qrB6FSPBI3BpIeMHl7n9meCLO6ovg==}
     engines: {node: '>=18.18.0'}
     hasBin: true
     peerDependencies:
@@ -5624,13 +5544,8 @@ packages:
       vue-tsc:
         optional: true
 
-  rolldown@1.0.0-beta.57:
-    resolution: {integrity: sha512-lMMxcNN71GMsSko8RyeTaFoATHkCh4IWU7pYF73ziMYjhHZWfVesC6GQ+iaJCvZmVjvgSks9Ks1aaqEkBd8udg==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    hasBin: true
-
-  rolldown@1.0.0-beta.58:
-    resolution: {integrity: sha512-v1FCjMZCan7f+xGAHBi+mqiE4MlH7I+SXEHSQSJoMOGNNB2UYtvMiejsq9YuUOiZjNeUeV/a21nSFbrUR+4ZCQ==}
+  rolldown@1.0.0-beta.59:
+    resolution: {integrity: sha512-Slm000Gd8/AO9z4Kxl4r8mp/iakrbAuJ1L+7ddpkNxgQ+Vf37WPvY63l3oeyZcfuPD1DRrUYBsRPIXSOhvOsmw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -5929,8 +5844,8 @@ packages:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
     engines: {node: '>=6'}
 
-  tsdown@0.18.4:
-    resolution: {integrity: sha512-J/tRS6hsZTkvqmt4+xdELUCkQYDuUCXgBv0fw3ImV09WPGbEKfsPD65E+WUjSu3E7Z6tji9XZ1iWs8rbGqB/ZA==}
+  tsdown@0.19.0:
+    resolution: {integrity: sha512-uqg8yzlS7GemFWcM6aCp/sptF4bJiJbWUibuHTRLLCBEsGCgJxuqxPhuVTqyHXqoEkh9ohwAdlyDKli5MEWCyQ==}
     engines: {node: '>=20.19.0'}
     hasBin: true
     peerDependencies:
@@ -6019,8 +5934,8 @@ packages:
   unrs-resolver@1.11.1:
     resolution: {integrity: sha512-bSjt9pjaEBnNiGgc9rUiHGKv5l4/TGzDmYw3RhnkJGtLhbnnA/5qJj7x3dNDCRx/PJxu774LlH8lCOlB4hEfKg==}
 
-  unrun@0.2.22:
-    resolution: {integrity: sha512-vlQce4gTLNyCZxGylEQXGG+fSrrEFWiM/L8aghtp+t6j8xXh+lmsBtQJknG7ZSvv7P+/MRgbQtHWHBWk981uTg==}
+  unrun@0.2.24:
+    resolution: {integrity: sha512-xa4/O5q2jmI6EqxweJ+sOy5cyORZWcsgmi8pmABVSUyg24Fh44qJrneUHavZEMsbJbghHYWKSraFy5hDCb/m4w==}
     engines: {node: '>=20.19.0'}
     hasBin: true
     peerDependencies:
@@ -6113,18 +6028,18 @@ packages:
       vite:
         optional: true
 
-  vitest@4.0.16:
-    resolution: {integrity: sha512-E4t7DJ9pESL6E3I8nFjPa4xGUd3PmiWDLsDztS2qXSJWfHtbQnwAWylaBvSNY48I3vr8PTqIZlyK8TE3V3CA4Q==}
+  vitest@4.0.17:
+    resolution: {integrity: sha512-FQMeF0DJdWY0iOnbv466n/0BudNdKj1l5jYgl5JVTwjSsZSlqyXFt/9+1sEyhR6CLowbZpV7O1sCHrzBhucKKg==}
     engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
     hasBin: true
     peerDependencies:
       '@edge-runtime/vm': '*'
       '@opentelemetry/api': ^1.9.0
       '@types/node': ^20.0.0 || ^22.0.0 || >=24.0.0
-      '@vitest/browser-playwright': 4.0.16
-      '@vitest/browser-preview': 4.0.16
-      '@vitest/browser-webdriverio': 4.0.16
-      '@vitest/ui': 4.0.16
+      '@vitest/browser-playwright': 4.0.17
+      '@vitest/browser-preview': 4.0.17
+      '@vitest/browser-webdriverio': 4.0.17
+      '@vitest/ui': 4.0.17
       happy-dom: '*'
       jsdom: '*'
     peerDependenciesMeta:
@@ -6515,7 +6430,7 @@ snapshots:
     dependencies:
       '@changesets/types': 6.1.0
 
-  '@changesets/cli@2.29.8(@types/node@25.0.3)':
+  '@changesets/cli@2.29.8(@types/node@25.0.7)':
     dependencies:
       '@changesets/apply-release-plan': 7.0.14
       '@changesets/assemble-release-plan': 6.0.9
@@ -6531,7 +6446,7 @@ snapshots:
       '@changesets/should-skip-package': 0.1.2
       '@changesets/types': 6.1.0
       '@changesets/write': 0.4.0
-      '@inquirer/external-editor': 1.0.3(@types/node@25.0.3)
+      '@inquirer/external-editor': 1.0.3(@types/node@25.0.7)
       '@manypkg/get-packages': 1.1.3
       ansi-colors: 4.1.3
       ci-info: 3.9.0
@@ -6740,27 +6655,27 @@ snapshots:
 
   '@eslint-community/regexpp@4.12.2': {}
 
-  '@eslint-react/ast@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/ast@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/eff': 2.5.1
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/typescript-estree': 8.52.0(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/typescript-estree': 8.53.0(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       string-ts: 2.3.1
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint-react/core@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/core@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/ast': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.5.1
-      '@eslint-react/shared': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.52.0
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@eslint-react/shared': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       birecord: 0.1.1
       eslint: 9.39.2(jiti@2.6.1)
       ts-pattern: 5.9.0
@@ -6768,31 +6683,31 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint-react/eff@2.5.1': {}
+  '@eslint-react/eff@2.5.7': {}
 
-  '@eslint-react/eslint-plugin@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/eslint-plugin@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/eff': 2.5.1
-      '@eslint-react/shared': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.52.0
-      '@typescript-eslint/type-utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@eslint-react/shared': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/type-utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
-      eslint-plugin-react-dom: 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      eslint-plugin-react-hooks-extra: 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      eslint-plugin-react-naming-convention: 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      eslint-plugin-react-web-api: 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      eslint-plugin-react-x: 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-dom: 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-hooks-extra: 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-naming-convention: 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-web-api: 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-x: 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       ts-api-utils: 2.4.0(typescript@5.9.3)
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint-react/shared@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/shared@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/eff': 2.5.1
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       ts-pattern: 5.9.0
       typescript: 5.9.3
@@ -6800,13 +6715,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint-react/var@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/var@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/ast': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.5.1
-      '@typescript-eslint/scope-manager': 8.52.0
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       ts-pattern: 5.9.0
       typescript: 5.9.3
@@ -6873,12 +6788,12 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@inquirer/external-editor@1.0.3(@types/node@25.0.3)':
+  '@inquirer/external-editor@1.0.3(@types/node@25.0.7)':
     dependencies:
       chardet: 2.1.1
       iconv-lite: 0.7.0
     optionalDependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.0.7
 
   '@isaacs/balanced-match@4.0.1': {}
 
@@ -6947,13 +6862,6 @@ snapshots:
       '@emnapi/runtime': 1.7.1
       '@tybys/wasm-util': 0.9.0
 
-  '@napi-rs/wasm-runtime@1.1.0':
-    dependencies:
-      '@emnapi/core': 1.7.1
-      '@emnapi/runtime': 1.7.1
-      '@tybys/wasm-util': 0.10.1
-    optional: true
-
   '@napi-rs/wasm-runtime@1.1.1':
     dependencies:
       '@emnapi/core': 1.7.1
@@ -7003,9 +6911,7 @@ snapshots:
   '@nx/nx-win32-x64-msvc@22.3.3':
     optional: true
 
-  '@oxc-project/types@0.103.0': {}
-
-  '@oxc-project/types@0.106.0': {}
+  '@oxc-project/types@0.107.0': {}
 
   '@oxc-resolver/binding-android-arm-eabi@11.15.0':
     optional: true
@@ -7057,7 +6963,7 @@ snapshots:
 
   '@oxc-resolver/binding-wasm32-wasi@11.15.0':
     dependencies:
-      '@napi-rs/wasm-runtime': 1.1.0
+      '@napi-rs/wasm-runtime': 1.1.1
     optional: true
 
   '@oxc-resolver/binding-win32-arm64-msvc@11.15.0':
@@ -7069,18 +6975,18 @@ snapshots:
   '@oxc-resolver/binding-win32-x64-msvc@11.15.0':
     optional: true
 
-  '@preact/preset-vite@2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))':
+  '@preact/preset-vite@2.10.2(@babel/core@7.28.5)(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-transform-react-jsx': 7.27.1(@babel/core@7.28.5)
       '@babel/plugin-transform-react-jsx-development': 7.27.1(@babel/core@7.28.5)
-      '@prefresh/vite': 2.4.11(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+      '@prefresh/vite': 2.4.11(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
       '@rollup/pluginutils': 4.2.1
       babel-plugin-transform-hook-names: 1.0.2(@babel/core@7.28.5)
       debug: 4.4.3
       picocolors: 1.1.1
-      vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
-      vite-prerender-plugin: 0.5.12(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+      vite: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
+      vite-prerender-plugin: 0.5.12(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
     transitivePeerDependencies:
       - preact
       - supports-color
@@ -7093,7 +6999,7 @@ snapshots:
 
   '@prefresh/utils@1.2.1': {}
 
-  '@prefresh/vite@2.4.11(preact@10.28.2)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))':
+  '@prefresh/vite@2.4.11(preact@10.28.2)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))':
     dependencies:
       '@babel/core': 7.28.5
       '@prefresh/babel-plugin': 0.5.2
@@ -7101,7 +7007,7 @@ snapshots:
       '@prefresh/utils': 1.2.1
       '@rollup/pluginutils': 4.2.1
       preact: 10.28.2
-      vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -7111,93 +7017,50 @@ snapshots:
     dependencies:
       quansync: 1.0.0
 
-  '@rolldown/binding-android-arm64@1.0.0-beta.57':
+  '@rolldown/binding-android-arm64@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-android-arm64@1.0.0-beta.58':
+  '@rolldown/binding-darwin-arm64@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-darwin-arm64@1.0.0-beta.57':
+  '@rolldown/binding-darwin-x64@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-darwin-arm64@1.0.0-beta.58':
+  '@rolldown/binding-freebsd-x64@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-darwin-x64@1.0.0-beta.57':
+  '@rolldown/binding-linux-arm-gnueabihf@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-darwin-x64@1.0.0-beta.58':
+  '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-freebsd-x64@1.0.0-beta.57':
+  '@rolldown/binding-linux-arm64-musl@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-freebsd-x64@1.0.0-beta.58':
+  '@rolldown/binding-linux-x64-gnu@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-linux-arm-gnueabihf@1.0.0-beta.57':
+  '@rolldown/binding-linux-x64-musl@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-linux-arm-gnueabihf@1.0.0-beta.58':
+  '@rolldown/binding-openharmony-arm64@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.57':
-    optional: true
-
-  '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.58':
-    optional: true
-
-  '@rolldown/binding-linux-arm64-musl@1.0.0-beta.57':
-    optional: true
-
-  '@rolldown/binding-linux-arm64-musl@1.0.0-beta.58':
-    optional: true
-
-  '@rolldown/binding-linux-x64-gnu@1.0.0-beta.57':
-    optional: true
-
-  '@rolldown/binding-linux-x64-gnu@1.0.0-beta.58':
-    optional: true
-
-  '@rolldown/binding-linux-x64-musl@1.0.0-beta.57':
-    optional: true
-
-  '@rolldown/binding-linux-x64-musl@1.0.0-beta.58':
-    optional: true
-
-  '@rolldown/binding-openharmony-arm64@1.0.0-beta.57':
-    optional: true
-
-  '@rolldown/binding-openharmony-arm64@1.0.0-beta.58':
-    optional: true
-
-  '@rolldown/binding-wasm32-wasi@1.0.0-beta.57':
-    dependencies:
-      '@napi-rs/wasm-runtime': 1.1.0
-    optional: true
-
-  '@rolldown/binding-wasm32-wasi@1.0.0-beta.58':
+  '@rolldown/binding-wasm32-wasi@1.0.0-beta.59':
     dependencies:
       '@napi-rs/wasm-runtime': 1.1.1
     optional: true
 
-  '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.57':
+  '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.59':
     optional: true
 
-  '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.58':
-    optional: true
-
-  '@rolldown/binding-win32-x64-msvc@1.0.0-beta.57':
-    optional: true
-
-  '@rolldown/binding-win32-x64-msvc@1.0.0-beta.58':
+  '@rolldown/binding-win32-x64-msvc@1.0.0-beta.59':
     optional: true
 
   '@rolldown/pluginutils@1.0.0-beta.53': {}
 
-  '@rolldown/pluginutils@1.0.0-beta.57': {}
-
-  '@rolldown/pluginutils@1.0.0-beta.58': {}
+  '@rolldown/pluginutils@1.0.0-beta.59': {}
 
   '@rollup/pluginutils@4.2.1':
     dependencies:
@@ -7386,7 +7249,7 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools-utils@0.2.3(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)':
+  '@tanstack/devtools-utils@0.2.4(@types/react@19.2.7)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)':
     dependencies:
       '@tanstack/devtools-ui': 0.4.4(csstype@3.2.3)(solid-js@1.9.10)
     optionalDependencies:
@@ -7397,7 +7260,18 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools@0.10.2(csstype@3.2.3)(solid-js@1.9.10)':
+  '@tanstack/devtools-utils@0.2.4(@types/react@19.2.8)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.10)':
+    dependencies:
+      '@tanstack/devtools-ui': 0.4.4(csstype@3.2.3)(solid-js@1.9.10)
+    optionalDependencies:
+      '@types/react': 19.2.8
+      preact: 10.28.2
+      react: 19.2.3
+      solid-js: 1.9.10
+    transitivePeerDependencies:
+      - csstype
+
+  '@tanstack/devtools@0.10.3(csstype@3.2.3)(solid-js@1.9.10)':
     dependencies:
       '@solid-primitives/event-listener': 2.4.3(solid-js@1.9.10)
       '@solid-primitives/keyboard': 1.3.3(solid-js@1.9.10)
@@ -7413,12 +7287,12 @@ snapshots:
       - csstype
       - utf-8-validate
 
-  '@tanstack/eslint-config@0.3.4(@typescript-eslint/utils@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@tanstack/eslint-config@0.3.4(@typescript-eslint/utils@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@eslint/js': 9.39.2
       '@stylistic/eslint-plugin': 5.6.1(eslint@9.39.2(jiti@2.6.1))
       eslint: 9.39.2(jiti@2.6.1)
-      eslint-plugin-import-x: 4.16.1(@typescript-eslint/utils@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))
+      eslint-plugin-import-x: 4.16.1(@typescript-eslint/utils@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-n: 17.23.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       globals: 16.5.0
       typescript-eslint: 8.48.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
@@ -7431,9 +7305,9 @@ snapshots:
 
   '@tanstack/persister@0.1.1': {}
 
-  '@tanstack/preact-devtools@0.9.6(csstype@3.2.3)(preact@10.28.2)(solid-js@1.9.10)':
+  '@tanstack/preact-devtools@0.9.7(csstype@3.2.3)(preact@10.28.2)(solid-js@1.9.10)':
     dependencies:
-      '@tanstack/devtools': 0.10.2(csstype@3.2.3)(solid-js@1.9.10)
+      '@tanstack/devtools': 0.10.3(csstype@3.2.3)(solid-js@1.9.10)
       preact: 10.28.2
     transitivePeerDependencies:
       - bufferutil
@@ -7450,11 +7324,11 @@ snapshots:
 
   '@tanstack/query-devtools@5.92.0': {}
 
-  '@tanstack/react-devtools@0.9.1(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10)':
+  '@tanstack/react-devtools@0.9.2(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10)':
     dependencies:
-      '@tanstack/devtools': 0.10.2(csstype@3.2.3)(solid-js@1.9.10)
-      '@types/react': 19.2.7
-      '@types/react-dom': 19.2.3(@types/react@19.2.7)
+      '@tanstack/devtools': 0.10.3(csstype@3.2.3)(solid-js@1.9.10)
+      '@types/react': 19.2.8
+      '@types/react-dom': 19.2.3(@types/react@19.2.8)
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
     transitivePeerDependencies:
@@ -7487,9 +7361,9 @@ snapshots:
       react-dom: 19.2.3(react@19.2.3)
       use-sync-external-store: 1.6.0(react@19.2.3)
 
-  '@tanstack/solid-devtools@0.7.21(csstype@3.2.3)(solid-js@1.9.10)':
+  '@tanstack/solid-devtools@0.7.22(csstype@3.2.3)(solid-js@1.9.10)':
     dependencies:
-      '@tanstack/devtools': 0.10.2(csstype@3.2.3)(solid-js@1.9.10)
+      '@tanstack/devtools': 0.10.3(csstype@3.2.3)(solid-js@1.9.10)
       solid-js: 1.9.10
     transitivePeerDependencies:
       - bufferutil
@@ -7589,7 +7463,7 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
-  '@types/node@25.0.3':
+  '@types/node@25.0.7':
     dependencies:
       undici-types: 7.16.0
 
@@ -7597,13 +7471,25 @@ snapshots:
     dependencies:
       '@types/react': 19.2.7
 
+  '@types/react-dom@19.2.3(@types/react@19.2.8)':
+    dependencies:
+      '@types/react': 19.2.8
+
   '@types/react@19.2.7':
+    dependencies:
+      csstype: 3.2.3
+
+  '@types/react@19.2.8':
     dependencies:
       csstype: 3.2.3
 
   '@types/unist@3.0.3': {}
 
   '@types/whatwg-mimetype@3.0.2': {}
+
+  '@types/ws@8.18.1':
+    dependencies:
+      '@types/node': 25.0.7
 
   '@typescript-eslint/eslint-plugin@8.48.1(@typescript-eslint/parser@8.48.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
@@ -7643,10 +7529,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.52.0(typescript@5.9.3)':
+  '@typescript-eslint/project-service@8.53.0(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.52.0(typescript@5.9.3)
-      '@typescript-eslint/types': 8.52.0
+      '@typescript-eslint/tsconfig-utils': 8.53.0(typescript@5.9.3)
+      '@typescript-eslint/types': 8.53.0
       debug: 4.4.3
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -7657,10 +7543,10 @@ snapshots:
       '@typescript-eslint/types': 8.48.1
       '@typescript-eslint/visitor-keys': 8.48.1
 
-  '@typescript-eslint/scope-manager@8.52.0':
+  '@typescript-eslint/scope-manager@8.53.0':
     dependencies:
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/visitor-keys': 8.52.0
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/visitor-keys': 8.53.0
 
   '@typescript-eslint/tsconfig-utils@8.48.1(typescript@5.9.3)':
     dependencies:
@@ -7670,7 +7556,7 @@ snapshots:
     dependencies:
       typescript: 5.9.3
 
-  '@typescript-eslint/tsconfig-utils@8.52.0(typescript@5.9.3)':
+  '@typescript-eslint/tsconfig-utils@8.53.0(typescript@5.9.3)':
     dependencies:
       typescript: 5.9.3
 
@@ -7686,11 +7572,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/type-utils@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@typescript-eslint/type-utils@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/typescript-estree': 8.52.0(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/typescript-estree': 8.53.0(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       debug: 4.4.3
       eslint: 9.39.2(jiti@2.6.1)
       ts-api-utils: 2.4.0(typescript@5.9.3)
@@ -7702,7 +7588,7 @@ snapshots:
 
   '@typescript-eslint/types@8.49.0': {}
 
-  '@typescript-eslint/types@8.52.0': {}
+  '@typescript-eslint/types@8.53.0': {}
 
   '@typescript-eslint/typescript-estree@8.48.1(typescript@5.9.3)':
     dependencies:
@@ -7719,12 +7605,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/typescript-estree@8.52.0(typescript@5.9.3)':
+  '@typescript-eslint/typescript-estree@8.53.0(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/project-service': 8.52.0(typescript@5.9.3)
-      '@typescript-eslint/tsconfig-utils': 8.52.0(typescript@5.9.3)
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/visitor-keys': 8.52.0
+      '@typescript-eslint/project-service': 8.53.0(typescript@5.9.3)
+      '@typescript-eslint/tsconfig-utils': 8.53.0(typescript@5.9.3)
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/visitor-keys': 8.53.0
       debug: 4.4.3
       minimatch: 9.0.5
       semver: 7.7.3
@@ -7745,12 +7631,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@typescript-eslint/utils@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.2(jiti@2.6.1))
-      '@typescript-eslint/scope-manager': 8.52.0
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/typescript-estree': 8.52.0(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/typescript-estree': 8.53.0(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -7761,9 +7647,9 @@ snapshots:
       '@typescript-eslint/types': 8.48.1
       eslint-visitor-keys: 4.2.1
 
-  '@typescript-eslint/visitor-keys@8.52.0':
+  '@typescript-eslint/visitor-keys@8.53.0':
     dependencies:
-      '@typescript-eslint/types': 8.52.0
+      '@typescript-eslint/types': 8.53.0
       eslint-visitor-keys: 4.2.1
 
   '@unrs/resolver-binding-android-arm-eabi@1.11.1':
@@ -7825,7 +7711,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vitejs/plugin-react@5.1.2(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))':
+  '@vitejs/plugin-react@5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.5)
@@ -7833,47 +7719,47 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.53
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/expect@4.0.16':
+  '@vitest/expect@4.0.17':
     dependencies:
       '@standard-schema/spec': 1.0.0
       '@types/chai': 5.2.3
-      '@vitest/spy': 4.0.16
-      '@vitest/utils': 4.0.16
+      '@vitest/spy': 4.0.17
+      '@vitest/utils': 4.0.17
       chai: 6.2.1
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.16(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))':
+  '@vitest/mocker@4.0.17(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))':
     dependencies:
-      '@vitest/spy': 4.0.16
+      '@vitest/spy': 4.0.17
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
-  '@vitest/pretty-format@4.0.16':
+  '@vitest/pretty-format@4.0.17':
     dependencies:
       tinyrainbow: 3.0.3
 
-  '@vitest/runner@4.0.16':
+  '@vitest/runner@4.0.17':
     dependencies:
-      '@vitest/utils': 4.0.16
+      '@vitest/utils': 4.0.17
       pathe: 2.0.3
 
-  '@vitest/snapshot@4.0.16':
+  '@vitest/snapshot@4.0.17':
     dependencies:
-      '@vitest/pretty-format': 4.0.16
+      '@vitest/pretty-format': 4.0.17
       magic-string: 0.30.21
       pathe: 2.0.3
 
-  '@vitest/spy@4.0.16': {}
+  '@vitest/spy@4.0.17': {}
 
-  '@vitest/utils@4.0.16':
+  '@vitest/utils@4.0.17':
     dependencies:
-      '@vitest/pretty-format': 4.0.16
+      '@vitest/pretty-format': 4.0.17
       tinyrainbow: 3.0.3
 
   '@yarnpkg/lockfile@1.1.0': {}
@@ -8355,7 +8241,7 @@ snapshots:
       eslint: 9.39.2(jiti@2.6.1)
       eslint-compat-utils: 0.5.1(eslint@9.39.2(jiti@2.6.1))
 
-  eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)):
+  eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       '@typescript-eslint/types': 8.49.0
       comment-parser: 1.4.1
@@ -8368,7 +8254,7 @@ snapshots:
       stable-hash-x: 0.2.0
       unrs-resolver: 1.11.1
     optionalDependencies:
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
     transitivePeerDependencies:
       - supports-color
 
@@ -8399,16 +8285,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-dom@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-dom@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.5.1
-      '@eslint-react/shared': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.52.0
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@eslint-react/shared': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       compare-versions: 6.1.1
       eslint: 9.39.2(jiti@2.6.1)
       string-ts: 2.3.1
@@ -8417,17 +8303,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-hooks-extra@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-hooks-extra@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.5.1
-      '@eslint-react/shared': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.52.0
-      '@typescript-eslint/type-utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@eslint-react/shared': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/type-utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       string-ts: 2.3.1
       ts-pattern: 5.9.0
@@ -8446,17 +8332,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-naming-convention@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-naming-convention@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.5.1
-      '@eslint-react/shared': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.52.0
-      '@typescript-eslint/type-utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@eslint-react/shared': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/type-utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      compare-versions: 6.1.1
       eslint: 9.39.2(jiti@2.6.1)
       string-ts: 2.3.1
       ts-pattern: 5.9.0
@@ -8464,16 +8351,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-web-api@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-web-api@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.5.1
-      '@eslint-react/shared': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.52.0
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@eslint-react/shared': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       string-ts: 2.3.1
       ts-pattern: 5.9.0
@@ -8481,17 +8368,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-x@2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-x@2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.5.1
-      '@eslint-react/shared': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.5.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.52.0
-      '@typescript-eslint/type-utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/types': 8.52.0
-      '@typescript-eslint/utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.5.7
+      '@eslint-react/shared': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.5.7(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/type-utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/types': 8.53.0
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       compare-versions: 6.1.1
       eslint: 9.39.2(jiti@2.6.1)
       is-immutable-type: 5.0.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
@@ -8758,11 +8645,16 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  happy-dom@20.0.11:
+  happy-dom@20.1.0:
     dependencies:
       '@types/node': 20.19.25
       '@types/whatwg-mimetype': 3.0.2
+      '@types/ws': 8.18.1
       whatwg-mimetype: 3.0.0
+      ws: 8.18.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   has-bigints@1.1.0: {}
 
@@ -8879,7 +8771,7 @@ snapshots:
 
   is-immutable-type@5.0.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@typescript-eslint/type-utils': 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/type-utils': 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       ts-api-utils: 2.4.0(typescript@5.9.3)
       ts-declaration-location: 1.0.7(typescript@5.9.3)
@@ -8991,10 +8883,10 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  knip@5.80.0(@types/node@25.0.3)(typescript@5.9.3):
+  knip@5.80.2(@types/node@25.0.7)(typescript@5.9.3):
     dependencies:
       '@nodelib/fs.walk': 1.2.8
-      '@types/node': 25.0.3
+      '@types/node': 25.0.7
       fast-glob: 3.3.3
       formatly: 0.3.0
       jiti: 2.6.1
@@ -9006,7 +8898,7 @@ snapshots:
       smol-toml: 1.5.2
       strip-json-comments: 5.0.3
       typescript: 5.9.3
-      zod: 4.1.13
+      zod: 4.3.5
 
   kolorist@1.8.0: {}
 
@@ -9457,7 +9349,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-dts@0.20.0(oxc-resolver@11.15.0)(rolldown@1.0.0-beta.57)(typescript@5.9.3):
+  rolldown-plugin-dts@0.20.0(oxc-resolver@11.15.0)(rolldown@1.0.0-beta.59)(typescript@5.9.3):
     dependencies:
       '@babel/generator': 7.28.5
       '@babel/parser': 7.28.5
@@ -9467,49 +9359,30 @@ snapshots:
       dts-resolver: 2.1.3(oxc-resolver@11.15.0)
       get-tsconfig: 4.13.0
       obug: 2.1.1
-      rolldown: 1.0.0-beta.57
+      rolldown: 1.0.0-beta.59
     optionalDependencies:
       typescript: 5.9.3
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown@1.0.0-beta.57:
+  rolldown@1.0.0-beta.59:
     dependencies:
-      '@oxc-project/types': 0.103.0
-      '@rolldown/pluginutils': 1.0.0-beta.57
+      '@oxc-project/types': 0.107.0
+      '@rolldown/pluginutils': 1.0.0-beta.59
     optionalDependencies:
-      '@rolldown/binding-android-arm64': 1.0.0-beta.57
-      '@rolldown/binding-darwin-arm64': 1.0.0-beta.57
-      '@rolldown/binding-darwin-x64': 1.0.0-beta.57
-      '@rolldown/binding-freebsd-x64': 1.0.0-beta.57
-      '@rolldown/binding-linux-arm-gnueabihf': 1.0.0-beta.57
-      '@rolldown/binding-linux-arm64-gnu': 1.0.0-beta.57
-      '@rolldown/binding-linux-arm64-musl': 1.0.0-beta.57
-      '@rolldown/binding-linux-x64-gnu': 1.0.0-beta.57
-      '@rolldown/binding-linux-x64-musl': 1.0.0-beta.57
-      '@rolldown/binding-openharmony-arm64': 1.0.0-beta.57
-      '@rolldown/binding-wasm32-wasi': 1.0.0-beta.57
-      '@rolldown/binding-win32-arm64-msvc': 1.0.0-beta.57
-      '@rolldown/binding-win32-x64-msvc': 1.0.0-beta.57
-
-  rolldown@1.0.0-beta.58:
-    dependencies:
-      '@oxc-project/types': 0.106.0
-      '@rolldown/pluginutils': 1.0.0-beta.58
-    optionalDependencies:
-      '@rolldown/binding-android-arm64': 1.0.0-beta.58
-      '@rolldown/binding-darwin-arm64': 1.0.0-beta.58
-      '@rolldown/binding-darwin-x64': 1.0.0-beta.58
-      '@rolldown/binding-freebsd-x64': 1.0.0-beta.58
-      '@rolldown/binding-linux-arm-gnueabihf': 1.0.0-beta.58
-      '@rolldown/binding-linux-arm64-gnu': 1.0.0-beta.58
-      '@rolldown/binding-linux-arm64-musl': 1.0.0-beta.58
-      '@rolldown/binding-linux-x64-gnu': 1.0.0-beta.58
-      '@rolldown/binding-linux-x64-musl': 1.0.0-beta.58
-      '@rolldown/binding-openharmony-arm64': 1.0.0-beta.58
-      '@rolldown/binding-wasm32-wasi': 1.0.0-beta.58
-      '@rolldown/binding-win32-arm64-msvc': 1.0.0-beta.58
-      '@rolldown/binding-win32-x64-msvc': 1.0.0-beta.58
+      '@rolldown/binding-android-arm64': 1.0.0-beta.59
+      '@rolldown/binding-darwin-arm64': 1.0.0-beta.59
+      '@rolldown/binding-darwin-x64': 1.0.0-beta.59
+      '@rolldown/binding-freebsd-x64': 1.0.0-beta.59
+      '@rolldown/binding-linux-arm-gnueabihf': 1.0.0-beta.59
+      '@rolldown/binding-linux-arm64-gnu': 1.0.0-beta.59
+      '@rolldown/binding-linux-arm64-musl': 1.0.0-beta.59
+      '@rolldown/binding-linux-x64-gnu': 1.0.0-beta.59
+      '@rolldown/binding-linux-x64-musl': 1.0.0-beta.59
+      '@rolldown/binding-openharmony-arm64': 1.0.0-beta.59
+      '@rolldown/binding-wasm32-wasi': 1.0.0-beta.59
+      '@rolldown/binding-win32-arm64-msvc': 1.0.0-beta.59
+      '@rolldown/binding-win32-x64-msvc': 1.0.0-beta.59
 
   rollup@4.53.3:
     dependencies:
@@ -9819,7 +9692,7 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tsdown@0.18.4(@arethetypeswrong/core@0.18.2)(oxc-resolver@11.15.0)(publint@0.3.16)(typescript@5.9.3):
+  tsdown@0.19.0(@arethetypeswrong/core@0.18.2)(oxc-resolver@11.15.0)(publint@0.3.16)(typescript@5.9.3):
     dependencies:
       ansis: 4.2.0
       cac: 6.7.14
@@ -9829,14 +9702,14 @@ snapshots:
       import-without-cache: 0.2.5
       obug: 2.1.1
       picomatch: 4.0.3
-      rolldown: 1.0.0-beta.57
-      rolldown-plugin-dts: 0.20.0(oxc-resolver@11.15.0)(rolldown@1.0.0-beta.57)(typescript@5.9.3)
+      rolldown: 1.0.0-beta.59
+      rolldown-plugin-dts: 0.20.0(oxc-resolver@11.15.0)(rolldown@1.0.0-beta.59)(typescript@5.9.3)
       semver: 7.7.3
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tree-kill: 1.2.2
       unconfig-core: 7.4.2
-      unrun: 0.2.22
+      unrun: 0.2.24
     optionalDependencies:
       '@arethetypeswrong/core': 0.18.2
       publint: 0.3.16
@@ -9927,9 +9800,9 @@ snapshots:
       '@unrs/resolver-binding-win32-ia32-msvc': 1.11.1
       '@unrs/resolver-binding-win32-x64-msvc': 1.11.1
 
-  unrun@0.2.22:
+  unrun@0.2.24:
     dependencies:
-      rolldown: 1.0.0-beta.58
+      rolldown: 1.0.0-beta.59
 
   update-browserslist-db@1.2.2(browserslist@4.28.1):
     dependencies:
@@ -9950,7 +9823,7 @@ snapshots:
   validate-npm-package-name@5.0.1:
     optional: true
 
-  vite-plugin-solid@2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)):
+  vite-plugin-solid@2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.10)(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)):
     dependencies:
       '@babel/core': 7.28.5
       '@types/babel__core': 7.20.5
@@ -9958,14 +9831,14 @@ snapshots:
       merge-anything: 5.1.7
       solid-js: 1.9.10
       solid-refresh: 0.6.3(solid-js@1.9.10)
-      vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
-      vitefu: 1.1.1(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
+      vite: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
+      vitefu: 1.1.1(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
     optionalDependencies:
       '@testing-library/jest-dom': 6.9.1
     transitivePeerDependencies:
       - supports-color
 
-  vite-prerender-plugin@0.5.12(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)):
+  vite-prerender-plugin@0.5.12(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)):
     dependencies:
       kolorist: 1.8.0
       magic-string: 0.30.21
@@ -9973,9 +9846,9 @@ snapshots:
       simple-code-frame: 1.3.0
       source-map: 0.7.6
       stack-trace: 1.0.0-pre2
-      vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
-  vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2):
+  vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2):
     dependencies:
       esbuild: 0.27.1
       fdir: 6.5.0(picomatch@4.0.3)
@@ -9984,24 +9857,24 @@ snapshots:
       rollup: 4.53.3
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.0.7
       fsevents: 2.3.3
       jiti: 2.6.1
       yaml: 2.8.2
 
-  vitefu@1.1.1(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)):
+  vitefu@1.1.1(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)):
     optionalDependencies:
-      vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
-  vitest@4.0.16(@types/node@25.0.3)(happy-dom@20.0.11)(jiti@2.6.1)(yaml@2.8.2):
+  vitest@4.0.17(@types/node@25.0.7)(happy-dom@20.1.0)(jiti@2.6.1)(yaml@2.8.2):
     dependencies:
-      '@vitest/expect': 4.0.16
-      '@vitest/mocker': 4.0.16(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2))
-      '@vitest/pretty-format': 4.0.16
-      '@vitest/runner': 4.0.16
-      '@vitest/snapshot': 4.0.16
-      '@vitest/spy': 4.0.16
-      '@vitest/utils': 4.0.16
+      '@vitest/expect': 4.0.17
+      '@vitest/mocker': 4.0.17(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
+      '@vitest/pretty-format': 4.0.17
+      '@vitest/runner': 4.0.17
+      '@vitest/snapshot': 4.0.17
+      '@vitest/spy': 4.0.17
+      '@vitest/utils': 4.0.17
       es-module-lexer: 1.7.0
       expect-type: 1.2.2
       magic-string: 0.30.21
@@ -10013,11 +9886,11 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.3.1(@types/node@25.0.3)(jiti@2.6.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 25.0.3
-      happy-dom: 20.0.11
+      '@types/node': 25.0.7
+      happy-dom: 20.1.0
     transitivePeerDependencies:
       - jiti
       - less
