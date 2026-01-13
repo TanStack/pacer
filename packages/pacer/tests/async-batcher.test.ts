@@ -751,4 +751,18 @@ describe('asyncBatch', () => {
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenCalledWith([1])
   })
+
+  describe('getAbortSignal', () => {
+    it('should be available as an instance method', () => {
+      const batcher = new AsyncBatcher(
+        async (items) => {
+          return items
+        },
+        { maxSize: 10, wait: 100 },
+      )
+
+      expect(typeof batcher.getAbortSignal).toBe('function')
+      expect(batcher.getAbortSignal()).toBeNull()
+    })
+  })
 })

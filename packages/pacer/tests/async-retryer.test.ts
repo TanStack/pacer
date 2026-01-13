@@ -1068,4 +1068,15 @@ describe('asyncRetry utility function', () => {
     expect(result).toBe('success')
     expect(mockFn).toHaveBeenCalledTimes(1)
   })
+
+  describe('getAbortSignal', () => {
+    it('should be available as an instance method', () => {
+      const retryer = new AsyncRetryer(async () => {
+        return 'result'
+      })
+
+      expect(typeof retryer.getAbortSignal).toBe('function')
+      expect(retryer.getAbortSignal()).toBeNull()
+    })
+  })
 })

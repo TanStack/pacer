@@ -984,4 +984,18 @@ describe('AsyncThrottler', () => {
       })
     })
   })
+
+  describe('getAbortSignal', () => {
+    it('should be available as an instance method', () => {
+      const throttler = new AsyncThrottler(
+        async () => {
+          return 'result'
+        },
+        { wait: 100 },
+      )
+
+      expect(typeof throttler.getAbortSignal).toBe('function')
+      expect(throttler.getAbortSignal()).toBeNull()
+    })
+  })
 })

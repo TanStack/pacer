@@ -1062,4 +1062,37 @@ describe('AsyncQueuer', () => {
       })
     })
   })
+
+  describe('lastResult bug investigation', () => {
+    it('should preserve lastResult from execute() and not overwrite with item', async () => {
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          return `processed-${item}`
+        },
+        { started: false },
+      )
+
+      asyncQueuer.addItem('test1')
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(100)
+
+      expect(asyncQueuer.store.state.lastResult).toBe('processed-test1')
+      expect(asyncQueuer.store.state.lastResult).not.toBe('test1')
+    })
+  })
+
+  describe('getAbortSignal', () => {
+    it('should be available as an instance method', () => {
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          return item
+        },
+        { started: false },
+      )
+
+      expect(typeof asyncQueuer.getAbortSignal).toBe('function')
+      expect(asyncQueuer.getAbortSignal()).toBeNull()
+    })
+  })
 })
