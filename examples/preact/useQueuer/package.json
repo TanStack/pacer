@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@tanstack/preact-devtools": "^0.9.7",
-    "@tanstack/preact-pacer": "^0.19.1",
+    "@tanstack/preact-pacer": "^0.19.2",
     "@tanstack/preact-pacer-devtools": "workspace:*",
     "preact": "^10.28.2"
   },
