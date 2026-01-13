@@ -1345,4 +1345,18 @@ describe('asyncDebounce helper function', () => {
       expect(mockFn).toBeCalledWith('second')
     })
   })
+
+  describe('getAbortSignal', () => {
+    it('should be available as an instance method', () => {
+      const debouncer = new AsyncDebouncer(
+        async () => {
+          return 'result'
+        },
+        { wait: 300 },
+      )
+
+      expect(typeof debouncer.getAbortSignal).toBe('function')
+      expect(debouncer.getAbortSignal()).toBeNull()
+    })
+  })
 })

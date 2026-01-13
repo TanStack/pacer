@@ -476,7 +476,7 @@ export class AsyncBatcher<TValue> {
    * )
    * ```
    */
-  getAbortSignal(executeCount?: number): AbortSignal | null {
+  getAbortSignal = (executeCount?: number): AbortSignal | null => {
     const count = executeCount ?? this.store.state.executeCount
     const retryer = this.asyncRetryers.get(count)
     return retryer?.getAbortSignal() ?? null

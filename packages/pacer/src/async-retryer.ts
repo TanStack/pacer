@@ -594,7 +594,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
    * retryer.abort()
    * ```
    */
-  getAbortSignal(): AbortSignal | null {
+  getAbortSignal = (): AbortSignal | null => {
     return this.#abortController?.signal ?? null
   }
 

@@ -761,4 +761,18 @@ describe('asyncRateLimit', () => {
     await expect(rateLimitedFn()).resolves.toBeUndefined()
     expect(mockFn).toHaveBeenCalledTimes(1)
   })
+
+  describe('getAbortSignal', () => {
+    it('should be available as an instance method', () => {
+      const rateLimiter = new AsyncRateLimiter(
+        async () => {
+          return 'result'
+        },
+        { limit: 5, window: 1000 },
+      )
+
+      expect(typeof rateLimiter.getAbortSignal).toBe('function')
+      expect(rateLimiter.getAbortSignal()).toBeNull()
+    })
+  })
 })
