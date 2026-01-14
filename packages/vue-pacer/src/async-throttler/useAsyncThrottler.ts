@@ -10,8 +10,10 @@ import type {
 } from '@tanstack/pacer/async-throttler'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
-export interface VueAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>
-  extends Omit<AsyncThrottler<TFn>, 'store'> {
+export interface VueAsyncThrottler<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends Omit<AsyncThrottler<TFn>, 'store'> {
   Subscribe: DefineComponent<{
     selector: (state: AsyncThrottlerState<TFn>) => any
   }>

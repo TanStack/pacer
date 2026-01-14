@@ -10,8 +10,10 @@ import type {
 } from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
-export interface VueRateLimiter<TFn extends AnyFunction, TSelected = {}>
-  extends Omit<RateLimiter<TFn>, 'store'> {
+export interface VueRateLimiter<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends Omit<RateLimiter<TFn>, 'store'> {
   Subscribe: DefineComponent<{
     selector: (state: RateLimiterState<TFn>) => any
   }>

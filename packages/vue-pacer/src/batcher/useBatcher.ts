@@ -6,8 +6,10 @@ import type { Store } from '@tanstack/vue-store'
 import type { Ref, DefineComponent, PropType } from 'vue'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
-export interface VueBatcher<TValue, TSelected = {}>
-  extends Omit<Batcher<TValue>, 'store'> {
+export interface VueBatcher<TValue, TSelected = {}> extends Omit<
+  Batcher<TValue>,
+  'store'
+> {
   Subscribe: DefineComponent<{
     selector: (state: BatcherState<TValue>) => any
   }>

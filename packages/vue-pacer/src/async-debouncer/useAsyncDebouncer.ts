@@ -10,8 +10,10 @@ import type {
 } from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
-export interface VueAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>
-  extends Omit<AsyncDebouncer<TFn>, 'store'> {
+export interface VueAsyncDebouncer<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends Omit<AsyncDebouncer<TFn>, 'store'> {
   Subscribe: DefineComponent<{
     selector: (state: AsyncDebouncerState<TFn>) => any
   }>

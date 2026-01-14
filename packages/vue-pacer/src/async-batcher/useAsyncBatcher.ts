@@ -9,8 +9,10 @@ import type {
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
 
-export interface VueAsyncBatcher<TValue, TSelected = {}>
-  extends Omit<AsyncBatcher<TValue>, 'store'> {
+export interface VueAsyncBatcher<TValue, TSelected = {}> extends Omit<
+  AsyncBatcher<TValue>,
+  'store'
+> {
   Subscribe: DefineComponent<{
     selector: (state: AsyncBatcherState<TValue>) => any
   }>

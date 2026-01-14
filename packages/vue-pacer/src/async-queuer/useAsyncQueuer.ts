@@ -9,8 +9,10 @@ import type {
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
-export interface VueAsyncQueuer<TValue, TSelected = {}>
-  extends Omit<AsyncQueuer<TValue>, 'store'> {
+export interface VueAsyncQueuer<TValue, TSelected = {}> extends Omit<
+  AsyncQueuer<TValue>,
+  'store'
+> {
   Subscribe: DefineComponent<{
     selector: (state: AsyncQueuerState<TValue>) => any
   }>

@@ -10,8 +10,10 @@ import type {
 } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
-export interface VueDebouncer<TFn extends AnyFunction, TSelected = {}>
-  extends Omit<Debouncer<TFn>, 'store'> {
+export interface VueDebouncer<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends Omit<Debouncer<TFn>, 'store'> {
   /**
    * A Vue component that allows you to subscribe to the debouncer state.
    *

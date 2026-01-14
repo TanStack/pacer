@@ -6,8 +6,10 @@ import type { Store } from '@tanstack/vue-store'
 import type { Ref, DefineComponent, PropType } from 'vue'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
-export interface VueQueuer<TValue, TSelected = {}>
-  extends Omit<Queuer<TValue>, 'store'> {
+export interface VueQueuer<TValue, TSelected = {}> extends Omit<
+  Queuer<TValue>,
+  'store'
+> {
   Subscribe: DefineComponent<{
     selector: (state: QueuerState<TValue>) => any
   }>
