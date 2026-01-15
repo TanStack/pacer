@@ -7,6 +7,24 @@ import type {
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
+export interface AsyncQueuedSignal<TValue, TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
+  AsyncQueuerState<TValue>,
+  'items'
+>> {
+  /**
+   * A Signal that provides the current queue items as an array
+   */
+  readonly items: Signal<Array<TValue>>
+  /**
+   * The queuer's addItem method
+   */
+  readonly addItem: AngularAsyncQueuer<TValue, TSelected>['addItem']
+  /**
+   * The queuer instance with additional control methods
+   */
+  readonly queuer: AngularAsyncQueuer<TValue, TSelected>
+}
+
 /**
  * An Angular function that creates an async queuer with managed state, combining Angular's signals with async queuing functionality.
  * This function provides both the current queue state and queue control methods.
@@ -14,15 +32,15 @@ import type {
  * The queue state is automatically updated whenever items are added, removed, or processed in the queue.
  * All queue operations are reflected in the state array returned by the function.
  *
- * The function returns a tuple containing:
- * - A Signal that provides the current queue items as an array
- * - The queuer's addItem method
- * - The queuer instance with additional control methods
+ * The function returns an object containing:
+ * - `items`: A Signal that provides the current queue items as an array
+ * - `addItem`: The queuer's addItem method
+ * - `queuer`: The queuer instance with additional control methods
  *
  * @example
  * ```ts
  * // Default behavior - track items
- * const [items, addItem, queuer] = createAsyncQueuedSignal(
+ * const queue = createAsyncQueuedSignal(
  *   async (item) => {
  *     const response = await fetch('/api/process', {
  *       method: 'POST',
@@ -34,14 +52,14 @@ import type {
  * );
  *
  * // Add items
- * addItem(data1);
+ * queue.addItem(data1);
  *
  * // Access items
- * console.log(items()); // [data1, ...]
+ * console.log(queue.items()); // [data1, ...]
  *
  * // Control the queue
- * queuer.start();
- * queuer.stop();
+ * queue.queuer.start();
+ * queue.queuer.stop();
  * ```
  */
 export function createAsyncQueuedSignal<
@@ -55,14 +73,14 @@ export function createAsyncQueuedSignal<
   options: AsyncQueuerOptions<TValue> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = (state) =>
     ({ items: state.items }) as TSelected,
-): [
-  Signal<Array<TValue>>,
-  AngularAsyncQueuer<TValue, TSelected>['addItem'],
-  AngularAsyncQueuer<TValue, TSelected>,
-] {
+): AsyncQueuedSignal<TValue, TSelected> {
   const queuer = createAsyncQueuer(fn, options, selector)
 
   const items = computed(() => queuer.state().items as Array<TValue>)
 
-  return [items, queuer.addItem.bind(queuer), queuer]
+  return {
+    items,
+    addItem: queuer.addItem.bind(queuer),
+    queuer,
+  }
 }

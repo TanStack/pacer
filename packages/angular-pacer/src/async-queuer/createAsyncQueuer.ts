@@ -1,4 +1,4 @@
-import { DestroyRef, inject, signal  } from '@angular/core'
+import { injectStore } from '@tanstack/angular-store'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core';
@@ -78,26 +78,10 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
   } as AsyncQueuerOptions<TValue>
 
   const queuer = new AsyncQueuer<TValue>(fn, mergedOptions)
-  const stateSignal = signal<Readonly<TSelected>>(
-    selector(queuer.store.state) as Readonly<TSelected>,
-  )
-
-  // Subscribe to store changes and update signal
-  const unsubscribe = queuer.store.subscribe((state) => {
-    const selected = selector(state)
-    stateSignal.set(selected as Readonly<TSelected>)
-  })
-
-  const destroyRef = inject(DestroyRef, { optional: true })
-  if (destroyRef) {
-    destroyRef.onDestroy(() => {
-      unsubscribe()
-      queuer.stop()
-    })
-  }
+  const state = injectStore(queuer.store, selector)
 
   return {
     ...queuer,
-    state: stateSignal.asReadonly(),
+    state,
   } as AngularAsyncQueuer<TValue, TSelected>
 }

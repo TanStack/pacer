@@ -9,6 +9,21 @@ import type {
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
+export interface DebouncedSignal<TValue, TSelected = {}> {
+  /**
+   * The current debounced value signal
+   */
+  readonly value: Signal<TValue>
+  /**
+   * Function to update the debounced value
+   */
+  readonly setValue: Setter<TValue>
+  /**
+   * The debouncer instance with additional control methods and state signals
+   */
+  readonly debouncer: AngularDebouncer<Setter<TValue>, TSelected>
+}
+
 /**
  * An Angular function that creates a debounced state signal, combining Angular's signal with debouncing functionality.
  * This function provides both the current debounced value and methods to update it.
@@ -18,10 +33,10 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * This is useful for handling frequent state updates that should be throttled, like search input values
  * or window resize dimensions.
  *
- * The function returns a tuple containing:
- * - The current debounced value signal
- * - A function to update the debounced value
- * - The debouncer instance with additional control methods and state signals
+ * The function returns an object containing:
+ * - `value`: The current debounced value signal
+ * - `setValue`: A function to update the debounced value
+ * - `debouncer`: The debouncer instance with additional control methods and state signals
  *
  * ## State Management and Selector
  *
@@ -44,12 +59,12 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * @example
  * ```ts
  * // Default behavior - no reactive state subscriptions
- * const [searchTerm, setSearchTerm, debouncer] = createDebouncedSignal('', {
+ * const debounced = createDebouncedSignal('', {
  *   wait: 500 // Wait 500ms after last keystroke
  * });
  *
  * // Opt-in to reactive updates when pending state changes (optimized for loading indicators)
- * const [searchTerm, setSearchTerm, debouncer] = createDebouncedSignal(
+ * const debounced = createDebouncedSignal(
  *   '',
  *   { wait: 500 },
  *   (state) => ({ isPending: state.isPending })
@@ -58,23 +73,22 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * // Update value - will be debounced
  * const handleChange = (e: Event) => {
  *   const target = e.target as HTMLInputElement
- *   setSearchTerm(target.value);
+ *   debounced.setValue(target.value);
  * };
  *
+ * // Access debounced value
+ * console.log('Search term:', debounced.value());
+ *
  * // Access debouncer state via signals
- * console.log('Executions:', debouncer.state().executionCount);
- * console.log('Is pending:', debouncer.state().isPending);
+ * console.log('Executions:', debounced.debouncer.state().executionCount);
+ * console.log('Is pending:', debounced.debouncer.state().isPending);
  * ```
  */
 export function createDebouncedSignal<TValue, TSelected = {}>(
   value: TValue,
   initialOptions: DebouncerOptions<Setter<TValue>>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
-): [
-  Signal<TValue>,
-  Setter<TValue>,
-  AngularDebouncer<Setter<TValue>, TSelected>,
-] {
+): DebouncedSignal<TValue, TSelected> {
   const debouncedValue = signal<TValue>(value)
 
   const debouncer = createDebouncer(
@@ -89,11 +103,15 @@ export function createDebouncedSignal<TValue, TSelected = {}>(
     selector,
   )
 
-  const setter: Setter<TValue> = (
+  const setValue: Setter<TValue> = (
     newValue: TValue | ((prev: TValue) => TValue),
   ) => {
     debouncer.maybeExecute(newValue)
   }
 
-  return [debouncedValue.asReadonly(), setter, debouncer]
+  return {
+    value: debouncedValue.asReadonly(),
+    setValue,
+    debouncer,
+  }
 }

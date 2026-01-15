@@ -1,4 +1,4 @@
-import { DestroyRef, inject, signal } from '@angular/core'
+import { injectStore } from '@tanstack/angular-store'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
@@ -93,31 +93,10 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
   } as DebouncerOptions<TFn>
 
   const debouncer = new Debouncer<TFn>(fn, mergedOptions)
-  const stateSignal = signal<Readonly<TSelected>>(
-    selector(debouncer.store.state) as Readonly<TSelected>,
-  )
-
-  // Subscribe to store changes and update signal
-  const unsubscribe = debouncer.store.subscribe((state) => {
-    const selected = selector(state)
-    stateSignal.set(selected as Readonly<TSelected>)
-  })
-
-  let destroyRef: DestroyRef | null = null
-  try {
-    destroyRef = inject(DestroyRef, { optional: true })
-  } catch {
-    // Not in injection context, skip cleanup registration
-  }
-  if (destroyRef) {
-    destroyRef.onDestroy(() => {
-      unsubscribe()
-      debouncer.cancel()
-    })
-  }
+  const state = injectStore(debouncer.store, selector)
 
   return {
     ...debouncer,
-    state: stateSignal.asReadonly(),
+    state,
   } as AngularDebouncer<TFn, TSelected>
 }

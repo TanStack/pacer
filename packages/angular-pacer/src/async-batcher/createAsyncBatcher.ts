@@ -1,4 +1,4 @@
-import { DestroyRef, inject, signal  } from '@angular/core'
+import { injectStore } from '@tanstack/angular-store'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core';
@@ -78,26 +78,10 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
   } as AsyncBatcherOptions<TValue>
 
   const batcher = new AsyncBatcher<TValue>(fn, mergedOptions)
-  const stateSignal = signal<Readonly<TSelected>>(
-    selector(batcher.store.state) as Readonly<TSelected>,
-  )
-
-  // Subscribe to store changes and update signal
-  const unsubscribe = batcher.store.subscribe((state) => {
-    const selected = selector(state)
-    stateSignal.set(selected as Readonly<TSelected>)
-  })
-
-  const destroyRef = inject(DestroyRef, { optional: true })
-  if (destroyRef) {
-    destroyRef.onDestroy(() => {
-      unsubscribe()
-      batcher.flush()
-    })
-  }
+  const state = injectStore(batcher.store, selector)
 
   return {
     ...batcher,
-    state: stateSignal.asReadonly(),
+    state,
   } as AngularAsyncBatcher<TValue, TSelected>
 }

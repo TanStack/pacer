@@ -76,15 +76,15 @@ export function createDebouncedValue<TValue, TSelected = {}>(
   initialOptions: DebouncerOptions<Setter<TValue>>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): [Signal<TValue>, AngularDebouncer<Setter<TValue>, TSelected>] {
-  const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
+  const debounced = createDebouncedSignal(
     value(),
     initialOptions,
     selector,
   )
 
   effect(() => {
-    setDebouncedValue(value())
+    debounced.setValue(value())
   })
 
-  return [debouncedValue, debouncer]
+  return [debounced.value, debounced.debouncer]
 }

@@ -1,9 +1,61 @@
-<input
-  type="text"
-  [value]="searchTerm()"
-  (input)="setSearchTerm($any($event.target).value)"
-  placeholder="Type to search..."
-/>
-<p>Debounced: {{ searchTerm() }}</p>
+<div style="padding: 20px; max-width: 800px; margin: 0 auto">
+  <h1>TanStack Pacer - Angular Examples</h1>
 
-<router-outlet />
+  <section style="margin-bottom: 40px; padding: 20px; border: 1px solid #ddd; border-radius: 8px">
+    <h2>Debouncer Example</h2>
+    <p>Type in the input below. The value will update 500ms after you stop typing.</p>
+    <input
+      type="text"
+      [value]="searchTerm()"
+      (input)="setSearchTerm($any($event.target).value)"
+      placeholder="Type to search..."
+      style="width: 100%; padding: 8px; margin-bottom: 10px"
+    />
+    <p><strong>Debounced value:</strong> {{ searchTerm() }}</p>
+    <p><strong>Is pending:</strong> {{ debounced.debouncer.state().isPending }}</p>
+  </section>
+
+  <section style="margin-bottom: 40px; padding: 20px; border: 1px solid #ddd; border-radius: 8px">
+    <h2>Batcher Example</h2>
+    <p>
+      Click the buttons below to add items to a batch. Items will be processed when 3 items are
+      collected or after 2 seconds, whichever comes first.
+    </p>
+    <div style="margin-bottom: 15px">
+      @for (item of ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']; track item) {
+        <button
+          (click)="addToBatch(item)"
+          style="margin-right: 10px; margin-bottom: 10px; padding: 8px 16px"
+        >
+          Add {{ item }}
+        </button>
+      }
+      <button (click)="flushBatch()" style="padding: 8px 16px; background: #ff6b6b; color: white; border: none; border-radius: 4px">
+        Flush Batch
+      </button>
+    </div>
+    <div style="margin-bottom: 15px">
+      <p><strong>Current batch size:</strong> {{ batcher.state().size }}</p>
+      <p><strong>Items in batch:</strong> {{ batcher.state().items.join(', ') || 'None' }}</p>
+      <p><strong>Is pending:</strong> {{ batcher.state().isPending }}</p>
+    </div>
+    <div>
+      <h3>Processed Batches:</h3>
+      
+      @if (processedBatches.length === 0) {
+        <div style="color: #999">No batches processed yet</div>
+      }
+
+      @for (batch of processedBatches; track batch.timestamp) {
+        <div
+          style="padding: 10px; margin-bottom: 10px; background: #f5f5f5; border-radius: 4px"
+        >
+          <strong>{{ batch.timestamp }}</strong> - Processed {{ batch.count }} items:
+          {{ batch.items.join(', ') }}
+        </div>
+      }
+    </div>
+  </section>
+
+  <router-outlet />
+</div>

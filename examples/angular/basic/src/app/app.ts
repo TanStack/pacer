@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { createDebouncedSignal } from '@tanstack/angular-pacer'
+import { createBatcher, createDebouncedSignal } from '@tanstack/angular-pacer';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,47 @@ import { createDebouncedSignal } from '@tanstack/angular-pacer'
   styleUrl: './app.css',
 })
 export class App {
-  private readonly debounced = createDebouncedSignal('', { wait: 500 })
-  protected readonly searchTerm = this.debounced[0]
-  protected readonly setSearchTerm = this.debounced[1]
+  // Debouncer example
+  protected readonly debounced = createDebouncedSignal<string, { isPending: boolean }>(
+    '',
+    { wait: 500 },
+    (state) => ({ isPending: state.isPending }),
+  );
+  protected readonly searchTerm = this.debounced.value;
+  protected readonly setSearchTerm = this.debounced.setValue;
+
+  // Batcher example
+  protected readonly batcher = createBatcher<
+    string,
+    { items: Array<string>; size: number; isPending: boolean }
+  >(
+    (items) => {
+      console.log('Processing batch:', items);
+      this.processedBatches.push({
+        timestamp: new Date().toLocaleTimeString(),
+        items: [...items],
+        count: items.length,
+      });
+    },
+    { maxSize: 3, wait: 2000 },
+    (state) => ({
+      items: state.items,
+      size: state.size,
+      isPending: state.isPending,
+    }),
+  );
+
+  protected readonly processedBatches: Array<{
+    timestamp: string;
+    items: Array<string>;
+    count: number;
+  }> = [];
+
+  protected addToBatch(item: string): void {
+    this.batcher.addItem(item);
+  }
+
+  protected flushBatch(): void {
+    this.batcher.flush();
+  }
 }
