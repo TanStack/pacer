@@ -45,7 +45,7 @@ export interface AsyncRetryerState<TFn extends AnyAsyncFunction> {
 function getDefaultAsyncRetryerState<
   TFn extends AnyAsyncFunction,
 >(): AsyncRetryerState<TFn> {
-  return structuredClone({
+  return {
     currentAttempt: 0,
     executionCount: 0,
     isExecuting: false,
@@ -54,7 +54,7 @@ function getDefaultAsyncRetryerState<
     lastResult: undefined,
     status: 'idle',
     totalExecutionTime: 0,
-  })
+  }
 }
 
 export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
