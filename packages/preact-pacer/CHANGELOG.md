@@ -1,5 +1,12 @@
 # @tanstack/preact-pacer
 
+## 0.19.3
+
+### Patch Changes
+
+- Updated dependencies [[`2bb7e70`](https://github.com/TanStack/pacer/commit/2bb7e7096715fbaf4584fe392810dc0fec72f844)]:
+  - @tanstack/pacer@0.17.3
+
 ## 0.19.2
 
 ### Patch Changes
