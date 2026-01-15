@@ -1,0 +1,157 @@
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useDebouncedValue } from '@tanstack/vue-pacer/debouncer'
+
+// Example 1: Counter
+const instantCount = ref(0)
+const [debouncedCount] = useDebouncedValue(instantCount, { wait: 500 })
+
+function increment() {
+  instantCount.value++
+}
+
+// Example 2: Search input with enabled condition
+const instantSearch = ref('')
+const [debouncedSearch] = useDebouncedValue(instantSearch, {
+  wait: 500,
+  enabled: () => instantSearch.value.length > 2,
+})
+
+// Example 3: Range slider with debouncer state
+const currentValue = ref(50)
+const instantExecutionCount = ref(0)
+
+const [debouncedValue, debouncer] = useDebouncedValue(currentValue, {
+  wait: 250,
+})
+
+const debouncerState = debouncer.state
+
+const savedExecutions = computed(
+  () => instantExecutionCount.value - debouncerState.value.executionCount,
+)
+
+const reductionPercent = computed(() =>
+  instantExecutionCount.value === 0
+    ? 0
+    : Math.round((savedExecutions.value / instantExecutionCount.value) * 100),
+)
+
+function handleRangeChange(e: Event) {
+  const target = e.target as HTMLInputElement
+  currentValue.value = parseInt(target.value, 10)
+  instantExecutionCount.value++
+}
+</script>
+
+<template>
+  <div>
+    <h1>TanStack Pacer useDebouncedValue Example 1</h1>
+    <table>
+      <tbody>
+        <tr>
+          <td>Instant Count:</td>
+          <td>{{ instantCount }}</td>
+        </tr>
+        <tr>
+          <td>Debounced Count:</td>
+          <td>{{ debouncedCount }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <button @click="increment">Increment</button>
+    </div>
+  </div>
+
+  <hr />
+
+  <div>
+    <h1>TanStack Pacer useDebouncedValue Example 2</h1>
+    <div>
+      <input
+        v-model="instantSearch"
+        autofocus
+        type="search"
+        placeholder="Type to search (min 3 chars)..."
+        style="width: 100%"
+      />
+    </div>
+    <table>
+      <tbody>
+        <tr>
+          <td>Instant Search:</td>
+          <td>{{ instantSearch }}</td>
+        </tr>
+        <tr>
+          <td>Debounced Search:</td>
+          <td>{{ debouncedSearch }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr />
+
+  <div>
+    <h1>TanStack Pacer useDebouncedValue Example 3</h1>
+    <div style="margin-bottom: 20px">
+      <label>
+        Current Range:
+        <input
+          type="range"
+          min="0"
+          max="100"
+          :value="currentValue"
+          @input="handleRangeChange"
+          style="width: 100%"
+        />
+        <span>{{ currentValue }}</span>
+      </label>
+    </div>
+    <div style="margin-bottom: 20px">
+      <label>
+        Debounced Range (Readonly):
+        <input
+          type="range"
+          min="0"
+          max="100"
+          :value="debouncedValue"
+          readonly
+          style="width: 100%"
+        />
+        <span>{{ debouncedValue }}</span>
+      </label>
+    </div>
+    <table>
+      <tbody>
+        <tr>
+          <td>Is Pending:</td>
+          <td>{{ debouncerState.isPending }}</td>
+        </tr>
+        <tr>
+          <td>Instant Executions:</td>
+          <td>{{ instantExecutionCount }}</td>
+        </tr>
+        <tr>
+          <td>Debounced Executions:</td>
+          <td>{{ debouncerState.executionCount }}</td>
+        </tr>
+        <tr>
+          <td>Saved Executions:</td>
+          <td>{{ savedExecutions }}</td>
+        </tr>
+        <tr>
+          <td>% Reduction:</td>
+          <td>{{ reductionPercent }}%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="color: #666; font-size: 0.9em">
+      <p>Debounced to 250ms wait time</p>
+    </div>
+    <pre style="margin-top: 20px">{{
+      JSON.stringify(debouncerState, null, 2)
+    }}</pre>
+  </div>
+</template>
