@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.17.3
+
+### Patch Changes
+
+- fix: remove structuredClone from async utils ([`2bb7e70`](https://github.com/TanStack/pacer/commit/2bb7e7096715fbaf4584fe392810dc0fec72f844))
+
 ## 0.17.2
 
 ### Patch Changes
