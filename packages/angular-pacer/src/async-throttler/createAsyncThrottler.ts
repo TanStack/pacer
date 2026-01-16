@@ -1,7 +1,7 @@
-import { DestroyRef, inject, signal  } from '@angular/core'
+import { injectStore } from '@tanstack/angular-store'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
-import type { Signal } from '@angular/core';
+import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
@@ -83,26 +83,10 @@ export function createAsyncThrottler<
   } as AsyncThrottlerOptions<TFn>
 
   const throttler = new AsyncThrottler<TFn>(fn, mergedOptions)
-  const stateSignal = signal<Readonly<TSelected>>(
-    selector(throttler.store.state) as Readonly<TSelected>,
-  )
-
-  // Subscribe to store changes and update signal
-  const unsubscribe = throttler.store.subscribe((state) => {
-    const selected = selector(state)
-    stateSignal.set(selected as Readonly<TSelected>)
-  })
-
-  const destroyRef = inject(DestroyRef, { optional: true })
-  if (destroyRef) {
-    destroyRef.onDestroy(() => {
-      unsubscribe()
-      throttler.cancel()
-    })
-  }
+  const state = injectStore(throttler.store, selector)
 
   return {
     ...throttler,
-    state: stateSignal.asReadonly(),
+    state,
   } as AngularAsyncThrottler<TFn, TSelected>
 }

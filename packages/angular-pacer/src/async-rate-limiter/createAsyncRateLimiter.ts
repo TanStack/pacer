@@ -1,7 +1,7 @@
-import { DestroyRef, inject, signal  } from '@angular/core'
+import { injectStore } from '@tanstack/angular-store'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
-import type { Signal } from '@angular/core';
+import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
@@ -78,26 +78,10 @@ export function createAsyncRateLimiter<
   } as AsyncRateLimiterOptions<TFn>
 
   const rateLimiter = new AsyncRateLimiter<TFn>(fn, mergedOptions)
-  const stateSignal = signal<Readonly<TSelected>>(
-    selector(rateLimiter.store.state) as Readonly<TSelected>,
-  )
-
-  // Subscribe to store changes and update signal
-  const unsubscribe = rateLimiter.store.subscribe((state) => {
-    const selected = selector(state)
-    stateSignal.set(selected as Readonly<TSelected>)
-  })
-
-  const destroyRef = inject(DestroyRef, { optional: true })
-  if (destroyRef) {
-    destroyRef.onDestroy(() => {
-      unsubscribe()
-      rateLimiter.reset()
-    })
-  }
+  const state = injectStore(rateLimiter.store, selector)
 
   return {
     ...rateLimiter,
-    state: stateSignal.asReadonly(),
+    state,
   } as AngularAsyncRateLimiter<TFn, TSelected>
 }
