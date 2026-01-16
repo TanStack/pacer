@@ -1,0 +1,121 @@
+<div style="padding: 20px; max-width: 800px; margin: 0 auto">
+  <h1>TanStack Pacer - Queuer Example</h1>
+
+  <section style="margin-bottom: 40px; padding: 20px; border: 1px solid #ddd; border-radius: 8px">
+    <h2>Queuer Example</h2>
+    <p>
+      The queuer processes items synchronously in order, with a 1 second delay between each item.
+      Items are processed one at a time when the queue is started.
+    </p>
+
+    <div style="margin-bottom: 20px">
+      <h3>Queue Status</h3>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px">
+        <div>
+          <strong>Queue Size:</strong> {{ queuer.state().size }} / 10
+        </div>
+        <div>
+          <strong>Status:</strong> {{ queuer.state().status }}
+        </div>
+        <div>
+          <strong>Is Empty:</strong> {{ queuer.state().isEmpty ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Is Full:</strong> {{ queuer.state().isFull ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Is Running:</strong> {{ queuer.state().isRunning ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Items Processed:</strong> {{ queuer.state().executionCount }}
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px">
+        <strong>Next Item to Process:</strong>
+        <span style="margin-left: 10px">
+          {{ queuer.peekNextItem() ?? 'None' }}
+        </span>
+      </div>
+
+      <div style="margin-bottom: 15px">
+        <strong>Queue Items:</strong>
+        <div style="margin-top: 5px; padding: 10px; background: #f5f5f5; border-radius: 4px; min-height: 40px">
+          @if (queuer.state().items.length === 0) {
+            <span style="color: #999">Queue is empty</span>
+          }
+          @for (let item of queuer.state().items; let i = index) {
+            <span>
+              {{ item }}<span @if(i < queuer.state().items.length - 1)>, </span>
+            </span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px">
+      <h3>Controls</h3>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px">
+        @for (let item of ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5']) {
+          <button
+            (click)="addItem(item)"
+            [disabled]="queuer.state().isFull"
+            style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer"
+          >
+            Add {{ item }}
+          </button>
+        }
+        <button
+          (click)="processNext()"
+          [disabled]="queuer.state().isEmpty"
+          style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer"
+        >
+          Process Next
+        </button>
+        <button
+          (click)="startProcessing()"
+          [disabled]="queuer.state().isRunning"
+          style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; background: #4caf50; color: white; cursor: pointer"
+        >
+          Start Processing
+        </button>
+        <button
+          (click)="stopProcessing()"
+          [disabled]="!queuer.state().isRunning"
+          style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; background: #f44336; color: white; cursor: pointer"
+        >
+          Stop Processing
+        </button>
+        <button
+          (click)="clearQueue()"
+          [disabled]="queuer.state().isEmpty"
+          style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer"
+        >
+          Clear Queue
+        </button>
+        <button
+          (click)="resetQueue()"
+          style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; background: #ff9800; color: white; cursor: pointer"
+        >
+          Reset All
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <h3>Processed Items</h3>
+      <div style="margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 4px; min-height: 40px">
+        @if (processedItems.length === 0) {
+          <span style="color: #999">No items processed yet</span>
+        }
+        @for (let item of processedItems; let i = index) {
+          <div style="margin-bottom: 5px">
+            {{ i + 1 }}. {{ item }}
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <router-outlet />
+</div>
