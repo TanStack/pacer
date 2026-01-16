@@ -12,7 +12,7 @@ function useThrottledValue<TValue, TSelected>(
    selector?): [TValue, PreactThrottler<Dispatch<StateUpdater<TValue>>, TSelected>];
 ```
 
-Defined in: [preact-pacer/src/throttler/useThrottledValue.ts:86](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottledValue.ts#L86)
+Defined in: [preact-pacer/src/throttler/useThrottledValue.ts:86](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottledValue.ts#L86)
 
 A high-level Preact hook that creates a throttled version of a value that updates at most once within a specified time window.
 This hook uses Preact's useState internally to manage the throttled state.

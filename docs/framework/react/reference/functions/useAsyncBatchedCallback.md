@@ -9,7 +9,7 @@ title: useAsyncBatchedCallback
 function useAsyncBatchedCallback<TFn>(fn, options): (...args) => Promise<void>;
 ```
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatchedCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatchedCallback.ts#L43)
+Defined in: [react-pacer/src/async-batcher/useAsyncBatchedCallback.ts:43](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatchedCallback.ts#L43)
 
 A React hook that creates a batched version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncBatcher` hook,

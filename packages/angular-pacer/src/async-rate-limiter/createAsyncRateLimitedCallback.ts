@@ -45,5 +45,8 @@ export function createAsyncRateLimitedCallback<TFn extends AnyAsyncFunction>(
   options: AsyncRateLimiterOptions<TFn>,
 ): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const rateLimiter = createAsyncRateLimiter(fn, options)
-  return (...args: Parameters<TFn>) => rateLimiter.maybeExecute(...args)
+  return async (...args: Parameters<TFn>) => {
+    const result = await rateLimiter.maybeExecute(...args)
+    return result !== undefined ? await result : undefined
+  }
 }

@@ -43,5 +43,8 @@ export function createAsyncThrottledCallback<TFn extends AnyAsyncFunction>(
   options: AsyncThrottlerOptions<TFn>,
 ): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const throttler = createAsyncThrottler(fn, options)
-  return (...args: Parameters<TFn>) => throttler.maybeExecute(...args)
+  return async (...args: Parameters<TFn>) => {
+    const result = await throttler.maybeExecute(...args)
+    return result !== undefined ? await result : undefined
+  }
 }

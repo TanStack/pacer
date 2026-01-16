@@ -12,7 +12,7 @@ function useRateLimitedValue<TValue, TSelected>(
    selector?): [TValue, PreactRateLimiter<Dispatch<StateUpdater<TValue>>, TSelected>];
 ```
 
-Defined in: [preact-pacer/src/rate-limiter/useRateLimitedValue.ts:97](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimitedValue.ts#L97)
+Defined in: [preact-pacer/src/rate-limiter/useRateLimitedValue.ts:97](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimitedValue.ts#L97)
 
 A high-level Preact hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.
 This hook uses Preact's useState internally to manage the rate-limited state.

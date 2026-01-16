@@ -42,5 +42,9 @@ export function createAsyncDebouncedCallback<TFn extends AnyAsyncFunction>(
   options: AsyncDebouncerOptions<TFn>,
 ): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const debouncer = createAsyncDebouncer(fn, options)
-  return (...args: Parameters<TFn>) => debouncer.maybeExecute(...args)
+  return async (...args: Parameters<TFn>) => {
+    const result = await debouncer.maybeExecute(...args)
+    // Not sure if this is the best way to handle this, 
+    return result !== undefined ? await result : undefined
+  }
 }

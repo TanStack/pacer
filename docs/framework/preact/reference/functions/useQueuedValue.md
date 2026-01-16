@@ -12,7 +12,7 @@ function useQueuedValue<TValue, TSelected>(
    selector?): [TValue, PreactQueuer<TValue, TSelected>];
 ```
 
-Defined in: [preact-pacer/src/queuer/useQueuedValue.ts:103](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuedValue.ts#L103)
+Defined in: [preact-pacer/src/queuer/useQueuedValue.ts:103](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuedValue.ts#L103)
 
 A Preact hook that creates a queued value that processes state changes in order with an optional delay.
 This hook uses useQueuer internally to manage a queue of state changes and apply them sequentially.

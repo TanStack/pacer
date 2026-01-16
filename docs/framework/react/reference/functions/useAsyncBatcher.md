@@ -12,7 +12,7 @@ function useAsyncBatcher<TValue, TSelected>(
 selector): ReactAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:205](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L205)
+Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:205](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L205)
 
 A React hook that creates an `AsyncBatcher` instance for managing asynchronous batches of items.
 

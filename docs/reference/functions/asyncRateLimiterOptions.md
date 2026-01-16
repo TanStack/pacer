@@ -9,7 +9,7 @@ title: asyncRateLimiterOptions
 function asyncRateLimiterOptions<TFn, TOptions>(options): TOptions;
 ```
 
-Defined in: [async-rate-limiter.ts:148](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L148)
+Defined in: [async-rate-limiter.ts:148](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L148)
 
 Utility function for sharing common `AsyncRateLimiterOptions` options between different `AsyncRateLimiter` instances.
 
