@@ -1,6 +1,6 @@
 import { effect } from '@angular/core'
 import { createDebouncedSignal } from './createDebouncedSignal'
-import type { Signal } from '@angular/core';
+import type { Signal } from '@angular/core'
 import type { AngularDebouncer } from './createDebouncer'
 import type {
   DebouncerOptions,
@@ -76,11 +76,7 @@ export function createDebouncedValue<TValue, TSelected = {}>(
   initialOptions: DebouncerOptions<Setter<TValue>>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): [Signal<TValue>, AngularDebouncer<Setter<TValue>, TSelected>] {
-  const debounced = createDebouncedSignal(
-    value(),
-    initialOptions,
-    selector,
-  )
+  const debounced = createDebouncedSignal(value(), initialOptions, selector)
 
   effect(() => {
     debounced.setValue(value())

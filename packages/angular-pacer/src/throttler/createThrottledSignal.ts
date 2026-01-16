@@ -1,6 +1,6 @@
 import { signal } from '@angular/core'
 import { createThrottler } from './createThrottler'
-import type { Signal } from '@angular/core';
+import type { Signal } from '@angular/core'
 import type { AngularThrottler } from './createThrottler'
 import type {
   ThrottlerOptions,

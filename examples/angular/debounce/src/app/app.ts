@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { createDebouncedSignal } from '@tanstack/angular-pacer';
+import { Component } from '@angular/core'
+import { RouterOutlet } from '@angular/router'
+import { createDebouncedSignal } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ export class App {
     '',
     { wait: 500 },
     (state) => ({ isPending: state.isPending }),
-  );
-  protected readonly searchTerm = this.debounced.value;
-  protected readonly setSearchTerm = this.debounced.setValue;
+  )
+  protected readonly searchTerm = this.debounced.value
+  protected readonly setSearchTerm = this.debounced.setValue
 }

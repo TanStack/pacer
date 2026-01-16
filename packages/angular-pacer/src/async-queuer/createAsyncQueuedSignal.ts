@@ -1,16 +1,19 @@
 import { computed } from '@angular/core'
 import { createAsyncQueuer } from './createAsyncQueuer'
-import type { Signal } from '@angular/core';
+import type { Signal } from '@angular/core'
 import type { AngularAsyncQueuer } from './createAsyncQueuer'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
-export interface AsyncQueuedSignal<TValue, TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
-  AsyncQueuerState<TValue>,
-  'items'
->> {
+export interface AsyncQueuedSignal<
+  TValue,
+  TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
+    AsyncQueuerState<TValue>,
+    'items'
+  >,
+> {
   /**
    * A Signal that provides the current queue items as an array
    */

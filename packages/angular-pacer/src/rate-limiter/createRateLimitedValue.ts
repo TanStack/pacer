@@ -1,6 +1,6 @@
 import { effect } from '@angular/core'
 import { createRateLimitedSignal } from './createRateLimitedSignal'
-import type { Signal } from '@angular/core';
+import type { Signal } from '@angular/core'
 import type { AngularRateLimiter } from './createRateLimiter'
 import type {
   RateLimiterOptions,

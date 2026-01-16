@@ -9,14 +9,23 @@
     </p>
     <div style="margin-bottom: 15px">
       @for (item of ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']; track item) {
-        <button
-          (click)="addToBatch(item)"
-          style="margin-right: 10px; margin-bottom: 10px; padding: 8px 16px"
-        >
-          Add {{ item }}
-        </button>
+      <button
+        (click)="addToBatch(item)"
+        style="margin-right: 10px; margin-bottom: 10px; padding: 8px 16px"
+      >
+        Add {{ item }}
+      </button>
       }
-      <button (click)="flushBatch()" style="padding: 8px 16px; background: #ff6b6b; color: white; border: none; border-radius: 4px">
+      <button
+        (click)="flushBatch()"
+        style="
+          padding: 8px 16px;
+          background: #ff6b6b;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+      >
         Flush Batch
       </button>
     </div>
@@ -27,18 +36,14 @@
     </div>
     <div>
       <h3>Processed Batches:</h3>
-      
-      @if (processedBatches.length === 0) {
-        <div style="color: #999">No batches processed yet</div>
-      }
 
-      @for (batch of processedBatches; track batch.timestamp) {
-        <div
-          style="padding: 10px; margin-bottom: 10px; background: #f5f5f5; border-radius: 4px"
-        >
-          <strong>{{ batch.timestamp }}</strong> - Processed {{ batch.count }} items:
-          {{ batch.items.join(', ') }}
-        </div>
+      @if (processedBatches.length === 0) {
+      <div style="color: #999">No batches processed yet</div>
+      } @for (batch of processedBatches; track batch.timestamp) {
+      <div style="padding: 10px; margin-bottom: 10px; background: #f5f5f5; border-radius: 4px">
+        <strong>{{ batch.timestamp }}</strong> - Processed {{ batch.count }} items: {{
+        batch.items.join(', ') }}
+      </div>
       }
     </div>
   </section>

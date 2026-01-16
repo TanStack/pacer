@@ -1,7 +1,7 @@
 import { injectStore } from '@tanstack/angular-store'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useDefaultPacerOptions } from '../provider/pacer-context'
-import type { Signal } from '@angular/core';
+import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 

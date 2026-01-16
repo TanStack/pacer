@@ -44,7 +44,7 @@ export function createAsyncDebouncedCallback<TFn extends AnyAsyncFunction>(
   const debouncer = createAsyncDebouncer(fn, options)
   return async (...args: Parameters<TFn>) => {
     const result = await debouncer.maybeExecute(...args)
-    // Not sure if this is the best way to handle this, 
+    // Not sure if this is the best way to handle this,
     return result !== undefined ? await result : undefined
   }
 }

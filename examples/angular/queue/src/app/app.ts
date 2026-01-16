@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { createQueuer } from '@tanstack/angular-pacer';
+import { Component } from '@angular/core'
+import { RouterOutlet } from '@angular/router'
+import { createQueuer } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -9,24 +9,24 @@ import { createQueuer } from '@tanstack/angular-pacer';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly processedItems: Array<string> = [];
+  protected readonly processedItems: Array<string> = []
 
   // Queuer example - processes items one at a time with a 1 second delay
   protected readonly queuer = createQueuer<
     string,
     {
-      items: Array<string>;
-      size: number;
-      status: string;
-      executionCount: number;
-      isEmpty: boolean;
-      isFull: boolean;
-      isRunning: boolean;
+      items: Array<string>
+      size: number
+      status: string
+      executionCount: number
+      isEmpty: boolean
+      isFull: boolean
+      isRunning: boolean
     }
   >(
     (item) => {
-      console.log('Processing item:', item);
-      this.processedItems.push(item);
+      console.log('Processing item:', item)
+      this.processedItems.push(item)
     },
     {
       started: false,
@@ -42,35 +42,35 @@ export class App {
       isFull: state.isFull,
       isRunning: state.isRunning,
     }),
-  );
+  )
 
   protected addItem(item: string): void {
     if (!this.queuer.state().isFull) {
-      this.queuer.addItem(item);
+      this.queuer.addItem(item)
     }
   }
 
   protected processNext(): void {
-    const item = this.queuer.getNextItem();
+    const item = this.queuer.getNextItem()
     if (item !== undefined) {
-      console.log('Manually processed item:', item);
+      console.log('Manually processed item:', item)
     }
   }
 
   protected startProcessing(): void {
-    this.queuer.start();
+    this.queuer.start()
   }
 
   protected stopProcessing(): void {
-    this.queuer.stop();
+    this.queuer.stop()
   }
 
   protected clearQueue(): void {
-    this.queuer.clear();
+    this.queuer.clear()
   }
 
   protected resetQueue(): void {
-    this.queuer.reset();
-    this.processedItems.length = 0;
+    this.queuer.reset()
+    this.processedItems.length = 0
   }
 }
