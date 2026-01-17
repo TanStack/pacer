@@ -1,81 +1,58 @@
 import { Component, signal } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
-import { createRateLimiter } from '@tanstack/angular-pacer'
+import { createRateLimitedCallback } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
   templateUrl: './app.html',
-  styleUrl: './app.css',
 })
 export class App {
-  protected readonly windowType = signal<'fixed' | 'sliding'>('fixed')
-  protected readonly instantCount = signal(0)
-  protected readonly limitedCount = signal(0)
-  protected readonly executionHistory: Array<{
-    timestamp: string
-    count: number
-    rejected: boolean
-  }> = []
+  private run: (value: number) => boolean
 
-  // Rate limiter: allows 5 executions per 5 seconds
-  protected readonly rateLimiter = createRateLimiter<
-    (count: number) => void,
-    {
-      executionCount: number
-      rejectionCount: number
-      executionTimes: Array<number>
-    }
-  >(
-    (count: number) => {
-      console.log('Rate-limited execution:', count)
-      this.limitedCount.set(count)
-      this.executionHistory.push({
-        timestamp: new Date().toLocaleTimeString(),
-        count,
-        rejected: false,
-      })
-    },
-    {
-      limit: 5,
-      window: 5000, // 5 seconds
-      windowType: this.windowType(),
-      onReject: () => {
-        console.log('Rejected by rate limiter', this.rateLimiter.getMsUntilNextWindow())
-        this.executionHistory.push({
-          timestamp: new Date().toLocaleTimeString(),
-          count: this.instantCount(),
-          rejected: true,
-        })
+  readonly rawCount = signal(0)
+  readonly executedCount = signal(0)
+  readonly blockedCount = signal(0)
+  readonly lastExecutedValue = signal<number | null>(null)
+  readonly lastExecutedAt = signal<string | null>(null)
+
+  readonly limit = 3
+  readonly windowMs = 2000
+
+  constructor() {
+    this.run = this.createLimiter()
+  }
+
+  private createLimiter() {
+    return createRateLimitedCallback(
+      (value: number) => {
+        this.executedCount.update((current) => current + 1)
+        this.lastExecutedValue.set(value)
+        this.lastExecutedAt.set(new Date().toLocaleTimeString())
       },
-    },
-    (state) => ({
-      executionCount: state.executionCount,
-      rejectionCount: state.rejectionCount,
-      executionTimes: state.executionTimes,
-    }),
-  )
-
-  protected increment(): void {
-    // Update instant count immediately
-    this.instantCount.update((c) => {
-      const newCount = c + 1
-      // Try to execute with rate limiter
-      this.rateLimiter.maybeExecute(newCount)
-      return newCount
-    })
+      {
+        limit: this.limit,
+        window: this.windowMs,
+        windowType: 'sliding',
+      },
+    )
   }
 
-  protected reset(): void {
-    this.rateLimiter.reset()
-    this.instantCount.set(0)
-    this.limitedCount.set(0)
-    this.executionHistory.length = 0
+  trigger(): void {
+    const next = this.rawCount() + 1
+    this.rawCount.set(next)
+
+    const executed = this.run(next)
+    if (!executed) {
+      this.blockedCount.update((current) => current + 1)
+    }
   }
 
-  protected setWindowType(type: 'fixed' | 'sliding'): void {
-    this.windowType.set(type)
-    // Note: windowType change requires recreating the rate limiter in a real app
-    // For this example, we'll just update the signal
+  reset(): void {
+    this.rawCount.set(0)
+    this.executedCount.set(0)
+    this.blockedCount.set(0)
+    this.lastExecutedValue.set(null)
+    this.lastExecutedAt.set(null)
+    this.run = this.createLimiter()
   }
 }

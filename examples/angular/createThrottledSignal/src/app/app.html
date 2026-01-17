@@ -1,0 +1,20 @@
+<div>
+  <h1>TanStack Pacer - createThrottledSignal Example</h1>
+
+  <p>
+    Clicks are counted immediately, but the visible count is throttled to update at most once every
+    500ms. This shows how <code>createThrottledSignal</code> can limit how often state updates.
+  </p>
+
+  <div>
+    <p>Raw clicks: {{ rawCount }}</p>
+    <p>Throttled count: {{ count }}</p>
+    <p>Executions: {{ executionCount }}</p>
+    <p>Is pending: {{ isPending }}</p>
+  </div>
+
+  <div>
+    <button (click)="onClick()">Click</button>
+    <button (click)="reset()">Reset</button>
+  </div>
+</div>
