@@ -1,81 +1,61 @@
 import { Component, signal } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { createRateLimiter } from '@tanstack/angular-pacer'
+import { createBatcher } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css',
 })
 export class App {
-  protected readonly windowType = signal<'fixed' | 'sliding'>('fixed')
-  protected readonly instantCount = signal(0)
-  protected readonly limitedCount = signal(0)
-  protected readonly executionHistory: Array<{
-    timestamp: string
-    count: number
-    rejected: boolean
-  }> = []
+  protected readonly input = signal('')
+  protected readonly queuedCount = signal(0)
+  protected readonly processedCount = signal(0)
+  protected readonly lastBatch = signal<Array<string>>([])
 
-  // Rate limiter: allows 5 executions per 5 seconds
-  protected readonly rateLimiter = createRateLimiter<
-    (count: number) => void,
+  protected readonly batcher = createBatcher<
+    string,
     {
+      items: Array<string>
+      isPending: boolean
       executionCount: number
-      rejectionCount: number
-      executionTimes: Array<number>
+      status: string
     }
   >(
-    (count: number) => {
-      console.log('Rate-limited execution:', count)
-      this.limitedCount.set(count)
-      this.executionHistory.push({
-        timestamp: new Date().toLocaleTimeString(),
-        count,
-        rejected: false,
-      })
+    (items) => {
+      this.lastBatch.set(items)
+      this.processedCount.update((c) => c + items.length)
     },
-    {
-      limit: 5,
-      window: 5000, // 5 seconds
-      windowType: this.windowType(),
-      onReject: () => {
-        console.log('Rejected by rate limiter', this.rateLimiter.getMsUntilNextWindow())
-        this.executionHistory.push({
-          timestamp: new Date().toLocaleTimeString(),
-          count: this.instantCount(),
-          rejected: true,
-        })
-      },
-    },
+    { maxSize: 5, wait: 1000 },
     (state) => ({
+      items: state.items,
+      isPending: state.isPending,
       executionCount: state.executionCount,
-      rejectionCount: state.rejectionCount,
-      executionTimes: state.executionTimes,
+      status: state.status,
     }),
   )
 
-  protected increment(): void {
-    // Update instant count immediately
-    this.instantCount.update((c) => {
-      const newCount = c + 1
-      // Try to execute with rate limiter
-      this.rateLimiter.maybeExecute(newCount)
-      return newCount
-    })
+  protected onInput(value: string): void {
+    this.input.set(value)
+  }
+
+  protected add(): void {
+    const value = this.input().trim()
+    if (!value) return
+    this.batcher.addItem(value)
+    this.queuedCount.update((c) => c + 1)
+    this.input.set('')
+  }
+
+  protected flush(): void {
+    this.batcher.flush()
   }
 
   protected reset(): void {
-    this.rateLimiter.reset()
-    this.instantCount.set(0)
-    this.limitedCount.set(0)
-    this.executionHistory.length = 0
-  }
-
-  protected setWindowType(type: 'fixed' | 'sliding'): void {
-    this.windowType.set(type)
-    // Note: windowType change requires recreating the rate limiter in a real app
-    // For this example, we'll just update the signal
+    this.input.set('')
+    this.queuedCount.set(0)
+    this.processedCount.set(0)
+    this.lastBatch.set([])
+    this.batcher.reset()
   }
 }

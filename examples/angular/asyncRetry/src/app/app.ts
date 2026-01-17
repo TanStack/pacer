@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { createRateLimiter } from '@tanstack/angular-pacer'
+import { asyncRetry } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -9,73 +9,78 @@ import { createRateLimiter } from '@tanstack/angular-pacer'
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly windowType = signal<'fixed' | 'sliding'>('fixed')
-  protected readonly instantCount = signal(0)
-  protected readonly limitedCount = signal(0)
-  protected readonly executionHistory: Array<{
-    timestamp: string
-    count: number
-    rejected: boolean
-  }> = []
+  protected readonly failTimes = signal(2)
+  protected readonly runId = signal(0)
 
-  // Rate limiter: allows 5 executions per 5 seconds
-  protected readonly rateLimiter = createRateLimiter<
-    (count: number) => void,
-    {
-      executionCount: number
-      rejectionCount: number
-      executionTimes: Array<number>
+  protected readonly status = signal<'idle' | 'running' | 'success' | 'error'>('idle')
+  protected readonly attempt = signal(0)
+  protected readonly result = signal<string | null>(null)
+  protected readonly error = signal<string | null>(null)
+
+  protected readonly log = signal<Array<{ time: string; message: string }>>([])
+
+  private logLine(message: string) {
+    this.log.update((l) => [{ time: new Date().toLocaleTimeString(), message }, ...l].slice(0, 50))
+  }
+
+  protected setFailTimes(value: number) {
+    this.failTimes.set(value)
+  }
+
+  protected bumpRunId() {
+    this.runId.update((v) => v + 1)
+  }
+
+  protected reset() {
+    this.status.set('idle')
+    this.attempt.set(0)
+    this.result.set(null)
+    this.error.set(null)
+    this.log.set([])
+  }
+
+  @asyncRetry((ctx) => ({
+    key: `asyncRetry-example-${ctx.args[0]}`,
+    enabled: true,
+    maxAttempts: 5,
+    baseWait: 250,
+    backoff: 'exponential',
+    jitter: true,
+    throwOnError: false,
+  }))
+  protected async run(runId: number): Promise<string | undefined> {
+    this.status.set('running')
+    this.result.set(null)
+    this.error.set(null)
+
+    const attempt = this.attempt() + 1
+    this.attempt.set(attempt)
+    this.logLine(`attempt ${attempt} (runId=${runId})`)
+
+    await new Promise((r) => setTimeout(r, 250))
+
+    if (attempt <= this.failTimes()) {
+      const msg = `simulated failure on attempt ${attempt}`
+      this.error.set(msg)
+      this.logLine(msg)
+      throw new Error(msg)
     }
-  >(
-    (count: number) => {
-      console.log('Rate-limited execution:', count)
-      this.limitedCount.set(count)
-      this.executionHistory.push({
-        timestamp: new Date().toLocaleTimeString(),
-        count,
-        rejected: false,
-      })
-    },
-    {
-      limit: 5,
-      window: 5000, // 5 seconds
-      windowType: this.windowType(),
-      onReject: () => {
-        console.log('Rejected by rate limiter', this.rateLimiter.getMsUntilNextWindow())
-        this.executionHistory.push({
-          timestamp: new Date().toLocaleTimeString(),
-          count: this.instantCount(),
-          rejected: true,
-        })
-      },
-    },
-    (state) => ({
-      executionCount: state.executionCount,
-      rejectionCount: state.rejectionCount,
-      executionTimes: state.executionTimes,
-    }),
-  )
 
-  protected increment(): void {
-    // Update instant count immediately
-    this.instantCount.update((c) => {
-      const newCount = c + 1
-      // Try to execute with rate limiter
-      this.rateLimiter.maybeExecute(newCount)
-      return newCount
-    })
+    const value = `success on attempt ${attempt}`
+    this.result.set(value)
+    this.status.set('success')
+    this.logLine(value)
+    return value
   }
 
-  protected reset(): void {
-    this.rateLimiter.reset()
-    this.instantCount.set(0)
-    this.limitedCount.set(0)
-    this.executionHistory.length = 0
-  }
-
-  protected setWindowType(type: 'fixed' | 'sliding'): void {
-    this.windowType.set(type)
-    // Note: windowType change requires recreating the rate limiter in a real app
-    // For this example, we'll just update the signal
+  protected async start() {
+    this.reset()
+    this.bumpRunId()
+    const id = this.runId()
+    const value = await this.run(id)
+    if (value === undefined) {
+      this.status.set('error')
+      this.logLine('gave up (maxAttempts reached)')
+    }
   }
 }

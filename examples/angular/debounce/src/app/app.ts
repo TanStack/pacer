@@ -6,7 +6,6 @@ import { createDebouncedSignal } from '@tanstack/angular-pacer'
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css',
 })
 export class App {
   // Debouncer example

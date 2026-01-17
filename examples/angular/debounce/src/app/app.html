@@ -1,7 +1,7 @@
-<div style="padding: 20px; max-width: 800px; margin: 0 auto">
+<div>
   <h1>TanStack Pacer - Angular Examples</h1>
 
-  <section style="margin-bottom: 40px; padding: 20px; border: 1px solid #ddd; border-radius: 8px">
+  <section>
     <h2>Debouncer Example</h2>
     <p>Type in the input below. The value will update 500ms after you stop typing.</p>
     <input
@@ -9,7 +9,6 @@
       [value]="searchTerm()"
       (input)="setSearchTerm($any($event.target).value)"
       placeholder="Type to search..."
-      style="width: 100%; padding: 8px; margin-bottom: 10px"
     />
     <p><strong>Debounced value:</strong> {{ searchTerm() }}</p>
     <p><strong>Is pending:</strong> {{ debounced.debouncer.state().isPending }}</p>
