@@ -1,0 +1,42 @@
+<h1>injectAsyncQueuedSignal</h1>
+
+<p>
+  This helper wires an async queue to Angular signals. <code>queue.items()</code> is reactive and
+  shows the current items waiting to be processed.
+</p>
+
+<div>
+  <label>
+    Value
+    <input [value]="value()" (input)="value.set(($any($event.target).value ?? '').toString())" />
+  </label>
+  <button (click)="enqueue()">Enqueue</button>
+  <button (click)="enqueueMany(10)">Enqueue 10</button>
+  <button (click)="start()">Start</button>
+  <button (click)="stop()">Stop</button>
+  <button (click)="reset()">Reset</button>
+</div>
+
+<h2>Queued Items</h2>
+
+@if (queue.items().length === 0) {
+  <p>Queue is empty.</p>
+} @else {
+  <ul>
+    @for (let item of queue.items(); track $index) {
+      <li>{{ item }}</li>
+    }
+  </ul>
+}
+
+<h2>Processed</h2>
+
+@if (processed.length === 0) {
+  <p>Nothing processed yet.</p>
+} @else {
+  <ul>
+    @for (let entry of processed; track $index) {
+      <li>{{ entry.timestamp }} - {{ entry.item }}</li>
+    }
+  </ul>
+}

@@ -1,81 +1,80 @@
-import { Component, signal } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
-import { injectRateLimiter } from '@tanstack/angular-pacer'
+import { Component, signal } from '@angular/core';
+import { injectAsyncRateLimiter } from '@tanstack/angular-pacer';
+
+type HistoryEntry = {
+  timestamp: string;
+  value: string;
+  executed: boolean;
+  result?: string;
+};
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly windowType = signal<'fixed' | 'sliding'>('fixed')
-  protected readonly instantCount = signal(0)
-  protected readonly limitedCount = signal(0)
-  protected readonly executionHistory: Array<{
-    timestamp: string
-    count: number
-    rejected: boolean
-  }> = []
+  protected readonly value = signal('');
+  protected readonly lastOutcome = signal<'idle' | 'executed' | 'rejected'>('idle');
+  protected readonly lastResult = signal<string | null>(null);
 
-  // Rate limiter: allows 5 executions per 5 seconds
-  protected readonly rateLimiter = injectRateLimiter<
-    (count: number) => void,
-    {
-      executionCount: number
-      rejectionCount: number
-      executionTimes: Array<number>
-    }
-  >(
-    (count: number) => {
-      console.log('Rate-limited execution:', count)
-      this.limitedCount.set(count)
-      this.executionHistory.push({
-        timestamp: new Date().toLocaleTimeString(),
-        count,
-        rejected: false,
-      })
+  protected readonly history: Array<HistoryEntry> = [];
+
+  private nextId = 1;
+
+  protected readonly rateLimiter = injectAsyncRateLimiter(
+    async (value: string) => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 400));
+      return `saved:${value}`;
     },
     {
-      limit: 5,
-      window: 5000, // 5 seconds
-      windowType: this.windowType(),
-      onReject: () => {
-        console.log('Rejected by rate limiter', this.rateLimiter.getMsUntilNextWindow())
-        this.executionHistory.push({
-          timestamp: new Date().toLocaleTimeString(),
-          count: this.instantCount(),
-          rejected: true,
-        })
-      },
+      limit: 3,
+      window: 2000,
+      windowType: 'fixed',
     },
     (state) => ({
-      executionCount: state.executionCount,
+      status: state.status,
+      isExecuting: state.isExecuting,
+      successCount: state.successCount,
       rejectionCount: state.rejectionCount,
-      executionTimes: state.executionTimes,
+      maybeExecuteCount: state.maybeExecuteCount,
     }),
-  )
+  );
 
-  protected increment(): void {
-    // Update instant count immediately
-    this.instantCount.update((c) => {
-      const newCount = c + 1
-      // Try to execute with rate limiter
-      this.rateLimiter.maybeExecute(newCount)
-      return newCount
-    })
+  protected runOnce(): void {
+    const v = this.value().trim() || `value-${this.nextId++}`;
+    this.value.set(v);
+    void this.attempt(v);
+  }
+
+  protected runBurst(count: number): void {
+    for (let i = 0; i < count; i++) {
+      void this.attempt(`value-${this.nextId++}`);
+    }
   }
 
   protected reset(): void {
-    this.rateLimiter.reset()
-    this.instantCount.set(0)
-    this.limitedCount.set(0)
-    this.executionHistory.length = 0
+    this.value.set('');
+    this.lastOutcome.set('idle');
+    this.lastResult.set(null);
+    this.history.length = 0;
+    this.nextId = 1;
+    this.rateLimiter.reset();
   }
 
-  protected setWindowType(type: 'fixed' | 'sliding'): void {
-    this.windowType.set(type)
-    // Note: windowType change requires recreating the rate limiter in a real app
-    // For this example, we'll just update the signal
+  private async attempt(value: string): Promise<void> {
+    const timestamp = new Date().toLocaleTimeString();
+
+    const result = await this.rateLimiter.maybeExecute(value);
+
+    if (result === undefined) {
+      this.lastOutcome.set('rejected');
+      this.history.unshift({ timestamp, value, executed: false });
+      return;
+    }
+
+    this.lastOutcome.set('executed');
+    this.lastResult.set(result);
+    this.history.unshift({ timestamp, value, executed: true, result });
   }
 }

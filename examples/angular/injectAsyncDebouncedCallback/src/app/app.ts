@@ -1,81 +1,76 @@
-import { Component, signal } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
-import { injectRateLimiter } from '@tanstack/angular-pacer'
+import { Component, signal } from '@angular/core';
+import { injectAsyncDebouncedCallback } from '@tanstack/angular-pacer';
+
+type HistoryEntry = {
+  timestamp: string;
+  value: string;
+  executed: boolean;
+  result?: string;
+};
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly windowType = signal<'fixed' | 'sliding'>('fixed')
-  protected readonly instantCount = signal(0)
-  protected readonly limitedCount = signal(0)
-  protected readonly executionHistory: Array<{
-    timestamp: string
-    count: number
-    rejected: boolean
-  }> = []
+  protected readonly query = signal('');
+  protected readonly isExecuting = signal(false);
+  protected readonly lastOutcome = signal<'idle' | 'executed' | 'debounced'>('idle');
+  protected readonly lastResult = signal<string | null>(null);
 
-  // Rate limiter: allows 5 executions per 5 seconds
-  protected readonly rateLimiter = injectRateLimiter<
-    (count: number) => void,
+  protected readonly history: Array<HistoryEntry> = [];
+
+  protected readonly search = injectAsyncDebouncedCallback(
+    async (query: string) => {
+      this.isExecuting.set(true);
+      try {
+        await new Promise<void>((resolve) => setTimeout(resolve, 300));
+        const result = `results-for:${query}`;
+        this.lastResult.set(result);
+        return result;
+      } finally {
+        this.isExecuting.set(false);
+      }
+    },
     {
-      executionCount: number
-      rejectionCount: number
-      executionTimes: Array<number>
+      wait: 600,
+    },
+  );
+
+  protected onQueryInput(value: string): void {
+    this.query.set(value);
+    void this.attempt(value);
+  }
+
+  protected runBurst(): void {
+    const parts = ['t', 'ta', 'tan', 'tans', 'tanst', 'tansta', 'tanstack'];
+    for (const q of parts) {
+      this.query.set(q);
+      void this.attempt(q);
     }
-  >(
-    (count: number) => {
-      console.log('Rate-limited execution:', count)
-      this.limitedCount.set(count)
-      this.executionHistory.push({
-        timestamp: new Date().toLocaleTimeString(),
-        count,
-        rejected: false,
-      })
-    },
-    {
-      limit: 5,
-      window: 5000, // 5 seconds
-      windowType: this.windowType(),
-      onReject: () => {
-        console.log('Rejected by rate limiter', this.rateLimiter.getMsUntilNextWindow())
-        this.executionHistory.push({
-          timestamp: new Date().toLocaleTimeString(),
-          count: this.instantCount(),
-          rejected: true,
-        })
-      },
-    },
-    (state) => ({
-      executionCount: state.executionCount,
-      rejectionCount: state.rejectionCount,
-      executionTimes: state.executionTimes,
-    }),
-  )
-
-  protected increment(): void {
-    // Update instant count immediately
-    this.instantCount.update((c) => {
-      const newCount = c + 1
-      // Try to execute with rate limiter
-      this.rateLimiter.maybeExecute(newCount)
-      return newCount
-    })
   }
 
   protected reset(): void {
-    this.rateLimiter.reset()
-    this.instantCount.set(0)
-    this.limitedCount.set(0)
-    this.executionHistory.length = 0
+    this.query.set('');
+    this.isExecuting.set(false);
+    this.lastOutcome.set('idle');
+    this.lastResult.set(null);
+    this.history.length = 0;
   }
 
-  protected setWindowType(type: 'fixed' | 'sliding'): void {
-    this.windowType.set(type)
-    // Note: windowType change requires recreating the rate limiter in a real app
-    // For this example, we'll just update the signal
+  private async attempt(query: string): Promise<void> {
+    const timestamp = new Date().toLocaleTimeString();
+
+    const result = await this.search(query);
+
+    if (result === undefined) {
+      this.lastOutcome.set('debounced');
+      this.history.unshift({ timestamp, value: query, executed: false });
+      return;
+    }
+
+    this.lastOutcome.set('executed');
+    this.history.unshift({ timestamp, value: query, executed: true, result });
   }
 }
