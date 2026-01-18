@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core'
-import { createAsyncRateLimiter } from '@tanstack/angular-pacer'
+import { injectAsyncRateLimiter } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { createAsyncRateLimiter } from '@tanstack/angular-pacer'
 })
 export class App {
   protected readonly logs = signal<Array<string>>([])
-  protected readonly rateLimiter = createAsyncRateLimiter(
+  protected readonly rateLimiter = injectAsyncRateLimiter(
     async (value: number) => {
       await new Promise((resolve) => setTimeout(resolve, 500))
       return `processed ${value}`

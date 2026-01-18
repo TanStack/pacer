@@ -1,0 +1,13 @@
+<h1>injectDebouncedValue</h1>
+
+<label>
+  Query
+  <input [value]="query()" (input)="onInput($event.target.value)" />
+</label>
+
+<button (click)="clear()">Clear</button>
+<button (click)="debouncer.cancel()">Cancel pending</button>
+
+<p>Instant: {{ query() }}</p>
+<p>Debounced: {{ debouncedQuery() }}</p>
+<p>Pending: {{ debouncer.state().isPending }}</p>

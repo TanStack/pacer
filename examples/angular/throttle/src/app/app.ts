@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core'
 
-import { createThrottler } from '@tanstack/angular-pacer'
+import { injectThrottler } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ export class App {
   protected readonly throttledCount = signal(0)
 
   // Throttler: executes at most once per second
-  protected readonly throttler = createThrottler(
+  protected readonly throttler = injectThrottler(
     () => {
       console.log('Throttled execution')
       this.throttledCount.set(this.instantCount())

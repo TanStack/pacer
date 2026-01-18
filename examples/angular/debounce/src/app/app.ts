@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { createDebouncedSignal } from '@tanstack/angular-pacer'
+import { injectDebouncedSignal } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import { createDebouncedSignal } from '@tanstack/angular-pacer'
 })
 export class App {
   // Debouncer example
-  protected readonly debounced = createDebouncedSignal<string, { isPending: boolean }>(
+  protected readonly debounced = injectDebouncedSignal<string, { isPending: boolean }>(
     '',
     { wait: 500 },
     (state) => ({ isPending: state.isPending }),

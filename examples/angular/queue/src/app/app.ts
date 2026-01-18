@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { createQueuer } from '@tanstack/angular-pacer'
+import { injectQueuer } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ export class App {
   protected readonly processedItems: Array<string> = []
 
   // Queuer example - processes items one at a time with a 1 second delay
-  protected readonly queuer = createQueuer<
+  protected readonly queuer = injectQueuer<
     string,
     {
       items: Array<string>

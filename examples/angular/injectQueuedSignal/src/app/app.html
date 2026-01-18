@@ -1,0 +1,23 @@
+<h1>injectQueuedSignal</h1>
+
+<p>Next: {{ next() }}</p>
+<p>Last processed: {{ lastProcessed() }}</p>
+
+<button (click)="enqueue()">Enqueue</button>
+<button (click)="enqueueFive()">Enqueue x5</button>
+<button (click)="queue.clear()">Clear queue</button>
+<button (click)="clearProcessed()">Clear processed</button>
+
+<p>Queued items: {{ items().length }}</p>
+<ul>
+  @for (item of items(); track $index) {
+    <li>{{ item }}</li>
+  }
+</ul>
+
+<p>Processed: {{ processed().length }}</p>
+<ul>
+  @for (item of processed(); track $index) {
+    <li>{{ item }}</li>
+  }
+</ul>

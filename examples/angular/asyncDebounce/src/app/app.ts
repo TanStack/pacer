@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core'
-import { createAsyncDebouncer } from '@tanstack/angular-pacer'
+import { injectAsyncDebouncer } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import { createAsyncDebouncer } from '@tanstack/angular-pacer'
 export class App {
   protected readonly query = signal('')
   protected readonly logs = signal<Array<string>>([])
-  protected readonly debouncer = createAsyncDebouncer(
+  protected readonly debouncer = injectAsyncDebouncer(
     async (q: string) => {
       await new Promise((resolve) => setTimeout(resolve, 1000))
       return `searched: ${q}`

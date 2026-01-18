@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core'
-import { createAsyncThrottler } from '@tanstack/angular-pacer'
+import { injectAsyncThrottler } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { createAsyncThrottler } from '@tanstack/angular-pacer'
 })
 export class App {
   protected readonly logs = signal<string[]>([])
-  protected readonly throttler = createAsyncThrottler(
+  protected readonly throttler = injectAsyncThrottler(
     async (value: number) => {
       await new Promise((resolve) => setTimeout(resolve, 1000))
       return `processed ${value}`

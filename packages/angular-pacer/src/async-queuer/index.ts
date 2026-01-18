@@ -1,4 +1,4 @@
 export * from '@tanstack/pacer/async-queuer'
 
-export * from './createAsyncQueuedSignal'
-export * from './createAsyncQueuer'
+export * from './injectAsyncQueuedSignal'
+export * from './injectAsyncQueuer'

@@ -1,4 +1,4 @@
 export * from '@tanstack/pacer/async-debouncer'
 
-export * from './createAsyncDebouncedCallback'
-export * from './createAsyncDebouncer'
+export * from './injectAsyncDebouncedCallback'
+export * from './injectAsyncDebouncer'

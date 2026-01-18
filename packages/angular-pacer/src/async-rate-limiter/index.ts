@@ -1,4 +1,4 @@
 export * from '@tanstack/pacer/async-rate-limiter'
 
-export * from './createAsyncRateLimitedCallback'
-export * from './createAsyncRateLimiter'
+export * from './injectAsyncRateLimitedCallback'
+export * from './injectAsyncRateLimiter'

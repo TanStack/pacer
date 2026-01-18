@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { createBatcher } from '@tanstack/angular-pacer'
+import { injectBatcher } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { createBatcher } from '@tanstack/angular-pacer'
 })
 export class App {
   // Batcher example
-  protected readonly batcher = createBatcher<
+  protected readonly batcher = injectBatcher<
     string,
     { items: Array<string>; size: number; isPending: boolean }
   >(

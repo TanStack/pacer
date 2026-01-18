@@ -1012,7 +1012,7 @@ importers:
         specifier: ^4.0.8
         version: 4.0.16(@types/node@25.0.3)(happy-dom@20.0.11)(jiti@2.6.1)(jsdom@27.4.0)(sass@1.93.2)(yaml@2.8.2)
 
-  examples/angular/createDebouncedState:
+  examples/angular/createDebouncedSignal:
     dependencies:
       '@angular/common':
         specifier: ^21.0.0
@@ -1159,7 +1159,7 @@ importers:
         specifier: ^4.0.8
         version: 4.0.16(@types/node@25.0.3)(happy-dom@20.0.11)(jiti@2.6.1)(jsdom@27.4.0)(sass@1.93.2)(yaml@2.8.2)
 
-  examples/angular/createQueuedState:
+  examples/angular/createQueuedSignal:
     dependencies:
       '@angular/common':
         specifier: ^21.0.0
@@ -1404,7 +1404,7 @@ importers:
         specifier: ^4.0.8
         version: 4.0.16(@types/node@25.0.3)(happy-dom@20.0.11)(jiti@2.6.1)(jsdom@27.4.0)(sass@1.93.2)(yaml@2.8.2)
 
-  examples/angular/createRateLimitedState:
+  examples/angular/createRateLimitedSignal:
     dependencies:
       '@angular/common':
         specifier: ^21.0.0
@@ -1649,7 +1649,7 @@ importers:
         specifier: ^4.0.8
         version: 4.0.16(@types/node@25.0.3)(happy-dom@20.0.11)(jiti@2.6.1)(jsdom@27.4.0)(sass@1.93.2)(yaml@2.8.2)
 
-  examples/angular/createThrottledState:
+  examples/angular/createThrottledSignal:
     dependencies:
       '@angular/common':
         specifier: ^21.0.0

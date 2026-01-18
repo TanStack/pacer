@@ -1,4 +1,4 @@
 export * from '@tanstack/pacer/async-batcher'
 
-export * from './createAsyncBatchedCallback'
-export * from './createAsyncBatcher'
+export * from './injectAsyncBatchedCallback'
+export * from './injectAsyncBatcher'

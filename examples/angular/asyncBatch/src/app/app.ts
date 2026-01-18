@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { createAsyncBatcher } from '@tanstack/angular-pacer'
+import { injectAsyncBatcher } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ export class App {
 
   protected readonly logs = signal<Array<string>>([])
 
-  protected readonly batcher = createAsyncBatcher<
+  protected readonly batcher = injectAsyncBatcher<
     number,
     {
       items: Array<number>

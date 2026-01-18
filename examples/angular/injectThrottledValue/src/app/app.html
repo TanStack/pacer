@@ -1,0 +1,26 @@
+<div>
+  <h1>injectThrottledValue — Angular</h1>
+
+  <label for="msg">Type rapidly to see throttled output</label>
+  <input
+    id="msg"
+    type="text"
+    placeholder="Type here..."
+    [value]="instantInput()"
+    (input)="onInput($event)"
+  />
+
+  <div>
+    <div>Instant: {{ instantInput() }}</div>
+    <div>Throttled: {{ throttledInput() }}</div>
+    <div>Pending: {{ throttler.state().isPending ? 'Yes' : 'No' }}</div>
+  </div>
+
+  <div>
+    <button (click)="hammerInput()">Hammer input</button>
+    <button (click)="clear()">Clear</button>
+    <button (click)="cancelPending()" [disabled]="!throttler.state().isPending">
+      Cancel pending
+    </button>
+  </div>
+</div>
