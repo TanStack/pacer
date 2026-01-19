@@ -70,7 +70,7 @@
         <div style="padding: 15px; background: #e8f5e9; border-radius: 4px">
           <strong>Rate Limited Count:</strong>
           <div style="font-size: 24px; font-weight: bold; margin-top: 5px">
-            {{ limitedCount() }}
+            {{ rateLimitedCount() }}
           </div>
           <div style="font-size: 12px; color: #666; margin-top: 5px">
             Only updates when rate limit allows
@@ -131,7 +131,7 @@
       >
         @if (executionHistory.length === 0) {
         <span style="color: #999">No executions yet. Click "Increment" to start.</span>
-        } @for (let entry of executionHistory; track $index) {
+        } @for (entry of executionHistory; track $index) {
         <div
           style="
             margin-bottom: 8px;

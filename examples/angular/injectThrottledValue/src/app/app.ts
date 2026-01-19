@@ -10,11 +10,14 @@ export class App {
   protected readonly instantInput = signal('')
 
   // Throttled value (500ms) + throttler state
-  private readonly _throttle = injectThrottledValue(this.instantInput, { wait: 500 }, (state) => ({
-    isPending: state.isPending,
-  }))
-  protected readonly throttledInput = this._throttle[0]
-  protected readonly throttler = this._throttle[1]
+  protected readonly throttled = injectThrottledValue(
+    this.instantInput,
+    { wait: 500 },
+    (state) => ({
+      isPending: state.isPending,
+    }),
+  )
+  protected readonly throttler = this.throttled.throttler
 
   protected onInput(e: Event): void {
     const v = (e.target as HTMLInputElement).value

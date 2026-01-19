@@ -1,7 +1,7 @@
-import { effect } from '@angular/core'
+import { effect, linkedSignal } from '@angular/core'
 import { injectThrottledSignal } from './injectThrottledSignal'
+import type { ThrottledSignal } from './injectThrottledSignal'
 import type { Signal } from '@angular/core'
-import type { AngularThrottler } from './injectThrottler'
 import type {
   ThrottlerOptions,
   ThrottlerState,
@@ -76,16 +76,17 @@ export function injectThrottledValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialOptions: ThrottlerOptions<Setter<TValue>>,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
-): [Signal<TValue>, AngularThrottler<Setter<TValue>, TSelected>] {
-  const [throttledValue, setThrottledValue, throttler] = injectThrottledSignal(
-    value(),
+): ThrottledSignal<TValue, TSelected> {
+  const linkedValue = linkedSignal(() => value())
+  const throttledValue = injectThrottledSignal(
+    linkedValue(),
     initialOptions,
     selector,
   )
 
   effect(() => {
-    setThrottledValue(value())
+    throttledValue.set(linkedValue())
   })
 
-  return [throttledValue, throttler]
+  return throttledValue
 }

@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { injectRateLimiter } from '@tanstack/angular-pacer'
+import { injectRateLimitedValue } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
@@ -10,38 +10,35 @@ import { injectRateLimiter } from '@tanstack/angular-pacer'
 })
 export class App {
   protected readonly windowType = signal<'fixed' | 'sliding'>('fixed')
+
+  // This is the "source" value that changes immediately on every click
   protected readonly instantCount = signal(0)
+
+  // We'll display the rate-limited version of `instantCount` in the UI
   protected readonly limitedCount = signal(0)
+
   protected readonly executionHistory: Array<{
     timestamp: string
     count: number
     rejected: boolean
   }> = []
 
-  // Rate limiter: allows 5 executions per 5 seconds
-  protected readonly rateLimiter = injectRateLimiter<
-    (count: number) => void,
+  // Rate-limited value: allows 5 updates per 5 seconds
+  protected readonly rateLimited = injectRateLimitedValue<
+    number,
     {
       executionCount: number
       rejectionCount: number
       executionTimes: Array<number>
     }
   >(
-    (count: number) => {
-      console.log('Rate-limited execution:', count)
-      this.limitedCount.set(count)
-      this.executionHistory.push({
-        timestamp: new Date().toLocaleTimeString(),
-        count,
-        rejected: false,
-      })
-    },
+    this.instantCount,
     {
       limit: 5,
       window: 5000, // 5 seconds
       windowType: this.windowType(),
       onReject: () => {
-        console.log('Rejected by rate limiter', this.rateLimiter.getMsUntilNextWindow())
+        // The value update was rejected; log the attempted value
         this.executionHistory.push({
           timestamp: new Date().toLocaleTimeString(),
           count: this.instantCount(),
@@ -56,13 +53,21 @@ export class App {
     }),
   )
 
+  // Convenience accessors for the template (matches the old names)
+  protected readonly rateLimiter = this.rateLimited.rateLimiter
+  protected readonly rateLimitedCount = this.rateLimited
+
   protected increment(): void {
-    // Update instant count immediately
-    this.instantCount.update((c) => {
-      const newCount = c + 1
-      // Try to execute with rate limiter
-      this.rateLimiter.maybeExecute(newCount)
-      return newCount
+    // Update instant count immediately; rateLimited value tracks it automatically
+    this.instantCount.update((c) => c + 1)
+
+    // If the update was accepted, reflect the latest rate-limited value + log it
+    // (Rejected updates are logged via `onReject`)
+    this.limitedCount.set(this.rateLimitedCount())
+    this.executionHistory.push({
+      timestamp: new Date().toLocaleTimeString(),
+      count: this.rateLimitedCount(),
+      rejected: false,
     })
   }
 
@@ -75,7 +80,7 @@ export class App {
 
   protected setWindowType(type: 'fixed' | 'sliding'): void {
     this.windowType.set(type)
-    // Note: windowType change requires recreating the rate limiter in a real app
-    // For this example, we'll just update the signal
+    // Note: windowType change requires recreating the rate limiter in a real app.
+    // For this example, we just update the signal.
   }
 }

@@ -9,12 +9,12 @@ import { injectDebouncedValue } from '@tanstack/angular-pacer';
 export class App {
   protected readonly query = signal('');
 
-  private readonly setup = injectDebouncedValue(this.query, { wait: 500 }, (state) => ({
+  private readonly debounced = injectDebouncedValue(this.query, { wait: 500 }, (state) => ({
     isPending: state.isPending,
   }));
 
-  protected readonly debouncedQuery = this.setup[0];
-  protected readonly debouncer = this.setup[1];
+  protected readonly debouncedQuery = this.debounced;
+  protected readonly debouncer = this.debounced.debouncer
 
   protected onInput(value: string): void {
     this.query.set(value);

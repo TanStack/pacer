@@ -1,11 +1,10 @@
-<h1>injectDebouncedSignal</h1>
+<h1>injectQueuedValue</h1>
 
 <input [value]="source()" (input)="onInput($any($event.target).value)" placeholder="Type here" />
 
 <p>Source (instant): {{ source() }}</p>
-<p>Value (debounced): {{ debounced.value() }}</p>
-<p>Pending: {{ debounced.debouncer.state().isPending }}</p>
-<p>Executions: {{ debounced.debouncer.state().executionCount }}</p>
+<p>Value (queued): {{ queued() }}</p>
+<p>Queue length: {{ queued().length }}</p>
 
-<button (click)="setRandom()">Set random</button>
+<button (click)="enqueueRandom()">Enqueue random</button>
 <button (click)="clear()">Clear</button>

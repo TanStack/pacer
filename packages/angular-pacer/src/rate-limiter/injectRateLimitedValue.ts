@@ -1,7 +1,7 @@
-import { effect } from '@angular/core'
+import { effect, linkedSignal } from '@angular/core'
 import { injectRateLimitedSignal } from './injectRateLimitedSignal'
+import type { RateLimitedSignal } from './injectRateLimitedSignal'
 import type { Signal } from '@angular/core'
-import type { AngularRateLimiter } from './injectRateLimiter'
 import type {
   RateLimiterOptions,
   RateLimiterState,
@@ -51,13 +51,17 @@ export function injectRateLimitedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialOptions: RateLimiterOptions<Setter<TValue>>,
   selector?: (state: RateLimiterState) => TSelected,
-): [Signal<TValue>, AngularRateLimiter<Setter<TValue>, TSelected>] {
-  const [rateLimitedValue, setRateLimitedValue, rateLimiter] =
-    injectRateLimitedSignal(value(), initialOptions, selector)
+): RateLimitedSignal<TValue, TSelected> {
+  const linkedValue = linkedSignal(() => value())
+  const rateLimited = injectRateLimitedSignal(
+    linkedValue(),
+    initialOptions,
+    selector,
+  )
 
   effect(() => {
-    setRateLimitedValue(value())
+    rateLimited.set(linkedValue())
   })
 
-  return [rateLimitedValue, rateLimiter]
+  return rateLimited
 }

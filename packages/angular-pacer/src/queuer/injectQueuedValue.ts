@@ -1,7 +1,7 @@
-import { effect, signal } from '@angular/core'
+import { effect, linkedSignal, signal } from '@angular/core'
 import { injectQueuedSignal } from './injectQueuedSignal'
+import type { QueuedSignal } from './injectQueuedSignal'
 import type { Signal } from '@angular/core'
-import type { AngularQueuer } from './injectQueuer'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
 /**
@@ -38,10 +38,12 @@ export function injectQueuedValue<
   initialValue: Signal<TValue>,
   options: QueuerOptions<TValue> = {},
   selector?: (state: QueuerState<TValue>) => TSelected,
-): [Signal<TValue>, AngularQueuer<TValue, TSelected>] {
-  const value = signal<TValue>(initialValue())
+): QueuedSignal<TValue, TSelected> {
+  const linkedInitialValue = linkedSignal(() => initialValue())
 
-  const [, addItem, queuer] = injectQueuedSignal(
+  const value = signal<TValue>(linkedInitialValue())
+
+  const queued = injectQueuedSignal(
     (item) => {
       value.set(item)
     },
@@ -50,8 +52,8 @@ export function injectQueuedValue<
   )
 
   effect(() => {
-    addItem(initialValue())
+    queued.addItem(linkedInitialValue())
   })
 
-  return [value.asReadonly(), queuer]
+  return queued
 }
