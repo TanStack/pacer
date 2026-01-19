@@ -52,7 +52,7 @@
     "preact": ">=10.0.0"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.2.4",
+    "@tanstack/devtools-utils": "^0.3.0",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
