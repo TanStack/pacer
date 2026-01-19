@@ -19,24 +19,24 @@
 
 <h2>Queued Items</h2>
 
-@if (queue.items().length === 0) {
-  <p>Queue is empty.</p>
+@if (queue().length === 0) {
+<p>Queue is empty.</p>
 } @else {
-  <ul>
-    @for (let item of queue.items(); track $index) {
-      <li>{{ item }}</li>
-    }
-  </ul>
+<ul>
+  @for (let item of queue(); track $index) {
+  <li>{{ item }}</li>
+  }
+</ul>
 }
 
 <h2>Processed</h2>
 
 @if (processed.length === 0) {
-  <p>Nothing processed yet.</p>
+<p>Nothing processed yet.</p>
 } @else {
-  <ul>
-    @for (let entry of processed; track $index) {
-      <li>{{ entry.timestamp }} - {{ entry.item }}</li>
-    }
-  </ul>
+<ul>
+  @for (let entry of processed; track $index) {
+  <li>{{ entry.timestamp }} - {{ entry.item }}</li>
+  }
+</ul>
 }

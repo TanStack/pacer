@@ -1,8 +1,18 @@
 import { computed } from '@angular/core'
 import { injectQueuer } from './injectQueuer'
-import type { Signal } from '@angular/core'
 import type { AngularQueuer } from './injectQueuer'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+
+export type QueuedSignal<TValue, TSelected = {}> = (() => Array<TValue>) & {
+  /**
+   * Add an item to the queue.
+   */
+  readonly addItem: AngularQueuer<TValue, TSelected>['addItem']
+  /**
+   * The queuer instance with additional control methods and state signals.
+   */
+  readonly queuer: AngularQueuer<TValue, TSelected>
+}
 
 /**
  * An Angular function that creates a queuer with managed state, combining Angular's signals with queuing functionality.
@@ -11,28 +21,28 @@ import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
  * The queue state is automatically updated whenever items are added, removed, or reordered in the queue.
  * All queue operations are reflected in the state array returned by the function.
  *
- * The function returns a tuple containing:
- * - A Signal that provides the current queue items as an array
- * - The queuer's addItem method
- * - The queuer instance with additional control methods
+ * The function returns a callable object:
+ * - `queued()`: Get the current queue items as an array
+ * - `queued.addItem(...)`: Add an item to the queue
+ * - `queued.queue`: The queuer instance with additional control methods
  *
  * @example
  * ```ts
  * // Default behavior - track items
- * const [items, addItem, queue] = injectQueuedSignal(
+ * const queued = injectQueuedSignal(
  *   (item) => console.log('Processing:', item),
  *   { started: true, wait: 1000 }
  * );
  *
  * // Add items
- * addItem('task1');
+ * queued.addItem('task1');
  *
  * // Access items
- * console.log(items()); // ['task1']
+ * console.log(queued()); // ['task1']
  *
  * // Control the queue
- * queue.start();
- * queue.stop();
+ * queued.queuer.start();
+ * queued.queuer.stop();
  * ```
  */
 export function injectQueuedSignal<
@@ -46,14 +56,15 @@ export function injectQueuedSignal<
   options: QueuerOptions<TValue> = {},
   selector: (state: QueuerState<TValue>) => TSelected = (state) =>
     ({ items: state.items }) as TSelected,
-): [
-  Signal<Array<TValue>>,
-  AngularQueuer<TValue, TSelected>['addItem'],
-  AngularQueuer<TValue, TSelected>,
-] {
-  const queue = injectQueuer(fn, options, selector)
+): QueuedSignal<TValue, TSelected> {
+  const queuer = injectQueuer(fn, options, selector)
 
-  const items = computed(() => queue.state().items as Array<TValue>)
+  const items = computed(() => queuer.state().items as Array<TValue>)
 
-  return [items, queue.addItem.bind(queue), queue]
+  const queued = Object.assign(items, {
+    addItem: queuer.addItem.bind(queuer),
+    queuer,
+  }) as QueuedSignal<TValue, TSelected>
+
+  return queued
 }

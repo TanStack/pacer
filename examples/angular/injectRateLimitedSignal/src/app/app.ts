@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core'
 import { injectRateLimitedSignal } from '@tanstack/angular-pacer'
-
-import type { Signal } from '@angular/core'
+import type { RateLimitedSignal } from '@tanstack/angular-pacer'
 
 type SelectedState = {
   executionCount: number
@@ -23,15 +22,12 @@ type RateLimiterHandle = {
 })
 export class App {
   readonly rawValue = signal(0)
-  readonly limitedValue: Signal<number>
+  readonly limitedValue: RateLimitedSignal<number, SelectedState>
   private readonly setLimitedValue: RateLimitedSetter
   readonly rateLimiter: RateLimiterHandle
 
   constructor() {
-    const [limitedValue, setLimitedValue, rateLimiter] = injectRateLimitedSignal<
-      number,
-      SelectedState
-    >(
+    const limitedValue = injectRateLimitedSignal<number, SelectedState>(
       0,
       {
         limit: 3,
@@ -45,7 +41,9 @@ export class App {
     )
 
     this.limitedValue = limitedValue
-    this.setLimitedValue = setLimitedValue
+    this.setLimitedValue = limitedValue.set
+
+    const rateLimiter = limitedValue.rateLimiter
     this.rateLimiter = {
       reset: rateLimiter.reset.bind(rateLimiter),
       state: rateLimiter.state,

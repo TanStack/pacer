@@ -20,13 +20,13 @@ export class App {
     const value = target.value;
 
     this.instantValue.set(value);
-    this.debounced.setValue(value);
+    this.debounced.set(value);
   }
 
   protected clear(): void {
     this.instantValue.set('');
     this.debounced.debouncer.cancel();
-    this.debounced.setValue('');
+    this.debounced.set('');
     this.debounced.debouncer.flush();
   }
 

@@ -22,9 +22,9 @@ export class App {
     },
   );
 
-  protected readonly items = this.queued[0];
-  private readonly addItem = this.queued[1];
-  protected readonly queue = this.queued[2];
+  protected readonly items = this.queued;
+  private readonly addItem = this.queued.addItem;
+  protected readonly queue = this.queued.queuer;
 
   protected enqueue(): void {
     const value = this.next();

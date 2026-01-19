@@ -1,6 +1,5 @@
 import { signal } from '@angular/core'
 import { injectThrottler } from './injectThrottler'
-import type { Signal } from '@angular/core'
 import type { AngularThrottler } from './injectThrottler'
 import type {
   ThrottlerOptions,
@@ -8,6 +7,19 @@ import type {
 } from '@tanstack/pacer/throttler'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
+
+export type ThrottledSignal<TValue, TSelected = {}> = ((
+  ...args: []
+) => TValue) & {
+  /**
+   * Set or update the throttled value. This calls `throttler.maybeExecute(...)`.
+   */
+  readonly set: Setter<TValue>
+  /**
+   * The throttler instance with additional control methods and state signals.
+   */
+  readonly throttler: AngularThrottler<Setter<TValue>, TSelected>
+}
 
 /**
  * An Angular function that creates a throttled state signal, combining Angular's signal with throttling functionality.
@@ -17,10 +29,10 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * This is useful for handling frequent state updates that should be rate-limited, like scroll positions
  * or mouse movements.
  *
- * The function returns a tuple containing:
- * - The current throttled value signal
- * - A function to update the throttled value
- * - The throttler instance with additional control methods and state signals
+ * The function returns a callable object:
+ * - `throttled()`: Get the current throttled value
+ * - `throttled.set(...)`: Set or update the throttled value (throttled via maybeExecute)
+ * - `throttled.throttler`: The throttler instance with additional control methods and state signals
  *
  * ## State Management and Selector
  *
@@ -44,33 +56,23 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const [scrollY, setScrollY, throttler] = injectThrottledSignal(0, {
- *   wait: 100 // Update at most once per 100ms
- * });
+ * const throttledScrollY = injectThrottledSignal(0, { wait: 100 })
  *
- * // Opt-in to reactive updates when pending state changes
- * const [scrollY, setScrollY, throttler] = injectThrottledSignal(
- *   0,
- *   { wait: 100 },
- *   (state) => ({ isPending: state.isPending })
- * );
+ * // Get value
+ * console.log(throttledScrollY())
  *
- * // Update value - will be throttled
- * window.addEventListener('scroll', () => {
- *   setScrollY(window.scrollY);
- * });
+ * // Set/update value (throttled)
+ * throttledScrollY.set(window.scrollY)
+ *
+ * // Access throttler
+ * console.log(throttledScrollY.throttler.state().isPending)
  * ```
  */
 export function injectThrottledSignal<TValue, TSelected = {}>(
   value: TValue,
   initialOptions: ThrottlerOptions<Setter<TValue>>,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
-): [
-  Signal<TValue>,
-  Setter<TValue>,
-  AngularThrottler<Setter<TValue>, TSelected>,
-] {
+): ThrottledSignal<TValue, TSelected> {
   const throttledValue = signal<TValue>(value)
 
   const throttler = injectThrottler(
@@ -85,11 +87,16 @@ export function injectThrottledSignal<TValue, TSelected = {}>(
     selector,
   )
 
-  const setter: Setter<TValue> = (
+  const set: Setter<TValue> = (
     newValue: TValue | ((prev: TValue) => TValue),
   ) => {
     throttler.maybeExecute(newValue)
   }
 
-  return [throttledValue.asReadonly(), setter, throttler]
+  const throttled = Object.assign(() => throttledValue(), {
+    set,
+    throttler,
+  }) as ThrottledSignal<TValue, TSelected>
+
+  return throttled
 }

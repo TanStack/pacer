@@ -32,7 +32,7 @@ export class App {
       }),
     )
 
-    const [throttledCount] = this.throttledState
+    const throttledCount = this.throttledState
 
     effect(() => {
       this.count = throttledCount()
@@ -40,26 +40,22 @@ export class App {
   }
 
   onClick() {
-    const [, setCount] = this.throttledState
-
     this.rawCount++
-    setCount((prev) => prev + 1)
+    this.throttledState.set((prev) => prev + 1)
   }
 
   reset() {
-    const [_, setThrottledCount] = this.throttledState
-
     this.rawCount = 0
-    setThrottledCount(0)
+    this.throttledState.set(0)
   }
 
   get executionCount() {
-    const [, , throttler] = this.throttledState
+    const throttler = this.throttledState.throttler
     return throttler.state().executionCount
   }
 
   get isPending() {
-    const [, , throttler] = this.throttledState
+    const throttler = this.throttledState.throttler
     return throttler.state().isPending
   }
 }

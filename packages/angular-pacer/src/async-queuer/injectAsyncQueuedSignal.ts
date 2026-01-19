@@ -1,29 +1,21 @@
 import { computed } from '@angular/core'
 import { injectAsyncQueuer } from './injectAsyncQueuer'
-import type { Signal } from '@angular/core'
 import type { AngularAsyncQueuer } from './injectAsyncQueuer'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
-export interface AsyncQueuedSignal<
+export type AsyncQueuedSignal<
   TValue,
-  TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
-    AsyncQueuerState<TValue>,
-    'items'
-  >,
-> {
+  TSelected = {},
+> = (() => Array<TValue>) & {
   /**
-   * A Signal that provides the current queue items as an array
-   */
-  readonly items: Signal<Array<TValue>>
-  /**
-   * The queuer's addItem method
+   * Add an item to the queue.
    */
   readonly addItem: AngularAsyncQueuer<TValue, TSelected>['addItem']
   /**
-   * The queuer instance with additional control methods
+   * The queuer instance with additional control methods and state signals.
    */
   readonly queuer: AngularAsyncQueuer<TValue, TSelected>
 }
@@ -35,15 +27,15 @@ export interface AsyncQueuedSignal<
  * The queue state is automatically updated whenever items are added, removed, or processed in the queue.
  * All queue operations are reflected in the state array returned by the function.
  *
- * The function returns an object containing:
- * - `items`: A Signal that provides the current queue items as an array
- * - `addItem`: The queuer's addItem method
- * - `queuer`: The queuer instance with additional control methods
+ * The function returns a callable object:
+ * - `queued()`: Get the current queue items as an array
+ * - `queued.addItem(...)`: Add an item to the queue
+ * - `queued.queue`: The queuer instance with additional control methods
  *
  * @example
  * ```ts
  * // Default behavior - track items
- * const queue = injectAsyncQueuedSignal(
+ * const queued = injectAsyncQueuedSignal(
  *   async (item) => {
  *     const response = await fetch('/api/process', {
  *       method: 'POST',
@@ -55,14 +47,14 @@ export interface AsyncQueuedSignal<
  * );
  *
  * // Add items
- * queue.addItem(data1);
+ * queued.addItem(data1);
  *
  * // Access items
- * console.log(queue.items()); // [data1, ...]
+ * console.log(queued()); // [data1, ...]
  *
  * // Control the queue
- * queue.queuer.start();
- * queue.queuer.stop();
+ * queued.queuer.start();
+ * queued.queuer.stop();
  * ```
  */
 export function injectAsyncQueuedSignal<
@@ -81,9 +73,10 @@ export function injectAsyncQueuedSignal<
 
   const items = computed(() => queuer.state().items as Array<TValue>)
 
-  return {
-    items,
+  const queued = Object.assign(items, {
     addItem: queuer.addItem.bind(queuer),
     queuer,
-  }
+  }) as AsyncQueuedSignal<TValue, TSelected>
+
+  return queued
 }
