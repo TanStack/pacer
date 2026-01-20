@@ -1,6 +1,6 @@
 import { injectStore } from '@tanstack/angular-store'
 import { Queuer } from '@tanstack/pacer/queuer'
-import { useDefaultPacerOptions } from '../provider/pacer-context'
+import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
@@ -69,7 +69,7 @@ export function injectQueuer<TValue, TSelected = {}>(
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): AngularQueuer<TValue, TSelected> {
   const mergedOptions = {
-    ...useDefaultPacerOptions().queuer,
+    ...injectPacerOptions().queuer,
     ...options,
   } as QueuerOptions<TValue>
 

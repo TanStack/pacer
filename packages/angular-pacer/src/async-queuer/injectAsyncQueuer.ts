@@ -1,6 +1,6 @@
 import { injectStore } from '@tanstack/angular-store'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { useDefaultPacerOptions } from '../provider/pacer-context'
+import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type {
@@ -73,7 +73,7 @@ export function injectAsyncQueuer<TValue, TSelected = {}>(
     ({}) as TSelected,
 ): AngularAsyncQueuer<TValue, TSelected> {
   const mergedOptions = {
-    ...useDefaultPacerOptions().asyncQueuer,
+    ...injectPacerOptions().asyncQueuer,
     ...options,
   } as AsyncQueuerOptions<TValue>
 

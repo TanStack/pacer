@@ -1,6 +1,6 @@
 import { injectStore } from '@tanstack/angular-store'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { useDefaultPacerOptions } from '../provider/pacer-context'
+import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -99,7 +99,7 @@ export function injectAsyncDebouncer<
     ({}) as TSelected,
 ): AngularAsyncDebouncer<TFn, TSelected> {
   const mergedOptions = {
-    ...useDefaultPacerOptions().asyncDebouncer,
+    ...injectPacerOptions().asyncDebouncer,
     ...options,
   } as AsyncDebouncerOptions<TFn>
 

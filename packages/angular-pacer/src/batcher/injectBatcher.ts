@@ -1,6 +1,6 @@
 import { injectStore } from '@tanstack/angular-store'
 import { Batcher } from '@tanstack/pacer/batcher'
-import { useDefaultPacerOptions } from '../provider/pacer-context'
+import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
@@ -65,7 +65,7 @@ export function injectBatcher<TValue, TSelected = {}>(
     ({}) as TSelected,
 ): AngularBatcher<TValue, TSelected> {
   const mergedOptions = {
-    ...useDefaultPacerOptions().batcher,
+    ...injectPacerOptions().batcher,
     ...options,
   } as BatcherOptions<TValue>
 

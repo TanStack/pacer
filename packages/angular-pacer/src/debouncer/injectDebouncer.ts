@@ -1,6 +1,6 @@
 import { injectStore } from '@tanstack/angular-store'
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { useDefaultPacerOptions } from '../provider/pacer-context'
+import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -88,7 +88,7 @@ export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): AngularDebouncer<TFn, TSelected> {
   const mergedOptions = {
-    ...useDefaultPacerOptions().debouncer,
+    ...injectPacerOptions().debouncer,
     ...options,
   } as DebouncerOptions<TFn>
 

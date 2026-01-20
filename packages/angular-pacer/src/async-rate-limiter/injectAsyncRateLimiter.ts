@@ -1,6 +1,6 @@
 import { injectStore } from '@tanstack/angular-store'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { useDefaultPacerOptions } from '../provider/pacer-context'
+import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -73,7 +73,7 @@ export function injectAsyncRateLimiter<
     ({}) as TSelected,
 ): AngularAsyncRateLimiter<TFn, TSelected> {
   const mergedOptions = {
-    ...useDefaultPacerOptions().asyncRateLimiter,
+    ...injectPacerOptions().asyncRateLimiter,
     ...options,
   } as AsyncRateLimiterOptions<TFn>
 

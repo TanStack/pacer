@@ -37,7 +37,7 @@ export const PACER_OPTIONS = new InjectionToken<PacerProviderOptions>(
   },
 )
 
-export function useDefaultPacerOptions(): PacerProviderOptions {
+export function injectPacerOptions(): PacerProviderOptions {
   try {
     return inject(PACER_OPTIONS, { optional: true }) ?? DEFAULT_OPTIONS
   } catch {

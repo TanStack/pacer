@@ -1,6 +1,6 @@
 import { injectStore } from '@tanstack/angular-store'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { useDefaultPacerOptions } from '../provider/pacer-context'
+import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -102,7 +102,7 @@ export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): AngularRateLimiter<TFn, TSelected> {
   const mergedOptions = {
-    ...useDefaultPacerOptions().rateLimiter,
+    ...injectPacerOptions().rateLimiter,
     ...options,
   } as RateLimiterOptions<TFn>
 
