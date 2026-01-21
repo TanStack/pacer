@@ -53,35 +53,37 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * @example
  * ```ts
  * // Default behavior - no reactive state subscriptions
- * const searchQuery = signal('');
- * const [debouncedQuery, debouncer] = injectDebouncedValue(searchQuery, {
- *   wait: 500 // Wait 500ms after last change
- * });
+ * const searchQuery = signal('')
+ * const debounced = injectDebouncedValue(searchQuery, {
+ *   wait: 500, // Wait 500ms after last change
+ * })
  *
  * // Opt-in to reactive updates when pending state changes (optimized for loading indicators)
- * const [debouncedQuery, debouncer] = injectDebouncedValue(
+ * const debouncedWithPending = injectDebouncedValue(
  *   searchQuery,
  *   { wait: 500 },
- *   (state) => ({ isPending: state.isPending })
- * );
+ *   (state) => ({ isPending: state.isPending }),
+ * )
  *
- * // debouncedQuery will update 500ms after searchQuery stops changing
+ * // Debounced value will update 500ms after searchQuery stops changing
  * effect(() => {
- *   fetchSearchResults(debouncedQuery());
- * });
+ *   fetchSearchResults(debounced())
+ * })
  *
- * // Access debouncer state via signals
- * console.log('Is pending:', debouncer.state().isPending);
+ * // Access selected debouncer state via signals (only if you provided a selector)
+ * effect(() => {
+ *   console.log('Is pending:', debouncedWithPending.state().isPending)
+ * })
  *
  * // Control the debouncer
- * debouncer.cancel(); // Cancel any pending updates
+ * debounced.cancel() // Cancel any pending updates
  * ```
  */
 export function injectDebouncedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialOptions: DebouncerOptions<Setter<TValue>>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
-): DebouncedSignal<TValue> {
+): DebouncedSignal<TValue, TSelected> {
   const linkedValue = linkedSignal(() => value())
 
   const debounced = injectDebouncedSignal(

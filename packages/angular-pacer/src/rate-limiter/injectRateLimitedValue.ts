@@ -34,17 +34,17 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * @example
  * ```ts
  * // Default behavior - no reactive state subscriptions
- * const value = signal(0);
- * const [rateLimitedValue, rateLimiter] = injectRateLimitedValue(value, {
+ * const value = signal(0)
+ * const rateLimited = injectRateLimitedValue(value, {
  *   limit: 5,
  *   window: 60000,
- *   windowType: 'sliding'
- * });
+ *   windowType: 'sliding',
+ * })
  *
- * // rateLimitedValue will update at most 5 times per 60 seconds
+ * // rateLimited() will update at most 5 times per 60 seconds
  * effect(() => {
- *   updateUI(rateLimitedValue());
- * });
+ *   updateUI(rateLimited())
+ * })
  * ```
  */
 export function injectRateLimitedValue<TValue, TSelected = {}>(

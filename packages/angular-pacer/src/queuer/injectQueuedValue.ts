@@ -18,14 +18,14 @@ import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
  *
  * @example
  * ```ts
- * const initialValue = signal('initial');
- * const [value, queuer] = injectQueuedValue(initialValue, {
+ * const initialValue = signal('initial')
+ * const queued = injectQueuedValue(initialValue, {
  *   wait: 500,
- *   started: true
- * });
+ *   started: true,
+ * })
  *
  * // Add changes to the queue
- * queuer.addItem('new value');
+ * queued.addItem('new value')
  * ```
  */
 export function injectQueuedValue<

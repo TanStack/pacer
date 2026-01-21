@@ -48,28 +48,28 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * @example
  * ```ts
  * // Default behavior - no reactive state subscriptions
- * const scrollY = signal(0);
- * const [throttledScrollY, throttler] = injectThrottledValue(scrollY, {
- *   wait: 100 // Update at most once per 100ms
- * });
+ * const scrollY = signal(0)
+ * const throttledScrollY = injectThrottledValue(scrollY, {
+ *   wait: 100, // Update at most once per 100ms
+ * })
  *
  * // Opt-in to reactive updates when pending state changes
- * const [throttledScrollY, throttler] = injectThrottledValue(
+ * const throttledScrollYWithState = injectThrottledValue(
  *   scrollY,
  *   { wait: 100 },
- *   (state) => ({ isPending: state.isPending })
- * );
+ *   (state) => ({ isPending: state.isPending }),
+ * )
  *
- * // throttledScrollY will update at most once per 100ms
+ * // Read the throttled signal value
  * effect(() => {
- *   updateUI(throttledScrollY());
- * });
+ *   updateUI(throttledScrollY())
+ * })
  *
- * // Access throttler state via signals
- * console.log('Is pending:', throttler.state().isPending);
+ * // Access throttler state via the returned object's state() signal
+ * console.log('Is pending:', throttledScrollYWithState.state().isPending)
  *
  * // Control the throttler
- * throttler.cancel(); // Cancel any pending updates
+ * throttledScrollY.cancel() // Cancel any pending updates
  * ```
  */
 export function injectThrottledValue<TValue, TSelected = {}>(
