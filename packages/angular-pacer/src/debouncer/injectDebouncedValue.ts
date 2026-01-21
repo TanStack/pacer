@@ -1,4 +1,4 @@
-import { effect, linkedSignal } from '@angular/core'
+import { effect } from '@angular/core'
 import { injectDebouncedSignal } from './injectDebouncedSignal'
 import type { DebouncedSignal } from './injectDebouncedSignal'
 import type { Signal } from '@angular/core'
@@ -44,11 +44,6 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
- * ## Handling Input Signals
- *
- * The input value is wrapped in a `linkedSignal` to defer reads of Angular input signals
- * until they are ready. This prevents `NG0729: Input signals not ready` errors that occur
- * when a signal input is accessed during component field initialization.
  *
  * @example
  * ```ts
@@ -83,17 +78,16 @@ export function injectDebouncedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialOptions: DebouncerOptions<Setter<TValue>>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
-): DebouncedSignal<TValue, TSelected> {
-  const linkedValue = linkedSignal(() => value())
-
+): DebouncedSignal<TValue, TSelected> | undefined {
   const debounced = injectDebouncedSignal(
-    linkedValue(),
+    undefined as unknown as TValue,
     initialOptions,
     selector,
   )
 
   effect(() => {
-    debounced.set(linkedValue())
+    const latest = value()
+    debounced.set(latest)
   })
 
   return debounced

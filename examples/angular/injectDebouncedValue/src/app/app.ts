@@ -1,10 +1,13 @@
 import { Component, signal } from '@angular/core'
 import { injectDebouncedValue } from '@tanstack/angular-pacer'
+import { JsonPipe } from '@angular/common'
+import { InputApp } from './inputapp'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
+  imports: [InputApp, JsonPipe],
 })
 export class App {
   protected readonly query = signal('')

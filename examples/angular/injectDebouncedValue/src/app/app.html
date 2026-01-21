@@ -10,4 +10,6 @@
 
 <p>Instant: {{ query() }}</p>
 <p>Debounced: {{ debouncedQuery() }}</p>
-<p>Pending: {{ debouncer.state().isPending }}</p>
+<p>Pending: {{ debouncer.state().isPending | json }}</p>
+
+<app-problem [value]="query()" />
