@@ -1,18 +1,18 @@
 ---
-id: createQueuer
-title: createQueuer
+id: injectQueuer
+title: injectQueuer
 ---
 
-# Function: createQueuer()
+# Function: injectQueuer()
 
 ```ts
-function createQueuer<TValue, TSelected>(
+function injectQueuer<TValue, TSelected>(
    fn, 
    options, 
 selector): AngularQueuer<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/queuer/createQueuer.ts:66](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/createQueuer.ts#L66)
+Defined in: [queuer/injectQueuer.ts:66](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L66)
 
 An Angular function that creates and manages a Queuer instance.
 
@@ -65,13 +65,13 @@ full control over when your component tracks state changes.
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const queue = createQueuer(
+const queue = injectQueuer(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 }
 );
 
 // Opt-in to track queue contents changes
-const queue = createQueuer(
+const queue = injectQueuer(
   (item) => console.log('Processing:', item),
   { started: true, wait: 1000 },
   (state) => ({ items: state.items, size: state.size })

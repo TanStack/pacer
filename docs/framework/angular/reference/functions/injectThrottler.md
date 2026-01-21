@@ -1,18 +1,18 @@
 ---
-id: createThrottler
-title: createThrottler
+id: injectThrottler
+title: injectThrottler
 ---
 
-# Function: createThrottler()
+# Function: injectThrottler()
 
 ```ts
-function createThrottler<TFn, TSelected>(
+function injectThrottler<TFn, TSelected>(
    fn, 
    options, 
 selector): AngularThrottler<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/throttler/createThrottler.ts:85](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/createThrottler.ts#L85)
+Defined in: [throttler/injectThrottler.ts:85](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L85)
 
 An Angular function that creates and manages a Throttler instance.
 
@@ -78,13 +78,13 @@ Available state properties:
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const throttler = createThrottler(
+const throttler = injectThrottler(
   (scrollY: number) => updateScrollPosition(scrollY),
   { wait: 100 }
 );
 
 // Opt-in to track isPending changes (optimized for loading states)
-const throttler = createThrottler(
+const throttler = injectThrottler(
   (scrollY: number) => updateScrollPosition(scrollY),
   { wait: 100 },
   (state) => ({ isPending: state.isPending })

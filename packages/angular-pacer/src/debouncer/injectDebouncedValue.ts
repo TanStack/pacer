@@ -2,7 +2,6 @@ import { effect, linkedSignal } from '@angular/core'
 import { injectDebouncedSignal } from './injectDebouncedSignal'
 import type { DebouncedSignal } from './injectDebouncedSignal'
 import type { Signal } from '@angular/core'
-import type { AngularDebouncer } from './injectDebouncer'
 import type {
   DebouncerOptions,
   DebouncerState,

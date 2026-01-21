@@ -1,24 +1,24 @@
 ---
-id: createAsyncBatchedCallback
-title: createAsyncBatchedCallback
+id: injectAsyncBatchedCallback
+title: injectAsyncBatchedCallback
 ---
 
-# Function: createAsyncBatchedCallback()
+# Function: injectAsyncBatchedCallback()
 
 ```ts
-function createAsyncBatchedCallback<TValue>(fn, options): (item) => Promise<void>;
+function injectAsyncBatchedCallback<TValue>(fn, options): (item) => Promise<void>;
 ```
 
-Defined in: [angular-pacer/src/async-batcher/createAsyncBatchedCallback.ts:42](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-batcher/createAsyncBatchedCallback.ts#L42)
+Defined in: [async-batcher/injectAsyncBatchedCallback.ts:42](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatchedCallback.ts#L42)
 
 An Angular function that creates an async batched version of a callback function.
-This function is essentially a wrapper around `createAsyncBatcher` that provides
+This function is essentially a wrapper around `injectAsyncBatcher` that provides
 a simplified API for basic async batching needs.
 
 The batched function will collect items and process them in batches asynchronously based on
 the configured conditions (maxSize, wait time, etc.).
 
-This function provides a simpler API compared to `createAsyncBatcher`, making it ideal for basic
+This function provides a simpler API compared to `injectAsyncBatcher`, making it ideal for basic
 async batching needs. However, it does not expose the underlying AsyncBatcher instance.
 
 For advanced usage requiring features like:
@@ -27,7 +27,7 @@ For advanced usage requiring features like:
 - Error handling callbacks
 - Retry support
 
-Consider using the `createAsyncBatcher` function instead.
+Consider using the `injectAsyncBatcher` function instead.
 
 ## Type Parameters
 
@@ -65,7 +65,7 @@ Consider using the `createAsyncBatcher` function instead.
 
 ```ts
 // Batch async API calls
-const batchApiCall = createAsyncBatchedCallback(
+const batchApiCall = injectAsyncBatchedCallback(
   async (items: Array<Data>) => {
     const response = await fetch('/api/batch', {
       method: 'POST',

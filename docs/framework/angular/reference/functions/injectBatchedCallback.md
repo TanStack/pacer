@@ -1,24 +1,24 @@
 ---
-id: createBatchedCallback
-title: createBatchedCallback
+id: injectBatchedCallback
+title: injectBatchedCallback
 ---
 
-# Function: createBatchedCallback()
+# Function: injectBatchedCallback()
 
 ```ts
-function createBatchedCallback<TValue>(fn, options): (item) => void;
+function injectBatchedCallback<TValue>(fn, options): (item) => void;
 ```
 
-Defined in: [angular-pacer/src/batcher/createBatchedCallback.ts:40](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/batcher/createBatchedCallback.ts#L40)
+Defined in: [batcher/injectBatchedCallback.ts:40](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatchedCallback.ts#L40)
 
 An Angular function that creates a batched version of a callback function.
-This function is essentially a wrapper around `createBatcher` that provides
+This function is essentially a wrapper around `injectBatcher` that provides
 a simplified API for basic batching needs.
 
 The batched function will collect items and process them in batches based on
 the configured conditions (maxSize, wait time, etc.).
 
-This function provides a simpler API compared to `createBatcher`, making it ideal for basic
+This function provides a simpler API compared to `injectBatcher`, making it ideal for basic
 batching needs. However, it does not expose the underlying Batcher instance.
 
 For advanced usage requiring features like:
@@ -26,7 +26,7 @@ For advanced usage requiring features like:
 - Access to batch state
 - State tracking
 
-Consider using the `createBatcher` function instead.
+Consider using the `injectBatcher` function instead.
 
 ## Type Parameters
 
@@ -64,7 +64,7 @@ Consider using the `createBatcher` function instead.
 
 ```ts
 // Batch API calls
-const batchApiCall = createBatchedCallback(
+const batchApiCall = injectBatchedCallback(
   (items) => {
     return fetch('/api/batch', {
       method: 'POST',

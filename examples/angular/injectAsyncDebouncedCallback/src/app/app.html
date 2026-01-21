@@ -21,19 +21,18 @@
 <h2>History</h2>
 
 @if (history.length === 0) {
-  <p>No calls yet.</p>
+<p>No calls yet.</p>
 } @else {
-  <ul>
-    @for (let entry of history; track $index) {
-      <li>
-        <div>
-          {{ entry.timestamp }} - {{ entry.value }} -
-          {{ entry.executed ? 'EXECUTED' : 'DEBOUNCED' }}
-        </div>
-        @if (entry.executed) {
-          <div>Result: {{ entry.result }}</div>
-        }
-      </li>
+<ul>
+  @for (let entry of history; track $index) {
+  <li>
+    <div>
+      {{ entry.timestamp }} - {{ entry.value }} - {{ entry.executed ? 'EXECUTED' : 'DEBOUNCED' }}
+    </div>
+    @if (entry.executed) {
+    <div>Result: {{ entry.result }}</div>
     }
-  </ul>
+  </li>
+  }
+</ul>
 }

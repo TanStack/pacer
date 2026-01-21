@@ -1,18 +1,18 @@
 ---
-id: createRateLimitedSignal
-title: createRateLimitedSignal
+id: injectRateLimitedSignal
+title: injectRateLimitedSignal
 ---
 
-# Function: createRateLimitedSignal()
+# Function: injectRateLimitedSignal()
 
 ```ts
-function createRateLimitedSignal<TValue, TSelected>(
+function injectRateLimitedSignal<TValue, TSelected>(
    value, 
    initialOptions, 
-   selector?): [Signal<TValue>, Setter<TValue>, AngularRateLimiter<Setter<TValue>, TSelected>];
+selector?): RateLimitedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/rate-limiter/createRateLimitedSignal.ts:52](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/rate-limiter/createRateLimitedSignal.ts#L52)
+Defined in: [rate-limiter/injectRateLimitedSignal.ts:64](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L64)
 
 An Angular function that creates a rate-limited state signal, combining Angular's signal with rate limiting functionality.
 This function provides both the current rate-limited value and methods to update it.
@@ -21,10 +21,10 @@ Rate limiting is a simple "hard limit" approach - it allows all updates until th
 subsequent updates until the window resets. Unlike throttling or debouncing, it does not attempt to space out
 or intelligently collapse updates.
 
-The function returns a tuple containing:
-- The current rate-limited value signal
-- A function to update the rate-limited value
-- The rate limiter instance with additional control methods and state signals
+The function returns a callable object:
+- `rateLimited()`: Get the current rate-limited value
+- `rateLimited.set(...)`: Set or update the rate-limited value (rate-limited via maybeExecute)
+- `rateLimited.rateLimiter`: The rate limiter instance with additional control methods and state signals
 
 ## State Management and Selector
 
@@ -63,20 +63,20 @@ full control over when your component tracks state changes.
 
 ## Returns
 
-\[`Signal`\<`TValue`\>, `Setter`\<`TValue`\>, [`AngularRateLimiter`](../interfaces/AngularRateLimiter.md)\<`Setter`\<`TValue`\>, `TSelected`\>\]
+[`RateLimitedSignal`](../type-aliases/RateLimitedSignal.md)\<`TValue`, `TSelected`\>
 
 ## Example
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const [value, setValue, rateLimiter] = createRateLimitedSignal(0, {
+const rateLimited = injectRateLimitedSignal(0, {
   limit: 5,
   window: 60000,
   windowType: 'sliding'
 });
 
 // Opt-in to reactive updates when limit state changes
-const [value, setValue, rateLimiter] = createRateLimitedSignal(
+const rateLimited = injectRateLimitedSignal(
   0,
   { limit: 5, window: 60000 },
   (state) => ({ rejectionCount: state.rejectionCount })

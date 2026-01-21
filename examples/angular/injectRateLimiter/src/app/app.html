@@ -16,13 +16,13 @@
   <section>
     <h2>Events</h2>
     @if (logs().length === 0) {
-      <p>No events yet. Press Attempt to generate entries.</p>
+    <p>No events yet. Press Attempt to generate entries.</p>
     } @else {
-      <ul>
-        @for (let entry of logs(); track $index) {
-          <li>{{ entry }}</li>
-        }
-      </ul>
+    <ul>
+      @for (let entry of logs(); track $index) {
+      <li>{{ entry }}</li>
+      }
+    </ul>
     }
   </section>
 </div>

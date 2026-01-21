@@ -1,18 +1,18 @@
 ---
-id: createAsyncRateLimiter
-title: createAsyncRateLimiter
+id: injectAsyncRateLimiter
+title: injectAsyncRateLimiter
 ---
 
-# Function: createAsyncRateLimiter()
+# Function: injectAsyncRateLimiter()
 
 ```ts
-function createAsyncRateLimiter<TFn, TSelected>(
+function injectAsyncRateLimiter<TFn, TSelected>(
    fn, 
    options, 
 selector): AngularAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:66](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L66)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:66](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L66)
 
 An Angular function that creates and manages an AsyncRateLimiter instance.
 
@@ -65,7 +65,7 @@ full control over when your component tracks state changes.
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const rateLimiter = createAsyncRateLimiter(
+const rateLimiter = injectAsyncRateLimiter(
   async (id: string) => {
     const response = await fetch(`/api/data/${id}`);
     return response.json();

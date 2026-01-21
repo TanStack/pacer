@@ -20,14 +20,14 @@
 <h2>Processed Batches</h2>
 
 @if (processedBatches.length === 0) {
-  <p>No batches processed yet. Click "Enqueue" a few times.</p>
+<p>No batches processed yet. Click "Enqueue" a few times.</p>
 } @else {
-  <ul>
-    @for (let batch of processedBatches; track $index) {
-      <li>
-        <div>{{ batch.timestamp }} ({{ batch.items.length }} items)</div>
-        <div>{{ batch.items.join(', ') }}</div>
-      </li>
-    }
-  </ul>
+<ul>
+  @for (let batch of processedBatches; track $index) {
+  <li>
+    <div>{{ batch.timestamp }} ({{ batch.items.length }} items)</div>
+    <div>{{ batch.items.join(', ') }}</div>
+  </li>
+  }
+</ul>
 }

@@ -1,18 +1,18 @@
 ---
-id: createRateLimiter
-title: createRateLimiter
+id: injectRateLimiter
+title: injectRateLimiter
 ---
 
-# Function: createRateLimiter()
+# Function: injectRateLimiter()
 
 ```ts
-function createRateLimiter<TFn, TSelected>(
+function injectRateLimiter<TFn, TSelected>(
    fn, 
    options, 
 selector): AngularRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/rate-limiter/createRateLimiter.ts:99](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/rate-limiter/createRateLimiter.ts#L99)
+Defined in: [rate-limiter/injectRateLimiter.ts:99](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L99)
 
 An Angular function that creates and manages a RateLimiter instance.
 
@@ -82,14 +82,14 @@ Available state properties:
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const rateLimiter = createRateLimiter(apiCall, {
+const rateLimiter = injectRateLimiter(apiCall, {
   limit: 5,
   window: 60000,
   windowType: 'sliding',
 });
 
 // Opt-in to track execution count changes
-const rateLimiter = createRateLimiter(
+const rateLimiter = injectRateLimiter(
   apiCall,
   {
     limit: 5,

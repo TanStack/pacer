@@ -1,30 +1,33 @@
 ---
-id: createThrottledSignal
-title: createThrottledSignal
+id: injectThrottledValue
+title: injectThrottledValue
 ---
 
-# Function: createThrottledSignal()
+# Function: injectThrottledValue()
 
 ```ts
-function createThrottledSignal<TValue, TSelected>(
+function injectThrottledValue<TValue, TSelected>(
    value, 
    initialOptions, 
-   selector?): [Signal<TValue>, Setter<TValue>, AngularThrottler<Setter<TValue>, TSelected>];
+selector?): ThrottledSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/throttler/createThrottledSignal.ts:65](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/createThrottledSignal.ts#L65)
+Defined in: [throttler/injectThrottledValue.ts:75](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledValue.ts#L75)
 
-An Angular function that creates a throttled state signal, combining Angular's signal with throttling functionality.
-This function provides both the current throttled value and methods to update it.
+An Angular function that creates a throttled value that updates at most once within a specified time window.
+Unlike injectThrottledSignal, this function automatically tracks changes to the input signal
+and updates the throttled value accordingly.
 
-The state value is updated at most once within the specified wait time.
-This is useful for handling frequent state updates that should be rate-limited, like scroll positions
-or mouse movements.
+The throttled value will update at most once within the specified wait time, regardless of
+how frequently the input value changes.
+
+This is useful for deriving throttled values from signals that change frequently,
+like scroll positions or mouse coordinates, where you want to limit how often downstream effects
+or calculations occur.
 
 The function returns a tuple containing:
-- The current throttled value signal
-- A function to update the throttled value
-- The throttler instance with additional control methods and state signals
+- A Signal that provides the current throttled value
+- The throttler instance with control methods
 
 ## State Management and Selector
 
@@ -61,7 +64,7 @@ Available throttler state properties:
 
 ### value
 
-`TValue`
+`Signal`\<`TValue`\>
 
 ### initialOptions
 
@@ -73,25 +76,32 @@ Available throttler state properties:
 
 ## Returns
 
-\[`Signal`\<`TValue`\>, `Setter`\<`TValue`\>, [`AngularThrottler`](../interfaces/AngularThrottler.md)\<`Setter`\<`TValue`\>, `TSelected`\>\]
+[`ThrottledSignal`](../type-aliases/ThrottledSignal.md)\<`TValue`, `TSelected`\>
 
 ## Example
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const [scrollY, setScrollY, throttler] = createThrottledSignal(0, {
+const scrollY = signal(0);
+const [throttledScrollY, throttler] = injectThrottledValue(scrollY, {
   wait: 100 // Update at most once per 100ms
 });
 
 // Opt-in to reactive updates when pending state changes
-const [scrollY, setScrollY, throttler] = createThrottledSignal(
-  0,
+const [throttledScrollY, throttler] = injectThrottledValue(
+  scrollY,
   { wait: 100 },
   (state) => ({ isPending: state.isPending })
 );
 
-// Update value - will be throttled
-window.addEventListener('scroll', () => {
-  setScrollY(window.scrollY);
+// throttledScrollY will update at most once per 100ms
+effect(() => {
+  updateUI(throttledScrollY());
 });
+
+// Access throttler state via signals
+console.log('Is pending:', throttler.state().isPending);
+
+// Control the throttler
+throttler.cancel(); // Cancel any pending updates
 ```

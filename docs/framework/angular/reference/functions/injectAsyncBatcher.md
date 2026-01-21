@@ -1,18 +1,18 @@
 ---
-id: createAsyncBatcher
-title: createAsyncBatcher
+id: injectAsyncBatcher
+title: injectAsyncBatcher
 ---
 
-# Function: createAsyncBatcher()
+# Function: injectAsyncBatcher()
 
 ```ts
-function createAsyncBatcher<TValue, TSelected>(
+function injectAsyncBatcher<TValue, TSelected>(
    fn, 
    options, 
 selector): AngularAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-batcher/createAsyncBatcher.ts:69](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-batcher/createAsyncBatcher.ts#L69)
+Defined in: [async-batcher/injectAsyncBatcher.ts:69](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L69)
 
 An Angular function that creates and manages an AsyncBatcher instance.
 
@@ -65,7 +65,7 @@ full control over when your component tracks state changes.
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const batcher = createAsyncBatcher(
+const batcher = injectAsyncBatcher(
   async (items: Array<Data>) => {
     const response = await fetch('/api/batch', {
       method: 'POST',

@@ -1,18 +1,18 @@
 ---
-id: createDebouncedSignal
-title: createDebouncedSignal
+id: injectDebouncedSignal
+title: injectDebouncedSignal
 ---
 
-# Function: createDebouncedSignal()
+# Function: injectDebouncedSignal()
 
 ```ts
-function createDebouncedSignal<TValue, TSelected>(
+function injectDebouncedSignal<TValue, TSelected>(
    value, 
    initialOptions, 
 selector?): DebouncedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/debouncer/createDebouncedSignal.ts:87](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/createDebouncedSignal.ts#L87)
+Defined in: [debouncer/injectDebouncedSignal.ts:70](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L70)
 
 An Angular function that creates a debounced state signal, combining Angular's signal with debouncing functionality.
 This function provides both the current debounced value and methods to update it.
@@ -22,10 +22,10 @@ If another update is attempted before the wait time expires, the timer resets an
 This is useful for handling frequent state updates that should be throttled, like search input values
 or window resize dimensions.
 
-The function returns an object containing:
-- `value`: The current debounced value signal
-- `setValue`: A function to update the debounced value
-- `debouncer`: The debouncer instance with additional control methods and state signals
+The function returns a callable object:
+- `debounced()`: Get the current debounced value
+- `debounced.set(...)`: Set or update the debounced value (debounced via maybeExecute)
+- `debounced.debouncer`: The debouncer instance with additional control methods and state signals
 
 ## State Management and Selector
 
@@ -72,33 +72,19 @@ Available debouncer state properties:
 
 ## Returns
 
-[`DebouncedSignal`](../interfaces/DebouncedSignal.md)\<`TValue`, `TSelected`\>
+[`DebouncedSignal`](../type-aliases/DebouncedSignal.md)\<`TValue`, `TSelected`\>
 
 ## Example
 
 ```ts
-// Default behavior - no reactive state subscriptions
-const debounced = createDebouncedSignal('', {
-  wait: 500 // Wait 500ms after last keystroke
-});
+const debouncedQuery = injectDebouncedSignal('', { wait: 500 })
 
-// Opt-in to reactive updates when pending state changes (optimized for loading indicators)
-const debounced = createDebouncedSignal(
-  '',
-  { wait: 500 },
-  (state) => ({ isPending: state.isPending })
-);
+// Get value
+console.log(debouncedQuery())
 
-// Update value - will be debounced
-const handleChange = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  debounced.setValue(target.value);
-};
+// Set/update value (debounced)
+debouncedQuery.set('hello')
 
-// Access debounced value
-console.log('Search term:', debounced.value());
-
-// Access debouncer state via signals
-console.log('Executions:', debounced.debouncer.state().executionCount);
-console.log('Is pending:', debounced.debouncer.state().isPending);
+// Access debouncer
+console.log(debouncedQuery.debouncer.state().isPending)
 ```

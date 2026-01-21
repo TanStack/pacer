@@ -5,7 +5,7 @@ title: AngularAsyncThrottler
 
 # Interface: AngularAsyncThrottler\<TFn, TSelected\>
 
-Defined in: [angular-pacer/src/async-throttler/createAsyncThrottler.ts:12](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/createAsyncThrottler.ts#L12)
+Defined in: [async-throttler/injectAsyncThrottler.ts:12](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L12)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [angular-pacer/src/async-throttler/createAsyncThrottler.ts:12](https
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [angular-pacer/src/async-throttler/createAsyncThrottler.ts:21](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/createAsyncThrottler.ts#L21)
+Defined in: [async-throttler/injectAsyncThrottler.ts:21](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L21)
 
 Reactive state signal that will be updated when the async throttler state changes
 
@@ -44,7 +44,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>;
 ```
 
-Defined in: [angular-pacer/src/async-throttler/createAsyncThrottler.ts:26](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/createAsyncThrottler.ts#L26)
+Defined in: [async-throttler/injectAsyncThrottler.ts:26](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L26)
 
 #### Deprecated
 

@@ -1,18 +1,18 @@
 ---
-id: createAsyncDebouncer
-title: createAsyncDebouncer
+id: injectAsyncDebouncer
+title: injectAsyncDebouncer
 ---
 
-# Function: createAsyncDebouncer()
+# Function: injectAsyncDebouncer()
 
 ```ts
-function createAsyncDebouncer<TFn, TSelected>(
+function injectAsyncDebouncer<TFn, TSelected>(
    fn, 
    options, 
 selector): AngularAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-debouncer/createAsyncDebouncer.ts:92](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-debouncer/createAsyncDebouncer.ts#L92)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:92](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L92)
 
 An Angular function that creates and manages an AsyncDebouncer instance.
 
@@ -80,7 +80,7 @@ Available state properties:
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const debouncer = createAsyncDebouncer(
+const debouncer = injectAsyncDebouncer(
   async (query: string) => {
     const response = await fetch(`/api/search?q=${query}`);
     return response.json();
@@ -89,7 +89,7 @@ const debouncer = createAsyncDebouncer(
 );
 
 // Opt-in to track isExecuting changes (optimized for loading states)
-const debouncer = createAsyncDebouncer(
+const debouncer = injectAsyncDebouncer(
   async (query: string) => fetchSearchResults(query),
   { wait: 500 },
   (state) => ({ isExecuting: state.isExecuting, isPending: state.isPending })

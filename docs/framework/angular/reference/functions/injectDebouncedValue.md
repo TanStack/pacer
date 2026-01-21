@@ -1,21 +1,21 @@
 ---
-id: createDebouncedValue
-title: createDebouncedValue
+id: injectDebouncedValue
+title: injectDebouncedValue
 ---
 
-# Function: createDebouncedValue()
+# Function: injectDebouncedValue()
 
 ```ts
-function createDebouncedValue<TValue, TSelected>(
+function injectDebouncedValue<TValue, TSelected>(
    value, 
    initialOptions, 
-   selector?): [Signal<TValue>, AngularDebouncer<Setter<TValue>, TSelected>];
+selector?): DebouncedSignal<TValue>;
 ```
 
-Defined in: [angular-pacer/src/debouncer/createDebouncedValue.ts:74](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/createDebouncedValue.ts#L74)
+Defined in: [debouncer/injectDebouncedValue.ts:80](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedValue.ts#L80)
 
 An Angular function that creates a debounced value that updates only after a specified delay.
-Unlike createDebouncedSignal, this function automatically tracks changes to the input signal
+Unlike injectDebouncedSignal, this function automatically tracks changes to the input signal
 and updates the debounced value accordingly.
 
 The debounced value will only update after the specified wait time has elapsed since
@@ -48,6 +48,12 @@ Available debouncer state properties:
 - `lastArgs`: The arguments from the most recent call to maybeExecute
 - `status`: Current execution status ('disabled' | 'idle' | 'pending')
 
+## Handling Input Signals
+
+The input value is wrapped in a `linkedSignal` to defer reads of Angular input signals
+until they are ready. This prevents `NG0729: Input signals not ready` errors that occur
+when a signal input is accessed during component field initialization.
+
 ## Type Parameters
 
 ### TValue
@@ -75,19 +81,19 @@ Available debouncer state properties:
 
 ## Returns
 
-\[`Signal`\<`TValue`\>, [`AngularDebouncer`](../interfaces/AngularDebouncer.md)\<`Setter`\<`TValue`\>, `TSelected`\>\]
+[`DebouncedSignal`](../type-aliases/DebouncedSignal.md)\<`TValue`\>
 
 ## Example
 
 ```ts
 // Default behavior - no reactive state subscriptions
 const searchQuery = signal('');
-const [debouncedQuery, debouncer] = createDebouncedValue(searchQuery, {
+const [debouncedQuery, debouncer] = injectDebouncedValue(searchQuery, {
   wait: 500 // Wait 500ms after last change
 });
 
 // Opt-in to reactive updates when pending state changes (optimized for loading indicators)
-const [debouncedQuery, debouncer] = createDebouncedValue(
+const [debouncedQuery, debouncer] = injectDebouncedValue(
   searchQuery,
   { wait: 500 },
   (state) => ({ isPending: state.isPending })

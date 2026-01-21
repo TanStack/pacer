@@ -1,23 +1,23 @@
 ---
-id: createAsyncThrottledCallback
-title: createAsyncThrottledCallback
+id: injectAsyncThrottledCallback
+title: injectAsyncThrottledCallback
 ---
 
-# Function: createAsyncThrottledCallback()
+# Function: injectAsyncThrottledCallback()
 
 ```ts
-function createAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
+function injectAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [angular-pacer/src/async-throttler/createAsyncThrottledCallback.ts:41](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/createAsyncThrottledCallback.ts#L41)
+Defined in: [async-throttler/injectAsyncThrottledCallback.ts:41](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottledCallback.ts#L41)
 
 An Angular function that creates an async throttled version of a callback function.
-This function is essentially a wrapper around `createAsyncThrottler` that provides
+This function is essentially a wrapper around `injectAsyncThrottler` that provides
 a simplified API for basic async throttling needs.
 
 The throttled function will execute at most once within the specified wait time.
 
-This function provides a simpler API compared to `createAsyncThrottler`, making it ideal for basic
+This function provides a simpler API compared to `injectAsyncThrottler`, making it ideal for basic
 async throttling needs. However, it does not expose the underlying AsyncThrottler instance.
 
 For advanced usage requiring features like:
@@ -26,7 +26,7 @@ For advanced usage requiring features like:
 - Error handling callbacks
 - Retry support
 
-Consider using the `createAsyncThrottler` function instead.
+Consider using the `injectAsyncThrottler` function instead.
 
 ## Type Parameters
 
@@ -64,7 +64,7 @@ Consider using the `createAsyncThrottler` function instead.
 
 ```ts
 // Throttle an async update handler
-const handleUpdate = createAsyncThrottledCallback(
+const handleUpdate = injectAsyncThrottledCallback(
   async (data: Data) => {
     const response = await fetch('/api/update', {
       method: 'POST',

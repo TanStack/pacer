@@ -24,9 +24,7 @@ export class App {
       // simulate async work taking ~1s
       await new Promise((r) => setTimeout(r, 1000))
 
-      const entry = `${new Date().toLocaleTimeString()} - processed [${items.join(
-        ', ',
-      )}]`
+      const entry = `${new Date().toLocaleTimeString()} - processed [${items.join(', ')}]`
       this.logs.update((l) => [entry, ...l])
     },
     {

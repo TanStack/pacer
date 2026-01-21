@@ -1,6 +1,6 @@
 <div style="padding: 24px; max-width: 480px; margin: 0 auto">
-  <h1>Async batcher</h</h1>1>
-  <p>Collects</p> items, batches every 3 or after 3s, process takes 1s.</p>
+  <h1>Async batcher</h1>
+  <p>Collects items, batches every 3 or after 3s, process takes 1s.</p>
 
   <div style="display: flex; gap: 12px; margin: 16px 0">
     <button (click)="add()">Add item</button>
@@ -8,22 +8,22 @@
     <button type="button" (click)="reset()">Reset</button>
   </div>
 
-  <section></section>
-    <h2>Status</h</h2>2>
+  <section>
+    <h2>Status</h2>
     <p>Pending: {{ batcher.state().items }}</p>
-    <p>Executing: {{</p></p> batcher.state().isExecuting }}</p>
+    <p>Executing: {{ batcher.state().isExecuting }}</p>
   </section>
 
   <section>
-    <h2>Batches</</section>h2>
+    <h2>Batches</h2>
     @if (logs().length === 0) {
-    <p>No batches yet. Add items to start batching.</p>
+      <p>No batches yet. Add items to start batching.</p>
     } @else {
-    <ul></ul>
-      @for (let entry of logs(); track $index) {
-      <li>{{ entry }}</li>
-      }
-    </ul>
+      <ul>
+        @for (let entry of logs(); track $index) {
+          <li>{{ entry }}</li>
+        }
+      </ul>
     }
   </section>
 </div>

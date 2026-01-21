@@ -1,18 +1,18 @@
 ---
-id: createBatcher
-title: createBatcher
+id: injectBatcher
+title: injectBatcher
 ---
 
-# Function: createBatcher()
+# Function: injectBatcher()
 
 ```ts
-function createBatcher<TValue, TSelected>(
+function injectBatcher<TValue, TSelected>(
    fn, 
    options, 
 selector): AngularBatcher<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/batcher/createBatcher.ts:61](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/batcher/createBatcher.ts#L61)
+Defined in: [batcher/injectBatcher.ts:61](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L61)
 
 An Angular function that creates and manages a Batcher instance.
 
@@ -67,7 +67,7 @@ full control over when your component tracks state changes.
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const batcher = createBatcher(
+const batcher = injectBatcher(
   (items) => console.log('Processing batch:', items),
   { maxSize: 5, wait: 2000 }
 );

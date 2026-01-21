@@ -1,25 +1,25 @@
 ---
-id: createAsyncDebouncedCallback
-title: createAsyncDebouncedCallback
+id: injectAsyncDebouncedCallback
+title: injectAsyncDebouncedCallback
 ---
 
-# Function: createAsyncDebouncedCallback()
+# Function: injectAsyncDebouncedCallback()
 
 ```ts
-function createAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
+function injectAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [angular-pacer/src/async-debouncer/createAsyncDebouncedCallback.ts:40](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-debouncer/createAsyncDebouncedCallback.ts#L40)
+Defined in: [async-debouncer/injectAsyncDebouncedCallback.ts:40](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncedCallback.ts#L40)
 
 An Angular function that creates an async debounced version of a callback function.
-This function is essentially a wrapper around `createAsyncDebouncer` that provides
+This function is essentially a wrapper around `injectAsyncDebouncer` that provides
 a simplified API for basic async debouncing needs.
 
 The debounced function will only execute after the specified wait time has elapsed
 since its last invocation. If called again before the wait time expires, the timer
 resets and starts waiting again.
 
-This function provides a simpler API compared to `createAsyncDebouncer`, making it ideal for basic
+This function provides a simpler API compared to `injectAsyncDebouncer`, making it ideal for basic
 async debouncing needs. However, it does not expose the underlying AsyncDebouncer instance.
 
 For advanced usage requiring features like:
@@ -28,7 +28,7 @@ For advanced usage requiring features like:
 - Error handling callbacks
 - Retry support
 
-Consider using the `createAsyncDebouncer` function instead.
+Consider using the `injectAsyncDebouncer` function instead.
 
 ## Type Parameters
 
@@ -66,7 +66,7 @@ Consider using the `createAsyncDebouncer` function instead.
 
 ```ts
 // Debounce an async search handler
-const handleSearch = createAsyncDebouncedCallback(
+const handleSearch = injectAsyncDebouncedCallback(
   async (query: string) => {
     const response = await fetch(`/api/search?q=${query}`);
     return response.json();

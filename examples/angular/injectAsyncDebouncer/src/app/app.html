@@ -18,11 +18,11 @@
 
 <h2>Results</h2>
 @if (results().length === 0) {
-  <p>(no results)</p>
+<p>(no results)</p>
 } @else {
-  <ul>
-    @for (let item of results(); track item) {
-      <li>{{ item }}</li>
-    }
-  </ul>
+<ul>
+  @for (let item of results(); track item) {
+  <li>{{ item }}</li>
+  }
+</ul>
 }

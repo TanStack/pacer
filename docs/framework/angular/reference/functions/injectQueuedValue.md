@@ -1,21 +1,21 @@
 ---
-id: createQueuedValue
-title: createQueuedValue
+id: injectQueuedValue
+title: injectQueuedValue
 ---
 
-# Function: createQueuedValue()
+# Function: injectQueuedValue()
 
 ```ts
-function createQueuedValue<TValue, TSelected>(
+function injectQueuedValue<TValue, TSelected>(
    initialValue, 
    options, 
-   selector?): [Signal<TValue>, AngularQueuer<TValue, TSelected>];
+selector?): QueuedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/queuer/createQueuedValue.ts:31](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/createQueuedValue.ts#L31)
+Defined in: [queuer/injectQueuedValue.ts:31](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L31)
 
 An Angular function that creates a queued value that processes state changes in order with an optional delay.
-This function uses createQueuedSignal internally to manage a queue of state changes and apply them sequentially.
+This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.
 
 The queued value will process changes in the order they are received, with optional delays between
 processing each change. This is useful for handling state updates that need to be processed
@@ -51,13 +51,13 @@ The function returns a tuple containing:
 
 ## Returns
 
-\[`Signal`\<`TValue`\>, [`AngularQueuer`](../interfaces/AngularQueuer.md)\<`TValue`, `TSelected`\>\]
+[`QueuedSignal`](../type-aliases/QueuedSignal.md)\<`TValue`, `TSelected`\>
 
 ## Example
 
 ```ts
 const initialValue = signal('initial');
-const [value, queuer] = createQueuedValue(initialValue, {
+const [value, queuer] = injectQueuedValue(initialValue, {
   wait: 500,
   started: true
 });

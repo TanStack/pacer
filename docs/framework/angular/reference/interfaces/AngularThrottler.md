@@ -5,7 +5,7 @@ title: AngularThrottler
 
 # Interface: AngularThrottler\<TFn, TSelected\>
 
-Defined in: [angular-pacer/src/throttler/createThrottler.ts:12](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/createThrottler.ts#L12)
+Defined in: [throttler/injectThrottler.ts:12](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L12)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [angular-pacer/src/throttler/createThrottler.ts:12](https://github.c
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [angular-pacer/src/throttler/createThrottler.ts:21](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/createThrottler.ts#L21)
+Defined in: [throttler/injectThrottler.ts:21](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L21)
 
 Reactive state signal that will be updated when the throttler state changes
 
@@ -44,7 +44,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: [angular-pacer/src/throttler/createThrottler.ts:26](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/createThrottler.ts#L26)
+Defined in: [throttler/injectThrottler.ts:26](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L26)
 
 #### Deprecated
 

@@ -5,7 +5,7 @@ title: AngularQueuer
 
 # Interface: AngularQueuer\<TValue, TSelected\>
 
-Defined in: [angular-pacer/src/queuer/createQueuer.ts:8](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/createQueuer.ts#L8)
+Defined in: [queuer/injectQueuer.ts:8](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L8)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [angular-pacer/src/queuer/createQueuer.ts:8](https://github.com/theV
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [angular-pacer/src/queuer/createQueuer.ts:17](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/createQueuer.ts#L17)
+Defined in: [queuer/injectQueuer.ts:17](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L17)
 
 Reactive state signal that will be updated when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<QueuerState<TValue>>>;
 ```
 
-Defined in: [angular-pacer/src/queuer/createQueuer.ts:22](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/createQueuer.ts#L22)
+Defined in: [queuer/injectQueuer.ts:22](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L22)
 
 #### Deprecated
 

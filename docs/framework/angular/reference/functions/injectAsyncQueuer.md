@@ -1,18 +1,18 @@
 ---
-id: createAsyncQueuer
-title: createAsyncQueuer
+id: injectAsyncQueuer
+title: injectAsyncQueuer
 ---
 
-# Function: createAsyncQueuer()
+# Function: injectAsyncQueuer()
 
 ```ts
-function createAsyncQueuer<TValue, TSelected>(
+function injectAsyncQueuer<TValue, TSelected>(
    fn, 
    options, 
 selector): AngularAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-queuer/createAsyncQueuer.ts:69](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-queuer/createAsyncQueuer.ts#L69)
+Defined in: [async-queuer/injectAsyncQueuer.ts:69](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L69)
 
 An Angular function that creates and manages an AsyncQueuer instance.
 
@@ -65,7 +65,7 @@ full control over when your component tracks state changes.
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const queuer = createAsyncQueuer(
+const queuer = injectAsyncQueuer(
   async (item: Data) => {
     const response = await fetch('/api/process', {
       method: 'POST',

@@ -1,18 +1,18 @@
 ---
-id: createDebouncer
-title: createDebouncer
+id: injectDebouncer
+title: injectDebouncer
 ---
 
-# Function: createDebouncer()
+# Function: injectDebouncer()
 
 ```ts
-function createDebouncer<TFn, TSelected>(
+function injectDebouncer<TFn, TSelected>(
    fn, 
    options, 
 selector): AngularDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/debouncer/createDebouncer.ts:85](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/createDebouncer.ts#L85)
+Defined in: [debouncer/injectDebouncer.ts:85](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L85)
 
 An Angular function that creates and manages a Debouncer instance.
 
@@ -77,13 +77,13 @@ Available state properties:
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const debouncer = createDebouncer(
+const debouncer = injectDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 }
 );
 
 // Opt-in to track isPending changes (optimized for loading states)
-const debouncer = createDebouncer(
+const debouncer = injectDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 },
   (state) => ({ isPending: state.isPending })

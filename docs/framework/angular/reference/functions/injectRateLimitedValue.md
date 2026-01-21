@@ -1,21 +1,21 @@
 ---
-id: createRateLimitedValue
-title: createRateLimitedValue
+id: injectRateLimitedValue
+title: injectRateLimitedValue
 ---
 
-# Function: createRateLimitedValue()
+# Function: injectRateLimitedValue()
 
 ```ts
-function createRateLimitedValue<TValue, TSelected>(
+function injectRateLimitedValue<TValue, TSelected>(
    value, 
    initialOptions, 
-   selector?): [Signal<TValue>, AngularRateLimiter<Setter<TValue>, TSelected>];
+selector?): RateLimitedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/rate-limiter/createRateLimitedValue.ts:50](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/rate-limiter/createRateLimitedValue.ts#L50)
+Defined in: [rate-limiter/injectRateLimitedValue.ts:50](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedValue.ts#L50)
 
 An Angular function that creates a rate-limited value that updates at most a certain number of times within a time window.
-Unlike createRateLimitedSignal, this function automatically tracks changes to the input signal
+Unlike injectRateLimitedSignal, this function automatically tracks changes to the input signal
 and updates the rate-limited value accordingly.
 
 The rate-limited value will update according to the configured rate limit, blocking updates
@@ -62,14 +62,14 @@ full control over when your component tracks state changes.
 
 ## Returns
 
-\[`Signal`\<`TValue`\>, [`AngularRateLimiter`](../interfaces/AngularRateLimiter.md)\<`Setter`\<`TValue`\>, `TSelected`\>\]
+[`RateLimitedSignal`](../type-aliases/RateLimitedSignal.md)\<`TValue`, `TSelected`\>
 
 ## Example
 
 ```ts
 // Default behavior - no reactive state subscriptions
 const value = signal(0);
-const [rateLimitedValue, rateLimiter] = createRateLimitedValue(value, {
+const [rateLimitedValue, rateLimiter] = injectRateLimitedValue(value, {
   limit: 5,
   window: 60000,
   windowType: 'sliding'

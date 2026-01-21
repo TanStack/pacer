@@ -16,22 +16,22 @@
 
 <h2>Last Batch</h2>
 @if (lastBatch().length === 0) {
-  <p>(none yet)</p>
+<p>(none yet)</p>
 } @else {
-  <ul>
-    @for (let x of lastBatch(); track x) {
-      <li>{{ x }}</li>
-    }
-  </ul>
+<ul>
+  @for (let x of lastBatch(); track x) {
+  <li>{{ x }}</li>
+  }
+</ul>
 }
 
 <h2>History</h2>
 @if (batchHistory().length === 0) {
-  <p>(no batches yet)</p>
+<p>(no batches yet)</p>
 } @else {
-  <ol>
-    @for (let batch of batchHistory(); track $index) {
-      <li>{{ batch.join(', ') }}</li>
-    }
-  </ol>
+<ol>
+  @for (let batch of batchHistory(); track $index) {
+  <li>{{ batch.join(', ') }}</li>
+  }
+</ol>
 }

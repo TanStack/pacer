@@ -1,21 +1,21 @@
 ---
-id: createAsyncRateLimitedCallback
-title: createAsyncRateLimitedCallback
+id: injectAsyncRateLimitedCallback
+title: injectAsyncRateLimitedCallback
 ---
 
-# Function: createAsyncRateLimitedCallback()
+# Function: injectAsyncRateLimitedCallback()
 
 ```ts
-function createAsyncRateLimitedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
+function injectAsyncRateLimitedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [angular-pacer/src/async-rate-limiter/createAsyncRateLimitedCallback.ts:43](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/createAsyncRateLimitedCallback.ts#L43)
+Defined in: [async-rate-limiter/injectAsyncRateLimitedCallback.ts:43](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimitedCallback.ts#L43)
 
 An Angular function that creates an async rate-limited version of a callback function.
-This function is essentially a wrapper around `createAsyncRateLimiter` that provides
+This function is essentially a wrapper around `injectAsyncRateLimiter` that provides
 a simplified API for basic async rate limiting needs.
 
-This function provides a simpler API compared to `createAsyncRateLimiter`, making it ideal for basic
+This function provides a simpler API compared to `injectAsyncRateLimiter`, making it ideal for basic
 async rate limiting needs. However, it does not expose the underlying AsyncRateLimiter instance.
 
 For advanced usage requiring features like:
@@ -24,7 +24,7 @@ For advanced usage requiring features like:
 - Error handling callbacks
 - Retry support
 
-Consider using the `createAsyncRateLimiter` function instead.
+Consider using the `injectAsyncRateLimiter` function instead.
 
 ## Type Parameters
 
@@ -62,7 +62,7 @@ Consider using the `createAsyncRateLimiter` function instead.
 
 ```ts
 // Rate limit API calls
-const makeApiCall = createAsyncRateLimitedCallback(
+const makeApiCall = injectAsyncRateLimitedCallback(
   async (data: ApiData) => {
     const response = await fetch('/api/endpoint', {
       method: 'POST',

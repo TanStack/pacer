@@ -1,18 +1,18 @@
 ---
-id: createAsyncThrottler
-title: createAsyncThrottler
+id: injectAsyncThrottler
+title: injectAsyncThrottler
 ---
 
-# Function: createAsyncThrottler()
+# Function: injectAsyncThrottler()
 
 ```ts
-function createAsyncThrottler<TFn, TSelected>(
+function injectAsyncThrottler<TFn, TSelected>(
    fn, 
    options, 
 selector): AngularAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-throttler/createAsyncThrottler.ts:71](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/createAsyncThrottler.ts#L71)
+Defined in: [async-throttler/injectAsyncThrottler.ts:71](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L71)
 
 An Angular function that creates and manages an AsyncThrottler instance.
 
@@ -67,7 +67,7 @@ full control over when your component tracks state changes.
 
 ```ts
 // Default behavior - no reactive state subscriptions
-const throttler = createAsyncThrottler(
+const throttler = injectAsyncThrottler(
   async (data: Data) => {
     const response = await fetch('/api/update', {
       method: 'POST',

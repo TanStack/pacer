@@ -1,18 +1,18 @@
 ---
-id: createAsyncQueuedSignal
-title: createAsyncQueuedSignal
+id: injectAsyncQueuedSignal
+title: injectAsyncQueuedSignal
 ---
 
-# Function: createAsyncQueuedSignal()
+# Function: injectAsyncQueuedSignal()
 
 ```ts
-function createAsyncQueuedSignal<TValue, TSelected>(
+function injectAsyncQueuedSignal<TValue, TSelected>(
    fn, 
    options, 
 selector): AsyncQueuedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-queuer/createAsyncQueuedSignal.ts:65](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-queuer/createAsyncQueuedSignal.ts#L65)
+Defined in: [async-queuer/injectAsyncQueuedSignal.ts:60](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L60)
 
 An Angular function that creates an async queuer with managed state, combining Angular's signals with async queuing functionality.
 This function provides both the current queue state and queue control methods.
@@ -20,10 +20,10 @@ This function provides both the current queue state and queue control methods.
 The queue state is automatically updated whenever items are added, removed, or processed in the queue.
 All queue operations are reflected in the state array returned by the function.
 
-The function returns an object containing:
-- `items`: A Signal that provides the current queue items as an array
-- `addItem`: The queuer's addItem method
-- `queuer`: The queuer instance with additional control methods
+The function returns a callable object:
+- `queued()`: Get the current queue items as an array
+- `queued.addItem(...)`: Add an item to the queue
+- `queued.queue`: The queuer instance with additional control methods
 
 ## Type Parameters
 
@@ -51,13 +51,13 @@ The function returns an object containing:
 
 ## Returns
 
-[`AsyncQueuedSignal`](../interfaces/AsyncQueuedSignal.md)\<`TValue`, `TSelected`\>
+[`AsyncQueuedSignal`](../type-aliases/AsyncQueuedSignal.md)\<`TValue`, `TSelected`\>
 
 ## Example
 
 ```ts
 // Default behavior - track items
-const queue = createAsyncQueuedSignal(
+const queued = injectAsyncQueuedSignal(
   async (item) => {
     const response = await fetch('/api/process', {
       method: 'POST',
@@ -69,12 +69,12 @@ const queue = createAsyncQueuedSignal(
 );
 
 // Add items
-queue.addItem(data1);
+queued.addItem(data1);
 
 // Access items
-console.log(queue.items()); // [data1, ...]
+console.log(queued()); // [data1, ...]
 
 // Control the queue
-queue.queuer.start();
-queue.queuer.stop();
+queued.queuer.start();
+queued.queuer.stop();
 ```
