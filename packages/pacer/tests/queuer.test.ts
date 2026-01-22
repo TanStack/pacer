@@ -24,6 +24,13 @@ describe('Queuer', () => {
     expect(queuer.store.state.size).toBe(2)
   })
 
+  it('should initialize with default state including processedKeys', () => {
+    const fn = vi.fn()
+    const queuer = new Queuer(fn, { started: false })
+
+    expect(queuer.store.state.processedKeys).toEqual([])
+  })
+
   describe('addItem', () => {
     it('should add items to the queuer', () => {
       const fn = vi.fn()
@@ -348,6 +355,23 @@ describe('Queuer', () => {
       queuer.reset()
       expect(queuer.peekAllItems()).toEqual([])
     })
+
+    it('should also reset processedKeys', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        deduplicateItems: true,
+      })
+
+      queuer.addItem(1)
+      queuer.execute() // processedKeys = [1]
+
+      expect(queuer.store.state.processedKeys).toEqual([1])
+
+      queuer.reset()
+
+      expect(queuer.store.state.processedKeys).toEqual([])
+    })
   })
 
   describe('start', () => {
@@ -533,6 +557,293 @@ describe('Queuer', () => {
         expect(batchFn).toHaveBeenCalledTimes(1)
         expect(batchFn).toHaveBeenCalledWith([])
       })
+    })
+  })
+
+  describe('In-Queue Deduplication', () => {
+    it('should not deduplicate by default', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, { started: false, maxSize: 5 })
+
+      expect(queuer.addItem(1)).toBe(true)
+      expect(queuer.addItem(1)).toBe(true)
+      expect(queuer.addItem(2)).toBe(true)
+
+      expect(queuer.store.state.items).toEqual([1, 1, 2])
+      expect(queuer.store.state.size).toBe(3)
+    })
+
+    it('should deduplicate primitive items in current queue with keep-first strategy', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        maxSize: 5,
+        deduplicateItems: true,
+      })
+
+      queuer.addItem(1)
+      queuer.addItem(2)
+      queuer.addItem(1) // Duplicate in queue
+      queuer.addItem(3)
+
+      expect(queuer.store.state.items).toEqual([1, 2, 3])
+      expect(queuer.store.state.size).toBe(3)
+    })
+
+    it('should deduplicate with keep-last strategy', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        maxSize: 5,
+        deduplicateItems: true,
+        deduplicateStrategy: 'keep-last',
+      })
+
+      queuer.addItem('a')
+      queuer.addItem('b')
+      queuer.addItem('a') // Should replace first 'a'
+
+      expect(queuer.store.state.items).toEqual(['a', 'b'])
+      expect(queuer.store.state.size).toBe(2)
+    })
+
+    it('should call onDuplicate callback for in-queue duplicates', () => {
+      const fn = vi.fn()
+      const onDuplicate = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        maxSize: 5,
+        deduplicateItems: true,
+        onDuplicate,
+      })
+
+      queuer.addItem(1)
+      queuer.addItem(2)
+      queuer.addItem(1) // Duplicate in queue
+
+      expect(onDuplicate).toHaveBeenCalledTimes(1)
+      expect(onDuplicate).toHaveBeenCalledWith(1, 1, queuer)
+    })
+
+    it('should deduplicate before checking maxSize', () => {
+      const fn = vi.fn()
+      const onReject = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        maxSize: 2,
+        deduplicateItems: true,
+        onReject,
+      })
+
+      queuer.addItem(1)
+      queuer.addItem(2)
+      queuer.addItem(1) // Duplicate in queue, should not trigger rejection
+
+      expect(queuer.store.state.size).toBe(2)
+      expect(onReject).not.toHaveBeenCalled()
+
+      queuer.addItem(3) // Should be rejected
+
+      expect(queuer.store.state.size).toBe(2)
+      expect(onReject).toHaveBeenCalledWith(3, queuer)
+    })
+  })
+
+  describe('Cross-Execution Deduplication', () => {
+    it('should skip items that were already processed', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        deduplicateItems: true,
+      })
+
+      queuer.addItem(1)
+      queuer.addItem(2)
+      queuer.execute() // Processes 1, processedKeys = [1]
+      queuer.execute() // Processes 2, processedKeys = [1, 2]
+
+      expect(fn).toHaveBeenCalledTimes(2)
+
+      // Now try to add already processed items
+      const result1 = queuer.addItem(1) // Should be skipped
+      const result2 = queuer.addItem(2) // Should be skipped
+      const result3 = queuer.addItem(3) // Should be added
+
+      expect(result1).toBe(false)
+      expect(result2).toBe(false)
+      expect(result3).toBe(true)
+
+      expect(queuer.store.state.items).toEqual([3])
+    })
+
+    it('should call onDuplicate with undefined existingItem for cross-execution duplicates', () => {
+      const fn = vi.fn()
+      const onDuplicate = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        deduplicateItems: true,
+        onDuplicate,
+      })
+
+      queuer.addItem(1)
+      queuer.execute() // Processes 1
+
+      onDuplicate.mockClear()
+      queuer.addItem(1) // Already processed
+
+      expect(onDuplicate).toHaveBeenCalledTimes(1)
+      expect(onDuplicate).toHaveBeenCalledWith(1, undefined, queuer)
+    })
+
+    it('should track processed keys with custom getItemKey', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer<{ id: string; value: number }>(fn, {
+        started: false,
+        deduplicateItems: true,
+        getItemKey: (item) => item.id,
+      })
+
+      queuer.addItem({ id: 'user-1', value: 100 })
+      queuer.execute() // Processes user-1
+
+      // Try to add same user with different value
+      const result = queuer.addItem({ id: 'user-1', value: 150 })
+      expect(result).toBe(false)
+
+      // New user should be added
+      const result2 = queuer.addItem({ id: 'user-2', value: 200 })
+      expect(result2).toBe(true)
+    })
+
+    it('should respect maxTrackedKeys limit with FIFO eviction', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        deduplicateItems: true,
+        maxTrackedKeys: 3,
+      })
+
+      // Process items 1, 2, 3
+      queuer.addItem(1)
+      queuer.execute() // processedKeys = [1]
+      queuer.addItem(2)
+      queuer.execute() // processedKeys = [1, 2]
+      queuer.addItem(3)
+      queuer.execute() // processedKeys = [1, 2, 3]
+
+      // Process item 4 - should evict key 1
+      queuer.addItem(4)
+      queuer.execute() // processedKeys = [2, 3, 4]
+
+      expect(queuer.store.state.processedKeys).toEqual([2, 3, 4])
+
+      // Item 1 should be processable again (evicted from tracking)
+      const result = queuer.addItem(1)
+      expect(result).toBe(true)
+    })
+
+    it('should provide peekProcessedKeys method', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        deduplicateItems: true,
+      })
+
+      queuer.addItem(1)
+      queuer.addItem(2)
+      queuer.execute()
+      queuer.execute()
+
+      const keys = queuer.peekProcessedKeys()
+      expect(keys).toEqual([1, 2])
+
+      // Should be a copy
+      keys.push(3)
+      expect(queuer.store.state.processedKeys).toEqual([1, 2])
+    })
+
+    it('should provide hasProcessedKey method', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        deduplicateItems: true,
+      })
+
+      queuer.addItem(1)
+      queuer.addItem(2)
+      queuer.execute()
+      queuer.execute()
+
+      expect(queuer.hasProcessedKey(1)).toBe(true)
+      expect(queuer.hasProcessedKey(2)).toBe(true)
+      expect(queuer.hasProcessedKey(3)).toBe(false)
+    })
+
+    it('should provide clearProcessedKeys method', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        deduplicateItems: true,
+      })
+
+      queuer.addItem(1)
+      queuer.execute()
+
+      expect(queuer.store.state.processedKeys).toEqual([1])
+
+      queuer.addItem(1) // Skipped
+
+      queuer.clearProcessedKeys()
+
+      expect(queuer.store.state.processedKeys).toEqual([])
+
+      // Now item 1 should be addable again
+      const result = queuer.addItem(1)
+      expect(result).toBe(true)
+    })
+
+    it('should restore processedKeys from initialState', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        deduplicateItems: true,
+        initialState: {
+          processedKeys: ['task-1', 'task-2'],
+        },
+      })
+
+      expect(queuer.store.state.processedKeys).toEqual(['task-1', 'task-2'])
+
+      // These should be skipped
+      const result1 = queuer.addItem('task-1')
+      const result2 = queuer.addItem('task-2')
+      expect(result1).toBe(false)
+      expect(result2).toBe(false)
+
+      // New item should be added
+      const result3 = queuer.addItem('task-3')
+      expect(result3).toBe(true)
+    })
+
+    it('should work with priority queue', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer<{ id: string; priority: number }>(fn, {
+        started: false,
+        deduplicateItems: true,
+        getItemKey: (item) => item.id,
+        getPriority: (item) => item.priority,
+      })
+
+      queuer.addItem({ id: 'task-1', priority: 1 })
+      queuer.addItem({ id: 'task-2', priority: 3 })
+      queuer.execute() // Processes task-2 (highest priority)
+
+      // task-2 should be skipped
+      const result = queuer.addItem({ id: 'task-2', priority: 5 })
+      expect(result).toBe(false)
+
+      // task-1 should still be processable
+      expect(queuer.store.state.items).toEqual([{ id: 'task-1', priority: 1 }])
     })
   })
 })
