@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@tanstack/solid-pacer": "^0.18.3",
-    "solid-js": "^1.9.10"
+    "solid-js": "^1.9.11"
   },
   "devDependencies": {
     "vite": "^7.3.1",
