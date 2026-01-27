@@ -1388,6 +1388,31 @@ importers:
         specifier: ^7.3.1
         version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
 
+  examples/react/useBatcherDedup:
+    dependencies:
+      '@tanstack/react-pacer':
+        specifier: ^0.19.3
+        version: link:../../../packages/react-pacer
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.8
+        version: 19.2.8
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.8)
+      '@vitejs/plugin-react':
+        specifier: ^5.1.2
+        version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
+      vite:
+        specifier: ^7.3.1
+        version: 7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2)
+
   examples/react/useDebouncedCallback:
     dependencies:
       '@tanstack/react-pacer':
