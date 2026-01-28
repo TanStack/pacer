@@ -56,7 +56,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
     "goober": "^2.1.18",
-    "solid-js": "^1.9.10"
+    "solid-js": "^1.9.11"
   },
   "devDependencies": {
     "vite-plugin-solid": "^2.11.10"
