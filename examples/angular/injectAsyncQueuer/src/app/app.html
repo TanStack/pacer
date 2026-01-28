@@ -1,0 +1,58 @@
+<h1>injectAsyncQueuer example</h1>
+
+<p>
+  Add jobs quickly to see queuing. This example uses <code>concurrency: 2</code>,
+  <code>wait: 200</code>, and <code>maxSize: 5</code>.
+</p>
+
+<label>
+  Next job text
+  <input [value]="nextText()" (input)="nextText.set($any($event.target).value)" />
+</label>
+
+<div>
+  <button (click)="add()">Add</button>
+  <button (click)="start()">Start</button>
+  <button (click)="stop()">Stop</button>
+  <button (click)="clear()">Clear</button>
+  <button (click)="flush()">Flush</button>
+  <button (click)="reset()">Reset</button>
+</div>
+
+<p>Last add: {{ lastAdd() }}</p>
+
+<h2>Pending</h2>
+@if (queuer.state().items.length === 0) {
+<p>(empty)</p>
+} @else {
+<ul>
+  @for (job of queuer.state().items; track job.id) {
+  <li>#{{ job.id }}: {{ job.text }}</li>
+  }
+</ul>
+}
+
+<h2>Active</h2>
+@if (queuer.state().activeItems.length === 0) {
+<p>(none)</p>
+} @else {
+<ul>
+  @for (job of queuer.state().activeItems; track job.id) {
+  <li>#{{ job.id }}: {{ job.text }}</li>
+  }
+</ul>
+}
+
+<h2>Results</h2>
+@if (results().length === 0) {
+<p>(none)</p>
+} @else {
+<ul>
+  @for (line of results(); track $index) {
+  <li>{{ line }}</li>
+  }
+</ul>
+}
+
+<h2>Queuer state</h2>
+<pre>{{ queuer.state() }}</pre>
