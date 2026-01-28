@@ -135,7 +135,12 @@ export interface BatcherOptions<TValue> {
 
 type BatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<BatcherOptions<TValue>>,
-  'initialState' | 'onExecute' | 'onItemsChange' | 'onDuplicate' | 'key' | 'getItemKey'
+  | 'initialState'
+  | 'onExecute'
+  | 'onItemsChange'
+  | 'onDuplicate'
+  | 'key'
+  | 'getItemKey'
 >
 
 const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
@@ -286,7 +291,7 @@ export class Batcher<TValue> {
 
   #addProcessedKeys = (keys: Array<string | number>): void => {
     const processedKeys = [...this.store.state.processedKeys]
-    
+
     for (const key of keys) {
       // Enforce maxTrackedKeys limit (FIFO eviction)
       while (processedKeys.length >= this.options.maxTrackedKeys) {
@@ -294,7 +299,7 @@ export class Batcher<TValue> {
       }
       processedKeys.push(key)
     }
-    
+
     this.#setState({ processedKeys })
   }
 
@@ -306,7 +311,7 @@ export class Batcher<TValue> {
   addItem = (item: TValue): boolean => {
     if (this.options.deduplicateItems) {
       const key = this.#getItemKey(item)
-      
+
       // Check if this key has already been processed (cross-batch deduplication)
       if (this.#isKeyProcessed(key)) {
         this.options.onDuplicate?.(item, undefined, this)

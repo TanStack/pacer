@@ -740,10 +740,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -765,10 +765,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -790,10 +790,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -815,10 +815,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -840,10 +840,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -865,10 +865,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -890,10 +890,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -915,14 +915,14 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@tanstack/react-devtools':
         specifier: 0.9.2
-        version: 0.9.2(@types/react-dom@19.2.3(@types/react@19.2.9))(@types/react@19.2.9)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.11)
+        version: 0.9.2(@types/react-dom@19.2.3(@types/react@19.2.9))(@types/react@19.2.9)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/react-pacer-devtools':
         specifier: 0.5.2
         version: link:../../../packages/react-pacer-devtools
@@ -946,10 +946,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -971,16 +971,16 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.90.20
-        version: 5.90.20(react@19.2.3)
+        version: 5.90.20(react@19.2.4)
       '@tanstack/react-query-devtools':
         specifier: ^5.91.2
-        version: 5.91.2(@tanstack/react-query@5.90.20(react@19.2.3))(react@19.2.3)
+        version: 5.91.2(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1002,16 +1002,16 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.90.20
-        version: 5.90.20(react@19.2.3)
+        version: 5.90.20(react@19.2.4)
       '@tanstack/react-query-devtools':
         specifier: ^5.91.2
-        version: 5.91.2(@tanstack/react-query@5.90.20(react@19.2.3))(react@19.2.3)
+        version: 5.91.2(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1033,16 +1033,16 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.90.20
-        version: 5.90.20(react@19.2.3)
+        version: 5.90.20(react@19.2.4)
       '@tanstack/react-query-devtools':
         specifier: ^5.91.2
-        version: 5.91.2(@tanstack/react-query@5.90.20(react@19.2.3))(react@19.2.3)
+        version: 5.91.2(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1064,10 +1064,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1089,10 +1089,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1114,10 +1114,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1139,10 +1139,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1164,10 +1164,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1189,10 +1189,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1214,10 +1214,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1239,13 +1239,13 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 0.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1267,13 +1267,13 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 0.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1295,10 +1295,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1320,10 +1320,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1345,10 +1345,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1370,10 +1370,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1395,17 +1395,17 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
-        specifier: ^19.2.8
-        version: 19.2.8
+        specifier: ^19.2.9
+        version: 19.2.9
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.8)
+        version: 19.2.3(@types/react@19.2.9)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
         version: 5.1.2(vite@7.3.1(@types/node@25.0.7)(jiti@2.6.1)(yaml@2.8.2))
@@ -1420,10 +1420,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1445,10 +1445,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1470,10 +1470,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1495,10 +1495,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1520,10 +1520,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1545,10 +1545,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1570,17 +1570,17 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 0.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@tanstack/react-devtools':
         specifier: 0.9.2
-        version: 0.9.2(@types/react-dom@19.2.3(@types/react@19.2.9))(@types/react@19.2.9)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.11)
+        version: 0.9.2(@types/react-dom@19.2.3(@types/react@19.2.9))(@types/react@19.2.9)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/react-pacer-devtools':
         specifier: 0.5.2
         version: link:../../../packages/react-pacer-devtools
@@ -1604,13 +1604,13 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 0.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1632,10 +1632,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1657,10 +1657,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1682,10 +1682,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1707,13 +1707,13 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 0.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1735,13 +1735,13 @@ importers:
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 0.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1763,10 +1763,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1788,10 +1788,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1813,10 +1813,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1838,10 +1838,10 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.9
@@ -1863,14 +1863,14 @@ importers:
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
       react-dom:
         specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@tanstack/react-devtools':
         specifier: 0.9.2
-        version: 0.9.2(@types/react-dom@19.2.3(@types/react@19.2.9))(@types/react@19.2.9)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.11)
+        version: 0.9.2(@types/react-dom@19.2.3(@types/react@19.2.9))(@types/react@19.2.9)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/react-pacer-devtools':
         specifier: 0.5.2
         version: link:../../../packages/react-pacer-devtools
@@ -2437,7 +2437,7 @@ importers:
         version: 0.4.4(csstype@3.2.3)(solid-js@1.9.11)
       '@tanstack/devtools-utils':
         specifier: ^0.3.0
-        version: 0.3.0(@types/react@19.2.9)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.11)
+        version: 0.3.0(@types/react@19.2.9)(csstype@3.2.3)(preact@10.28.2)(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/pacer':
         specifier: '>=0.16.4'
         version: link:../pacer
@@ -2490,7 +2490,7 @@ importers:
     dependencies:
       '@tanstack/devtools-utils':
         specifier: ^0.3.0
-        version: 0.3.0(@types/react@19.2.9)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.11)
+        version: 0.3.0(@types/react@19.2.9)(csstype@3.2.3)(preact@10.28.2)(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -2512,10 +2512,10 @@ importers:
         version: link:../pacer
       '@tanstack/react-store':
         specifier: ^0.8.0
-        version: 0.8.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 0.8.0(react-dom@19.2.3(react@19.2.4))(react@19.2.4)
       react-dom:
         specifier: '>=16.8'
-        version: 19.2.3(react@19.2.3)
+        version: 19.2.3(react@19.2.4)
     devDependencies:
       '@eslint-react/eslint-plugin':
         specifier: ^2.7.4
@@ -2534,13 +2534,13 @@ importers:
         version: 7.0.1(eslint@9.39.2(jiti@2.6.1))
       react:
         specifier: ^19.2.3
-        version: 19.2.3
+        version: 19.2.4
 
   packages/react-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
         specifier: ^0.3.0
-        version: 0.3.0(@types/react@19.2.9)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.11)
+        version: 0.3.0(@types/react@19.2.9)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.11)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -2590,7 +2590,7 @@ importers:
     dependencies:
       '@tanstack/devtools-utils':
         specifier: ^0.3.0
-        version: 0.3.0(@types/react@19.2.9)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.11)
+        version: 0.3.0(@types/react@19.2.9)(csstype@3.2.3)(preact@10.28.2)(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -5491,6 +5491,11 @@ packages:
     peerDependencies:
       react: ^19.2.3
 
+  react-dom@19.2.4:
+    resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
+    peerDependencies:
+      react: ^19.2.4
+
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
 
@@ -5503,6 +5508,10 @@ packages:
 
   react@19.2.3:
     resolution: {integrity: sha512-Ku/hhYbVjOQnXDZFv2+RibmLFGwFdeeKHFcOTlrt7xplBnya5OGn/hIRDsqDiSUcfORsDC7MPxwork8jBwsIWA==}
+    engines: {node: '>=0.10.0'}
+
+  react@19.2.4:
+    resolution: {integrity: sha512-9nfp2hYpCwOjAN+8TZFGhtWEwgvWHXqESH8qT89AT/lWklpLON22Lc8pEtnpsZz7VmawabSU0gCjnj8aC0euHQ==}
     engines: {node: '>=0.10.0'}
 
   read-yaml-file@1.1.0:
@@ -7279,7 +7288,18 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools-utils@0.3.0(@types/react@19.2.9)(csstype@3.2.3)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.11)':
+  '@tanstack/devtools-utils@0.3.0(@types/react@19.2.9)(csstype@3.2.3)(preact@10.28.2)(react@19.2.4)(solid-js@1.9.11)':
+    dependencies:
+      '@tanstack/devtools-ui': 0.4.4(csstype@3.2.3)(solid-js@1.9.11)
+    optionalDependencies:
+      '@types/react': 19.2.9
+      preact: 10.28.2
+      react: 19.2.4
+      solid-js: 1.9.11
+    transitivePeerDependencies:
+      - csstype
+
+  '@tanstack/devtools-utils@0.3.0(@types/react@19.2.9)(preact@10.28.2)(react@19.2.3)(solid-js@1.9.11)':
     dependencies:
       '@tanstack/devtools-ui': 0.4.4(csstype@3.2.3)(solid-js@1.9.11)
     optionalDependencies:
@@ -7343,42 +7363,42 @@ snapshots:
 
   '@tanstack/query-devtools@5.92.0': {}
 
-  '@tanstack/react-devtools@0.9.2(@types/react-dom@19.2.3(@types/react@19.2.9))(@types/react@19.2.9)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.11)':
+  '@tanstack/react-devtools@0.9.2(@types/react-dom@19.2.3(@types/react@19.2.9))(@types/react@19.2.9)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)':
     dependencies:
       '@tanstack/devtools': 0.10.3(csstype@3.2.3)(solid-js@1.9.11)
       '@types/react': 19.2.9
       '@types/react-dom': 19.2.3(@types/react@19.2.9)
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
     transitivePeerDependencies:
       - bufferutil
       - csstype
       - solid-js
       - utf-8-validate
 
-  '@tanstack/react-persister@0.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@tanstack/react-persister@0.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@tanstack/persister': 0.1.1
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
 
-  '@tanstack/react-query-devtools@5.91.2(@tanstack/react-query@5.90.20(react@19.2.3))(react@19.2.3)':
+  '@tanstack/react-query-devtools@5.91.2(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@tanstack/query-devtools': 5.92.0
-      '@tanstack/react-query': 5.90.20(react@19.2.3)
-      react: 19.2.3
+      '@tanstack/react-query': 5.90.20(react@19.2.4)
+      react: 19.2.4
 
-  '@tanstack/react-query@5.90.20(react@19.2.3)':
+  '@tanstack/react-query@5.90.20(react@19.2.4)':
     dependencies:
       '@tanstack/query-core': 5.90.20
-      react: 19.2.3
+      react: 19.2.4
 
-  '@tanstack/react-store@0.8.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@tanstack/react-store@0.8.0(react-dom@19.2.3(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@tanstack/store': 0.8.0
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
-      use-sync-external-store: 1.6.0(react@19.2.3)
+      react: 19.2.4
+      react-dom: 19.2.3(react@19.2.4)
+      use-sync-external-store: 1.6.0(react@19.2.4)
 
   '@tanstack/solid-devtools@0.7.22(csstype@3.2.3)(solid-js@1.9.11)':
     dependencies:
@@ -9298,6 +9318,16 @@ snapshots:
       react: 19.2.3
       scheduler: 0.27.0
 
+  react-dom@19.2.3(react@19.2.4):
+    dependencies:
+      react: 19.2.4
+      scheduler: 0.27.0
+
+  react-dom@19.2.4(react@19.2.4):
+    dependencies:
+      react: 19.2.4
+      scheduler: 0.27.0
+
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
@@ -9305,6 +9335,8 @@ snapshots:
   react-refresh@0.18.0: {}
 
   react@19.2.3: {}
+
+  react@19.2.4: {}
 
   read-yaml-file@1.1.0:
     dependencies:
@@ -9809,9 +9841,9 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-sync-external-store@1.6.0(react@19.2.3):
+  use-sync-external-store@1.6.0(react@19.2.4):
     dependencies:
-      react: 19.2.3
+      react: 19.2.4
 
   util-deprecate@1.0.2: {}
 

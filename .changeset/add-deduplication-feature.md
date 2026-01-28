@@ -1,5 +1,5 @@
 ---
-"@tanstack/pacer": minor
+'@tanstack/pacer': minor
 ---
 
 Add cross-batch/cross-execution deduplication support to Batcher and Queuer
@@ -27,6 +27,7 @@ This feature extends the existing `deduplicateItems` option to track processed i
 ### Behavior
 
 When `deduplicateItems` is enabled:
+
 1. **In-batch duplicates**: Merged based on `deduplicateStrategy` ('keep-first' or 'keep-last')
 2. **Cross-batch duplicates**: Skipped entirely (already processed)
 3. `onDuplicate` called with `existingItem` for in-batch, `undefined` for cross-batch
@@ -34,6 +35,7 @@ When `deduplicateItems` is enabled:
 ### Use Case
 
 Prevents redundant processing when the same data is requested multiple times:
+
 - API calls: Don't fetch user-123 if it was already fetched
 - No-code tools: Multiple components requesting the same resource
 - Event processing: Skip events that have already been handled

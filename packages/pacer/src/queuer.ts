@@ -441,12 +441,12 @@ export class Queuer<TValue> {
 
   #addProcessedKey = (key: string | number): void => {
     const processedKeys = [...this.store.state.processedKeys]
-    
+
     // Enforce maxTrackedKeys limit (FIFO eviction)
     while (processedKeys.length >= (this.options.maxTrackedKeys ?? 1000)) {
       processedKeys.shift()
     }
-    
+
     processedKeys.push(key)
     this.#setState({ processedKeys })
   }
@@ -507,7 +507,7 @@ export class Queuer<TValue> {
 
     if (this.options.deduplicateItems) {
       const key = this.#getItemKey(item)
-      
+
       // Check if this key has already been processed (cross-execution deduplication)
       if (this.#isKeyProcessed(key)) {
         this.options.onDuplicate?.(item, undefined, this)
