@@ -45,7 +45,7 @@ export interface AsyncRetryerState<TFn extends AnyAsyncFunction> {
 function getDefaultAsyncRetryerState<
   TFn extends AnyAsyncFunction,
 >(): AsyncRetryerState<TFn> {
-  return structuredClone({
+  return {
     currentAttempt: 0,
     executionCount: 0,
     isExecuting: false,
@@ -54,7 +54,7 @@ function getDefaultAsyncRetryerState<
     lastResult: undefined,
     status: 'idle',
     totalExecutionTime: 0,
-  })
+  }
 }
 
 export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
@@ -106,6 +106,11 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
    */
   maxTotalExecutionTime?: number
   /**
+   * Maximum wait time in milliseconds to cap retry delays, or a function that returns the max wait time
+   * @default Infinity
+   */
+  maxWait?: number | ((retryer: AsyncRetryer<TFn>) => number)
+  /**
    * Callback invoked when the execution is aborted (manually or due to timeouts)
    */
   onAbort?: (
@@ -120,6 +125,10 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
     args: Parameters<TFn>,
     retryer: AsyncRetryer<TFn>,
   ) => void
+  /**
+   * Callback invoked when a single execution attempt times out (maxExecutionTime exceeded)
+   */
+  onExecutionTimeout?: (retryer: AsyncRetryer<TFn>) => void
   /**
    * Callback invoked when the final error occurs after all retries are exhausted
    */
@@ -140,10 +149,6 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
     args: Parameters<TFn>,
     retryer: AsyncRetryer<TFn>,
   ) => void
-  /**
-   * Callback invoked when a single execution attempt times out (maxExecutionTime exceeded)
-   */
-  onExecutionTimeout?: (retryer: AsyncRetryer<TFn>) => void
   /**
    * Callback invoked when the total execution time times out (maxTotalExecutionTime exceeded)
    */
@@ -185,6 +190,7 @@ const defaultOptions: Omit<
 > = {
   backoff: 'exponential',
   baseWait: 1000,
+  maxWait: Infinity,
   enabled: true,
   jitter: 0,
   maxAttempts: 3,
@@ -209,6 +215,8 @@ const defaultOptions: Omit<
  *   - `'fixed'`: Waits a constant amount of time (`baseWait`) between each attempt
  * - **Jitter**: Adds randomness to retry delays to prevent thundering herd problems (default: `0`).
  *   Set to a value between 0-1 to apply that percentage of random variation to each delay.
+ * - **Max Wait**: Caps the maximum wait time between retries (default: `Infinity`).
+ *   Useful for preventing exponential backoff from growing too large (e.g., cap at 30s even if exponential would be 64s).
  * - **Timeout Controls**: Set limits on execution time to prevent hanging operations:
  *   - `maxExecutionTime`: Maximum time for a single function call (default: `Infinity`)
  *   - `maxTotalExecutionTime`: Maximum time for the entire retry operation (default: `Infinity`)
@@ -249,7 +257,7 @@ const defaultOptions: Omit<
  * ## Usage
  *
  * - Use for async operations that may fail transiently and benefit from retrying.
- * - Configure `maxAttempts`, `backoff`, `baseWait`, and `jitter` to control retry behavior.
+ * - Configure `maxAttempts`, `backoff`, `baseWait`, `maxWait`, and `jitter` to control retry behavior.
  * - Set `maxExecutionTime` and `maxTotalExecutionTime` to prevent hanging operations.
  * - Use `onAbort`, `onError`, `onLastError`, `onRetry`, `onSettled`, `onSuccess`, `onExecutionTimeout`, and `onTotalExecutionTimeout` for custom side effects.
  * - Call `abort()` to cancel ongoing execution and pending retries.
@@ -362,6 +370,10 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     return parseFunctionOrValue(this.options.baseWait, this)
   }
 
+  #getMaxWait = (): number => {
+    return parseFunctionOrValue(this.options.maxWait, this)
+  }
+
   #calculateJitter = (waitTime: number): number => {
     const jitterAmount = this.options.jitter
     if (jitterAmount <= 0) return 0
@@ -398,6 +410,8 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         waitTime = baseWait
         break
     }
+
+    waitTime = Math.min(waitTime, this.#getMaxWait())
 
     const jitter = this.#calculateJitter(waitTime)
     return Math.max(0, waitTime + jitter)
@@ -594,7 +608,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
    * retryer.abort()
    * ```
    */
-  getAbortSignal(): AbortSignal | null {
+  getAbortSignal = (): AbortSignal | null => {
     return this.#abortController?.signal ?? null
   }
 

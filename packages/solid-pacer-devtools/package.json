@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/solid-pacer-devtools",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Solid adapter for devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -32,8 +32,6 @@
     "build": "tsdown"
   },
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
@@ -52,7 +50,7 @@
     "solid-js": ">=1.9.7"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.2.3",
+    "@tanstack/devtools-utils": "^0.3.0",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {

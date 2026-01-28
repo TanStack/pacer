@@ -9,7 +9,7 @@ title: ThrottledSignal
 type ThrottledSignal<TValue, TSelected> = (...args) => TValue & object;
 ```
 
-Defined in: [throttler/injectThrottledSignal.ts:11](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L11)
+Defined in: [throttler/injectThrottledSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L11)
 
 ## Type Declaration
 

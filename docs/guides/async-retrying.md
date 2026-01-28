@@ -84,7 +84,8 @@ async function fetchData(url: string) {
 const fetchWithRetry = asyncRetry(fetchData, {
   maxAttempts: 3,
   backoff: 'exponential',
-  baseWait: 1000
+  baseWait: 1000,
+  maxWait: 5000 // Cap wait time at 5 seconds
 })
 
 // Call it
@@ -115,6 +116,7 @@ const retryer = new AsyncRetryer(
     maxAttempts: 5,
     backoff: 'exponential',
     baseWait: 1000,
+    maxWait: 5000, // Cap wait time at 5 seconds
     jitter: 0.1, // Add 10% random variation
     maxExecutionTime: 5000, // Abort individual calls after 5 seconds
     maxTotalExecutionTime: 30000, // Abort entire operation after 30 seconds
@@ -171,6 +173,7 @@ const sharedOptions = asyncRetryerOptions({
   maxAttempts: 3,
   backoff: 'exponential',
   baseWait: 1000,
+  maxWait: 5000, // Cap wait time at 5 seconds
   onSuccess: (result, args, retryer) => console.log('Success')
 })
 
@@ -229,6 +232,41 @@ const retryer = new AsyncRetryer(asyncFn, {
 // Attempt 4: wait 1 second
 // Attempt 5: wait 1 second
 ```
+
+## Max Wait
+
+The `maxWait` option caps the maximum wait time between retries, preventing exponential or linear backoff from growing too large. This is particularly useful with exponential backoff, where wait times can quickly become very long:
+
+```ts
+const retryer = new AsyncRetryer(asyncFn, {
+  backoff: 'exponential',
+  baseWait: 1000,
+  maxWait: 5000 // Cap wait time at 5 seconds
+})
+// Attempt 1: immediate
+// Attempt 2: wait 1 second (1000ms * 2^0) - not capped
+// Attempt 3: wait 2 seconds (1000ms * 2^1) - not capped
+// Attempt 4: wait 4 seconds (1000ms * 2^2) - not capped
+// Attempt 5: wait 5 seconds (would be 8s, but capped at 5s)
+// Attempt 6: wait 5 seconds (would be 16s, but capped at 5s)
+```
+
+Without `maxWait`, exponential backoff can result in very long delays (e.g., 64 seconds, 128 seconds) that may be impractical for your use case. Setting `maxWait` ensures retries continue at a reasonable interval even after many attempts.
+
+The `maxWait` option also supports dynamic functions:
+
+```ts
+const retryer = new AsyncRetryer(asyncFn, {
+  backoff: 'exponential',
+  baseWait: 1000,
+  maxWait: (retryer) => {
+    // Increase max wait for critical operations
+    return retryer.store.state.executionCount > 10 ? 10000 : 5000
+  }
+})
+```
+
+By default, `maxWait` is `Infinity`, meaning there's no cap on wait times.
 
 ## Jitter
 
@@ -295,6 +333,7 @@ const retryer = new AsyncRetryer(asyncFn, {
   maxAttempts: 5,
   backoff: 'exponential',
   baseWait: 1000,
+  maxWait: 5000, // Cap wait time between retries
   maxExecutionTime: 5000, // Individual call timeout
   maxTotalExecutionTime: 30000 // Overall operation timeout
 })
@@ -455,6 +494,20 @@ const retryer = new AsyncRetryer(asyncFn, {
     // Increase wait time if we've had many errors
     const errorCount = retryer.store.state.executionCount
     return errorCount > 10 ? 2000 : 1000
+  }
+})
+```
+
+### Dynamic Max Wait
+
+```ts
+const retryer = new AsyncRetryer(asyncFn, {
+  backoff: 'exponential',
+  baseWait: 1000,
+  maxWait: (retryer) => {
+    // Increase max wait cap for critical operations
+    const errorCount = retryer.store.state.executionCount
+    return errorCount > 10 ? 10000 : 5000
   }
 })
 ```

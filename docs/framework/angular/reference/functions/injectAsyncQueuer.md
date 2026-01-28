@@ -12,7 +12,7 @@ function injectAsyncQueuer<TValue, TSelected>(
 selector): AngularAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:69](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L69)
+Defined in: [async-queuer/injectAsyncQueuer.ts:69](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L69)
 
 An Angular function that creates and manages an AsyncQueuer instance.
 

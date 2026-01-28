@@ -441,8 +441,7 @@ export class AsyncQueuer<TValue> {
         activeItems,
       })
       ;(async () => {
-        const result = await this.execute()
-        this.#setState({ lastResult: result })
+        await this.execute()
 
         const wait = this.#getWait()
         if (wait > 0) {
@@ -820,7 +819,7 @@ export class AsyncQueuer<TValue> {
    * )
    * ```
    */
-  getAbortSignal(executeCount?: number): AbortSignal | null {
+  getAbortSignal = (executeCount?: number): AbortSignal | null => {
     const count = executeCount ?? this.store.state.executeCount
     const retryer = this.asyncRetryers.get(count)
     return retryer?.getAbortSignal() ?? null

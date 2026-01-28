@@ -9,7 +9,7 @@ title: useAsyncRateLimitedCallback
 function useAsyncRateLimitedCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>;
 ```
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:59](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L59)
+Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:59](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L59)
 
 A React hook that creates a rate-limited version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncRateLimiter` hook,

@@ -9,7 +9,7 @@ title: useDebouncedCallback
 function useDebouncedCallback<TFn>(fn, options): (...args) => void;
 ```
 
-Defined in: [preact-pacer/src/debouncer/useDebouncedCallback.ts:42](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncedCallback.ts#L42)
+Defined in: [preact-pacer/src/debouncer/useDebouncedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncedCallback.ts#L42)
 
 A Preact hook that creates a debounced version of a callback function.
 This hook is essentially a wrapper around the basic `debounce` function

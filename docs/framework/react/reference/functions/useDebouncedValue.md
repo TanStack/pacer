@@ -12,7 +12,7 @@ function useDebouncedValue<TValue, TSelected>(
    selector?): [TValue, ReactDebouncer<Dispatch<SetStateAction<TValue>>, TSelected>];
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:90](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L90)
+Defined in: [react-pacer/src/debouncer/useDebouncedValue.ts:90](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedValue.ts#L90)
 
 A React hook that creates a debounced value that updates only after a specified delay.
 Unlike useDebouncedState, this hook automatically tracks changes to the input value

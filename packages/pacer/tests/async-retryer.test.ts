@@ -13,6 +13,7 @@ describe('AsyncRetryer', () => {
 
       expect(retryer.options.backoff).toBe('exponential')
       expect(retryer.options.baseWait).toBe(1000)
+      expect(retryer.options.maxWait).toBe(Infinity)
       expect(retryer.options.enabled).toBe(true)
       expect(retryer.options.maxAttempts).toBe(3)
       expect(retryer.options.maxExecutionTime).toBe(Infinity)
@@ -245,6 +246,68 @@ describe('AsyncRetryer', () => {
       vi.advanceTimersByTime(150)
 
       await executePromise
+      expect(mockFn).toHaveBeenCalledTimes(3)
+    })
+
+    it('should cap wait time at maxWait', async () => {
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 4,
+        baseWait: 100,
+        maxWait: 200,
+        backoff: 'exponential',
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      // First retry: 100ms (100 * 2^0) - not capped
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(100)
+
+      // Second retry: 200ms (100 * 2^1) - not capped
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(200)
+
+      // Third retry: would be 400ms (100 * 2^2) but capped at 200ms
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(200)
+
+      await executePromise
+      expect(mockFn).toHaveBeenCalledTimes(4)
+    })
+
+    it('should have Infinity as default maxWait', () => {
+      const mockFn = vi.fn().mockResolvedValue('success')
+      const retryer = new AsyncRetryer(mockFn)
+
+      expect(retryer.options.maxWait).toBe(Infinity)
+    })
+
+    it('should support function-based maxWait', async () => {
+      const mockFn = vi.fn().mockRejectedValue(new Error('Failure'))
+      const maxWaitFn = vi.fn().mockReturnValue(150)
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 3,
+        baseWait: 100,
+        maxWait: maxWaitFn,
+        backoff: 'exponential',
+        throwOnError: false,
+      })
+
+      const executePromise = retryer.execute()
+
+      // First retry: 100ms (not capped)
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(100)
+
+      // Second retry: would be 200ms but capped at 150ms
+      await vi.runOnlyPendingTimersAsync()
+      vi.advanceTimersByTime(150)
+
+      await executePromise
+
+      expect(maxWaitFn).toHaveBeenCalledWith(retryer)
       expect(mockFn).toHaveBeenCalledTimes(3)
     })
   })
@@ -1067,5 +1130,16 @@ describe('asyncRetry utility function', () => {
 
     expect(result).toBe('success')
     expect(mockFn).toHaveBeenCalledTimes(1)
+  })
+
+  describe('getAbortSignal', () => {
+    it('should be available as an instance method', () => {
+      const retryer = new AsyncRetryer(async () => {
+        return 'result'
+      })
+
+      expect(typeof retryer.getAbortSignal).toBe('function')
+      expect(retryer.getAbortSignal()).toBeNull()
+    })
   })
 })

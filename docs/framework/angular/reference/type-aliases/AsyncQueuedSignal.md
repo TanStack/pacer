@@ -9,7 +9,7 @@ title: AsyncQueuedSignal
 type AsyncQueuedSignal<TValue, TSelected> = () => TValue[] & object;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuedSignal.ts:9](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L9)
+Defined in: [async-queuer/injectAsyncQueuedSignal.ts:9](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L9)
 
 ## Type Declaration
 

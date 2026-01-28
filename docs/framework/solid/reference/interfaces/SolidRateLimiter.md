@@ -5,7 +5,7 @@ title: SolidRateLimiter
 
 # Interface: SolidRateLimiter\<TFn, TSelected\>
 
-Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:12](https://github.com/theVedanta/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L12)
+Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:12](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L12)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:12](https://githu
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:38](https://github.com/theVedanta/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L38)
+Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L38)
 
 Reactive state that will be updated when the rate limiter state changes
 
@@ -44,7 +44,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:44](https://github.com/theVedanta/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L44)
+Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:44](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L44)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:29](https://github.com/theVedanta/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L29)
+Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:29](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L29)
 
 A Solid component that allows you to subscribe to the rate limiter state.
 

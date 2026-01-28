@@ -12,7 +12,7 @@ function injectThrottler<TFn, TSelected>(
 selector): AngularThrottler<TFn, TSelected>;
 ```
 
-Defined in: [throttler/injectThrottler.ts:85](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L85)
+Defined in: [throttler/injectThrottler.ts:85](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L85)
 
 An Angular function that creates and manages a Throttler instance.
 

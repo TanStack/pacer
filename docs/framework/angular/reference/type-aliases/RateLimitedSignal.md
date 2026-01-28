@@ -9,7 +9,7 @@ title: RateLimitedSignal
 type RateLimitedSignal<TValue, TSelected> = (...args) => TValue & object;
 ```
 
-Defined in: [rate-limiter/injectRateLimitedSignal.ts:11](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L11)
+Defined in: [rate-limiter/injectRateLimitedSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L11)
 
 ## Type Declaration
 

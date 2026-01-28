@@ -5,7 +5,7 @@ title: PreactBatcher
 
 # Interface: PreactBatcher\<TValue, TSelected\>
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:9](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L9)
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:9](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L9)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/batcher/useBatcher.ts:9](https://github.com/theVed
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:35](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L35)
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:35](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L35)
 
 Reactive state that will be updated and re-rendered when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:41](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L41)
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L41)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:26](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L26)
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L26)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the batcher state.
 

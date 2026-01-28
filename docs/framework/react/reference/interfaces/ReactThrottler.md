@@ -5,7 +5,7 @@ title: ReactThrottler
 
 # Interface: ReactThrottler\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:13](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L13)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/throttler/useThrottler.ts:13](https://github.com/th
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:39](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L39)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:39](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L39)
 
 Reactive state that will be updated and re-rendered when the throttler state changes
 
@@ -44,7 +44,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:45](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L45)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L45)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:30](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L30)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L30)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the throttler state.
 

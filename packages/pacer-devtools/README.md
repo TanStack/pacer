@@ -86,7 +86,7 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
 <br />
 
 > [!NOTE]
-> You may know **TanSack Pacer** by our adapter names, too!
+> You may know **TanStack Pacer** by our adapter names, too!
 >
 > - [**React Pacer**](https://tanstack.com/pacer/latest/docs/framework/react/react-pacer)
 > - [**Preact Pacer**](https://tanstack.com/pacer/latest/docs/framework/preact/preact-pacer)

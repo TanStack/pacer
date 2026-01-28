@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/preact-pacer-devtools",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Preact adapter for devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -25,7 +25,6 @@
   ],
   "type": "module",
   "types": "./dist/index.d.ts",
-  "module": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
     "./production": "./dist/production.js",
@@ -53,13 +52,12 @@
     "preact": ">=10.0.0"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.2.3",
+    "@tanstack/devtools-utils": "^0.3.0",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.2",
     "@testing-library/preact": "^3.2.4",
     "preact": "^10.28.2"
-  },
-  "main": "./dist/index.js"
+  }
 }

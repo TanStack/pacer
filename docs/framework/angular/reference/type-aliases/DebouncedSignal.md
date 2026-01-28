@@ -9,7 +9,7 @@ title: DebouncedSignal
 type DebouncedSignal<TValue, TSelected> = (...args) => TValue & object;
 ```
 
-Defined in: [debouncer/injectDebouncedSignal.ts:11](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L11)
+Defined in: [debouncer/injectDebouncedSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L11)
 
 ## Type Declaration
 

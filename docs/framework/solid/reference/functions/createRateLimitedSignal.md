@@ -12,7 +12,7 @@ function createRateLimitedSignal<TValue, TSelected>(
    selector?): [Accessor<TValue>, Setter<TValue>, SolidRateLimiter<Setter<TValue>, TSelected>];
 ```
 
-Defined in: [solid-pacer/src/rate-limiter/createRateLimitedSignal.ts:95](https://github.com/theVedanta/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L95)
+Defined in: [solid-pacer/src/rate-limiter/createRateLimitedSignal.ts:95](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L95)
 
 A Solid hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
 This hook combines Solid's createSignal with rate limiting functionality to provide controlled state updates.

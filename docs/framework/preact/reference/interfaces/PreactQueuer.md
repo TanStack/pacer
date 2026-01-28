@@ -5,7 +5,7 @@ title: PreactQueuer
 
 # Interface: PreactQueuer\<TValue, TSelected\>
 
-Defined in: [preact-pacer/src/queuer/useQueuer.ts:9](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L9)
+Defined in: [preact-pacer/src/queuer/useQueuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L9)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/queuer/useQueuer.ts:9](https://github.com/theVedan
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/queuer/useQueuer.ts:35](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L35)
+Defined in: [preact-pacer/src/queuer/useQueuer.ts:35](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L35)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<QueuerState<TValue>>>;
 ```
 
-Defined in: [preact-pacer/src/queuer/useQueuer.ts:41](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L41)
+Defined in: [preact-pacer/src/queuer/useQueuer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L41)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/queuer/useQueuer.ts:26](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L26)
+Defined in: [preact-pacer/src/queuer/useQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L26)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the queuer state.
 

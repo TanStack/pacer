@@ -5,7 +5,7 @@ title: RateLimiter
 
 # Class: RateLimiter\<TFn\>
 
-Defined in: [rate-limiter.ts:156](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L156)
+Defined in: [rate-limiter.ts:156](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L156)
 
 A class that creates a rate-limited function.
 
@@ -66,7 +66,7 @@ rateLimiter.maybeExecute('123');
 new RateLimiter<TFn>(fn, initialOptions): RateLimiter<TFn>;
 ```
 
-Defined in: [rate-limiter.ts:163](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L163)
+Defined in: [rate-limiter.ts:163](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L163)
 
 #### Parameters
 
@@ -90,7 +90,7 @@ Defined in: [rate-limiter.ts:163](https://github.com/theVedanta/pacer/blob/main/
 fn: TFn;
 ```
 
-Defined in: [rate-limiter.ts:164](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L164)
+Defined in: [rate-limiter.ts:164](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L164)
 
 ***
 
@@ -100,7 +100,7 @@ Defined in: [rate-limiter.ts:164](https://github.com/theVedanta/pacer/blob/main/
 key: string | undefined;
 ```
 
-Defined in: [rate-limiter.ts:159](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L159)
+Defined in: [rate-limiter.ts:159](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L159)
 
 ***
 
@@ -110,7 +110,7 @@ Defined in: [rate-limiter.ts:159](https://github.com/theVedanta/pacer/blob/main/
 options: RateLimiterOptions<TFn>;
 ```
 
-Defined in: [rate-limiter.ts:160](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L160)
+Defined in: [rate-limiter.ts:160](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L160)
 
 ***
 
@@ -120,7 +120,7 @@ Defined in: [rate-limiter.ts:160](https://github.com/theVedanta/pacer/blob/main/
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [rate-limiter.ts:157](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L157)
+Defined in: [rate-limiter.ts:157](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L157)
 
 ## Methods
 
@@ -130,7 +130,7 @@ Defined in: [rate-limiter.ts:157](https://github.com/theVedanta/pacer/blob/main/
 getMsUntilNextWindow(): number;
 ```
 
-Defined in: [rate-limiter.ts:356](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L356)
+Defined in: [rate-limiter.ts:356](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L356)
 
 Returns the number of milliseconds until the next execution will be possible
 
@@ -146,7 +146,7 @@ Returns the number of milliseconds until the next execution will be possible
 getRemainingInWindow(): number;
 ```
 
-Defined in: [rate-limiter.ts:348](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L348)
+Defined in: [rate-limiter.ts:348](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L348)
 
 Returns the number of remaining executions allowed in the current window
 
@@ -162,7 +162,7 @@ Returns the number of remaining executions allowed in the current window
 maybeExecute(...args): boolean;
 ```
 
-Defined in: [rate-limiter.ts:250](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L250)
+Defined in: [rate-limiter.ts:250](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L250)
 
 Attempts to execute the rate-limited function if within the configured limits.
 Will reject execution if the number of calls in the current window exceeds the limit.
@@ -197,7 +197,7 @@ rateLimiter.maybeExecute('arg1', 'arg2'); // false
 reset(): void;
 ```
 
-Defined in: [rate-limiter.ts:367](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L367)
+Defined in: [rate-limiter.ts:367](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L367)
 
 Resets the rate limiter state
 
@@ -213,7 +213,7 @@ Resets the rate limiter state
 setOptions(newOptions): void;
 ```
 
-Defined in: [rate-limiter.ts:189](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L189)
+Defined in: [rate-limiter.ts:189](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L189)
 
 Updates the rate limiter options
 

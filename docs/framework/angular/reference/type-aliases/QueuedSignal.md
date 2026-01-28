@@ -9,7 +9,7 @@ title: QueuedSignal
 type QueuedSignal<TValue, TSelected> = () => TValue[] & object;
 ```
 
-Defined in: [queuer/injectQueuedSignal.ts:6](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L6)
+Defined in: [queuer/injectQueuedSignal.ts:6](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L6)
 
 ## Type Declaration
 

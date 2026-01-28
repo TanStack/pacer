@@ -1,5 +1,29 @@
 # @tanstack/react-pacer
 
+## 0.19.4
+
+### Patch Changes
+
+- Updated dependencies [[`66fffde`](https://github.com/TanStack/pacer/commit/66fffdeedfd7254c4ad193c3e3b7053b5c35a276)]:
+  - @tanstack/pacer@0.18.0
+
+## 0.19.3
+
+### Patch Changes
+
+- Updated dependencies [[`2bb7e70`](https://github.com/TanStack/pacer/commit/2bb7e7096715fbaf4584fe392810dc0fec72f844)]:
+  - @tanstack/pacer@0.17.3
+
+## 0.19.2
+
+### Patch Changes
+
+- Fixed getAbortSignal binding on all utils ([#132](https://github.com/TanStack/pacer/pull/132))
+  Fixed lastResult overwrite bug in AsyncQueuer
+  Updated TanStack Devtools versions
+- Updated dependencies [[`98e606f`](https://github.com/TanStack/pacer/commit/98e606f0b628c1c52b8bf794e9a6fd1ac2d56b73)]:
+  - @tanstack/pacer@0.17.2
+
 ## 0.19.1
 
 ### Patch Changes

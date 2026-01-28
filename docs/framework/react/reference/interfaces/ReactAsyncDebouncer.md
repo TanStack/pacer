@@ -5,7 +5,7 @@ title: ReactAsyncDebouncer
 
 # Interface: ReactAsyncDebouncer\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:13](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L13)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:13](https://gi
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:39](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L39)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L39)
 
 Reactive state that will be updated and re-rendered when the debouncer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:45](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L45)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L45)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:30](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L30)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L30)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the debouncer state.
 
