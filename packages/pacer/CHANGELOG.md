@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.18.0
+
+### Minor Changes
+
+- feat: add maxWait option to AsyncRetryer ([#147](https://github.com/TanStack/pacer/pull/147))
+
 ## 0.17.3
 
 ### Patch Changes
