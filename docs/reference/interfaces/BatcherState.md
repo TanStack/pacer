@@ -63,13 +63,26 @@ Array of items currently queued for batch processing
 
 ***
 
+### processedKeys
+
+```ts
+processedKeys: (string | number)[];
+```
+
+Defined in: [batcher.ts:27](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L27)
+
+Array of keys that have been processed (for cross-batch deduplication)
+Only populated when deduplicateItems is enabled
+
+***
+
 ### size
 
 ```ts
 size: number;
 ```
 
-Defined in: [batcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L26)
+Defined in: [batcher.ts:31](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L31)
 
 Number of items currently in the batch queue
 
@@ -81,7 +94,7 @@ Number of items currently in the batch queue
 status: "idle" | "pending";
 ```
 
-Defined in: [batcher.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L30)
+Defined in: [batcher.ts:35](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L35)
 
 Current processing status - 'idle' when not processing, 'pending' when waiting for timeout
 
@@ -93,6 +106,6 @@ Current processing status - 'idle' when not processing, 'pending' when waiting f
 totalItemsProcessed: number;
 ```
 
-Defined in: [batcher.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L34)
+Defined in: [batcher.ts:39](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L39)
 
 Total number of items that have been processed across all batches

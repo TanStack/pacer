@@ -19,6 +19,7 @@ describe('Batcher', () => {
       expect(batcher.store.state.isEmpty).toBe(true)
       expect(batcher.store.state.isPending).toBe(false)
       expect(batcher.store.state.items).toEqual([])
+      expect(batcher.store.state.processedKeys).toEqual([])
       expect(batcher.store.state.size).toBe(0)
       expect(batcher.store.state.status).toBe('idle')
       expect(batcher.store.state.totalItemsProcessed).toBe(0)
@@ -86,6 +87,9 @@ describe('Batcher', () => {
       expect(batcher.options.maxSize).toBe(Infinity)
       expect(batcher.options.wait).toBe(Infinity)
       expect(batcher.options.started).toBe(true)
+      expect(batcher.options.deduplicateItems).toBe(false)
+      expect(batcher.options.deduplicateStrategy).toBe('keep-first')
+      expect(batcher.options.maxTrackedKeys).toBe(1000)
       expect(typeof batcher.options.getShouldExecute).toBe('function')
     })
 
@@ -213,6 +217,14 @@ describe('Batcher', () => {
         vi.advanceTimersByTime(500)
         expect(mockFn).toHaveBeenCalledWith([1, 2])
       })
+
+      it('should return true when item is added', () => {
+        const mockFn = vi.fn()
+        const batcher = new Batcher(mockFn, { wait: 1000 })
+
+        const result = batcher.addItem(1)
+        expect(result).toBe(true)
+      })
     })
 
     describe('flush', () => {
@@ -311,6 +323,7 @@ describe('Batcher', () => {
         expect(batcher.store.state.isEmpty).toBe(true)
         expect(batcher.store.state.isPending).toBe(false)
         expect(batcher.store.state.items).toEqual([])
+        expect(batcher.store.state.processedKeys).toEqual([])
         expect(batcher.store.state.size).toBe(0)
         expect(batcher.store.state.status).toBe('idle')
         expect(batcher.store.state.totalItemsProcessed).toBe(0)
@@ -445,5 +458,343 @@ describe('batch', () => {
 
     vi.advanceTimersByTime(1000)
     expect(mockFn).toHaveBeenCalledWith(['test'])
+  })
+})
+
+describe('Batcher Deduplication', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should not deduplicate by default', () => {
+    const mockFn = vi.fn()
+    const batcher = new Batcher(mockFn, { maxSize: 5 })
+
+    batcher.addItem(1)
+    batcher.addItem(1)
+    batcher.addItem(2)
+
+    expect(batcher.store.state.items).toEqual([1, 1, 2])
+    expect(batcher.store.state.size).toBe(3)
+  })
+
+  describe('In-Batch Deduplication', () => {
+    it('should deduplicate primitive items in the same batch with keep-first strategy', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem(1)
+      batcher.addItem(2)
+      batcher.addItem(1) // Duplicate in current batch
+      batcher.addItem(3)
+
+      expect(batcher.store.state.items).toEqual([1, 2, 3])
+      expect(batcher.store.state.size).toBe(3)
+    })
+
+    it('should deduplicate with keep-last strategy', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+        deduplicateStrategy: 'keep-last',
+      })
+
+      batcher.addItem('a')
+      batcher.addItem('b')
+      batcher.addItem('a') // Should replace first 'a'
+
+      expect(batcher.store.state.items).toEqual(['a', 'b'])
+      expect(batcher.store.state.size).toBe(2)
+    })
+
+    it('should call onDuplicate with existingItem for in-batch duplicates', () => {
+      const mockFn = vi.fn()
+      const onDuplicate = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+        onDuplicate,
+      })
+
+      batcher.addItem(1)
+      batcher.addItem(2)
+      batcher.addItem(1) // Duplicate in batch
+
+      expect(onDuplicate).toHaveBeenCalledTimes(1)
+      expect(onDuplicate).toHaveBeenCalledWith(1, 1, batcher)
+    })
+  })
+
+  describe('Cross-Batch Deduplication', () => {
+    it('should skip items that were already processed in a previous batch', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 3,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem(1)
+      batcher.addItem(2)
+      batcher.addItem(3) // Triggers execution with [1, 2, 3]
+
+      expect(mockFn).toHaveBeenCalledWith([1, 2, 3])
+      expect(batcher.store.state.processedKeys).toEqual([1, 2, 3])
+
+      // Now try to add already processed items
+      const result1 = batcher.addItem(1) // Should be skipped
+      const result2 = batcher.addItem(2) // Should be skipped
+      const result3 = batcher.addItem(4) // Should be added
+
+      expect(result1).toBe(false)
+      expect(result2).toBe(false)
+      expect(result3).toBe(true)
+
+      expect(batcher.store.state.items).toEqual([4])
+    })
+
+    it('should call onDuplicate with undefined existingItem for cross-batch duplicates', () => {
+      const mockFn = vi.fn()
+      const onDuplicate = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 2,
+        deduplicateItems: true,
+        onDuplicate,
+      })
+
+      batcher.addItem(1)
+      batcher.addItem(2) // Triggers execution
+
+      onDuplicate.mockClear()
+      batcher.addItem(1) // Already processed
+
+      expect(onDuplicate).toHaveBeenCalledTimes(1)
+      expect(onDuplicate).toHaveBeenCalledWith(1, undefined, batcher)
+    })
+
+    it('should track processed keys with custom getItemKey', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher<{ id: string; value: number }>(mockFn, {
+        maxSize: 2,
+        deduplicateItems: true,
+        getItemKey: (item) => item.id,
+      })
+
+      batcher.addItem({ id: 'user-1', value: 100 })
+      batcher.addItem({ id: 'user-2', value: 200 }) // Triggers execution
+
+      // Try to add same user with different value
+      const result = batcher.addItem({ id: 'user-1', value: 150 })
+      expect(result).toBe(false)
+
+      // New user should be added
+      const result2 = batcher.addItem({ id: 'user-3', value: 300 })
+      expect(result2).toBe(true)
+    })
+
+    it('should respect maxTrackedKeys limit with FIFO eviction', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 2,
+        deduplicateItems: true,
+        maxTrackedKeys: 3,
+      })
+
+      // Process items 1, 2
+      batcher.addItem(1)
+      batcher.addItem(2) // Triggers, processedKeys = [1, 2]
+
+      // Process items 3, 4
+      batcher.addItem(3)
+      batcher.addItem(4) // Triggers, processedKeys = [2, 3, 4] (1 evicted)
+
+      expect(batcher.store.state.processedKeys).toEqual([2, 3, 4])
+
+      // Item 1 should be processable again (evicted from tracking)
+      const result = batcher.addItem(1)
+      expect(result).toBe(true)
+    })
+
+    it('should provide peekProcessedKeys method', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 2,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem(1)
+      batcher.addItem(2) // Triggers execution
+
+      const keys = batcher.peekProcessedKeys()
+      expect(keys).toEqual([1, 2])
+
+      // Should be a copy
+      keys.push(3)
+      expect(batcher.store.state.processedKeys).toEqual([1, 2])
+    })
+
+    it('should provide hasProcessedKey method', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 2,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem(1)
+      batcher.addItem(2) // Triggers execution
+
+      expect(batcher.hasProcessedKey(1)).toBe(true)
+      expect(batcher.hasProcessedKey(2)).toBe(true)
+      expect(batcher.hasProcessedKey(3)).toBe(false)
+    })
+
+    it('should provide clearProcessedKeys method', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 2,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem(1)
+      batcher.addItem(2) // Triggers execution
+
+      expect(batcher.store.state.processedKeys).toEqual([1, 2])
+
+      batcher.addItem(1) // Skipped
+      expect(batcher.addItem(1)).toBe(false)
+
+      batcher.clearProcessedKeys()
+
+      expect(batcher.store.state.processedKeys).toEqual([])
+
+      // Now item 1 should be addable again
+      const result = batcher.addItem(1)
+      expect(result).toBe(true)
+    })
+
+    it('should reset processedKeys on reset()', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 2,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem(1)
+      batcher.addItem(2) // Triggers execution
+
+      expect(batcher.store.state.processedKeys).toEqual([1, 2])
+
+      batcher.reset()
+
+      expect(batcher.store.state.processedKeys).toEqual([])
+    })
+
+    it('should restore processedKeys from initialState', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 3,
+        deduplicateItems: true,
+        initialState: {
+          processedKeys: ['user-1', 'user-2'],
+        },
+      })
+
+      expect(batcher.store.state.processedKeys).toEqual(['user-1', 'user-2'])
+
+      // These should be skipped
+      const result1 = batcher.addItem('user-1')
+      const result2 = batcher.addItem('user-2')
+      expect(result1).toBe(false)
+      expect(result2).toBe(false)
+
+      // New item should be added
+      const result3 = batcher.addItem('user-3')
+      expect(result3).toBe(true)
+    })
+
+    it('should work with string items', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 2,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem('apple')
+      batcher.addItem('banana') // Triggers execution
+
+      const result1 = batcher.addItem('apple') // Should be skipped
+      const result2 = batcher.addItem('cherry') // Should be added
+
+      expect(result1).toBe(false)
+      expect(result2).toBe(true)
+      expect(batcher.store.state.items).toEqual(['cherry'])
+    })
+
+    it('should handle objects with JSON.stringify when no getItemKey', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher<{ x: number }>(mockFn, {
+        maxSize: 2,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem({ x: 1 })
+      batcher.addItem({ x: 2 }) // Triggers execution
+
+      // Same object structure should be skipped
+      const result = batcher.addItem({ x: 1 })
+      expect(result).toBe(false)
+    })
+
+    it('should deduplicate objects with custom getItemKey', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher<{ id: number; name: string }>(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+        getItemKey: (item) => item.id,
+      })
+
+      batcher.addItem({ id: 1, name: 'Alice' })
+      batcher.addItem({ id: 2, name: 'Bob' })
+      batcher.addItem({ id: 1, name: 'Alice Updated' }) // Duplicate id in batch
+
+      expect(batcher.store.state.items).toEqual([
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' },
+      ])
+      expect(batcher.store.state.size).toBe(2)
+    })
+
+    it('should replace item with keep-last and call onDuplicate', () => {
+      const mockFn = vi.fn()
+      const onDuplicate = vi.fn()
+      const batcher = new Batcher<{ id: string; value: number }>(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+        deduplicateStrategy: 'keep-last',
+        getItemKey: (item) => item.id,
+        onDuplicate,
+      })
+
+      const item1 = { id: 'user-1', value: 100 }
+      const item2 = { id: 'user-2', value: 200 }
+      const item1Updated = { id: 'user-1', value: 150 }
+
+      batcher.addItem(item1)
+      batcher.addItem(item2)
+      batcher.addItem(item1Updated) // Should replace item1 in batch
+
+      expect(batcher.store.state.items).toEqual([
+        { id: 'user-1', value: 150 },
+        { id: 'user-2', value: 200 },
+      ])
+      expect(onDuplicate).toHaveBeenCalledWith(item1Updated, item1, batcher)
+    })
   })
 })

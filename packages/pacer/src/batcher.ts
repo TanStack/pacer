@@ -21,6 +21,11 @@ export interface BatcherState<TValue> {
    */
   items: Array<TValue>
   /**
+   * Array of keys that have been processed (for cross-batch deduplication)
+   * Only populated when deduplicateItems is enabled
+   */
+  processedKeys: Array<string | number>
+  /**
    * Number of items currently in the batch queue
    */
   size: number
@@ -39,6 +44,7 @@ function getDefaultBatcherState<TValue>(): BatcherState<TValue> {
     executionCount: 0,
     isEmpty: true,
     isPending: false,
+    processedKeys: [],
     totalItemsProcessed: 0,
     items: [],
     size: 0,
@@ -51,10 +57,30 @@ function getDefaultBatcherState<TValue>(): BatcherState<TValue> {
  */
 export interface BatcherOptions<TValue> {
   /**
+   * Enable automatic deduplication of items across batches
+   * When enabled, items that have already been processed will be automatically skipped
+   * The keys of processed items are tracked in state.processedKeys
+   * @default false
+   */
+  deduplicateItems?: boolean
+  /**
+   * Strategy to use when a duplicate item is detected in the current batch
+   * - 'keep-first': Keep the existing item and ignore the new one (default)
+   * - 'keep-last': Replace the existing item with the new one
+   * Note: This only affects duplicates within the same batch, not across batches
+   * @default 'keep-first'
+   */
+  deduplicateStrategy?: 'keep-first' | 'keep-last'
+  /**
    * Custom function to determine if a batch should be processed
    * Return true to process the batch immediately
    */
   getShouldExecute?: (items: Array<TValue>, batcher: Batcher<TValue>) => boolean
+  /**
+   * Function to extract a unique key from each item for deduplication
+   * If not provided, uses the item itself for primitives or JSON.stringify for objects
+   */
+  getItemKey?: (item: TValue) => string | number
   /**
    * Initial state for the batcher
    */
@@ -69,6 +95,22 @@ export interface BatcherOptions<TValue> {
    * @default Infinity
    */
   maxSize?: number
+  /**
+   * Maximum number of processed keys to track (prevents memory leaks)
+   * When limit is reached, oldest keys are removed (FIFO)
+   * Only used when deduplicateItems is enabled
+   * @default 1000
+   */
+  maxTrackedKeys?: number
+  /**
+   * Callback fired when a duplicate item is detected
+   * Called both for in-batch duplicates and cross-batch duplicates
+   */
+  onDuplicate?: (
+    newItem: TValue,
+    existingItem: TValue | undefined,
+    batcher: Batcher<TValue>,
+  ) => void
   /**
    * Callback fired after a batch is processed
    */
@@ -93,12 +135,20 @@ export interface BatcherOptions<TValue> {
 
 type BatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<BatcherOptions<TValue>>,
-  'initialState' | 'onExecute' | 'onItemsChange' | 'key'
+  | 'initialState'
+  | 'onExecute'
+  | 'onItemsChange'
+  | 'onDuplicate'
+  | 'key'
+  | 'getItemKey'
 >
 
 const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
+  deduplicateItems: false,
+  deduplicateStrategy: 'keep-first',
   getShouldExecute: () => false,
   maxSize: Infinity,
+  maxTrackedKeys: 1000,
   started: true,
   wait: Infinity,
 }
@@ -114,6 +164,7 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * - Time-based batching (process after X milliseconds)
  * - Custom batch processing logic via getShouldExecute
  * - Event callbacks for monitoring batch operations
+ * - Cross-batch deduplication via deduplicateItems (similar to RateLimiter's executionTimes)
  *
  * State Management:
  * - Uses TanStack Store for reactive state management
@@ -140,6 +191,27 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * // After 2 seconds or when 5 items are added, whichever comes first,
  * // the batch will be processed
  * // batcher.flush() // manually trigger a batch
+ * ```
+ *
+ * @example
+ * ```ts
+ * // Cross-batch deduplication - prevent duplicate API calls
+ * const batcher = new Batcher<{ userId: string }>(
+ *   (items) => fetchUsers(items.map(i => i.userId)),
+ *   {
+ *     deduplicateItems: true,
+ *     getItemKey: (item) => item.userId,
+ *     maxTrackedKeys: 500, // Limit memory usage
+ *     onDuplicate: (item) => console.log('Already fetched:', item.userId)
+ *   }
+ * );
+ *
+ * batcher.addItem({ userId: 'user-1' }); // Added to batch
+ * batcher.addItem({ userId: 'user-2' }); // Added to batch
+ * batcher.flush(); // Processes [user-1, user-2]
+ *
+ * batcher.addItem({ userId: 'user-1' }); // Skipped! Already processed
+ * batcher.addItem({ userId: 'user-3' }); // Added to batch
  * ```
  */
 export class Batcher<TValue> {
@@ -200,11 +272,71 @@ export class Batcher<TValue> {
     return parseFunctionOrValue(this.options.wait, this)
   }
 
+  #getItemKey = (item: TValue): string | number => {
+    if (this.options.getItemKey) {
+      return this.options.getItemKey(item)
+    }
+    return typeof item === 'object' ? JSON.stringify(item) : (item as any)
+  }
+
+  #isKeyProcessed = (key: string | number): boolean => {
+    return this.store.state.processedKeys.includes(key)
+  }
+
+  #findItemByKey = (key: string | number): number => {
+    return this.store.state.items.findIndex(
+      (item) => this.#getItemKey(item) === key,
+    )
+  }
+
+  #addProcessedKeys = (keys: Array<string | number>): void => {
+    const processedKeys = [...this.store.state.processedKeys]
+
+    for (const key of keys) {
+      // Enforce maxTrackedKeys limit (FIFO eviction)
+      while (processedKeys.length >= this.options.maxTrackedKeys) {
+        processedKeys.shift()
+      }
+      processedKeys.push(key)
+    }
+
+    this.#setState({ processedKeys })
+  }
+
   /**
    * Adds an item to the batcher
    * If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
+   * When deduplicateItems is enabled, items that have already been processed will be skipped
    */
-  addItem = (item: TValue): void => {
+  addItem = (item: TValue): boolean => {
+    if (this.options.deduplicateItems) {
+      const key = this.#getItemKey(item)
+
+      // Check if this key has already been processed (cross-batch deduplication)
+      if (this.#isKeyProcessed(key)) {
+        this.options.onDuplicate?.(item, undefined, this)
+        return false
+      }
+
+      // Check for duplicates in the current batch (in-batch deduplication)
+      const existingIndex = this.#findItemByKey(key)
+      if (existingIndex !== -1) {
+        const existingItem = this.store.state.items[existingIndex]
+        if (existingItem !== undefined) {
+          this.options.onDuplicate?.(item, existingItem, this)
+
+          if (this.options.deduplicateStrategy === 'keep-last') {
+            const newItems = [...this.store.state.items]
+            newItems[existingIndex] = item
+            this.#setState({ items: newItems })
+            this.options.onItemsChange?.(this)
+          }
+          // For 'keep-first' strategy, we simply return without adding
+          return true
+        }
+      }
+    }
+
     this.#setState({
       items: [...this.store.state.items, item],
       isPending: this.options.wait !== Infinity,
@@ -221,6 +353,8 @@ export class Batcher<TValue> {
       this.#clearTimeout() // clear any pending timeout to replace it with a new one
       this.#timeoutId = setTimeout(() => this.#execute(), this.#getWait())
     }
+
+    return true
   }
 
   /**
@@ -240,6 +374,12 @@ export class Batcher<TValue> {
     const batch = this.peekAllItems() // copy of the items to be processed (to prevent race conditions)
     this.clear() // Clear items before processing to prevent race conditions
     this.options.onItemsChange?.(this) // Call onItemsChange to notify listeners that the items have changed
+
+    // Track processed keys if deduplication is enabled
+    if (this.options.deduplicateItems) {
+      const keys = batch.map((item) => this.#getItemKey(item))
+      this.#addProcessedKeys(keys)
+    }
 
     this.fn(batch) // EXECUTE
     this.#setState({
@@ -262,6 +402,30 @@ export class Batcher<TValue> {
    */
   peekAllItems = (): Array<TValue> => {
     return [...this.store.state.items]
+  }
+
+  /**
+   * Returns a copy of all processed keys
+   * Only meaningful when deduplicateItems is enabled
+   */
+  peekProcessedKeys = (): Array<string | number> => {
+    return [...this.store.state.processedKeys]
+  }
+
+  /**
+   * Checks if a key has already been processed
+   * Only meaningful when deduplicateItems is enabled
+   */
+  hasProcessedKey = (key: string | number): boolean => {
+    return this.#isKeyProcessed(key)
+  }
+
+  /**
+   * Clears all processed keys, allowing items with those keys to be processed again
+   * Only meaningful when deduplicateItems is enabled
+   */
+  clearProcessedKeys = (): void => {
+    this.#setState({ processedKeys: [] })
   }
 
   #clearTimeout = (): void => {
@@ -289,6 +453,7 @@ export class Batcher<TValue> {
 
   /**
    * Resets the batcher state to its default values
+   * This also clears the processed keys history
    */
   reset = (): void => {
     this.#setState(getDefaultBatcherState<TValue>())

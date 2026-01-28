@@ -6,10 +6,10 @@ title: batch
 # Function: batch()
 
 ```ts
-function batch<TValue>(fn, options): (item) => void;
+function batch<TValue>(fn, options): (item) => boolean;
 ```
 
-Defined in: [batcher.ts:319](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L319)
+Defined in: [batcher.ts:484](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L484)
 
 Creates a batcher that processes items in batches.
 
@@ -34,11 +34,12 @@ This synchronous version is lighter weight and often all you need - upgrade to a
 ## Returns
 
 ```ts
-(item): void;
+(item): boolean;
 ```
 
 Adds an item to the batcher
 If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
+When deduplicateItems is enabled, items that have already been processed will be skipped
 
 ### Parameters
 
@@ -48,7 +49,7 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 
 ### Returns
 
-`void`
+`boolean`
 
 ## Example
 
