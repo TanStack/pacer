@@ -36,19 +36,19 @@ Then open http://localhost:3007
 const batcher = useBatcher(
   (userIds: string[]) => {
     // API call to fetch users
-    console.log("Fetching users:", userIds);
+    console.log('Fetching users:', userIds)
   },
   {
     maxSize: 5,
     wait: 2000,
-    trackProcessedKeys: true,       // Enable cross-batch deduplication
+    trackProcessedKeys: true, // Enable cross-batch deduplication
     getItemKey: (userId) => userId, // Define uniqueness
-    maxTrackedKeys: 100,            // Limit memory (FIFO eviction)
+    maxTrackedKeys: 100, // Limit memory (FIFO eviction)
     onSkip: (item) => {
-      console.log(`Skipped (already processed): ${item}`);
+      console.log(`Skipped (already processed): ${item}`)
     },
-  }
-);
+  },
+)
 ```
 
 ## Try It Out
