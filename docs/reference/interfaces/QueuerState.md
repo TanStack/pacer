@@ -135,13 +135,26 @@ Whether the queuer has a pending timeout for processing the next item
 
 ***
 
+### processedKeys
+
+```ts
+processedKeys: (string | number)[];
+```
+
+Defined in: [queuer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L50)
+
+Array of keys that have been processed (for cross-execution deduplication)
+Only populated when deduplicateItems is enabled
+
+***
+
 ### rejectionCount
 
 ```ts
 rejectionCount: number;
 ```
 
-Defined in: [queuer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L49)
+Defined in: [queuer.ts:54](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L54)
 
 Number of items that have been rejected from being added to the queue
 
@@ -153,7 +166,7 @@ Number of items that have been rejected from being added to the queue
 size: number;
 ```
 
-Defined in: [queuer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L53)
+Defined in: [queuer.ts:58](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L58)
 
 Number of items currently in the queue
 
@@ -165,6 +178,6 @@ Number of items currently in the queue
 status: "idle" | "running" | "stopped";
 ```
 
-Defined in: [queuer.ts:57](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L57)
+Defined in: [queuer.ts:62](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L62)
 
 Current processing status - 'idle' when not processing, 'running' when active, 'stopped' when paused
