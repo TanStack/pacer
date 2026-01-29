@@ -44,11 +44,6 @@ export interface QueuerState<TValue> {
    */
   pendingTick: boolean
   /**
-   * Array of keys that have been processed (for cross-execution deduplication)
-   * Only populated when deduplicateItems is enabled
-   */
-  processedKeys: Array<string | number>
-  /**
    * Number of items that have been rejected from being added to the queue
    */
   rejectionCount: number
@@ -73,7 +68,6 @@ function getDefaultQueuerState<TValue>(): QueuerState<TValue> {
     itemTimestamps: [],
     items: [],
     pendingTick: false,
-    processedKeys: [],
     rejectionCount: 0,
     size: 0,
     status: 'idle',
@@ -93,9 +87,8 @@ export interface QueuerOptions<TValue> {
    */
   addItemsTo?: QueuePosition
   /**
-   * Enable automatic deduplication of items across queue cycles
-   * When enabled, items that have already been processed will be automatically skipped
-   * The keys of processed items are tracked in state.processedKeys
+   * Enable automatic deduplication of items within the current queue
+   * When enabled, duplicate items in the same queue will be merged based on deduplicateStrategy
    * @default false
    */
   deduplicateItems?: boolean
@@ -103,7 +96,6 @@ export interface QueuerOptions<TValue> {
    * Strategy to use when a duplicate item is detected in the current queue
    * - 'keep-first': Keep the existing item and ignore the new one (default)
    * - 'keep-last': Replace the existing item with the new one
-   * Note: This only affects duplicates within the same queue, not across executions
    * @default 'keep-first'
    */
   deduplicateStrategy?: 'keep-first' | 'keep-last'
@@ -149,22 +141,6 @@ export interface QueuerOptions<TValue> {
    * Maximum number of items allowed in the queuer
    */
   maxSize?: number
-  /**
-   * Maximum number of processed keys to track (prevents memory leaks)
-   * When limit is reached, oldest keys are removed (FIFO)
-   * Only used when deduplicateItems is enabled
-   * @default 1000
-   */
-  maxTrackedKeys?: number
-  /**
-   * Callback fired when a duplicate item is detected
-   * Called both for in-queue duplicates and cross-execution duplicates
-   */
-  onDuplicate?: (
-    newItem: TValue,
-    existingItem: TValue | undefined,
-    queuer: Queuer<TValue>,
-  ) => void
   /**
    * Callback fired whenever an item is removed from the queuer
    */
@@ -213,7 +189,6 @@ const defaultOptions: Omit<
   | 'onItemsChange'
   | 'onReject'
   | 'onExpire'
-  | 'onDuplicate'
   | 'key'
   | 'getItemKey'
 > = {
@@ -226,7 +201,6 @@ const defaultOptions: Omit<
   expirationDuration: Infinity,
   initialItems: [],
   maxSize: Infinity,
-  maxTrackedKeys: 1000,
   started: true,
   wait: 0,
 }
@@ -250,7 +224,7 @@ export type QueuePosition = 'front' | 'back'
  * - Priority-based ordering when getPriority is provided
  * - Item expiration and removal of stale items
  * - Callbacks for queue state changes, execution, rejection, and expiration
- * - Cross-execution deduplication via deduplicateItems (similar to RateLimiter's executionTimes)
+ * - In-queue deduplication via deduplicateItems
  *
  * Running behavior:
  * - `start()`: Begins automatically processing items in the queue (defaults to isRunning)
@@ -316,22 +290,18 @@ export type QueuePosition = 'front' | 'back'
  *
  * @example
  * ```ts
- * // Cross-execution deduplication - prevent duplicate processing
+ * // In-queue deduplication - prevent duplicate items within the same queue
  * const queuer = new Queuer<{ userId: string }>(
  *   (item) => fetchUser(item.userId),
  *   {
  *     deduplicateItems: true,
  *     getItemKey: (item) => item.userId,
- *     maxTrackedKeys: 500, // Limit memory usage
- *     onDuplicate: (item) => console.log('Already processed:', item.userId)
  *   }
  * );
  *
- * queuer.addItem({ userId: 'user-1' }); // Added and processed
- * queuer.addItem({ userId: 'user-2' }); // Added and processed
- *
- * queuer.addItem({ userId: 'user-1' }); // Skipped! Already processed
- * queuer.addItem({ userId: 'user-3' }); // Added and processed
+ * queuer.addItem({ userId: 'user-1' }); // Added to queue
+ * queuer.addItem({ userId: 'user-2' }); // Added to queue
+ * queuer.addItem({ userId: 'user-1' }); // Ignored! Already in current queue
  * ```
  */
 export class Queuer<TValue> {
@@ -429,26 +399,10 @@ export class Queuer<TValue> {
     return typeof item === 'object' ? JSON.stringify(item) : (item as any)
   }
 
-  #isKeyProcessed = (key: string | number): boolean => {
-    return this.store.state.processedKeys.includes(key)
-  }
-
   #findItemByKey = (key: string | number): number => {
     return this.store.state.items.findIndex(
       (item) => this.#getItemKey(item) === key,
     )
-  }
-
-  #addProcessedKey = (key: string | number): void => {
-    const processedKeys = [...this.store.state.processedKeys]
-
-    // Enforce maxTrackedKeys limit (FIFO eviction)
-    while (processedKeys.length >= (this.options.maxTrackedKeys ?? 1000)) {
-      processedKeys.shift()
-    }
-
-    processedKeys.push(key)
-    this.#setState({ processedKeys })
   }
 
   /**
@@ -486,9 +440,9 @@ export class Queuer<TValue> {
   /**
    * Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
    * Items can be inserted based on priority or at the front/back depending on configuration.
-   * When deduplicateItems is enabled, items that have already been processed will be skipped.
+   * When deduplicateItems is enabled, duplicate items within the current queue will be merged based on deduplicateStrategy.
    *
-   * Returns true if the item was added, false if the queue is full or item was skipped.
+   * Returns true if the item was added, false if the queue is full.
    *
    * Example usage:
    * ```ts
@@ -508,19 +462,11 @@ export class Queuer<TValue> {
     if (this.options.deduplicateItems) {
       const key = this.#getItemKey(item)
 
-      // Check if this key has already been processed (cross-execution deduplication)
-      if (this.#isKeyProcessed(key)) {
-        this.options.onDuplicate?.(item, undefined, this)
-        return false
-      }
-
       // Check for duplicates in the current queue (in-queue deduplication)
       const existingIndex = this.#findItemByKey(key)
       if (existingIndex !== -1) {
         const existingItem = this.store.state.items[existingIndex]
         if (existingItem !== undefined) {
-          this.options.onDuplicate?.(item, existingItem, this)
-
           if (this.options.deduplicateStrategy === 'keep-last') {
             const newItems = [...this.store.state.items]
             newItems[existingIndex] = item
@@ -665,12 +611,6 @@ export class Queuer<TValue> {
   execute = (position?: QueuePosition): TValue | undefined => {
     const item = this.getNextItem(position)
     if (item !== undefined) {
-      // Track processed key if deduplication is enabled
-      if (this.options.deduplicateItems) {
-        const key = this.#getItemKey(item)
-        this.#addProcessedKey(key)
-      }
-
       this.fn(item)
       this.#setState({
         executionCount: this.store.state.executionCount + 1,
@@ -787,30 +727,6 @@ export class Queuer<TValue> {
   }
 
   /**
-   * Returns a copy of all processed keys
-   * Only meaningful when deduplicateItems is enabled
-   */
-  peekProcessedKeys = (): Array<string | number> => {
-    return [...this.store.state.processedKeys]
-  }
-
-  /**
-   * Checks if a key has already been processed
-   * Only meaningful when deduplicateItems is enabled
-   */
-  hasProcessedKey = (key: string | number): boolean => {
-    return this.#isKeyProcessed(key)
-  }
-
-  /**
-   * Clears all processed keys, allowing items with those keys to be processed again
-   * Only meaningful when deduplicateItems is enabled
-   */
-  clearProcessedKeys = (): void => {
-    this.#setState({ processedKeys: [] })
-  }
-
-  /**
    * Starts processing items in the queue. If already isRunning, does nothing.
    */
   start = () => {
@@ -845,7 +761,6 @@ export class Queuer<TValue> {
 
   /**
    * Resets the queuer state to its default values
-   * This also clears the processed keys history
    */
   reset = (): void => {
     this.#setState(getDefaultQueuerState<TValue>())
