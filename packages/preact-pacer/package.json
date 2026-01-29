@@ -111,7 +111,7 @@
     "@tanstack/preact-store": "^0.10.1"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.10.2",
+    "@preact/preset-vite": "^2.10.3",
     "eslint-plugin-react-hooks": "^7.0.1",
     "preact": "^10.28.2"
   },

@@ -10,13 +10,13 @@
   },
   "dependencies": {
     "@tanstack/react-pacer": "^0.19.4",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
-    "@tanstack/react-devtools": "0.9.2",
+    "@tanstack/react-devtools": "0.9.3",
     "@tanstack/react-pacer-devtools": "0.5.2",
-    "@types/react": "^19.2.9",
+    "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
     "vite": "^7.3.1"
