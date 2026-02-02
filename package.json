@@ -63,7 +63,7 @@
     "happy-dom": "^20.4.0",
     "knip": "^5.82.1",
     "markdown-link-extractor": "^4.0.3",
-    "nx": "^22.4.2",
+    "nx": "^22.4.4",
     "premove": "^4.0.0",
     "prettier": "^3.8.1",
     "prettier-plugin-svelte": "^3.4.1",
