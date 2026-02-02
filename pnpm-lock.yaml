@@ -48,7 +48,7 @@ importers:
         specifier: ^4.0.3
         version: 4.0.3
       nx:
-        specifier: ^22.4.2
+        specifier: ^22.4.4
         version: 22.4.4
       premove:
         specifier: ^4.0.0
@@ -87,7 +87,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -103,7 +103,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -119,7 +119,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -135,7 +135,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -151,7 +151,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -167,7 +167,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -183,7 +183,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -199,7 +199,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -215,7 +215,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -231,7 +231,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -247,7 +247,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -263,7 +263,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -279,7 +279,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -295,7 +295,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -311,7 +311,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -327,7 +327,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -343,7 +343,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -359,7 +359,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -375,7 +375,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -391,7 +391,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -407,7 +407,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -423,7 +423,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -439,7 +439,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -455,7 +455,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -471,7 +471,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -487,7 +487,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -503,7 +503,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -519,7 +519,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -532,7 +532,7 @@ importers:
   examples/preact/useQueuer:
     dependencies:
       '@tanstack/preact-devtools':
-        specifier: ^0.9.8
+        specifier: ^0.9.9
         version: 0.9.9(csstype@3.2.3)(preact@10.28.3)(solid-js@1.9.11)
       '@tanstack/preact-pacer':
         specifier: ^0.19.4
@@ -541,7 +541,7 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer-devtools
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -557,7 +557,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -573,7 +573,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -589,7 +589,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -605,7 +605,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -621,7 +621,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -637,7 +637,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -653,7 +653,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -669,7 +669,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -685,7 +685,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -701,7 +701,7 @@ importers:
         specifier: ^0.19.4
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -714,7 +714,7 @@ importers:
   examples/preact/util-comparison:
     dependencies:
       '@tanstack/preact-devtools':
-        specifier: ^0.9.8
+        specifier: ^0.9.9
         version: 0.9.9(csstype@3.2.3)(preact@10.28.3)(solid-js@1.9.11)
       '@tanstack/preact-pacer':
         specifier: ^0.19.4
@@ -723,7 +723,7 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer-devtools
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
     devDependencies:
       '@preact/preset-vite':
@@ -921,8 +921,8 @@ importers:
         version: 19.2.4(react@19.2.4)
     devDependencies:
       '@tanstack/react-devtools':
-        specifier: 0.9.3
-        version: 0.9.3(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
+        specifier: 0.9.4
+        version: 0.9.4(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/react-pacer-devtools':
         specifier: 0.5.2
         version: link:../../../packages/react-pacer-devtools
@@ -973,7 +973,7 @@ importers:
         specifier: ^5.90.20
         version: 5.90.20(react@19.2.4)
       '@tanstack/react-query-devtools':
-        specifier: ^5.91.2
+        specifier: ^5.91.3
         version: 5.91.3(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.4
@@ -1004,7 +1004,7 @@ importers:
         specifier: ^5.90.20
         version: 5.90.20(react@19.2.4)
       '@tanstack/react-query-devtools':
-        specifier: ^5.91.2
+        specifier: ^5.91.3
         version: 5.91.3(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.4
@@ -1035,7 +1035,7 @@ importers:
         specifier: ^5.90.20
         version: 5.90.20(react@19.2.4)
       '@tanstack/react-query-devtools':
-        specifier: ^5.91.2
+        specifier: ^5.91.3
         version: 5.91.3(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.2.4
@@ -1554,8 +1554,8 @@ importers:
         version: 19.2.4(react@19.2.4)
     devDependencies:
       '@tanstack/react-devtools':
-        specifier: 0.9.3
-        version: 0.9.3(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
+        specifier: 0.9.4
+        version: 0.9.4(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/react-pacer-devtools':
         specifier: 0.5.2
         version: link:../../../packages/react-pacer-devtools
@@ -1844,8 +1844,8 @@ importers:
         version: 19.2.4(react@19.2.4)
     devDependencies:
       '@tanstack/react-devtools':
-        specifier: 0.9.3
-        version: 0.9.3(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
+        specifier: 0.9.4
+        version: 0.9.4(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/react-pacer-devtools':
         specifier: 0.5.2
         version: link:../../../packages/react-pacer-devtools
@@ -2089,8 +2089,8 @@ importers:
   examples/solid/createQueuedSignal:
     dependencies:
       '@tanstack/solid-devtools':
-        specifier: 0.7.23
-        version: 0.7.23(csstype@3.2.3)(solid-js@1.9.11)
+        specifier: 0.7.24
+        version: 0.7.24(csstype@3.2.3)(solid-js@1.9.11)
       '@tanstack/solid-pacer':
         specifier: ^0.18.4
         version: link:../../../packages/solid-pacer
@@ -2111,8 +2111,8 @@ importers:
   examples/solid/createQueuer:
     dependencies:
       '@tanstack/solid-devtools':
-        specifier: 0.7.23
-        version: 0.7.23(csstype@3.2.3)(solid-js@1.9.11)
+        specifier: 0.7.24
+        version: 0.7.24(csstype@3.2.3)(solid-js@1.9.11)
       '@tanstack/solid-pacer':
         specifier: ^0.18.4
         version: link:../../../packages/solid-pacer
@@ -2245,8 +2245,8 @@ importers:
   examples/solid/queue:
     dependencies:
       '@tanstack/solid-devtools':
-        specifier: 0.7.23
-        version: 0.7.23(csstype@3.2.3)(solid-js@1.9.11)
+        specifier: 0.7.24
+        version: 0.7.24(csstype@3.2.3)(solid-js@1.9.11)
       '@tanstack/solid-pacer':
         specifier: ^0.18.4
         version: link:../../../packages/solid-pacer
@@ -2458,7 +2458,7 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1(eslint@9.39.2(jiti@2.6.1))
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
 
   packages/preact-pacer-devtools:
@@ -2477,7 +2477,7 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(preact@10.28.3)
       preact:
-        specifier: ^10.28.2
+        specifier: ^10.28.3
         version: 10.28.3
 
   packages/react-pacer:
@@ -2493,8 +2493,8 @@ importers:
         version: 19.2.4(react@19.2.4)
     devDependencies:
       '@eslint-react/eslint-plugin':
-        specifier: ^2.7.4
-        version: 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+        specifier: ^2.8.4
+        version: 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@types/react':
         specifier: ^19.2.10
         version: 19.2.10
@@ -2533,8 +2533,8 @@ importers:
         version: 19.2.4(react@19.2.4)
     devDependencies:
       '@eslint-react/eslint-plugin':
-        specifier: ^2.7.4
-        version: 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+        specifier: ^2.8.4
+        version: 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
         version: 5.1.2(vite@7.3.1(@types/node@25.1.0)(jiti@2.6.1)(yaml@2.8.2))
@@ -2980,40 +2980,40 @@ packages:
     resolution: {integrity: sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
 
-  '@eslint-react/ast@2.8.1':
-    resolution: {integrity: sha512-4D442lxeFvvd9PMvBbA621rfz/Ne8Kod8RW0/FLKO0vx+IOxm74pP6be1uU56rqL9TvoIHxjclBjfgXplEF+Yw==}
+  '@eslint-react/ast@2.8.4':
+    resolution: {integrity: sha512-1Wees6TgSMKBLpN0S7UYRDSDCCikjIqKOM9hTQjudS5Vfmeay+YTC0Ooaym5O1goVh5wfUnLJ9YXpFWfWgEKNQ==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@eslint-react/core@2.8.1':
-    resolution: {integrity: sha512-zF73p8blyuX+zrfgyTtpKesichYzK+G54TEjFWtzagWIbnqQjtVscebL/eGep72oWzAOd5B04ACBvJ2hW4fp5g==}
+  '@eslint-react/core@2.8.4':
+    resolution: {integrity: sha512-8XgI7oHkNEYffHcoImmblL0pRWcLEG36MTwPs1rYWa56oFZxZsFxMS0HPzLjcAsQ1jo4TjWfVTTUzQB3Y2dw0w==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@eslint-react/eff@2.8.1':
-    resolution: {integrity: sha512-ZASOs8oTZJSiu1giue7V87GEKQvlKLfGfLppal6Rl+aKnfIEz+vartmjpH12pkFQZ9ESRyHzYbU533S6pEDoNg==}
+  '@eslint-react/eff@2.8.4':
+    resolution: {integrity: sha512-a6LXcKvYlBpACME3p91TqbUBA0SokY+O0VBS/GKV9a76pEIJN0iDueLSrCAub3E6iU5YgQWs9w8NsObCjy/ZTg==}
     engines: {node: '>=20.19.0'}
 
-  '@eslint-react/eslint-plugin@2.8.1':
-    resolution: {integrity: sha512-ob+SSDnTPnA5dhiWWJLfyHRLEzWnjilCsohgo5s9PPKF5b5bjxG+c/rwqhQwT3M9Ey83mGNdkrLzt00SOfr4pw==}
-    engines: {node: '>=20.19.0'}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <6.0.0'
-
-  '@eslint-react/shared@2.8.1':
-    resolution: {integrity: sha512-NDmJBiMiPDXR6qeZzYOtiILHxWjYwBHxquQ/bMQkWcWK+1qF5LeD8UTRcWtBpZoMPi3sNBWwR3k2Sc5HWZpJ7g==}
+  '@eslint-react/eslint-plugin@2.8.4':
+    resolution: {integrity: sha512-7feB1P5jZixI23yBj4nQOm9G7dWCgNe6GWbcUo3zcXMNQftCTGdUFrbXL2EfvSOzdg+36ebBf1T5/oDGcIRvZg==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@eslint-react/var@2.8.1':
-    resolution: {integrity: sha512-iHIdEBz6kgW4dEFdhEjpy9SEQ6+d4RYg+WBzHg5J5ktT2xSQFi77Dq6Wtemik6QvvAPnYLRseQxgW+m+1rQlfA==}
+  '@eslint-react/shared@2.8.4':
+    resolution: {integrity: sha512-mHKntKO6FtPnomQ4M41oIXSKBkEa2cH7VjXnWi555i2AKCxdDa3m7LW+55tIcobXVLzzm5/K2ucficqJ6YDKPw==}
+    engines: {node: '>=20.19.0'}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0
+      typescript: '>=4.8.4 <6.0.0'
+
+  '@eslint-react/var@2.8.4':
+    resolution: {integrity: sha512-kXCpIJin1gWqVbxS2I9KnTGOm5+S3OuJX68wIq79Ls/nUj0M2uIdbVvQ0UpoMPifJnp8na1Mgkp9S/sdJ/5XGw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -3697,12 +3697,6 @@ packages:
       vue:
         optional: true
 
-  '@tanstack/devtools@0.10.4':
-    resolution: {integrity: sha512-GR/HMWe+eAZgSm/mOeuWMs/cXy3pEcrdMBU+OH0c6Qv1IXYv/xqru4aCSJPe+2/eJXng5ioqCsoVt9MztyU1mg==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      solid-js: '>=1.9.7'
-
   '@tanstack/devtools@0.10.5':
     resolution: {integrity: sha512-aptV4sMcdEn/zB8zqNqKSKi8pLzfB7BhdP2MuVmyfWgBDYNchqJjhviaxEXW3tJTolbWwc30o+jszwqxOIcIaA==}
     engines: {node: '>=18'}
@@ -3736,8 +3730,8 @@ packages:
   '@tanstack/query-devtools@5.93.0':
     resolution: {integrity: sha512-+kpsx1NQnOFTZsw6HAFCW3HkKg0+2cepGtAWXjiiSOJJ1CtQpt72EE2nyZb+AjAbLRPoeRmPJ8MtQd8r8gsPdg==}
 
-  '@tanstack/react-devtools@0.9.3':
-    resolution: {integrity: sha512-SJTYWXWZkbWznwUwZ11awinPGB5StVIVyJXT0BFM1zUgjuajRwT8xRHl1oXVzVqqjJP5kfj89jkbFrcQPpq7Ng==}
+  '@tanstack/react-devtools@0.9.4':
+    resolution: {integrity: sha512-6wQf8gVKDks1VL+LI5SS4XWK8dQLIjcDF3iMZfidyesWJNmodWbWlRkdgCmK5SpDSbcygjbp3p+LG2nE/SZ1bQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@types/react': '>=16.8'
@@ -3769,8 +3763,8 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@tanstack/solid-devtools@0.7.23':
-    resolution: {integrity: sha512-zFfZVBSzMT1rZL9FXxyZ0xyhI9H7dU6v18Kat4f+fXm7iaJ4F2w23E0KB1UDHhKUI9miOtxDWTVjIMPkIZ517g==}
+  '@tanstack/solid-devtools@0.7.24':
+    resolution: {integrity: sha512-qpuT5gUxSQdeK1Rv/ZpbV5chwzwMGYiu8XGDKecyhh6K4JIYxX1Pb3wRW5pKQio1m2duVGbx3gXxlvC1utxVjg==}
     engines: {node: '>=18'}
     peerDependencies:
       solid-js: '>=1.9.7'
@@ -4544,15 +4538,15 @@ packages:
     peerDependencies:
       eslint: '>=7'
 
-  eslint-plugin-react-dom@2.8.1:
-    resolution: {integrity: sha512-VAVs3cp/0XTxdjTeLePtZVadj+om+N1VNVy7hyzSPACfh5ncAicC0zOIc5MB15KUWCj8PoG/ZnVny0YqeubgRg==}
+  eslint-plugin-react-dom@2.8.4:
+    resolution: {integrity: sha512-yzEsyZQRUd6aj3t/86m3LDyPSro7Rxw91k4XxJU7fhfSOiAkqGsEkApP1J4ht3MC8MaK/THILjJYBYBAf29O1Q==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  eslint-plugin-react-hooks-extra@2.8.1:
-    resolution: {integrity: sha512-YeZLGzcib6UxlY7Gf+3zz8Mfl7u+OoVj3MukGaTuU6zkm1XQMI8/k4o16bKHuWtUauhn7Udl1bLAWfLgQM5UFw==}
+  eslint-plugin-react-hooks-extra@2.8.4:
+    resolution: {integrity: sha512-yB0n40BRzTzic0bV+Ej/QhEt1ov+JwssRoNNdqUcXvs3+JQ5VGYOs9Pr4oReUKrnFrUC1UnCppym7seHR6TlyQ==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -4564,22 +4558,22 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
 
-  eslint-plugin-react-naming-convention@2.8.1:
-    resolution: {integrity: sha512-fVj+hSzIe2I6HyPTf1nccMBXq72c4jbM3gk0T+szo/wewEF8/LgenjfquJoxHPpheb1fujFgdlo5HBhsilAX7Q==}
+  eslint-plugin-react-naming-convention@2.8.4:
+    resolution: {integrity: sha512-0QmsRHHa1r5lOhora0odeE72uUd/rMzXEA+UDv2hNkGkLnnnq9NymcQeOottFI1/HL3MnFrcJ13so5VUum0/nA==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  eslint-plugin-react-web-api@2.8.1:
-    resolution: {integrity: sha512-NYsZKW1aJZ2XZuYTPzbwYLShvGcuXKRV/5TW61VO56gik/btil4Snt5UtyxshHbvT/zXx/Z+QsHul51/XM4/Qw==}
+  eslint-plugin-react-web-api@2.8.4:
+    resolution: {integrity: sha512-OCp5eLsOOR7VMAv9hMSywkK0MsRbUTq8IafThnsYFV1+IEMwz7WIdIo9xhWA+T97A5XM9wGSZMhkkIcPSL1wRg==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  eslint-plugin-react-x@2.8.1:
-    resolution: {integrity: sha512-4IpCMrsb63AVEa9diOApIm+T3wUGIzK+EB5vyYocO31YYPJ16+R7Fh4lV3S3fOuX1+aQ+Ad4SE0cYuZ2pF2Tlg==}
+  eslint-plugin-react-x@2.8.4:
+    resolution: {integrity: sha512-eg/GUb11iSbjiHq4vD2VVEYnjB1Oue2UTP7NpCaGrp2WKJrNpua7wRW8RgF6INf34oiZCJ9HXTaSNRkKyoUsNw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -6633,9 +6627,9 @@ snapshots:
 
   '@eslint-community/regexpp@4.12.2': {}
 
-  '@eslint-react/ast@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/ast@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/eff': 2.8.1
+      '@eslint-react/eff': 2.8.4
       '@typescript-eslint/types': 8.54.0
       '@typescript-eslint/typescript-estree': 8.54.0(typescript@5.9.3)
       '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
@@ -6645,12 +6639,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint-react/core@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/core@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/ast': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.8.1
-      '@eslint-react/shared': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.8.4
+      '@eslint-react/shared': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.54.0
       '@typescript-eslint/types': 8.54.0
       '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
@@ -6660,30 +6654,30 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint-react/eff@2.8.1': {}
+  '@eslint-react/eff@2.8.4': {}
 
-  '@eslint-react/eslint-plugin@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/eslint-plugin@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/eff': 2.8.1
-      '@eslint-react/shared': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.8.4
+      '@eslint-react/shared': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.54.0
       '@typescript-eslint/type-utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/types': 8.54.0
       '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
-      eslint-plugin-react-dom: 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      eslint-plugin-react-hooks-extra: 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      eslint-plugin-react-naming-convention: 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      eslint-plugin-react-web-api: 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      eslint-plugin-react-x: 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-dom: 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-hooks-extra: 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-naming-convention: 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-web-api: 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint-plugin-react-x: 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       ts-api-utils: 2.4.0(typescript@5.9.3)
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint-react/shared@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/shared@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/eff': 2.8.1
+      '@eslint-react/eff': 2.8.4
       '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       ts-pattern: 5.9.0
@@ -6692,11 +6686,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint-react/var@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+  '@eslint-react/var@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-react/ast': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.8.1
-      '@eslint-react/shared': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.8.4
+      '@eslint-react/shared': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.54.0
       '@typescript-eslint/types': 8.54.0
       '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
@@ -7251,22 +7245,6 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools@0.10.4(csstype@3.2.3)(solid-js@1.9.11)':
-    dependencies:
-      '@solid-primitives/event-listener': 2.4.3(solid-js@1.9.11)
-      '@solid-primitives/keyboard': 1.3.3(solid-js@1.9.11)
-      '@solid-primitives/resize-observer': 2.1.3(solid-js@1.9.11)
-      '@tanstack/devtools-client': 0.0.5
-      '@tanstack/devtools-event-bus': 0.4.0
-      '@tanstack/devtools-ui': 0.4.4(csstype@3.2.3)(solid-js@1.9.11)
-      clsx: 2.1.1
-      goober: 2.1.18(csstype@3.2.3)
-      solid-js: 1.9.11
-    transitivePeerDependencies:
-      - bufferutil
-      - csstype
-      - utf-8-validate
-
   '@tanstack/devtools@0.10.5(csstype@3.2.3)(solid-js@1.9.11)':
     dependencies:
       '@solid-primitives/event-listener': 2.4.3(solid-js@1.9.11)
@@ -7320,9 +7298,9 @@ snapshots:
 
   '@tanstack/query-devtools@5.93.0': {}
 
-  '@tanstack/react-devtools@0.9.3(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)':
+  '@tanstack/react-devtools@0.9.4(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)':
     dependencies:
-      '@tanstack/devtools': 0.10.4(csstype@3.2.3)(solid-js@1.9.11)
+      '@tanstack/devtools': 0.10.5(csstype@3.2.3)(solid-js@1.9.11)
       '@types/react': 19.2.10
       '@types/react-dom': 19.2.3(@types/react@19.2.10)
       react: 19.2.4
@@ -7357,9 +7335,9 @@ snapshots:
       react-dom: 19.2.4(react@19.2.4)
       use-sync-external-store: 1.6.0(react@19.2.4)
 
-  '@tanstack/solid-devtools@0.7.23(csstype@3.2.3)(solid-js@1.9.11)':
+  '@tanstack/solid-devtools@0.7.24(csstype@3.2.3)(solid-js@1.9.11)':
     dependencies:
-      '@tanstack/devtools': 0.10.4(csstype@3.2.3)(solid-js@1.9.11)
+      '@tanstack/devtools': 0.10.5(csstype@3.2.3)(solid-js@1.9.11)
       solid-js: 1.9.11
     transitivePeerDependencies:
       - bufferutil
@@ -8201,37 +8179,35 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-dom@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-dom@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.8.1
-      '@eslint-react/shared': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.8.4
+      '@eslint-react/shared': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.54.0
       '@typescript-eslint/types': 8.54.0
       '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       compare-versions: 6.1.1
       eslint: 9.39.2(jiti@2.6.1)
-      string-ts: 2.3.1
       ts-pattern: 5.9.0
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-hooks-extra@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-hooks-extra@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.8.1
-      '@eslint-react/shared': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.8.4
+      '@eslint-react/shared': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.54.0
       '@typescript-eslint/type-utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/types': 8.54.0
       '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
-      string-ts: 2.3.1
       ts-pattern: 5.9.0
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -8248,13 +8224,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-naming-convention@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-naming-convention@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.8.1
-      '@eslint-react/shared': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.8.4
+      '@eslint-react/shared': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.54.0
       '@typescript-eslint/type-utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/types': 8.54.0
@@ -8267,31 +8243,30 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-web-api@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-web-api@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.8.1
-      '@eslint-react/shared': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.8.4
+      '@eslint-react/shared': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.54.0
       '@typescript-eslint/types': 8.54.0
       '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       birecord: 0.1.1
       eslint: 9.39.2(jiti@2.6.1)
-      string-ts: 2.3.1
       ts-pattern: 5.9.0
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-x@2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-react-x@2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@eslint-react/ast': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/core': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/eff': 2.8.1
-      '@eslint-react/shared': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      '@eslint-react/var': 2.8.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/ast': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/core': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/eff': 2.8.4
+      '@eslint-react/shared': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@eslint-react/var': 2.8.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.54.0
       '@typescript-eslint/type-utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/types': 8.54.0
@@ -8299,7 +8274,6 @@ snapshots:
       compare-versions: 6.1.1
       eslint: 9.39.2(jiti@2.6.1)
       is-immutable-type: 5.0.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      string-ts: 2.3.1
       ts-api-utils: 2.4.0(typescript@5.9.3)
       ts-pattern: 5.9.0
       typescript: 5.9.3

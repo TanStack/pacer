@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@tanstack/preact-pacer": "^0.19.4",
-    "preact": "^10.28.2"
+    "preact": "^10.28.3"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.3",
