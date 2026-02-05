@@ -1,4 +1,4 @@
-import { effect, linkedSignal } from '@angular/core'
+import { effect } from '@angular/core'
 import { injectThrottledSignal } from './injectThrottledSignal'
 import type { ThrottledSignal } from './injectThrottledSignal'
 import type { Signal } from '@angular/core'
@@ -21,7 +21,7 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * like scroll positions or mouse coordinates, where you want to limit how often downstream effects
  * or calculations occur.
  *
- * The function returns a tuple containing:
+ * The function returns a throttled signal object containing:
  * - A Signal that provides the current throttled value
  * - The throttler instance with control methods
  *
@@ -76,16 +76,48 @@ export function injectThrottledValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialOptions: ThrottlerOptions<Setter<TValue>>,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
+): ThrottledSignal<TValue, TSelected>
+export function injectThrottledValue<TValue, TSelected = {}>(
+  value: Signal<TValue>,
+  initialValue: TValue,
+  initialOptions: ThrottlerOptions<Setter<TValue>>,
+  selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
+): ThrottledSignal<TValue, TSelected>
+export function injectThrottledValue<TValue, TSelected = {}>(
+  value: Signal<TValue>,
+  initialValueOrOptions: TValue | ThrottlerOptions<Setter<TValue>>,
+  initialOptionsOrSelector?:
+    | ThrottlerOptions<Setter<TValue>>
+    | ((state: ThrottlerState<Setter<TValue>>) => TSelected),
+  maybeSelector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
 ): ThrottledSignal<TValue, TSelected> {
-  const linkedValue = linkedSignal(() => value())
+  const hasSelector = typeof initialOptionsOrSelector === 'function'
+
+  const hasInitialValue =
+    (initialOptionsOrSelector !== undefined && !hasSelector) ||
+    maybeSelector !== undefined
+
+  const initialValue = hasInitialValue
+    ? (initialValueOrOptions as TValue)
+    : (undefined as unknown as TValue)
+  const initialOptions = hasInitialValue
+    ? (initialOptionsOrSelector as ThrottlerOptions<Setter<TValue>>)
+    : (initialValueOrOptions as ThrottlerOptions<Setter<TValue>>)
+  const selector = hasInitialValue
+    ? maybeSelector
+    : (initialOptionsOrSelector as
+        | ((state: ThrottlerState<Setter<TValue>>) => TSelected)
+        | undefined)
+
   const throttledValue = injectThrottledSignal(
-    linkedValue(),
+    initialValue,
     initialOptions,
     selector,
   )
 
   effect(() => {
-    throttledValue.set(linkedValue())
+    const latest = value()
+    throttledValue.set(latest)
   })
 
   return throttledValue

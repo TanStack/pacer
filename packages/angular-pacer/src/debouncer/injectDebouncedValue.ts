@@ -78,9 +78,41 @@ export function injectDebouncedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialOptions: DebouncerOptions<Setter<TValue>>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
-): DebouncedSignal<TValue, TSelected> | undefined {
+): DebouncedSignal<TValue, TSelected>
+export function injectDebouncedValue<TValue, TSelected = {}>(
+  value: Signal<TValue>,
+  initialValue: TValue,
+  initialOptions: DebouncerOptions<Setter<TValue>>,
+  selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
+): DebouncedSignal<TValue, TSelected>
+export function injectDebouncedValue<TValue, TSelected = {}>(
+  value: Signal<TValue>,
+  initialValueOrOptions: TValue | DebouncerOptions<Setter<TValue>>,
+  initialOptionsOrSelector?:
+    | DebouncerOptions<Setter<TValue>>
+    | ((state: DebouncerState<Setter<TValue>>) => TSelected),
+  maybeSelector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
+): DebouncedSignal<TValue, TSelected> {
+  const hasSelector = typeof initialOptionsOrSelector === 'function'
+
+  const hasInitialValue =
+    (initialOptionsOrSelector !== undefined && !hasSelector) ||
+    maybeSelector !== undefined
+
+  const initialValue = hasInitialValue
+    ? (initialValueOrOptions as TValue)
+    : (undefined as unknown as TValue)
+  const initialOptions = hasInitialValue
+    ? (initialOptionsOrSelector as DebouncerOptions<Setter<TValue>>)
+    : (initialValueOrOptions as DebouncerOptions<Setter<TValue>>)
+  const selector = hasInitialValue
+    ? maybeSelector
+    : (initialOptionsOrSelector as
+        | ((state: DebouncerState<Setter<TValue>>) => TSelected)
+        | undefined)
+
   const debounced = injectDebouncedSignal(
-    undefined as unknown as TValue,
+    initialValue,
     initialOptions,
     selector,
   )

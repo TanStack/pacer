@@ -35,24 +35,66 @@ export function injectQueuedValue<
     'items'
   >,
 >(
-  initialValue: Signal<TValue>,
-  options: QueuerOptions<TValue> = {},
+  value: Signal<TValue>,
+  options?: QueuerOptions<TValue>,
   selector?: (state: QueuerState<TValue>) => TSelected,
+): QueuedSignal<TValue, TSelected>
+export function injectQueuedValue<
+  TValue,
+  TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
+    QueuerState<TValue>,
+    'items'
+  >,
+>(
+  value: Signal<TValue>,
+  initialValue: TValue,
+  options?: QueuerOptions<TValue>,
+  selector?: (state: QueuerState<TValue>) => TSelected,
+): QueuedSignal<TValue, TSelected>
+export function injectQueuedValue<
+  TValue,
+  TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
+    QueuerState<TValue>,
+    'items'
+  >,
+>(
+  value: Signal<TValue>,
+  initialValueOrOptions?: TValue | QueuerOptions<TValue>,
+  initialOptionsOrSelector?:
+    | QueuerOptions<TValue>
+    | ((state: QueuerState<TValue>) => TSelected),
+  maybeSelector?: (state: QueuerState<TValue>) => TSelected,
 ): QueuedSignal<TValue, TSelected> {
-  const linkedInitialValue = linkedSignal(() => initialValue())
+  const hasSelector = typeof initialOptionsOrSelector === 'function'
+  const hasInitialValue =
+    (initialOptionsOrSelector !== undefined && !hasSelector) ||
+    maybeSelector !== undefined
 
-  const value = signal<TValue>(linkedInitialValue())
+  const initialValue = hasInitialValue
+    ? (initialValueOrOptions as TValue)
+    : value()
+  const initialOptions = hasInitialValue
+    ? (initialOptionsOrSelector as QueuerOptions<TValue>)
+    : (initialValueOrOptions as QueuerOptions<TValue>)
+  const selector = hasInitialValue
+    ? maybeSelector
+    : (initialOptionsOrSelector as
+        | ((state: QueuerState<TValue>) => TSelected)
+        | undefined)
+
+  const linkedValue = linkedSignal(() => value())
+  const queuedValue = signal<TValue>(initialValue)
 
   const queued = injectQueuedSignal(
     (item) => {
-      value.set(item)
+      queuedValue.set(item)
     },
-    options,
+    initialOptions,
     selector,
   )
 
   effect(() => {
-    queued.addItem(linkedInitialValue())
+    queued.addItem(linkedValue())
   })
 
   return queued

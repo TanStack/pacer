@@ -1,4 +1,4 @@
-import { effect, linkedSignal } from '@angular/core'
+import { effect } from '@angular/core'
 import { injectRateLimitedSignal } from './injectRateLimitedSignal'
 import type { RateLimitedSignal } from './injectRateLimitedSignal'
 import type { Signal } from '@angular/core'
@@ -17,7 +17,7 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * The rate-limited value will update according to the configured rate limit, blocking updates
  * once the limit is reached until the window resets.
  *
- * The function returns a tuple containing:
+ * The function returns a rate-limited signal object containing:
  * - A Signal that provides the current rate-limited value
  * - The rate limiter instance with control methods
  *
@@ -51,16 +51,48 @@ export function injectRateLimitedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialOptions: RateLimiterOptions<Setter<TValue>>,
   selector?: (state: RateLimiterState) => TSelected,
+): RateLimitedSignal<TValue, TSelected>
+export function injectRateLimitedValue<TValue, TSelected = {}>(
+  value: Signal<TValue>,
+  initialValue: TValue,
+  initialOptions: RateLimiterOptions<Setter<TValue>>,
+  selector?: (state: RateLimiterState) => TSelected,
+): RateLimitedSignal<TValue, TSelected>
+export function injectRateLimitedValue<TValue, TSelected = {}>(
+  value: Signal<TValue>,
+  initialValueOrOptions: TValue | RateLimiterOptions<Setter<TValue>>,
+  initialOptionsOrSelector?:
+    | RateLimiterOptions<Setter<TValue>>
+    | ((state: RateLimiterState) => TSelected),
+  maybeSelector?: (state: RateLimiterState) => TSelected,
 ): RateLimitedSignal<TValue, TSelected> {
-  const linkedValue = linkedSignal(() => value())
+  const hasSelector = typeof initialOptionsOrSelector === 'function'
+
+  const hasInitialValue =
+    (initialOptionsOrSelector !== undefined && !hasSelector) ||
+    maybeSelector !== undefined
+
+  const initialValue = hasInitialValue
+    ? (initialValueOrOptions as TValue)
+    : (undefined as unknown as TValue)
+  const initialOptions = hasInitialValue
+    ? (initialOptionsOrSelector as RateLimiterOptions<Setter<TValue>>)
+    : (initialValueOrOptions as RateLimiterOptions<Setter<TValue>>)
+  const selector = hasInitialValue
+    ? maybeSelector
+    : (initialOptionsOrSelector as
+        | ((state: RateLimiterState) => TSelected)
+        | undefined)
+
   const rateLimited = injectRateLimitedSignal(
-    linkedValue(),
+    initialValue,
     initialOptions,
     selector,
   )
 
   effect(() => {
-    rateLimited.set(linkedValue())
+    const latest = value()
+    rateLimited.set(latest)
   })
 
   return rateLimited

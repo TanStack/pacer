@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core'
 import { injectQueuedValue } from '@tanstack/angular-pacer'
+import { InputApp } from './inputapp'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
+  imports: [InputApp],
 })
 export class App {
   protected readonly source = signal('')
