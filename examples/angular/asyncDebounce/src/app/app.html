@@ -11,7 +11,7 @@
   <section>
     <h2>Status</h2>
     <p>Pending: {{ debouncer.state().isPending }}</p>
-    <p></p>Executing: {{ debouncer.state().isExecuting }}</p>
+    <p>Executing: {{ debouncer.state().isExecuting }}</p>
   </section>
 
   <section>
@@ -20,7 +20,7 @@
     <p>No events yet. Type in the input to search.</p>
     } @else {
     <ul>
-      @for (let entry of logs(); track $index) {
+      @for (entry of logs(); track $index) {
       <li>{{ entry }}</li>
       }
     </ul>

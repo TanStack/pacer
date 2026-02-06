@@ -7,6 +7,7 @@ import { injectAsyncRateLimiter } from '@tanstack/angular-pacer'
   templateUrl: './app.html',
 })
 export class App {
+  protected readonly Math = Math
   protected readonly logs = signal<Array<string>>([])
   protected readonly rateLimiter = injectAsyncRateLimiter(
     async (value: number) => {
@@ -20,9 +21,10 @@ export class App {
     },
     (state) => ({
       rejectionCount: state.rejectionCount,
+      executionTimes: state.executionTimes,
     }),
   )
-
+  
   protected async attempt(value: number): Promise<void> {
     try {
       const result = await this.rateLimiter.maybeExecute(value)

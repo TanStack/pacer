@@ -9,7 +9,7 @@
 
   <section>
     <h2>Status</h2>
-    <p>Allowed: {{ rateLimiter.state().executionCount }}</p>
+    <p>Allowed: {{ rateLimiter.state().executionTimes.length }}</p>
     <p>Blocked: {{ rateLimiter.state().rejectionCount }}</p>
   </section>
 
@@ -19,7 +19,7 @@
     <p>No events yet. Press Attempt to generate entries.</p>
     } @else {
     <ul>
-      @for (let entry of logs(); track $index) {
+      @for (entry of logs(); track $index) {
       <li>{{ entry }}</li>
       }
     </ul>

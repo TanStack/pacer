@@ -6,7 +6,7 @@
   Query
   <input
     [value]="query()"
-    (input)="onQueryInput(($any($event.target).value as string) ?? '')"
+    (input)="onQueryInput($any($event.target).value ?? '')"
     placeholder="Type here..."
   />
 </label>

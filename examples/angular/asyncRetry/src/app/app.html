@@ -43,7 +43,7 @@
       <div>
         @if (log().length === 0) {
         <span>No logs yet. Click "Run" to start.</span>
-        } @for (let entry of log(); track $index) {
+        } @for (entry of log(); track $index) {
         <div><strong>{{ entry.time }}</strong> — {{ entry.message }}</div>
         }
       </div>

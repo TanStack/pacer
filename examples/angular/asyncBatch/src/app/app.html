@@ -20,7 +20,7 @@
       <p>No batches yet. Add items to start batching.</p>
     } @else {
       <ul>
-        @for (let entry of logs(); track $index) {
+        @for (entry of logs(); track $index) {
           <li>{{ entry }}</li>
         }
       </ul>

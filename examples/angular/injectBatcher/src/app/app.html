@@ -2,7 +2,7 @@
 
 <label>
   Item
-  <input [value]="input()" (input)="onInput(($any($event.target).value as string) ?? '')" />
+  <input [value]="input()" (input)="onInput($any($event.target).value ?? '')" />
 </label>
 
 <div>

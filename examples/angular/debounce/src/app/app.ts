@@ -14,6 +14,6 @@ export class App {
     { wait: 500 },
     (state) => ({ isPending: state.isPending }),
   )
-  protected readonly searchTerm = this.debounced.value
-  protected readonly setSearchTerm = this.debounced.setValue
+  protected readonly searchTerm = this.debounced
+  protected readonly setSearchTerm = this.debounced.set
 }

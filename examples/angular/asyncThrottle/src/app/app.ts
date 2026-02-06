@@ -7,7 +7,8 @@ import { injectAsyncThrottler } from '@tanstack/angular-pacer'
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly logs = signal<string[]>([])
+  protected readonly Math = Math
+  protected readonly logs = signal<Array<string>>([])
   protected readonly throttler = injectAsyncThrottler(
     async (value: number) => {
       await new Promise((resolve) => setTimeout(resolve, 1000))

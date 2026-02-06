@@ -4,7 +4,7 @@
 
 <label>
   Item
-  <input [value]="item()" (input)="onItemInput(($event.target as HTMLInputElement).value)" />
+  <input [value]="item()" (input)="onItemInput($event.target.value)" />
 </label>
 
 <button type="button" (click)="addItem()">Add</button>
@@ -19,7 +19,7 @@
 <p>(none yet)</p>
 } @else {
 <ul>
-  @for (let x of lastBatch(); track x) {
+  @for (x of lastBatch(); track x) {
   <li>{{ x }}</li>
   }
 </ul>
@@ -30,7 +30,7 @@
 <p>(no batches yet)</p>
 } @else {
 <ol>
-  @for (let batch of batchHistory(); track $index) {
+  @for (batch of batchHistory(); track $index) {
   <li>{{ batch.join(', ') }}</li>
   }
 </ol>

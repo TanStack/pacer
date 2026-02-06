@@ -33,7 +33,7 @@
 <p>No calls yet.</p>
 } @else {
 <ul>
-  @for (let entry of history; track $index) {
+  @for (entry of history; track $index) {
   <li>
     <div>
       {{ entry.timestamp }} - {{ entry.value }} - {{ entry.executed ? 'EXECUTED' : 'REJECTED' }}

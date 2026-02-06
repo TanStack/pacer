@@ -4,7 +4,7 @@
 
 <label>
   Query
-  <input [value]="query()" (input)="onQueryInput(($event.target as HTMLInputElement).value)" />
+  <input [value]="query()" (input)="onQueryInput($event.target.value)" />
 </label>
 
 <button type="button" (click)="clear()">Clear</button>
@@ -21,7 +21,7 @@
 <p>(no results)</p>
 } @else {
 <ul>
-  @for (let item of results(); track item) {
+  @for (item of results(); track item) {
   <li>{{ item }}</li>
   }
 </ul>

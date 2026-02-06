@@ -1,5 +1,5 @@
 <div>
-  <h1>Tan Stack Pacer - create</h1>RateLimitedCallback Example</h1>
+  <h1>Tan Stack Pacer - createRateLimitedCallback Example</h1>
 
   <p>
     Click the trigger button quickly. The callback executes at most {{ limit }} times within
@@ -7,17 +7,17 @@
   </p>
 
   <section>
-    <h2>Counts<</h2>/h2>
+    <h2>Counts</h2>
     <p>Total triggers: {{ rawCount() }}</p>
     <p>Executed callbacks: {{ executedCount() }}</p>
     <p>Blocked callbacks: {{ blockedCount() }}</p>
   </section>
 
   <section>
-    <h2>Last execution<</h2>/h2>
+    <h2>Last execution</h2>
     <p>
       Value:
-</p>      {{ lastExecutedValue() !== null ? lastExecutedValue() : '(none yet)' }}
+      {{ lastExecutedValue() !== null ? lastExecutedValue() : '(none yet)' }}
     </p>
     <p>
       Time:
@@ -26,7 +26,7 @@
   </section>
 
   <section>
-    <h2>Controls</h2></h2>
+    <h2>Controls</h2>
     <button (click)="trigger()">Trigger callback</button>
     <button (click)="reset()">Reset</button>
   </section>

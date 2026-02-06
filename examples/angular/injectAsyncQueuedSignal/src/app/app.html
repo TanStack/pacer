@@ -23,7 +23,7 @@
 <p>Queue is empty.</p>
 } @else {
 <ul>
-  @for (let item of queue(); track $index) {
+  @for (item of queue(); track $index) {
   <li>{{ item }}</li>
   }
 </ul>
@@ -35,7 +35,7 @@
 <p>Nothing processed yet.</p>
 } @else {
 <ul>
-  @for (let entry of processed; track $index) {
+  @for (entry of processed; track $index) {
   <li>{{ entry.timestamp }} - {{ entry.item }}</li>
   }
 </ul>

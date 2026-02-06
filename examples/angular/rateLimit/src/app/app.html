@@ -131,7 +131,7 @@
       >
         @if (executionHistory.length === 0) {
         <span style="color: #999">No executions yet. Click "Increment" to start.</span>
-        } @for (let entry of executionHistory; track $index) {
+        } @for (entry of executionHistory; track $index) {
         <div
           style="
             margin-bottom: 8px;

@@ -39,16 +39,7 @@ export class App {
     this.log.set([])
   }
 
-  @asyncRetry((ctx) => ({
-    key: `asyncRetry-example-${ctx.args[0]}`,
-    enabled: true,
-    maxAttempts: 5,
-    baseWait: 250,
-    backoff: 'exponential',
-    jitter: true,
-    throwOnError: false,
-  }))
-  protected async run(runId: number): Promise<string | undefined> {
+  protected async run(runId: number): Promise<string> {
     this.status.set('running')
     this.result.set(null)
     this.error.set(null)
@@ -77,7 +68,18 @@ export class App {
     this.reset()
     this.bumpRunId()
     const id = this.runId()
-    const value = await this.run(id)
+
+    const runWithRetry = asyncRetry(this.run.bind(this), {
+      key: `asyncRetry-example-${id}`,
+      maxAttempts: 5,
+      baseWait: 250,
+      backoff: 'exponential',
+      // asyncRetry expects jitter as a number (e.g. 0.1), not a boolean
+      jitter: 0.1,
+    })
+
+    const value = await runWithRetry(id)
+
     if (value === undefined) {
       this.status.set('error')
       this.logLine('gave up (maxAttempts reached)')
