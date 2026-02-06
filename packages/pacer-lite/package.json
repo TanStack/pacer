@@ -37,28 +37,28 @@
   "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./lite-batcher": {
-      "require": "./dist/lite-batcher.cjs",
-      "import": "./dist/lite-batcher.js"
+      "import": "./dist/lite-batcher.js",
+      "require": "./dist/lite-batcher.cjs"
     },
     "./lite-debouncer": {
-      "require": "./dist/lite-debouncer.cjs",
-      "import": "./dist/lite-debouncer.js"
+      "import": "./dist/lite-debouncer.js",
+      "require": "./dist/lite-debouncer.cjs"
     },
     "./lite-queuer": {
-      "require": "./dist/lite-queuer.cjs",
-      "import": "./dist/lite-queuer.js"
+      "import": "./dist/lite-queuer.js",
+      "require": "./dist/lite-queuer.cjs"
     },
     "./lite-rate-limiter": {
-      "require": "./dist/lite-rate-limiter.cjs",
-      "import": "./dist/lite-rate-limiter.js"
+      "import": "./dist/lite-rate-limiter.js",
+      "require": "./dist/lite-rate-limiter.cjs"
     },
     "./lite-throttler": {
-      "require": "./dist/lite-throttler.cjs",
-      "import": "./dist/lite-throttler.js"
+      "import": "./dist/lite-throttler.js",
+      "require": "./dist/lite-throttler.cjs"
     },
     "./package.json": "./package.json"
   },

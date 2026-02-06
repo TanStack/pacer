@@ -1,0 +1,37 @@
+<h1>TanStack Pacer - Async Batcher</h1>
+
+<p>Add items. They flush as a batch when max size is hit or the wait timer expires.</p>
+
+<label>
+  Item
+  <input [value]="item()" (input)="onItemInput($event.target.value)" />
+</label>
+
+<button type="button" (click)="addItem()">Add</button>
+<button type="button" (click)="addThree()">Add 3 Quickly</button>
+<button type="button" (click)="reset()">Reset</button>
+
+<p>Queued items: {{ batcher.state().items.length }}</p>
+<p>Executing: {{ batcher.state().isExecuting }}</p>
+
+<h2>Last Batch</h2>
+@if (lastBatch().length === 0) {
+<p>(none yet)</p>
+} @else {
+<ul>
+  @for (x of lastBatch(); track x) {
+  <li>{{ x }}</li>
+  }
+</ul>
+}
+
+<h2>History</h2>
+@if (batchHistory().length === 0) {
+<p>(no batches yet)</p>
+} @else {
+<ol>
+  @for (batch of batchHistory(); track $index) {
+  <li>{{ batch.join(', ') }}</li>
+  }
+</ol>
+}

@@ -1,0 +1,47 @@
+<h1>injectAsyncRateLimiter</h1>
+
+<p>
+  This example limits an async function to 3 executions per 2 seconds. Calls over the limit are
+  rejected and resolve to <code>undefined</code>.
+</p>
+
+<div>
+  <label>
+    Value
+    <input [value]="value()" (input)="value.set(($any($event.target).value ?? '').toString())" />
+  </label>
+  <button (click)="runOnce()">Run Once</button>
+  <button (click)="runBurst(10)">Run Burst (10)</button>
+  <button (click)="reset()">Reset</button>
+</div>
+
+<h2>Status</h2>
+
+<div>status: {{ rateLimiter.state().status }}</div>
+<div>isExecuting: {{ rateLimiter.state().isExecuting }}</div>
+<div>remainingInWindow: {{ rateLimiter.getRemainingInWindow() }}</div>
+<div>msUntilNextWindow: {{ rateLimiter.getMsUntilNextWindow() }}</div>
+<div>successCount: {{ rateLimiter.state().successCount }}</div>
+<div>rejectionCount: {{ rateLimiter.state().rejectionCount }}</div>
+<div>maybeExecuteCount: {{ rateLimiter.state().maybeExecuteCount }}</div>
+<div>lastOutcome: {{ lastOutcome() }}</div>
+<div>lastResult: {{ lastResult() ?? 'none' }}</div>
+
+<h2>History</h2>
+
+@if (history.length === 0) {
+<p>No calls yet.</p>
+} @else {
+<ul>
+  @for (entry of history; track $index) {
+  <li>
+    <div>
+      {{ entry.timestamp }} - {{ entry.value }} - {{ entry.executed ? 'EXECUTED' : 'REJECTED' }}
+    </div>
+    @if (entry.executed) {
+    <div>Result: {{ entry.result }}</div>
+    }
+  </li>
+  }
+</ul>
+}
