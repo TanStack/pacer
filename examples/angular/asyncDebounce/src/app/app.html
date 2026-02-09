@@ -2,7 +2,13 @@
   <h1>Async debouncer</h1>
   <p>Waits 500ms after last change, execution takes 1s.</p>
 
-  <input type="text" [value]="query()" (input)="onInput($event)" placeholder="Type to search..." style="width: 100%; padding: 8px; margin: 16px 0" />
+  <input
+    type="text"
+    [value]="query()"
+    (input)="onInput($event)"
+    placeholder="Type to search..."
+    style="width: 100%; padding: 8px; margin: 16px 0"
+  />
 
   <div style="display: flex; gap: 12px; margin: 16px 0">
     <button type="button" (click)="reset()">Reset</button>

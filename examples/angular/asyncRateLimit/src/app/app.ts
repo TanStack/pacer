@@ -24,7 +24,7 @@ export class App {
       executionTimes: state.executionTimes,
     }),
   )
-  
+
   protected async attempt(value: number): Promise<void> {
     try {
       const result = await this.rateLimiter.maybeExecute(value)

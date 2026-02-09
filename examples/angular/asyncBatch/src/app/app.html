@@ -17,13 +17,13 @@
   <section>
     <h2>Batches</h2>
     @if (logs().length === 0) {
-      <p>No batches yet. Add items to start batching.</p>
+    <p>No batches yet. Add items to start batching.</p>
     } @else {
-      <ul>
-        @for (entry of logs(); track $index) {
-          <li>{{ entry }}</li>
-        }
-      </ul>
+    <ul>
+      @for (entry of logs(); track $index) {
+      <li>{{ entry }}</li>
+      }
+    </ul>
     }
   </section>
 </div>
