@@ -91,7 +91,7 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
 > - [**React Pacer**](https://tanstack.com/pacer/latest/docs/framework/react/react-pacer)
 > - [**Preact Pacer**](https://tanstack.com/pacer/latest/docs/framework/preact/preact-pacer)
 > - [**Solid Pacer**](https://tanstack.com/pacer/latest/docs/framework/solid/solid-pacer)
-> - Angular Pacer - needs a contributor!
+> - [**Angular Pacer**](https://tanstack.com/pacer/latest/docs/framework/angular/angular-pacer)
 > - Svelte Pacer - needs a contributor!
 > - Vue Pacer - needs a contributor!
 
