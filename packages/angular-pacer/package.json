@@ -116,6 +116,6 @@
     "@types/node": "^25.0.10"
   },
   "peerDependencies": {
-    "@angular/core": ">=16.0.0"
+    "@angular/core": ">=17.0.0"
   }
 }

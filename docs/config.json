@@ -53,6 +53,15 @@
               "to": "framework/preact/adapter"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "Angular Adapter",
+              "to": "framework/angular/adapter"
+            }
+          ]
         }
       ]
     },
@@ -142,6 +151,15 @@
             {
               "label": "Preact Hooks",
               "to": "framework/preact/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "Angular inject API",
+              "to": "framework/angular/reference/index"
             }
           ]
         }
@@ -288,6 +306,43 @@
               "to": "framework/preact/reference/functions/useAsyncDebouncedCallback"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularDebouncer",
+              "to": "framework/angular/reference/interfaces/AngularDebouncer"
+            },
+            {
+              "label": "AngularAsyncDebouncer",
+              "to": "framework/angular/reference/interfaces/AngularAsyncDebouncer"
+            },
+            {
+              "label": "injectDebouncer",
+              "to": "framework/angular/reference/functions/injectDebouncer"
+            },
+            {
+              "label": "injectDebouncedCallback",
+              "to": "framework/angular/reference/functions/injectDebouncedCallback"
+            },
+            {
+              "label": "injectDebouncedSignal",
+              "to": "framework/angular/reference/functions/injectDebouncedSignal"
+            },
+            {
+              "label": "injectDebouncedValue",
+              "to": "framework/angular/reference/functions/injectDebouncedValue"
+            },
+            {
+              "label": "injectAsyncDebouncer",
+              "to": "framework/angular/reference/functions/injectAsyncDebouncer"
+            },
+            {
+              "label": "injectAsyncDebouncedCallback",
+              "to": "framework/angular/reference/functions/injectAsyncDebouncedCallback"
+            }
+          ]
         }
       ]
     },
@@ -430,6 +485,43 @@
             {
               "label": "useAsyncThrottledCallback",
               "to": "framework/preact/reference/functions/useAsyncThrottledCallback"
+            }
+          ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularThrottler",
+              "to": "framework/angular/reference/interfaces/AngularThrottler"
+            },
+            {
+              "label": "AngularAsyncThrottler",
+              "to": "framework/angular/reference/interfaces/AngularAsyncThrottler"
+            },
+            {
+              "label": "injectThrottler",
+              "to": "framework/angular/reference/functions/injectThrottler"
+            },
+            {
+              "label": "injectThrottledCallback",
+              "to": "framework/angular/reference/functions/injectThrottledCallback"
+            },
+            {
+              "label": "injectThrottledSignal",
+              "to": "framework/angular/reference/functions/injectThrottledSignal"
+            },
+            {
+              "label": "injectThrottledValue",
+              "to": "framework/angular/reference/functions/injectThrottledValue"
+            },
+            {
+              "label": "injectAsyncThrottler",
+              "to": "framework/angular/reference/functions/injectAsyncThrottler"
+            },
+            {
+              "label": "injectAsyncThrottledCallback",
+              "to": "framework/angular/reference/functions/injectAsyncThrottledCallback"
             }
           ]
         }
@@ -576,6 +668,43 @@
               "to": "framework/preact/reference/functions/useAsyncRateLimitedCallback"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularRateLimiter",
+              "to": "framework/angular/reference/interfaces/AngularRateLimiter"
+            },
+            {
+              "label": "AngularAsyncRateLimiter",
+              "to": "framework/angular/reference/interfaces/AngularAsyncRateLimiter"
+            },
+            {
+              "label": "injectRateLimiter",
+              "to": "framework/angular/reference/functions/injectRateLimiter"
+            },
+            {
+              "label": "injectRateLimitedCallback",
+              "to": "framework/angular/reference/functions/injectRateLimitedCallback"
+            },
+            {
+              "label": "injectRateLimitedSignal",
+              "to": "framework/angular/reference/functions/injectRateLimitedSignal"
+            },
+            {
+              "label": "injectRateLimitedValue",
+              "to": "framework/angular/reference/functions/injectRateLimitedValue"
+            },
+            {
+              "label": "injectAsyncRateLimiter",
+              "to": "framework/angular/reference/functions/injectAsyncRateLimiter"
+            },
+            {
+              "label": "injectAsyncRateLimitedCallback",
+              "to": "framework/angular/reference/functions/injectAsyncRateLimitedCallback"
+            }
+          ]
         }
       ]
     },
@@ -708,6 +837,39 @@
               "to": "framework/preact/reference/functions/useAsyncQueuedState"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularQueuer",
+              "to": "framework/angular/reference/interfaces/AngularQueuer"
+            },
+            {
+              "label": "AngularAsyncQueuer",
+              "to": "framework/angular/reference/interfaces/AngularAsyncQueuer"
+            },
+            {
+              "label": "injectQueuer",
+              "to": "framework/angular/reference/functions/injectQueuer"
+            },
+            {
+              "label": "injectQueuedSignal",
+              "to": "framework/angular/reference/functions/injectQueuedSignal"
+            },
+            {
+              "label": "injectQueuedValue",
+              "to": "framework/angular/reference/functions/injectQueuedValue"
+            },
+            {
+              "label": "injectAsyncQueuer",
+              "to": "framework/angular/reference/functions/injectAsyncQueuer"
+            },
+            {
+              "label": "injectAsyncQueuedSignal",
+              "to": "framework/angular/reference/functions/injectAsyncQueuedSignal"
+            }
+          ]
         }
       ]
     },
@@ -828,6 +990,35 @@
               "to": "framework/preact/reference/functions/useAsyncBatchedCallback"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularBatcher",
+              "to": "framework/angular/reference/interfaces/AngularBatcher"
+            },
+            {
+              "label": "AngularAsyncBatcher",
+              "to": "framework/angular/reference/interfaces/AngularAsyncBatcher"
+            },
+            {
+              "label": "injectBatcher",
+              "to": "framework/angular/reference/functions/injectBatcher"
+            },
+            {
+              "label": "injectBatchedCallback",
+              "to": "framework/angular/reference/functions/injectBatchedCallback"
+            },
+            {
+              "label": "injectAsyncBatcher",
+              "to": "framework/angular/reference/functions/injectAsyncBatcher"
+            },
+            {
+              "label": "injectAsyncBatchedCallback",
+              "to": "framework/angular/reference/functions/injectAsyncBatchedCallback"
+            }
+          ]
         }
       ]
     },
@@ -946,6 +1137,43 @@
               "to": "framework/preact/examples/useAsyncDebouncedCallback"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "debounce",
+              "to": "framework/angular/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/angular/examples/asyncDebounce"
+            },
+            {
+              "label": "injectDebouncer",
+              "to": "framework/angular/examples/injectDebouncer"
+            },
+            {
+              "label": "injectDebouncedCallback",
+              "to": "framework/angular/examples/injectDebouncedCallback"
+            },
+            {
+              "label": "injectDebouncedSignal",
+              "to": "framework/angular/examples/injectDebouncedSignal"
+            },
+            {
+              "label": "injectDebouncedValue",
+              "to": "framework/angular/examples/injectDebouncedValue"
+            },
+            {
+              "label": "injectAsyncDebouncer",
+              "to": "framework/angular/examples/injectAsyncDebouncer"
+            },
+            {
+              "label": "injectAsyncDebouncedCallback",
+              "to": "framework/angular/examples/injectAsyncDebouncedCallback"
+            }
+          ]
         }
       ]
     },
@@ -1058,6 +1286,43 @@
             {
               "label": "useAsyncThrottledCallback",
               "to": "framework/preact/examples/useAsyncThrottledCallback"
+            }
+          ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "throttle",
+              "to": "framework/angular/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/angular/examples/asyncThrottle"
+            },
+            {
+              "label": "injectThrottler",
+              "to": "framework/angular/examples/injectThrottler"
+            },
+            {
+              "label": "injectThrottledCallback",
+              "to": "framework/angular/examples/injectThrottledCallback"
+            },
+            {
+              "label": "injectThrottledSignal",
+              "to": "framework/angular/examples/injectThrottledSignal"
+            },
+            {
+              "label": "injectThrottledValue",
+              "to": "framework/angular/examples/injectThrottledValue"
+            },
+            {
+              "label": "injectAsyncThrottler",
+              "to": "framework/angular/examples/injectAsyncThrottler"
+            },
+            {
+              "label": "injectAsyncThrottledCallback",
+              "to": "framework/angular/examples/injectAsyncThrottledCallback"
             }
           ]
         }
@@ -1186,6 +1451,51 @@
               "to": "framework/preact/examples/useAsyncRateLimiterWithPersister"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "rateLimit",
+              "to": "framework/angular/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/angular/examples/asyncRateLimit"
+            },
+            {
+              "label": "injectRateLimiter",
+              "to": "framework/angular/examples/injectRateLimiter"
+            },
+            {
+              "label": "injectRateLimitedCallback",
+              "to": "framework/angular/examples/injectRateLimitedCallback"
+            },
+            {
+              "label": "injectRateLimitedSignal",
+              "to": "framework/angular/examples/injectRateLimitedSignal"
+            },
+            {
+              "label": "injectRateLimitedValue",
+              "to": "framework/angular/examples/injectRateLimitedValue"
+            },
+            {
+              "label": "injectRateLimiterWithPersister",
+              "to": "framework/angular/examples/injectRateLimiterWithPersister"
+            },
+            {
+              "label": "injectAsyncRateLimiter",
+              "to": "framework/angular/examples/injectAsyncRateLimiter"
+            },
+            {
+              "label": "injectAsyncRateLimitedCallback",
+              "to": "framework/angular/examples/injectAsyncRateLimitedCallback"
+            },
+            {
+              "label": "injectAsyncRateLimiterWithPersister",
+              "to": "framework/angular/examples/injectAsyncRateLimiterWithPersister"
+            }
+          ]
         }
       ]
     },
@@ -1288,6 +1598,39 @@
               "to": "framework/preact/examples/useAsyncQueuedState"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "queue",
+              "to": "framework/angular/examples/queue"
+            },
+            {
+              "label": "injectQueuer",
+              "to": "framework/angular/examples/injectQueuer"
+            },
+            {
+              "label": "injectQueuedSignal",
+              "to": "framework/angular/examples/injectQueuedSignal"
+            },
+            {
+              "label": "injectQueuedValue",
+              "to": "framework/angular/examples/injectQueuedValue"
+            },
+            {
+              "label": "injectQueuerWithPersister",
+              "to": "framework/angular/examples/injectQueuerWithPersister"
+            },
+            {
+              "label": "injectAsyncQueuer",
+              "to": "framework/angular/examples/injectAsyncQueuer"
+            },
+            {
+              "label": "injectAsyncQueuedSignal",
+              "to": "framework/angular/examples/injectAsyncQueuedSignal"
+            }
+          ]
         }
       ]
     },
@@ -1376,6 +1719,35 @@
             {
               "label": "useAsyncBatchedCallback",
               "to": "framework/preact/examples/useAsyncBatchedCallback"
+            }
+          ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "batch",
+              "to": "framework/angular/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/angular/examples/asyncBatch"
+            },
+            {
+              "label": "injectBatcher",
+              "to": "framework/angular/examples/injectBatcher"
+            },
+            {
+              "label": "injectBatchedCallback",
+              "to": "framework/angular/examples/injectBatchedCallback"
+            },
+            {
+              "label": "injectAsyncBatcher",
+              "to": "framework/angular/examples/injectAsyncBatcher"
+            },
+            {
+              "label": "injectAsyncBatchedCallback",
+              "to": "framework/angular/examples/injectAsyncBatchedCallback"
             }
           ]
         }
