@@ -37,64 +37,64 @@
   "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./async-batcher": {
-      "require": "./dist/async-batcher.cjs",
-      "import": "./dist/async-batcher.js"
+      "import": "./dist/async-batcher.js",
+      "require": "./dist/async-batcher.cjs"
     },
     "./async-debouncer": {
-      "require": "./dist/async-debouncer.cjs",
-      "import": "./dist/async-debouncer.js"
+      "import": "./dist/async-debouncer.js",
+      "require": "./dist/async-debouncer.cjs"
     },
     "./async-queuer": {
-      "require": "./dist/async-queuer.cjs",
-      "import": "./dist/async-queuer.js"
+      "import": "./dist/async-queuer.js",
+      "require": "./dist/async-queuer.cjs"
     },
     "./async-rate-limiter": {
-      "require": "./dist/async-rate-limiter.cjs",
-      "import": "./dist/async-rate-limiter.js"
+      "import": "./dist/async-rate-limiter.js",
+      "require": "./dist/async-rate-limiter.cjs"
     },
     "./async-retryer": {
-      "require": "./dist/async-retryer.cjs",
-      "import": "./dist/async-retryer.js"
+      "import": "./dist/async-retryer.js",
+      "require": "./dist/async-retryer.cjs"
     },
     "./async-throttler": {
-      "require": "./dist/async-throttler.cjs",
-      "import": "./dist/async-throttler.js"
+      "import": "./dist/async-throttler.js",
+      "require": "./dist/async-throttler.cjs"
     },
     "./batcher": {
-      "require": "./dist/batcher.cjs",
-      "import": "./dist/batcher.js"
+      "import": "./dist/batcher.js",
+      "require": "./dist/batcher.cjs"
     },
     "./debouncer": {
-      "require": "./dist/debouncer.cjs",
-      "import": "./dist/debouncer.js"
+      "import": "./dist/debouncer.js",
+      "require": "./dist/debouncer.cjs"
     },
     "./event-client": {
-      "require": "./dist/event-client.cjs",
-      "import": "./dist/event-client.js"
+      "import": "./dist/event-client.js",
+      "require": "./dist/event-client.cjs"
     },
     "./queuer": {
-      "require": "./dist/queuer.cjs",
-      "import": "./dist/queuer.js"
+      "import": "./dist/queuer.js",
+      "require": "./dist/queuer.cjs"
     },
     "./rate-limiter": {
-      "require": "./dist/rate-limiter.cjs",
-      "import": "./dist/rate-limiter.js"
+      "import": "./dist/rate-limiter.js",
+      "require": "./dist/rate-limiter.cjs"
     },
     "./throttler": {
-      "require": "./dist/throttler.cjs",
-      "import": "./dist/throttler.js"
+      "import": "./dist/throttler.js",
+      "require": "./dist/throttler.cjs"
     },
     "./types": {
-      "require": "./dist/types.cjs",
-      "import": "./dist/types.js"
+      "import": "./dist/types.js",
+      "require": "./dist/types.cjs"
     },
     "./utils": {
-      "require": "./dist/utils.cjs",
-      "import": "./dist/utils.js"
+      "import": "./dist/utils.js",
+      "require": "./dist/utils.cjs"
     },
     "./package.json": "./package.json"
   },

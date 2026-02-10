@@ -1,0 +1,12 @@
+<h1>injectQueuedValue</h1>
+
+<input [value]="source()" (input)="onInput($any($event.target).value)" placeholder="Type here" />
+
+<p>Source (instant): {{ source() }}</p>
+<p>Value (queued): {{ queued() }}</p>
+<p>Queue length: {{ queued().length }}</p>
+
+<button (click)="enqueueRandom()">Enqueue random</button>
+<button (click)="clear()">Clear</button>
+
+<app-input [value]="source()" />

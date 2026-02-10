@@ -1,0 +1,33 @@
+<h1>injectBatchedCallback</h1>
+
+<p>
+  Queue items quickly; they get delivered to the callback in batches. This example batches up to 5
+  items, or flushes after 1 second.
+</p>
+
+<div>
+  <label>
+    Value
+    <input [value]="value()" (input)="value.set(($any($event.target).value ?? '').toString())" />
+  </label>
+  <button (click)="enqueue()">Enqueue</button>
+  <button (click)="enqueueMany(10)">Enqueue 10</button>
+  <button (click)="reset()">Reset</button>
+</div>
+
+<p>Queued (not yet processed): {{ queuedCount() }}</p>
+
+<h2>Processed Batches</h2>
+
+@if (processedBatches.length === 0) {
+<p>No batches processed yet. Click "Enqueue" a few times.</p>
+} @else {
+<ul>
+  @for (batch of processedBatches; track $index) {
+  <li>
+    <div>{{ batch.timestamp }} ({{ batch.items.length }} items)</div>
+    <div>{{ batch.items.join(', ') }}</div>
+  </li>
+  }
+</ul>
+}

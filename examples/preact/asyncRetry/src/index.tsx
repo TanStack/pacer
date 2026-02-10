@@ -36,7 +36,7 @@ function App() {
   const [scenario, setScenario] = useState<
     'default' | 'timeout' | 'jitter' | 'linear'
   >('default')
-  const [logs, setLogs] = useState<string[]>([])
+  const [logs, setLogs] = useState<Array<string>>([])
 
   const addLog = (message: string) => {
     setLogs((prev) => [

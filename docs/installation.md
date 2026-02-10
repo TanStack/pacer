@@ -23,6 +23,14 @@ npm install @tanstack/solid-pacer
 
 TanStack Pacer is compatible with Solid v1.9.5+
 
+## Angular
+
+```sh
+npm install @tanstack/angular-pacer
+```
+
+TanStack Pacer is compatible with Angular v16+
+
 ## Vanilla JS
 
 ```sh

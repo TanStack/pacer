@@ -1,0 +1,27 @@
+<div>
+  <h1>TanStack Pacer - injectRateLimitedSignal Example</h1>
+
+  <p>
+    Click the button quickly to see the rate-limited value update. Only three updates are allowed
+    within any 3 second window; additional updates are ignored until space frees up.
+  </p>
+
+  <section>
+    <h2>Counters</h2>
+    <p>Raw value (updates every click): {{ rawValue() }}</p>
+    <p>Rate-limited value: {{ limitedValue() }}</p>
+  </section>
+
+  <section>
+    <h2>Rate limiter status</h2>
+    <p>Remaining executions in window: {{ remainingInWindow }}</p>
+    <p>Total executions: {{ executionCount }}</p>
+    <p>Total rejections: {{ rejectionCount }}</p>
+  </section>
+
+  <section>
+    <h2>Controls</h2>
+    <button (click)="increment()">Increment</button>
+    <button (click)="reset()">Reset</button>
+  </section>
+</div>
