@@ -102,7 +102,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -151,7 +151,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -200,7 +200,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -249,7 +249,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -298,7 +298,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -347,7 +347,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -396,7 +396,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -445,7 +445,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -494,7 +494,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -543,7 +543,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -592,7 +592,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -641,7 +641,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -690,7 +690,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -739,7 +739,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -788,7 +788,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -837,7 +837,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -886,7 +886,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -935,7 +935,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -984,7 +984,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1033,7 +1033,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1082,7 +1082,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1131,7 +1131,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1180,7 +1180,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1229,7 +1229,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1278,7 +1278,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1327,7 +1327,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1376,7 +1376,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1425,7 +1425,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1474,7 +1474,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1523,7 +1523,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1572,7 +1572,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1621,7 +1621,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1670,7 +1670,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1719,7 +1719,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1768,7 +1768,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1817,7 +1817,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1866,7 +1866,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1915,7 +1915,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
@@ -1964,7 +1964,7 @@ importers:
         specifier: ^21.0.0
         version: 21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(@angular/platform-browser@21.1.3(@angular/common@21.1.3(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.3(@angular/compiler@21.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: workspace:^
+        specifier: ^0.20.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.0
