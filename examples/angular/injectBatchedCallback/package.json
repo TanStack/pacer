@@ -1,6 +1,5 @@
 {
-  "name": "injectBatchedCallback-example",
-  "version": "0.0.0",
+  "name": "@tanstack/pacer-example-angular-inject-batched-callback",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

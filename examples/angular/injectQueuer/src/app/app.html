@@ -2,11 +2,7 @@
 
 <p>Items are processed one by one with a small delay.</p>
 
-<input
-  [value]="input()"
-  (input)="onInput(($any($event.target).value as string) ?? '')"
-  placeholder="Item"
-/>
+<input [value]="input()" (input)="onInput($any($event.target).value ?? '')" placeholder="Item" />
 
 <button type="button" (click)="add()">Add</button>
 <button type="button" (click)="start()">Start</button>

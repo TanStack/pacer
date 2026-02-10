@@ -1,6 +1,5 @@
 {
-  "name": "injectAsyncBatcher-example",
-  "version": "0.0.0",
+  "name": "@tanstack/pacer-example-angular-inject-async-batcher",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

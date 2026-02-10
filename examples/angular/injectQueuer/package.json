@@ -1,6 +1,5 @@
 {
-  "name": "injectQueuer-example",
-  "version": "0.0.0",
+  "name": "@tanstack/pacer-example-angular-inject-queuer",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

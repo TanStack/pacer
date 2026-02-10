@@ -1,6 +1,5 @@
 {
-  "name": "injectThrottledSignal-example",
-  "version": "0.0.0",
+  "name": "@tanstack/pacer-example-angular-inject-throttled-signal",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

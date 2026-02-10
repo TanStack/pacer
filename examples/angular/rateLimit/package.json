@@ -1,6 +1,5 @@
 {
-  "name": "rateLimit-example",
-  "version": "0.0.0",
+  "name": "@tanstack/pacer-example-angular-rate-limit",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -1,6 +1,5 @@
 {
-  "name": "injectThrottler-example",
-  "version": "0.0.0",
+  "name": "@tanstack/pacer-example-angular-inject-throttler",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

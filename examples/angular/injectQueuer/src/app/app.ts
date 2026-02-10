@@ -5,7 +5,7 @@ import { injectQueuer } from '@tanstack/angular-pacer'
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
-  template: 'app.html',
+  templateUrl: './app.html',
 })
 export class App {
   protected readonly input = signal('')

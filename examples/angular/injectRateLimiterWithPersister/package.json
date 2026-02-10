@@ -1,6 +1,5 @@
 {
-  "name": "injectRateLimiterWithPersister-example",
-  "version": "0.0.0",
+  "name": "@tanstack/pacer-example-angular-inject-rate-limiter-with-persister",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
