@@ -9,7 +9,7 @@ title: useAsyncDebouncedCallback
 function useAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:44](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L44)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:44](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L44)
 
 A React hook that creates a debounced version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncDebouncer` hook,

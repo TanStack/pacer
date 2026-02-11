@@ -5,7 +5,7 @@ title: PreactRateLimiter
 
 # Interface: PreactRateLimiter\<TFn, TSelected\>
 
-Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L13)
+Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:13](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:13](https://github.
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:39](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L39)
+Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:39](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L39)
 
 Reactive state that will be updated and re-rendered when the rate limiter state changes
 
@@ -44,7 +44,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:45](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L45)
+Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:45](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L45)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:30](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L30)
+Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:30](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L30)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the rate limiter state.
 

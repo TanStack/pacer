@@ -9,7 +9,7 @@ title: useAsyncRateLimitedCallback
 function useAsyncRateLimitedCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>;
 ```
 
-Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:59](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L59)
+Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:59](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L59)
 
 A Preact hook that creates a rate-limited version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncRateLimiter` hook,

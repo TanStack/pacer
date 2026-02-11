@@ -12,7 +12,7 @@ function createAsyncThrottler<TFn, TSelected>(
 selector): SolidAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:145](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L145)
+Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:145](https://github.com/theVedanta/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L145)
 
 A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 

@@ -12,7 +12,7 @@ function injectAsyncDebouncer<TFn, TSelected>(
 selector): AngularAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:92](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L92)
+Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:92](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L92)
 
 An Angular function that creates and manages an AsyncDebouncer instance.
 

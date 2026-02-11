@@ -8,17 +8,10 @@ import type {
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
-export type ThrottledSignal<TValue, TSelected = {}> = ((
-  ...args: []
-) => TValue) & {
-  /**
-   * Set or update the throttled value. This calls `throttler.maybeExecute(...)`.
-   */
-  readonly set: Setter<TValue>
-  /**
-   * The throttler instance with additional control methods and state signals.
-   */
-  readonly throttler: AngularThrottler<Setter<TValue>, TSelected>
+export interface ThrottledSignal<TValue, TSelected = {}> {
+  (): TValue
+  set: Setter<TValue>
+  throttler: AngularThrottler<Setter<TValue>, TSelected>
 }
 
 /**

@@ -5,7 +5,7 @@ title: PreactAsyncThrottler
 
 # Interface: PreactAsyncThrottler\<TFn, TSelected\>
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L13)
+Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:13](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:13](https://g
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:39](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L39)
+Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:39](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L39)
 
 Reactive state that will be updated and re-rendered when the throttler state changes
 
@@ -44,7 +44,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:45](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L45)
+Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:45](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L45)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L30)
+Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:30](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L30)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the async throttler state.
 

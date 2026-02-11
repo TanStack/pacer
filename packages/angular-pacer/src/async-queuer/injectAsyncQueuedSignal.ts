@@ -6,18 +6,10 @@ import type {
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
-export type AsyncQueuedSignal<
-  TValue,
-  TSelected = {},
-> = (() => Array<TValue>) & {
-  /**
-   * Add an item to the queue.
-   */
-  readonly addItem: AngularAsyncQueuer<TValue, TSelected>['addItem']
-  /**
-   * The queuer instance with additional control methods and state signals.
-   */
-  readonly queuer: AngularAsyncQueuer<TValue, TSelected>
+export interface AsyncQueuedSignal<TValue, TSelected = {}> {
+  (): Array<TValue>
+  addItem: AngularAsyncQueuer<TValue, TSelected>['addItem']
+  queuer: AngularAsyncQueuer<TValue, TSelected>
 }
 
 /**

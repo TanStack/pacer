@@ -17,14 +17,11 @@ title: "@tanstack/angular-pacer"
 - [AngularQueuer](interfaces/AngularQueuer.md)
 - [AngularRateLimiter](interfaces/AngularRateLimiter.md)
 - [AngularThrottler](interfaces/AngularThrottler.md)
-
-## Type Aliases
-
-- [AsyncQueuedSignal](type-aliases/AsyncQueuedSignal.md)
-- [DebouncedSignal](type-aliases/DebouncedSignal.md)
-- [QueuedSignal](type-aliases/QueuedSignal.md)
-- [RateLimitedSignal](type-aliases/RateLimitedSignal.md)
-- [ThrottledSignal](type-aliases/ThrottledSignal.md)
+- [AsyncQueuedSignal](interfaces/AsyncQueuedSignal.md)
+- [DebouncedSignal](interfaces/DebouncedSignal.md)
+- [QueuedSignal](interfaces/QueuedSignal.md)
+- [RateLimitedSignal](interfaces/RateLimitedSignal.md)
+- [ThrottledSignal](interfaces/ThrottledSignal.md)
 
 ## Functions
 

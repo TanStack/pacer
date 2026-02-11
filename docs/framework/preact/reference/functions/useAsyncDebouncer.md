@@ -12,7 +12,7 @@ function useAsyncDebouncer<TFn, TSelected>(
 selector): PreactAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:185](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L185)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:185](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L185)
 
 A low-level Preact hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
