@@ -9,7 +9,7 @@ title: useAsyncThrottledCallback
 function useAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>;
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottledCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L42)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottledCallback.ts:42](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L42)
 
 A React hook that creates a throttled version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncThrottler` hook,

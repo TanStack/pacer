@@ -9,7 +9,7 @@ title: injectThrottledCallback
 function injectThrottledCallback<TFn>(fn, options): (...args) => void;
 ```
 
-Defined in: [throttler/injectThrottledCallback.ts:39](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledCallback.ts#L39)
+Defined in: [angular-pacer/src/throttler/injectThrottledCallback.ts:39](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledCallback.ts#L39)
 
 An Angular function that creates a throttled version of a callback function.
 This function is essentially a wrapper around `injectThrottler` that provides

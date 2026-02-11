@@ -5,7 +5,7 @@ title: AngularAsyncQueuer
 
 # Interface: AngularAsyncQueuer\<TValue, TSelected\>
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L11)
+Defined in: [angular-pacer/src/async-queuer/injectAsyncQueuer.ts:11](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L11)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:11](https://github.com/TanStack/p
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L20)
+Defined in: [angular-pacer/src/async-queuer/injectAsyncQueuer.ts:20](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L20)
 
 Reactive state signal that will be updated when the async queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L25)
+Defined in: [angular-pacer/src/async-queuer/injectAsyncQueuer.ts:25](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L25)
 
 #### Deprecated
 

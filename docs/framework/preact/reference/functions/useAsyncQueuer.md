@@ -12,7 +12,7 @@ function useAsyncQueuer<TValue, TSelected>(
 selector): PreactAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:205](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L205)
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:205](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L205)
 
 A lower-level Preact hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 

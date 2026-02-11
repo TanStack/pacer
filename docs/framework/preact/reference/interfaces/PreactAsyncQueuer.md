@@ -5,7 +5,7 @@ title: PreactAsyncQueuer
 
 # Interface: PreactAsyncQueuer\<TValue, TSelected\>
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L12)
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:12](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L12)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:12](https://github.
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L38)
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:38](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L38)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L44)
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:44](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L44)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L29)
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:29](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L29)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the async queuer state.
 

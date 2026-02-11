@@ -12,7 +12,7 @@ function useThrottler<TFn, TSelected>(
 selector): ReactThrottler<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:145](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L145)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:145](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L145)
 
 A low-level React hook that creates a `Throttler` instance that limits how often the provided function can execute.
 

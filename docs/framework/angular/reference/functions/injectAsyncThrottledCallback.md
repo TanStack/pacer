@@ -9,7 +9,7 @@ title: injectAsyncThrottledCallback
 function injectAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottledCallback.ts:41](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottledCallback.ts#L41)
+Defined in: [angular-pacer/src/async-throttler/injectAsyncThrottledCallback.ts:41](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottledCallback.ts#L41)
 
 An Angular function that creates an async throttled version of a callback function.
 This function is essentially a wrapper around `injectAsyncThrottler` that provides

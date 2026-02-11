@@ -9,7 +9,7 @@ title: useBatchedCallback
 function useBatchedCallback<TFn>(fn, options): (...args) => void;
 ```
 
-Defined in: [react-pacer/src/batcher/useBatchedCallback.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatchedCallback.ts#L41)
+Defined in: [react-pacer/src/batcher/useBatchedCallback.ts:41](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/batcher/useBatchedCallback.ts#L41)
 
 A React hook that creates a batched version of a callback function.
 This hook is essentially a wrapper around the basic `batch` function

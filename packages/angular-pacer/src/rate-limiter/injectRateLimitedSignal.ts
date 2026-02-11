@@ -8,17 +8,10 @@ import type {
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
-export type RateLimitedSignal<TValue, TSelected = {}> = ((
-  ...args: []
-) => TValue) & {
-  /**
-   * Set or update the rate-limited value. This calls `rateLimiter.maybeExecute(...)`.
-   */
-  readonly set: Setter<TValue>
-  /**
-   * The rate limiter instance with additional control methods and state signals.
-   */
-  readonly rateLimiter: AngularRateLimiter<Setter<TValue>, TSelected>
+export interface RateLimitedSignal<TValue, TSelected = {}> {
+  (): TValue
+  set: Setter<TValue>
+  rateLimiter: AngularRateLimiter<Setter<TValue>, TSelected>
 }
 
 /**

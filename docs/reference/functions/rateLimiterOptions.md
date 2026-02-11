@@ -9,7 +9,7 @@ title: rateLimiterOptions
 function rateLimiterOptions<TFn, TOptions>(options): TOptions;
 ```
 
-Defined in: [rate-limiter.ts:92](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L92)
+Defined in: [rate-limiter.ts:92](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L92)
 
 Utility function for sharing common `RateLimiterOptions` options between different `RateLimiter` instances.
 

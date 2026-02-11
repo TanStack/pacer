@@ -3,15 +3,10 @@ import { injectQueuer } from './injectQueuer'
 import type { AngularQueuer } from './injectQueuer'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
-export type QueuedSignal<TValue, TSelected = {}> = (() => Array<TValue>) & {
-  /**
-   * Add an item to the queue.
-   */
-  readonly addItem: AngularQueuer<TValue, TSelected>['addItem']
-  /**
-   * The queuer instance with additional control methods and state signals.
-   */
-  readonly queuer: AngularQueuer<TValue, TSelected>
+export interface QueuedSignal<TValue, TSelected = {}> {
+  (): Array<TValue>
+  addItem: AngularQueuer<TValue, TSelected>['addItem']
+  queuer: AngularQueuer<TValue, TSelected>
 }
 
 /**

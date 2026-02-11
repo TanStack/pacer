@@ -9,7 +9,7 @@ title: asyncDebouncerOptions
 function asyncDebouncerOptions<TFn, TOptions>(options): TOptions;
 ```
 
-Defined in: [async-debouncer.ts:140](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L140)
+Defined in: [async-debouncer.ts:140](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L140)
 
 Utility function for sharing common `AsyncDebouncerOptions` options between different `AsyncDebouncer` instances.
 

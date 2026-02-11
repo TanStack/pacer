@@ -8,17 +8,10 @@ import type {
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
-export type DebouncedSignal<TValue, TSelected = {}> = ((
-  ...args: []
-) => TValue) & {
-  /**
-   * Set or update the debounced value. This calls `debouncer.maybeExecute(...)`.
-   */
-  readonly set: Setter<TValue>
-  /**
-   * The debouncer instance with additional control methods and state signals.
-   */
-  readonly debouncer: AngularDebouncer<Setter<TValue>, TSelected>
+export interface DebouncedSignal<TValue, TSelected = {}> {
+  (): TValue
+  set: Setter<TValue>
+  debouncer: AngularDebouncer<Setter<TValue>, TSelected>
 }
 
 /**

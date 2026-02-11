@@ -5,7 +5,7 @@ title: AsyncRetryer
 
 # Class: AsyncRetryer\<TFn\>
 
-Defined in: [async-retryer.ts:296](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L296)
+Defined in: [async-retryer.ts:296](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L296)
 
 Provides robust retry functionality for asynchronous functions, supporting configurable backoff strategies,
 attempt limits, timeout controls, and detailed state management. The AsyncRetryer class is designed to help you reliably
@@ -115,7 +115,7 @@ The async function type to be retried.
 new AsyncRetryer<TFn>(fn, initialOptions): AsyncRetryer<TFn>;
 ```
 
-Defined in: [async-retryer.ts:309](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L309)
+Defined in: [async-retryer.ts:309](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L309)
 
 Creates a new AsyncRetryer instance
 
@@ -145,7 +145,7 @@ Configuration options for the retryer
 fn: TFn;
 ```
 
-Defined in: [async-retryer.ts:310](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L310)
+Defined in: [async-retryer.ts:310](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L310)
 
 The async function to retry
 
@@ -157,7 +157,7 @@ The async function to retry
 key: string | undefined;
 ```
 
-Defined in: [async-retryer.ts:300](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L300)
+Defined in: [async-retryer.ts:300](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L300)
 
 ***
 
@@ -177,7 +177,7 @@ options: AsyncRetryerOptions<TFn> & Omit<Required<AsyncRetryerOptions<any>>,
 | "onTotalExecutionTimeout">;
 ```
 
-Defined in: [async-retryer.ts:301](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L301)
+Defined in: [async-retryer.ts:301](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L301)
 
 ***
 
@@ -187,7 +187,7 @@ Defined in: [async-retryer.ts:301](https://github.com/TanStack/pacer/blob/main/p
 readonly store: Store<Readonly<AsyncRetryerState<TFn>>>;
 ```
 
-Defined in: [async-retryer.ts:297](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L297)
+Defined in: [async-retryer.ts:297](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L297)
 
 ## Methods
 
@@ -197,7 +197,7 @@ Defined in: [async-retryer.ts:297](https://github.com/TanStack/pacer/blob/main/p
 abort(reason): void;
 ```
 
-Defined in: [async-retryer.ts:619](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L619)
+Defined in: [async-retryer.ts:619](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L619)
 
 Cancels the current execution and any pending retries
 
@@ -221,7 +221,7 @@ The reason for the abort (defaults to 'manual')
 execute(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [async-retryer.ts:426](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L426)
+Defined in: [async-retryer.ts:426](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L426)
 
 Executes the function with retry logic
 
@@ -251,7 +251,7 @@ The last error if throwOnError is true and all retries fail
 getAbortSignal(): AbortSignal | null;
 ```
 
-Defined in: [async-retryer.ts:611](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L611)
+Defined in: [async-retryer.ts:611](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L611)
 
 Returns the current AbortSignal for the executing operation.
 Use this signal in your async function to make it cancellable.
@@ -284,7 +284,7 @@ retryer.abort()
 reset(): void;
 ```
 
-Defined in: [async-retryer.ts:639](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L639)
+Defined in: [async-retryer.ts:639](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L639)
 
 Resets the retryer to its initial state
 
@@ -300,7 +300,7 @@ Resets the retryer to its initial state
 setOptions(newOptions): void;
 ```
 
-Defined in: [async-retryer.ts:336](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L336)
+Defined in: [async-retryer.ts:336](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/async-retryer.ts#L336)
 
 Updates the retryer options
 
