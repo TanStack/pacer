@@ -12,7 +12,7 @@ function useAsyncBatcher<TValue, TSelected>(
 selector): PreactAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:205](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L205)
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:205](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L205)
 
 A Preact hook that creates an `AsyncBatcher` instance for managing asynchronous batches of items.
 

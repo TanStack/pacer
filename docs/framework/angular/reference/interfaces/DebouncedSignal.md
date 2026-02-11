@@ -5,7 +5,7 @@ title: DebouncedSignal
 
 # Interface: DebouncedSignal()\<TValue, TSelected\>
 
-Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:11](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L11)
+Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L11)
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:11](https://gi
 DebouncedSignal(): TValue;
 ```
 
-Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:12](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L12)
+Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:12](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L12)
 
 ## Returns
 
@@ -36,7 +36,7 @@ Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:12](https://gi
 debouncer: AngularDebouncer<Setter<TValue>, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:14](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L14)
+Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:14](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L14)
 
 ***
 
@@ -46,4 +46,4 @@ Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:14](https://gi
 set: Setter<TValue>;
 ```
 
-Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:13](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L13)
+Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L13)

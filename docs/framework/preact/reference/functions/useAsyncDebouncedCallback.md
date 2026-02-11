@@ -9,7 +9,7 @@ title: useAsyncDebouncedCallback
 function useAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>;
 ```
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:44](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L44)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:44](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L44)
 
 A Preact hook that creates a debounced version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncDebouncer` hook,

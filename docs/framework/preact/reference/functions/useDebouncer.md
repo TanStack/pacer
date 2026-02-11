@@ -12,7 +12,7 @@ function useDebouncer<TFn, TSelected>(
 selector): PreactDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:140](https://github.com/theVedanta/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L140)
+Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:140](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L140)
 
 A Preact hook that creates and manages a Debouncer instance.
 

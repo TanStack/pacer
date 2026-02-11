@@ -9,7 +9,7 @@ title: useDefaultPacerOptions
 function useDefaultPacerOptions(): PacerProviderOptions;
 ```
 
-Defined in: [react-pacer/src/provider/PacerProvider.tsx:66](https://github.com/theVedanta/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L66)
+Defined in: [react-pacer/src/provider/PacerProvider.tsx:66](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L66)
 
 ## Returns
 

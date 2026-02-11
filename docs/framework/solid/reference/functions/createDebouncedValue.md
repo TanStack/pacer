@@ -12,7 +12,7 @@ function createDebouncedValue<TValue, TSelected>(
    selector?): [Accessor<TValue>, SolidDebouncer<Setter<TValue>, TSelected>];
 ```
 
-Defined in: [solid-pacer/src/debouncer/createDebouncedValue.ts:72](https://github.com/theVedanta/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L72)
+Defined in: [solid-pacer/src/debouncer/createDebouncedValue.ts:72](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedValue.ts#L72)
 
 A Solid hook that creates a debounced value that updates only after a specified delay.
 Unlike createDebouncedSignal, this hook automatically tracks changes to the input value

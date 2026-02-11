@@ -9,7 +9,7 @@ title: parseFunctionOrValue
 function parseFunctionOrValue<T, TArgs>(value, ...args): T;
 ```
 
-Defined in: [utils.ts:7](https://github.com/theVedanta/pacer/blob/main/packages/pacer/src/utils.ts#L7)
+Defined in: [utils.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/utils.ts#L7)
 
 ## Type Parameters
 

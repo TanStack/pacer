@@ -14,7 +14,7 @@ function injectRateLimitedValue<TValue, TSelected>(
 selector?): RateLimitedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/rate-limiter/injectRateLimitedValue.ts:50](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedValue.ts#L50)
+Defined in: [angular-pacer/src/rate-limiter/injectRateLimitedValue.ts:50](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedValue.ts#L50)
 
 An Angular function that creates a rate-limited value that updates at most a certain number of times within a time window.
 Unlike injectRateLimitedSignal, this function automatically tracks changes to the input signal
@@ -93,7 +93,7 @@ function injectRateLimitedValue<TValue, TSelected>(
 selector?): RateLimitedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/rate-limiter/injectRateLimitedValue.ts:55](https://github.com/theVedanta/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedValue.ts#L55)
+Defined in: [angular-pacer/src/rate-limiter/injectRateLimitedValue.ts:55](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedValue.ts#L55)
 
 An Angular function that creates a rate-limited value that updates at most a certain number of times within a time window.
 Unlike injectRateLimitedSignal, this function automatically tracks changes to the input signal
