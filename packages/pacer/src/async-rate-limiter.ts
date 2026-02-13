@@ -25,7 +25,7 @@ export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
   /**
    * The result from the most recent successful function execution
    */
-  lastResult: ReturnType<TFn> | undefined
+  lastResult: Awaited<ReturnType<TFn>> | undefined
   /**
    * Number of function executions that have been rejected due to rate limiting
    */
@@ -118,7 +118,7 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    * Optional function to call when the rate-limited function is executed
    */
   onSuccess?: (
-    result: ReturnType<TFn>,
+    result: Awaited<ReturnType<TFn>>,
     args: Parameters<TFn>,
     rateLimiter: AsyncRateLimiter<TFn>,
   ) => void
@@ -353,7 +353,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    */
   maybeExecute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> => {
+  ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     this.#setState({
       maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
     })
@@ -376,7 +376,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
 
   #execute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> => {
+  ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (!this.#getEnabled()) return
 
     const currentMaybeExecute = this.store.state.maybeExecuteCount
@@ -400,7 +400,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         successCount: this.store.state.successCount + 1,
         lastResult: result,
       })
-      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
+      this.options.onSuccess?.(result as Awaited<ReturnType<TFn>>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
