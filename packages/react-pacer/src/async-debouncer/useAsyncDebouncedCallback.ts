@@ -44,10 +44,10 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 export function useAsyncDebouncedCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
   options: AsyncDebouncerOptions<TFn>,
-): (...args: Parameters<TFn>) => Promise<ReturnType<TFn>> {
+): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>>> {
   const asyncDebouncedFn = useAsyncDebouncer(fn, options).maybeExecute
   return useCallback(
-    (...args) => asyncDebouncedFn(...args) as Promise<ReturnType<TFn>>,
+    (...args) => asyncDebouncedFn(...args) as Promise<Awaited<ReturnType<TFn>>>,
     [asyncDebouncedFn],
   )
 }
