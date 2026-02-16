@@ -66,7 +66,7 @@ Whether the rate-limited function is currently executing asynchronously
 ### lastResult
 
 ```ts
-lastResult: ReturnType<TFn> | undefined;
+lastResult: Awaited<ReturnType<TFn>> | undefined;
 ```
 
 Defined in: [async-rate-limiter.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L28)

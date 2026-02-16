@@ -258,7 +258,7 @@ Returns the number of remaining executions allowed in the current window
 ### maybeExecute()
 
 ```ts
-maybeExecute(...args): Promise<ReturnType<TFn> | undefined>;
+maybeExecute(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 Defined in: [async-rate-limiter.ts:354](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L354)
@@ -281,7 +281,7 @@ Error Handling:
 
 #### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\> \| `undefined`\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
 

@@ -333,25 +333,27 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#setState({ isPending: true })
     }
 
-    return new Promise<Awaited<ReturnType<TFn>> | undefined>((resolve, reject) => {
-      this.#resolvePreviousPromise = resolve
-      // this.#rejectPreviousPromise = reject
-      this.#timeoutId = setTimeout(async () => {
-        // Execute trailing if enabled
-        if (this.options.trailing && this.store.state.lastArgs) {
-          try {
-            await this.#execute(...this.store.state.lastArgs)
-          } catch (error) {
-            reject(error)
+    return new Promise<Awaited<ReturnType<TFn>> | undefined>(
+      (resolve, reject) => {
+        this.#resolvePreviousPromise = resolve
+        // this.#rejectPreviousPromise = reject
+        this.#timeoutId = setTimeout(async () => {
+          // Execute trailing if enabled
+          if (this.options.trailing && this.store.state.lastArgs) {
+            try {
+              await this.#execute(...this.store.state.lastArgs)
+            } catch (error) {
+              reject(error)
+            }
           }
-        }
 
-        // Reset state and resolve
-        this.#setState({ canLeadingExecute: true })
-        this.#resolvePreviousPromise = null
-        resolve(this.store.state.lastResult)
-      }, this.#getWait())
-    })
+          // Reset state and resolve
+          this.#setState({ canLeadingExecute: true })
+          this.#resolvePreviousPromise = null
+          resolve(this.store.state.lastResult)
+        }, this.#getWait())
+      },
+    )
   }
 
   #execute = async (

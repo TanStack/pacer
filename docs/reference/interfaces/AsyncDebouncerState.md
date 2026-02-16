@@ -78,7 +78,7 @@ The arguments from the most recent call to maybeExecute
 ### lastResult
 
 ```ts
-lastResult: ReturnType<TFn> | undefined;
+lastResult: Awaited<ReturnType<TFn>> | undefined;
 ```
 
 Defined in: [async-debouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L32)
