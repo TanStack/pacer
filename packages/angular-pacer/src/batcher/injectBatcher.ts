@@ -2,7 +2,7 @@ import { injectStore } from '@tanstack/angular-store'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
 export interface AngularBatcher<TValue, TSelected = {}> extends Omit<

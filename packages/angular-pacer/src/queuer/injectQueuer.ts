@@ -2,7 +2,7 @@ import { injectStore } from '@tanstack/angular-store'
 import { Queuer } from '@tanstack/pacer/queuer'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
 export interface AngularQueuer<TValue, TSelected = {}> extends Omit<

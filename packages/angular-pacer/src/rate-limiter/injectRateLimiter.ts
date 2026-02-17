@@ -2,7 +2,7 @@ import { injectStore } from '@tanstack/angular-store'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   RateLimiterOptions,

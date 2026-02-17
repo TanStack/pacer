@@ -4315,9 +4315,6 @@ importers:
       '@tanstack/pacer':
         specifier: workspace:*
         version: link:../pacer
-      '@tanstack/store':
-        specifier: ^0.8.0
-        version: 0.8.0
     devDependencies:
       '@angular/core':
         specifier: ^21.0.0

@@ -3,59 +3,54 @@ title: Installation
 id: installation
 ---
 
-You can install TanStack Pacer with any [NPM](https://npmjs.com) package manager.
+TanStack Pacer is compatible with various front-end frameworks. Install the corresponding adapter for your framework using your preferred package manager:
 
-Only install one of the following packages depending on your use case:
+<!-- ::start:tabs variant="package-managers" -->
 
-## React
+react: @tanstack/react-pacer
+solid: @tanstack/solid-pacer
+angular: @tanstack/angular-pacer
 
-```sh
-npm install @tanstack/react-pacer
-```
+<!-- ::end:tabs -->
 
-TanStack Pacer is compatible with React v16.8+
+Each framework package re-exports everything from the core `@tanstack/pacer` package, so there is no need to install the core package separately.
 
-## Solid
+> [!NOTE]
+> If you are not using a framework, you can install the core `@tanstack/pacer` package directly for use with vanilla JavaScript.
 
-```sh
-npm install @tanstack/solid-pacer
-```
+<!-- ::start:framework -->
 
-TanStack Pacer is compatible with Solid v1.9.5+
+# React
 
-## Angular
+## Devtools
 
-```sh
-npm install @tanstack/angular-pacer
-```
+Developer tools are available using [TanStack Devtools](https://tanstack.com/devtools/latest). Install the devtools adapter and the Pacer devtools plugin as dev dependencies to inspect and monitor your pacers.
 
-TanStack Pacer is compatible with Angular v16+
+# Solid
 
-## Vanilla JS
+## Devtools
 
-```sh
-npm install @tanstack/pacer
-```
+Developer tools are available using [TanStack Devtools](https://tanstack.com/devtools/latest). Install the devtools adapter and the Pacer devtools plugin as dev dependencies to inspect and monitor your pacers.
 
-Install the the core `@tanstack/pacer` package to use with any framework or without a framework. Each framework package up above will also re-export everything from this core package.
+<!-- ::end:framework -->
 
-> [!IMPORTANT] 
-> There's no need to install the `@tanstack/pacer` core package if you've already installed one of the above framework packages.
+<!-- ::start:tabs variant="package-manager" -->
 
-## Devtools (Optional)
+react: @tanstack/react-devtools
+react: @tanstack/react-pacer-devtools
+solid: @tanstack/solid-devtools
+solid: @tanstack/solid-pacer-devtools
 
-To use the devtools for debugging and monitoring, install both the framework devtools and the Pacer devtools packages:
+<!-- ::end:tabs -->
 
-### React Devtools
+<!-- ::start:framework -->
 
-```sh
-npm install @tanstack/react-devtools @tanstack/react-pacer-devtools
-```
+# React
 
-### Solid Devtools
+See the [devtools](./devtools) documentation for more information on how to set up and use the Pacer devtools.
 
-```sh
-npm install @tanstack/solid-devtools @tanstack/solid-pacer-devtools
-```
+# Solid
 
-See the [devtools](https://pacer.tanstack.com/docs/devtools) documentation for more information on how to set up and use the Pacer devtools.
+See the [devtools](./devtools) documentation for more information on how to set up and use the Pacer devtools.
+
+<!-- ::end:framework -->

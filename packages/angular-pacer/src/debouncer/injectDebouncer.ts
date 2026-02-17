@@ -2,7 +2,7 @@ import { injectStore } from '@tanstack/angular-store'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   DebouncerOptions,

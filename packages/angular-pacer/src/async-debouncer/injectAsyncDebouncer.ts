@@ -2,7 +2,7 @@ import { injectStore } from '@tanstack/angular-store'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncDebouncerOptions,

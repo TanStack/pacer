@@ -2,7 +2,7 @@ import { injectStore } from '@tanstack/angular-store'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
