@@ -231,12 +231,10 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
     ...useDefaultPacerOptions().asyncThrottler,
     ...options,
   } as ReactAsyncThrottlerOptions<TFn, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const [asyncThrottler] = useState(() => {
     const asyncThrottlerInstance = new AsyncThrottler<TFn>(
       fn,
-      coreOptions,
+      mergedOptions,
     ) as unknown as ReactAsyncThrottler<TFn, TSelected>
 
     asyncThrottlerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -254,15 +252,15 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   })
 
   asyncThrottler.fn = fn
-  asyncThrottler.setOptions(coreOptions)
+  asyncThrottler.setOptions(mergedOptions)
 
   const state = useStore(asyncThrottler.store, selector)
 
   /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (onUnmount) {
-        onUnmount(asyncThrottler)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncThrottler)
       } else {
         asyncThrottler.cancel()
       }

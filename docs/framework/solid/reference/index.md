@@ -16,6 +16,7 @@ title: "@tanstack/solid-pacer"
 - [SolidAsyncQueuer](interfaces/SolidAsyncQueuer.md)
 - [SolidAsyncQueuerOptions](interfaces/SolidAsyncQueuerOptions.md)
 - [SolidAsyncRateLimiter](interfaces/SolidAsyncRateLimiter.md)
+- [SolidAsyncRateLimiterOptions](interfaces/SolidAsyncRateLimiterOptions.md)
 - [SolidAsyncThrottler](interfaces/SolidAsyncThrottler.md)
 - [SolidAsyncThrottlerOptions](interfaces/SolidAsyncThrottlerOptions.md)
 - [SolidBatcher](interfaces/SolidBatcher.md)
@@ -25,6 +26,7 @@ title: "@tanstack/solid-pacer"
 - [SolidQueuer](interfaces/SolidQueuer.md)
 - [SolidQueuerOptions](interfaces/SolidQueuerOptions.md)
 - [SolidRateLimiter](interfaces/SolidRateLimiter.md)
+- [SolidRateLimiterOptions](interfaces/SolidRateLimiterOptions.md)
 - [SolidThrottler](interfaces/SolidThrottler.md)
 - [SolidThrottlerOptions](interfaces/SolidThrottlerOptions.md)
 

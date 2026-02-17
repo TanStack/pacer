@@ -220,12 +220,10 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
     ...useDefaultPacerOptions().asyncDebouncer,
     ...options,
   } as PreactAsyncDebouncerOptions<TFn, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const [asyncDebouncer] = useState(() => {
     const debouncerInstance = new AsyncDebouncer<TFn>(
       fn,
-      coreOptions,
+      mergedOptions,
     ) as unknown as PreactAsyncDebouncer<TFn, TSelected>
 
     debouncerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -243,15 +241,15 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   })
 
   asyncDebouncer.fn = fn
-  asyncDebouncer.setOptions(coreOptions)
+  asyncDebouncer.setOptions(mergedOptions)
 
   const state = useStore(asyncDebouncer.store, selector)
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (onUnmount) {
-        onUnmount(asyncDebouncer)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncDebouncer)
       } else {
         asyncDebouncer.cancel()
       }

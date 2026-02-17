@@ -190,12 +190,11 @@ export function useBatcher<TValue, TSelected = {}>(
     ...useDefaultPacerOptions().batcher,
     ...options,
   } as PreactBatcherOptions<TValue, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [batcher] = useState(() => {
     const batcherInstance = new Batcher<TValue>(
       fn,
-      coreOptions,
+      mergedOptions,
     ) as unknown as PreactBatcher<TValue, TSelected>
 
     batcherInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -213,13 +212,13 @@ export function useBatcher<TValue, TSelected = {}>(
   })
 
   batcher.fn = fn
-  batcher.setOptions(coreOptions)
+  batcher.setOptions(mergedOptions)
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (onUnmount) {
-        onUnmount(batcher)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(batcher)
       } else {
         batcher.cancel()
       }

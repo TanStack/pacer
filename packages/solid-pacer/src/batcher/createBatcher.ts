@@ -162,9 +162,7 @@ export function createBatcher<TValue, TSelected = {}>(
     ...useDefaultPacerOptions().batcher,
     ...options,
   } as SolidBatcherOptions<TValue, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
-  const batcher = new Batcher(fn, coreOptions) as unknown as SolidBatcher<
+  const batcher = new Batcher(fn, mergedOptions) as unknown as SolidBatcher<
     TValue,
     TSelected
   >
@@ -184,8 +182,8 @@ export function createBatcher<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (onUnmount) {
-        onUnmount(batcher)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(batcher)
       } else {
         batcher.cancel()
       }

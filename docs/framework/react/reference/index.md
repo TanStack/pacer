@@ -16,6 +16,7 @@ title: "@tanstack/react-pacer"
 - [ReactAsyncQueuer](interfaces/ReactAsyncQueuer.md)
 - [ReactAsyncQueuerOptions](interfaces/ReactAsyncQueuerOptions.md)
 - [ReactAsyncRateLimiter](interfaces/ReactAsyncRateLimiter.md)
+- [ReactAsyncRateLimiterOptions](interfaces/ReactAsyncRateLimiterOptions.md)
 - [ReactAsyncThrottler](interfaces/ReactAsyncThrottler.md)
 - [ReactAsyncThrottlerOptions](interfaces/ReactAsyncThrottlerOptions.md)
 - [ReactBatcher](interfaces/ReactBatcher.md)
@@ -25,6 +26,7 @@ title: "@tanstack/react-pacer"
 - [ReactQueuer](interfaces/ReactQueuer.md)
 - [ReactQueuerOptions](interfaces/ReactQueuerOptions.md)
 - [ReactRateLimiter](interfaces/ReactRateLimiter.md)
+- [ReactRateLimiterOptions](interfaces/ReactRateLimiterOptions.md)
 - [ReactThrottler](interfaces/ReactThrottler.md)
 - [ReactThrottlerOptions](interfaces/ReactThrottlerOptions.md)
 

@@ -174,12 +174,10 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
     ...useDefaultPacerOptions().throttler,
     ...options,
   } as PreactThrottlerOptions<TFn, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const [throttler] = useState(() => {
     const throttlerInstance = new Throttler<TFn>(
       fn,
-      coreOptions,
+      mergedOptions,
     ) as unknown as PreactThrottler<TFn, TSelected>
 
     throttlerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -197,15 +195,15 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   })
 
   throttler.fn = fn
-  throttler.setOptions(coreOptions)
+  throttler.setOptions(mergedOptions)
 
   const state = useStore(throttler.store, selector)
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (onUnmount) {
-        onUnmount(throttler)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(throttler)
       } else {
         throttler.cancel()
       }

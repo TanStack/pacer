@@ -1,6 +1,6 @@
 import { createQueuer } from './createQueuer'
-import type { SolidQueuer } from './createQueuer'
-import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+import type { SolidQueuer, SolidQueuerOptions } from './createQueuer'
+import type { QueuerState } from '@tanstack/pacer/queuer'
 
 /**
  * A Solid primitive that creates a queuer with managed state, combining Solid's signals with queuing functionality.
@@ -124,7 +124,7 @@ export function createQueuedSignal<
   >,
 >(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: SolidQueuerOptions<TValue, TSelected> = {},
   selector: (state: QueuerState<TValue>) => TSelected = (state) =>
     ({ items: state.items }) as TSelected,
 ): [

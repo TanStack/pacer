@@ -187,11 +187,9 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
     ...useDefaultPacerOptions().asyncQueuer,
     ...options,
   } as SolidAsyncQueuerOptions<TValue, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const asyncQueuer = new AsyncQueuer<TValue>(
     fn,
-    coreOptions,
+    mergedOptions,
   ) as unknown as SolidAsyncQueuer<TValue, TSelected>
 
   asyncQueuer.Subscribe = function Subscribe<TSelected>(props: {
@@ -209,8 +207,8 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (onUnmount) {
-        onUnmount(asyncQueuer)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncQueuer)
       } else {
         asyncQueuer.stop()
       }

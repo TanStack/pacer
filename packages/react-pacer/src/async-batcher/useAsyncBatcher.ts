@@ -241,12 +241,10 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
     ...useDefaultPacerOptions().asyncBatcher,
     ...options,
   } as ReactAsyncBatcherOptions<TValue, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const [asyncBatcher] = useState(() => {
     const asyncBatcherInstance = new AsyncBatcher<TValue>(
       fn,
-      coreOptions,
+      mergedOptions,
     ) as unknown as ReactAsyncBatcher<TValue, TSelected>
 
     asyncBatcherInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -264,13 +262,13 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
   })
 
   asyncBatcher.fn = fn
-  asyncBatcher.setOptions(coreOptions)
+  asyncBatcher.setOptions(mergedOptions)
 
   /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (onUnmount) {
-        onUnmount(asyncBatcher)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncBatcher)
       } else {
         asyncBatcher.cancel()
       }

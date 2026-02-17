@@ -6,10 +6,10 @@ title: useAsyncBatchedCallback
 # Function: useAsyncBatchedCallback()
 
 ```ts
-function useAsyncBatchedCallback<TFn>(fn, options): (...args) => Promise<void>;
+function useAsyncBatchedCallback<TValue>(fn, options): (item) => Promise<void>;
 ```
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatchedCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatchedCallback.ts#L43)
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatchedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatchedCallback.ts#L42)
 
 A Preact hook that creates a batched version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncBatcher` hook,
@@ -32,32 +32,32 @@ Consider using the `useAsyncBatcher` hook instead.
 
 ## Type Parameters
 
-### TFn
+### TValue
 
-`TFn` *extends* `AnyAsyncFunction`
+`TValue`
 
 ## Parameters
 
 ### fn
 
-(`items`) => `Promise`\<`any`\>
+(`items`) => `Promise`\<`unknown`\>
 
 ### options
 
-[`PreactAsyncBatcherOptions`](../interfaces/PreactAsyncBatcherOptions.md)\<`Parameters`\<`TFn`\>\[`0`\], \{
+[`PreactAsyncBatcherOptions`](../interfaces/PreactAsyncBatcherOptions.md)\<`TValue`, \{
 \}\>
 
 ## Returns
 
 ```ts
-(...args): Promise<void>;
+(item): Promise<void>;
 ```
 
 ### Parameters
 
-#### args
+#### item
 
-...`Parameters`\<`TFn`\>
+`TValue`
 
 ### Returns
 

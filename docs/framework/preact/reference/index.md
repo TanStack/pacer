@@ -16,6 +16,7 @@ title: "@tanstack/preact-pacer"
 - [PreactAsyncQueuer](interfaces/PreactAsyncQueuer.md)
 - [PreactAsyncQueuerOptions](interfaces/PreactAsyncQueuerOptions.md)
 - [PreactAsyncRateLimiter](interfaces/PreactAsyncRateLimiter.md)
+- [PreactAsyncRateLimiterOptions](interfaces/PreactAsyncRateLimiterOptions.md)
 - [PreactAsyncThrottler](interfaces/PreactAsyncThrottler.md)
 - [PreactAsyncThrottlerOptions](interfaces/PreactAsyncThrottlerOptions.md)
 - [PreactBatcher](interfaces/PreactBatcher.md)
@@ -25,6 +26,7 @@ title: "@tanstack/preact-pacer"
 - [PreactQueuer](interfaces/PreactQueuer.md)
 - [PreactQueuerOptions](interfaces/PreactQueuerOptions.md)
 - [PreactRateLimiter](interfaces/PreactRateLimiter.md)
+- [PreactRateLimiterOptions](interfaces/PreactRateLimiterOptions.md)
 - [PreactThrottler](interfaces/PreactThrottler.md)
 - [PreactThrottlerOptions](interfaces/PreactThrottlerOptions.md)
 

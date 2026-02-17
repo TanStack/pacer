@@ -195,11 +195,9 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
     ...useDefaultPacerOptions().asyncBatcher,
     ...options,
   } as SolidAsyncBatcherOptions<TValue, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const asyncBatcher = new AsyncBatcher<TValue>(
     fn,
-    coreOptions,
+    mergedOptions,
   ) as unknown as SolidAsyncBatcher<TValue, TSelected>
 
   asyncBatcher.Subscribe = function Subscribe<TSelected>(props: {
@@ -217,8 +215,8 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (onUnmount) {
-        onUnmount(asyncBatcher)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncBatcher)
       } else {
         asyncBatcher.cancel()
       }

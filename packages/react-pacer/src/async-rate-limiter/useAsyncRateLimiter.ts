@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -9,6 +9,17 @@ import type {
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
 import type { FunctionComponent, ReactNode } from 'react'
+
+export interface ReactAsyncRateLimiterOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncRateLimiterOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the async rate limiter instance.
+   * When provided, replaces the default cleanup; use it to call reset(), add logging, etc.
+   */
+  onUnmount?: (rateLimiter: ReactAsyncRateLimiter<TFn, TSelected>) => void
+}
 
 export interface ReactAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
@@ -216,15 +227,14 @@ export function useAsyncRateLimiter<
   TSelected = {},
 >(
   fn: TFn,
-  options: AsyncRateLimiterOptions<TFn>,
+  options: ReactAsyncRateLimiterOptions<TFn, TSelected>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncRateLimiter<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncRateLimiter,
     ...options,
-  } as AsyncRateLimiterOptions<TFn>
-
+  } as ReactAsyncRateLimiterOptions<TFn, TSelected>
   const [asyncRateLimiter] = useState(() => {
     const asyncRateLimiterInstance = new AsyncRateLimiter<TFn>(
       fn,
@@ -247,6 +257,16 @@ export function useAsyncRateLimiter<
 
   asyncRateLimiter.fn = fn
   asyncRateLimiter.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncRateLimiter)
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   const state = useStore(asyncRateLimiter.store, selector)
 

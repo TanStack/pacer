@@ -184,11 +184,9 @@ export function createAsyncThrottler<
     ...useDefaultPacerOptions().asyncThrottler,
     ...options,
   } as SolidAsyncThrottlerOptions<TFn, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const asyncThrottler = new AsyncThrottler(
     fn,
-    coreOptions,
+    mergedOptions,
   ) as unknown as SolidAsyncThrottler<TFn, TSelected>
 
   asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
@@ -206,8 +204,8 @@ export function createAsyncThrottler<
 
   createEffect(() => {
     onCleanup(() => {
-      if (onUnmount) {
-        onUnmount(asyncThrottler)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncThrottler)
       } else {
         asyncThrottler.cancel()
       }

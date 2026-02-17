@@ -162,11 +162,9 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
     ...useDefaultPacerOptions().debouncer,
     ...options,
   } as SolidDebouncerOptions<TFn, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const asyncDebouncer = new Debouncer<TFn>(
     fn,
-    coreOptions,
+    mergedOptions,
   ) as unknown as SolidDebouncer<TFn, TSelected>
 
   asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
@@ -184,8 +182,8 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (onUnmount) {
-        onUnmount(asyncDebouncer)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncDebouncer)
       } else {
         asyncDebouncer.cancel()
       }

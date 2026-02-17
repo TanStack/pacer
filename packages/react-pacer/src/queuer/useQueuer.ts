@@ -200,12 +200,10 @@ export function useQueuer<TValue, TSelected = {}>(
     ...useDefaultPacerOptions().queuer,
     ...options,
   } as ReactQueuerOptions<TValue, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const [queuer] = useState(() => {
     const queuerInstance = new Queuer<TValue>(
       fn,
-      coreOptions,
+      mergedOptions,
     ) as unknown as ReactQueuer<TValue, TSelected>
 
     queuerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -223,13 +221,13 @@ export function useQueuer<TValue, TSelected = {}>(
   })
 
   queuer.fn = fn
-  queuer.setOptions(coreOptions)
+  queuer.setOptions(mergedOptions)
 
   /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (onUnmount) {
-        onUnmount(queuer)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(queuer)
       } else {
         queuer.stop()
       }

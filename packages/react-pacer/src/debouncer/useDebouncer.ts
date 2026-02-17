@@ -169,12 +169,10 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
     ...useDefaultPacerOptions().debouncer,
     ...options,
   } as ReactDebouncerOptions<TFn, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
   const [debouncer] = useState(() => {
     const debouncerInstance = new Debouncer(
       fn,
-      coreOptions,
+      mergedOptions,
     ) as unknown as ReactDebouncer<TFn, TSelected>
 
     debouncerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -192,13 +190,13 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   })
 
   debouncer.fn = fn
-  debouncer.setOptions(coreOptions)
+  debouncer.setOptions(mergedOptions)
 
   /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (onUnmount) {
-        onUnmount(debouncer)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(debouncer)
       } else {
         debouncer.cancel()
       }

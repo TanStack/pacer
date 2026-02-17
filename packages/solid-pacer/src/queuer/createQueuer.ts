@@ -162,9 +162,7 @@ export function createQueuer<TValue, TSelected = {}>(
     ...useDefaultPacerOptions().queuer,
     ...options,
   } as SolidQueuerOptions<TValue, TSelected>
-  const { onUnmount, ...coreOptions } = mergedOptions
-
-  const queuer = new Queuer(fn, coreOptions) as unknown as SolidQueuer<
+  const queuer = new Queuer(fn, mergedOptions) as unknown as SolidQueuer<
     TValue,
     TSelected
   >
@@ -184,8 +182,8 @@ export function createQueuer<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (onUnmount) {
-        onUnmount(queuer)
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(queuer)
       } else {
         queuer.stop()
       }

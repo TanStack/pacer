@@ -44,7 +44,8 @@ Consider using the `useAsyncDebouncer` hook instead.
 
 ### options
 
-`AsyncDebouncerOptions`\<`TFn`\>
+[`ReactAsyncDebouncerOptions`](../interfaces/ReactAsyncDebouncerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 
