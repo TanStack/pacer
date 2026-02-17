@@ -169,6 +169,30 @@ Optional function to call when the throttled function is executed
 
 ***
 
+### onUnmount()?
+
+```ts
+optional onUnmount: (throttler) => void;
+```
+
+Defined in: [async-throttler.ts:142](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L142)
+
+Optional callback invoked when the component unmounts. Receives the throttler instance.
+When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+Framework adapters only; ignored by core.
+
+#### Parameters
+
+##### throttler
+
+[`AsyncThrottler`](../classes/AsyncThrottler.md)\<`TFn`\>
+
+#### Returns
+
+`void`
+
+***
+
 ### throwOnError?
 
 ```ts
@@ -202,7 +226,7 @@ Defaults to true
 wait: number | (throttler) => number;
 ```
 
-Defined in: [async-throttler.ts:142](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L142)
+Defined in: [async-throttler.ts:148](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L148)
 
 Time window in milliseconds during which the function can only be executed once.
 Can be a number or a function that returns a number.

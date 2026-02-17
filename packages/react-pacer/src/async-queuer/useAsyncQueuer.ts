@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -104,6 +104,24 @@ export interface ReactAsyncQueuer<TValue, TSelected = {}> extends Omit<
  * - `size`: Number of items currently in the queue
  * - `status`: Current processing status ('idle' | 'running' | 'stopped')
  * - `successCount`: Number of task executions that have completed successfully
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook stops the queuer when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```tsx
+ * const queuer = useAsyncQueuer(fn, {
+ *   concurrency: 2,
+ *   started: false,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your task function updates React state, those updates may run after the component has
+ * unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+ * accordingly when using onUnmount with flush.
  *
  * @example
  * ```tsx
@@ -235,6 +253,18 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
 
   asyncQueuer.fn = fn
   asyncQueuer.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncQueuer as unknown as AsyncQueuer<TValue>)
+      } else {
+        asyncQueuer.stop()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   const state = useStore(asyncQueuer.store, selector)
 

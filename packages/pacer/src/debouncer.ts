@@ -78,6 +78,12 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    */
   trailing?: boolean
   /**
+   * Optional callback invoked when the component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   * Framework adapters only; ignored by core.
+   */
+  onUnmount?: (debouncer: Debouncer<TFn>) => void
+  /**
    * Delay in milliseconds before executing the function.
    * Can be a number or a function that returns a number.
    * Defaults to 0ms
@@ -99,7 +105,7 @@ export function debouncerOptions<
 
 const defaultOptions: Omit<
   Required<DebouncerOptions<any>>,
-  'initialState' | 'onExecute' | 'key'
+  'initialState' | 'onExecute' | 'key' | 'onUnmount'
 > = {
   enabled: true,
   leading: false,

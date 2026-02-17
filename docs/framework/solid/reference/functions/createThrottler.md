@@ -12,7 +12,7 @@ function createThrottler<TFn, TSelected>(
 selector): SolidThrottler<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/throttler/createThrottler.ts:136](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L136)
+Defined in: [solid-pacer/src/throttler/createThrottler.ts:148](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L148)
 
 A low-level Solid hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
@@ -54,6 +54,18 @@ Available state properties:
 - `lastExecutionTime`: Timestamp of the last execution
 - `nextExecutionTime`: Timestamp of the next allowed execution
 - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+
+## Unmount behavior
+
+By default, the primitive cancels any pending execution when the owning component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const throttler = createThrottler(fn, {
+  wait: 1000,
+  onUnmount: (t) => t.flush()
+});
+```
 
 ## Type Parameters
 

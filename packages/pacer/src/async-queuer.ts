@@ -200,6 +200,12 @@ export interface AsyncQueuerOptions<TValue> {
    */
   throwOnError?: boolean
   /**
+   * Optional callback invoked when the component unmounts. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+   * Framework adapters only; ignored by core.
+   */
+  onUnmount?: (queuer: AsyncQueuer<TValue>) => void
+  /**
    * Time in milliseconds to wait between processing items.
    * Can be a number or a function that returns a number.
    * @default 0
@@ -230,6 +236,7 @@ type AsyncQueuerOptionsWithOptionalCallbacks = OptionalKeys<
   | 'onExpire'
   | 'onError'
   | 'key'
+  | 'onUnmount'
 >
 
 const defaultOptions: AsyncQueuerOptionsWithOptionalCallbacks = {

@@ -12,7 +12,7 @@ function createQueuer<TValue, TSelected>(
 selector): SolidQueuer<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/queuer/createQueuer.ts:131](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L131)
+Defined in: [solid-pacer/src/queuer/createQueuer.ts:145](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L145)
 
 Creates a Solid-compatible Queuer instance for managing a synchronous queue of items, exposing Solid signals for all stateful properties.
 
@@ -56,6 +56,19 @@ Available state properties:
 - `isRunning`: Whether the queuer is currently running (not stopped)
 - `items`: Array of items currently queued for processing
 - `rejectionCount`: Number of items that were rejected (expired or failed validation)
+
+## Unmount behavior
+
+By default, the primitive stops the queuer when the owning component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+
+```tsx
+const queue = createQueuer(fn, {
+  started: true,
+  wait: 1000,
+  onUnmount: (q) => q.flush()
+});
+```
 
 Example usage:
 ```tsx

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Queuer } from '@tanstack/pacer/queuer'
 import { useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -92,6 +92,19 @@ export interface ReactQueuer<TValue, TSelected = {}> extends Omit<
  * - `rejectionCount`: Number of items that have been rejected from being added
  * - `size`: Number of items currently in the queue
  * - `status`: Current processing status ('idle' | 'running' | 'stopped')
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook stops the queuer when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```tsx
+ * const queue = useQueuer(fn, {
+ *   started: true,
+ *   wait: 1000,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
  *
  * @example
  * ```tsx
@@ -199,6 +212,18 @@ export function useQueuer<TValue, TSelected = {}>(
 
   queuer.fn = fn
   queuer.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(queuer as unknown as Queuer<TValue>)
+      } else {
+        queuer.stop()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   const state = useStore(queuer.store, selector)
 

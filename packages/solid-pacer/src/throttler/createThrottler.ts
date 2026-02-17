@@ -87,6 +87,18 @@ export interface SolidThrottler<
  * - `nextExecutionTime`: Timestamp of the next allowed execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = createThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -163,7 +175,11 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      asyncThrottler.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncThrottler as unknown as Throttler<TFn>)
+      } else {
+        asyncThrottler.cancel()
+      }
     })
   })
 

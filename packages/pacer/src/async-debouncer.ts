@@ -127,6 +127,12 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    */
   trailing?: boolean
   /**
+   * Optional callback invoked when the component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   * Framework adapters only; ignored by core.
+   */
+  onUnmount?: (debouncer: AsyncDebouncer<TFn>) => void
+  /**
    * Delay in milliseconds to wait after the last call before executing.
    * Can be a number or a function that returns a number.
    * Defaults to 0ms
@@ -148,7 +154,7 @@ export function asyncDebouncerOptions<
 
 type AsyncDebouncerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncDebouncerOptions<any>,
-  'initialState' | 'onError' | 'onSettled' | 'onSuccess' | 'key'
+  'initialState' | 'onError' | 'onSettled' | 'onSuccess' | 'key' | 'onUnmount'
 >
 
 const defaultOptions: AsyncDebouncerOptionsWithOptionalCallbacks = {

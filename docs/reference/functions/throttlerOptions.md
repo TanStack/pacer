@@ -9,7 +9,7 @@ title: throttlerOptions
 function throttlerOptions<TFn, TOptions>(options): TOptions;
 ```
 
-Defined in: [throttler.ts:95](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L95)
+Defined in: [throttler.ts:101](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L101)
 
 Utility function for sharing common `ThrottlerOptions` options between different `Throttler` instances.
 

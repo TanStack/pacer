@@ -1,5 +1,6 @@
 import { Queuer } from '@tanstack/pacer/queuer'
 import { useStore } from '@tanstack/solid-store'
+import { createEffect, onCleanup } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -84,6 +85,19 @@ export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
  * - `items`: Array of items currently queued for processing
  * - `rejectionCount`: Number of items that were rejected (expired or failed validation)
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive stops the queuer when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```tsx
+ * const queue = createQueuer(fn, {
+ *   started: true,
+ *   wait: 1000,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
+ *
  * Example usage:
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -155,6 +169,16 @@ export function createQueuer<TValue, TSelected = {}>(
   }
 
   const state = useStore(queuer.store, selector)
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(queuer as unknown as Queuer<TValue>)
+      } else {
+        queuer.stop()
+      }
+    })
+  })
 
   return {
     ...queuer,

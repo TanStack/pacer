@@ -1,5 +1,6 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useStore } from '@tanstack/solid-store'
+import { createEffect, onCleanup } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -96,6 +97,24 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
  * - `settleCount`: Number of items that have completed processing (successful or failed)
  * - `successCount`: Number of items that were processed successfully
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive stops the queuer when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```tsx
+ * const queuer = createAsyncQueuer(fn, {
+ *   concurrency: 2,
+ *   started: false,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your task function updates Solid signals, those updates may run after the component has
+ * unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+ * using onUnmount with flush.
+ *
  * Example usage:
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -175,6 +194,16 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
   }
 
   const state = useStore(asyncQueuer.store, selector)
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncQueuer as unknown as AsyncQueuer<TValue>)
+      } else {
+        asyncQueuer.stop()
+      }
+    })
+  })
 
   return {
     ...asyncQueuer,

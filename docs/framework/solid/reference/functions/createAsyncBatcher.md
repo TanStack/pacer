@@ -12,7 +12,7 @@ function createAsyncBatcher<TValue, TSelected>(
 selector): SolidAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:158](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L158)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:177](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L177)
 
 Creates a Solid-compatible AsyncBatcher instance for managing asynchronous batches of items, exposing Solid signals for all stateful properties.
 
@@ -74,6 +74,24 @@ Available state properties:
 - `lastResult`: The result from the most recent successful batch execution
 - `settleCount`: Number of batch executions that have completed (successful or failed)
 - `successCount`: Number of successful batch executions
+
+## Unmount behavior
+
+By default, the primitive cancels any pending batch when the owning component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const batcher = createAsyncBatcher(fn, {
+  maxSize: 10,
+  wait: 2000,
+  onUnmount: (b) => b.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your batch function updates Solid signals, those updates may run after the component has
+unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+using onUnmount with flush.
 
 Example usage:
 ```tsx

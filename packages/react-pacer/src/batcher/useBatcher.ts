@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -83,6 +83,19 @@ export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
  * - `size`: Number of items currently in the batch queue
  * - `status`: Current processing status ('idle' | 'pending')
  * - `totalItemsProcessed`: Total number of items processed across all batches
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending batch when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const batcher = useBatcher(fn, {
+ *   maxSize: 5,
+ *   wait: 2000,
+ *   onUnmount: (b) => b.flush()
+ * });
+ * ```
  *
  * @example
  * ```tsx
@@ -189,6 +202,18 @@ export function useBatcher<TValue, TSelected = {}>(
 
   batcher.fn = fn
   batcher.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(batcher as unknown as Batcher<TValue>)
+      } else {
+        batcher.cancel()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   const state = useStore(batcher.store, selector)
 

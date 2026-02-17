@@ -85,6 +85,18 @@ export interface ReactThrottler<
  * - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = useThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -177,11 +189,17 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
 
   const state = useStore(throttler.store, selector)
 
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      throttler.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(throttler as unknown as Throttler<TFn>)
+      } else {
+        throttler.cancel()
+      }
     }
-  }, [throttler])
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   return useMemo(
     () =>

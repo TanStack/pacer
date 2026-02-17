@@ -88,6 +88,18 @@ export interface SolidDebouncer<
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = createDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -160,7 +172,11 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      asyncDebouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncDebouncer as unknown as Debouncer<TFn>)
+      } else {
+        asyncDebouncer.cancel()
+      }
     })
   })
 

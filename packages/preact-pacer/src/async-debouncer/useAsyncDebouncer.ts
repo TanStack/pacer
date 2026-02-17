@@ -101,6 +101,23 @@ export interface PreactAsyncDebouncer<
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
  * - `successCount`: Number of function executions that have completed successfully
  *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = useAsyncDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your debounced function updates Preact state, those updates may run after the component has
+ * unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+ * accordingly when using onUnmount with flush.
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -218,11 +235,19 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
 
   const state = useStore(asyncDebouncer.store, selector)
 
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      asyncDebouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(
+          asyncDebouncer as unknown as AsyncDebouncer<TFn>,
+        )
+      } else {
+        asyncDebouncer.cancel()
+      }
     }
-  }, [asyncDebouncer])
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return useMemo(
     () =>

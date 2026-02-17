@@ -101,6 +101,23 @@ export interface SolidAsyncDebouncer<
  * - `lastResult`: The result from the most recent successful execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = createAsyncDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your debounced function updates Solid signals, those updates may run after the component has
+ * unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+ * using onUnmount with flush.
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -177,7 +194,13 @@ export function createAsyncDebouncer<
 
   createEffect(() => {
     onCleanup(() => {
-      asyncDebouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(
+          asyncDebouncer as unknown as AsyncDebouncer<TFn>,
+        )
+      } else {
+        asyncDebouncer.cancel()
+      }
     })
   })
 

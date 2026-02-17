@@ -205,6 +205,19 @@ asyncThrottler.flush()
 console.log(asyncThrottler.store.state.isPending) // false
 ```
 
+### Customizing Unmount Behavior
+
+Framework hooks cancel pending work by default when a component unmounts. Use the `onUnmount` option to flush instead.
+
+```tsx
+const throttler = useAsyncThrottler(fn, {
+  wait: 500,
+  onUnmount: (t) => t.flush(),
+})
+```
+
+> **Warning:** For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup. If your throttled function updates React/Preact state or Solid signals, those updates may run after the component has unmounted, which can cause "setState on unmounted component" warnings or unexpected reactive updates. Guard your callbacks accordingly.
+
 ## State Management
 
 The `AsyncThrottler` class uses TanStack Store for reactive state management, providing real-time access to execution state, error tracking, and timing information. All state is stored in a TanStack Store and can be accessed via `asyncThrottler.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `asyncThrottler.state` along with providing a selector callback as the 3rd argument to the `useAsyncThrottler` hook to opt-in to state tracking as shown below.

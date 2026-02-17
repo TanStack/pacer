@@ -12,7 +12,7 @@ function useAsyncBatcher<TValue, TSelected>(
 selector): PreactAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:205](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L205)
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:223](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L223)
 
 A Preact hook that creates an `AsyncBatcher` instance for managing asynchronous batches of items.
 
@@ -78,6 +78,24 @@ Available state properties:
 - `successCount`: Number of batch executions that have completed successfully
 - `totalItemsProcessed`: Total number of items processed across all batches
 - `totalItemsFailed`: Total number of items that have failed processing
+
+## Unmount behavior
+
+By default, the hook cancels any pending batch when the component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const batcher = useAsyncBatcher(fn, {
+  maxSize: 10,
+  wait: 2000,
+  onUnmount: (b) => b.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your batch function updates Preact state, those updates may run after the component has
+unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+accordingly when using onUnmount with flush.
 
 ## Type Parameters
 

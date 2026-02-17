@@ -267,6 +267,30 @@ Callback fired whenever an item is rejected from being added to the queuer
 
 ***
 
+### onUnmount()?
+
+```ts
+optional onUnmount: (queuer) => void;
+```
+
+Defined in: [queuer.ts:151](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L151)
+
+Optional callback invoked when the component unmounts. Receives the queuer instance.
+When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+Framework adapters only; ignored by core.
+
+#### Parameters
+
+##### queuer
+
+[`Queuer`](../classes/Queuer.md)\<`TValue`\>
+
+#### Returns
+
+`void`
+
+***
+
 ### started?
 
 ```ts
@@ -285,7 +309,7 @@ Whether the queuer should start processing tasks immediately
 optional wait: number | (queuer) => number;
 ```
 
-Defined in: [queuer.ts:151](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L151)
+Defined in: [queuer.ts:157](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L157)
 
 Time in milliseconds to wait between processing items.
 Can be a number or a function that returns a number.

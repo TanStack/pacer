@@ -12,7 +12,7 @@ function useAsyncThrottler<TFn, TSelected>(
 selector): ReactAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:196](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L196)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:213](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L213)
 
 A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -66,6 +66,23 @@ Available state properties:
 - `settleCount`: Number of function executions that have completed (success or error)
 - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
 - `successCount`: Number of function executions that have completed successfully
+
+## Unmount behavior
+
+By default, the hook cancels any pending execution when the component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const throttler = useAsyncThrottler(fn, {
+  wait: 1000,
+  onUnmount: (t) => t.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your throttled function updates React state, those updates may run after the component has
+unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+accordingly when using onUnmount with flush.
 
 ## Type Parameters
 

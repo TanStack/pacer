@@ -12,7 +12,7 @@ function useThrottler<TFn, TSelected>(
 selector): PreactThrottler<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/throttler/useThrottler.ts:145](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L145)
+Defined in: [preact-pacer/src/throttler/useThrottler.ts:157](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L157)
 
 A low-level Preact hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
@@ -52,6 +52,18 @@ Available state properties:
 - `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
 - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
 - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+
+## Unmount behavior
+
+By default, the hook cancels any pending execution when the component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const throttler = useThrottler(fn, {
+  wait: 1000,
+  onUnmount: (t) => t.flush()
+});
+```
 
 ## Type Parameters
 

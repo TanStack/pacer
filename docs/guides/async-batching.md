@@ -341,6 +341,20 @@ console.log('Flush result:', result)
 console.log(batcher.store.state.isEmpty) // true (batch was processed)
 ```
 
+### Customizing Unmount Behavior
+
+Framework hooks cancel pending batches by default when a component unmounts. Use the `onUnmount` option to flush instead.
+
+```tsx
+const batcher = useAsyncBatcher(fn, {
+  maxSize: 5,
+  wait: 2000,
+  onUnmount: (b) => b.flush(),
+})
+```
+
+> **Warning:** For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup. If your batch function updates React/Preact state or Solid signals, those updates may run after the component has unmounted, which can cause "setState on unmounted component" warnings or unexpected reactive updates. Guard your callbacks accordingly.
+
 ## State Management
 
 The `AsyncBatcher` class uses TanStack Store for reactive state management, providing real-time access to batch execution state, error tracking, and processing statistics. All state is stored in a TanStack Store and can be accessed via `asyncBatcher.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `asyncBatcher.state` along with providing a selector callback as the 3rd argument to the `useAsyncBatcher` hook to opt-in to state tracking as shown below.

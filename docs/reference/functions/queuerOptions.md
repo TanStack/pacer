@@ -9,7 +9,7 @@ title: queuerOptions
 function queuerOptions<TValue, TOptions>(options): TOptions;
 ```
 
-Defined in: [queuer.ts:157](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L157)
+Defined in: [queuer.ts:163](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L163)
 
 Utility function for sharing common `QueuerOptions` options between different `Queuer` instances.
 

@@ -1,3 +1,4 @@
+import { createEffect, onCleanup } from 'solid-js'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { useStore } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -100,6 +101,23 @@ export interface SolidAsyncThrottler<
  * - `nextExecutionTime`: Timestamp of the next allowed execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = createAsyncThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your throttled function updates Solid signals, those updates may run after the component has
+ * unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+ * using onUnmount with flush.
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -173,6 +191,18 @@ export function createAsyncThrottler<
   }
 
   const state = useStore(asyncThrottler.store, selector)
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(
+          asyncThrottler as unknown as AsyncThrottler<TFn>,
+        )
+      } else {
+        asyncThrottler.cancel()
+      }
+    })
+  })
 
   return {
     ...asyncThrottler,

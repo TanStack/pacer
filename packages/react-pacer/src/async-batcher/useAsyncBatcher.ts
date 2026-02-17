@@ -1,12 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { Store } from '@tanstack/react-store'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
+import type { Store } from '@tanstack/react-store'
 import type { FunctionComponent, ReactNode } from 'react'
 
 export interface ReactAsyncBatcher<TValue, TSelected = {}> extends Omit<
@@ -109,6 +109,24 @@ export interface ReactAsyncBatcher<TValue, TSelected = {}> extends Omit<
  * - `successCount`: Number of batch executions that have completed successfully
  * - `totalItemsProcessed`: Total number of items processed across all batches
  * - `totalItemsFailed`: Total number of items that have failed processing
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending batch when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const batcher = useAsyncBatcher(fn, {
+ *   maxSize: 10,
+ *   wait: 2000,
+ *   onUnmount: (b) => b.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your batch function updates React state, those updates may run after the component has
+ * unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+ * accordingly when using onUnmount with flush.
  *
  * @example
  * ```tsx
@@ -235,6 +253,18 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
 
   asyncBatcher.fn = fn
   asyncBatcher.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncBatcher as unknown as AsyncBatcher<TValue>)
+      } else {
+        asyncBatcher.cancel()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   const state = useStore(asyncBatcher.store, selector)
 

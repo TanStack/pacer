@@ -99,6 +99,23 @@ export interface PreactAsyncThrottler<
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
  * - `successCount`: Number of function executions that have completed successfully
  *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = useAsyncThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your throttled function updates Preact state, those updates may run after the component has
+ * unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+ * accordingly when using onUnmount with flush.
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -229,9 +246,19 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
 
   const state = useStore(asyncThrottler.store, selector)
 
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
-    return () => asyncThrottler.cancel()
-  }, [asyncThrottler])
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(
+          asyncThrottler as unknown as AsyncThrottler<TFn>,
+        )
+      } else {
+        asyncThrottler.cancel()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return useMemo(
     () =>

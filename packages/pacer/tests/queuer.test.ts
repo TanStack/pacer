@@ -535,4 +535,18 @@ describe('Queuer', () => {
       })
     })
   })
+
+  describe('onUnmount option', () => {
+    it('should accept onUnmount in options (framework adapters only)', () => {
+      const fn = vi.fn()
+      const onUnmount = vi.fn()
+      const queuer = new Queuer(fn, { started: false, onUnmount })
+
+      queuer.addItem(1)
+      expect(onUnmount).not.toBeCalled()
+
+      onUnmount(queuer)
+      expect(onUnmount).toHaveBeenCalledWith(queuer)
+    })
+  })
 })

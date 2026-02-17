@@ -88,6 +88,18 @@ export interface ReactDebouncer<
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = useDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -170,11 +182,17 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   debouncer.fn = fn
   debouncer.setOptions(mergedOptions)
 
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      debouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(debouncer as unknown as Debouncer<TFn>)
+      } else {
+        debouncer.cancel()
+      }
     }
-  }, [debouncer])
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   const state = useStore(debouncer.store, selector)
 

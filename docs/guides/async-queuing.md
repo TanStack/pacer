@@ -253,6 +253,19 @@ queue.flush(1) // Process 1 more item
 console.log(queue.store.state.activeItems.length) // 3 (all processing concurrently)
 ```
 
+### Customizing Unmount Behavior
+
+Framework hooks stop the queuer by default when a component unmounts. Use the `onUnmount` option to flush instead.
+
+```tsx
+const queuer = useAsyncQueuer(fn, {
+  concurrency: 2,
+  onUnmount: (q) => q.flush(),
+})
+```
+
+> **Warning:** For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup. If your task function updates React/Preact state or Solid signals, those updates may run after the component has unmounted, which can cause "setState on unmounted component" warnings or unexpected reactive updates. Guard your callbacks accordingly.
+
 ## Advanced Features: Retry and Abort Support
 
 The async queuer includes built-in retry and abort capabilities through integration with `AsyncRetryer`. These features help handle transient failures and provide control over in-flight task executions.

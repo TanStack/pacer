@@ -12,7 +12,7 @@ function useBatcher<TValue, TSelected>(
 selector): ReactBatcher<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:159](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L159)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:172](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L172)
 
 A React hook that creates and manages a Batcher instance.
 
@@ -55,6 +55,19 @@ Available state properties:
 - `size`: Number of items currently in the batch queue
 - `status`: Current processing status ('idle' | 'pending')
 - `totalItemsProcessed`: Total number of items processed across all batches
+
+## Unmount behavior
+
+By default, the hook cancels any pending batch when the component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const batcher = useBatcher(fn, {
+  maxSize: 5,
+  wait: 2000,
+  onUnmount: (b) => b.flush()
+});
+```
 
 ## Type Parameters
 

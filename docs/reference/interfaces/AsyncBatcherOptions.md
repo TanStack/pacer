@@ -209,6 +209,30 @@ Optional callback to call when a batch succeeds
 
 ***
 
+### onUnmount()?
+
+```ts
+optional onUnmount: (batcher) => void;
+```
+
+Defined in: [async-batcher.ts:160](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L160)
+
+Optional callback invoked when the component unmounts. Receives the batcher instance.
+When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+Framework adapters only; ignored by core.
+
+#### Parameters
+
+##### batcher
+
+[`AsyncBatcher`](../classes/AsyncBatcher.md)\<`TValue`\>
+
+#### Returns
+
+`void`
+
+***
+
 ### started?
 
 ```ts
@@ -247,7 +271,7 @@ Can be explicitly set to override these defaults.
 optional wait: number | (asyncBatcher) => number;
 ```
 
-Defined in: [async-batcher.ts:161](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L161)
+Defined in: [async-batcher.ts:167](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L167)
 
 Maximum time in milliseconds to wait before processing a batch.
 If the wait duration has elapsed, the batch will be processed.

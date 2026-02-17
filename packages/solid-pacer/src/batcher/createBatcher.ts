@@ -1,5 +1,6 @@
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/solid-store'
+import { createEffect, onCleanup } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -82,6 +83,19 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  * - `items`: Array of items currently queued for batching
  * - `totalItemsProcessed`: Total number of individual items that have been processed across all batches
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending batch when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const batcher = createBatcher(fn, {
+ *   maxSize: 10,
+ *   wait: 2000,
+ *   onUnmount: (b) => b.flush()
+ * });
+ * ```
+ *
  * Example usage:
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -155,6 +169,17 @@ export function createBatcher<TValue, TSelected = {}>(
   }
 
   const state = useStore(batcher.store, selector)
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(batcher as unknown as Batcher<TValue>)
+      } else {
+        batcher.cancel()
+      }
+    })
+  })
+
   return {
     ...batcher,
     state,

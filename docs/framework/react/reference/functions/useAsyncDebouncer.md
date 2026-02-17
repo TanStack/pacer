@@ -12,7 +12,7 @@ function useAsyncDebouncer<TFn, TSelected>(
 selector): ReactAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:185](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L185)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:202](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L202)
 
 A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -68,6 +68,23 @@ Available state properties:
 - `settleCount`: Number of function executions that have completed (success or error)
 - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
 - `successCount`: Number of function executions that have completed successfully
+
+## Unmount behavior
+
+By default, the hook cancels any pending execution when the component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const debouncer = useAsyncDebouncer(fn, {
+  wait: 500,
+  onUnmount: (d) => d.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your debounced function updates React state, those updates may run after the component has
+unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+accordingly when using onUnmount with flush.
 
 ## Type Parameters
 

@@ -297,6 +297,18 @@ batcher.flush()
 console.log(batcher.store.state.isEmpty) // true (batch was processed)
 ```
 
+### Customizing Unmount Behavior
+
+Framework hooks cancel pending batches by default when a component unmounts. Use the `onUnmount` option to flush instead.
+
+```tsx
+const batcher = useBatcher(fn, {
+  maxSize: 5,
+  wait: 2000,
+  onUnmount: (b) => b.flush(),
+})
+```
+
 ## Framework Adapters
 
 Each framework adapter builds convenient hooks and functions around the batcher classes. Hooks like `useBatcher`, or `createBatcher` are small wrappers that can cut down on the boilerplate needed in your own code for some common use cases.

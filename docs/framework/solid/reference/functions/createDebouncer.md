@@ -12,7 +12,7 @@ function createDebouncer<TFn, TSelected>(
 selector): SolidDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/debouncer/createDebouncer.ts:133](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L133)
+Defined in: [solid-pacer/src/debouncer/createDebouncer.ts:145](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L145)
 
 A Solid hook that creates and manages a Debouncer instance.
 
@@ -55,6 +55,18 @@ Available state properties:
 - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
 - `lastArgs`: The arguments from the most recent call to maybeExecute
 - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+
+## Unmount behavior
+
+By default, the primitive cancels any pending execution when the owning component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const debouncer = createDebouncer(fn, {
+  wait: 500,
+  onUnmount: (d) => d.flush()
+});
+```
 
 ## Type Parameters
 
