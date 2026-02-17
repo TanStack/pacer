@@ -179,7 +179,7 @@ Optional function to call when the rate-limited function is executed
 
 ##### result
 
-`ReturnType`\<`TFn`\>
+`Awaited`\<`ReturnType`\<`TFn`\>\>
 
 ##### args
 

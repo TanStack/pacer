@@ -6,10 +6,10 @@ title: asyncThrottle
 # Function: asyncThrottle()
 
 ```ts
-function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<ReturnType<TFn> | undefined>;
+function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [async-throttler.ts:623](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L623)
+Defined in: [async-throttler.ts:625](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L625)
 
 Creates an async throttled function that limits how often the function can execute.
 The throttled function will execute at most once per wait period, even if called multiple times.
@@ -76,7 +76,7 @@ State Management:
 ## Returns
 
 ```ts
-(...args): Promise<ReturnType<TFn> | undefined>;
+(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 Attempts to execute the throttled function. The execution behavior depends on the throttler options:
@@ -97,7 +97,7 @@ Attempts to execute the throttled function. The execution behavior depends on th
 
 ### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\> \| `undefined`\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 ### Example
 

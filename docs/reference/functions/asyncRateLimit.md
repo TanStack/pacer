@@ -6,7 +6,7 @@ title: asyncRateLimit
 # Function: asyncRateLimit()
 
 ```ts
-function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<ReturnType<TFn> | undefined>;
+function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 Defined in: [async-rate-limiter.ts:637](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L637)
@@ -89,7 +89,7 @@ State Management:
 ## Returns
 
 ```ts
-(...args): Promise<ReturnType<TFn> | undefined>;
+(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 Attempts to execute the rate-limited function if within the configured limits.
@@ -110,7 +110,7 @@ Error Handling:
 
 ### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\> \| `undefined`\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
 

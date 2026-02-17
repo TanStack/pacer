@@ -59,11 +59,11 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
 export function useAsyncRateLimitedCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
   options: AsyncRateLimiterOptions<TFn>,
-): (...args: Parameters<TFn>) => Promise<ReturnType<TFn>> {
+): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>>> {
   const asyncRateLimitedFn = useAsyncRateLimiter(fn, options).maybeExecute
   return useCallback(
     (...args: Parameters<TFn>) =>
-      asyncRateLimitedFn(...args) as Promise<ReturnType<TFn>>,
+      asyncRateLimitedFn(...args) as Promise<Awaited<ReturnType<TFn>>>,
     [asyncRateLimitedFn],
   )
 }
