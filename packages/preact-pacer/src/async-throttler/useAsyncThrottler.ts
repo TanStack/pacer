@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/async-throttler'
 import type { ComponentChildren } from 'preact'
 
+export interface PreactAsyncThrottlerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: PreactAsyncThrottler<TFn, TSelected>) => void
+}
+
 export interface PreactAsyncThrottler<
   TFn extends AnyAsyncFunction,
   TSelected = {},
@@ -212,19 +223,20 @@ export interface PreactAsyncThrottler<
  */
 export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   fn: TFn,
-  options: AsyncThrottlerOptions<TFn>,
+  options: PreactAsyncThrottlerOptions<TFn, TSelected>,
   selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): PreactAsyncThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncThrottler,
     ...options,
-  } as AsyncThrottlerOptions<TFn>
+  } as PreactAsyncThrottlerOptions<TFn, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [asyncThrottler] = useState(() => {
     const throttlerInstance = new AsyncThrottler<TFn>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as PreactAsyncThrottler<TFn, TSelected>
 
     throttlerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -242,17 +254,15 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   })
 
   asyncThrottler.fn = fn
-  asyncThrottler.setOptions(mergedOptions)
+  asyncThrottler.setOptions(coreOptions)
 
   const state = useStore(asyncThrottler.store, selector)
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(
-          asyncThrottler as unknown as AsyncThrottler<TFn>,
-        )
+      if (onUnmount) {
+        onUnmount(asyncThrottler)
       } else {
         asyncThrottler.cancel()
       }

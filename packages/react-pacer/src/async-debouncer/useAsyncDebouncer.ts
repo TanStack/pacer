@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/async-debouncer'
 import type { FunctionComponent, ReactNode } from 'react'
 
+export interface ReactAsyncDebouncerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncDebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: ReactAsyncDebouncer<TFn, TSelected>) => void
+}
+
 export interface ReactAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = {},
@@ -201,19 +212,20 @@ export interface ReactAsyncDebouncer<
  */
 export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   fn: TFn,
-  options: AsyncDebouncerOptions<TFn>,
+  options: ReactAsyncDebouncerOptions<TFn, TSelected>,
   selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncDebouncer,
     ...options,
-  } as AsyncDebouncerOptions<TFn>
+  } as ReactAsyncDebouncerOptions<TFn, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [asyncDebouncer] = useState(() => {
     const asyncDebouncerInstance = new AsyncDebouncer<TFn>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as ReactAsyncDebouncer<TFn, TSelected>
 
     asyncDebouncerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -231,17 +243,15 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   })
 
   asyncDebouncer.fn = fn
-  asyncDebouncer.setOptions(mergedOptions)
+  asyncDebouncer.setOptions(coreOptions)
 
   const state = useStore(asyncDebouncer.store, selector)
 
   /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(
-          asyncDebouncer as unknown as AsyncDebouncer<TFn>,
-        )
+      if (onUnmount) {
+        onUnmount(asyncDebouncer)
       } else {
         asyncDebouncer.cancel()
       }

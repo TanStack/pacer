@@ -12,7 +12,7 @@ function useBatcher<TValue, TSelected>(
 selector): ReactBatcher<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:172](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L172)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:183](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L183)
 
 A React hook that creates and manages a Batcher instance.
 
@@ -88,7 +88,7 @@ const batcher = useBatcher(fn, {
 
 ### options
 
-`BatcherOptions`\<`TValue`\> = `{}`
+[`ReactBatcherOptions`](../interfaces/ReactBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

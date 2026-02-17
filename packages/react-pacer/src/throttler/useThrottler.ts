@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/throttler'
 import type { FunctionComponent, ReactNode } from 'react'
 
+export interface ReactThrottlerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends ThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: ReactThrottler<TFn, TSelected>) => void
+}
+
 export interface ReactThrottler<
   TFn extends AnyFunction,
   TSelected = {},
@@ -156,13 +167,13 @@ export interface ReactThrottler<
  */
 export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: ThrottlerOptions<TFn>,
+  options: ReactThrottlerOptions<TFn, TSelected>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): ReactThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().throttler,
     ...options,
-  } as ThrottlerOptions<TFn>
+  } as ReactThrottlerOptions<TFn, TSelected>
 
   const [throttler] = useState(() => {
     const throttlerInstance = new Throttler<TFn>(
@@ -193,7 +204,7 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   useEffect(() => {
     return () => {
       if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(throttler as unknown as Throttler<TFn>)
+        mergedOptions.onUnmount(throttler)
       } else {
         throttler.cancel()
       }

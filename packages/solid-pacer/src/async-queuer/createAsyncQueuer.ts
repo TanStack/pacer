@@ -9,6 +9,17 @@ import type {
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
+export interface SolidAsyncQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends AsyncQueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+   */
+  onUnmount?: (queuer: SolidAsyncQueuer<TValue, TSelected>) => void
+}
+
 export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
   AsyncQueuer<TValue>,
   'store'
@@ -168,18 +179,19 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function createAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
-  options: AsyncQueuerOptions<TValue> = {},
+  options: SolidAsyncQueuerOptions<TValue, TSelected> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncQueuer,
     ...options,
-  } as AsyncQueuerOptions<TValue>
+  } as SolidAsyncQueuerOptions<TValue, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const asyncQueuer = new AsyncQueuer<TValue>(
     fn,
-    mergedOptions,
+    coreOptions,
   ) as unknown as SolidAsyncQueuer<TValue, TSelected>
 
   asyncQueuer.Subscribe = function Subscribe<TSelected>(props: {
@@ -197,8 +209,8 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncQueuer as unknown as AsyncQueuer<TValue>)
+      if (onUnmount) {
+        onUnmount(asyncQueuer)
       } else {
         asyncQueuer.stop()
       }

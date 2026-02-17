@@ -446,18 +446,4 @@ describe('batch', () => {
     vi.advanceTimersByTime(1000)
     expect(mockFn).toHaveBeenCalledWith(['test'])
   })
-
-  describe('onUnmount option', () => {
-    it('should accept onUnmount in options (framework adapters only)', () => {
-      const mockFn = vi.fn()
-      const onUnmount = vi.fn()
-      const batcher = new Batcher(mockFn, { wait: 1000, onUnmount })
-
-      batcher.addItem(1)
-      expect(onUnmount).not.toBeCalled()
-
-      onUnmount(batcher)
-      expect(onUnmount).toHaveBeenCalledWith(batcher)
-    })
-  })
 })

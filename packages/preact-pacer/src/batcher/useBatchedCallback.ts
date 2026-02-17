@@ -1,6 +1,6 @@
 import { useCallback } from 'preact/hooks'
 import { useBatcher } from './useBatcher'
-import type { BatcherOptions } from '@tanstack/pacer/batcher'
+import type { PreactBatcherOptions } from './useBatcher'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
@@ -40,7 +40,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  */
 export function useBatchedCallback<TFn extends AnyFunction>(
   fn: (items: Array<Parameters<TFn>[0]>) => void,
-  options: BatcherOptions<Parameters<TFn>[0]>,
+  options: PreactBatcherOptions<Parameters<TFn>[0], {}>,
 ): (...args: Parameters<TFn>) => void {
   const batchedFn = useBatcher(fn, options).addItem
   return useCallback(

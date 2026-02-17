@@ -43,7 +43,8 @@ Consider using the `useBatcher` hook instead.
 
 ### options
 
-`BatcherOptions`\<`Parameters`\<`TFn`\>\[`0`\]\>
+[`PreactBatcherOptions`](../interfaces/PreactBatcherOptions.md)\<`Parameters`\<`TFn`\>\[`0`\], \{
+\}\>
 
 ## Returns
 

@@ -135,30 +135,6 @@ Callback fired after items are added to the batcher
 
 ***
 
-### onUnmount()?
-
-```ts
-optional onUnmount: (batcher) => void;
-```
-
-Defined in: [batcher.ts:90](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L90)
-
-Optional callback invoked when the component unmounts. Receives the batcher instance.
-When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
-Framework adapters only; ignored by core.
-
-#### Parameters
-
-##### batcher
-
-[`Batcher`](../classes/Batcher.md)\<`TValue`\>
-
-#### Returns
-
-`void`
-
-***
-
 ### started?
 
 ```ts
@@ -183,7 +159,7 @@ true
 optional wait: number | (batcher) => number;
 ```
 
-Defined in: [batcher.ts:97](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L97)
+Defined in: [batcher.ts:91](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L91)
 
 Maximum time in milliseconds to wait before processing a batch.
 If the wait duration has elapsed, the batch will be processed.

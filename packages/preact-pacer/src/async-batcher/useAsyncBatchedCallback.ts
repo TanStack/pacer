@@ -1,6 +1,6 @@
 import { useCallback } from 'preact/hooks'
 import { useAsyncBatcher } from './useAsyncBatcher'
-import type { AsyncBatcherOptions } from '@tanstack/pacer/async-batcher'
+import type { PreactAsyncBatcherOptions } from './useAsyncBatcher'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
 /**
@@ -42,7 +42,7 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  */
 export function useAsyncBatchedCallback<TFn extends AnyAsyncFunction>(
   fn: (items: Array<Parameters<TFn>[0]>) => Promise<any>,
-  options: AsyncBatcherOptions<Parameters<TFn>[0]>,
+  options: PreactAsyncBatcherOptions<Parameters<TFn>[0], {}>,
 ): (...args: Parameters<TFn>) => Promise<void> {
   const asyncBatchedFn = useAsyncBatcher(fn, options).addItem
   return useCallback(

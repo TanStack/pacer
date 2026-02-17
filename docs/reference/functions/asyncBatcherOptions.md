@@ -9,7 +9,7 @@ title: asyncBatcherOptions
 function asyncBatcherOptions<TValue, TOptions>(options): TOptions;
 ```
 
-Defined in: [async-batcher.ts:174](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L174)
+Defined in: [async-batcher.ts:168](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L168)
 
 Utility function for sharing common `AsyncBatcherOptions` options between different `AsyncBatcher` instances.
 

@@ -12,7 +12,7 @@ function useAsyncQueuer<TValue, TSelected>(
 selector): ReactAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:223](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L223)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:234](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L234)
 
 A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
@@ -111,7 +111,7 @@ accordingly when using onUnmount with flush.
 
 ### options
 
-`AsyncQueuerOptions`\<`TValue`\> = `{}`
+[`ReactAsyncQueuerOptions`](../interfaces/ReactAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

@@ -12,7 +12,7 @@ function useAsyncThrottler<TFn, TSelected>(
 selector): PreactAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:213](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L213)
+Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:224](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L224)
 
 A low-level Preact hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -103,7 +103,7 @@ accordingly when using onUnmount with flush.
 
 ### options
 
-`AsyncThrottlerOptions`\<`TFn`\>
+[`PreactAsyncThrottlerOptions`](../interfaces/PreactAsyncThrottlerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

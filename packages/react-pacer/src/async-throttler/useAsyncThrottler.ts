@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/async-throttler'
 import type { FunctionComponent, ReactNode } from 'react'
 
+export interface ReactAsyncThrottlerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: ReactAsyncThrottler<TFn, TSelected>) => void
+}
+
 export interface ReactAsyncThrottler<
   TFn extends AnyAsyncFunction,
   TSelected = {},
@@ -212,19 +223,20 @@ export interface ReactAsyncThrottler<
  */
 export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   fn: TFn,
-  options: AsyncThrottlerOptions<TFn>,
+  options: ReactAsyncThrottlerOptions<TFn, TSelected>,
   selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncThrottler,
     ...options,
-  } as AsyncThrottlerOptions<TFn>
+  } as ReactAsyncThrottlerOptions<TFn, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [asyncThrottler] = useState(() => {
     const asyncThrottlerInstance = new AsyncThrottler<TFn>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as ReactAsyncThrottler<TFn, TSelected>
 
     asyncThrottlerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -242,17 +254,15 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   })
 
   asyncThrottler.fn = fn
-  asyncThrottler.setOptions(mergedOptions)
+  asyncThrottler.setOptions(coreOptions)
 
   const state = useStore(asyncThrottler.store, selector)
 
   /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(
-          asyncThrottler as unknown as AsyncThrottler<TFn>,
-        )
+      if (onUnmount) {
+        onUnmount(asyncThrottler)
       } else {
         asyncThrottler.cancel()
       }

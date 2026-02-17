@@ -6,6 +6,17 @@ import type { Store } from '@tanstack/preact-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 import type { ComponentChildren } from 'preact'
 
+export interface PreactQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends QueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+   */
+  onUnmount?: (queuer: PreactQueuer<TValue, TSelected>) => void
+}
+
 export interface PreactQueuer<TValue, TSelected = {}> extends Omit<
   Queuer<TValue>,
   'store'
@@ -182,18 +193,19 @@ export interface PreactQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function useQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: PreactQueuerOptions<TValue, TSelected> = {},
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): PreactQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().queuer,
     ...options,
-  } as QueuerOptions<TValue>
+  } as PreactQueuerOptions<TValue, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [queuer] = useState(() => {
     const queuerInstance = new Queuer<TValue>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as PreactQueuer<TValue, TSelected>
 
     queuerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -211,13 +223,13 @@ export function useQueuer<TValue, TSelected = {}>(
   })
 
   queuer.fn = fn
-  queuer.setOptions(mergedOptions)
+  queuer.setOptions(coreOptions)
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(queuer as unknown as Queuer<TValue>)
+      if (onUnmount) {
+        onUnmount(queuer)
       } else {
         queuer.stop()
       }

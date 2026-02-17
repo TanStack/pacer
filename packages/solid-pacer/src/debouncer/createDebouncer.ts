@@ -10,6 +10,17 @@ import type {
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
 
+export interface SolidDebouncerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends DebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: SolidDebouncer<TFn, TSelected>) => void
+}
+
 export interface SolidDebouncer<
   TFn extends AnyFunction,
   TSelected = {},
@@ -144,17 +155,18 @@ export interface SolidDebouncer<
  */
 export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: DebouncerOptions<TFn>,
+  options: SolidDebouncerOptions<TFn, TSelected>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): SolidDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().debouncer,
     ...options,
-  } as DebouncerOptions<TFn>
+  } as SolidDebouncerOptions<TFn, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const asyncDebouncer = new Debouncer<TFn>(
     fn,
-    mergedOptions,
+    coreOptions,
   ) as unknown as SolidDebouncer<TFn, TSelected>
 
   asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
@@ -172,8 +184,8 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncDebouncer as unknown as Debouncer<TFn>)
+      if (onUnmount) {
+        onUnmount(asyncDebouncer)
       } else {
         asyncDebouncer.cancel()
       }

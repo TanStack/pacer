@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/throttler'
 import type { ComponentChildren } from 'preact'
 
+export interface PreactThrottlerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends ThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: PreactThrottler<TFn, TSelected>) => void
+}
+
 export interface PreactThrottler<
   TFn extends AnyFunction,
   TSelected = {},
@@ -156,18 +167,19 @@ export interface PreactThrottler<
  */
 export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: ThrottlerOptions<TFn>,
+  options: PreactThrottlerOptions<TFn, TSelected>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): PreactThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().throttler,
     ...options,
-  } as ThrottlerOptions<TFn>
+  } as PreactThrottlerOptions<TFn, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [throttler] = useState(() => {
     const throttlerInstance = new Throttler<TFn>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as PreactThrottler<TFn, TSelected>
 
     throttlerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -185,15 +197,15 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   })
 
   throttler.fn = fn
-  throttler.setOptions(mergedOptions)
+  throttler.setOptions(coreOptions)
 
   const state = useStore(throttler.store, selector)
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(throttler as unknown as Throttler<TFn>)
+      if (onUnmount) {
+        onUnmount(throttler)
       } else {
         throttler.cancel()
       }

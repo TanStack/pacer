@@ -5,7 +5,7 @@ title: SolidBatcher
 
 # Interface: SolidBatcher\<TValue, TSelected\>
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:9](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L9)
+Defined in: [solid-pacer/src/batcher/createBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L20)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/batcher/createBatcher.ts:9](https://github.com/TanS
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:35](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L35)
+Defined in: [solid-pacer/src/batcher/createBatcher.ts:46](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L46)
 
 Reactive state that will be updated when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L41)
+Defined in: [solid-pacer/src/batcher/createBatcher.ts:52](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L52)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L26)
+Defined in: [solid-pacer/src/batcher/createBatcher.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L37)
 
 A Solid component that allows you to subscribe to the batcher state.
 

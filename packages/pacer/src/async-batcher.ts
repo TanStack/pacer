@@ -153,12 +153,6 @@ export interface AsyncBatcherOptions<TValue> {
    */
   throwOnError?: boolean
   /**
-   * Optional callback invoked when the component unmounts. Receives the batcher instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
-   * Framework adapters only; ignored by core.
-   */
-  onUnmount?: (batcher: AsyncBatcher<TValue>) => void
-  /**
    * Maximum time in milliseconds to wait before processing a batch.
    * If the wait duration has elapsed, the batch will be processed.
    * If not provided, the batch will not be triggered by a timeout.
@@ -188,7 +182,6 @@ type AsyncBatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   | 'onSettled'
   | 'onSuccess'
   | 'key'
-  | 'onUnmount'
 >
 
 const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {

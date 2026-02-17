@@ -44,7 +44,8 @@ Consider using the `useAsyncBatcher` hook instead.
 
 ### options
 
-`AsyncBatcherOptions`\<`Parameters`\<`TFn`\>\[`0`\]\>
+[`PreactAsyncBatcherOptions`](../interfaces/PreactAsyncBatcherOptions.md)\<`Parameters`\<`TFn`\>\[`0`\], \{
+\}\>
 
 ## Returns
 

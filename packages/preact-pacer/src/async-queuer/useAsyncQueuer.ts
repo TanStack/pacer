@@ -9,6 +9,17 @@ import type {
 } from '@tanstack/pacer/async-queuer'
 import type { ComponentChildren } from 'preact'
 
+export interface PreactAsyncQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends AsyncQueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+   */
+  onUnmount?: (queuer: PreactAsyncQueuer<TValue, TSelected>) => void
+}
+
 export interface PreactAsyncQueuer<TValue, TSelected = {}> extends Omit<
   AsyncQueuer<TValue>,
   'store'
@@ -222,19 +233,20 @@ export interface PreactAsyncQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function useAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
-  options: AsyncQueuerOptions<TValue> = {},
+  options: PreactAsyncQueuerOptions<TValue, TSelected> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): PreactAsyncQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncQueuer,
     ...options,
-  } as AsyncQueuerOptions<TValue>
+  } as PreactAsyncQueuerOptions<TValue, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [asyncQueuer] = useState(() => {
     const queuerInstance = new AsyncQueuer<TValue>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as PreactAsyncQueuer<TValue, TSelected>
 
     queuerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -252,13 +264,13 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
   })
 
   asyncQueuer.fn = fn
-  asyncQueuer.setOptions(mergedOptions)
+  asyncQueuer.setOptions(coreOptions)
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncQueuer as unknown as AsyncQueuer<TValue>)
+      if (onUnmount) {
+        onUnmount(asyncQueuer)
       } else {
         asyncQueuer.stop()
       }

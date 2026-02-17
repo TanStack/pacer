@@ -9,6 +9,17 @@ import type {
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
 
+export interface SolidAsyncBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends AsyncBatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: SolidAsyncBatcher<TValue, TSelected>) => void
+}
+
 export interface SolidAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
   'store'
@@ -176,18 +187,19 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function createAsyncBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => Promise<any>,
-  options: AsyncBatcherOptions<TValue> = {},
+  options: SolidAsyncBatcherOptions<TValue, TSelected> = {},
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncBatcher,
     ...options,
-  } as AsyncBatcherOptions<TValue>
+  } as SolidAsyncBatcherOptions<TValue, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const asyncBatcher = new AsyncBatcher<TValue>(
     fn,
-    mergedOptions,
+    coreOptions,
   ) as unknown as SolidAsyncBatcher<TValue, TSelected>
 
   asyncBatcher.Subscribe = function Subscribe<TSelected>(props: {
@@ -205,8 +217,8 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncBatcher as unknown as AsyncBatcher<TValue>)
+      if (onUnmount) {
+        onUnmount(asyncBatcher)
       } else {
         asyncBatcher.cancel()
       }

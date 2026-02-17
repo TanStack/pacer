@@ -144,12 +144,6 @@ export interface QueuerOptions<TValue> {
    */
   started?: boolean
   /**
-   * Optional callback invoked when the component unmounts. Receives the queuer instance.
-   * When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
-   * Framework adapters only; ignored by core.
-   */
-  onUnmount?: (queuer: Queuer<TValue>) => void
-  /**
    * Time in milliseconds to wait between processing items.
    * Can be a number or a function that returns a number.
    * @default 0
@@ -178,7 +172,6 @@ const defaultOptions: Omit<
   | 'onReject'
   | 'onExpire'
   | 'key'
-  | 'onUnmount'
 > = {
   addItemsTo: 'back',
   getItemsFrom: 'front',

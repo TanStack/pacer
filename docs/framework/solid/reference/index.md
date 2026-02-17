@@ -10,15 +10,23 @@ title: "@tanstack/solid-pacer"
 - [PacerProviderOptions](interfaces/PacerProviderOptions.md)
 - [PacerProviderProps](interfaces/PacerProviderProps.md)
 - [SolidAsyncBatcher](interfaces/SolidAsyncBatcher.md)
+- [SolidAsyncBatcherOptions](interfaces/SolidAsyncBatcherOptions.md)
 - [SolidAsyncDebouncer](interfaces/SolidAsyncDebouncer.md)
+- [SolidAsyncDebouncerOptions](interfaces/SolidAsyncDebouncerOptions.md)
 - [SolidAsyncQueuer](interfaces/SolidAsyncQueuer.md)
+- [SolidAsyncQueuerOptions](interfaces/SolidAsyncQueuerOptions.md)
 - [SolidAsyncRateLimiter](interfaces/SolidAsyncRateLimiter.md)
 - [SolidAsyncThrottler](interfaces/SolidAsyncThrottler.md)
+- [SolidAsyncThrottlerOptions](interfaces/SolidAsyncThrottlerOptions.md)
 - [SolidBatcher](interfaces/SolidBatcher.md)
+- [SolidBatcherOptions](interfaces/SolidBatcherOptions.md)
 - [SolidDebouncer](interfaces/SolidDebouncer.md)
+- [SolidDebouncerOptions](interfaces/SolidDebouncerOptions.md)
 - [SolidQueuer](interfaces/SolidQueuer.md)
+- [SolidQueuerOptions](interfaces/SolidQueuerOptions.md)
 - [SolidRateLimiter](interfaces/SolidRateLimiter.md)
 - [SolidThrottler](interfaces/SolidThrottler.md)
+- [SolidThrottlerOptions](interfaces/SolidThrottlerOptions.md)
 
 ## Functions
 

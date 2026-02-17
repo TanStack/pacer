@@ -10,15 +10,23 @@ title: "@tanstack/react-pacer"
 - [PacerProviderOptions](interfaces/PacerProviderOptions.md)
 - [PacerProviderProps](interfaces/PacerProviderProps.md)
 - [ReactAsyncBatcher](interfaces/ReactAsyncBatcher.md)
+- [ReactAsyncBatcherOptions](interfaces/ReactAsyncBatcherOptions.md)
 - [ReactAsyncDebouncer](interfaces/ReactAsyncDebouncer.md)
+- [ReactAsyncDebouncerOptions](interfaces/ReactAsyncDebouncerOptions.md)
 - [ReactAsyncQueuer](interfaces/ReactAsyncQueuer.md)
+- [ReactAsyncQueuerOptions](interfaces/ReactAsyncQueuerOptions.md)
 - [ReactAsyncRateLimiter](interfaces/ReactAsyncRateLimiter.md)
 - [ReactAsyncThrottler](interfaces/ReactAsyncThrottler.md)
+- [ReactAsyncThrottlerOptions](interfaces/ReactAsyncThrottlerOptions.md)
 - [ReactBatcher](interfaces/ReactBatcher.md)
+- [ReactBatcherOptions](interfaces/ReactBatcherOptions.md)
 - [ReactDebouncer](interfaces/ReactDebouncer.md)
+- [ReactDebouncerOptions](interfaces/ReactDebouncerOptions.md)
 - [ReactQueuer](interfaces/ReactQueuer.md)
+- [ReactQueuerOptions](interfaces/ReactQueuerOptions.md)
 - [ReactRateLimiter](interfaces/ReactRateLimiter.md)
 - [ReactThrottler](interfaces/ReactThrottler.md)
+- [ReactThrottlerOptions](interfaces/ReactThrottlerOptions.md)
 
 ## Functions
 

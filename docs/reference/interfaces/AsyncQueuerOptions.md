@@ -357,30 +357,6 @@ Optional callback to call when a task succeeds
 
 ***
 
-### onUnmount()?
-
-```ts
-optional onUnmount: (queuer) => void;
-```
-
-Defined in: [async-queuer.ts:207](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L207)
-
-Optional callback invoked when the component unmounts. Receives the queuer instance.
-When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
-Framework adapters only; ignored by core.
-
-#### Parameters
-
-##### queuer
-
-[`AsyncQueuer`](../classes/AsyncQueuer.md)\<`TValue`\>
-
-#### Returns
-
-`void`
-
-***
-
 ### started?
 
 ```ts
@@ -413,7 +389,7 @@ Can be explicitly set to override these defaults.
 optional wait: number | (queuer) => number;
 ```
 
-Defined in: [async-queuer.ts:213](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L213)
+Defined in: [async-queuer.ts:207](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L207)
 
 Time in milliseconds to wait between processing items.
 Can be a number or a function that returns a number.

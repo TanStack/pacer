@@ -83,12 +83,6 @@ export interface BatcherOptions<TValue> {
    */
   started?: boolean
   /**
-   * Optional callback invoked when the component unmounts. Receives the batcher instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
-   * Framework adapters only; ignored by core.
-   */
-  onUnmount?: (batcher: Batcher<TValue>) => void
-  /**
    * Maximum time in milliseconds to wait before processing a batch.
    * If the wait duration has elapsed, the batch will be processed.
    * If not provided, the batch will not be triggered by a timeout.
@@ -99,7 +93,7 @@ export interface BatcherOptions<TValue> {
 
 type BatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<BatcherOptions<TValue>>,
-  'initialState' | 'onExecute' | 'onItemsChange' | 'key' | 'onUnmount'
+  'initialState' | 'onExecute' | 'onItemsChange' | 'key'
 >
 
 const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {

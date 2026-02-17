@@ -12,7 +12,7 @@ function useAsyncQueuer<TValue, TSelected>(
 selector): PreactAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:223](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L223)
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:234](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L234)
 
 A lower-level Preact hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
@@ -111,7 +111,7 @@ accordingly when using onUnmount with flush.
 
 ### options
 
-`AsyncQueuerOptions`\<`TValue`\> = `{}`
+[`PreactAsyncQueuerOptions`](../interfaces/PreactAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

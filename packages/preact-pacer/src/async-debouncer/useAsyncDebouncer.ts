@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/async-debouncer'
 import type { ComponentChildren } from 'preact'
 
+export interface PreactAsyncDebouncerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncDebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: PreactAsyncDebouncer<TFn, TSelected>) => void
+}
+
 export interface PreactAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = {},
@@ -201,19 +212,20 @@ export interface PreactAsyncDebouncer<
  */
 export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   fn: TFn,
-  options: AsyncDebouncerOptions<TFn>,
+  options: PreactAsyncDebouncerOptions<TFn, TSelected>,
   selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): PreactAsyncDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncDebouncer,
     ...options,
-  } as AsyncDebouncerOptions<TFn>
+  } as PreactAsyncDebouncerOptions<TFn, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [asyncDebouncer] = useState(() => {
     const debouncerInstance = new AsyncDebouncer<TFn>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as PreactAsyncDebouncer<TFn, TSelected>
 
     debouncerInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -231,17 +243,15 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   })
 
   asyncDebouncer.fn = fn
-  asyncDebouncer.setOptions(mergedOptions)
+  asyncDebouncer.setOptions(coreOptions)
 
   const state = useStore(asyncDebouncer.store, selector)
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(
-          asyncDebouncer as unknown as AsyncDebouncer<TFn>,
-        )
+      if (onUnmount) {
+        onUnmount(asyncDebouncer)
       } else {
         asyncDebouncer.cancel()
       }

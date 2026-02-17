@@ -95,30 +95,6 @@ Callback function that is called after the function is executed
 
 ***
 
-### onUnmount()?
-
-```ts
-optional onUnmount: (throttler) => void;
-```
-
-Defined in: [throttler.ts:89](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L89)
-
-Optional callback invoked when the component unmounts. Receives the throttler instance.
-When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
-Framework adapters only; ignored by core.
-
-#### Parameters
-
-##### throttler
-
-[`Throttler`](../classes/Throttler.md)\<`TFn`\>
-
-#### Returns
-
-`void`
-
-***
-
 ### trailing?
 
 ```ts
@@ -138,7 +114,7 @@ Defaults to true.
 wait: number | (throttler) => number;
 ```
 
-Defined in: [throttler.ts:95](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L95)
+Defined in: [throttler.ts:89](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L89)
 
 Time window in milliseconds during which the function can only be executed once.
 Can be a number or a function that returns a number.

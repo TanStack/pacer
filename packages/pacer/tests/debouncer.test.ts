@@ -814,37 +814,4 @@ describe('debounce helper function', () => {
       expect(mockFn).toHaveBeenLastCalledWith('second')
     })
   })
-
-  describe('onUnmount option', () => {
-    it('should accept onUnmount in options (framework adapters only)', () => {
-      const mockFn = vi.fn()
-      const onUnmount = vi.fn()
-      const debouncer = new Debouncer(mockFn, { wait: 1000, onUnmount })
-
-      debouncer.maybeExecute()
-      vi.advanceTimersByTime(1000)
-      expect(mockFn).toBeCalledTimes(1)
-      expect(onUnmount).not.toBeCalled()
-
-      debouncer.cancel()
-      expect(onUnmount).not.toBeCalled()
-    })
-
-    it('should allow onUnmount callback to receive instance and call flush', () => {
-      const mockFn = vi.fn()
-      let capturedInstance: Debouncer<typeof mockFn> | undefined
-      const onUnmount = vi.fn((d: Debouncer<typeof mockFn>) => {
-        capturedInstance = d
-        d.flush()
-      })
-      const debouncer = new Debouncer(mockFn, { wait: 1000, onUnmount })
-
-      debouncer.maybeExecute('arg')
-      expect(mockFn).not.toBeCalled()
-
-      onUnmount(debouncer)
-      expect(capturedInstance).toBe(debouncer)
-      expect(mockFn).toBeCalledWith('arg')
-    })
-  })
 })

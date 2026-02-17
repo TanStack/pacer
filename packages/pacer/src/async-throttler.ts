@@ -135,12 +135,6 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    */
   trailing?: boolean
   /**
-   * Optional callback invoked when the component unmounts. Receives the throttler instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
-   * Framework adapters only; ignored by core.
-   */
-  onUnmount?: (throttler: AsyncThrottler<TFn>) => void
-  /**
    * Time window in milliseconds during which the function can only be executed once.
    * Can be a number or a function that returns a number.
    * Defaults to 0ms
@@ -162,7 +156,7 @@ export function asyncThrottlerOptions<
 
 type AsyncThrottlerOptionsWithOptionalCallbacks = OptionalKeys<
   AsyncThrottlerOptions<any>,
-  'initialState' | 'onError' | 'onSettled' | 'onSuccess' | 'onUnmount'
+  'initialState' | 'onError' | 'onSettled' | 'onSuccess'
 >
 
 const defaultOptions: AsyncThrottlerOptionsWithOptionalCallbacks = {

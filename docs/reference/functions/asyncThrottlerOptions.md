@@ -9,7 +9,7 @@ title: asyncThrottlerOptions
 function asyncThrottlerOptions<TFn, TOptions>(options): TOptions;
 ```
 
-Defined in: [async-throttler.ts:154](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L154)
+Defined in: [async-throttler.ts:148](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L148)
 
 Utility function for sharing common `AsyncThrottlerOptions` options between different `AsyncThrottler` instances.
 

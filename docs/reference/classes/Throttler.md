@@ -5,7 +5,7 @@ title: Throttler
 
 # Class: Throttler\<TFn\>
 
-Defined in: [throttler.ts:156](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L156)
+Defined in: [throttler.ts:150](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L150)
 
 A class that creates a throttled function.
 
@@ -57,7 +57,7 @@ throttler.maybeExecute('123'); // Throttled
 new Throttler<TFn>(fn, initialOptions): Throttler<TFn>;
 ```
 
-Defined in: [throttler.ts:164](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L164)
+Defined in: [throttler.ts:158](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L158)
 
 #### Parameters
 
@@ -81,7 +81,7 @@ Defined in: [throttler.ts:164](https://github.com/TanStack/pacer/blob/main/packa
 fn: TFn;
 ```
 
-Defined in: [throttler.ts:165](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L165)
+Defined in: [throttler.ts:159](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L159)
 
 ***
 
@@ -91,7 +91,7 @@ Defined in: [throttler.ts:165](https://github.com/TanStack/pacer/blob/main/packa
 key: string | undefined;
 ```
 
-Defined in: [throttler.ts:160](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L160)
+Defined in: [throttler.ts:154](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L154)
 
 ***
 
@@ -101,7 +101,7 @@ Defined in: [throttler.ts:160](https://github.com/TanStack/pacer/blob/main/packa
 options: ThrottlerOptions<TFn>;
 ```
 
-Defined in: [throttler.ts:161](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L161)
+Defined in: [throttler.ts:155](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L155)
 
 ***
 
@@ -111,7 +111,7 @@ Defined in: [throttler.ts:161](https://github.com/TanStack/pacer/blob/main/packa
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: [throttler.ts:157](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L157)
+Defined in: [throttler.ts:151](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L151)
 
 ## Methods
 
@@ -121,7 +121,7 @@ Defined in: [throttler.ts:157](https://github.com/TanStack/pacer/blob/main/packa
 cancel(): void;
 ```
 
-Defined in: [throttler.ts:326](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L326)
+Defined in: [throttler.ts:320](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L320)
 
 Cancels any pending trailing execution and clears internal state.
 
@@ -143,7 +143,7 @@ Has no effect if there is no pending execution.
 flush(): void;
 ```
 
-Defined in: [throttler.ts:304](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L304)
+Defined in: [throttler.ts:298](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L298)
 
 Processes the current pending execution immediately
 
@@ -159,7 +159,7 @@ Processes the current pending execution immediately
 maybeExecute(...args): void;
 ```
 
-Defined in: [throttler.ts:245](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L245)
+Defined in: [throttler.ts:239](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L239)
 
 Attempts to execute the throttled function. The execution behavior depends on the throttler options:
 
@@ -201,7 +201,7 @@ throttled.maybeExecute('c', 'd');
 reset(): void;
 ```
 
-Defined in: [throttler.ts:337](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L337)
+Defined in: [throttler.ts:331](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L331)
 
 Resets the throttler state to its default values
 
@@ -217,7 +217,7 @@ Resets the throttler state to its default values
 setOptions(newOptions): void;
 ```
 
-Defined in: [throttler.ts:187](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L187)
+Defined in: [throttler.ts:181](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L181)
 
 Updates the throttler options
 

@@ -1,6 +1,6 @@
 import { useQueuer } from './useQueuer'
-import type { PreactQueuer } from './useQueuer'
-import type { Queuer, QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+import type { PreactQueuer, PreactQueuerOptions } from './useQueuer'
+import type { Queuer, QueuerState } from '@tanstack/pacer/queuer'
 
 /**
  * A Preact hook that creates a queuer with managed state, combining Preact's useState with queuing functionality.
@@ -124,7 +124,7 @@ export function useQueuedState<
   >,
 >(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: PreactQueuerOptions<TValue, TSelected> = {},
   selector?: (state: QueuerState<TValue>) => TSelected,
 ): [Array<TValue>, Queuer<TValue>['addItem'], PreactQueuer<TValue, TSelected>] {
   const queue = useQueuer(fn, options, selector)

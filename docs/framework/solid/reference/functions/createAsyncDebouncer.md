@@ -12,7 +12,7 @@ function createAsyncDebouncer<TFn, TSelected>(
 selector): SolidAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:163](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L163)
+Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:174](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L174)
 
 A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -105,7 +105,7 @@ using onUnmount with flush.
 
 ### options
 
-`AsyncDebouncerOptions`\<`TFn`\>
+[`SolidAsyncDebouncerOptions`](../interfaces/SolidAsyncDebouncerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

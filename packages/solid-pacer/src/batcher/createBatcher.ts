@@ -6,6 +6,17 @@ import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
+export interface SolidBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends BatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: SolidBatcher<TValue, TSelected>) => void
+}
+
 export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
   Batcher<TValue>,
   'store'
@@ -143,16 +154,17 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function createBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
-  options: BatcherOptions<TValue> = {},
+  options: SolidBatcherOptions<TValue, TSelected> = {},
   selector: (state: BatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().batcher,
     ...options,
-  } as BatcherOptions<TValue>
+  } as SolidBatcherOptions<TValue, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
-  const batcher = new Batcher(fn, mergedOptions) as unknown as SolidBatcher<
+  const batcher = new Batcher(fn, coreOptions) as unknown as SolidBatcher<
     TValue,
     TSelected
   >
@@ -172,8 +184,8 @@ export function createBatcher<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(batcher as unknown as Batcher<TValue>)
+      if (onUnmount) {
+        onUnmount(batcher)
       } else {
         batcher.cancel()
       }

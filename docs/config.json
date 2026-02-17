@@ -208,6 +208,14 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactDebouncerOptions",
+              "to": "framework/react/reference/interfaces/ReactDebouncerOptions"
+            },
+            {
+              "label": "ReactAsyncDebouncerOptions",
+              "to": "framework/react/reference/interfaces/ReactAsyncDebouncerOptions"
+            },
+            {
               "label": "ReactDebouncer",
               "to": "framework/react/reference/interfaces/ReactDebouncer"
             },
@@ -245,6 +253,14 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidDebouncerOptions",
+              "to": "framework/solid/reference/interfaces/SolidDebouncerOptions"
+            },
+            {
+              "label": "SolidAsyncDebouncerOptions",
+              "to": "framework/solid/reference/interfaces/SolidAsyncDebouncerOptions"
+            },
+            {
               "label": "SolidDebouncer",
               "to": "framework/solid/reference/interfaces/SolidDebouncer"
             },
@@ -273,6 +289,14 @@
         {
           "label": "preact",
           "children": [
+            {
+              "label": "PreactDebouncerOptions",
+              "to": "framework/preact/reference/interfaces/PreactDebouncerOptions"
+            },
+            {
+              "label": "PreactAsyncDebouncerOptions",
+              "to": "framework/preact/reference/interfaces/PreactAsyncDebouncerOptions"
+            },
             {
               "label": "PreactDebouncer",
               "to": "framework/preact/reference/interfaces/PreactDebouncer"
@@ -389,6 +413,14 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactThrottlerOptions",
+              "to": "framework/react/reference/interfaces/ReactThrottlerOptions"
+            },
+            {
+              "label": "ReactAsyncThrottlerOptions",
+              "to": "framework/react/reference/interfaces/ReactAsyncThrottlerOptions"
+            },
+            {
               "label": "ReactThrottler",
               "to": "framework/react/reference/interfaces/ReactThrottler"
             },
@@ -426,6 +458,14 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidThrottlerOptions",
+              "to": "framework/solid/reference/interfaces/SolidThrottlerOptions"
+            },
+            {
+              "label": "SolidAsyncThrottlerOptions",
+              "to": "framework/solid/reference/interfaces/SolidAsyncThrottlerOptions"
+            },
+            {
               "label": "SolidThrottler",
               "to": "framework/solid/reference/interfaces/SolidThrottler"
             },
@@ -454,6 +494,14 @@
         {
           "label": "preact",
           "children": [
+            {
+              "label": "PreactThrottlerOptions",
+              "to": "framework/preact/reference/interfaces/PreactThrottlerOptions"
+            },
+            {
+              "label": "PreactAsyncThrottlerOptions",
+              "to": "framework/preact/reference/interfaces/PreactAsyncThrottlerOptions"
+            },
             {
               "label": "PreactThrottler",
               "to": "framework/preact/reference/interfaces/PreactThrottler"
@@ -751,6 +799,14 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactQueuerOptions",
+              "to": "framework/react/reference/interfaces/ReactQueuerOptions"
+            },
+            {
+              "label": "ReactAsyncQueuerOptions",
+              "to": "framework/react/reference/interfaces/ReactAsyncQueuerOptions"
+            },
+            {
               "label": "ReactQueuer",
               "to": "framework/react/reference/interfaces/ReactQueuer"
             },
@@ -784,6 +840,14 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidQueuerOptions",
+              "to": "framework/solid/reference/interfaces/SolidQueuerOptions"
+            },
+            {
+              "label": "SolidAsyncQueuerOptions",
+              "to": "framework/solid/reference/interfaces/SolidAsyncQueuerOptions"
+            },
+            {
               "label": "SolidQueuer",
               "to": "framework/solid/reference/interfaces/SolidQueuer"
             },
@@ -808,6 +872,14 @@
         {
           "label": "preact",
           "children": [
+            {
+              "label": "PreactQueuerOptions",
+              "to": "framework/preact/reference/interfaces/PreactQueuerOptions"
+            },
+            {
+              "label": "PreactAsyncQueuerOptions",
+              "to": "framework/preact/reference/interfaces/PreactAsyncQueuerOptions"
+            },
             {
               "label": "PreactQueuer",
               "to": "framework/preact/reference/interfaces/PreactQueuer"
@@ -916,6 +988,14 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactBatcherOptions",
+              "to": "framework/react/reference/interfaces/ReactBatcherOptions"
+            },
+            {
+              "label": "ReactAsyncBatcherOptions",
+              "to": "framework/react/reference/interfaces/ReactAsyncBatcherOptions"
+            },
+            {
               "label": "ReactBatcher",
               "to": "framework/react/reference/interfaces/ReactBatcher"
             },
@@ -945,6 +1025,14 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidBatcherOptions",
+              "to": "framework/solid/reference/interfaces/SolidBatcherOptions"
+            },
+            {
+              "label": "SolidAsyncBatcherOptions",
+              "to": "framework/solid/reference/interfaces/SolidAsyncBatcherOptions"
+            },
+            {
               "label": "SolidBatcher",
               "to": "framework/solid/reference/interfaces/SolidBatcher"
             },
@@ -965,6 +1053,14 @@
         {
           "label": "preact",
           "children": [
+            {
+              "label": "PreactBatcherOptions",
+              "to": "framework/preact/reference/interfaces/PreactBatcherOptions"
+            },
+            {
+              "label": "PreactAsyncBatcherOptions",
+              "to": "framework/preact/reference/interfaces/PreactAsyncBatcherOptions"
+            },
             {
               "label": "PreactBatcher",
               "to": "framework/preact/reference/interfaces/PreactBatcher"

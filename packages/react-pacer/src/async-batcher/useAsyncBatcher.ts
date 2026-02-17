@@ -9,6 +9,17 @@ import type {
 import type { Store } from '@tanstack/react-store'
 import type { FunctionComponent, ReactNode } from 'react'
 
+export interface ReactAsyncBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends AsyncBatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: ReactAsyncBatcher<TValue, TSelected>) => void
+}
+
 export interface ReactAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
   'store'
@@ -222,19 +233,20 @@ export interface ReactAsyncBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function useAsyncBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => Promise<any>,
-  options: AsyncBatcherOptions<TValue> = {},
+  options: ReactAsyncBatcherOptions<TValue, TSelected> = {},
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncBatcher,
     ...options,
-  } as AsyncBatcherOptions<TValue>
+  } as ReactAsyncBatcherOptions<TValue, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [asyncBatcher] = useState(() => {
     const asyncBatcherInstance = new AsyncBatcher<TValue>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as ReactAsyncBatcher<TValue, TSelected>
 
     asyncBatcherInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -252,13 +264,13 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
   })
 
   asyncBatcher.fn = fn
-  asyncBatcher.setOptions(mergedOptions)
+  asyncBatcher.setOptions(coreOptions)
 
   /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncBatcher as unknown as AsyncBatcher<TValue>)
+      if (onUnmount) {
+        onUnmount(asyncBatcher)
       } else {
         asyncBatcher.cancel()
       }

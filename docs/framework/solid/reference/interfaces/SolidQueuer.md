@@ -5,7 +5,7 @@ title: SolidQueuer
 
 # Interface: SolidQueuer\<TValue, TSelected\>
 
-Defined in: [solid-pacer/src/queuer/createQueuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L9)
+Defined in: [solid-pacer/src/queuer/createQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L20)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/queuer/createQueuer.ts:9](https://github.com/TanSta
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/queuer/createQueuer.ts:35](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L35)
+Defined in: [solid-pacer/src/queuer/createQueuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L46)
 
 Reactive state that will be updated when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<QueuerState<TValue>>>;
 ```
 
-Defined in: [solid-pacer/src/queuer/createQueuer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L41)
+Defined in: [solid-pacer/src/queuer/createQueuer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L52)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [solid-pacer/src/queuer/createQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L26)
+Defined in: [solid-pacer/src/queuer/createQueuer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L37)
 
 A Solid component that allows you to subscribe to the queuer state.
 

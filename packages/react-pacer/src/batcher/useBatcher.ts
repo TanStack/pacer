@@ -6,6 +6,17 @@ import type { Store } from '@tanstack/react-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { FunctionComponent, ReactNode } from 'react'
 
+export interface ReactBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends BatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: ReactBatcher<TValue, TSelected>) => void
+}
+
 export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
   Batcher<TValue>,
   'store'
@@ -171,19 +182,20 @@ export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function useBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
-  options: BatcherOptions<TValue> = {},
+  options: ReactBatcherOptions<TValue, TSelected> = {},
   selector: (state: BatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().batcher,
     ...options,
-  } as BatcherOptions<TValue>
+  } as ReactBatcherOptions<TValue, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [batcher] = useState(() => {
     const batcherInstance = new Batcher<TValue>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as ReactBatcher<TValue, TSelected>
 
     batcherInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -201,13 +213,13 @@ export function useBatcher<TValue, TSelected = {}>(
   })
 
   batcher.fn = fn
-  batcher.setOptions(mergedOptions)
+  batcher.setOptions(coreOptions)
 
   /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(batcher as unknown as Batcher<TValue>)
+      if (onUnmount) {
+        onUnmount(batcher)
       } else {
         batcher.cancel()
       }

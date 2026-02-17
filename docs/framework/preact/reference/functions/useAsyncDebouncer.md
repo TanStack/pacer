@@ -12,7 +12,7 @@ function useAsyncDebouncer<TFn, TSelected>(
 selector): PreactAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:202](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L202)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:213](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L213)
 
 A low-level Preact hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -105,7 +105,7 @@ accordingly when using onUnmount with flush.
 
 ### options
 
-`AsyncDebouncerOptions`\<`TFn`\>
+[`PreactAsyncDebouncerOptions`](../interfaces/PreactAsyncDebouncerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

@@ -96,30 +96,6 @@ Callback function that is called after the function is executed
 
 ***
 
-### onUnmount()?
-
-```ts
-optional onUnmount: (debouncer) => void;
-```
-
-Defined in: [debouncer.ts:85](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L85)
-
-Optional callback invoked when the component unmounts. Receives the debouncer instance.
-When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
-Framework adapters only; ignored by core.
-
-#### Parameters
-
-##### debouncer
-
-[`Debouncer`](../classes/Debouncer.md)\<`TFn`\>
-
-#### Returns
-
-`void`
-
-***
-
 ### trailing?
 
 ```ts
@@ -139,7 +115,7 @@ Defaults to true.
 wait: number | (debouncer) => number;
 ```
 
-Defined in: [debouncer.ts:91](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L91)
+Defined in: [debouncer.ts:85](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L85)
 
 Delay in milliseconds before executing the function.
 Can be a number or a function that returns a number.

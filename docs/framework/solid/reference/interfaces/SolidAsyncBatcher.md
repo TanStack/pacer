@@ -5,7 +5,7 @@ title: SolidAsyncBatcher
 
 # Interface: SolidAsyncBatcher\<TValue, TSelected\>
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:12](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L12)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L23)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:12](https://git
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L38)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L49)
 
 Reactive state that will be updated when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:44](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L44)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L55)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:29](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L29)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L40)
 
 A Solid component that allows you to subscribe to the batcher state.
 

@@ -10,6 +10,17 @@ import type {
   AsyncThrottlerState,
 } from '@tanstack/pacer/async-throttler'
 
+export interface SolidAsyncThrottlerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: SolidAsyncThrottler<TFn, TSelected>) => void
+}
+
 export interface SolidAsyncThrottler<
   TFn extends AnyAsyncFunction,
   TSelected = {},
@@ -165,18 +176,19 @@ export function createAsyncThrottler<
   TSelected = {},
 >(
   fn: TFn,
-  options: AsyncThrottlerOptions<TFn>,
+  options: SolidAsyncThrottlerOptions<TFn, TSelected>,
   selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncThrottler,
     ...options,
-  } as AsyncThrottlerOptions<TFn>
+  } as SolidAsyncThrottlerOptions<TFn, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const asyncThrottler = new AsyncThrottler(
     fn,
-    mergedOptions,
+    coreOptions,
   ) as unknown as SolidAsyncThrottler<TFn, TSelected>
 
   asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
@@ -194,10 +206,8 @@ export function createAsyncThrottler<
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(
-          asyncThrottler as unknown as AsyncThrottler<TFn>,
-        )
+      if (onUnmount) {
+        onUnmount(asyncThrottler)
       } else {
         asyncThrottler.cancel()
       }

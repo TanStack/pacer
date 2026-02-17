@@ -9,6 +9,17 @@ import type {
 } from '@tanstack/pacer/async-batcher'
 import type { ComponentChildren } from 'preact'
 
+export interface PreactAsyncBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends AsyncBatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: PreactAsyncBatcher<TValue, TSelected>) => void
+}
+
 export interface PreactAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
   'store'
@@ -222,19 +233,20 @@ export interface PreactAsyncBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function useAsyncBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => Promise<any>,
-  options: AsyncBatcherOptions<TValue> = {},
+  options: PreactAsyncBatcherOptions<TValue, TSelected> = {},
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): PreactAsyncBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncBatcher,
     ...options,
-  } as AsyncBatcherOptions<TValue>
+  } as PreactAsyncBatcherOptions<TValue, TSelected>
+  const { onUnmount, ...coreOptions } = mergedOptions
 
   const [asyncBatcher] = useState(() => {
     const batcherInstance = new AsyncBatcher<TValue>(
       fn,
-      mergedOptions,
+      coreOptions,
     ) as unknown as PreactAsyncBatcher<TValue, TSelected>
 
     batcherInstance.Subscribe = function Subscribe<TSelected>(props: {
@@ -252,13 +264,13 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
   })
 
   asyncBatcher.fn = fn
-  asyncBatcher.setOptions(mergedOptions)
+  asyncBatcher.setOptions(coreOptions)
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncBatcher as unknown as AsyncBatcher<TValue>)
+      if (onUnmount) {
+        onUnmount(asyncBatcher)
       } else {
         asyncBatcher.cancel()
       }

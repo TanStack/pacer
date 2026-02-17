@@ -9,7 +9,7 @@ title: debouncerOptions
 function debouncerOptions<TFn, TOptions>(options): TOptions;
 ```
 
-Defined in: [debouncer.ts:97](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L97)
+Defined in: [debouncer.ts:91](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L91)
 
 Utility function for sharing common `DebouncerOptions` options between different `Debouncer` instances.
 

@@ -12,7 +12,7 @@ function useAsyncBatcher<TValue, TSelected>(
 selector): PreactAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:223](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L223)
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:234](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L234)
 
 A Preact hook that creates an `AsyncBatcher` instance for managing asynchronous batches of items.
 
@@ -116,7 +116,7 @@ accordingly when using onUnmount with flush.
 
 ### options
 
-`AsyncBatcherOptions`\<`TValue`\> = `{}`
+[`PreactAsyncBatcherOptions`](../interfaces/PreactAsyncBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 
