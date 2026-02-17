@@ -107,12 +107,12 @@
   ],
   "dependencies": {
     "@tanstack/pacer": "workspace:*",
-    "@tanstack/react-store": "^0.8.0"
+    "@tanstack/react-store": "^0.8.1"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^2.8.4",
-    "@types/react": "^19.2.10",
-    "@vitejs/plugin-react": "^5.1.2",
+    "@eslint-react/eslint-plugin": "^2.13.0",
+    "@types/react": "^19.2.14",
+    "@vitejs/plugin-react": "^5.1.4",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^7.0.1",
     "react": "^19.2.4"
