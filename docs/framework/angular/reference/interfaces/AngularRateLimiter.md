@@ -5,7 +5,7 @@ title: AngularRateLimiter
 
 # Interface: AngularRateLimiter\<TFn, TSelected\>
 
-Defined in: [rate-limiter/injectRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L23)
+Defined in: [angular-pacer/src/rate-limiter/injectRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L23)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [rate-limiter/injectRateLimiter.ts:23](https://github.com/TanStack/p
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L32)
+Defined in: [angular-pacer/src/rate-limiter/injectRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L32)
 
 Reactive state signal that will be updated when the rate limiter state changes
 
@@ -44,7 +44,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:37](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L37)
+Defined in: [angular-pacer/src/rate-limiter/injectRateLimiter.ts:37](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L37)
 
 #### Deprecated
 

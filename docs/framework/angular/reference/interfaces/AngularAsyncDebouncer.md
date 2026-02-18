@@ -5,7 +5,7 @@ title: AngularAsyncDebouncer
 
 # Interface: AngularAsyncDebouncer\<TFn, TSelected\>
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L25)
+Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L25)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:25](https://github.com/TanS
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L34)
+Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L34)
 
 Reactive state signal that will be updated when the async debouncer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L39)
+Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L39)
 
 #### Deprecated
 

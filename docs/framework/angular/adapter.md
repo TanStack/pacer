@@ -24,18 +24,20 @@ import { Component, signal } from '@angular/core'
 import { injectDebouncer } from '@tanstack/angular-pacer'
 
 @Component({
-  selector: 'app-search',
+  selector: 'app-root',
   template: `
     <input [value]="query()" (input)="onInput($event)" placeholder="Search..." />
     <p>Pending: {{ debouncer.state().isPending }}</p>
+    <p>Debounced: {{ debounced() }}</p>
   `,
 })
-export class SearchComponent {
+export class App {
   protected readonly query = signal('')
+  protected readonly debounced = signal('')
 
   protected readonly debouncer = injectDebouncer(
     (q: string) => {
-      console.log('Searching for', q)
+      this.debounced.set(q)
     },
     { wait: 500 },
     (state) => ({ isPending: state.isPending }),
@@ -82,7 +84,7 @@ The third argument to each inject function is a state selector. It determines wh
 **By default, if you omit the selector, `state()` is not populated.** Pass a selector to opt in to reactive state.
 
 ```ts
-// No selector: state() is not useful for reactivity
+// No selector: state() is not populated
 const debouncer = injectDebouncer(fn, { wait: 500 })
 
 // With selector: state() is a signal of the selected slice

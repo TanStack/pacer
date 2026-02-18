@@ -12,7 +12,7 @@ function injectDebouncedSignal<TValue, TSelected>(
 selector?): DebouncedSignal<TValue, TSelected>;
 ```
 
-Defined in: [debouncer/injectDebouncedSignal.ts:70](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L70)
+Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:63](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L63)
 
 An Angular function that creates a debounced state signal, combining Angular's signal with debouncing functionality.
 This function provides both the current debounced value and methods to update it.
@@ -72,7 +72,7 @@ Available debouncer state properties:
 
 ## Returns
 
-[`DebouncedSignal`](../type-aliases/DebouncedSignal.md)\<`TValue`, `TSelected`\>
+[`DebouncedSignal`](../interfaces/DebouncedSignal.md)\<`TValue`, `TSelected`\>
 
 ## Example
 

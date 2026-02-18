@@ -9,7 +9,7 @@ title: injectBatchedCallback
 function injectBatchedCallback<TValue>(fn, options): (item) => void;
 ```
 
-Defined in: [batcher/injectBatchedCallback.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatchedCallback.ts#L40)
+Defined in: [angular-pacer/src/batcher/injectBatchedCallback.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatchedCallback.ts#L40)
 
 An Angular function that creates a batched version of a callback function.
 This function is essentially a wrapper around `injectBatcher` that provides

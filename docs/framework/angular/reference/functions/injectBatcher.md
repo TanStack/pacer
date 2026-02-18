@@ -12,7 +12,7 @@ function injectBatcher<TValue, TSelected>(
 selector): AngularBatcher<TValue, TSelected>;
 ```
 
-Defined in: [batcher/injectBatcher.ts:85](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L85)
+Defined in: [angular-pacer/src/batcher/injectBatcher.ts:85](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L85)
 
 An Angular function that creates and manages a Batcher instance.
 

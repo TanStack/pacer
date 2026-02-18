@@ -12,7 +12,7 @@ function injectAsyncRateLimiter<TFn, TSelected>(
 selector): AngularAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:83](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L83)
+Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:83](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L83)
 
 An Angular function that creates and manages an AsyncRateLimiter instance.
 
