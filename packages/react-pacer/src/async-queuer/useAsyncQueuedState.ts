@@ -1,9 +1,9 @@
 import { useAsyncQueuer } from './useAsyncQueuer'
-import type { ReactAsyncQueuer } from './useAsyncQueuer'
 import type {
-  AsyncQueuerOptions,
-  AsyncQueuerState,
-} from '@tanstack/pacer/async-queuer'
+  ReactAsyncQueuer,
+  ReactAsyncQueuerOptions,
+} from './useAsyncQueuer'
+import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
 
 /**
  * A higher-level React hook that creates an `AsyncQueuer` instance with built-in state management.
@@ -156,7 +156,7 @@ export function useAsyncQueuedState<
   >,
 >(
   fn: (value: TValue) => Promise<any>,
-  options: AsyncQueuerOptions<TValue> = {},
+  options: ReactAsyncQueuerOptions<TValue, TSelected> = {},
   selector?: (state: AsyncQueuerState<TValue>) => TSelected,
 ): [Array<TValue>, ReactAsyncQueuer<TValue, TSelected>] {
   const asyncQueuer = useAsyncQueuer(fn, options, selector)

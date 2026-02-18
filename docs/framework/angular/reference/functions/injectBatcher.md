@@ -12,7 +12,7 @@ function injectBatcher<TValue, TSelected>(
 selector): AngularBatcher<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/batcher/injectBatcher.ts:61](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L61)
+Defined in: [angular-pacer/src/batcher/injectBatcher.ts:85](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L85)
 
 An Angular function that creates and manages a Batcher instance.
 
@@ -34,6 +34,18 @@ optimizing performance by preventing unnecessary updates when irrelevant state c
 tracking by providing a selector function. This prevents unnecessary updates and gives you
 full control over when your component tracks state changes.
 
+## Cleanup on Destroy
+
+By default, the function cancels any pending batch when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```ts
+const batcher = injectBatcher(fn, {
+  maxSize: 5,
+  onUnmount: (b) => b.flush()
+});
+```
+
 ## Type Parameters
 
 ### TValue
@@ -53,7 +65,7 @@ full control over when your component tracks state changes.
 
 ### options
 
-`BatcherOptions`\<`TValue`\> = `{}`
+[`AngularBatcherOptions`](../interfaces/AngularBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/throttler'
 import type { FunctionComponent, ReactNode } from 'react'
 
+export interface ReactThrottlerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends ThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: ReactThrottler<TFn, TSelected>) => void
+}
+
 export interface ReactThrottler<
   TFn extends AnyFunction,
   TSelected = {},
@@ -85,6 +96,18 @@ export interface ReactThrottler<
  * - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = useThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -144,13 +167,13 @@ export interface ReactThrottler<
  */
 export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: ThrottlerOptions<TFn>,
+  options: ReactThrottlerOptions<TFn, TSelected>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): ReactThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().throttler,
     ...options,
-  } as ThrottlerOptions<TFn>
+  } as ReactThrottlerOptions<TFn, TSelected>
 
   const [throttler] = useState(() => {
     const throttlerInstance = new Throttler<TFn>(
@@ -177,11 +200,17 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
 
   const state = useStore(throttler.store, selector)
 
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      throttler.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(throttler)
+      } else {
+        throttler.cancel()
+      }
     }
-  }, [throttler])
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   return useMemo(
     () =>

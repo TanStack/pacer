@@ -1,12 +1,25 @@
+import { DestroyRef, inject } from '@angular/core'
 import { injectStore } from '@tanstack/angular-store'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
+
+export interface AngularAsyncQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends AsyncQueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the component is destroyed. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop + abort); use it to call flush(), stop(), add logging, etc.
+   * When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+   */
+  onUnmount?: (queuer: AngularAsyncQueuer<TValue, TSelected>) => void
+}
 
 export interface AngularAsyncQueuer<TValue, TSelected = {}> extends Omit<
   AsyncQueuer<TValue>,
@@ -44,6 +57,20 @@ export interface AngularAsyncQueuer<TValue, TSelected = {}> extends Omit<
  * tracking by providing a selector function. This prevents unnecessary updates and gives you
  * full control over when your component tracks state changes.
  *
+ * ## Cleanup on Destroy
+ *
+ * By default, the function stops the queuer and aborts in-flight work when the component is destroyed.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```ts
+ * const queuer = injectAsyncQueuer(fn, {
+ *   concurrency: 2,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
+ *
+ * When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+ *
  * @example
  * ```ts
  * // Default behavior - no reactive state subscriptions
@@ -68,20 +95,32 @@ export interface AngularAsyncQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function injectAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
-  options: AsyncQueuerOptions<TValue> = {},
+  options: AngularAsyncQueuerOptions<TValue, TSelected> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): AngularAsyncQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...injectPacerOptions().asyncQueuer,
     ...options,
-  } as AsyncQueuerOptions<TValue>
+  } as AngularAsyncQueuerOptions<TValue, TSelected>
 
   const queuer = new AsyncQueuer<TValue>(fn, mergedOptions)
   const state = injectStore(queuer.store, selector)
 
-  return {
+  const result = {
     ...queuer,
     state,
   } as AngularAsyncQueuer<TValue, TSelected>
+
+  const destroyRef = inject(DestroyRef, { optional: true })
+  destroyRef?.onDestroy(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(result)
+    } else {
+      queuer.stop()
+      queuer.abort()
+    }
+  })
+
+  return result
 }

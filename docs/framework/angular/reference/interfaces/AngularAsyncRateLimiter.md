@@ -5,7 +5,7 @@ title: AngularAsyncRateLimiter
 
 # Interface: AngularAsyncRateLimiter\<TFn, TSelected\>
 
-Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:12](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L12)
+Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L24)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:12](
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L21)
+Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L33)
 
 Reactive state signal that will be updated when the async rate limiter state changes
 
@@ -44,7 +44,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>;
 ```
 
-Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L26)
+Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:38](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L38)
 
 #### Deprecated
 

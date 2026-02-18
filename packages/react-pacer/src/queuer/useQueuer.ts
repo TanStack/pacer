@@ -1,10 +1,21 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Queuer } from '@tanstack/pacer/queuer'
 import { useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 import type { FunctionComponent, ReactNode } from 'react'
+
+export interface ReactQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends QueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
+   */
+  onUnmount?: (queuer: ReactQueuer<TValue, TSelected>) => void
+}
 
 export interface ReactQueuer<TValue, TSelected = {}> extends Omit<
   Queuer<TValue>,
@@ -93,6 +104,19 @@ export interface ReactQueuer<TValue, TSelected = {}> extends Omit<
  * - `size`: Number of items currently in the queue
  * - `status`: Current processing status ('idle' | 'running' | 'stopped')
  *
+ * ## Unmount behavior
+ *
+ * By default, the hook stops the queuer when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```tsx
+ * const queue = useQueuer(fn, {
+ *   started: true,
+ *   wait: 1000,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -169,14 +193,13 @@ export interface ReactQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function useQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: ReactQueuerOptions<TValue, TSelected> = {},
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): ReactQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().queuer,
     ...options,
-  } as QueuerOptions<TValue>
-
+  } as ReactQueuerOptions<TValue, TSelected>
   const [queuer] = useState(() => {
     const queuerInstance = new Queuer<TValue>(
       fn,
@@ -199,6 +222,18 @@ export function useQueuer<TValue, TSelected = {}>(
 
   queuer.fn = fn
   queuer.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(queuer)
+      } else {
+        queuer.stop()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   const state = useStore(queuer.store, selector)
 

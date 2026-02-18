@@ -214,6 +214,17 @@ debouncer.flush()
 console.log(debouncer.store.state.isPending) // false
 ```
 
+### Customizing Unmount Behavior
+
+Framework hooks cancel pending work by default when a component unmounts. Use the `onUnmount` option to flush instead.
+
+```tsx
+const debouncer = useDebouncer(fn, {
+  wait: 500,
+  onUnmount: (d) => d.flush(),
+})
+```
+
 ## State Management
 
 The `Debouncer` class uses TanStack Store for reactive state management, providing real-time access to execution state and statistics. All state is stored in a TanStack Store and can be accessed via `debouncer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `debouncer.state` along with providing a selector callback as the 3rd argument to the `useDebouncer` hook to opt-in to state tracking as shown below.

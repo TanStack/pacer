@@ -58,7 +58,8 @@ Consider using the `useAsyncRateLimiter` hook instead.
 
 ### options
 
-`AsyncRateLimiterOptions`\<`TFn`\>
+[`PreactAsyncRateLimiterOptions`](../interfaces/PreactAsyncRateLimiterOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

@@ -1,13 +1,25 @@
+import { DestroyRef, inject } from '@angular/core'
 import { injectStore } from '@tanstack/angular-store'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   DebouncerOptions,
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
+
+export interface AngularDebouncerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends DebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component is destroyed. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: AngularDebouncer<TFn, TSelected>) => void
+}
 
 export interface AngularDebouncer<
   TFn extends AnyFunction,
@@ -57,6 +69,18 @@ export interface AngularDebouncer<
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Cleanup on Destroy
+ *
+ * By default, the function cancels any pending execution when the component is destroyed.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```ts
+ * const debouncer = injectDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
  * @example
  * ```ts
  * // Default behavior - no reactive state subscriptions
@@ -84,19 +108,30 @@ export interface AngularDebouncer<
  */
 export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: DebouncerOptions<TFn>,
+  options: AngularDebouncerOptions<TFn, TSelected>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): AngularDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...injectPacerOptions().debouncer,
     ...options,
-  } as DebouncerOptions<TFn>
+  } as AngularDebouncerOptions<TFn, TSelected>
 
   const debouncer = new Debouncer<TFn>(fn, mergedOptions)
   const state = injectStore(debouncer.store, selector)
 
-  return {
+  const result = {
     ...debouncer,
     state,
   } as AngularDebouncer<TFn, TSelected>
+
+  const destroyRef = inject(DestroyRef, { optional: true })
+  destroyRef?.onDestroy(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(result)
+    } else {
+      debouncer.cancel()
+    }
+  })
+
+  return result
 }

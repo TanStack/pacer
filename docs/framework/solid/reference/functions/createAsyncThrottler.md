@@ -12,7 +12,7 @@ function createAsyncThrottler<TFn, TSelected>(
 selector): SolidAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:145](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L145)
+Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:175](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L175)
 
 A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -69,6 +69,24 @@ Available state properties:
 - `nextExecutionTime`: Timestamp of the next allowed execution
 - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
 
+## Unmount behavior
+
+By default, the primitive cancels any pending execution and aborts any in-flight execution when the owning component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const throttler = createAsyncThrottler(fn, {
+  wait: 1000,
+  onUnmount: (t) => t.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your throttled function updates Solid signals, those updates may run after the component has
+unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+using onUnmount with flush.
+
 ## Type Parameters
 
 ### TFn
@@ -88,7 +106,7 @@ Available state properties:
 
 ### options
 
-`AsyncThrottlerOptions`\<`TFn`\>
+[`SolidAsyncThrottlerOptions`](../interfaces/SolidAsyncThrottlerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

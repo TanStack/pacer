@@ -1,9 +1,21 @@
+import { DestroyRef, inject } from '@angular/core'
 import { injectStore } from '@tanstack/angular-store'
 import { Queuer } from '@tanstack/pacer/queuer'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+
+export interface AngularQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends QueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the component is destroyed. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+   */
+  onUnmount?: (queuer: AngularQueuer<TValue, TSelected>) => void
+}
 
 export interface AngularQueuer<TValue, TSelected = {}> extends Omit<
   Queuer<TValue>,
@@ -62,22 +74,45 @@ export interface AngularQueuer<TValue, TSelected = {}> extends Omit<
  * // Access the selected state
  * const { items, isRunning } = queue.state();
  * ```
+ *
+ * ## Cleanup on Destroy
+ *
+ * By default, the function stops the queuer when the component is destroyed.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```ts
+ * const queue = injectQueuer(fn, {
+ *   started: true,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
  */
 export function injectQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: AngularQueuerOptions<TValue, TSelected> = {},
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): AngularQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...injectPacerOptions().queuer,
     ...options,
-  } as QueuerOptions<TValue>
+  } as AngularQueuerOptions<TValue, TSelected>
 
   const queuer = new Queuer<TValue>(fn, mergedOptions)
   const state = injectStore(queuer.store, selector)
 
-  return {
+  const result = {
     ...queuer,
     state,
   } as AngularQueuer<TValue, TSelected>
+
+  const destroyRef = inject(DestroyRef, { optional: true })
+  destroyRef?.onDestroy(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(result)
+    } else {
+      queuer.stop()
+    }
+  })
+
+  return result
 }

@@ -12,7 +12,7 @@ function injectQueuer<TValue, TSelected>(
 selector): AngularQueuer<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/queuer/injectQueuer.ts:66](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L66)
+Defined in: [angular-pacer/src/queuer/injectQueuer.ts:90](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L90)
 
 An Angular function that creates and manages a Queuer instance.
 
@@ -51,7 +51,7 @@ full control over when your component tracks state changes.
 
 ### options
 
-`QueuerOptions`\<`TValue`\> = `{}`
+[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 
@@ -82,4 +82,16 @@ queue.addItem('task1');
 
 // Access the selected state
 const { items, isRunning } = queue.state();
+```
+
+## Cleanup on Destroy
+
+By default, the function stops the queuer when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+
+```ts
+const queue = injectQueuer(fn, {
+  started: true,
+  onUnmount: (q) => q.flush()
+});
 ```

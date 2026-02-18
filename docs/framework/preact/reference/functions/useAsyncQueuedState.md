@@ -80,7 +80,7 @@ Available async queuer state properties:
 
 ### options
 
-`AsyncQueuerOptions`\<`TValue`\> = `{}`
+[`PreactAsyncQueuerOptions`](../interfaces/PreactAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector?
 

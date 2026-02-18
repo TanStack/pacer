@@ -1,5 +1,6 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { useStore } from '@tanstack/solid-store'
+import { createEffect, onCleanup } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -7,6 +8,17 @@ import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
+
+export interface SolidAsyncBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends AsyncBatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: SolidAsyncBatcher<TValue, TSelected>) => void
+}
 
 export interface SolidAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
@@ -105,6 +117,25 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}> extends Omit<
  * - `settleCount`: Number of batch executions that have completed (successful or failed)
  * - `successCount`: Number of successful batch executions
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending batch and aborts any in-flight execution when the owning component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const batcher = createAsyncBatcher(fn, {
+ *   maxSize: 10,
+ *   wait: 2000,
+ *   onUnmount: (b) => b.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your batch function updates Solid signals, those updates may run after the component has
+ * unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+ * using onUnmount with flush.
+ *
  * Example usage:
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -157,15 +188,14 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function createAsyncBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => Promise<any>,
-  options: AsyncBatcherOptions<TValue> = {},
+  options: SolidAsyncBatcherOptions<TValue, TSelected> = {},
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncBatcher,
     ...options,
-  } as AsyncBatcherOptions<TValue>
-
+  } as SolidAsyncBatcherOptions<TValue, TSelected>
   const asyncBatcher = new AsyncBatcher<TValue>(
     fn,
     mergedOptions,
@@ -183,6 +213,17 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
   }
 
   const state = useStore(asyncBatcher.store, selector)
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncBatcher)
+      } else {
+        asyncBatcher.cancel()
+        asyncBatcher.abort()
+      }
+    })
+  })
 
   return {
     ...asyncBatcher,

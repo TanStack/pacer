@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useAsyncThrottler } from './useAsyncThrottler'
-import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
+import type { ReactAsyncThrottlerOptions } from './useAsyncThrottler'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
 /**
@@ -41,7 +41,7 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  */
 export function useAsyncThrottledCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AsyncThrottlerOptions<TFn>,
+  options: ReactAsyncThrottlerOptions<TFn, {}>,
 ): (...args: Parameters<TFn>) => Promise<ReturnType<TFn>> {
   const asyncThrottledFn = useAsyncThrottler(fn, options).maybeExecute
   return useCallback(

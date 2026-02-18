@@ -1,7 +1,7 @@
 import { useCallback } from 'preact/hooks'
 import { useRateLimiter } from './useRateLimiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
-import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
+import type { PreactRateLimiterOptions } from './useRateLimiter'
 
 /**
  * A Preact hook that creates a rate-limited version of a callback function.
@@ -58,7 +58,7 @@ import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
  */
 export function useRateLimitedCallback<TFn extends AnyFunction>(
   fn: TFn,
-  options: RateLimiterOptions<TFn>,
+  options: PreactRateLimiterOptions<TFn, {}>,
 ): (...args: Parameters<TFn>) => boolean {
   const rateLimitedFn = useRateLimiter(fn, options).maybeExecute
   return useCallback(

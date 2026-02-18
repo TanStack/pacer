@@ -12,7 +12,7 @@ function useAsyncQueuer<TValue, TSelected>(
 selector): ReactAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:205](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L205)
+Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:235](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L235)
 
 A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
@@ -74,6 +74,25 @@ Available state properties:
 - `status`: Current processing status ('idle' | 'running' | 'stopped')
 - `successCount`: Number of task executions that have completed successfully
 
+## Unmount behavior
+
+By default, the hook stops the queuer and aborts any in-flight task executions when the component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+
+```tsx
+const queuer = useAsyncQueuer(fn, {
+  concurrency: 2,
+  started: false,
+  onUnmount: (q) => q.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your task function updates React state, those updates may run after the component has
+unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+accordingly when using onUnmount with flush.
+
 ## Type Parameters
 
 ### TValue
@@ -93,7 +112,7 @@ Available state properties:
 
 ### options
 
-`AsyncQueuerOptions`\<`TValue`\> = `{}`
+[`ReactAsyncQueuerOptions`](../interfaces/ReactAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

@@ -45,7 +45,8 @@ Consider using the `useThrottler` hook instead.
 
 ### options
 
-`ThrottlerOptions`\<`TFn`\>
+[`ReactThrottlerOptions`](../interfaces/ReactThrottlerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

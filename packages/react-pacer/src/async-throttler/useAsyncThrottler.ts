@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/async-throttler'
 import type { FunctionComponent, ReactNode } from 'react'
 
+export interface ReactAsyncThrottlerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: ReactAsyncThrottler<TFn, TSelected>) => void
+}
+
 export interface ReactAsyncThrottler<
   TFn extends AnyAsyncFunction,
   TSelected = {},
@@ -98,6 +109,24 @@ export interface ReactAsyncThrottler<
  * - `settleCount`: Number of function executions that have completed (success or error)
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
  * - `successCount`: Number of function executions that have completed successfully
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution and aborts any in-flight execution when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = useAsyncThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your throttled function updates React state, those updates may run after the component has
+ * unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+ * accordingly when using onUnmount with flush.
  *
  * @example
  * ```tsx
@@ -195,15 +224,14 @@ export interface ReactAsyncThrottler<
  */
 export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   fn: TFn,
-  options: AsyncThrottlerOptions<TFn>,
+  options: ReactAsyncThrottlerOptions<TFn, TSelected>,
   selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncThrottler,
     ...options,
-  } as AsyncThrottlerOptions<TFn>
-
+  } as ReactAsyncThrottlerOptions<TFn, TSelected>
   const [asyncThrottler] = useState(() => {
     const asyncThrottlerInstance = new AsyncThrottler<TFn>(
       fn,
@@ -229,9 +257,18 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
 
   const state = useStore(asyncThrottler.store, selector)
 
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
-    return () => asyncThrottler.cancel()
-  }, [asyncThrottler])
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncThrottler)
+      } else {
+        asyncThrottler.cancel()
+        asyncThrottler.abort()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   return useMemo(
     () =>

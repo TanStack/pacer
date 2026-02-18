@@ -1,13 +1,24 @@
+import { DestroyRef, inject } from '@angular/core'
 import { injectStore } from '@tanstack/angular-store'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   RateLimiterOptions,
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
+
+export interface AngularRateLimiterOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends RateLimiterOptions<TFn> {
+  /**
+   * Optional callback invoked when the component is destroyed. Receives the rate limiter instance.
+   */
+  onUnmount?: (rateLimiter: AngularRateLimiter<TFn, TSelected>) => void
+}
 
 export interface AngularRateLimiter<
   TFn extends AnyFunction,
@@ -62,6 +73,10 @@ export interface AngularRateLimiter<
  * - `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
  * - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
  *
+ * ## Cleanup on Destroy
+ *
+ * Use the `onUnmount` option to run a callback when the component is destroyed.
+ *
  * @example
  * ```ts
  * // Default behavior - no reactive state subscriptions
@@ -98,19 +113,28 @@ export interface AngularRateLimiter<
  */
 export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: RateLimiterOptions<TFn>,
+  options: AngularRateLimiterOptions<TFn, TSelected>,
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): AngularRateLimiter<TFn, TSelected> {
   const mergedOptions = {
     ...injectPacerOptions().rateLimiter,
     ...options,
-  } as RateLimiterOptions<TFn>
+  } as AngularRateLimiterOptions<TFn, TSelected>
 
   const rateLimiter = new RateLimiter<TFn>(fn, mergedOptions)
   const state = injectStore(rateLimiter.store, selector)
 
-  return {
+  const result = {
     ...rateLimiter,
     state,
   } as AngularRateLimiter<TFn, TSelected>
+
+  const destroyRef = inject(DestroyRef, { optional: true })
+  destroyRef?.onDestroy(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(result)
+    }
+  })
+
+  return result
 }

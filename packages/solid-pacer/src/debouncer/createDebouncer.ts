@@ -10,6 +10,17 @@ import type {
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
 
+export interface SolidDebouncerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends DebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: SolidDebouncer<TFn, TSelected>) => void
+}
+
 export interface SolidDebouncer<
   TFn extends AnyFunction,
   TSelected = {},
@@ -88,6 +99,18 @@ export interface SolidDebouncer<
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = createDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -132,14 +155,13 @@ export interface SolidDebouncer<
  */
 export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: DebouncerOptions<TFn>,
+  options: SolidDebouncerOptions<TFn, TSelected>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): SolidDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().debouncer,
     ...options,
-  } as DebouncerOptions<TFn>
-
+  } as SolidDebouncerOptions<TFn, TSelected>
   const asyncDebouncer = new Debouncer<TFn>(
     fn,
     mergedOptions,
@@ -160,7 +182,11 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      asyncDebouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncDebouncer)
+      } else {
+        asyncDebouncer.cancel()
+      }
     })
   })
 

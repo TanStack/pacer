@@ -1,13 +1,25 @@
+import { DestroyRef, inject } from '@angular/core'
 import { injectStore } from '@tanstack/angular-store'
 import { Throttler } from '@tanstack/pacer/throttler'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/store'
+import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
+
+export interface AngularThrottlerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends ThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component is destroyed. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: AngularThrottler<TFn, TSelected>) => void
+}
 
 export interface AngularThrottler<
   TFn extends AnyFunction,
@@ -58,6 +70,18 @@ export interface AngularThrottler<
  * - `nextExecutionTime`: Timestamp of the next allowed execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Cleanup on Destroy
+ *
+ * By default, the function cancels any pending execution when the component is destroyed.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```ts
+ * const throttler = injectThrottler(fn, {
+ *   wait: 100,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
  * @example
  * ```ts
  * // Default behavior - no reactive state subscriptions
@@ -84,19 +108,30 @@ export interface AngularThrottler<
  */
 export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: ThrottlerOptions<TFn>,
+  options: AngularThrottlerOptions<TFn, TSelected>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): AngularThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...injectPacerOptions().throttler,
     ...options,
-  } as ThrottlerOptions<TFn>
+  } as AngularThrottlerOptions<TFn, TSelected>
 
   const throttler = new Throttler<TFn>(fn, mergedOptions)
   const state = injectStore(throttler.store, selector)
 
-  return {
+  const result = {
     ...throttler,
     state,
   } as AngularThrottler<TFn, TSelected>
+
+  const destroyRef = inject(DestroyRef, { optional: true })
+  destroyRef?.onDestroy(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(result)
+    } else {
+      throttler.cancel()
+    }
+  })
+
+  return result
 }

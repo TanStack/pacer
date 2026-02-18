@@ -45,7 +45,8 @@ Consider using the `useAsyncThrottler` hook instead.
 
 ### options
 
-`AsyncThrottlerOptions`\<`TFn`\>
+[`PreactAsyncThrottlerOptions`](../interfaces/PreactAsyncThrottlerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

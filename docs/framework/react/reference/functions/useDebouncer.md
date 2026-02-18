@@ -12,7 +12,7 @@ function useDebouncer<TFn, TSelected>(
 selector): ReactDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:140](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L140)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:163](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L163)
 
 A React hook that creates and manages a Debouncer instance.
 
@@ -56,6 +56,18 @@ Available state properties:
 - `lastArgs`: The arguments from the most recent call to maybeExecute
 - `status`: Current execution status ('disabled' | 'idle' | 'pending')
 
+## Unmount behavior
+
+By default, the hook cancels any pending execution when the component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const debouncer = useDebouncer(fn, {
+  wait: 500,
+  onUnmount: (d) => d.flush()
+});
+```
+
 ## Type Parameters
 
 ### TFn
@@ -75,7 +87,7 @@ Available state properties:
 
 ### options
 
-`DebouncerOptions`\<`TFn`\>
+[`ReactDebouncerOptions`](../interfaces/ReactDebouncerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

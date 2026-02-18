@@ -1,6 +1,6 @@
 import { useCallback } from 'preact/hooks'
 import { useDebouncer } from './useDebouncer'
-import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
+import type { PreactDebouncerOptions } from './useDebouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
@@ -41,7 +41,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  */
 export function useDebouncedCallback<TFn extends AnyFunction>(
   fn: TFn,
-  options: DebouncerOptions<TFn>,
+  options: PreactDebouncerOptions<TFn, {}>,
 ): (...args: Parameters<TFn>) => void {
   const debouncedFn = useDebouncer(fn, options).maybeExecute
   return useCallback(

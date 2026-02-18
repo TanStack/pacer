@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'preact/hooks'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -9,6 +9,17 @@ import type {
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
 import type { ComponentChildren } from 'preact'
+
+export interface PreactAsyncRateLimiterOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncRateLimiterOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the rate limiter instance.
+   * When provided, replaces the default cleanup (abort); use it to call reset(), add logging, etc.
+   */
+  onUnmount?: (rateLimiter: PreactAsyncRateLimiter<TFn, TSelected>) => void
+}
 
 export interface PreactAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
@@ -102,6 +113,12 @@ export interface PreactAsyncRateLimiter<
  * - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
  * - `settleCount`: Number of function executions that have completed (success or error)
  * - `successCount`: Number of function executions that have completed successfully
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook aborts any in-flight execution when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this.
  *
  * @example
  * ```tsx
@@ -216,14 +233,14 @@ export function useAsyncRateLimiter<
   TSelected = {},
 >(
   fn: TFn,
-  options: AsyncRateLimiterOptions<TFn>,
+  options: PreactAsyncRateLimiterOptions<TFn, TSelected>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): PreactAsyncRateLimiter<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncRateLimiter,
     ...options,
-  } as AsyncRateLimiterOptions<TFn>
+  } as PreactAsyncRateLimiterOptions<TFn, TSelected>
 
   const [asyncRateLimiter] = useState(() => {
     const rateLimiterInstance = new AsyncRateLimiter<TFn>(
@@ -247,6 +264,18 @@ export function useAsyncRateLimiter<
 
   asyncRateLimiter.fn = fn
   asyncRateLimiter.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncRateLimiter)
+      } else {
+        asyncRateLimiter.abort()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const state = useStore(asyncRateLimiter.store, selector)
 

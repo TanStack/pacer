@@ -12,7 +12,7 @@ function injectRateLimiter<TFn, TSelected>(
 selector): AngularRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/rate-limiter/injectRateLimiter.ts:99](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L99)
+Defined in: [angular-pacer/src/rate-limiter/injectRateLimiter.ts:114](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L114)
 
 An Angular function that creates and manages a RateLimiter instance.
 
@@ -49,6 +49,10 @@ Available state properties:
 - `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
 - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
 
+## Cleanup on Destroy
+
+Use the `onUnmount` option to run a callback when the component is destroyed.
+
 ## Type Parameters
 
 ### TFn
@@ -68,7 +72,7 @@ Available state properties:
 
 ### options
 
-`RateLimiterOptions`\<`TFn`\>
+[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

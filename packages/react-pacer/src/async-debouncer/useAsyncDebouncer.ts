@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/async-debouncer'
 import type { FunctionComponent, ReactNode } from 'react'
 
+export interface ReactAsyncDebouncerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncDebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: ReactAsyncDebouncer<TFn, TSelected>) => void
+}
+
 export interface ReactAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = {},
@@ -101,6 +112,24 @@ export interface ReactAsyncDebouncer<
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
  * - `successCount`: Number of function executions that have completed successfully
  *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution and aborts any in-flight execution when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = useAsyncDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your debounced function updates React state, those updates may run after the component has
+ * unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+ * accordingly when using onUnmount with flush.
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -184,15 +213,14 @@ export interface ReactAsyncDebouncer<
  */
 export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   fn: TFn,
-  options: AsyncDebouncerOptions<TFn>,
+  options: ReactAsyncDebouncerOptions<TFn, TSelected>,
   selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactAsyncDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncDebouncer,
     ...options,
-  } as AsyncDebouncerOptions<TFn>
-
+  } as ReactAsyncDebouncerOptions<TFn, TSelected>
   const [asyncDebouncer] = useState(() => {
     const asyncDebouncerInstance = new AsyncDebouncer<TFn>(
       fn,
@@ -218,11 +246,18 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
 
   const state = useStore(asyncDebouncer.store, selector)
 
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      asyncDebouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncDebouncer)
+      } else {
+        asyncDebouncer.cancel()
+        asyncDebouncer.abort()
+      }
     }
-  }, [asyncDebouncer])
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   return useMemo(
     () =>

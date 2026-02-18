@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/angular-pacer",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "description": "Utilities for debouncing and throttling functions in Angular.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -25,6 +25,7 @@
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
+    "lint:fix": "eslint ./src --fix",
     "test:eslint": "eslint ./src",
     "test:lib": "vitest --passWithNoTests",
     "test:lib:dev": "pnpm test:lib --watch",
@@ -107,13 +108,12 @@
     "src"
   ],
   "dependencies": {
-    "@tanstack/angular-store": "^0.8.0",
-    "@tanstack/pacer": "workspace:*",
-    "@tanstack/store": "^0.8.0"
+    "@tanstack/angular-store": "^0.8.1",
+    "@tanstack/pacer": "workspace:*"
   },
   "devDependencies": {
-    "@angular/core": "^21.0.0",
-    "@types/node": "^25.0.10"
+    "@angular/core": "^21.1.4",
+    "@types/node": "^25.2.3"
   },
   "peerDependencies": {
     "@angular/core": ">=17.0.0"

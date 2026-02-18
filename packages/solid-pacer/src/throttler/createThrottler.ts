@@ -10,6 +10,17 @@ import type {
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
 
+export interface SolidThrottlerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends ThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: SolidThrottler<TFn, TSelected>) => void
+}
+
 export interface SolidThrottler<
   TFn extends AnyFunction,
   TSelected = {},
@@ -87,6 +98,18 @@ export interface SolidThrottler<
  * - `nextExecutionTime`: Timestamp of the next allowed execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = createThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -135,14 +158,13 @@ export interface SolidThrottler<
  */
 export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: ThrottlerOptions<TFn>,
+  options: SolidThrottlerOptions<TFn, TSelected>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): SolidThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().throttler,
     ...options,
-  } as ThrottlerOptions<TFn>
-
+  } as SolidThrottlerOptions<TFn, TSelected>
   const asyncThrottler = new Throttler<TFn>(
     fn,
     mergedOptions,
@@ -163,7 +185,11 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      asyncThrottler.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncThrottler)
+      } else {
+        asyncThrottler.cancel()
+      }
     })
   })
 

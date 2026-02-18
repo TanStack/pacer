@@ -68,7 +68,7 @@ Available queuer state properties:
 
 ### options
 
-`QueuerOptions`\<`TValue`\> = `{}`
+[`PreactQueuerOptions`](../interfaces/PreactQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector?
 

@@ -12,7 +12,7 @@ function injectAsyncThrottler<TFn, TSelected>(
 selector): AngularAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-throttler/injectAsyncThrottler.ts:71](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L71)
+Defined in: [angular-pacer/src/async-throttler/injectAsyncThrottler.ts:98](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L98)
 
 An Angular function that creates and manages an AsyncThrottler instance.
 
@@ -34,6 +34,20 @@ optimizing performance by preventing unnecessary updates when irrelevant state c
 tracking by providing a selector function. This prevents unnecessary updates and gives you
 full control over when your component tracks state changes.
 
+## Cleanup on Destroy
+
+By default, the function cancels any pending execution and aborts in-flight work when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```ts
+const throttler = injectAsyncThrottler(fn, {
+  wait: 1000,
+  onUnmount: (t) => t.flush()
+});
+```
+
+When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+
 ## Type Parameters
 
 ### TFn
@@ -53,7 +67,7 @@ full control over when your component tracks state changes.
 
 ### options
 
-`AsyncThrottlerOptions`\<`TFn`\>
+[`AngularAsyncThrottlerOptions`](../interfaces/AngularAsyncThrottlerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

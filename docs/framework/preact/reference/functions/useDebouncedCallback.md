@@ -44,7 +44,8 @@ Consider using the `useDebouncer` hook instead.
 
 ### options
 
-`DebouncerOptions`\<`TFn`\>
+[`PreactDebouncerOptions`](../interfaces/PreactDebouncerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 
