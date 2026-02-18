@@ -168,6 +168,8 @@ The abort functionality:
 - Does NOT clear execution times or reset the rate limiter
 - Can be used alongside retry support
 
+Abort only cancels underlying operations (e.g. `fetch`) when you pass the signal from `getAbortSignal()` to them. If your rate-limited function does not attach the signal, abort clears internal state but the async work continues until it completes.
+
 For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
 ### Sharing Options Between Instances
@@ -190,6 +192,10 @@ const limiter2 = new AsyncRateLimiter(fn2, { ...sharedOptions, onError: (error) 
 ## Dynamic Options and Enabling/Disabling
 
 Just like the synchronous rate limiter, the async rate limiter supports dynamic options for `limit`, `window`, and `enabled`, which can be functions that receive the rate limiter instance. This allows for sophisticated, runtime-adaptive rate limiting behavior.
+
+### Customizing Unmount Behavior
+
+Framework hooks abort any in-flight execution by default when a component unmounts. The automatic abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them. Use the `onUnmount` option to customize this behavior.
 
 ## State Management
 

@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { useAsyncBatcher } from './useAsyncBatcher'
-import type { AsyncBatcherOptions } from '@tanstack/pacer/async-batcher'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { ReactAsyncBatcherOptions } from './useAsyncBatcher'
 
 /**
  * A React hook that creates a batched version of an async callback function.
@@ -40,14 +39,14 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  * </button>
  * ```
  */
-export function useAsyncBatchedCallback<TFn extends AnyAsyncFunction>(
-  fn: (items: Array<Parameters<TFn>[0]>) => Promise<any>,
-  options: AsyncBatcherOptions<Parameters<TFn>[0]>,
-): (...args: Parameters<TFn>) => Promise<void> {
+export function useAsyncBatchedCallback<TValue>(
+  fn: (items: Array<TValue>) => Promise<unknown>,
+  options: ReactAsyncBatcherOptions<TValue, {}>,
+): (item: TValue) => Promise<void> {
   const asyncBatchedFn = useAsyncBatcher(fn, options).addItem
   return useCallback(
-    async (...args) => {
-      asyncBatchedFn(args[0])
+    async (item: TValue) => {
+      asyncBatchedFn(item)
     },
     [asyncBatchedFn],
   )

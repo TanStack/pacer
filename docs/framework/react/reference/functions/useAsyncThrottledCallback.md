@@ -45,7 +45,8 @@ Consider using the `useAsyncThrottler` hook instead.
 
 ### options
 
-`AsyncThrottlerOptions`\<`TFn`\>
+[`ReactAsyncThrottlerOptions`](../interfaces/ReactAsyncThrottlerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

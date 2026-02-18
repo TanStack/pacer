@@ -1,9 +1,21 @@
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/solid-store'
+import { createEffect, onCleanup } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
+
+export interface SolidBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends BatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: SolidBatcher<TValue, TSelected>) => void
+}
 
 export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
   Batcher<TValue>,
@@ -82,6 +94,19 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  * - `items`: Array of items currently queued for batching
  * - `totalItemsProcessed`: Total number of individual items that have been processed across all batches
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending batch when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const batcher = createBatcher(fn, {
+ *   maxSize: 10,
+ *   wait: 2000,
+ *   onUnmount: (b) => b.flush()
+ * });
+ * ```
+ *
  * Example usage:
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -129,15 +154,14 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function createBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
-  options: BatcherOptions<TValue> = {},
+  options: SolidBatcherOptions<TValue, TSelected> = {},
   selector: (state: BatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().batcher,
     ...options,
-  } as BatcherOptions<TValue>
-
+  } as SolidBatcherOptions<TValue, TSelected>
   const batcher = new Batcher(fn, mergedOptions) as unknown as SolidBatcher<
     TValue,
     TSelected
@@ -155,6 +179,17 @@ export function createBatcher<TValue, TSelected = {}>(
   }
 
   const state = useStore(batcher.store, selector)
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(batcher)
+      } else {
+        batcher.cancel()
+      }
+    })
+  })
+
   return {
     ...batcher,
     state,

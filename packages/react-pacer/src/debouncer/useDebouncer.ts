@@ -10,6 +10,17 @@ import type {
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { FunctionComponent, ReactNode } from 'react'
 
+export interface ReactDebouncerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends DebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: ReactDebouncer<TFn, TSelected>) => void
+}
+
 export interface ReactDebouncer<
   TFn extends AnyFunction,
   TSelected = {},
@@ -88,6 +99,18 @@ export interface ReactDebouncer<
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = useDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -139,14 +162,13 @@ export interface ReactDebouncer<
  */
 export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: DebouncerOptions<TFn>,
+  options: ReactDebouncerOptions<TFn, TSelected>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): ReactDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().debouncer,
     ...options,
-  } as DebouncerOptions<TFn>
-
+  } as ReactDebouncerOptions<TFn, TSelected>
   const [debouncer] = useState(() => {
     const debouncerInstance = new Debouncer(
       fn,
@@ -170,11 +192,17 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   debouncer.fn = fn
   debouncer.setOptions(mergedOptions)
 
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      debouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(debouncer)
+      } else {
+        debouncer.cancel()
+      }
     }
-  }, [debouncer])
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   const state = useStore(debouncer.store, selector)
 

@@ -5,7 +5,7 @@ title: ReactRateLimiter
 
 # Interface: ReactRateLimiter\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L13)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L24)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:13](https://github.c
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:39](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L39)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L50)
 
 Reactive state that will be updated and re-rendered when the rate limiter state changes
 
@@ -44,7 +44,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L45)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:56](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L56)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:30](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L30)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L41)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the rate limiter state.
 

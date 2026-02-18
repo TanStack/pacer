@@ -1,10 +1,21 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { FunctionComponent, ReactNode } from 'react'
+
+export interface ReactBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends BatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: ReactBatcher<TValue, TSelected>) => void
+}
 
 export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
   Batcher<TValue>,
@@ -84,6 +95,19 @@ export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
  * - `status`: Current processing status ('idle' | 'pending')
  * - `totalItemsProcessed`: Total number of items processed across all batches
  *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending batch when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const batcher = useBatcher(fn, {
+ *   maxSize: 5,
+ *   wait: 2000,
+ *   onUnmount: (b) => b.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -158,15 +182,14 @@ export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function useBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
-  options: BatcherOptions<TValue> = {},
+  options: ReactBatcherOptions<TValue, TSelected> = {},
   selector: (state: BatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): ReactBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().batcher,
     ...options,
-  } as BatcherOptions<TValue>
-
+  } as ReactBatcherOptions<TValue, TSelected>
   const [batcher] = useState(() => {
     const batcherInstance = new Batcher<TValue>(
       fn,
@@ -189,6 +212,18 @@ export function useBatcher<TValue, TSelected = {}>(
 
   batcher.fn = fn
   batcher.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(batcher)
+      } else {
+        batcher.cancel()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
 
   const state = useStore(batcher.store, selector)
 

@@ -8,15 +8,25 @@ title: "@tanstack/angular-pacer"
 ## Interfaces
 
 - [AngularAsyncBatcher](interfaces/AngularAsyncBatcher.md)
+- [AngularAsyncBatcherOptions](interfaces/AngularAsyncBatcherOptions.md)
 - [AngularAsyncDebouncer](interfaces/AngularAsyncDebouncer.md)
+- [AngularAsyncDebouncerOptions](interfaces/AngularAsyncDebouncerOptions.md)
 - [AngularAsyncQueuer](interfaces/AngularAsyncQueuer.md)
+- [AngularAsyncQueuerOptions](interfaces/AngularAsyncQueuerOptions.md)
 - [AngularAsyncRateLimiter](interfaces/AngularAsyncRateLimiter.md)
+- [AngularAsyncRateLimiterOptions](interfaces/AngularAsyncRateLimiterOptions.md)
 - [AngularAsyncThrottler](interfaces/AngularAsyncThrottler.md)
+- [AngularAsyncThrottlerOptions](interfaces/AngularAsyncThrottlerOptions.md)
 - [AngularBatcher](interfaces/AngularBatcher.md)
+- [AngularBatcherOptions](interfaces/AngularBatcherOptions.md)
 - [AngularDebouncer](interfaces/AngularDebouncer.md)
+- [AngularDebouncerOptions](interfaces/AngularDebouncerOptions.md)
 - [AngularQueuer](interfaces/AngularQueuer.md)
+- [AngularQueuerOptions](interfaces/AngularQueuerOptions.md)
 - [AngularRateLimiter](interfaces/AngularRateLimiter.md)
+- [AngularRateLimiterOptions](interfaces/AngularRateLimiterOptions.md)
 - [AngularThrottler](interfaces/AngularThrottler.md)
+- [AngularThrottlerOptions](interfaces/AngularThrottlerOptions.md)
 
 ## Type Aliases
 

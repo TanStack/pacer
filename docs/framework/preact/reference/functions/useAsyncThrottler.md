@@ -12,7 +12,7 @@ function useAsyncThrottler<TFn, TSelected>(
 selector): PreactAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:196](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L196)
+Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:225](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L225)
 
 A low-level Preact hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -67,6 +67,24 @@ Available state properties:
 - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
 - `successCount`: Number of function executions that have completed successfully
 
+## Unmount behavior
+
+By default, the hook cancels any pending execution and aborts any in-flight execution when the component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const throttler = useAsyncThrottler(fn, {
+  wait: 1000,
+  onUnmount: (t) => t.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your throttled function updates Preact state, those updates may run after the component has
+unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+accordingly when using onUnmount with flush.
+
 ## Type Parameters
 
 ### TFn
@@ -86,7 +104,7 @@ Available state properties:
 
 ### options
 
-`AsyncThrottlerOptions`\<`TFn`\>
+[`PreactAsyncThrottlerOptions`](../interfaces/PreactAsyncThrottlerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

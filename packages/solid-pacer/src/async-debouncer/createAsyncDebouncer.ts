@@ -10,6 +10,17 @@ import type {
 } from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
+export interface SolidAsyncDebouncerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncDebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: SolidAsyncDebouncer<TFn, TSelected>) => void
+}
+
 export interface SolidAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = {},
@@ -101,6 +112,24 @@ export interface SolidAsyncDebouncer<
  * - `lastResult`: The result from the most recent successful execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution and aborts any in-flight execution when the owning component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = createAsyncDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your debounced function updates Solid signals, those updates may run after the component has
+ * unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+ * using onUnmount with flush.
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -148,15 +177,14 @@ export function createAsyncDebouncer<
   TSelected = {},
 >(
   fn: TFn,
-  options: AsyncDebouncerOptions<TFn>,
+  options: SolidAsyncDebouncerOptions<TFn, TSelected>,
   selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncDebouncer,
     ...options,
-  } as AsyncDebouncerOptions<TFn>
-
+  } as SolidAsyncDebouncerOptions<TFn, TSelected>
   const asyncDebouncer = new AsyncDebouncer<TFn>(
     fn,
     mergedOptions,
@@ -177,7 +205,12 @@ export function createAsyncDebouncer<
 
   createEffect(() => {
     onCleanup(() => {
-      asyncDebouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncDebouncer)
+      } else {
+        asyncDebouncer.cancel()
+        asyncDebouncer.abort()
+      }
     })
   })
 

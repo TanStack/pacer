@@ -12,7 +12,7 @@ function injectAsyncQueuer<TValue, TSelected>(
 selector): AngularAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:69](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L69)
+Defined in: [async-queuer/injectAsyncQueuer.ts:96](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L96)
 
 An Angular function that creates and manages an AsyncQueuer instance.
 
@@ -31,6 +31,20 @@ optimizing performance by preventing unnecessary updates when irrelevant state c
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
 tracking by providing a selector function. This prevents unnecessary updates and gives you
 full control over when your component tracks state changes.
+
+## Cleanup on Destroy
+
+By default, the function stops the queuer and aborts in-flight work when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+
+```ts
+const queuer = injectAsyncQueuer(fn, {
+  concurrency: 2,
+  onUnmount: (q) => q.flush()
+});
+```
+
+When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
 
 ## Type Parameters
 
@@ -51,7 +65,7 @@ full control over when your component tracks state changes.
 
 ### options
 
-`AsyncQueuerOptions`\<`TValue`\> = `{}`
+[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

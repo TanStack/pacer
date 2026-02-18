@@ -12,7 +12,7 @@ function injectAsyncRateLimiter<TFn, TSelected>(
 selector): AngularAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:66](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L66)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:83](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L83)
 
 An Angular function that creates and manages an AsyncRateLimiter instance.
 
@@ -31,6 +31,11 @@ optimizing performance by preventing unnecessary updates when irrelevant state c
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
 tracking by providing a selector function. This prevents unnecessary updates and gives you
 full control over when your component tracks state changes.
+
+## Cleanup on Destroy
+
+By default, the function aborts in-flight work when the component is destroyed.
+Use the `onUnmount` option to customize this.
 
 ## Type Parameters
 
@@ -51,7 +56,7 @@ full control over when your component tracks state changes.
 
 ### options
 
-`AsyncRateLimiterOptions`\<`TFn`\>
+[`AngularAsyncRateLimiterOptions`](../interfaces/AngularAsyncRateLimiterOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

@@ -1,4 +1,5 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
+import { createEffect, onCleanup } from 'solid-js'
 import { useStore } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
@@ -8,6 +9,17 @@ import type {
   RateLimiterOptions,
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
+
+export interface SolidRateLimiterOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends RateLimiterOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the rate limiter instance.
+   * When provided, replaces the default cleanup; use it to call reset(), add logging, etc.
+   */
+  onUnmount?: (rateLimiter: SolidRateLimiter<TFn, TSelected>) => void
+}
 
 export interface SolidRateLimiter<
   TFn extends AnyFunction,
@@ -172,14 +184,13 @@ export interface SolidRateLimiter<
  */
 export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: RateLimiterOptions<TFn>,
+  options: SolidRateLimiterOptions<TFn, TSelected>,
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): SolidRateLimiter<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().rateLimiter,
     ...options,
-  } as RateLimiterOptions<TFn>
-
+  } as SolidRateLimiterOptions<TFn, TSelected>
   const rateLimiter = new RateLimiter<TFn>(
     fn,
     mergedOptions,
@@ -197,6 +208,14 @@ export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   }
 
   const state = useStore(rateLimiter.store, selector)
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(rateLimiter)
+      }
+    })
+  })
 
   return {
     ...rateLimiter,

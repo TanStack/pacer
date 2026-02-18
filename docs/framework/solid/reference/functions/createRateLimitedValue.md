@@ -75,7 +75,7 @@ Available rate limiter state properties:
 
 ### initialOptions
 
-`RateLimiterOptions`\<`Setter`\<`TValue`\>\>
+[`SolidRateLimiterOptions`](../interfaces/SolidRateLimiterOptions.md)\<`Setter`\<`TValue`\>, `TSelected`\>
 
 ### selector?
 

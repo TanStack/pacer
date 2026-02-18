@@ -12,7 +12,7 @@ function createAsyncRateLimiter<TFn, TSelected>(
 selector): SolidAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:202](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L202)
+Defined in: [solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:220](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L220)
 
 A low-level Solid hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -80,6 +80,12 @@ Available state properties:
 - `rejectionCount`: Number of function calls that were rejected due to rate limiting
 - `remainingInWindow`: Number of executions remaining in the current window
 
+## Unmount behavior
+
+By default, the primitive aborts any in-flight execution when the owning component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+Use the `onUnmount` option to customize this.
+
 ## Type Parameters
 
 ### TFn
@@ -99,7 +105,7 @@ Available state properties:
 
 ### options
 
-`AsyncRateLimiterOptions`\<`TFn`\>
+[`SolidAsyncRateLimiterOptions`](../interfaces/SolidAsyncRateLimiterOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

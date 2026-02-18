@@ -417,6 +417,17 @@ queue.flush(2) // Process only 2 items
 console.log(queue.store.state.size) // 1 (one item remaining)
 ```
 
+### Customizing Unmount Behavior
+
+Framework hooks stop the queuer by default when a component unmounts. Use the `onUnmount` option to flush instead.
+
+```tsx
+const queuer = useQueuer(fn, {
+  wait: 1000,
+  onUnmount: (q) => q.flush(),
+})
+```
+
 ## State Management
 
 The `Queuer` class uses TanStack Store for reactive state management, providing real-time access to queue state, processing statistics, and concurrent task tracking. All state is stored in a TanStack Store and can be accessed via `queuer.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `queuer.state` along with providing a selector callback as the 3rd argument to the `useQueuer` hook to opt-in to state tracking as shown below.

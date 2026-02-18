@@ -12,7 +12,7 @@ function createAsyncDebouncer<TFn, TSelected>(
 selector): SolidAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:146](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L146)
+Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:175](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L175)
 
 A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -69,6 +69,24 @@ Available state properties:
 - `lastResult`: The result from the most recent successful execution
 - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
 
+## Unmount behavior
+
+By default, the primitive cancels any pending execution and aborts any in-flight execution when the owning component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const debouncer = createAsyncDebouncer(fn, {
+  wait: 500,
+  onUnmount: (d) => d.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your debounced function updates Solid signals, those updates may run after the component has
+unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+using onUnmount with flush.
+
 ## Type Parameters
 
 ### TFn
@@ -88,7 +106,7 @@ Available state properties:
 
 ### options
 
-`AsyncDebouncerOptions`\<`TFn`\>
+[`SolidAsyncDebouncerOptions`](../interfaces/SolidAsyncDebouncerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

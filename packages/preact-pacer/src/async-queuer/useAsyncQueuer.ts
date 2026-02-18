@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'preact/hooks'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -8,6 +8,17 @@ import type {
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 import type { ComponentChildren } from 'preact'
+
+export interface PreactAsyncQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends AsyncQueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop + abort); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
+   */
+  onUnmount?: (queuer: PreactAsyncQueuer<TValue, TSelected>) => void
+}
 
 export interface PreactAsyncQueuer<TValue, TSelected = {}> extends Omit<
   AsyncQueuer<TValue>,
@@ -104,6 +115,25 @@ export interface PreactAsyncQueuer<TValue, TSelected = {}> extends Omit<
  * - `size`: Number of items currently in the queue
  * - `status`: Current processing status ('idle' | 'running' | 'stopped')
  * - `successCount`: Number of task executions that have completed successfully
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook stops the queuer and aborts any in-flight task executions when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```tsx
+ * const queuer = useAsyncQueuer(fn, {
+ *   concurrency: 2,
+ *   started: false,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your task function updates Preact state, those updates may run after the component has
+ * unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+ * accordingly when using onUnmount with flush.
  *
  * @example
  * ```tsx
@@ -204,15 +234,14 @@ export interface PreactAsyncQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function useAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
-  options: AsyncQueuerOptions<TValue> = {},
+  options: PreactAsyncQueuerOptions<TValue, TSelected> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): PreactAsyncQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncQueuer,
     ...options,
-  } as AsyncQueuerOptions<TValue>
-
+  } as PreactAsyncQueuerOptions<TValue, TSelected>
   const [asyncQueuer] = useState(() => {
     const queuerInstance = new AsyncQueuer<TValue>(
       fn,
@@ -235,6 +264,19 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
 
   asyncQueuer.fn = fn
   asyncQueuer.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncQueuer)
+      } else {
+        asyncQueuer.stop()
+        asyncQueuer.abort()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const state = useStore(asyncQueuer.store, selector)
 

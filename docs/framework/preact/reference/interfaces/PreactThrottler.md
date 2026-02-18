@@ -5,7 +5,7 @@ title: PreactThrottler
 
 # Interface: PreactThrottler\<TFn, TSelected\>
 
-Defined in: [preact-pacer/src/throttler/useThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L13)
+Defined in: [preact-pacer/src/throttler/useThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L24)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/throttler/useThrottler.ts:13](https://github.com/T
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/throttler/useThrottler.ts:39](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L39)
+Defined in: [preact-pacer/src/throttler/useThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L50)
 
 Reactive state that will be updated and re-rendered when the throttler state changes
 
@@ -44,7 +44,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: [preact-pacer/src/throttler/useThrottler.ts:45](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L45)
+Defined in: [preact-pacer/src/throttler/useThrottler.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L56)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/throttler/useThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L30)
+Defined in: [preact-pacer/src/throttler/useThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L41)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the throttler state.
 

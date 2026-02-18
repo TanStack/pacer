@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'preact/hooks'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -9,6 +9,17 @@ import type {
 } from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { ComponentChildren } from 'preact'
+
+export interface PreactRateLimiterOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends RateLimiterOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the rate limiter instance.
+   * When provided, replaces the default cleanup; use it to call reset(), add logging, etc.
+   */
+  onUnmount?: (rateLimiter: PreactRateLimiter<TFn, TSelected>) => void
+}
 
 export interface PreactRateLimiter<
   TFn extends AnyFunction,
@@ -178,14 +189,13 @@ export interface PreactRateLimiter<
  */
 export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: RateLimiterOptions<TFn>,
+  options: PreactRateLimiterOptions<TFn, TSelected>,
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): PreactRateLimiter<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().rateLimiter,
     ...options,
-  } as RateLimiterOptions<TFn>
-
+  } as PreactRateLimiterOptions<TFn, TSelected>
   const [rateLimiter] = useState(() => {
     const rateLimiterInstance = new RateLimiter<TFn>(
       fn,
@@ -208,6 +218,16 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
 
   rateLimiter.fn = fn
   rateLimiter.setOptions(mergedOptions)
+
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(rateLimiter)
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const state = useStore(rateLimiter.store, selector)
 

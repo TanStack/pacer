@@ -71,7 +71,7 @@ Available queuer state properties:
 
 ### options
 
-`QueuerOptions`\<`TValue`\> = `{}`
+[`ReactQueuerOptions`](../interfaces/ReactQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector?
 

@@ -205,6 +205,17 @@ throttler.flush()
 console.log(throttler.store.state.isPending) // false
 ```
 
+### Customizing Unmount Behavior
+
+Framework hooks cancel pending work by default when a component unmounts. Use the `onUnmount` option to flush instead.
+
+```tsx
+const throttler = useThrottler(fn, {
+  wait: 200,
+  onUnmount: (t) => t.flush(),
+})
+```
+
 ## State Management
 
 The `Throttler` class uses TanStack Store for reactive state management, providing real-time access to execution state and timing information. All state is stored in a TanStack Store and can be accessed via `throttler.store.state`, although, if you are using a framework adapter like React or Solid, you will not want to read the state from here. Instead, you will read the state from `throttler.state` along with providing a selector callback as the 3rd argument to the `useThrottler` hook to opt-in to state tracking as shown below.

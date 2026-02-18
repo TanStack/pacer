@@ -58,7 +58,8 @@ Consider using the `useAsyncRateLimiter` hook instead.
 
 ### options
 
-`AsyncRateLimiterOptions`\<`TFn`\>
+[`ReactAsyncRateLimiterOptions`](../interfaces/ReactAsyncRateLimiterOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 
