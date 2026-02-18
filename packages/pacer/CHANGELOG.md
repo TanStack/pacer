@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.19.0
+
+### Minor Changes
+
+- feat: Add optional `onUnmount` callback to Debouncer, Throttler, Batcher, Queuer and async variants for custom cleanup. ([#158](https://github.com/TanStack/pacer/pull/158))
+
 ## 0.18.0
 
 ### Minor Changes

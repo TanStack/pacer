@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/angular-pacer",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "description": "Utilities for debouncing and throttling functions in Angular.",
   "author": "Tanner Linsley",
   "license": "MIT",
