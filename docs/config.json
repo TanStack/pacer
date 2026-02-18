@@ -335,6 +335,14 @@
           "label": "angular",
           "children": [
             {
+              "label": "AngularDebouncerOptions",
+              "to": "framework/angular/reference/interfaces/AngularDebouncerOptions"
+            },
+            {
+              "label": "AngularAsyncDebouncerOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncDebouncerOptions"
+            },
+            {
               "label": "AngularDebouncer",
               "to": "framework/angular/reference/interfaces/AngularDebouncer"
             },
@@ -540,6 +548,14 @@
           "label": "angular",
           "children": [
             {
+              "label": "AngularThrottlerOptions",
+              "to": "framework/angular/reference/interfaces/AngularThrottlerOptions"
+            },
+            {
+              "label": "AngularAsyncThrottlerOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncThrottlerOptions"
+            },
+            {
               "label": "AngularThrottler",
               "to": "framework/angular/reference/interfaces/AngularThrottler"
             },
@@ -720,6 +736,14 @@
         {
           "label": "angular",
           "children": [
+            {
+              "label": "AngularRateLimiterOptions",
+              "to": "framework/angular/reference/interfaces/AngularRateLimiterOptions"
+            },
+            {
+              "label": "AngularAsyncRateLimiterOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncRateLimiterOptions"
+            },
             {
               "label": "AngularRateLimiter",
               "to": "framework/angular/reference/interfaces/AngularRateLimiter"
@@ -914,6 +938,14 @@
           "label": "angular",
           "children": [
             {
+              "label": "AngularQueuerOptions",
+              "to": "framework/angular/reference/interfaces/AngularQueuerOptions"
+            },
+            {
+              "label": "AngularAsyncQueuerOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncQueuerOptions"
+            },
+            {
               "label": "AngularQueuer",
               "to": "framework/angular/reference/interfaces/AngularQueuer"
             },
@@ -1090,6 +1122,14 @@
         {
           "label": "angular",
           "children": [
+            {
+              "label": "AngularBatcherOptions",
+              "to": "framework/angular/reference/interfaces/AngularBatcherOptions"
+            },
+            {
+              "label": "AngularAsyncBatcherOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncBatcherOptions"
+            },
             {
               "label": "AngularBatcher",
               "to": "framework/angular/reference/interfaces/AngularBatcher"

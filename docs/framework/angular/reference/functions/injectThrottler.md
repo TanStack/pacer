@@ -12,7 +12,7 @@ function injectThrottler<TFn, TSelected>(
 selector): AngularThrottler<TFn, TSelected>;
 ```
 
-Defined in: [throttler/injectThrottler.ts:85](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L85)
+Defined in: [throttler/injectThrottler.ts:109](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L109)
 
 An Angular function that creates and manages a Throttler instance.
 
@@ -45,6 +45,18 @@ Available state properties:
 - `nextExecutionTime`: Timestamp of the next allowed execution
 - `status`: Current execution status ('disabled' | 'idle' | 'pending')
 
+## Cleanup on Destroy
+
+By default, the function cancels any pending execution when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```ts
+const throttler = injectThrottler(fn, {
+  wait: 100,
+  onUnmount: (t) => t.flush()
+});
+```
+
 ## Type Parameters
 
 ### TFn
@@ -64,7 +76,7 @@ Available state properties:
 
 ### options
 
-`ThrottlerOptions`\<`TFn`\>
+[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

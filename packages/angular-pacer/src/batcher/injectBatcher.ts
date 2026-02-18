@@ -1,9 +1,21 @@
+import { DestroyRef, inject } from '@angular/core'
 import { injectStore } from '@tanstack/angular-store'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
+
+export interface AngularBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends BatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the component is destroyed. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: AngularBatcher<TValue, TSelected>) => void
+}
 
 export interface AngularBatcher<TValue, TSelected = {}> extends Omit<
   Batcher<TValue>,
@@ -43,6 +55,18 @@ export interface AngularBatcher<TValue, TSelected = {}> extends Omit<
  * tracking by providing a selector function. This prevents unnecessary updates and gives you
  * full control over when your component tracks state changes.
  *
+ * ## Cleanup on Destroy
+ *
+ * By default, the function cancels any pending batch when the component is destroyed.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```ts
+ * const batcher = injectBatcher(fn, {
+ *   maxSize: 5,
+ *   onUnmount: (b) => b.flush()
+ * });
+ * ```
+ *
  * @example
  * ```ts
  * // Default behavior - no reactive state subscriptions
@@ -60,20 +84,31 @@ export interface AngularBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function injectBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
-  options: BatcherOptions<TValue> = {},
+  options: AngularBatcherOptions<TValue, TSelected> = {},
   selector: (state: BatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): AngularBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...injectPacerOptions().batcher,
     ...options,
-  } as BatcherOptions<TValue>
+  } as AngularBatcherOptions<TValue, TSelected>
 
   const batcher = new Batcher<TValue>(fn, mergedOptions)
   const state = injectStore(batcher.store, selector)
 
-  return {
+  const result = {
     ...batcher,
     state,
   } as AngularBatcher<TValue, TSelected>
+
+  const destroyRef = inject(DestroyRef, { optional: true })
+  destroyRef?.onDestroy(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(result)
+    } else {
+      batcher.cancel()
+    }
+  })
+
+  return result
 }

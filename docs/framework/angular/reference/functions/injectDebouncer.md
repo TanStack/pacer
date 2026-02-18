@@ -12,7 +12,7 @@ function injectDebouncer<TFn, TSelected>(
 selector): AngularDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:85](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L85)
+Defined in: [debouncer/injectDebouncer.ts:109](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L109)
 
 An Angular function that creates and manages a Debouncer instance.
 
@@ -44,6 +44,18 @@ Available state properties:
 - `lastArgs`: The arguments from the most recent call to maybeExecute
 - `status`: Current execution status ('disabled' | 'idle' | 'pending')
 
+## Cleanup on Destroy
+
+By default, the function cancels any pending execution when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```ts
+const debouncer = injectDebouncer(fn, {
+  wait: 500,
+  onUnmount: (d) => d.flush()
+});
+```
+
 ## Type Parameters
 
 ### TFn
@@ -63,7 +75,7 @@ Available state properties:
 
 ### options
 
-`DebouncerOptions`\<`TFn`\>
+[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

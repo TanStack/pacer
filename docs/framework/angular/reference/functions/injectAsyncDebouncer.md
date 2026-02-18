@@ -12,7 +12,7 @@ function injectAsyncDebouncer<TFn, TSelected>(
 selector): AngularAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:92](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L92)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:119](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L119)
 
 An Angular function that creates and manages an AsyncDebouncer instance.
 
@@ -47,6 +47,20 @@ Available state properties:
 - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
 - `successCount`: Number of function executions that have completed successfully
 
+## Cleanup on Destroy
+
+By default, the function cancels any pending execution and aborts in-flight work when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```ts
+const debouncer = injectAsyncDebouncer(fn, {
+  wait: 500,
+  onUnmount: (d) => d.flush()
+});
+```
+
+When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+
 ## Type Parameters
 
 ### TFn
@@ -66,7 +80,7 @@ Available state properties:
 
 ### options
 
-`AsyncDebouncerOptions`\<`TFn`\>
+[`AngularAsyncDebouncerOptions`](../interfaces/AngularAsyncDebouncerOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

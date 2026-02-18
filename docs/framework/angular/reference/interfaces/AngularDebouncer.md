@@ -5,7 +5,7 @@ title: AngularDebouncer
 
 # Interface: AngularDebouncer\<TFn, TSelected\>
 
-Defined in: [debouncer/injectDebouncer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L12)
+Defined in: [debouncer/injectDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L24)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [debouncer/injectDebouncer.ts:12](https://github.com/TanStack/pacer/
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L21)
+Defined in: [debouncer/injectDebouncer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L33)
 
 Reactive state signal that will be updated when the debouncer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<DebouncerState<TFn>>>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L26)
+Defined in: [debouncer/injectDebouncer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L38)
 
 #### Deprecated
 

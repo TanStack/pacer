@@ -12,7 +12,7 @@ function injectAsyncBatcher<TValue, TSelected>(
 selector): AngularAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:69](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L69)
+Defined in: [async-batcher/injectAsyncBatcher.ts:96](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L96)
 
 An Angular function that creates and manages an AsyncBatcher instance.
 
@@ -31,6 +31,20 @@ optimizing performance by preventing unnecessary updates when irrelevant state c
 **By default, there will be no reactive state subscriptions** and you must opt-in to state
 tracking by providing a selector function. This prevents unnecessary updates and gives you
 full control over when your component tracks state changes.
+
+## Cleanup on Destroy
+
+By default, the function cancels any pending batch and aborts in-flight work when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```ts
+const batcher = injectAsyncBatcher(fn, {
+  maxSize: 10,
+  onUnmount: (b) => b.flush()
+});
+```
+
+When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
 
 ## Type Parameters
 
@@ -51,7 +65,7 @@ full control over when your component tracks state changes.
 
 ### options
 
-`AsyncBatcherOptions`\<`TValue`\> = `{}`
+[`AngularAsyncBatcherOptions`](../interfaces/AngularAsyncBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

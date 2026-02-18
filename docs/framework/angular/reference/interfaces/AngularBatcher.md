@@ -5,7 +5,7 @@ title: AngularBatcher
 
 # Interface: AngularBatcher\<TValue, TSelected\>
 
-Defined in: [batcher/injectBatcher.ts:8](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L8)
+Defined in: [batcher/injectBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L20)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [batcher/injectBatcher.ts:8](https://github.com/TanStack/pacer/blob/
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [batcher/injectBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L17)
+Defined in: [batcher/injectBatcher.ts:29](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L29)
 
 Reactive state signal that will be updated when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [batcher/injectBatcher.ts:22](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L22)
+Defined in: [batcher/injectBatcher.ts:34](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L34)
 
 #### Deprecated
 
