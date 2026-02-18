@@ -102,7 +102,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -151,7 +151,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -200,7 +200,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -249,7 +249,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -298,7 +298,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -347,7 +347,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -396,7 +396,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -445,7 +445,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -494,7 +494,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -543,7 +543,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -592,7 +592,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -641,7 +641,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -690,7 +690,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -739,7 +739,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -788,7 +788,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -837,7 +837,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -886,7 +886,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -935,7 +935,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -984,7 +984,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1033,7 +1033,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1082,7 +1082,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1131,7 +1131,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1180,7 +1180,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1229,7 +1229,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1278,7 +1278,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1327,7 +1327,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1376,7 +1376,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1425,7 +1425,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1474,7 +1474,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1523,7 +1523,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1572,7 +1572,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1621,7 +1621,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1670,7 +1670,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1719,7 +1719,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1768,7 +1768,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1817,7 +1817,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1866,7 +1866,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1915,7 +1915,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1964,7 +1964,7 @@ importers:
         specifier: ^21.1.4
         version: 21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(@angular/platform-browser@21.1.4(@angular/common@21.1.4(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.4(@angular/compiler@21.1.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
-        specifier: ^0.20.0
+        specifier: ^0.21.0
         version: link:../../../packages/angular-pacer
       rxjs:
         specifier: ~7.8.2
@@ -1995,7 +1995,7 @@ importers:
   examples/preact/asyncBatch:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2011,7 +2011,7 @@ importers:
   examples/preact/asyncDebounce:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2027,7 +2027,7 @@ importers:
   examples/preact/asyncRateLimit:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2043,7 +2043,7 @@ importers:
   examples/preact/asyncRetry:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2059,7 +2059,7 @@ importers:
   examples/preact/asyncThrottle:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2075,7 +2075,7 @@ importers:
   examples/preact/batch:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2091,7 +2091,7 @@ importers:
   examples/preact/debounce:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2107,7 +2107,7 @@ importers:
   examples/preact/queue:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2123,7 +2123,7 @@ importers:
   examples/preact/rateLimit:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2139,7 +2139,7 @@ importers:
   examples/preact/throttle:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2155,7 +2155,7 @@ importers:
   examples/preact/useAsyncBatchedCallback:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2171,7 +2171,7 @@ importers:
   examples/preact/useAsyncBatcher:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2187,7 +2187,7 @@ importers:
   examples/preact/useAsyncDebouncedCallback:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2203,7 +2203,7 @@ importers:
   examples/preact/useAsyncDebouncer:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2219,7 +2219,7 @@ importers:
   examples/preact/useAsyncQueuedState:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2235,7 +2235,7 @@ importers:
   examples/preact/useAsyncQueuer:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2251,7 +2251,7 @@ importers:
   examples/preact/useAsyncRateLimiter:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2267,7 +2267,7 @@ importers:
   examples/preact/useAsyncRateLimiterWithPersister:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2283,7 +2283,7 @@ importers:
   examples/preact/useAsyncThrottledCallback:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2299,7 +2299,7 @@ importers:
   examples/preact/useAsyncThrottler:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2315,7 +2315,7 @@ importers:
   examples/preact/useBatchedCallback:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2331,7 +2331,7 @@ importers:
   examples/preact/useBatcher:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2347,7 +2347,7 @@ importers:
   examples/preact/useDebouncedCallback:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2363,7 +2363,7 @@ importers:
   examples/preact/useDebouncedState:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2379,7 +2379,7 @@ importers:
   examples/preact/useDebouncedValue:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2395,7 +2395,7 @@ importers:
   examples/preact/useDebouncer:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2411,7 +2411,7 @@ importers:
   examples/preact/useQueuedState:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2427,7 +2427,7 @@ importers:
   examples/preact/useQueuedValue:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2446,7 +2446,7 @@ importers:
         specifier: ^0.9.10
         version: 0.9.10(csstype@3.2.3)(preact@10.28.3)(solid-js@1.9.11)
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       '@tanstack/preact-pacer-devtools':
         specifier: workspace:*
@@ -2465,7 +2465,7 @@ importers:
   examples/preact/useQueuerWithPersister:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2481,7 +2481,7 @@ importers:
   examples/preact/useRateLimitedCallback:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2497,7 +2497,7 @@ importers:
   examples/preact/useRateLimitedState:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2513,7 +2513,7 @@ importers:
   examples/preact/useRateLimitedValue:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2529,7 +2529,7 @@ importers:
   examples/preact/useRateLimiter:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2545,7 +2545,7 @@ importers:
   examples/preact/useRateLimiterWithPersister:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2561,7 +2561,7 @@ importers:
   examples/preact/useThrottledCallback:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2577,7 +2577,7 @@ importers:
   examples/preact/useThrottledState:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2593,7 +2593,7 @@ importers:
   examples/preact/useThrottledValue:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2609,7 +2609,7 @@ importers:
   examples/preact/useThrottler:
     dependencies:
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       preact:
         specifier: ^10.28.3
@@ -2628,7 +2628,7 @@ importers:
         specifier: ^0.9.10
         version: 0.9.10(csstype@3.2.3)(preact@10.28.3)(solid-js@1.9.11)
       '@tanstack/preact-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/preact-pacer
       '@tanstack/preact-pacer-devtools':
         specifier: workspace:*
@@ -2647,7 +2647,7 @@ importers:
   examples/react/asyncBatch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2672,7 +2672,7 @@ importers:
   examples/react/asyncDebounce:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2697,7 +2697,7 @@ importers:
   examples/react/asyncRateLimit:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2722,7 +2722,7 @@ importers:
   examples/react/asyncRetry:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2747,7 +2747,7 @@ importers:
   examples/react/asyncThrottle:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2772,7 +2772,7 @@ importers:
   examples/react/batch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2797,7 +2797,7 @@ importers:
   examples/react/debounce:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2822,7 +2822,7 @@ importers:
   examples/react/queue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2853,7 +2853,7 @@ importers:
   examples/react/rateLimit:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2878,7 +2878,7 @@ importers:
   examples/react/react-query-debounced-prefetch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.90.21
@@ -2909,7 +2909,7 @@ importers:
   examples/react/react-query-queued-prefetch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.90.21
@@ -2940,7 +2940,7 @@ importers:
   examples/react/react-query-throttled-prefetch:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-query':
         specifier: ^5.90.21
@@ -2971,7 +2971,7 @@ importers:
   examples/react/throttle:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -2996,7 +2996,7 @@ importers:
   examples/react/useAsyncBatchedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3021,7 +3021,7 @@ importers:
   examples/react/useAsyncBatcher:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3046,7 +3046,7 @@ importers:
   examples/react/useAsyncDebouncedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3071,7 +3071,7 @@ importers:
   examples/react/useAsyncDebouncer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3096,7 +3096,7 @@ importers:
   examples/react/useAsyncQueuedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3121,7 +3121,7 @@ importers:
   examples/react/useAsyncQueuer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3146,7 +3146,7 @@ importers:
   examples/react/useAsyncRateLimiter:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -3174,7 +3174,7 @@ importers:
   examples/react/useAsyncRateLimiterWithPersister:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -3202,7 +3202,7 @@ importers:
   examples/react/useAsyncThrottledCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3227,7 +3227,7 @@ importers:
   examples/react/useAsyncThrottler:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3252,7 +3252,7 @@ importers:
   examples/react/useBatchedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3277,7 +3277,7 @@ importers:
   examples/react/useBatcher:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3302,7 +3302,7 @@ importers:
   examples/react/useDebouncedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3327,7 +3327,7 @@ importers:
   examples/react/useDebouncedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3352,7 +3352,7 @@ importers:
   examples/react/useDebouncedValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3377,7 +3377,7 @@ importers:
   examples/react/useDebouncer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3402,7 +3402,7 @@ importers:
   examples/react/useQueuedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3427,7 +3427,7 @@ importers:
   examples/react/useQueuedValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3452,7 +3452,7 @@ importers:
   examples/react/useQueuer:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -3486,7 +3486,7 @@ importers:
   examples/react/useQueuerWithPersister:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -3514,7 +3514,7 @@ importers:
   examples/react/useRateLimitedCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3539,7 +3539,7 @@ importers:
   examples/react/useRateLimitedState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3564,7 +3564,7 @@ importers:
   examples/react/useRateLimitedValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3589,7 +3589,7 @@ importers:
   examples/react/useRateLimiter:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -3617,7 +3617,7 @@ importers:
   examples/react/useRateLimiterWithPersister:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       '@tanstack/react-persister':
         specifier: ^0.1.1
@@ -3645,7 +3645,7 @@ importers:
   examples/react/useThrottledCallback:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3670,7 +3670,7 @@ importers:
   examples/react/useThrottledState:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3695,7 +3695,7 @@ importers:
   examples/react/useThrottledValue:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3720,7 +3720,7 @@ importers:
   examples/react/useThrottler:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3745,7 +3745,7 @@ importers:
   examples/react/util-comparison:
     dependencies:
       '@tanstack/react-pacer':
-        specifier: ^0.19.4
+        specifier: ^0.20.0
         version: link:../../../packages/react-pacer
       react:
         specifier: ^19.2.4
@@ -3776,7 +3776,7 @@ importers:
   examples/solid/asyncBatch:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3792,7 +3792,7 @@ importers:
   examples/solid/asyncDebounce:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3808,7 +3808,7 @@ importers:
   examples/solid/asyncRateLimit:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3824,7 +3824,7 @@ importers:
   examples/solid/asyncThrottle:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3840,7 +3840,7 @@ importers:
   examples/solid/batch:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3856,7 +3856,7 @@ importers:
   examples/solid/createAsyncBatcher:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3872,7 +3872,7 @@ importers:
   examples/solid/createAsyncDebouncer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3888,7 +3888,7 @@ importers:
   examples/solid/createAsyncQueuer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3904,7 +3904,7 @@ importers:
   examples/solid/createAsyncRateLimiter:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3920,7 +3920,7 @@ importers:
   examples/solid/createAsyncThrottler:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3936,7 +3936,7 @@ importers:
   examples/solid/createBatcher:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3952,7 +3952,7 @@ importers:
   examples/solid/createDebouncedSignal:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3968,7 +3968,7 @@ importers:
   examples/solid/createDebouncedValue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -3984,7 +3984,7 @@ importers:
   examples/solid/createDebouncer:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -4003,7 +4003,7 @@ importers:
         specifier: 0.7.25
         version: 0.7.25(csstype@3.2.3)(solid-js@1.9.11)
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
         specifier: 0.5.2
@@ -4025,7 +4025,7 @@ importers:
         specifier: 0.7.25
         version: 0.7.25(csstype@3.2.3)(solid-js@1.9.11)
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
         specifier: 0.5.2
@@ -4044,7 +4044,7 @@ importers:
   examples/solid/createRateLimitedSignal:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -4060,7 +4060,7 @@ importers:
   examples/solid/createRateLimitedValue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -4076,7 +4076,7 @@ importers:
   examples/solid/createRateLimiter:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -4092,7 +4092,7 @@ importers:
   examples/solid/createThrottledSignal:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -4108,7 +4108,7 @@ importers:
   examples/solid/createThrottledValue:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -4124,7 +4124,7 @@ importers:
   examples/solid/createThrottler:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -4140,7 +4140,7 @@ importers:
   examples/solid/debounce:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -4159,7 +4159,7 @@ importers:
         specifier: 0.7.25
         version: 0.7.25(csstype@3.2.3)(solid-js@1.9.11)
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
         specifier: 0.5.2
@@ -4178,7 +4178,7 @@ importers:
   examples/solid/rateLimit:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
@@ -4194,7 +4194,7 @@ importers:
   examples/solid/throttle:
     dependencies:
       '@tanstack/solid-pacer':
-        specifier: ^0.18.4
+        specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       solid-js:
         specifier: ^1.9.11
