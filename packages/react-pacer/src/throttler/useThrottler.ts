@@ -16,7 +16,7 @@ export interface ReactThrottlerOptions<
 > extends ThrottlerOptions<TFn> {
   /**
    * Optional callback invoked when the component unmounts. Receives the throttler instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
    */
   onUnmount?: (throttler: ReactThrottler<TFn, TSelected>) => void
 }

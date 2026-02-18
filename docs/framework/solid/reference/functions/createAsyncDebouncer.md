@@ -12,7 +12,7 @@ function createAsyncDebouncer<TFn, TSelected>(
 selector): SolidAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:174](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L174)
+Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:175](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L175)
 
 A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -71,7 +71,8 @@ Available state properties:
 
 ## Unmount behavior
 
-By default, the primitive cancels any pending execution when the owning component unmounts.
+By default, the primitive cancels any pending execution and aborts any in-flight execution when the owning component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
 Use the `onUnmount` option to customize this. For example, to flush pending work instead:
 
 ```tsx

@@ -256,6 +256,8 @@ The abort functionality:
 - Does NOT clear items from the batcher
 - Can be used alongside retry support
 
+Abort only cancels underlying operations (e.g. `fetch`) when you pass the signal from `getAbortSignal()` to them. If your batch function does not attach the signal, abort clears internal state but the async work continues until it completes.
+
 For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
 ### Sharing Options Between Instances
@@ -343,7 +345,7 @@ console.log(batcher.store.state.isEmpty) // true (batch was processed)
 
 ### Customizing Unmount Behavior
 
-Framework hooks cancel pending batches by default when a component unmounts. Use the `onUnmount` option to flush instead.
+Framework hooks cancel any pending batch and abort any in-flight execution by default when a component unmounts. The automatic abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them. Use the `onUnmount` option to flush instead of canceling.
 
 ```tsx
 const batcher = useAsyncBatcher(fn, {

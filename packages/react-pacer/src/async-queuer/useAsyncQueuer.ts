@@ -15,7 +15,7 @@ export interface ReactAsyncQueuerOptions<
 > extends AsyncQueuerOptions<TValue> {
   /**
    * Optional callback invoked when the component unmounts. Receives the queuer instance.
-   * When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+   * When provided, replaces the default cleanup (stop + abort); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
    */
   onUnmount?: (queuer: ReactAsyncQueuer<TValue, TSelected>) => void
 }
@@ -118,7 +118,8 @@ export interface ReactAsyncQueuer<TValue, TSelected = {}> extends Omit<
  *
  * ## Unmount behavior
  *
- * By default, the hook stops the queuer when the component unmounts.
+ * By default, the hook stops the queuer and aborts any in-flight task executions when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
  * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
  *
  * ```tsx
@@ -271,6 +272,7 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
         mergedOptions.onUnmount(asyncQueuer)
       } else {
         asyncQueuer.stop()
+        asyncQueuer.abort()
       }
     }
   }, [])

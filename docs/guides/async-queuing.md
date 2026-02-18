@@ -255,7 +255,7 @@ console.log(queue.store.state.activeItems.length) // 3 (all processing concurren
 
 ### Customizing Unmount Behavior
 
-Framework hooks stop the queuer by default when a component unmounts. Use the `onUnmount` option to flush instead.
+Framework hooks stop the queuer and abort any in-flight task executions by default when a component unmounts. The automatic abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them. Use the `onUnmount` option to flush instead.
 
 ```tsx
 const queuer = useAsyncQueuer(fn, {
@@ -326,6 +326,8 @@ The abort functionality:
 - Does NOT clear items from the queue (pending tasks remain queued)
 - Works with concurrent executions - aborts all active tasks
 - Can be used alongside retry support
+
+Abort only cancels underlying operations (e.g. `fetch`) when you pass the signal from `getAbortSignal()` to them. If your task function does not attach the signal, abort clears internal state but the async work continues until it completes.
 
 For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 

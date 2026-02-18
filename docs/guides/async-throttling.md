@@ -166,6 +166,8 @@ The abort functionality:
 - Does NOT cancel pending executions that haven't started yet (use `cancel()` for that)
 - Can be used alongside retry support
 
+Abort only cancels underlying operations (e.g. `fetch`) when you pass the signal from `getAbortSignal()` to them. If your throttled function does not attach the signal, abort clears internal state but the async work continues until it completes.
+
 For more details on abort patterns and integration with fetch/axios, see the [Async Retrying Guide](./async-retrying.md).
 
 ### Sharing Options Between Instances
@@ -207,7 +209,7 @@ console.log(asyncThrottler.store.state.isPending) // false
 
 ### Customizing Unmount Behavior
 
-Framework hooks cancel pending work by default when a component unmounts. Use the `onUnmount` option to flush instead.
+Framework hooks cancel any pending execution and abort any in-flight execution by default when a component unmounts. The automatic abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them. Use the `onUnmount` option to flush instead of canceling.
 
 ```tsx
 const throttler = useAsyncThrottler(fn, {

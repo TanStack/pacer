@@ -12,7 +12,7 @@ function useAsyncQueuer<TValue, TSelected>(
 selector): PreactAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:234](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L234)
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:235](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L235)
 
 A lower-level Preact hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
@@ -76,7 +76,8 @@ Available state properties:
 
 ## Unmount behavior
 
-By default, the hook stops the queuer when the component unmounts.
+By default, the hook stops the queuer and aborts any in-flight task executions when the component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
 Use the `onUnmount` option to customize this. For example, to flush pending items instead:
 
 ```tsx

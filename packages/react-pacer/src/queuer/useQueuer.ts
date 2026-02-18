@@ -12,7 +12,7 @@ export interface ReactQueuerOptions<
 > extends QueuerOptions<TValue> {
   /**
    * Optional callback invoked when the component unmounts. Receives the queuer instance.
-   * When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+   * When provided, replaces the default cleanup (stop); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
    */
   onUnmount?: (queuer: ReactQueuer<TValue, TSelected>) => void
 }

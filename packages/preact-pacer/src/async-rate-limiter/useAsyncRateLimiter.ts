@@ -15,8 +15,8 @@ export interface PreactAsyncRateLimiterOptions<
   TSelected = {},
 > extends AsyncRateLimiterOptions<TFn> {
   /**
-   * Optional callback invoked when the component unmounts. Receives the async rate limiter instance.
-   * When provided, replaces the default cleanup; use it to call reset(), add logging, etc.
+   * Optional callback invoked when the component unmounts. Receives the rate limiter instance.
+   * When provided, replaces the default cleanup (abort); use it to call reset(), add logging, etc.
    */
   onUnmount?: (rateLimiter: PreactAsyncRateLimiter<TFn, TSelected>) => void
 }
@@ -113,6 +113,12 @@ export interface PreactAsyncRateLimiter<
  * - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
  * - `settleCount`: Number of function executions that have completed (success or error)
  * - `successCount`: Number of function executions that have completed successfully
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook aborts any in-flight execution when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this.
  *
  * @example
  * ```tsx
@@ -264,6 +270,8 @@ export function useAsyncRateLimiter<
     return () => {
       if (mergedOptions.onUnmount) {
         mergedOptions.onUnmount(asyncRateLimiter)
+      } else {
+        asyncRateLimiter.abort()
       }
     }
   }, [])

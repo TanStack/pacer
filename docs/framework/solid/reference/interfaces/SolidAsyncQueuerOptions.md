@@ -33,7 +33,7 @@ optional onUnmount: (queuer) => void;
 Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L20)
 
 Optional callback invoked when the owning component unmounts. Receives the queuer instance.
-When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+When provided, replaces the default cleanup (stop + abort); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
 
 #### Parameters
 

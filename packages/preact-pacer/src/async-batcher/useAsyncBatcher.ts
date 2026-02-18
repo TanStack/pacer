@@ -15,7 +15,7 @@ export interface PreactAsyncBatcherOptions<
 > extends AsyncBatcherOptions<TValue> {
   /**
    * Optional callback invoked when the component unmounts. Receives the batcher instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
    */
   onUnmount?: (batcher: PreactAsyncBatcher<TValue, TSelected>) => void
 }
@@ -123,7 +123,8 @@ export interface PreactAsyncBatcher<TValue, TSelected = {}> extends Omit<
  *
  * ## Unmount behavior
  *
- * By default, the hook cancels any pending batch when the component unmounts.
+ * By default, the hook cancels any pending batch and aborts any in-flight execution when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
  * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
  *
  * ```tsx
@@ -271,6 +272,7 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
         mergedOptions.onUnmount(asyncBatcher)
       } else {
         asyncBatcher.cancel()
+        asyncBatcher.abort()
       }
     }
   }, [])

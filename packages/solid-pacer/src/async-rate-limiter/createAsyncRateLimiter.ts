@@ -15,8 +15,8 @@ export interface SolidAsyncRateLimiterOptions<
   TSelected = {},
 > extends AsyncRateLimiterOptions<TFn> {
   /**
-   * Optional callback invoked when the owning component unmounts. Receives the async rate limiter instance.
-   * When provided, replaces the default cleanup; use it to call reset(), add logging, etc.
+   * Optional callback invoked when the owning component unmounts. Receives the rate limiter instance.
+   * When provided, replaces the default cleanup (abort); use it to call reset(), add logging, etc.
    */
   onUnmount?: (rateLimiter: SolidAsyncRateLimiter<TFn, TSelected>) => void
 }
@@ -122,6 +122,12 @@ export interface SolidAsyncRateLimiter<
  * - `nextWindowTime`: Timestamp when the next window begins
  * - `rejectionCount`: Number of function calls that were rejected due to rate limiting
  * - `remainingInWindow`: Number of executions remaining in the current window
+ *
+ * ## Unmount behavior
+ *
+ * By default, the primitive aborts any in-flight execution when the owning component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this.
  *
  * @example
  * ```tsx
@@ -246,6 +252,8 @@ export function createAsyncRateLimiter<
     onCleanup(() => {
       if (mergedOptions.onUnmount) {
         mergedOptions.onUnmount(asyncRateLimiter)
+      } else {
+        asyncRateLimiter.abort()
       }
     })
   })

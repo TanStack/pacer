@@ -16,7 +16,7 @@ export interface ReactAsyncThrottlerOptions<
 > extends AsyncThrottlerOptions<TFn> {
   /**
    * Optional callback invoked when the component unmounts. Receives the throttler instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
    */
   onUnmount?: (throttler: ReactAsyncThrottler<TFn, TSelected>) => void
 }
@@ -112,7 +112,8 @@ export interface ReactAsyncThrottler<
  *
  * ## Unmount behavior
  *
- * By default, the hook cancels any pending execution when the component unmounts.
+ * By default, the hook cancels any pending execution and aborts any in-flight execution when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
  * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
  *
  * ```tsx
@@ -263,6 +264,7 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
         mergedOptions.onUnmount(asyncThrottler)
       } else {
         asyncThrottler.cancel()
+        asyncThrottler.abort()
       }
     }
   }, [])

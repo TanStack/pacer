@@ -15,7 +15,7 @@ export interface SolidAsyncQueuerOptions<
 > extends AsyncQueuerOptions<TValue> {
   /**
    * Optional callback invoked when the owning component unmounts. Receives the queuer instance.
-   * When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+   * When provided, replaces the default cleanup (stop + abort); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
    */
   onUnmount?: (queuer: SolidAsyncQueuer<TValue, TSelected>) => void
 }
@@ -110,7 +110,8 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
  *
  * ## Unmount behavior
  *
- * By default, the primitive stops the queuer when the owning component unmounts.
+ * By default, the primitive stops the queuer and aborts any in-flight task executions when the owning component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
  * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
  *
  * ```tsx
@@ -211,6 +212,7 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
         mergedOptions.onUnmount(asyncQueuer)
       } else {
         asyncQueuer.stop()
+        asyncQueuer.abort()
       }
     })
   })

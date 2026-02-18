@@ -33,7 +33,7 @@ optional onUnmount: (throttler) => void;
 Defined in: [solid-pacer/src/throttler/createThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L21)
 
 Optional callback invoked when the owning component unmounts. Receives the throttler instance.
-When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
 
 #### Parameters
 

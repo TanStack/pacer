@@ -12,7 +12,7 @@ function createAsyncThrottler<TFn, TSelected>(
 selector): SolidAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:174](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L174)
+Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:175](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L175)
 
 A low-level Solid hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -71,7 +71,8 @@ Available state properties:
 
 ## Unmount behavior
 
-By default, the primitive cancels any pending execution when the owning component unmounts.
+By default, the primitive cancels any pending execution and aborts any in-flight execution when the owning component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
 Use the `onUnmount` option to customize this. For example, to flush pending work instead:
 
 ```tsx

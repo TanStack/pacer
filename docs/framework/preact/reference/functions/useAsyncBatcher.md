@@ -12,7 +12,7 @@ function useAsyncBatcher<TValue, TSelected>(
 selector): PreactAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:234](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L234)
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:235](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L235)
 
 A Preact hook that creates an `AsyncBatcher` instance for managing asynchronous batches of items.
 
@@ -81,7 +81,8 @@ Available state properties:
 
 ## Unmount behavior
 
-By default, the hook cancels any pending batch when the component unmounts.
+By default, the hook cancels any pending batch and aborts any in-flight execution when the component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
 Use the `onUnmount` option to customize this. For example, to flush pending work instead:
 
 ```tsx

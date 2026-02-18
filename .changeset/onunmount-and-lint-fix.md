@@ -1,8 +1,8 @@
 ---
-'@tanstack/pacer': patch
-'@tanstack/react-pacer': patch
-'@tanstack/preact-pacer': patch
-'@tanstack/solid-pacer': patch
+'@tanstack/pacer': minor
+'@tanstack/react-pacer': minor
+'@tanstack/preact-pacer': minor
+'@tanstack/solid-pacer': minor
 ---
 
-Add optional `onUnmount` callback to Debouncer, Throttler, Batcher, Queuer and async variants for custom cleanup.
+feat: Add optional `onUnmount` callback to Debouncer, Throttler, Batcher, Queuer and async variants for custom cleanup.

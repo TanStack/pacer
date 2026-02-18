@@ -12,7 +12,7 @@ function useAsyncDebouncer<TFn, TSelected>(
 selector): PreactAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:213](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L213)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:214](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L214)
 
 A low-level Preact hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -71,7 +71,8 @@ Available state properties:
 
 ## Unmount behavior
 
-By default, the hook cancels any pending execution when the component unmounts.
+By default, the hook cancels any pending execution and aborts any in-flight execution when the component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
 Use the `onUnmount` option to customize this. For example, to flush pending work instead:
 
 ```tsx

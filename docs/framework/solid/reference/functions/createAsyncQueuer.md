@@ -12,7 +12,7 @@ function createAsyncQueuer<TValue, TSelected>(
 selector): SolidAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:180](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L180)
+Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:181](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L181)
 
 Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 
@@ -68,7 +68,8 @@ Available state properties:
 
 ## Unmount behavior
 
-By default, the primitive stops the queuer when the owning component unmounts.
+By default, the primitive stops the queuer and aborts any in-flight task executions when the owning component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
 Use the `onUnmount` option to customize this. For example, to flush pending items instead:
 
 ```tsx

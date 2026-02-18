@@ -12,7 +12,7 @@ function useAsyncThrottler<TFn, TSelected>(
 selector): ReactAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:224](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L224)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:225](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L225)
 
 A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -69,7 +69,8 @@ Available state properties:
 
 ## Unmount behavior
 
-By default, the hook cancels any pending execution when the component unmounts.
+By default, the hook cancels any pending execution and aborts any in-flight execution when the component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
 Use the `onUnmount` option to customize this. For example, to flush pending work instead:
 
 ```tsx

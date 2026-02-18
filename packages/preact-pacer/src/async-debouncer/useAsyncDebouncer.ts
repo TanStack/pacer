@@ -16,7 +16,7 @@ export interface PreactAsyncDebouncerOptions<
 > extends AsyncDebouncerOptions<TFn> {
   /**
    * Optional callback invoked when the component unmounts. Receives the debouncer instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
    */
   onUnmount?: (debouncer: PreactAsyncDebouncer<TFn, TSelected>) => void
 }
@@ -114,7 +114,8 @@ export interface PreactAsyncDebouncer<
  *
  * ## Unmount behavior
  *
- * By default, the hook cancels any pending execution when the component unmounts.
+ * By default, the hook cancels any pending execution and aborts any in-flight execution when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
  * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
  *
  * ```tsx
@@ -252,6 +253,7 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
         mergedOptions.onUnmount(asyncDebouncer)
       } else {
         asyncDebouncer.cancel()
+        asyncDebouncer.abort()
       }
     }
   }, [])

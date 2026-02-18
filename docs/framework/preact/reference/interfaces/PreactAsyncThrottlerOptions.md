@@ -33,7 +33,7 @@ optional onUnmount: (throttler) => void;
 Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L21)
 
 Optional callback invoked when the component unmounts. Receives the throttler instance.
-When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
 
 #### Parameters
 

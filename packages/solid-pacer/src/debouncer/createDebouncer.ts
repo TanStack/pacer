@@ -16,7 +16,7 @@ export interface SolidDebouncerOptions<
 > extends DebouncerOptions<TFn> {
   /**
    * Optional callback invoked when the owning component unmounts. Receives the debouncer instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
    */
   onUnmount?: (debouncer: SolidDebouncer<TFn, TSelected>) => void
 }

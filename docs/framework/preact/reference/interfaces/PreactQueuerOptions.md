@@ -33,7 +33,7 @@ optional onUnmount: (queuer) => void;
 Defined in: [preact-pacer/src/queuer/useQueuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L17)
 
 Optional callback invoked when the component unmounts. Receives the queuer instance.
-When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+When provided, replaces the default cleanup (stop); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
 
 #### Parameters
 
