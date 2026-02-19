@@ -34,7 +34,8 @@
     "test:pr": "nx affected --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
     "test:sherif": "sherif",
     "test:types": "nx affected --targets=test:types --exclude=examples/**",
-    "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all"
+    "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all",
+    "publish:fork": "node scripts/publish-fork.mjs"
   },
   "nx": {
     "includedScripts": [
