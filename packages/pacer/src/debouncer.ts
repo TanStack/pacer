@@ -83,6 +83,13 @@ export interface DebouncerOptions<TFn extends AnyFunction> {
    * Defaults to 0ms
    */
   wait: number | ((debouncer: Debouncer<TFn>) => number)
+  /**
+   * Maximum time in milliseconds the function can be delayed before it's invoked.
+   * If the debounced function is called continuously, it will be invoked at least once per maxWait period.
+   * Can be a number or a function that returns a number.
+   * Similar to lodash's maxWait option.
+   */
+  maxWait?: number | ((debouncer: Debouncer<TFn>) => number)
 }
 
 /**
@@ -99,7 +106,7 @@ export function debouncerOptions<
 
 const defaultOptions: Omit<
   Required<DebouncerOptions<any>>,
-  'initialState' | 'onExecute' | 'key'
+  'initialState' | 'onExecute' | 'key' | 'maxWait'
 > = {
   enabled: true,
   leading: false,
@@ -146,6 +153,7 @@ export class Debouncer<TFn extends AnyFunction> {
   key: string | undefined
   options: DebouncerOptions<TFn>
   #timeoutId: NodeJS.Timeout | undefined
+  #maxWaitTimeoutId: NodeJS.Timeout | undefined
 
   constructor(
     public fn: TFn,
@@ -213,6 +221,13 @@ export class Debouncer<TFn extends AnyFunction> {
   }
 
   /**
+   * Returns the current maxWait time in milliseconds
+   */
+  #getMaxWait = (): number | undefined => {
+    return parseFunctionOrValue(this.options.maxWait, this)
+  }
+
+  /**
    * Attempts to execute the debounced function
    * If a call is already in progress, it will be queued
    */
@@ -225,6 +240,20 @@ export class Debouncer<TFn extends AnyFunction> {
 
     let _didLeadingExecute = false
 
+    // Start maxWait timer if not already running
+    const maxWait = this.#getMaxWait()
+    if (maxWait !== undefined && !this.#maxWaitTimeoutId) {
+      this.#maxWaitTimeoutId = setTimeout(() => {
+        // Force execution when maxWait is reached
+        this.#clearTimeout() // Clear the regular wait timer
+        this.#setState({ canLeadingExecute: true })
+        if (this.store.state.lastArgs) {
+          this.#execute(...this.store.state.lastArgs)
+        }
+        this.#maxWaitTimeoutId = undefined
+      }, maxWait)
+    }
+
     // Handle leading execution
     if (this.options.leading && this.store.state.canLeadingExecute) {
       this.#setState({ canLeadingExecute: false })
@@ -232,9 +261,12 @@ export class Debouncer<TFn extends AnyFunction> {
       this.#execute(...args)
     }
 
+    // Always update lastArgs for maxWait to use
+    this.#setState({ lastArgs: args })
+
     // Start pending state to indicate that the debouncer is waiting for the trailing edge
     if (this.options.trailing) {
-      this.#setState({ isPending: true, lastArgs: args })
+      this.#setState({ isPending: true })
     }
 
     // Clear any existing timeout
@@ -242,6 +274,7 @@ export class Debouncer<TFn extends AnyFunction> {
 
     // Set new timeout that will reset canLeadingExecute and execute trailing only if enabled and did not execute leading
     this.#timeoutId = setTimeout(() => {
+      this.#clearMaxWaitTimeout() // Clear maxWait timer since wait completed first
       this.#setState({ canLeadingExecute: true })
       if (this.options.trailing && !_didLeadingExecute) {
         this.#execute(...args)
@@ -266,6 +299,7 @@ export class Debouncer<TFn extends AnyFunction> {
   flush = (): void => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
       this.#clearTimeout() // clear any pending timeout
+      this.#clearMaxWaitTimeout() // clear any pending maxWait timeout
       this.#execute(...this.store.state.lastArgs) // execute immediately
     }
   }
@@ -277,11 +311,19 @@ export class Debouncer<TFn extends AnyFunction> {
     }
   }
 
+  #clearMaxWaitTimeout = (): void => {
+    if (this.#maxWaitTimeoutId) {
+      clearTimeout(this.#maxWaitTimeoutId)
+      this.#maxWaitTimeoutId = undefined
+    }
+  }
+
   /**
    * Cancels any pending execution
    */
   cancel = (): void => {
     this.#clearTimeout()
+    this.#clearMaxWaitTimeout()
     this.#setState({
       canLeadingExecute: true,
       isPending: false,

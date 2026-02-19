@@ -1251,6 +1251,488 @@ describe('AsyncDebouncer', () => {
       expect(onSettled1).not.toBeCalled()
     })
   })
+
+  describe('maxWait Option', () => {
+    it('should execute via normal trailing debounce when burst ends before maxWait', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      // Call rapidly every 100ms
+      debouncer.maybeExecute('call1')
+      vi.advanceTimersByTime(100)
+      debouncer.maybeExecute('call2')
+      vi.advanceTimersByTime(100)
+      debouncer.maybeExecute('call3')
+      vi.advanceTimersByTime(100)
+      debouncer.maybeExecute('call4')
+      vi.advanceTimersByTime(100)
+      const promise = debouncer.maybeExecute('call5')
+
+      // At 400ms, no execution yet
+      expect(mockFn).not.toBeCalled()
+
+      // Advance past wait time (debounce fires at 900ms)
+      vi.advanceTimersByTime(600)
+      await promise
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenLastCalledWith('call5')
+    })
+
+    it('should not execute before maxWait and should use most recent args when it fires', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      debouncer.maybeExecute('first') // t=0, starts maxWait timer for t=1000
+      await vi.advanceTimersByTimeAsync(300) // t=300
+      debouncer.maybeExecute('second') // resets wait to t=800, maxWait unchanged
+      await vi.advanceTimersByTimeAsync(300) // t=600
+      const promise = debouncer.maybeExecute('third') // resets wait to t=1100, maxWait still t=1000
+
+      await vi.advanceTimersByTimeAsync(300) // t=900 (before maxWait)
+      expect(mockFn).not.toBeCalled()
+
+      await vi.advanceTimersByTimeAsync(100) // t=1000 (maxWait fires)
+      await promise
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('third') // most recent args, not 'first'
+      expect(debouncer.store.state.successCount).toBe(1)
+      expect(debouncer.store.state.settleCount).toBe(1)
+    })
+
+    it('should execute at wait time when calls stop before maxWait', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      // Make a call then stop
+      const promise = debouncer.maybeExecute('call')
+      expect(mockFn).not.toBeCalled()
+
+      // Advance to wait time (500ms)
+      vi.advanceTimersByTime(500)
+      await promise
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('call')
+
+      // Advance to maxWait time (1000ms) - should not execute again
+      vi.advanceTimersByTime(500)
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
+    it('should force execution at maxWait intervals with continuous calls', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      // Call continuously for 2.5 seconds
+      let lastPromise
+      for (let i = 0; i < 20; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      await lastPromise
+
+      // Should execute at ~1000ms and ~2000ms
+      expect(mockFn).toBeCalledTimes(2)
+    })
+
+    it('should work with leading edge execution', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+        leading: true,
+      })
+
+      // First call executes immediately (leading)
+      const promise1 = debouncer.maybeExecute('first')
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('first')
+
+      // Continue calling rapidly
+      vi.advanceTimersByTime(100)
+      debouncer.maybeExecute('second')
+      vi.advanceTimersByTime(100)
+      const promise3 = debouncer.maybeExecute('third')
+
+      // At 200ms, still only 1 execution (the leading one)
+      expect(mockFn).toBeCalledTimes(1)
+
+      // Advance to 1000ms (maxWait from first call)
+      vi.advanceTimersByTime(800)
+      await Promise.all([promise1, promise3])
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenLastCalledWith('third')
+    })
+
+    it('should work with trailing edge disabled', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+        leading: true,
+        trailing: false,
+      })
+
+      // First call executes immediately
+      const promise1 = debouncer.maybeExecute('first')
+      expect(mockFn).toBeCalledTimes(1)
+
+      // Continue calling rapidly
+      let lastPromise
+      for (let i = 0; i < 10; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      // At 1000ms, maxWait forces execution
+      await Promise.all([promise1, lastPromise])
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenLastCalledWith('call9')
+    })
+
+    it('should clear maxWait timer on flush', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      debouncer.maybeExecute('test')
+      expect(mockFn).not.toBeCalled()
+
+      // Flush before maxWait
+      vi.advanceTimersByTime(300)
+      await debouncer.flush()
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('test')
+
+      // Advance to maxWait time - should not execute again
+      vi.advanceTimersByTime(700)
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
+    it('should flush correctly after maxWait has already fired during a burst', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      // Continuous calls for 12 iterations at 100ms
+      for (let i = 0; i < 12; i++) {
+        debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+      // maxWait fires at t=1000; loop ends at t=1200
+      expect(mockFn).toBeCalledTimes(1)
+
+      debouncer.maybeExecute('post-maxwait-1') // new burst starts
+      await vi.advanceTimersByTimeAsync(100)
+      debouncer.maybeExecute('post-maxwait-2')
+      expect(debouncer.store.state.isPending).toBe(true)
+
+      await debouncer.flush()
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenLastCalledWith('post-maxwait-2')
+
+      await vi.advanceTimersByTimeAsync(1500) // verify no more fires
+      expect(mockFn).toBeCalledTimes(2)
+    })
+
+    it('should clear maxWait timer on cancel', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      const promise = debouncer.maybeExecute('test')
+      expect(mockFn).not.toBeCalled()
+
+      // Cancel before maxWait
+      vi.advanceTimersByTime(300)
+      debouncer.cancel()
+
+      // Advance to maxWait time - should not execute
+      vi.advanceTimersByTime(700)
+      await promise
+      expect(mockFn).not.toBeCalled()
+    })
+
+    it('should clear maxWait timer when disabled and start fresh on re-enable', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      debouncer.maybeExecute('call1') // t=0, starts maxWait for t=1000
+      vi.advanceTimersByTime(300) // t=300
+      debouncer.maybeExecute('call2') // resets wait to t=800, maxWait running
+
+      debouncer.setOptions({ enabled: false }) // cancel() clears both timers
+      expect(mockFn).not.toBeCalled()
+      expect(debouncer.store.state.isPending).toBe(false)
+
+      vi.advanceTimersByTime(700) // t=1000, where maxWait WOULD have fired
+      expect(mockFn).not.toBeCalled() // timer was cleared
+
+      debouncer.setOptions({ enabled: true })
+      const promise = debouncer.maybeExecute('fresh') // starts new maxWait
+      await vi.advanceTimersByTimeAsync(500) // wait fires
+      await promise
+      expect(mockFn).toBeCalledTimes(1) // normal debounce fires
+      expect(mockFn).toBeCalledWith('fresh')
+    })
+
+    it('should handle dynamic maxWait function', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      let maxWaitValue = 1000
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: () => maxWaitValue,
+      })
+
+      // Call continuously
+      let lastPromise
+      for (let i = 0; i < 10; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      await lastPromise
+
+      // Should execute at 1000ms
+      expect(mockFn).toBeCalledTimes(1)
+
+      // Change maxWait value
+      maxWaitValue = 500
+
+      // Continue calling
+      for (let i = 0; i < 5; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      await lastPromise
+
+      // Should execute again (total of 2 times now)
+      expect(mockFn).toBeCalledTimes(2)
+    })
+
+    it('should handle maxWait less than wait', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        maxWait: 500,
+      })
+
+      // Call continuously
+      let lastPromise
+      for (let i = 0; i < 5; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      await lastPromise
+
+      // maxWait (500ms) should take precedence
+      expect(mockFn).toBeCalledTimes(1)
+
+      // Continue for another 500ms
+      for (let i = 0; i < 5; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      await lastPromise
+
+      // Should execute again at next maxWait interval
+      expect(mockFn).toBeCalledTimes(2)
+    })
+
+    it('should force execution on next tick when maxWait is 0', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        maxWait: 0,
+      })
+
+      const promise = debouncer.maybeExecute('immediate')
+      expect(mockFn).not.toBeCalled() // setTimeout(0) is still async
+
+      await vi.advanceTimersByTimeAsync(0) // flush macrotask queue
+      await promise
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('immediate')
+
+      await vi.advanceTimersByTimeAsync(1000) // let wait timer fire if it exists
+      expect(mockFn).toBeCalledTimes(1) // no double execution
+    })
+
+    it('should treat negative maxWait like 0 (fires on next tick)', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        maxWait: -100,
+      })
+
+      const promise = debouncer.maybeExecute('negative')
+      expect(mockFn).not.toBeCalled() // still async
+
+      await vi.advanceTimersByTimeAsync(0) // flush macrotask queue
+      await promise
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('negative')
+
+      await vi.advanceTimersByTimeAsync(1000) // let wait timer fire if it exists
+      expect(mockFn).toBeCalledTimes(1) // no double execution
+    })
+
+    it('should work without maxWait (backward compatibility)', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+      })
+
+      // Call continuously for 2 seconds
+      let lastPromise
+      for (let i = 0; i < 20; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        vi.advanceTimersByTime(100)
+      }
+
+      // Without maxWait, should never execute during continuous calls
+      expect(mockFn).not.toBeCalled()
+
+      // Stop calling and wait
+      vi.advanceTimersByTime(500)
+      await lastPromise
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
+    it('should restart maxWait timer on new burst after completion', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      // First burst
+      let lastPromise
+      for (let i = 0; i < 10; i++) {
+        lastPromise = debouncer.maybeExecute(`burst1-${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      await lastPromise
+
+      // Should execute at 1000ms
+      expect(mockFn).toBeCalledTimes(1)
+
+      // Wait for completion
+      await vi.advanceTimersByTimeAsync(500)
+      expect(mockFn).toBeCalledTimes(1)
+
+      // Second burst - maxWait timer should restart
+      for (let i = 0; i < 10; i++) {
+        lastPromise = debouncer.maybeExecute(`burst2-${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      await lastPromise
+
+      // Should execute again at next maxWait interval
+      expect(mockFn).toBeCalledTimes(2)
+    })
+
+    it('should handle maxWait with both leading and trailing', async () => {
+      const mockFn = vi.fn().mockResolvedValue('result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+        leading: true,
+        trailing: true,
+      })
+
+      // First call executes immediately (leading)
+      const promise1 = debouncer.maybeExecute('first')
+      expect(mockFn).toBeCalledTimes(1)
+
+      // Continue calling rapidly
+      let lastPromise
+      for (let i = 0; i < 10; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      // At 1000ms, maxWait forces execution
+      await Promise.all([promise1, lastPromise])
+      expect(mockFn).toBeCalledTimes(2)
+
+      // Make one more call to set up trailing, then wait for it
+      lastPromise = debouncer.maybeExecute('trailing')
+      await vi.advanceTimersByTimeAsync(500)
+      await lastPromise
+      expect(mockFn).toBeCalledTimes(3)
+    })
+
+    it('should handle errors with maxWait', async () => {
+      const error = new Error('test error')
+      const mockFn = vi.fn().mockRejectedValue(error)
+      const onError = vi.fn()
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+        onError,
+      })
+
+      // Call continuously
+      let lastPromise
+      for (let i = 0; i < 10; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      await lastPromise
+
+      // Should execute at maxWait and handle error
+      expect(mockFn).toBeCalledTimes(1)
+      expect(onError).toBeCalledWith(error, ['call9'], debouncer)
+      expect(debouncer.store.state.errorCount).toBe(1)
+    })
+
+    it('should return result from maxWait execution', async () => {
+      const mockFn = vi.fn().mockResolvedValue('maxWait result')
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 500,
+        maxWait: 1000,
+      })
+
+      // Call continuously
+      let lastPromise
+      for (let i = 0; i < 10; i++) {
+        lastPromise = debouncer.maybeExecute(`call${i}`)
+        await vi.advanceTimersByTimeAsync(100)
+      }
+
+      const result = await lastPromise
+      expect(result).toBe('maxWait result')
+      expect(mockFn).toBeCalledTimes(1)
+    })
+  })
 })
 
 describe('asyncDebounce helper function', () => {

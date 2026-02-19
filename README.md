@@ -33,15 +33,103 @@
 ### [Become a Sponsor!](https://github.com/sponsors/tannerlinsley/)
 </div>
 
-# TanStack Pacer
+# TanStack Pacer (Fork with `maxWait`)
+
+> **This is a fork of [TanStack Pacer](https://github.com/TanStack/pacer)** that adds a `maxWait` option to the debouncer. The TanStack team has decided not to include `maxWait` in the official library. This fork exists for anyone who needs that capability.
 
 A lightweight timing and scheduling library for debouncing, throttling, rate limiting, queuing, and batching.
+
+## Why `maxWait`?
+
+Standard debouncing delays execution until a burst of activity stops. This works well most of the time, but it has a fundamental problem: **if calls never stop, execution never happens.** A user typing continuously, a stream of scroll events, or a sensor firing rapid updates can all postpone the debounced function indefinitely.
+
+The `maxWait` option sets an upper bound on how long execution can be deferred. Once that limit is reached, the function fires with the most recent arguments regardless of ongoing activity. The regular debounce timer then resets, and the cycle continues.
+
+This is the same behavior provided by lodash's `_.debounce(fn, wait, { maxWait })`, which has been a widely relied-upon pattern for years.
+
+### Why not just use throttle?
+
+TanStack Pacer already includes a throttler, and at first glance `debounce + maxWait` looks similar to throttling. Both guarantee execution during continuous activity. The difference is in _how_ they schedule that execution, and it matters in practice.
+
+**Throttle** fires on a fixed cadence. With `{ wait: 1000 }`, you get an execution every ~1000ms no matter what -- even if the user paused at 200ms and is waiting for a response. Throttle doesn't know or care that activity stopped; it sticks to its schedule.
+
+**Debounce + maxWait** is adaptive. With `{ wait: 300, maxWait: 1000 }`, if the user pauses for 300ms the function fires immediately after the pause -- you don't wait for the next 1000ms tick. But if the user never pauses, you still get execution at least every 1000ms. You get **low latency when possible, bounded latency when necessary.**
+
+Concretely, consider a search input where the user types "react" with natural pauses:
+
+| Time   | Event           | Throttle (1000ms)        | Debounce (300ms wait, 1000ms maxWait)                |
+| ------ | --------------- | ------------------------ | ---------------------------------------------------- |
+| 0ms    | types "r"       | fires "r" (leading)      | waits...                                             |
+| 150ms  | types "re"      | queued                   | waits...                                             |
+| 300ms  | types "rea"     | queued                   | waits...                                             |
+| 700ms  | pauses to think | --                       | fires "rea" at 1000ms (300ms after pause)            |
+| 1000ms | --              | fires "rea" (trailing)   | --                                                   |
+| 1200ms | types "reac"    | fires "reac" (leading)   | waits...                                             |
+| 1400ms | types "react"   | queued                   | waits...                                             |
+| 1700ms | done typing     | --                       | fires "react" at 1700ms (300ms after last keystroke) |
+| 2200ms | --              | fires "react" (trailing) | --                                                   |
+
+The throttle version fires 4 times and has up to 800ms of wasted latency (the user stopped at 700ms but results don't arrive until the trailing edge at 1000ms). The debounce+maxWait version fires 2 times and responds within 300ms of each pause.
+
+The two tools solve different problems:
+
+- **Throttle** is for smoothing high-frequency events into a steady pulse -- scroll handlers, mousemove tracking, progress updates. You want consistent, evenly-spaced execution.
+- **Debounce + maxWait** is for collapsing bursts while bounding worst-case latency -- search inputs, autosave, form validation. You want to wait for the user to finish, but not forever.
+
+### Use cases
+
+- **Search-as-you-type** -- Show results within a guaranteed window even if the user types without pausing, so the UI never feels unresponsive.
+- **Autosave** -- Debounce keystrokes to avoid saving on every character, but guarantee a save at least every N seconds so work is never lost.
+- **Live previews and validation** -- Update a rendered preview or run validation periodically during continuous editing so the user gets timely feedback.
+- **Scroll / resize handlers** -- Debounce expensive layout recalculations while still recalculating at regular intervals during a long, continuous scroll.
+- **Analytics and telemetry** -- Batch rapid user interactions but flush them periodically so dashboards stay reasonably up-to-date.
+
+### How to use it
+
+`maxWait` is available on every debounce API in the library -- the core `Debouncer` / `AsyncDebouncer` classes, the `debounce` / `asyncDebounce` helper functions, and all framework hooks (`useDebouncer`, `useDebouncedCallback`, `useDebouncedState`, `useDebouncedValue`).
+
+```tsx
+import { useDebouncedCallback } from '@tanstack/react-pacer'
+
+function SearchInput() {
+  const handleSearch = useDebouncedCallback(
+    (query: string) => fetchResults(query),
+    {
+      wait: 300, // wait 300ms after the user stops typing
+      maxWait: 1000, // but always search at least once per second
+    },
+  )
+
+  return <input onChange={(e) => handleSearch(e.target.value)} />
+}
+```
+
+`maxWait` also accepts a function for dynamic values:
+
+```ts
+const debouncer = new Debouncer(save, {
+  wait: 500,
+  maxWait: (d) => (d.store.state.executionCount === 0 ? 500 : 2000),
+})
+```
+
+### Behavior details
+
+- The `maxWait` timer starts when the first call in a burst arrives and does not reset on subsequent calls.
+- When `maxWait` fires, it uses the **most recent arguments**, not the arguments from the first call.
+- If the normal debounce wait expires before `maxWait`, the function fires normally and the `maxWait` timer is cleared.
+- `cancel()`, `flush()`, and `setOptions({ enabled: false })` all clear the `maxWait` timer.
+- `maxWait` works correctly with `leading`, `trailing`, and all other debouncer options.
+- Setting `maxWait` less than `wait` effectively caps the maximum delay, so the function fires at most every `maxWait` milliseconds during continuous calls.
+
+---
 
 > [!NOTE]
 > TanStack Pacer is currently mostly a client-side only library, but it is being designed to be able to potentially be used on the server-side as well.
 
 - **Debouncing**
   - Delay execution until after a period of inactivity for when you only care about the last execution in a sequence.
+  - Optional `maxWait` to guarantee periodic execution during continuous calls
   - Synchronous or Asynchronous Debounce utilities with promise support and error handling
   - Control of leading, trailing, and enabled options
 - **Throttling**
@@ -81,7 +169,7 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
 - **Tree Shaking**
   - We, of course, get tree-shaking right for your applications by default, but we also provide extra deep imports for each utility, making it easier to embed these utilities into your libraries without increasing the bundle-phobia reports of your library.
 
-### <a href="https://tanstack.com/pacer">Read the docs →</b></a>
+### <a href="https://tanstack.com/pacer">Upstream docs</a>
 
 <br />
 

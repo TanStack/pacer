@@ -132,6 +132,13 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    * Defaults to 0ms
    */
   wait: number | ((debouncer: AsyncDebouncer<TFn>) => number)
+  /**
+   * Maximum time in milliseconds the function can be delayed before it's invoked.
+   * If the debounced function is called continuously, it will be invoked at least once per maxWait period.
+   * Can be a number or a function that returns a number.
+   * Similar to lodash's maxWait option.
+   */
+  maxWait?: number | ((debouncer: AsyncDebouncer<TFn>) => number)
 }
 
 /**
@@ -223,6 +230,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   options: AsyncDebouncerOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: NodeJS.Timeout | null = null
+  #maxWaitTimeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null
@@ -298,6 +306,13 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   /**
+   * Returns the current maxWait time in milliseconds
+   */
+  #getMaxWait = (): number | undefined => {
+    return parseFunctionOrValue(this.options.maxWait, this)
+  }
+
+  /**
    * Attempts to execute the debounced function.
    * If a call is already in progress, it will be queued.
    *
@@ -321,6 +336,29 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
     })
 
+    // Start maxWait timer if not already running
+    const maxWait = this.#getMaxWait()
+    if (maxWait !== undefined && !this.#maxWaitTimeoutId) {
+      this.#maxWaitTimeoutId = setTimeout(async () => {
+        // Force execution when maxWait is reached
+        this.#clearTimeout() // Clear the regular wait timer
+        this.#setState({ canLeadingExecute: true })
+        if (this.store.state.lastArgs) {
+          try {
+            await this.#execute(...this.store.state.lastArgs)
+          } catch (error) {
+            // Error is already handled in #execute
+          }
+        }
+        // Resolve the pending promise
+        if (this.#resolvePreviousPromise) {
+          this.#resolvePreviousPromise(this.store.state.lastResult)
+          this.#resolvePreviousPromise = null
+        }
+        this.#maxWaitTimeoutId = null
+      }, maxWait)
+    }
+
     // Handle leading execution
     if (this.options.leading && this.store.state.canLeadingExecute) {
       this.#setState({ canLeadingExecute: false })
@@ -337,6 +375,8 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#resolvePreviousPromise = resolve
       // this.#rejectPreviousPromise = reject
       this.#timeoutId = setTimeout(async () => {
+        this.#clearMaxWaitTimeout() // Clear maxWait timer since wait completed first
+
         // Execute trailing if enabled
         if (this.options.trailing && this.store.state.lastArgs) {
           try {
@@ -401,6 +441,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     if (this.store.state.isPending && this.store.state.lastArgs) {
       const { lastArgs } = this.store.state
       this.#cancelPendingExecution()
+      this.#clearMaxWaitTimeout() // Also clear maxWait timer
       return await this.#execute(...lastArgs)
     }
     return undefined
@@ -417,6 +458,13 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     if (this.#timeoutId) {
       clearTimeout(this.#timeoutId)
       this.#timeoutId = null
+    }
+  }
+
+  #clearMaxWaitTimeout = (): void => {
+    if (this.#maxWaitTimeoutId) {
+      clearTimeout(this.#maxWaitTimeoutId)
+      this.#maxWaitTimeoutId = null
     }
   }
 
@@ -476,6 +524,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    */
   cancel = (): void => {
     this.#cancelPendingExecution()
+    this.#clearMaxWaitTimeout()
     this.#setState({ canLeadingExecute: true })
   }
 
