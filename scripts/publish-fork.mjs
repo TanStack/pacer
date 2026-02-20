@@ -165,9 +165,15 @@ function main() {
 
   // ── Step 4: Publish ───────────────────────────────────────────────────
   // --access public: required for scoped packages on first publish
-  // --no-provenance: provenance requires GitHub Actions OIDC, skip for local publish
+  // --provenance: publish with provenance attestation (requires OIDC, i.e. GitHub Actions)
   console.log('\n=== Publishing packages ===')
-  const publishFlags = ['--access', 'public', '--no-provenance']
+  const inCI = Boolean(process.env.CI)
+  const publishFlags = ['--access', 'public']
+  if (inCI) {
+    publishFlags.push('--provenance')
+  } else {
+    publishFlags.push('--no-provenance')
+  }
   if (dryRun) publishFlags.push('--dry-run')
 
   // When --only is specified, only publish those package directories

@@ -25,6 +25,9 @@ jobs:
       - name: Setup Tools
         uses: tanstack/config/.github/setup@main
 
+      - name: Install latest npm
+        run: npm install -g npm@latest
+
       - name: Detect changed versions
         id: changes
         run: |
@@ -59,8 +62,4 @@ jobs:
 
       - name: Publish changed packages
         if: steps.changes.outputs.has_changes == 'true'
-        run: |
-          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
-          node scripts/publish-fork.mjs --only ${{ steps.changes.outputs.changed }}
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: node scripts/publish-fork.mjs --only ${{ steps.changes.outputs.changed }}
