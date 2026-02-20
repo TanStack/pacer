@@ -1,0 +1,149 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 */2 * * *' # Every 2 hours
+  workflow_dispatch: {} # Manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add upstream remote and fetch
+        run: |
+          git remote add upstream https://github.com/TanStack/pacer.git
+          git fetch upstream main
+
+      - name: Compare versions across all packages
+        id: compare
+        run: |
+          PACKAGES=(
+            angular-pacer
+            pacer
+            pacer-devtools
+            pacer-lite
+            preact-pacer
+            preact-pacer-devtools
+            react-pacer
+            react-pacer-devtools
+            solid-pacer
+            solid-pacer-devtools
+          )
+
+          NEEDS_SYNC=false
+          CHANGED=""
+
+          for PKG in "${PACKAGES[@]}"; do
+            UPSTREAM=$(git show upstream/main:packages/$PKG/package.json | jq -r '.version')
+            OURS=$(git show origin/main:packages/$PKG/package.json | jq -r '.version')
+
+            if [ "$UPSTREAM" != "$OURS" ]; then
+              echo "$PKG: upstream v$UPSTREAM vs ours v$OURS"
+              NEEDS_SYNC=true
+              CHANGED="${CHANGED}- **$PKG**: v$OURS → v$UPSTREAM\n"
+            else
+              echo "$PKG: up to date (v$OURS)"
+            fi
+          done
+
+          if [ "$NEEDS_SYNC" = "false" ]; then
+            echo "All packages are up to date"
+          fi
+
+          # Use the core pacer package version for branch naming
+          UPSTREAM_VERSION=$(git show upstream/main:packages/pacer/package.json | jq -r '.version')
+
+          echo "needs_sync=$NEEDS_SYNC" >> "$GITHUB_OUTPUT"
+          echo "upstream_version=$UPSTREAM_VERSION" >> "$GITHUB_OUTPUT"
+          echo "date=$(git log -1 --format='%cd' --date=format:'%Y%m%d' upstream/main)" >> "$GITHUB_OUTPUT"
+          # Store changed list for PR body (base64 to preserve newlines)
+          echo "changed=$(echo -e "$CHANGED" | base64 -w 0)" >> "$GITHUB_OUTPUT"
+
+      - name: Check for existing PR
+        if: steps.compare.outputs.needs_sync == 'true'
+        id: check_pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=${{ steps.compare.outputs.upstream_version }}
+          DATE=${{ steps.compare.outputs.date }}
+          BRANCH="sync/v${VERSION}-${DATE}"
+          EXISTING=$(gh pr list --head "$BRANCH" --json number --jq 'length')
+
+          if [ "$EXISTING" -gt 0 ]; then
+            echo "PR already exists for $BRANCH"
+            echo "pr_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "pr_exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Cherry-pick fork commits onto upstream
+        if: steps.compare.outputs.needs_sync == 'true' && steps.check_pr.outputs.pr_exists == 'false'
+        run: |
+          VERSION=${{ steps.compare.outputs.upstream_version }}
+          DATE=${{ steps.compare.outputs.date }}
+          BRANCH="sync/v${VERSION}-${DATE}"
+
+          # Get our fork-only commits (oldest first)
+          FORK_COMMITS=$(git log --reverse --format='%H' upstream/main..origin/main)
+          echo "Fork commits to cherry-pick:"
+          echo "$FORK_COMMITS"
+
+          # Create branch from upstream/main
+          git checkout -b "$BRANCH" upstream/main
+
+          # Configure git for the cherry-pick
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Cherry-pick each commit
+          for COMMIT in $FORK_COMMITS; do
+            echo "Cherry-picking $COMMIT..."
+            git cherry-pick "$COMMIT"
+          done
+
+          # Push the branch
+          git push origin "$BRANCH"
+
+      - name: Create PR
+        if: steps.compare.outputs.needs_sync == 'true' && steps.check_pr.outputs.pr_exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=${{ steps.compare.outputs.upstream_version }}
+          DATE=${{ steps.compare.outputs.date }}
+          BRANCH="sync/v${VERSION}-${DATE}"
+
+          CHANGED=$(echo "${{ steps.compare.outputs.changed }}" | base64 -d)
+
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "Sync upstream TanStack Pacer v${VERSION} (${DATE})" \
+            --body "## Upstream sync
+
+          New upstream release detected. This PR cherry-picks our fork commits on top of upstream \`main\`.
+
+          ### Changed packages
+
+          ${CHANGED}
+
+          ### After merging
+
+          Run the fork publish script to release under \`@klinking\`:
+
+          \`\`\`sh
+          ./scripts/fork-publish.sh
+          \`\`\`
+
+          ---
+          *Auto-generated by the [sync-upstream](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) workflow.*"
