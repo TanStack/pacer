@@ -25,8 +25,9 @@
 //   5. Reverts all package.json changes via git checkout
 //
 // Usage:
-//   pnpm publish:fork              # publish for real
-//   pnpm publish:fork -- --dry-run # npm dry-run (no actual publish)
+//   pnpm publish:fork                              # publish all for real
+//   pnpm publish:fork -- --dry-run                  # npm dry-run (no actual publish)
+//   pnpm publish:fork -- --only pacer,react-pacer   # publish only specified package dirs
 //
 // Prerequisites:
 //   - `npm login` (authenticated to npm)
@@ -71,6 +72,13 @@ function run(cmd, opts = {}) {
 
 function main() {
   const dryRun = process.argv.includes('--dry-run')
+
+  // --only dir1,dir2,... — only publish these package directories (build & rewrite still run for all)
+  const onlyIdx = process.argv.indexOf('--only')
+  const onlyDirs =
+    onlyIdx !== -1 && process.argv[onlyIdx + 1]
+      ? new Set(process.argv[onlyIdx + 1].split(','))
+      : null
 
   // ── Step 1: Discover packages and build a version map ─────────────────
   // We need versions up front so we can write exact version aliases like
@@ -162,7 +170,19 @@ function main() {
   const publishFlags = ['--access', 'public', '--no-provenance']
   if (dryRun) publishFlags.push('--dry-run')
 
-  for (const pkgPath of packageJsonPaths) {
+  // When --only is specified, only publish those package directories
+  const publishPaths = onlyDirs
+    ? packageJsonPaths.filter((p) => {
+        const dir = p.split('/').at(-2)
+        return onlyDirs.has(dir)
+      })
+    : packageJsonPaths
+
+  if (onlyDirs) {
+    console.log(`Filtering to: ${[...onlyDirs].join(', ')}`)
+  }
+
+  for (const pkgPath of publishPaths) {
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
     const pkgDir = dirname(pkgPath)
     console.log(`\nPublishing ${pkg.name}@${pkg.version}...`)

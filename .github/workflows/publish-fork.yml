@@ -1,0 +1,66 @@
+name: Publish Fork
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish Fork
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 2
+
+      - name: Setup Tools
+        uses: tanstack/config/.github/setup@main
+
+      - name: Detect changed versions
+        id: changes
+        run: |
+          changed=""
+          for dir in packages/*/; do
+            dir_name=$(basename "$dir")
+            pkg_file="$dir/package.json"
+            # Skip dirs without package.json
+            [ -f "$pkg_file" ] || continue
+
+            old_version=$(git show HEAD~1:"$pkg_file" 2>/dev/null | jq -r '.version // empty' 2>/dev/null || true)
+            new_version=$(jq -r '.version // empty' "$pkg_file")
+
+            if [ -n "$new_version" ] && [ "$old_version" != "$new_version" ]; then
+              echo "Version changed: $dir_name ($old_version -> $new_version)"
+              if [ -n "$changed" ]; then
+                changed="$changed,$dir_name"
+              else
+                changed="$dir_name"
+              fi
+            fi
+          done
+
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          if [ -n "$changed" ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "Packages to publish: $changed"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No version changes detected"
+          fi
+
+      - name: Publish changed packages
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
+          node scripts/publish-fork.mjs --only ${{ steps.changes.outputs.changed }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
