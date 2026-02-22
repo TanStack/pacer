@@ -30,6 +30,7 @@ title: "@tanstack/angular-pacer"
 - [AsyncQueuedSignal](interfaces/AsyncQueuedSignal.md)
 - [DebouncedSignal](interfaces/DebouncedSignal.md)
 - [QueuedSignal](interfaces/QueuedSignal.md)
+- [QueuedValueSignal](interfaces/QueuedValueSignal.md)
 - [RateLimitedSignal](interfaces/RateLimitedSignal.md)
 - [ThrottledSignal](interfaces/ThrottledSignal.md)
 
