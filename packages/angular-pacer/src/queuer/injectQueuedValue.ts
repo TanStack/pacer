@@ -2,7 +2,7 @@ import { effect, linkedSignal, untracked } from '@angular/core'
 import { injectQueuedSignal } from './injectQueuedSignal'
 import type { Signal } from '@angular/core'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
-import { AngularQueuer } from './injectQueuer'
+import type { AngularQueuer } from './injectQueuer'
 
 export interface QueuedValueSignal<TValue, TSelected = {}> {
   (): TValue
@@ -81,8 +81,8 @@ export function injectQueuedValue<
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as
-      | ((state: QueuerState<TValue>) => TSelected)
-      | undefined)
+        | ((state: QueuerState<TValue>) => TSelected)
+        | undefined)
 
   const queuedValue = linkedSignal<TValue>(() => {
     return hasInitialValue

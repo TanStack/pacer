@@ -76,7 +76,7 @@ describe('injectQueuedValue', () => {
       imports: [ChildComponent],
       template: '<pacer-test-child value="hello" />',
     })
-    class HostComponent { }
+    class HostComponent {}
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
