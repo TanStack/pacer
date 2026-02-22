@@ -69,10 +69,6 @@ export function injectQueuedValue<
   const hasInitialValue =
     (initialOptionsOrSelector !== undefined && !hasSelector) ||
     maybeSelector !== undefined
-
-  const initialValue = hasInitialValue
-    ? (initialValueOrOptions as TValue)
-    : value()
   const initialOptions = hasInitialValue
     ? (initialOptionsOrSelector as QueuerOptions<TValue>)
     : (initialValueOrOptions as QueuerOptions<TValue>)
@@ -83,7 +79,11 @@ export function injectQueuedValue<
         | undefined)
 
   const linkedValue = linkedSignal(() => value())
-  const queuedValue = signal<TValue>(initialValue)
+  const queuedValue = linkedSignal<TValue>(() => {
+    return hasInitialValue
+      ? (initialValueOrOptions as TValue)
+      : untracked(value)
+  })
 
   const queued = injectQueuedSignal(
     (item) => {
