@@ -18,9 +18,10 @@ export interface QueuedValueSignal<TValue, TSelected = {}> {
  * processing each change. This is useful for handling state updates that need to be processed
  * in a specific order, like animations or sequential UI updates.
  *
- * The function returns a tuple containing:
- * - A Signal that provides the current queued value
- * - The queuer instance with control methods
+ * The function returns a callable object containing:
+ * - `queued()`: A signal-like function that provides the current queued value
+ * - `queued.addItem(...)`: A method to enqueue additional values
+ * - `queued.queuer`: The queuer instance with control methods and state
  *
  * @example
  * ```ts

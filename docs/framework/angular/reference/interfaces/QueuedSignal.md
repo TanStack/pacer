@@ -33,7 +33,7 @@ Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:7](https://github.co
 ### addItem()
 
 ```ts
-addItem: (item, position?, runOnItemsChange?) => boolean;
+addItem: (item, position, runOnItemsChange) => boolean;
 ```
 
 Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:8](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L8)
@@ -55,13 +55,13 @@ queuer.addItem('task2', 'front');
 
 `TValue`
 
-##### position?
+##### position
 
-`QueuePosition`
+`QueuePosition` = `...`
 
-##### runOnItemsChange?
+##### runOnItemsChange
 
-`boolean`
+`boolean` = `true`
 
 #### Returns
 
