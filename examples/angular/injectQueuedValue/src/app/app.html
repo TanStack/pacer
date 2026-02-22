@@ -4,7 +4,7 @@
 
 <p>Source (instant): {{ source() }}</p>
 <p>Value (queued): {{ queued() }}</p>
-<p>Queue length: {{ queued().length }}</p>
+<p>Queue length: {{ queued.queuer.state().items.length }}</p>
 
 <button (click)="enqueueRandom()">Enqueue random</button>
 <button (click)="clear()">Clear</button>
