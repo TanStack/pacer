@@ -87,6 +87,19 @@ export interface QueuerOptions<TValue> {
    */
   addItemsTo?: QueuePosition
   /**
+   * Enable automatic deduplication of items within the current queue
+   * When enabled, duplicate items in the same queue will be merged based on deduplicateStrategy
+   * @default false
+   */
+  deduplicateItems?: boolean
+  /**
+   * Strategy to use when a duplicate item is detected in the current queue
+   * - 'keep-first': Keep the existing item and ignore the new one (default)
+   * - 'keep-last': Replace the existing item with the new one
+   * @default 'keep-first'
+   */
+  deduplicateStrategy?: 'keep-first' | 'keep-last'
+  /**
    * Maximum time in milliseconds that an item can stay in the queue
    * If not provided, items will never expire
    */
@@ -101,6 +114,11 @@ export interface QueuerOptions<TValue> {
    * @default 'front'
    */
   getItemsFrom?: QueuePosition
+  /**
+   * Function to extract a unique key from each item for deduplication
+   * If not provided, uses the item itself for primitives or JSON.stringify for objects
+   */
+  getItemKey?: (item: TValue) => string | number
   /**
    * Function to determine priority of items in the queuer
    * Higher priority items will be processed first
@@ -172,8 +190,11 @@ const defaultOptions: Omit<
   | 'onReject'
   | 'onExpire'
   | 'key'
+  | 'getItemKey'
 > = {
   addItemsTo: 'back',
+  deduplicateItems: false,
+  deduplicateStrategy: 'keep-first',
   getItemsFrom: 'front',
   getPriority: (item) => item?.priority ?? 0,
   getIsExpired: () => false,
@@ -203,6 +224,7 @@ export type QueuePosition = 'front' | 'back'
  * - Priority-based ordering when getPriority is provided
  * - Item expiration and removal of stale items
  * - Callbacks for queue state changes, execution, rejection, and expiration
+ * - In-queue deduplication via deduplicateItems
  *
  * Running behavior:
  * - `start()`: Begins automatically processing items in the queue (defaults to isRunning)
@@ -264,6 +286,22 @@ export type QueuePosition = 'front' | 'back'
  * manualQueue.addItem(2); // [1, 2]
  * manualQueue.execute(); // logs 1, queue is [2]
  * manualQueue.getNextItem(); // returns 2, queue is empty
+ * ```
+ *
+ * @example
+ * ```ts
+ * // In-queue deduplication - prevent duplicate items within the same queue
+ * const queuer = new Queuer<{ userId: string }>(
+ *   (item) => fetchUser(item.userId),
+ *   {
+ *     deduplicateItems: true,
+ *     getItemKey: (item) => item.userId,
+ *   }
+ * );
+ *
+ * queuer.addItem({ userId: 'user-1' }); // Added to queue
+ * queuer.addItem({ userId: 'user-2' }); // Added to queue
+ * queuer.addItem({ userId: 'user-1' }); // Ignored! Already in current queue
  * ```
  */
 export class Queuer<TValue> {
@@ -354,6 +392,19 @@ export class Queuer<TValue> {
     return parseFunctionOrValue(this.options.wait ?? 0, this)
   }
 
+  #getItemKey = (item: TValue): string | number => {
+    if (this.options.getItemKey) {
+      return this.options.getItemKey(item)
+    }
+    return typeof item === 'object' ? JSON.stringify(item) : (item as any)
+  }
+
+  #findItemByKey = (key: string | number): number => {
+    return this.store.state.items.findIndex(
+      (item) => this.#getItemKey(item) === key,
+    )
+  }
+
   /**
    * Processes items in the queue up to the wait interval. Internal use only.
    */
@@ -389,6 +440,7 @@ export class Queuer<TValue> {
   /**
    * Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
    * Items can be inserted based on priority or at the front/back depending on configuration.
+   * When deduplicateItems is enabled, duplicate items within the current queue will be merged based on deduplicateStrategy.
    *
    * Returns true if the item was added, false if the queue is full.
    *
@@ -406,6 +458,28 @@ export class Queuer<TValue> {
     this.#setState({
       addItemCount: this.store.state.addItemCount + 1,
     })
+
+    if (this.options.deduplicateItems) {
+      const key = this.#getItemKey(item)
+
+      // Check for duplicates in the current queue (in-queue deduplication)
+      const existingIndex = this.#findItemByKey(key)
+      if (existingIndex !== -1) {
+        const existingItem = this.store.state.items[existingIndex]
+        if (existingItem !== undefined) {
+          if (this.options.deduplicateStrategy === 'keep-last') {
+            const newItems = [...this.store.state.items]
+            newItems[existingIndex] = item
+            this.#setState({ items: newItems })
+            if (runOnItemsChange) {
+              this.options.onItemsChange?.(this)
+            }
+          }
+          // For 'keep-first' strategy, we simply return without adding
+          return true // Item was "handled" (deduplicated)
+        }
+      }
+    }
 
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({

@@ -86,6 +86,8 @@ describe('Batcher', () => {
       expect(batcher.options.maxSize).toBe(Infinity)
       expect(batcher.options.wait).toBe(Infinity)
       expect(batcher.options.started).toBe(true)
+      expect(batcher.options.deduplicateItems).toBe(false)
+      expect(batcher.options.deduplicateStrategy).toBe('keep-first')
       expect(typeof batcher.options.getShouldExecute).toBe('function')
     })
 
@@ -212,6 +214,14 @@ describe('Batcher', () => {
 
         vi.advanceTimersByTime(500)
         expect(mockFn).toHaveBeenCalledWith([1, 2])
+      })
+
+      it('should return true when item is added', () => {
+        const mockFn = vi.fn()
+        const batcher = new Batcher(mockFn, { wait: 1000 })
+
+        const result = batcher.addItem(1)
+        expect(result).toBe(true)
       })
     })
 
@@ -445,5 +455,118 @@ describe('batch', () => {
 
     vi.advanceTimersByTime(1000)
     expect(mockFn).toHaveBeenCalledWith(['test'])
+  })
+})
+
+describe('Batcher Deduplication', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should not deduplicate by default', () => {
+    const mockFn = vi.fn()
+    const batcher = new Batcher(mockFn, { maxSize: 5 })
+
+    batcher.addItem(1)
+    batcher.addItem(1)
+    batcher.addItem(2)
+
+    expect(batcher.store.state.items).toEqual([1, 1, 2])
+    expect(batcher.store.state.size).toBe(3)
+  })
+
+  describe('In-Batch Deduplication', () => {
+    it('should deduplicate primitive items in the same batch with keep-first strategy', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem(1)
+      batcher.addItem(2)
+      batcher.addItem(1) // Duplicate in current batch
+      batcher.addItem(3)
+
+      expect(batcher.store.state.items).toEqual([1, 2, 3])
+      expect(batcher.store.state.size).toBe(3)
+    })
+
+    it('should deduplicate with keep-last strategy', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+        deduplicateStrategy: 'keep-last',
+      })
+
+      batcher.addItem('a')
+      batcher.addItem('b')
+      batcher.addItem('a') // Should replace first 'a'
+
+      expect(batcher.store.state.items).toEqual(['a', 'b'])
+      expect(batcher.store.state.size).toBe(2)
+    })
+
+    it('should deduplicate objects with custom getItemKey', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher<{ id: number; name: string }>(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+        getItemKey: (item) => item.id,
+      })
+
+      batcher.addItem({ id: 1, name: 'Alice' })
+      batcher.addItem({ id: 2, name: 'Bob' })
+      batcher.addItem({ id: 1, name: 'Alice Updated' }) // Duplicate id in batch
+
+      expect(batcher.store.state.items).toEqual([
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' },
+      ])
+      expect(batcher.store.state.size).toBe(2)
+    })
+
+    it('should replace item with keep-last strategy', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher<{ id: string; value: number }>(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+        deduplicateStrategy: 'keep-last',
+        getItemKey: (item) => item.id,
+      })
+
+      const item1 = { id: 'user-1', value: 100 }
+      const item2 = { id: 'user-2', value: 200 }
+      const item1Updated = { id: 'user-1', value: 150 }
+
+      batcher.addItem(item1)
+      batcher.addItem(item2)
+      batcher.addItem(item1Updated) // Should replace item1 in batch
+
+      expect(batcher.store.state.items).toEqual([
+        { id: 'user-1', value: 150 },
+        { id: 'user-2', value: 200 },
+      ])
+    })
+
+    it('should handle objects with JSON.stringify when no getItemKey', () => {
+      const mockFn = vi.fn()
+      const batcher = new Batcher<{ x: number }>(mockFn, {
+        maxSize: 5,
+        deduplicateItems: true,
+      })
+
+      batcher.addItem({ x: 1 })
+      batcher.addItem({ x: 2 })
+      batcher.addItem({ x: 1 }) // Same object structure, should be deduplicated
+
+      expect(batcher.store.state.items).toEqual([{ x: 1 }, { x: 2 }])
+      expect(batcher.store.state.size).toBe(2)
+    })
   })
 })

@@ -51,10 +51,28 @@ function getDefaultBatcherState<TValue>(): BatcherState<TValue> {
  */
 export interface BatcherOptions<TValue> {
   /**
+   * Enable automatic deduplication of items within the current batch
+   * When enabled, duplicate items in the same batch will be merged based on deduplicateStrategy
+   * @default false
+   */
+  deduplicateItems?: boolean
+  /**
+   * Strategy to use when a duplicate item is detected in the current batch
+   * - 'keep-first': Keep the existing item and ignore the new one (default)
+   * - 'keep-last': Replace the existing item with the new one
+   * @default 'keep-first'
+   */
+  deduplicateStrategy?: 'keep-first' | 'keep-last'
+  /**
    * Custom function to determine if a batch should be processed
    * Return true to process the batch immediately
    */
   getShouldExecute?: (items: Array<TValue>, batcher: Batcher<TValue>) => boolean
+  /**
+   * Function to extract a unique key from each item for deduplication
+   * If not provided, uses the item itself for primitives or JSON.stringify for objects
+   */
+  getItemKey?: (item: TValue) => string | number
   /**
    * Initial state for the batcher
    */
@@ -93,10 +111,12 @@ export interface BatcherOptions<TValue> {
 
 type BatcherOptionsWithOptionalCallbacks<TValue> = OptionalKeys<
   Required<BatcherOptions<TValue>>,
-  'initialState' | 'onExecute' | 'onItemsChange' | 'key'
+  'initialState' | 'onExecute' | 'onItemsChange' | 'key' | 'getItemKey'
 >
 
 const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
+  deduplicateItems: false,
+  deduplicateStrategy: 'keep-first',
   getShouldExecute: () => false,
   maxSize: Infinity,
   started: true,
@@ -114,6 +134,7 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * - Time-based batching (process after X milliseconds)
  * - Custom batch processing logic via getShouldExecute
  * - Event callbacks for monitoring batch operations
+ * - In-batch deduplication via deduplicateItems
  *
  * State Management:
  * - Uses TanStack Store for reactive state management
@@ -140,6 +161,23 @@ const defaultOptions: BatcherOptionsWithOptionalCallbacks<any> = {
  * // After 2 seconds or when 5 items are added, whichever comes first,
  * // the batch will be processed
  * // batcher.flush() // manually trigger a batch
+ * ```
+ *
+ * @example
+ * ```ts
+ * // In-batch deduplication - prevent duplicate items within the same batch
+ * const batcher = new Batcher<{ userId: string }>(
+ *   (items) => fetchUsers(items.map(i => i.userId)),
+ *   {
+ *     deduplicateItems: true,
+ *     getItemKey: (item) => item.userId,
+ *   }
+ * );
+ *
+ * batcher.addItem({ userId: 'user-1' }); // Added to batch
+ * batcher.addItem({ userId: 'user-2' }); // Added to batch
+ * batcher.addItem({ userId: 'user-1' }); // Ignored! Already in current batch
+ * batcher.flush(); // Processes [user-1, user-2]
  * ```
  */
 export class Batcher<TValue> {
@@ -200,11 +238,45 @@ export class Batcher<TValue> {
     return parseFunctionOrValue(this.options.wait, this)
   }
 
+  #getItemKey = (item: TValue): string | number => {
+    if (this.options.getItemKey) {
+      return this.options.getItemKey(item)
+    }
+    return typeof item === 'object' ? JSON.stringify(item) : (item as any)
+  }
+
+  #findItemByKey = (key: string | number): number => {
+    return this.store.state.items.findIndex(
+      (item) => this.#getItemKey(item) === key,
+    )
+  }
+
   /**
    * Adds an item to the batcher
    * If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
+   * When deduplicateItems is enabled, duplicate items within the current batch will be merged based on deduplicateStrategy
    */
-  addItem = (item: TValue): void => {
+  addItem = (item: TValue): boolean => {
+    if (this.options.deduplicateItems) {
+      const key = this.#getItemKey(item)
+
+      // Check for duplicates in the current batch (in-batch deduplication)
+      const existingIndex = this.#findItemByKey(key)
+      if (existingIndex !== -1) {
+        const existingItem = this.store.state.items[existingIndex]
+        if (existingItem !== undefined) {
+          if (this.options.deduplicateStrategy === 'keep-last') {
+            const newItems = [...this.store.state.items]
+            newItems[existingIndex] = item
+            this.#setState({ items: newItems })
+            this.options.onItemsChange?.(this)
+          }
+          // For 'keep-first' strategy, we simply return without adding
+          return true
+        }
+      }
+    }
+
     this.#setState({
       items: [...this.store.state.items, item],
       isPending: this.options.wait !== Infinity,
@@ -221,6 +293,8 @@ export class Batcher<TValue> {
       this.#clearTimeout() // clear any pending timeout to replace it with a new one
       this.#timeoutId = setTimeout(() => this.#execute(), this.#getWait())
     }
+
+    return true
   }
 
   /**

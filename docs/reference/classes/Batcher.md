@@ -5,7 +5,7 @@ title: Batcher
 
 # Class: Batcher\<TValue\>
 
-Defined in: [batcher.ts:145](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L145)
+Defined in: [batcher.ts:217](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L217)
 
 A class that collects items and processes them in batches.
 
@@ -17,6 +17,7 @@ The Batcher provides a flexible way to implement batching with configurable:
 - Time-based batching (process after X milliseconds)
 - Custom batch processing logic via getShouldExecute
 - Event callbacks for monitoring batch operations
+- Cross-batch deduplication via deduplicateItems (similar to RateLimiter's executionTimes)
 
 State Management:
 - Uses TanStack Store for reactive state management
@@ -27,7 +28,7 @@ State Management:
 - State can be accessed via `batcher.store.state` when using the class directly
 - When using framework adapters (React/Solid), state is accessed from `batcher.state`
 
-## Example
+## Examples
 
 ```ts
 const batcher = new Batcher<number>(
@@ -46,6 +47,26 @@ batcher.addItem(2);
 // batcher.flush() // manually trigger a batch
 ```
 
+```ts
+// Cross-batch deduplication - prevent duplicate API calls
+const batcher = new Batcher<{ userId: string }>(
+  (items) => fetchUsers(items.map(i => i.userId)),
+  {
+    deduplicateItems: true,
+    getItemKey: (item) => item.userId,
+    maxTrackedKeys: 500, // Limit memory usage
+    onDuplicate: (item) => console.log('Already fetched:', item.userId)
+  }
+);
+
+batcher.addItem({ userId: 'user-1' }); // Added to batch
+batcher.addItem({ userId: 'user-2' }); // Added to batch
+batcher.flush(); // Processes [user-1, user-2]
+
+batcher.addItem({ userId: 'user-1' }); // Skipped! Already processed
+batcher.addItem({ userId: 'user-3' }); // Added to batch
+```
+
 ## Type Parameters
 
 ### TValue
@@ -60,7 +81,7 @@ batcher.addItem(2);
 new Batcher<TValue>(fn, initialOptions): Batcher<TValue>;
 ```
 
-Defined in: [batcher.ts:153](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L153)
+Defined in: [batcher.ts:225](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L225)
 
 #### Parameters
 
@@ -84,7 +105,7 @@ Defined in: [batcher.ts:153](https://github.com/TanStack/pacer/blob/main/package
 fn: (items) => void;
 ```
 
-Defined in: [batcher.ts:154](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L154)
+Defined in: [batcher.ts:226](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L226)
 
 #### Parameters
 
@@ -104,7 +125,7 @@ Defined in: [batcher.ts:154](https://github.com/TanStack/pacer/blob/main/package
 key: string | undefined;
 ```
 
-Defined in: [batcher.ts:149](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L149)
+Defined in: [batcher.ts:221](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L221)
 
 ***
 
@@ -114,7 +135,7 @@ Defined in: [batcher.ts:149](https://github.com/TanStack/pacer/blob/main/package
 options: BatcherOptionsWithOptionalCallbacks<TValue>;
 ```
 
-Defined in: [batcher.ts:150](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L150)
+Defined in: [batcher.ts:222](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L222)
 
 ***
 
@@ -124,20 +145,21 @@ Defined in: [batcher.ts:150](https://github.com/TanStack/pacer/blob/main/package
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [batcher.ts:146](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L146)
+Defined in: [batcher.ts:218](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L218)
 
 ## Methods
 
 ### addItem()
 
 ```ts
-addItem(item): void;
+addItem(item): boolean;
 ```
 
-Defined in: [batcher.ts:207](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L207)
+Defined in: [batcher.ts:311](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L311)
 
 Adds an item to the batcher
 If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
+When deduplicateItems is enabled, items that have already been processed will be skipped
 
 #### Parameters
 
@@ -147,7 +169,7 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 
 #### Returns
 
-`void`
+`boolean`
 
 ***
 
@@ -157,7 +179,7 @@ If the batch size is reached, timeout occurs, or shouldProcess returns true, the
 cancel(): void;
 ```
 
-Defined in: [batcher.ts:285](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L285)
+Defined in: [batcher.ts:449](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L449)
 
 Cancels any pending execution that was scheduled.
 Does NOT clear out the items.
@@ -174,9 +196,26 @@ Does NOT clear out the items.
 clear(): void;
 ```
 
-Defined in: [batcher.ts:277](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L277)
+Defined in: [batcher.ts:441](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L441)
 
 Removes all items from the batcher
+
+#### Returns
+
+`void`
+
+***
+
+### clearProcessedKeys()
+
+```ts
+clearProcessedKeys(): void;
+```
+
+Defined in: [batcher.ts:427](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L427)
+
+Clears all processed keys, allowing items with those keys to be processed again
+Only meaningful when deduplicateItems is enabled
 
 #### Returns
 
@@ -190,7 +229,7 @@ Removes all items from the batcher
 flush(): void;
 ```
 
-Defined in: [batcher.ts:255](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L255)
+Defined in: [batcher.ts:395](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L395)
 
 Processes the current batch of items immediately
 
@@ -200,13 +239,36 @@ Processes the current batch of items immediately
 
 ***
 
+### hasProcessedKey()
+
+```ts
+hasProcessedKey(key): boolean;
+```
+
+Defined in: [batcher.ts:419](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L419)
+
+Checks if a key has already been processed
+Only meaningful when deduplicateItems is enabled
+
+#### Parameters
+
+##### key
+
+`string` | `number`
+
+#### Returns
+
+`boolean`
+
+***
+
 ### peekAllItems()
 
 ```ts
 peekAllItems(): TValue[];
 ```
 
-Defined in: [batcher.ts:263](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L263)
+Defined in: [batcher.ts:403](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L403)
 
 Returns a copy of all items in the batcher
 
@@ -216,15 +278,33 @@ Returns a copy of all items in the batcher
 
 ***
 
+### peekProcessedKeys()
+
+```ts
+peekProcessedKeys(): (string | number)[];
+```
+
+Defined in: [batcher.ts:411](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L411)
+
+Returns a copy of all processed keys
+Only meaningful when deduplicateItems is enabled
+
+#### Returns
+
+(`string` \| `number`)[]
+
+***
+
 ### reset()
 
 ```ts
 reset(): void;
 ```
 
-Defined in: [batcher.ts:293](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L293)
+Defined in: [batcher.ts:458](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L458)
 
 Resets the batcher state to its default values
+This also clears the processed keys history
 
 #### Returns
 
@@ -238,7 +318,7 @@ Resets the batcher state to its default values
 setOptions(newOptions): void;
 ```
 
-Defined in: [batcher.ts:176](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L176)
+Defined in: [batcher.ts:248](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L248)
 
 Updates the batcher options
 

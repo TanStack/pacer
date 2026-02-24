@@ -24,6 +24,7 @@ describe('Queuer', () => {
     expect(queuer.store.state.size).toBe(2)
   })
 
+
   describe('addItem', () => {
     it('should add items to the queuer', () => {
       const fn = vi.fn()
@@ -348,6 +349,7 @@ describe('Queuer', () => {
       queuer.reset()
       expect(queuer.peekAllItems()).toEqual([])
     })
+
   })
 
   describe('start', () => {
@@ -533,6 +535,117 @@ describe('Queuer', () => {
         expect(batchFn).toHaveBeenCalledTimes(1)
         expect(batchFn).toHaveBeenCalledWith([])
       })
+    })
+  })
+
+  describe('In-Queue Deduplication', () => {
+    it('should not deduplicate by default', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, { started: false, maxSize: 5 })
+
+      expect(queuer.addItem(1)).toBe(true)
+      expect(queuer.addItem(1)).toBe(true)
+      expect(queuer.addItem(2)).toBe(true)
+
+      expect(queuer.store.state.items).toEqual([1, 1, 2])
+      expect(queuer.store.state.size).toBe(3)
+    })
+
+    it('should deduplicate primitive items in current queue with keep-first strategy', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        maxSize: 5,
+        deduplicateItems: true,
+      })
+
+      queuer.addItem(1)
+      queuer.addItem(2)
+      queuer.addItem(1) // Duplicate in queue
+      queuer.addItem(3)
+
+      expect(queuer.store.state.items).toEqual([1, 2, 3])
+      expect(queuer.store.state.size).toBe(3)
+    })
+
+    it('should deduplicate with keep-last strategy', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        maxSize: 5,
+        deduplicateItems: true,
+        deduplicateStrategy: 'keep-last',
+      })
+
+      queuer.addItem('a')
+      queuer.addItem('b')
+      queuer.addItem('a') // Should replace first 'a'
+
+      expect(queuer.store.state.items).toEqual(['a', 'b'])
+      expect(queuer.store.state.size).toBe(2)
+    })
+
+    it('should deduplicate before checking maxSize', () => {
+      const fn = vi.fn()
+      const onReject = vi.fn()
+      const queuer = new Queuer(fn, {
+        started: false,
+        maxSize: 2,
+        deduplicateItems: true,
+        onReject,
+      })
+
+      queuer.addItem(1)
+      queuer.addItem(2)
+      queuer.addItem(1) // Duplicate in queue, should not trigger rejection
+
+      expect(queuer.store.state.size).toBe(2)
+      expect(onReject).not.toHaveBeenCalled()
+
+      queuer.addItem(3) // Should be rejected
+
+      expect(queuer.store.state.size).toBe(2)
+      expect(onReject).toHaveBeenCalledWith(3, queuer)
+    })
+
+    it('should deduplicate objects with custom getItemKey', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer<{ id: string; value: number }>(fn, {
+        started: false,
+        maxSize: 5,
+        deduplicateItems: true,
+        getItemKey: (item) => item.id,
+      })
+
+      queuer.addItem({ id: 'user-1', value: 100 })
+      queuer.addItem({ id: 'user-2', value: 200 })
+      queuer.addItem({ id: 'user-1', value: 150 }) // Duplicate in queue
+
+      expect(queuer.store.state.items).toEqual([
+        { id: 'user-1', value: 100 },
+        { id: 'user-2', value: 200 },
+      ])
+      expect(queuer.store.state.size).toBe(2)
+    })
+
+    it('should work with priority queue and deduplication', () => {
+      const fn = vi.fn()
+      const queuer = new Queuer<{ id: string; priority: number }>(fn, {
+        started: false,
+        deduplicateItems: true,
+        getItemKey: (item) => item.id,
+        getPriority: (item) => item.priority,
+      })
+
+      queuer.addItem({ id: 'task-1', priority: 1 })
+      queuer.addItem({ id: 'task-2', priority: 3 })
+      queuer.addItem({ id: 'task-1', priority: 5 }) // Duplicate in queue
+
+      // Items should be sorted by priority, with duplicate deduplicated
+      expect(queuer.store.state.items).toEqual([
+        { id: 'task-2', priority: 3 },
+        { id: 'task-1', priority: 1 },
+      ])
     })
   })
 })
