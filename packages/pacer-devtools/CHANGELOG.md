@@ -1,5 +1,11 @@
 # @tanstack/pacer-devtools
 
+## 1.1.3
+
+### Patch Changes
+
+- fix(devtools): deep imports from day-js need .js extension ([#165](https://github.com/TanStack/pacer/pull/165))
+
 ## 1.1.2
 
 ### Patch Changes
