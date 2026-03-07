@@ -67,6 +67,8 @@ const stylesFactory = (theme: 'light' | 'dark') => {
       overflow: hidden;
       min-height: 0;
       flex-shrink: 0;
+      min-width: 150px;
+      max-width: 800px;
     `,
     rightPanel: css`
       background: ${t(colors.gray[100], colors.darkGray[800])};
@@ -285,6 +287,15 @@ const stylesFactory = (theme: 'light' | 'dark') => {
       font-size: ${fontSize.xs};
       color: ${t(colors.gray[900], colors.gray[100])};
       word-break: break-all;
+    `,
+    stateHeaderRow: css`
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    `,
+    reductionValue: css`
+      margin-left: auto;
+      font-weight: bold;
     `,
     noSelection: css`
       flex: 1;

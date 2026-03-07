@@ -85,7 +85,7 @@ export function StateHeader(props: StateHeaderProps) {
   return (
     <div class={styles().stateHeader}>
       <div class={styles().stateTitle}>{entry.type}</div>
-      <div style={{ display: 'flex', 'align-items': 'center', gap: '16px' }}>
+      <div class={styles().stateHeaderRow}>
         <div class={styles().infoGrid}>
           <div class={styles().infoLabel}>Key</div>
           <div class={styles().infoValueMono}>{key}</div>
@@ -95,8 +95,7 @@ export function StateHeader(props: StateHeaderProps) {
           </div>
         </div>
         <div
-          class={styles().infoValueMono}
-          style={{ 'margin-left': 'auto', 'font-weight': 'bold' }}
+          class={`${styles().infoValueMono} ${styles().reductionValue}`}
         >
           {reductionPercentage}% reduction
         </div>
