@@ -5,7 +5,7 @@ title: ReactBatcher
 
 # Interface: ReactBatcher\<TValue, TSelected\>
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L20)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:20](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L20)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/batcher/useBatcher.ts:20](https://github.com/TanSta
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L46)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:46](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L46)
 
 Reactive state that will be updated and re-rendered when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:52](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L52)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:52](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L52)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [react-pacer/src/batcher/useBatcher.ts:37](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L37)
+Defined in: [react-pacer/src/batcher/useBatcher.ts:37](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L37)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the batcher state.
 

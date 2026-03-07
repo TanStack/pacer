@@ -5,7 +5,7 @@ title: ReactRateLimiterOptions
 
 # Interface: ReactRateLimiterOptions\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L13)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:13](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:13](https://github.c
 optional onUnmount: (rateLimiter) => void;
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L21)
+Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:21](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L21)
 
 Optional callback invoked when the component unmounts. Receives the rate limiter instance.
 When provided, replaces the default cleanup; use it to call reset(), add logging, etc.

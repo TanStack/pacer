@@ -12,7 +12,7 @@ function useRateLimiter<TFn, TSelected>(
 selector): PreactRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:190](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L190)
+Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:190](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L190)
 
 A low-level Preact hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 

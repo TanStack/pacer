@@ -5,7 +5,7 @@ title: ReactThrottlerOptions
 
 # Interface: ReactThrottlerOptions\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L13)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:13](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/throttler/useThrottler.ts:13](https://github.com/Ta
 optional onUnmount: (throttler) => void;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L21)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:21](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L21)
 
 Optional callback invoked when the component unmounts. Receives the throttler instance.
 When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.

@@ -12,7 +12,7 @@ function createDebouncedSignal<TValue, TSelected>(
    selector?): [Accessor<TValue>, Setter<TValue>, SolidDebouncer<Setter<TValue>, TSelected>];
 ```
 
-Defined in: [solid-pacer/src/debouncer/createDebouncedSignal.ts:78](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedSignal.ts#L78)
+Defined in: [solid-pacer/src/debouncer/createDebouncedSignal.ts:78](https://github.com/ghostd/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncedSignal.ts#L78)
 
 A Solid hook that creates a debounced state value, combining Solid's createSignal with debouncing functionality.
 This hook provides both the current debounced value and methods to update it.

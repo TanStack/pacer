@@ -5,7 +5,7 @@ title: AngularAsyncDebouncerOptions
 
 # Interface: AngularAsyncDebouncerOptions\<TFn, TSelected\>
 
-Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L13)
+Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:13](https://github.com/ghostd/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:13](https
 optional onUnmount: (debouncer) => void;
 ```
 
-Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L22)
+Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:22](https://github.com/ghostd/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L22)
 
 Optional callback invoked when the component is destroyed. Receives the debouncer instance.
 When provided, replaces the default cleanup (cancel + abort); use it to call flush(), cancel(), add logging, etc.

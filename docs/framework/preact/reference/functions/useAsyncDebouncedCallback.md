@@ -6,10 +6,10 @@ title: useAsyncDebouncedCallback
 # Function: useAsyncDebouncedCallback()
 
 ```ts
-function useAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>;
+function useAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>>>;
 ```
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:44](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L44)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:44](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L44)
 
 A Preact hook that creates a debounced version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncDebouncer` hook,
@@ -50,7 +50,7 @@ Consider using the `useAsyncDebouncer` hook instead.
 ## Returns
 
 ```ts
-(...args): Promise<ReturnType<TFn>>;
+(...args): Promise<Awaited<ReturnType<TFn>>>;
 ```
 
 ### Parameters
@@ -61,7 +61,7 @@ Consider using the `useAsyncDebouncer` hook instead.
 
 ### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\>\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\>\>
 
 ## Example
 
