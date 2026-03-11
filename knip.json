@@ -3,8 +3,17 @@
   "ignoreDependencies": ["@faker-js/faker"],
   "ignoreWorkspaces": ["examples/**"],
   "workspaces": {
+    "packages/preact-pacer-devtools": {
+      "ignoreDependencies": ["csstype"]
+    },
     "packages/react-pacer": {
       "ignore": []
+    },
+    "packages/react-pacer-devtools": {
+      "ignoreDependencies": ["csstype"]
+    },
+    "packages/solid-pacer-devtools": {
+      "ignoreDependencies": ["csstype"]
     }
   }
 }

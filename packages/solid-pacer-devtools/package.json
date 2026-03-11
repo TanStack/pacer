@@ -50,10 +50,11 @@
     "solid-js": ">=1.9.7"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.3.0",
+    "@tanstack/devtools-utils": "^0.3.2",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
+    "csstype": "^3.0.10",
     "vite-plugin-solid": "^2.11.10"
   }
 }

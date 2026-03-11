@@ -58,7 +58,7 @@
     "@tanstack/typedoc-config": "0.3.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "^25.2.3",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "happy-dom": "^20.6.1",
     "knip": "^5.83.1",
@@ -71,7 +71,7 @@
     "sherif": "^1.10.0",
     "size-limit": "^12.0.0",
     "tinyglobby": "^0.2.15",
-    "tsdown": "^0.20.3",
+    "tsdown": "^0.21.1",
     "typescript": "5.9.3",
     "vitest": "^4.0.18"
   },
