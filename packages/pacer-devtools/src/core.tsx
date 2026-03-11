@@ -1,10 +1,7 @@
 import { constructCoreClass } from '@tanstack/devtools-utils/solid'
-import { lazy } from 'solid-js'
-
-const Component = lazy(() => import('./PacerDevtools'))
 
 export interface PacerDevtoolsInit {}
 
-const [PacerDevtoolsCore, PacerDevtoolsCoreNoOp] = constructCoreClass(Component)
+const [PacerDevtoolsCore, PacerDevtoolsCoreNoOp] = constructCoreClass(() => import('./PacerDevtools'))
 
 export { PacerDevtoolsCore, PacerDevtoolsCoreNoOp }

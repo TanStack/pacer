@@ -4,6 +4,6 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js"
   },
-  "include": ["src", "vitest.config.ts", "tests"],
+  "include": ["src", "vitest.config.ts", "tests","tsdown.config.ts"],
   "exclude": ["eslint.config.js"]
 }
