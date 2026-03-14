@@ -11,10 +11,10 @@ title: injectQueuedValue
 function injectQueuedValue<TValue, TSelected>(
    value, 
    options?, 
-selector?): QueuedSignal<TValue, TSelected>;
+selector?): QueuedValueSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/queuer/injectQueuedValue.ts:31](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L31)
+Defined in: [angular-pacer/src/queuer/injectQueuedValue.ts:38](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L38)
 
 An Angular function that creates a queued value that processes state changes in order with an optional delay.
 This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.
@@ -23,9 +23,10 @@ The queued value will process changes in the order they are received, with optio
 processing each change. This is useful for handling state updates that need to be processed
 in a specific order, like animations or sequential UI updates.
 
-The function returns a tuple containing:
-- A Signal that provides the current queued value
-- The queuer instance with control methods
+The function returns a callable object containing:
+- `queued()`: A signal-like function that provides the current queued value
+- `queued.addItem(...)`: A method to enqueue additional values
+- `queued.queuer`: The queuer instance with control methods and state
 
 ### Type Parameters
 
@@ -53,7 +54,7 @@ The function returns a tuple containing:
 
 ### Returns
 
-[`QueuedSignal`](../interfaces/QueuedSignal.md)\<`TValue`, `TSelected`\>
+[`QueuedValueSignal`](../interfaces/QueuedValueSignal.md)\<`TValue`, `TSelected`\>
 
 ### Example
 
@@ -75,10 +76,10 @@ function injectQueuedValue<TValue, TSelected>(
    value, 
    initialValue, 
    options?, 
-selector?): QueuedSignal<TValue, TSelected>;
+selector?): QueuedValueSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/queuer/injectQueuedValue.ts:42](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L42)
+Defined in: [angular-pacer/src/queuer/injectQueuedValue.ts:49](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L49)
 
 An Angular function that creates a queued value that processes state changes in order with an optional delay.
 This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.
@@ -87,9 +88,10 @@ The queued value will process changes in the order they are received, with optio
 processing each change. This is useful for handling state updates that need to be processed
 in a specific order, like animations or sequential UI updates.
 
-The function returns a tuple containing:
-- A Signal that provides the current queued value
-- The queuer instance with control methods
+The function returns a callable object containing:
+- `queued()`: A signal-like function that provides the current queued value
+- `queued.addItem(...)`: A method to enqueue additional values
+- `queued.queuer`: The queuer instance with control methods and state
 
 ### Type Parameters
 
@@ -121,7 +123,7 @@ The function returns a tuple containing:
 
 ### Returns
 
-[`QueuedSignal`](../interfaces/QueuedSignal.md)\<`TValue`, `TSelected`\>
+[`QueuedValueSignal`](../interfaces/QueuedValueSignal.md)\<`TValue`, `TSelected`\>
 
 ### Example
 

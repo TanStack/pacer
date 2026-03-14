@@ -112,8 +112,12 @@
     "@tanstack/pacer": "workspace:*"
   },
   "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.2.3",
+    "@analogjs/vitest-angular": "^2.2.3",
+    "@angular/compiler": "^21.1.4",
     "@angular/core": "^21.1.4",
-    "@types/node": "^25.2.3"
+    "@types/node": "^25.2.3",
+    "jsdom": "^28.1.0"
   },
   "peerDependencies": {
     "@angular/core": ">=17.0.0"
