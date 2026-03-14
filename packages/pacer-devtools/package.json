@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer-devtools",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -34,8 +34,38 @@
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./production": "./dist/production.js",
+    ".": {
+      "workerd": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/server.js"
+      },
+      "browser": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "node": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/server.js"
+      },
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./production": {
+      "workerd": {
+        "types": "./dist/production/index.d.ts",
+        "import": "./dist/production/server.js"
+      },
+      "browser": {
+        "types": "./dist/production/index.d.ts",
+        "import": "./dist/production/index.js"
+      },
+      "node": {
+        "types": "./dist/production/index.d.ts",
+        "import": "./dist/production/server.js"
+      },
+      "types": "./dist/production/index.d.ts",
+      "import": "./dist/production/index.js"
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -50,15 +80,18 @@
     "@tanstack/pacer": ">=0.16.4"
   },
   "dependencies": {
-    "@tanstack/devtools-ui": "^0.4.4",
-    "@tanstack/devtools-utils": "^0.3.0",
+    "@tanstack/devtools-ui": "^0.5.0",
+    "@tanstack/devtools-utils": "^0.3.2",
     "@tanstack/solid-store": "^0.8.1",
     "clsx": "^2.1.1",
+    "csstype": "^3.0.10",
     "dayjs": "^1.11.19",
     "goober": "^2.1.18",
     "solid-js": "^1.9.11"
   },
   "devDependencies": {
+    "rolldown-plugin-solid": "^0.2.1",
+    "tsdown": "^0.21.1",
     "vite-plugin-solid": "^2.11.10"
   }
 }
