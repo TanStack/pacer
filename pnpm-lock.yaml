@@ -4335,11 +4335,11 @@ importers:
   packages/pacer-devtools:
     dependencies:
       '@tanstack/devtools-ui':
-        specifier: ^0.5.0
-        version: 0.5.0(csstype@3.2.3)(solid-js@1.9.11)
+        specifier: 0.5.1
+        version: 0.5.1(csstype@3.2.3)(solid-js@1.9.11)
       '@tanstack/devtools-utils':
-        specifier: ^0.3.2
-        version: 0.3.4(@types/react@19.2.14)(csstype@3.2.3)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)
+        specifier: ^0.4.0
+        version: 0.4.0(@types/react@19.2.14)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/pacer':
         specifier: '>=0.16.4'
         version: link:../pacer
@@ -4400,8 +4400,8 @@ importers:
   packages/preact-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
-        specifier: ^0.3.2
-        version: 0.3.4(@types/react@19.2.14)(csstype@3.2.3)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)
+        specifier: ^0.4.0
+        version: 0.4.0(@types/react@19.2.14)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -4453,8 +4453,8 @@ importers:
   packages/react-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
-        specifier: ^0.3.2
-        version: 0.3.4(@types/react@19.2.14)(csstype@3.2.3)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)
+        specifier: ^0.4.0
+        version: 0.4.0(@types/react@19.2.14)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -4506,8 +4506,8 @@ importers:
   packages/solid-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
-        specifier: ^0.3.2
-        version: 0.3.4(@types/react@19.2.14)(csstype@3.2.3)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)
+        specifier: ^0.4.0
+        version: 0.4.0(@types/react@19.2.14)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -6493,14 +6493,14 @@ packages:
     peerDependencies:
       solid-js: '>=1.9.7'
 
-  '@tanstack/devtools-ui@0.5.0':
-    resolution: {integrity: sha512-nNZ14054n31fWB61jtWhZYLRdQ3yceCE3G/RINoINUB0RqIGZAIm9DnEDwOTAOfqt4/a/D8vNk8pJu6RQUp74g==}
+  '@tanstack/devtools-ui@0.5.1':
+    resolution: {integrity: sha512-T9JjAdqMSnxsVO6AQykD5vhxPF4iFLKtbYxee/bU3OLlk446F5C1220GdCmhDSz7y4lx+m8AvIS0bq6zzvdDUA==}
     engines: {node: '>=18'}
     peerDependencies:
       solid-js: '>=1.9.7'
 
-  '@tanstack/devtools-utils@0.3.4':
-    resolution: {integrity: sha512-lQdUdpSh1odWCZjtjOi9FA+MJWvIK/4TkGyeJeiOX7eY3JW+z3FNwHUR10vToHOwAJB6UGJhi04RNZQRpiM7GQ==}
+  '@tanstack/devtools-utils@0.4.0':
+    resolution: {integrity: sha512-KsGzYhA8L/fCNgyyMyoUy+TKtx+DjNbzWwqH6wXL48Llzo7kvV9RynYJlaO8Qkzwm+NdHXSgsljQNjQ3CKPpZA==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -11754,7 +11754,7 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools-ui@0.5.0(csstype@3.2.3)(solid-js@1.9.11)':
+  '@tanstack/devtools-ui@0.5.1(csstype@3.2.3)(solid-js@1.9.11)':
     dependencies:
       clsx: 2.1.1
       dayjs: 1.11.19
@@ -11763,16 +11763,12 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools-utils@0.3.4(@types/react@19.2.14)(csstype@3.2.3)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)':
-    dependencies:
-      '@tanstack/devtools-ui': 0.5.0(csstype@3.2.3)(solid-js@1.9.11)
+  '@tanstack/devtools-utils@0.4.0(@types/react@19.2.14)(preact@10.28.4)(react@19.2.4)(solid-js@1.9.11)':
     optionalDependencies:
       '@types/react': 19.2.14
       preact: 10.28.4
       react: 19.2.4
       solid-js: 1.9.11
-    transitivePeerDependencies:
-      - csstype
 
   '@tanstack/devtools@0.10.6(csstype@3.2.3)(solid-js@1.9.11)':
     dependencies:
