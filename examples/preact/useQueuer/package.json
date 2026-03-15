@@ -9,10 +9,10 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/preact-devtools": "^0.9.10",
+    "@tanstack/preact-devtools": "^0.9.18",
     "@tanstack/preact-pacer": "^0.20.0",
     "@tanstack/preact-pacer-devtools": "workspace:*",
-    "preact": "^10.28.3"
+    "preact": "^10.29.0"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.3",

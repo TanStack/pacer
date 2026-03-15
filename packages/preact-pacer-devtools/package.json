@@ -52,13 +52,13 @@
     "preact": ">=10.0.0"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.3.2",
+    "@tanstack/devtools-utils": "^0.3.4",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.3",
     "@testing-library/preact": "^3.2.4",
-    "csstype": "^3.0.10",
-    "preact": "^10.28.3"
+    "csstype": "^3.2.3",
+    "preact": "^10.29.0"
   }
 }
