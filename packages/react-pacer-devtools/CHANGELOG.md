@@ -1,5 +1,14 @@
 # @tanstack/react-pacer-devtools
 
+## 0.5.4
+
+### Patch Changes
+
+- Update devtools-utils to fix theme miss match. ([#170](https://github.com/TanStack/pacer/pull/170))
+
+- Updated dependencies [[`434d227`](https://github.com/TanStack/pacer/commit/434d2274561544baa85dc1b031966a3b09162f4d)]:
+  - @tanstack/pacer-devtools@1.1.4
+
 ## 0.5.3
 
 ### Patch Changes
