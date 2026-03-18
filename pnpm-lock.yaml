@@ -2835,7 +2835,7 @@ importers:
         specifier: 0.9.5
         version: 0.9.5(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/react-pacer-devtools':
-        specifier: 0.5.4
+        specifier: 0.5.5
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
         specifier: ^19.2.14
@@ -3468,7 +3468,7 @@ importers:
         specifier: 0.9.5
         version: 0.9.5(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/react-pacer-devtools':
-        specifier: 0.5.4
+        specifier: 0.5.5
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
         specifier: ^19.2.14
@@ -3758,7 +3758,7 @@ importers:
         specifier: 0.9.5
         version: 0.9.5(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(solid-js@1.9.11)
       '@tanstack/react-pacer-devtools':
-        specifier: 0.5.4
+        specifier: 0.5.5
         version: link:../../../packages/react-pacer-devtools
       '@types/react':
         specifier: ^19.2.14
@@ -4006,7 +4006,7 @@ importers:
         specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
-        specifier: 0.5.4
+        specifier: 0.5.5
         version: link:../../../packages/solid-pacer-devtools
       solid-js:
         specifier: ^1.9.11
@@ -4028,7 +4028,7 @@ importers:
         specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
-        specifier: 0.5.4
+        specifier: 0.5.5
         version: link:../../../packages/solid-pacer-devtools
       solid-js:
         specifier: ^1.9.11
@@ -4162,7 +4162,7 @@ importers:
         specifier: ^0.19.0
         version: link:../../../packages/solid-pacer
       '@tanstack/solid-pacer-devtools':
-        specifier: 0.5.4
+        specifier: 0.5.5
         version: link:../../../packages/solid-pacer-devtools
       solid-js:
         specifier: ^1.9.11

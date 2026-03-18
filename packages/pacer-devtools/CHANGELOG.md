@@ -1,5 +1,11 @@
 # @tanstack/pacer-devtools
 
+## 1.1.5
+
+### Patch Changes
+
+- Moves devtools theme to the component to avoid theme mismatch. ([#173](https://github.com/TanStack/pacer/pull/173))
+
 ## 1.1.4
 
 ### Patch Changes
