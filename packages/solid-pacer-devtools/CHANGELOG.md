@@ -1,5 +1,12 @@
 # @tanstack/solid-pacer-devtools
 
+## 0.5.5
+
+### Patch Changes
+
+- Updated dependencies [[`265b355`](https://github.com/TanStack/pacer/commit/265b355377a7e90cf6d741bbdc6fd346ff837a2c)]:
+  - @tanstack/pacer-devtools@1.1.5
+
 ## 0.5.4
 
 ### Patch Changes
