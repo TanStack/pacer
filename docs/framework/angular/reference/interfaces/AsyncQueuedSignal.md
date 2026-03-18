@@ -33,7 +33,7 @@ Defined in: [angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts:10](https
 ### addItem()
 
 ```ts
-addItem: (item, position?, runOnItemsChange?) => boolean;
+addItem: (item, position, runOnItemsChange) => boolean;
 ```
 
 Defined in: [angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L11)
@@ -47,13 +47,13 @@ Items can be inserted based on priority or at the front/back depending on config
 
 `TValue`
 
-##### position?
+##### position
 
-`QueuePosition`
+`QueuePosition` = `...`
 
-##### runOnItemsChange?
+##### runOnItemsChange
 
-`boolean`
+`boolean` = `true`
 
 #### Returns
 

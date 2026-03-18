@@ -1,8 +1,7 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "jsx": "preserve"
-  },
-  "include": ["src", "vitest.config.ts", "tests"],
-  "exclude": ["eslint.config.js"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.lib.json" },
+    { "path": "./tsconfig.spec.json" }
+  ]
 }
