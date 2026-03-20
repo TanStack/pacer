@@ -12,7 +12,7 @@ function useDebouncedValue<TValue, TSelected>(
    selector?): [TValue, PreactDebouncer<Dispatch<StateUpdater<TValue>>, TSelected>];
 ```
 
-Defined in: [preact-pacer/src/debouncer/useDebouncedValue.ts:88](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncedValue.ts#L88)
+Defined in: [preact-pacer/src/debouncer/useDebouncedValue.ts:88](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncedValue.ts#L88)
 
 A Preact hook that creates a debounced value that updates only after a specified delay.
 Unlike useDebouncedState, this hook automatically tracks changes to the input value

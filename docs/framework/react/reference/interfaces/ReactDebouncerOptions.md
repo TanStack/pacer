@@ -5,7 +5,7 @@ title: ReactDebouncerOptions
 
 # Interface: ReactDebouncerOptions\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L13)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:13](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/debouncer/useDebouncer.ts:13](https://github.com/Ta
 optional onUnmount: (debouncer) => void;
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L21)
+Defined in: [react-pacer/src/debouncer/useDebouncer.ts:21](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L21)
 
 Optional callback invoked when the component unmounts. Receives the debouncer instance.
 When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.

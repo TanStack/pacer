@@ -5,7 +5,7 @@ title: ReactAsyncDebouncerOptions
 
 # Interface: ReactAsyncDebouncerOptions\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L13)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:13](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:13](https://gi
 optional onUnmount: (debouncer) => void;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L21)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:21](https://github.com/ghostd/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L21)
 
 Optional callback invoked when the component unmounts. Receives the debouncer instance.
 When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.

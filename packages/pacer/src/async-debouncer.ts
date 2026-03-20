@@ -29,7 +29,7 @@ export interface AsyncDebouncerState<TFn extends AnyAsyncFunction> {
   /**
    * The result from the most recent successful function execution
    */
-  lastResult: ReturnType<TFn> | undefined
+  lastResult: Awaited<ReturnType<TFn>> | undefined
   /**
    * Number of times maybeExecute has been called (for reduction calculations)
    */
@@ -111,7 +111,7 @@ export interface AsyncDebouncerOptions<TFn extends AnyAsyncFunction> {
    * Optional callback to call when the debounced function is executed
    */
   onSuccess?: (
-    result: ReturnType<TFn>,
+    result: Awaited<ReturnType<TFn>>,
     args: Parameters<TFn>,
     debouncer: AsyncDebouncer<TFn>,
   ) => void
@@ -224,7 +224,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: NodeJS.Timeout | null = null
   #resolvePreviousPromise:
-    | ((value?: ReturnType<TFn> | undefined) => void)
+    | ((value?: Awaited<ReturnType<TFn>> | undefined) => void)
     | null = null
 
   constructor(
@@ -313,7 +313,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    */
   maybeExecute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> => {
+  ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (!this.#getEnabled()) return undefined
     this.#cancelPendingExecution()
     this.#setState({
@@ -333,7 +333,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#setState({ isPending: true })
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise<Awaited<ReturnType<TFn>> | undefined>((resolve, reject) => {
       this.#resolvePreviousPromise = resolve
       // this.#rejectPreviousPromise = reject
       this.#timeoutId = setTimeout(async () => {
@@ -356,7 +356,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
 
   #execute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> => {
+  ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (!this.#getEnabled()) return undefined
     const currentMaybeExecuteCount = this.store.state.maybeExecuteCount + 1
 
@@ -372,7 +372,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
+      this.options.onSuccess?.(result as Awaited<ReturnType<TFn>>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
@@ -397,7 +397,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   /**
    * Processes the current pending execution immediately
    */
-  flush = async (): Promise<ReturnType<TFn> | undefined> => {
+  flush = async (): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
       const { lastArgs } = this.store.state
       this.#cancelPendingExecution()

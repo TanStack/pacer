@@ -5,7 +5,7 @@ title: PreactAsyncRateLimiterOptions
 
 # Interface: PreactAsyncRateLimiterOptions\<TFn, TSelected\>
 
-Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L13)
+Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:13](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:13](http
 optional onUnmount: (rateLimiter) => void;
 ```
 
-Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L21)
+Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:21](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L21)
 
 Optional callback invoked when the component unmounts. Receives the rate limiter instance.
 When provided, replaces the default cleanup (abort); use it to call reset(), add logging, etc.

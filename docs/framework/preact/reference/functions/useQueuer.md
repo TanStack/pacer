@@ -12,7 +12,7 @@ function useQueuer<TValue, TSelected>(
 selector): PreactQueuer<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/queuer/useQueuer.ts:194](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L194)
+Defined in: [preact-pacer/src/queuer/useQueuer.ts:194](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L194)
 
 A Preact hook that creates and manages a Queuer instance.
 

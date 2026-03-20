@@ -12,7 +12,7 @@ function useDebouncedState<TValue, TSelected>(
    selector?): [TValue, Dispatch<StateUpdater<TValue>>, PreactDebouncer<Dispatch<StateUpdater<TValue>>, TSelected>];
 ```
 
-Defined in: [preact-pacer/src/debouncer/useDebouncedState.ts:79](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncedState.ts#L79)
+Defined in: [preact-pacer/src/debouncer/useDebouncedState.ts:79](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncedState.ts#L79)
 
 A Preact hook that creates a debounced state value, combining Preact's useState with debouncing functionality.
 This hook provides both the current debounced value and methods to update it.

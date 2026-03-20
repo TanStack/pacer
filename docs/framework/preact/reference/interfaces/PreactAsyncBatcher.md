@@ -5,7 +5,7 @@ title: PreactAsyncBatcher
 
 # Interface: PreactAsyncBatcher\<TValue, TSelected\>
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L23)
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:23](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L23)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:23](https://githu
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:49](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L49)
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:49](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L49)
 
 Reactive state that will be updated and re-rendered when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:55](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L55)
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:55](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L55)
 
 #### Deprecated
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L40)
+Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:40](https://github.com/ghostd/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L40)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the async batcher state.
 
