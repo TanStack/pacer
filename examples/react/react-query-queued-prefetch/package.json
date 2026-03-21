@@ -10,15 +10,15 @@
   },
   "dependencies": {
     "@tanstack/react-pacer": "^0.20.0",
-    "@tanstack/react-query": "^5.90.21",
-    "@tanstack/react-query-devtools": "^5.91.3",
+    "@tanstack/react-query": "^5.94.5",
+    "@tanstack/react-query-devtools": "^5.94.5",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.4",
+    "@vitejs/plugin-react": "^5.2.0",
     "vite": "^7.3.1"
   },
   "browserslist": {
