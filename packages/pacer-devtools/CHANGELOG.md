@@ -1,5 +1,11 @@
 # @tanstack/pacer-devtools
 
+## 1.2.0
+
+### Minor Changes
+
+- feat: TanStack Store Upgrade to alien signals ([#178](https://github.com/TanStack/pacer/pull/178))
+
 ## 1.1.5
 
 ### Patch Changes

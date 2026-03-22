@@ -1,5 +1,16 @@
 # @tanstack/react-pacer-devtools
 
+## 0.6.0
+
+### Minor Changes
+
+- feat: TanStack Store Upgrade to alien signals ([#178](https://github.com/TanStack/pacer/pull/178))
+
+### Patch Changes
+
+- Updated dependencies [[`225381e`](https://github.com/TanStack/pacer/commit/225381e40d848b0bf35a690bb9d5009255fb4c9d)]:
+  - @tanstack/pacer-devtools@1.2.0
+
 ## 0.5.5
 
 ### Patch Changes
