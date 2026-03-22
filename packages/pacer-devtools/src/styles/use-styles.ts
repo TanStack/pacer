@@ -10,9 +10,30 @@ const stylesFactory = (theme: 'light' | 'dark') => {
   const t = (light: string, dark: string) => (theme === 'light' ? light : dark)
 
   return {
+    /**
+     * Fills the devtools-utils portal div (height: 100%) and is a flex parent so MainPanel
+     * gets a real flex height budget (not just height: 100% without a flex chain).
+     */
+    shellRoot: css`
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+    `,
+    /** Overrides devtools-ui MainPanel overflow-y: auto so inner columns own scrolling */
+    mainPanelShell: css`
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 0%;
+      min-height: 0;
+      overflow: hidden !important;
+    `,
     mainContainer: css`
       display: flex;
-      flex: 1;
+      flex: 1 1 0%;
       min-height: 0;
       overflow: hidden;
       padding: ${size[2]};

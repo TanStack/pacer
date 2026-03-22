@@ -1,4 +1,10 @@
-import { createMemo, createSignal, onCleanup, onMount } from 'solid-js'
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  onCleanup,
+  onMount,
+} from 'solid-js'
 import { Header, HeaderLogo, MainPanel } from '@tanstack/devtools-ui'
 import { useStyles } from '../styles/use-styles'
 import { usePacerDevtoolsState } from '../PacerContextProvider'
@@ -7,6 +13,23 @@ import { UtilList } from './UtilList'
 import { DetailsPanel } from './DetailsPanel'
 import type { StateKey } from './util-groups'
 
+function readResizeObserverBlockSize(entry: ResizeObserverEntry): number {
+  const box = entry.borderBoxSize?.[0]
+  if (box) return box.blockSize
+  return entry.contentRect.height
+}
+
+/** Outer plugin slot from TanStack Devtools (not the inner React mount div, which can report a tiny height). */
+function resolvePluginHost(el: HTMLElement): HTMLElement | null {
+  const byId = el.closest<HTMLElement>('[id^="plugin-container-"]')
+  if (byId) return byId
+  return (
+    el.parentElement?.parentElement?.parentElement ??
+    el.parentElement?.parentElement ??
+    el.parentElement
+  )
+}
+
 export function Shell() {
   const styles = useStyles()
   const state = usePacerDevtoolsState()
@@ -14,6 +37,12 @@ export function Shell() {
   const [selectedKey, setSelectedKey] = createSignal<string | null>(null)
   const [leftPanelWidth, setLeftPanelWidth] = createSignal(300)
   const [isDragging, setIsDragging] = createSignal(false)
+  const [shellRootEl, setShellRootEl] = createSignal<HTMLDivElement | null>(
+    null,
+  )
+  const [slotHeightPx, setSlotHeightPx] = createSignal<number | undefined>(
+    undefined,
+  )
 
   const selectedInstance = createMemo(() => {
     const key = selectedKey()
@@ -65,43 +94,83 @@ export function Shell() {
     document.removeEventListener('mouseup', handleMouseUp)
   })
 
+  /**
+   * TanStack Devtools plugin slots use height: 100% without min-height: 0 on flex
+   * ancestors, so percentage height often never constrains our tree. Observing the
+   * outer `plugin-container-*` host (not the immediate React mount wrapper) and
+   * setting an explicit pixel height makes inner overflow-y regions scroll without
+   * capping to the mount div’s collapsed height.
+   */
+  createEffect(() => {
+    const el = shellRootEl()
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const pluginSlot = resolvePluginHost(el)
+    if (!pluginSlot) return
+
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      if (!entry) return
+      const target = entry.target as HTMLElement
+      const h =
+        target.clientHeight > 0
+          ? target.clientHeight
+          : readResizeObserverBlockSize(entry)
+      if (h > 0) setSlotHeightPx(Math.round(h))
+    })
+    ro.observe(pluginSlot)
+    onCleanup(() => ro.disconnect())
+  })
+
   return (
-    <MainPanel>
-      <Header>
-        <HeaderLogo flavor={{ light: '#84cc16', dark: '#84cc16' }}>
-          TanStack Pacer
-        </HeaderLogo>
-      </Header>
+    <div
+      ref={setShellRootEl}
+      class={styles().shellRoot}
+      style={{
+        ...(slotHeightPx() !== undefined
+          ? {
+              height: `${slotHeightPx()}px`,
+              'max-height': `${slotHeightPx()}px`,
+            }
+          : {}),
+      }}
+    >
+      <MainPanel class={styles().mainPanelShell}>
+        <Header>
+          <HeaderLogo flavor={{ light: '#84cc16', dark: '#84cc16' }}>
+            TanStack Pacer
+          </HeaderLogo>
+        </Header>
 
-      <div class={styles().mainContainer}>
-        <div
-          class={styles().leftPanel}
-          style={{
-            width: `${leftPanelWidth()}px`,
-            'min-width': '150px',
-            'max-width': '800px',
-          }}
-        >
-          <UtilList
-            selectedKey={selectedKey}
-            setSelectedKey={setSelectedKey}
-            utilState={utilState}
+        <div class={styles().mainContainer}>
+          <div
+            class={styles().leftPanel}
+            style={{
+              width: `${leftPanelWidth()}px`,
+              'min-width': '150px',
+              'max-width': '800px',
+            }}
+          >
+            <UtilList
+              selectedKey={selectedKey}
+              setSelectedKey={setSelectedKey}
+              utilState={utilState}
+            />
+          </div>
+
+          <div
+            class={`${styles().dragHandle} ${isDragging() ? 'dragging' : ''}`}
+            onMouseDown={handleMouseDown}
           />
-        </div>
 
-        <div
-          class={`${styles().dragHandle} ${isDragging() ? 'dragging' : ''}`}
-          onMouseDown={handleMouseDown}
-        />
-
-        <div class={styles().rightPanel} style={{ flex: 1 }}>
-          <div class={styles().panelHeader}>Details</div>
-          <DetailsPanel
-            selectedInstance={selectedInstance}
-            utilState={utilState}
-          />
+          <div class={styles().rightPanel} style={{ flex: 1 }}>
+            <div class={styles().panelHeader}>Details</div>
+            <DetailsPanel
+              selectedInstance={selectedInstance}
+              utilState={utilState}
+            />
+          </div>
         </div>
-      </div>
-    </MainPanel>
+      </MainPanel>
+    </div>
   )
 }

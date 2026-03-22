@@ -1,6 +1,10 @@
 import { emitChange } from '@tanstack/pacer'
+import { useStore } from '@tanstack/solid-store'
 import { useStyles } from '../styles/use-styles'
-import { getPacerUtilStoreState } from '../utils/read-pacer-store-state'
+import {
+  getPacerUtilStoreState,
+  isPacerUtilTanStackStore,
+} from '../utils/read-pacer-store-state'
 import type { PacerEventName } from '@tanstack/pacer'
 
 type ActionButtonsProps = {
@@ -11,17 +15,35 @@ type ActionButtonsProps = {
 export function ActionButtons(props: ActionButtonsProps) {
   const styles = useStyles()
   const utilInstance = props.instance
-  const _rawState = getPacerUtilStoreState(utilInstance)
-  const utilState =
-    _rawState !== null &&
-    _rawState !== undefined &&
-    typeof _rawState === 'object'
-      ? (_rawState as Record<string, unknown>)
-      : undefined
-  const hasPending = utilState && 'isPending' in utilState
-  const hasEmpty = utilState && 'isEmpty' in utilState
-  const isPending = hasPending ? !!utilState.isPending : false
-  const isEmptyFlag = hasEmpty ? !!utilState.isEmpty : false
+  const store = utilInstance?.store
+
+  const stateAccessor = isPacerUtilTanStackStore(store)
+    ? useStore(store as never, (s: unknown) =>
+        s !== null && s !== undefined && typeof s === 'object'
+          ? (s as Record<string, unknown>)
+          : {},
+      )
+    : () =>
+        getPacerUtilStoreState(utilInstance) as Record<string, unknown>
+
+  const getState = () => {
+    const s = stateAccessor()
+    if (s === null || s === undefined || typeof s !== 'object') return undefined
+    return s as Record<string, unknown>
+  }
+
+  const hasPending = () => {
+    const u = getState()
+    return !!(u && 'isPending' in u)
+  }
+  const isPending = () => {
+    const u = getState()
+    return u && 'isPending' in u ? !!u.isPending : false
+  }
+  const isEmptyFlag = () => {
+    const u = getState()
+    return u && 'isEmpty' in u ? !!u.isEmpty : false
+  }
 
   const hasFlush = typeof utilInstance.flush === 'function'
   const hasCancel = typeof utilInstance.cancel === 'function'
@@ -31,10 +53,12 @@ export function ActionButtons(props: ActionButtonsProps) {
   const hasStop = typeof utilInstance.stop === 'function'
   const hasStartStop = hasStart && hasStop
 
-  const isRunning =
-    utilState && 'isRunning' in utilState ? !!utilState.isRunning : true
+  const isRunning = () => {
+    const u = getState()
+    return u && 'isRunning' in u ? !!u.isRunning : true
+  }
 
-  if (!hasPending && !hasFlush && !hasCancel && !hasReset && !hasClear) {
+  if (!hasPending() && !hasFlush && !hasCancel && !hasReset && !hasClear) {
     return (
       <div class={styles().sectionEmpty}>
         No actions available for this util
@@ -43,14 +67,15 @@ export function ActionButtons(props: ActionButtonsProps) {
   }
 
   const emitName = `d-${props.utilName}` as PacerEventName
+  const utilNameLower = props.utilName.toLowerCase()
 
   return (
     <div class={styles().actionsRow}>
-      {hasPending && (
+      {hasPending() && (
         <button
           class={styles().actionButton}
           onMouseDown={() => {
-            const next = !isPending
+            const next = !isPending()
             utilInstance.store.setState((prev: any) => ({
               ...prev,
               isPending: next,
@@ -59,7 +84,7 @@ export function ActionButtons(props: ActionButtonsProps) {
           }}
         >
           <span class={styles().actionDotBlue} />
-          {isPending ? 'Restore Pending' : 'Trigger Pending'}
+          {isPending() ? 'Restore Pending' : 'Trigger Pending'}
         </button>
       )}
       {hasFlush && (
@@ -70,12 +95,10 @@ export function ActionButtons(props: ActionButtonsProps) {
             emitChange(emitName, utilInstance)
           }}
           disabled={
-            (props.utilName.toLowerCase().includes('debouncer') &&
-              !isPending) ||
-            (props.utilName.toLowerCase().includes('throttler') &&
-              !isPending) ||
-            (props.utilName.toLowerCase().includes('batcher') && isEmptyFlag) ||
-            (props.utilName.toLowerCase().includes('queuer') && isEmptyFlag)
+            (utilNameLower.includes('debouncer') && !isPending()) ||
+            (utilNameLower.includes('throttler') && !isPending()) ||
+            (utilNameLower.includes('batcher') && isEmptyFlag()) ||
+            (utilNameLower.includes('queuer') && isEmptyFlag())
           }
         >
           <span class={styles().actionDotGreen} />
@@ -90,12 +113,10 @@ export function ActionButtons(props: ActionButtonsProps) {
             emitChange(emitName, utilInstance)
           }}
           disabled={
-            (props.utilName.toLowerCase().includes('debouncer') &&
-              !isPending) ||
-            (props.utilName.toLowerCase().includes('throttler') &&
-              !isPending) ||
-            (props.utilName.toLowerCase().includes('batcher') && isEmptyFlag) ||
-            (props.utilName.toLowerCase().includes('queuer') && isEmptyFlag)
+            (utilNameLower.includes('debouncer') && !isPending()) ||
+            (utilNameLower.includes('throttler') && !isPending()) ||
+            (utilNameLower.includes('batcher') && isEmptyFlag()) ||
+            (utilNameLower.includes('queuer') && isEmptyFlag())
           }
         >
           <span class={styles().actionDotRed} />
@@ -122,8 +143,8 @@ export function ActionButtons(props: ActionButtonsProps) {
             emitChange(emitName, utilInstance)
           }}
           disabled={
-            (props.utilName.toLowerCase().includes('batcher') && isEmptyFlag) ||
-            (props.utilName.toLowerCase().includes('queuer') && isEmptyFlag)
+            (utilNameLower.includes('batcher') && isEmptyFlag()) ||
+            (utilNameLower.includes('queuer') && isEmptyFlag())
           }
         >
           <span class={styles().actionDotOrange} />
@@ -134,7 +155,7 @@ export function ActionButtons(props: ActionButtonsProps) {
         <button
           class={styles().actionButton}
           onMouseDown={() => {
-            if (isRunning) {
+            if (isRunning()) {
               utilInstance.stop()
             } else {
               utilInstance.start()
@@ -143,7 +164,7 @@ export function ActionButtons(props: ActionButtonsProps) {
           }}
         >
           <span class={styles().actionDotPurple} />
-          {isRunning ? 'Stop' : 'Start'}
+          {isRunning() ? 'Stop' : 'Start'}
         </button>
       )}
     </div>
