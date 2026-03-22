@@ -14,8 +14,8 @@ import { DetailsPanel } from './DetailsPanel'
 import type { StateKey } from './util-groups'
 
 function readResizeObserverBlockSize(entry: ResizeObserverEntry): number {
-  const box = entry.borderBoxSize?.[0]
-  if (box) return box.blockSize
+  const [box] = entry.borderBoxSize
+  if (box !== undefined) return box.blockSize
   return entry.contentRect.height
 }
 

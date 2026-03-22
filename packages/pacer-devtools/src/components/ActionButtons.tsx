@@ -26,23 +26,19 @@ export function ActionButtons(props: ActionButtonsProps) {
     : () =>
         getPacerUtilStoreState(utilInstance) as Record<string, unknown>
 
-  const getState = () => {
-    const s = stateAccessor()
-    if (s === null || s === undefined || typeof s !== 'object') return undefined
-    return s as Record<string, unknown>
-  }
+  const getState = () => stateAccessor()
 
   const hasPending = () => {
     const u = getState()
-    return !!(u && 'isPending' in u)
+    return 'isPending' in u
   }
   const isPending = () => {
     const u = getState()
-    return u && 'isPending' in u ? !!u.isPending : false
+    return 'isPending' in u ? !!u.isPending : false
   }
   const isEmptyFlag = () => {
     const u = getState()
-    return u && 'isEmpty' in u ? !!u.isEmpty : false
+    return 'isEmpty' in u ? !!u.isEmpty : false
   }
 
   const hasFlush = typeof utilInstance.flush === 'function'
@@ -55,7 +51,7 @@ export function ActionButtons(props: ActionButtonsProps) {
 
   const isRunning = () => {
     const u = getState()
-    return u && 'isRunning' in u ? !!u.isRunning : true
+    return 'isRunning' in u ? !!u.isRunning : true
   }
 
   if (!hasPending() && !hasFlush && !hasCancel && !hasReset && !hasClear) {
