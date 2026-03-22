@@ -1,9 +1,12 @@
-import { constructCoreClass } from '@tanstack/devtools-utils/solid'
+import {
+  
+  constructCoreClass
+} from '@tanstack/devtools-utils/solid'
+import type {ClassType} from '@tanstack/devtools-utils/solid';
 
 export interface PacerDevtoolsInit {}
 
-const [PacerDevtoolsCore, PacerDevtoolsCoreNoOp] = constructCoreClass(
-  () => import('./components'),
-)
+const coreClasses = constructCoreClass(() => import('./components'))
 
-export { PacerDevtoolsCore, PacerDevtoolsCoreNoOp }
+export const PacerDevtoolsCore: ClassType = coreClasses[0]
+export const PacerDevtoolsCoreNoOp: ClassType = coreClasses[1]

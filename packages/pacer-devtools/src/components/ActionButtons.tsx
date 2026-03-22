@@ -1,5 +1,6 @@
-import { pacerEventClient } from '@tanstack/pacer'
+import { emitChange } from '@tanstack/pacer'
 import { useStyles } from '../styles/use-styles'
+import { getPacerUtilStoreState } from '../utils/read-pacer-store-state'
 import type { PacerEventName } from '@tanstack/pacer'
 
 type ActionButtonsProps = {
@@ -10,11 +11,17 @@ type ActionButtonsProps = {
 export function ActionButtons(props: ActionButtonsProps) {
   const styles = useStyles()
   const utilInstance = props.instance
-  const utilState = utilInstance?.store?.state
+  const _rawState = getPacerUtilStoreState(utilInstance)
+  const utilState =
+    _rawState !== null &&
+    _rawState !== undefined &&
+    typeof _rawState === 'object'
+      ? (_rawState as Record<string, unknown>)
+      : undefined
   const hasPending = utilState && 'isPending' in utilState
   const hasEmpty = utilState && 'isEmpty' in utilState
   const isPending = hasPending ? !!utilState.isPending : false
-  const isEmpty = hasEmpty ? utilState.isEmpty : undefined
+  const isEmptyFlag = hasEmpty ? !!utilState.isEmpty : false
 
   const hasFlush = typeof utilInstance.flush === 'function'
   const hasCancel = typeof utilInstance.cancel === 'function'
@@ -24,7 +31,8 @@ export function ActionButtons(props: ActionButtonsProps) {
   const hasStop = typeof utilInstance.stop === 'function'
   const hasStartStop = hasStart && hasStop
 
-  const isRunning = utilState?.isRunning ?? true
+  const isRunning =
+    utilState && 'isRunning' in utilState ? !!utilState.isRunning : true
 
   if (!hasPending && !hasFlush && !hasCancel && !hasReset && !hasClear) {
     return (
@@ -47,7 +55,7 @@ export function ActionButtons(props: ActionButtonsProps) {
               ...prev,
               isPending: next,
             }))
-            pacerEventClient.emit(emitName, utilInstance)
+            emitChange(emitName, utilInstance)
           }}
         >
           <span class={styles().actionDotBlue} />
@@ -59,15 +67,15 @@ export function ActionButtons(props: ActionButtonsProps) {
           class={styles().actionButton}
           onMouseDown={() => {
             utilInstance.flush()
-            pacerEventClient.emit(emitName, utilInstance)
+            emitChange(emitName, utilInstance)
           }}
           disabled={
             (props.utilName.toLowerCase().includes('debouncer') &&
               !isPending) ||
             (props.utilName.toLowerCase().includes('throttler') &&
               !isPending) ||
-            (props.utilName.toLowerCase().includes('batcher') && isEmpty) ||
-            (props.utilName.toLowerCase().includes('queuer') && isEmpty)
+            (props.utilName.toLowerCase().includes('batcher') && isEmptyFlag) ||
+            (props.utilName.toLowerCase().includes('queuer') && isEmptyFlag)
           }
         >
           <span class={styles().actionDotGreen} />
@@ -79,15 +87,15 @@ export function ActionButtons(props: ActionButtonsProps) {
           class={styles().actionButton}
           onMouseDown={() => {
             utilInstance.cancel()
-            pacerEventClient.emit(emitName, utilInstance)
+            emitChange(emitName, utilInstance)
           }}
           disabled={
             (props.utilName.toLowerCase().includes('debouncer') &&
               !isPending) ||
             (props.utilName.toLowerCase().includes('throttler') &&
               !isPending) ||
-            (props.utilName.toLowerCase().includes('batcher') && isEmpty) ||
-            (props.utilName.toLowerCase().includes('queuer') && isEmpty)
+            (props.utilName.toLowerCase().includes('batcher') && isEmptyFlag) ||
+            (props.utilName.toLowerCase().includes('queuer') && isEmptyFlag)
           }
         >
           <span class={styles().actionDotRed} />
@@ -99,7 +107,7 @@ export function ActionButtons(props: ActionButtonsProps) {
           class={styles().actionButton}
           onMouseDown={() => {
             utilInstance.reset()
-            pacerEventClient.emit(emitName, utilInstance)
+            emitChange(emitName, utilInstance)
           }}
         >
           <span class={styles().actionDotYellow} />
@@ -111,11 +119,11 @@ export function ActionButtons(props: ActionButtonsProps) {
           class={styles().actionButton}
           onMouseDown={() => {
             utilInstance.clear()
-            pacerEventClient.emit(emitName, utilInstance)
+            emitChange(emitName, utilInstance)
           }}
           disabled={
-            (props.utilName.toLowerCase().includes('batcher') && isEmpty) ||
-            (props.utilName.toLowerCase().includes('queuer') && isEmpty)
+            (props.utilName.toLowerCase().includes('batcher') && isEmptyFlag) ||
+            (props.utilName.toLowerCase().includes('queuer') && isEmptyFlag)
           }
         >
           <span class={styles().actionDotOrange} />
@@ -131,7 +139,7 @@ export function ActionButtons(props: ActionButtonsProps) {
             } else {
               utilInstance.start()
             }
-            pacerEventClient.emit(emitName, utilInstance)
+            emitChange(emitName, utilInstance)
           }}
         >
           <span class={styles().actionDotPurple} />

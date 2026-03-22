@@ -289,8 +289,8 @@ export class AsyncBatcher<TValue> {
     if (this.key) {
       pacerEventClient.on('d-AsyncBatcher', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
+        this.#setState(event.payload.store.state as Partial<AsyncBatcherState<TValue>>)
+        this.setOptions(event.payload.options as Partial<AsyncBatcherOptions<TValue>>)
       })
     }
   }

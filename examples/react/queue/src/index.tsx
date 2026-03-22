@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { queue } from '@tanstack/react-pacer/queuer'
 
@@ -219,7 +219,7 @@ root.render(
       eventBusConfig={{
         debug: false,
       }}
-      plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
+      plugins={[pacerDevtoolsPlugin()]}
     />
   </div>,
 )

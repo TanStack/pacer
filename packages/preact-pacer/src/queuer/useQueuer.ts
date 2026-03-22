@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Queuer } from '@tanstack/pacer/queuer'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
@@ -211,7 +211,9 @@ export function useQueuer<TValue, TSelected = {}>(
       selector: (state: QueuerState<TValue>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(queuerInstance.store, props.selector)
+      const selected = useStore(queuerInstance.store, props.selector, {
+        equal: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -236,7 +238,7 @@ export function useQueuer<TValue, TSelected = {}>(
   }, [])
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const state = useStore(queuer.store, selector)
+  const state = useStore(queuer.store, selector, { equal: shallow })
 
   return useMemo(
     () =>
