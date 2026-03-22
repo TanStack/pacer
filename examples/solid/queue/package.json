@@ -9,14 +9,14 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/solid-devtools": "0.7.25",
+    "@tanstack/solid-devtools": "0.8.0",
     "@tanstack/solid-pacer": "^0.19.0",
     "@tanstack/solid-pacer-devtools": "0.5.5",
     "solid-js": "^1.9.11"
   },
   "devDependencies": {
-    "vite": "^7.3.1",
-    "vite-plugin-solid": "^2.11.10"
+    "vite": "^8.0.1",
+    "vite-plugin-solid": "^2.11.11"
   },
   "browserslist": {
     "production": [

@@ -1,6 +1,9 @@
-import { createStore } from 'solid-js/store'
+import { createStore, produce } from 'solid-js/store'
 import { createContext, createEffect, onCleanup, useContext } from 'solid-js'
-import { pacerEventClient } from '@tanstack/pacer/event-client'
+import {
+  getPacerDevtoolsInstance,
+  pacerEventClient,
+} from '@tanstack/pacer/event-client'
 import type {
   AsyncBatcher,
   AsyncDebouncer,
@@ -9,6 +12,7 @@ import type {
   AsyncThrottler,
   Batcher,
   Debouncer,
+  PacerEventName,
   Queuer,
   RateLimiter,
   Throttler,
@@ -49,18 +53,62 @@ const PacerDevtoolsContext = createContext<
   ]
 >([initialPacerDevtoolsStore, () => {}])
 
-const updateOrAddToArray = <T extends { key: string }>(
-  oldArray: Array<T>,
-  newItem: T,
-) => {
-  const index = oldArray.findIndex((item) => item.key === newItem.key)
-  if (index !== -1) {
-    // Update existing item
-    return oldArray.map((item, i) => (i === index ? newItem : item))
-  }
-  // Add new item
-  return [...oldArray, newItem]
-}
+type UtilListKey = Exclude<keyof PacerDevtoolsContextType, 'lastUpdatedByKey'>
+
+/**
+ * Match TanStack Form devtools: subscribe with {@link pacerEventClient.on} per
+ * event suffix so the same `pacer:${suffix}` channel the library emits on is
+ * observed. `onAllPluginEvents` only sees `tanstack-devtools-global`, which is
+ * not always relayed the same way by the shell.
+ *
+ * `d-*` suffixes are used when the devtools panel pushes state back (see
+ * ActionButtons); those must update the panel store too.
+ */
+const PACER_DEVTOOLS_UTIL_EVENTS: Array<{
+  listKey: UtilListKey
+  suffixes: ReadonlyArray<PacerEventName>
+}> = [
+  {
+    listKey: 'asyncBatchers',
+    suffixes: ['AsyncBatcher', 'd-AsyncBatcher'],
+  },
+  {
+    listKey: 'asyncDebouncers',
+    suffixes: ['AsyncDebouncer', 'd-AsyncDebouncer'],
+  },
+  {
+    listKey: 'asyncQueuers',
+    suffixes: ['AsyncQueuer', 'd-AsyncQueuer'],
+  },
+  {
+    listKey: 'asyncRateLimiters',
+    suffixes: ['AsyncRateLimiter', 'd-AsyncRateLimiter'],
+  },
+  {
+    listKey: 'asyncThrottlers',
+    suffixes: ['AsyncThrottler', 'd-AsyncThrottler'],
+  },
+  {
+    listKey: 'batchers',
+    suffixes: ['Batcher', 'd-Batcher'],
+  },
+  {
+    listKey: 'debouncers',
+    suffixes: ['Debouncer', 'd-Debouncer'],
+  },
+  {
+    listKey: 'queuers',
+    suffixes: ['Queuer', 'd-Queuer'],
+  },
+  {
+    listKey: 'rateLimiters',
+    suffixes: ['RateLimiter', 'd-RateLimiter'],
+  },
+  {
+    listKey: 'throttlers',
+    suffixes: ['Throttler', 'd-Throttler'],
+  },
+]
 
 export function PacerContextProvider(props: { children: any }) {
   const [store, setStore] = createStore<PacerDevtoolsContextType>(
@@ -68,121 +116,42 @@ export function PacerContextProvider(props: { children: any }) {
   )
 
   createEffect(() => {
-    const cleanup = pacerEventClient.onAllPluginEvents((_e) => {
-      const e = _e as unknown as { type: string; payload: any }
-      switch (e.type) {
-        case 'pacer:AsyncBatcher': {
-          setStore({
-            asyncBatchers: updateOrAddToArray(store.asyncBatchers, e.payload),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
-        case 'pacer:AsyncDebouncer': {
-          setStore({
-            asyncDebouncers: updateOrAddToArray(
-              store.asyncDebouncers,
-              e.payload,
-            ),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
-        case 'pacer:AsyncQueuer': {
-          setStore({
-            asyncQueuers: updateOrAddToArray(store.asyncQueuers, e.payload),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
-        case 'pacer:AsyncRateLimiter': {
-          setStore({
-            asyncRateLimiters: updateOrAddToArray(
-              store.asyncRateLimiters,
-              e.payload,
-            ),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
-        case 'pacer:AsyncThrottler': {
-          setStore({
-            asyncThrottlers: updateOrAddToArray(
-              store.asyncThrottlers,
-              e.payload,
-            ),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
-        case 'pacer:Batcher': {
-          setStore({
-            batchers: updateOrAddToArray(store.batchers, e.payload),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
-        case 'pacer:Debouncer': {
-          setStore({
-            debouncers: updateOrAddToArray(store.debouncers, e.payload),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
-        case 'pacer:Queuer': {
-          setStore({
-            queuers: updateOrAddToArray(store.queuers, e.payload),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
-        case 'pacer:RateLimiter': {
-          setStore({
-            rateLimiters: updateOrAddToArray(store.rateLimiters, e.payload),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
-        case 'pacer:Throttler': {
-          setStore({
-            throttlers: updateOrAddToArray(store.throttlers, e.payload),
-            lastUpdatedByKey: {
-              ...store.lastUpdatedByKey,
-              [e.payload.key]: Date.now(),
-            },
-          })
-          break
-        }
+    const cleanups: Array<() => void> = []
+
+    for (const { listKey, suffixes } of PACER_DEVTOOLS_UTIL_EVENTS) {
+      for (const suffix of suffixes) {
+        cleanups.push(
+          pacerEventClient.on(suffix, (e) => {
+            const payload = e.payload
+            const key = payload.key
+            if (!key) return
+
+            const instance = getPacerDevtoolsInstance(key)
+            if (!instance || typeof instance !== 'object') return
+
+            setStore(
+              produce((draft) => {
+                const list = draft[listKey] as Array<{ key: string }>
+                const index = list.findIndex((item) => item.key === key)
+                const inst = instance as { key: string }
+                if (index !== -1) {
+                  list[index] = inst as (typeof list)[number]
+                } else {
+                  list.push(inst as (typeof list)[number])
+                }
+                draft.lastUpdatedByKey[key] = Date.now()
+              }),
+            )
+          }),
+        )
+      }
+    }
+
+    onCleanup(() => {
+      for (const cleanup of cleanups) {
+        cleanup()
       }
     })
-    onCleanup(cleanup)
   })
   return (
     <PacerDevtoolsContext.Provider value={[store, setStore]}>

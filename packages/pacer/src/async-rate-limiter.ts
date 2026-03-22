@@ -269,8 +269,12 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     if (this.key) {
       pacerEventClient.on('d-AsyncRateLimiter', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
+        this.#setState(
+          event.payload.store.state as Partial<AsyncRateLimiterState<TFn>>,
+        )
+        this.setOptions(
+          event.payload.options as Partial<AsyncRateLimiterOptions<TFn>>,
+        )
       })
     }
   }

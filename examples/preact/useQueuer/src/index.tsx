@@ -3,7 +3,7 @@ import { render } from 'preact'
 import type { JSX } from 'preact'
 import { useQueuer } from '@tanstack/preact-pacer/queuer'
 import { PacerProvider } from '@tanstack/preact-pacer/provider'
-import { PacerDevtoolsPanel } from '@tanstack/preact-pacer-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/preact-pacer-devtools'
 import { TanStackDevtools } from '@tanstack/preact-devtools'
 
 function App1() {
@@ -274,7 +274,7 @@ render(
       eventBusConfig={{
         debug: false,
       }}
-      plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
+      plugins={[pacerDevtoolsPlugin()]}
     />
   </PacerProvider>,
   root,

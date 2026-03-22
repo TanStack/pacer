@@ -2,7 +2,7 @@
 
 import * as Devtools from './core'
 
-export const PacerDevtoolsCore =
+export const PacerDevtoolsCore: typeof Devtools.PacerDevtoolsCore =
   process.env.NODE_ENV !== 'development'
     ? Devtools.PacerDevtoolsCoreNoOp
     : Devtools.PacerDevtoolsCore

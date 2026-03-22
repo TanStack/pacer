@@ -2,6 +2,7 @@ import { JsonTree } from '@tanstack/devtools-ui'
 import { useStyles } from '../styles/use-styles'
 import { ActionButtons } from './ActionButtons'
 import { StateHeader } from './StateHeader'
+import { UtilStateJsonTree } from './UtilStateJsonTree'
 
 type DetailsPanelProps = {
   selectedInstance: () => { instance: any; type: string } | null
@@ -42,7 +43,7 @@ export function DetailsPanel(props: DetailsPanelProps) {
               <div class={styles().detailSection}>
                 <div class={styles().detailSectionHeader}>State</div>
                 <div class={styles().stateContent}>
-                  <JsonTree value={entry.instance.store?.state as unknown} />
+                  <UtilStateJsonTree instance={entry.instance} />
                 </div>
               </div>
 

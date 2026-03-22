@@ -444,18 +444,26 @@ function ComparisonApp() {
           ))}
         </div>
       </div>
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <>
       <TanStackDevtools
         eventBusConfig={{
           debug: false,
         }}
         plugins={[pacerDevtoolsPlugin()]}
       />
-    </div>
+      <ComparisonApp />
+    </>
   )
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
-root.render(<ComparisonApp />)
+root.render(<App />)
 
 // Warning icon SVG
 const WarningIcon = ({ size = 16 }: { size?: number }) => (

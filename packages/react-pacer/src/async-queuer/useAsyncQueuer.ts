@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { useStore } from '@tanstack/react-store'
+import { shallow, useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type {
@@ -248,11 +248,16 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
       mergedOptions,
     ) as unknown as ReactAsyncQueuer<TValue, TSelected>
 
+    /* eslint-disable-next-line @eslint-react/component-hook-factories -- Subscribe attached once in useState lazy init; stable per instance */
     asyncQueuerInstance.Subscribe = function Subscribe<TSelected>(props: {
       selector: (state: AsyncQueuerState<TValue>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
     }) {
-      const selected = useStore(asyncQueuerInstance.store, props.selector)
+      const selected = useStore(
+        asyncQueuerInstance.store,
+        props.selector,
+        shallow,
+      )
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -265,7 +270,7 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
   asyncQueuer.fn = fn
   asyncQueuer.setOptions(mergedOptions)
 
-  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
   useEffect(() => {
     return () => {
       if (mergedOptions.onUnmount) {
@@ -276,9 +281,9 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
       }
     }
   }, [])
-  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
+  /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
 
-  const state = useStore(asyncQueuer.store, selector)
+  const state = useStore(asyncQueuer.store, selector, shallow)
 
   return useMemo(
     () =>

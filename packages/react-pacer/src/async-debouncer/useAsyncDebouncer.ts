@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { useStore } from '@tanstack/react-store'
+import { shallow, useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -227,11 +227,16 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
       mergedOptions,
     ) as unknown as ReactAsyncDebouncer<TFn, TSelected>
 
+    /* eslint-disable-next-line @eslint-react/component-hook-factories -- Subscribe attached once in useState lazy init; stable per instance */
     asyncDebouncerInstance.Subscribe = function Subscribe<TSelected>(props: {
       selector: (state: AsyncDebouncerState<TFn>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
     }) {
-      const selected = useStore(asyncDebouncerInstance.store, props.selector)
+      const selected = useStore(
+        asyncDebouncerInstance.store,
+        props.selector,
+        shallow,
+      )
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -244,9 +249,9 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   asyncDebouncer.fn = fn
   asyncDebouncer.setOptions(mergedOptions)
 
-  const state = useStore(asyncDebouncer.store, selector)
+  const state = useStore(asyncDebouncer.store, selector, shallow)
 
-  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
   useEffect(() => {
     return () => {
       if (mergedOptions.onUnmount) {
@@ -257,7 +262,7 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
       }
     }
   }, [])
-  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
+  /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
 
   return useMemo(
     () =>

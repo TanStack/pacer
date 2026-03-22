@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type {
@@ -206,7 +206,9 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
       selector: (state: RateLimiterState) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(rateLimiterInstance.store, props.selector)
+      const selected = useStore(rateLimiterInstance.store, props.selector, {
+        equal: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -229,7 +231,7 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   }, [])
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const state = useStore(rateLimiter.store, selector)
+  const state = useStore(rateLimiter.store, selector, { equal: shallow })
 
   return useMemo(
     () =>

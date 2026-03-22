@@ -56,9 +56,9 @@
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.10.3",
+    "@preact/preset-vite": "^2.10.5",
     "@testing-library/preact": "^3.2.4",
-    "csstype": "^3.0.10",
-    "preact": "^10.28.3"
+    "csstype": "^3.2.3",
+    "preact": "^10.29.0"
   }
 }
