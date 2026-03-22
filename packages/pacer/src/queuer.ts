@@ -305,7 +305,9 @@ export class Queuer<TValue> {
     if (this.key) {
       pacerEventClient.on('d-Queuer', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state as Partial<QueuerState<TValue>>)
+        this.#setState(
+          event.payload.store.state as Partial<QueuerState<TValue>>,
+        )
         this.setOptions(event.payload.options as Partial<QueuerOptions<TValue>>)
       })
     }

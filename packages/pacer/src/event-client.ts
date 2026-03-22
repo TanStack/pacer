@@ -37,7 +37,10 @@ function cloneJsonSafe(value: unknown): unknown {
   }
 }
 
-function readStoreSnapshot(store: { get?: () => unknown; state?: unknown }): unknown {
+function readStoreSnapshot(store: {
+  get?: () => unknown
+  state?: unknown
+}): unknown {
   if (typeof store.get === 'function') {
     return store.get()
   }

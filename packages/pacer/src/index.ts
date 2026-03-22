@@ -12,7 +12,11 @@ export * from './throttler'
 export * from './types'
 export * from './utils'
 
-export { emitChange, getPacerDevtoolsInstance, pacerEventClient } from './event-client'
+export {
+  emitChange,
+  getPacerDevtoolsInstance,
+  pacerEventClient,
+} from './event-client'
 export type {
   PacerDevtoolsWirePayload,
   PacerEventMap,

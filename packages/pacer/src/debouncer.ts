@@ -161,7 +161,9 @@ export class Debouncer<TFn extends AnyFunction> {
     if (this.key) {
       pacerEventClient.on('d-Debouncer', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state as Partial<DebouncerState<TFn>>)
+        this.#setState(
+          event.payload.store.state as Partial<DebouncerState<TFn>>,
+        )
         this.setOptions(event.payload.options as Partial<DebouncerOptions<TFn>>)
       })
     }

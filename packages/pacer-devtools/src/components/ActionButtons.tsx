@@ -23,8 +23,7 @@ export function ActionButtons(props: ActionButtonsProps) {
           ? (s as Record<string, unknown>)
           : {},
       )
-    : () =>
-        getPacerUtilStoreState(utilInstance) as Record<string, unknown>
+    : () => getPacerUtilStoreState(utilInstance) as Record<string, unknown>
 
   const getState = () => stateAccessor()
 

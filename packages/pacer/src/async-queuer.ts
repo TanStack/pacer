@@ -356,8 +356,12 @@ export class AsyncQueuer<TValue> {
     if (this.key) {
       pacerEventClient.on('d-AsyncQueuer', (e) => {
         if (e.payload.key !== this.key) return
-        this.#setState(e.payload.store.state as Partial<AsyncQueuerState<TValue>>)
-        this.setOptions(e.payload.options as Partial<AsyncQueuerOptions<TValue>>)
+        this.#setState(
+          e.payload.store.state as Partial<AsyncQueuerState<TValue>>,
+        )
+        this.setOptions(
+          e.payload.options as Partial<AsyncQueuerOptions<TValue>>,
+        )
       })
     }
   }

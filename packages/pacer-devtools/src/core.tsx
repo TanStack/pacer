@@ -1,8 +1,5 @@
-import {
-  
-  constructCoreClass
-} from '@tanstack/devtools-utils/solid'
-import type {ClassType} from '@tanstack/devtools-utils/solid';
+import { constructCoreClass } from '@tanstack/devtools-utils/solid'
+import type { ClassType } from '@tanstack/devtools-utils/solid'
 
 export interface PacerDevtoolsInit {}
 

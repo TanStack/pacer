@@ -1,7 +1,5 @@
 /** TanStack Store (`@tanstack/store`) used by pacer utils. */
-export function isPacerUtilTanStackStore(
-  x: unknown,
-): x is {
+export function isPacerUtilTanStackStore(x: unknown): x is {
   subscribe: (cb: (s: unknown) => void) => { unsubscribe: () => void }
   get: () => unknown
 } {

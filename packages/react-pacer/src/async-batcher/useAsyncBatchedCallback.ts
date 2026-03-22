@@ -44,8 +44,5 @@ export function useAsyncBatchedCallback<TValue>(
   options: ReactAsyncBatcherOptions<TValue, {}>,
 ): (item: TValue) => Promise<void> {
   const asyncBatchedFn = useAsyncBatcher(fn, options).addItem
-  return useCallback(
-    (item: TValue) => asyncBatchedFn(item),
-    [asyncBatchedFn],
-  )
+  return useCallback((item: TValue) => asyncBatchedFn(item), [asyncBatchedFn])
 }

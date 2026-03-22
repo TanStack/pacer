@@ -169,7 +169,9 @@ export class Throttler<TFn extends AnyFunction> {
     if (this.key) {
       pacerEventClient.on('d-Throttler', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state as Partial<ThrottlerState<TFn>>)
+        this.#setState(
+          event.payload.store.state as Partial<ThrottlerState<TFn>>,
+        )
         this.setOptions(event.payload.options as Partial<ThrottlerOptions<TFn>>)
       })
     }
