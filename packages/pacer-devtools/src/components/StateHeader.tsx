@@ -96,7 +96,9 @@ function StateHeaderInner(props: {
             {new Date(updatedAt()).toLocaleTimeString()} ({getRelativeTime()})
           </div>
         </div>
-        <div class={`${props.styles.infoValueMono} ${props.styles.stateHeaderReduction}`}>
+        <div
+          class={`${props.styles.infoValueMono} ${props.styles.stateHeaderReduction}`}
+        >
           {reductionPercentage()}% reduction
         </div>
       </div>

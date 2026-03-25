@@ -125,7 +125,11 @@ export function Shell() {
     <div
       ref={setShellRootEl}
       class={styles().shellRoot}
-      style={slotHeightPx() !== undefined ? `--shell-slot-height: ${slotHeightPx()}px` : undefined}
+      style={
+        slotHeightPx() !== undefined
+          ? `--shell-slot-height: ${slotHeightPx()}px`
+          : undefined
+      }
     >
       <MainPanel class={styles().mainPanelShell}>
         <Header>
