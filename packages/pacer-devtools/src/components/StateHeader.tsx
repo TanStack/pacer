@@ -87,7 +87,7 @@ function StateHeaderInner(props: {
   return (
     <div class={props.styles.stateHeader}>
       <div class={props.styles.stateTitle}>{props.entry.type}</div>
-      <div style={{ display: 'flex', 'align-items': 'center', gap: '16px' }}>
+      <div class={props.styles.stateHeaderMeta}>
         <div class={props.styles.infoGrid}>
           <div class={props.styles.infoLabel}>Key</div>
           <div class={props.styles.infoValueMono}>{key}</div>
@@ -96,10 +96,7 @@ function StateHeaderInner(props: {
             {new Date(updatedAt()).toLocaleTimeString()} ({getRelativeTime()})
           </div>
         </div>
-        <div
-          class={props.styles.infoValueMono}
-          style={{ 'margin-left': 'auto', 'font-weight': 'bold' }}
-        >
+        <div class={`${props.styles.infoValueMono} ${props.styles.stateHeaderReduction}`}>
           {reductionPercentage()}% reduction
         </div>
       </div>
