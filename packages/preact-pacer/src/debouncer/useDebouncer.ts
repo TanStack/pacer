@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type {
@@ -179,7 +179,9 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
       selector: (state: DebouncerState<TFn>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(debouncerInstance.store, props.selector)
+      const selected = useStore(debouncerInstance.store, props.selector, {
+        equal: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -204,7 +206,7 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   }, [])
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const state = useStore(debouncer.store, selector)
+  const state = useStore(debouncer.store, selector, { equal: shallow })
 
   return useMemo(
     () =>

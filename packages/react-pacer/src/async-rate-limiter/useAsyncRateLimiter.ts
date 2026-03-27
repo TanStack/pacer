@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { useStore } from '@tanstack/react-store'
+import { shallow, useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -247,11 +247,16 @@ export function useAsyncRateLimiter<
       mergedOptions,
     ) as unknown as ReactAsyncRateLimiter<TFn, TSelected>
 
+    /* eslint-disable-next-line @eslint-react/component-hook-factories -- Subscribe attached once in useState lazy init; stable per instance */
     asyncRateLimiterInstance.Subscribe = function Subscribe<TSelected>(props: {
       selector: (state: AsyncRateLimiterState<TFn>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
     }) {
-      const selected = useStore(asyncRateLimiterInstance.store, props.selector)
+      const selected = useStore(
+        asyncRateLimiterInstance.store,
+        props.selector,
+        shallow,
+      )
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -264,7 +269,7 @@ export function useAsyncRateLimiter<
   asyncRateLimiter.fn = fn
   asyncRateLimiter.setOptions(mergedOptions)
 
-  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
   useEffect(() => {
     return () => {
       if (mergedOptions.onUnmount) {
@@ -274,9 +279,9 @@ export function useAsyncRateLimiter<
       }
     }
   }, [])
-  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
+  /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
 
-  const state = useStore(asyncRateLimiter.store, selector)
+  const state = useStore(asyncRateLimiter.store, selector, shallow)
 
   return useMemo(
     () =>

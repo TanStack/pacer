@@ -15,6 +15,10 @@ import type {
   ThrottlerOptions,
 } from '@tanstack/pacer'
 
+/* eslint-disable @eslint-react/no-context-provider, @eslint-react/no-use-context --
+ * React <19: keep Context.Provider and useContext; `use` and `<Context>` as provider need React 19+.
+ */
+
 export interface PacerProviderOptions {
   asyncBatcher?: Partial<AsyncBatcherOptions<any>>
   asyncDebouncer?: Partial<AsyncDebouncerOptions<AnyAsyncFunction>>

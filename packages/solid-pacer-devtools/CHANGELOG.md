@@ -1,5 +1,34 @@
 # @tanstack/solid-pacer-devtools
 
+## 0.6.0
+
+### Minor Changes
+
+- feat: TanStack Store Upgrade to alien signals ([#178](https://github.com/TanStack/pacer/pull/178))
+
+### Patch Changes
+
+- Updated dependencies [[`225381e`](https://github.com/TanStack/pacer/commit/225381e40d848b0bf35a690bb9d5009255fb4c9d)]:
+  - @tanstack/pacer-devtools@1.2.0
+
+## 0.5.5
+
+### Patch Changes
+
+- Updated dependencies [[`265b355`](https://github.com/TanStack/pacer/commit/265b355377a7e90cf6d741bbdc6fd346ff837a2c)]:
+  - @tanstack/pacer-devtools@1.1.5
+
+## 0.5.4
+
+### Patch Changes
+
+- Extract devtools theme provider to respective devtools to prevent mismatch. ([#176](https://github.com/TanStack/pacer/pull/176))
+
+- Update devtools-utils to fix theme miss match. ([#170](https://github.com/TanStack/pacer/pull/170))
+
+- Updated dependencies [[`160b4ff`](https://github.com/TanStack/pacer/commit/160b4ff351c9242f54431903339866d3fffc080b), [`434d227`](https://github.com/TanStack/pacer/commit/434d2274561544baa85dc1b031966a3b09162f4d)]:
+  - @tanstack/pacer-devtools@1.1.4
+
 ## 0.5.3
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Throttler } from '@tanstack/pacer/throttler'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -184,7 +184,9 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
       selector: (state: ThrottlerState<TFn>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(throttlerInstance.store, props.selector)
+      const selected = useStore(throttlerInstance.store, props.selector, {
+        equal: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -197,7 +199,7 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   throttler.fn = fn
   throttler.setOptions(mergedOptions)
 
-  const state = useStore(throttler.store, selector)
+  const state = useStore(throttler.store, selector, { equal: shallow })
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { useStore } from '@tanstack/react-store'
+import { shallow, useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type {
@@ -175,11 +175,16 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
       mergedOptions,
     ) as unknown as ReactDebouncer<TFn, TSelected>
 
+    /* eslint-disable-next-line @eslint-react/component-hook-factories -- Subscribe attached once in useState lazy init; stable per instance */
     debouncerInstance.Subscribe = function Subscribe<TSelected>(props: {
       selector: (state: DebouncerState<TFn>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
     }) {
-      const selected = useStore(debouncerInstance.store, props.selector)
+      const selected = useStore(
+        debouncerInstance.store,
+        props.selector,
+        shallow,
+      )
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -192,7 +197,7 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   debouncer.fn = fn
   debouncer.setOptions(mergedOptions)
 
-  /* eslint-disable react-hooks/exhaustive-deps, react-compiler/react-compiler -- cleanup only; runs on unmount */
+  /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
   useEffect(() => {
     return () => {
       if (mergedOptions.onUnmount) {
@@ -202,9 +207,9 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
       }
     }
   }, [])
-  /* eslint-enable react-hooks/exhaustive-deps, react-compiler/react-compiler */
+  /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
 
-  const state = useStore(debouncer.store, selector)
+  const state = useStore(debouncer.store, selector, shallow)
 
   return useMemo(
     () =>
