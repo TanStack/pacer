@@ -117,7 +117,7 @@ Defined in: [debouncer.ts:150](https://github.com/dogmar/pacer/blob/main/package
 cancel(): void;
 ```
 
-Defined in: [debouncer.ts:324](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L324)
+Defined in: [debouncer.ts:326](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L326)
 
 Cancels any pending execution
 
@@ -133,7 +133,7 @@ Cancels any pending execution
 flush(): void;
 ```
 
-Defined in: [debouncer.ts:299](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L299)
+Defined in: [debouncer.ts:301](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L301)
 
 Processes the current pending execution immediately
 
@@ -149,7 +149,7 @@ Processes the current pending execution immediately
 maybeExecute(...args): void;
 ```
 
-Defined in: [debouncer.ts:234](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L234)
+Defined in: [debouncer.ts:236](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L236)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued
@@ -172,7 +172,7 @@ If a call is already in progress, it will be queued
 reset(): void;
 ```
 
-Defined in: [debouncer.ts:336](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L336)
+Defined in: [debouncer.ts:338](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L338)
 
 Resets the debouncer state to its default values
 
@@ -188,7 +188,7 @@ Resets the debouncer state to its default values
 setOptions(newOptions): void;
 ```
 
-Defined in: [debouncer.ts:181](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L181)
+Defined in: [debouncer.ts:183](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L183)
 
 Updates the debouncer options
 

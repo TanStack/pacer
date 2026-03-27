@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/preact-pacer-devtools",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Preact adapter for devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -52,12 +52,13 @@
     "preact": ">=10.0.0"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.3.0",
+    "@tanstack/devtools-utils": "^0.4.0",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.10.3",
+    "@preact/preset-vite": "^2.10.5",
     "@testing-library/preact": "^3.2.4",
-    "preact": "^10.28.3"
+    "csstype": "^3.2.3",
+    "preact": "^10.29.0"
   }
 }

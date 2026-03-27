@@ -1,5 +1,25 @@
 # @tanstack/pacer-devtools
 
+## 1.2.0
+
+### Minor Changes
+
+- feat: TanStack Store Upgrade to alien signals ([#178](https://github.com/TanStack/pacer/pull/178))
+
+## 1.1.5
+
+### Patch Changes
+
+- Moves devtools theme to the component to avoid theme mismatch. ([#173](https://github.com/TanStack/pacer/pull/173))
+
+## 1.1.4
+
+### Patch Changes
+
+- Extract devtools theme provider to respective devtools to prevent mismatch. ([#176](https://github.com/TanStack/pacer/pull/176))
+
+- Update devtools-utils to fix theme miss match. ([#170](https://github.com/TanStack/pacer/pull/170))
+
 ## 1.1.3
 
 ### Patch Changes

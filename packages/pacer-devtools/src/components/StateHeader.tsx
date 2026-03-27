@@ -1,13 +1,110 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime.js'
-import { createSignal, onCleanup, onMount } from 'solid-js'
+import { Show, createSignal, onCleanup, onMount } from 'solid-js'
+import { useStore } from '@tanstack/solid-store'
 import { useStyles } from '../styles/use-styles'
+import {
+  getPacerUtilStoreState,
+  isPacerUtilTanStackStore,
+} from '../utils/read-pacer-store-state'
 
 dayjs.extend(relativeTime)
 
 type StateHeaderProps = {
   selectedInstance: () => { instance: any; type: string } | null
   utilState: () => { lastUpdatedByKey: Record<string, number> }
+}
+
+function reductionFromState(
+  entry: { type: string },
+  state: Record<string, unknown> | null | undefined,
+): number {
+  if (!state) return 0
+
+  const isAsync = entry.type.toLowerCase().includes('async')
+  const completedExecutions = isAsync
+    ? Number(state.settleCount) || 0
+    : Number(state.executionCount) || 0
+
+  if (entry.type.toLowerCase().includes('batcher')) {
+    const totalItemsProcessed = Number(state.totalItemsProcessed) || 0
+    if (totalItemsProcessed === 0) return 0
+    return Math.round(
+      ((totalItemsProcessed - completedExecutions) / totalItemsProcessed) * 100,
+    )
+  }
+
+  let requestCount = 0
+
+  if (state.maybeExecuteCount !== undefined) {
+    requestCount = Number(state.maybeExecuteCount) || 0
+  } else if (state.addItemCount !== undefined) {
+    requestCount = Number(state.addItemCount) || 0
+  } else {
+    return 0
+  }
+
+  if (requestCount === 0) return 0
+
+  const reduction = requestCount - completedExecutions
+  return Math.round((reduction / requestCount) * 100)
+}
+
+function StateHeaderInner(props: {
+  entry: { instance: any; type: string }
+  styles: ReturnType<ReturnType<typeof useStyles>>
+  now: () => number
+  utilState: () => { lastUpdatedByKey: Record<string, number> }
+}) {
+  const key = props.entry.instance.key as string
+  const updatedAt = () => props.utilState().lastUpdatedByKey[key] ?? Date.now()
+
+  const getRelativeTime = () => {
+    const at = updatedAt()
+    const diffMs = props.now() - at
+    const diffSeconds = Math.floor(diffMs / 1000)
+
+    if (diffSeconds < 60) {
+      return `${diffSeconds} second${diffSeconds !== 1 ? 's' : ''} ago`
+    }
+
+    return dayjs(at).fromNow()
+  }
+
+  const store = props.entry.instance?.store
+  const stateAccessor = isPacerUtilTanStackStore(store)
+    ? useStore(store as never, (s: unknown) =>
+        s !== null && s !== undefined && typeof s === 'object'
+          ? (s as Record<string, unknown>)
+          : {},
+      )
+    : () =>
+        getPacerUtilStoreState(props.entry.instance) as Record<string, unknown>
+
+  const reductionPercentage = () =>
+    reductionFromState(props.entry, stateAccessor())
+
+  return (
+    <div class={props.styles.stateHeader}>
+      <div class={props.styles.stateTitle}>{props.entry.type}</div>
+      <div style={{ display: 'flex', 'align-items': 'center', gap: '16px' }}>
+        <div class={props.styles.infoGrid}>
+          <div class={props.styles.infoLabel}>Key</div>
+          <div class={props.styles.infoValueMono}>{key}</div>
+          <div class={props.styles.infoLabel}>Last Updated</div>
+          <div class={props.styles.infoValueMono}>
+            {new Date(updatedAt()).toLocaleTimeString()} ({getRelativeTime()})
+          </div>
+        </div>
+        <div
+          class={props.styles.infoValueMono}
+          style={{ 'margin-left': 'auto', 'font-weight': 'bold' }}
+        >
+          {reductionPercentage()}% reduction
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export function StateHeader(props: StateHeaderProps) {
@@ -24,83 +121,16 @@ export function StateHeader(props: StateHeaderProps) {
     })
   })
 
-  const entry = props.selectedInstance()
-  if (!entry) return null
-
-  const key = entry.instance.key as string
-  const updatedAt = props.utilState().lastUpdatedByKey[key] ?? Date.now()
-
-  const getRelativeTime = () => {
-    const diffMs = now() - updatedAt
-    const diffSeconds = Math.floor(diffMs / 1000)
-
-    if (diffSeconds < 60) {
-      return `${diffSeconds} second${diffSeconds !== 1 ? 's' : ''} ago`
-    }
-
-    return dayjs(updatedAt).fromNow()
-  }
-
-  const getReductionPercentage = () => {
-    const state = entry.instance.store?.state || entry.instance.state
-
-    if (!state) return 0
-
-    // Use settleCount for async utilities, executionCount for sync utilities
-    const isAsync = entry.type.toLowerCase().includes('async')
-    const completedExecutions = isAsync
-      ? state.settleCount || 0
-      : state.executionCount || 0
-
-    // For batchers, calculate reduction based on items processed vs executions
-    if (entry.type.toLowerCase().includes('batcher')) {
-      const totalItemsProcessed = state.totalItemsProcessed || 0
-      if (totalItemsProcessed === 0) return 0
-      return Math.round(
-        ((totalItemsProcessed - completedExecutions) / totalItemsProcessed) *
-          100,
-      )
-    }
-
-    // For other utilities, calculate reduction based on request tracking
-    let requestCount = 0
-
-    if (state.maybeExecuteCount !== undefined) {
-      requestCount = state.maybeExecuteCount
-    } else if (state.addItemCount !== undefined) {
-      requestCount = state.addItemCount
-    } else {
-      // For utilities that don't track requests, show 0%
-      return 0
-    }
-
-    if (requestCount === 0) return 0
-
-    const reduction = requestCount - completedExecutions
-    return Math.round((reduction / requestCount) * 100)
-  }
-
-  const reductionPercentage = getReductionPercentage()
-
   return (
-    <div class={styles().stateHeader}>
-      <div class={styles().stateTitle}>{entry.type}</div>
-      <div style={{ display: 'flex', 'align-items': 'center', gap: '16px' }}>
-        <div class={styles().infoGrid}>
-          <div class={styles().infoLabel}>Key</div>
-          <div class={styles().infoValueMono}>{key}</div>
-          <div class={styles().infoLabel}>Last Updated</div>
-          <div class={styles().infoValueMono}>
-            {new Date(updatedAt).toLocaleTimeString()} ({getRelativeTime()})
-          </div>
-        </div>
-        <div
-          class={styles().infoValueMono}
-          style={{ 'margin-left': 'auto', 'font-weight': 'bold' }}
-        >
-          {reductionPercentage}% reduction
-        </div>
-      </div>
-    </div>
+    <Show when={props.selectedInstance()}>
+      {(entry) => (
+        <StateHeaderInner
+          entry={entry()}
+          styles={styles()}
+          now={now}
+          utilState={props.utilState}
+        />
+      )}
+    </Show>
   )
 }

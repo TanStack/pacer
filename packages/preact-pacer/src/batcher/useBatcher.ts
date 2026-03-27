@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Batcher } from '@tanstack/pacer/batcher'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
@@ -201,7 +201,9 @@ export function useBatcher<TValue, TSelected = {}>(
       selector: (state: BatcherState<TValue>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(batcherInstance.store, props.selector)
+      const selected = useStore(batcherInstance.store, props.selector, {
+        equal: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -226,7 +228,7 @@ export function useBatcher<TValue, TSelected = {}>(
   }, [])
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const state = useStore(batcher.store, selector)
+  const state = useStore(batcher.store, selector, { equal: shallow })
 
   return useMemo(
     () =>

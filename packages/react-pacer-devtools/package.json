@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/react-pacer-devtools",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "React adapter for devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -24,8 +24,8 @@
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
-    "lint:fix": "eslint ./src --fix",
-    "test:eslint": "eslint ./src",
+    "lint:fix": "pnpm -w exec eslint \"$INIT_CWD/src\" --fix",
+    "test:eslint": "pnpm -w exec eslint \"$INIT_CWD/src\"",
     "test:lib": "vitest",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
@@ -53,12 +53,13 @@
     "react-dom": ">=16.8"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.3.0",
+    "@tanstack/devtools-utils": "^0.4.0",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^2.13.0",
-    "@vitejs/plugin-react": "^5.1.4",
+    "@eslint-react/eslint-plugin": "^3.0.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "csstype": "^3.2.3",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^7.0.1"
   }

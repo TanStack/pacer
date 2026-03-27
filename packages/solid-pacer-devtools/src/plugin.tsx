@@ -1,9 +1,14 @@
 import { createSolidPlugin } from '@tanstack/devtools-utils/solid'
 import { PacerDevtoolsPanel } from './SolidPacerDevtools'
 
-const [pacerDevtoolsPlugin, pacerDevtoolsNoOpPlugin] = createSolidPlugin({
+type PacerDevtoolsPluginFactory = ReturnType<typeof createSolidPlugin>[0]
+
+const pacerDevtoolsPlugins = createSolidPlugin({
   name: 'TanStack Pacer',
   Component: PacerDevtoolsPanel,
 })
 
-export { pacerDevtoolsPlugin, pacerDevtoolsNoOpPlugin }
+export const pacerDevtoolsPlugin: PacerDevtoolsPluginFactory =
+  pacerDevtoolsPlugins[0]
+export const pacerDevtoolsNoOpPlugin: PacerDevtoolsPluginFactory =
+  pacerDevtoolsPlugins[1]

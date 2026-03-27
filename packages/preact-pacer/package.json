@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/preact-pacer",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "description": "Utilities for debouncing and throttling functions in Preact.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -109,12 +109,12 @@
   },
   "dependencies": {
     "@tanstack/pacer": "workspace:*",
-    "@tanstack/preact-store": "^0.10.2"
+    "@tanstack/preact-store": "^0.11.2"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.10.3",
+    "@preact/preset-vite": "^2.10.5",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "preact": "^10.28.3"
+    "preact": "^10.29.0"
   },
   "peerDependencies": {
     "preact": ">=10.0.0"

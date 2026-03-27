@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -231,7 +231,9 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
       selector: (state: AsyncDebouncerState<TFn>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(debouncerInstance.store, props.selector)
+      const selected = useStore(debouncerInstance.store, props.selector, {
+        equal: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -244,7 +246,7 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
   asyncDebouncer.fn = fn
   asyncDebouncer.setOptions(mergedOptions)
 
-  const state = useStore(asyncDebouncer.store, selector)
+  const state = useStore(asyncDebouncer.store, selector, { equal: shallow })
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {

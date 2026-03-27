@@ -177,8 +177,10 @@ export class RateLimiter<TFn extends AnyFunction> {
     if (this.key) {
       pacerEventClient.on('d-RateLimiter', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
+        this.#setState(event.payload.store.state as Partial<RateLimiterState>)
+        this.setOptions(
+          event.payload.options as Partial<RateLimiterOptions<TFn>>,
+        )
       })
     }
   }
