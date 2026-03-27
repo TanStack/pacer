@@ -88,6 +88,7 @@ jobs:
 
       - name: Merge upstream into fork branch
         if: steps.compare.outputs.needs_sync == 'true' && steps.check_pr.outputs.pr_exists == 'false'
+        id: merge
         run: |
           VERSION=${{ steps.compare.outputs.upstream_version }}
           DATE=${{ steps.compare.outputs.date }}
@@ -100,11 +101,75 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Merge upstream main into our branch
+          # Attempt the merge — allow failure so we can auto-resolve conflicts
           echo "Merging upstream/main into fork branch..."
-          git merge upstream/main -m "Merge upstream TanStack Pacer v${VERSION} into fork"
+          if git merge upstream/main -m "Merge upstream TanStack Pacer v${VERSION} into fork"; then
+            echo "Merge completed cleanly"
+            echo "auto_resolved=" >> "$GITHUB_OUTPUT"
+            git push origin "$BRANCH"
+            exit 0
+          fi
 
-          # Push the branch
+          echo "Merge has conflicts — attempting auto-resolution..."
+          CONFLICTED=$(git diff --name-only --diff-filter=U)
+
+          # ── Auto-resolution rules ─────────────────────────────────────
+          # Each rule handles a category of files that we never customize
+          # in the fork and can safely resolve automatically.
+          AUTO_RESOLVED=""
+          UNRESOLVED=""
+
+          for FILE in $CONFLICTED; do
+            case "$FILE" in
+              # Generated docs — take upstream; autofix CI regenerates them
+              docs/*)
+                git checkout --theirs -- "$FILE" && git add "$FILE"
+                AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (took upstream — generated docs)\n"
+                ;;
+              # CI workflows deleted in fork (e.g. release.yml) — keep deleted
+              .github/workflows/release.yml)
+                git rm -f "$FILE" 2>/dev/null || true
+                AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (kept deleted — fork uses publish-fork.yml)\n"
+                ;;
+              # Upstream changelogs — take upstream; fork doesn't add entries
+              packages/*/CHANGELOG.md)
+                git checkout --theirs -- "$FILE" && git add "$FILE"
+                AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (took upstream — changelog)\n"
+                ;;
+              # Lockfile — take upstream; will be validated by CI
+              pnpm-lock.yaml)
+                git checkout --theirs -- "$FILE" && git add "$FILE"
+                AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (took upstream — lockfile)\n"
+                ;;
+              # Example app package.json — take upstream; fork doesn't modify examples
+              examples/*/package.json | examples/*/*/package.json)
+                git checkout --theirs -- "$FILE" && git add "$FILE"
+                AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (took upstream — example dep versions)\n"
+                ;;
+              # Everything else requires manual review
+              *)
+                UNRESOLVED="${UNRESOLVED}  ${FILE}\n"
+                ;;
+            esac
+          done
+
+          if [ -n "$AUTO_RESOLVED" ]; then
+            echo "Auto-resolved conflicts:"
+            echo -e "$AUTO_RESOLVED"
+          fi
+
+          # If any conflicts remain that we can't auto-resolve, abort
+          REMAINING=$(git diff --name-only --diff-filter=U)
+          if [ -n "$REMAINING" ]; then
+            echo "::error::Unable to auto-resolve all conflicts. Manual intervention required:"
+            echo -e "$UNRESOLVED"
+            git merge --abort
+            exit 1
+          fi
+
+          # All conflicts resolved — complete the merge
+          git commit --no-edit
+          echo "auto_resolved=$(echo -e "$AUTO_RESOLVED" | base64 -w 0)" >> "$GITHUB_OUTPUT"
           git push origin "$BRANCH"
 
       - name: Create PR
@@ -118,6 +183,18 @@ jobs:
 
           CHANGED=$(echo "${{ steps.compare.outputs.changed }}" | base64 -d)
 
+          AUTO_RESOLVED=""
+          if [ -n "${{ steps.merge.outputs.auto_resolved }}" ]; then
+            DECODED=$(echo "${{ steps.merge.outputs.auto_resolved }}" | base64 -d)
+            AUTO_RESOLVED="### Auto-resolved conflicts
+
+          \`\`\`
+          ${DECODED}
+          \`\`\`
+
+          "
+          fi
+
           gh pr create \
             --base main \
             --head "$BRANCH" \
@@ -130,7 +207,7 @@ jobs:
 
           ${CHANGED}
 
-          ### After merging
+          ${AUTO_RESOLVED}### After merging
 
           The [publish-fork](${{ github.server_url }}/${{ github.repository }}/actions/workflows/publish-fork.yml) workflow will automatically publish any packages with changed versions.
 
