@@ -86,6 +86,10 @@ jobs:
             echo "pr_exists=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Setup Tools
+        if: steps.compare.outputs.needs_sync == 'true' && steps.check_pr.outputs.pr_exists == 'false'
+        uses: tanstack/config/.github/setup@main
+
       - name: Merge upstream into fork branch
         if: steps.compare.outputs.needs_sync == 'true' && steps.check_pr.outputs.pr_exists == 'false'
         id: merge
@@ -136,10 +140,11 @@ jobs:
                 git checkout --theirs -- "$FILE" && git add "$FILE"
                 AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (took upstream — changelog)\n"
                 ;;
-              # Lockfile — take upstream; will be validated by CI
+              # Lockfile — take upstream, then reconcile with fork's root package.json
               pnpm-lock.yaml)
                 git checkout --theirs -- "$FILE" && git add "$FILE"
-                AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (took upstream — lockfile)\n"
+                AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (took upstream + pnpm install to reconcile)\n"
+                NEEDS_LOCKFILE_RECONCILE=true
                 ;;
               # Example app package.json — take upstream; fork doesn't modify examples
               examples/*/package.json | examples/*/*/package.json)
@@ -165,6 +170,13 @@ jobs:
             echo -e "$UNRESOLVED"
             git merge --abort
             exit 1
+          fi
+
+          # Reconcile lockfile if it was conflict-resolved
+          if [ "${NEEDS_LOCKFILE_RECONCILE:-}" = "true" ]; then
+            echo "Running pnpm install to reconcile lockfile with fork's package.json..."
+            pnpm install --no-frozen-lockfile
+            git add pnpm-lock.yaml
           fi
 
           # All conflicts resolved — complete the merge
