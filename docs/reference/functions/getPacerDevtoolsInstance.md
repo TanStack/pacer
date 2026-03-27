@@ -9,7 +9,7 @@ title: getPacerDevtoolsInstance
 function getPacerDevtoolsInstance(key): unknown;
 ```
 
-Defined in: [event-client.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L25)
+Defined in: [event-client.ts:25](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L25)
 
 ## Parameters
 

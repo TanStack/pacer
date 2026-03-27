@@ -5,7 +5,7 @@ title: Debouncer
 
 # Class: Debouncer\<TFn\>
 
-Defined in: [debouncer.ts:142](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L142)
+Defined in: [debouncer.ts:149](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L149)
 
 A class that creates a debounced function.
 
@@ -53,7 +53,7 @@ inputElement.addEventListener('input', () => {
 new Debouncer<TFn>(fn, initialOptions): Debouncer<TFn>;
 ```
 
-Defined in: [debouncer.ts:150](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L150)
+Defined in: [debouncer.ts:158](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L158)
 
 #### Parameters
 
@@ -77,7 +77,7 @@ Defined in: [debouncer.ts:150](https://github.com/TanStack/pacer/blob/main/packa
 fn: TFn;
 ```
 
-Defined in: [debouncer.ts:151](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L151)
+Defined in: [debouncer.ts:159](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L159)
 
 ***
 
@@ -87,7 +87,7 @@ Defined in: [debouncer.ts:151](https://github.com/TanStack/pacer/blob/main/packa
 key: string | undefined;
 ```
 
-Defined in: [debouncer.ts:146](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L146)
+Defined in: [debouncer.ts:153](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L153)
 
 ***
 
@@ -97,7 +97,7 @@ Defined in: [debouncer.ts:146](https://github.com/TanStack/pacer/blob/main/packa
 options: DebouncerOptions<TFn>;
 ```
 
-Defined in: [debouncer.ts:147](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L147)
+Defined in: [debouncer.ts:154](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L154)
 
 ***
 
@@ -107,7 +107,7 @@ Defined in: [debouncer.ts:147](https://github.com/TanStack/pacer/blob/main/packa
 readonly store: Store<Readonly<DebouncerState<TFn>>>;
 ```
 
-Defined in: [debouncer.ts:143](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L143)
+Defined in: [debouncer.ts:150](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L150)
 
 ## Methods
 
@@ -117,7 +117,7 @@ Defined in: [debouncer.ts:143](https://github.com/TanStack/pacer/blob/main/packa
 cancel(): void;
 ```
 
-Defined in: [debouncer.ts:285](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L285)
+Defined in: [debouncer.ts:326](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L326)
 
 Cancels any pending execution
 
@@ -133,7 +133,7 @@ Cancels any pending execution
 flush(): void;
 ```
 
-Defined in: [debouncer.ts:268](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L268)
+Defined in: [debouncer.ts:301](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L301)
 
 Processes the current pending execution immediately
 
@@ -149,7 +149,7 @@ Processes the current pending execution immediately
 maybeExecute(...args): void;
 ```
 
-Defined in: [debouncer.ts:221](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L221)
+Defined in: [debouncer.ts:236](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L236)
 
 Attempts to execute the debounced function
 If a call is already in progress, it will be queued
@@ -172,7 +172,7 @@ If a call is already in progress, it will be queued
 reset(): void;
 ```
 
-Defined in: [debouncer.ts:296](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L296)
+Defined in: [debouncer.ts:338](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L338)
 
 Resets the debouncer state to its default values
 
@@ -188,7 +188,7 @@ Resets the debouncer state to its default values
 setOptions(newOptions): void;
 ```
 
-Defined in: [debouncer.ts:175](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L175)
+Defined in: [debouncer.ts:183](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/debouncer.ts#L183)
 
 Updates the debouncer options
 

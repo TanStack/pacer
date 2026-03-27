@@ -5,7 +5,7 @@ title: PacerDevtoolsWirePayload
 
 # Interface: PacerDevtoolsWirePayload
 
-Defined in: [event-client.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L10)
+Defined in: [event-client.ts:10](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L10)
 
 Payload on the devtools event bus must be JSON-serializable: `ClientEventBus`
 always stringifies events for `emitToServer` and `BroadcastChannel`, so live
@@ -21,7 +21,7 @@ Live instances are kept in pacerDevtoolsInstancesByKey for the panel.
 key: string;
 ```
 
-Defined in: [event-client.ts:11](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L11)
+Defined in: [event-client.ts:11](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L11)
 
 ***
 
@@ -31,7 +31,7 @@ Defined in: [event-client.ts:11](https://github.com/TanStack/pacer/blob/main/pac
 options: unknown;
 ```
 
-Defined in: [event-client.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L13)
+Defined in: [event-client.ts:13](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L13)
 
 ***
 
@@ -41,7 +41,7 @@ Defined in: [event-client.ts:13](https://github.com/TanStack/pacer/blob/main/pac
 store: object;
 ```
 
-Defined in: [event-client.ts:12](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L12)
+Defined in: [event-client.ts:12](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L12)
 
 #### state
 
