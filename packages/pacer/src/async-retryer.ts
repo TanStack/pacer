@@ -451,7 +451,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     })
 
     // Set up total execution timeout
-    let totalTimeoutId: NodeJS.Timeout | undefined
+    let totalTimeoutId: ReturnType<typeof setTimeout> | undefined
     if (this.options.maxTotalExecutionTime !== Infinity) {
       totalTimeoutId = setTimeout(() => {
         this.options.onTotalExecutionTimeout?.(this)

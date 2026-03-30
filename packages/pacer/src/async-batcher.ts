@@ -272,7 +272,7 @@ export class AsyncBatcher<TValue> {
     number,
     AsyncRetryer<(items: Array<TValue>) => Promise<any>>
   >()
-  #timeoutId: NodeJS.Timeout | null = null
+  #timeoutId: ReturnType<typeof setTimeout> | null = null
 
   constructor(
     public fn: (items: Array<TValue>) => Promise<any>,

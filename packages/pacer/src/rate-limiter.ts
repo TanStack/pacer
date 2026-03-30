@@ -158,7 +158,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     new Store<RateLimiterState>(getDefaultRateLimiterState())
   key: string | undefined
   options: RateLimiterOptions<TFn>
-  #timeoutIds: Set<NodeJS.Timeout> = new Set()
+  #timeoutIds: Set<ReturnType<typeof setTimeout>> = new Set()
 
   constructor(
     public fn: TFn,
@@ -328,7 +328,7 @@ export class RateLimiter<TFn extends AnyFunction> {
     }
   }
 
-  #clearTimeout = (timeoutId: NodeJS.Timeout): void => {
+  #clearTimeout = (timeoutId: ReturnType<typeof setTimeout>): void => {
     clearTimeout(timeoutId)
     this.#timeoutIds.delete(timeoutId)
   }

@@ -272,7 +272,7 @@ export class Queuer<TValue> {
   )
   key: string | undefined
   options: QueuerOptions<TValue>
-  #timeoutId: NodeJS.Timeout | null = null
+  #timeoutId: ReturnType<typeof setTimeout> | null = null
 
   constructor(
     public fn: (item: TValue) => void,

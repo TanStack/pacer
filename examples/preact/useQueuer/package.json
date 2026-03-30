@@ -10,13 +10,13 @@
   },
   "dependencies": {
     "@tanstack/preact-devtools": "^0.10.0",
-    "@tanstack/preact-pacer": "^0.21.0",
+    "@tanstack/preact-pacer": "^0.21.1",
     "@tanstack/preact-pacer-devtools": "workspace:*",
     "preact": "^10.29.0"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.5",
-    "vite": "^8.0.1"
+    "vite": "^8.0.3"
   },
   "browserslist": {
     "production": [
