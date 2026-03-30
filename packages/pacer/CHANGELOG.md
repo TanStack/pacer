@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.20.1
+
+### Patch Changes
+
+- chore: bump tanstack store versions for better tree-shaking ([`4e74cb4`](https://github.com/TanStack/pacer/commit/4e74cb42bf803bbc11932285d4508964c45f3283))
+
 ## 0.20.0
 
 ### Minor Changes
