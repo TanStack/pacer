@@ -222,7 +222,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   key: string | undefined
   options: AsyncDebouncerOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
-  #timeoutId: NodeJS.Timeout | null = null
+  #timeoutId: ReturnType<typeof setTimeout> | null = null
   #resolvePreviousPromise:
     | ((value?: ReturnType<TFn> | undefined) => void)
     | null = null

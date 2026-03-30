@@ -249,7 +249,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   key: string | undefined
   options: AsyncRateLimiterOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
-  #timeoutIds: Set<NodeJS.Timeout> = new Set()
+  #timeoutIds: Set<ReturnType<typeof setTimeout>> = new Set()
 
   constructor(
     public fn: TFn,
@@ -469,7 +469,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     }
   }
 
-  #clearTimeout = (timeoutId: NodeJS.Timeout): void => {
+  #clearTimeout = (timeoutId: ReturnType<typeof setTimeout>): void => {
     clearTimeout(timeoutId)
     this.#timeoutIds.delete(timeoutId)
   }

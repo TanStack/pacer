@@ -145,7 +145,7 @@ export class Debouncer<TFn extends AnyFunction> {
   )
   key: string | undefined
   options: DebouncerOptions<TFn>
-  #timeoutId: NodeJS.Timeout | undefined
+  #timeoutId: ReturnType<typeof setTimeout> | undefined
 
   constructor(
     public fn: TFn,

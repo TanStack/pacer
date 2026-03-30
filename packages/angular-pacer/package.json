@@ -108,11 +108,11 @@
     "src"
   ],
   "dependencies": {
-    "@tanstack/angular-store": "^0.9.2",
+    "@tanstack/angular-store": "^0.9.3",
     "@tanstack/pacer": "workspace:*"
   },
   "devDependencies": {
-    "@angular/core": "^21.2.5",
+    "@angular/core": "^21.2.6",
     "@types/node": "^25.5.0"
   },
   "peerDependencies": {

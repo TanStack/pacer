@@ -82,16 +82,16 @@
   "dependencies": {
     "@tanstack/devtools-ui": "0.5.1",
     "@tanstack/devtools-utils": "^0.4.0",
-    "@tanstack/solid-store": "^0.9.2",
+    "@tanstack/solid-store": "^0.9.3",
     "clsx": "^2.1.1",
     "csstype": "^3.2.3",
     "dayjs": "^1.11.20",
     "goober": "^2.1.18",
-    "solid-js": "^1.9.11"
+    "solid-js": "^1.9.12"
   },
   "devDependencies": {
     "rolldown-plugin-solid": "^0.2.1",
-    "tsdown": "^0.21.4",
+    "tsdown": "^0.21.7",
     "vite-plugin-solid": "^2.11.11"
   }
 }
