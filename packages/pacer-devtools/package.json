@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/pacer-devtools",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
