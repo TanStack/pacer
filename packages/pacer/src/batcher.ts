@@ -148,7 +148,7 @@ export class Batcher<TValue> {
   )
   key: string | undefined
   options: BatcherOptionsWithOptionalCallbacks<TValue>
-  #timeoutId: NodeJS.Timeout | null = null
+  #timeoutId: ReturnType<typeof setTimeout> | null = null
 
   constructor(
     public fn: (items: Array<TValue>) => void,

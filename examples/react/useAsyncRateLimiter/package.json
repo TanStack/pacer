@@ -9,7 +9,7 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/react-pacer": "^0.21.0",
+    "@tanstack/react-pacer": "^0.21.1",
     "@tanstack/react-persister": "^0.1.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
@@ -18,7 +18,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "vite": "^8.0.1"
+    "vite": "^8.0.3"
   },
   "browserslist": {
     "production": [
