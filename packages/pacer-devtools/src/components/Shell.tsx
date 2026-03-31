@@ -125,14 +125,11 @@ export function Shell() {
     <div
       ref={setShellRootEl}
       class={styles().shellRoot}
-      style={{
-        ...(slotHeightPx() !== undefined
-          ? {
-              height: `${slotHeightPx()}px`,
-              'max-height': `${slotHeightPx()}px`,
-            }
-          : {}),
-      }}
+      style={
+        slotHeightPx() !== undefined
+          ? `--shell-slot-height: ${slotHeightPx()}px`
+          : undefined
+      }
     >
       <MainPanel class={styles().mainPanelShell}>
         <Header>
@@ -144,11 +141,7 @@ export function Shell() {
         <div class={styles().mainContainer}>
           <div
             class={styles().leftPanel}
-            style={{
-              width: `${leftPanelWidth()}px`,
-              'min-width': '150px',
-              'max-width': '800px',
-            }}
+            style={`--left-panel-width: ${leftPanelWidth()}px`}
           >
             <UtilList
               selectedKey={selectedKey}
@@ -162,7 +155,7 @@ export function Shell() {
             onMouseDown={handleMouseDown}
           />
 
-          <div class={styles().rightPanel} style={{ flex: 1 }}>
+          <div class={styles().rightPanel}>
             <div class={styles().panelHeader}>Details</div>
             <DetailsPanel
               selectedInstance={selectedInstance}
