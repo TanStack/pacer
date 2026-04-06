@@ -55,6 +55,6 @@
   },
   "devDependencies": {
     "csstype": "^3.2.3",
-    "vite-plugin-solid": "^2.11.11"
+    "vite-plugin-solid": "^2.11.12"
   }
 }
