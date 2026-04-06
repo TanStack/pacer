@@ -92,6 +92,6 @@
   "devDependencies": {
     "rolldown-plugin-solid": "^0.2.1",
     "tsdown": "^0.21.7",
-    "vite-plugin-solid": "^2.11.11"
+    "vite-plugin-solid": "^2.11.12"
   }
 }
