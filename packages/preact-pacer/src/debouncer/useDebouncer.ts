@@ -199,8 +199,8 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(debouncer)
+      if (onUnmountRef.current) {
+        onUnmountRef.current(debouncer)
       } else {
         debouncer.cancel()
       }
