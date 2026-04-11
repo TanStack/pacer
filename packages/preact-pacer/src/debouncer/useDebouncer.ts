@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { shallow, useStore } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -193,6 +193,8 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   debouncer.fn = fn
   debouncer.setOptions(mergedOptions)
+  const onUnmountRef = useRef(mergedOptions.onUnmount)
+  onUnmountRef.current = mergedOptions.onUnmount
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
