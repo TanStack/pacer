@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { shallow, useStore } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -248,14 +248,16 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
 
   asyncDebouncer.fn = fn
   asyncDebouncer.setOptions(mergedOptions)
+  const onUnmountRef = useRef(mergedOptions.onUnmount)
+  onUnmountRef.current = mergedOptions.onUnmount
 
   const state = useStore(asyncDebouncer.store, selector, shallow)
 
   /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncDebouncer)
+      if (onUnmountRef.current) {
+        onUnmountRef.current(asyncDebouncer)
       } else {
         asyncDebouncer.cancel()
         asyncDebouncer.abort()
