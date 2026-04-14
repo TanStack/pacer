@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { AsyncDebouncer, asyncDebounce } from '../src/async-debouncer'
 
 describe('AsyncDebouncer', () => {
@@ -1357,6 +1357,25 @@ describe('asyncDebounce helper function', () => {
 
       expect(typeof debouncer.getAbortSignal).toBe('function')
       expect(debouncer.getAbortSignal()).toBeNull()
+    })
+  })
+
+  describe('Type Safety', () => {
+    it('should type lastResult as the awaited return type, not a Promise', () => {
+      const debouncer = new AsyncDebouncer(async () => 'hello', { wait: 100 })
+      expectTypeOf(debouncer.store.state.lastResult).toEqualTypeOf<
+        string | undefined
+      >()
+    })
+
+    it('should type lastResult correctly for non-primitive return types', () => {
+      const debouncer = new AsyncDebouncer(
+        async () => ({ id: 1, name: 'test' }),
+        { wait: 100 },
+      )
+      expectTypeOf(debouncer.store.state.lastResult).toEqualTypeOf<
+        { id: number; name: string } | undefined
+      >()
     })
   })
 })
