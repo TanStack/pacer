@@ -437,7 +437,7 @@ export class AsyncQueuer<TValue> {
       this.store.state.items.length > 0
     ) {
       const nextItem = this.peekNextItem()
-      if (!nextItem) {
+      if (nextItem === undefined) {
         break
       }
       activeItems.push(nextItem)
