@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { shallow, useStore } from '@tanstack/preact-store'
+import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type {
@@ -50,8 +50,8 @@ export interface PreactDebouncer<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<DebouncerState<TFn>>>
 }
@@ -179,8 +179,8 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
       selector: (state: DebouncerState<TFn>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(debouncerInstance.store, props.selector, {
-        equal: shallow,
+      const selected = useSelector(debouncerInstance.store, props.selector, {
+        compare: shallow,
       })
 
       return typeof props.children === 'function'
@@ -206,7 +206,7 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   }, [])
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const state = useStore(debouncer.store, selector, { equal: shallow })
+  const state = useSelector(debouncer.store, selector, { compare: shallow })
 
   return useMemo(
     () =>

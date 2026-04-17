@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Throttler } from '@tanstack/pacer/throttler'
-import { shallow, useStore } from '@tanstack/react-store'
+import { shallow, useSelector } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -50,8 +50,8 @@ export interface ReactThrottler<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<ThrottlerState<TFn>>>
 }
@@ -186,11 +186,9 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
       selector: (state: ThrottlerState<TFn>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
     }) {
-      const selected = useStore(
-        throttlerInstance.store,
-        props.selector,
-        shallow,
-      )
+      const selected = useSelector(throttlerInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -203,7 +201,7 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   throttler.fn = fn
   throttler.setOptions(mergedOptions)
 
-  const state = useStore(throttler.store, selector, shallow)
+  const state = useSelector(throttler.store, selector, { compare: shallow })
 
   /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
   useEffect(() => {

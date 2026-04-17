@@ -1,6 +1,6 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { createEffect, onCleanup } from 'solid-js'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -50,8 +50,8 @@ export interface SolidAsyncRateLimiter<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>
 }
@@ -239,14 +239,18 @@ export function createAsyncRateLimiter<
     selector: (state: AsyncRateLimiterState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(asyncRateLimiter.store, props.selector)
+    const selected = useSelector(asyncRateLimiter.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(asyncRateLimiter.store, selector)
+  const state = useSelector(asyncRateLimiter.store, selector, {
+    compare: shallow,
+  })
 
   createEffect(() => {
     onCleanup(() => {
