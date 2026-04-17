@@ -1,5 +1,5 @@
 import { For } from 'solid-js'
-import { useStore } from '@tanstack/solid-store'
+import { useSelector } from '@tanstack/solid-store'
 import clsx from 'clsx'
 import { useStyles } from '../styles/use-styles'
 import { UTIL_GROUPS } from './util-groups'
@@ -26,7 +26,7 @@ export function UtilList(props: UtilListProps) {
                   {(instance) => {
                     const status = (() => {
                       try {
-                        const statusAccessor = useStore(
+                        const statusAccessor = useSelector(
                           instance.store,
                           (s: any) => s.status,
                         )

@@ -49,8 +49,8 @@ Defined in: [solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:56](ht
 #### Deprecated
 
 Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-Although, you can make the state reactive by using the `useStore` in your own usage.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
 
 ***
 

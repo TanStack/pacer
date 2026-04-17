@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { shallow, useStore } from '@tanstack/react-store'
+import { shallow, useSelector } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type {
@@ -50,8 +50,8 @@ export interface ReactRateLimiter<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<RateLimiterState>>
 }
@@ -207,11 +207,9 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
       selector: (state: RateLimiterState) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
     }) {
-      const selected = useStore(
-        rateLimiterInstance.store,
-        props.selector,
-        shallow,
-      )
+      const selected = useSelector(rateLimiterInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -234,7 +232,7 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   }, [])
   /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
 
-  const state = useStore(rateLimiter.store, selector, shallow)
+  const state = useSelector(rateLimiter.store, selector, { compare: shallow })
 
   return useMemo(
     () =>

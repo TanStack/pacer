@@ -1,5 +1,5 @@
 import { JsonTree } from '@tanstack/devtools-ui'
-import { useStore } from '@tanstack/solid-store'
+import { useSelector } from '@tanstack/solid-store'
 import {
   getPacerUtilStoreState,
   isPacerUtilTanStackStore,
@@ -18,7 +18,7 @@ type UtilStateJsonTreeProps = {
 export function UtilStateJsonTree(props: UtilStateJsonTreeProps): JSX.Element {
   const store = props.instance?.store
   if (isPacerUtilTanStackStore(store)) {
-    const snapshot = useStore(store as never, (s: unknown) => s)
+    const snapshot = useSelector(store as never, (s: unknown) => s)
     return <JsonTree value={snapshot()} />
   }
   return <JsonTree value={getPacerUtilStoreState(props.instance)} />
