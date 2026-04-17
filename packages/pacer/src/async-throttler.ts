@@ -416,7 +416,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       this.#setState({ isExecuting: true })
       const currentAsyncRetryer = new AsyncRetryer(this.fn, {
         ...this.options.asyncRetryerOptions,
-        key: `${this.key}-retryer-${currentMaybeExecute}`,
+        key: this.key ? `${this.key}-retryer-${currentMaybeExecute}` : undefined,
       })
       this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
       const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
