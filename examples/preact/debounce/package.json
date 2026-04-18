@@ -9,7 +9,7 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/preact-pacer": "^0.21.1",
+    "@tanstack/preact-pacer": "^0.22.0",
     "preact": "^10.29.1"
   },
   "devDependencies": {
