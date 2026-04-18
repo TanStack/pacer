@@ -368,7 +368,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#setState({ isExecuting: true })
       const currentAsyncRetryer = new AsyncRetryer(this.fn, {
         ...this.options.asyncRetryerOptions,
-        key: `${this.key}-retryer-${currentMaybeExecuteCount}`,
+        key: this.key ? `${this.key}-retryer-${currentMaybeExecuteCount}` : undefined,
       })
       this.asyncRetryers.set(currentMaybeExecuteCount, currentAsyncRetryer)
       const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
