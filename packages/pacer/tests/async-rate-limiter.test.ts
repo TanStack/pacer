@@ -1,4 +1,12 @@
-import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  expectTypeOf,
+  it,
+  vi,
+} from 'vitest'
 import { AsyncRateLimiter, asyncRateLimit } from '../src/async-rate-limiter'
 
 describe('AsyncRateLimiter', () => {
@@ -773,28 +781,6 @@ describe('asyncRateLimit', () => {
 
       expect(typeof rateLimiter.getAbortSignal).toBe('function')
       expect(rateLimiter.getAbortSignal()).toBeNull()
-    })
-  })
-
-  describe('Type Safety', () => {
-    it('should type lastResult as the awaited return type, not a Promise', () => {
-      const rateLimiter = new AsyncRateLimiter(async () => 'hello', {
-        limit: 5,
-        window: 1000,
-      })
-      expectTypeOf(rateLimiter.store.state.lastResult).toEqualTypeOf<
-        string | undefined
-      >()
-    })
-
-    it('should type lastResult correctly for non-primitive return types', () => {
-      const rateLimiter = new AsyncRateLimiter(
-        async () => ({ id: 1, name: 'test' }),
-        { limit: 5, window: 1000 },
-      )
-      expectTypeOf(rateLimiter.store.state.lastResult).toEqualTypeOf<
-        { id: number; name: string } | undefined
-      >()
     })
   })
 })

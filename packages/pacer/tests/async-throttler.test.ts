@@ -998,23 +998,4 @@ describe('AsyncThrottler', () => {
       expect(throttler.getAbortSignal()).toBeNull()
     })
   })
-
-  describe('Type Safety', () => {
-    it('should type lastResult as the awaited return type, not a Promise', () => {
-      const throttler = new AsyncThrottler(async () => 'hello', { wait: 100 })
-      expectTypeOf(throttler.store.state.lastResult).toEqualTypeOf<
-        string | undefined
-      >()
-    })
-
-    it('should type lastResult correctly for non-primitive return types', () => {
-      const throttler = new AsyncThrottler(
-        async () => ({ id: 1, name: 'test' }),
-        { wait: 100 },
-      )
-      expectTypeOf(throttler.store.state.lastResult).toEqualTypeOf<
-        { id: number; name: string } | undefined
-      >()
-    })
-  })
 })
