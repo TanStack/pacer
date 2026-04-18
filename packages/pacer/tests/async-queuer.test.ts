@@ -1095,4 +1095,70 @@ describe('AsyncQueuer', () => {
       expect(asyncQueuer.getAbortSignal()).toBeNull()
     })
   })
+
+  describe('falsy item handling', () => {
+    it('should process items with value 0', async () => {
+      const processed: Array<number> = []
+      const asyncQueuer = new AsyncQueuer<number>(
+        async (item) => {
+          processed.push(item)
+          return item
+        },
+        { started: false },
+      )
+
+      asyncQueuer.addItem(0)
+      asyncQueuer.addItem(1)
+      asyncQueuer.addItem(2)
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(100)
+
+      expect(processed).toEqual([0, 1, 2])
+      expect(asyncQueuer.store.state.successCount).toBe(3)
+    })
+
+    it('should process items with value "" (empty string)', async () => {
+      const processed: Array<string> = []
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          processed.push(item)
+          return item
+        },
+        { started: false },
+      )
+
+      asyncQueuer.addItem('')
+      asyncQueuer.addItem('hello')
+      asyncQueuer.addItem('')
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(100)
+
+      expect(processed).toEqual(['', 'hello', ''])
+      expect(asyncQueuer.store.state.successCount).toBe(3)
+    })
+
+    it('should process items with value false', async () => {
+      const processed: Array<boolean> = []
+      const asyncQueuer = new AsyncQueuer<boolean>(
+        async (item) => {
+          processed.push(item)
+          return item
+        },
+        { started: false },
+      )
+
+      asyncQueuer.addItem(false)
+      asyncQueuer.addItem(true)
+      asyncQueuer.addItem(false)
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(100)
+
+      expect(processed).toEqual([false, true, false])
+      expect(asyncQueuer.store.state.successCount).toBe(3)
+    })
+
+  })
 })
