@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AsyncThrottler } from '../src/async-throttler'
 
 describe('AsyncThrottler', () => {
