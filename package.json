@@ -50,7 +50,7 @@
     }
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.30.0",
+    "@changesets/cli": "^2.31.0",
     "@faker-js/faker": "^10.4.0",
     "@size-limit/preset-small-lib": "^12.1.0",
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
@@ -58,10 +58,10 @@
     "@tanstack/typedoc-config": "0.3.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "^25.6.0",
-    "eslint": "^10.2.0",
+    "eslint": "^10.2.1",
     "eslint-plugin-unused-imports": "^4.4.1",
     "happy-dom": "^20.9.0",
-    "knip": "^6.4.1",
+    "knip": "^6.5.0",
     "markdown-link-extractor": "^4.0.3",
     "nx": "^22.6.5",
     "premove": "^4.0.0",
