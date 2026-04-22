@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { shallow, useStore } from '@tanstack/react-store'
+import { shallow, useSelector } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type {
@@ -49,8 +49,8 @@ export interface ReactAsyncQueuer<TValue, TSelected = {}> extends Omit<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<AsyncQueuerState<TValue>>>
 }
@@ -253,11 +253,9 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
       selector: (state: AsyncQueuerState<TValue>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
     }) {
-      const selected = useStore(
-        asyncQueuerInstance.store,
-        props.selector,
-        shallow,
-      )
+      const selected = useSelector(asyncQueuerInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -283,7 +281,7 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
   }, [])
   /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
 
-  const state = useStore(asyncQueuer.store, selector, shallow)
+  const state = useSelector(asyncQueuer.store, selector, { compare: shallow })
 
   return useMemo(
     () =>

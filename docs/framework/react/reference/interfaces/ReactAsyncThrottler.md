@@ -49,8 +49,8 @@ Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:56](https://gi
 #### Deprecated
 
 Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-Although, you can make the state reactive by using the `useStore` in your own usage.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
 
 ***
 

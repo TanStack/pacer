@@ -1,5 +1,5 @@
 import { emitChange } from '@tanstack/pacer'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { useStyles } from '../styles/use-styles'
 import {
   getPacerUtilStoreState,
@@ -18,10 +18,13 @@ export function ActionButtons(props: ActionButtonsProps) {
   const store = utilInstance?.store
 
   const stateAccessor = isPacerUtilTanStackStore(store)
-    ? useStore(store as never, (s: unknown) =>
-        s !== null && s !== undefined && typeof s === 'object'
-          ? (s as Record<string, unknown>)
-          : {},
+    ? useSelector(
+        store as never,
+        (s: unknown) =>
+          s !== null && s !== undefined && typeof s === 'object'
+            ? (s as Record<string, unknown>)
+            : {},
+        { compare: shallow },
       )
     : () => getPacerUtilStoreState(utilInstance) as Record<string, unknown>
 

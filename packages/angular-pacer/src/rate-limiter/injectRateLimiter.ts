@@ -1,5 +1,5 @@
 import { DestroyRef, inject } from '@angular/core'
-import { injectStore } from '@tanstack/angular-store'
+import { injectSelector } from '@tanstack/angular-store'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
@@ -122,7 +122,7 @@ export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   } as AngularRateLimiterOptions<TFn, TSelected>
 
   const rateLimiter = new RateLimiter<TFn>(fn, mergedOptions)
-  const state = injectStore(rateLimiter.store, selector)
+  const state = injectSelector(rateLimiter.store, selector)
 
   const result = {
     ...rateLimiter,

@@ -9,12 +9,12 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/preact-pacer": "^0.21.1",
-    "preact": "^10.29.0"
+    "@tanstack/preact-pacer": "^0.22.0",
+    "preact": "^10.29.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.5",
-    "vite": "^8.0.3"
+    "vite": "^8.0.9"
   },
   "browserslist": {
     "production": [

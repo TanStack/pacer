@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
-import { shallow, useStore } from '@tanstack/preact-store'
+import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -50,8 +50,8 @@ export interface PreactAsyncThrottler<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>
 }
@@ -242,8 +242,8 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
       selector: (state: AsyncThrottlerState<TFn>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(throttlerInstance.store, props.selector, {
-        equal: shallow,
+      const selected = useSelector(throttlerInstance.store, props.selector, {
+        compare: shallow,
       })
 
       return typeof props.children === 'function'
@@ -257,7 +257,9 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   asyncThrottler.fn = fn
   asyncThrottler.setOptions(mergedOptions)
 
-  const state = useStore(asyncThrottler.store, selector, { equal: shallow })
+  const state = useSelector(asyncThrottler.store, selector, {
+    compare: shallow,
+  })
 
   /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
