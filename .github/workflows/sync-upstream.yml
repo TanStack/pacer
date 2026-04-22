@@ -73,6 +73,10 @@ jobs:
         id: check_pr
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Pin gh to the fork. Without this, gh defaults to the parent
+          # (TanStack/pacer) because this is a fork — pr list would query
+          # the wrong repo and pr create would 403 on the upstream.
+          GH_REPO: ${{ github.repository }}
         run: |
           VERSION=${{ steps.compare.outputs.upstream_version }}
           DATE=${{ steps.compare.outputs.date }}
@@ -188,6 +192,7 @@ jobs:
         if: steps.compare.outputs.needs_sync == 'true' && steps.check_pr.outputs.pr_exists == 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
         run: |
           VERSION=${{ steps.compare.outputs.upstream_version }}
           DATE=${{ steps.compare.outputs.date }}
