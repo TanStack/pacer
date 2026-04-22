@@ -1,5 +1,5 @@
 import { DestroyRef, inject } from '@angular/core'
-import { injectStore } from '@tanstack/angular-store'
+import { injectSelector } from '@tanstack/angular-store'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
@@ -94,7 +94,7 @@ export function injectBatcher<TValue, TSelected = {}>(
   } as AngularBatcherOptions<TValue, TSelected>
 
   const batcher = new Batcher<TValue>(fn, mergedOptions)
-  const state = injectStore(batcher.store, selector)
+  const state = injectSelector(batcher.store, selector)
 
   const result = {
     ...batcher,

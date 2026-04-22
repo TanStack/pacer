@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
-import { shallow, useStore } from '@tanstack/preact-store'
+import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type {
@@ -49,8 +49,8 @@ export interface PreactAsyncBatcher<TValue, TSelected = {}> extends Omit<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<AsyncBatcherState<TValue>>>
 }
@@ -252,8 +252,8 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
       selector: (state: AsyncBatcherState<TValue>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(batcherInstance.store, props.selector, {
-        equal: shallow,
+      const selected = useSelector(batcherInstance.store, props.selector, {
+        compare: shallow,
       })
 
       return typeof props.children === 'function'
@@ -280,7 +280,7 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
   }, [])
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const state = useStore(asyncBatcher.store, selector, { equal: shallow })
+  const state = useSelector(asyncBatcher.store, selector, { compare: shallow })
 
   return useMemo(
     () =>
