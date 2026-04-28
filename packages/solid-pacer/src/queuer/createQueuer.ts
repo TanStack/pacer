@@ -1,5 +1,5 @@
 import { Queuer } from '@tanstack/pacer/queuer'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { createEffect, onCleanup } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
@@ -46,8 +46,8 @@ export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<QueuerState<TValue>>>
 }
@@ -171,14 +171,16 @@ export function createQueuer<TValue, TSelected = {}>(
     selector: (state: QueuerState<TValue>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(queuer.store, props.selector)
+    const selected = useSelector(queuer.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(queuer.store, selector)
+  const state = useSelector(queuer.store, selector, { compare: shallow })
 
   createEffect(() => {
     onCleanup(() => {

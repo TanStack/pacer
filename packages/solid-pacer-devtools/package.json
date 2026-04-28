@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/solid-pacer-devtools",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Solid adapter for devtools for Pacer.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -55,6 +55,6 @@
   },
   "devDependencies": {
     "csstype": "^3.2.3",
-    "vite-plugin-solid": "^2.11.11"
+    "vite-plugin-solid": "^2.11.12"
   }
 }

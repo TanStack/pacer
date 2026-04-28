@@ -1,6 +1,6 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { createEffect, onCleanup } from 'solid-js'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -50,8 +50,8 @@ export interface SolidDebouncer<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<DebouncerState<TFn>>>
 }
@@ -171,14 +171,18 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
     selector: (state: DebouncerState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(asyncDebouncer.store, props.selector)
+    const selected = useSelector(asyncDebouncer.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(asyncDebouncer.store, selector)
+  const state = useSelector(asyncDebouncer.store, selector, {
+    compare: shallow,
+  })
 
   createEffect(() => {
     onCleanup(() => {
