@@ -1,5 +1,5 @@
 import { Batcher } from '@tanstack/pacer/batcher'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { createEffect, onCleanup } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
@@ -46,8 +46,8 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<BatcherState<TValue>>>
 }
@@ -171,14 +171,16 @@ export function createBatcher<TValue, TSelected = {}>(
     selector: (state: BatcherState<TValue>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(batcher.store, props.selector)
+    const selected = useSelector(batcher.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(batcher.store, selector)
+  const state = useSelector(batcher.store, selector, { compare: shallow })
 
   createEffect(() => {
     onCleanup(() => {

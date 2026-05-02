@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime.js'
 import { Show, createSignal, onCleanup, onMount } from 'solid-js'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { useStyles } from '../styles/use-styles'
 import {
   getPacerUtilStoreState,
@@ -73,10 +73,13 @@ function StateHeaderInner(props: {
 
   const store = props.entry.instance?.store
   const stateAccessor = isPacerUtilTanStackStore(store)
-    ? useStore(store as never, (s: unknown) =>
-        s !== null && s !== undefined && typeof s === 'object'
-          ? (s as Record<string, unknown>)
-          : {},
+    ? useSelector(
+        store as never,
+        (s: unknown) =>
+          s !== null && s !== undefined && typeof s === 'object'
+            ? (s as Record<string, unknown>)
+            : {},
+        { compare: shallow },
       )
     : () =>
         getPacerUtilStoreState(props.entry.instance) as Record<string, unknown>

@@ -1,5 +1,16 @@
 # @tanstack/react-pacer-devtools
 
+## 0.7.0
+
+### Minor Changes
+
+- feat: upgrade to tanstack store with useSelector hook ([`c9f6385`](https://github.com/TanStack/pacer/commit/c9f63850f816bfc95eca74699b0fff45bca02867))
+
+### Patch Changes
+
+- Updated dependencies [[`c9f6385`](https://github.com/TanStack/pacer/commit/c9f63850f816bfc95eca74699b0fff45bca02867)]:
+  - @tanstack/pacer-devtools@1.3.0
+
 ## 0.6.1
 
 ### Patch Changes

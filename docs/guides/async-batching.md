@@ -385,7 +385,7 @@ const asyncBatcher = useAsyncBatcher(asyncBatchFn, { maxSize: 5, wait: 1000 })
 
 The `selector` parameter allows you to specify which state changes will trigger reactive updates at the hook level, optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
 
-**By default, `asyncBatcher.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+**By default, `asyncBatcher.state` is empty (`{}`) as the selector is empty by default.** This is where the selected slice of TanStack Store state is exposed. You must opt-in to state tracking by providing a selector function.
 
 ```ts
 // Default behavior - no reactive state subscriptions
@@ -444,15 +444,21 @@ const unsubscribe = batcher.store.subscribe((state) => {
 unsubscribe()
 ```
 
-> **Note:** This is unnecessary when using a framework adapter because the underlying `useStore` hook already does this. You can also import and use `useStore` from TanStack Store to turn `batcher.store.state` into reactive state with a custom selector wherever you want if necessary.
+> **Note:** Framework adapters already subscribe through `useSelector` (React/Preact/Solid) or `injectSelector` (Angular) from TanStack Store. To subscribe manually, use `useSelector(store, selector, { compare: shallow })` from `@tanstack/react-store` (or `@tanstack/preact-store` / `@tanstack/solid-store`; import `shallow` from the same package), or `injectSelector(store, selector)` from `@tanstack/angular-store`.
 
 ```ts
+import { shallow, useSelector } from '@tanstack/react-store'
+
 const batcher = useAsyncBatcher(asyncBatchFn, { maxSize: 5, wait: 1000 })
 
-// you could manually use the `useStore` hook to subscribe to state changes in whatever scope you want
-const state = useStore(batcher.store, (state) => ({
-  successCount: state.successCount,
-}))
+// you could manually use `useSelector` to subscribe to state changes in whatever scope you want
+const state = useSelector(
+  batcher.store,
+  (state) => ({
+    successCount: state.successCount,
+  }),
+  { compare: shallow },
+)
 
 console.log(state)
 ```
