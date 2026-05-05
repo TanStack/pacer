@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { shallow, useSelector } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -221,12 +221,14 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
 
   rateLimiter.fn = fn
   rateLimiter.setOptions(mergedOptions)
+  const onUnmountRef = useRef(mergedOptions.onUnmount)
+  onUnmountRef.current = mergedOptions.onUnmount
 
   /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
   useEffect(() => {
     return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(rateLimiter)
+      if (onUnmountRef.current) {
+        onUnmountRef.current(rateLimiter)
       }
     }
   }, [])
