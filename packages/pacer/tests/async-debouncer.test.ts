@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AsyncDebouncer, asyncDebounce } from '../src/async-debouncer'
+import { pacerEventClient } from '../src'
 
 describe('AsyncDebouncer', () => {
   beforeEach(() => {
@@ -1357,6 +1358,90 @@ describe('asyncDebounce helper function', () => {
 
       expect(typeof debouncer.getAbortSignal).toBe('function')
       expect(debouncer.getAbortSignal()).toBeNull()
+    })
+  })
+
+  describe('retryer key propagation', () => {
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
+    it('should give child AsyncRetryer key: undefined when debouncer has no key', async () => {
+      let resolve!: (v: string) => void
+      const gate = new Promise<string>((r) => { resolve = r })
+
+      const debouncer = new AsyncDebouncer(
+        async () => { await gate },
+        { wait: 100 },
+      )
+
+      debouncer.maybeExecute()
+      await vi.advanceTimersByTimeAsync(100)
+
+      const retryer = debouncer.asyncRetryers.get(2)
+      expect(retryer).toBeDefined()
+      expect(retryer!.key).toBeUndefined()
+
+      resolve('done')
+      await vi.advanceTimersByTimeAsync(0)
+    })
+
+    it('should give child AsyncRetryer a namespaced key when debouncer has a key', async () => {
+      let resolve!: (v: string) => void
+      const gate = new Promise<string>((r) => { resolve = r })
+
+      const debouncer = new AsyncDebouncer(
+        async () => { await gate },
+        { wait: 100, key: 'my-debouncer' },
+      )
+
+      debouncer.maybeExecute()
+      await vi.advanceTimersByTimeAsync(100)
+
+      const retryer = debouncer.asyncRetryers.get(2)
+      expect(retryer).toBeDefined()
+      expect(retryer!.key).toBe('my-debouncer-retryer-2')
+
+      resolve('done')
+      await vi.advanceTimersByTimeAsync(0)
+    })
+
+    it('should not queue devtools events when debouncer has no key', async () => {
+      const emitSpy = vi.spyOn(pacerEventClient, 'emit')
+
+      const debouncer = new AsyncDebouncer(
+        async () => 'result',
+        { wait: 100 },
+      )
+
+      emitSpy.mockClear()
+
+      debouncer.maybeExecute()
+      await vi.advanceTimersByTimeAsync(100)
+
+      const retryerEmits = emitSpy.mock.calls.filter(
+        ([event]) => event === 'AsyncRetryer',
+      )
+      expect(retryerEmits).toHaveLength(0)
+    })
+
+    it('should queue devtools events when debouncer has a key', async () => {
+      const emitSpy = vi.spyOn(pacerEventClient, 'emit')
+
+      const debouncer = new AsyncDebouncer(
+        async () => 'result',
+        { wait: 100, key: 'my-debouncer' },
+      )
+
+      emitSpy.mockClear()
+
+      debouncer.maybeExecute()
+      await vi.advanceTimersByTimeAsync(100)
+
+      const retryerEmits = emitSpy.mock.calls.filter(
+        ([event]) => event === 'AsyncRetryer',
+      )
+      expect(retryerEmits.length).toBeGreaterThan(0)
     })
   })
 })

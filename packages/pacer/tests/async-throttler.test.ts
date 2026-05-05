@@ -1,5 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AsyncThrottler } from '../src/async-throttler'
+import { pacerEventClient } from '../src'
 
 describe('AsyncThrottler', () => {
   beforeEach(() => {
@@ -996,6 +997,88 @@ describe('AsyncThrottler', () => {
 
       expect(typeof throttler.getAbortSignal).toBe('function')
       expect(throttler.getAbortSignal()).toBeNull()
+    })
+  })
+
+  describe('retryer key propagation', () => {
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
+    it('should give child AsyncRetryer key: undefined when throttler has no key', async () => {
+      let resolve!: (v: string) => void
+      const gate = new Promise<string>((r) => { resolve = r })
+
+      const throttler = new AsyncThrottler(
+        async () => { await gate },
+        { wait: 0 },
+      )
+
+      const executePromise = throttler.maybeExecute()
+      await vi.advanceTimersByTimeAsync(0)
+
+      const retryer = throttler.asyncRetryers.get(1)
+      expect(retryer).toBeDefined()
+      expect(retryer!.key).toBeUndefined()
+
+      resolve('done')
+      await executePromise
+    })
+
+    it('should give child AsyncRetryer a namespaced key when throttler has a key', async () => {
+      let resolve!: (v: string) => void
+      const gate = new Promise<string>((r) => { resolve = r })
+
+      const throttler = new AsyncThrottler(
+        async () => { await gate },
+        { wait: 0, key: 'my-throttler' },
+      )
+
+      const executePromise = throttler.maybeExecute()
+      await vi.advanceTimersByTimeAsync(0)
+
+      const retryer = throttler.asyncRetryers.get(1)
+      expect(retryer).toBeDefined()
+      expect(retryer!.key).toBe('my-throttler-retryer-1')
+
+      resolve('done')
+      await executePromise
+    })
+
+    it('should not queue devtools events when throttler has no key', async () => {
+      const emitSpy = vi.spyOn(pacerEventClient, 'emit')
+
+      const throttler = new AsyncThrottler(
+        async () => 'result',
+        { wait: 0 },
+      )
+
+      emitSpy.mockClear()
+
+      await throttler.maybeExecute()
+
+      const retryerEmits = emitSpy.mock.calls.filter(
+        ([event]) => event === 'AsyncRetryer',
+      )
+      expect(retryerEmits).toHaveLength(0)
+    })
+
+    it('should queue devtools events when throttler has a key', async () => {
+      const emitSpy = vi.spyOn(pacerEventClient, 'emit')
+
+      const throttler = new AsyncThrottler(
+        async () => 'result',
+        { wait: 0, key: 'my-throttler' },
+      )
+
+      emitSpy.mockClear()
+
+      await throttler.maybeExecute()
+
+      const retryerEmits = emitSpy.mock.calls.filter(
+        ([event]) => event === 'AsyncRetryer',
+      )
+      expect(retryerEmits.length).toBeGreaterThan(0)
     })
   })
 })
