@@ -5,3 +5,17 @@ preferWorkspacePackages: true
 packages:
   - 'examples/**/*'
   - 'packages/*'
+
+allowBuilds:
+  # root dependency
+  nx: true
+  unrs-resolver: true
+  esbuild: true
+
+  # @angular/build
+  '@parcel/watcher': true
+  lmdb: true
+  msgpackr-extract: true
+
+  # vue-store
+  vue-demi: true
