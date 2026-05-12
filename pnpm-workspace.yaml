@@ -9,13 +9,11 @@ packages:
 allowBuilds:
   # root dependency
   nx: true
-  unrs-resolver: true
+  unrs-resolver: false # not directly required for build
   esbuild: true
 
   # @angular/build
-  '@parcel/watcher': true
-  lmdb: true
-  msgpackr-extract: true
+  '@parcel/watcher': false # optional dep of @angular/build
+  lmdb: false # optional dep of @angular/build
+  msgpackr-extract: false # optional dep of @angular/build
 
-  # vue-store
-  vue-demi: true
