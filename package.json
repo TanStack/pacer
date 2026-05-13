@@ -5,7 +5,7 @@
     "type": "git",
     "url": "git+https://github.com/TanStack/pacer.git"
   },
-  "packageManager": "pnpm@11.1.0",
+  "packageManager": "pnpm@11.1.1",
   "type": "module",
   "scripts": {
     "build": "nx affected --skip-nx-cache --targets=build --exclude=examples/** && size-limit && pnpm run",
@@ -57,22 +57,22 @@
     "@tanstack/eslint-config": "0.4.0",
     "@tanstack/typedoc-config": "0.3.3",
     "@testing-library/jest-dom": "^6.9.1",
-    "@types/node": "^25.6.0",
+    "@types/node": "^25.7.0",
     "eslint": "^10.3.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "happy-dom": "^20.9.0",
-    "knip": "^6.12.2",
+    "knip": "^6.13.1",
     "markdown-link-extractor": "^4.0.3",
     "nx": "^22.7.1",
     "premove": "^4.0.0",
     "prettier": "^3.8.3",
-    "prettier-plugin-svelte": "^3.5.1",
-    "publint": "^0.3.20",
+    "prettier-plugin-svelte": "^3.5.2",
+    "publint": "^0.3.21",
     "sherif": "^1.11.1",
     "size-limit": "^12.1.0",
     "tinyglobby": "^0.2.16",
     "tsdown": "^0.22.0",
     "typescript": "6.0.3",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.6"
   }
 }

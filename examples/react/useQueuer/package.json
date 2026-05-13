@@ -15,12 +15,12 @@
     "react-dom": "^19.2.6"
   },
   "devDependencies": {
-    "@tanstack/react-devtools": "0.10.2",
+    "@tanstack/react-devtools": "0.10.5",
     "@tanstack/react-pacer-devtools": "0.7.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "vite": "^8.0.11"
+    "vite": "^8.0.12"
   },
   "browserslist": {
     "production": [
