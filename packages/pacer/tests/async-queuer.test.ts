@@ -836,6 +836,40 @@ describe('AsyncQueuer', () => {
       expect(results).toHaveLength(3)
       expect(results[2]).toBe('third')
     })
+
+    it('should respect wait period when addItem is called during processing', async () => {
+      const results: Array<string> = []
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          results.push(item)
+          return item
+        },
+        {
+          wait: 100,
+          concurrency: 1,
+          started: false,
+        },
+      )
+
+      asyncQueuer.addItem('first')
+      asyncQueuer.start()
+
+      // 'first' processes immediately
+      await vi.advanceTimersByTimeAsync(0)
+      expect(results).toEqual(['first'])
+
+      // During the 100ms wait period, add a new item
+      await vi.advanceTimersByTimeAsync(50)
+      asyncQueuer.addItem('second')
+
+      // 'second' should NOT have processed yet — still in the wait period
+      await vi.advanceTimersByTimeAsync(0)
+      expect(results).toEqual(['first'])
+
+      // After the remaining wait time, 'second' should process
+      await vi.advanceTimersByTimeAsync(50)
+      expect(results).toEqual(['first', 'second'])
+    })
   })
 
   describe('error handling', () => {

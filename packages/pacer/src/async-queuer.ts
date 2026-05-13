@@ -431,6 +431,7 @@ export class AsyncQueuer<TValue> {
     this.#checkExpiredItems()
 
     // Process items concurrently up to the concurrency limit
+    let scheduledAsyncWork = false
     const activeItems = this.store.state.activeItems
     while (
       activeItems.length < this.#getConcurrency() &&
@@ -444,6 +445,7 @@ export class AsyncQueuer<TValue> {
       this.#setState({
         activeItems,
       })
+      scheduledAsyncWork = true
       ;(async () => {
         await this.execute()
 
@@ -458,7 +460,9 @@ export class AsyncQueuer<TValue> {
       })()
     }
 
-    this.#setState({ pendingTick: false })
+    if (!scheduledAsyncWork) {
+      this.#setState({ pendingTick: false })
+    }
   }
 
   /**
