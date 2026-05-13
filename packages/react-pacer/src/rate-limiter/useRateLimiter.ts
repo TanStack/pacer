@@ -202,7 +202,6 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
       mergedOptions,
     ) as unknown as ReactRateLimiter<TFn, TSelected>
 
-    /* eslint-disable-next-line @eslint-react/component-hook-factories -- Subscribe attached once in useState lazy init; stable per instance */
     rateLimiterInstance.Subscribe = function Subscribe<TSelected>(props: {
       selector: (state: RateLimiterState) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode

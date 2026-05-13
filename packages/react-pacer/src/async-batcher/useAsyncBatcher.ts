@@ -248,7 +248,6 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
       mergedOptions,
     ) as unknown as ReactAsyncBatcher<TValue, TSelected>
 
-    /* eslint-disable-next-line @eslint-react/component-hook-factories -- Subscribe attached once in useState lazy init; stable per instance */
     asyncBatcherInstance.Subscribe = function Subscribe<TSelected>(props: {
       selector: (state: AsyncBatcherState<TValue>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode

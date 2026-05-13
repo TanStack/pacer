@@ -181,7 +181,6 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
       mergedOptions,
     ) as unknown as ReactThrottler<TFn, TSelected>
 
-    /* eslint-disable-next-line @eslint-react/component-hook-factories -- Subscribe attached once in useState lazy init; stable per instance */
     throttlerInstance.Subscribe = function Subscribe<TSelected>(props: {
       selector: (state: ThrottlerState<TFn>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
