@@ -16,9 +16,12 @@ jobs:
   autofix:
     name: autofix
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Setup Tools
         uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
       - name: Fix formatting
@@ -26,6 +29,6 @@ jobs:
       - name: Regenerate docs
         run: pnpm build:all && pnpm generate-docs
       - name: Apply fixes
-        uses: autofix-ci/action@7a166d7532b277f34e16238930461bf77f9d7ed8
+        uses: autofix-ci/action@7a166d7532b277f34e16238930461bf77f9d7ed8 # v1
         with:
           commit-message: 'ci: apply automated fixes'
