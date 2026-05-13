@@ -74,17 +74,5 @@
     "tsdown": "^0.22.0",
     "typescript": "6.0.3",
     "vitest": "^4.1.5"
-  },
-  "overrides": {
-    "@tanstack/angular-pacer": "workspace:*",
-    "@tanstack/pacer": "workspace:*",
-    "@tanstack/pacer-devtools": "workspace:*",
-    "@tanstack/pacer-lite": "workspace:*",
-    "@tanstack/preact-pacer": "workspace:*",
-    "@tanstack/preact-pacer-devtools": "workspace:*",
-    "@tanstack/react-pacer": "workspace:*",
-    "@tanstack/react-pacer-devtools": "workspace:*",
-    "@tanstack/solid-pacer": "workspace:*",
-    "@tanstack/solid-pacer-devtools": "workspace:*"
   }
 }
