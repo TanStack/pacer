@@ -139,6 +139,14 @@ jobs:
                 git rm -f "$FILE" 2>/dev/null || true
                 AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (kept deleted — fork uses publish-fork.yml)\n"
                 ;;
+              # PR workflow — keep fork's simplified version (no NX Cloud, no
+              # nx-set-shas, no preview job, uses test:ci). The fork has
+              # intentionally diverged here; upstream changes are not adopted
+              # automatically and can be cherry-picked manually if desired.
+              .github/workflows/pr.yml)
+                git checkout --ours -- "$FILE" && git add "$FILE"
+                AUTO_RESOLVED="${AUTO_RESOLVED}  ${FILE} (kept fork version — simplified PR workflow)\n"
+                ;;
               # Upstream changelogs — take upstream; fork doesn't add entries
               packages/*/CHANGELOG.md)
                 git checkout --theirs -- "$FILE" && git add "$FILE"
