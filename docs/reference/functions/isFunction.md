@@ -9,7 +9,7 @@ title: isFunction
 function isFunction<T>(value): value is T;
 ```
 
-Defined in: [utils.ts:3](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/utils.ts#L3)
+Defined in: [utils.ts:3](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/utils.ts#L3)
 
 ## Type Parameters
 

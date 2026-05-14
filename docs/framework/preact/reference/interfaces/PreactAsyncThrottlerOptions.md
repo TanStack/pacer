@@ -5,7 +5,7 @@ title: PreactAsyncThrottlerOptions
 
 # Interface: PreactAsyncThrottlerOptions\<TFn, TSelected\>
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:13](https://github.com/dogmar/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L13)
+Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:13](https://github.com/klink-ing/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L13)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:13](https://g
 optional onUnmount: (throttler) => void;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:21](https://github.com/dogmar/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L21)
+Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:21](https://github.com/klink-ing/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L21)
 
 Optional callback invoked when the component unmounts. Receives the throttler instance.
 When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
