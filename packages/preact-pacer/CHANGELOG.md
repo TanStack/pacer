@@ -1,5 +1,14 @@
 # @tanstack/preact-pacer
 
+## 0.22.1
+
+### Patch Changes
+
+- Allow standalone devtools panels to render without required TanStack Devtools props. ([#216](https://github.com/TanStack/pacer/pull/216))
+
+- Updated dependencies [[`47d02e2`](https://github.com/TanStack/pacer/commit/47d02e20e8470abacc86a8a06926ec7bc1c81a7a)]:
+  - @tanstack/pacer@0.21.1
+
 ## 0.22.0
 
 ### Minor Changes
