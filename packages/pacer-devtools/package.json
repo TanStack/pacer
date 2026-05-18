@@ -87,7 +87,7 @@
     "csstype": "^3.2.3",
     "dayjs": "^1.11.20",
     "goober": "^2.1.19",
-    "solid-js": "^1.9.12"
+    "solid-js": "^1.9.13"
   },
   "devDependencies": {
     "rolldown-plugin-solid": "^0.2.1",
