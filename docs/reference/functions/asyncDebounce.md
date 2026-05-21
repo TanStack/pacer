@@ -9,7 +9,7 @@ title: asyncDebounce
 function asyncDebounce<TFn>(fn, initialOptions): (...args) => Promise<ReturnType<TFn> | undefined>;
 ```
 
-Defined in: [async-debouncer.ts:608](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L608)
+Defined in: [async-debouncer.ts:608](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L608)
 
 Creates an async debounced function that delays execution until after a specified wait time.
 The debounced function will only execute once the wait period has elapsed without any new calls.

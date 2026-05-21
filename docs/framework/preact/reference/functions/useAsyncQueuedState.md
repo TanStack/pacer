@@ -12,7 +12,7 @@ function useAsyncQueuedState<TValue, TSelected>(
    selector?): [TValue[], PreactAsyncQueuer<TValue, TSelected>];
 ```
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuedState.ts:151](https://github.com/dogmar/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuedState.ts#L151)
+Defined in: [preact-pacer/src/async-queuer/useAsyncQueuedState.ts:151](https://github.com/klink-ing/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuedState.ts#L151)
 
 A higher-level Preact hook that creates an `AsyncQueuer` instance with built-in state management.
 

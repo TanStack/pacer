@@ -9,7 +9,7 @@ title: usePacerContext
 function usePacerContext(): PacerContextValue | null;
 ```
 
-Defined in: [solid-pacer/src/provider/PacerProvider.tsx:56](https://github.com/dogmar/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L56)
+Defined in: [solid-pacer/src/provider/PacerProvider.tsx:56](https://github.com/klink-ing/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L56)
 
 ## Returns
 

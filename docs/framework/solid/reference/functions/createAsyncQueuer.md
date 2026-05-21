@@ -12,7 +12,7 @@ function createAsyncQueuer<TValue, TSelected>(
 selector): SolidAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:181](https://github.com/dogmar/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L181)
+Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:181](https://github.com/klink-ing/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L181)
 
 Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 

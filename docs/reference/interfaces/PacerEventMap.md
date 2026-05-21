@@ -5,7 +5,7 @@ title: PacerEventMap
 
 # Interface: PacerEventMap
 
-Defined in: [event-client.ts:66](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L66)
+Defined in: [event-client.ts:66](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L66)
 
 Suffix-only keys: EventClient prepends `pluginId:` (`pacer:`) at runtime
 for `emit` / `on`. Wire `type` values are `pacer:${key}`.
@@ -18,7 +18,7 @@ for `emit` / `on`. Wire `type` values are `pacer:${key}`.
 AsyncBatcher: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:78](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L78)
+Defined in: [event-client.ts:78](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L78)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [event-client.ts:78](https://github.com/dogmar/pacer/blob/main/packa
 AsyncDebouncer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:79](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L79)
+Defined in: [event-client.ts:79](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L79)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [event-client.ts:79](https://github.com/dogmar/pacer/blob/main/packa
 AsyncQueuer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:80](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L80)
+Defined in: [event-client.ts:80](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L80)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [event-client.ts:80](https://github.com/dogmar/pacer/blob/main/packa
 AsyncRateLimiter: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:81](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L81)
+Defined in: [event-client.ts:81](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L81)
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: [event-client.ts:81](https://github.com/dogmar/pacer/blob/main/packa
 AsyncRetryer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:82](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L82)
+Defined in: [event-client.ts:82](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L82)
 
 ***
 
@@ -68,7 +68,7 @@ Defined in: [event-client.ts:82](https://github.com/dogmar/pacer/blob/main/packa
 AsyncThrottler: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:83](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L83)
+Defined in: [event-client.ts:83](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L83)
 
 ***
 
@@ -78,7 +78,7 @@ Defined in: [event-client.ts:83](https://github.com/dogmar/pacer/blob/main/packa
 Batcher: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:84](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L84)
+Defined in: [event-client.ts:84](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L84)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [event-client.ts:84](https://github.com/dogmar/pacer/blob/main/packa
 d-AsyncBatcher: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:67](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L67)
+Defined in: [event-client.ts:67](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L67)
 
 ***
 
@@ -98,7 +98,7 @@ Defined in: [event-client.ts:67](https://github.com/dogmar/pacer/blob/main/packa
 d-AsyncDebouncer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:68](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L68)
+Defined in: [event-client.ts:68](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L68)
 
 ***
 
@@ -108,7 +108,7 @@ Defined in: [event-client.ts:68](https://github.com/dogmar/pacer/blob/main/packa
 d-AsyncQueuer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:69](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L69)
+Defined in: [event-client.ts:69](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L69)
 
 ***
 
@@ -118,7 +118,7 @@ Defined in: [event-client.ts:69](https://github.com/dogmar/pacer/blob/main/packa
 d-AsyncRateLimiter: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:70](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L70)
+Defined in: [event-client.ts:70](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L70)
 
 ***
 
@@ -128,7 +128,7 @@ Defined in: [event-client.ts:70](https://github.com/dogmar/pacer/blob/main/packa
 d-AsyncRetryer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:71](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L71)
+Defined in: [event-client.ts:71](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L71)
 
 ***
 
@@ -138,7 +138,7 @@ Defined in: [event-client.ts:71](https://github.com/dogmar/pacer/blob/main/packa
 d-AsyncThrottler: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:72](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L72)
+Defined in: [event-client.ts:72](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L72)
 
 ***
 
@@ -148,7 +148,7 @@ Defined in: [event-client.ts:72](https://github.com/dogmar/pacer/blob/main/packa
 d-Batcher: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:73](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L73)
+Defined in: [event-client.ts:73](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L73)
 
 ***
 
@@ -158,7 +158,7 @@ Defined in: [event-client.ts:73](https://github.com/dogmar/pacer/blob/main/packa
 d-Debouncer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:74](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L74)
+Defined in: [event-client.ts:74](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L74)
 
 ***
 
@@ -168,7 +168,7 @@ Defined in: [event-client.ts:74](https://github.com/dogmar/pacer/blob/main/packa
 d-Queuer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:75](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L75)
+Defined in: [event-client.ts:75](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L75)
 
 ***
 
@@ -178,7 +178,7 @@ Defined in: [event-client.ts:75](https://github.com/dogmar/pacer/blob/main/packa
 d-RateLimiter: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:76](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L76)
+Defined in: [event-client.ts:76](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L76)
 
 ***
 
@@ -188,7 +188,7 @@ Defined in: [event-client.ts:76](https://github.com/dogmar/pacer/blob/main/packa
 d-Throttler: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:77](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L77)
+Defined in: [event-client.ts:77](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L77)
 
 ***
 
@@ -198,7 +198,7 @@ Defined in: [event-client.ts:77](https://github.com/dogmar/pacer/blob/main/packa
 Debouncer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:85](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L85)
+Defined in: [event-client.ts:85](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L85)
 
 ***
 
@@ -208,7 +208,7 @@ Defined in: [event-client.ts:85](https://github.com/dogmar/pacer/blob/main/packa
 Queuer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:86](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L86)
+Defined in: [event-client.ts:86](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L86)
 
 ***
 
@@ -218,7 +218,7 @@ Defined in: [event-client.ts:86](https://github.com/dogmar/pacer/blob/main/packa
 RateLimiter: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:87](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L87)
+Defined in: [event-client.ts:87](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L87)
 
 ***
 
@@ -228,4 +228,4 @@ Defined in: [event-client.ts:87](https://github.com/dogmar/pacer/blob/main/packa
 Throttler: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:88](https://github.com/dogmar/pacer/blob/main/packages/pacer/src/event-client.ts#L88)
+Defined in: [event-client.ts:88](https://github.com/klink-ing/pacer/blob/main/packages/pacer/src/event-client.ts#L88)

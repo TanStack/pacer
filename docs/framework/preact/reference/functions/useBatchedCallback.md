@@ -9,7 +9,7 @@ title: useBatchedCallback
 function useBatchedCallback<TValue>(fn, options): (item) => void;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatchedCallback.ts:40](https://github.com/dogmar/pacer/blob/main/packages/preact-pacer/src/batcher/useBatchedCallback.ts#L40)
+Defined in: [preact-pacer/src/batcher/useBatchedCallback.ts:40](https://github.com/klink-ing/pacer/blob/main/packages/preact-pacer/src/batcher/useBatchedCallback.ts#L40)
 
 A Preact hook that creates a batched version of a callback function.
 This hook is essentially a wrapper around the basic `batch` function
