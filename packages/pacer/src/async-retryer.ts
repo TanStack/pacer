@@ -538,7 +538,17 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         ) {
           return undefined
         }
-        lastError = error instanceof Error ? error : new Error(String(error))
+        lastError =
+          error instanceof Error
+            ? error
+            : new Error(
+                typeof error === 'object' &&
+                  error !== null &&
+                  typeof (error as any).message === 'string'
+                  ? (error as any).message
+                  : String(error),
+                { cause: error },
+              )
         this.#setState({ lastError })
 
         // Call onError for every error (including during retries)

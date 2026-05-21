@@ -387,6 +387,24 @@ describe('AsyncRetryer', () => {
       expect(onLastError).toHaveBeenCalledTimes(1)
       expect(onLastError).toHaveBeenCalledWith(error, retryer)
     })
+
+    it('should preserve plain object error message and cause', async () => {
+      const originalError = { message: 'readable error', code: 'E001' }
+      const mockFn = vi.fn().mockRejectedValue(originalError)
+      const retryer = new AsyncRetryer(mockFn, {
+        maxAttempts: 1,
+        throwOnError: true,
+      })
+
+      try {
+        await retryer.execute()
+        expect.unreachable('Expected execute to throw')
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error)
+        expect((error as Error).message).toBe('readable error')
+        expect((error as Error & { cause?: unknown }).cause).toBe(originalError)
+      }
+    })
   })
 
   describe('State Management', () => {
