@@ -6,6 +6,9 @@
     "url": "git+https://github.com/TanStack/pacer.git"
   },
   "packageManager": "pnpm@11.1.1",
+  "engines": {
+    "pnpm": ">=11.0.0"
+  },
   "type": "module",
   "scripts": {
     "build": "nx affected --skip-nx-cache --targets=build --exclude=examples/** && size-limit && pnpm run",
