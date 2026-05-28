@@ -206,7 +206,6 @@ export function useQueuer<TValue, TSelected = {}>(
       mergedOptions,
     ) as unknown as ReactQueuer<TValue, TSelected>
 
-    /* eslint-disable-next-line @eslint-react/component-hook-factories -- Subscribe attached once in useState lazy init; stable per instance */
     queuerInstance.Subscribe = function Subscribe<TSelected>(props: {
       selector: (state: QueuerState<TValue>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode

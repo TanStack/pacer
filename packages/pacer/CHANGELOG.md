@@ -1,5 +1,11 @@
 # @tanstack/pacer
 
+## 0.21.1
+
+### Patch Changes
+
+- Allow standalone devtools panels to render without required TanStack Devtools props. ([#216](https://github.com/TanStack/pacer/pull/216))
+
 ## 0.21.0
 
 ### Minor Changes

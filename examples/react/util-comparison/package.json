@@ -9,17 +9,17 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/react-pacer": "^0.22.0",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "@tanstack/react-pacer": "^0.22.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "devDependencies": {
-    "@tanstack/react-devtools": "0.10.2",
-    "@tanstack/react-pacer-devtools": "0.7.0",
+    "@tanstack/react-devtools": "0.10.5",
+    "@tanstack/react-pacer-devtools": "0.7.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "vite": "^8.0.9"
+    "vite": "^8.0.12"
   },
   "browserslist": {
     "production": [

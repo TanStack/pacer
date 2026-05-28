@@ -9,9 +9,9 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/pacer-lite": "0.2.1"
+    "@tanstack/pacer-lite": "0.2.2"
   },
   "devDependencies": {
-    "vite": "^8.0.9"
+    "vite": "^8.0.12"
   }
 }

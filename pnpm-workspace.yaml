@@ -5,3 +5,27 @@ preferWorkspacePackages: true
 packages:
   - 'examples/**/*'
   - 'packages/*'
+
+overrides:
+  '@tanstack/angular-pacer': 'workspace:*'
+  '@tanstack/pacer': 'workspace:*'
+  '@tanstack/pacer-devtools': 'workspace:*'
+  '@tanstack/pacer-lite': 'workspace:*'
+  '@tanstack/preact-pacer': 'workspace:*'
+  '@tanstack/preact-pacer-devtools': 'workspace:*'
+  '@tanstack/react-pacer': 'workspace:*'
+  '@tanstack/react-pacer-devtools': 'workspace:*'
+  '@tanstack/solid-pacer': 'workspace:*'
+  '@tanstack/solid-pacer-devtools': 'workspace:*'
+
+allowBuilds:
+  # root dependency
+  nx: true
+  unrs-resolver: false # not directly required for build
+  esbuild: true
+
+  # @angular/build
+  '@parcel/watcher': false # optional dep of @angular/build
+  lmdb: false # optional dep of @angular/build
+  msgpackr-extract: false # optional dep of @angular/build
+

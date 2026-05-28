@@ -175,7 +175,6 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
       mergedOptions,
     ) as unknown as ReactDebouncer<TFn, TSelected>
 
-    /* eslint-disable-next-line @eslint-react/component-hook-factories -- Subscribe attached once in useState lazy init; stable per instance */
     debouncerInstance.Subscribe = function Subscribe<TSelected>(props: {
       selector: (state: DebouncerState<TFn>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
