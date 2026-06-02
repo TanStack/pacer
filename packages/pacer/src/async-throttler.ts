@@ -29,7 +29,7 @@ export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
   /**
    * The result from the most recent successful function execution
    */
-  lastResult: ReturnType<TFn> | undefined
+  lastResult: Awaited<ReturnType<TFn>> | undefined
   /**
    * Number of times maybeExecute has been called (for reduction calculations)
    */
