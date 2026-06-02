@@ -618,7 +618,7 @@ export class AsyncQueuer<TValue> {
       try {
         const currentAsyncRetryer = new AsyncRetryer(this.fn, {
           ...this.options.asyncRetryerOptions,
-          key: `${this.key}-retryer-${currentExecuteCount}`,
+          key: this.key ? `${this.key}-retryer-${currentExecuteCount}` : undefined,
         })
         this.asyncRetryers.set(currentExecuteCount, currentAsyncRetryer)
         const lastResult = await currentAsyncRetryer.execute(item) // EXECUTE!

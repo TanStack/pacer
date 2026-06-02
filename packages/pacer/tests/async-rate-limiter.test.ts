@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AsyncRateLimiter, asyncRateLimit } from '../src/async-rate-limiter'
+import { pacerEventClient } from '../src'
 
 describe('AsyncRateLimiter', () => {
   beforeEach(() => {
@@ -773,6 +774,88 @@ describe('asyncRateLimit', () => {
 
       expect(typeof rateLimiter.getAbortSignal).toBe('function')
       expect(rateLimiter.getAbortSignal()).toBeNull()
+    })
+  })
+
+  describe('retryer key propagation', () => {
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
+    it('should give child AsyncRetryer key: undefined when rate limiter has no key', async () => {
+      let resolve!: (v: string) => void
+      const gate = new Promise<string>((r) => { resolve = r })
+
+      const rateLimiter = new AsyncRateLimiter(
+        async () => { await gate },
+        { limit: 5, window: 1000 },
+      )
+
+      const executePromise = rateLimiter.maybeExecute()
+      await vi.advanceTimersByTimeAsync(0)
+
+      const retryer = rateLimiter.asyncRetryers.get(1)
+      expect(retryer).toBeDefined()
+      expect(retryer!.key).toBeUndefined()
+
+      resolve('done')
+      await executePromise
+    })
+
+    it('should give child AsyncRetryer a namespaced key when rate limiter has a key', async () => {
+      let resolve!: (v: string) => void
+      const gate = new Promise<string>((r) => { resolve = r })
+
+      const rateLimiter = new AsyncRateLimiter(
+        async () => { await gate },
+        { limit: 5, window: 1000, key: 'my-limiter' },
+      )
+
+      const executePromise = rateLimiter.maybeExecute()
+      await vi.advanceTimersByTimeAsync(0)
+
+      const retryer = rateLimiter.asyncRetryers.get(1)
+      expect(retryer).toBeDefined()
+      expect(retryer!.key).toBe('my-limiter-retryer-1')
+
+      resolve('done')
+      await executePromise
+    })
+
+    it('should not queue devtools events when rate limiter has no key', async () => {
+      const emitSpy = vi.spyOn(pacerEventClient, 'emit')
+
+      const rateLimiter = new AsyncRateLimiter(
+        async () => 'result',
+        { limit: 5, window: 1000 },
+      )
+
+      emitSpy.mockClear()
+
+      await rateLimiter.maybeExecute()
+
+      const retryerEmits = emitSpy.mock.calls.filter(
+        ([event]) => event === 'AsyncRetryer',
+      )
+      expect(retryerEmits).toHaveLength(0)
+    })
+
+    it('should queue devtools events when rate limiter has a key', async () => {
+      const emitSpy = vi.spyOn(pacerEventClient, 'emit')
+
+      const rateLimiter = new AsyncRateLimiter(
+        async () => 'result',
+        { limit: 5, window: 1000, key: 'my-limiter' },
+      )
+
+      emitSpy.mockClear()
+
+      await rateLimiter.maybeExecute()
+
+      const retryerEmits = emitSpy.mock.calls.filter(
+        ([event]) => event === 'AsyncRetryer',
+      )
+      expect(retryerEmits.length).toBeGreaterThan(0)
     })
   })
 })

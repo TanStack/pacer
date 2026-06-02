@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { AsyncQueuer } from '../src'
+import { AsyncQueuer, pacerEventClient } from '../src'
 
 describe('AsyncQueuer', () => {
   beforeEach(() => {
@@ -1093,6 +1093,92 @@ describe('AsyncQueuer', () => {
 
       expect(typeof asyncQueuer.getAbortSignal).toBe('function')
       expect(asyncQueuer.getAbortSignal()).toBeNull()
+    })
+  })
+
+  describe('retryer key propagation', () => {
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
+    it('should give child AsyncRetryer key: undefined when queuer has no key', async () => {
+      let resolve!: (v: string) => void
+      const item = new Promise<string>((r) => { resolve = r })
+
+      const asyncQueuer = new AsyncQueuer<Promise<string>>(
+        (p) => p,
+        { started: false },
+      )
+
+      asyncQueuer.addItem(item)
+      const executePromise = asyncQueuer.execute()
+
+      const retryer = asyncQueuer.asyncRetryers.get(1)
+      expect(retryer).toBeDefined()
+      expect(retryer!.key).toBeUndefined()
+
+      resolve('done')
+      await executePromise
+    })
+
+    it('should give child AsyncRetryer a namespaced key when queuer has a key', async () => {
+      let resolve!: (v: string) => void
+      const item = new Promise<string>((r) => { resolve = r })
+
+      const asyncQueuer = new AsyncQueuer<Promise<string>>(
+        (p) => p,
+        { started: false, key: 'my-queue' },
+      )
+
+      asyncQueuer.addItem(item)
+      const executePromise = asyncQueuer.execute()
+
+      const retryer = asyncQueuer.asyncRetryers.get(1)
+      expect(retryer).toBeDefined()
+      expect(retryer!.key).toBe('my-queue-retryer-1')
+
+      resolve('done')
+      await executePromise
+    })
+
+    it('should not queue devtools events when queuer has no key', async () => {
+      const emitSpy = vi.spyOn(pacerEventClient, 'emit')
+
+      const asyncQueuer = new AsyncQueuer<string>(
+        (item) => Promise.resolve(item),
+        { started: false },
+      )
+
+      emitSpy.mockClear()
+
+      asyncQueuer.addItem('a')
+      asyncQueuer.addItem('b')
+      await asyncQueuer.execute()
+      await asyncQueuer.execute()
+
+      const retryerEmits = emitSpy.mock.calls.filter(
+        ([event]) => event === 'AsyncRetryer',
+      )
+      expect(retryerEmits).toHaveLength(0)
+    })
+
+    it('should queue devtools events when queuer has a key', async () => {
+      const emitSpy = vi.spyOn(pacerEventClient, 'emit')
+
+      const asyncQueuer = new AsyncQueuer<string>(
+        (item) => Promise.resolve(item),
+        { started: false, key: 'my-queue' },
+      )
+
+      emitSpy.mockClear()
+
+      asyncQueuer.addItem('a')
+      await asyncQueuer.execute()
+
+      const retryerEmits = emitSpy.mock.calls.filter(
+        ([event]) => event === 'AsyncRetryer',
+      )
+      expect(retryerEmits.length).toBeGreaterThan(0)
     })
   })
 })
