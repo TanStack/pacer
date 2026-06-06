@@ -2,10 +2,8 @@ import { effect } from '@angular/core'
 import { injectThrottledSignal } from './injectThrottledSignal'
 import type { ThrottledSignal } from './injectThrottledSignal'
 import type { Signal } from '@angular/core'
-import type {
-  ThrottlerOptions,
-  ThrottlerState,
-} from '@tanstack/pacer/throttler'
+import type { AngularThrottlerOptions } from './injectThrottler'
+import type { ThrottlerState } from '@tanstack/pacer/throttler'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
@@ -74,20 +72,22 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  */
 export function injectThrottledValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialOptions: ThrottlerOptions<Setter<TValue>>,
+  initialOptions: AngularThrottlerOptions<Setter<TValue>, TSelected>,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
 ): ThrottledSignal<TValue, TSelected>
 export function injectThrottledValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialValue: TValue,
-  initialOptions: ThrottlerOptions<Setter<TValue>>,
+  initialOptions: AngularThrottlerOptions<Setter<TValue>, TSelected>,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
 ): ThrottledSignal<TValue, TSelected>
 export function injectThrottledValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialValueOrOptions: TValue | ThrottlerOptions<Setter<TValue>>,
+  initialValueOrOptions:
+    | TValue
+    | AngularThrottlerOptions<Setter<TValue>, TSelected>,
   initialOptionsOrSelector?:
-    | ThrottlerOptions<Setter<TValue>>
+    | AngularThrottlerOptions<Setter<TValue>, TSelected>
     | ((state: ThrottlerState<Setter<TValue>>) => TSelected),
   maybeSelector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
 ): ThrottledSignal<TValue, TSelected> {
@@ -101,8 +101,14 @@ export function injectThrottledValue<TValue, TSelected = {}>(
     ? (initialValueOrOptions as TValue)
     : (undefined as unknown as TValue)
   const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as ThrottlerOptions<Setter<TValue>>)
-    : (initialValueOrOptions as ThrottlerOptions<Setter<TValue>>)
+    ? (initialOptionsOrSelector as AngularThrottlerOptions<
+        Setter<TValue>,
+        TSelected
+      >)
+    : (initialValueOrOptions as AngularThrottlerOptions<
+        Setter<TValue>,
+        TSelected
+      >)
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as

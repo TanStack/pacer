@@ -43,7 +43,8 @@ Consider using the `injectThrottler` function instead.
 
 ### options
 
-`ThrottlerOptions`\<`TFn`\>
+[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

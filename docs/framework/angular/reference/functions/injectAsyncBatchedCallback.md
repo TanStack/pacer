@@ -43,7 +43,8 @@ Consider using the `injectAsyncBatcher` function instead.
 
 ### options
 
-`AsyncBatcherOptions`\<`TValue`\>
+[`AngularAsyncBatcherOptions`](../interfaces/AngularAsyncBatcherOptions.md)\<`TValue`, \{
+\}\>
 
 ## Returns
 

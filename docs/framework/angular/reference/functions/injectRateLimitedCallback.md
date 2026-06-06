@@ -43,7 +43,8 @@ Consider using the `injectRateLimiter` function instead.
 
 ### options
 
-`RateLimiterOptions`\<`TFn`\>
+[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

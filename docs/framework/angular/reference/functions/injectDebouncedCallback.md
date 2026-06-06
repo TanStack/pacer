@@ -43,7 +43,8 @@ Consider using the `injectDebouncer` function instead.
 
 ### options
 
-`DebouncerOptions`\<`TFn`\>
+[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

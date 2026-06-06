@@ -65,7 +65,7 @@ Available throttler state properties:
 
 ### initialOptions
 
-`ThrottlerOptions`\<`Setter`\<`TValue`\>\>
+[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`Setter`\<`TValue`\>, `TSelected`\>
 
 ### selector?
 
