@@ -8,7 +8,7 @@ import { injectQueuedValue } from '@tanstack/angular-pacer'
     <h1>NG0950</h1>
     <p>value: {{ value() }}</p>
     <p>Value (queued): {{ queued() }}</p>
-    <p>Queue length: {{ queued().length }}</p>
+    <p>Queue length: {{ queued.queuer.state().items.length }}</p>
     <button (click)="enqueueRandom()">Enqueue random</button>
   `,
 })

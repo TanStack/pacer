@@ -1,5 +1,5 @@
 import { injectAsyncDebouncer } from './injectAsyncDebouncer'
-import type { AsyncDebouncerOptions } from '@tanstack/pacer/async-debouncer'
+import type { AngularAsyncDebouncerOptions } from './injectAsyncDebouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
 /**
@@ -39,7 +39,7 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  */
 export function injectAsyncDebouncedCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AsyncDebouncerOptions<TFn>,
+  options: AngularAsyncDebouncerOptions<TFn, {}>,
 ): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const debouncer = injectAsyncDebouncer(fn, options)
   return async (...args: Parameters<TFn>) => {

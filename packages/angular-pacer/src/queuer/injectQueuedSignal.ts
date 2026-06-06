@@ -1,7 +1,7 @@
 import { computed } from '@angular/core'
 import { injectQueuer } from './injectQueuer'
-import type { AngularQueuer } from './injectQueuer'
-import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
+import type { QueuerState } from '@tanstack/pacer/queuer'
 
 export interface QueuedSignal<TValue, TSelected = {}> {
   (): Array<TValue>
@@ -48,7 +48,7 @@ export function injectQueuedSignal<
   >,
 >(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: AngularQueuerOptions<TValue, TSelected> = {},
   selector: (state: QueuerState<TValue>) => TSelected = (state) =>
     ({ items: state.items }) as TSelected,
 ): QueuedSignal<TValue, TSelected> {

@@ -43,7 +43,7 @@ The function returns a callable object:
 
 ### options
 
-`QueuerOptions`\<`TValue`\> = `{}`
+[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

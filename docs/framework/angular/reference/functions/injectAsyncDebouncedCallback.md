@@ -44,7 +44,8 @@ Consider using the `injectAsyncDebouncer` function instead.
 
 ### options
 
-`AsyncDebouncerOptions`\<`TFn`\>
+[`AngularAsyncDebouncerOptions`](../interfaces/AngularAsyncDebouncerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

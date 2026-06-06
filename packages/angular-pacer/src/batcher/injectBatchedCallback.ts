@@ -1,5 +1,5 @@
 import { injectBatcher } from './injectBatcher'
-import type { BatcherOptions } from '@tanstack/pacer/batcher'
+import type { AngularBatcherOptions } from './injectBatcher'
 
 /**
  * An Angular function that creates a batched version of a callback function.
@@ -39,7 +39,7 @@ import type { BatcherOptions } from '@tanstack/pacer/batcher'
  */
 export function injectBatchedCallback<TValue>(
   fn: (items: Array<TValue>) => void,
-  options: BatcherOptions<TValue>,
+  options: AngularBatcherOptions<TValue, {}>,
 ): (item: TValue) => void {
   const batcher = injectBatcher(fn, options)
   return (item: TValue) => batcher.addItem(item)

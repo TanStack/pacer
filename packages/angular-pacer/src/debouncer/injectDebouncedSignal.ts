@@ -1,10 +1,10 @@
 import { signal } from '@angular/core'
 import { injectDebouncer } from './injectDebouncer'
-import type { AngularDebouncer } from './injectDebouncer'
 import type {
-  DebouncerOptions,
-  DebouncerState,
-} from '@tanstack/pacer/debouncer'
+  AngularDebouncer,
+  AngularDebouncerOptions,
+} from './injectDebouncer'
+import type { DebouncerState } from '@tanstack/pacer/debouncer'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
@@ -62,7 +62,7 @@ export interface DebouncedSignal<TValue, TSelected = {}> {
  */
 export function injectDebouncedSignal<TValue, TSelected = {}>(
   value: TValue,
-  initialOptions: DebouncerOptions<Setter<TValue>>,
+  initialOptions: AngularDebouncerOptions<Setter<TValue>, TSelected>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): DebouncedSignal<TValue, TSelected> {
   const debouncedValue = signal<TValue>(value)

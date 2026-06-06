@@ -2,10 +2,8 @@ import { effect } from '@angular/core'
 import { injectRateLimitedSignal } from './injectRateLimitedSignal'
 import type { RateLimitedSignal } from './injectRateLimitedSignal'
 import type { Signal } from '@angular/core'
-import type {
-  RateLimiterOptions,
-  RateLimiterState,
-} from '@tanstack/pacer/rate-limiter'
+import type { AngularRateLimiterOptions } from './injectRateLimiter'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
@@ -49,20 +47,22 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  */
 export function injectRateLimitedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialOptions: RateLimiterOptions<Setter<TValue>>,
+  initialOptions: AngularRateLimiterOptions<Setter<TValue>, TSelected>,
   selector?: (state: RateLimiterState) => TSelected,
 ): RateLimitedSignal<TValue, TSelected>
 export function injectRateLimitedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialValue: TValue,
-  initialOptions: RateLimiterOptions<Setter<TValue>>,
+  initialOptions: AngularRateLimiterOptions<Setter<TValue>, TSelected>,
   selector?: (state: RateLimiterState) => TSelected,
 ): RateLimitedSignal<TValue, TSelected>
 export function injectRateLimitedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialValueOrOptions: TValue | RateLimiterOptions<Setter<TValue>>,
+  initialValueOrOptions:
+    | TValue
+    | AngularRateLimiterOptions<Setter<TValue>, TSelected>,
   initialOptionsOrSelector?:
-    | RateLimiterOptions<Setter<TValue>>
+    | AngularRateLimiterOptions<Setter<TValue>, TSelected>
     | ((state: RateLimiterState) => TSelected),
   maybeSelector?: (state: RateLimiterState) => TSelected,
 ): RateLimitedSignal<TValue, TSelected> {
@@ -76,8 +76,14 @@ export function injectRateLimitedValue<TValue, TSelected = {}>(
     ? (initialValueOrOptions as TValue)
     : (undefined as unknown as TValue)
   const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as RateLimiterOptions<Setter<TValue>>)
-    : (initialValueOrOptions as RateLimiterOptions<Setter<TValue>>)
+    ? (initialOptionsOrSelector as AngularRateLimiterOptions<
+        Setter<TValue>,
+        TSelected
+      >)
+    : (initialValueOrOptions as AngularRateLimiterOptions<
+        Setter<TValue>,
+        TSelected
+      >)
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as

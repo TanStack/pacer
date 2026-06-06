@@ -1,5 +1,5 @@
 import { injectDebouncer } from './injectDebouncer'
-import type { DebouncerOptions } from '@tanstack/pacer/debouncer'
+import type { AngularDebouncerOptions } from './injectDebouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
@@ -39,7 +39,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  */
 export function injectDebouncedCallback<TFn extends AnyFunction>(
   fn: TFn,
-  options: DebouncerOptions<TFn>,
+  options: AngularDebouncerOptions<TFn, {}>,
 ): (...args: Parameters<TFn>) => void {
   const debouncer = injectDebouncer(fn, options)
   return (...args: Parameters<TFn>) => debouncer.maybeExecute(...args)
