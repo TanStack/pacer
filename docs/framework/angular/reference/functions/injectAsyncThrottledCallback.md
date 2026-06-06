@@ -42,7 +42,8 @@ Consider using the `injectAsyncThrottler` function instead.
 
 ### options
 
-`AsyncThrottlerOptions`\<`TFn`\>
+[`AngularAsyncThrottlerOptions`](../interfaces/AngularAsyncThrottlerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

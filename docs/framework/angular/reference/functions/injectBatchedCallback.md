@@ -42,7 +42,8 @@ Consider using the `injectBatcher` function instead.
 
 ### options
 
-`BatcherOptions`\<`TValue`\>
+[`AngularBatcherOptions`](../interfaces/AngularBatcherOptions.md)\<`TValue`, \{
+\}\>
 
 ## Returns
 

@@ -43,7 +43,7 @@ The function returns a callable object:
 
 ### options
 
-`AsyncQueuerOptions`\<`TValue`\> = `{}`
+[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

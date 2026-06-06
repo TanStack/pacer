@@ -2,10 +2,8 @@ import { effect } from '@angular/core'
 import { injectDebouncedSignal } from './injectDebouncedSignal'
 import type { DebouncedSignal } from './injectDebouncedSignal'
 import type { Signal } from '@angular/core'
-import type {
-  DebouncerOptions,
-  DebouncerState,
-} from '@tanstack/pacer/debouncer'
+import type { AngularDebouncerOptions } from './injectDebouncer'
+import type { DebouncerState } from '@tanstack/pacer/debouncer'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
@@ -76,20 +74,22 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  */
 export function injectDebouncedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialOptions: DebouncerOptions<Setter<TValue>>,
+  initialOptions: AngularDebouncerOptions<Setter<TValue>, TSelected>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): DebouncedSignal<TValue, TSelected>
 export function injectDebouncedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
   initialValue: TValue,
-  initialOptions: DebouncerOptions<Setter<TValue>>,
+  initialOptions: AngularDebouncerOptions<Setter<TValue>, TSelected>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): DebouncedSignal<TValue, TSelected>
 export function injectDebouncedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialValueOrOptions: TValue | DebouncerOptions<Setter<TValue>>,
+  initialValueOrOptions:
+    | TValue
+    | AngularDebouncerOptions<Setter<TValue>, TSelected>,
   initialOptionsOrSelector?:
-    | DebouncerOptions<Setter<TValue>>
+    | AngularDebouncerOptions<Setter<TValue>, TSelected>
     | ((state: DebouncerState<Setter<TValue>>) => TSelected),
   maybeSelector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): DebouncedSignal<TValue, TSelected> {
@@ -103,8 +103,14 @@ export function injectDebouncedValue<TValue, TSelected = {}>(
     ? (initialValueOrOptions as TValue)
     : (undefined as unknown as TValue)
   const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as DebouncerOptions<Setter<TValue>>)
-    : (initialValueOrOptions as DebouncerOptions<Setter<TValue>>)
+    ? (initialOptionsOrSelector as AngularDebouncerOptions<
+        Setter<TValue>,
+        TSelected
+      >)
+    : (initialValueOrOptions as AngularDebouncerOptions<
+        Setter<TValue>,
+        TSelected
+      >)
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as

@@ -46,7 +46,7 @@ The function returns a callable object containing:
 
 #### options?
 
-`QueuerOptions`\<`TValue`\>
+[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\>
 
 #### selector?
 
@@ -115,7 +115,7 @@ The function returns a callable object containing:
 
 #### options?
 
-`QueuerOptions`\<`TValue`\>
+[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\>
 
 #### selector?
 

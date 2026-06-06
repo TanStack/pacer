@@ -64,7 +64,7 @@ Available debouncer state properties:
 
 ### initialOptions
 
-`DebouncerOptions`\<`Setter`\<`TValue`\>\>
+[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`Setter`\<`TValue`\>, `TSelected`\>
 
 ### selector?
 

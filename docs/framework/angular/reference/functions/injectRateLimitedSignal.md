@@ -55,7 +55,7 @@ full control over when your component tracks state changes.
 
 ### initialOptions
 
-`RateLimiterOptions`\<`Setter`\<`TValue`\>\>
+[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<`Setter`\<`TValue`\>, `TSelected`\>
 
 ### selector?
 

@@ -1,8 +1,8 @@
 import { effect, linkedSignal, untracked } from '@angular/core'
 import { injectQueuedSignal } from './injectQueuedSignal'
 import type { Signal } from '@angular/core'
-import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
-import type { AngularQueuer } from './injectQueuer'
+import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
 
 export interface QueuedValueSignal<TValue, TSelected = {}> {
   (): TValue
@@ -43,7 +43,7 @@ export function injectQueuedValue<
   >,
 >(
   value: Signal<TValue>,
-  options?: QueuerOptions<TValue>,
+  options?: AngularQueuerOptions<TValue, TSelected>,
   selector?: (state: QueuerState<TValue>) => TSelected,
 ): QueuedValueSignal<TValue, TSelected>
 export function injectQueuedValue<
@@ -55,7 +55,7 @@ export function injectQueuedValue<
 >(
   value: Signal<TValue>,
   initialValue: TValue,
-  options?: QueuerOptions<TValue>,
+  options?: AngularQueuerOptions<TValue, TSelected>,
   selector?: (state: QueuerState<TValue>) => TSelected,
 ): QueuedValueSignal<TValue, TSelected>
 export function injectQueuedValue<
@@ -66,9 +66,9 @@ export function injectQueuedValue<
   >,
 >(
   value: Signal<TValue>,
-  initialValueOrOptions?: TValue | QueuerOptions<TValue>,
+  initialValueOrOptions?: TValue | AngularQueuerOptions<TValue, TSelected>,
   initialOptionsOrSelector?:
-    | QueuerOptions<TValue>
+    | AngularQueuerOptions<TValue, TSelected>
     | ((state: QueuerState<TValue>) => TSelected),
   maybeSelector?: (state: QueuerState<TValue>) => TSelected,
 ): QueuedValueSignal<TValue, TSelected> {
@@ -77,8 +77,8 @@ export function injectQueuedValue<
     (initialOptionsOrSelector !== undefined && !hasSelector) ||
     maybeSelector !== undefined
   const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as QueuerOptions<TValue>)
-    : (initialValueOrOptions as QueuerOptions<TValue>)
+    ? (initialOptionsOrSelector as AngularQueuerOptions<TValue, TSelected>)
+    : (initialValueOrOptions as AngularQueuerOptions<TValue, TSelected>)
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as

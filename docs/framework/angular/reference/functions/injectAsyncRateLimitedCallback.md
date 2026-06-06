@@ -40,7 +40,8 @@ Consider using the `injectAsyncRateLimiter` function instead.
 
 ### options
 
-`AsyncRateLimiterOptions`\<`TFn`\>
+[`AngularAsyncRateLimiterOptions`](../interfaces/AngularAsyncRateLimiterOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

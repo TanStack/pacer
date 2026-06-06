@@ -1,10 +1,10 @@
 import { computed } from '@angular/core'
 import { injectAsyncQueuer } from './injectAsyncQueuer'
-import type { AngularAsyncQueuer } from './injectAsyncQueuer'
 import type {
-  AsyncQueuerOptions,
-  AsyncQueuerState,
-} from '@tanstack/pacer/async-queuer'
+  AngularAsyncQueuer,
+  AngularAsyncQueuerOptions,
+} from './injectAsyncQueuer'
+import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
 
 export interface AsyncQueuedSignal<TValue, TSelected = {}> {
   (): Array<TValue>
@@ -57,7 +57,7 @@ export function injectAsyncQueuedSignal<
   >,
 >(
   fn: (value: TValue) => Promise<any>,
-  options: AsyncQueuerOptions<TValue> = {},
+  options: AngularAsyncQueuerOptions<TValue, TSelected> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = (state) =>
     ({ items: state.items }) as TSelected,
 ): AsyncQueuedSignal<TValue, TSelected> {
