@@ -25,7 +25,7 @@ export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
   /**
    * The result from the most recent successful function execution
    */
-  lastResult: ReturnType<TFn> | undefined
+  lastResult: Awaited<ReturnType<TFn>> | undefined
   /**
    * Number of function executions that have been rejected due to rate limiting
    */
