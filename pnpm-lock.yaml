@@ -97,22 +97,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -125,13 +125,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -146,22 +146,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -174,13 +174,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -195,22 +195,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -223,13 +223,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -244,22 +244,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -272,13 +272,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -293,22 +293,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -321,13 +321,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -342,22 +342,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -370,13 +370,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -391,22 +391,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -419,13 +419,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -440,22 +440,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -468,13 +468,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -489,22 +489,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -517,13 +517,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -538,22 +538,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -566,13 +566,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -587,22 +587,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -615,13 +615,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -636,22 +636,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -664,13 +664,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -685,22 +685,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -713,13 +713,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -734,22 +734,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -762,13 +762,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -783,22 +783,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -811,13 +811,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -832,22 +832,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -860,13 +860,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -881,22 +881,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -909,13 +909,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -930,22 +930,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -958,13 +958,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -979,22 +979,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1007,13 +1007,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1028,22 +1028,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1056,13 +1056,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1077,22 +1077,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1105,13 +1105,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1126,22 +1126,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1154,13 +1154,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1175,22 +1175,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1203,13 +1203,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1224,22 +1224,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1252,13 +1252,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1273,22 +1273,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1301,13 +1301,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1322,22 +1322,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1350,13 +1350,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1371,22 +1371,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1399,13 +1399,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1420,22 +1420,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1448,13 +1448,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1469,22 +1469,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1497,13 +1497,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1518,22 +1518,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1546,13 +1546,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1567,22 +1567,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1595,13 +1595,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1616,22 +1616,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1644,13 +1644,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1665,22 +1665,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1693,13 +1693,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1714,22 +1714,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1742,13 +1742,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1763,22 +1763,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1791,13 +1791,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1812,22 +1812,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1840,13 +1840,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1861,22 +1861,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1889,13 +1889,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1910,22 +1910,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1938,13 +1938,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1959,22 +1959,22 @@ importers:
     dependencies:
       '@angular/common':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/compiler':
         specifier: ^21.2.12
-        version: 21.2.15
+        version: 21.2.17
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/platform-browser':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@tanstack/angular-pacer':
         specifier: workspace:*
         version: link:../../../packages/angular-pacer
@@ -1987,13 +1987,13 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^21.2.11
-        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^21.2.11
         version: 21.2.13(@types/node@25.7.0)(chokidar@5.0.0)
       '@angular/compiler-cli':
         specifier: ^21.2.12
-        version: 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+        version: 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -4323,14 +4323,14 @@ importers:
     dependencies:
       '@tanstack/angular-store':
         specifier: ^0.11.0
-        version: 0.11.0(@angular/common@21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(rxjs@7.8.2))
+        version: 0.11.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@tanstack/pacer':
         specifier: workspace:*
         version: link:../pacer
     devDependencies:
       '@angular/core':
         specifier: ^21.2.12
-        version: 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+        version: 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@types/node':
         specifier: ^25.7.0
         version: 25.7.0
@@ -4351,7 +4351,7 @@ importers:
         version: 0.5.2(csstype@3.2.3)(solid-js@1.9.13)
       '@tanstack/devtools-utils':
         specifier: ^0.5.0
-        version: 0.5.0(@angular/core@21.2.17(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)
+        version: 0.5.0(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)
       '@tanstack/pacer':
         specifier: workspace:*
         version: link:../pacer
@@ -4413,7 +4413,7 @@ importers:
     dependencies:
       '@tanstack/devtools-utils':
         specifier: ^0.5.0
-        version: 0.5.0(@angular/core@21.2.17(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)
+        version: 0.5.0(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -4466,7 +4466,7 @@ importers:
     dependencies:
       '@tanstack/devtools-utils':
         specifier: ^0.5.0
-        version: 0.5.0(@angular/core@21.2.17(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)
+        version: 0.5.0(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -4519,7 +4519,7 @@ importers:
     dependencies:
       '@tanstack/devtools-utils':
         specifier: ^0.5.0
-        version: 0.5.0(@angular/core@21.2.17(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)
+        version: 0.5.0(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
@@ -4686,8 +4686,8 @@ packages:
       typescript:
         optional: true
 
-  '@angular/compiler@21.2.15':
-    resolution: {integrity: sha512-nwpNb+NbVUNzR3cck0QXbU/oFK7BpmXOXVnN/w7+P4+TsFUYeTtO1Ojbc15jkqe6mSM0lBvGlcoztVblHQkqcw==}
+  '@angular/compiler@21.2.17':
+    resolution: {integrity: sha512-p+NdjYiwAz9Zmu2yul0LlMXaFjMISVVa24+/MVMoKFeQeI82QE8jDywPlnOSHQHvdCcQVpS7saeEriZzX3JuBQ==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
 
   '@angular/core@21.2.17':
@@ -10585,12 +10585,12 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular/build@21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3))(@angular/compiler@21.2.15)(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)':
+  '@angular/build@21.2.13(@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.7.0)(chokidar@5.0.0)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(vitest@4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0)))(yaml@2.9.0)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2102.13(chokidar@5.0.0)
-      '@angular/compiler': 21.2.15
-      '@angular/compiler-cli': 21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)
+      '@angular/compiler': 21.2.17
+      '@angular/compiler-cli': 21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)
       '@babel/core': 7.29.0
       '@babel/helper-annotate-as-pure': 7.27.3
       '@babel/helper-split-export-declaration': 7.24.7
@@ -10619,8 +10619,8 @@ snapshots:
       vite: 7.3.2(@types/node@25.7.0)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.97.3)(yaml@2.9.0)
       watchpack: 2.5.1
     optionalDependencies:
-      '@angular/core': 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
-      '@angular/platform-browser': 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+      '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
+      '@angular/platform-browser': 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       lmdb: 3.5.1
       postcss: 8.5.15
       vitest: 4.1.7(@types/node@25.7.0)(happy-dom@20.9.0)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(yaml@2.9.0))
@@ -10665,15 +10665,15 @@ snapshots:
       - chokidar
       - supports-color
 
-  '@angular/common@21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)':
+  '@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)':
     dependencies:
-      '@angular/core': 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+      '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/compiler-cli@21.2.15(@angular/compiler@21.2.15)(typescript@6.0.3)':
+  '@angular/compiler-cli@21.2.15(@angular/compiler@21.2.17)(typescript@6.0.3)':
     dependencies:
-      '@angular/compiler': 21.2.15
+      '@angular/compiler': 21.2.17
       '@babel/core': 7.29.0
       '@jridgewell/sourcemap-codec': 1.5.5
       chokidar: 5.0.0
@@ -10687,37 +10687,37 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@angular/compiler@21.2.15':
+  '@angular/compiler@21.2.17':
     dependencies:
       tslib: 2.8.1
 
-  '@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)':
+  '@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)':
     dependencies:
       rxjs: 7.8.2
       tslib: 2.8.1
     optionalDependencies:
-      '@angular/compiler': 21.2.15
+      '@angular/compiler': 21.2.17
 
-  '@angular/forms@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)':
+  '@angular/forms@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)':
     dependencies:
-      '@angular/common': 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
-      '@angular/platform-browser': 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+      '@angular/common': 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
+      '@angular/platform-browser': 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@standard-schema/spec': 1.1.0
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))':
+  '@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))':
     dependencies:
-      '@angular/common': 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+      '@angular/common': 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       tslib: 2.8.1
 
-  '@angular/router@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)))(rxjs@7.8.2)':
+  '@angular/router@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)':
     dependencies:
-      '@angular/common': 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
-      '@angular/platform-browser': 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2))
+      '@angular/common': 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
+      '@angular/platform-browser': 21.2.15(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       rxjs: 7.8.2
       tslib: 2.8.1
 
@@ -12565,10 +12565,10 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@tanstack/angular-store@0.11.0(@angular/common@21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(rxjs@7.8.2))':
+  '@tanstack/angular-store@0.11.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))':
     dependencies:
-      '@angular/common': 21.2.17(@angular/core@21.2.17(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+      '@angular/common': 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@tanstack/store': 0.11.0
 
   '@tanstack/devtools-client@0.0.6':
@@ -12593,9 +12593,9 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools-utils@0.5.0(@angular/core@21.2.17(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)':
+  '@tanstack/devtools-utils@0.5.0(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@types/react@19.2.15)(preact@10.29.2)(react@19.2.6)(solid-js@1.9.13)':
     optionalDependencies:
-      '@angular/core': 21.2.17(@angular/compiler@21.2.15)(rxjs@7.8.2)
+      '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@types/react': 19.2.15
       preact: 10.29.2
       react: 19.2.6
