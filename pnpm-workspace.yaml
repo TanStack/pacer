@@ -1,6 +1,13 @@
 cleanupUnusedCatalogs: true
+minimumReleaseAge: 1440
 linkWorkspacePackages: true
 preferWorkspacePackages: true
+blockExoticSubdeps: true
+trustPolicy: 'no-downgrade'
+
+trustPolicyExclude:
+  - 'chokidar@4.0.3' # Socket score 99; popular and healthy existing watcher dependency
+  - 'semver@6.3.1' # Socket score 100; latest v6 and healthy existing semver dependency
 
 packages:
   - 'examples/**/*'
@@ -28,4 +35,3 @@ allowBuilds:
   '@parcel/watcher': false # optional dep of @angular/build
   lmdb: false # optional dep of @angular/build
   msgpackr-extract: false # optional dep of @angular/build
-
