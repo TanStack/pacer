@@ -80,18 +80,18 @@
     "@tanstack/pacer": ">=0.16.4"
   },
   "dependencies": {
-    "@tanstack/devtools-ui": "0.5.2",
-    "@tanstack/devtools-utils": "^0.5.0",
+    "@tanstack/devtools-ui": "0.6.0",
+    "@tanstack/devtools-utils": "^0.6.0",
     "@tanstack/solid-store": "^0.11.0",
     "clsx": "^2.1.1",
     "csstype": "^3.2.3",
-    "dayjs": "^1.11.20",
+    "dayjs": "^1.11.21",
     "goober": "^2.1.19",
-    "solid-js": "^1.9.12"
+    "solid-js": "^1.9.13"
   },
   "devDependencies": {
     "rolldown-plugin-solid": "^0.2.1",
-    "tsdown": "^0.22.0",
+    "tsdown": "^0.22.3",
     "vite-plugin-solid": "^2.11.12"
   }
 }
