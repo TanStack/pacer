@@ -5,9 +5,9 @@
     "type": "git",
     "url": "git+https://github.com/TanStack/pacer.git"
   },
-  "packageManager": "pnpm@11.1.1",
+  "packageManager": "pnpm@11.9.0",
   "engines": {
-    "pnpm": ">=11.0.0"
+    "pnpm": ">=11.9.0"
   },
   "type": "module",
   "scripts": {
@@ -54,28 +54,28 @@
   ],
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
-    "@faker-js/faker": "^10.4.0",
+    "@faker-js/faker": "^10.5.0",
     "@size-limit/preset-small-lib": "^12.1.0",
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
     "@tanstack/eslint-config": "0.4.0",
     "@tanstack/typedoc-config": "0.3.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "^25.7.0",
-    "eslint": "^10.3.0",
+    "eslint": "^10.6.0",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "happy-dom": "^20.9.0",
-    "knip": "^6.13.1",
+    "happy-dom": "^20.10.6",
+    "knip": "^6.22.0",
     "markdown-link-extractor": "^4.0.3",
-    "nx": "^22.7.1",
+    "nx": "^22.7.6",
     "premove": "^4.0.0",
-    "prettier": "^3.8.3",
+    "prettier": "^3.9.0",
     "prettier-plugin-svelte": "^3.5.2",
     "publint": "^0.3.21",
-    "sherif": "^1.11.1",
+    "sherif": "^1.12.0",
     "size-limit": "^12.1.0",
-    "tinyglobby": "^0.2.16",
-    "tsdown": "^0.22.0",
+    "tinyglobby": "^0.2.17",
+    "tsdown": "^0.22.3",
     "typescript": "6.0.3",
-    "vitest": "^4.1.6"
+    "vitest": "^4.1.9"
   }
 }
