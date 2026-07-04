@@ -362,7 +362,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<ReturnType<TFn> | undefined> => {
     if (!this.#getEnabled()) return undefined
-    const currentMaybeExecuteCount = this.store.state.maybeExecuteCount + 1
+    const currentMaybeExecuteCount = this.store.state.maybeExecuteCount
 
     try {
       this.#setState({ isExecuting: true })

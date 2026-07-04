@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi, } from 'vitest'
 import { AsyncDebouncer, asyncDebounce } from '../src/async-debouncer'
 
 describe('AsyncDebouncer', () => {
@@ -1357,6 +1357,28 @@ describe('asyncDebounce helper function', () => {
 
       expect(typeof debouncer.getAbortSignal).toBe('function')
       expect(debouncer.getAbortSignal()).toBeNull()
+    })
+
+
+    it('should return an AbortSignal and mark it aborted when abort() is called', async () => {
+      const debouncer = new AsyncDebouncer(
+        async () => {
+          const signal = debouncer.getAbortSignal()
+          expect(signal).toBeInstanceOf(AbortSignal)
+          expect(signal?.aborted).toBe(false)
+          return 'result'
+        },
+        { wait: 300 },
+      )
+
+
+      debouncer.maybeExecute()
+      vi.advanceTimersByTime(150)
+      const promise = debouncer.maybeExecute()
+      vi.advanceTimersByTime(300)
+      debouncer.abort()
+      expect(debouncer.getAbortSignal()?.aborted ?? true).toBe(true)
+      await promise
     })
   })
 })
