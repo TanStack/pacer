@@ -1,12 +1,25 @@
 import { effect, linkedSignal, untracked } from '@angular/core'
 import { injectQueuedSignal } from './injectQueuedSignal'
 import type { Signal } from '@angular/core'
-import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { QueuePosition, QueuerState } from '@tanstack/pacer/queuer'
 import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
 
 export interface QueuedValueSignal<TValue, TSelected = {}> {
   (): TValue
-  addItem: AngularQueuer<TValue, TSelected>['addItem']
+  /**
+   * Adds an item to the queue.
+   *
+   * @example
+   * ```ts
+   * queued.addItem('task')
+   * queued.addItem('task2', 'front')
+   * ```
+   */
+  addItem: (
+    item: TValue,
+    position?: QueuePosition,
+    runOnItemsChange?: boolean,
+  ) => boolean
   queuer: AngularQueuer<TValue, TSelected>
 }
 

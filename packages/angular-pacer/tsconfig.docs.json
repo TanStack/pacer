@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.lib.json",
   "compilerOptions": {
+    "composite": false,
     "paths": {
       "@tanstack/pacer": ["../pacer/src"],
       "@tanstack/pacer/*": ["../pacer/src/*"]

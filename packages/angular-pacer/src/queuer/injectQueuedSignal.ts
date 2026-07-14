@@ -1,11 +1,24 @@
 import { computed } from '@angular/core'
 import { injectQueuer } from './injectQueuer'
 import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
-import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { QueuePosition, QueuerState } from '@tanstack/pacer/queuer'
 
 export interface QueuedSignal<TValue, TSelected = {}> {
   (): Array<TValue>
-  addItem: AngularQueuer<TValue, TSelected>['addItem']
+  /**
+   * Adds an item to the queue.
+   *
+   * @example
+   * ```ts
+   * queued.addItem('task')
+   * queued.addItem('task2', 'front')
+   * ```
+   */
+  addItem: (
+    item: TValue,
+    position?: QueuePosition,
+    runOnItemsChange?: boolean,
+  ) => boolean
   queuer: AngularQueuer<TValue, TSelected>
 }
 

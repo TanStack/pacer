@@ -14,7 +14,7 @@ function injectThrottledValue<TValue, TSelected>(
 selector?): ThrottledSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/throttler/injectThrottledValue.ts:73](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledValue.ts#L73)
+Defined in: [throttler/injectThrottledValue.ts:73](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledValue.ts#L73)
 
 An Angular function that creates a throttled value that updates at most once within a specified time window.
 Unlike injectThrottledSignal, this function automatically tracks changes to the input signal
@@ -118,7 +118,7 @@ function injectThrottledValue<TValue, TSelected>(
 selector?): ThrottledSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/throttler/injectThrottledValue.ts:78](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledValue.ts#L78)
+Defined in: [throttler/injectThrottledValue.ts:78](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledValue.ts#L78)
 
 An Angular function that creates a throttled value that updates at most once within a specified time window.
 Unlike injectThrottledSignal, this function automatically tracks changes to the input signal

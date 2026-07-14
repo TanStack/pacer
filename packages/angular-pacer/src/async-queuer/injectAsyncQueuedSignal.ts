@@ -5,10 +5,24 @@ import type {
   AngularAsyncQueuerOptions,
 } from './injectAsyncQueuer'
 import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
+import type { QueuePosition } from '@tanstack/pacer/queuer'
 
 export interface AsyncQueuedSignal<TValue, TSelected = {}> {
   (): Array<TValue>
-  addItem: AngularAsyncQueuer<TValue, TSelected>['addItem']
+  /**
+   * Adds an item to the queue.
+   *
+   * @example
+   * ```ts
+   * queued.addItem('task')
+   * queued.addItem('task2', 'front')
+   * ```
+   */
+  addItem: (
+    item: TValue,
+    position?: QueuePosition,
+    runOnItemsChange?: boolean,
+  ) => boolean
   queuer: AngularAsyncQueuer<TValue, TSelected>
 }
 

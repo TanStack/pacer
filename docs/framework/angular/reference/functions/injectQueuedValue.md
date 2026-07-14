@@ -14,7 +14,7 @@ function injectQueuedValue<TValue, TSelected>(
 selector?): QueuedValueSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/queuer/injectQueuedValue.ts:38](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L38)
+Defined in: [queuer/injectQueuedValue.ts:51](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L51)
 
 An Angular function that creates a queued value that processes state changes in order with an optional delay.
 This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.
@@ -79,7 +79,7 @@ function injectQueuedValue<TValue, TSelected>(
 selector?): QueuedValueSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/queuer/injectQueuedValue.ts:49](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L49)
+Defined in: [queuer/injectQueuedValue.ts:62](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L62)
 
 An Angular function that creates a queued value that processes state changes in order with an optional delay.
 This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.

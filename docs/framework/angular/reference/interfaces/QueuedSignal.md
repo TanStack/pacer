@@ -5,7 +5,7 @@ title: QueuedSignal
 
 # Interface: QueuedSignal()\<TValue, TSelected\>
 
-Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:6](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L6)
+Defined in: [queuer/injectQueuedSignal.ts:6](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L6)
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:6](https://github.co
 QueuedSignal(): TValue[];
 ```
 
-Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:7](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L7)
+Defined in: [queuer/injectQueuedSignal.ts:7](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L7)
 
 ## Returns
 
@@ -33,21 +33,12 @@ Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:7](https://github.co
 ### addItem()
 
 ```ts
-addItem: (item, position, runOnItemsChange) => boolean;
+addItem: (item, position?, runOnItemsChange?) => boolean;
 ```
 
-Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:8](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L8)
+Defined in: [queuer/injectQueuedSignal.ts:17](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L17)
 
-Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
-Items can be inserted based on priority or at the front/back depending on configuration.
-
-Returns true if the item was added, false if the queue is full.
-
-Example usage:
-```ts
-queuer.addItem('task');
-queuer.addItem('task2', 'front');
-```
+Adds an item to the queue.
 
 #### Parameters
 
@@ -55,17 +46,24 @@ queuer.addItem('task2', 'front');
 
 `TValue`
 
-##### position
+##### position?
 
-`QueuePosition` = `...`
+`QueuePosition`
 
-##### runOnItemsChange
+##### runOnItemsChange?
 
-`boolean` = `true`
+`boolean`
 
 #### Returns
 
 `boolean`
+
+#### Example
+
+```ts
+queued.addItem('task')
+queued.addItem('task2', 'front')
+```
 
 ***
 
@@ -75,4 +73,4 @@ queuer.addItem('task2', 'front');
 queuer: AngularQueuer<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:9](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L9)
+Defined in: [queuer/injectQueuedSignal.ts:22](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L22)
