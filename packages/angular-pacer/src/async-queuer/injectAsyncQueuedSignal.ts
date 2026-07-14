@@ -36,7 +36,7 @@ export interface AsyncQueuedSignal<TValue, TSelected = {}> {
  * The function returns a callable object:
  * - `queued()`: Get the current queue items as an array
  * - `queued.addItem(...)`: Add an item to the queue
- * - `queued.queue`: The queuer instance with additional control methods
+ * - `queued.queuer`: The queuer instance with additional control methods
  *
  * @example
  * ```ts
