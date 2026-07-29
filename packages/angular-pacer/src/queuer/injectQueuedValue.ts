@@ -61,8 +61,7 @@ export function injectQueuedValue<
   value: Signal<TValue>,
   initialValueOrOptions?: TValue | QueuerOptions<TValue>,
   initialOptionsOrSelector?:
-    | QueuerOptions<TValue>
-    | ((state: QueuerState<TValue>) => TSelected),
+    QueuerOptions<TValue> | ((state: QueuerState<TValue>) => TSelected),
   maybeSelector?: (state: QueuerState<TValue>) => TSelected,
 ): QueuedSignal<TValue, TSelected> {
   const hasSelector = typeof initialOptionsOrSelector === 'function'
@@ -79,8 +78,7 @@ export function injectQueuedValue<
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as
-        | ((state: QueuerState<TValue>) => TSelected)
-        | undefined)
+        ((state: QueuerState<TValue>) => TSelected) | undefined)
 
   const linkedValue = linkedSignal(() => value())
   const queuedValue = signal<TValue>(initialValue)

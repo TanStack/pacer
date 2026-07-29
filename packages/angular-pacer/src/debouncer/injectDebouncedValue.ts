@@ -108,8 +108,7 @@ export function injectDebouncedValue<TValue, TSelected = {}>(
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as
-        | ((state: DebouncerState<Setter<TValue>>) => TSelected)
-        | undefined)
+        ((state: DebouncerState<Setter<TValue>>) => TSelected) | undefined)
 
   const debounced = injectDebouncedSignal(
     initialValue,
