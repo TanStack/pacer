@@ -3,6 +3,7 @@ import { createContext, createEffect, onCleanup, useContext } from 'solid-js'
 import {
   getPacerDevtoolsInstance,
   pacerEventClient,
+  subscribeToPacerDevtoolsInstances,
 } from '@tanstack/pacer/event-client'
 import type {
   AsyncBatcher,
@@ -56,13 +57,8 @@ const PacerDevtoolsContext = createContext<
 type UtilListKey = Exclude<keyof PacerDevtoolsContextType, 'lastUpdatedByKey'>
 
 /**
- * Match TanStack Form devtools: subscribe with {@link pacerEventClient.on} per
- * event suffix so the same `pacer:${suffix}` channel the library emits on is
- * observed. `onAllPluginEvents` only sees `tanstack-devtools-global`, which is
- * not always relayed the same way by the shell.
- *
- * `d-*` suffixes are used when the devtools panel pushes state back (see
- * ActionButtons); those must update the panel store too.
+ * Bus subscriptions preserve relayed devtools events. The instance subscription
+ * below additionally replays same-runtime utilities when this provider mounts.
  */
 const PACER_DEVTOOLS_UTIL_EVENTS: Array<{
   listKey: UtilListKey
@@ -116,31 +112,47 @@ export function PacerContextProvider(props: { children: any }) {
   )
 
   createEffect(() => {
-    const cleanups: Array<() => void> = []
+    const updateInstance = (
+      event: PacerEventName,
+      key: string,
+      instance: unknown,
+    ) => {
+      if (!instance || typeof instance !== 'object') return
 
-    for (const { listKey, suffixes } of PACER_DEVTOOLS_UTIL_EVENTS) {
+      const eventConfig = PACER_DEVTOOLS_UTIL_EVENTS.find(({ suffixes }) =>
+        suffixes.includes(event),
+      )
+      if (!eventConfig) return
+
+      setStore(
+        produce((draft) => {
+          const list = draft[eventConfig.listKey] as Array<{ key: string }>
+          const index = list.findIndex((item) => item.key === key)
+          const inst = instance as { key: string }
+          if (index !== -1) {
+            list[index] = inst as (typeof list)[number]
+          } else {
+            list.push(inst as (typeof list)[number])
+          }
+          draft.lastUpdatedByKey[key] = Date.now()
+        }),
+      )
+    }
+
+    const cleanups = [
+      subscribeToPacerDevtoolsInstances(({ event, key, instance }) => {
+        updateInstance(event, key, instance)
+      }),
+    ]
+
+    for (const { suffixes } of PACER_DEVTOOLS_UTIL_EVENTS) {
       for (const suffix of suffixes) {
         cleanups.push(
-          pacerEventClient.on(suffix, (e) => {
-            const payload = e.payload
-            const key = payload.key
-            if (!key) return
-
-            const instance = getPacerDevtoolsInstance(key)
-            if (!instance || typeof instance !== 'object') return
-
-            setStore(
-              produce((draft) => {
-                const list = draft[listKey] as Array<{ key: string }>
-                const index = list.findIndex((item) => item.key === key)
-                const inst = instance as { key: string }
-                if (index !== -1) {
-                  list[index] = inst as (typeof list)[number]
-                } else {
-                  list.push(inst as (typeof list)[number])
-                }
-                draft.lastUpdatedByKey[key] = Date.now()
-              }),
+          pacerEventClient.on(suffix, ({ payload }) => {
+            updateInstance(
+              suffix,
+              payload.key,
+              getPacerDevtoolsInstance(payload.key),
             )
           }),
         )
@@ -148,9 +160,7 @@ export function PacerContextProvider(props: { children: any }) {
     }
 
     onCleanup(() => {
-      for (const cleanup of cleanups) {
-        cleanup()
-      }
+      cleanups.forEach((cleanup) => cleanup())
     })
   })
   return (
