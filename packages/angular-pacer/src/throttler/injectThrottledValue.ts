@@ -106,8 +106,7 @@ export function injectThrottledValue<TValue, TSelected = {}>(
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as
-        | ((state: ThrottlerState<Setter<TValue>>) => TSelected)
-        | undefined)
+        ((state: ThrottlerState<Setter<TValue>>) => TSelected) | undefined)
 
   const throttledValue = injectThrottledSignal(
     initialValue,
