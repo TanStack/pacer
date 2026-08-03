@@ -2,15 +2,15 @@
   <picture>
     <source
       media="(prefers-color-scheme: dark)"
-      srcset="https://tanstack.com/api/readme/pacer.png?framework=preact&theme=dark"
+      srcset="https://tanstack.com/api/readme/pacer.png?theme=dark"
     />
     <source
       media="(prefers-color-scheme: light)"
-      srcset="https://tanstack.com/api/readme/pacer.png?framework=preact"
+      srcset="https://tanstack.com/api/readme/pacer.png"
     />
     <img
-      src="https://tanstack.com/api/readme/pacer.png?framework=preact"
-      alt="TanStack Preact Pacer"
+      src="https://tanstack.com/api/readme/pacer.png"
+      alt="TanStack Pacer"
       width="900"
     />
   </picture>
