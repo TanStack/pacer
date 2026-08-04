@@ -1,8 +1,27 @@
-import { effect, linkedSignal, signal } from '@angular/core'
+import { effect, linkedSignal, untracked } from '@angular/core'
 import { injectQueuedSignal } from './injectQueuedSignal'
-import type { QueuedSignal } from './injectQueuedSignal'
 import type { Signal } from '@angular/core'
-import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+import type { QueuePosition, QueuerState } from '@tanstack/pacer/queuer'
+import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
+
+export interface QueuedValueSignal<TValue, TSelected = {}> {
+  (): TValue
+  /**
+   * Adds an item to the queue.
+   *
+   * @example
+   * ```ts
+   * queued.addItem('task')
+   * queued.addItem('task2', 'front')
+   * ```
+   */
+  addItem: (
+    item: TValue,
+    position?: QueuePosition,
+    runOnItemsChange?: boolean,
+  ) => boolean
+  queuer: AngularQueuer<TValue, TSelected>
+}
 
 /**
  * An Angular function that creates a queued value that processes state changes in order with an optional delay.
@@ -12,9 +31,10 @@ import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
  * processing each change. This is useful for handling state updates that need to be processed
  * in a specific order, like animations or sequential UI updates.
  *
- * The function returns a tuple containing:
- * - A Signal that provides the current queued value
- * - The queuer instance with control methods
+ * The function returns a callable object containing:
+ * - `queued()`: A signal-like function that provides the current queued value
+ * - `queued.addItem(...)`: A method to enqueue additional values
+ * - `queued.queuer`: The queuer instance with control methods and state
  *
  * @example
  * ```ts
@@ -36,9 +56,9 @@ export function injectQueuedValue<
   >,
 >(
   value: Signal<TValue>,
-  options?: QueuerOptions<TValue>,
+  options?: AngularQueuerOptions<TValue, TSelected>,
   selector?: (state: QueuerState<TValue>) => TSelected,
-): QueuedSignal<TValue, TSelected>
+): QueuedValueSignal<TValue, TSelected>
 export function injectQueuedValue<
   TValue,
   TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
@@ -48,9 +68,9 @@ export function injectQueuedValue<
 >(
   value: Signal<TValue>,
   initialValue: TValue,
-  options?: QueuerOptions<TValue>,
+  options?: AngularQueuerOptions<TValue, TSelected>,
   selector?: (state: QueuerState<TValue>) => TSelected,
-): QueuedSignal<TValue, TSelected>
+): QueuedValueSignal<TValue, TSelected>
 export function injectQueuedValue<
   TValue,
   TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
@@ -59,31 +79,30 @@ export function injectQueuedValue<
   >,
 >(
   value: Signal<TValue>,
-  initialValueOrOptions?: TValue | QueuerOptions<TValue>,
+  initialValueOrOptions?: TValue | AngularQueuerOptions<TValue, TSelected>,
   initialOptionsOrSelector?:
-    | QueuerOptions<TValue>
+    | AngularQueuerOptions<TValue, TSelected>
     | ((state: QueuerState<TValue>) => TSelected),
   maybeSelector?: (state: QueuerState<TValue>) => TSelected,
-): QueuedSignal<TValue, TSelected> {
+): QueuedValueSignal<TValue, TSelected> {
   const hasSelector = typeof initialOptionsOrSelector === 'function'
   const hasInitialValue =
     (initialOptionsOrSelector !== undefined && !hasSelector) ||
     maybeSelector !== undefined
-
-  const initialValue = hasInitialValue
-    ? (initialValueOrOptions as TValue)
-    : value()
   const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as QueuerOptions<TValue>)
-    : (initialValueOrOptions as QueuerOptions<TValue>)
+    ? (initialOptionsOrSelector as AngularQueuerOptions<TValue, TSelected>)
+    : (initialValueOrOptions as AngularQueuerOptions<TValue, TSelected>)
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as
         | ((state: QueuerState<TValue>) => TSelected)
         | undefined)
 
-  const linkedValue = linkedSignal(() => value())
-  const queuedValue = signal<TValue>(initialValue)
+  const queuedValue = linkedSignal<TValue>(() => {
+    return hasInitialValue
+      ? (initialValueOrOptions as TValue)
+      : untracked(value)
+  })
 
   const queued = injectQueuedSignal(
     (item) => {
@@ -94,8 +113,11 @@ export function injectQueuedValue<
   )
 
   effect(() => {
-    queued.addItem(linkedValue())
+    queued.addItem(value())
   })
 
-  return queued
+  return Object.assign(queuedValue, {
+    addItem: queued.addItem.bind(queued),
+    queuer: queued.queuer,
+  }) as QueuedValueSignal<TValue, TSelected>
 }

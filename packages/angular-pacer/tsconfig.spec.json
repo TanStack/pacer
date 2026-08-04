@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true,
+    "target": "ES2022",
+    "types": ["vitest/globals", "node"],
+    "paths": {
+      "@tanstack/pacer": ["../pacer/src"],
+      "@tanstack/pacer/*": ["../pacer/src/*"]
+    }
+  },
+  "files": ["tests/test-setup.ts"],
+  "include": [
+    "src",
+    "../pacer/src",
+    "tests/**/*.spec.ts",
+    "tests/**/*.d.ts"
+  ]
+}

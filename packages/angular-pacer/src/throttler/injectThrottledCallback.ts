@@ -1,5 +1,5 @@
 import { injectThrottler } from './injectThrottler'
-import type { ThrottlerOptions } from '@tanstack/pacer/throttler'
+import type { AngularThrottlerOptions } from './injectThrottler'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
 /**
@@ -38,7 +38,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  */
 export function injectThrottledCallback<TFn extends AnyFunction>(
   fn: TFn,
-  options: ThrottlerOptions<TFn>,
+  options: AngularThrottlerOptions<TFn, {}>,
 ): (...args: Parameters<TFn>) => void {
   const throttler = injectThrottler(fn, options)
   return (...args: Parameters<TFn>) => throttler.maybeExecute(...args)

@@ -1,11 +1,24 @@
 import { computed } from '@angular/core'
 import { injectQueuer } from './injectQueuer'
-import type { AngularQueuer } from './injectQueuer'
-import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
+import type { QueuePosition, QueuerState } from '@tanstack/pacer/queuer'
 
 export interface QueuedSignal<TValue, TSelected = {}> {
   (): Array<TValue>
-  addItem: AngularQueuer<TValue, TSelected>['addItem']
+  /**
+   * Adds an item to the queue.
+   *
+   * @example
+   * ```ts
+   * queued.addItem('task')
+   * queued.addItem('task2', 'front')
+   * ```
+   */
+  addItem: (
+    item: TValue,
+    position?: QueuePosition,
+    runOnItemsChange?: boolean,
+  ) => boolean
   queuer: AngularQueuer<TValue, TSelected>
 }
 
@@ -19,7 +32,7 @@ export interface QueuedSignal<TValue, TSelected = {}> {
  * The function returns a callable object:
  * - `queued()`: Get the current queue items as an array
  * - `queued.addItem(...)`: Add an item to the queue
- * - `queued.queue`: The queuer instance with additional control methods
+ * - `queued.queuer`: The queuer instance with additional control methods
  *
  * @example
  * ```ts
@@ -48,7 +61,7 @@ export function injectQueuedSignal<
   >,
 >(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: AngularQueuerOptions<TValue, TSelected> = {},
   selector: (state: QueuerState<TValue>) => TSelected = (state) =>
     ({ items: state.items }) as TSelected,
 ): QueuedSignal<TValue, TSelected> {

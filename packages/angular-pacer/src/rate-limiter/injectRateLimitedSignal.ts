@@ -1,10 +1,10 @@
 import { signal } from '@angular/core'
 import { injectRateLimiter } from './injectRateLimiter'
-import type { AngularRateLimiter } from './injectRateLimiter'
 import type {
-  RateLimiterOptions,
-  RateLimiterState,
-} from '@tanstack/pacer/rate-limiter'
+  AngularRateLimiter,
+  AngularRateLimiterOptions,
+} from './injectRateLimiter'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
@@ -56,7 +56,7 @@ export interface RateLimitedSignal<TValue, TSelected = {}> {
  */
 export function injectRateLimitedSignal<TValue, TSelected = {}>(
   value: TValue,
-  initialOptions: RateLimiterOptions<Setter<TValue>>,
+  initialOptions: AngularRateLimiterOptions<Setter<TValue>, TSelected>,
   selector?: (state: RateLimiterState) => TSelected,
 ): RateLimitedSignal<TValue, TSelected> {
   const rateLimitedValue = signal<TValue>(value)
