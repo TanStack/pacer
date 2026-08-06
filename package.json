@@ -28,7 +28,7 @@
     "lint:fix:all": "nx run-many --targets=lint --fix",
     "size": "size-limit",
     "test": "pnpm run test:ci",
-    "test:ci": "nx run-many --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
+    "test:ci": "nx run @tanstack/angular-pacer:build && nx run-many --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
     "test:docs": "node scripts/verify-links.ts",
     "test:eslint": "nx affected --target=test:eslint --exclude=examples/**",
     "test:knip": "knip",
