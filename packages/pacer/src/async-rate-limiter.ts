@@ -416,7 +416,8 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     } finally {
       this.asyncRetryers.delete(currentMaybeExecute) // dispose retryer
       this.#setState({
-        isExecuting: false,
+        // other executions may still be in flight within the window
+        isExecuting: this.asyncRetryers.size > 0,
         settleCount: this.store.state.settleCount + 1,
       })
       this.options.onSettled?.(args, this)

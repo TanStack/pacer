@@ -817,6 +817,41 @@ describe('AsyncRateLimiter internal retryer devtools registration', () => {
   })
 })
 
+describe('AsyncRateLimiter concurrent execution state', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('should keep isExecuting true until all overlapping executions settle', async () => {
+    const resolvers: Array<() => void> = []
+    const rateLimiter = new AsyncRateLimiter(
+      (value: string) => {
+        return new Promise<string>((resolve) => {
+          resolvers.push(() => resolve(value))
+        })
+      },
+      { limit: 5, window: 1000 },
+    )
+
+    const p1 = rateLimiter.maybeExecute('one')
+    const p2 = rateLimiter.maybeExecute('two')
+    expect(rateLimiter.store.state.isExecuting).toBe(true)
+
+    resolvers.shift()!()
+    await vi.advanceTimersByTimeAsync(0)
+    expect(rateLimiter.store.state.isExecuting).toBe(true) // second still in flight
+
+    resolvers.shift()!()
+    await vi.advanceTimersByTimeAsync(0)
+    expect(rateLimiter.store.state.isExecuting).toBe(false)
+
+    await Promise.all([p1, p2])
+  })
+})
+
 describe('AsyncRateLimiter return type inference', () => {
   it('should resolve to the awaited return type, not a nested promise', () => {
     const rateLimiter = new AsyncRateLimiter(async (value: string) => value, {

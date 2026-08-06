@@ -432,7 +432,7 @@ export class AsyncQueuer<TValue> {
 
     // Process items concurrently up to the concurrency limit
     let scheduledAsyncWork = false
-    const activeItems = this.store.state.activeItems
+    const activeItems = [...this.store.state.activeItems]
     while (
       activeItems.length < this.#getConcurrency() &&
       this.store.state.items.length > 0
@@ -443,7 +443,7 @@ export class AsyncQueuer<TValue> {
       }
       activeItems.push(nextItem)
       this.#setState({
-        activeItems,
+        activeItems: [...activeItems],
       })
       scheduledAsyncWork = true
       ;(async () => {
@@ -672,7 +672,8 @@ export class AsyncQueuer<TValue> {
         }
         this.#setState({
           activeItems: remainingActiveItems,
-          isExecuting: false,
+          // other executions may still be in flight (concurrency > 1 or flush)
+          isExecuting: this.asyncRetryers.size > 0,
           settledCount: this.store.state.settledCount + 1,
         })
         this.options.onSettled?.(item, this)

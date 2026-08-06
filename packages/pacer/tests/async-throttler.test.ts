@@ -1,4 +1,12 @@
-import { beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  expectTypeOf,
+  it,
+  vi,
+} from 'vitest'
 import { AsyncThrottler } from '../src/async-throttler'
 import { getPacerDevtoolsInstance } from '../src'
 
@@ -1004,6 +1012,9 @@ describe('AsyncThrottler', () => {
 describe('AsyncThrottler internal retryer devtools registration', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('should not register internal retryers with or without a key', async () => {

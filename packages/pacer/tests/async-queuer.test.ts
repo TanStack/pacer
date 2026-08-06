@@ -1475,25 +1475,29 @@ describe('AsyncQueuer', () => {
           results.push(item)
           return item
         },
-        { started: false },
+        { wait: 100, started: false },
       )
 
       asyncQueuer.addItem('a')
       asyncQueuer.addItem('b')
+      asyncQueuer.start()
+      await vi.advanceTimersByTimeAsync(0) // 'a' processed, wait timer pending, pendingTick true
 
       const batchPromise = asyncQueuer.flushAsBatch(async (items) => {
         batches.push(items)
         await new Promise((resolve) => setTimeout(resolve, 50))
       })
+      // pendingTick is still true, so this addItem cannot start a tick itself —
+      // only the finally-restart after the batch settles can process it
       asyncQueuer.addItem('late')
-      asyncQueuer.start()
+      expect(results).toEqual(['a'])
 
       await vi.advanceTimersByTimeAsync(50)
       await batchPromise
-      await vi.advanceTimersByTimeAsync(100)
+      await vi.advanceTimersByTimeAsync(0)
 
-      expect(batches).toEqual([['a', 'b']])
-      expect(results).toEqual(['late'])
+      expect(batches).toEqual([['b']])
+      expect(results).toEqual(['a', 'late'])
     })
 
     it('should not restart processing when flushing a stopped queuer', async () => {
@@ -1589,6 +1593,33 @@ describe('AsyncQueuer', () => {
       resolvers.shift()!()
       await vi.advanceTimersByTimeAsync(0)
       expect(asyncQueuer.peekActiveItems()).toEqual([])
+    })
+
+    it('should keep isExecuting true until all concurrent executions settle', async () => {
+      const resolvers: Array<() => void> = []
+      const asyncQueuer = new AsyncQueuer<number>(
+        (item) => {
+          return new Promise<number>((resolve) => {
+            resolvers.push(() => resolve(item))
+          })
+        },
+        { concurrency: 2, started: false },
+      )
+
+      asyncQueuer.addItem(1)
+      asyncQueuer.addItem(2)
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(0)
+      expect(asyncQueuer.store.state.isExecuting).toBe(true)
+
+      resolvers.shift()!()
+      await vi.advanceTimersByTimeAsync(0)
+      expect(asyncQueuer.store.state.isExecuting).toBe(true) // second still in flight
+
+      resolvers.shift()!()
+      await vi.advanceTimersByTimeAsync(0)
+      expect(asyncQueuer.store.state.isExecuting).toBe(false)
     })
 
     it('should process duplicate falsy items with concurrency > 1', async () => {
