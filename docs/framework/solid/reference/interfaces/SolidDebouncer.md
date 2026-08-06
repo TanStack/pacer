@@ -49,8 +49,8 @@ Defined in: [solid-pacer/src/debouncer/createDebouncer.ts:56](https://github.com
 #### Deprecated
 
 Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-Although, you can make the state reactive by using the `useStore` in your own usage.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
 
 ***
 

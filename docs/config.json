@@ -1160,17 +1160,21 @@
     },
     {
       "label": "Debouncer Examples",
-      "children": [
-        {
-          "label": "liteDebounce",
-          "to": "framework/vanilla/examples/liteDebounce"
-        },
-        {
-          "label": "LiteDebouncer",
-          "to": "framework/vanilla/examples/LiteDebouncer"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteDebounce",
+              "to": "framework/vanilla/examples/liteDebounce"
+            },
+            {
+              "label": "LiteDebouncer",
+              "to": "framework/vanilla/examples/LiteDebouncer"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [
@@ -1315,17 +1319,21 @@
     },
     {
       "label": "Throttler Examples",
-      "children": [
-        {
-          "label": "liteThrottle",
-          "to": "framework/vanilla/examples/liteThrottle"
-        },
-        {
-          "label": "LiteThrottler",
-          "to": "framework/vanilla/examples/LiteThrottler"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteThrottle",
+              "to": "framework/vanilla/examples/liteThrottle"
+            },
+            {
+              "label": "LiteThrottler",
+              "to": "framework/vanilla/examples/LiteThrottler"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [
@@ -1466,17 +1474,21 @@
     },
     {
       "label": "Rate Limiter Examples",
-      "children": [
-        {
-          "label": "liteRateLimit",
-          "to": "framework/vanilla/examples/liteRateLimit"
-        },
-        {
-          "label": "LiteRateLimiter",
-          "to": "framework/vanilla/examples/LiteRateLimiter"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteRateLimit",
+              "to": "framework/vanilla/examples/liteRateLimit"
+            },
+            {
+              "label": "LiteRateLimiter",
+              "to": "framework/vanilla/examples/LiteRateLimiter"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [
@@ -1637,17 +1649,21 @@
     },
     {
       "label": "Queue Examples",
-      "children": [
-        {
-          "label": "liteQueue",
-          "to": "framework/vanilla/examples/liteQueue"
-        },
-        {
-          "label": "LiteQueuer",
-          "to": "framework/vanilla/examples/LiteQueuer"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteQueue",
+              "to": "framework/vanilla/examples/liteQueue"
+            },
+            {
+              "label": "LiteQueuer",
+              "to": "framework/vanilla/examples/LiteQueuer"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [
@@ -1772,17 +1788,21 @@
     },
     {
       "label": "Batcher Examples",
-      "children": [
-        {
-          "label": "liteBatch",
-          "to": "framework/vanilla/examples/liteBatch"
-        },
-        {
-          "label": "LiteBatcher",
-          "to": "framework/vanilla/examples/LiteBatcher"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteBatch",
+              "to": "framework/vanilla/examples/liteBatch"
+            },
+            {
+              "label": "LiteBatcher",
+              "to": "framework/vanilla/examples/LiteBatcher"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [

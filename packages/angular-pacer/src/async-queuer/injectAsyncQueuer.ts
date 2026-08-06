@@ -1,5 +1,5 @@
 import { DestroyRef, inject } from '@angular/core'
-import { injectStore } from '@tanstack/angular-store'
+import { injectSelector } from '@tanstack/angular-store'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
@@ -105,7 +105,7 @@ export function injectAsyncQueuer<TValue, TSelected = {}>(
   } as AngularAsyncQueuerOptions<TValue, TSelected>
 
   const queuer = new AsyncQueuer<TValue>(fn, mergedOptions)
-  const state = injectStore(queuer.store, selector)
+  const state = injectSelector(queuer.store, selector)
 
   const result = {
     ...queuer,

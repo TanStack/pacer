@@ -1,5 +1,34 @@
 # @tanstack/preact-pacer
 
+## 0.22.1
+
+### Patch Changes
+
+- Allow standalone devtools panels to render without required TanStack Devtools props. ([#216](https://github.com/TanStack/pacer/pull/216))
+
+- Updated dependencies [[`47d02e2`](https://github.com/TanStack/pacer/commit/47d02e20e8470abacc86a8a06926ec7bc1c81a7a)]:
+  - @tanstack/pacer@0.21.1
+
+## 0.22.0
+
+### Minor Changes
+
+- feat: upgrade to tanstack store with useSelector hook ([`c9f6385`](https://github.com/TanStack/pacer/commit/c9f63850f816bfc95eca74699b0fff45bca02867))
+
+### Patch Changes
+
+- Updated dependencies [[`c9f6385`](https://github.com/TanStack/pacer/commit/c9f63850f816bfc95eca74699b0fff45bca02867)]:
+  - @tanstack/pacer@0.21.0
+
+## 0.21.1
+
+### Patch Changes
+
+- chore: bump tanstack store versions for better tree-shaking ([`4e74cb4`](https://github.com/TanStack/pacer/commit/4e74cb42bf803bbc11932285d4508964c45f3283))
+
+- Updated dependencies [[`4e74cb4`](https://github.com/TanStack/pacer/commit/4e74cb42bf803bbc11932285d4508964c45f3283)]:
+  - @tanstack/pacer@0.20.1
+
 ## 0.21.0
 
 ### Minor Changes

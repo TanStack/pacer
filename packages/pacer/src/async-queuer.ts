@@ -322,7 +322,7 @@ export class AsyncQueuer<TValue> {
     number,
     AsyncRetryer<(item: TValue) => Promise<any>>
   >()
-  #timeoutIds: Set<NodeJS.Timeout> = new Set()
+  #timeoutIds: Set<ReturnType<typeof setTimeout>> = new Set()
 
   constructor(
     public fn: (item: TValue) => Promise<any>,

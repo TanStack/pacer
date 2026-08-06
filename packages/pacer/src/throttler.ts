@@ -153,7 +153,7 @@ export class Throttler<TFn extends AnyFunction> {
   )
   key: string | undefined
   options: ThrottlerOptions<TFn>
-  #timeoutId: NodeJS.Timeout | undefined
+  #timeoutId: ReturnType<typeof setTimeout> | undefined
 
   constructor(
     public fn: TFn,

@@ -1,5 +1,23 @@
 # @tanstack/pacer-devtools
 
+## 1.3.1
+
+### Patch Changes
+
+- Allow standalone devtools panels to render without required TanStack Devtools props. ([#216](https://github.com/TanStack/pacer/pull/216))
+
+## 1.3.0
+
+### Minor Changes
+
+- feat: upgrade to tanstack store with useSelector hook ([`c9f6385`](https://github.com/TanStack/pacer/commit/c9f63850f816bfc95eca74699b0fff45bca02867))
+
+## 1.2.1
+
+### Patch Changes
+
+- chore: bump tanstack store versions for better tree-shaking ([`4e74cb4`](https://github.com/TanStack/pacer/commit/4e74cb42bf803bbc11932285d4508964c45f3283))
+
 ## 1.2.0
 
 ### Minor Changes
