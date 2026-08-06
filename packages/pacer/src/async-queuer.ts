@@ -652,10 +652,15 @@ export class AsyncQueuer<TValue> {
         }
       } finally {
         this.asyncRetryers.delete(currentExecuteCount) // dispose retryer
+        // remove only one occurrence so duplicate item values keep accurate
+        // concurrency accounting
+        const remainingActiveItems = [...this.store.state.activeItems]
+        const activeItemIndex = remainingActiveItems.indexOf(item)
+        if (activeItemIndex !== -1) {
+          remainingActiveItems.splice(activeItemIndex, 1)
+        }
         this.#setState({
-          activeItems: this.store.state.activeItems.filter(
-            (activeItem) => activeItem !== item,
-          ),
+          activeItems: remainingActiveItems,
           isExecuting: false,
           settledCount: this.store.state.settledCount + 1,
         })
@@ -674,13 +679,31 @@ export class AsyncQueuer<TValue> {
     position?: QueuePosition,
   ): Promise<void> => {
     this.#clearTimeouts() // clear any pending timeouts (kills the tick chain)
-    await Promise.all(
+    const results = await Promise.allSettled(
       Array.from({ length: numberOfItems }, () => this.execute(position)),
     )
-    // the tick chain was killed above; restart it so remaining and future items process
+    // the tick chain was killed above; restart it so remaining and future items
+    // process even when a flushed task rejected. Remaining items resume with the
+    // normal wait spacing after the flushed executions.
     this.#setState({ pendingTick: false })
     if (this.store.state.isRunning && this.store.state.items.length > 0) {
-      this.#tick()
+      const wait = this.#getWait()
+      if (wait > 0) {
+        this.#setState({ pendingTick: true })
+        const timeoutId = setTimeout(() => {
+          this.#timeoutIds.delete(timeoutId)
+          this.#tick()
+        }, wait)
+        this.#timeoutIds.add(timeoutId)
+      } else {
+        this.#tick()
+      }
+    }
+    const failure = results.find(
+      (result): result is PromiseRejectedResult => result.status === 'rejected',
+    )
+    if (failure) {
+      throw failure.reason
     }
   }
 
@@ -693,8 +716,15 @@ export class AsyncQueuer<TValue> {
   ): Promise<void> => {
     this.#clearTimeouts() // clear any pending timeouts (kills the tick chain)
     const items = this.#getAllItems()
-    await batchFunction(items)
-    this.#setState({ pendingTick: false })
+    try {
+      await batchFunction(items)
+    } finally {
+      // restore the tick chain even when the batch function rejects
+      this.#setState({ pendingTick: false })
+      if (this.store.state.isRunning && this.store.state.items.length > 0) {
+        this.#tick()
+      }
+    }
   }
 
   /**

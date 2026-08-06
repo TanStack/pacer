@@ -9,7 +9,7 @@ title: useAsyncDebouncedCallback
 function useAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L45)
+Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L46)
 
 A React hook that creates a debounced version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncDebouncer` hook,
@@ -17,9 +17,10 @@ providing a stable, debounced async function reference for use in React componen
 
 The debounced async function will only execute after the specified wait time has elapsed
 since its last invocation. If called again before the wait time expires, the timer
-resets and starts waiting again. The returned function always returns a promise
-that resolves or rejects with the result of the original async function, or
-resolves with `undefined` if the call was superseded or the debouncer is disabled.
+resets and starts waiting again. The returned function always returns a promise. The call
+that triggers an execution resolves or rejects with that execution's result; superseded
+calls resolve with the most recent result (which may be `undefined` if nothing has executed
+yet), and calls made while the debouncer is disabled resolve with `undefined`.
 
 This hook provides a simpler API compared to `useAsyncDebouncer`, making it ideal for basic
 async debouncing needs. However, it does not expose the underlying AsyncDebouncer instance.

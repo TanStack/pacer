@@ -1341,4 +1341,253 @@ describe('AsyncQueuer', () => {
       expect(getPacerDevtoolsInstance('my-queuer')).toBeDefined() // the queuer itself still registers
     })
   })
+
+  describe('flush robustness', () => {
+    it('should continue processing after flush() rejects during a wait window', async () => {
+      const results: Array<string> = []
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          if (item === 'bad') throw new Error('boom')
+          results.push(item)
+          return item
+        },
+        { wait: 100, started: false },
+      )
+
+      asyncQueuer.addItem('a')
+      asyncQueuer.addItem('bad')
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(0) // 'a' done, wait timer pending
+      expect(results).toEqual(['a'])
+
+      await expect(asyncQueuer.flush()).rejects.toThrow('boom')
+      expect(asyncQueuer.store.state.errorCount).toBe(1)
+
+      asyncQueuer.addItem('c')
+      await vi.advanceTimersByTimeAsync(300)
+      expect(results).toEqual(['a', 'c'])
+    })
+
+    it('should flush remaining items even when an earlier flushed item rejects', async () => {
+      const results: Array<string> = []
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          if (item === 'bad') throw new Error('boom')
+          results.push(item)
+          return item
+        },
+        { started: false },
+      )
+
+      asyncQueuer.addItem('bad')
+      asyncQueuer.addItem('x')
+      asyncQueuer.addItem('y')
+
+      await expect(asyncQueuer.flush()).rejects.toThrow('boom')
+
+      // allSettled semantics: the non-failing items still executed
+      expect(results).toEqual(['x', 'y'])
+      expect(asyncQueuer.store.state.errorCount).toBe(1)
+      expect(asyncQueuer.store.state.settledCount).toBe(3)
+    })
+
+    it('should process items remaining after a partial flush with wait > 0', async () => {
+      const results: Array<string> = []
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          results.push(item)
+          return item
+        },
+        { wait: 100, started: false },
+      )
+
+      asyncQueuer.addItem('a')
+      asyncQueuer.addItem('b')
+      asyncQueuer.addItem('c')
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(0) // 'a' done, wait timer pending
+      await asyncQueuer.flush(1) // flush only 'b'
+      expect(results).toEqual(['a', 'b'])
+
+      // 'c' must be picked up by the restarted chain
+      await vi.advanceTimersByTimeAsync(300)
+      expect(results).toEqual(['a', 'b', 'c'])
+    })
+
+    it('should continue processing after flushAsBatch() rejects', async () => {
+      const results: Array<string> = []
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          results.push(item)
+          return item
+        },
+        { wait: 100, started: false },
+      )
+
+      asyncQueuer.addItem('a')
+      asyncQueuer.addItem('b')
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(0)
+      await expect(
+        asyncQueuer.flushAsBatch(async () => {
+          throw new Error('batch boom')
+        }),
+      ).rejects.toThrow('batch boom')
+
+      asyncQueuer.addItem('c')
+      await vi.advanceTimersByTimeAsync(300)
+      expect(results).toEqual(['a', 'c'])
+    })
+
+    it('should process items added while flushAsBatch is awaiting', async () => {
+      const batches: Array<Array<string>> = []
+      const results: Array<string> = []
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          results.push(item)
+          return item
+        },
+        { started: false },
+      )
+
+      asyncQueuer.addItem('a')
+      asyncQueuer.addItem('b')
+
+      const batchPromise = asyncQueuer.flushAsBatch(async (items) => {
+        batches.push(items)
+        await new Promise((resolve) => setTimeout(resolve, 50))
+      })
+      asyncQueuer.addItem('late')
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(50)
+      await batchPromise
+      await vi.advanceTimersByTimeAsync(100)
+
+      expect(batches).toEqual([['a', 'b']])
+      expect(results).toEqual(['late'])
+    })
+
+    it('should not restart processing when flushing a stopped queuer', async () => {
+      const results: Array<string> = []
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          results.push(item)
+          return item
+        },
+        { started: false },
+      )
+
+      asyncQueuer.addItem('a')
+      asyncQueuer.addItem('b')
+      asyncQueuer.addItem('c')
+
+      await asyncQueuer.flush(2)
+      expect(results).toEqual(['a', 'b'])
+      expect(asyncQueuer.store.state.isRunning).toBe(false)
+      expect(asyncQueuer.store.state.items).toEqual(['c'])
+
+      await vi.advanceTimersByTimeAsync(100)
+      expect(results).toEqual(['a', 'b']) // still stopped
+
+      asyncQueuer.start()
+      await vi.advanceTimersByTimeAsync(0)
+      expect(results).toEqual(['a', 'b', 'c'])
+    })
+  })
+
+  describe('concurrency accounting with duplicate items', () => {
+    it('should never exceed concurrency when duplicate primitive items complete', async () => {
+      let active = 0
+      let maxActive = 0
+      const resolvers: Array<() => void> = []
+      const asyncQueuer = new AsyncQueuer<number>(
+        (item) => {
+          active++
+          maxActive = Math.max(maxActive, active)
+          return new Promise<number>((resolve) => {
+            resolvers.push(() => {
+              active--
+              resolve(item)
+            })
+          })
+        },
+        { concurrency: 2, started: false },
+      )
+
+      asyncQueuer.addItem(0)
+      asyncQueuer.addItem(0)
+      asyncQueuer.addItem(1)
+      asyncQueuer.addItem(2)
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(0)
+      expect(maxActive).toBe(2)
+
+      resolvers.shift()!() // first 0 completes while the second 0 is still active
+      await vi.advanceTimersByTimeAsync(0)
+      expect(maxActive).toBe(2)
+
+      while (resolvers.length > 0) {
+        resolvers.shift()!()
+        await vi.advanceTimersByTimeAsync(0)
+      }
+      expect(maxActive).toBe(2)
+      expect(asyncQueuer.store.state.successCount).toBe(4)
+    })
+
+    it('should keep activeItems accurate when a duplicate completes', async () => {
+      const resolvers: Array<() => void> = []
+      const asyncQueuer = new AsyncQueuer<number>(
+        (item) => {
+          return new Promise<number>((resolve) => {
+            resolvers.push(() => resolve(item))
+          })
+        },
+        { concurrency: 2, started: false },
+      )
+
+      asyncQueuer.addItem(7)
+      asyncQueuer.addItem(7)
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(0)
+      expect(asyncQueuer.peekActiveItems()).toEqual([7, 7])
+
+      resolvers.shift()!()
+      await vi.advanceTimersByTimeAsync(0)
+      expect(asyncQueuer.peekActiveItems()).toEqual([7]) // only ONE removed
+
+      resolvers.shift()!()
+      await vi.advanceTimersByTimeAsync(0)
+      expect(asyncQueuer.peekActiveItems()).toEqual([])
+    })
+
+    it('should process duplicate falsy items with concurrency > 1', async () => {
+      const processed: Array<any> = []
+      const asyncQueuer = new AsyncQueuer<any>(
+        async (item) => {
+          processed.push(item)
+          return item
+        },
+        { concurrency: 3, started: false },
+      )
+
+      asyncQueuer.addItem(0)
+      asyncQueuer.addItem('')
+      asyncQueuer.addItem(0)
+      asyncQueuer.addItem(false)
+      asyncQueuer.addItem('')
+      asyncQueuer.start()
+
+      await vi.advanceTimersByTimeAsync(100)
+
+      expect(processed).toEqual([0, '', 0, false, ''])
+      expect(asyncQueuer.store.state.successCount).toBe(5)
+      expect(asyncQueuer.store.state.activeItems).toEqual([])
+    })
+  })
 })
