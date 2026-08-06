@@ -10,7 +10,7 @@ export default defineConfig({
   unbundle: true,
   dts: true,
   sourcemap: true,
-  clean: false,
+  clean: true,
   minify: false,
   fixedExtension: false,
   exports: true,
