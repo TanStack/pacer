@@ -1,5 +1,19 @@
 <div align="center">
-  <img src="./media/header_pacer.png" >
+  <picture>
+    <source
+      media="(prefers-color-scheme: dark)"
+      srcset="https://tanstack.com/api/readme/pacer.png?framework=preact&theme=dark"
+    />
+    <source
+      media="(prefers-color-scheme: light)"
+      srcset="https://tanstack.com/api/readme/pacer.png?framework=preact"
+    />
+    <img
+      src="https://tanstack.com/api/readme/pacer.png?framework=preact"
+      alt="TanStack Preact Pacer"
+      width="900"
+    />
+  </picture>
 </div>
 
 <br />
