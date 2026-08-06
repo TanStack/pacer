@@ -9,7 +9,7 @@ title: asyncRetryerOptions
 function asyncRetryerOptions<TFn, TOptions>(options): TOptions;
 ```
 
-Defined in: [async-retryer.ts:169](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L169)
+Defined in: [async-retryer.ts:171](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L171)
 
 Utility function for sharing common `AsyncRetryerOptions` options between different `AsyncRetryer` instances.
 

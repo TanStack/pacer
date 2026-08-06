@@ -59,11 +59,10 @@ import type { PreactAsyncRateLimiterOptions } from './useAsyncRateLimiter'
 export function useAsyncRateLimitedCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
   options: PreactAsyncRateLimiterOptions<TFn, {}>,
-): (...args: Parameters<TFn>) => Promise<ReturnType<TFn>> {
+): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const asyncRateLimitedFn = useAsyncRateLimiter(fn, options).maybeExecute
   return useCallback(
-    (...args: Parameters<TFn>) =>
-      asyncRateLimitedFn(...args) as Promise<ReturnType<TFn>>,
+    (...args: Parameters<TFn>) => asyncRateLimitedFn(...args),
     [asyncRateLimitedFn],
   )
 }

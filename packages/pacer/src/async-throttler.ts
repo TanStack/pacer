@@ -29,7 +29,7 @@ export interface AsyncThrottlerState<TFn extends AnyAsyncFunction> {
   /**
    * The result from the most recent successful function execution
    */
-  lastResult: ReturnType<TFn> | undefined
+  lastResult: Awaited<ReturnType<TFn>> | undefined
   /**
    * Number of times maybeExecute has been called (for reduction calculations)
    */
@@ -119,7 +119,7 @@ export interface AsyncThrottlerOptions<TFn extends AnyAsyncFunction> {
    * Optional function to call when the throttled function is executed
    */
   onSuccess?: (
-    result: ReturnType<TFn>,
+    result: Awaited<ReturnType<TFn>>,
     args: Parameters<TFn>,
     asyncThrottler: AsyncThrottler<TFn>,
   ) => void
@@ -236,7 +236,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: ReturnType<typeof setTimeout> | null = null
   #resolvePreviousPromise:
-    ((value?: ReturnType<TFn> | undefined) => void) | null = null
+    ((value?: Awaited<ReturnType<TFn>> | undefined) => void) | null = null
 
   constructor(
     public fn: TFn,
@@ -336,7 +336,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    */
   maybeExecute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> => {
+  ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (!this.#getEnabled()) return undefined
 
     this.#resolvePreviousPromiseInternal()
@@ -379,51 +379,53 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       })
 
       // Set up new trailing execution
-      return new Promise((resolve, reject) => {
-        this.#resolvePreviousPromise = resolve
+      return new Promise<Awaited<ReturnType<TFn>> | undefined>(
+        (resolve, reject) => {
+          this.#resolvePreviousPromise = resolve
 
-        const newTimeSinceLastExecution = this.store.state.lastExecutionTime
-          ? now - this.store.state.lastExecutionTime
-          : 0
-        const timeoutDuration = Math.max(0, wait - newTimeSinceLastExecution)
+          const newTimeSinceLastExecution = this.store.state.lastExecutionTime
+            ? now - this.store.state.lastExecutionTime
+            : 0
+          const timeoutDuration = Math.max(0, wait - newTimeSinceLastExecution)
 
-        this.#timeoutId = setTimeout(async () => {
-          this.#clearTimeout()
-          if (this.store.state.lastArgs !== undefined) {
-            try {
-              await this.#execute(...this.store.state.lastArgs) // Trailing EXECUTE!
-            } catch (error) {
-              reject(error)
+          this.#timeoutId = setTimeout(async () => {
+            this.#clearTimeout()
+            if (this.store.state.lastArgs !== undefined) {
+              try {
+                await this.#execute(...this.store.state.lastArgs) // Trailing EXECUTE!
+              } catch (error) {
+                reject(error)
+              }
             }
-          }
-          this.#resolvePreviousPromise = null
-          resolve(this.store.state.lastResult)
-        }, timeoutDuration)
-      })
+            this.#resolvePreviousPromise = null
+            resolve(this.store.state.lastResult)
+          }, timeoutDuration)
+        },
+      )
     }
     return this.store.state.lastResult
   }
 
   #execute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> => {
+  ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (!this.#getEnabled()) return undefined
 
     const currentMaybeExecute = this.store.state.maybeExecuteCount
 
     try {
       this.#setState({ isExecuting: true })
-      const currentAsyncRetryer = new AsyncRetryer(this.fn, {
-        ...this.options.asyncRetryerOptions,
-        key: `${this.key}-retryer-${currentMaybeExecute}`,
-      })
+      const currentAsyncRetryer = new AsyncRetryer(
+        this.fn,
+        this.options.asyncRetryerOptions,
+      )
       this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
       const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
+      this.options.onSuccess?.(result as Awaited<ReturnType<TFn>>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
@@ -458,7 +460,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   /**
    * Processes the current pending execution immediately
    */
-  flush = async (): Promise<ReturnType<TFn> | undefined> => {
+  flush = async (): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
       // Store the pending promise resolver before clearing timeout
       const resolvePromise = this.#resolvePreviousPromise

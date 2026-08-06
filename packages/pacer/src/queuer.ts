@@ -421,7 +421,7 @@ export class Queuer<TValue> {
     const priority =
       this.options.getPriority !== defaultOptions.getPriority
         ? this.options.getPriority!(item)
-        : (item as any).priority
+        : (item as any)?.priority
 
     const items = this.store.state.items
     const itemTimestamps = this.store.state.itemTimestamps
@@ -432,7 +432,7 @@ export class Queuer<TValue> {
         const existingPriority: number =
           this.options.getPriority !== defaultOptions.getPriority
             ? this.options.getPriority!(existing)
-            : (existing as any).priority
+            : (existing as any)?.priority
         return existingPriority < priority
       })
 

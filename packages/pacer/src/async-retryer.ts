@@ -1,6 +1,5 @@
 import { Store } from '@tanstack/store'
 import { parseFunctionOrValue } from './utils'
-import { emitChange, pacerEventClient } from './event-client'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRetryerState<TFn extends AnyAsyncFunction> {
@@ -87,7 +86,10 @@ export interface AsyncRetryerOptions<TFn extends AnyAsyncFunction> {
   jitter?: number
   /**
    * Optional key to identify this async retryer instance.
-   * If provided, the async retryer will be identified by this key in the devtools and PacerProvider if applicable.
+   * Note: async retryers are not currently surfaced in the devtools, so this key
+   * is only a plain identifier. Retryer instances are often created per-execution
+   * (including internally by the other async utilities), so they intentionally do
+   * not register with the devtools event bus.
    */
   key?: string
   /**
@@ -319,18 +321,6 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         (initialOptions.onError ? false : defaultOptions.throwOnError),
     }
     this.#setState(this.options.initialState ?? {})
-
-    if (this.key) {
-      pacerEventClient.on('d-AsyncRetryer', (event) => {
-        if (event.payload.key !== this.key) return
-        this.#setState(
-          event.payload.store.state as Partial<AsyncRetryerState<TFn>>,
-        )
-        this.setOptions(
-          event.payload.options as Partial<AsyncRetryerOptions<TFn>>,
-        )
-      })
-    }
   }
 
   /**
@@ -359,7 +349,6 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
               : 'idle',
       }
     })
-    emitChange('AsyncRetryer', this)
   }
 
   #getEnabled = (): boolean => {

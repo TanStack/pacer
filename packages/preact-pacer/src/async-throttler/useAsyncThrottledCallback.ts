@@ -12,7 +12,8 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  * regardless of how many times it is called. If called multiple times during the wait period,
  * only the first invocation will execute, and subsequent calls will be ignored until
  * the wait period has elapsed. The returned function always returns a promise
- * that resolves or rejects with the result of the original async function.
+ * that resolves or rejects with the result of the original async function, or
+ * resolves with `undefined` if the call was throttled or the throttler is disabled.
  *
  * This hook provides a simpler API compared to `useAsyncThrottler`, making it ideal for basic
  * async throttling needs. However, it does not expose the underlying AsyncThrottler instance.
@@ -42,11 +43,10 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 export function useAsyncThrottledCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
   options: PreactAsyncThrottlerOptions<TFn, {}>,
-): (...args: Parameters<TFn>) => Promise<ReturnType<TFn>> {
+): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const asyncThrottledFn = useAsyncThrottler(fn, options).maybeExecute
   return useCallback(
-    (...args: Parameters<TFn>) =>
-      asyncThrottledFn(...args) as Promise<ReturnType<TFn>>,
+    (...args: Parameters<TFn>) => asyncThrottledFn(...args),
     [asyncThrottledFn],
   )
 }

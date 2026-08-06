@@ -153,7 +153,7 @@ Optional function to call when the throttled function is executed
 
 ##### result
 
-`ReturnType`\<`TFn`\>
+`Awaited`\<`ReturnType`\<`TFn`\>\>
 
 ##### args
 

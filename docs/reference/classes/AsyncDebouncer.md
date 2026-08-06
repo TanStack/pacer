@@ -149,7 +149,7 @@ Defined in: [async-debouncer.ts:219](https://github.com/TanStack/pacer/blob/main
 abort(): void;
 ```
 
-Defined in: [async-debouncer.ts:468](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L468)
+Defined in: [async-debouncer.ts:470](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L470)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT cancel any pending execution that have not started yet.
@@ -166,7 +166,7 @@ Does NOT cancel any pending execution that have not started yet.
 cancel(): void;
 ```
 
-Defined in: [async-debouncer.ts:480](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L480)
+Defined in: [async-debouncer.ts:482](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L482)
 
 Cancels any pending execution that have not started yet.
 Does NOT abort any execution already in progress.
@@ -180,16 +180,16 @@ Does NOT abort any execution already in progress.
 ### flush()
 
 ```ts
-flush(): Promise<ReturnType<TFn> | undefined>;
+flush(): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [async-debouncer.ts:403](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L403)
+Defined in: [async-debouncer.ts:405](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L405)
 
 Processes the current pending execution immediately
 
 #### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\> \| `undefined`\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 ***
 
@@ -199,7 +199,7 @@ Processes the current pending execution immediately
 getAbortSignal(maybeExecuteCount?): AbortSignal | null;
 ```
 
-Defined in: [async-debouncer.ts:458](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L458)
+Defined in: [async-debouncer.ts:460](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L460)
 
 Returns the AbortSignal for a specific execution.
 If no maybeExecuteCount is provided, returns the signal for the most recent execution.
@@ -237,7 +237,7 @@ const debouncer = new AsyncDebouncer(
 ### maybeExecute()
 
 ```ts
-maybeExecute(...args): Promise<ReturnType<TFn> | undefined>;
+maybeExecute(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 Defined in: [async-debouncer.ts:317](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L317)
@@ -260,7 +260,7 @@ Error Handling:
 
 #### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\> \| `undefined`\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
 
@@ -276,7 +276,7 @@ The error from the debounced function if no onError handler is configured
 reset(): void;
 ```
 
-Defined in: [async-debouncer.ts:488](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L488)
+Defined in: [async-debouncer.ts:490](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L490)
 
 Resets the debouncer state to its default values
 

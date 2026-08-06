@@ -6,10 +6,10 @@ title: useAsyncThrottledCallback
 # Function: useAsyncThrottledCallback()
 
 ```ts
-function useAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>;
+function useAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottledCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L42)
+Defined in: [preact-pacer/src/async-throttler/useAsyncThrottledCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L43)
 
 A Preact hook that creates a throttled version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncThrottler` hook,
@@ -19,7 +19,8 @@ The throttled async function will execute at most once within the specified wait
 regardless of how many times it is called. If called multiple times during the wait period,
 only the first invocation will execute, and subsequent calls will be ignored until
 the wait period has elapsed. The returned function always returns a promise
-that resolves or rejects with the result of the original async function.
+that resolves or rejects with the result of the original async function, or
+resolves with `undefined` if the call was throttled or the throttler is disabled.
 
 This hook provides a simpler API compared to `useAsyncThrottler`, making it ideal for basic
 async throttling needs. However, it does not expose the underlying AsyncThrottler instance.
@@ -51,7 +52,7 @@ Consider using the `useAsyncThrottler` hook instead.
 ## Returns
 
 ```ts
-(...args): Promise<ReturnType<TFn>>;
+(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 ### Parameters
@@ -62,7 +63,7 @@ Consider using the `useAsyncThrottler` hook instead.
 
 ### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\>\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 ## Example
 

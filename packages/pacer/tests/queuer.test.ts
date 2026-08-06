@@ -535,4 +535,18 @@ describe('Queuer', () => {
       })
     })
   })
+
+  describe('nullish item handling', () => {
+    it('should accept and process null items without throwing', () => {
+      const processed: Array<any> = []
+      const queuer = new Queuer<any>((item) => processed.push(item), {
+        started: false,
+      })
+
+      expect(() => queuer.addItem(null)).not.toThrow()
+      queuer.start()
+
+      expect(processed).toEqual([null])
+    })
+  })
 })

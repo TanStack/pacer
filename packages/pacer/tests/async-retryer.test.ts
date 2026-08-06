@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AsyncRetryer, asyncRetry } from '../src/async-retryer'
+import { getPacerDevtoolsInstance } from '../src'
 
 describe('AsyncRetryer', () => {
   beforeEach(() => {
@@ -1141,5 +1142,19 @@ describe('asyncRetry utility function', () => {
       expect(typeof retryer.getAbortSignal).toBe('function')
       expect(retryer.getAbortSignal()).toBeNull()
     })
+  })
+})
+
+describe('AsyncRetryer devtools registration', () => {
+  it('should not register with the devtools registry even when keyed', async () => {
+    const retryer = new AsyncRetryer(async (value: string) => value, {
+      key: 'my-retryer',
+    })
+
+    expect(retryer.key).toBe('my-retryer')
+
+    await retryer.execute('test')
+
+    expect(getPacerDevtoolsInstance('my-retryer')).toBeUndefined()
   })
 })

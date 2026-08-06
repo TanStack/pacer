@@ -1,5 +1,14 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  expectTypeOf,
+  it,
+  vi,
+} from 'vitest'
 import { AsyncRateLimiter, asyncRateLimit } from '../src/async-rate-limiter'
+import { getPacerDevtoolsInstance } from '../src'
 
 describe('AsyncRateLimiter', () => {
   beforeEach(() => {
@@ -774,5 +783,59 @@ describe('asyncRateLimit', () => {
       expect(typeof rateLimiter.getAbortSignal).toBe('function')
       expect(rateLimiter.getAbortSignal()).toBeNull()
     })
+  })
+})
+
+describe('AsyncRateLimiter internal retryer devtools registration', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('should not register internal retryers with or without a key', async () => {
+    const rateLimiter = new AsyncRateLimiter(async (value: string) => value, {
+      limit: 5,
+      window: 1000,
+    })
+
+    await rateLimiter.maybeExecute('test')
+
+    expect(getPacerDevtoolsInstance('undefined-retryer-1')).toBeUndefined()
+
+    const keyedRateLimiter = new AsyncRateLimiter(
+      async (value: string) => value,
+      { limit: 5, window: 1000, key: 'my-rate-limiter' },
+    )
+
+    await keyedRateLimiter.maybeExecute('test')
+
+    expect(
+      getPacerDevtoolsInstance('my-rate-limiter-retryer-1'),
+    ).toBeUndefined()
+  })
+})
+
+describe('AsyncRateLimiter return type inference', () => {
+  it('should resolve to the awaited return type, not a nested promise', () => {
+    const rateLimiter = new AsyncRateLimiter(async (value: string) => value, {
+      limit: 5,
+      window: 1000,
+    })
+    expectTypeOf(rateLimiter.maybeExecute).returns.toEqualTypeOf<
+      Promise<string | undefined>
+    >()
+    expectTypeOf(rateLimiter.store.state.lastResult).toEqualTypeOf<
+      string | undefined
+    >()
+
+    const rateLimited = asyncRateLimit(async (value: string) => value, {
+      limit: 5,
+      window: 1000,
+    })
+    expectTypeOf(rateLimited).returns.toEqualTypeOf<
+      Promise<string | undefined>
+    >()
   })
 })

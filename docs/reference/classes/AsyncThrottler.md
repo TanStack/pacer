@@ -153,7 +153,7 @@ Defined in: [async-throttler.ts:231](https://github.com/TanStack/pacer/blob/main
 abort(): void;
 ```
 
-Defined in: [async-throttler.ts:532](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L532)
+Defined in: [async-throttler.ts:534](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L534)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT cancel any pending execution that have not started yet.
@@ -170,7 +170,7 @@ Does NOT cancel any pending execution that have not started yet.
 cancel(): void;
 ```
 
-Defined in: [async-throttler.ts:542](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L542)
+Defined in: [async-throttler.ts:544](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L544)
 
 Cancels any pending execution that have not started yet.
 Does NOT abort any execution already in progress.
@@ -184,16 +184,16 @@ Does NOT abort any execution already in progress.
 ### flush()
 
 ```ts
-flush(): Promise<ReturnType<TFn> | undefined>;
+flush(): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [async-throttler.ts:461](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L461)
+Defined in: [async-throttler.ts:463](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L463)
 
 Processes the current pending execution immediately
 
 #### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\> \| `undefined`\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 ***
 
@@ -203,7 +203,7 @@ Processes the current pending execution immediately
 getAbortSignal(maybeExecuteCount?): AbortSignal | null;
 ```
 
-Defined in: [async-throttler.ts:522](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L522)
+Defined in: [async-throttler.ts:524](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L524)
 
 Returns the AbortSignal for a specific execution.
 If no maybeExecuteCount is provided, returns the signal for the most recent execution.
@@ -245,7 +245,7 @@ const throttler = new AsyncThrottler(
 ### maybeExecute()
 
 ```ts
-maybeExecute(...args): Promise<ReturnType<TFn> | undefined>;
+maybeExecute(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 Defined in: [async-throttler.ts:337](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L337)
@@ -268,7 +268,7 @@ Attempts to execute the throttled function. The execution behavior depends on th
 
 #### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\> \| `undefined`\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 #### Example
 
@@ -290,7 +290,7 @@ await throttled.maybeExecute('c', 'd');
 reset(): void;
 ```
 
-Defined in: [async-throttler.ts:556](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L556)
+Defined in: [async-throttler.ts:558](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L558)
 
 Resets the debouncer state to its default values
 

@@ -6,10 +6,10 @@ title: useAsyncDebouncedCallback
 # Function: useAsyncDebouncedCallback()
 
 ```ts
-function useAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>;
+function useAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:44](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L44)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:45](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L45)
 
 A Preact hook that creates a debounced version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncDebouncer` hook,
@@ -18,7 +18,8 @@ providing a stable, debounced async function reference for use in Preact compone
 The debounced async function will only execute after the specified wait time has elapsed
 since its last invocation. If called again before the wait time expires, the timer
 resets and starts waiting again. The returned function always returns a promise
-that resolves or rejects with the result of the original async function.
+that resolves or rejects with the result of the original async function, or
+resolves with `undefined` if the call was superseded or the debouncer is disabled.
 
 This hook provides a simpler API compared to `useAsyncDebouncer`, making it ideal for basic
 async debouncing needs. However, it does not expose the underlying AsyncDebouncer instance.
@@ -50,7 +51,7 @@ Consider using the `useAsyncDebouncer` hook instead.
 ## Returns
 
 ```ts
-(...args): Promise<ReturnType<TFn>>;
+(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 ### Parameters
@@ -61,7 +62,7 @@ Consider using the `useAsyncDebouncer` hook instead.
 
 ### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\>\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 ## Example
 
