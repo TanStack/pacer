@@ -1,5 +1,5 @@
 import { DestroyRef, inject } from '@angular/core'
-import { injectStore } from '@tanstack/angular-store'
+import { injectSelector } from '@tanstack/angular-store'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
@@ -131,7 +131,7 @@ export function injectAsyncDebouncer<
   } as AngularAsyncDebouncerOptions<TFn, TSelected>
 
   const debouncer = new AsyncDebouncer<TFn>(fn, mergedOptions)
-  const state = injectStore(debouncer.store, selector)
+  const state = injectSelector(debouncer.store, selector)
 
   const result = {
     ...debouncer,

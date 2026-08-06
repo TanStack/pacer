@@ -603,7 +603,7 @@ The `AsyncRetryer` class uses TanStack Store for reactive state management, prov
 
 Framework adapters support a `selector` argument that allows you to specify which state changes will trigger re-renders. This optimizes performance by preventing unnecessary re-renders when irrelevant state changes occur.
 
-**By default, `retryer.state` is empty (`{}`) as the selector is empty by default.** This is where reactive state from a TanStack Store `useStore` gets stored. You must opt-in to state tracking by providing a selector function.
+**By default, `retryer.state` is empty (`{}`) as the selector is empty by default.** This is where the selected slice of TanStack Store state is exposed. You must opt-in to state tracking by providing a selector function.
 
 ```tsx
 // Example with framework adapter (conceptual)
@@ -643,7 +643,7 @@ const unsubscribe = retryer.store.subscribe((state) => {
 unsubscribe()
 ```
 
-> **Note:** This is unnecessary when using a framework adapter because the underlying framework hooks already handle this. You can also import and use `useStore` from TanStack Store to turn `retryer.store.state` into reactive state with a custom selector wherever you want if necessary.
+> **Note:** Framework adapters already subscribe through `useSelector` (React/Preact/Solid) or `injectSelector` (Angular) from TanStack Store. To subscribe manually, use `useSelector(store, selector, { compare: shallow })` from `@tanstack/react-store` (or `@tanstack/preact-store` / `@tanstack/solid-store`; import `shallow` from the same package), or `injectSelector(store, selector)` from `@tanstack/angular-store`.
 
 ### Available State Properties
 

@@ -8,11 +8,20 @@ const pacerDevtoolsPanels: readonly [
   (props: DevtoolsPanelProps) => JSX.Element,
 ] = createSolidPanel(PacerDevtoolsCore)
 
-type PacerDevtoolsPanelComponent = (typeof pacerDevtoolsPanels)[0]
+type PacerDevtoolsPanelComponent = (
+  props?: PacerDevtoolsSolidInit,
+) => JSX.Element
 
-export const PacerDevtoolsPanel: PacerDevtoolsPanelComponent =
-  pacerDevtoolsPanels[0]
-export const PacerDevtoolsPanelNoOp: PacerDevtoolsPanelComponent =
-  pacerDevtoolsPanels[1]
+function resolvePanelProps(props?: PacerDevtoolsSolidInit): DevtoolsPanelProps {
+  return {
+    theme: props?.theme ?? 'dark',
+    devtoolsOpen: props?.devtoolsOpen ?? false,
+  }
+}
 
-export interface PacerDevtoolsSolidInit extends DevtoolsPanelProps {}
+export const PacerDevtoolsPanel: PacerDevtoolsPanelComponent = (props) =>
+  pacerDevtoolsPanels[0](resolvePanelProps(props))
+export const PacerDevtoolsPanelNoOp: PacerDevtoolsPanelComponent = (props) =>
+  pacerDevtoolsPanels[1](resolvePanelProps(props))
+
+export interface PacerDevtoolsSolidInit extends Partial<DevtoolsPanelProps> {}
