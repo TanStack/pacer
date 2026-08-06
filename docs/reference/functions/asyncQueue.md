@@ -9,7 +9,7 @@ title: asyncQueue
 function asyncQueue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean;
 ```
 
-Defined in: [async-queuer.ts:970](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L970)
+Defined in: [async-queuer.ts:981](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L981)
 
 Creates a new AsyncQueuer instance and returns a bound addItem function for adding tasks.
 The queuer is started automatically and ready to process items.
@@ -89,6 +89,7 @@ State Management:
 
 Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
 Items can be inserted based on priority or at the front/back depending on configuration.
+`undefined` cannot be queued (it is the internal "no item" sentinel) and is always rejected.
 
 ### Parameters
 

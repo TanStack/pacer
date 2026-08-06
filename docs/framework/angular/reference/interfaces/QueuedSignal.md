@@ -39,6 +39,7 @@ addItem: (item, position?, runOnItemsChange?) => boolean;
 Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:8](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L8)
 
 Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
+`undefined` cannot be queued (it is the internal "no item" sentinel) and is always rejected.
 Items can be inserted based on priority or at the front/back depending on configuration.
 
 Returns true if the item was added, false if the queue is full.

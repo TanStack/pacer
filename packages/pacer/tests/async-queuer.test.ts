@@ -1137,6 +1137,31 @@ describe('AsyncQueuer', () => {
       expect(asyncQueuer.store.state.successCount).toBe(1)
     })
 
+    it('should reject undefined items instead of wedging the queue', async () => {
+      const onReject = vi.fn()
+      const processed: Array<any> = []
+      const asyncQueuer = new AsyncQueuer<any>(
+        async (item) => {
+          processed.push(item)
+          return item
+        },
+        { started: false, onReject },
+      )
+
+      // undefined is the internal "no item" sentinel; queuing it would block
+      // every item behind it in the processing loop
+      expect(asyncQueuer.addItem(undefined)).toBe(false)
+      expect(onReject).toHaveBeenCalledWith(undefined, asyncQueuer)
+      expect(asyncQueuer.store.state.rejectionCount).toBe(1)
+      expect(asyncQueuer.store.state.items).toEqual([])
+
+      asyncQueuer.addItem('a')
+      asyncQueuer.start()
+      await vi.advanceTimersByTimeAsync(100)
+
+      expect(processed).toEqual(['a'])
+    })
+
     it('should interleave falsy items with truthy items in order', async () => {
       const processed: Array<any> = []
       const asyncQueuer = new AsyncQueuer<any>(

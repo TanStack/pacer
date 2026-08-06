@@ -9,7 +9,7 @@ title: queue
 function queue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean;
 ```
 
-Defined in: [queuer.ts:734](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L734)
+Defined in: [queuer.ts:745](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L745)
 
 Creates a queue that processes items immediately upon addition.
 Items are processed sequentially in FIFO order by default.
@@ -71,6 +71,7 @@ processPriority(3); // Processed before 1
 ```
 
 Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
+`undefined` cannot be queued (it is the internal "no item" sentinel) and is always rejected.
 Items can be inserted based on priority or at the front/back depending on configuration.
 
 Returns true if the item was added, false if the queue is full.

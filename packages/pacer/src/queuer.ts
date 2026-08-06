@@ -390,6 +390,7 @@ export class Queuer<TValue> {
 
   /**
    * Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
+   * `undefined` cannot be queued (it is the internal "no item" sentinel) and is always rejected.
    * Items can be inserted based on priority or at the front/back depending on configuration.
    *
    * Returns true if the item was added, false if the queue is full.
@@ -408,6 +409,16 @@ export class Queuer<TValue> {
     this.#setState({
       addItemCount: this.store.state.addItemCount + 1,
     })
+
+    // undefined is the internal "no item" sentinel (peekNextItem/getNextItem);
+    // queuing it would break the processing loop and block items behind it
+    if (item === undefined) {
+      this.#setState({
+        rejectionCount: this.store.state.rejectionCount + 1,
+      })
+      this.options.onReject?.(item, this)
+      return false
+    }
 
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({
