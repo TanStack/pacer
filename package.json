@@ -34,7 +34,7 @@
     "test:knip": "knip",
     "test:lib": "nx affected --targets=test:lib --exclude=examples/**",
     "test:lib:dev": "pnpm test:lib && nx watch --all -- pnpm test:lib",
-    "test:pr": "nx affected --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
+    "test:pr": "nx run @tanstack/angular-pacer:build && nx affected --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
     "test:sherif": "sherif",
     "test:types": "nx affected --targets=test:types --exclude=examples/**",
     "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all"
