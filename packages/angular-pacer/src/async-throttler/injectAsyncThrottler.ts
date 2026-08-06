@@ -1,5 +1,5 @@
 import { DestroyRef, inject } from '@angular/core'
-import { injectStore } from '@tanstack/angular-store'
+import { injectSelector } from '@tanstack/angular-store'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { Signal } from '@angular/core'
@@ -110,7 +110,7 @@ export function injectAsyncThrottler<
   } as AngularAsyncThrottlerOptions<TFn, TSelected>
 
   const throttler = new AsyncThrottler<TFn>(fn, mergedOptions)
-  const state = injectStore(throttler.store, selector)
+  const state = injectSelector(throttler.store, selector)
 
   const result = {
     ...throttler,

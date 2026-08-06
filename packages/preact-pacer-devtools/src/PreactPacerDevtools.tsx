@@ -1,18 +1,30 @@
+import { h } from 'preact'
 import { createPreactPanel } from '@tanstack/devtools-utils/preact'
 import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
 import type { JSX } from 'preact'
 import type { DevtoolsPanelProps } from '@tanstack/devtools-utils/preact'
 
-export interface PacerDevtoolsPreactInit extends DevtoolsPanelProps {}
+export interface PacerDevtoolsPreactInit extends Partial<DevtoolsPanelProps> {}
 
 const pacerDevtoolsPanels: readonly [
   (props: DevtoolsPanelProps) => JSX.Element,
   (props: DevtoolsPanelProps) => JSX.Element,
 ] = createPreactPanel(PacerDevtoolsCore)
 
-type PacerDevtoolsPanelComponent = (typeof pacerDevtoolsPanels)[0]
+type PacerDevtoolsPanelComponent = (
+  props?: PacerDevtoolsPreactInit,
+) => JSX.Element
 
-export const PacerDevtoolsPanel: PacerDevtoolsPanelComponent =
-  pacerDevtoolsPanels[0]
-export const PacerDevtoolsPanelNoOp: PacerDevtoolsPanelComponent =
-  pacerDevtoolsPanels[1]
+function resolvePanelProps(
+  props?: PacerDevtoolsPreactInit,
+): DevtoolsPanelProps {
+  return {
+    theme: props?.theme ?? 'dark',
+    devtoolsOpen: props?.devtoolsOpen ?? false,
+  }
+}
+
+export const PacerDevtoolsPanel: PacerDevtoolsPanelComponent = (props) =>
+  h(pacerDevtoolsPanels[0], resolvePanelProps(props))
+export const PacerDevtoolsPanelNoOp: PacerDevtoolsPanelComponent = (props) =>
+  h(pacerDevtoolsPanels[1], resolvePanelProps(props))

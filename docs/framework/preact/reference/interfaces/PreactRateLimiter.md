@@ -49,8 +49,8 @@ Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:56](https://github.
 #### Deprecated
 
 Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-Although, you can make the state reactive by using the `useStore` in your own usage.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
 
 ***
 
