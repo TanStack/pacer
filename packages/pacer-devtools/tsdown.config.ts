@@ -11,7 +11,6 @@ export default defineConfig([
     outDir: 'dist',
     fixedExtension: false,
     plugins: [makeSolid()],
-    clean: true,
   },
   {
     entry: { server: 'src/index.ts' },
