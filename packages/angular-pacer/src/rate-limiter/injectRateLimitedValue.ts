@@ -81,8 +81,7 @@ export function injectRateLimitedValue<TValue, TSelected = {}>(
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as
-        | ((state: RateLimiterState) => TSelected)
-        | undefined)
+        ((state: RateLimiterState) => TSelected) | undefined)
 
   const rateLimited = injectRateLimitedSignal(
     initialValue,

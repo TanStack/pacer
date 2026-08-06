@@ -236,8 +236,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: ReturnType<typeof setTimeout> | null = null
   #resolvePreviousPromise:
-    | ((value?: ReturnType<TFn> | undefined) => void)
-    | null = null
+    ((value?: ReturnType<TFn> | undefined) => void) | null = null
 
   constructor(
     public fn: TFn,
