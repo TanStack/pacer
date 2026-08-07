@@ -1,5 +1,16 @@
 # @tanstack/solid-pacer
 
+## 0.22.0
+
+### Minor Changes
+
+- Update package dependencies and migrate the devtools theme integration to the latest API. ([#245](https://github.com/TanStack/pacer/pull/245))
+
+### Patch Changes
+
+- Updated dependencies [[`dc47121`](https://github.com/TanStack/pacer/commit/dc47121ffbeb2353e43cd0fe350ef4916aa75b9f), [`dc47121`](https://github.com/TanStack/pacer/commit/dc47121ffbeb2353e43cd0fe350ef4916aa75b9f), [`dc47121`](https://github.com/TanStack/pacer/commit/dc47121ffbeb2353e43cd0fe350ef4916aa75b9f), [`bd96217`](https://github.com/TanStack/pacer/commit/bd9621752367c1446430af9146b72e04ed991798), [`dc47121`](https://github.com/TanStack/pacer/commit/dc47121ffbeb2353e43cd0fe350ef4916aa75b9f)]:
+  - @tanstack/pacer@0.22.0
+
 ## 0.21.1
 
 ### Patch Changes

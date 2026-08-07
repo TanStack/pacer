@@ -1,5 +1,11 @@
 # @tanstack/pacer-devtools
 
+## 1.4.0
+
+### Minor Changes
+
+- Update package dependencies and migrate the devtools theme integration to the latest API. ([#245](https://github.com/TanStack/pacer/pull/245))
+
 ## 1.3.1
 
 ### Patch Changes

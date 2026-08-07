@@ -1,5 +1,21 @@
 # @tanstack/pacer
 
+## 0.22.0
+
+### Minor Changes
+
+- Update package dependencies and migrate the devtools theme integration to the latest API. ([#245](https://github.com/TanStack/pacer/pull/245))
+
+### Patch Changes
+
+- fix(queuer): stop silently dropping falsy items (`0`, `''`, `false`) from AsyncQueuer processing, and stop throwing a TypeError when `null` items are added to AsyncQueuer or Queuer without a custom `getPriority` (fixes [#200](https://github.com/TanStack/pacer/issues/200)) ([#246](https://github.com/TanStack/pacer/pull/246))
+
+- fix(async-queuer): respect the `wait` period when `addItem` is called during active processing. `pendingTick` now stays true while executions or wait timers are pending (matching the sync Queuer's semantics), task errors no longer kill the processing chain or produce unhandled promise rejections during tick-driven processing, and `flush`/`flushAsBatch` restart the tick chain they interrupt (fixes [#188](https://github.com/TanStack/pacer/issues/188)) ([#246](https://github.com/TanStack/pacer/pull/246))
+
+- fix: async utility return types no longer double-wrap promises. `maybeExecute`, `flush`, `lastResult` state, and `onSuccess` callbacks on AsyncDebouncer, AsyncThrottler, and AsyncRateLimiter (and the `asyncDebounce`/`asyncThrottle`/`asyncRateLimit` helpers) now use `Awaited<ReturnType<TFn>>` instead of `ReturnType<TFn>`. The `useAsyncDebouncedCallback`, `useAsyncThrottledCallback`, and `useAsyncRateLimitedCallback` hooks in react-pacer and preact-pacer now return `Promise<Awaited<ReturnType<TFn>> | undefined>`, matching the angular adapter and the actual runtime behavior (fixes [#156](https://github.com/TanStack/pacer/issues/156)) ([#246](https://github.com/TanStack/pacer/pull/246))
+
+- fix: remove the devtools event-client integration from AsyncRetryer to fix unbounded memory growth (#198). Retryer instances are created per-execution by AsyncQueuer, AsyncDebouncer, AsyncThrottler, and AsyncRateLimiter, so every execution permanently accumulated a devtools event listener, a live instance in the devtools registry (keyed `"<key>-retryer-N"`, or `"undefined-retryer-N"` when the parent had no key), and queued devtools events — most visibly as a memory leak in Node.js. The devtools panel never consumed retryer events, so no devtools functionality is lost. The `key` option on AsyncRetryer remains as a plain identifier, and internal retryers now receive `asyncRetryerOptions` unmodified ([#246](https://github.com/TanStack/pacer/pull/246))
+
 ## 0.21.1
 
 ### Patch Changes

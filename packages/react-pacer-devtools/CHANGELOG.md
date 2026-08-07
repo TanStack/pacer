@@ -1,5 +1,16 @@
 # @tanstack/react-pacer-devtools
 
+## 0.8.0
+
+### Minor Changes
+
+- Update package dependencies and migrate the devtools theme integration to the latest API. ([#245](https://github.com/TanStack/pacer/pull/245))
+
+### Patch Changes
+
+- Updated dependencies [[`bd96217`](https://github.com/TanStack/pacer/commit/bd9621752367c1446430af9146b72e04ed991798)]:
+  - @tanstack/pacer-devtools@1.4.0
+
 ## 0.7.1
 
 ### Patch Changes
