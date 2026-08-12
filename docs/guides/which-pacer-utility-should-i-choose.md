@@ -3,108 +3,86 @@ title: Which Pacer Utility Should I Choose?
 id: which-pacer-utility-should-i-choose
 ---
 
-TanStack Pacer provides 5 core utilities for controlling function execution frequency. Here is a one-sentence summary of each utility:
+TanStack Pacer provides five strategies for controlling when operations run. The right choice depends on what should happen to calls that arrive faster than your application can process them.
 
- - [**Debouncer**](./debouncing.md) - Executes a function after a period of inactivity. (Rejects other calls during activity)
- - [**Throttler**](./throttling.md) - Executes a function at regular intervals. (Rejects all but one call during each interval)
- - [**Rate Limiter**](./rate-limiting.md) - Prevents a function from being called too frequently. (Rejects calls when the limit is reached)
- - [**Queuer**](./queuing.md) - Processes all calls to a function in order. (Only rejects calls if the queue is full)
- - [**Batcher**](./batching.md) - Groups multiple function calls into a single batch. (No rejections)
+## Compare the utilities
 
-After choosing which strategy fits your needs, there are additional variations and decisions to consider. This guide provides quick clarifications on the most common decisions you'll need to make.
+| Utility | What happens to frequent calls? | Best fit |
+| --- | --- | --- |
+| [Debouncer](./debouncing.md) | Earlier calls are discarded. The latest call runs after activity stops. | Search input, validation, autosave |
+| [Throttler](./throttling.md) | Calls are limited to a steady interval. A trailing call can retain the latest arguments. | Scroll, resize, progress, repeated UI updates |
+| [Rate Limiter](./rate-limiting.md) | Calls run until a quota is reached. Additional calls are rejected until capacity returns. | Client-side quotas and burst limits |
+| [Queuer](./queuing.md) | Calls wait in an ordered buffer and run individually. | Work that must not be lost |
+| [Batcher](./batching.md) | Items accumulate and run together as one batch. | Bulk requests, writes, and analytics events |
 
-## Synchronous vs Asynchronous
+## Choose by required behavior
 
-You may see both a [Debouncer](./debouncing.md) and an [Async Debouncer](./async-debouncing.md) when first exploring TanStack Pacer. Which one should you use?
+### Only the final value matters
 
-Each utility comes in both synchronous and asynchronous versions. For most use cases, the simpler synchronous version is sufficient. However, if you need these utilities to handle async logic for you, the complexity of each utility increases significantly. The bundle size of the asynchronous versions of each utility is often more than double the size of the synchronous versions. If you actually need and use some of these additional APIs, the extra complexity is worth it, but don't choose the asynchronous version of a utility unless you actually end up using these features.
+Use a [debouncer](./debouncing.md). Every call restarts a timer, and the most recent call runs after the activity becomes quiet.
 
-> [!TIP] We recommend using the simpler synchronous version of each utility for most use cases. (Debouncer, Throttler, Rate Limiter, Queuer, Batcher)
+### Work should continue at a steady pace
 
-Luckily, switching between the synchronous and asynchronous versions of a utility is straightforward. For the most part, just replace the import whenever you decide you need to switch.
+Use a [throttler](./throttling.md). It limits execution frequency without waiting for activity to stop completely.
 
-### When to Use the Asynchronous Version
+### A fixed quota must be enforced
 
-Use the asynchronous version when you need any of these capabilities:
+Use a [rate limiter](./rate-limiting.md). It accepts calls until the configured limit is reached, then rejects additional calls within the window.
 
-- **Await Return Values**: Await and use the return value from your function, rather than just calling it for side effects. The synchronous version returns void, while the async version returns a Promise that resolves with your function's result. You can also await the return value to determine when to send another execution when execution order matters.
+### Every operation must run
 
-- **Error Handling**: Built-in error handling with configurable error callbacks, control over whether errors are thrown or swallowed, and error statistics tracking.
+Use a [queuer](./queuing.md). It preserves pending operations and processes them according to FIFO, LIFO, or priority ordering. A finite `maxSize` can still cause new items to be rejected.
 
-- **Extra Callbacks**: Instead of just an `onExecute` callback that comes with the synchronous version, the asynchronous version comes with additional callbacks such as `onSuccess`, `onError`, `onSettled`, and `onAbort`.
+### Several items should run together
 
-- **Concurrency**: For queuing specifically, concurrency support allowing multiple items to be processed simultaneously while maintaining control over how many run at once.
+Use a [batcher](./batching.md). It collects items until a size, time, or custom condition triggers one batch execution.
 
-- **Retries and Aborts**: Built-in integration with `AsyncRetryer` for automatic retries of failed executions with configurable backoff strategies, jitter, and retry limits. Cancel in-flight operations using AbortController.
+## Synchronous or asynchronous
 
-## Pacer Lite vs Pacer
+Each utility has a synchronous and asynchronous version. Start with the synchronous version unless the utility must manage Promise-specific behavior.
 
-Pacer Lite (`@tanstack/pacer-lite`) is a stripped-down version of the core TanStack Pacer library. It is designed to be used in libraries and npm packages that need minimal overhead and no reactivity features. The Lite version of each utility has the same core functionality as its core counterpart, but with a smaller API surface and a smaller bundle size. Pacer Lite lacks reactivity features, framework adapters, devtools support, and some of the advanced options that the core utilities have.
+Use the asynchronous version when you need to:
 
-If you are building an application, use the normal `@tanstack/pacer` package (or your framework adapter like `@tanstack/react-pacer` for React, `@tanstack/solid-pacer` for Solid, etc.). Only use Pacer Lite if you are building a library or npm package that needs to be as lightweight as possible and doesn't need the extra features of the core utilities.
+- Await the wrapped function's result.
+- Track success, error, and settlement state.
+- Configure error propagation.
+- Retry failed executions.
+- Abort in-flight operations.
+- Run queued tasks concurrently with `AsyncQueuer`.
 
-## Which Hook Variation Should I Use?
+Passing an async function to a synchronous utility does not provide these features. The synchronous utility invokes the function but does not await or manage its Promise.
 
-We will use the Debouncer utility as the main example, but the same principles apply to all the other utilities.
+| Synchronous | Asynchronous |
+| --- | --- |
+| [Debouncing](./debouncing.md) | [Async debouncing](./async-debouncing.md) |
+| [Throttling](./throttling.md) | [Async throttling](./async-throttling.md) |
+| [Rate limiting](./rate-limiting.md) | [Async rate limiting](./async-rate-limiting.md) |
+| [Queuing](./queuing.md) | [Async queuing](./async-queuing.md) |
+| [Batching](./batching.md) | [Async batching](./async-batching.md) |
 
-If you are using a framework adapter like React, you will see that there are lots of examples with multiple hook variations. For example, for debouncing you will see:
+The async utilities use [`AsyncRetryer`](./async-retrying.md) internally for retry and abort support.
 
-- [`useDebouncer`](../framework/react/examples/useDebouncer)
-- [`useDebouncedCallback`](../framework/react/examples/useDebouncedCallback)
-- [`useDebouncedState`](../framework/react/examples/useDebouncedState)
-- [`useDebouncedValue`](../framework/react/examples/useDebouncedValue)
+## Core package or framework adapter
 
-You will also probably see that you can use the core `Debouncer` class directly or the core `debounce` function directly without using a hook.
+Use `@tanstack/pacer` when you need the core classes and functions without component lifecycle integration.
 
-These are all variations of the same basic debouncing functionality. So, which one should you use?
+Use a framework adapter in an application that needs automatic cleanup and reactive state:
 
-The answer is: It Depends! 🤷‍♂️
+- [React adapter](../framework/react/adapter.md)
+- [Preact adapter](../framework/preact/adapter.md)
+- [Solid adapter](../framework/solid/adapter.md)
+- [Angular adapter](../framework/angular/adapter.md)
 
-But also: It doesn't really matter too much. They all do essentially the same thing. It's mostly a matter of personal preference and how you want to interact with the utility. Under the hood, a `Debouncer` instance is created no matter what you choose.
+Framework adapters provide several API shapes around the same underlying utility:
 
-You can start with the [`useDebouncer`](../framework/react/examples/useDebouncer) hook if you don't know which one to use. All of the others wrap the `useDebouncer` hook with different argument and return value signatures.
+- Instance APIs such as `useDebouncer` expose lifecycle methods and selected state.
+- Callback APIs such as `useDebouncedCallback` return a function to call.
+- State and value APIs connect the utility to framework state.
 
-```tsx
-import { useDebouncer } from '@tanstack/react-pacer'
-//...
-const debouncer = useDebouncer(fn, options)
+Choose the narrowest API that provides the control you need. Use the instance API when you need methods such as `cancel()` or `flush()`.
 
-debouncer.maybeExecute(args) // execute the debounced function
-//...
-debouncer.cancel() // use Debouncer APIs with full access to the debouncer instance
-debouncer.flush()
-```
+## Pacer Lite or Pacer
 
-If you only need to create a debounced function and don't need access to the debouncer instance to call methods or use its extra features, use the [`useDebouncedCallback`](../framework/react/examples/useDebouncedCallback) hook. The `*Callback` versions of the hooks are actually most similar to calling the core functions directly (like `debounce`) but with the memoization setup taken care of for you.
+`@tanstack/pacer-lite` is intended for libraries that need smaller, non-reactive utilities. It omits TanStack Store integration, framework adapters, Devtools support, and some advanced options.
 
-```tsx
-import { useDebouncedCallback } from '@tanstack/react-pacer'
-//...
-const debouncedFn = useDebouncedCallback(fn, options)
-
-debouncedFn(args) // execute the debounced function
-//...
-```
-
-The other variations are convenience hooks that wrap the `useDebouncer` hook with different argument and return value signatures. For example, the [`useDebouncedState`](../framework/react/examples/useDebouncedState) hook is useful when you need to debounce a state value.
-
-```tsx
-import { useDebouncedState } from '@tanstack/react-pacer'
-//...
-const [debouncedValue, setDebouncedValue] = useDebouncedState(value, options)
-
-setDebouncedValue(newValue) // set the debounced value (will be debounced state setter)
-//...
-```
-
-The [`useDebouncedValue`](../framework/react/examples/useDebouncedValue) hook is useful when your debounced value is derived from an instant value that changes frequently.
-
-```tsx
-import { useDebouncedValue } from '@tanstack/react-pacer'
-//...
-const [instantValue, setInstantValue] = useState(0)
-const [debouncedValue] = useDebouncedValue(instantValue, options)
-//...
-setInstantValue(newValue) // Set the instant value; the debounced value will update automatically, delayed by the wait time
-//...
-```
+Use the regular core package or a framework adapter for application code. Consider Pacer Lite when bundle size is the primary constraint and reactive state is unnecessary.

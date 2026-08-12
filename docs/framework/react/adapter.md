@@ -56,20 +56,20 @@ const debouncer = useDebouncer(
 )
 ```
 
-### Queuer Options
+### Async Queuer Options
 
 ```tsx
-import { useQueuer } from '@tanstack/react-pacer'
-import { queuerOptions } from '@tanstack/pacer'
+import { useAsyncQueuer } from '@tanstack/react-pacer'
+import { asyncQueuerOptions } from '@tanstack/pacer'
 
-const commonQueuerOptions = queuerOptions({
+const commonAsyncQueuerOptions = asyncQueuerOptions({
   concurrency: 3,
   addItemsTo: 'back',
 })
 
-const queuer = useQueuer(
-  (item: string) => processItem(item),
-  { ...commonQueuerOptions, key: 'itemQueuer' }
+const queuer = useAsyncQueuer(
+  async (item: string) => processItem(item),
+  { ...commonAsyncQueuerOptions, key: 'itemQueuer' }
 )
 ```
 
@@ -102,7 +102,7 @@ import { PacerProvider } from '@tanstack/react-pacer'
 <PacerProvider
   defaultOptions={{
     debouncer: { wait: 1000 },
-    queuer: { concurrency: 3 },
+    asyncQueuer: { concurrency: 3 },
     rateLimiter: { limit: 5, window: 60000 },
   }}
 >
@@ -161,11 +161,11 @@ import { useDebouncer } from '@tanstack/react-pacer'
 
 function SearchComponent() {
   // Default behavior - no reactive state subscriptions
-  const debouncer = useDebouncer(
+  const untrackedDebouncer = useDebouncer(
     (query: string) => fetchSearchResults(query),
     { wait: 500 }
   )
-  console.log(debouncer.state) // {}
+  console.log(untrackedDebouncer.state) // {}
 
   // Opt-in to track isPending changes
   const debouncer = useDebouncer(
@@ -211,13 +211,13 @@ function SearchComponent() {
 }
 ```
 
-### Queuer Example
+### Async Queuer Example
 
 ```tsx
-import { useQueuer } from '@tanstack/react-pacer'
+import { useAsyncQueuer } from '@tanstack/react-pacer'
 
 function UploadComponent() {
-  const queuer = useQueuer(
+  const queuer = useAsyncQueuer(
     async (file: File) => {
       await uploadFile(file)
     },
@@ -226,7 +226,7 @@ function UploadComponent() {
 
   const handleFileSelect = (files: FileList) => {
     Array.from(files).forEach((file) => {
-      queuer.add(file)
+      queuer.addItem(file)
     })
   }
 
@@ -277,4 +277,3 @@ function ApiComponent() {
   return <button onClick={handleSubmit}>Submit</button>
 }
 ```
-

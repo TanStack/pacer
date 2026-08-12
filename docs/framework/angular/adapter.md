@@ -70,7 +70,7 @@ export const appConfig: ApplicationConfig = {
     providePacerOptions({
       debouncer: { wait: 300 },
       throttler: { wait: 100 },
-      queuer: { concurrency: 2 },
+      asyncQueuer: { concurrency: 2 },
       rateLimiter: { limit: 5, window: 60000 },
     }),
   ],
@@ -127,11 +127,11 @@ export class SearchComponent {
 }
 ```
 
-### Queuer
+### Async Queuer
 
 ```ts
 import { Component, signal } from '@angular/core'
-import { injectQueuer } from '@tanstack/angular-pacer'
+import { injectAsyncQueuer } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-upload',
@@ -141,7 +141,7 @@ import { injectQueuer } from '@tanstack/angular-pacer'
   `,
 })
 export class UploadComponent {
-  protected readonly queuer = injectQueuer<File, { size: number }>(
+  protected readonly queuer = injectAsyncQueuer<File, { size: number }>(
     async (file) => {
       await uploadFile(file)
     },

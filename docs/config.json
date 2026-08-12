@@ -71,50 +71,253 @@
         {
           "label": "Which Utility Should I Choose?",
           "to": "guides/which-pacer-utility-should-i-choose"
+        }
+      ],
+      "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/vanilla/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/vanilla/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/vanilla/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/vanilla/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/vanilla/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/vanilla/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/vanilla/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/vanilla/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/vanilla/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/vanilla/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/vanilla/guides/async-retrying"
+            }
+          ]
         },
         {
-          "label": "Debouncing Guide",
-          "to": "guides/debouncing"
+          "label": "react",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/react/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/react/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/react/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/react/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/react/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/react/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/react/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/react/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/react/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/react/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/react/guides/async-retrying"
+            }
+          ]
         },
         {
-          "label": "Throttling Guide",
-          "to": "guides/throttling"
+          "label": "solid",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/solid/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/solid/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/solid/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/solid/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/solid/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/solid/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/solid/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/solid/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/solid/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/solid/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/solid/guides/async-retrying"
+            }
+          ]
         },
         {
-          "label": "Rate Limiting Guide",
-          "to": "guides/rate-limiting"
+          "label": "preact",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/preact/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/preact/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/preact/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/preact/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/preact/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/preact/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/preact/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/preact/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/preact/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/preact/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/preact/guides/async-retrying"
+            }
+          ]
         },
         {
-          "label": "Queuing Guide",
-          "to": "guides/queuing"
-        },
-        {
-          "label": "Batching Guide",
-          "to": "guides/batching"
-        },
-        {
-          "label": "Async Debouncing Guide",
-          "to": "guides/async-debouncing"
-        },
-        {
-          "label": "Async Throttling Guide",
-          "to": "guides/async-throttling"
-        },
-        {
-          "label": "Async Rate Limiting Guide",
-          "to": "guides/async-rate-limiting"
-        },
-        {
-          "label": "Async Queuing Guide",
-          "to": "guides/async-queuing"
-        },
-        {
-          "label": "Async Batching Guide",
-          "to": "guides/async-batching"
-        },
-        {
-          "label": "Async Retrying Guide",
-          "to": "guides/async-retrying"
+          "label": "angular",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/angular/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/angular/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/angular/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/angular/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/angular/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/angular/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/angular/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/angular/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/angular/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/angular/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/angular/guides/async-retrying"
+            }
+          ]
         }
       ]
     },
