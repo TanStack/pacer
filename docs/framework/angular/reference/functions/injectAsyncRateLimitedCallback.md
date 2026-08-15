@@ -9,7 +9,7 @@ title: injectAsyncRateLimitedCallback
 function injectAsyncRateLimitedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimitedCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimitedCallback.ts#L43)
+Defined in: [async-rate-limiter/injectAsyncRateLimitedCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimitedCallback.ts#L43)
 
 An Angular function that creates an async rate-limited version of a callback function.
 This function is essentially a wrapper around `injectAsyncRateLimiter` that provides
@@ -44,19 +44,7 @@ Consider using the `injectAsyncRateLimiter` function instead.
 
 ## Returns
 
-```ts
-(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
-```
-
-### Parameters
-
-#### args
-
-...`Parameters`\<`TFn`\>
-
-### Returns
-
-`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
+(...`args`) => `Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 ## Example
 

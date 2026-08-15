@@ -22,7 +22,7 @@ These options control queue behavior, item expiration, callbacks, and more.
 ### addItemsTo?
 
 ```ts
-optional addItemsTo: QueuePosition;
+optional addItemsTo?: QueuePosition;
 ```
 
 Defined in: [queuer.ts:88](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L88)
@@ -40,7 +40,7 @@ Default position to add items to the queuer
 ### expirationDuration?
 
 ```ts
-optional expirationDuration: number;
+optional expirationDuration?: number;
 ```
 
 Defined in: [queuer.ts:93](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L93)
@@ -50,10 +50,10 @@ If not provided, items will never expire
 
 ***
 
-### getIsExpired()?
+### getIsExpired?
 
 ```ts
-optional getIsExpired: (item, addedAt) => boolean;
+optional getIsExpired?: (item, addedAt) => boolean;
 ```
 
 Defined in: [queuer.ts:98](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L98)
@@ -80,7 +80,7 @@ If provided, this overrides the expirationDuration behavior
 ### getItemsFrom?
 
 ```ts
-optional getItemsFrom: QueuePosition;
+optional getItemsFrom?: QueuePosition;
 ```
 
 Defined in: [queuer.ts:103](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L103)
@@ -95,10 +95,10 @@ Default position to get items from during processing
 
 ***
 
-### getPriority()?
+### getPriority?
 
 ```ts
-optional getPriority: (item) => number;
+optional getPriority?: (item) => number;
 ```
 
 Defined in: [queuer.ts:108](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L108)
@@ -121,7 +121,7 @@ Higher priority items will be processed first
 ### initialItems?
 
 ```ts
-optional initialItems: TValue[];
+optional initialItems?: TValue[];
 ```
 
 Defined in: [queuer.ts:112](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L112)
@@ -133,7 +133,7 @@ Initial items to populate the queuer with
 ### initialState?
 
 ```ts
-optional initialState: Partial<QueuerState<TValue>>;
+optional initialState?: Partial<QueuerState<TValue>>;
 ```
 
 Defined in: [queuer.ts:116](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L116)
@@ -145,7 +145,7 @@ Initial state for the queuer
 ### key?
 
 ```ts
-optional key: string;
+optional key?: string;
 ```
 
 Defined in: [queuer.ts:121](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L121)
@@ -158,7 +158,7 @@ If provided, the queuer will be identified by this key in the devtools and Pacer
 ### maxSize?
 
 ```ts
-optional maxSize: number;
+optional maxSize?: number;
 ```
 
 Defined in: [queuer.ts:125](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L125)
@@ -167,10 +167,10 @@ Maximum number of items allowed in the queuer
 
 ***
 
-### onExecute()?
+### onExecute?
 
 ```ts
-optional onExecute: (item, queuer) => void;
+optional onExecute?: (item, queuer) => void;
 ```
 
 Defined in: [queuer.ts:129](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L129)
@@ -193,10 +193,10 @@ Callback fired whenever an item is removed from the queuer
 
 ***
 
-### onExpire()?
+### onExpire?
 
 ```ts
-optional onExpire: (item, queuer) => void;
+optional onExpire?: (item, queuer) => void;
 ```
 
 Defined in: [queuer.ts:133](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L133)
@@ -219,10 +219,10 @@ Callback fired whenever an item expires in the queuer
 
 ***
 
-### onItemsChange()?
+### onItemsChange?
 
 ```ts
-optional onItemsChange: (queuer) => void;
+optional onItemsChange?: (queuer) => void;
 ```
 
 Defined in: [queuer.ts:137](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L137)
@@ -241,10 +241,10 @@ Callback fired whenever an item is added or removed from the queuer
 
 ***
 
-### onReject()?
+### onReject?
 
 ```ts
-optional onReject: (item, queuer) => void;
+optional onReject?: (item, queuer) => void;
 ```
 
 Defined in: [queuer.ts:141](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L141)
@@ -270,7 +270,7 @@ Callback fired whenever an item is rejected from being added to the queuer
 ### started?
 
 ```ts
-optional started: boolean;
+optional started?: boolean;
 ```
 
 Defined in: [queuer.ts:145](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L145)
@@ -282,7 +282,7 @@ Whether the queuer should start processing tasks immediately
 ### wait?
 
 ```ts
-optional wait: number | (queuer) => number;
+optional wait?: number | ((queuer) => number);
 ```
 
 Defined in: [queuer.ts:151](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L151)

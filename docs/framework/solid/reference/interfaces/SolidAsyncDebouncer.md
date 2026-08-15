@@ -5,7 +5,7 @@ title: SolidAsyncDebouncer
 
 # Interface: SolidAsyncDebouncer\<TFn, TSelected\>
 
-Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L24)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L24)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:24](https:/
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L50)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L50)
 
 Reactive state that will be updated when the debouncer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:56](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L56)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:56](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L56)
 
 #### Deprecated
 
@@ -54,13 +54,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L41)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L41)
 
 A Solid component that allows you to subscribe to the debouncer state.
 
@@ -79,7 +79,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`Element` \| (`state`) => `Element`
+`Element` \| ((`state`) => `Element`)
 
 ###### selector
 

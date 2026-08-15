@@ -8,11 +8,11 @@ title: createAsyncQueuer
 ```ts
 function createAsyncQueuer<TValue, TSelected>(
    fn, 
-   options, 
-selector): SolidAsyncQueuer<TValue, TSelected>;
+   options?, 
+selector?): SolidAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:181](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L181)
+Defined in: [async-queuer/createAsyncQueuer.ts:181](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L181)
 
 Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 
@@ -153,11 +153,11 @@ const { pendingItems, activeItems } = asyncQueuer.state();
 
 (`value`) => `Promise`\<`any`\>
 
-### options
+### options?
 
 [`SolidAsyncQueuerOptions`](../interfaces/SolidAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

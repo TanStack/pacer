@@ -17,10 +17,10 @@ Options for configuring a Batcher instance
 
 ## Properties
 
-### getShouldExecute()?
+### getShouldExecute?
 
 ```ts
-optional getShouldExecute: (items, batcher) => boolean;
+optional getShouldExecute?: (items, batcher) => boolean;
 ```
 
 Defined in: [batcher.ts:57](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L57)
@@ -47,7 +47,7 @@ Return true to process the batch immediately
 ### initialState?
 
 ```ts
-optional initialState: Partial<BatcherState<TValue>>;
+optional initialState?: Partial<BatcherState<TValue>>;
 ```
 
 Defined in: [batcher.ts:61](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L61)
@@ -59,7 +59,7 @@ Initial state for the batcher
 ### key?
 
 ```ts
-optional key: string;
+optional key?: string;
 ```
 
 Defined in: [batcher.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L66)
@@ -72,7 +72,7 @@ If provided, the batcher will be identified by this key in the devtools and Pace
 ### maxSize?
 
 ```ts
-optional maxSize: number;
+optional maxSize?: number;
 ```
 
 Defined in: [batcher.ts:71](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L71)
@@ -87,10 +87,10 @@ Infinity
 
 ***
 
-### onExecute()?
+### onExecute?
 
 ```ts
-optional onExecute: (batch, batcher) => void;
+optional onExecute?: (batch, batcher) => void;
 ```
 
 Defined in: [batcher.ts:75](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L75)
@@ -113,10 +113,10 @@ Callback fired after a batch is processed
 
 ***
 
-### onItemsChange()?
+### onItemsChange?
 
 ```ts
-optional onItemsChange: (batcher) => void;
+optional onItemsChange?: (batcher) => void;
 ```
 
 Defined in: [batcher.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L79)
@@ -138,7 +138,7 @@ Callback fired after items are added to the batcher
 ### started?
 
 ```ts
-optional started: boolean;
+optional started?: boolean;
 ```
 
 Defined in: [batcher.ts:84](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L84)
@@ -156,7 +156,7 @@ true
 ### wait?
 
 ```ts
-optional wait: number | (batcher) => number;
+optional wait?: number | ((batcher) => number);
 ```
 
 Defined in: [batcher.ts:91](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L91)

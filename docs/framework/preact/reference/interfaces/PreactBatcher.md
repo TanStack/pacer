@@ -5,7 +5,7 @@ title: PreactBatcher
 
 # Interface: PreactBatcher\<TValue, TSelected\>
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L20)
+Defined in: [batcher/useBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L20)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/batcher/useBatcher.ts:20](https://github.com/TanSt
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:46](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L46)
+Defined in: [batcher/useBatcher.ts:46](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L46)
 
 Reactive state that will be updated and re-rendered when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:52](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L52)
+Defined in: [batcher/useBatcher.ts:52](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L52)
 
 #### Deprecated
 
@@ -54,13 +54,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:37](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L37)
+Defined in: [batcher/useBatcher.ts:37](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L37)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the batcher state.
 
@@ -79,7 +79,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`ComponentChildren` \| (`state`) => `ComponentChildren`
+`ComponentChildren` \| ((`state`) => `ComponentChildren`)
 
 ###### selector
 

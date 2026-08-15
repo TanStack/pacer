@@ -8,11 +8,11 @@ title: createQueuedSignal
 ```ts
 function createQueuedSignal<TValue, TSelected>(
    fn, 
-   options, 
-   selector): [() => TValue[], (item, position?, runOnItemsChange?) => boolean, SolidQueuer<TValue, TSelected>];
+   options?, 
+   selector?): [() => TValue[], (item, position?, runOnItemsChange?) => boolean, SolidQueuer<TValue, TSelected>];
 ```
 
-Defined in: [solid-pacer/src/queuer/createQueuedSignal.ts:119](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuedSignal.ts#L119)
+Defined in: [queuer/createQueuedSignal.ts:119](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuedSignal.ts#L119)
 
 A Solid primitive that creates a queuer with managed state, combining Solid's signals with queuing functionality.
 This primitive provides both the current queue state and queue control methods.
@@ -69,11 +69,11 @@ Available queuer state properties:
 
 (`item`) => `void`
 
-### options
+### options?
 
 [`SolidQueuerOptions`](../interfaces/SolidQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

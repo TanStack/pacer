@@ -5,7 +5,7 @@ title: ReactQueuer
 
 # Interface: ReactQueuer\<TValue, TSelected\>
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L20)
+Defined in: [queuer/useQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L20)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/queuer/useQueuer.ts:20](https://github.com/TanStack
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L46)
+Defined in: [queuer/useQueuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L46)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<QueuerState<TValue>>>;
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L52)
+Defined in: [queuer/useQueuer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L52)
 
 #### Deprecated
 
@@ -54,13 +54,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [react-pacer/src/queuer/useQueuer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L37)
+Defined in: [queuer/useQueuer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L37)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the queuer state.
 
@@ -79,7 +79,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`ReactNode` \| (`state`) => `ReactNode`
+`ReactNode` \| ((`state`) => `ReactNode`)
 
 ###### selector
 

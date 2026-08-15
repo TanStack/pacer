@@ -45,19 +45,7 @@ State Management:
 
 ## Returns
 
-```ts
-(...args): void;
-```
-
-### Parameters
-
-#### args
-
-...`Parameters`\<`TFn`\>
-
-### Returns
-
-`void`
+(...`args`) => `void`
 
 ## Example
 

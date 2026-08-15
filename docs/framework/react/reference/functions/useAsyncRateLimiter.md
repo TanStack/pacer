@@ -9,10 +9,10 @@ title: useAsyncRateLimiter
 function useAsyncRateLimiter<TFn, TSelected>(
    fn, 
    options, 
-selector): ReactAsyncRateLimiter<TFn, TSelected>;
+selector?): ReactAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:231](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L231)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:231](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L231)
 
 A low-level React hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -98,7 +98,7 @@ Use the `onUnmount` option to customize this.
 
 [`ReactAsyncRateLimiterOptions`](../interfaces/ReactAsyncRateLimiterOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

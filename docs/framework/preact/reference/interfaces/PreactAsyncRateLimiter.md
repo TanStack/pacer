@@ -5,7 +5,7 @@ title: PreactAsyncRateLimiter
 
 # Interface: PreactAsyncRateLimiter\<TFn, TSelected\>
 
-Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L24)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L24)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:24](http
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L50)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L50)
 
 Reactive state that will be updated and re-rendered when the rate limiter state changes
 
@@ -44,7 +44,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>;
 ```
 
-Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L56)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L56)
 
 #### Deprecated
 
@@ -54,13 +54,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L41)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L41)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the async rate limiter state.
 
@@ -79,7 +79,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`ComponentChildren` \| (`state`) => `ComponentChildren`
+`ComponentChildren` \| ((`state`) => `ComponentChildren`)
 
 ###### selector
 

@@ -20,7 +20,7 @@ Options for configuring a rate-limited function
 ### enabled?
 
 ```ts
-optional enabled: boolean | (rateLimiter) => boolean;
+optional enabled?: boolean | ((rateLimiter) => boolean);
 ```
 
 Defined in: [rate-limiter.ts:52](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L52)
@@ -33,7 +33,7 @@ Defaults to true.
 ### initialState?
 
 ```ts
-optional initialState: Partial<RateLimiterState>;
+optional initialState?: Partial<RateLimiterState>;
 ```
 
 Defined in: [rate-limiter.ts:56](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L56)
@@ -45,7 +45,7 @@ Initial state for the rate limiter
 ### key?
 
 ```ts
-optional key: string;
+optional key?: string;
 ```
 
 Defined in: [rate-limiter.ts:61](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L61)
@@ -58,7 +58,7 @@ If provided, the rate limiter will be identified by this key in the devtools and
 ### limit
 
 ```ts
-limit: number | (rateLimiter) => number;
+limit: number | ((rateLimiter) => number);
 ```
 
 Defined in: [rate-limiter.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L66)
@@ -68,10 +68,10 @@ Can be a number or a callback function that receives the rate limiter instance a
 
 ***
 
-### onExecute()?
+### onExecute?
 
 ```ts
-optional onExecute: (args, rateLimiter) => void;
+optional onExecute?: (args, rateLimiter) => void;
 ```
 
 Defined in: [rate-limiter.ts:70](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L70)
@@ -94,10 +94,10 @@ Callback function that is called after the function is executed
 
 ***
 
-### onReject()?
+### onReject?
 
 ```ts
-optional onReject: (rateLimiter) => void;
+optional onReject?: (rateLimiter) => void;
 ```
 
 Defined in: [rate-limiter.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L74)
@@ -119,7 +119,7 @@ Optional callback function that is called when an execution is rejected due to r
 ### window
 
 ```ts
-window: number | (rateLimiter) => number;
+window: number | ((rateLimiter) => number);
 ```
 
 Defined in: [rate-limiter.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L79)
@@ -132,7 +132,7 @@ Can be a number or a callback function that receives the rate limiter instance a
 ### windowType?
 
 ```ts
-optional windowType: "fixed" | "sliding";
+optional windowType?: "fixed" | "sliding";
 ```
 
 Defined in: [rate-limiter.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L86)

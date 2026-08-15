@@ -9,10 +9,10 @@ title: injectAsyncThrottler
 function injectAsyncThrottler<TFn, TSelected>(
    fn, 
    options, 
-selector): AngularAsyncThrottler<TFn, TSelected>;
+selector?): AngularAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-throttler/injectAsyncThrottler.ts:98](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L98)
+Defined in: [async-throttler/injectAsyncThrottler.ts:98](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L98)
 
 An Angular function that creates and manages an AsyncThrottler instance.
 
@@ -69,7 +69,7 @@ When using onUnmount with flush, guard your callbacks since the component may al
 
 [`AngularAsyncThrottlerOptions`](../interfaces/AngularAsyncThrottlerOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

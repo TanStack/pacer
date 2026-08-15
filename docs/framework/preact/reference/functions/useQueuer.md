@@ -8,11 +8,11 @@ title: useQueuer
 ```ts
 function useQueuer<TValue, TSelected>(
    fn, 
-   options, 
-selector): PreactQueuer<TValue, TSelected>;
+   options?, 
+selector?): PreactQueuer<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/queuer/useQueuer.ts:194](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L194)
+Defined in: [queuer/useQueuer.ts:194](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L194)
 
 A Preact hook that creates and manages a Queuer instance.
 
@@ -95,11 +95,11 @@ const queue = useQueuer(fn, {
 
 (`item`) => `void`
 
-### options
+### options?
 
 [`PreactQueuerOptions`](../interfaces/PreactQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

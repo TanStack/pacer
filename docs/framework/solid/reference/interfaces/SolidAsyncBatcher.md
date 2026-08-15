@@ -5,7 +5,7 @@ title: SolidAsyncBatcher
 
 # Interface: SolidAsyncBatcher\<TValue, TSelected\>
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L23)
+Defined in: [async-batcher/createAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L23)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:23](https://git
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L49)
+Defined in: [async-batcher/createAsyncBatcher.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L49)
 
 Reactive state that will be updated when the batcher state changes
 
@@ -44,7 +44,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L55)
+Defined in: [async-batcher/createAsyncBatcher.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L55)
 
 #### Deprecated
 
@@ -54,13 +54,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L40)
+Defined in: [async-batcher/createAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L40)
 
 A Solid component that allows you to subscribe to the batcher state.
 
@@ -79,7 +79,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`Element` \| (`state`) => `Element`
+`Element` \| ((`state`) => `Element`)
 
 ###### selector
 

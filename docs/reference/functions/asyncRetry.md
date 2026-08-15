@@ -6,7 +6,7 @@ title: asyncRetry
 # Function: asyncRetry()
 
 ```ts
-function asyncRetry<TFn>(fn, initialOptions): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
+function asyncRetry<TFn>(fn, initialOptions?): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 Defined in: [async-retryer.ts:667](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L667)
@@ -28,7 +28,7 @@ around the AsyncRetryer class that returns the execute method.
 
 The async function to add retry functionality to
 
-### initialOptions
+### initialOptions?
 
 [`AsyncRetryerOptions`](../interfaces/AsyncRetryerOptions.md)\<`TFn`\> = `{}`
 
@@ -38,19 +38,7 @@ Configuration options for the retry behavior
 
 A new function that executes the original with retry logic
 
-```ts
-(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
-```
-
-### Parameters
-
-#### args
-
-...`Parameters`\<`TFn`\>
-
-### Returns
-
-`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
+(...`args`) => `Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 ## Example
 

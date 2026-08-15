@@ -91,7 +91,7 @@ manualQueue.getNextItem(); // returns 2, queue is empty
 ### Constructor
 
 ```ts
-new Queuer<TValue>(fn, initialOptions): Queuer<TValue>;
+new Queuer<TValue>(fn, initialOptions?): Queuer<TValue>;
 ```
 
 Defined in: [queuer.ts:277](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L277)
@@ -102,7 +102,7 @@ Defined in: [queuer.ts:277](https://github.com/TanStack/pacer/blob/main/packages
 
 (`item`) => `void`
 
-##### initialOptions
+##### initialOptions?
 
 [`QueuerOptions`](../interfaces/QueuerOptions.md)\<`TValue`\> = `{}`
 
@@ -112,7 +112,7 @@ Defined in: [queuer.ts:277](https://github.com/TanStack/pacer/blob/main/packages
 
 ## Properties
 
-### fn()
+### fn
 
 ```ts
 fn: (item) => void;
@@ -167,8 +167,8 @@ Defined in: [queuer.ts:270](https://github.com/TanStack/pacer/blob/main/packages
 ```ts
 addItem(
    item, 
-   position, 
-   runOnItemsChange): boolean;
+   position?, 
+   runOnItemsChange?): boolean;
 ```
 
 Defined in: [queuer.ts:404](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L404)
@@ -191,11 +191,11 @@ queuer.addItem('task2', 'front');
 
 `TValue`
 
-##### position
+##### position?
 
 [`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
-##### runOnItemsChange
+##### runOnItemsChange?
 
 `boolean` = `true`
 
@@ -253,7 +253,7 @@ queuer.execute('back');
 ### flush()
 
 ```ts
-flush(numberOfItems, position?): void;
+flush(numberOfItems?, position?): void;
 ```
 
 Defined in: [queuer.ts:566](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L566)
@@ -263,7 +263,7 @@ If no numberOfItems is provided, all items will be processed
 
 #### Parameters
 
-##### numberOfItems
+##### numberOfItems?
 
 `number` = `...`
 
@@ -303,7 +303,7 @@ The queue is cleared after processing
 ### getNextItem()
 
 ```ts
-getNextItem(position): TValue | undefined;
+getNextItem(position?): TValue | undefined;
 ```
 
 Defined in: [queuer.ts:498](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L498)
@@ -321,7 +321,7 @@ queuer.getNextItem('back');
 
 #### Parameters
 
-##### position
+##### position?
 
 [`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
@@ -350,7 +350,7 @@ Returns a copy of all items in the queue.
 ### peekNextItem()
 
 ```ts
-peekNextItem(position): TValue | undefined;
+peekNextItem(position?): TValue | undefined;
 ```
 
 Defined in: [queuer.ts:654](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L654)
@@ -365,7 +365,7 @@ queuer.peekNextItem('back'); // back
 
 #### Parameters
 
-##### position
+##### position?
 
 [`QueuePosition`](../type-aliases/QueuePosition.md) = `'front'`
 
