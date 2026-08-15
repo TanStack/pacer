@@ -5,9 +5,9 @@
     "type": "git",
     "url": "git+https://github.com/TanStack/pacer.git"
   },
-  "packageManager": "pnpm@11.20.0",
+  "packageManager": "pnpm@11.22.0",
   "engines": {
-    "pnpm": ">=11.0.0"
+    "pnpm": ">=11.22.0"
   },
   "type": "module",
   "scripts": {
@@ -54,17 +54,17 @@
   ],
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
-    "@faker-js/faker": "^10.5.0",
+    "@faker-js/faker": "^10.6.0",
     "@size-limit/preset-small-lib": "^13.0.3",
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
     "@tanstack/eslint-config": "0.4.0",
-    "@tanstack/typedoc-config": "0.3.3",
-    "@testing-library/jest-dom": "^7.0.0",
+    "@tanstack/typedoc-config": "0.3.4",
+    "@testing-library/jest-dom": "^7.0.1",
     "@types/node": "^26.1.2",
-    "eslint": "^10.8.0",
+    "eslint": "^10.8.1",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "happy-dom": "^20.11.1",
-    "knip": "^6.32.0",
+    "happy-dom": "^20.11.2",
+    "knip": "^6.32.2",
     "markdown-link-extractor": "^4.0.4",
     "nx": "^23.1.1",
     "premove": "^4.0.0",
