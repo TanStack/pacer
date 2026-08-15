@@ -12,7 +12,7 @@ function useAsyncRateLimiter<TFn, TSelected>(
 selector): PreactAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:214](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L214)
+Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:231](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L231)
 
 A low-level Preact hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -71,6 +71,12 @@ Available state properties:
 - `settleCount`: Number of function executions that have completed (success or error)
 - `successCount`: Number of function executions that have completed successfully
 
+## Unmount behavior
+
+By default, the hook aborts any in-flight execution when the component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+Use the `onUnmount` option to customize this.
+
 ## Type Parameters
 
 ### TFn
@@ -90,7 +96,7 @@ Available state properties:
 
 ### options
 
-`AsyncRateLimiterOptions`\<`TFn`\>
+[`PreactAsyncRateLimiterOptions`](../interfaces/PreactAsyncRateLimiterOptions.md)\<`TFn`, `TSelected`\>
 
 ### selector
 

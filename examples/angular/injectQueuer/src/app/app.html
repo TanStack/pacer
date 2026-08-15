@@ -1,0 +1,18 @@
+<h1>injectQueuer (Angular)</h1>
+
+<p>Items are processed one by one with a small delay.</p>
+
+<input [value]="input()" (input)="onInput($any($event.target).value ?? '')" placeholder="Item" />
+
+<button type="button" (click)="add()">Add</button>
+<button type="button" (click)="start()">Start</button>
+<button type="button" (click)="stop()">Stop</button>
+<button type="button" (click)="reset()">Reset</button>
+
+<p>queue size: {{ queue.state().size }}</p>
+<p>items: {{ queue.state().items.join(', ') }}</p>
+<p>isRunning: {{ queue.state().isRunning }}</p>
+<p>processedCount: {{ processedCount() }}</p>
+<p>lastProcessed: {{ lastProcessed() }}</p>
+
+<router-outlet />

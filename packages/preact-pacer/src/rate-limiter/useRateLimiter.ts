@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'preact/hooks'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type {
@@ -9,6 +9,17 @@ import type {
 } from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { ComponentChildren } from 'preact'
+
+export interface PreactRateLimiterOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends RateLimiterOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the rate limiter instance.
+   * When provided, replaces the default cleanup; use it to call reset(), add logging, etc.
+   */
+  onUnmount?: (rateLimiter: PreactRateLimiter<TFn, TSelected>) => void
+}
 
 export interface PreactRateLimiter<
   TFn extends AnyFunction,
@@ -39,8 +50,8 @@ export interface PreactRateLimiter<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<RateLimiterState>>
 }
@@ -178,14 +189,13 @@ export interface PreactRateLimiter<
  */
 export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: RateLimiterOptions<TFn>,
+  options: PreactRateLimiterOptions<TFn, TSelected>,
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): PreactRateLimiter<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().rateLimiter,
     ...options,
-  } as RateLimiterOptions<TFn>
-
+  } as PreactRateLimiterOptions<TFn, TSelected>
   const [rateLimiter] = useState(() => {
     const rateLimiterInstance = new RateLimiter<TFn>(
       fn,
@@ -196,7 +206,9 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
       selector: (state: RateLimiterState) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(rateLimiterInstance.store, props.selector)
+      const selected = useSelector(rateLimiterInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -209,7 +221,17 @@ export function useRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   rateLimiter.fn = fn
   rateLimiter.setOptions(mergedOptions)
 
-  const state = useStore(rateLimiter.store, selector)
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(rateLimiter)
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
+
+  const state = useSelector(rateLimiter.store, selector, { compare: shallow })
 
   return useMemo(
     () =>

@@ -535,4 +535,36 @@ describe('Queuer', () => {
       })
     })
   })
+
+  describe('nullish item handling', () => {
+    it('should accept and process null items without throwing', () => {
+      const processed: Array<any> = []
+      const queuer = new Queuer<any>((item) => processed.push(item), {
+        started: false,
+      })
+
+      expect(() => queuer.addItem(null)).not.toThrow()
+      queuer.start()
+
+      expect(processed).toEqual([null])
+    })
+
+    it('should reject undefined items instead of wedging the queue', () => {
+      const onReject = vi.fn()
+      const processed: Array<any> = []
+      const queuer = new Queuer<any>((item) => processed.push(item), {
+        started: false,
+        onReject,
+      })
+
+      expect(queuer.addItem(undefined)).toBe(false)
+      expect(onReject).toHaveBeenCalledWith(undefined, queuer)
+      expect(queuer.store.state.rejectionCount).toBe(1)
+
+      queuer.addItem('a')
+      queuer.start()
+
+      expect(processed).toEqual(['a'])
+    })
+  })
 })

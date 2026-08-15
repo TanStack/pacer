@@ -1,6 +1,6 @@
 import { Throttler } from '@tanstack/pacer/throttler'
 import { createEffect, onCleanup } from 'solid-js'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -9,6 +9,17 @@ import type {
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
+
+export interface SolidThrottlerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends ThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: SolidThrottler<TFn, TSelected>) => void
+}
 
 export interface SolidThrottler<
   TFn extends AnyFunction,
@@ -39,8 +50,8 @@ export interface SolidThrottler<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<ThrottlerState<TFn>>>
 }
@@ -86,6 +97,18 @@ export interface SolidThrottler<
  * - `lastExecutionTime`: Timestamp of the last execution
  * - `nextExecutionTime`: Timestamp of the next allowed execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+ *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = createThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
  *
  * @example
  * ```tsx
@@ -135,14 +158,13 @@ export interface SolidThrottler<
  */
 export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: ThrottlerOptions<TFn>,
+  options: SolidThrottlerOptions<TFn, TSelected>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): SolidThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().throttler,
     ...options,
-  } as ThrottlerOptions<TFn>
-
+  } as SolidThrottlerOptions<TFn, TSelected>
   const asyncThrottler = new Throttler<TFn>(
     fn,
     mergedOptions,
@@ -152,18 +174,26 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
     selector: (state: ThrottlerState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(asyncThrottler.store, props.selector)
+    const selected = useSelector(asyncThrottler.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(asyncThrottler.store, selector)
+  const state = useSelector(asyncThrottler.store, selector, {
+    compare: shallow,
+  })
 
   createEffect(() => {
     onCleanup(() => {
-      asyncThrottler.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncThrottler)
+      } else {
+        asyncThrottler.cancel()
+      }
     })
   })
 

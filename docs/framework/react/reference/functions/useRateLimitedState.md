@@ -75,7 +75,7 @@ Available rate limiter state properties:
 
 ### options
 
-`RateLimiterOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
+[`ReactRateLimiterOptions`](../interfaces/ReactRateLimiterOptions.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>
 
 ### selector?
 

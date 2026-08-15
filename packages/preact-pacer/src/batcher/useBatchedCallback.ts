@@ -1,7 +1,6 @@
 import { useCallback } from 'preact/hooks'
 import { useBatcher } from './useBatcher'
-import type { BatcherOptions } from '@tanstack/pacer/batcher'
-import type { AnyFunction } from '@tanstack/pacer/types'
+import type { PreactBatcherOptions } from './useBatcher'
 
 /**
  * A Preact hook that creates a batched version of a callback function.
@@ -38,13 +37,10 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  * </button>
  * ```
  */
-export function useBatchedCallback<TFn extends AnyFunction>(
-  fn: (items: Array<Parameters<TFn>[0]>) => void,
-  options: BatcherOptions<Parameters<TFn>[0]>,
-): (...args: Parameters<TFn>) => void {
+export function useBatchedCallback<TValue>(
+  fn: (items: Array<TValue>) => void,
+  options: PreactBatcherOptions<TValue, {}>,
+): (item: TValue) => void {
   const batchedFn = useBatcher(fn, options).addItem
-  return useCallback(
-    (...args: Parameters<TFn>) => batchedFn(args[0]),
-    [batchedFn],
-  )
+  return useCallback((item: TValue) => batchedFn(item), [batchedFn])
 }

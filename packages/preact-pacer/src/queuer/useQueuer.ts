@@ -1,10 +1,21 @@
-import { useMemo, useState } from 'preact/hooks'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Queuer } from '@tanstack/pacer/queuer'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 import type { ComponentChildren } from 'preact'
+
+export interface PreactQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends QueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
+   */
+  onUnmount?: (queuer: PreactQueuer<TValue, TSelected>) => void
+}
 
 export interface PreactQueuer<TValue, TSelected = {}> extends Omit<
   Queuer<TValue>,
@@ -35,8 +46,8 @@ export interface PreactQueuer<TValue, TSelected = {}> extends Omit<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<QueuerState<TValue>>>
 }
@@ -92,6 +103,19 @@ export interface PreactQueuer<TValue, TSelected = {}> extends Omit<
  * - `rejectionCount`: Number of items that have been rejected from being added
  * - `size`: Number of items currently in the queue
  * - `status`: Current processing status ('idle' | 'running' | 'stopped')
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook stops the queuer when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```tsx
+ * const queue = useQueuer(fn, {
+ *   started: true,
+ *   wait: 1000,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
  *
  * @example
  * ```tsx
@@ -169,13 +193,13 @@ export interface PreactQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function useQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: PreactQueuerOptions<TValue, TSelected> = {},
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): PreactQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().queuer,
     ...options,
-  } as QueuerOptions<TValue>
+  } as PreactQueuerOptions<TValue, TSelected>
 
   const [queuer] = useState(() => {
     const queuerInstance = new Queuer<TValue>(
@@ -187,7 +211,9 @@ export function useQueuer<TValue, TSelected = {}>(
       selector: (state: QueuerState<TValue>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(queuerInstance.store, props.selector)
+      const selected = useSelector(queuerInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -200,7 +226,19 @@ export function useQueuer<TValue, TSelected = {}>(
   queuer.fn = fn
   queuer.setOptions(mergedOptions)
 
-  const state = useStore(queuer.store, selector)
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(queuer)
+      } else {
+        queuer.stop()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
+
+  const state = useSelector(queuer.store, selector, { compare: shallow })
 
   return useMemo(
     () =>

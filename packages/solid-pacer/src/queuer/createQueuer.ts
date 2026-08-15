@@ -1,9 +1,21 @@
 import { Queuer } from '@tanstack/pacer/queuer'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
+import { createEffect, onCleanup } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+
+export interface SolidQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends QueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
+   */
+  onUnmount?: (queuer: SolidQueuer<TValue, TSelected>) => void
+}
 
 export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
   Queuer<TValue>,
@@ -34,8 +46,8 @@ export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<QueuerState<TValue>>>
 }
@@ -84,6 +96,19 @@ export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
  * - `items`: Array of items currently queued for processing
  * - `rejectionCount`: Number of items that were rejected (expired or failed validation)
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive stops the queuer when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```tsx
+ * const queue = createQueuer(fn, {
+ *   started: true,
+ *   wait: 1000,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
+ *
  * Example usage:
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -130,14 +155,13 @@ export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function createQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: SolidQueuerOptions<TValue, TSelected> = {},
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): SolidQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().queuer,
     ...options,
-  } as QueuerOptions<TValue>
-
+  } as SolidQueuerOptions<TValue, TSelected>
   const queuer = new Queuer(fn, mergedOptions) as unknown as SolidQueuer<
     TValue,
     TSelected
@@ -147,14 +171,26 @@ export function createQueuer<TValue, TSelected = {}>(
     selector: (state: QueuerState<TValue>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(queuer.store, props.selector)
+    const selected = useSelector(queuer.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(queuer.store, selector)
+  const state = useSelector(queuer.store, selector, { compare: shallow })
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(queuer)
+      } else {
+        queuer.stop()
+      }
+    })
+  })
 
   return {
     ...queuer,

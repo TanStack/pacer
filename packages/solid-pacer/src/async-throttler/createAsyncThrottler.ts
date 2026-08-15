@@ -1,5 +1,6 @@
+import { createEffect, onCleanup } from 'solid-js'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -8,6 +9,17 @@ import type {
   AsyncThrottlerOptions,
   AsyncThrottlerState,
 } from '@tanstack/pacer/async-throttler'
+
+export interface SolidAsyncThrottlerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: SolidAsyncThrottler<TFn, TSelected>) => void
+}
 
 export interface SolidAsyncThrottler<
   TFn extends AnyAsyncFunction,
@@ -38,8 +50,8 @@ export interface SolidAsyncThrottler<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>
 }
@@ -100,6 +112,24 @@ export interface SolidAsyncThrottler<
  * - `nextExecutionTime`: Timestamp of the next allowed execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution and aborts any in-flight execution when the owning component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = createAsyncThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your throttled function updates Solid signals, those updates may run after the component has
+ * unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+ * using onUnmount with flush.
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -147,15 +177,14 @@ export function createAsyncThrottler<
   TSelected = {},
 >(
   fn: TFn,
-  options: AsyncThrottlerOptions<TFn>,
+  options: SolidAsyncThrottlerOptions<TFn, TSelected>,
   selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncThrottler,
     ...options,
-  } as AsyncThrottlerOptions<TFn>
-
+  } as SolidAsyncThrottlerOptions<TFn, TSelected>
   const asyncThrottler = new AsyncThrottler(
     fn,
     mergedOptions,
@@ -165,14 +194,29 @@ export function createAsyncThrottler<
     selector: (state: AsyncThrottlerState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(asyncThrottler.store, props.selector)
+    const selected = useSelector(asyncThrottler.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(asyncThrottler.store, selector)
+  const state = useSelector(asyncThrottler.store, selector, {
+    compare: shallow,
+  })
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncThrottler)
+      } else {
+        asyncThrottler.cancel()
+        asyncThrottler.abort()
+      }
+    })
+  })
 
   return {
     ...asyncThrottler,

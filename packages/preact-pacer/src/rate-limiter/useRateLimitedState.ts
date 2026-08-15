@@ -1,11 +1,11 @@
 import { useState } from 'preact/hooks'
 import { useRateLimiter } from './useRateLimiter'
-import type { Dispatch, StateUpdater } from 'preact/hooks'
-import type { PreactRateLimiter } from './useRateLimiter'
 import type {
-  RateLimiterOptions,
-  RateLimiterState,
-} from '@tanstack/pacer/rate-limiter'
+  PreactRateLimiter,
+  PreactRateLimiterOptions,
+} from './useRateLimiter'
+import type { Dispatch, StateUpdater } from 'preact/hooks'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 
 /**
  * A Preact hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
@@ -107,7 +107,7 @@ import type {
  */
 export function useRateLimitedState<TValue, TSelected = RateLimiterState>(
   value: TValue,
-  options: RateLimiterOptions<Dispatch<StateUpdater<TValue>>>,
+  options: PreactRateLimiterOptions<Dispatch<StateUpdater<TValue>>, TSelected>,
   selector?: (state: RateLimiterState) => TSelected,
 ): [
   TValue,

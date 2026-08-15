@@ -1,11 +1,8 @@
 import { createSignal } from 'solid-js'
 import { createDebouncer } from './createDebouncer'
-import type { SolidDebouncer } from './createDebouncer'
+import type { SolidDebouncer, SolidDebouncerOptions } from './createDebouncer'
 import type { Accessor, Setter } from 'solid-js'
-import type {
-  DebouncerOptions,
-  DebouncerState,
-} from '@tanstack/pacer/debouncer'
+import type { DebouncerState } from '@tanstack/pacer/debouncer'
 
 /**
  * A Solid hook that creates a debounced state value, combining Solid's createSignal with debouncing functionality.
@@ -80,7 +77,7 @@ import type {
  */
 export function createDebouncedSignal<TValue, TSelected = {}>(
   value: TValue,
-  initialOptions: DebouncerOptions<Setter<TValue>>,
+  initialOptions: SolidDebouncerOptions<Setter<TValue>, TSelected>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): [
   Accessor<TValue>,

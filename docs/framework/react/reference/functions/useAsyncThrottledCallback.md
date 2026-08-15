@@ -6,20 +6,21 @@ title: useAsyncThrottledCallback
 # Function: useAsyncThrottledCallback()
 
 ```ts
-function useAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<ReturnType<TFn>>;
+function useAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottledCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L42)
+Defined in: [react-pacer/src/async-throttler/useAsyncThrottledCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L43)
 
 A React hook that creates a throttled version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncThrottler` hook,
 providing a stable, throttled async function reference for use in React components.
 
 The throttled async function will execute at most once within the specified wait time period,
-regardless of how many times it is called. If called multiple times during the wait period,
-only the first invocation will execute, and subsequent calls will be ignored until
-the wait period has elapsed. The returned function always returns a promise
-that resolves or rejects with the result of the original async function.
+regardless of how many times it is called. Calls made during the wait period reschedule a
+single trailing execution with the latest arguments when `trailing` is enabled (the default).
+The most recent call's promise resolves or rejects with the trailing execution's result;
+each earlier call's promise resolves immediately with the most recent previous result (or
+`undefined` if nothing has executed yet), as does every call when the throttler is disabled.
 
 This hook provides a simpler API compared to `useAsyncThrottler`, making it ideal for basic
 async throttling needs. However, it does not expose the underlying AsyncThrottler instance.
@@ -45,12 +46,13 @@ Consider using the `useAsyncThrottler` hook instead.
 
 ### options
 
-`AsyncThrottlerOptions`\<`TFn`\>
+[`ReactAsyncThrottlerOptions`](../interfaces/ReactAsyncThrottlerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 
 ```ts
-(...args): Promise<ReturnType<TFn>>;
+(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
 ### Parameters
@@ -61,7 +63,7 @@ Consider using the `useAsyncThrottler` hook instead.
 
 ### Returns
 
-`Promise`\<`ReturnType`\<`TFn`\>\>
+`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 ## Example
 

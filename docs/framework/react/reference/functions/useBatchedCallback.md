@@ -6,10 +6,10 @@ title: useBatchedCallback
 # Function: useBatchedCallback()
 
 ```ts
-function useBatchedCallback<TFn>(fn, options): (...args) => void;
+function useBatchedCallback<TValue>(fn, options): (item) => void;
 ```
 
-Defined in: [react-pacer/src/batcher/useBatchedCallback.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatchedCallback.ts#L41)
+Defined in: [react-pacer/src/batcher/useBatchedCallback.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatchedCallback.ts#L40)
 
 A React hook that creates a batched version of a callback function.
 This hook is essentially a wrapper around the basic `batch` function
@@ -31,9 +31,9 @@ Consider using the `useBatcher` hook instead.
 
 ## Type Parameters
 
-### TFn
+### TValue
 
-`TFn` *extends* `AnyFunction`
+`TValue`
 
 ## Parameters
 
@@ -43,19 +43,20 @@ Consider using the `useBatcher` hook instead.
 
 ### options
 
-`BatcherOptions`\<`Parameters`\<`TFn`\>\[`0`\]\>
+[`ReactBatcherOptions`](../interfaces/ReactBatcherOptions.md)\<`TValue`, \{
+\}\>
 
 ## Returns
 
 ```ts
-(...args): void;
+(item): void;
 ```
 
 ### Parameters
 
-#### args
+#### item
 
-...`Parameters`\<`TFn`\>
+`TValue`
 
 ### Returns
 

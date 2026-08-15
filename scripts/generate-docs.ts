@@ -44,6 +44,18 @@ await generateReferenceDocs({
       outputDir: resolve(__dirname, '../docs/framework/solid/reference'),
       exclude: ['packages/pacer/**/*'],
     },
+    {
+      name: 'angular-pacer',
+      entryPoints: [
+        resolve(__dirname, '../packages/angular-pacer/src/index.ts'),
+      ],
+      tsconfig: resolve(
+        __dirname,
+        '../packages/angular-pacer/tsconfig.docs.json',
+      ),
+      outputDir: resolve(__dirname, '../docs/framework/angular/reference'),
+      exclude: ['packages/pacer/**/*'],
+    },
   ],
 })
 

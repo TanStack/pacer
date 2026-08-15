@@ -1,18 +1,42 @@
 import { defineConfig } from 'tsdown'
-import solid from 'vite-plugin-solid'
+import solid from 'rolldown-plugin-solid'
 
-export default defineConfig({
-  plugins: [solid()],
-  entry: ['./src/index.ts', './src/production.ts'],
-  format: ['esm'],
-  unbundle: true,
-  dts: true,
-  sourcemap: true,
-  clean: true,
-  minify: false,
-  fixedExtension: false,
-  exports: true,
-  publint: {
-    strict: true,
+const makeSolid = (ssr = false) =>
+  solid({ solid: { generate: ssr ? 'ssr' : 'dom' } })
+
+export default defineConfig([
+  {
+    entry: { index: 'src/index.ts' },
+    format: ['esm'],
+    outDir: 'dist',
+    fixedExtension: false,
+    plugins: [makeSolid()],
+    clean: true,
   },
-})
+  {
+    entry: { server: 'src/index.ts' },
+    format: ['esm'],
+    outDir: 'dist',
+    fixedExtension: false,
+    plugins: [makeSolid(true)],
+    dts: false,
+    clean: false,
+  },
+  {
+    entry: { 'production/index': 'src/production.ts' },
+    format: ['esm'],
+    outDir: 'dist',
+    fixedExtension: false,
+    plugins: [makeSolid()],
+    clean: false,
+  },
+  {
+    entry: { 'production/server': 'src/production.ts' },
+    format: ['esm'],
+    outDir: 'dist',
+    fixedExtension: false,
+    plugins: [makeSolid(true)],
+    dts: false,
+    clean: false,
+  },
+])

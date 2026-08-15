@@ -272,7 +272,7 @@ export class Queuer<TValue> {
   )
   key: string | undefined
   options: QueuerOptions<TValue>
-  #timeoutId: NodeJS.Timeout | null = null
+  #timeoutId: ReturnType<typeof setTimeout> | null = null
 
   constructor(
     public fn: (item: TValue) => void,
@@ -305,8 +305,10 @@ export class Queuer<TValue> {
     if (this.key) {
       pacerEventClient.on('d-Queuer', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
+        this.#setState(
+          event.payload.store.state as Partial<QueuerState<TValue>>,
+        )
+        this.setOptions(event.payload.options as Partial<QueuerOptions<TValue>>)
       })
     }
   }
@@ -388,6 +390,7 @@ export class Queuer<TValue> {
 
   /**
    * Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
+   * `undefined` cannot be queued (it is the internal "no item" sentinel) and is always rejected.
    * Items can be inserted based on priority or at the front/back depending on configuration.
    *
    * Returns true if the item was added, false if the queue is full.
@@ -407,6 +410,16 @@ export class Queuer<TValue> {
       addItemCount: this.store.state.addItemCount + 1,
     })
 
+    // undefined is the internal "no item" sentinel (peekNextItem/getNextItem);
+    // queuing it would break the processing loop and block items behind it
+    if (item === undefined) {
+      this.#setState({
+        rejectionCount: this.store.state.rejectionCount + 1,
+      })
+      this.options.onReject?.(item, this)
+      return false
+    }
+
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,
@@ -419,7 +432,7 @@ export class Queuer<TValue> {
     const priority =
       this.options.getPriority !== defaultOptions.getPriority
         ? this.options.getPriority!(item)
-        : (item as any).priority
+        : (item as any)?.priority
 
     const items = this.store.state.items
     const itemTimestamps = this.store.state.itemTimestamps
@@ -430,7 +443,7 @@ export class Queuer<TValue> {
         const existingPriority: number =
           this.options.getPriority !== defaultOptions.getPriority
             ? this.options.getPriority!(existing)
-            : (existing as any).priority
+            : (existing as any)?.priority
         return existingPriority < priority
       })
 

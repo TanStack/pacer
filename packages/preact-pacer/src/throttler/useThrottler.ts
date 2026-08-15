@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Throttler } from '@tanstack/pacer/throttler'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -9,6 +9,17 @@ import type {
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
 import type { ComponentChildren } from 'preact'
+
+export interface PreactThrottlerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends ThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: PreactThrottler<TFn, TSelected>) => void
+}
 
 export interface PreactThrottler<
   TFn extends AnyFunction,
@@ -39,8 +50,8 @@ export interface PreactThrottler<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<ThrottlerState<TFn>>>
 }
@@ -84,6 +95,18 @@ export interface PreactThrottler<
  * - `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
  * - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = useThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
  *
  * @example
  * ```tsx
@@ -144,14 +167,13 @@ export interface PreactThrottler<
  */
 export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: ThrottlerOptions<TFn>,
+  options: PreactThrottlerOptions<TFn, TSelected>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): PreactThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().throttler,
     ...options,
-  } as ThrottlerOptions<TFn>
-
+  } as PreactThrottlerOptions<TFn, TSelected>
   const [throttler] = useState(() => {
     const throttlerInstance = new Throttler<TFn>(
       fn,
@@ -162,7 +184,9 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
       selector: (state: ThrottlerState<TFn>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(throttlerInstance.store, props.selector)
+      const selected = useSelector(throttlerInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -175,13 +199,19 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
   throttler.fn = fn
   throttler.setOptions(mergedOptions)
 
-  const state = useStore(throttler.store, selector)
+  const state = useSelector(throttler.store, selector, { compare: shallow })
 
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
     return () => {
-      throttler.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(throttler)
+      } else {
+        throttler.cancel()
+      }
     }
-  }, [throttler])
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return useMemo(
     () =>

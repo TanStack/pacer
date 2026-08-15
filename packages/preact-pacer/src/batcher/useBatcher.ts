@@ -1,10 +1,21 @@
-import { useMemo, useState } from 'preact/hooks'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Batcher } from '@tanstack/pacer/batcher'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { ComponentChildren } from 'preact'
+
+export interface PreactBatcherOptions<
+  TValue,
+  TSelected = {},
+> extends BatcherOptions<TValue> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the batcher instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (batcher: PreactBatcher<TValue, TSelected>) => void
+}
 
 export interface PreactBatcher<TValue, TSelected = {}> extends Omit<
   Batcher<TValue>,
@@ -35,8 +46,8 @@ export interface PreactBatcher<TValue, TSelected = {}> extends Omit<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<BatcherState<TValue>>>
 }
@@ -83,6 +94,19 @@ export interface PreactBatcher<TValue, TSelected = {}> extends Omit<
  * - `size`: Number of items currently in the batch queue
  * - `status`: Current processing status ('idle' | 'pending')
  * - `totalItemsProcessed`: Total number of items processed across all batches
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending batch when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const batcher = useBatcher(fn, {
+ *   maxSize: 10,
+ *   wait: 2000,
+ *   onUnmount: (b) => b.flush()
+ * });
+ * ```
  *
  * @example
  * ```tsx
@@ -158,14 +182,14 @@ export interface PreactBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function useBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
-  options: BatcherOptions<TValue> = {},
+  options: PreactBatcherOptions<TValue, TSelected> = {},
   selector: (state: BatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): PreactBatcher<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().batcher,
     ...options,
-  } as BatcherOptions<TValue>
+  } as PreactBatcherOptions<TValue, TSelected>
 
   const [batcher] = useState(() => {
     const batcherInstance = new Batcher<TValue>(
@@ -177,7 +201,9 @@ export function useBatcher<TValue, TSelected = {}>(
       selector: (state: BatcherState<TValue>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(batcherInstance.store, props.selector)
+      const selected = useSelector(batcherInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -190,7 +216,19 @@ export function useBatcher<TValue, TSelected = {}>(
   batcher.fn = fn
   batcher.setOptions(mergedOptions)
 
-  const state = useStore(batcher.store, selector)
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(batcher)
+      } else {
+        batcher.cancel()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
+
+  const state = useSelector(batcher.store, selector, { compare: shallow })
 
   return useMemo(
     () =>

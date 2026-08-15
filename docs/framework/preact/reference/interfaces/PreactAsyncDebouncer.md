@@ -5,7 +5,7 @@ title: PreactAsyncDebouncer
 
 # Interface: PreactAsyncDebouncer\<TFn, TSelected\>
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L13)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L24)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:13](https://g
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L39)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L50)
 
 Reactive state that will be updated and re-rendered when the debouncer state changes
 
@@ -44,13 +44,13 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:45](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L45)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L56)
 
 #### Deprecated
 
 Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-Although, you can make the state reactive by using the `useStore` in your own usage.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
 
 ***
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L30)
+Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L41)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the async debouncer state.
 

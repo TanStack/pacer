@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'preact/hooks'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -9,6 +9,17 @@ import type {
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
 import type { ComponentChildren } from 'preact'
+
+export interface PreactAsyncRateLimiterOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncRateLimiterOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the rate limiter instance.
+   * When provided, replaces the default cleanup (abort); use it to call reset(), add logging, etc.
+   */
+  onUnmount?: (rateLimiter: PreactAsyncRateLimiter<TFn, TSelected>) => void
+}
 
 export interface PreactAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
@@ -39,8 +50,8 @@ export interface PreactAsyncRateLimiter<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>
 }
@@ -102,6 +113,12 @@ export interface PreactAsyncRateLimiter<
  * - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
  * - `settleCount`: Number of function executions that have completed (success or error)
  * - `successCount`: Number of function executions that have completed successfully
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook aborts any in-flight execution when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this.
  *
  * @example
  * ```tsx
@@ -216,14 +233,14 @@ export function useAsyncRateLimiter<
   TSelected = {},
 >(
   fn: TFn,
-  options: AsyncRateLimiterOptions<TFn>,
+  options: PreactAsyncRateLimiterOptions<TFn, TSelected>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): PreactAsyncRateLimiter<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncRateLimiter,
     ...options,
-  } as AsyncRateLimiterOptions<TFn>
+  } as PreactAsyncRateLimiterOptions<TFn, TSelected>
 
   const [asyncRateLimiter] = useState(() => {
     const rateLimiterInstance = new AsyncRateLimiter<TFn>(
@@ -235,7 +252,9 @@ export function useAsyncRateLimiter<
       selector: (state: AsyncRateLimiterState<TFn>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(rateLimiterInstance.store, props.selector)
+      const selected = useSelector(rateLimiterInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -248,7 +267,21 @@ export function useAsyncRateLimiter<
   asyncRateLimiter.fn = fn
   asyncRateLimiter.setOptions(mergedOptions)
 
-  const state = useStore(asyncRateLimiter.store, selector)
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
+  useEffect(() => {
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncRateLimiter)
+      } else {
+        asyncRateLimiter.abort()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
+
+  const state = useSelector(asyncRateLimiter.store, selector, {
+    compare: shallow,
+  })
 
   return useMemo(
     () =>

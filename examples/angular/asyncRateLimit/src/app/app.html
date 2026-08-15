@@ -1,0 +1,28 @@
+<div style="padding: 24px; max-width: 480px; margin: 0 auto">
+  <h1>Async rate limiter</h1>
+  <p>3 executions per 5 seconds (sliding window).</p>
+
+  <div style="display: flex; gap: 12px; margin: 16px 0">
+    <button (click)="attempt(Math.random())">Attempt</button>
+    <button type="button" (click)="reset()">Reset</button>
+  </div>
+
+  <section>
+    <h2>Status</h2>
+    <p>Allowed: {{ rateLimiter.state().executionTimes.length }}</p>
+    <p>Blocked: {{ rateLimiter.state().rejectionCount }}</p>
+  </section>
+
+  <section>
+    <h2>Events</h2>
+    @if (logs().length === 0) {
+    <p>No events yet. Press Attempt to generate entries.</p>
+    } @else {
+    <ul>
+      @for (entry of logs(); track $index) {
+      <li>{{ entry }}</li>
+      }
+    </ul>
+    }
+  </section>
+</div>

@@ -12,7 +12,7 @@ function useDebouncedState<TValue, TSelected>(
    selector?): [TValue, Dispatch<SetStateAction<TValue>>, ReactDebouncer<Dispatch<SetStateAction<TValue>>, TSelected>];
 ```
 
-Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:81](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L81)
+Defined in: [react-pacer/src/debouncer/useDebouncedState.ts:78](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncedState.ts#L78)
 
 A React hook that creates a debounced state value, combining React's useState with debouncing functionality.
 This hook provides both the current debounced value and methods to update it.
@@ -63,7 +63,7 @@ Available debouncer state properties:
 
 ### options
 
-`DebouncerOptions`\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>\>
+[`ReactDebouncerOptions`](../interfaces/ReactDebouncerOptions.md)\<`Dispatch`\<`SetStateAction`\<`TValue`\>\>, `TSelected`\>
 
 ### selector?
 

@@ -5,224 +5,227 @@ title: PacerEventMap
 
 # Interface: PacerEventMap
 
-Defined in: [event-client.ts:14](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L14)
+Defined in: [event-client.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L66)
+
+Suffix-only keys: EventClient prepends `pluginId:` (`pacer:`) at runtime
+for `emit` / `on`. Wire `type` values are `pacer:${key}`.
 
 ## Properties
 
-### pacer:AsyncBatcher
+### AsyncBatcher
 
 ```ts
-pacer:AsyncBatcher: AsyncBatcher<any>;
+AsyncBatcher: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:26](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L26)
+Defined in: [event-client.ts:78](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L78)
 
 ***
 
-### pacer:AsyncDebouncer
+### AsyncDebouncer
 
 ```ts
-pacer:AsyncDebouncer: AsyncDebouncer<any>;
+AsyncDebouncer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:27](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L27)
+Defined in: [event-client.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L79)
 
 ***
 
-### pacer:AsyncQueuer
+### AsyncQueuer
 
 ```ts
-pacer:AsyncQueuer: AsyncQueuer<any>;
+AsyncQueuer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:28](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L28)
+Defined in: [event-client.ts:80](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L80)
 
 ***
 
-### pacer:AsyncRateLimiter
+### AsyncRateLimiter
 
 ```ts
-pacer:AsyncRateLimiter: AsyncRateLimiter<any>;
+AsyncRateLimiter: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L29)
+Defined in: [event-client.ts:81](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L81)
 
 ***
 
-### pacer:AsyncRetryer
+### AsyncRetryer
 
 ```ts
-pacer:AsyncRetryer: AsyncRetryer<any>;
+AsyncRetryer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:30](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L30)
+Defined in: [event-client.ts:82](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L82)
 
 ***
 
-### pacer:AsyncThrottler
+### AsyncThrottler
 
 ```ts
-pacer:AsyncThrottler: AsyncThrottler<any>;
+AsyncThrottler: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:31](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L31)
+Defined in: [event-client.ts:83](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L83)
 
 ***
 
-### pacer:Batcher
+### Batcher
 
 ```ts
-pacer:Batcher: Batcher<any>;
+Batcher: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L32)
+Defined in: [event-client.ts:84](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L84)
 
 ***
 
-### pacer:d-AsyncBatcher
+### d-AsyncBatcher
 
 ```ts
-pacer:d-AsyncBatcher: AsyncBatcher<any>;
+d-AsyncBatcher: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:15](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L15)
+Defined in: [event-client.ts:67](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L67)
 
 ***
 
-### pacer:d-AsyncDebouncer
+### d-AsyncDebouncer
 
 ```ts
-pacer:d-AsyncDebouncer: AsyncDebouncer<any>;
+d-AsyncDebouncer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L16)
+Defined in: [event-client.ts:68](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L68)
 
 ***
 
-### pacer:d-AsyncQueuer
+### d-AsyncQueuer
 
 ```ts
-pacer:d-AsyncQueuer: AsyncQueuer<any>;
+d-AsyncQueuer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L17)
+Defined in: [event-client.ts:69](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L69)
 
 ***
 
-### pacer:d-AsyncRateLimiter
+### d-AsyncRateLimiter
 
 ```ts
-pacer:d-AsyncRateLimiter: AsyncRateLimiter<any>;
+d-AsyncRateLimiter: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:18](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L18)
+Defined in: [event-client.ts:70](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L70)
 
 ***
 
-### pacer:d-AsyncRetryer
+### d-AsyncRetryer
 
 ```ts
-pacer:d-AsyncRetryer: AsyncRetryer<any>;
+d-AsyncRetryer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:19](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L19)
+Defined in: [event-client.ts:71](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L71)
 
 ***
 
-### pacer:d-AsyncThrottler
+### d-AsyncThrottler
 
 ```ts
-pacer:d-AsyncThrottler: AsyncThrottler<any>;
+d-AsyncThrottler: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:20](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L20)
+Defined in: [event-client.ts:72](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L72)
 
 ***
 
-### pacer:d-Batcher
+### d-Batcher
 
 ```ts
-pacer:d-Batcher: Batcher<any>;
+d-Batcher: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L21)
+Defined in: [event-client.ts:73](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L73)
 
 ***
 
-### pacer:d-Debouncer
+### d-Debouncer
 
 ```ts
-pacer:d-Debouncer: Debouncer<any>;
+d-Debouncer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:22](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L22)
+Defined in: [event-client.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L74)
 
 ***
 
-### pacer:d-Queuer
+### d-Queuer
 
 ```ts
-pacer:d-Queuer: Queuer<any>;
+d-Queuer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:23](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L23)
+Defined in: [event-client.ts:75](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L75)
 
 ***
 
-### pacer:d-RateLimiter
+### d-RateLimiter
 
 ```ts
-pacer:d-RateLimiter: RateLimiter<any>;
+d-RateLimiter: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:24](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L24)
+Defined in: [event-client.ts:76](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L76)
 
 ***
 
-### pacer:d-Throttler
+### d-Throttler
 
 ```ts
-pacer:d-Throttler: Throttler<any>;
+d-Throttler: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L25)
+Defined in: [event-client.ts:77](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L77)
 
 ***
 
-### pacer:Debouncer
+### Debouncer
 
 ```ts
-pacer:Debouncer: Debouncer<any>;
+Debouncer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L33)
+Defined in: [event-client.ts:85](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L85)
 
 ***
 
-### pacer:Queuer
+### Queuer
 
 ```ts
-pacer:Queuer: Queuer<any>;
+Queuer: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:34](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L34)
+Defined in: [event-client.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L86)
 
 ***
 
-### pacer:RateLimiter
+### RateLimiter
 
 ```ts
-pacer:RateLimiter: RateLimiter<any>;
+RateLimiter: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:35](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L35)
+Defined in: [event-client.ts:87](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L87)
 
 ***
 
-### pacer:Throttler
+### Throttler
 
 ```ts
-pacer:Throttler: Throttler<any>;
+Throttler: PacerDevtoolsWirePayload;
 ```
 
-Defined in: [event-client.ts:36](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L36)
+Defined in: [event-client.ts:88](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L88)

@@ -153,7 +153,7 @@ Optional callback to call when the debounced function is executed
 
 ##### result
 
-`ReturnType`\<`TFn`\>
+`Awaited`\<`ReturnType`\<`TFn`\>\>
 
 ##### args
 

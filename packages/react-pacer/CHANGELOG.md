@@ -1,5 +1,76 @@
 # @tanstack/react-pacer
 
+## 0.23.0
+
+### Minor Changes
+
+- Update package dependencies and migrate the devtools theme integration to the latest API. ([#245](https://github.com/TanStack/pacer/pull/245))
+
+### Patch Changes
+
+- fix: async utility return types no longer double-wrap promises. `maybeExecute`, `flush`, `lastResult` state, and `onSuccess` callbacks on AsyncDebouncer, AsyncThrottler, and AsyncRateLimiter (and the `asyncDebounce`/`asyncThrottle`/`asyncRateLimit` helpers) now use `Awaited<ReturnType<TFn>>` instead of `ReturnType<TFn>`. The `useAsyncDebouncedCallback`, `useAsyncThrottledCallback`, and `useAsyncRateLimitedCallback` hooks in react-pacer and preact-pacer now return `Promise<Awaited<ReturnType<TFn>> | undefined>`, matching the angular adapter and the actual runtime behavior (fixes [#156](https://github.com/TanStack/pacer/issues/156)) ([#246](https://github.com/TanStack/pacer/pull/246))
+
+- Updated dependencies [[`dc47121`](https://github.com/TanStack/pacer/commit/dc47121ffbeb2353e43cd0fe350ef4916aa75b9f), [`dc47121`](https://github.com/TanStack/pacer/commit/dc47121ffbeb2353e43cd0fe350ef4916aa75b9f), [`dc47121`](https://github.com/TanStack/pacer/commit/dc47121ffbeb2353e43cd0fe350ef4916aa75b9f), [`bd96217`](https://github.com/TanStack/pacer/commit/bd9621752367c1446430af9146b72e04ed991798), [`dc47121`](https://github.com/TanStack/pacer/commit/dc47121ffbeb2353e43cd0fe350ef4916aa75b9f)]:
+  - @tanstack/pacer@0.22.0
+
+## 0.22.1
+
+### Patch Changes
+
+- Allow standalone devtools panels to render without required TanStack Devtools props. ([#216](https://github.com/TanStack/pacer/pull/216))
+
+- Updated dependencies [[`47d02e2`](https://github.com/TanStack/pacer/commit/47d02e20e8470abacc86a8a06926ec7bc1c81a7a)]:
+  - @tanstack/pacer@0.21.1
+
+## 0.22.0
+
+### Minor Changes
+
+- feat: upgrade to tanstack store with useSelector hook ([`c9f6385`](https://github.com/TanStack/pacer/commit/c9f63850f816bfc95eca74699b0fff45bca02867))
+
+### Patch Changes
+
+- Updated dependencies [[`c9f6385`](https://github.com/TanStack/pacer/commit/c9f63850f816bfc95eca74699b0fff45bca02867)]:
+  - @tanstack/pacer@0.21.0
+
+## 0.21.1
+
+### Patch Changes
+
+- chore: bump tanstack store versions for better tree-shaking ([`4e74cb4`](https://github.com/TanStack/pacer/commit/4e74cb42bf803bbc11932285d4508964c45f3283))
+
+- Updated dependencies [[`4e74cb4`](https://github.com/TanStack/pacer/commit/4e74cb42bf803bbc11932285d4508964c45f3283)]:
+  - @tanstack/pacer@0.20.1
+
+## 0.21.0
+
+### Minor Changes
+
+- feat: TanStack Store Upgrade to alien signals ([#178](https://github.com/TanStack/pacer/pull/178))
+
+### Patch Changes
+
+- Updated dependencies [[`225381e`](https://github.com/TanStack/pacer/commit/225381e40d848b0bf35a690bb9d5009255fb4c9d)]:
+  - @tanstack/pacer@0.20.0
+
+## 0.20.0
+
+### Minor Changes
+
+- feat: Add optional `onUnmount` callback to Debouncer, Throttler, Batcher, Queuer and async variants for custom cleanup. ([#158](https://github.com/TanStack/pacer/pull/158))
+
+### Patch Changes
+
+- Updated dependencies [[`54d2c21`](https://github.com/TanStack/pacer/commit/54d2c21ca241d9d92ef3c2322bbd12fa905f6e4c)]:
+  - @tanstack/pacer@0.19.0
+
+## 0.19.4
+
+### Patch Changes
+
+- Updated dependencies [[`66fffde`](https://github.com/TanStack/pacer/commit/66fffdeedfd7254c4ad193c3e3b7053b5c35a276)]:
+  - @tanstack/pacer@0.18.0
+
 ## 0.19.3
 
 ### Patch Changes

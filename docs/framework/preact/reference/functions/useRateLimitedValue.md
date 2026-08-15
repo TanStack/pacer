@@ -74,7 +74,7 @@ Available rate limiter state properties:
 
 ### options
 
-`RateLimiterOptions`\<`Dispatch`\<`StateUpdater`\<`TValue`\>\>\>
+[`PreactRateLimiterOptions`](../interfaces/PreactRateLimiterOptions.md)\<`Dispatch`\<`StateUpdater`\<`TValue`\>\>, `TSelected`\>
 
 ### selector?
 

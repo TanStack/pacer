@@ -1,5 +1,14 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  expectTypeOf,
+  it,
+  vi,
+} from 'vitest'
 import { AsyncThrottler } from '../src/async-throttler'
+import { getPacerDevtoolsInstance } from '../src'
 
 describe('AsyncThrottler', () => {
   beforeEach(() => {
@@ -997,5 +1006,52 @@ describe('AsyncThrottler', () => {
       expect(typeof throttler.getAbortSignal).toBe('function')
       expect(throttler.getAbortSignal()).toBeNull()
     })
+  })
+})
+
+describe('AsyncThrottler internal retryer devtools registration', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('should not register internal retryers with or without a key', async () => {
+    const throttler = new AsyncThrottler(async (value: string) => value, {
+      wait: 100,
+    })
+
+    throttler.maybeExecute('test')
+    await vi.advanceTimersByTimeAsync(100)
+
+    expect(getPacerDevtoolsInstance('undefined-retryer-1')).toBeUndefined()
+
+    const keyedThrottler = new AsyncThrottler(async (value: string) => value, {
+      wait: 100,
+      key: 'my-throttler',
+    })
+
+    keyedThrottler.maybeExecute('test')
+    await vi.advanceTimersByTimeAsync(100)
+
+    expect(getPacerDevtoolsInstance('my-throttler-retryer-1')).toBeUndefined()
+  })
+})
+
+describe('AsyncThrottler return type inference', () => {
+  it('should resolve to the awaited return type, not a nested promise', () => {
+    const throttler = new AsyncThrottler(async (value: string) => value, {
+      wait: 100,
+    })
+    expectTypeOf(throttler.maybeExecute).returns.toEqualTypeOf<
+      Promise<string | undefined>
+    >()
+    expectTypeOf(throttler.flush).returns.toEqualTypeOf<
+      Promise<string | undefined>
+    >()
+    expectTypeOf(throttler.store.state.lastResult).toEqualTypeOf<
+      string | undefined
+    >()
   })
 })

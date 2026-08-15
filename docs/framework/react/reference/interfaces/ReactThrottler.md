@@ -5,7 +5,7 @@ title: ReactThrottler
 
 # Interface: ReactThrottler\<TFn, TSelected\>
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L13)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L24)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/throttler/useThrottler.ts:13](https://github.com/Ta
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:39](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L39)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L50)
 
 Reactive state that will be updated and re-rendered when the throttler state changes
 
@@ -44,13 +44,13 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:45](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L45)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:56](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L56)
 
 #### Deprecated
 
 Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-Although, you can make the state reactive by using the `useStore` in your own usage.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
 
 ***
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L30)
+Defined in: [react-pacer/src/throttler/useThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L41)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the throttler state.
 

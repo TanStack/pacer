@@ -138,7 +138,7 @@ Number of items currently in the batch queue
 ### status
 
 ```ts
-status: "idle" | "pending" | "executing" | "populated";
+status: "idle" | "executing" | "pending" | "populated";
 ```
 
 Defined in: [async-batcher.ts:52](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L52)

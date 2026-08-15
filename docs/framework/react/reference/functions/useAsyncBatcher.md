@@ -12,7 +12,7 @@ function useAsyncBatcher<TValue, TSelected>(
 selector): ReactAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:205](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L205)
+Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:235](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L235)
 
 A React hook that creates an `AsyncBatcher` instance for managing asynchronous batches of items.
 
@@ -79,6 +79,25 @@ Available state properties:
 - `totalItemsProcessed`: Total number of items processed across all batches
 - `totalItemsFailed`: Total number of items that have failed processing
 
+## Unmount behavior
+
+By default, the hook cancels any pending batch and aborts any in-flight execution when the component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const batcher = useAsyncBatcher(fn, {
+  maxSize: 10,
+  wait: 2000,
+  onUnmount: (b) => b.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your batch function updates React state, those updates may run after the component has
+unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+accordingly when using onUnmount with flush.
+
 ## Type Parameters
 
 ### TValue
@@ -98,7 +117,7 @@ Available state properties:
 
 ### options
 
-`AsyncBatcherOptions`\<`TValue`\> = `{}`
+[`ReactAsyncBatcherOptions`](../interfaces/ReactAsyncBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

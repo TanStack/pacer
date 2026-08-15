@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/react-pacer",
-  "version": "0.19.3",
+  "version": "0.23.0",
   "description": "Utilities for debouncing and throttling functions in React.",
   "author": "Tanner Linsley",
   "license": "MIT",
@@ -24,7 +24,8 @@
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
-    "test:eslint": "eslint ./src",
+    "lint:fix": "pnpm -w exec eslint \"$INIT_CWD/src\" --fix",
+    "test:eslint": "pnpm -w exec eslint \"$INIT_CWD/src\"",
     "test:lib": "vitest --passWithNoTests",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
@@ -36,64 +37,64 @@
   "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./async-batcher": {
-      "require": "./dist/async-batcher/index.cjs",
-      "import": "./dist/async-batcher/index.js"
+      "import": "./dist/async-batcher/index.js",
+      "require": "./dist/async-batcher/index.cjs"
     },
     "./async-debouncer": {
-      "require": "./dist/async-debouncer/index.cjs",
-      "import": "./dist/async-debouncer/index.js"
+      "import": "./dist/async-debouncer/index.js",
+      "require": "./dist/async-debouncer/index.cjs"
     },
     "./async-queuer": {
-      "require": "./dist/async-queuer/index.cjs",
-      "import": "./dist/async-queuer/index.js"
+      "import": "./dist/async-queuer/index.js",
+      "require": "./dist/async-queuer/index.cjs"
     },
     "./async-rate-limiter": {
-      "require": "./dist/async-rate-limiter/index.cjs",
-      "import": "./dist/async-rate-limiter/index.js"
+      "import": "./dist/async-rate-limiter/index.js",
+      "require": "./dist/async-rate-limiter/index.cjs"
     },
     "./async-retryer": {
-      "require": "./dist/async-retryer/index.cjs",
-      "import": "./dist/async-retryer/index.js"
+      "import": "./dist/async-retryer/index.js",
+      "require": "./dist/async-retryer/index.cjs"
     },
     "./async-throttler": {
-      "require": "./dist/async-throttler/index.cjs",
-      "import": "./dist/async-throttler/index.js"
+      "import": "./dist/async-throttler/index.js",
+      "require": "./dist/async-throttler/index.cjs"
     },
     "./batcher": {
-      "require": "./dist/batcher/index.cjs",
-      "import": "./dist/batcher/index.js"
+      "import": "./dist/batcher/index.js",
+      "require": "./dist/batcher/index.cjs"
     },
     "./debouncer": {
-      "require": "./dist/debouncer/index.cjs",
-      "import": "./dist/debouncer/index.js"
+      "import": "./dist/debouncer/index.js",
+      "require": "./dist/debouncer/index.cjs"
     },
     "./provider": {
-      "require": "./dist/provider/index.cjs",
-      "import": "./dist/provider/index.js"
+      "import": "./dist/provider/index.js",
+      "require": "./dist/provider/index.cjs"
     },
     "./queuer": {
-      "require": "./dist/queuer/index.cjs",
-      "import": "./dist/queuer/index.js"
+      "import": "./dist/queuer/index.js",
+      "require": "./dist/queuer/index.cjs"
     },
     "./rate-limiter": {
-      "require": "./dist/rate-limiter/index.cjs",
-      "import": "./dist/rate-limiter/index.js"
+      "import": "./dist/rate-limiter/index.js",
+      "require": "./dist/rate-limiter/index.cjs"
     },
     "./throttler": {
-      "require": "./dist/throttler/index.cjs",
-      "import": "./dist/throttler/index.js"
+      "import": "./dist/throttler/index.js",
+      "require": "./dist/throttler/index.cjs"
     },
     "./types": {
-      "require": "./dist/types/index.cjs",
-      "import": "./dist/types/index.js"
+      "import": "./dist/types/index.js",
+      "require": "./dist/types/index.cjs"
     },
     "./utils": {
-      "require": "./dist/utils/index.cjs",
-      "import": "./dist/utils/index.js"
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -107,15 +108,15 @@
   ],
   "dependencies": {
     "@tanstack/pacer": "workspace:*",
-    "@tanstack/react-store": "^0.8.0"
+    "@tanstack/react-store": "^0.11.1"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^2.7.2",
-    "@types/react": "^19.2.8",
-    "@vitejs/plugin-react": "^5.1.2",
+    "@eslint-react/eslint-plugin": "^5.18.3",
+    "@types/react": "^19.2.18",
+    "@vitejs/plugin-react": "^6.0.5",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "react": "^19.2.3"
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "react": "^19.2.8"
   },
   "peerDependencies": {
     "react": ">=16.8",

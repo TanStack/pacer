@@ -1,5 +1,77 @@
 # @tanstack/preact-pacer-devtools
 
+## 0.7.0
+
+### Minor Changes
+
+- Update package dependencies and migrate the devtools theme integration to the latest API. ([#245](https://github.com/TanStack/pacer/pull/245))
+
+### Patch Changes
+
+- Updated dependencies [[`bd96217`](https://github.com/TanStack/pacer/commit/bd9621752367c1446430af9146b72e04ed991798)]:
+  - @tanstack/pacer-devtools@1.4.0
+
+## 0.6.3
+
+### Patch Changes
+
+- Allow standalone devtools panels to render without required TanStack Devtools props. ([#216](https://github.com/TanStack/pacer/pull/216))
+
+- Updated dependencies [[`47d02e2`](https://github.com/TanStack/pacer/commit/47d02e20e8470abacc86a8a06926ec7bc1c81a7a)]:
+  - @tanstack/pacer-devtools@1.3.1
+
+## 0.6.2
+
+### Patch Changes
+
+- Updated dependencies [[`c9f6385`](https://github.com/TanStack/pacer/commit/c9f63850f816bfc95eca74699b0fff45bca02867)]:
+  - @tanstack/pacer-devtools@1.3.0
+
+## 0.6.1
+
+### Patch Changes
+
+- chore: bump tanstack store versions for better tree-shaking ([`4e74cb4`](https://github.com/TanStack/pacer/commit/4e74cb42bf803bbc11932285d4508964c45f3283))
+
+- Updated dependencies [[`4e74cb4`](https://github.com/TanStack/pacer/commit/4e74cb42bf803bbc11932285d4508964c45f3283)]:
+  - @tanstack/pacer-devtools@1.2.1
+
+## 0.6.0
+
+### Minor Changes
+
+- feat: TanStack Store Upgrade to alien signals ([#178](https://github.com/TanStack/pacer/pull/178))
+
+### Patch Changes
+
+- Updated dependencies [[`225381e`](https://github.com/TanStack/pacer/commit/225381e40d848b0bf35a690bb9d5009255fb4c9d)]:
+  - @tanstack/pacer-devtools@1.2.0
+
+## 0.5.5
+
+### Patch Changes
+
+- Updated dependencies [[`265b355`](https://github.com/TanStack/pacer/commit/265b355377a7e90cf6d741bbdc6fd346ff837a2c)]:
+  - @tanstack/pacer-devtools@1.1.5
+
+## 0.5.4
+
+### Patch Changes
+
+- Extract devtools theme provider to respective devtools to prevent mismatch. ([#176](https://github.com/TanStack/pacer/pull/176))
+
+- Update devtools-utils to fix theme miss match. ([#170](https://github.com/TanStack/pacer/pull/170))
+
+- Updated dependencies [[`160b4ff`](https://github.com/TanStack/pacer/commit/160b4ff351c9242f54431903339866d3fffc080b), [`434d227`](https://github.com/TanStack/pacer/commit/434d2274561544baa85dc1b031966a3b09162f4d)]:
+  - @tanstack/pacer-devtools@1.1.4
+
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependencies [[`df10ce6`](https://github.com/TanStack/pacer/commit/df10ce6a53513d43f3e9eeaaf2ca71e5cb1de2ca)]:
+  - @tanstack/pacer-devtools@1.1.3
+
 ## 0.5.2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
-import { useStore } from '@tanstack/preact-store'
+import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/preact-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -9,6 +9,17 @@ import type {
   AsyncThrottlerState,
 } from '@tanstack/pacer/async-throttler'
 import type { ComponentChildren } from 'preact'
+
+export interface PreactAsyncThrottlerOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncThrottlerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the throttler instance.
+   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (throttler: PreactAsyncThrottler<TFn, TSelected>) => void
+}
 
 export interface PreactAsyncThrottler<
   TFn extends AnyAsyncFunction,
@@ -39,8 +50,8 @@ export interface PreactAsyncThrottler<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>
 }
@@ -98,6 +109,24 @@ export interface PreactAsyncThrottler<
  * - `settleCount`: Number of function executions that have completed (success or error)
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
  * - `successCount`: Number of function executions that have completed successfully
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution and aborts any in-flight execution when the component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const throttler = useAsyncThrottler(fn, {
+ *   wait: 1000,
+ *   onUnmount: (t) => t.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your throttled function updates Preact state, those updates may run after the component has
+ * unmounted, which can cause "setState on unmounted component" warnings. Guard your callbacks
+ * accordingly when using onUnmount with flush.
  *
  * @example
  * ```tsx
@@ -195,15 +224,14 @@ export interface PreactAsyncThrottler<
  */
 export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   fn: TFn,
-  options: AsyncThrottlerOptions<TFn>,
+  options: PreactAsyncThrottlerOptions<TFn, TSelected>,
   selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): PreactAsyncThrottler<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncThrottler,
     ...options,
-  } as AsyncThrottlerOptions<TFn>
-
+  } as PreactAsyncThrottlerOptions<TFn, TSelected>
   const [asyncThrottler] = useState(() => {
     const throttlerInstance = new AsyncThrottler<TFn>(
       fn,
@@ -214,7 +242,9 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
       selector: (state: AsyncThrottlerState<TFn>) => TSelected
       children: ((state: TSelected) => ComponentChildren) | ComponentChildren
     }) {
-      const selected = useStore(throttlerInstance.store, props.selector)
+      const selected = useSelector(throttlerInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -227,11 +257,22 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
   asyncThrottler.fn = fn
   asyncThrottler.setOptions(mergedOptions)
 
-  const state = useStore(asyncThrottler.store, selector)
+  const state = useSelector(asyncThrottler.store, selector, {
+    compare: shallow,
+  })
 
+  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
   useEffect(() => {
-    return () => asyncThrottler.cancel()
-  }, [asyncThrottler])
+    return () => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncThrottler)
+      } else {
+        asyncThrottler.cancel()
+        asyncThrottler.abort()
+      }
+    }
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return useMemo(
     () =>

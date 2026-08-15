@@ -57,20 +57,20 @@ const debouncer = createDebouncer(
 )
 ```
 
-### Queuer Options
+### Async Queuer Options
 
 ```tsx
-import { createQueuer } from '@tanstack/solid-pacer'
-import { queuerOptions } from '@tanstack/pacer'
+import { createAsyncQueuer } from '@tanstack/solid-pacer'
+import { asyncQueuerOptions } from '@tanstack/pacer'
 
-const commonQueuerOptions = queuerOptions({
+const commonAsyncQueuerOptions = asyncQueuerOptions({
   concurrency: 3,
   addItemsTo: 'back',
 })
 
-const queuer = createQueuer(
-  (item: string) => processItem(item),
-  { ...commonQueuerOptions, key: 'itemQueuer' }
+const queuer = createAsyncQueuer(
+  async (item: string) => processItem(item),
+  { ...commonAsyncQueuerOptions, key: 'itemQueuer' }
 )
 ```
 
@@ -103,7 +103,7 @@ import { PacerProvider } from '@tanstack/solid-pacer'
 <PacerProvider
   defaultOptions={{
     debouncer: { wait: 1000 },
-    queuer: { concurrency: 3 },
+    asyncQueuer: { concurrency: 3 },
     rateLimiter: { limit: 5, window: 60000 },
   }}
 >
@@ -166,11 +166,11 @@ import { createDebouncer } from '@tanstack/solid-pacer'
 
 function SearchComponent() {
   // Default behavior - no reactive state subscriptions
-  const debouncer = createDebouncer(
+  const untrackedDebouncer = createDebouncer(
     (query: string) => fetchSearchResults(query),
     { wait: 500 }
   )
-  console.log(debouncer.state()) // {}
+  console.log(untrackedDebouncer.state()) // {}
 
   // Opt-in to track isPending changes
   const debouncer = createDebouncer(
@@ -216,13 +216,13 @@ function SearchComponent() {
 }
 ```
 
-### Queuer Example
+### Async Queuer Example
 
 ```tsx
-import { createQueuer } from '@tanstack/solid-pacer'
+import { createAsyncQueuer } from '@tanstack/solid-pacer'
 
 function UploadComponent() {
-  const queuer = createQueuer(
+  const queuer = createAsyncQueuer(
     async (file: File) => {
       await uploadFile(file)
     },

@@ -145,7 +145,7 @@ export class Debouncer<TFn extends AnyFunction> {
   )
   key: string | undefined
   options: DebouncerOptions<TFn>
-  #timeoutId: NodeJS.Timeout | undefined
+  #timeoutId: ReturnType<typeof setTimeout> | undefined
 
   constructor(
     public fn: TFn,
@@ -161,8 +161,10 @@ export class Debouncer<TFn extends AnyFunction> {
     if (this.key) {
       pacerEventClient.on('d-Debouncer', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state as DebouncerState<TFn>)
-        this.setOptions(event.payload.options)
+        this.#setState(
+          event.payload.store.state as Partial<DebouncerState<TFn>>,
+        )
+        this.setOptions(event.payload.options as Partial<DebouncerOptions<TFn>>)
       })
     }
   }

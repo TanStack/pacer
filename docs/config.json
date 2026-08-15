@@ -53,6 +53,15 @@
               "to": "framework/preact/adapter"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "Angular Adapter",
+              "to": "framework/angular/adapter"
+            }
+          ]
         }
       ]
     },
@@ -62,50 +71,253 @@
         {
           "label": "Which Utility Should I Choose?",
           "to": "guides/which-pacer-utility-should-i-choose"
+        }
+      ],
+      "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/vanilla/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/vanilla/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/vanilla/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/vanilla/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/vanilla/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/vanilla/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/vanilla/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/vanilla/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/vanilla/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/vanilla/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/vanilla/guides/async-retrying"
+            }
+          ]
         },
         {
-          "label": "Debouncing Guide",
-          "to": "guides/debouncing"
+          "label": "react",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/react/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/react/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/react/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/react/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/react/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/react/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/react/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/react/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/react/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/react/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/react/guides/async-retrying"
+            }
+          ]
         },
         {
-          "label": "Throttling Guide",
-          "to": "guides/throttling"
+          "label": "solid",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/solid/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/solid/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/solid/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/solid/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/solid/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/solid/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/solid/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/solid/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/solid/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/solid/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/solid/guides/async-retrying"
+            }
+          ]
         },
         {
-          "label": "Rate Limiting Guide",
-          "to": "guides/rate-limiting"
+          "label": "preact",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/preact/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/preact/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/preact/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/preact/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/preact/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/preact/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/preact/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/preact/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/preact/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/preact/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/preact/guides/async-retrying"
+            }
+          ]
         },
         {
-          "label": "Queuing Guide",
-          "to": "guides/queuing"
-        },
-        {
-          "label": "Batching Guide",
-          "to": "guides/batching"
-        },
-        {
-          "label": "Async Debouncing Guide",
-          "to": "guides/async-debouncing"
-        },
-        {
-          "label": "Async Throttling Guide",
-          "to": "guides/async-throttling"
-        },
-        {
-          "label": "Async Rate Limiting Guide",
-          "to": "guides/async-rate-limiting"
-        },
-        {
-          "label": "Async Queuing Guide",
-          "to": "guides/async-queuing"
-        },
-        {
-          "label": "Async Batching Guide",
-          "to": "guides/async-batching"
-        },
-        {
-          "label": "Async Retrying Guide",
-          "to": "guides/async-retrying"
+          "label": "angular",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/angular/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/angular/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/angular/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/angular/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/angular/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/angular/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/angular/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/angular/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/angular/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/angular/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/angular/guides/async-retrying"
+            }
+          ]
         }
       ]
     },
@@ -142,6 +354,15 @@
             {
               "label": "Preact Hooks",
               "to": "framework/preact/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "Angular inject API",
+              "to": "framework/angular/reference/index"
             }
           ]
         }
@@ -190,6 +411,14 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactDebouncerOptions",
+              "to": "framework/react/reference/interfaces/ReactDebouncerOptions"
+            },
+            {
+              "label": "ReactAsyncDebouncerOptions",
+              "to": "framework/react/reference/interfaces/ReactAsyncDebouncerOptions"
+            },
+            {
               "label": "ReactDebouncer",
               "to": "framework/react/reference/interfaces/ReactDebouncer"
             },
@@ -227,6 +456,14 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidDebouncerOptions",
+              "to": "framework/solid/reference/interfaces/SolidDebouncerOptions"
+            },
+            {
+              "label": "SolidAsyncDebouncerOptions",
+              "to": "framework/solid/reference/interfaces/SolidAsyncDebouncerOptions"
+            },
+            {
               "label": "SolidDebouncer",
               "to": "framework/solid/reference/interfaces/SolidDebouncer"
             },
@@ -255,6 +492,14 @@
         {
           "label": "preact",
           "children": [
+            {
+              "label": "PreactDebouncerOptions",
+              "to": "framework/preact/reference/interfaces/PreactDebouncerOptions"
+            },
+            {
+              "label": "PreactAsyncDebouncerOptions",
+              "to": "framework/preact/reference/interfaces/PreactAsyncDebouncerOptions"
+            },
             {
               "label": "PreactDebouncer",
               "to": "framework/preact/reference/interfaces/PreactDebouncer"
@@ -286,6 +531,51 @@
             {
               "label": "useAsyncDebouncedCallback",
               "to": "framework/preact/reference/functions/useAsyncDebouncedCallback"
+            }
+          ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularDebouncerOptions",
+              "to": "framework/angular/reference/interfaces/AngularDebouncerOptions"
+            },
+            {
+              "label": "AngularAsyncDebouncerOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncDebouncerOptions"
+            },
+            {
+              "label": "AngularDebouncer",
+              "to": "framework/angular/reference/interfaces/AngularDebouncer"
+            },
+            {
+              "label": "AngularAsyncDebouncer",
+              "to": "framework/angular/reference/interfaces/AngularAsyncDebouncer"
+            },
+            {
+              "label": "injectDebouncer",
+              "to": "framework/angular/reference/functions/injectDebouncer"
+            },
+            {
+              "label": "injectDebouncedCallback",
+              "to": "framework/angular/reference/functions/injectDebouncedCallback"
+            },
+            {
+              "label": "injectDebouncedSignal",
+              "to": "framework/angular/reference/functions/injectDebouncedSignal"
+            },
+            {
+              "label": "injectDebouncedValue",
+              "to": "framework/angular/reference/functions/injectDebouncedValue"
+            },
+            {
+              "label": "injectAsyncDebouncer",
+              "to": "framework/angular/reference/functions/injectAsyncDebouncer"
+            },
+            {
+              "label": "injectAsyncDebouncedCallback",
+              "to": "framework/angular/reference/functions/injectAsyncDebouncedCallback"
             }
           ]
         }
@@ -334,6 +624,14 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactThrottlerOptions",
+              "to": "framework/react/reference/interfaces/ReactThrottlerOptions"
+            },
+            {
+              "label": "ReactAsyncThrottlerOptions",
+              "to": "framework/react/reference/interfaces/ReactAsyncThrottlerOptions"
+            },
+            {
               "label": "ReactThrottler",
               "to": "framework/react/reference/interfaces/ReactThrottler"
             },
@@ -371,6 +669,14 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidThrottlerOptions",
+              "to": "framework/solid/reference/interfaces/SolidThrottlerOptions"
+            },
+            {
+              "label": "SolidAsyncThrottlerOptions",
+              "to": "framework/solid/reference/interfaces/SolidAsyncThrottlerOptions"
+            },
+            {
               "label": "SolidThrottler",
               "to": "framework/solid/reference/interfaces/SolidThrottler"
             },
@@ -399,6 +705,14 @@
         {
           "label": "preact",
           "children": [
+            {
+              "label": "PreactThrottlerOptions",
+              "to": "framework/preact/reference/interfaces/PreactThrottlerOptions"
+            },
+            {
+              "label": "PreactAsyncThrottlerOptions",
+              "to": "framework/preact/reference/interfaces/PreactAsyncThrottlerOptions"
+            },
             {
               "label": "PreactThrottler",
               "to": "framework/preact/reference/interfaces/PreactThrottler"
@@ -430,6 +744,51 @@
             {
               "label": "useAsyncThrottledCallback",
               "to": "framework/preact/reference/functions/useAsyncThrottledCallback"
+            }
+          ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularThrottlerOptions",
+              "to": "framework/angular/reference/interfaces/AngularThrottlerOptions"
+            },
+            {
+              "label": "AngularAsyncThrottlerOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncThrottlerOptions"
+            },
+            {
+              "label": "AngularThrottler",
+              "to": "framework/angular/reference/interfaces/AngularThrottler"
+            },
+            {
+              "label": "AngularAsyncThrottler",
+              "to": "framework/angular/reference/interfaces/AngularAsyncThrottler"
+            },
+            {
+              "label": "injectThrottler",
+              "to": "framework/angular/reference/functions/injectThrottler"
+            },
+            {
+              "label": "injectThrottledCallback",
+              "to": "framework/angular/reference/functions/injectThrottledCallback"
+            },
+            {
+              "label": "injectThrottledSignal",
+              "to": "framework/angular/reference/functions/injectThrottledSignal"
+            },
+            {
+              "label": "injectThrottledValue",
+              "to": "framework/angular/reference/functions/injectThrottledValue"
+            },
+            {
+              "label": "injectAsyncThrottler",
+              "to": "framework/angular/reference/functions/injectAsyncThrottler"
+            },
+            {
+              "label": "injectAsyncThrottledCallback",
+              "to": "framework/angular/reference/functions/injectAsyncThrottledCallback"
             }
           ]
         }
@@ -576,6 +935,51 @@
               "to": "framework/preact/reference/functions/useAsyncRateLimitedCallback"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularRateLimiterOptions",
+              "to": "framework/angular/reference/interfaces/AngularRateLimiterOptions"
+            },
+            {
+              "label": "AngularAsyncRateLimiterOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncRateLimiterOptions"
+            },
+            {
+              "label": "AngularRateLimiter",
+              "to": "framework/angular/reference/interfaces/AngularRateLimiter"
+            },
+            {
+              "label": "AngularAsyncRateLimiter",
+              "to": "framework/angular/reference/interfaces/AngularAsyncRateLimiter"
+            },
+            {
+              "label": "injectRateLimiter",
+              "to": "framework/angular/reference/functions/injectRateLimiter"
+            },
+            {
+              "label": "injectRateLimitedCallback",
+              "to": "framework/angular/reference/functions/injectRateLimitedCallback"
+            },
+            {
+              "label": "injectRateLimitedSignal",
+              "to": "framework/angular/reference/functions/injectRateLimitedSignal"
+            },
+            {
+              "label": "injectRateLimitedValue",
+              "to": "framework/angular/reference/functions/injectRateLimitedValue"
+            },
+            {
+              "label": "injectAsyncRateLimiter",
+              "to": "framework/angular/reference/functions/injectAsyncRateLimiter"
+            },
+            {
+              "label": "injectAsyncRateLimitedCallback",
+              "to": "framework/angular/reference/functions/injectAsyncRateLimitedCallback"
+            }
+          ]
         }
       ]
     },
@@ -622,6 +1026,14 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactQueuerOptions",
+              "to": "framework/react/reference/interfaces/ReactQueuerOptions"
+            },
+            {
+              "label": "ReactAsyncQueuerOptions",
+              "to": "framework/react/reference/interfaces/ReactAsyncQueuerOptions"
+            },
+            {
               "label": "ReactQueuer",
               "to": "framework/react/reference/interfaces/ReactQueuer"
             },
@@ -655,6 +1067,14 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidQueuerOptions",
+              "to": "framework/solid/reference/interfaces/SolidQueuerOptions"
+            },
+            {
+              "label": "SolidAsyncQueuerOptions",
+              "to": "framework/solid/reference/interfaces/SolidAsyncQueuerOptions"
+            },
+            {
               "label": "SolidQueuer",
               "to": "framework/solid/reference/interfaces/SolidQueuer"
             },
@@ -679,6 +1099,14 @@
         {
           "label": "preact",
           "children": [
+            {
+              "label": "PreactQueuerOptions",
+              "to": "framework/preact/reference/interfaces/PreactQueuerOptions"
+            },
+            {
+              "label": "PreactAsyncQueuerOptions",
+              "to": "framework/preact/reference/interfaces/PreactAsyncQueuerOptions"
+            },
             {
               "label": "PreactQueuer",
               "to": "framework/preact/reference/interfaces/PreactQueuer"
@@ -706,6 +1134,47 @@
             {
               "label": "useAsyncQueuedState",
               "to": "framework/preact/reference/functions/useAsyncQueuedState"
+            }
+          ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularQueuerOptions",
+              "to": "framework/angular/reference/interfaces/AngularQueuerOptions"
+            },
+            {
+              "label": "AngularAsyncQueuerOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncQueuerOptions"
+            },
+            {
+              "label": "AngularQueuer",
+              "to": "framework/angular/reference/interfaces/AngularQueuer"
+            },
+            {
+              "label": "AngularAsyncQueuer",
+              "to": "framework/angular/reference/interfaces/AngularAsyncQueuer"
+            },
+            {
+              "label": "injectQueuer",
+              "to": "framework/angular/reference/functions/injectQueuer"
+            },
+            {
+              "label": "injectQueuedSignal",
+              "to": "framework/angular/reference/functions/injectQueuedSignal"
+            },
+            {
+              "label": "injectQueuedValue",
+              "to": "framework/angular/reference/functions/injectQueuedValue"
+            },
+            {
+              "label": "injectAsyncQueuer",
+              "to": "framework/angular/reference/functions/injectAsyncQueuer"
+            },
+            {
+              "label": "injectAsyncQueuedSignal",
+              "to": "framework/angular/reference/functions/injectAsyncQueuedSignal"
             }
           ]
         }
@@ -754,6 +1223,14 @@
           "label": "react",
           "children": [
             {
+              "label": "ReactBatcherOptions",
+              "to": "framework/react/reference/interfaces/ReactBatcherOptions"
+            },
+            {
+              "label": "ReactAsyncBatcherOptions",
+              "to": "framework/react/reference/interfaces/ReactAsyncBatcherOptions"
+            },
+            {
               "label": "ReactBatcher",
               "to": "framework/react/reference/interfaces/ReactBatcher"
             },
@@ -783,6 +1260,14 @@
           "label": "solid",
           "children": [
             {
+              "label": "SolidBatcherOptions",
+              "to": "framework/solid/reference/interfaces/SolidBatcherOptions"
+            },
+            {
+              "label": "SolidAsyncBatcherOptions",
+              "to": "framework/solid/reference/interfaces/SolidAsyncBatcherOptions"
+            },
+            {
               "label": "SolidBatcher",
               "to": "framework/solid/reference/interfaces/SolidBatcher"
             },
@@ -803,6 +1288,14 @@
         {
           "label": "preact",
           "children": [
+            {
+              "label": "PreactBatcherOptions",
+              "to": "framework/preact/reference/interfaces/PreactBatcherOptions"
+            },
+            {
+              "label": "PreactAsyncBatcherOptions",
+              "to": "framework/preact/reference/interfaces/PreactAsyncBatcherOptions"
+            },
             {
               "label": "PreactBatcher",
               "to": "framework/preact/reference/interfaces/PreactBatcher"
@@ -828,22 +1321,63 @@
               "to": "framework/preact/reference/functions/useAsyncBatchedCallback"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "AngularBatcherOptions",
+              "to": "framework/angular/reference/interfaces/AngularBatcherOptions"
+            },
+            {
+              "label": "AngularAsyncBatcherOptions",
+              "to": "framework/angular/reference/interfaces/AngularAsyncBatcherOptions"
+            },
+            {
+              "label": "AngularBatcher",
+              "to": "framework/angular/reference/interfaces/AngularBatcher"
+            },
+            {
+              "label": "AngularAsyncBatcher",
+              "to": "framework/angular/reference/interfaces/AngularAsyncBatcher"
+            },
+            {
+              "label": "injectBatcher",
+              "to": "framework/angular/reference/functions/injectBatcher"
+            },
+            {
+              "label": "injectBatchedCallback",
+              "to": "framework/angular/reference/functions/injectBatchedCallback"
+            },
+            {
+              "label": "injectAsyncBatcher",
+              "to": "framework/angular/reference/functions/injectAsyncBatcher"
+            },
+            {
+              "label": "injectAsyncBatchedCallback",
+              "to": "framework/angular/reference/functions/injectAsyncBatchedCallback"
+            }
+          ]
         }
       ]
     },
     {
       "label": "Debouncer Examples",
-      "children": [
-        {
-          "label": "liteDebounce",
-          "to": "framework/vanilla/examples/liteDebounce"
-        },
-        {
-          "label": "LiteDebouncer",
-          "to": "framework/vanilla/examples/LiteDebouncer"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteDebounce",
+              "to": "framework/vanilla/examples/liteDebounce"
+            },
+            {
+              "label": "LiteDebouncer",
+              "to": "framework/vanilla/examples/LiteDebouncer"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [
@@ -946,22 +1480,63 @@
               "to": "framework/preact/examples/useAsyncDebouncedCallback"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "debounce",
+              "to": "framework/angular/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/angular/examples/asyncDebounce"
+            },
+            {
+              "label": "injectDebouncer",
+              "to": "framework/angular/examples/injectDebouncer"
+            },
+            {
+              "label": "injectDebouncedCallback",
+              "to": "framework/angular/examples/injectDebouncedCallback"
+            },
+            {
+              "label": "injectDebouncedSignal",
+              "to": "framework/angular/examples/injectDebouncedSignal"
+            },
+            {
+              "label": "injectDebouncedValue",
+              "to": "framework/angular/examples/injectDebouncedValue"
+            },
+            {
+              "label": "injectAsyncDebouncer",
+              "to": "framework/angular/examples/injectAsyncDebouncer"
+            },
+            {
+              "label": "injectAsyncDebouncedCallback",
+              "to": "framework/angular/examples/injectAsyncDebouncedCallback"
+            }
+          ]
         }
       ]
     },
     {
       "label": "Throttler Examples",
-      "children": [
-        {
-          "label": "liteThrottle",
-          "to": "framework/vanilla/examples/liteThrottle"
-        },
-        {
-          "label": "LiteThrottler",
-          "to": "framework/vanilla/examples/LiteThrottler"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteThrottle",
+              "to": "framework/vanilla/examples/liteThrottle"
+            },
+            {
+              "label": "LiteThrottler",
+              "to": "framework/vanilla/examples/LiteThrottler"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [
@@ -1060,22 +1635,63 @@
               "to": "framework/preact/examples/useAsyncThrottledCallback"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "throttle",
+              "to": "framework/angular/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/angular/examples/asyncThrottle"
+            },
+            {
+              "label": "injectThrottler",
+              "to": "framework/angular/examples/injectThrottler"
+            },
+            {
+              "label": "injectThrottledCallback",
+              "to": "framework/angular/examples/injectThrottledCallback"
+            },
+            {
+              "label": "injectThrottledSignal",
+              "to": "framework/angular/examples/injectThrottledSignal"
+            },
+            {
+              "label": "injectThrottledValue",
+              "to": "framework/angular/examples/injectThrottledValue"
+            },
+            {
+              "label": "injectAsyncThrottler",
+              "to": "framework/angular/examples/injectAsyncThrottler"
+            },
+            {
+              "label": "injectAsyncThrottledCallback",
+              "to": "framework/angular/examples/injectAsyncThrottledCallback"
+            }
+          ]
         }
       ]
     },
     {
       "label": "Rate Limiter Examples",
-      "children": [
-        {
-          "label": "liteRateLimit",
-          "to": "framework/vanilla/examples/liteRateLimit"
-        },
-        {
-          "label": "LiteRateLimiter",
-          "to": "framework/vanilla/examples/LiteRateLimiter"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteRateLimit",
+              "to": "framework/vanilla/examples/liteRateLimit"
+            },
+            {
+              "label": "LiteRateLimiter",
+              "to": "framework/vanilla/examples/LiteRateLimiter"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [
@@ -1186,22 +1802,71 @@
               "to": "framework/preact/examples/useAsyncRateLimiterWithPersister"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "rateLimit",
+              "to": "framework/angular/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/angular/examples/asyncRateLimit"
+            },
+            {
+              "label": "injectRateLimiter",
+              "to": "framework/angular/examples/injectRateLimiter"
+            },
+            {
+              "label": "injectRateLimitedCallback",
+              "to": "framework/angular/examples/injectRateLimitedCallback"
+            },
+            {
+              "label": "injectRateLimitedSignal",
+              "to": "framework/angular/examples/injectRateLimitedSignal"
+            },
+            {
+              "label": "injectRateLimitedValue",
+              "to": "framework/angular/examples/injectRateLimitedValue"
+            },
+            {
+              "label": "injectRateLimiterWithPersister",
+              "to": "framework/angular/examples/injectRateLimiterWithPersister"
+            },
+            {
+              "label": "injectAsyncRateLimiter",
+              "to": "framework/angular/examples/injectAsyncRateLimiter"
+            },
+            {
+              "label": "injectAsyncRateLimitedCallback",
+              "to": "framework/angular/examples/injectAsyncRateLimitedCallback"
+            },
+            {
+              "label": "injectAsyncRateLimiterWithPersister",
+              "to": "framework/angular/examples/injectAsyncRateLimiterWithPersister"
+            }
+          ]
         }
       ]
     },
     {
       "label": "Queue Examples",
-      "children": [
-        {
-          "label": "liteQueue",
-          "to": "framework/vanilla/examples/liteQueue"
-        },
-        {
-          "label": "LiteQueuer",
-          "to": "framework/vanilla/examples/LiteQueuer"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteQueue",
+              "to": "framework/vanilla/examples/liteQueue"
+            },
+            {
+              "label": "LiteQueuer",
+              "to": "framework/vanilla/examples/LiteQueuer"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [
@@ -1288,22 +1953,59 @@
               "to": "framework/preact/examples/useAsyncQueuedState"
             }
           ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "queue",
+              "to": "framework/angular/examples/queue"
+            },
+            {
+              "label": "injectQueuer",
+              "to": "framework/angular/examples/injectQueuer"
+            },
+            {
+              "label": "injectQueuedSignal",
+              "to": "framework/angular/examples/injectQueuedSignal"
+            },
+            {
+              "label": "injectQueuedValue",
+              "to": "framework/angular/examples/injectQueuedValue"
+            },
+            {
+              "label": "injectQueuerWithPersister",
+              "to": "framework/angular/examples/injectQueuerWithPersister"
+            },
+            {
+              "label": "injectAsyncQueuer",
+              "to": "framework/angular/examples/injectAsyncQueuer"
+            },
+            {
+              "label": "injectAsyncQueuedSignal",
+              "to": "framework/angular/examples/injectAsyncQueuedSignal"
+            }
+          ]
         }
       ]
     },
     {
       "label": "Batcher Examples",
-      "children": [
-        {
-          "label": "liteBatch",
-          "to": "framework/vanilla/examples/liteBatch"
-        },
-        {
-          "label": "LiteBatcher",
-          "to": "framework/vanilla/examples/LiteBatcher"
-        }
-      ],
+      "children": [],
       "frameworks": [
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "liteBatch",
+              "to": "framework/vanilla/examples/liteBatch"
+            },
+            {
+              "label": "LiteBatcher",
+              "to": "framework/vanilla/examples/LiteBatcher"
+            }
+          ]
+        },
         {
           "label": "react",
           "children": [
@@ -1376,6 +2078,35 @@
             {
               "label": "useAsyncBatchedCallback",
               "to": "framework/preact/examples/useAsyncBatchedCallback"
+            }
+          ]
+        },
+        {
+          "label": "angular",
+          "children": [
+            {
+              "label": "batch",
+              "to": "framework/angular/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/angular/examples/asyncBatch"
+            },
+            {
+              "label": "injectBatcher",
+              "to": "framework/angular/examples/injectBatcher"
+            },
+            {
+              "label": "injectBatchedCallback",
+              "to": "framework/angular/examples/injectBatchedCallback"
+            },
+            {
+              "label": "injectAsyncBatcher",
+              "to": "framework/angular/examples/injectAsyncBatcher"
+            },
+            {
+              "label": "injectAsyncBatchedCallback",
+              "to": "framework/angular/examples/injectAsyncBatchedCallback"
             }
           ]
         }

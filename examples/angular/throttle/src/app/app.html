@@ -1,0 +1,16 @@
+<h1>TanStack Pacer - Throttler Example</h1>
+
+<p>
+  Throttling executes the function at most once per second. Click the button rapidly to see
+  throttling in action.
+</p>
+
+<button (click)="increment()">Increment</button>
+
+<p>Instant count: {{ instantCount() }}</p>
+
+<p>Throttled count: {{ throttledCount() }}</p>
+
+<p>Is pending: {{ throttler.state().isPending }}</p>
+
+<p>Execution count: {{ throttler.state().executionCount }}</p>

@@ -1,0 +1,22 @@
+<h1>TanStack Pacer - injectDebouncedSignal</h1>
+
+<p>Type below to update an instant signal and a debounced signal.</p>
+
+<label>
+  Value
+  <input [value]="instantValue()" (input)="onInput($event)" />
+</label>
+
+<div>
+  <button type="button" (click)="clear()">Clear</button>
+  <button type="button" (click)="cancelPending()">Cancel pending</button>
+</div>
+
+<h2>Values</h2>
+<div>
+  <div>Instant: {{ instantValue() }}</div>
+  <div>Debounced: {{ debounced() }}</div>
+  <div>Pending: {{ debounced.debouncer.state().isPending }}</div>
+</div>
+
+<router-outlet />

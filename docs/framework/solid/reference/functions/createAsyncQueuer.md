@@ -12,7 +12,7 @@ function createAsyncQueuer<TValue, TSelected>(
 selector): SolidAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:150](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L150)
+Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:181](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L181)
 
 Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 
@@ -65,6 +65,25 @@ Available state properties:
 - `rejectionCount`: Number of items that were rejected (expired or failed validation)
 - `settleCount`: Number of items that have completed processing (successful or failed)
 - `successCount`: Number of items that were processed successfully
+
+## Unmount behavior
+
+By default, the primitive stops the queuer and aborts any in-flight task executions when the owning component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+
+```tsx
+const queuer = createAsyncQueuer(fn, {
+  concurrency: 2,
+  started: false,
+  onUnmount: (q) => q.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your task function updates Solid signals, those updates may run after the component has
+unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+using onUnmount with flush.
 
 Example usage:
 ```tsx
@@ -136,7 +155,7 @@ const { pendingItems, activeItems } = asyncQueuer.state();
 
 ### options
 
-`AsyncQueuerOptions`\<`TValue`\> = `{}`
+[`SolidAsyncQueuerOptions`](../interfaces/SolidAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

@@ -1,0 +1,27 @@
+<div>
+  <h1>Tan Stack Pacer - createRateLimitedCallback Example</h1>
+
+  <p>
+    Click the trigger button quickly. The callback executes at most {{ limit }} times within {{
+    windowMs / 1000 }} seconds. Extra calls inside the window are blocked.
+  </p>
+
+  <section>
+    <h2>Counts</h2>
+    <p>Total triggers: {{ rawCount() }}</p>
+    <p>Executed callbacks: {{ executedCount() }}</p>
+    <p>Blocked callbacks: {{ blockedCount() }}</p>
+  </section>
+
+  <section>
+    <h2>Last execution</h2>
+    <p>Value: {{ lastExecutedValue() !== null ? lastExecutedValue() : '(none yet)' }}</p>
+    <p>Time: {{ lastExecutedAt() !== null ? lastExecutedAt() : '(none yet)' }}</p>
+  </section>
+
+  <section>
+    <h2>Controls</h2>
+    <button (click)="trigger()">Trigger callback</button>
+    <button (click)="reset()">Reset</button>
+  </section>
+</div>

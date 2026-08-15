@@ -1,0 +1,54 @@
+<div>
+  <h1>TanStack Pacer - Async Retry Example</h1>
+
+  <section>
+    <h2>AsyncRetry</h2>
+    <p>
+      Click "Run" to execute an async task that fails the first N times, then succeeds. The
+      decorator retries with backoff.
+    </p>
+
+    <div>
+      <h3>Controls</h3>
+      <div>
+        <label>
+          <span>Fail first</span>
+          <input
+            type="number"
+            min="0"
+            [value]="failTimes()"
+            (input)="setFailTimes($any($event.target).valueAsNumber ?? 0)"
+          />
+          <span>attempts</span>
+        </label>
+
+        <button (click)="start()">Run</button>
+
+        <button (click)="reset()">Reset</button>
+      </div>
+    </div>
+
+    <div>
+      <h3>Status</h3>
+      <div>
+        <div><strong>Status:</strong> {{ status() }}</div>
+        <div><strong>Attempt:</strong> {{ attempt() }}</div>
+        <div><strong>Result:</strong> {{ result() ?? '-' }}</div>
+        <div><strong>Error:</strong> {{ error() ?? '-' }}</div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Log</h3>
+      <div>
+        @if (log().length === 0) {
+        <span>No logs yet. Click "Run" to start.</span>
+        } @for (entry of log(); track $index) {
+        <div><strong>{{ entry.time }}</strong> — {{ entry.message }}</div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <router-outlet />
+</div>

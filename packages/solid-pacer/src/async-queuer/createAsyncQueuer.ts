@@ -1,5 +1,6 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
+import { createEffect, onCleanup } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -7,6 +8,17 @@ import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
+
+export interface SolidAsyncQueuerOptions<
+  TValue,
+  TSelected = {},
+> extends AsyncQueuerOptions<TValue> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the queuer instance.
+   * When provided, replaces the default cleanup (stop + abort); use it to call flush(), flushAsBatch(), stop(), add logging, etc.
+   */
+  onUnmount?: (queuer: SolidAsyncQueuer<TValue, TSelected>) => void
+}
 
 export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
   AsyncQueuer<TValue>,
@@ -37,8 +49,8 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<AsyncQueuerState<TValue>>>
 }
@@ -96,6 +108,25 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
  * - `settleCount`: Number of items that have completed processing (successful or failed)
  * - `successCount`: Number of items that were processed successfully
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive stops the queuer and aborts any in-flight task executions when the owning component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+ *
+ * ```tsx
+ * const queuer = createAsyncQueuer(fn, {
+ *   concurrency: 2,
+ *   started: false,
+ *   onUnmount: (q) => q.flush()
+ * });
+ * ```
+ *
+ * Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+ * If your task function updates Solid signals, those updates may run after the component has
+ * unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+ * using onUnmount with flush.
+ *
  * Example usage:
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -149,15 +180,14 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function createAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
-  options: AsyncQueuerOptions<TValue> = {},
+  options: SolidAsyncQueuerOptions<TValue, TSelected> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncQueuer<TValue, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncQueuer,
     ...options,
-  } as AsyncQueuerOptions<TValue>
-
+  } as SolidAsyncQueuerOptions<TValue, TSelected>
   const asyncQueuer = new AsyncQueuer<TValue>(
     fn,
     mergedOptions,
@@ -167,14 +197,27 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
     selector: (state: AsyncQueuerState<TValue>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(asyncQueuer.store, props.selector)
+    const selected = useSelector(asyncQueuer.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(asyncQueuer.store, selector)
+  const state = useSelector(asyncQueuer.store, selector, { compare: shallow })
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncQueuer)
+      } else {
+        asyncQueuer.stop()
+        asyncQueuer.abort()
+      }
+    })
+  })
 
   return {
     ...asyncQueuer,

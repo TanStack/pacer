@@ -12,7 +12,7 @@ function createBatcher<TValue, TSelected>(
 selector): SolidBatcher<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:130](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L130)
+Defined in: [solid-pacer/src/batcher/createBatcher.ts:155](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L155)
 
 Creates a Solid-compatible Batcher instance for managing batches of items, exposing Solid signals for all stateful properties.
 
@@ -54,6 +54,19 @@ Available state properties:
 - `isRunning`: Whether the batcher is currently running (not stopped)
 - `items`: Array of items currently queued for batching
 - `totalItemsProcessed`: Total number of individual items that have been processed across all batches
+
+## Unmount behavior
+
+By default, the primitive cancels any pending batch when the owning component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const batcher = createBatcher(fn, {
+  maxSize: 10,
+  wait: 2000,
+  onUnmount: (b) => b.flush()
+});
+```
 
 Example usage:
 ```tsx
@@ -119,7 +132,7 @@ const { items, isRunning } = batcher.state();
 
 ### options
 
-`BatcherOptions`\<`TValue`\> = `{}`
+[`SolidBatcherOptions`](../interfaces/SolidBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

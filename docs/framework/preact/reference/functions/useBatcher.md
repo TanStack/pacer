@@ -12,7 +12,7 @@ function useBatcher<TValue, TSelected>(
 selector): PreactBatcher<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:159](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L159)
+Defined in: [preact-pacer/src/batcher/useBatcher.ts:183](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L183)
 
 A Preact hook that creates and manages a Batcher instance.
 
@@ -56,6 +56,19 @@ Available state properties:
 - `status`: Current processing status ('idle' | 'pending')
 - `totalItemsProcessed`: Total number of items processed across all batches
 
+## Unmount behavior
+
+By default, the hook cancels any pending batch when the component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```tsx
+const batcher = useBatcher(fn, {
+  maxSize: 10,
+  wait: 2000,
+  onUnmount: (b) => b.flush()
+});
+```
+
 ## Type Parameters
 
 ### TValue
@@ -75,7 +88,7 @@ Available state properties:
 
 ### options
 
-`BatcherOptions`\<`TValue`\> = `{}`
+[`PreactBatcherOptions`](../interfaces/PreactBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

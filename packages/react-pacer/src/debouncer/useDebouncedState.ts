@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { useDebouncer } from './useDebouncer'
-import type { ReactDebouncer } from './useDebouncer'
-import type {
-  DebouncerOptions,
-  DebouncerState,
-} from '@tanstack/pacer/debouncer'
+import type { ReactDebouncer, ReactDebouncerOptions } from './useDebouncer'
+import type { DebouncerState } from '@tanstack/pacer/debouncer'
 
 /**
  * A React hook that creates a debounced state value, combining React's useState with debouncing functionality.
@@ -83,7 +80,10 @@ export function useDebouncedState<
   TSelected = DebouncerState<React.Dispatch<React.SetStateAction<TValue>>>,
 >(
   value: TValue,
-  options: DebouncerOptions<React.Dispatch<React.SetStateAction<TValue>>>,
+  options: ReactDebouncerOptions<
+    React.Dispatch<React.SetStateAction<TValue>>,
+    TSelected
+  >,
   selector?: (
     state: DebouncerState<React.Dispatch<React.SetStateAction<TValue>>>,
   ) => TSelected,

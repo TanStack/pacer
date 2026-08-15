@@ -78,7 +78,7 @@ Timestamp of the last function execution in milliseconds
 ### lastResult
 
 ```ts
-lastResult: ReturnType<TFn> | undefined;
+lastResult: Awaited<ReturnType<TFn>> | undefined;
 ```
 
 Defined in: [async-throttler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L32)
@@ -126,7 +126,7 @@ Number of function executions that have completed (either successfully or with e
 ### status
 
 ```ts
-status: "disabled" | "idle" | "pending" | "executing" | "settled";
+status: "disabled" | "idle" | "executing" | "pending" | "settled";
 ```
 
 Defined in: [async-throttler.ts:48](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L48)

@@ -80,7 +80,7 @@ Available async queuer state properties:
 
 ### options
 
-`AsyncQueuerOptions`\<`TValue`\> = `{}`
+[`ReactAsyncQueuerOptions`](../interfaces/ReactAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector?
 

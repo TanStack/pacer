@@ -1,0 +1,38 @@
+<h1>injectAsyncDebouncedCallback</h1>
+
+<p>
+  Debounce waits for a pause before executing. Calls made while the timer is pending resolve to
+  <code>undefined</code>. Only the final call after the pause runs.
+</p>
+
+<div>
+  <label>
+    Query
+    <input [value]="query()" (input)="onQueryInput(($any($event.target).value ?? '').toString())" />
+  </label>
+  <button (click)="runBurst()">Simulate Typing</button>
+  <button (click)="reset()">Reset</button>
+</div>
+
+<p>Executing: {{ isExecuting() }}</p>
+<p>Last outcome: {{ lastOutcome() }}</p>
+<p>Last result: {{ lastResult() ?? 'none' }}</p>
+
+<h2>History</h2>
+
+@if (history.length === 0) {
+<p>No calls yet.</p>
+} @else {
+<ul>
+  @for (entry of history; track $index) {
+  <li>
+    <div>
+      {{ entry.timestamp }} - {{ entry.value }} - {{ entry.executed ? 'EXECUTED' : 'DEBOUNCED' }}
+    </div>
+    @if (entry.executed) {
+    <div>Result: {{ entry.result }}</div>
+    }
+  </li>
+  }
+</ul>
+}

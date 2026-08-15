@@ -71,7 +71,7 @@ Available queuer state properties:
 
 ### options
 
-`QueuerOptions`\<`TValue`\> = `{}`
+[`SolidQueuerOptions`](../interfaces/SolidQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

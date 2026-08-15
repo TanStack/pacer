@@ -1,7 +1,7 @@
 import { useCallback } from 'preact/hooks'
 import { useAsyncRateLimiter } from './useAsyncRateLimiter'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
-import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
+import type { PreactAsyncRateLimiterOptions } from './useAsyncRateLimiter'
 
 /**
  * A Preact hook that creates a rate-limited version of an async callback function.
@@ -58,12 +58,11 @@ import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter
  */
 export function useAsyncRateLimitedCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AsyncRateLimiterOptions<TFn>,
-): (...args: Parameters<TFn>) => Promise<ReturnType<TFn>> {
+  options: PreactAsyncRateLimiterOptions<TFn, {}>,
+): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const asyncRateLimitedFn = useAsyncRateLimiter(fn, options).maybeExecute
   return useCallback(
-    (...args: Parameters<TFn>) =>
-      asyncRateLimitedFn(...args) as Promise<ReturnType<TFn>>,
+    (...args: Parameters<TFn>) => asyncRateLimitedFn(...args),
     [asyncRateLimitedFn],
   )
 }

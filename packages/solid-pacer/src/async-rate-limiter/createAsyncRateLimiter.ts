@@ -1,5 +1,6 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { useStore } from '@tanstack/solid-store'
+import { createEffect, onCleanup } from 'solid-js'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -8,6 +9,17 @@ import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
+
+export interface SolidAsyncRateLimiterOptions<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+> extends AsyncRateLimiterOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the rate limiter instance.
+   * When provided, replaces the default cleanup (abort); use it to call reset(), add logging, etc.
+   */
+  onUnmount?: (rateLimiter: SolidAsyncRateLimiter<TFn, TSelected>) => void
+}
 
 export interface SolidAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
@@ -38,8 +50,8 @@ export interface SolidAsyncRateLimiter<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>
 }
@@ -110,6 +122,12 @@ export interface SolidAsyncRateLimiter<
  * - `nextWindowTime`: Timestamp when the next window begins
  * - `rejectionCount`: Number of function calls that were rejected due to rate limiting
  * - `remainingInWindow`: Number of executions remaining in the current window
+ *
+ * ## Unmount behavior
+ *
+ * By default, the primitive aborts any in-flight execution when the owning component unmounts.
+ * Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+ * Use the `onUnmount` option to customize this.
  *
  * @example
  * ```tsx
@@ -204,15 +222,14 @@ export function createAsyncRateLimiter<
   TSelected = {},
 >(
   fn: TFn,
-  options: AsyncRateLimiterOptions<TFn>,
+  options: SolidAsyncRateLimiterOptions<TFn, TSelected>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncRateLimiter<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().asyncRateLimiter,
     ...options,
-  } as AsyncRateLimiterOptions<TFn>
-
+  } as SolidAsyncRateLimiterOptions<TFn, TSelected>
   const asyncRateLimiter = new AsyncRateLimiter<TFn>(
     fn,
     mergedOptions,
@@ -222,14 +239,28 @@ export function createAsyncRateLimiter<
     selector: (state: AsyncRateLimiterState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(asyncRateLimiter.store, props.selector)
+    const selected = useSelector(asyncRateLimiter.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(asyncRateLimiter.store, selector)
+  const state = useSelector(asyncRateLimiter.store, selector, {
+    compare: shallow,
+  })
+
+  createEffect(() => {
+    onCleanup(() => {
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncRateLimiter)
+      } else {
+        asyncRateLimiter.abort()
+      }
+    })
+  })
 
   return {
     ...asyncRateLimiter,

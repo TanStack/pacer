@@ -1,0 +1,28 @@
+<h1>TanStack Pacer - Async Debouncer</h1>
+
+<p>Type to trigger a debounced async "search". Only the last value after the wait runs.</p>
+
+<label>
+  Query
+  <input [value]="query()" (input)="onQueryInput($event.target.value)" />
+</label>
+
+<button type="button" (click)="clear()">Clear</button>
+
+<p>Latest executed query: {{ executedQuery() || '(none yet)' }}</p>
+
+<p>Status: {{ debouncer.state().status }}</p>
+<p>Pending: {{ debouncer.state().isPending }}</p>
+<p>Executing: {{ debouncer.state().isExecuting }}</p>
+<p>Error count: {{ debouncer.state().errorCount }}</p>
+
+<h2>Results</h2>
+@if (results().length === 0) {
+<p>(no results)</p>
+} @else {
+<ul>
+  @for (item of results(); track item) {
+  <li>{{ item }}</li>
+  }
+</ul>
+}

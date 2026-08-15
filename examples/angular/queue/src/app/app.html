@@ -1,0 +1,74 @@
+<div>
+  <h1>TanStack Pacer - Queuer Example</h1>
+
+  <section>
+    <h2>Queuer Example</h2>
+    <p>
+      The queuer processes items synchronously in order, with a 1 second delay between each item.
+      Items are processed one at a time when the queue is started.
+    </p>
+
+    <div>
+      <h3>Queue Status</h3>
+      <div>
+        <div><strong>Queue Size:</strong> {{ queuer.state().size }} / 10</div>
+        <div><strong>Status:</strong> {{ queuer.state().status }}</div>
+        <div><strong>Is Empty:</strong> {{ queuer.state().isEmpty ? 'Yes' : 'No' }}</div>
+        <div><strong>Is Full:</strong> {{ queuer.state().isFull ? 'Yes' : 'No' }}</div>
+        <div><strong>Is Running:</strong> {{ queuer.state().isRunning ? 'Yes' : 'No' }}</div>
+        <div><strong>Items Processed:</strong> {{ queuer.state().executionCount }}</div>
+      </div>
+
+      <div>
+        <strong>Next Item to Process:</strong>
+        <span> {{ queuer.peekNextItem() ?? 'None' }} </span>
+      </div>
+
+      <div>
+        <strong>Queue Items:</strong>
+        <div>
+          @if (queuer.state().items.length === 0) {
+          <span>Queue is empty</span>
+          } @for (item of queuer.state().items; track item; let i = $index) {
+          <span>
+            {{ item }} @if (i < queuer.state().items.length - 1) {
+            <span>, </span>
+            }
+          </span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Controls</h3>
+      <div>
+        @for (item of ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5']; track item) {
+        <button (click)="addItem(item)" [disabled]="queuer.state().isFull">Add {{ item }}</button>
+        }
+        <button (click)="processNext()" [disabled]="queuer.state().isEmpty">Process Next</button>
+        <button (click)="startProcessing()" [disabled]="queuer.state().isRunning">
+          Start Processing
+        </button>
+        <button (click)="stopProcessing()" [disabled]="!queuer.state().isRunning">
+          Stop Processing
+        </button>
+        <button (click)="clearQueue()" [disabled]="queuer.state().isEmpty">Clear Queue</button>
+        <button (click)="resetQueue()">Reset All</button>
+      </div>
+    </div>
+
+    <div>
+      <h3>Processed Items</h3>
+      <div>
+        @if (processedItems.length === 0) {
+        <span>No items processed yet</span>
+        } @for (item of processedItems; track item; let i = $index) {
+        <div>{{ i + 1 }}. {{ item }}</div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <router-outlet />
+</div>

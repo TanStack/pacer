@@ -5,7 +5,7 @@ title: SolidAsyncBatcher
 
 # Interface: SolidAsyncBatcher\<TValue, TSelected\>
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:11](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L11)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L23)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:11](https://git
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L37)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L49)
 
 Reactive state that will be updated when the batcher state changes
 
@@ -44,13 +44,13 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L43)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L55)
 
 #### Deprecated
 
 Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
-The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-Although, you can make the state reactive by using the `useStore` in your own usage.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
 
 ***
 
@@ -60,7 +60,7 @@ Although, you can make the state reactive by using the `useStore` in your own us
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:28](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L28)
+Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L40)
 
 A Solid component that allows you to subscribe to the batcher state.
 

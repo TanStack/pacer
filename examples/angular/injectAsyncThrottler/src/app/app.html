@@ -1,0 +1,29 @@
+<h1>injectAsyncThrottler example</h1>
+
+<p>
+  Click "Run" rapidly. The underlying async function will run at most once per second (<code
+    >wait: 1000</code
+  >).
+</p>
+
+<label>
+  Query
+  <input
+    [value]="query()"
+    (input)="query.set($any($event.target).value)"
+    placeholder="type something"
+  />
+</label>
+
+<div>
+  <button (click)="run()">Run</button>
+  <button (click)="reset()">Reset</button>
+</div>
+
+<p>Last event: {{ lastEvent() }}</p>
+<p>Last value: {{ lastValue() }}</p>
+
+<h2>Throttler state</h2>
+<pre>{{ throttler.state() }}</pre>
+
+<router-outlet />

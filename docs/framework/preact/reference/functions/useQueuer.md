@@ -12,7 +12,7 @@ function useQueuer<TValue, TSelected>(
 selector): PreactQueuer<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/queuer/useQueuer.ts:170](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L170)
+Defined in: [preact-pacer/src/queuer/useQueuer.ts:194](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L194)
 
 A Preact hook that creates and manages a Queuer instance.
 
@@ -65,6 +65,19 @@ Available state properties:
 - `size`: Number of items currently in the queue
 - `status`: Current processing status ('idle' | 'running' | 'stopped')
 
+## Unmount behavior
+
+By default, the hook stops the queuer when the component unmounts.
+Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+
+```tsx
+const queue = useQueuer(fn, {
+  started: true,
+  wait: 1000,
+  onUnmount: (q) => q.flush()
+});
+```
+
 ## Type Parameters
 
 ### TValue
@@ -84,7 +97,7 @@ Available state properties:
 
 ### options
 
-`QueuerOptions`\<`TValue`\> = `{}`
+[`PreactQueuerOptions`](../interfaces/PreactQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
 ### selector
 

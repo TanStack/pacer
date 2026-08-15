@@ -78,7 +78,7 @@ The arguments from the most recent call to maybeExecute
 ### lastResult
 
 ```ts
-lastResult: ReturnType<TFn> | undefined;
+lastResult: Awaited<ReturnType<TFn>> | undefined;
 ```
 
 Defined in: [async-debouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L32)
@@ -114,7 +114,7 @@ Number of function executions that have completed (either successfully or with e
 ### status
 
 ```ts
-status: "disabled" | "idle" | "pending" | "executing" | "settled";
+status: "disabled" | "idle" | "executing" | "pending" | "settled";
 ```
 
 Defined in: [async-debouncer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L44)

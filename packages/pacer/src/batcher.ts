@@ -148,7 +148,7 @@ export class Batcher<TValue> {
   )
   key: string | undefined
   options: BatcherOptionsWithOptionalCallbacks<TValue>
-  #timeoutId: NodeJS.Timeout | null = null
+  #timeoutId: ReturnType<typeof setTimeout> | null = null
 
   constructor(
     public fn: (items: Array<TValue>) => void,
@@ -164,8 +164,12 @@ export class Batcher<TValue> {
     if (this.key) {
       pacerEventClient.on('d-Batcher', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
+        this.#setState(
+          event.payload.store.state as Partial<BatcherState<TValue>>,
+        )
+        this.setOptions(
+          event.payload.options as Partial<BatcherOptions<TValue>>,
+        )
       })
     }
   }

@@ -1,5 +1,14 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  expectTypeOf,
+  it,
+  vi,
+} from 'vitest'
 import { AsyncDebouncer, asyncDebounce } from '../src/async-debouncer'
+import { getPacerDevtoolsInstance } from '../src'
 
 describe('AsyncDebouncer', () => {
   beforeEach(() => {
@@ -1358,5 +1367,61 @@ describe('asyncDebounce helper function', () => {
       expect(typeof debouncer.getAbortSignal).toBe('function')
       expect(debouncer.getAbortSignal()).toBeNull()
     })
+  })
+})
+
+describe('AsyncDebouncer internal retryer devtools registration', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('should not register internal retryers when the debouncer has no key', async () => {
+    const debouncer = new AsyncDebouncer(async (value: string) => value, {
+      wait: 100,
+    })
+
+    debouncer.maybeExecute('test')
+    await vi.advanceTimersByTimeAsync(100)
+
+    expect(getPacerDevtoolsInstance('undefined-retryer-1')).toBeUndefined()
+    expect(getPacerDevtoolsInstance('undefined-retryer-2')).toBeUndefined()
+  })
+
+  it('should not register per-execution internal retryers when the debouncer has a key', async () => {
+    const debouncer = new AsyncDebouncer(async (value: string) => value, {
+      wait: 100,
+      key: 'my-debouncer',
+    })
+
+    debouncer.maybeExecute('test')
+    await vi.advanceTimersByTimeAsync(100)
+
+    expect(getPacerDevtoolsInstance('my-debouncer-retryer-2')).toBeUndefined()
+    expect(getPacerDevtoolsInstance('my-debouncer')).toBeDefined() // the debouncer itself still registers
+  })
+})
+
+describe('AsyncDebouncer return type inference', () => {
+  it('should resolve to the awaited return type, not a nested promise', () => {
+    const debouncer = new AsyncDebouncer(async (value: string) => value, {
+      wait: 100,
+    })
+    expectTypeOf(debouncer.maybeExecute).returns.toEqualTypeOf<
+      Promise<string | undefined>
+    >()
+    expectTypeOf(debouncer.flush).returns.toEqualTypeOf<
+      Promise<string | undefined>
+    >()
+    expectTypeOf(debouncer.store.state.lastResult).toEqualTypeOf<
+      string | undefined
+    >()
+
+    const debounced = asyncDebounce(async (value: string) => value, {
+      wait: 100,
+    })
+    expectTypeOf(debounced).returns.toEqualTypeOf<Promise<string | undefined>>()
   })
 })

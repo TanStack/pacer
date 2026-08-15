@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { useStore } from '@tanstack/react-store'
+import { shallow, useSelector } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/react-store'
 import type {
@@ -9,6 +9,17 @@ import type {
 } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { FunctionComponent, ReactNode } from 'react'
+
+export interface ReactDebouncerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends DebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: ReactDebouncer<TFn, TSelected>) => void
+}
 
 export interface ReactDebouncer<
   TFn extends AnyFunction,
@@ -39,8 +50,8 @@ export interface ReactDebouncer<
   readonly state: Readonly<TSelected>
   /**
    * @deprecated Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<DebouncerState<TFn>>>
 }
@@ -87,6 +98,18 @@ export interface ReactDebouncer<
  * - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+ *
+ * ## Unmount behavior
+ *
+ * By default, the hook cancels any pending execution when the component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = useDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
  *
  * @example
  * ```tsx
@@ -139,14 +162,13 @@ export interface ReactDebouncer<
  */
 export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: DebouncerOptions<TFn>,
+  options: ReactDebouncerOptions<TFn, TSelected>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): ReactDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().debouncer,
     ...options,
-  } as DebouncerOptions<TFn>
-
+  } as ReactDebouncerOptions<TFn, TSelected>
   const [debouncer] = useState(() => {
     const debouncerInstance = new Debouncer(
       fn,
@@ -157,7 +179,9 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
       selector: (state: DebouncerState<TFn>) => TSelected
       children: ((state: TSelected) => ReactNode) | ReactNode
     }) {
-      const selected = useStore(debouncerInstance.store, props.selector)
+      const selected = useSelector(debouncerInstance.store, props.selector, {
+        compare: shallow,
+      })
 
       return typeof props.children === 'function'
         ? props.children(selected)
@@ -170,13 +194,19 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   debouncer.fn = fn
   debouncer.setOptions(mergedOptions)
 
+  /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
   useEffect(() => {
     return () => {
-      debouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(debouncer)
+      } else {
+        debouncer.cancel()
+      }
     }
-  }, [debouncer])
+  }, [])
+  /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
 
-  const state = useStore(debouncer.store, selector)
+  const state = useSelector(debouncer.store, selector, { compare: shallow })
 
   return useMemo(
     () =>

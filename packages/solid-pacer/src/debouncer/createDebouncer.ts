@@ -1,6 +1,6 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { createEffect, onCleanup } from 'solid-js'
-import { useStore } from '@tanstack/solid-store'
+import { shallow, useSelector } from '@tanstack/solid-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
@@ -9,6 +9,17 @@ import type {
   DebouncerOptions,
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
+
+export interface SolidDebouncerOptions<
+  TFn extends AnyFunction,
+  TSelected = {},
+> extends DebouncerOptions<TFn> {
+  /**
+   * Optional callback invoked when the owning component unmounts. Receives the debouncer instance.
+   * When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.
+   */
+  onUnmount?: (debouncer: SolidDebouncer<TFn, TSelected>) => void
+}
 
 export interface SolidDebouncer<
   TFn extends AnyFunction,
@@ -39,8 +50,8 @@ export interface SolidDebouncer<
   readonly state: Accessor<Readonly<TSelected>>
   /**
    * @deprecated Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive, as it has not been wrapped in a `useStore` hook internally.
-   * Although, you can make the state reactive by using the `useStore` in your own usage.
+   * The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+   * Although, you can make the state reactive by using the `useSelector` in your own usage.
    */
   readonly store: Store<Readonly<DebouncerState<TFn>>>
 }
@@ -88,6 +99,18 @@ export interface SolidDebouncer<
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
  * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
  *
+ * ## Unmount behavior
+ *
+ * By default, the primitive cancels any pending execution when the owning component unmounts.
+ * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+ *
+ * ```tsx
+ * const debouncer = createDebouncer(fn, {
+ *   wait: 500,
+ *   onUnmount: (d) => d.flush()
+ * });
+ * ```
+ *
  * @example
  * ```tsx
  * // Default behavior - no reactive state subscriptions
@@ -132,14 +155,13 @@ export interface SolidDebouncer<
  */
 export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: DebouncerOptions<TFn>,
+  options: SolidDebouncerOptions<TFn, TSelected>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): SolidDebouncer<TFn, TSelected> {
   const mergedOptions = {
     ...useDefaultPacerOptions().debouncer,
     ...options,
-  } as DebouncerOptions<TFn>
-
+  } as SolidDebouncerOptions<TFn, TSelected>
   const asyncDebouncer = new Debouncer<TFn>(
     fn,
     mergedOptions,
@@ -149,18 +171,26 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
     selector: (state: DebouncerState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useStore(asyncDebouncer.store, props.selector)
+    const selected = useSelector(asyncDebouncer.store, props.selector, {
+      compare: shallow,
+    })
 
     return typeof props.children === 'function'
       ? props.children(selected)
       : props.children
   }
 
-  const state = useStore(asyncDebouncer.store, selector)
+  const state = useSelector(asyncDebouncer.store, selector, {
+    compare: shallow,
+  })
 
   createEffect(() => {
     onCleanup(() => {
-      asyncDebouncer.cancel()
+      if (mergedOptions.onUnmount) {
+        mergedOptions.onUnmount(asyncDebouncer)
+      } else {
+        asyncDebouncer.cancel()
+      }
     })
   })
 

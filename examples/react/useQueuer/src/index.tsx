@@ -2,7 +2,7 @@ import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useQueuer } from '@tanstack/react-pacer/queuer'
 import { PacerProvider } from '@tanstack/react-pacer/provider'
-import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 function App1() {
@@ -277,7 +277,7 @@ root.render(
       eventBusConfig={{
         debug: false,
       }}
-      plugins={[{ name: 'TanStack Pacer', render: <PacerDevtoolsPanel /> }]}
+      plugins={[pacerDevtoolsPlugin()]}
     />
   </PacerProvider>,
 )

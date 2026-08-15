@@ -45,7 +45,8 @@ Consider using the `useThrottler` hook instead.
 
 ### options
 
-`ThrottlerOptions`\<`TFn`\>
+[`PreactThrottlerOptions`](../interfaces/PreactThrottlerOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

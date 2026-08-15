@@ -26,6 +26,10 @@ npm install @tanstack/react-devtools @tanstack/react-pacer-devtools
 npm install @tanstack/solid-devtools @tanstack/solid-pacer-devtools
 ```
 
+### Angular
+
+Coming soon...
+
 ## Basic Setup
 
 ### React Setup

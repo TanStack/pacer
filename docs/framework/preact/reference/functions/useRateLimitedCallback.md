@@ -59,7 +59,8 @@ Consider using the `useRateLimiter` hook instead.
 
 ### options
 
-`RateLimiterOptions`\<`TFn`\>
+[`PreactRateLimiterOptions`](../interfaces/PreactRateLimiterOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 

@@ -1,0 +1,39 @@
+<h1>injectAsyncThrottledCallback</h1>
+
+<p>
+  Call the async function rapidly; it executes at most once per wait window. Calls made while
+  throttled return <code>undefined</code>.
+</p>
+
+<div>
+  <label>
+    Value
+    <input [value]="value()" (input)="value.set(($any($event.target).value ?? '').toString())" />
+  </label>
+  <button (click)="runOnce()">Run Once</button>
+  <button (click)="runBurst(10)">Run Burst (10)</button>
+  <button (click)="reset()">Reset</button>
+</div>
+
+<p>Executing: {{ isExecuting() }}</p>
+<p>Last outcome: {{ lastOutcome() }}</p>
+<p>Last result: {{ lastResult() ?? 'none' }}</p>
+
+<h2>History</h2>
+
+@if (history.length === 0) {
+<p>No calls yet.</p>
+} @else {
+<ul>
+  @for (entry of history; track $index) {
+  <li>
+    <div>
+      {{ entry.timestamp }} - {{ entry.value }} - {{ entry.executed ? 'EXECUTED' : 'THROTTLED' }}
+    </div>
+    @if (entry.executed) {
+    <div>Result: {{ entry.result }}</div>
+    }
+  </li>
+  }
+</ul>
+}

@@ -322,7 +322,7 @@ export class AsyncQueuer<TValue> {
     number,
     AsyncRetryer<(item: TValue) => Promise<any>>
   >()
-  #timeoutIds: Set<NodeJS.Timeout> = new Set()
+  #timeoutIds: Set<ReturnType<typeof setTimeout>> = new Set()
 
   constructor(
     public fn: (item: TValue) => Promise<any>,
@@ -356,8 +356,12 @@ export class AsyncQueuer<TValue> {
     if (this.key) {
       pacerEventClient.on('d-AsyncQueuer', (e) => {
         if (e.payload.key !== this.key) return
-        this.#setState(e.payload.store.state)
-        this.setOptions(e.payload.options)
+        this.#setState(
+          e.payload.store.state as Partial<AsyncQueuerState<TValue>>,
+        )
+        this.setOptions(
+          e.payload.options as Partial<AsyncQueuerOptions<TValue>>,
+        )
       })
     }
   }
@@ -427,25 +431,36 @@ export class AsyncQueuer<TValue> {
     this.#checkExpiredItems()
 
     // Process items concurrently up to the concurrency limit
-    const activeItems = this.store.state.activeItems
+    let scheduledAsyncWork = false
+    const activeItems = [...this.store.state.activeItems]
     while (
       activeItems.length < this.#getConcurrency() &&
       this.store.state.items.length > 0
     ) {
       const nextItem = this.peekNextItem()
-      if (!nextItem) {
+      if (nextItem === undefined) {
         break
       }
       activeItems.push(nextItem)
       this.#setState({
-        activeItems,
+        activeItems: [...activeItems],
       })
+      scheduledAsyncWork = true
       ;(async () => {
-        await this.execute()
+        try {
+          await this.execute()
+        } catch {
+          // errors are already surfaced via onError/errorCount (and rethrown to
+          // direct execute/flush callers); swallowing here prevents unhandled
+          // rejections and keeps the processing chain alive
+        }
 
         const wait = this.#getWait()
         if (wait > 0) {
-          const timeoutId = setTimeout(() => this.#tick(), wait)
+          const timeoutId = setTimeout(() => {
+            this.#timeoutIds.delete(timeoutId)
+            this.#tick()
+          }, wait)
           this.#timeoutIds.add(timeoutId)
           return
         }
@@ -454,12 +469,17 @@ export class AsyncQueuer<TValue> {
       })()
     }
 
-    this.#setState({ pendingTick: false })
+    // pendingTick must stay true while executions or wait timers are pending so
+    // that addItem does not trigger an extra tick that bypasses the wait period
+    if (!scheduledAsyncWork) {
+      this.#setState({ pendingTick: false })
+    }
   }
 
   /**
    * Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
    * Items can be inserted based on priority or at the front/back depending on configuration.
+   * `undefined` cannot be queued (it is the internal "no item" sentinel) and is always rejected.
    *
    * @example
    * ```ts
@@ -476,6 +496,16 @@ export class AsyncQueuer<TValue> {
       addItemCount: this.store.state.addItemCount + 1,
     })
 
+    // undefined is the internal "no item" sentinel (peekNextItem/getNextItem);
+    // queuing it would wedge the processing loop and block items behind it
+    if (item === undefined) {
+      this.#setState({
+        rejectionCount: this.store.state.rejectionCount + 1,
+      })
+      this.options.onReject?.(item, this)
+      return false
+    }
+
     if (this.store.state.items.length >= (this.options.maxSize ?? Infinity)) {
       this.#setState({
         rejectionCount: this.store.state.rejectionCount + 1,
@@ -488,7 +518,7 @@ export class AsyncQueuer<TValue> {
     const priority =
       this.options.getPriority !== defaultOptions.getPriority
         ? this.options.getPriority!(item)
-        : (item as any).priority
+        : (item as any)?.priority
 
     const items = this.store.state.items
     const itemTimestamps = this.store.state.itemTimestamps
@@ -499,7 +529,7 @@ export class AsyncQueuer<TValue> {
         const existingPriority =
           this.options.getPriority !== defaultOptions.getPriority
             ? this.options.getPriority!(existing)
-            : (existing as any).priority
+            : (existing as any)?.priority
         return existingPriority < priority
       })
 
@@ -612,10 +642,10 @@ export class AsyncQueuer<TValue> {
         isExecuting: true,
       })
       try {
-        const currentAsyncRetryer = new AsyncRetryer(this.fn, {
-          ...this.options.asyncRetryerOptions,
-          key: `${this.key}-retryer-${currentExecuteCount}`,
-        })
+        const currentAsyncRetryer = new AsyncRetryer(
+          this.fn,
+          this.options.asyncRetryerOptions,
+        )
         this.asyncRetryers.set(currentExecuteCount, currentAsyncRetryer)
         const lastResult = await currentAsyncRetryer.execute(item) // EXECUTE!
         this.#setState({
@@ -633,11 +663,17 @@ export class AsyncQueuer<TValue> {
         }
       } finally {
         this.asyncRetryers.delete(currentExecuteCount) // dispose retryer
+        // remove only one occurrence so duplicate item values keep accurate
+        // concurrency accounting
+        const remainingActiveItems = [...this.store.state.activeItems]
+        const activeItemIndex = remainingActiveItems.indexOf(item)
+        if (activeItemIndex !== -1) {
+          remainingActiveItems.splice(activeItemIndex, 1)
+        }
         this.#setState({
-          activeItems: this.store.state.activeItems.filter(
-            (activeItem) => activeItem !== item,
-          ),
-          isExecuting: false,
+          activeItems: remainingActiveItems,
+          // other executions may still be in flight (concurrency > 1 or flush)
+          isExecuting: this.asyncRetryers.size > 0,
           settledCount: this.store.state.settledCount + 1,
         })
         this.options.onSettled?.(item, this)
@@ -654,10 +690,33 @@ export class AsyncQueuer<TValue> {
     numberOfItems: number = this.store.state.items.length,
     position?: QueuePosition,
   ): Promise<void> => {
-    this.#clearTimeouts() // clear any pending timeouts
-    await Promise.all(
+    this.#clearTimeouts() // clear any pending timeouts (kills the tick chain)
+    const results = await Promise.allSettled(
       Array.from({ length: numberOfItems }, () => this.execute(position)),
     )
+    // the tick chain was killed above; restart it so remaining and future items
+    // process even when a flushed task rejected. Remaining items resume with the
+    // normal wait spacing after the flushed executions.
+    this.#setState({ pendingTick: false })
+    if (this.store.state.isRunning && this.store.state.items.length > 0) {
+      const wait = this.#getWait()
+      if (wait > 0) {
+        this.#setState({ pendingTick: true })
+        const timeoutId = setTimeout(() => {
+          this.#timeoutIds.delete(timeoutId)
+          this.#tick()
+        }, wait)
+        this.#timeoutIds.add(timeoutId)
+      } else {
+        this.#tick()
+      }
+    }
+    const failure = results.find(
+      (result): result is PromiseRejectedResult => result.status === 'rejected',
+    )
+    if (failure) {
+      throw failure.reason
+    }
   }
 
   /**
@@ -667,9 +726,17 @@ export class AsyncQueuer<TValue> {
   flushAsBatch = async (
     batchFunction: (items: Array<TValue>) => Promise<any>,
   ): Promise<void> => {
-    this.#clearTimeouts() // clear any pending timeouts
+    this.#clearTimeouts() // clear any pending timeouts (kills the tick chain)
     const items = this.#getAllItems()
-    await batchFunction(items)
+    try {
+      await batchFunction(items)
+    } finally {
+      // restore the tick chain even when the batch function rejects
+      this.#setState({ pendingTick: false })
+      if (this.store.state.isRunning && this.store.state.items.length > 0) {
+        this.#tick()
+      }
+    }
   }
 
   /**

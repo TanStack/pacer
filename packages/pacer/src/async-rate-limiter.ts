@@ -25,7 +25,7 @@ export interface AsyncRateLimiterState<TFn extends AnyAsyncFunction> {
   /**
    * The result from the most recent successful function execution
    */
-  lastResult: ReturnType<TFn> | undefined
+  lastResult: Awaited<ReturnType<TFn>> | undefined
   /**
    * Number of function executions that have been rejected due to rate limiting
    */
@@ -118,7 +118,7 @@ export interface AsyncRateLimiterOptions<TFn extends AnyAsyncFunction> {
    * Optional function to call when the rate-limited function is executed
    */
   onSuccess?: (
-    result: ReturnType<TFn>,
+    result: Awaited<ReturnType<TFn>>,
     args: Parameters<TFn>,
     rateLimiter: AsyncRateLimiter<TFn>,
   ) => void
@@ -249,7 +249,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   key: string | undefined
   options: AsyncRateLimiterOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
-  #timeoutIds: Set<NodeJS.Timeout> = new Set()
+  #timeoutIds: Set<ReturnType<typeof setTimeout>> = new Set()
 
   constructor(
     public fn: TFn,
@@ -269,8 +269,12 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     if (this.key) {
       pacerEventClient.on('d-AsyncRateLimiter', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state)
-        this.setOptions(event.payload.options)
+        this.#setState(
+          event.payload.store.state as Partial<AsyncRateLimiterState<TFn>>,
+        )
+        this.setOptions(
+          event.payload.options as Partial<AsyncRateLimiterOptions<TFn>>,
+        )
       })
     }
   }
@@ -353,7 +357,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    */
   maybeExecute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> => {
+  ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     this.#setState({
       maybeExecuteCount: this.store.state.maybeExecuteCount + 1,
     })
@@ -376,7 +380,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
 
   #execute = async (
     ...args: Parameters<TFn>
-  ): Promise<ReturnType<TFn> | undefined> => {
+  ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (!this.#getEnabled()) return
 
     const currentMaybeExecute = this.store.state.maybeExecuteCount
@@ -389,10 +393,10 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
 
     try {
       // Create a new AsyncRetryer for this execution to avoid cancelling concurrent executions
-      const currentAsyncRetryer = new AsyncRetryer(this.fn, {
-        ...this.options.asyncRetryerOptions,
-        key: `${this.key}-retryer-${currentMaybeExecute}`,
-      })
+      const currentAsyncRetryer = new AsyncRetryer(
+        this.fn,
+        this.options.asyncRetryerOptions,
+      )
       this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
       const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setCleanupTimeout(now)
@@ -400,7 +404,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         successCount: this.store.state.successCount + 1,
         lastResult: result,
       })
-      this.options.onSuccess?.(result as ReturnType<TFn>, args, this)
+      this.options.onSuccess?.(result as Awaited<ReturnType<TFn>>, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
@@ -412,7 +416,8 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     } finally {
       this.asyncRetryers.delete(currentMaybeExecute) // dispose retryer
       this.#setState({
-        isExecuting: false,
+        // other executions may still be in flight within the window
+        isExecuting: this.asyncRetryers.size > 0,
         settleCount: this.store.state.settleCount + 1,
       })
       this.options.onSettled?.(args, this)
@@ -465,7 +470,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
     }
   }
 
-  #clearTimeout = (timeoutId: NodeJS.Timeout): void => {
+  #clearTimeout = (timeoutId: ReturnType<typeof setTimeout>): void => {
     clearTimeout(timeoutId)
     this.#timeoutIds.delete(timeoutId)
   }

@@ -1,7 +1,55 @@
 cleanupUnusedCatalogs: true
 linkWorkspacePackages: true
 preferWorkspacePackages: true
+blockExoticSubdeps: true
+trustPolicy: 'no-downgrade'
+trustPolicyExclude:
+  - semver@6.3.1
 
 packages:
   - 'examples/**/*'
   - 'packages/*'
+
+overrides:
+  '@tanstack/angular-pacer': 'workspace:*'
+  '@tanstack/pacer': 'workspace:*'
+  '@tanstack/pacer-devtools': 'workspace:*'
+  '@tanstack/pacer-lite': 'workspace:*'
+  '@tanstack/preact-pacer': 'workspace:*'
+  '@tanstack/preact-pacer-devtools': 'workspace:*'
+  '@tanstack/react-pacer': 'workspace:*'
+  '@tanstack/react-pacer-devtools': 'workspace:*'
+  '@tanstack/solid-pacer': 'workspace:*'
+  '@tanstack/solid-pacer-devtools': 'workspace:*'
+
+allowBuilds:
+  # root dependency
+  nx: true
+  unrs-resolver: false # not directly required for build
+  esbuild: true
+
+  # @angular/build
+  '@parcel/watcher': false # optional dep of @angular/build
+  lmdb: false # optional dep of @angular/build
+  msgpackr-extract: false # optional dep of @angular/build
+
+minimumReleaseAgeExclude:
+  - '@eslint-react/ast@5.18.3'
+  - '@eslint-react/core@5.18.3'
+  - '@eslint-react/eslint-plugin@5.18.3'
+  - '@eslint-react/eslint@5.18.3'
+  - '@eslint-react/jsx@5.18.3'
+  - '@eslint-react/shared@5.18.3'
+  - '@eslint-react/var@5.18.3'
+  - '@tanstack/angular-store@0.11.1'
+  - '@tanstack/preact-store@0.13.2'
+  - '@tanstack/react-store@0.11.1'
+  - '@tanstack/solid-store@0.11.1'
+  - '@tanstack/store@0.11.1'
+  - eslint-plugin-react-dom@5.18.3
+  - eslint-plugin-react-jsx@5.18.3
+  - eslint-plugin-react-naming-convention@5.18.3
+  - eslint-plugin-react-rsc@5.18.3
+  - eslint-plugin-react-web-api@5.18.3
+  - eslint-plugin-react-x@5.18.3
+  - knip@6.32.0

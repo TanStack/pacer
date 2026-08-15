@@ -149,11 +149,11 @@ const defaultOptions: Omit<
  */
 export class Throttler<TFn extends AnyFunction> {
   readonly store: Store<Readonly<ThrottlerState<TFn>>> = new Store(
-    getDefaultThrottlerState(),
+    getDefaultThrottlerState<TFn>(),
   )
   key: string | undefined
   options: ThrottlerOptions<TFn>
-  #timeoutId: NodeJS.Timeout | undefined
+  #timeoutId: ReturnType<typeof setTimeout> | undefined
 
   constructor(
     public fn: TFn,
@@ -169,8 +169,10 @@ export class Throttler<TFn extends AnyFunction> {
     if (this.key) {
       pacerEventClient.on('d-Throttler', (event) => {
         if (event.payload.key !== this.key) return
-        this.#setState(event.payload.store.state as ThrottlerState<TFn>)
-        this.setOptions(event.payload.options)
+        this.#setState(
+          event.payload.store.state as Partial<ThrottlerState<TFn>>,
+        )
+        this.setOptions(event.payload.options as Partial<ThrottlerOptions<TFn>>)
       })
     }
   }

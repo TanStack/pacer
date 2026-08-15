@@ -59,7 +59,8 @@ Consider using the `useRateLimiter` hook instead.
 
 ### options
 
-`RateLimiterOptions`\<`TFn`\>
+[`ReactRateLimiterOptions`](../interfaces/ReactRateLimiterOptions.md)\<`TFn`, \{
+\}\>
 
 ## Returns
 
