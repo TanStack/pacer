@@ -3,7 +3,7 @@ title: TanStack Pacer React Adapter
 id: adapter
 ---
 
-If you are using TanStack Pacer in a React application, we recommend using the React Adapter. The React Adapter provides a set of easy-to-use hooks on top of the core Pacer utilities. If you find yourself wanting to use the core Pacer classes/functions directly, the React Adapter will also re-export everything from the core package.
+In a React application, use the React Adapter. Its hooks wrap the core Pacer utilities with lifecycle cleanup and reactive state. The adapter also re-exports everything from the core package, so you can import the plain classes and functions from the same place.
 
 ## Installation
 
@@ -11,13 +11,13 @@ If you are using TanStack Pacer in a React application, we recommend using the R
 npm install @tanstack/react-pacer
 ```
 
-## React Hooks
+## React hooks
 
-See the [React Functions Reference](./reference/index.md) to see the full list of hooks available in the React Adapter.
+See the [React Functions Reference](./reference/index.md) for the full list of hooks in the React Adapter.
 
-## Basic Usage
+## Basic usage
 
-Import a react specific hook from the React Adapter.
+Import a React-specific hook from the React Adapter.
 
 ```tsx
 import { useDebouncedValue } from '@tanstack/react-pacer'
@@ -34,11 +34,11 @@ Or import a core Pacer class/function that is re-exported from the React Adapter
 import { debounce, Debouncer } from '@tanstack/react-pacer' // no need to install the core package separately
 ```
 
-## Option Helpers
+## Option helpers
 
-If you want a type-safe way to define common options for pacer utilities, TanStack Pacer provides option helpers for each utility. These helpers can be used with React hooks.
+Option helpers define shared options with full type checking, so you can declare them once and reuse them across hooks.
 
-### Debouncer Options
+### Debouncer options
 
 ```tsx
 import { useDebouncer } from '@tanstack/react-pacer'
@@ -56,7 +56,7 @@ const debouncer = useDebouncer(
 )
 ```
 
-### Async Queuer Options
+### Async queuer options
 
 ```tsx
 import { useAsyncQueuer } from '@tanstack/react-pacer'
@@ -73,7 +73,7 @@ const queuer = useAsyncQueuer(
 )
 ```
 
-### Rate Limiter Options
+### Rate limiter options
 
 ```tsx
 import { useRateLimiter } from '@tanstack/react-pacer'
@@ -93,7 +93,7 @@ const rateLimiter = useRateLimiter(
 
 ## Provider
 
-The React Adapter provides a `PacerProvider` component that you can use to provide default options to all instances of pacer utilities within your component tree.
+The `PacerProvider` component sets default options for every Pacer utility instance in its component tree.
 
 ```tsx
 import { PacerProvider } from '@tanstack/react-pacer'
@@ -110,15 +110,15 @@ import { PacerProvider } from '@tanstack/react-pacer'
 </PacerProvider>
 ```
 
-All hooks within the provider will automatically use these default options, which can be overridden on a per-hook basis.
+Hooks inside the provider use these defaults. Options passed to an individual hook override them.
 
-## Subscribing to State
+## Subscribing to state
 
 The React adapter supports subscribing to state changes in two ways:
 
-### Using the Subscribe Component
+### Using the Subscribe component
 
-Use the `Subscribe` component to subscribe to state changes deep in your component tree without needing to pass a selector to the hook. This is ideal when you want to subscribe to state in child components.
+Use the `Subscribe` component to read state deep in the component tree without passing a selector to the hook.
 
 ```tsx
 import { useRateLimiter } from '@tanstack/react-pacer'
@@ -150,11 +150,11 @@ function ApiComponent() {
 }
 ```
 
-### Using the Selector Parameter
+### Using the selector parameter
 
-The `selector` parameter allows you to specify which state changes will trigger reactive updates at the hook level, optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+The `selector` parameter controls which state changes trigger reactive updates. State you do not select never causes an update.
 
-**By default, `hook.state` is empty (`{}`) as the selector is empty by default.** You must opt-in to state tracking by providing a selector function.
+Without a selector, `hook.state` is an empty object (`{}`). Pass a selector function to opt in to state tracking.
 
 ```tsx
 import { useDebouncer } from '@tanstack/react-pacer'
@@ -188,7 +188,7 @@ For more details on state management and available state properties, see the ind
 
 ## Examples
 
-### Debouncer Example
+### Debouncer example
 
 ```tsx
 import { useDebouncer } from '@tanstack/react-pacer'
@@ -211,7 +211,7 @@ function SearchComponent() {
 }
 ```
 
-### Async Queuer Example
+### Async queuer example
 
 ```tsx
 import { useAsyncQueuer } from '@tanstack/react-pacer'
@@ -244,7 +244,7 @@ function UploadComponent() {
 }
 ```
 
-### Rate Limiter Example
+### Rate limiter example
 
 ```tsx
 import { useRateLimiter } from '@tanstack/react-pacer'

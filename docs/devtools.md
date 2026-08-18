@@ -5,10 +5,10 @@ id: devtools
 
 What? My debouncer can have dedicated devtools? Yep!
 
-TanStack Pacer provides devtools for debugging and monitoring all your utilities in real-time. The devtools integrate seamlessly within the new [TanStack Devtools](https://tanstack.com/devtools) multi-panel UI.
+TanStack Pacer ships devtools for watching and debugging every registered utility in real time. They run as a plugin inside the [TanStack Devtools](https://tanstack.com/devtools) multi-panel UI.
 
-> [!NOTE] 
-> By default, the TanStack Devtools and TanStack Pacer Devtools will only be included in development mode. This helps keep your production bundle size minimal. If you need to include devtools in production builds (e.g., for debugging production issues), you can use the alternative "production" imports.
+> [!NOTE]
+> The devtools are excluded from production builds by default, so they add nothing to your production bundle. See [Production builds](#production-builds) if you need them in production.
 
 ## Installation
 
@@ -30,9 +30,9 @@ npm install @tanstack/solid-devtools @tanstack/solid-pacer-devtools
 
 Coming soon...
 
-## Basic Setup
+## Basic setup
 
-### React Setup
+### React setup
 
 ```tsx
 import { TanStackDevtools } from '@tanstack/react-devtools'
@@ -54,7 +54,7 @@ function App() {
 }
 ```
 
-### Solid Setup
+### Solid setup
 
 ```tsx
 import { TanStackDevtools } from '@tanstack/solid-devtools'
@@ -76,25 +76,25 @@ function App() {
 }
 ```
 
-## Production Builds
+## Production builds
 
-By default, devtools are excluded from production builds to minimize bundle size. The default imports will return no-op implementations in production:
+The default imports become no-ops in production builds:
 
 ```tsx
-// This will be a no-op in production builds
+// This is a no-op in production builds
 import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
 ```
 
-If you need to include devtools in production builds (e.g., for debugging production issues), use the production-specific imports:
+To debug a production issue with full devtools, switch to the production-specific imports:
 
 ```tsx
-// This will include full devtools even in production builds
+// This includes full devtools even in production builds
 import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools/production'
 ```
 
-## Registering Utilities
+## Registering utilities
 
-Pacer utilities only register with the devtools when you pass a `key`. Keys are no longer generated automatically, so leave the option out if you do not want an instance to appear in the panels.
+A utility only registers with the devtools when you give it a `key`. Leave the option out and the instance stays out of the panels.
 
 ```tsx
 const debouncer = new Debouncer(myDebounceFn, {

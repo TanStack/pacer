@@ -15,7 +15,7 @@ npm install @tanstack/angular-pacer
 
 See the [Angular inject API Reference](./reference/index.md) for the full list of inject functions (injectDebouncer, injectThrottler, injectRateLimiter, injectQueuer, injectBatcher, and their async and callback variants).
 
-## Basic Usage
+## Basic usage
 
 Inject a Pacer utility in your component or service. Each inject function returns an object that exposes methods and a reactive `state()` signal when you pass a selector.
 

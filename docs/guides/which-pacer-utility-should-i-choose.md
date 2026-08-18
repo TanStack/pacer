@@ -19,7 +19,7 @@ TanStack Pacer provides five strategies for controlling when operations run. The
 
 ### Only the final value matters
 
-Use a [debouncer](./debouncing.md). Every call restarts a timer, and the most recent call runs after the activity becomes quiet.
+Use a [debouncer](./debouncing.md). Every call restarts a timer, and the most recent call runs once the calls go quiet.
 
 ### Work should continue at a steady pace
 
