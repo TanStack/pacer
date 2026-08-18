@@ -275,6 +275,23 @@ describe('LiteDebouncer', () => {
       expect(mockFn).toHaveBeenLastCalledWith('second')
     })
 
+    it('should not re-execute args already handled by the leading edge', () => {
+      const mockFn = vi.fn()
+      const debouncer = new LiteDebouncer(mockFn, {
+        wait: 1000,
+        leading: true,
+        trailing: true,
+      })
+
+      debouncer.maybeExecute('only-call')
+      expect(mockFn).toBeCalledTimes(1)
+
+      // The single call was fully handled by the leading edge, so flush
+      // must not execute it a second time
+      debouncer.flush()
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
     it('should flush pending execution even with trailing: false', () => {
       const mockFn = vi.fn()
       const debouncer = new LiteDebouncer(mockFn, {

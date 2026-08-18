@@ -234,8 +234,10 @@ export class Debouncer<TFn extends AnyFunction> {
       this.#execute(...args)
     }
 
-    // Start pending state to indicate that the debouncer is waiting for the trailing edge
-    if (this.options.trailing) {
+    // Start pending state to indicate that the debouncer is waiting for the trailing edge.
+    // Skip if this call already executed on the leading edge, since the timeout
+    // will not perform a trailing execution for it.
+    if (this.options.trailing && !_didLeadingExecute) {
       this.#setState({ isPending: true, lastArgs: args })
     }
 
