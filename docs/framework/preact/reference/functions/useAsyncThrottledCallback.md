@@ -9,7 +9,7 @@ title: useAsyncThrottledCallback
 function useAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottledCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L43)
+Defined in: [async-throttler/useAsyncThrottledCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L43)
 
 A Preact hook that creates a throttled version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncThrottler` hook,
@@ -51,19 +51,7 @@ Consider using the `useAsyncThrottler` hook instead.
 
 ## Returns
 
-```ts
-(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
-```
-
-### Parameters
-
-#### args
-
-...`Parameters`\<`TFn`\>
-
-### Returns
-
-`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
+(...`args`) => `Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
 
 ## Example
 

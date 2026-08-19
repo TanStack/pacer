@@ -5,7 +5,7 @@ title: AngularAsyncBatcherOptions
 
 # Interface: AngularAsyncBatcherOptions\<TValue, TSelected\>
 
-Defined in: [angular-pacer/src/async-batcher/injectAsyncBatcher.ts:12](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L12)
+Defined in: [async-batcher/injectAsyncBatcher.ts:12](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L12)
 
 ## Extends
 
@@ -24,13 +24,13 @@ Defined in: [angular-pacer/src/async-batcher/injectAsyncBatcher.ts:12](https://g
 
 ## Properties
 
-### onUnmount()?
+### onUnmount?
 
 ```ts
-optional onUnmount: (batcher) => void;
+optional onUnmount?: (batcher) => void;
 ```
 
-Defined in: [angular-pacer/src/async-batcher/injectAsyncBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L21)
+Defined in: [async-batcher/injectAsyncBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L21)
 
 Optional callback invoked when the component is destroyed. Receives the batcher instance.
 When provided, replaces the default cleanup (cancel + abort); use it to call flush(), cancel(), add logging, etc.

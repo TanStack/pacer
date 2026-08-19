@@ -9,7 +9,7 @@ title: useThrottledCallback
 function useThrottledCallback<TFn>(fn, options): (...args) => void;
 ```
 
-Defined in: [preact-pacer/src/throttler/useThrottledCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottledCallback.ts#L43)
+Defined in: [throttler/useThrottledCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottledCallback.ts#L43)
 
 A Preact hook that creates a throttled version of a callback function.
 This hook is essentially a wrapper around the basic `throttle` function
@@ -50,19 +50,7 @@ Consider using the `useThrottler` hook instead.
 
 ## Returns
 
-```ts
-(...args): void;
-```
-
-### Parameters
-
-#### args
-
-...`Parameters`\<`TFn`\>
-
-### Returns
-
-`void`
+(...`args`) => `void`
 
 ## Example
 

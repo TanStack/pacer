@@ -8,11 +8,11 @@ title: useAsyncBatcher
 ```ts
 function useAsyncBatcher<TValue, TSelected>(
    fn, 
-   options, 
-selector): ReactAsyncBatcher<TValue, TSelected>;
+   options?, 
+selector?): ReactAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:235](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L235)
+Defined in: [async-batcher/useAsyncBatcher.ts:235](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L235)
 
 A React hook that creates an `AsyncBatcher` instance for managing asynchronous batches of items.
 
@@ -115,11 +115,11 @@ accordingly when using onUnmount with flush.
 
 (`items`) => `Promise`\<`any`\>
 
-### options
+### options?
 
 [`ReactAsyncBatcherOptions`](../interfaces/ReactAsyncBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

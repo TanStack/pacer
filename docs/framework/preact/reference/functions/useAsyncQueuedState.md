@@ -8,11 +8,11 @@ title: useAsyncQueuedState
 ```ts
 function useAsyncQueuedState<TValue, TSelected>(
    fn, 
-   options, 
+   options?, 
    selector?): [TValue[], PreactAsyncQueuer<TValue, TSelected>];
 ```
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuedState.ts:151](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuedState.ts#L151)
+Defined in: [async-queuer/useAsyncQueuedState.ts:151](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuedState.ts#L151)
 
 A higher-level Preact hook that creates an `AsyncQueuer` instance with built-in state management.
 
@@ -78,7 +78,7 @@ Available async queuer state properties:
 
 (`value`) => `Promise`\<`any`\>
 
-### options
+### options?
 
 [`PreactAsyncQueuerOptions`](../interfaces/PreactAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 

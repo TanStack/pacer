@@ -78,7 +78,7 @@ Defined in: [batcher.ts:153](https://github.com/TanStack/pacer/blob/main/package
 
 ## Properties
 
-### fn()
+### fn
 
 ```ts
 fn: (items) => void;

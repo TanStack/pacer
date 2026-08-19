@@ -20,7 +20,7 @@ Options for configuring an async rate-limited function
 ### asyncRetryerOptions?
 
 ```ts
-optional asyncRetryerOptions: AsyncRetryerOptions<TFn>;
+optional asyncRetryerOptions?: AsyncRetryerOptions<TFn>;
 ```
 
 Defined in: [async-rate-limiter.ts:75](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L75)
@@ -32,7 +32,7 @@ Options for configuring the underlying async retryer
 ### enabled?
 
 ```ts
-optional enabled: boolean | (rateLimiter) => boolean;
+optional enabled?: boolean | ((rateLimiter) => boolean);
 ```
 
 Defined in: [async-rate-limiter.ts:81](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L81)
@@ -46,7 +46,7 @@ Defaults to true.
 ### initialState?
 
 ```ts
-optional initialState: Partial<AsyncRateLimiterState<TFn>>;
+optional initialState?: Partial<AsyncRateLimiterState<TFn>>;
 ```
 
 Defined in: [async-rate-limiter.ts:85](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L85)
@@ -58,7 +58,7 @@ Initial state for the rate limiter
 ### key?
 
 ```ts
-optional key: string;
+optional key?: string;
 ```
 
 Defined in: [async-rate-limiter.ts:90](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L90)
@@ -71,7 +71,7 @@ If provided, the async rate limiter will be identified by this key in the devtoo
 ### limit
 
 ```ts
-limit: number | (rateLimiter) => number;
+limit: number | ((rateLimiter) => number);
 ```
 
 Defined in: [async-rate-limiter.ts:95](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L95)
@@ -81,10 +81,10 @@ Can be a number or a function that returns a number.
 
 ***
 
-### onError()?
+### onError?
 
 ```ts
-optional onError: (error, args, rateLimiter) => void;
+optional onError?: (error, args, rateLimiter) => void;
 ```
 
 Defined in: [async-rate-limiter.ts:101](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L101)
@@ -113,10 +113,10 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 ***
 
-### onReject()?
+### onReject?
 
 ```ts
-optional onReject: (args, rateLimiter) => void;
+optional onReject?: (args, rateLimiter) => void;
 ```
 
 Defined in: [async-rate-limiter.ts:109](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L109)
@@ -139,10 +139,10 @@ Optional callback function that is called when an execution is rejected due to r
 
 ***
 
-### onSettled()?
+### onSettled?
 
 ```ts
-optional onSettled: (args, rateLimiter) => void;
+optional onSettled?: (args, rateLimiter) => void;
 ```
 
 Defined in: [async-rate-limiter.ts:113](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L113)
@@ -165,10 +165,10 @@ Optional function to call when the rate-limited function is executed
 
 ***
 
-### onSuccess()?
+### onSuccess?
 
 ```ts
-optional onSuccess: (result, args, rateLimiter) => void;
+optional onSuccess?: (result, args, rateLimiter) => void;
 ```
 
 Defined in: [async-rate-limiter.ts:120](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L120)
@@ -198,7 +198,7 @@ Optional function to call when the rate-limited function is executed
 ### throwOnError?
 
 ```ts
-optional throwOnError: boolean;
+optional throwOnError?: boolean;
 ```
 
 Defined in: [async-rate-limiter.ts:130](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L130)
@@ -212,7 +212,7 @@ Can be explicitly set to override these defaults.
 ### window
 
 ```ts
-window: number | (rateLimiter) => number;
+window: number | ((rateLimiter) => number);
 ```
 
 Defined in: [async-rate-limiter.ts:135](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L135)
@@ -225,7 +225,7 @@ Can be a number or a function that returns a number.
 ### windowType?
 
 ```ts
-optional windowType: "fixed" | "sliding";
+optional windowType?: "fixed" | "sliding";
 ```
 
 Defined in: [async-rate-limiter.ts:142](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L142)

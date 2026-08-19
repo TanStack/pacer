@@ -9,7 +9,7 @@ title: useAsyncBatchedCallback
 function useAsyncBatchedCallback<TValue>(fn, options): (item) => Promise<void>;
 ```
 
-Defined in: [preact-pacer/src/async-batcher/useAsyncBatchedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatchedCallback.ts#L42)
+Defined in: [async-batcher/useAsyncBatchedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatchedCallback.ts#L42)
 
 A Preact hook that creates a batched version of an async callback function.
 This hook is a convenient wrapper around the `useAsyncBatcher` hook,
@@ -49,19 +49,7 @@ Consider using the `useAsyncBatcher` hook instead.
 
 ## Returns
 
-```ts
-(item): Promise<void>;
-```
-
-### Parameters
-
-#### item
-
-`TValue`
-
-### Returns
-
-`Promise`\<`void`\>
+(`item`) => `Promise`\<`void`\>
 
 ## Example
 

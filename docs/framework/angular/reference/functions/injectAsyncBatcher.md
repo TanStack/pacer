@@ -8,11 +8,11 @@ title: injectAsyncBatcher
 ```ts
 function injectAsyncBatcher<TValue, TSelected>(
    fn, 
-   options, 
-selector): AngularAsyncBatcher<TValue, TSelected>;
+   options?, 
+selector?): AngularAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-batcher/injectAsyncBatcher.ts:96](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L96)
+Defined in: [async-batcher/injectAsyncBatcher.ts:96](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L96)
 
 An Angular function that creates and manages an AsyncBatcher instance.
 
@@ -63,11 +63,11 @@ When using onUnmount with flush, guard your callbacks since the component may al
 
 (`items`) => `Promise`\<`any`\>
 
-### options
+### options?
 
 [`AngularAsyncBatcherOptions`](../interfaces/AngularAsyncBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

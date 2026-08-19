@@ -20,7 +20,7 @@ Options for configuring an async debounced function
 ### asyncRetryerOptions?
 
 ```ts
-optional asyncRetryerOptions: AsyncRetryerOptions<TFn>;
+optional asyncRetryerOptions?: AsyncRetryerOptions<TFn>;
 ```
 
 Defined in: [async-debouncer.ts:75](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L75)
@@ -32,7 +32,7 @@ Options for configuring the underlying async retryer
 ### enabled?
 
 ```ts
-optional enabled: boolean | (debouncer) => boolean;
+optional enabled?: boolean | ((debouncer) => boolean);
 ```
 
 Defined in: [async-debouncer.ts:81](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L81)
@@ -46,7 +46,7 @@ Defaults to true.
 ### initialState?
 
 ```ts
-optional initialState: Partial<AsyncDebouncerState<TFn>>;
+optional initialState?: Partial<AsyncDebouncerState<TFn>>;
 ```
 
 Defined in: [async-debouncer.ts:85](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L85)
@@ -58,7 +58,7 @@ Initial state for the async debouncer
 ### key?
 
 ```ts
-optional key: string;
+optional key?: string;
 ```
 
 Defined in: [async-debouncer.ts:90](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L90)
@@ -71,7 +71,7 @@ If provided, the async debouncer will be identified by this key in the devtools 
 ### leading?
 
 ```ts
-optional leading: boolean;
+optional leading?: boolean;
 ```
 
 Defined in: [async-debouncer.ts:95](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L95)
@@ -81,10 +81,10 @@ Defaults to false.
 
 ***
 
-### onError()?
+### onError?
 
 ```ts
-optional onError: (error, args, debouncer) => void;
+optional onError?: (error, args, debouncer) => void;
 ```
 
 Defined in: [async-debouncer.ts:101](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L101)
@@ -113,10 +113,10 @@ This can be used alongside throwOnError - the handler will be called before any 
 
 ***
 
-### onSettled()?
+### onSettled?
 
 ```ts
-optional onSettled: (args, debouncer) => void;
+optional onSettled?: (args, debouncer) => void;
 ```
 
 Defined in: [async-debouncer.ts:109](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L109)
@@ -139,10 +139,10 @@ Optional callback to call when the debounced function is executed
 
 ***
 
-### onSuccess()?
+### onSuccess?
 
 ```ts
-optional onSuccess: (result, args, debouncer) => void;
+optional onSuccess?: (result, args, debouncer) => void;
 ```
 
 Defined in: [async-debouncer.ts:113](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L113)
@@ -172,7 +172,7 @@ Optional callback to call when the debounced function is executed
 ### throwOnError?
 
 ```ts
-optional throwOnError: boolean;
+optional throwOnError?: boolean;
 ```
 
 Defined in: [async-debouncer.ts:123](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L123)
@@ -186,7 +186,7 @@ Can be explicitly set to override these defaults.
 ### trailing?
 
 ```ts
-optional trailing: boolean;
+optional trailing?: boolean;
 ```
 
 Defined in: [async-debouncer.ts:128](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L128)
@@ -199,7 +199,7 @@ Defaults to true.
 ### wait
 
 ```ts
-wait: number | (debouncer) => number;
+wait: number | ((debouncer) => number);
 ```
 
 Defined in: [async-debouncer.ts:134](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L134)

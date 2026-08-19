@@ -112,7 +112,7 @@
     "@tanstack/pacer": "workspace:*"
   },
   "devDependencies": {
-    "@angular/core": "^22.1.0",
+    "@angular/core": "^22.1.2",
     "@types/node": "^26.1.2"
   },
   "peerDependencies": {

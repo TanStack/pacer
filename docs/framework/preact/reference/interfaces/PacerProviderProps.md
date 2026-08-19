@@ -5,7 +5,7 @@ title: PacerProviderProps
 
 # Interface: PacerProviderProps
 
-Defined in: [preact-pacer/src/provider/PacerProvider.tsx:38](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L38)
+Defined in: [provider/PacerProvider.tsx:38](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L38)
 
 ## Properties
 
@@ -15,14 +15,14 @@ Defined in: [preact-pacer/src/provider/PacerProvider.tsx:38](https://github.com/
 children: ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/provider/PacerProvider.tsx:39](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L39)
+Defined in: [provider/PacerProvider.tsx:39](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L39)
 
 ***
 
 ### defaultOptions?
 
 ```ts
-optional defaultOptions: PacerProviderOptions;
+optional defaultOptions?: PacerProviderOptions;
 ```
 
-Defined in: [preact-pacer/src/provider/PacerProvider.tsx:40](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L40)
+Defined in: [provider/PacerProvider.tsx:40](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/provider/PacerProvider.tsx#L40)

@@ -5,7 +5,7 @@ title: ReactAsyncQueuer
 
 # Interface: ReactAsyncQueuer\<TValue, TSelected\>
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L23)
+Defined in: [async-queuer/useAsyncQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L23)
 
 ## Extends
 
@@ -30,7 +30,7 @@ Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:23](https://github.c
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L49)
+Defined in: [async-queuer/useAsyncQueuer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L49)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -44,7 +44,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L55)
+Defined in: [async-queuer/useAsyncQueuer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L55)
 
 #### Deprecated
 
@@ -54,13 +54,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L40)
+Defined in: [async-queuer/useAsyncQueuer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L40)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the queuer state.
 
@@ -79,7 +79,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`ReactNode` \| (`state`) => `ReactNode`
+`ReactNode` \| ((`state`) => `ReactNode`)
 
 ###### selector
 

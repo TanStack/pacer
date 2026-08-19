@@ -9,10 +9,10 @@ title: useAsyncThrottler
 function useAsyncThrottler<TFn, TSelected>(
    fn, 
    options, 
-selector): ReactAsyncThrottler<TFn, TSelected>;
+selector?): ReactAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:225](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L225)
+Defined in: [async-throttler/useAsyncThrottler.ts:225](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L225)
 
 A low-level React hook that creates an `AsyncThrottler` instance to limit how often an async function can execute.
 
@@ -106,7 +106,7 @@ accordingly when using onUnmount with flush.
 
 [`ReactAsyncThrottlerOptions`](../interfaces/ReactAsyncThrottlerOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

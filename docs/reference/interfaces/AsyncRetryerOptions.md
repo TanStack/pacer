@@ -18,7 +18,7 @@ Defined in: [async-retryer.ts:59](https://github.com/TanStack/pacer/blob/main/pa
 ### backoff?
 
 ```ts
-optional backoff: "linear" | "exponential" | "fixed";
+optional backoff?: "linear" | "exponential" | "fixed";
 ```
 
 Defined in: [async-retryer.ts:67](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L67)
@@ -39,7 +39,7 @@ The backoff strategy for retry delays:
 ### baseWait?
 
 ```ts
-optional baseWait: number | (retryer) => number;
+optional baseWait?: number | ((retryer) => number);
 ```
 
 Defined in: [async-retryer.ts:72](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L72)
@@ -57,7 +57,7 @@ Base wait time in milliseconds between retries, or a function that returns the w
 ### enabled?
 
 ```ts
-optional enabled: boolean | (retryer) => boolean;
+optional enabled?: boolean | ((retryer) => boolean);
 ```
 
 Defined in: [async-retryer.ts:77](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L77)
@@ -75,7 +75,7 @@ true
 ### initialState?
 
 ```ts
-optional initialState: Partial<AsyncRetryerState<TFn>>;
+optional initialState?: Partial<AsyncRetryerState<TFn>>;
 ```
 
 Defined in: [async-retryer.ts:81](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L81)
@@ -87,7 +87,7 @@ Initial state to merge with the default state
 ### jitter?
 
 ```ts
-optional jitter: number;
+optional jitter?: number;
 ```
 
 Defined in: [async-retryer.ts:86](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L86)
@@ -105,7 +105,7 @@ Jitter percentage to add to retry delays (0-1). Adds randomness to prevent thund
 ### key?
 
 ```ts
-optional key: string;
+optional key?: string;
 ```
 
 Defined in: [async-retryer.ts:94](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L94)
@@ -121,7 +121,7 @@ not register with the devtools event bus.
 ### maxAttempts?
 
 ```ts
-optional maxAttempts: number | (retryer) => number;
+optional maxAttempts?: number | ((retryer) => number);
 ```
 
 Defined in: [async-retryer.ts:99](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L99)
@@ -139,7 +139,7 @@ Maximum number of retry attempts, or a function that returns the max attempts
 ### maxExecutionTime?
 
 ```ts
-optional maxExecutionTime: number;
+optional maxExecutionTime?: number;
 ```
 
 Defined in: [async-retryer.ts:104](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L104)
@@ -157,7 +157,7 @@ Infinity
 ### maxTotalExecutionTime?
 
 ```ts
-optional maxTotalExecutionTime: number;
+optional maxTotalExecutionTime?: number;
 ```
 
 Defined in: [async-retryer.ts:109](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L109)
@@ -175,7 +175,7 @@ Infinity
 ### maxWait?
 
 ```ts
-optional maxWait: number | (retryer) => number;
+optional maxWait?: number | ((retryer) => number);
 ```
 
 Defined in: [async-retryer.ts:114](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L114)
@@ -190,10 +190,10 @@ Infinity
 
 ***
 
-### onAbort()?
+### onAbort?
 
 ```ts
-optional onAbort: (reason, retryer) => void;
+optional onAbort?: (reason, retryer) => void;
 ```
 
 Defined in: [async-retryer.ts:118](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L118)
@@ -204,7 +204,7 @@ Callback invoked when the execution is aborted (manually or due to timeouts)
 
 ##### reason
 
-`"manual"` | `"execution-timeout"` | `"total-timeout"` | `"new-execution"`
+`"manual"` \| `"execution-timeout"` \| `"total-timeout"` \| `"new-execution"`
 
 ##### retryer
 
@@ -216,10 +216,10 @@ Callback invoked when the execution is aborted (manually or due to timeouts)
 
 ***
 
-### onError()?
+### onError?
 
 ```ts
-optional onError: (error, args, retryer) => void;
+optional onError?: (error, args, retryer) => void;
 ```
 
 Defined in: [async-retryer.ts:125](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L125)
@@ -246,10 +246,10 @@ Callback invoked when any error occurs during execution (including retries)
 
 ***
 
-### onExecutionTimeout()?
+### onExecutionTimeout?
 
 ```ts
-optional onExecutionTimeout: (retryer) => void;
+optional onExecutionTimeout?: (retryer) => void;
 ```
 
 Defined in: [async-retryer.ts:133](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L133)
@@ -268,10 +268,10 @@ Callback invoked when a single execution attempt times out (maxExecutionTime exc
 
 ***
 
-### onLastError()?
+### onLastError?
 
 ```ts
-optional onLastError: (error, retryer) => void;
+optional onLastError?: (error, retryer) => void;
 ```
 
 Defined in: [async-retryer.ts:137](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L137)
@@ -294,10 +294,10 @@ Callback invoked when the final error occurs after all retries are exhausted
 
 ***
 
-### onRetry()?
+### onRetry?
 
 ```ts
-optional onRetry: (attempt, error, retryer) => void;
+optional onRetry?: (attempt, error, retryer) => void;
 ```
 
 Defined in: [async-retryer.ts:141](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L141)
@@ -324,10 +324,10 @@ Callback invoked before each retry attempt
 
 ***
 
-### onSettled()?
+### onSettled?
 
 ```ts
-optional onSettled: (args, retryer) => void;
+optional onSettled?: (args, retryer) => void;
 ```
 
 Defined in: [async-retryer.ts:145](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L145)
@@ -350,10 +350,10 @@ Callback invoked after execution completes (success or failure) of each attempt
 
 ***
 
-### onSuccess()?
+### onSuccess?
 
 ```ts
-optional onSuccess: (result, args, retryer) => void;
+optional onSuccess?: (result, args, retryer) => void;
 ```
 
 Defined in: [async-retryer.ts:149](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L149)
@@ -380,10 +380,10 @@ Callback invoked when execution succeeds
 
 ***
 
-### onTotalExecutionTimeout()?
+### onTotalExecutionTimeout?
 
 ```ts
-optional onTotalExecutionTimeout: (retryer) => void;
+optional onTotalExecutionTimeout?: (retryer) => void;
 ```
 
 Defined in: [async-retryer.ts:157](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L157)
@@ -405,7 +405,7 @@ Callback invoked when the total execution time times out (maxTotalExecutionTime 
 ### throwOnError?
 
 ```ts
-optional throwOnError: boolean | "last";
+optional throwOnError?: boolean | "last";
 ```
 
 Defined in: [async-retryer.ts:165](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L165)

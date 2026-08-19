@@ -8,11 +8,11 @@ title: useQueuedState
 ```ts
 function useQueuedState<TValue, TSelected>(
    fn, 
-   options, 
+   options?, 
    selector?): [TValue[], (item, position?, runOnItemsChange?) => boolean, PreactQueuer<TValue, TSelected>];
 ```
 
-Defined in: [preact-pacer/src/queuer/useQueuedState.ts:119](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuedState.ts#L119)
+Defined in: [queuer/useQueuedState.ts:119](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuedState.ts#L119)
 
 A Preact hook that creates a queuer with managed state, combining Preact's useState with queuing functionality.
 This hook provides both the current queue state and queue control methods.
@@ -69,7 +69,7 @@ Available queuer state properties:
 
 (`item`) => `void`
 
-### options
+### options?
 
 [`PreactQueuerOptions`](../interfaces/PreactQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
