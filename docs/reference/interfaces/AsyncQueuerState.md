@@ -51,10 +51,10 @@ Number of task executions that have resulted in errors
 
 ***
 
-### executeCount
+### executionCount
 
 ```ts
-executeCount: number;
+executionCount: number;
 ```
 
 Defined in: [async-queuer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L25)

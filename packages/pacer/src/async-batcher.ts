@@ -11,9 +11,9 @@ export interface AsyncBatcherState<TValue> {
    */
   errorCount: number
   /**
-   * Number of batch executions that have been executed
+   * Number of batch executions that have been started
    */
-  executeCount: number
+  executionCount: number
   /**
    * Array of items that failed during batch processing
    */
@@ -67,7 +67,7 @@ export interface AsyncBatcherState<TValue> {
 function getDefaultAsyncBatcherState<TValue>(): AsyncBatcherState<TValue> {
   return {
     errorCount: 0,
-    executeCount: 0,
+    executionCount: 0,
     failedItems: [],
     isEmpty: true,
     isExecuting: false,
@@ -380,19 +380,19 @@ export class AsyncBatcher<TValue> {
       return undefined
     }
 
-    const currentExecuteCount = this.store.state.executeCount + 1
+    const currentExecutionCount = this.store.state.executionCount + 1
     const batch = this.peekAllItems() // copy of the items to be processed (to prevent race conditions)
     this.clear() // Clear items before processing to prevent race conditions
     this.options.onItemsChange?.(this)
 
-    this.#setState({ isExecuting: true, executeCount: currentExecuteCount })
+    this.#setState({ isExecuting: true, executionCount: currentExecutionCount })
 
     try {
       const currentAsyncRetryer = new AsyncRetryer(
         this.fn,
         this.options.asyncRetryerOptions,
       )
-      this.asyncRetryers.set(currentExecuteCount, currentAsyncRetryer)
+      this.asyncRetryers.set(currentExecutionCount, currentAsyncRetryer)
       const result = await currentAsyncRetryer.execute(batch) // EXECUTE
       this.#setState({
         totalItemsProcessed:
@@ -414,7 +414,7 @@ export class AsyncBatcher<TValue> {
       }
       return undefined
     } finally {
-      this.asyncRetryers.delete(currentExecuteCount) // dispose retryer
+      this.asyncRetryers.delete(currentExecutionCount) // dispose retryer
       this.#setState({
         isExecuting: false,
         settleCount: this.store.state.settleCount + 1,
@@ -458,10 +458,10 @@ export class AsyncBatcher<TValue> {
 
   /**
    * Returns the AbortSignal for a specific execution.
-   * If no executeCount is provided, returns the signal for the most recent execution.
+   * If no executionCount is provided, returns the signal for the most recent execution.
    * Returns null if no execution is found or not currently executing.
    *
-   * @param executeCount - Optional specific execution to get signal for
+   * @param executionCount - Optional specific execution to get signal for
    * @example
    * ```typescript
    * const batcher = new AsyncBatcher(
@@ -480,8 +480,8 @@ export class AsyncBatcher<TValue> {
    * )
    * ```
    */
-  getAbortSignal = (executeCount?: number): AbortSignal | null => {
-    const count = executeCount ?? this.store.state.executeCount
+  getAbortSignal = (executionCount?: number): AbortSignal | null => {
+    const count = executionCount ?? this.store.state.executionCount
     const retryer = this.asyncRetryers.get(count)
     return retryer?.getAbortSignal() ?? null
   }

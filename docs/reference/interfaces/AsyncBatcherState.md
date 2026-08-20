@@ -27,15 +27,15 @@ Number of batch executions that have resulted in errors
 
 ***
 
-### executeCount
+### executionCount
 
 ```ts
-executeCount: number;
+executionCount: number;
 ```
 
 Defined in: [async-batcher.ts:16](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L16)
 
-Number of batch executions that have been executed
+Number of batch executions that have been started
 
 ***
 
