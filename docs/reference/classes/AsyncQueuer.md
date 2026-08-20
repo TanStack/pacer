@@ -321,18 +321,18 @@ The queue is cleared after processing
 ### getAbortSignal()
 
 ```ts
-getAbortSignal(executeCount?): AbortSignal | null;
+getAbortSignal(executionCount?): AbortSignal | null;
 ```
 
 Defined in: [async-queuer.ts:889](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L889)
 
 Returns the AbortSignal for a specific execution.
-If no executeCount is provided, returns the signal for the most recent execution.
+If no executionCount is provided, returns the signal for the most recent execution.
 Returns null if no execution is found or not currently executing.
 
 #### Parameters
 
-##### executeCount?
+##### executionCount?
 
 `number`
 
