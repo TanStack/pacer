@@ -5,22 +5,22 @@ on:
     branches: [main, alpha, beta, rc]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+  queue: max
 
-env:
-  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-
-permissions:
-  contents: write
-  id-token: write
-  pull-requests: write
+permissions: {}
 
 jobs:
-  release:
-    name: Release
+  test:
+    name: Test
     if: github.repository_owner == 'TanStack'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -31,12 +31,167 @@ jobs:
         uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
       - name: Run Tests
         run: pnpm run test:ci
-      - name: Run Changesets (version or publish)
-        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b # v1.8.0
+
+  select-mode:
+    name: Select Mode
+    if: github.repository_owner == 'TanStack'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      mode: ${{ steps.changesets.outputs.mode }}
+      publish-plan-artifact-id: ${{ steps.changesets.outputs.publish-plan-artifact-id }}
+      prerelease-tag: ${{ steps.release-channel.outputs.prerelease-tag }}
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          version: pnpm run changeset:version
-          publish: pnpm run changeset:publish
-          commit: 'ci: Version Packages'
-          title: 'ci: Version Packages'
+          persist-credentials: false
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        with:
+          cache: false
+      - name: Setup Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Root-only install
+        run: pnpm install --filter . --frozen-lockfile --ignore-scripts
+      - name: Determine Release Channel
+        id: release-channel
+        run: |
+          if [[ "$GITHUB_REF_NAME" == "main" ]]; then
+            echo "prerelease-tag=" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease-tag=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Validate Stable Release State
+        if: steps.release-channel.outputs.prerelease-tag == ''
+        run: |
+          if [[ -f ".changeset/pre.json" ]]; then
+            echo "::error title=Changesets release state mismatch::Changesets uses .changeset/pre.json, not the Git branch, to choose pre-release versions and npm dist-tags. Pacer reserves main for stable releases, so run 'pnpm changeset pre exit' and commit the result before releasing from main."
+            exit 1
+          fi
+      - name: Select Release Mode
+        id: changesets
+        uses: changesets/action/select-mode@198f833dd7d863100ea6e28967bc9a9fdefadb0a # v2.1.0
+      - name: Validate Pre-Release State
+        if: steps.changesets.outputs.mode == 'publish' && steps.release-channel.outputs.prerelease-tag != ''
+        run: |
+          if ! actual_tag="$(jq -er '.tag' .changeset/pre.json)"; then
+            echo "::error title=Changesets release state mismatch::Changesets uses .changeset/pre.json, not the Git branch, to choose pre-release versions and npm dist-tags. Pacer's $GITHUB_REF_NAME branch convention requires committed pre-release state with the $EXPECTED_TAG tag before publishing."
+            exit 1
+          fi
+          if [[ "$actual_tag" != "$EXPECTED_TAG" ]]; then
+            echo "::error title=Changesets release state mismatch::Changesets will publish with the $actual_tag dist-tag from .changeset/pre.json, while Pacer's $GITHUB_REF_NAME branch convention expects $EXPECTED_TAG. Update and commit the pre-release state so Changesets and the branch convention agree."
+            exit 1
+          fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EXPECTED_TAG: ${{ steps.release-channel.outputs.prerelease-tag }}
+
+  version:
+    name: Version
+    needs: [test, select-mode]
+    if: needs.select-mode.outputs.mode == 'version'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Tools
+        uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
+      - name: Enter Pre-Release Mode
+        if: needs.select-mode.outputs.prerelease-tag != '' && !hashFiles('.changeset/pre.json')
+        run: pnpm changeset pre enter "$PRERELEASE_TAG"
+        env:
+          PRERELEASE_TAG: ${{ needs.select-mode.outputs.prerelease-tag }}
+      - name: Validate Pre-Release State
+        if: needs.select-mode.outputs.prerelease-tag != ''
+        run: |
+          if ! actual_tag="$(jq -er '.tag' .changeset/pre.json)"; then
+            echo "::error title=Changesets release state mismatch::Changesets uses .changeset/pre.json, not the Git branch, to choose pre-release versions and npm dist-tags. Pacer's $GITHUB_REF_NAME branch convention requires pre-release state with the $EXPECTED_TAG tag before versioning."
+            exit 1
+          fi
+          if [[ "$actual_tag" != "$EXPECTED_TAG" ]]; then
+            echo "::error title=Changesets release state mismatch::Changesets will version packages with the $actual_tag dist-tag from .changeset/pre.json, while Pacer's $GITHUB_REF_NAME branch convention expects $EXPECTED_TAG. Update and commit the pre-release state so Changesets and the branch convention agree."
+            exit 1
+          fi
+        env:
+          EXPECTED_TAG: ${{ needs.select-mode.outputs.prerelease-tag }}
+      - name: Create or Update Release Pull Request
+        uses: changesets/action/version@198f833dd7d863100ea6e28967bc9a9fdefadb0a # v2.1.0
+        with:
+          github-token: ${{ github.token }}
+          script: pnpm run changeset:version
+          pr-title: 'ci: Version Packages'
+          commit-message: 'ci: Version Packages'
+
+  pack:
+    name: Build and Pack
+    needs: [test, select-mode]
+    if: needs.select-mode.outputs.mode == 'publish'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+    outputs:
+      pack-dir-artifact-id: ${{ steps.pack.outputs.pack-dir-artifact-id }}
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Setup Tools
+        uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
+      - name: Build Packages
+        run: pnpm run build:all
+      - name: Pack Packages
+        id: pack
+        uses: changesets/action/pack@198f833dd7d863100ea6e28967bc9a9fdefadb0a # v2.1.0
+        with:
+          publish-plan-artifact-id: ${{ needs.select-mode.outputs.publish-plan-artifact-id }}
+
+  publish:
+    name: Publish
+    needs: [select-mode, pack]
+    if: needs.select-mode.outputs.mode == 'publish'
+    runs-on: ubuntu-latest
+    environment: npm
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        with:
+          cache: false
+      - name: Setup Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Root-only install
+        run: pnpm install --filter . --frozen-lockfile --ignore-scripts
+      - name: Publish Packed Packages
+        uses: changesets/action/publish@198f833dd7d863100ea6e28967bc9a9fdefadb0a # v2.1.0
+        with:
+          github-token: ${{ github.token }}
+          pack-dir-artifact-id: ${{ needs.pack.outputs.pack-dir-artifact-id }}
+          create-github-releases: true
+          push-git-tags: true
