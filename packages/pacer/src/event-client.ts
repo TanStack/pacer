@@ -13,17 +13,73 @@ export interface PacerDevtoolsWirePayload {
   options: unknown
 }
 
-const pacerDevtoolsInstancesByKey = new Map<string, unknown>()
+/**
+ * The panel is a same-runtime consumer of live instances. Keep a replayable
+ * registry and direct subscription alongside the serialized event-bus
+ * transport so a lazy-mounted panel does not depend on its connection window.
+ */
+const pacerDevtoolsInstancesByKey = new Map<
+  string,
+  PacerDevtoolsStoredInstance
+>()
+const pacerDevtoolsInstanceListeners = new Set<
+  (registration: PacerDevtoolsInstanceRegistration) => void
+>()
+
+export interface PacerDevtoolsInstanceRegistration {
+  event: PacerEventName
+  key: string
+  instance: unknown
+}
+
+type PacerDevtoolsStoredInstance = {
+  event?: PacerEventName
+  key: string
+  instance: unknown
+}
 
 export function registerPacerDevtoolsInstance(
   key: string,
   instance: unknown,
 ): void {
-  pacerDevtoolsInstancesByKey.set(key, instance)
+  const previous = pacerDevtoolsInstancesByKey.get(key)
+  pacerDevtoolsInstancesByKey.set(key, {
+    event: previous?.event,
+    key,
+    instance,
+  })
 }
 
 export function getPacerDevtoolsInstance(key: string): unknown {
-  return pacerDevtoolsInstancesByKey.get(key)
+  return pacerDevtoolsInstancesByKey.get(key)?.instance
+}
+
+function notifyPacerDevtoolsInstanceListener(
+  listener: (registration: PacerDevtoolsInstanceRegistration) => void,
+  registration: PacerDevtoolsInstanceRegistration,
+): void {
+  try {
+    listener(registration)
+  } catch {
+    // Devtools observers must never affect application behavior.
+  }
+}
+
+export function subscribeToPacerDevtoolsInstances(
+  listener: (registration: PacerDevtoolsInstanceRegistration) => void,
+): () => void {
+  pacerDevtoolsInstanceListeners.add(listener)
+  for (const registration of pacerDevtoolsInstancesByKey.values()) {
+    if (registration.event) {
+      notifyPacerDevtoolsInstanceListener(listener, {
+        ...registration,
+        event: registration.event,
+      })
+    }
+  }
+  return () => {
+    pacerDevtoolsInstanceListeners.delete(listener)
+  }
 }
 
 function cloneJsonSafe(value: unknown): unknown {
@@ -122,8 +178,12 @@ export const emitChange = <TEvent extends keyof PacerEventMap>(
   if (!key) {
     return
   }
-  registerPacerDevtoolsInstance(key, instance)
+  const registration = { event, key, instance }
+  pacerDevtoolsInstancesByKey.set(key, registration)
   pacerEventClient.emit(event, toPacerDevtoolsWirePayload({ ...instance, key }))
+  for (const listener of pacerDevtoolsInstanceListeners) {
+    notifyPacerDevtoolsInstanceListener(listener, registration)
+  }
 }
 
 export const pacerEventClient = new PacerEventClient()

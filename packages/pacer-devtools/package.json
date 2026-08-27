@@ -77,7 +77,7 @@
     "src"
   ],
   "peerDependencies": {
-    "@tanstack/pacer": ">=0.16.4"
+    "@tanstack/pacer": ">=0.21.2"
   },
   "dependencies": {
     "@tanstack/devtools-ui": "0.6.0",
