@@ -237,6 +237,39 @@ describe('AsyncDebouncer', () => {
       expect(mockFn).toHaveBeenLastCalledWith('fifth')
       await promise5
     })
+
+    it('should execute a trailing call scheduled after a prior execution', async () => {
+      const mockFn = vi.fn(
+        (_: string) =>
+          new Promise((resolve) => setTimeout(() => resolve('result'), 500)),
+      )
+      const debouncer = new AsyncDebouncer(mockFn, {
+        wait: 1000,
+        leading: true,
+        trailing: true,
+      })
+
+      // First call - should execute immediately
+      const promise1 = debouncer.maybeExecute('first')
+      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toBeCalledWith('first')
+
+      // Second call enqueued during first execution
+      const promise2 = debouncer.maybeExecute('second')
+      expect(mockFn).toBeCalledTimes(1)
+
+      // Advance past first execution
+      vi.advanceTimersByTime(500)
+      await promise1
+
+      // Trigger second execution
+      vi.advanceTimersByTime(1000)
+      await promise2
+
+      // Verify trailing execution occurred
+      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenLastCalledWith('second')
+    })
   })
 
   describe('Promise Handling', () => {
