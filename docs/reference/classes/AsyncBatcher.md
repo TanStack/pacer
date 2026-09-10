@@ -3,8 +3,6 @@ id: AsyncBatcher
 title: AsyncBatcher
 ---
 
-# Class: AsyncBatcher\<TValue\>
-
 Defined in: [async-batcher.ts:265](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L265)
 
 A class that collects items and processes them in batches asynchronously.

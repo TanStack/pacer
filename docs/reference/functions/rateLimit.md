@@ -3,8 +3,6 @@ id: rateLimit
 title: rateLimit
 ---
 
-# Function: rateLimit()
-
 ```ts
 function rateLimit<TFn>(fn, initialOptions): (...args) => boolean;
 ```

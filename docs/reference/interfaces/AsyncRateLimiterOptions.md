@@ -3,8 +3,6 @@ id: AsyncRateLimiterOptions
 title: AsyncRateLimiterOptions
 ---
 
-# Interface: AsyncRateLimiterOptions\<TFn\>
-
 Defined in: [async-rate-limiter.ts:71](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L71)
 
 Options for configuring an async rate-limited function

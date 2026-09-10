@@ -3,8 +3,6 @@ id: AsyncThrottler
 title: AsyncThrottler
 ---
 
-# Class: AsyncThrottler\<TFn\>
-
 Defined in: [async-throttler.ts:230](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L230)
 
 A class that creates an async throttled function.

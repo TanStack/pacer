@@ -3,8 +3,6 @@ id: AngularAsyncDebouncerOptions
 title: AngularAsyncDebouncerOptions
 ---
 
-# Interface: AngularAsyncDebouncerOptions\<TFn, TSelected\>
-
 Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L13)
 
 ## Extends

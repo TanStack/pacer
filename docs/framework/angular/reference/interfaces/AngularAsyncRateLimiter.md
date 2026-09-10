@@ -3,8 +3,6 @@ id: AngularAsyncRateLimiter
 title: AngularAsyncRateLimiter
 ---
 
-# Interface: AngularAsyncRateLimiter\<TFn, TSelected\>
-
 Defined in: [angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L24)
 
 ## Extends

@@ -3,8 +3,6 @@ id: DebouncerState
 title: DebouncerState
 ---
 
-# Interface: DebouncerState\<TFn\>
-
 Defined in: [debouncer.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L6)
 
 ## Type Parameters

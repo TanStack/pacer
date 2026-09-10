@@ -3,8 +3,6 @@ id: Queuer
 title: Queuer
 ---
 
-# Class: Queuer\<TValue\>
-
 Defined in: [queuer.ts:269](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L269)
 
 A flexible queue that processes items with configurable wait times, expiration, and priority.

@@ -3,8 +3,6 @@ id: AngularBatcherOptions
 title: AngularBatcherOptions
 ---
 
-# Interface: AngularBatcherOptions\<TValue, TSelected\>
-
 Defined in: [angular-pacer/src/batcher/injectBatcher.ts:9](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L9)
 
 ## Extends

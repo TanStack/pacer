@@ -3,8 +3,6 @@ id: injectRateLimitedCallback
 title: injectRateLimitedCallback
 ---
 
-# Function: injectRateLimitedCallback()
-
 ```ts
 function injectRateLimitedCallback<TFn>(fn, options): (...args) => boolean;
 ```

@@ -3,8 +3,6 @@ id: isFunction
 title: isFunction
 ---
 
-# Function: isFunction()
-
 ```ts
 function isFunction<T>(value): value is T;
 ```

@@ -3,8 +3,6 @@ id: AsyncDebouncerOptions
 title: AsyncDebouncerOptions
 ---
 
-# Interface: AsyncDebouncerOptions\<TFn\>
-
 Defined in: [async-debouncer.ts:71](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L71)
 
 Options for configuring an async debounced function

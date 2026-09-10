@@ -3,8 +3,6 @@ id: QueuedSignal
 title: QueuedSignal
 ---
 
-# Interface: QueuedSignal()\<TValue, TSelected\>
-
 Defined in: [angular-pacer/src/queuer/injectQueuedSignal.ts:6](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L6)
 
 ## Type Parameters
