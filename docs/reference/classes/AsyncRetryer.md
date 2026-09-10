@@ -3,6 +3,8 @@ id: AsyncRetryer
 title: AsyncRetryer
 ---
 
+# Class: AsyncRetryer\<TFn\>
+
 Defined in: [async-retryer.ts:298](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L298)
 
 Provides robust retry functionality for asynchronous functions, supporting configurable backoff strategies,

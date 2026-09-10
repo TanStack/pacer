@@ -3,6 +3,8 @@ id: SolidRateLimiter
 title: SolidRateLimiter
 ---
 
+# Interface: SolidRateLimiter\<TFn, TSelected\>
+
 Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L24)
 
 ## Extends

@@ -3,6 +3,8 @@ id: useThrottledState
 title: useThrottledState
 ---
 
+# Function: useThrottledState()
+
 ```ts
 function useThrottledState<TValue, TSelected>(
    value, 

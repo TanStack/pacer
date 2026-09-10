@@ -3,6 +3,8 @@ id: AsyncRateLimiterState
 title: AsyncRateLimiterState
 ---
 
+# Interface: AsyncRateLimiterState\<TFn\>
+
 Defined in: [async-rate-limiter.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L8)
 
 ## Type Parameters

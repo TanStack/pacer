@@ -3,6 +3,8 @@ id: asyncBatcherOptions
 title: asyncBatcherOptions
 ---
 
+# Function: asyncBatcherOptions()
+
 ```ts
 function asyncBatcherOptions<TValue, TOptions>(options): TOptions;
 ```

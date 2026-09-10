@@ -3,6 +3,8 @@ id: useBatcher
 title: useBatcher
 ---
 
+# Function: useBatcher()
+
 ```ts
 function useBatcher<TValue, TSelected>(
    fn, 

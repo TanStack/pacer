@@ -3,6 +3,8 @@ id: useAsyncBatchedCallback
 title: useAsyncBatchedCallback
 ---
 
+# Function: useAsyncBatchedCallback()
+
 ```ts
 function useAsyncBatchedCallback<TValue>(fn, options): (item) => Promise<void>;
 ```

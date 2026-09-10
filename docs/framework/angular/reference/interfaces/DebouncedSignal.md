@@ -3,6 +3,8 @@ id: DebouncedSignal
 title: DebouncedSignal
 ---
 
+# Interface: DebouncedSignal()\<TValue, TSelected\>
+
 Defined in: [angular-pacer/src/debouncer/injectDebouncedSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L11)
 
 ## Type Parameters

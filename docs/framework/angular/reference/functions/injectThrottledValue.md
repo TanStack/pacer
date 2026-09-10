@@ -3,6 +3,8 @@ id: injectThrottledValue
 title: injectThrottledValue
 ---
 
+# Function: injectThrottledValue()
+
 ## Call Signature
 
 ```ts

@@ -3,6 +3,8 @@ id: ReactDebouncerOptions
 title: ReactDebouncerOptions
 ---
 
+# Interface: ReactDebouncerOptions\<TFn, TSelected\>
+
 Defined in: [react-pacer/src/debouncer/useDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/debouncer/useDebouncer.ts#L13)
 
 ## Extends

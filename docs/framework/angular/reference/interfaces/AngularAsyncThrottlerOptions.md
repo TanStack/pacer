@@ -3,6 +3,8 @@ id: AngularAsyncThrottlerOptions
 title: AngularAsyncThrottlerOptions
 ---
 
+# Interface: AngularAsyncThrottlerOptions\<TFn, TSelected\>
+
 Defined in: [angular-pacer/src/async-throttler/injectAsyncThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L13)
 
 ## Extends

@@ -3,6 +3,8 @@ id: SolidAsyncBatcherOptions
 title: SolidAsyncBatcherOptions
 ---
 
+# Interface: SolidAsyncBatcherOptions\<TValue, TSelected\>
+
 Defined in: [solid-pacer/src/async-batcher/createAsyncBatcher.ts:12](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L12)
 
 ## Extends

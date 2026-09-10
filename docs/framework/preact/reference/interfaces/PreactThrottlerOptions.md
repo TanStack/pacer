@@ -3,6 +3,8 @@ id: PreactThrottlerOptions
 title: PreactThrottlerOptions
 ---
 
+# Interface: PreactThrottlerOptions\<TFn, TSelected\>
+
 Defined in: [preact-pacer/src/throttler/useThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/throttler/useThrottler.ts#L13)
 
 ## Extends

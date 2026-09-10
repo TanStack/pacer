@@ -3,6 +3,8 @@ id: useDebouncedState
 title: useDebouncedState
 ---
 
+# Function: useDebouncedState()
+
 ```ts
 function useDebouncedState<TValue, TSelected>(
    value, 

@@ -3,6 +3,8 @@ id: queue
 title: queue
 ---
 
+# Function: queue()
+
 ```ts
 function queue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean;
 ```

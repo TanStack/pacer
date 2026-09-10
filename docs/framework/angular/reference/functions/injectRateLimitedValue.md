@@ -3,6 +3,8 @@ id: injectRateLimitedValue
 title: injectRateLimitedValue
 ---
 
+# Function: injectRateLimitedValue()
+
 ## Call Signature
 
 ```ts

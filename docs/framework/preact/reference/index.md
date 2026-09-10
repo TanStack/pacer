@@ -3,6 +3,8 @@ id: "@tanstack/preact-pacer"
 title: "@tanstack/preact-pacer"
 ---
 
+# @tanstack/preact-pacer
+
 ## Interfaces
 
 - [PacerProviderOptions](interfaces/PacerProviderOptions.md)

@@ -3,6 +3,8 @@ id: useAsyncBatcher
 title: useAsyncBatcher
 ---
 
+# Function: useAsyncBatcher()
+
 ```ts
 function useAsyncBatcher<TValue, TSelected>(
    fn, 

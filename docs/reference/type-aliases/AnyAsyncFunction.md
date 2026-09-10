@@ -3,6 +3,8 @@ id: AnyAsyncFunction
 title: AnyAsyncFunction
 ---
 
+# Type Alias: AnyAsyncFunction()
+
 ```ts
 type AnyAsyncFunction = (...args) => Promise<any>;
 ```

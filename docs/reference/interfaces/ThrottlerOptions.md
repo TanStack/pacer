@@ -3,6 +3,8 @@ id: ThrottlerOptions
 title: ThrottlerOptions
 ---
 
+# Interface: ThrottlerOptions\<TFn\>
+
 Defined in: [throttler.ts:54](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L54)
 
 Options for configuring a throttled function

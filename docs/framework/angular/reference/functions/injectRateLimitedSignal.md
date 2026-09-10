@@ -3,6 +3,8 @@ id: injectRateLimitedSignal
 title: injectRateLimitedSignal
 ---
 
+# Function: injectRateLimitedSignal()
+
 ```ts
 function injectRateLimitedSignal<TValue, TSelected>(
    value, 

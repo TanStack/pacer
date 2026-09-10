@@ -3,6 +3,8 @@ id: useRateLimiter
 title: useRateLimiter
 ---
 
+# Function: useRateLimiter()
+
 ```ts
 function useRateLimiter<TFn, TSelected>(
    fn, 

@@ -3,6 +3,8 @@ id: createAsyncDebouncer
 title: createAsyncDebouncer
 ---
 
+# Function: createAsyncDebouncer()
+
 ```ts
 function createAsyncDebouncer<TFn, TSelected>(
    fn, 

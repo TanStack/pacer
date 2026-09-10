@@ -3,6 +3,8 @@ id: SolidThrottler
 title: SolidThrottler
 ---
 
+# Interface: SolidThrottler\<TFn, TSelected\>
+
 Defined in: [solid-pacer/src/throttler/createThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L24)
 
 ## Extends

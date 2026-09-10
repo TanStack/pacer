@@ -3,6 +3,8 @@ id: injectQueuedSignal
 title: injectQueuedSignal
 ---
 
+# Function: injectQueuedSignal()
+
 ```ts
 function injectQueuedSignal<TValue, TSelected>(
    fn, 

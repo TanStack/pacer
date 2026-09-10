@@ -3,6 +3,8 @@ id: PacerEventMap
 title: PacerEventMap
 ---
 
+# Interface: PacerEventMap
+
 Defined in: [event-client.ts:66](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L66)
 
 Suffix-only keys: EventClient prepends `pluginId:` (`pacer:`) at runtime

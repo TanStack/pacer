@@ -3,6 +3,8 @@ id: QueuerState
 title: QueuerState
 ---
 
+# Interface: QueuerState\<TValue\>
+
 Defined in: [queuer.ts:5](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L5)
 
 ## Type Parameters

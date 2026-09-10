@@ -3,6 +3,8 @@ id: ThrottlerState
 title: ThrottlerState
 ---
 
+# Interface: ThrottlerState\<TFn\>
+
 Defined in: [throttler.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L6)
 
 ## Type Parameters

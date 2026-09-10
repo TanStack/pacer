@@ -3,6 +3,8 @@ id: AsyncQueuer
 title: AsyncQueuer
 ---
 
+# Class: AsyncQueuer\<TValue\>
+
 Defined in: [async-queuer.ts:315](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L315)
 
 A flexible asynchronous queue for processing tasks with configurable concurrency, priority, and expiration.

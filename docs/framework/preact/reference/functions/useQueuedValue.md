@@ -3,6 +3,8 @@ id: useQueuedValue
 title: useQueuedValue
 ---
 
+# Function: useQueuedValue()
+
 ```ts
 function useQueuedValue<TValue, TSelected>(
    initialValue, 

@@ -3,6 +3,8 @@ id: BatcherState
 title: BatcherState
 ---
 
+# Interface: BatcherState\<TValue\>
+
 Defined in: [batcher.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L6)
 
 ## Type Parameters

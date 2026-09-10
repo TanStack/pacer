@@ -3,6 +3,8 @@ id: QueuePosition
 title: QueuePosition
 ---
 
+# Type Alias: QueuePosition
+
 ```ts
 type QueuePosition = "front" | "back";
 ```

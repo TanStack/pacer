@@ -3,6 +3,8 @@ id: injectDebouncedCallback
 title: injectDebouncedCallback
 ---
 
+# Function: injectDebouncedCallback()
+
 ```ts
 function injectDebouncedCallback<TFn>(fn, options): (...args) => void;
 ```

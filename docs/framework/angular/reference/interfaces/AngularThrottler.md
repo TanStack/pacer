@@ -3,6 +3,8 @@ id: AngularThrottler
 title: AngularThrottler
 ---
 
+# Interface: AngularThrottler\<TFn, TSelected\>
+
 Defined in: [angular-pacer/src/throttler/injectThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L24)
 
 ## Extends

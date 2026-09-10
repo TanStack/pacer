@@ -3,6 +3,8 @@ id: AsyncDebouncer
 title: AsyncDebouncer
 ---
 
+# Class: AsyncDebouncer\<TFn\>
+
 Defined in: [async-debouncer.ts:218](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L218)
 
 A class that creates an async debounced function.

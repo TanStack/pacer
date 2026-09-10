@@ -3,6 +3,8 @@ id: SolidQueuer
 title: SolidQueuer
 ---
 
+# Interface: SolidQueuer\<TValue, TSelected\>
+
 Defined in: [solid-pacer/src/queuer/createQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L20)
 
 ## Extends

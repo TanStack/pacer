@@ -3,6 +3,8 @@ id: AsyncThrottlerState
 title: AsyncThrottlerState
 ---
 
+# Interface: AsyncThrottlerState\<TFn\>
+
 Defined in: [async-throttler.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L8)
 
 ## Type Parameters

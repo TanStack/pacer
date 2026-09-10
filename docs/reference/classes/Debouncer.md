@@ -3,6 +3,8 @@ id: Debouncer
 title: Debouncer
 ---
 
+# Class: Debouncer\<TFn\>
+
 Defined in: [debouncer.ts:142](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L142)
 
 A class that creates a debounced function.

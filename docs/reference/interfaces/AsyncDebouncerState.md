@@ -3,6 +3,8 @@ id: AsyncDebouncerState
 title: AsyncDebouncerState
 ---
 
+# Interface: AsyncDebouncerState\<TFn\>
+
 Defined in: [async-debouncer.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-debouncer.ts#L8)
 
 ## Type Parameters

@@ -3,6 +3,8 @@ id: asyncDebounce
 title: asyncDebounce
 ---
 
+# Function: asyncDebounce()
+
 ```ts
 function asyncDebounce<TFn>(fn, initialOptions): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```

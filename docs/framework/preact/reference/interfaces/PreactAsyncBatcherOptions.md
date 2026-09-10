@@ -3,6 +3,8 @@ id: PreactAsyncBatcherOptions
 title: PreactAsyncBatcherOptions
 ---
 
+# Interface: PreactAsyncBatcherOptions\<TValue, TSelected\>
+
 Defined in: [preact-pacer/src/async-batcher/useAsyncBatcher.ts:12](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L12)
 
 ## Extends

@@ -3,6 +3,8 @@ id: ReactAsyncRateLimiter
 title: ReactAsyncRateLimiter
 ---
 
+# Interface: ReactAsyncRateLimiter\<TFn, TSelected\>
+
 Defined in: [react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L24)
 
 ## Extends

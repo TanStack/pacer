@@ -3,6 +3,8 @@ id: useAsyncQueuer
 title: useAsyncQueuer
 ---
 
+# Function: useAsyncQueuer()
+
 ```ts
 function useAsyncQueuer<TValue, TSelected>(
    fn, 

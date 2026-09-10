@@ -3,6 +3,8 @@ id: createAsyncRateLimiter
 title: createAsyncRateLimiter
 ---
 
+# Function: createAsyncRateLimiter()
+
 ```ts
 function createAsyncRateLimiter<TFn, TSelected>(
    fn, 

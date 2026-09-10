@@ -3,6 +3,8 @@ id: injectAsyncQueuer
 title: injectAsyncQueuer
 ---
 
+# Function: injectAsyncQueuer()
+
 ```ts
 function injectAsyncQueuer<TValue, TSelected>(
    fn, 

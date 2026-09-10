@@ -3,6 +3,8 @@ id: injectQueuedValue
 title: injectQueuedValue
 ---
 
+# Function: injectQueuedValue()
+
 ## Call Signature
 
 ```ts

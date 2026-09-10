@@ -3,6 +3,8 @@ id: ReactRateLimiterOptions
 title: ReactRateLimiterOptions
 ---
 
+# Interface: ReactRateLimiterOptions\<TFn, TSelected\>
+
 Defined in: [react-pacer/src/rate-limiter/useRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimiter.ts#L13)
 
 ## Extends

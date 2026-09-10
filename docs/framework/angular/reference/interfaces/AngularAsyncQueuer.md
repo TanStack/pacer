@@ -3,6 +3,8 @@ id: AngularAsyncQueuer
 title: AngularAsyncQueuer
 ---
 
+# Interface: AngularAsyncQueuer\<TValue, TSelected\>
+
 Defined in: [angular-pacer/src/async-queuer/injectAsyncQueuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L24)
 
 ## Extends

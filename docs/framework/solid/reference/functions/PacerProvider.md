@@ -3,6 +3,8 @@ id: PacerProvider
 title: PacerProvider
 ---
 
+# Function: PacerProvider()
+
 ```ts
 function PacerProvider(props): Element;
 ```

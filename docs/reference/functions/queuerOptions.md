@@ -3,6 +3,8 @@ id: queuerOptions
 title: queuerOptions
 ---
 
+# Function: queuerOptions()
+
 ```ts
 function queuerOptions<TValue, TOptions>(options): TOptions;
 ```

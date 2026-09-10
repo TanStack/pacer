@@ -3,6 +3,8 @@ id: providePacerOptions
 title: providePacerOptions
 ---
 
+# Function: providePacerOptions()
+
 ```ts
 function providePacerOptions(options): Provider;
 ```

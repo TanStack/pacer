@@ -3,6 +3,8 @@ id: createDebouncedSignal
 title: createDebouncedSignal
 ---
 
+# Function: createDebouncedSignal()
+
 ```ts
 function createDebouncedSignal<TValue, TSelected>(
    value, 

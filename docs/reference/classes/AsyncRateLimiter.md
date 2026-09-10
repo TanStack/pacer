@@ -3,6 +3,8 @@ id: AsyncRateLimiter
 title: AsyncRateLimiter
 ---
 
+# Class: AsyncRateLimiter\<TFn\>
+
 Defined in: [async-rate-limiter.ts:245](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-rate-limiter.ts#L245)
 
 A class that creates an async rate-limited function.

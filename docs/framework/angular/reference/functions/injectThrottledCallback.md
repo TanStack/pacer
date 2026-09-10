@@ -3,6 +3,8 @@ id: injectThrottledCallback
 title: injectThrottledCallback
 ---
 
+# Function: injectThrottledCallback()
+
 ```ts
 function injectThrottledCallback<TFn>(fn, options): (...args) => void;
 ```

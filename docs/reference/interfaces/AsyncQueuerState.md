@@ -3,6 +3,8 @@ id: AsyncQueuerState
 title: AsyncQueuerState
 ---
 
+# Interface: AsyncQueuerState\<TValue\>
+
 Defined in: [async-queuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L9)
 
 ## Type Parameters

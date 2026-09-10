@@ -3,6 +3,8 @@ id: injectRateLimiter
 title: injectRateLimiter
 ---
 
+# Function: injectRateLimiter()
+
 ```ts
 function injectRateLimiter<TFn, TSelected>(
    fn, 

@@ -3,6 +3,8 @@ id: injectAsyncThrottledCallback
 title: injectAsyncThrottledCallback
 ---
 
+# Function: injectAsyncThrottledCallback()
+
 ```ts
 function injectAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```

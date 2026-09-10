@@ -3,6 +3,8 @@ id: rateLimiterOptions
 title: rateLimiterOptions
 ---
 
+# Function: rateLimiterOptions()
+
 ```ts
 function rateLimiterOptions<TFn, TOptions>(options): TOptions;
 ```

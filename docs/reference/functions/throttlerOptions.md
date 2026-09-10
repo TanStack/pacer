@@ -3,6 +3,8 @@ id: throttlerOptions
 title: throttlerOptions
 ---
 
+# Function: throttlerOptions()
+
 ```ts
 function throttlerOptions<TFn, TOptions>(options): TOptions;
 ```

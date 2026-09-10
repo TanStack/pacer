@@ -3,6 +3,8 @@ id: createRateLimitedSignal
 title: createRateLimitedSignal
 ---
 
+# Function: createRateLimitedSignal()
+
 ```ts
 function createRateLimitedSignal<TValue, TSelected>(
    value, 

@@ -3,6 +3,8 @@ id: ReactAsyncThrottler
 title: ReactAsyncThrottler
 ---
 
+# Interface: ReactAsyncThrottler\<TFn, TSelected\>
+
 Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L24)
 
 ## Extends

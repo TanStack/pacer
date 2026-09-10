@@ -3,6 +3,8 @@ id: PreactAsyncDebouncer
 title: PreactAsyncDebouncer
 ---
 
+# Interface: PreactAsyncDebouncer\<TFn, TSelected\>
+
 Defined in: [preact-pacer/src/async-debouncer/useAsyncDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L24)
 
 ## Extends

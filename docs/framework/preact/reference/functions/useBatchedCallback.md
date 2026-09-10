@@ -3,6 +3,8 @@ id: useBatchedCallback
 title: useBatchedCallback
 ---
 
+# Function: useBatchedCallback()
+
 ```ts
 function useBatchedCallback<TValue>(fn, options): (item) => void;
 ```

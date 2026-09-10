@@ -3,6 +3,8 @@ id: PreactDebouncer
 title: PreactDebouncer
 ---
 
+# Interface: PreactDebouncer\<TFn, TSelected\>
+
 Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L24)
 
 ## Extends

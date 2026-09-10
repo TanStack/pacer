@@ -3,6 +3,8 @@ id: SolidAsyncQueuerOptions
 title: SolidAsyncQueuerOptions
 ---
 
+# Interface: SolidAsyncQueuerOptions\<TValue, TSelected\>
+
 Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L12)
 
 ## Extends

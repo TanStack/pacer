@@ -3,6 +3,8 @@ id: injectBatchedCallback
 title: injectBatchedCallback
 ---
 
+# Function: injectBatchedCallback()
+
 ```ts
 function injectBatchedCallback<TValue>(fn, options): (item) => void;
 ```

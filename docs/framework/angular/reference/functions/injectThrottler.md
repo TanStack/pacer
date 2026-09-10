@@ -3,6 +3,8 @@ id: injectThrottler
 title: injectThrottler
 ---
 
+# Function: injectThrottler()
+
 ```ts
 function injectThrottler<TFn, TSelected>(
    fn, 

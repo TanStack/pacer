@@ -3,6 +3,8 @@ id: AnyFunction
 title: AnyFunction
 ---
 
+# Type Alias: AnyFunction()
+
 ```ts
 type AnyFunction = (...args) => any;
 ```

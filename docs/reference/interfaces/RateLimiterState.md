@@ -3,6 +3,8 @@ id: RateLimiterState
 title: RateLimiterState
 ---
 
+# Interface: RateLimiterState
+
 Defined in: [rate-limiter.ts:6](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L6)
 
 ## Properties

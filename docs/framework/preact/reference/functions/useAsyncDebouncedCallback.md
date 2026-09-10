@@ -3,6 +3,8 @@ id: useAsyncDebouncedCallback
 title: useAsyncDebouncedCallback
 ---
 
+# Function: useAsyncDebouncedCallback()
+
 ```ts
 function useAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```

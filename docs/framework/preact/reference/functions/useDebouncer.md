@@ -3,6 +3,8 @@ id: useDebouncer
 title: useDebouncer
 ---
 
+# Function: useDebouncer()
+
 ```ts
 function useDebouncer<TFn, TSelected>(
    fn, 

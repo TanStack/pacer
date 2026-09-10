@@ -3,6 +3,8 @@ id: AngularDebouncer
 title: AngularDebouncer
 ---
 
+# Interface: AngularDebouncer\<TFn, TSelected\>
+
 Defined in: [angular-pacer/src/debouncer/injectDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L24)
 
 ## Extends

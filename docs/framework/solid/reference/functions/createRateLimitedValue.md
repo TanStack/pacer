@@ -3,6 +3,8 @@ id: createRateLimitedValue
 title: createRateLimitedValue
 ---
 
+# Function: createRateLimitedValue()
+
 ```ts
 function createRateLimitedValue<TValue, TSelected>(
    value, 

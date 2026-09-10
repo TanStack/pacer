@@ -3,6 +3,8 @@ id: QueuerOptions
 title: QueuerOptions
 ---
 
+# Interface: QueuerOptions\<TValue\>
+
 Defined in: [queuer.ts:83](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/queuer.ts#L83)
 
 Options for configuring a Queuer instance.

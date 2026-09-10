@@ -3,6 +3,8 @@ id: "@tanstack/angular-pacer"
 title: "@tanstack/angular-pacer"
 ---
 
+# @tanstack/angular-pacer
+
 ## Interfaces
 
 - [AngularAsyncBatcher](interfaces/AngularAsyncBatcher.md)

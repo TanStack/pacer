@@ -3,6 +3,8 @@ id: PacerProviderProps
 title: PacerProviderProps
 ---
 
+# Interface: PacerProviderProps
+
 Defined in: [react-pacer/src/provider/PacerProvider.tsx:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L41)
 
 ## Properties

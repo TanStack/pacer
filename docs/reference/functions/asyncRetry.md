@@ -3,6 +3,8 @@ id: asyncRetry
 title: asyncRetry
 ---
 
+# Function: asyncRetry()
+
 ```ts
 function asyncRetry<TFn>(fn, initialOptions): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```

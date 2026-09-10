@@ -3,6 +3,8 @@ id: AsyncBatcherState
 title: AsyncBatcherState
 ---
 
+# Interface: AsyncBatcherState\<TValue\>
+
 Defined in: [async-batcher.ts:8](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L8)
 
 ## Type Parameters

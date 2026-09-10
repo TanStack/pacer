@@ -3,6 +3,8 @@ id: injectAsyncBatcher
 title: injectAsyncBatcher
 ---
 
+# Function: injectAsyncBatcher()
+
 ```ts
 function injectAsyncBatcher<TValue, TSelected>(
    fn, 

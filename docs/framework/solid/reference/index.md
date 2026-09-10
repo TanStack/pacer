@@ -3,6 +3,8 @@ id: "@tanstack/solid-pacer"
 title: "@tanstack/solid-pacer"
 ---
 
+# @tanstack/solid-pacer
+
 ## Interfaces
 
 - [PacerProviderOptions](interfaces/PacerProviderOptions.md)

@@ -3,6 +3,8 @@ id: AsyncQueuedSignal
 title: AsyncQueuedSignal
 ---
 
+# Interface: AsyncQueuedSignal()\<TValue, TSelected\>
+
 Defined in: [angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts:9](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L9)
 
 ## Type Parameters

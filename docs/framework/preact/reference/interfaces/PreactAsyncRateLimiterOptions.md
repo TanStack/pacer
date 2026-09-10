@@ -3,6 +3,8 @@ id: PreactAsyncRateLimiterOptions
 title: PreactAsyncRateLimiterOptions
 ---
 
+# Interface: PreactAsyncRateLimiterOptions\<TFn, TSelected\>
+
 Defined in: [preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L13)
 
 ## Extends
