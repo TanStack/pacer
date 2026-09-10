@@ -3,8 +3,6 @@ id: injectQueuer
 title: injectQueuer
 ---
 
-# Function: injectQueuer()
-
 ```ts
 function injectQueuer<TValue, TSelected>(
    fn, 

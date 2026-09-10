@@ -3,8 +3,6 @@ id: createAsyncQueuer
 title: createAsyncQueuer
 ---
 
-# Function: createAsyncQueuer()
-
 ```ts
 function createAsyncQueuer<TValue, TSelected>(
    fn, 

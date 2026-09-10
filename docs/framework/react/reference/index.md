@@ -3,8 +3,6 @@ id: "@tanstack/react-pacer"
 title: "@tanstack/react-pacer"
 ---
 
-# @tanstack/react-pacer
-
 ## Interfaces
 
 - [PacerProviderOptions](interfaces/PacerProviderOptions.md)

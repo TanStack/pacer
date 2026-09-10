@@ -3,8 +3,6 @@ id: useAsyncThrottledCallback
 title: useAsyncThrottledCallback
 ---
 
-# Function: useAsyncThrottledCallback()
-
 ```ts
 function useAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```

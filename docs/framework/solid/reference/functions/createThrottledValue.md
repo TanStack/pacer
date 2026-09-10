@@ -3,8 +3,6 @@ id: createThrottledValue
 title: createThrottledValue
 ---
 
-# Function: createThrottledValue()
-
 ```ts
 function createThrottledValue<TValue, TSelected>(
    value, 

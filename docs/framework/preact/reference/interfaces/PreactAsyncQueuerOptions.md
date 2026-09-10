@@ -3,8 +3,6 @@ id: PreactAsyncQueuerOptions
 title: PreactAsyncQueuerOptions
 ---
 
-# Interface: PreactAsyncQueuerOptions\<TValue, TSelected\>
-
 Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L12)
 
 ## Extends

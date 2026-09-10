@@ -3,8 +3,6 @@ id: injectAsyncDebouncedCallback
 title: injectAsyncDebouncedCallback
 ---
 
-# Function: injectAsyncDebouncedCallback()
-
 ```ts
 function injectAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```

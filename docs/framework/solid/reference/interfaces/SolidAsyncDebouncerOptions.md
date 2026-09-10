@@ -3,8 +3,6 @@ id: SolidAsyncDebouncerOptions
 title: SolidAsyncDebouncerOptions
 ---
 
-# Interface: SolidAsyncDebouncerOptions\<TFn, TSelected\>
-
 Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L13)
 
 ## Extends

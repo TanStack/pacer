@@ -3,8 +3,6 @@ id: AngularBatcher
 title: AngularBatcher
 ---
 
-# Interface: AngularBatcher\<TValue, TSelected\>
-
 Defined in: [angular-pacer/src/batcher/injectBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L20)
 
 ## Extends

@@ -3,8 +3,6 @@ id: createAsyncThrottler
 title: createAsyncThrottler
 ---
 
-# Function: createAsyncThrottler()
-
 ```ts
 function createAsyncThrottler<TFn, TSelected>(
    fn, 

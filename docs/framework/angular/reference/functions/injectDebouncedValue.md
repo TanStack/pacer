@@ -3,8 +3,6 @@ id: injectDebouncedValue
 title: injectDebouncedValue
 ---
 
-# Function: injectDebouncedValue()
-
 ## Call Signature
 
 ```ts

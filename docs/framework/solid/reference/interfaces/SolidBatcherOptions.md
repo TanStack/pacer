@@ -3,8 +3,6 @@ id: SolidBatcherOptions
 title: SolidBatcherOptions
 ---
 
-# Interface: SolidBatcherOptions\<TValue, TSelected\>
-
 Defined in: [solid-pacer/src/batcher/createBatcher.ts:9](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L9)
 
 ## Extends

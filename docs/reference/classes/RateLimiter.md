@@ -3,8 +3,6 @@ id: RateLimiter
 title: RateLimiter
 ---
 
-# Class: RateLimiter\<TFn\>
-
 Defined in: [rate-limiter.ts:156](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L156)
 
 A class that creates a rate-limited function.

@@ -3,8 +3,6 @@ id: AsyncThrottlerOptions
 title: AsyncThrottlerOptions
 ---
 
-# Interface: AsyncThrottlerOptions\<TFn\>
-
 Defined in: [async-throttler.ts:76](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-throttler.ts#L76)
 
 Options for configuring an async throttled function

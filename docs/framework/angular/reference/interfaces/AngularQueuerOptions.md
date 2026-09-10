@@ -3,8 +3,6 @@ id: AngularQueuerOptions
 title: AngularQueuerOptions
 ---
 
-# Interface: AngularQueuerOptions\<TValue, TSelected\>
-
 Defined in: [angular-pacer/src/queuer/injectQueuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L9)
 
 ## Extends

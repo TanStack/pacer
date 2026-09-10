@@ -3,8 +3,6 @@ id: asyncQueuerOptions
 title: asyncQueuerOptions
 ---
 
-# Function: asyncQueuerOptions()
-
 ```ts
 function asyncQueuerOptions<TValue, TOptions>(options): TOptions;
 ```

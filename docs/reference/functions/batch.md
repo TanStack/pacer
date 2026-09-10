@@ -3,8 +3,6 @@ id: batch
 title: batch
 ---
 
-# Function: batch()
-
 ```ts
 function batch<TValue>(fn, options): (item) => void;
 ```

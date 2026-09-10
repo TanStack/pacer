@@ -3,8 +3,6 @@ id: useAsyncQueuedState
 title: useAsyncQueuedState
 ---
 
-# Function: useAsyncQueuedState()
-
 ```ts
 function useAsyncQueuedState<TValue, TSelected>(
    fn, 
