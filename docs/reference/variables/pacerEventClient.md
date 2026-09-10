@@ -3,8 +3,6 @@ id: pacerEventClient
 title: pacerEventClient
 ---
 
-# Variable: pacerEventClient
-
 ```ts
 const pacerEventClient: PacerEventClient;
 ```

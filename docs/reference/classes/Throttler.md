@@ -3,8 +3,6 @@ id: Throttler
 title: Throttler
 ---
 
-# Class: Throttler\<TFn\>
-
 Defined in: [throttler.ts:150](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L150)
 
 A class that creates a throttled function.

@@ -3,8 +3,6 @@ id: useRateLimitedCallback
 title: useRateLimitedCallback
 ---
 
-# Function: useRateLimitedCallback()
-
 ```ts
 function useRateLimitedCallback<TFn>(fn, options): (...args) => boolean;
 ```

@@ -3,8 +3,6 @@ id: asyncQueue
 title: asyncQueue
 ---
 
-# Function: asyncQueue()
-
 ```ts
 function asyncQueue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean;
 ```

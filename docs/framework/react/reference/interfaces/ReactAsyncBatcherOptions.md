@@ -3,8 +3,6 @@ id: ReactAsyncBatcherOptions
 title: ReactAsyncBatcherOptions
 ---
 
-# Interface: ReactAsyncBatcherOptions\<TValue, TSelected\>
-
 Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:12](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L12)
 
 ## Extends

@@ -3,8 +3,6 @@ id: SolidDebouncer
 title: SolidDebouncer
 ---
 
-# Interface: SolidDebouncer\<TFn, TSelected\>
-
 Defined in: [solid-pacer/src/debouncer/createDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L24)
 
 ## Extends

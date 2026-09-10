@@ -3,8 +3,6 @@ id: injectAsyncBatchedCallback
 title: injectAsyncBatchedCallback
 ---
 
-# Function: injectAsyncBatchedCallback()
-
 ```ts
 function injectAsyncBatchedCallback<TValue>(fn, options): (item) => Promise<void>;
 ```

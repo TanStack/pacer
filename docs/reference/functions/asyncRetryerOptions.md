@@ -3,8 +3,6 @@ id: asyncRetryerOptions
 title: asyncRetryerOptions
 ---
 
-# Function: asyncRetryerOptions()
-
 ```ts
 function asyncRetryerOptions<TFn, TOptions>(options): TOptions;
 ```

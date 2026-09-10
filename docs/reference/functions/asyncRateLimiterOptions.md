@@ -3,8 +3,6 @@ id: asyncRateLimiterOptions
 title: asyncRateLimiterOptions
 ---
 
-# Function: asyncRateLimiterOptions()
-
 ```ts
 function asyncRateLimiterOptions<TFn, TOptions>(options): TOptions;
 ```

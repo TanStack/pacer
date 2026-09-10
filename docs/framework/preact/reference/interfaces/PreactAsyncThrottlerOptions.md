@@ -3,8 +3,6 @@ id: PreactAsyncThrottlerOptions
 title: PreactAsyncThrottlerOptions
 ---
 
-# Interface: PreactAsyncThrottlerOptions\<TFn, TSelected\>
-
 Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L13)
 
 ## Extends

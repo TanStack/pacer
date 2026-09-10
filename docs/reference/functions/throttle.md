@@ -3,8 +3,6 @@ id: throttle
 title: throttle
 ---
 
-# Function: throttle()
-
 ```ts
 function throttle<TFn>(fn, initialOptions): (...args) => void;
 ```

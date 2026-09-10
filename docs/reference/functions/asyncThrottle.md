@@ -3,8 +3,6 @@ id: asyncThrottle
 title: asyncThrottle
 ---
 
-# Function: asyncThrottle()
-
 ```ts
 function asyncThrottle<TFn>(fn, initialOptions): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```

@@ -3,8 +3,6 @@ id: RateLimitedSignal
 title: RateLimitedSignal
 ---
 
-# Interface: RateLimitedSignal()\<TValue, TSelected\>
-
 Defined in: [angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L11)
 
 ## Type Parameters

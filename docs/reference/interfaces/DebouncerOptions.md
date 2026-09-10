@@ -3,8 +3,6 @@ id: DebouncerOptions
 title: DebouncerOptions
 ---
 
-# Interface: DebouncerOptions\<TFn\>
-
 Defined in: [debouncer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L49)
 
 Options for configuring a debounced function

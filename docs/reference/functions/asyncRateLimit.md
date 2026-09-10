@@ -3,8 +3,6 @@ id: asyncRateLimit
 title: asyncRateLimit
 ---
 
-# Function: asyncRateLimit()
-
 ```ts
 function asyncRateLimit<TFn>(fn, initialOptions): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```

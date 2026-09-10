@@ -3,8 +3,6 @@ id: ReactQueuerOptions
 title: ReactQueuerOptions
 ---
 
-# Interface: ReactQueuerOptions\<TValue, TSelected\>
-
 Defined in: [react-pacer/src/queuer/useQueuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L9)
 
 ## Extends

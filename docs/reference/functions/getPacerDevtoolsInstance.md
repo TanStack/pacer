@@ -3,8 +3,6 @@ id: getPacerDevtoolsInstance
 title: getPacerDevtoolsInstance
 ---
 
-# Function: getPacerDevtoolsInstance()
-
 ```ts
 function getPacerDevtoolsInstance(key): unknown;
 ```

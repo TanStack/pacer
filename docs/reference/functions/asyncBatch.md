@@ -3,8 +3,6 @@ id: asyncBatch
 title: asyncBatch
 ---
 
-# Function: asyncBatch()
-
 ```ts
 function asyncBatch<TValue>(fn, options): (item) => Promise<any>;
 ```

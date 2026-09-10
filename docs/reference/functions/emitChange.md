@@ -3,8 +3,6 @@ id: emitChange
 title: emitChange
 ---
 
-# Function: emitChange()
-
 ```ts
 function emitChange<TEvent>(event, instance): void;
 ```

@@ -3,8 +3,6 @@ id: ReactAsyncQueuer
 title: ReactAsyncQueuer
 ---
 
-# Interface: ReactAsyncQueuer\<TValue, TSelected\>
-
 Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L23)
 
 ## Extends
