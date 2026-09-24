@@ -70,7 +70,7 @@ export interface AsyncQueuerState<TValue> {
   /**
    * Number of task executions that have completed (either successfully or with errors)
    */
-  settledCount: number
+  settleCount: number
   /**
    * Number of items currently in the queue
    */
@@ -102,7 +102,7 @@ function getDefaultAsyncQueuerState<TValue>(): AsyncQueuerState<TValue> {
     lastResult: null,
     pendingTick: false,
     rejectionCount: 0,
-    settledCount: 0,
+    settleCount: 0,
     size: 0,
     status: 'idle',
     successCount: 0,
@@ -674,7 +674,7 @@ export class AsyncQueuer<TValue> {
           activeItems: remainingActiveItems,
           // other executions may still be in flight (concurrency > 1 or flush)
           isExecuting: this.asyncRetryers.size > 0,
-          settledCount: this.store.state.settledCount + 1,
+          settleCount: this.store.state.settleCount + 1,
         })
         this.options.onSettled?.(item, this)
       }

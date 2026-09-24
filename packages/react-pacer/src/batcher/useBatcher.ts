@@ -89,7 +89,6 @@ export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
  * - `executionCount`: Number of batch executions that have been completed
  * - `isEmpty`: Whether the batcher has no items to process
  * - `isPending`: Whether the batcher is waiting for the timeout to trigger batch processing
- * - `isRunning`: Whether the batcher is active and will process items automatically
  * - `items`: Array of items currently queued for batch processing
  * - `size`: Number of items currently in the batch queue
  * - `status`: Current processing status ('idle' | 'pending')
@@ -149,7 +148,6 @@ export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
  *   { maxSize: 5, wait: 2000 },
  *   (state) => ({
  *     isPending: state.isPending,
- *     isRunning: state.isRunning,
  *     status: state.status
  *   })
  * );
@@ -163,7 +161,7 @@ export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
  *     maxSize: 5,
  *     wait: 2000,
  *     onItemsChange: (batcher) => setItems(batcher.peekAllItems()),
- *     getShouldExecute: (items) => items.length >= 3
+ *     getShouldExecute: (batcher) => batcher.store.state.size >= 3
  *   }
  * );
  *
@@ -173,8 +171,8 @@ export interface ReactBatcher<TValue, TSelected = {}> extends Omit<
  * batcher.addItem(3); // Triggers batch processing
  *
  * // Control the batcher
- * batcher.stop();  // Pause batching
- * batcher.start(); // Resume batching
+ * batcher.setOptions({ started: false }); // Disable automatic processing
+ * batcher.setOptions({ started: true });  // Enable automatic processing
  *
  * // Access the selected state (will be empty object {} unless selector provided)
  * const { size, isPending } = batcher.state;

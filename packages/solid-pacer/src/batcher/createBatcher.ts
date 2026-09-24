@@ -28,9 +28,9 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
    * deep in your component tree without needing to pass a selector to the hook.
    *
    * @example
-   * <batcher.Subscribe selector={(state) => ({ size: state.size, isRunning: state.isRunning })}>
+   * <batcher.Subscribe selector={(state) => ({ size: state.size, isPending: state.isPending })}>
    *   {(state) => (
-   *     <div>Batch: {state().size} items, {state().isRunning ? 'Processing' : 'Idle'}</div>
+   *     <div>Batch: {state().size} items, {state().isPending ? 'Pending' : 'Idle'}</div>
    *   )}
    * </batcher.Subscribe>
    */
@@ -90,7 +90,6 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  *
  * Available state properties:
  * - `executionCount`: Number of batch executions that have been completed
- * - `isRunning`: Whether the batcher is currently running (not stopped)
  * - `items`: Array of items currently queued for batching
  * - `totalItemsProcessed`: Total number of individual items that have been processed across all batches
  *
@@ -119,15 +118,15 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  *     maxSize: 5,
  *     wait: 2000,
  *     onExecute: (batcher) => console.log('Batch executed'),
- *     getShouldExecute: (items) => items.length >= 3
+ *     getShouldExecute: (batcher) => batcher.store.state.size >= 3
  *   }
  * );
  *
- * // Opt-in to track items or isRunning changes (optimized for UI updates)
+ * // Opt-in to track items or isPending changes (optimized for UI updates)
  * const batcher = createBatcher(
  *   (items) => console.log('Processing batch:', items),
  *   { maxSize: 5, wait: 2000 },
- *   (state) => ({ items: state.items, isRunning: state.isRunning })
+ *   (state) => ({ items: state.items, isPending: state.isPending })
  * );
  *
  * // Opt-in to track execution metrics changes (optimized for tracking progress)
@@ -145,11 +144,11 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  * batcher.addItem('task2');
  *
  * // Control the batcher
- * batcher.stop();  // Pause processing
- * batcher.start(); // Resume processing
+ * batcher.setOptions({ started: false }); // Disable automatic processing
+ * batcher.setOptions({ started: true });  // Enable automatic processing
  *
  * // Access the selected state (will be empty object {} unless selector provided)
- * const { items, isRunning } = batcher.state();
+ * const { items, isPending } = batcher.state();
  * ```
  */
 export function createBatcher<TValue, TSelected = {}>(

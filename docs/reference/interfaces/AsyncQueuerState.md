@@ -195,10 +195,10 @@ Number of items that have been rejected from being added to the queue
 
 ***
 
-### settledCount
+### settleCount
 
 ```ts
-settledCount: number;
+settleCount: number;
 ```
 
 Defined in: [async-queuer.ts:73](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L73)

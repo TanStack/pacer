@@ -12,7 +12,7 @@ function createBatcher<TValue, TSelected>(
 selector): SolidBatcher<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:155](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L155)
+Defined in: [solid-pacer/src/batcher/createBatcher.ts:154](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L154)
 
 Creates a Solid-compatible Batcher instance for managing batches of items, exposing Solid signals for all stateful properties.
 
@@ -51,7 +51,6 @@ updates and gives you full control over when your component tracks state changes
 
 Available state properties:
 - `executionCount`: Number of batch executions that have been completed
-- `isRunning`: Whether the batcher is currently running (not stopped)
 - `items`: Array of items currently queued for batching
 - `totalItemsProcessed`: Total number of individual items that have been processed across all batches
 
@@ -80,15 +79,15 @@ const batcher = createBatcher(
     maxSize: 5,
     wait: 2000,
     onExecute: (batcher) => console.log('Batch executed'),
-    getShouldExecute: (items) => items.length >= 3
+    getShouldExecute: (batcher) => batcher.store.state.size >= 3
   }
 );
 
-// Opt-in to track items or isRunning changes (optimized for UI updates)
+// Opt-in to track items or isPending changes (optimized for UI updates)
 const batcher = createBatcher(
   (items) => console.log('Processing batch:', items),
   { maxSize: 5, wait: 2000 },
-  (state) => ({ items: state.items, isRunning: state.isRunning })
+  (state) => ({ items: state.items, isPending: state.isPending })
 );
 
 // Opt-in to track execution metrics changes (optimized for tracking progress)
@@ -106,11 +105,11 @@ batcher.addItem('task1');
 batcher.addItem('task2');
 
 // Control the batcher
-batcher.stop();  // Pause processing
-batcher.start(); // Resume processing
+batcher.setOptions({ started: false }); // Disable automatic processing
+batcher.setOptions({ started: true });  // Enable automatic processing
 
 // Access the selected state (will be empty object {} unless selector provided)
-const { items, isRunning } = batcher.state();
+const { items, isPending } = batcher.state();
 ```
 
 ## Type Parameters

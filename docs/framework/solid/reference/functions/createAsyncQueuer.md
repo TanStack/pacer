@@ -61,7 +61,7 @@ Available state properties:
 - `activeItems`: Array of items currently being processed
 - `errorCount`: Number of items that failed processing
 - `isRunning`: Whether the queuer is currently running (not stopped)
-- `pendingItems`: Array of items waiting to be processed
+- `items`: Array of items waiting to be processed
 - `rejectionCount`: Number of items that were rejected (expired or failed validation)
 - `settleCount`: Number of items that have completed processing (successful or failed)
 - `successCount`: Number of items that were processed successfully
@@ -109,7 +109,7 @@ const asyncQueuer = createAsyncQueuer(
   async (item) => await fetchData(item),
   { concurrency: 2, started: true },
   (state) => ({
-    pendingItems: state.pendingItems,
+    items: state.items,
     activeItems: state.activeItems,
     isRunning: state.isRunning
   })
@@ -133,7 +133,7 @@ asyncQueuer.addItem(newItem);
 asyncQueuer.start();
 
 // Access the selected state (will be empty object {} unless selector provided)
-const { pendingItems, activeItems } = asyncQueuer.state();
+const { items, activeItems } = asyncQueuer.state();
 ```
 
 ## Type Parameters

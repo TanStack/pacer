@@ -203,7 +203,7 @@ Common state includes:
 - `activeItems`: Work currently tracked as active.
 - `isRunning`, `isIdle`, and `status`: Scheduler state.
 - `isFull` and `rejectionCount`: Pending capacity state.
-- `successCount`, `errorCount`, and `settledCount`: Execution outcomes.
+- `successCount`, `errorCount`, and `settleCount`: Execution outcomes.
 - `lastResult`: The most recent successful processing result.
 
 Use `peekPendingItems()`, `peekActiveItems()`, and `peekAllItems()` for copied item arrays. See the [`AsyncQueuer` API reference](../../../reference/classes/AsyncQueuer.md) for all methods and state.
