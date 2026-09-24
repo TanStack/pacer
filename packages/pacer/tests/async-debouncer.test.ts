@@ -25,14 +25,14 @@ describe('AsyncDebouncer', () => {
       const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
 
       const promise = debouncer.maybeExecute()
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       vi.advanceTimersByTime(999)
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       vi.advanceTimersByTime(1)
       await promise
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
     })
 
     it('should execute the async function after the specified wait', async () => {
@@ -40,11 +40,11 @@ describe('AsyncDebouncer', () => {
       const debouncer = new AsyncDebouncer(mockFn, { wait: 1000 })
 
       const promise = debouncer.maybeExecute()
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       vi.advanceTimersByTime(1000)
       const result = await promise
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
       expect(result).toBe('result')
     })
 
@@ -60,14 +60,14 @@ describe('AsyncDebouncer', () => {
       const promise3 = debouncer.maybeExecute()
 
       // Function should not be called yet
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       // Wait for the full delay
       vi.advanceTimersByTime(1000)
       await Promise.any([promise1, promise2, promise3])
 
       // Should only execute once
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
     })
 
     it('should pass arguments to the debounced async function', async () => {
@@ -78,7 +78,7 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
 
-      expect(mockFn).toBeCalledWith('arg1', 42, { foo: 'bar' })
+      expect(mockFn).toHaveBeenCalledWith('arg1', 42, { foo: 'bar' })
     })
 
     it('should return a promise that resolves with the function result', async () => {
@@ -104,12 +104,12 @@ describe('AsyncDebouncer', () => {
       })
 
       const promise = debouncer.maybeExecute()
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith()
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith()
 
       vi.advanceTimersByTime(1000)
       await promise
-      expect(mockFn).toBeCalledTimes(1) // Should not execute again
+      expect(mockFn).toHaveBeenCalledTimes(1) // Should not execute again
     })
 
     it('should respect leading edge timing', async () => {
@@ -122,22 +122,22 @@ describe('AsyncDebouncer', () => {
 
       // First call - executes immediately
       const promise1 = debouncer.maybeExecute('first')
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith('first')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('first')
 
       // Call again before wait expires - should not execute
       vi.advanceTimersByTime(500)
       const promise2 = debouncer.maybeExecute('second')
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
 
       // Advance to end of second call's wait period - should not execute
       vi.advanceTimersByTime(1000)
       await Promise.all([promise1, promise2])
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
 
       // Now that the full wait has passed since last call, this should execute
       const promise3 = debouncer.maybeExecute('third')
-      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledTimes(2)
       expect(mockFn).toHaveBeenLastCalledWith('third')
       await promise3
     })
@@ -152,17 +152,17 @@ describe('AsyncDebouncer', () => {
 
       // First call - executes immediately (leading)
       const promise1 = debouncer.maybeExecute('first')
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith('first')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('first')
 
       // Second call - should not execute immediately
       const promise2 = debouncer.maybeExecute('second')
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
 
       // After wait, should execute again (trailing)
       vi.advanceTimersByTime(1000)
       await Promise.all([promise1, promise2])
-      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledTimes(2)
       expect(mockFn).toHaveBeenLastCalledWith('second')
     })
 
@@ -172,17 +172,17 @@ describe('AsyncDebouncer', () => {
 
       // First call - should not execute immediately
       const promise1 = debouncer.maybeExecute('first')
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       // Second call - should not execute immediately
       const promise2 = debouncer.maybeExecute('second')
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       // After wait, should execute once with last arguments
       vi.advanceTimersByTime(1000)
       await Promise.any([promise1, promise2])
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith('second')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('second')
     })
 
     it('should handle case where both leading and trailing are false', async () => {
@@ -195,18 +195,18 @@ describe('AsyncDebouncer', () => {
 
       // First call - should not execute
       debouncer.maybeExecute('test')
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       // Second call - should cancel first promise and not execute
       const promise2 = debouncer.maybeExecute('test2')
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       // Advance time and wait for the last promise
       vi.advanceTimersByTime(1000)
       await promise2
 
       // Verify no executions occurred
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
     })
 
     it('should handle rapid calls with leading edge execution', async () => {
@@ -224,8 +224,8 @@ describe('AsyncDebouncer', () => {
       const promise4 = debouncer.maybeExecute('fourth')
 
       // Only first call should execute immediately
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith('first')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('first')
 
       // Wait for timeout and last promise
       vi.advanceTimersByTime(1000)
@@ -233,7 +233,7 @@ describe('AsyncDebouncer', () => {
 
       // Next call should execute immediately
       const promise5 = debouncer.maybeExecute('fifth')
-      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledTimes(2)
       expect(mockFn).toHaveBeenLastCalledWith('fifth')
       await promise5
     })
@@ -249,7 +249,7 @@ describe('AsyncDebouncer', () => {
       const result = await promise
 
       expect(result).toBe('resolved value')
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
     })
 
     it('should handle promise errors without rejecting', async () => {
@@ -267,7 +267,7 @@ describe('AsyncDebouncer', () => {
       // The promise should resolve with undefined, not reject
       const result = await promise
       expect(result).toBeUndefined()
-      expect(onError).toBeCalledWith(error, [], debouncer)
+      expect(onError).toHaveBeenCalledWith(error, [], debouncer)
     })
 
     it('should maintain execution order of promises', async () => {
@@ -290,8 +290,8 @@ describe('AsyncDebouncer', () => {
       await promise3
 
       // Should only execute once with the last value
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith('third')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('third')
       expect(results).toEqual(['third'])
     })
 
@@ -319,7 +319,7 @@ describe('AsyncDebouncer', () => {
       await promise3
       expect(mockFn).toHaveBeenCalledWith('third')
 
-      expect(mockFn).toBeCalledTimes(3)
+      expect(mockFn).toHaveBeenCalledTimes(3)
     })
 
     it('should handle promise cancellation', () => {
@@ -332,7 +332,7 @@ describe('AsyncDebouncer', () => {
       debouncer.maybeExecute('test')
       debouncer.cancel()
       vi.advanceTimersByTime(1100)
-      expect(mockFn).toBeCalledTimes(0)
+      expect(mockFn).toHaveBeenCalledTimes(0)
     })
   })
 
@@ -352,8 +352,8 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
 
-      expect(onError).toBeCalledWith(error, [], debouncer)
-      expect(onSettled).toBeCalledWith([], debouncer)
+      expect(onError).toHaveBeenCalledWith(error, [], debouncer)
+      expect(onSettled).toHaveBeenCalledWith([], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -375,7 +375,7 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(onError).toBeCalledWith(error, [], debouncer)
+      expect(onError).toHaveBeenCalledWith(error, [], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -385,7 +385,7 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       const result = await promise2
       expect(result).toBe('success')
-      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledTimes(2)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(2)
       expect(debouncer.store.state.successCount).toBe(1)
@@ -438,8 +438,8 @@ describe('AsyncDebouncer', () => {
       const promise = debouncer.maybeExecute()
       await vi.advanceTimersByTimeAsync(1000)
       await promise
-      expect(onError).toBeCalledWith(error, [], debouncer)
-      expect(onSettled).toBeCalledWith([], debouncer)
+      expect(onError).toHaveBeenCalledWith(error, [], debouncer)
+      expect(onSettled).toHaveBeenCalledWith([], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -460,8 +460,8 @@ describe('AsyncDebouncer', () => {
       const promise = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise
-      expect(onError).toBeCalledWith(error, [], debouncer)
-      expect(onSettled).toBeCalledWith([], debouncer)
+      expect(onError).toHaveBeenCalledWith(error, [], debouncer)
+      expect(onSettled).toHaveBeenCalledWith([], debouncer)
       expect(debouncer.store.state.errorCount).toBe(1)
       expect(debouncer.store.state.settleCount).toBe(1)
       expect(debouncer.store.state.successCount).toBe(0)
@@ -518,7 +518,7 @@ describe('AsyncDebouncer', () => {
         vi.advanceTimersByTime(1000)
 
         await expect(promise).rejects.toThrow('test error')
-        expect(onError).toBeCalledWith(error, [], debouncer)
+        expect(onError).toHaveBeenCalledWith(error, [], debouncer)
         expect(debouncer.store.state.errorCount).toBe(1)
       })
 
@@ -589,7 +589,7 @@ describe('AsyncDebouncer', () => {
 
         const result = await promise
         expect(result).toBeUndefined()
-        expect(onError).toBeCalledWith(error, [], debouncer)
+        expect(onError).toHaveBeenCalledWith(error, [], debouncer)
         expect(debouncer.store.state.errorCount).toBe(1)
       })
 
@@ -607,7 +607,7 @@ describe('AsyncDebouncer', () => {
         const promise = debouncer.maybeExecute()
         const result = await promise
         expect(result).toBeUndefined()
-        expect(onError).toBeCalledWith(error, [], debouncer)
+        expect(onError).toHaveBeenCalledWith(error, [], debouncer)
         expect(debouncer.store.state.errorCount).toBe(1)
       })
     })
@@ -644,7 +644,7 @@ describe('AsyncDebouncer', () => {
 
         const result = await debouncer.flush()
         expect(result).toBeUndefined()
-        expect(onError).toBeCalledWith(error, [], debouncer)
+        expect(onError).toHaveBeenCalledWith(error, [], debouncer)
         expect(debouncer.store.state.errorCount).toBe(1)
         expect(debouncer.store.state.isPending).toBe(false)
       })
@@ -663,7 +663,7 @@ describe('AsyncDebouncer', () => {
 
         const result = await promise
         expect(result).toBeUndefined()
-        expect(onError).toBeCalledWith(error, [], debouncer)
+        expect(onError).toHaveBeenCalledWith(error, [], debouncer)
       })
     })
 
@@ -678,7 +678,7 @@ describe('AsyncDebouncer', () => {
 
         const result = await debouncer.maybeExecute()
         expect(result).toBeUndefined()
-        expect(mockFn).not.toBeCalled()
+        expect(mockFn).not.toHaveBeenCalled()
         expect(debouncer.store.state.errorCount).toBe(0)
       })
     })
@@ -697,7 +697,7 @@ describe('AsyncDebouncer', () => {
 
         const result = await promise
         expect(result).toBeUndefined()
-        expect(mockFn).not.toBeCalled()
+        expect(mockFn).not.toHaveBeenCalled()
         expect(debouncer.store.state.errorCount).toBe(0)
       })
     })
@@ -716,8 +716,8 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
 
-      expect(onSuccess).toBeCalledTimes(1)
-      expect(onSuccess).toBeCalledWith('success', [], debouncer)
+      expect(onSuccess).toHaveBeenCalledTimes(1)
+      expect(onSuccess).toHaveBeenCalledWith('success', [], debouncer)
     })
 
     it('should call onSettled after execution completes', async () => {
@@ -732,8 +732,8 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
 
-      expect(onSettled).toBeCalledTimes(1)
-      expect(onSettled).toBeCalledWith([], debouncer)
+      expect(onSettled).toHaveBeenCalledTimes(1)
+      expect(onSettled).toHaveBeenCalledWith([], debouncer)
     })
 
     it('should call onError when execution fails', async () => {
@@ -749,8 +749,8 @@ describe('AsyncDebouncer', () => {
       vi.advanceTimersByTime(1000)
       await promise
 
-      expect(onError).toBeCalledTimes(1)
-      expect(onError).toBeCalledWith(error, [], debouncer)
+      expect(onError).toHaveBeenCalledTimes(1)
+      expect(onError).toHaveBeenCalledWith(error, [], debouncer)
     })
 
     it('should maintain correct callback order', async () => {
@@ -799,11 +799,11 @@ describe('AsyncDebouncer', () => {
       await promise
 
       // onSuccess throws, which triggers onError, and onSettled is always called
-      expect(onSuccess).toBeCalledTimes(1)
-      expect(onError).toBeCalledTimes(1)
-      expect(onError).toBeCalledWith(callbackError, [], debouncer)
-      expect(onSettled).toBeCalledTimes(1)
-      expect(onSettled).toBeCalledWith([], debouncer)
+      expect(onSuccess).toHaveBeenCalledTimes(1)
+      expect(onError).toHaveBeenCalledTimes(1)
+      expect(onError).toHaveBeenCalledWith(callbackError, [], debouncer)
+      expect(onSettled).toHaveBeenCalledTimes(1)
+      expect(onSettled).toHaveBeenCalledWith([], debouncer)
     })
   })
 
@@ -822,7 +822,7 @@ describe('AsyncDebouncer', () => {
 
       // Advance time and verify no execution
       vi.advanceTimersByTime(1000)
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
     })
 
     it('should properly handle canLeadingExecute flag after cancellation', async () => {
@@ -834,8 +834,8 @@ describe('AsyncDebouncer', () => {
 
       // First call - should execute immediately
       const promise1 = debouncer.maybeExecute('first')
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith('first')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('first')
 
       // Cancel and verify canLeadingExecute is reset
       debouncer.cancel()
@@ -843,8 +843,8 @@ describe('AsyncDebouncer', () => {
 
       // Next call should execute immediately again
       const promise2 = debouncer.maybeExecute('second')
-      expect(mockFn).toBeCalledTimes(2)
-      expect(mockFn).toBeCalledWith('second')
+      expect(mockFn).toHaveBeenCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledWith('second')
 
       await Promise.all([promise1, promise2])
     })
@@ -858,8 +858,8 @@ describe('AsyncDebouncer', () => {
 
       // First call - executes immediately
       const promise1 = debouncer.maybeExecute('first')
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith('first')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('first')
 
       // Cancel during leading execution
       debouncer.cancel()
@@ -867,8 +867,8 @@ describe('AsyncDebouncer', () => {
 
       // Next call should execute immediately again
       const promise2 = debouncer.maybeExecute('second')
-      expect(mockFn).toBeCalledTimes(2)
-      expect(mockFn).toBeCalledWith('second')
+      expect(mockFn).toHaveBeenCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledWith('second')
 
       await Promise.all([promise1, promise2])
     })
@@ -1012,7 +1012,7 @@ describe('AsyncDebouncer', () => {
       // Advance time and verify no execution
       vi.advanceTimersByTime(1000)
       await promise
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
     })
 
     it('should not execute leading edge when disabled', async () => {
@@ -1031,7 +1031,7 @@ describe('AsyncDebouncer', () => {
       // Advance time and verify no execution
       vi.advanceTimersByTime(1000)
       await promise
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
     })
 
     it('should default to enabled', async () => {
@@ -1045,7 +1045,7 @@ describe('AsyncDebouncer', () => {
       // Advance time and verify execution
       vi.advanceTimersByTime(1000)
       await promise
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
     })
 
     it('should allow disabling mid-wait', async () => {
@@ -1063,7 +1063,7 @@ describe('AsyncDebouncer', () => {
       // Advance time and verify no execution
       vi.advanceTimersByTime(1000)
       await promise
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
     })
 
     it('should handle rapid enable/disable cycles', async () => {
@@ -1086,7 +1086,7 @@ describe('AsyncDebouncer', () => {
       // Advance time and verify single execution
       vi.advanceTimersByTime(1000)
       await promise
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
     })
 
     it('should maintain state when disabled', async () => {
@@ -1128,13 +1128,13 @@ describe('AsyncDebouncer', () => {
 
       // Verify new options are applied
       const promise = debouncer.maybeExecute()
-      expect(mockFn).toBeCalledTimes(1) // Leading execution
-      expect(mockFn).toBeCalledWith()
+      expect(mockFn).toHaveBeenCalledTimes(1) // Leading execution
+      expect(mockFn).toHaveBeenCalledWith()
 
       // Advance time and verify no trailing execution
       vi.advanceTimersByTime(500)
       await promise
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
     })
 
     it('should handle option changes during execution', async () => {
@@ -1155,8 +1155,8 @@ describe('AsyncDebouncer', () => {
       // Advance time and verify new callback is used
       vi.advanceTimersByTime(1000)
       await promise
-      expect(onSuccess).toBeCalledTimes(1)
-      expect(onSuccess).toBeCalledWith('result', [], debouncer)
+      expect(onSuccess).toHaveBeenCalledTimes(1)
+      expect(onSuccess).toHaveBeenCalledWith('result', [], debouncer)
     })
 
     it('should maintain state across option changes', async () => {
@@ -1179,7 +1179,7 @@ describe('AsyncDebouncer', () => {
 
       // Second execution with new options
       const promise2 = debouncer.maybeExecute()
-      expect(mockFn).toBeCalledTimes(2) // Leading execution
+      expect(mockFn).toHaveBeenCalledTimes(2) // Leading execution
       vi.advanceTimersByTime(500)
       await promise2
       expect(debouncer.store.state.successCount).toBe(2)
@@ -1205,9 +1205,9 @@ describe('AsyncDebouncer', () => {
       const promise1 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise1
-      expect(onSuccess1).toBeCalledTimes(1)
-      expect(onSettled1).toBeCalledTimes(1)
-      expect(onError1).not.toBeCalled()
+      expect(onSuccess1).toHaveBeenCalledTimes(1)
+      expect(onSettled1).toHaveBeenCalledTimes(1)
+      expect(onError1).not.toHaveBeenCalled()
 
       // Change callbacks
       debouncer.setOptions({
@@ -1220,9 +1220,9 @@ describe('AsyncDebouncer', () => {
       const promise2 = debouncer.maybeExecute()
       vi.advanceTimersByTime(1000)
       await promise2
-      expect(onSuccess2).toBeCalledTimes(1)
-      expect(onSettled2).toBeCalledTimes(1)
-      expect(onError2).not.toBeCalled()
+      expect(onSuccess2).toHaveBeenCalledTimes(1)
+      expect(onSettled2).toHaveBeenCalledTimes(1)
+      expect(onError2).not.toHaveBeenCalled()
     })
 
     it('should handle option changes during error handling', async () => {
@@ -1252,12 +1252,12 @@ describe('AsyncDebouncer', () => {
       // Advance time and verify new callbacks are used
       vi.advanceTimersByTime(1000)
       await promise
-      expect(onError2).toBeCalledTimes(1)
-      expect(onError2).toBeCalledWith(error, [], debouncer)
-      expect(onSettled2).toBeCalledTimes(1)
-      expect(onSettled2).toBeCalledWith([], debouncer)
-      expect(onError1).not.toBeCalled()
-      expect(onSettled1).not.toBeCalled()
+      expect(onError2).toHaveBeenCalledTimes(1)
+      expect(onError2).toHaveBeenCalledWith(error, [], debouncer)
+      expect(onSettled2).toHaveBeenCalledTimes(1)
+      expect(onSettled2).toHaveBeenCalledWith([], debouncer)
+      expect(onError1).not.toHaveBeenCalled()
+      expect(onSettled1).not.toHaveBeenCalled()
     })
   })
 })
@@ -1277,11 +1277,11 @@ describe('asyncDebounce helper function', () => {
       const debounced = asyncDebounce(mockFn, { wait: 1000 })
 
       const promise = debounced()
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       vi.advanceTimersByTime(1000)
       const result = await promise
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
       expect(result).toBe('result')
     })
 
@@ -1293,7 +1293,7 @@ describe('asyncDebounce helper function', () => {
       vi.advanceTimersByTime(1000)
       await promise
 
-      expect(mockFn).toBeCalledWith('arg1', 42, { foo: 'bar' })
+      expect(mockFn).toHaveBeenCalledWith('arg1', 42, { foo: 'bar' })
     })
 
     it('should return a promise', () => {
@@ -1311,11 +1311,11 @@ describe('asyncDebounce helper function', () => {
       const debounced = asyncDebounce(mockFn, { wait: 1000, leading: true })
 
       const promise = debounced()
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
 
       vi.advanceTimersByTime(1000)
       await promise
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
     })
 
     it('should handle multiple calls with trailing edge', () => {
@@ -1325,10 +1325,10 @@ describe('asyncDebounce helper function', () => {
       debounced()
       debounced()
       debounced()
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       vi.advanceTimersByTime(1000)
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
     })
 
     it('should support both leading and trailing execution', async () => {
@@ -1341,17 +1341,17 @@ describe('asyncDebounce helper function', () => {
 
       // First call - should execute immediately
       const promise1 = debounced('first')
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith('first')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('first')
 
       // Second call - should queue for trailing
       const promise2 = debounced('second')
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
 
       vi.advanceTimersByTime(1000)
       await Promise.all([promise1, promise2])
-      expect(mockFn).toBeCalledTimes(2)
-      expect(mockFn).toBeCalledWith('second')
+      expect(mockFn).toHaveBeenCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledWith('second')
     })
   })
 

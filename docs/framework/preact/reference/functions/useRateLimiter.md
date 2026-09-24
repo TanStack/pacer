@@ -5,12 +5,12 @@ title: useRateLimiter
 
 ```ts
 function useRateLimiter<TFn, TSelected>(
-   fn, 
-   options, 
-selector): PreactRateLimiter<TFn, TSelected>;
+   fn,
+   options,
+selector?): PreactRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/rate-limiter/useRateLimiter.ts:190](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L190)
+Defined in: [rate-limiter/useRateLimiter.ts:190](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/rate-limiter/useRateLimiter.ts#L190)
 
 A low-level Preact hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
@@ -86,7 +86,7 @@ The hook returns an object containing:
 
 [`PreactRateLimiterOptions`](../interfaces/PreactRateLimiterOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

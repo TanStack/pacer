@@ -32,11 +32,10 @@
   },
   "sideEffects": false,
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "files": [
-    "dist/",
-    "src"
+    "dist"
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
@@ -45,14 +44,14 @@
     "test:lib": "vitest",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
-    "test:build": "publint --strict",
+    "test:build": "publint --strict && node ../../scripts/verify-package.ts",
     "build": "tsdown"
   },
   "peerDependencies": {
     "preact": ">=10.0.0"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.6.0",
+    "@tanstack/devtools-utils": "^0.7.0",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {

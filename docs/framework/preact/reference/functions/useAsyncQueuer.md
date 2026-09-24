@@ -5,12 +5,12 @@ title: useAsyncQueuer
 
 ```ts
 function useAsyncQueuer<TValue, TSelected>(
-   fn, 
-   options, 
-selector): PreactAsyncQueuer<TValue, TSelected>;
+   fn,
+   options?,
+selector?): PreactAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-queuer/useAsyncQueuer.ts:235](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L235)
+Defined in: [async-queuer/useAsyncQueuer.ts:235](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-queuer/useAsyncQueuer.ts#L235)
 
 A lower-level Preact hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
@@ -108,11 +108,11 @@ accordingly when using onUnmount with flush.
 
 (`value`) => `Promise`\<`any`\>
 
-### options
+### options?
 
 [`PreactAsyncQueuerOptions`](../interfaces/PreactAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

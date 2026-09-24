@@ -33,23 +33,16 @@ allowBuilds:
   lmdb: false # optional dep of @angular/build
   msgpackr-extract: false # optional dep of @angular/build
 
+minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
-  - '@eslint-react/ast@5.18.3'
-  - '@eslint-react/core@5.18.3'
-  - '@eslint-react/eslint-plugin@5.18.3'
-  - '@eslint-react/eslint@5.18.3'
-  - '@eslint-react/jsx@5.18.3'
-  - '@eslint-react/shared@5.18.3'
-  - '@eslint-react/var@5.18.3'
-  - '@tanstack/angular-store@0.11.1'
-  - '@tanstack/preact-store@0.13.2'
-  - '@tanstack/react-store@0.11.1'
-  - '@tanstack/solid-store@0.11.1'
-  - '@tanstack/store@0.11.1'
-  - eslint-plugin-react-dom@5.18.3
-  - eslint-plugin-react-jsx@5.18.3
-  - eslint-plugin-react-naming-convention@5.18.3
-  - eslint-plugin-react-rsc@5.18.3
-  - eslint-plugin-react-web-api@5.18.3
-  - eslint-plugin-react-x@5.18.3
-  - knip@6.32.0
+  # Reviewed Vite patch released on 2026-09-24.
+  - vite@8.3.1
+  # Upstream Preact selector-cache fix verified with Hotkeys.
+  - '@tanstack/preact-store@0.13.3'
+  # Angular 22.2 supports Vitest 5; tooling published on 2026-09-23.
+  - '@angular-devkit/architect@0.2202.0'
+  - '@angular-devkit/core@22.2.0'
+  - '@angular-devkit/schematics@22.2.0'
+  - '@angular/build@22.2.0'
+  - '@angular/cli@22.2.0'
+  - '@schematics/angular@22.2.0'

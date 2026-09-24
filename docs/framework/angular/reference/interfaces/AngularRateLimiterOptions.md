@@ -3,7 +3,7 @@ id: AngularRateLimiterOptions
 title: AngularRateLimiterOptions
 ---
 
-Defined in: [angular-pacer/src/rate-limiter/injectRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L13)
+Defined in: [rate-limiter/injectRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L13)
 
 ## Extends
 
@@ -22,13 +22,13 @@ Defined in: [angular-pacer/src/rate-limiter/injectRateLimiter.ts:13](https://git
 
 ## Properties
 
-### onUnmount()?
+### onUnmount?
 
 ```ts
-optional onUnmount: (rateLimiter) => void;
+optional onUnmount?: (rateLimiter) => void;
 ```
 
-Defined in: [angular-pacer/src/rate-limiter/injectRateLimiter.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L20)
+Defined in: [rate-limiter/injectRateLimiter.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L20)
 
 Optional callback invoked when the component is destroyed. Receives the rate limiter instance.
 

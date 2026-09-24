@@ -18,7 +18,7 @@ Options for configuring a throttled function
 ### enabled?
 
 ```ts
-optional enabled: boolean | (throttler) => boolean;
+optional enabled?: boolean | ((throttler) => boolean);
 ```
 
 Defined in: [throttler.ts:60](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L60)
@@ -32,7 +32,7 @@ Defaults to true.
 ### initialState?
 
 ```ts
-optional initialState: Partial<ThrottlerState<TFn>>;
+optional initialState?: Partial<ThrottlerState<TFn>>;
 ```
 
 Defined in: [throttler.ts:64](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L64)
@@ -44,7 +44,7 @@ Initial state for the throttler
 ### key?
 
 ```ts
-optional key: string;
+optional key?: string;
 ```
 
 Defined in: [throttler.ts:69](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L69)
@@ -57,7 +57,7 @@ If provided, the throttler will be identified by this key in the devtools and Pa
 ### leading?
 
 ```ts
-optional leading: boolean;
+optional leading?: boolean;
 ```
 
 Defined in: [throttler.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L74)
@@ -67,10 +67,10 @@ Defaults to true.
 
 ***
 
-### onExecute()?
+### onExecute?
 
 ```ts
-optional onExecute: (args, throttler) => void;
+optional onExecute?: (args, throttler) => void;
 ```
 
 Defined in: [throttler.ts:78](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L78)
@@ -96,7 +96,7 @@ Callback function that is called after the function is executed
 ### trailing?
 
 ```ts
-optional trailing: boolean;
+optional trailing?: boolean;
 ```
 
 Defined in: [throttler.ts:83](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L83)
@@ -109,7 +109,7 @@ Defaults to true.
 ### wait
 
 ```ts
-wait: number | (throttler) => number;
+wait: number | ((throttler) => number);
 ```
 
 Defined in: [throttler.ts:89](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/throttler.ts#L89)

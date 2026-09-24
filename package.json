@@ -5,15 +5,16 @@
     "type": "git",
     "url": "git+https://github.com/TanStack/pacer.git"
   },
-  "packageManager": "pnpm@11.20.0",
+  "packageManager": "pnpm@12.6.0",
   "engines": {
-    "pnpm": ">=11.0.0"
+    "node": "^24.21.0 || >=26.0.0",
+    "pnpm": ">=12.6.0"
   },
   "type": "module",
   "scripts": {
-    "build": "nx affected --skip-nx-cache --targets=build --exclude=examples/** && size-limit && pnpm run",
-    "build:all": "nx run-many --targets=build --exclude=examples/** && size-limit && pnpm run",
-    "build:core": "nx run-many --targets=build --projects=packages/pacer,packages/persister && size-limit && pnpm run",
+    "build": "nx affected --skip-nx-cache --targets=build --exclude=examples/** && size-limit",
+    "build:all": "nx run-many --targets=build --exclude=examples/** && size-limit",
+    "build:core": "nx run-many --targets=build --projects=packages/pacer,packages/pacer-lite && size-limit",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
     "changeset:version": "changeset version && pnpm install --no-frozen-lockfile && pnpm format",
@@ -28,13 +29,13 @@
     "lint:fix:all": "nx run-many --targets=lint --fix",
     "size": "size-limit",
     "test": "pnpm run test:ci",
-    "test:ci": "nx run-many --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
+    "test:ci": "nx run-many --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build,test:build && size-limit",
     "test:docs": "node scripts/verify-links.ts",
     "test:eslint": "nx affected --target=test:eslint --exclude=examples/**",
     "test:knip": "knip",
     "test:lib": "nx affected --targets=test:lib --exclude=examples/**",
     "test:lib:dev": "pnpm test:lib && nx watch --all -- pnpm test:lib",
-    "test:pr": "nx affected --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build",
+    "test:pr": "nx affected --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build,test:build",
     "test:sherif": "sherif",
     "test:types": "nx affected --targets=test:types --exclude=examples/**",
     "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all"
@@ -53,29 +54,32 @@
     }
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.31.1",
-    "@faker-js/faker": "^10.5.0",
-    "@size-limit/preset-small-lib": "^13.0.3",
-    "@svitejs/changesets-changelog-github-compact": "^1.2.0",
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
+    "@faker-js/faker": "^10.6.0",
+    "@size-limit/preset-small-lib": "^14.0.0",
     "@tanstack/eslint-config": "0.4.0",
-    "@tanstack/typedoc-config": "0.3.3",
-    "@testing-library/jest-dom": "^7.0.0",
-    "@types/node": "^26.1.2",
-    "eslint": "^10.8.0",
+    "@tanstack/typedoc-config": "0.3.4",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@types/node": "^26.6.2",
+    "eslint": "^10.11.0",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "happy-dom": "^20.11.1",
-    "knip": "^6.32.0",
+    "happy-dom": "^20.14.5",
+    "knip": "^6.38.0",
     "markdown-link-extractor": "^4.0.4",
-    "nx": "^23.1.1",
+    "nx": "^23.2.1",
     "premove": "^4.0.0",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.9",
     "prettier-plugin-svelte": "^4.1.1",
-    "publint": "^0.3.23",
+    "publint": "^0.3.24",
     "sherif": "^1.13.0",
-    "size-limit": "^13.0.3",
+    "size-limit": "^14.0.0",
     "tinyglobby": "^0.2.17",
-    "tsdown": "^0.22.14",
+    "tsdown": "^0.23.0",
     "typescript": "6.0.3",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.1"
+  },
+  "volta": {
+    "node": "24.21.0"
   }
 }

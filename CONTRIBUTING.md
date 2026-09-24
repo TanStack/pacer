@@ -28,6 +28,7 @@ Before proceeding with development, ensure you match one of the following criter
 ## Development Workflow
 
 - Fork this repository, we prefer the `feat-*` branch name style
+- Use the Node.js version in `.nvmrc` (`nvm install && nvm use`) and the pnpm version pinned in `package.json`. Keep TypeScript at `6.0.3` during routine dependency updates.
 - Ensure you have `pnpm` installed
 - Install projects dependencies and linkages by running `pnpm install`
 - Auto-build and auto-test files as you edit by running `pnpm dev`
@@ -53,3 +54,11 @@ Before proceeding with development, ensure you match one of the following criter
 - Install any additional packages to the example that you may need
 - Update the docs/config.json file to include the new example in the navigation sidebar
 - Commit the example eg. `docs: Add example-name`
+
+## Package builds
+
+Packages target ES2022 and require Node.js 20 or newer. They publish ESM and `.d.ts` declarations from `dist`, without CommonJS, source files, or source maps. Preserve all documented subpath exports and the devtools browser/server conditions when changing builds.
+
+`pnpm test` runs the workspace checks, builds, strict publint, packed-file validation, and the existing core size budget. Use the repository’s newer Node.js version for development and CI; the published package runtime minimum is separate.
+
+Package changes require a changeset. Use a minor release for this build migration, including the devtools packages; do not accidentally request a major release.

@@ -3,7 +3,7 @@ id: PreactDebouncer
 title: PreactDebouncer
 ---
 
-Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L24)
+Defined in: [debouncer/useDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L24)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:24](https://github.com/T
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L50)
+Defined in: [debouncer/useDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L50)
 
 Reactive state that will be updated and re-rendered when the debouncer state changes
 
@@ -42,7 +42,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<DebouncerState<TFn>>>;
 ```
 
-Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L56)
+Defined in: [debouncer/useDebouncer.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L56)
 
 #### Deprecated
 
@@ -52,13 +52,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/debouncer/useDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L41)
+Defined in: [debouncer/useDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/debouncer/useDebouncer.ts#L41)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the debouncer state.
 
@@ -77,7 +77,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`ComponentChildren` \| (`state`) => `ComponentChildren`
+`ComponentChildren` \| ((`state`) => `ComponentChildren`)
 
 ###### selector
 

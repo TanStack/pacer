@@ -3,7 +3,7 @@ id: ReactThrottler
 title: ReactThrottler
 ---
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L24)
+Defined in: [throttler/useThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L24)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [react-pacer/src/throttler/useThrottler.ts:24](https://github.com/Ta
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L50)
+Defined in: [throttler/useThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L50)
 
 Reactive state that will be updated and re-rendered when the throttler state changes
 
@@ -42,7 +42,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:56](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L56)
+Defined in: [throttler/useThrottler.ts:56](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L56)
 
 #### Deprecated
 
@@ -52,13 +52,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [react-pacer/src/throttler/useThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L41)
+Defined in: [throttler/useThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L41)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the throttler state.
 
@@ -77,7 +77,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`ReactNode` \| (`state`) => `ReactNode`
+`ReactNode` \| ((`state`) => `ReactNode`)
 
 ###### selector
 

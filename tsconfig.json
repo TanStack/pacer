@@ -21,8 +21,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2020",
-    "noErrorTruncation": true
+    "target": "ES2022",
+    "noErrorTruncation": true,
+    "sourceMap": false,
+    "declarationMap": false
   },
   "include": ["scripts", "*.config.*", "vitest.workspace.js"]
 }

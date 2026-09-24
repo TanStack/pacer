@@ -29,46 +29,26 @@
     "test:lib": "vitest",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
-    "build": "tsdown"
+    "build": "tsdown",
+    "test:build": "publint --strict && node ../../scripts/verify-package.ts"
   },
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.cts",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./lite-batcher": {
-      "import": "./dist/lite-batcher.js",
-      "require": "./dist/lite-batcher.cjs"
-    },
-    "./lite-debouncer": {
-      "import": "./dist/lite-debouncer.js",
-      "require": "./dist/lite-debouncer.cjs"
-    },
-    "./lite-queuer": {
-      "import": "./dist/lite-queuer.js",
-      "require": "./dist/lite-queuer.cjs"
-    },
-    "./lite-rate-limiter": {
-      "import": "./dist/lite-rate-limiter.js",
-      "require": "./dist/lite-rate-limiter.cjs"
-    },
-    "./lite-throttler": {
-      "import": "./dist/lite-throttler.js",
-      "require": "./dist/lite-throttler.cjs"
-    },
+    ".": "./dist/index.js",
+    "./lite-batcher": "./dist/lite-batcher.js",
+    "./lite-debouncer": "./dist/lite-debouncer.js",
+    "./lite-queuer": "./dist/lite-queuer.js",
+    "./lite-rate-limiter": "./dist/lite-rate-limiter.js",
+    "./lite-throttler": "./dist/lite-throttler.js",
     "./package.json": "./package.json"
   },
   "sideEffects": false,
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "files": [
-    "dist/",
-    "src"
+    "dist"
   ],
   "devDependencies": {
     "@tanstack/pacer": "workspace:*"

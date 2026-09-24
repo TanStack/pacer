@@ -29,7 +29,8 @@
     "test:lib": "vitest",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
-    "build": "tsdown"
+    "build": "tsdown",
+    "test:build": "publint --strict && node ../../scripts/verify-package.ts"
   },
   "type": "module",
   "types": "./dist/index.d.ts",
@@ -70,28 +71,27 @@
   },
   "sideEffects": false,
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "files": [
-    "dist/",
-    "src"
+    "dist"
   ],
   "peerDependencies": {
     "@tanstack/pacer": ">=0.16.4"
   },
   "dependencies": {
-    "@tanstack/devtools-ui": "0.6.0",
-    "@tanstack/devtools-utils": "^0.6.0",
+    "@tanstack/devtools-ui": "0.7.1",
+    "@tanstack/devtools-utils": "^0.7.0",
     "@tanstack/solid-store": "^0.11.1",
     "clsx": "^2.1.1",
     "csstype": "^3.2.3",
-    "dayjs": "^1.11.21",
+    "dayjs": "^1.11.23",
     "goober": "^2.1.19",
-    "solid-js": "^1.9.14"
+    "solid-js": "^1.9.15"
   },
   "devDependencies": {
     "rolldown-plugin-solid": "^0.2.1",
-    "tsdown": "^0.22.14",
+    "tsdown": "^0.23.0",
     "vite-plugin-solid": "^2.11.14"
   }
 }
