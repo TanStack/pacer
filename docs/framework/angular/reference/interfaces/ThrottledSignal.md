@@ -3,8 +3,6 @@ id: ThrottledSignal
 title: ThrottledSignal
 ---
 
-# Interface: ThrottledSignal()\<TValue, TSelected\>
-
 Defined in: [angular-pacer/src/throttler/injectThrottledSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L11)
 
 ## Type Parameters

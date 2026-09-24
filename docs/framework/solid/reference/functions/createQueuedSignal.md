@@ -3,8 +3,6 @@ id: createQueuedSignal
 title: createQueuedSignal
 ---
 
-# Function: createQueuedSignal()
-
 ```ts
 function createQueuedSignal<TValue, TSelected>(
    fn, 

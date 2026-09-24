@@ -3,8 +3,6 @@ id: debounce
 title: debounce
 ---
 
-# Function: debounce()
-
 ```ts
 function debounce<TFn>(fn, initialOptions): (...args) => void;
 ```

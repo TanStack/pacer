@@ -3,8 +3,6 @@ id: useThrottler
 title: useThrottler
 ---
 
-# Function: useThrottler()
-
 ```ts
 function useThrottler<TFn, TSelected>(
    fn, 

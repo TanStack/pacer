@@ -3,8 +3,6 @@ id: AngularQueuer
 title: AngularQueuer
 ---
 
-# Interface: AngularQueuer\<TValue, TSelected\>
-
 Defined in: [angular-pacer/src/queuer/injectQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L20)
 
 ## Extends

@@ -3,8 +3,6 @@ id: PreactBatcher
 title: PreactBatcher
 ---
 
-# Interface: PreactBatcher\<TValue, TSelected\>
-
 Defined in: [preact-pacer/src/batcher/useBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L20)
 
 ## Extends

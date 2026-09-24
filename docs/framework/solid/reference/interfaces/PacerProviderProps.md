@@ -3,8 +3,6 @@ id: PacerProviderProps
 title: PacerProviderProps
 ---
 
-# Interface: PacerProviderProps
-
 Defined in: [solid-pacer/src/provider/PacerProvider.tsx:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L37)
 
 ## Properties

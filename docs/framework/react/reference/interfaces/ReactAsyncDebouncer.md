@@ -3,8 +3,6 @@ id: ReactAsyncDebouncer
 title: ReactAsyncDebouncer
 ---
 
-# Interface: ReactAsyncDebouncer\<TFn, TSelected\>
-
 Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L24)
 
 ## Extends

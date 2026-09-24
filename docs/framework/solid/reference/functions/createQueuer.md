@@ -3,8 +3,6 @@ id: createQueuer
 title: createQueuer
 ---
 
-# Function: createQueuer()
-
 ```ts
 function createQueuer<TValue, TSelected>(
    fn, 

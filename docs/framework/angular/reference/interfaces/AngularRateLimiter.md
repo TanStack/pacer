@@ -3,8 +3,6 @@ id: AngularRateLimiter
 title: AngularRateLimiter
 ---
 
-# Interface: AngularRateLimiter\<TFn, TSelected\>
-
 Defined in: [angular-pacer/src/rate-limiter/injectRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L23)
 
 ## Extends

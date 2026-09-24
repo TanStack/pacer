@@ -3,8 +3,6 @@ id: SolidAsyncRateLimiter
 title: SolidAsyncRateLimiter
 ---
 
-# Interface: SolidAsyncRateLimiter\<TFn, TSelected\>
-
 Defined in: [solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L24)
 
 ## Extends

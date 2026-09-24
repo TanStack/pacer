@@ -3,8 +3,6 @@ id: BatcherOptions
 title: BatcherOptions
 ---
 
-# Interface: BatcherOptions\<TValue\>
-
 Defined in: [batcher.ts:52](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L52)
 
 Options for configuring a Batcher instance

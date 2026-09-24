@@ -3,8 +3,6 @@ id: createThrottledSignal
 title: createThrottledSignal
 ---
 
-# Function: createThrottledSignal()
-
 ```ts
 function createThrottledSignal<TValue, TSelected>(
    value, 

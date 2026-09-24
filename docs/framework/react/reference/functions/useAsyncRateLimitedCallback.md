@@ -3,8 +3,6 @@ id: useAsyncRateLimitedCallback
 title: useAsyncRateLimitedCallback
 ---
 
-# Function: useAsyncRateLimitedCallback()
-
 ```ts
 function useAsyncRateLimitedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```

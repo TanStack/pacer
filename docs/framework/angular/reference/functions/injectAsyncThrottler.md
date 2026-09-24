@@ -3,8 +3,6 @@ id: injectAsyncThrottler
 title: injectAsyncThrottler
 ---
 
-# Function: injectAsyncThrottler()
-
 ```ts
 function injectAsyncThrottler<TFn, TSelected>(
    fn, 

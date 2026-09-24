@@ -3,8 +3,6 @@ id: createThrottler
 title: createThrottler
 ---
 
-# Function: createThrottler()
-
 ```ts
 function createThrottler<TFn, TSelected>(
    fn, 

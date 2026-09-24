@@ -3,8 +3,6 @@ id: injectAsyncDebouncer
 title: injectAsyncDebouncer
 ---
 
-# Function: injectAsyncDebouncer()
-
 ```ts
 function injectAsyncDebouncer<TFn, TSelected>(
    fn, 

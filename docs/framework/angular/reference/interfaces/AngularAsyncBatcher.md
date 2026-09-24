@@ -3,8 +3,6 @@ id: AngularAsyncBatcher
 title: AngularAsyncBatcher
 ---
 
-# Interface: AngularAsyncBatcher\<TValue, TSelected\>
-
 Defined in: [angular-pacer/src/async-batcher/injectAsyncBatcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L24)
 
 ## Extends

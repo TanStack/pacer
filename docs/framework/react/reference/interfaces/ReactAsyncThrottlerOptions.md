@@ -3,8 +3,6 @@ id: ReactAsyncThrottlerOptions
 title: ReactAsyncThrottlerOptions
 ---
 
-# Interface: ReactAsyncThrottlerOptions\<TFn, TSelected\>
-
 Defined in: [react-pacer/src/async-throttler/useAsyncThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-throttler/useAsyncThrottler.ts#L13)
 
 ## Extends

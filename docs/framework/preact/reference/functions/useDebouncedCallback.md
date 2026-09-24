@@ -3,8 +3,6 @@ id: useDebouncedCallback
 title: useDebouncedCallback
 ---
 
-# Function: useDebouncedCallback()
-
 ```ts
 function useDebouncedCallback<TFn>(fn, options): (...args) => void;
 ```

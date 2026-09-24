@@ -3,8 +3,6 @@ id: usePacerContext
 title: usePacerContext
 ---
 
-# Function: usePacerContext()
-
 ```ts
 function usePacerContext(): PacerContextValue | null;
 ```

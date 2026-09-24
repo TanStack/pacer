@@ -3,8 +3,6 @@ id: RateLimiterOptions
 title: RateLimiterOptions
 ---
 
-# Interface: RateLimiterOptions\<TFn\>
-
 Defined in: [rate-limiter.ts:47](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/rate-limiter.ts#L47)
 
 Options for configuring a rate-limited function

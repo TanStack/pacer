@@ -3,8 +3,6 @@ id: useRateLimitedState
 title: useRateLimitedState
 ---
 
-# Function: useRateLimitedState()
-
 ```ts
 function useRateLimitedState<TValue, TSelected>(
    value, 

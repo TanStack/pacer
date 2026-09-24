@@ -3,8 +3,6 @@ id: injectThrottledSignal
 title: injectThrottledSignal
 ---
 
-# Function: injectThrottledSignal()
-
 ```ts
 function injectThrottledSignal<TValue, TSelected>(
    value, 

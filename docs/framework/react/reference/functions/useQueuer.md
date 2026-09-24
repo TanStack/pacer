@@ -3,8 +3,6 @@ id: useQueuer
 title: useQueuer
 ---
 
-# Function: useQueuer()
-
 ```ts
 function useQueuer<TValue, TSelected>(
    fn, 

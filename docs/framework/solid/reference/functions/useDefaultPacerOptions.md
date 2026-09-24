@@ -3,8 +3,6 @@ id: useDefaultPacerOptions
 title: useDefaultPacerOptions
 ---
 
-# Function: useDefaultPacerOptions()
-
 ```ts
 function useDefaultPacerOptions(): PacerProviderOptions;
 ```

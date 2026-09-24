@@ -3,8 +3,6 @@ id: AsyncBatcherOptions
 title: AsyncBatcherOptions
 ---
 
-# Interface: AsyncBatcherOptions\<TValue\>
-
 Defined in: [async-batcher.ts:89](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L89)
 
 Options for configuring an AsyncBatcher instance

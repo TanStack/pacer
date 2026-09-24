@@ -3,8 +3,6 @@ id: injectDebouncedSignal
 title: injectDebouncedSignal
 ---
 
-# Function: injectDebouncedSignal()
-
 ```ts
 function injectDebouncedSignal<TValue, TSelected>(
    value, 

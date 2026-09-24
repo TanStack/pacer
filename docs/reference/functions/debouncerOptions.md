@@ -3,8 +3,6 @@ id: debouncerOptions
 title: debouncerOptions
 ---
 
-# Function: debouncerOptions()
-
 ```ts
 function debouncerOptions<TFn, TOptions>(options): TOptions;
 ```

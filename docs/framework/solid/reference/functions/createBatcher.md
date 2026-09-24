@@ -3,8 +3,6 @@ id: createBatcher
 title: createBatcher
 ---
 
-# Function: createBatcher()
-
 ```ts
 function createBatcher<TValue, TSelected>(
    fn, 

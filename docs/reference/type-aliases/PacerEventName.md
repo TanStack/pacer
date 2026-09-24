@@ -3,8 +3,6 @@ id: PacerEventName
 title: PacerEventName
 ---
 
-# Type Alias: PacerEventName
-
 ```ts
 type PacerEventName = keyof PacerEventMap;
 ```

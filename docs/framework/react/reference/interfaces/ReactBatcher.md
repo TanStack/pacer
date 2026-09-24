@@ -3,8 +3,6 @@ id: ReactBatcher
 title: ReactBatcher
 ---
 
-# Interface: ReactBatcher\<TValue, TSelected\>
-
 Defined in: [react-pacer/src/batcher/useBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L20)
 
 ## Extends

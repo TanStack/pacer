@@ -3,8 +3,6 @@ id: Batcher
 title: Batcher
 ---
 
-# Class: Batcher\<TValue\>
-
 Defined in: [batcher.ts:145](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/batcher.ts#L145)
 
 A class that collects items and processes them in batches.

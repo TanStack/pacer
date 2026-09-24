@@ -3,8 +3,6 @@ id: SolidAsyncThrottler
 title: SolidAsyncThrottler
 ---
 
-# Interface: SolidAsyncThrottler\<TFn, TSelected\>
-
 Defined in: [solid-pacer/src/async-throttler/createAsyncThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L24)
 
 ## Extends

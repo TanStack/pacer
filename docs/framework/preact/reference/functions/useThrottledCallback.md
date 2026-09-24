@@ -3,8 +3,6 @@ id: useThrottledCallback
 title: useThrottledCallback
 ---
 
-# Function: useThrottledCallback()
-
 ```ts
 function useThrottledCallback<TFn>(fn, options): (...args) => void;
 ```

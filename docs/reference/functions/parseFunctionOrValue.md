@@ -3,8 +3,6 @@ id: parseFunctionOrValue
 title: parseFunctionOrValue
 ---
 
-# Function: parseFunctionOrValue()
-
 ```ts
 function parseFunctionOrValue<T, TArgs>(value, ...args): T;
 ```

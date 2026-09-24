@@ -3,8 +3,6 @@ id: ReactThrottler
 title: ReactThrottler
 ---
 
-# Interface: ReactThrottler\<TFn, TSelected\>
-
 Defined in: [react-pacer/src/throttler/useThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L24)
 
 ## Extends
