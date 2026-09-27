@@ -90,9 +90,9 @@ deep in your component tree without needing to pass a selector to the hook.
 #### Example
 
 ```ts
-<batcher.Subscribe selector={(state) => ({ size: state.size, isRunning: state.isRunning })}>
+<batcher.Subscribe selector={(state) => ({ size: state.size, isPending: state.isPending })}>
   {(state) => (
-    <div>Batch: {state().size} items, {state().isRunning ? 'Processing' : 'Idle'}</div>
+    <div>Batch: {state().size} items, {state().isPending ? 'Pending' : 'Idle'}</div>
   )}
 </batcher.Subscribe>
 ```

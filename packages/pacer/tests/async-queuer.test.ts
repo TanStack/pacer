@@ -586,7 +586,7 @@ describe('AsyncQueuer', () => {
       asyncQueuer.addItem('test2')
       await asyncQueuer.execute()
       await asyncQueuer.execute()
-      expect(asyncQueuer.store.state.settledCount).toBe(2)
+      expect(asyncQueuer.store.state.settleCount).toBe(2)
     })
   })
 
@@ -1414,7 +1414,7 @@ describe('AsyncQueuer', () => {
       // allSettled semantics: the non-failing items still executed
       expect(results).toEqual(['x', 'y'])
       expect(asyncQueuer.store.state.errorCount).toBe(1)
-      expect(asyncQueuer.store.state.settledCount).toBe(3)
+      expect(asyncQueuer.store.state.settleCount).toBe(3)
     })
 
     it('should process items remaining after a partial flush with wait > 0', async () => {

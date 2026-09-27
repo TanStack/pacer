@@ -111,7 +111,6 @@ export interface PreactAsyncBatcher<TValue, TSelected = {}> extends Omit<
  * - `isEmpty`: Whether the batcher has no items to process
  * - `isExecuting`: Whether a batch is currently being processed asynchronously
  * - `isPending`: Whether the batcher is waiting for the timeout to trigger batch processing
- * - `isRunning`: Whether the batcher is active and will process items automatically
  * - `items`: Array of items currently queued for batch processing
  * - `lastResult`: The result from the most recent batch execution
  * - `settleCount`: Number of batch executions that have completed (success or error)

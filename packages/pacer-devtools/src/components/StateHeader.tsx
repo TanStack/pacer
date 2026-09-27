@@ -3,6 +3,7 @@ import relativeTime from 'dayjs/plugin/relativeTime.js'
 import { Show, createSignal, onCleanup, onMount } from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
 import { useStyles } from '../styles/use-styles'
+import { reductionFromState } from '../utils/reduction-from-state'
 import {
   getPacerUtilStoreState,
   isPacerUtilTanStackStore,
@@ -13,41 +14,6 @@ dayjs.extend(relativeTime)
 type StateHeaderProps = {
   selectedInstance: () => { instance: any; type: string } | null
   utilState: () => { lastUpdatedByKey: Record<string, number> }
-}
-
-function reductionFromState(
-  entry: { type: string },
-  state: Record<string, unknown> | null | undefined,
-): number {
-  if (!state) return 0
-
-  const isAsync = entry.type.toLowerCase().includes('async')
-  const completedExecutions = isAsync
-    ? Number(state.settleCount) || 0
-    : Number(state.executionCount) || 0
-
-  if (entry.type.toLowerCase().includes('batcher')) {
-    const totalItemsProcessed = Number(state.totalItemsProcessed) || 0
-    if (totalItemsProcessed === 0) return 0
-    return Math.round(
-      ((totalItemsProcessed - completedExecutions) / totalItemsProcessed) * 100,
-    )
-  }
-
-  let requestCount = 0
-
-  if (state.maybeExecuteCount !== undefined) {
-    requestCount = Number(state.maybeExecuteCount) || 0
-  } else if (state.addItemCount !== undefined) {
-    requestCount = Number(state.addItemCount) || 0
-  } else {
-    return 0
-  }
-
-  if (requestCount === 0) return 0
-
-  const reduction = requestCount - completedExecutions
-  return Math.round((reduction / requestCount) * 100)
 }
 
 function StateHeaderInner(props: {

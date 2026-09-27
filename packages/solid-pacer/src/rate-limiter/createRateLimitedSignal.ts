@@ -47,13 +47,14 @@ import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
  * the reactive system track the selected state values.
  *
  * Available rate limiter state properties:
- * - `callsInWindow`: Number of calls made in the current window
- * - `remainingInWindow`: Number of calls remaining in the current window
- * - `windowStart`: Unix timestamp when the current window started
- * - `nextWindowStart`: Unix timestamp when the next window will start
- * - `msUntilNextWindow`: Milliseconds until the next window starts
- * - `isAtLimit`: Whether the call limit for the current window has been reached
- * - `status`: Current status ('disabled' | 'idle' | 'at-limit')
+ * - `executionCount`: Number of function executions
+ * - `executionTimes`: Timestamps of executions tracked for the current window
+ * - `maybeExecuteCount`: Number of calls to maybeExecute
+ * - `rejectionCount`: Number of calls rejected by the rate limit
+ * - `isExceeded`: Whether the rate limit has been reached
+ * - `status`: Current status ('disabled' | 'exceeded' | 'idle')
+ *
+ * Use `getRemainingInWindow()` and `getMsUntilNextWindow()` for current window capacity and timing.
  *
  * @example
  * ```tsx
@@ -68,7 +69,7 @@ import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
  * const [value, setValue, rateLimiter] = createRateLimitedSignal(
  *   0,
  *   { limit: 5, window: 60000 },
- *   (state) => ({ isAtLimit: state.isAtLimit, remainingInWindow: state.remainingInWindow })
+ *   (state) => ({ isExceeded: state.isExceeded })
  * );
  *
  * // With rejection callback and fixed window
@@ -83,7 +84,7 @@ import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
  *
  * // Access rateLimiter state via signals
  * const handleSubmit = () => {
- *   const remaining = rateLimiter.state().remainingInWindow;
+ *   const remaining = rateLimiter.getRemainingInWindow();
  *   if (remaining > 0) {
  *     setValue(newValue);
  *   } else {
