@@ -166,12 +166,12 @@ describe('Throttler', () => {
 
     // Should execute immediately due to leading: true
     throttler.maybeExecute('first')
-    expect(mockFn).toBeCalledTimes(1)
-    expect(mockFn).toBeCalledWith('first')
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledWith('first')
 
     // Should execute immediately again since wait is 0
     throttler.maybeExecute('second')
-    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenCalledTimes(2)
     expect(mockFn).toHaveBeenLastCalledWith('second')
   })
 
@@ -181,21 +181,21 @@ describe('Throttler', () => {
 
     // First call should execute immediately
     throttler.maybeExecute('first')
-    expect(mockFn).toBeCalledTimes(1)
-    expect(mockFn).toBeCalledWith('first')
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledWith('first')
 
     // Subsequent calls should be throttled
     throttler.maybeExecute('second')
     throttler.maybeExecute('third')
-    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledTimes(1)
 
     // Advance time by half the wait period
     vi.advanceTimersByTime(500000)
-    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledTimes(1)
 
     // Complete the wait period
     vi.advanceTimersByTime(500000)
-    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenCalledTimes(2)
     expect(mockFn).toHaveBeenLastCalledWith('third')
   })
 
@@ -205,19 +205,19 @@ describe('Throttler', () => {
 
     // First call executes immediately
     throttler.maybeExecute('first')
-    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledTimes(1)
 
     // Second call during wait period
     throttler.maybeExecute('second')
-    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledTimes(1)
 
     // Cancel before trailing execution
     throttler.cancel()
 
     // Advance time - trailing execution should not occur
     vi.advanceTimersByTime(100)
-    expect(mockFn).toBeCalledTimes(1)
-    expect(mockFn).toBeCalledWith('first')
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledWith('first')
   })
 
   it('should handle multiple cancellations', () => {
@@ -226,21 +226,21 @@ describe('Throttler', () => {
 
     // First call
     throttler.maybeExecute('first')
-    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledTimes(1)
 
     // Cancel before trailing execution
     throttler.cancel()
     vi.advanceTimersByTime(100)
-    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledTimes(1)
 
     // Second call
     throttler.maybeExecute('second')
-    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenCalledTimes(2)
 
     // Cancel again
     throttler.cancel()
     vi.advanceTimersByTime(100)
-    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenCalledTimes(2)
   })
 
   describe('Flush Method', () => {
@@ -249,13 +249,13 @@ describe('Throttler', () => {
       const throttler = new Throttler(mockFn, { wait: 1000 })
 
       throttler.maybeExecute('test')
-      expect(mockFn).toBeCalledTimes(1) // Leading execution
+      expect(mockFn).toHaveBeenCalledTimes(1) // Leading execution
 
       throttler.maybeExecute('pending')
-      expect(mockFn).toBeCalledTimes(1) // Still throttled
+      expect(mockFn).toHaveBeenCalledTimes(1) // Still throttled
 
       throttler.flush()
-      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledTimes(2)
       expect(mockFn).toHaveBeenLastCalledWith('pending')
     })
 
@@ -270,7 +270,7 @@ describe('Throttler', () => {
       // Advance time to ensure timeout would have fired
       vi.advanceTimersByTime(1000)
 
-      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledTimes(2)
     })
 
     it('should do nothing when no pending execution', () => {
@@ -278,7 +278,7 @@ describe('Throttler', () => {
       const throttler = new Throttler(mockFn, { wait: 1000 })
 
       throttler.flush()
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
     })
 
     it('should work with leading and trailing execution', () => {
@@ -290,12 +290,12 @@ describe('Throttler', () => {
       })
 
       throttler.maybeExecute('first')
-      expect(mockFn).toBeCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledTimes(1)
 
       throttler.maybeExecute('second')
       throttler.flush()
 
-      expect(mockFn).toBeCalledTimes(2)
+      expect(mockFn).toHaveBeenCalledTimes(2)
       expect(mockFn).toHaveBeenLastCalledWith('second')
     })
 
@@ -308,11 +308,11 @@ describe('Throttler', () => {
       })
 
       throttler.maybeExecute('first')
-      expect(mockFn).not.toBeCalled()
+      expect(mockFn).not.toHaveBeenCalled()
 
       throttler.flush()
-      expect(mockFn).toBeCalledTimes(1)
-      expect(mockFn).toBeCalledWith('first')
+      expect(mockFn).toHaveBeenCalledTimes(1)
+      expect(mockFn).toHaveBeenCalledWith('first')
     })
 
     it('should update state correctly after flush', () => {
@@ -345,14 +345,14 @@ describe('throttle helper function', () => {
     const throttledFn = throttle(mockFn, { wait: 100 })
 
     throttledFn('test')
-    expect(mockFn).toBeCalledTimes(1) // Leading edge
-    expect(mockFn).toBeCalledWith('test')
+    expect(mockFn).toHaveBeenCalledTimes(1) // Leading edge
+    expect(mockFn).toHaveBeenCalledWith('test')
 
     throttledFn('ignored')
-    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledTimes(1)
 
     vi.advanceTimersByTime(100)
-    expect(mockFn).toBeCalledTimes(2) // Trailing edge
+    expect(mockFn).toHaveBeenCalledTimes(2) // Trailing edge
     expect(mockFn).toHaveBeenLastCalledWith('ignored')
   })
 
@@ -361,7 +361,7 @@ describe('throttle helper function', () => {
     const throttledFn = throttle(mockFn, { wait: 100 })
 
     throttledFn(42, 'test', { foo: 'bar' })
-    expect(mockFn).toBeCalledWith(42, 'test', { foo: 'bar' })
+    expect(mockFn).toHaveBeenCalledWith(42, 'test', { foo: 'bar' })
   })
 
   it('should respect leading: false option', () => {
@@ -373,7 +373,7 @@ describe('throttle helper function', () => {
     })
 
     throttledFn('first')
-    expect(mockFn).not.toBeCalled() // No leading edge execution
+    expect(mockFn).not.toHaveBeenCalled() // No leading edge execution
 
     throttledFn('second') // Add another call to ensure trailing edge triggers
 
@@ -392,11 +392,11 @@ describe('throttle helper function', () => {
     })
 
     throttledFn('first')
-    expect(mockFn).toBeCalledTimes(1) // Leading edge
+    expect(mockFn).toHaveBeenCalledTimes(1) // Leading edge
 
     throttledFn('second')
     vi.advanceTimersByTime(100)
-    expect(mockFn).toBeCalledTimes(1) // No trailing edge
+    expect(mockFn).toHaveBeenCalledTimes(1) // No trailing edge
     expect(mockFn).toHaveBeenCalledWith('first')
   })
 
@@ -407,23 +407,23 @@ describe('throttle helper function', () => {
     // First burst
     throttledFn('a')
     throttledFn('b')
-    expect(mockFn).toBeCalledTimes(1)
-    expect(mockFn).toBeCalledWith('a')
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledWith('a')
 
     // Advance halfway and make another call
     vi.advanceTimersByTime(50)
     throttledFn('c')
-    expect(mockFn).toBeCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledTimes(1)
 
     // Complete first wait period
     vi.advanceTimersByTime(50)
-    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenCalledTimes(2)
     expect(mockFn).toHaveBeenLastCalledWith('c')
 
     // Wait another period and make new call
     vi.advanceTimersByTime(100)
     throttledFn('d')
-    expect(mockFn).toBeCalledTimes(3)
+    expect(mockFn).toHaveBeenCalledTimes(3)
     expect(mockFn).toHaveBeenLastCalledWith('d')
   })
 
@@ -435,12 +435,12 @@ describe('throttle helper function', () => {
     for (let i = 0; i < 5; i++) {
       throttledFn(`call-${i}`)
     }
-    expect(mockFn).toBeCalledTimes(1)
-    expect(mockFn).toBeCalledWith('call-0')
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledWith('call-0')
 
     // Should execute the last call after wait
     vi.advanceTimersByTime(100)
-    expect(mockFn).toBeCalledTimes(2)
+    expect(mockFn).toHaveBeenCalledTimes(2)
     expect(mockFn).toHaveBeenLastCalledWith('call-4')
   })
 
@@ -453,9 +453,9 @@ describe('throttle helper function', () => {
     })
 
     throttledFn('test')
-    expect(mockFn).not.toBeCalled()
+    expect(mockFn).not.toHaveBeenCalled()
 
     vi.advanceTimersByTime(100)
-    expect(mockFn).not.toBeCalled()
+    expect(mockFn).not.toHaveBeenCalled()
   })
 })

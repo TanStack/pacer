@@ -5,12 +5,12 @@ title: useAsyncDebouncer
 
 ```ts
 function useAsyncDebouncer<TFn, TSelected>(
-   fn, 
-   options, 
-selector): ReactAsyncDebouncer<TFn, TSelected>;
+   fn,
+   options,
+selector?): ReactAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-debouncer/useAsyncDebouncer.ts:214](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L214)
+Defined in: [async-debouncer/useAsyncDebouncer.ts:214](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-debouncer/useAsyncDebouncer.ts#L214)
 
 A low-level React hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -106,7 +106,7 @@ accordingly when using onUnmount with flush.
 
 [`ReactAsyncDebouncerOptions`](../interfaces/ReactAsyncDebouncerOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

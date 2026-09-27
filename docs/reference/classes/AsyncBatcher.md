@@ -114,7 +114,7 @@ Defined in: [async-batcher.ts:271](https://github.com/TanStack/pacer/blob/main/p
 
 ***
 
-### fn()
+### fn
 
 ```ts
 fn: (items) => Promise<any>;

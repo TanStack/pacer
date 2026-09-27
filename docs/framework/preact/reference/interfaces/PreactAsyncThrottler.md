@@ -3,7 +3,7 @@ id: PreactAsyncThrottler
 title: PreactAsyncThrottler
 ---
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L24)
+Defined in: [async-throttler/useAsyncThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L24)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:24](https://g
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L50)
+Defined in: [async-throttler/useAsyncThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L50)
 
 Reactive state that will be updated and re-rendered when the throttler state changes
 
@@ -42,7 +42,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L56)
+Defined in: [async-throttler/useAsyncThrottler.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L56)
 
 #### Deprecated
 
@@ -52,13 +52,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [preact-pacer/src/async-throttler/useAsyncThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L41)
+Defined in: [async-throttler/useAsyncThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L41)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the async throttler state.
 
@@ -77,7 +77,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`ComponentChildren` \| (`state`) => `ComponentChildren`
+`ComponentChildren` \| ((`state`) => `ComponentChildren`)
 
 ###### selector
 

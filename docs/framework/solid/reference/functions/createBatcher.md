@@ -5,12 +5,12 @@ title: createBatcher
 
 ```ts
 function createBatcher<TValue, TSelected>(
-   fn, 
-   options, 
-selector): SolidBatcher<TValue, TSelected>;
+   fn,
+   options?,
+selector?): SolidBatcher<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/batcher/createBatcher.ts:154](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L154)
+Defined in: [batcher/createBatcher.ts:154](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L154)
 
 Creates a Solid-compatible Batcher instance for managing batches of items, exposing Solid signals for all stateful properties.
 
@@ -127,11 +127,11 @@ const { items, isPending } = batcher.state();
 
 (`items`) => `void`
 
-### options
+### options?
 
 [`SolidBatcherOptions`](../interfaces/SolidBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

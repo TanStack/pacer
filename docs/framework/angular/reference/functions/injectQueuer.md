@@ -5,12 +5,12 @@ title: injectQueuer
 
 ```ts
 function injectQueuer<TValue, TSelected>(
-   fn, 
-   options, 
-selector): AngularQueuer<TValue, TSelected>;
+   fn,
+   options?,
+selector?): AngularQueuer<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/queuer/injectQueuer.ts:90](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L90)
+Defined in: [queuer/injectQueuer.ts:90](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L90)
 
 An Angular function that creates and manages a Queuer instance.
 
@@ -47,11 +47,11 @@ full control over when your component tracks state changes.
 
 (`item`) => `void`
 
-### options
+### options?
 
 [`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

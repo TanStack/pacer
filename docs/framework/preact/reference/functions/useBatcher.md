@@ -5,12 +5,12 @@ title: useBatcher
 
 ```ts
 function useBatcher<TValue, TSelected>(
-   fn, 
-   options, 
-selector): PreactBatcher<TValue, TSelected>;
+   fn,
+   options?,
+selector?): PreactBatcher<TValue, TSelected>;
 ```
 
-Defined in: [preact-pacer/src/batcher/useBatcher.ts:181](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L181)
+Defined in: [batcher/useBatcher.ts:181](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/batcher/useBatcher.ts#L181)
 
 A Preact hook that creates and manages a Batcher instance.
 
@@ -83,11 +83,11 @@ const batcher = useBatcher(fn, {
 
 (`items`) => `void`
 
-### options
+### options?
 
 [`PreactBatcherOptions`](../interfaces/PreactBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

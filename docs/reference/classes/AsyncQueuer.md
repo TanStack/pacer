@@ -79,7 +79,7 @@ asyncQueuer.start();
 ### Constructor
 
 ```ts
-new AsyncQueuer<TValue>(fn, initialOptions): AsyncQueuer<TValue>;
+new AsyncQueuer<TValue>(fn, initialOptions?): AsyncQueuer<TValue>;
 ```
 
 Defined in: [async-queuer.ts:327](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L327)
@@ -90,7 +90,7 @@ Defined in: [async-queuer.ts:327](https://github.com/TanStack/pacer/blob/main/pa
 
 (`item`) => `Promise`\<`any`\>
 
-##### initialOptions
+##### initialOptions?
 
 [`AsyncQueuerOptions`](../interfaces/AsyncQueuerOptions.md)\<`TValue`\> = `{}`
 
@@ -110,7 +110,7 @@ Defined in: [async-queuer.ts:321](https://github.com/TanStack/pacer/blob/main/pa
 
 ***
 
-### fn()
+### fn
 
 ```ts
 fn: (item) => Promise<any>;
@@ -181,9 +181,9 @@ Does NOT clear out the items.
 
 ```ts
 addItem(
-   item, 
-   position, 
-   runOnItemsChange): boolean;
+   item,
+   position?,
+   runOnItemsChange?): boolean;
 ```
 
 Defined in: [async-queuer.ts:490](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L490)
@@ -198,11 +198,11 @@ Items can be inserted based on priority or at the front/back depending on config
 
 `TValue`
 
-##### position
+##### position?
 
 [`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
-##### runOnItemsChange
+##### runOnItemsChange?
 
 `boolean` = `true`
 
@@ -269,7 +269,7 @@ queuer.execute('back');
 ### flush()
 
 ```ts
-flush(numberOfItems, position?): Promise<void>;
+flush(numberOfItems?, position?): Promise<void>;
 ```
 
 Defined in: [async-queuer.ts:689](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L689)
@@ -279,7 +279,7 @@ If no numberOfItems is provided, all items will be processed
 
 #### Parameters
 
-##### numberOfItems
+##### numberOfItems?
 
 `number` = `...`
 
@@ -360,7 +360,7 @@ const queuer = new AsyncQueuer(
 ### getNextItem()
 
 ```ts
-getNextItem(position): TValue | undefined;
+getNextItem(position?): TValue | undefined;
 ```
 
 Defined in: [async-queuer.ts:583](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L583)
@@ -370,7 +370,7 @@ Use for manual queue management. Normally, use execute() to process items.
 
 #### Parameters
 
-##### position
+##### position?
 
 [`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
@@ -424,7 +424,7 @@ Returns a copy of all items in the queue, including active and pending items.
 ### peekNextItem()
 
 ```ts
-peekNextItem(position): TValue | undefined;
+peekNextItem(position?): TValue | undefined;
 ```
 
 Defined in: [async-queuer.ts:809](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L809)
@@ -433,7 +433,7 @@ Returns the next item in the queue without removing it.
 
 #### Parameters
 
-##### position
+##### position?
 
 [`QueuePosition`](../type-aliases/QueuePosition.md) = `'front'`
 

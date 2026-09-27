@@ -5,12 +5,12 @@ title: injectAsyncQueuedSignal
 
 ```ts
 function injectAsyncQueuedSignal<TValue, TSelected>(
-   fn, 
-   options, 
-selector): AsyncQueuedSignal<TValue, TSelected>;
+   fn,
+   options?,
+selector?): AsyncQueuedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts:52](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L52)
+Defined in: [async-queuer/injectAsyncQueuedSignal.ts:52](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L52)
 
 An Angular function that creates an async queuer with managed state, combining Angular's signals with async queuing functionality.
 This function provides both the current queue state and queue control methods.
@@ -39,11 +39,11 @@ The function returns a callable object:
 
 (`value`) => `Promise`\<`any`\>
 
-### options
+### options?
 
 `AsyncQueuerOptions`\<`TValue`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

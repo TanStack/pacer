@@ -1,6 +1,8 @@
+import { readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { generateReferenceDocs } from '@tanstack/typedoc-config'
+import { glob } from 'tinyglobby'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -58,6 +60,21 @@ await generateReferenceDocs({
     },
   ],
 })
+
+// TypeDoc can leave trailing spaces in multiline signatures. Preserve Markdown
+// hard breaks outside code fences while keeping generated code whitespace clean.
+for (const file of await glob('docs/**/reference/**/*.md')) {
+  let inCodeBlock = false
+  const markdown = await readFile(file, 'utf8')
+  const cleaned = markdown
+    .split('\n')
+    .map((line) => {
+      if (line.startsWith('```')) inCodeBlock = !inCodeBlock
+      return inCodeBlock ? line.trimEnd() : line
+    })
+    .join('\n')
+  if (cleaned !== markdown) await writeFile(file, cleaned)
+}
 
 console.log('\n✅ All markdown files have been processed!')
 

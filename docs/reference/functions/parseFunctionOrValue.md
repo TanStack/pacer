@@ -23,7 +23,7 @@ Defined in: [utils.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pa
 
 ### value
 
-`T` | (...`args`) => `T`
+`T` \| ((...`args`) => `T`)
 
 ### args
 

@@ -7,12 +7,12 @@ title: injectDebouncedValue
 
 ```ts
 function injectDebouncedValue<TValue, TSelected>(
-   value, 
-   initialOptions, 
+   value,
+   initialOptions,
 selector?): DebouncedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/debouncer/injectDebouncedValue.ts:77](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedValue.ts#L77)
+Defined in: [debouncer/injectDebouncedValue.ts:77](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedValue.ts#L77)
 
 An Angular function that creates a debounced value that updates only after a specified delay.
 Unlike injectDebouncedSignal, this function automatically tracks changes to the input signal
@@ -111,13 +111,13 @@ debounced.cancel() // Cancel any pending updates
 
 ```ts
 function injectDebouncedValue<TValue, TSelected>(
-   value, 
-   initialValue, 
-   initialOptions, 
+   value,
+   initialValue,
+   initialOptions,
 selector?): DebouncedSignal<TValue, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/debouncer/injectDebouncedValue.ts:82](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedValue.ts#L82)
+Defined in: [debouncer/injectDebouncedValue.ts:82](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedValue.ts#L82)
 
 An Angular function that creates a debounced value that updates only after a specified delay.
 Unlike injectDebouncedSignal, this function automatically tracks changes to the input signal

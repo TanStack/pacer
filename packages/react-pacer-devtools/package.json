@@ -29,7 +29,8 @@
     "test:lib": "vitest",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
-    "build": "tsdown"
+    "build": "tsdown",
+    "test:build": "publint --strict && node ../../scripts/verify-package.ts"
   },
   "type": "module",
   "types": "./dist/index.d.ts",
@@ -40,11 +41,10 @@
   },
   "sideEffects": false,
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "files": [
-    "dist/",
-    "src"
+    "dist"
   ],
   "peerDependencies": {
     "@types/react": ">=16.8",
@@ -53,12 +53,12 @@
     "react-dom": ">=16.8"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.6.0",
+    "@tanstack/devtools-utils": "^0.7.0",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^5.18.3",
-    "@vitejs/plugin-react": "^6.0.5",
+    "@eslint-react/eslint-plugin": "^5.20.8",
+    "@vitejs/plugin-react": "^6.1.1",
     "csstype": "^3.2.3",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^7.1.1"

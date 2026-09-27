@@ -23,79 +23,31 @@
     "async"
   ],
   "type": "module",
-  "types": "./dist/index.d.cts",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./async-batcher": {
-      "import": "./dist/async-batcher/index.js",
-      "require": "./dist/async-batcher/index.cjs"
-    },
-    "./async-debouncer": {
-      "import": "./dist/async-debouncer/index.js",
-      "require": "./dist/async-debouncer/index.cjs"
-    },
-    "./async-queuer": {
-      "import": "./dist/async-queuer/index.js",
-      "require": "./dist/async-queuer/index.cjs"
-    },
-    "./async-rate-limiter": {
-      "import": "./dist/async-rate-limiter/index.js",
-      "require": "./dist/async-rate-limiter/index.cjs"
-    },
-    "./async-retryer": {
-      "import": "./dist/async-retryer/index.js",
-      "require": "./dist/async-retryer/index.cjs"
-    },
-    "./async-throttler": {
-      "import": "./dist/async-throttler/index.js",
-      "require": "./dist/async-throttler/index.cjs"
-    },
-    "./batcher": {
-      "import": "./dist/batcher/index.js",
-      "require": "./dist/batcher/index.cjs"
-    },
-    "./debouncer": {
-      "import": "./dist/debouncer/index.js",
-      "require": "./dist/debouncer/index.cjs"
-    },
-    "./provider": {
-      "import": "./dist/provider/index.js",
-      "require": "./dist/provider/index.cjs"
-    },
-    "./queuer": {
-      "import": "./dist/queuer/index.js",
-      "require": "./dist/queuer/index.cjs"
-    },
-    "./rate-limiter": {
-      "import": "./dist/rate-limiter/index.js",
-      "require": "./dist/rate-limiter/index.cjs"
-    },
-    "./throttler": {
-      "import": "./dist/throttler/index.js",
-      "require": "./dist/throttler/index.cjs"
-    },
-    "./types": {
-      "import": "./dist/types/index.js",
-      "require": "./dist/types/index.cjs"
-    },
-    "./utils": {
-      "import": "./dist/utils/index.js",
-      "require": "./dist/utils/index.cjs"
-    },
+    ".": "./dist/index.js",
+    "./async-batcher": "./dist/async-batcher/index.js",
+    "./async-debouncer": "./dist/async-debouncer/index.js",
+    "./async-queuer": "./dist/async-queuer/index.js",
+    "./async-rate-limiter": "./dist/async-rate-limiter/index.js",
+    "./async-retryer": "./dist/async-retryer/index.js",
+    "./async-throttler": "./dist/async-throttler/index.js",
+    "./batcher": "./dist/batcher/index.js",
+    "./debouncer": "./dist/debouncer/index.js",
+    "./provider": "./dist/provider/index.js",
+    "./queuer": "./dist/queuer/index.js",
+    "./rate-limiter": "./dist/rate-limiter/index.js",
+    "./throttler": "./dist/throttler/index.js",
+    "./types": "./dist/types/index.js",
+    "./utils": "./dist/utils/index.js",
     "./package.json": "./package.json"
   },
   "sideEffects": false,
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
@@ -104,12 +56,12 @@
     "test:lib": "vitest --passWithNoTests",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
-    "test:build": "publint --strict",
+    "test:build": "publint --strict && node ../../scripts/verify-package.ts",
     "build": "tsdown"
   },
   "dependencies": {
     "@tanstack/pacer": "workspace:*",
-    "@tanstack/preact-store": "^0.13.2"
+    "@tanstack/preact-store": "^0.13.3"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.6",

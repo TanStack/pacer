@@ -18,7 +18,7 @@ Options for configuring a debounced function
 ### enabled?
 
 ```ts
-optional enabled: boolean | (debouncer) => boolean;
+optional enabled?: boolean | ((debouncer) => boolean);
 ```
 
 Defined in: [debouncer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L55)
@@ -32,7 +32,7 @@ Defaults to true.
 ### initialState?
 
 ```ts
-optional initialState: Partial<DebouncerState<TFn>>;
+optional initialState?: Partial<DebouncerState<TFn>>;
 ```
 
 Defined in: [debouncer.ts:59](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L59)
@@ -44,7 +44,7 @@ Initial state for the debouncer
 ### key?
 
 ```ts
-optional key: string;
+optional key?: string;
 ```
 
 Defined in: [debouncer.ts:64](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L64)
@@ -57,7 +57,7 @@ If provided, the debouncer will be identified by this key in the devtools and Pa
 ### leading?
 
 ```ts
-optional leading: boolean;
+optional leading?: boolean;
 ```
 
 Defined in: [debouncer.ts:70](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L70)
@@ -68,10 +68,10 @@ Defaults to false.
 
 ***
 
-### onExecute()?
+### onExecute?
 
 ```ts
-optional onExecute: (args, debouncer) => void;
+optional onExecute?: (args, debouncer) => void;
 ```
 
 Defined in: [debouncer.ts:74](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L74)
@@ -97,7 +97,7 @@ Callback function that is called after the function is executed
 ### trailing?
 
 ```ts
-optional trailing: boolean;
+optional trailing?: boolean;
 ```
 
 Defined in: [debouncer.ts:79](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L79)
@@ -110,7 +110,7 @@ Defaults to true.
 ### wait
 
 ```ts
-wait: number | (debouncer) => number;
+wait: number | ((debouncer) => number);
 ```
 
 Defined in: [debouncer.ts:85](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L85)
