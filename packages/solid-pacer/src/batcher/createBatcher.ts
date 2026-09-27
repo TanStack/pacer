@@ -118,7 +118,7 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  *     maxSize: 5,
  *     wait: 2000,
  *     onExecute: (batcher) => console.log('Batch executed'),
- *     getShouldExecute: (batcher) => batcher.store.state.size >= 3
+ *     getShouldExecute: (items) => items.length >= 3
  *   }
  * );
  *
@@ -144,8 +144,8 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  * batcher.addItem('task2');
  *
  * // Control the batcher
- * batcher.setOptions({ started: false }); // Disable automatic processing
- * batcher.setOptions({ started: true });  // Enable automatic processing
+ * batcher.cancel(); // Cancel the pending timer; queued items are retained
+ * batcher.flush();  // Process queued items immediately
  *
  * // Access the selected state (will be empty object {} unless selector provided)
  * const { items, isPending } = batcher.state();

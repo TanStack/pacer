@@ -1,3 +1,8 @@
+/**
+ * Calculates the percentage of requests saved by a Pacer utility.
+ * Async batch totals include both successful and failed items because both
+ * outcomes contribute to the completed execution count.
+ */
 export function reductionFromState(
   entry: { type: string },
   state: Record<string, unknown> | null | undefined,
@@ -12,10 +17,10 @@ export function reductionFromState(
 
   if (entry.type.toLowerCase().includes('batcher')) {
     const totalItemsProcessed = Number(state.totalItemsProcessed) || 0
-    if (totalItemsProcessed === 0) return 0
-    return Math.round(
-      ((totalItemsProcessed - completedExecutions) / totalItemsProcessed) * 100,
-    )
+    const totalItems =
+      totalItemsProcessed + (isAsync ? Number(state.totalItemsFailed) || 0 : 0)
+    if (totalItems === 0) return 0
+    return Math.round(((totalItems - completedExecutions) / totalItems) * 100)
   }
 
   let requestCount = 0
