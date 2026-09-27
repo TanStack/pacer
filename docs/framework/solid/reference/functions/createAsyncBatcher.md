@@ -10,7 +10,7 @@ function createAsyncBatcher<TValue, TSelected>(
 selector?): SolidAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:189](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L189)
+Defined in: [async-batcher/createAsyncBatcher.ts:187](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L187)
 
 Creates a Solid-compatible AsyncBatcher instance for managing asynchronous batches of items, exposing Solid signals for all stateful properties.
 
@@ -65,10 +65,8 @@ updates and gives you full control over when your component tracks state changes
 Available state properties:
 - `errorCount`: Number of failed batch executions
 - `executionCount`: Total number of batch execution attempts (successful + failed)
-- `hasError`: Whether the last batch execution resulted in an error
 - `isExecuting`: Whether a batch execution is currently in progress
 - `items`: Array of items currently queued for batching
-- `lastError`: The error from the most recent failed batch execution (if any)
 - `lastResult`: The result from the most recent successful batch execution
 - `settleCount`: Number of batch executions that have completed (successful or failed)
 - `successCount`: Number of successful batch executions
@@ -129,7 +127,7 @@ const asyncBatcher = createAsyncBatcher(
     return results;
   },
   { maxSize: 10, wait: 2000 },
-  (state) => ({ hasError: state.hasError, lastError: state.lastError })
+  (state) => ({ errorCount: state.errorCount })
 );
 
 // Add items to batch

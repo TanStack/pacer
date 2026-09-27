@@ -90,9 +90,9 @@ deep in your component tree without needing to pass a selector to the hook.
 #### Example
 
 ```ts
-<queuer.Subscribe selector={(state) => ({ pendingItems: state.pendingItems, activeItems: state.activeItems })}>
+<queuer.Subscribe selector={(state) => ({ items: state.items, activeItems: state.activeItems })}>
   {(state) => (
-    <div>Pending: {state().pendingItems.length}, Active: {state().activeItems.length}</div>
+    <div>Pending: {state().items.length}, Active: {state().activeItems.length}</div>
   )}
 </queuer.Subscribe>
 ```

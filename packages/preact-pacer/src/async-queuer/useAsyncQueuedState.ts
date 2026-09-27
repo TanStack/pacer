@@ -49,7 +49,7 @@ import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
  * - `lastResult`: The result from the most recent task execution
  * - `pendingTick`: Whether the queuer has a pending timeout for processing the next item
  * - `rejectionCount`: Number of items that have been rejected from being added
- * - `settledCount`: Number of task executions that have completed (success or error)
+ * - `settleCount`: Number of task executions that have completed (success or error)
  * - `size`: Number of items currently in the queue
  * - `status`: Current processing status ('idle' | 'running' | 'stopped')
  * - `successCount`: Number of task executions that have completed successfully
@@ -110,7 +110,7 @@ import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
  *   (state) => ({
  *     successCount: state.successCount,
  *     errorCount: state.errorCount,
- *     settledCount: state.settledCount,
+ *     settleCount: state.settleCount,
  *     expirationCount: state.expirationCount,
  *     rejectionCount: state.rejectionCount
  *   })

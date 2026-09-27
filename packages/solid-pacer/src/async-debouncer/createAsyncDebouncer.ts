@@ -103,14 +103,13 @@ export interface SolidAsyncDebouncer<
  *
  * Available state properties:
  * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
- * - `executionCount`: Number of function executions that have been completed
- * - `hasError`: Whether the last execution resulted in an error
+ * - `settleCount`: Number of function executions that have completed (success or error)
+ * - `errorCount`: Number of function executions that have resulted in errors
  * - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
  * - `isExecuting`: Whether an async function execution is currently in progress
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
- * - `lastError`: The error from the most recent failed execution (if any)
  * - `lastResult`: The result from the most recent successful execution
- * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
+ * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
  *
  * ## Unmount behavior
  *
@@ -165,7 +164,7 @@ export interface SolidAsyncDebouncer<
  *       console.error('API call failed:', error);
  *     }
  *   },
- *   (state) => ({ hasError: state.hasError, lastError: state.lastError })
+ *   (state) => ({ errorCount: state.errorCount })
  * );
  *
  * // Access the selected state (will be empty object {} unless selector provided)

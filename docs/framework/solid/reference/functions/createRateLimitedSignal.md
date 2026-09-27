@@ -10,7 +10,7 @@ function createRateLimitedSignal<TValue, TSelected>(
    selector?): [Accessor<TValue>, Setter<TValue>, SolidRateLimiter<Setter<TValue>, TSelected>];
 ```
 
-Defined in: [rate-limiter/createRateLimitedSignal.ts:95](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L95)
+Defined in: [rate-limiter/createRateLimitedSignal.ts:96](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L96)
 
 A Solid hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
 This hook combines Solid's createSignal with rate limiting functionality to provide controlled state updates.
@@ -51,13 +51,14 @@ full control over when your component subscribes to state changes. Only when you
 the reactive system track the selected state values.
 
 Available rate limiter state properties:
-- `callsInWindow`: Number of calls made in the current window
-- `remainingInWindow`: Number of calls remaining in the current window
-- `windowStart`: Unix timestamp when the current window started
-- `nextWindowStart`: Unix timestamp when the next window will start
-- `msUntilNextWindow`: Milliseconds until the next window starts
-- `isAtLimit`: Whether the call limit for the current window has been reached
-- `status`: Current status ('disabled' | 'idle' | 'at-limit')
+- `executionCount`: Number of function executions
+- `executionTimes`: Timestamps of executions tracked for the current window
+- `maybeExecuteCount`: Number of calls to maybeExecute
+- `rejectionCount`: Number of calls rejected by the rate limit
+- `isExceeded`: Whether the rate limit has been reached
+- `status`: Current status ('disabled' | 'exceeded' | 'idle')
+
+Use `getRemainingInWindow()` and `getMsUntilNextWindow()` for current window capacity and timing.
 
 ## Type Parameters
 
@@ -102,7 +103,7 @@ const [value, setValue, rateLimiter] = createRateLimitedSignal(0, {
 const [value, setValue, rateLimiter] = createRateLimitedSignal(
   0,
   { limit: 5, window: 60000 },
-  (state) => ({ isAtLimit: state.isAtLimit, remainingInWindow: state.remainingInWindow })
+  (state) => ({ isExceeded: state.isExceeded })
 );
 
 // With rejection callback and fixed window
@@ -117,7 +118,7 @@ const [value, setValue] = createRateLimitedSignal(0, {
 
 // Access rateLimiter state via signals
 const handleSubmit = () => {
-  const remaining = rateLimiter.state().remainingInWindow;
+  const remaining = rateLimiter.getRemainingInWindow();
   if (remaining > 0) {
     setValue(newValue);
   } else {

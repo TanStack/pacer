@@ -12,7 +12,7 @@ function injectThrottledValue<TValue, TSelected>(
 selector?): ThrottledSignal<TValue, TSelected>;
 ```
 
-Defined in: [throttler/injectThrottledValue.ts:75](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledValue.ts#L75)
+Defined in: [throttler/injectThrottledValue.ts:73](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledValue.ts#L73)
 
 An Angular function that creates a throttled value that updates at most once within a specified time window.
 Unlike injectThrottledSignal, this function automatically tracks changes to the input signal
@@ -40,8 +40,6 @@ tracking by providing a selector function. This prevents unnecessary updates and
 full control over when your component tracks state changes.
 
 Available throttler state properties:
-- `canLeadingExecute`: Whether the throttler can execute on the leading edge
-- `canTrailingExecute`: Whether the throttler can execute on the trailing edge
 - `executionCount`: Number of function executions that have been completed
 - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
 - `lastArgs`: The arguments from the most recent call to maybeExecute
@@ -116,7 +114,7 @@ function injectThrottledValue<TValue, TSelected>(
 selector?): ThrottledSignal<TValue, TSelected>;
 ```
 
-Defined in: [throttler/injectThrottledValue.ts:80](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledValue.ts#L80)
+Defined in: [throttler/injectThrottledValue.ts:78](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledValue.ts#L78)
 
 An Angular function that creates a throttled value that updates at most once within a specified time window.
 Unlike injectThrottledSignal, this function automatically tracks changes to the input signal
@@ -144,8 +142,6 @@ tracking by providing a selector function. This prevents unnecessary updates and
 full control over when your component tracks state changes.
 
 Available throttler state properties:
-- `canLeadingExecute`: Whether the throttler can execute on the leading edge
-- `canTrailingExecute`: Whether the throttler can execute on the trailing edge
 - `executionCount`: Number of function executions that have been completed
 - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
 - `lastArgs`: The arguments from the most recent call to maybeExecute
