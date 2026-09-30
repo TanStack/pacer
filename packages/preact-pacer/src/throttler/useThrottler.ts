@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
+import { useMemo, useState } from 'preact/hooks'
 import { Throttler } from '@tanstack/pacer/throttler'
 import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { useOnUnmount } from '../useOnUnmount'
 import type { Store } from '@tanstack/preact-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
@@ -201,17 +202,13 @@ export function useThrottler<TFn extends AnyFunction, TSelected = {}>(
 
   const state = useSelector(throttler.store, selector, { compare: shallow })
 
-  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
-  useEffect(() => {
-    return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(throttler)
-      } else {
-        throttler.cancel()
-      }
+  useOnUnmount(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(throttler)
+    } else {
+      throttler.cancel()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps */
+  })
 
   return useMemo(
     () =>

@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { shallow, useSelector } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { useOnUnmount } from '../useOnUnmount'
 import type { Store } from '@tanstack/react-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { FunctionComponent, ReactNode } from 'react'
@@ -213,17 +214,13 @@ export function useBatcher<TValue, TSelected = {}>(
   batcher.fn = fn
   batcher.setOptions(mergedOptions)
 
-  /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
-  useEffect(() => {
-    return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(batcher)
-      } else {
-        batcher.cancel()
-      }
+  useOnUnmount(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(batcher)
+    } else {
+      batcher.cancel()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
+  })
 
   const state = useSelector(batcher.store, selector, { compare: shallow })
 

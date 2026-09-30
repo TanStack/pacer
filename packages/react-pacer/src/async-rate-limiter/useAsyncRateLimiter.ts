@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { shallow, useSelector } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { useOnUnmount } from '../useOnUnmount'
 import type { Store } from '@tanstack/react-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
@@ -268,17 +269,13 @@ export function useAsyncRateLimiter<
   asyncRateLimiter.fn = fn
   asyncRateLimiter.setOptions(mergedOptions)
 
-  /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
-  useEffect(() => {
-    return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncRateLimiter)
-      } else {
-        asyncRateLimiter.abort()
-      }
+  useOnUnmount(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(asyncRateLimiter)
+    } else {
+      asyncRateLimiter.abort()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
+  })
 
   const state = useSelector(asyncRateLimiter.store, selector, {
     compare: shallow,

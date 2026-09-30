@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
+import { useMemo, useState } from 'preact/hooks'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { useOnUnmount } from '../useOnUnmount'
 import type { Store } from '@tanstack/preact-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
@@ -261,18 +262,14 @@ export function useAsyncThrottler<TFn extends AnyAsyncFunction, TSelected = {}>(
     compare: shallow,
   })
 
-  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
-  useEffect(() => {
-    return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncThrottler)
-      } else {
-        asyncThrottler.cancel()
-        asyncThrottler.abort()
-      }
+  useOnUnmount(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(asyncThrottler)
+    } else {
+      asyncThrottler.cancel()
+      asyncThrottler.abort()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps */
+  })
 
   return useMemo(
     () =>
