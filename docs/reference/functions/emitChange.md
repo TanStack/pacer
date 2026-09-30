@@ -7,7 +7,7 @@ title: emitChange
 function emitChange<TEvent>(event, instance): void;
 ```
 
-Defined in: [event-client.ts:117](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L117)
+Defined in: [event-client.ts:181](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L181)
 
 ## Type Parameters
 

@@ -102,3 +102,9 @@ const debouncer = new Debouncer(myDebounceFn, {
   wait: 1000,
 })
 ```
+
+Use a unique key for each utility you want to inspect. A newer instance with the same key replaces the stored instance.
+
+The panel can mount after your keyed utilities are created. With matching current core and devtools packages, it replays registered instances and receives later updates even if the event transport stopped reconnecting. Older core packages without the instance-subscription API retain their existing event-bus behavior, so update `@tanstack/pacer` as well as your framework devtools package to get late discovery.
+
+Unmounting the panel removes its subscriptions. Keyed instances remain in the core registry until another instance replaces the same key.
