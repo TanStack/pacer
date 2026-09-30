@@ -1,4 +1,4 @@
-import { gt, prerelease, rcompare, valid } from 'semver'
+import { eq, gt, prerelease, rcompare, valid } from 'semver'
 
 interface PublishedVersion {
   deprecated?: string
@@ -18,6 +18,17 @@ export function checkReleaseVersion(
     throw new Error(`${name} has an invalid version: ${version}`)
   // Prereleases use their own distribution tag and do not advance latest.
   if (prerelease(version)) return
+  if (
+    [
+      '@tanstack/react-pacer-devtools',
+      '@tanstack/solid-pacer-devtools',
+    ].includes(name) &&
+    eq(version, '0.14.0')
+  ) {
+    throw new Error(
+      `${name}@0.14.0 is an intermediate release floor, not a publishable version. Complete pnpm changeset:version to generate 0.15.0.`,
+    )
+  }
   const versions = Object.entries(metadata.versions ?? {})
     .filter(
       ([published, info]) =>

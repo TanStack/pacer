@@ -74,10 +74,12 @@ Packages target ES2022 and require Node.js 20 or newer. They publish ESM and `.d
 
 Package changes require a changeset. Use a minor release for this build migration, including the devtools packages; do not accidentally request a major release.
 
-## Accidental devtools version
+## Accidental devtools versions
 
-Issue [#168](https://github.com/TanStack/pacer/issues/168) tracks the accidental `@tanstack/react-pacer-devtools@0.14.0` release. Its contents predate the current release line, but update tools can choose it as the highest stable version. Moving the `latest` tag does not change that ordering.
+Issue [#168](https://github.com/TanStack/pacer/issues/168) tracks the accidental `@tanstack/react-pacer-devtools@0.14.0` release. The same obsolete `0.14.0` exists for `@tanstack/solid-pacer-devtools`. Their contents predate the current release lines, but update tools can select them as the highest stable versions. Moving the `latest` tag does not change that ordering.
 
-Run `pnpm release:deprecate-devtools` to inspect the fixed deprecation target and message. An npm maintainer can run `pnpm release:deprecate-devtools --apply` to deprecate only that version. The command verifies its package name, version, and obsolete core dependency before writing npm metadata. It does not remove the package or change its contents. Verify the deprecation in npm and in the supported update tools afterward; their treatment of deprecated versions depends on their configuration.
+The next stable React and Solid devtools releases are prepared as `0.15.0`, superseding the accidental versions with the current implementations. A dedicated minor changeset and the preparation step in `pnpm changeset:version` stage only these two packages at `0.14.0`, verify that the actual Changesets plan produces `0.15.0` for both, then let the standard Changesets command update package versions, dependency ranges, and changelogs. The existing install and format steps update the lockfile and release files.
 
-`pnpm release:check` rejects stable workspace versions below a higher, non-deprecated npm release. The publish command runs this check before publishing, so the accidental version must be deprecated or superseded before another stable release. Offline policy tests run through `pnpm test:release`. No npm metadata changes occur during tests or preview mode.
+Use `pnpm changeset:version` for release preparation. Running `changeset version` directly bypasses the one-time floor. The preparation step is idempotent and becomes a no-op once Changesets consumes its dedicated changeset. It defers during active prerelease mode and applies when leaving that mode. If preparation stops after staging the floor, rerun the full version command; `0.14.0` must never be published from this checkout.
+
+`pnpm release:check` rejects the intermediate `0.14.0` floor and stable workspace versions below a higher, non-deprecated npm release. The publish command runs this check before publishing. Offline policy and actual Changesets fixture tests run through `pnpm test:release`. Merging the preparation change does not update npm; the repair takes effect when the generated `0.15.0` releases are published through the normal release workflow.
