@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import packageJson from './package.json' with { type: 'json' }
@@ -6,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     name: packageJson.name,
-    dir: './',
+    dir: fileURLToPath(new URL('./tests', import.meta.url)),
     watch: false,
     environment: 'happy-dom',
     setupFiles: ['./tests/test-setup.ts'],

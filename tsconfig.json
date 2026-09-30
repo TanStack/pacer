@@ -27,5 +27,5 @@
     "sourceMap": false,
     "declarationMap": false
   },
-  "include": ["scripts", "*.config.*", "vitest.workspace.js"]
+  "include": ["scripts", "*.config.*"]
 }
