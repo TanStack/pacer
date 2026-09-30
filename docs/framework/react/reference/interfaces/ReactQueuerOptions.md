@@ -3,7 +3,7 @@ id: ReactQueuerOptions
 title: ReactQueuerOptions
 ---
 
-Defined in: [queuer/useQueuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L9)
+Defined in: [queuer/useQueuer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L10)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [queuer/useQueuer.ts:9](https://github.com/TanStack/pacer/blob/main/
 optional onUnmount?: (queuer) => void;
 ```
 
-Defined in: [queuer/useQueuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L17)
+Defined in: [queuer/useQueuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L18)
 
 Optional callback invoked when the component unmounts. Receives the queuer instance.
 When provided, replaces the default cleanup (stop); use it to call flush(), flushAsBatch(), stop(), add logging, etc.

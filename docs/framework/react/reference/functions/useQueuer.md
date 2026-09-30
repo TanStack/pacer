@@ -10,7 +10,7 @@ function useQueuer<TValue, TSelected>(
 selector?): ReactQueuer<TValue, TSelected>;
 ```
 
-Defined in: [queuer/useQueuer.ts:194](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L194)
+Defined in: [queuer/useQueuer.ts:195](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L195)
 
 A React hook that creates and manages a Queuer instance.
 

@@ -3,7 +3,7 @@ id: PreactAsyncThrottlerOptions
 title: PreactAsyncThrottlerOptions
 ---
 
-Defined in: [async-throttler/useAsyncThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L13)
+Defined in: [async-throttler/useAsyncThrottler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L14)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-throttler/useAsyncThrottler.ts:13](https://github.com/TanStac
 optional onUnmount?: (throttler) => void;
 ```
 
-Defined in: [async-throttler/useAsyncThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L21)
+Defined in: [async-throttler/useAsyncThrottler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-throttler/useAsyncThrottler.ts#L22)
 
 Optional callback invoked when the component unmounts. Receives the throttler instance.
 When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
