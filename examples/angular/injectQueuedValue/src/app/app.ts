@@ -12,7 +12,7 @@ export class App {
   protected readonly source = signal('')
 
   // A queued value: changes are applied in-order, with an optional delay between items.
-  // `value()` is the current processed value, and `items()` exposes the pending queue.
+  // `queued()` is the processed value; `queued.queuer.state().items` contains pending values.
   protected readonly queued = injectQueuedValue(this.source, { wait: 500 }, (state) => ({
     items: state.items,
   }))

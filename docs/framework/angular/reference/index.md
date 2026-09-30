@@ -34,6 +34,7 @@ title: "@tanstack/angular-pacer"
 ## Type Aliases
 
 - [AngularPacerOptions](type-aliases/AngularPacerOptions.md)
+- [QueuedValueSignal](type-aliases/QueuedValueSignal.md)
 
 ## Functions
 

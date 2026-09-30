@@ -23,6 +23,32 @@ function checkOptionOverloads() {
     undefined,
   )
   injectQueuedValue(source, 'initial', () => ({ wait: 100 }), undefined)
+  expectTypeOf(injectQueuedValue(source)()).toEqualTypeOf<string>()
+  const objectSource = signal({ label: 'source' })
+  const objectInitial = { label: 'fallback' }
+  const functionInitial = () => 'fallback'
+  const functionSource = signal(() => 'source')
+  injectQueuedValue(objectSource, objectInitial, {})
+  injectQueuedValue(objectSource, objectInitial, undefined, undefined)
+  injectQueuedValue(
+    objectSource,
+    objectInitial,
+    () => ({ wait: 100 }),
+    undefined,
+  )
+  injectQueuedValue(functionSource, functionInitial, {})
+  injectQueuedValue(functionSource, functionInitial, undefined, undefined)
+  injectQueuedValue(source, 'fallback')
+  injectQueuedValue(source, 'fallback', undefined)
+  injectQueuedValue(source, { wait: 100 }, undefined)
+  // @ts-expect-error Object fallbacks require explicit options to distinguish them from options-only calls.
+  injectQueuedValue(objectSource, objectInitial)
+  // @ts-expect-error Undefined third arguments are reserved for options plus an undefined selector.
+  injectQueuedValue(objectSource, objectInitial, undefined)
+  // @ts-expect-error Function fallbacks require explicit options to distinguish them from factories.
+  injectQueuedValue(functionSource, functionInitial)
+  // @ts-expect-error Undefined options for a function fallback require a fourth argument.
+  injectQueuedValue(functionSource, functionInitial, undefined)
   // @ts-expect-error A fourth argument distinguishes a factory from a selector.
   injectDebouncedValue(source, 'initial', () => ({ wait: 100 }))
   // @ts-expect-error A fourth argument distinguishes a factory from a selector.
