@@ -181,11 +181,13 @@ const queue = new AsyncQueuer(
 queue.abort()
 ```
 
-When multiple executions overlap, pass an `executionCount` to `getAbortSignal()` when you need a specific execution's signal.
+`getAbortSignal()` returns the latest active execution's signal. Capture it before awaiting work. When multiple executions overlap, pass an `executionCount` to select a specific execution started since the latest reset.
 
 ### Resetting safely
 
-`reset()` restores default state, including an empty pending queue and a running status. It does not clear the queue's wait timers or guarantee that active underlying work stops. Use explicit lifecycle methods first:
+`reset()` clears pending items and counters and restores a running status. Active executions continue, remain abortable, and keep their concurrency slots until they settle. Their completions contribute to the reset outcome counters. Existing wait timers retain their delays.
+
+Explicit `getAbortSignal(executionCount)` lookups start over after reset. Previously captured signals remain valid, and the default lookup still reaches the latest active execution from before reset. Use explicit lifecycle methods first when you need to stop and abort work:
 
 ```ts
 queue.stop()
