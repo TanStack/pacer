@@ -72,3 +72,11 @@ Packages target ES2022 and require Node.js 20 or newer. They publish ESM and `.d
 `pnpm test` runs the workspace checks, builds, strict publint, packed-file validation, and the existing core size budget. Use the repository’s newer Node.js version for development and CI; the published package runtime minimum is separate.
 
 Package changes require a changeset. Use a minor release for this build migration, including the devtools packages; do not accidentally request a major release.
+
+## Accidental devtools version
+
+Issue [#168](https://github.com/TanStack/pacer/issues/168) tracks the accidental `@tanstack/react-pacer-devtools@0.14.0` release. Its contents predate the current release line, but update tools can choose it as the highest stable version. Moving the `latest` tag does not change that ordering.
+
+Run `pnpm release:deprecate-devtools` to inspect the fixed deprecation target and message. An npm maintainer can run `pnpm release:deprecate-devtools --apply` to deprecate only that version. The command verifies its package name, version, and obsolete core dependency before writing npm metadata. It does not remove the package or change its contents. Verify the deprecation in npm and in the supported update tools afterward; their treatment of deprecated versions depends on their configuration.
+
+`pnpm release:check` rejects stable workspace versions below a higher, non-deprecated npm release. The publish command runs this check before publishing, so the accidental version must be deprecated or superseded before another stable release. Offline policy tests run through `pnpm test:release`. No npm metadata changes occur during tests or preview mode.
