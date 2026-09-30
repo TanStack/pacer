@@ -10,7 +10,7 @@ function injectRateLimiter<TFn, TSelected>(
 selector?): AngularRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:114](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L114)
+Defined in: [rate-limiter/injectRateLimiter.ts:116](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L116)
 
 An Angular function that creates and manages a RateLimiter instance.
 
@@ -70,7 +70,7 @@ Use the `onUnmount` option to run a callback when the component is destroyed.
 
 ### options
 
-[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<`TFn`, `TSelected`\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<`TFn`, `TSelected`\>\>
 
 ### selector?
 

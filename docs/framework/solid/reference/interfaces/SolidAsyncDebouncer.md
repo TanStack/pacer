@@ -3,7 +3,7 @@ id: SolidAsyncDebouncer
 title: SolidAsyncDebouncer
 ---
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L24)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L26)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:24](https://github.com/TanS
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L50)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L52)
 
 Reactive state that will be updated when the debouncer state changes
 
@@ -42,7 +42,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:56](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L56)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L58)
 
 #### Deprecated
 
@@ -58,7 +58,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L41)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L43)
 
 A Solid component that allows you to subscribe to the debouncer state.
 

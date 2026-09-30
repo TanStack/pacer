@@ -7,7 +7,7 @@ title: injectAsyncDebouncedCallback
 function injectAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncedCallback.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncedCallback.ts#L40)
+Defined in: [async-debouncer/injectAsyncDebouncedCallback.ts:41](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncedCallback.ts#L41)
 
 An Angular function that creates an async debounced version of a callback function.
 This function is essentially a wrapper around `injectAsyncDebouncer` that provides
@@ -42,7 +42,7 @@ Consider using the `injectAsyncDebouncer` function instead.
 
 ### options
 
-`AsyncDebouncerOptions`\<`TFn`\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`AsyncDebouncerOptions`\<`TFn`\>\>
 
 ## Returns
 

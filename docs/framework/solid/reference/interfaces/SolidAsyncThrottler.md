@@ -3,7 +3,7 @@ id: SolidAsyncThrottler
 title: SolidAsyncThrottler
 ---
 
-Defined in: [async-throttler/createAsyncThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L24)
+Defined in: [async-throttler/createAsyncThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L26)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-throttler/createAsyncThrottler.ts:24](https://github.com/TanS
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L50)
+Defined in: [async-throttler/createAsyncThrottler.ts:52](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L52)
 
 Reactive state that will be updated when the throttler state changes
 
@@ -42,7 +42,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:56](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L56)
+Defined in: [async-throttler/createAsyncThrottler.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L58)
 
 #### Deprecated
 
@@ -58,7 +58,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L41)
+Defined in: [async-throttler/createAsyncThrottler.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L43)
 
 A Solid component that allows you to subscribe to the throttler state.
 

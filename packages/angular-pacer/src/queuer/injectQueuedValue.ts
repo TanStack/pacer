@@ -1,5 +1,6 @@
 import { effect, linkedSignal, signal } from '@angular/core'
 import { injectQueuedSignal } from './injectQueuedSignal'
+import type { AngularPacerOptions } from '../types'
 import type { QueuedSignal } from './injectQueuedSignal'
 import type { Signal } from '@angular/core'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
@@ -36,7 +37,7 @@ export function injectQueuedValue<
   >,
 >(
   value: Signal<TValue>,
-  options?: QueuerOptions<TValue>,
+  options?: AngularPacerOptions<QueuerOptions<TValue>>,
   selector?: (state: QueuerState<TValue>) => TSelected,
 ): QueuedSignal<TValue, TSelected>
 export function injectQueuedValue<
@@ -59,22 +60,35 @@ export function injectQueuedValue<
   >,
 >(
   value: Signal<TValue>,
-  initialValueOrOptions?: TValue | QueuerOptions<TValue>,
+  initialValue: TValue,
+  options: () => QueuerOptions<TValue>,
+  selector: ((state: QueuerState<TValue>) => TSelected) | undefined,
+): QueuedSignal<TValue, TSelected>
+export function injectQueuedValue<
+  TValue,
+  TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
+    QueuerState<TValue>,
+    'items'
+  >,
+>(
+  value: Signal<TValue>,
+  initialValueOrOptions?: TValue | AngularPacerOptions<QueuerOptions<TValue>>,
   initialOptionsOrSelector?:
-    QueuerOptions<TValue> | ((state: QueuerState<TValue>) => TSelected),
+    | AngularPacerOptions<QueuerOptions<TValue>>
+    | ((state: QueuerState<TValue>) => TSelected),
   maybeSelector?: (state: QueuerState<TValue>) => TSelected,
 ): QueuedSignal<TValue, TSelected> {
   const hasSelector = typeof initialOptionsOrSelector === 'function'
   const hasInitialValue =
     (initialOptionsOrSelector !== undefined && !hasSelector) ||
-    maybeSelector !== undefined
+    arguments.length >= 4
 
   const initialValue = hasInitialValue
     ? (initialValueOrOptions as TValue)
     : value()
   const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as QueuerOptions<TValue>)
-    : (initialValueOrOptions as QueuerOptions<TValue>)
+    ? (initialOptionsOrSelector as AngularPacerOptions<QueuerOptions<TValue>>)
+    : (initialValueOrOptions as AngularPacerOptions<QueuerOptions<TValue>>)
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as

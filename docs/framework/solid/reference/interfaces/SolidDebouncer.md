@@ -3,7 +3,7 @@ id: SolidDebouncer
 title: SolidDebouncer
 ---
 
-Defined in: [debouncer/createDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L24)
+Defined in: [debouncer/createDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L26)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [debouncer/createDebouncer.ts:24](https://github.com/TanStack/pacer/
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L50)
+Defined in: [debouncer/createDebouncer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L52)
 
 Reactive state that will be updated when the debouncer state changes
 
@@ -42,7 +42,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<DebouncerState<TFn>>>;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:56](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L56)
+Defined in: [debouncer/createDebouncer.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L58)
 
 #### Deprecated
 
@@ -58,7 +58,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L41)
+Defined in: [debouncer/createDebouncer.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L43)
 
 A Solid component that allows you to subscribe to the debouncer state.
 

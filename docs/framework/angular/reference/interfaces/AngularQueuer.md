@@ -3,7 +3,7 @@ id: AngularQueuer
 title: AngularQueuer
 ---
 
-Defined in: [queuer/injectQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L20)
+Defined in: [queuer/injectQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L22)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [queuer/injectQueuer.ts:20](https://github.com/TanStack/pacer/blob/m
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L29)
+Defined in: [queuer/injectQueuer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L31)
 
 Reactive state signal that will be updated when the queuer state changes
 
@@ -42,7 +42,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<QueuerState<TValue>>>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L34)
+Defined in: [queuer/injectQueuer.ts:36](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L36)
 
 #### Deprecated
 

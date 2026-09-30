@@ -3,7 +3,7 @@ id: SolidThrottler
 title: SolidThrottler
 ---
 
-Defined in: [throttler/createThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L24)
+Defined in: [throttler/createThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L26)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [throttler/createThrottler.ts:24](https://github.com/TanStack/pacer/
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [throttler/createThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L50)
+Defined in: [throttler/createThrottler.ts:52](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L52)
 
 Reactive state that will be updated when the throttler state changes
 
@@ -42,7 +42,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<ThrottlerState<TFn>>>;
 ```
 
-Defined in: [throttler/createThrottler.ts:56](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L56)
+Defined in: [throttler/createThrottler.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L58)
 
 #### Deprecated
 
@@ -58,7 +58,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [throttler/createThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L41)
+Defined in: [throttler/createThrottler.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L43)
 
 A Solid component that allows you to subscribe to the throttler state.
 

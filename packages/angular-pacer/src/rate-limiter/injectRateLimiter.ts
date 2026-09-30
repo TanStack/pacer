@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -113,9 +115,24 @@ export interface AngularRateLimiter<
  */
 export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: AngularRateLimiterOptions<TFn, TSelected>,
+  options: AngularPacerOptions<AngularRateLimiterOptions<TFn, TSelected>>,
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): AngularRateLimiter<TFn, TSelected> {
+  if (typeof options === 'function') {
+    const defaults = injectPacerOptions().rateLimiter
+    return injectReactiveOptions<
+      AngularRateLimiterOptions<TFn, TSelected>,
+      AngularRateLimiter<TFn, TSelected>
+    >(
+      () =>
+        ({ ...defaults, ...options() }) as AngularRateLimiterOptions<
+          TFn,
+          TSelected
+        >,
+      (resolved) => injectRateLimiter(fn, resolved, selector),
+    )
+  }
+
   const mergedOptions = {
     ...injectPacerOptions().rateLimiter,
     ...options,
@@ -126,13 +143,22 @@ export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
 
   const result = {
     ...rateLimiter,
+    get options() {
+      return rateLimiter.options
+    },
+    set options(value) {
+      rateLimiter.options = value
+    },
     state,
   } as AngularRateLimiter<TFn, TSelected>
 
   const destroyRef = inject(DestroyRef, { optional: true })
   destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
+    const onUnmount = (
+      rateLimiter.options as AngularRateLimiterOptions<TFn, TSelected>
+    ).onUnmount
+    if (onUnmount) {
+      onUnmount(result)
     }
   })
 

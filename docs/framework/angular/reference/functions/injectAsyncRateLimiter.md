@@ -10,7 +10,7 @@ function injectAsyncRateLimiter<TFn, TSelected>(
 selector?): AngularAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:83](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L83)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:85](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L85)
 
 An Angular function that creates and manages an AsyncRateLimiter instance.
 
@@ -54,7 +54,7 @@ Use the `onUnmount` option to customize this.
 
 ### options
 
-[`AngularAsyncRateLimiterOptions`](../interfaces/AngularAsyncRateLimiterOptions.md)\<`TFn`, `TSelected`\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularAsyncRateLimiterOptions`](../interfaces/AngularAsyncRateLimiterOptions.md)\<`TFn`, `TSelected`\>\>
 
 ### selector?
 

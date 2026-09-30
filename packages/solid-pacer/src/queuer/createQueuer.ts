@@ -1,7 +1,9 @@
 import { Queuer } from '@tanstack/pacer/queuer'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
@@ -155,17 +157,23 @@ export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function createQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
-  options: SolidQueuerOptions<TValue, TSelected> = {},
+  options: SolidPacerOptions<SolidQueuerOptions<TValue, TSelected>> = {},
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): SolidQueuer<TValue, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().queuer,
-    ...options,
-  } as SolidQueuerOptions<TValue, TSelected>
-  const queuer = new Queuer(fn, mergedOptions) as unknown as SolidQueuer<
+  const mergedOptions = createPacerOptions<
+    SolidQueuerOptions<TValue, TSelected>
+  >(options, useDefaultPacerOptions().queuer)
+  const queuer = new Queuer(fn, mergedOptions()) as unknown as SolidQueuer<
     TValue,
     TSelected
   >
+
+  if (typeof options === 'function') {
+    createRenderEffect(() => {
+      const latest = mergedOptions()
+      untrack(() => queuer.setOptions(latest))
+    })
+  }
 
   queuer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: QueuerState<TValue>) => TSelected
@@ -184,8 +192,9 @@ export function createQueuer<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(queuer)
+      const onUnmount = mergedOptions().onUnmount
+      if (onUnmount) {
+        onUnmount(queuer)
       } else {
         queuer.stop()
       }
@@ -194,6 +203,12 @@ export function createQueuer<TValue, TSelected = {}>(
 
   return {
     ...queuer,
+    get options() {
+      return queuer.options
+    },
+    set options(value) {
+      queuer.options = value
+    },
     state,
   } as SolidQueuer<TValue, TSelected> // omit `store` in favor of `state`
 }

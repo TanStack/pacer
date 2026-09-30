@@ -1,7 +1,9 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -222,18 +224,24 @@ export function createAsyncRateLimiter<
   TSelected = {},
 >(
   fn: TFn,
-  options: SolidAsyncRateLimiterOptions<TFn, TSelected>,
+  options: SolidPacerOptions<SolidAsyncRateLimiterOptions<TFn, TSelected>>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncRateLimiter<TFn, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().asyncRateLimiter,
-    ...options,
-  } as SolidAsyncRateLimiterOptions<TFn, TSelected>
+  const mergedOptions = createPacerOptions<
+    SolidAsyncRateLimiterOptions<TFn, TSelected>
+  >(options, useDefaultPacerOptions().asyncRateLimiter)
   const asyncRateLimiter = new AsyncRateLimiter<TFn>(
     fn,
-    mergedOptions,
+    mergedOptions(),
   ) as unknown as SolidAsyncRateLimiter<TFn, TSelected>
+
+  if (typeof options === 'function') {
+    createRenderEffect(() => {
+      const latest = mergedOptions()
+      untrack(() => asyncRateLimiter.setOptions(latest))
+    })
+  }
 
   asyncRateLimiter.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncRateLimiterState<TFn>) => TSelected
@@ -254,8 +262,9 @@ export function createAsyncRateLimiter<
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncRateLimiter)
+      const onUnmount = mergedOptions().onUnmount
+      if (onUnmount) {
+        onUnmount(asyncRateLimiter)
       } else {
         asyncRateLimiter.abort()
       }
@@ -264,6 +273,12 @@ export function createAsyncRateLimiter<
 
   return {
     ...asyncRateLimiter,
+    get options() {
+      return asyncRateLimiter.options
+    },
+    set options(value) {
+      asyncRateLimiter.options = value
+    },
     state,
   } as SolidAsyncRateLimiter<TFn, TSelected>
 }

@@ -191,3 +191,37 @@ export class ApiComponent {
   }
 }
 ```
+
+## Reactive options
+
+Pass an options factory to read Angular signals, including required component inputs:
+
+```ts
+import { input } from '@angular/core'
+import { injectDebouncer } from '@tanstack/angular-pacer'
+
+readonly wait = input.required<number>()
+readonly search = injectDebouncer(
+  (query: string) => this.fetchResults(query),
+  () => ({ wait: this.wait() }),
+)
+```
+
+The factory runs during Angular's first effect, after component inputs are bound, or when you first access the returned utility. Accessing the utility before a required input is available throws Angular's required-input error. Destroying the component before initialization does not evaluate the factory or create a utility.
+
+Later signal changes update the same utility through `setOptions` during change detection. The utility, store, queued items, and pending work retain their identity. Provider defaults are merged before each factory result. Construction options such as `key`, `initialState`, and `initialItems` apply only when the utility is created. Use control methods such as `start()` and `stop()` to change running queues.
+
+This contract applies to synchronous and asynchronous inject functions and their callback, signal, and value helpers. Object options initialize eagerly; later mutations to the original options object are not tracked. The utility’s `options` property exposes its current core options, including updates made with `setOptions`. Factories should read signals and return options without side effects.
+
+For a value helper with an explicit initial value and factory options, pass a fourth argument for the selector. Pass `undefined` when no selector is needed:
+
+```ts
+const debounced = injectDebouncedValue(
+  query,
+  '',
+  () => ({ wait: wait() }),
+  undefined,
+)
+```
+
+The fourth argument distinguishes this form from `injectDebouncedValue(query, optionsFactory, selector)`. Object options still support the existing three-argument form with an initial value.

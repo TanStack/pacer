@@ -282,3 +282,18 @@ function ApiComponent() {
   return <button onClick={handleSubmit}>Submit</button>
 }
 ```
+
+## Reactive options
+
+Pass an options accessor to read Solid signals or props:
+
+```tsx
+const [wait, setWait] = createSignal(300)
+const debouncer = createDebouncer(save, () => ({ wait: wait() }))
+
+setWait(600)
+```
+
+The accessor initializes the utility immediately. Later changes update its options without replacing the utility or store. Provider defaults are merged before each accessor result. Pending work and queued items are preserved, and disposal uses the latest `onUnmount` callback. If the accessor removes that callback, the default cleanup applies.
+
+All synchronous and asynchronous create functions and their signal and value helpers accept options accessors. Later mutations to an options object are not tracked. The utility’s `options` property exposes its current core options, including updates made with `setOptions`. Construction options such as `key`, `initialState`, and `initialItems` apply only when the utility is created. Use control methods such as `start()` and `stop()` to change running queues.

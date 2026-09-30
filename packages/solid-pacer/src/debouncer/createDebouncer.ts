@@ -1,7 +1,9 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -155,17 +157,23 @@ export interface SolidDebouncer<
  */
 export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: SolidDebouncerOptions<TFn, TSelected>,
+  options: SolidPacerOptions<SolidDebouncerOptions<TFn, TSelected>>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): SolidDebouncer<TFn, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().debouncer,
-    ...options,
-  } as SolidDebouncerOptions<TFn, TSelected>
+  const mergedOptions = createPacerOptions<
+    SolidDebouncerOptions<TFn, TSelected>
+  >(options, useDefaultPacerOptions().debouncer)
   const asyncDebouncer = new Debouncer<TFn>(
     fn,
-    mergedOptions,
+    mergedOptions(),
   ) as unknown as SolidDebouncer<TFn, TSelected>
+
+  if (typeof options === 'function') {
+    createRenderEffect(() => {
+      const latest = mergedOptions()
+      untrack(() => asyncDebouncer.setOptions(latest))
+    })
+  }
 
   asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: DebouncerState<TFn>) => TSelected
@@ -186,8 +194,9 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncDebouncer)
+      const onUnmount = mergedOptions().onUnmount
+      if (onUnmount) {
+        onUnmount(asyncDebouncer)
       } else {
         asyncDebouncer.cancel()
       }
@@ -196,6 +205,12 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   return {
     ...asyncDebouncer,
+    get options() {
+      return asyncDebouncer.options
+    },
+    set options(value) {
+      asyncDebouncer.options = value
+    },
     state,
   } as SolidDebouncer<TFn, TSelected> // omit `store` in favor of `state`
 }

@@ -7,7 +7,7 @@ title: injectAsyncBatchedCallback
 function injectAsyncBatchedCallback<TValue>(fn, options): (item) => Promise<void>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatchedCallback.ts:42](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatchedCallback.ts#L42)
+Defined in: [async-batcher/injectAsyncBatchedCallback.ts:43](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatchedCallback.ts#L43)
 
 An Angular function that creates an async batched version of a callback function.
 This function is essentially a wrapper around `injectAsyncBatcher` that provides
@@ -41,7 +41,7 @@ Consider using the `injectAsyncBatcher` function instead.
 
 ### options
 
-`AsyncBatcherOptions`\<`TValue`\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`AsyncBatcherOptions`\<`TValue`\>\>
 
 ## Returns
 

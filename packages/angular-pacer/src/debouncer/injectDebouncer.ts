@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { Debouncer } from '@tanstack/pacer/debouncer'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -108,9 +110,24 @@ export interface AngularDebouncer<
  */
 export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: AngularDebouncerOptions<TFn, TSelected>,
+  options: AngularPacerOptions<AngularDebouncerOptions<TFn, TSelected>>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): AngularDebouncer<TFn, TSelected> {
+  if (typeof options === 'function') {
+    const defaults = injectPacerOptions().debouncer
+    return injectReactiveOptions<
+      AngularDebouncerOptions<TFn, TSelected>,
+      AngularDebouncer<TFn, TSelected>
+    >(
+      () =>
+        ({ ...defaults, ...options() }) as AngularDebouncerOptions<
+          TFn,
+          TSelected
+        >,
+      (resolved) => injectDebouncer(fn, resolved, selector),
+    )
+  }
+
   const mergedOptions = {
     ...injectPacerOptions().debouncer,
     ...options,
@@ -121,13 +138,22 @@ export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   const result = {
     ...debouncer,
+    get options() {
+      return debouncer.options
+    },
+    set options(value) {
+      debouncer.options = value
+    },
     state,
   } as AngularDebouncer<TFn, TSelected>
 
   const destroyRef = inject(DestroyRef, { optional: true })
   destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
+    const onUnmount = (
+      debouncer.options as AngularDebouncerOptions<TFn, TSelected>
+    ).onUnmount
+    if (onUnmount) {
+      onUnmount(result)
     } else {
       debouncer.cancel()
     }

@@ -38,3 +38,5 @@ export * from './throttler/injectThrottledCallback'
 export * from './throttler/injectThrottledSignal'
 export * from './throttler/injectThrottledValue'
 export * from './throttler/injectThrottler'
+
+export type { AngularPacerOptions } from './types'

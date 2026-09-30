@@ -1,7 +1,9 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type {
@@ -180,18 +182,24 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function createAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
-  options: SolidAsyncQueuerOptions<TValue, TSelected> = {},
+  options: SolidPacerOptions<SolidAsyncQueuerOptions<TValue, TSelected>> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncQueuer<TValue, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().asyncQueuer,
-    ...options,
-  } as SolidAsyncQueuerOptions<TValue, TSelected>
+  const mergedOptions = createPacerOptions<
+    SolidAsyncQueuerOptions<TValue, TSelected>
+  >(options, useDefaultPacerOptions().asyncQueuer)
   const asyncQueuer = new AsyncQueuer<TValue>(
     fn,
-    mergedOptions,
+    mergedOptions(),
   ) as unknown as SolidAsyncQueuer<TValue, TSelected>
+
+  if (typeof options === 'function') {
+    createRenderEffect(() => {
+      const latest = mergedOptions()
+      untrack(() => asyncQueuer.setOptions(latest))
+    })
+  }
 
   asyncQueuer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncQueuerState<TValue>) => TSelected
@@ -210,8 +218,9 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncQueuer)
+      const onUnmount = mergedOptions().onUnmount
+      if (onUnmount) {
+        onUnmount(asyncQueuer)
       } else {
         asyncQueuer.stop()
         asyncQueuer.abort()
@@ -221,6 +230,12 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
 
   return {
     ...asyncQueuer,
+    get options() {
+      return asyncQueuer.options
+    },
+    set options(value) {
+      asyncQueuer.options = value
+    },
     state,
   } as SolidAsyncQueuer<TValue, TSelected> // omit `store` in favor of `state`
 }

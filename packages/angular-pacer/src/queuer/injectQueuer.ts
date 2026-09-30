@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { Queuer } from '@tanstack/pacer/queuer'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
@@ -89,9 +91,24 @@ export interface AngularQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function injectQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
-  options: AngularQueuerOptions<TValue, TSelected> = {},
+  options: AngularPacerOptions<AngularQueuerOptions<TValue, TSelected>> = {},
   selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
 ): AngularQueuer<TValue, TSelected> {
+  if (typeof options === 'function') {
+    const defaults = injectPacerOptions().queuer
+    return injectReactiveOptions<
+      AngularQueuerOptions<TValue, TSelected>,
+      AngularQueuer<TValue, TSelected>
+    >(
+      () =>
+        ({ ...defaults, ...options() }) as AngularQueuerOptions<
+          TValue,
+          TSelected
+        >,
+      (resolved) => injectQueuer(fn, resolved, selector),
+    )
+  }
+
   const mergedOptions = {
     ...injectPacerOptions().queuer,
     ...options,
@@ -102,13 +119,22 @@ export function injectQueuer<TValue, TSelected = {}>(
 
   const result = {
     ...queuer,
+    get options() {
+      return queuer.options
+    },
+    set options(value) {
+      queuer.options = value
+    },
     state,
   } as AngularQueuer<TValue, TSelected>
 
   const destroyRef = inject(DestroyRef, { optional: true })
   destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
+    const onUnmount = (
+      queuer.options as AngularQueuerOptions<TValue, TSelected>
+    ).onUnmount
+    if (onUnmount) {
+      onUnmount(result)
     } else {
       queuer.stop()
     }

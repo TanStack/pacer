@@ -7,7 +7,7 @@ title: injectRateLimitedCallback
 function injectRateLimitedCallback<TFn>(fn, options): (...args) => boolean;
 ```
 
-Defined in: [rate-limiter/injectRateLimitedCallback.ts:39](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedCallback.ts#L39)
+Defined in: [rate-limiter/injectRateLimitedCallback.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedCallback.ts#L40)
 
 An Angular function that creates a rate-limited version of a callback function.
 This function is essentially a wrapper around `injectRateLimiter` that provides
@@ -41,7 +41,7 @@ Consider using the `injectRateLimiter` function instead.
 
 ### options
 
-`RateLimiterOptions`\<`TFn`\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`RateLimiterOptions`\<`TFn`\>\>
 
 ## Returns
 

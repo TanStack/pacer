@@ -10,7 +10,7 @@ function injectAsyncQueuer<TValue, TSelected>(
 selector?): AngularAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:96](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L96)
+Defined in: [async-queuer/injectAsyncQueuer.ts:98](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L98)
 
 An Angular function that creates and manages an AsyncQueuer instance.
 
@@ -63,7 +63,7 @@ When using onUnmount with flush, guard your callbacks since the component may al
 
 ### options?
 
-[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`, `TSelected`\>\> = `{}`
 
 ### selector?
 

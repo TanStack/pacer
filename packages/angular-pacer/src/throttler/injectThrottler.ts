@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { Throttler } from '@tanstack/pacer/throttler'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -106,9 +108,24 @@ export interface AngularThrottler<
  */
 export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: AngularThrottlerOptions<TFn, TSelected>,
+  options: AngularPacerOptions<AngularThrottlerOptions<TFn, TSelected>>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): AngularThrottler<TFn, TSelected> {
+  if (typeof options === 'function') {
+    const defaults = injectPacerOptions().throttler
+    return injectReactiveOptions<
+      AngularThrottlerOptions<TFn, TSelected>,
+      AngularThrottler<TFn, TSelected>
+    >(
+      () =>
+        ({ ...defaults, ...options() }) as AngularThrottlerOptions<
+          TFn,
+          TSelected
+        >,
+      (resolved) => injectThrottler(fn, resolved, selector),
+    )
+  }
+
   const mergedOptions = {
     ...injectPacerOptions().throttler,
     ...options,
@@ -119,13 +136,22 @@ export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
 
   const result = {
     ...throttler,
+    get options() {
+      return throttler.options
+    },
+    set options(value) {
+      throttler.options = value
+    },
     state,
   } as AngularThrottler<TFn, TSelected>
 
   const destroyRef = inject(DestroyRef, { optional: true })
   destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
+    const onUnmount = (
+      throttler.options as AngularThrottlerOptions<TFn, TSelected>
+    ).onUnmount
+    if (onUnmount) {
+      onUnmount(result)
     } else {
       throttler.cancel()
     }

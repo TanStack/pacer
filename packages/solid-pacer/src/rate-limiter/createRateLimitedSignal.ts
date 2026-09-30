@@ -1,5 +1,6 @@
 import { createSignal } from 'solid-js'
 import { createRateLimiter } from './createRateLimiter'
+import type { SolidPacerOptions } from '../types'
 import type {
   SolidRateLimiter,
   SolidRateLimiterOptions,
@@ -95,7 +96,9 @@ import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
  */
 export function createRateLimitedSignal<TValue, TSelected = {}>(
   value: TValue,
-  initialOptions: SolidRateLimiterOptions<Setter<TValue>, TSelected>,
+  initialOptions: SolidPacerOptions<
+    SolidRateLimiterOptions<Setter<TValue>, TSelected>
+  >,
   selector?: (state: RateLimiterState) => TSelected,
 ): [
   Accessor<TValue>,

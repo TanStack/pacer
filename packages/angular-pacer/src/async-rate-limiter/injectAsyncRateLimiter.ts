@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -85,10 +87,25 @@ export function injectAsyncRateLimiter<
   TSelected = {},
 >(
   fn: TFn,
-  options: AngularAsyncRateLimiterOptions<TFn, TSelected>,
+  options: AngularPacerOptions<AngularAsyncRateLimiterOptions<TFn, TSelected>>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): AngularAsyncRateLimiter<TFn, TSelected> {
+  if (typeof options === 'function') {
+    const defaults = injectPacerOptions().asyncRateLimiter
+    return injectReactiveOptions<
+      AngularAsyncRateLimiterOptions<TFn, TSelected>,
+      AngularAsyncRateLimiter<TFn, TSelected>
+    >(
+      () =>
+        ({ ...defaults, ...options() }) as AngularAsyncRateLimiterOptions<
+          TFn,
+          TSelected
+        >,
+      (resolved) => injectAsyncRateLimiter(fn, resolved, selector),
+    )
+  }
+
   const mergedOptions = {
     ...injectPacerOptions().asyncRateLimiter,
     ...options,
@@ -99,13 +116,22 @@ export function injectAsyncRateLimiter<
 
   const result = {
     ...rateLimiter,
+    get options() {
+      return rateLimiter.options
+    },
+    set options(value) {
+      rateLimiter.options = value
+    },
     state,
   } as AngularAsyncRateLimiter<TFn, TSelected>
 
   const destroyRef = inject(DestroyRef, { optional: true })
   destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
+    const onUnmount = (
+      rateLimiter.options as AngularAsyncRateLimiterOptions<TFn, TSelected>
+    ).onUnmount
+    if (onUnmount) {
+      onUnmount(result)
     } else {
       rateLimiter.abort()
     }

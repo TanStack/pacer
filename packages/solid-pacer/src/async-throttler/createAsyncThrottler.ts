@@ -1,7 +1,9 @@
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { shallow, useSelector } from '@tanstack/solid-store'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -174,18 +176,24 @@ export function createAsyncThrottler<
   TSelected = {},
 >(
   fn: TFn,
-  options: SolidAsyncThrottlerOptions<TFn, TSelected>,
+  options: SolidPacerOptions<SolidAsyncThrottlerOptions<TFn, TSelected>>,
   selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncThrottler<TFn, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().asyncThrottler,
-    ...options,
-  } as SolidAsyncThrottlerOptions<TFn, TSelected>
+  const mergedOptions = createPacerOptions<
+    SolidAsyncThrottlerOptions<TFn, TSelected>
+  >(options, useDefaultPacerOptions().asyncThrottler)
   const asyncThrottler = new AsyncThrottler(
     fn,
-    mergedOptions,
+    mergedOptions(),
   ) as unknown as SolidAsyncThrottler<TFn, TSelected>
+
+  if (typeof options === 'function') {
+    createRenderEffect(() => {
+      const latest = mergedOptions()
+      untrack(() => asyncThrottler.setOptions(latest))
+    })
+  }
 
   asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncThrottlerState<TFn>) => TSelected
@@ -206,8 +214,9 @@ export function createAsyncThrottler<
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncThrottler)
+      const onUnmount = mergedOptions().onUnmount
+      if (onUnmount) {
+        onUnmount(asyncThrottler)
       } else {
         asyncThrottler.cancel()
         asyncThrottler.abort()
@@ -217,6 +226,12 @@ export function createAsyncThrottler<
 
   return {
     ...asyncThrottler,
+    get options() {
+      return asyncThrottler.options
+    },
+    set options(value) {
+      asyncThrottler.options = value
+    },
     state,
   } as SolidAsyncThrottler<TFn, TSelected>
 }

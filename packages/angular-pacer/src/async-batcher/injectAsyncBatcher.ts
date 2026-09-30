@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type {
@@ -95,10 +97,27 @@ export interface AngularAsyncBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function injectAsyncBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => Promise<any>,
-  options: AngularAsyncBatcherOptions<TValue, TSelected> = {},
+  options: AngularPacerOptions<
+    AngularAsyncBatcherOptions<TValue, TSelected>
+  > = {},
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): AngularAsyncBatcher<TValue, TSelected> {
+  if (typeof options === 'function') {
+    const defaults = injectPacerOptions().asyncBatcher
+    return injectReactiveOptions<
+      AngularAsyncBatcherOptions<TValue, TSelected>,
+      AngularAsyncBatcher<TValue, TSelected>
+    >(
+      () =>
+        ({ ...defaults, ...options() }) as AngularAsyncBatcherOptions<
+          TValue,
+          TSelected
+        >,
+      (resolved) => injectAsyncBatcher(fn, resolved, selector),
+    )
+  }
+
   const mergedOptions = {
     ...injectPacerOptions().asyncBatcher,
     ...options,
@@ -109,13 +128,22 @@ export function injectAsyncBatcher<TValue, TSelected = {}>(
 
   const result = {
     ...batcher,
+    get options() {
+      return batcher.options
+    },
+    set options(value) {
+      batcher.options = value
+    },
     state,
   } as AngularAsyncBatcher<TValue, TSelected>
 
   const destroyRef = inject(DestroyRef, { optional: true })
   destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
+    const onUnmount = (
+      batcher.options as AngularAsyncBatcherOptions<TValue, TSelected>
+    ).onUnmount
+    if (onUnmount) {
+      onUnmount(result)
     } else {
       batcher.cancel()
       batcher.abort()

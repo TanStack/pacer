@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type {
@@ -95,10 +97,27 @@ export interface AngularAsyncQueuer<TValue, TSelected = {}> extends Omit<
  */
 export function injectAsyncQueuer<TValue, TSelected = {}>(
   fn: (value: TValue) => Promise<any>,
-  options: AngularAsyncQueuerOptions<TValue, TSelected> = {},
+  options: AngularPacerOptions<
+    AngularAsyncQueuerOptions<TValue, TSelected>
+  > = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): AngularAsyncQueuer<TValue, TSelected> {
+  if (typeof options === 'function') {
+    const defaults = injectPacerOptions().asyncQueuer
+    return injectReactiveOptions<
+      AngularAsyncQueuerOptions<TValue, TSelected>,
+      AngularAsyncQueuer<TValue, TSelected>
+    >(
+      () =>
+        ({ ...defaults, ...options() }) as AngularAsyncQueuerOptions<
+          TValue,
+          TSelected
+        >,
+      (resolved) => injectAsyncQueuer(fn, resolved, selector),
+    )
+  }
+
   const mergedOptions = {
     ...injectPacerOptions().asyncQueuer,
     ...options,
@@ -109,13 +128,22 @@ export function injectAsyncQueuer<TValue, TSelected = {}>(
 
   const result = {
     ...queuer,
+    get options() {
+      return queuer.options
+    },
+    set options(value) {
+      queuer.options = value
+    },
     state,
   } as AngularAsyncQueuer<TValue, TSelected>
 
   const destroyRef = inject(DestroyRef, { optional: true })
   destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
+    const onUnmount = (
+      queuer.options as AngularAsyncQueuerOptions<TValue, TSelected>
+    ).onUnmount
+    if (onUnmount) {
+      onUnmount(result)
     } else {
       queuer.stop()
       queuer.abort()
