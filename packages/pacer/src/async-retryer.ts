@@ -428,7 +428,10 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     return outcome.status === 'success' ? outcome.result : undefined
   };
 
-  /** @internal */
+  /**
+   * @internal
+   * @hidden
+   */
   [executeWithOutcome] = (
     ...args: Parameters<TFn>
   ): Promise<AsyncExecutionOutcome<Awaited<ReturnType<TFn>>>> => {
