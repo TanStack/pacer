@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
+import { executeWithOutcome } from './async-retryer-execution'
 import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AsyncRetryerOptions } from './async-retryer'
@@ -398,13 +399,16 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         this.options.asyncRetryerOptions,
       )
       this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
-      const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
+      const outcome = await currentAsyncRetryer[executeWithOutcome](...args)
       this.#setCleanupTimeout(now)
+      if (outcome.status === 'error') throw outcome.error
+      if (outcome.status !== 'success') return undefined
+      const { result } = outcome
       this.#setState({
         successCount: this.store.state.successCount + 1,
         lastResult: result,
       })
-      this.options.onSuccess?.(result as Awaited<ReturnType<TFn>>, args, this)
+      this.options.onSuccess?.(result, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,

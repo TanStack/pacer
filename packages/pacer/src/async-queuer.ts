@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
+import { executeWithOutcome } from './async-retryer-execution'
 import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AsyncRetryerOptions } from './async-retryer'
@@ -661,12 +662,15 @@ export class AsyncQueuer<TValue> {
           this.options.asyncRetryerOptions,
         )
         this.asyncRetryers.set(currentExecutionCount, currentAsyncRetryer)
-        const lastResult = await currentAsyncRetryer.execute(item) // EXECUTE!
-        this.#setState({
-          successCount: this.store.state.successCount + 1,
-          lastResult,
-        })
-        this.options.onSuccess?.(lastResult, item, this)
+        const outcome = await currentAsyncRetryer[executeWithOutcome](item)
+        if (outcome.status === 'error') throw outcome.error
+        if (outcome.status === 'success') {
+          this.#setState({
+            successCount: this.store.state.successCount + 1,
+            lastResult: outcome.result,
+          })
+          this.options.onSuccess?.(outcome.result, item, this)
+        }
       } catch (error) {
         this.#setState({
           errorCount: this.store.state.errorCount + 1,

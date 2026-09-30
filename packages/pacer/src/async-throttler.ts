@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
+import { executeWithOutcome } from './async-retryer-execution'
 import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AsyncRetryerOptions } from './async-retryer'
@@ -425,12 +426,15 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
     try {
       this.#setState({ isExecuting: true })
-      const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
+      const outcome = await currentAsyncRetryer[executeWithOutcome](...args)
+      if (outcome.status === 'error') throw outcome.error
+      if (outcome.status !== 'success') return undefined
+      const { result } = outcome
       this.#setState({
         lastResult: result,
         successCount: this.store.state.successCount + 1,
       })
-      this.options.onSuccess?.(result as Awaited<ReturnType<TFn>>, args, this)
+      this.options.onSuccess?.(result, args, this)
     } catch (error) {
       this.#setState({
         errorCount: this.store.state.errorCount + 1,
