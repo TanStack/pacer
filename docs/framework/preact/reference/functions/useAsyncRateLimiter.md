@@ -10,7 +10,7 @@ function useAsyncRateLimiter<TFn, TSelected>(
 selector?): PreactAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:231](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L231)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:232](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L232)
 
 A low-level Preact hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
