@@ -1,5 +1,6 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
+import { executeWithOutcome } from './async-retryer-execution'
 import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
 import type { AsyncRetryerOptions } from './async-retryer'
@@ -398,7 +399,10 @@ export class AsyncBatcher<TValue> {
     this.#activeRetryers.add(currentAsyncRetryer)
     this.asyncRetryers.set(currentExecutionCount, currentAsyncRetryer)
     try {
-      const result = await currentAsyncRetryer.execute(batch) // EXECUTE
+      const outcome = await currentAsyncRetryer[executeWithOutcome](batch)
+      if (outcome.status === 'error') throw outcome.error
+      if (outcome.status !== 'success') return undefined
+      const { result } = outcome
       this.#setState({
         totalItemsProcessed:
           this.store.state.totalItemsProcessed + batch.length,
