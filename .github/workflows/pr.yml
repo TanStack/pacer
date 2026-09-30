@@ -73,9 +73,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0
           persist-credentials: false
       - name: Setup Tools
         uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
+      - name: Make Changesets Base Available
+        run: git show-ref --verify --quiet refs/heads/main || git branch main origin/main
       - name: Prepare Release Version
         run: node scripts/prepare-devtools-release.ts
       - name: Changeset Preview

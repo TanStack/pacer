@@ -56,7 +56,7 @@ function fixture() {
   // Use Changesets' local changelog writer so these tests never need GitHub credentials.
   config.changelog = '@changesets/cli/changelog'
   write('.changeset/config.json', JSON.stringify(config))
-  execFileSync('git', ['init', '-q'], { cwd })
+  execFileSync('git', ['init', '-q', '--initial-branch=main'], { cwd })
   execFileSync('git', ['add', '.'], { cwd })
   execFileSync(
     'git',
