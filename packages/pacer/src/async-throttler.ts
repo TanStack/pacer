@@ -236,8 +236,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #activeRetryers = new Set<AsyncRetryer<TFn>>()
   #timeoutId: ReturnType<typeof setTimeout> | null = null
-  #resolvePreviousPromise:
-    ((value?: Awaited<ReturnType<TFn>> | undefined) => void) | null = null
+  #pendingPromise: {
+    resolve: (value?: Awaited<ReturnType<TFn>> | undefined) => void
+    reject: (reason?: unknown) => void
+  } | null = null
 
   constructor(
     public fn: TFn,
@@ -382,7 +384,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       // Set up new trailing execution
       return new Promise<Awaited<ReturnType<TFn>> | undefined>(
         (resolve, reject) => {
-          this.#resolvePreviousPromise = resolve
+          this.#pendingPromise = { resolve, reject }
 
           const newTimeSinceLastExecution = this.store.state.lastExecutionTime
             ? now - this.store.state.lastExecutionTime
@@ -392,7 +394,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
           this.#timeoutId = setTimeout(async () => {
             this.#clearTimeout()
             // A call made during this execution must not resolve this promise early
-            this.#resolvePreviousPromise = null
+            this.#pendingPromise = null
             this.#setState({ isPending: false })
             let result = this.store.state.lastResult
             if (this.store.state.lastArgs !== undefined) {
@@ -467,35 +469,35 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
 
   /**
    * Processes the current pending execution immediately
+   * The original maybeExecute call and flush share the execution's result or error.
    */
   flush = async (): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
-      // Store the pending promise resolver before clearing timeout
-      const resolvePromise = this.#resolvePreviousPromise
-
-      // Clear timeout and state without resolving the promise
+      const pendingPromise = this.#pendingPromise
+      const args = this.store.state.lastArgs
+      // Once execution starts, later calls and cancel only own newer pending work.
+      this.#pendingPromise = null
       this.#clearTimeout()
       this.#setState({
         isPending: false,
       })
 
-      const result = await this.#execute(...this.store.state.lastArgs)
-
-      // Resolve the pending promise with the result
-      if (resolvePromise) {
-        resolvePromise(result)
+      try {
+        const result = await this.#execute(...args)
+        pendingPromise?.resolve(result)
+        return result
+      } catch (error) {
+        pendingPromise?.reject(error)
+        throw error
       }
-
-      return result
     }
     return undefined
   }
 
   #resolvePreviousPromiseInternal = (): void => {
-    if (this.#resolvePreviousPromise) {
-      this.#resolvePreviousPromise(this.store.state.lastResult)
-      this.#resolvePreviousPromise = null
-    }
+    const pendingPromise = this.#pendingPromise
+    this.#pendingPromise = null
+    pendingPromise?.resolve(this.store.state.lastResult)
   }
 
   #clearTimeout = (): void => {
@@ -556,10 +558,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    */
   cancel = (): void => {
     this.#clearTimeout()
-    if (this.#resolvePreviousPromise) {
-      this.#resolvePreviousPromiseInternal()
-      this.#resolvePreviousPromise = null
-    }
+    this.#resolvePreviousPromiseInternal()
     this.#setState({
       isPending: false,
     })
