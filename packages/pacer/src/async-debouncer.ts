@@ -222,6 +222,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   key: string | undefined
   options: AsyncDebouncerOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
+  #activeRetryers = new Set<AsyncRetryer<TFn>>()
   #timeoutId: ReturnType<typeof setTimeout> | null = null
   #resolvePreviousPromise:
     ((value?: Awaited<ReturnType<TFn>> | undefined) => void) | null = null
@@ -326,9 +327,8 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
 
     // Handle leading execution
     if (this.options.leading && this.store.state.canLeadingExecute) {
-      this.#setState({ canLeadingExecute: false })
-      await this.#execute(...args)
-      return this.store.state.lastResult
+      this.#setState({ canLeadingExecute: false, lastArgs: undefined })
+      return await this.#execute(...args)
     }
 
     // Handle trailing execution
@@ -341,10 +341,16 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         this.#resolvePreviousPromise = resolve
         // this.#rejectPreviousPromise = reject
         this.#timeoutId = setTimeout(async () => {
+          // A call made during this execution must not resolve this promise early
+          this.#resolvePreviousPromise = null
+          const { lastArgs } = this.store.state
+          this.#setState({ isPending: false, lastArgs: undefined })
+          let result = this.store.state.lastResult
+
           // Execute trailing if enabled
-          if (this.options.trailing && this.store.state.lastArgs) {
+          if (this.options.trailing && lastArgs) {
             try {
-              await this.#execute(...this.store.state.lastArgs)
+              result = await this.#execute(...lastArgs)
             } catch (error) {
               reject(error)
             }
@@ -352,8 +358,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
 
           // Reset state and resolve
           this.#setState({ canLeadingExecute: true })
-          this.#resolvePreviousPromise = null
-          resolve(this.store.state.lastResult)
+          resolve(result)
         }, this.#getWait())
       },
     )
@@ -363,15 +368,16 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (!this.#getEnabled()) return undefined
-    const currentMaybeExecuteCount = this.store.state.maybeExecuteCount + 1
+    const currentMaybeExecuteCount = this.store.state.maybeExecuteCount
 
+    const currentAsyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
+    this.#activeRetryers.add(currentAsyncRetryer)
+    this.asyncRetryers.set(currentMaybeExecuteCount, currentAsyncRetryer)
     try {
       this.#setState({ isExecuting: true })
-      const currentAsyncRetryer = new AsyncRetryer(
-        this.fn,
-        this.options.asyncRetryerOptions,
-      )
-      this.asyncRetryers.set(currentMaybeExecuteCount, currentAsyncRetryer)
       const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setState({
         lastResult: result,
@@ -387,11 +393,14 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         throw error
       }
     } finally {
-      this.asyncRetryers.delete(currentMaybeExecuteCount) // dispose retryer
+      if (
+        this.asyncRetryers.get(currentMaybeExecuteCount) === currentAsyncRetryer
+      ) {
+        this.asyncRetryers.delete(currentMaybeExecuteCount)
+      }
+      this.#activeRetryers.delete(currentAsyncRetryer)
       this.#setState({
-        isExecuting: false,
-        isPending: false,
-        lastArgs: undefined,
+        isExecuting: this.#activeRetryers.size > 0,
         settleCount: this.store.state.settleCount + 1,
       })
       this.options.onSettled?.(args, this)
@@ -439,7 +448,9 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
 
   /**
    * Returns the AbortSignal for a specific execution.
-   * If no maybeExecuteCount is provided, returns the signal for the most recent execution.
+   * If no maybeExecuteCount is provided, returns the signal for the latest active execution.
+   * Capture the signal before awaiting work, since another execution may start meanwhile.
+   * Explicit counts refer to executions started since the most recent reset().
    * Returns null if no execution is found or not currently executing.
    *
    * @param maybeExecuteCount - Optional specific execution to get signal for
@@ -458,8 +469,10 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * ```
    */
   getAbortSignal = (maybeExecuteCount?: number): AbortSignal | null => {
-    const count = maybeExecuteCount ?? this.store.state.maybeExecuteCount
-    const retryer = this.asyncRetryers.get(count)
+    const retryer =
+      maybeExecuteCount === undefined
+        ? [...this.#activeRetryers].pop()
+        : this.asyncRetryers.get(maybeExecuteCount)
     return retryer?.getAbortSignal() ?? null
   }
 
@@ -468,7 +481,8 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * Does NOT cancel any pending execution that have not started yet.
    */
   abort = (): void => {
-    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.#activeRetryers.forEach((retryer) => retryer.abort())
+    this.#activeRetryers.clear()
     this.asyncRetryers.clear()
     this.#setState({
       isExecuting: false,
@@ -485,11 +499,17 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
   }
 
   /**
-   * Resets the debouncer state to its default values
+   * Resets counters and pending state without aborting active executions.
+   * Active executions remain abortable and keep isExecuting true until they settle.
+   * Explicit execution count lookups start over after reset().
    */
   reset = (): void => {
-    this.#setState(getDefaultAsyncDebouncerState<TFn>())
-    this.asyncRetryers.forEach((retryer) => retryer.reset())
+    this.asyncRetryers.clear()
+    this.#setState({
+      ...getDefaultAsyncDebouncerState<TFn>(),
+      isExecuting: this.#activeRetryers.size > 0,
+    })
+    this.#activeRetryers.forEach((retryer) => retryer.reset())
   }
 }
 

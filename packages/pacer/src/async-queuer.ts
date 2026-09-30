@@ -323,6 +323,7 @@ export class AsyncQueuer<TValue> {
     AsyncRetryer<(item: TValue) => Promise<any>>
   >()
   #timeoutIds: Set<ReturnType<typeof setTimeout>> = new Set()
+  #isTicking = false
 
   constructor(
     public fn: (item: TValue) => Promise<any>,
@@ -425,54 +426,60 @@ export class AsyncQueuer<TValue> {
       this.#setState({ pendingTick: false })
       return
     }
-    this.#setState({ pendingTick: true })
+    if (this.#isTicking) return
+    this.#isTicking = true
+    try {
+      this.#setState({ pendingTick: true })
 
-    // Check for expired items
-    this.#checkExpiredItems()
+      // Check for expired items
+      this.#checkExpiredItems()
 
-    // Process items concurrently up to the concurrency limit
-    let scheduledAsyncWork = false
-    const activeItems = [...this.store.state.activeItems]
-    while (
-      activeItems.length < this.#getConcurrency() &&
-      this.store.state.items.length > 0
-    ) {
-      const nextItem = this.peekNextItem()
-      if (nextItem === undefined) {
-        break
+      // Process items concurrently up to the concurrency limit
+      let scheduledAsyncWork = false
+      const activeItems = [...this.store.state.activeItems]
+      while (
+        activeItems.length < this.#getConcurrency() &&
+        this.store.state.items.length > 0
+      ) {
+        const nextItem = this.peekNextItem()
+        if (nextItem === undefined) {
+          break
+        }
+        activeItems.push(nextItem)
+        this.#setState({
+          activeItems: [...activeItems],
+        })
+        scheduledAsyncWork = true
+        ;(async () => {
+          try {
+            await this.execute()
+          } catch {
+            // errors are already surfaced via onError/errorCount (and rethrown to
+            // direct execute/flush callers); swallowing here prevents unhandled
+            // rejections and keeps the processing chain alive
+          }
+
+          const wait = this.#getWait()
+          if (wait > 0) {
+            const timeoutId = setTimeout(() => {
+              this.#timeoutIds.delete(timeoutId)
+              this.#tick()
+            }, wait)
+            this.#timeoutIds.add(timeoutId)
+            return
+          }
+
+          this.#tick()
+        })()
       }
-      activeItems.push(nextItem)
-      this.#setState({
-        activeItems: [...activeItems],
-      })
-      scheduledAsyncWork = true
-      ;(async () => {
-        try {
-          await this.execute()
-        } catch {
-          // errors are already surfaced via onError/errorCount (and rethrown to
-          // direct execute/flush callers); swallowing here prevents unhandled
-          // rejections and keeps the processing chain alive
-        }
 
-        const wait = this.#getWait()
-        if (wait > 0) {
-          const timeoutId = setTimeout(() => {
-            this.#timeoutIds.delete(timeoutId)
-            this.#tick()
-          }, wait)
-          this.#timeoutIds.add(timeoutId)
-          return
-        }
-
-        this.#tick()
-      })()
-    }
-
-    // pendingTick must stay true while executions or wait timers are pending so
-    // that addItem does not trigger an extra tick that bypasses the wait period
-    if (!scheduledAsyncWork) {
-      this.#setState({ pendingTick: false })
+      // Keep the scheduled chain marked pending. addItem may fill a free slot
+      // while work is active, but must preserve an armed wait timer.
+      if (!scheduledAsyncWork) {
+        this.#setState({ pendingTick: false })
+      }
+    } finally {
+      this.#isTicking = false
     }
   }
 
@@ -561,7 +568,14 @@ export class AsyncQueuer<TValue> {
       this.options.onItemsChange?.(this)
     }
 
-    if (this.store.state.isRunning && !this.store.state.pendingTick) {
+    const { activeItems, isRunning, pendingTick } = this.store.state
+    // A pending execution is not a wait timer. New items can use spare capacity
+    // while it runs, without restarting a paused flush or bypassing a wait.
+    const hasAvailableExecutionSlot =
+      activeItems.length > 0 &&
+      activeItems.length < this.#getConcurrency() &&
+      this.#timeoutIds.size === 0
+    if (isRunning && (!pendingTick || hasAvailableExecutionSlot)) {
       this.#tick()
     }
 

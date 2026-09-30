@@ -22,6 +22,8 @@ pending queue                 active work, concurrency: 2
 
 `concurrency` limits automatically scheduled active items. Its default is `1`. With `wait: 0`, a free slot is filled after an item settles. With a positive `wait`, the queue waits that long after a settled item before checking for more work.
 
+An item added while another task is active can start immediately when a concurrency slot is free and no wait timer is armed. Adding an item while a wait timer is armed preserves that delay.
+
 The queue controls start order. With concurrency greater than `1`, completion order depends on the work itself.
 
 ## Quick start

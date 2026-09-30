@@ -63,7 +63,7 @@ Promise C ───────────────────────�
 
 The replaced call does not wait for the newer trailing execution. If every call needs its own execution and result, use an [Async Queue](./async-queuing.md).
 
-An async throttler also avoids starting its next scheduled execution while the current execution is still active. The `wait` interval still controls throttle timing, while the Promise lifecycle can delay when later work is scheduled.
+An async throttler can delay scheduling while an earlier execution is active, but long-running executions can overlap. Executions started by leading calls or trailing timers keep their own Promises and results. `isExecuting` remains true until all active executions settle. Use an async queue with `concurrency: 1` when executions must run one at a time.
 
 ## Leading and trailing execution
 
@@ -133,7 +133,11 @@ saver.abort()
 
 Calling `abort()` without using the signal stops retry management but cannot force an arbitrary Promise to stop.
 
+`getAbortSignal()` returns the signal for the latest active execution. A newer call that is still waiting does not replace that signal. Capture the signal before the first `await`, or pass the execution's `maybeExecuteCount` to select it explicitly.
+
 ### Resetting safely
+
+Active executions remain abortable across `reset()` and keep `isExecuting` true until they settle. Their completions contribute to the reset outcome counters. Explicit `getAbortSignal(maybeExecuteCount)` lookups start over after reset; previously captured signals remain valid. The default lookup still includes active executions started before reset.
 
 `reset()` restores default state, but it does not clear a scheduled timeout or guarantee that active work stops. Clean up the lifecycle first when necessary:
 
