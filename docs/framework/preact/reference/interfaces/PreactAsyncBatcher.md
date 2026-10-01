@@ -3,7 +3,7 @@ id: PreactAsyncBatcher
 title: PreactAsyncBatcher
 ---
 
-Defined in: [async-batcher/useAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L23)
+Defined in: [async-batcher/useAsyncBatcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L24)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-batcher/useAsyncBatcher.ts:23](https://github.com/TanStack/pa
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-batcher/useAsyncBatcher.ts:49](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L49)
+Defined in: [async-batcher/useAsyncBatcher.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L50)
 
 Reactive state that will be updated and re-rendered when the batcher state changes
 
@@ -42,7 +42,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: [async-batcher/useAsyncBatcher.ts:55](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L55)
+Defined in: [async-batcher/useAsyncBatcher.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L56)
 
 #### Deprecated
 
@@ -58,7 +58,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [async-batcher/useAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L40)
+Defined in: [async-batcher/useAsyncBatcher.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-batcher/useAsyncBatcher.ts#L41)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the async batcher state.
 

@@ -3,7 +3,7 @@ id: PreactAsyncDebouncer
 title: PreactAsyncDebouncer
 ---
 
-Defined in: [async-debouncer/useAsyncDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L24)
+Defined in: [async-debouncer/useAsyncDebouncer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L25)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-debouncer/useAsyncDebouncer.ts:24](https://github.com/TanStac
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-debouncer/useAsyncDebouncer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L50)
+Defined in: [async-debouncer/useAsyncDebouncer.ts:51](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L51)
 
 Reactive state that will be updated and re-rendered when the debouncer state changes
 
@@ -42,7 +42,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [async-debouncer/useAsyncDebouncer.ts:56](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L56)
+Defined in: [async-debouncer/useAsyncDebouncer.ts:57](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L57)
 
 #### Deprecated
 
@@ -58,7 +58,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [async-debouncer/useAsyncDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L41)
+Defined in: [async-debouncer/useAsyncDebouncer.ts:42](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/async-debouncer/useAsyncDebouncer.ts#L42)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the async debouncer state.
 

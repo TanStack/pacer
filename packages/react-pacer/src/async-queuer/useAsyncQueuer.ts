@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { shallow, useSelector } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { useOnUnmount } from '../useOnUnmount'
 import type { Store } from '@tanstack/react-store'
 import type {
   AsyncQueuerOptions,
@@ -267,18 +268,14 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
   asyncQueuer.fn = fn
   asyncQueuer.setOptions(mergedOptions)
 
-  /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
-  useEffect(() => {
-    return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncQueuer)
-      } else {
-        asyncQueuer.stop()
-        asyncQueuer.abort()
-      }
+  useOnUnmount(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(asyncQueuer)
+    } else {
+      asyncQueuer.stop()
+      asyncQueuer.abort()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
+  })
 
   const state = useSelector(asyncQueuer.store, selector, { compare: shallow })
 

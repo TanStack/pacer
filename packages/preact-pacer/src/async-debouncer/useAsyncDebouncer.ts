@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
+import { useMemo, useState } from 'preact/hooks'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { useOnUnmount } from '../useOnUnmount'
 import type { Store } from '@tanstack/preact-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
@@ -250,18 +251,14 @@ export function useAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected = {}>(
     compare: shallow,
   })
 
-  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
-  useEffect(() => {
-    return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncDebouncer)
-      } else {
-        asyncDebouncer.cancel()
-        asyncDebouncer.abort()
-      }
+  useOnUnmount(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(asyncDebouncer)
+    } else {
+      asyncDebouncer.cancel()
+      asyncDebouncer.abort()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps */
+  })
 
   return useMemo(
     () =>

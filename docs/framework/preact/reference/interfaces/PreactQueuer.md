@@ -3,7 +3,7 @@ id: PreactQueuer
 title: PreactQueuer
 ---
 
-Defined in: [queuer/useQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L20)
+Defined in: [queuer/useQueuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L21)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [queuer/useQueuer.ts:20](https://github.com/TanStack/pacer/blob/main
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [queuer/useQueuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L46)
+Defined in: [queuer/useQueuer.ts:47](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L47)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -42,7 +42,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<QueuerState<TValue>>>;
 ```
 
-Defined in: [queuer/useQueuer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L52)
+Defined in: [queuer/useQueuer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L53)
 
 #### Deprecated
 
@@ -58,7 +58,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => ComponentChildren;
 ```
 
-Defined in: [queuer/useQueuer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L37)
+Defined in: [queuer/useQueuer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/preact-pacer/src/queuer/useQueuer.ts#L38)
 
 A Preact HOC (Higher Order Component) that allows you to subscribe to the queuer state.
 

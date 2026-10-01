@@ -10,7 +10,7 @@ function useBatcher<TValue, TSelected>(
 selector?): ReactBatcher<TValue, TSelected>;
 ```
 
-Defined in: [batcher/useBatcher.ts:181](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L181)
+Defined in: [batcher/useBatcher.ts:182](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L182)
 
 A React hook that creates and manages a Batcher instance.
 

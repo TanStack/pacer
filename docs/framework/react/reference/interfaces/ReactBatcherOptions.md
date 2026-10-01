@@ -3,7 +3,7 @@ id: ReactBatcherOptions
 title: ReactBatcherOptions
 ---
 
-Defined in: [batcher/useBatcher.ts:9](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L9)
+Defined in: [batcher/useBatcher.ts:10](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L10)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [batcher/useBatcher.ts:9](https://github.com/TanStack/pacer/blob/mai
 optional onUnmount?: (batcher) => void;
 ```
 
-Defined in: [batcher/useBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L17)
+Defined in: [batcher/useBatcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/batcher/useBatcher.ts#L18)
 
 Optional callback invoked when the component unmounts. Receives the batcher instance.
 When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.

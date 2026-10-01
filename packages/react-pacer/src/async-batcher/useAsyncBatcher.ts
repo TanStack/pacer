@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { shallow, useSelector } from '@tanstack/react-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { useOnUnmount } from '../useOnUnmount'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
@@ -266,18 +267,14 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
   asyncBatcher.fn = fn
   asyncBatcher.setOptions(mergedOptions)
 
-  /* eslint-disable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler -- unmount cleanup only; empty deps keep teardown stable */
-  useEffect(() => {
-    return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncBatcher)
-      } else {
-        asyncBatcher.cancel()
-        asyncBatcher.abort()
-      }
+  useOnUnmount(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(asyncBatcher)
+    } else {
+      asyncBatcher.cancel()
+      asyncBatcher.abort()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps, react-compiler/react-compiler */
+  })
 
   const state = useSelector(asyncBatcher.store, selector, { compare: shallow })
 

@@ -3,7 +3,7 @@ id: ReactAsyncQueuer
 title: ReactAsyncQueuer
 ---
 
-Defined in: [async-queuer/useAsyncQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L23)
+Defined in: [async-queuer/useAsyncQueuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L24)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-queuer/useAsyncQueuer.ts:23](https://github.com/TanStack/pace
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-queuer/useAsyncQueuer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L49)
+Defined in: [async-queuer/useAsyncQueuer.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L50)
 
 Reactive state that will be updated and re-rendered when the queuer state changes
 
@@ -42,7 +42,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: [async-queuer/useAsyncQueuer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L55)
+Defined in: [async-queuer/useAsyncQueuer.ts:56](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L56)
 
 #### Deprecated
 
@@ -58,7 +58,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [async-queuer/useAsyncQueuer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L40)
+Defined in: [async-queuer/useAsyncQueuer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L41)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the queuer state.
 

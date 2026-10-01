@@ -3,7 +3,7 @@ id: ReactAsyncRateLimiter
 title: ReactAsyncRateLimiter
 ---
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L24)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:25](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L25)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:24](https://github.com/Ta
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L50)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:51](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L51)
 
 Reactive state that will be updated and re-rendered when the rate limiter state changes
 
@@ -42,7 +42,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:56](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L56)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:57](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L57)
 
 #### Deprecated
 
@@ -58,7 +58,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L41)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:42](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L42)
 
 A React HOC (Higher Order Component) that allows you to subscribe to the rate limiter state.
 

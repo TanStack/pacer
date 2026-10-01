@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
+import { useMemo, useState } from 'preact/hooks'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { useOnUnmount } from '../useOnUnmount'
 import type { Store } from '@tanstack/preact-store'
 import type {
   DebouncerOptions,
@@ -194,17 +195,13 @@ export function useDebouncer<TFn extends AnyFunction, TSelected = {}>(
   debouncer.fn = fn
   debouncer.setOptions(mergedOptions)
 
-  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
-  useEffect(() => {
-    return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(debouncer)
-      } else {
-        debouncer.cancel()
-      }
+  useOnUnmount(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(debouncer)
+    } else {
+      debouncer.cancel()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps */
+  })
 
   const state = useSelector(debouncer.store, selector, { compare: shallow })
 

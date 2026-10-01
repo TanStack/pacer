@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
+import { useMemo, useState } from 'preact/hooks'
 import { Queuer } from '@tanstack/pacer/queuer'
 import { shallow, useSelector } from '@tanstack/preact-store'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { useOnUnmount } from '../useOnUnmount'
 import type { Store } from '@tanstack/preact-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 import type { ComponentChildren } from 'preact'
@@ -226,17 +227,13 @@ export function useQueuer<TValue, TSelected = {}>(
   queuer.fn = fn
   queuer.setOptions(mergedOptions)
 
-  /* eslint-disable react-hooks/exhaustive-deps -- cleanup only; runs on unmount */
-  useEffect(() => {
-    return () => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(queuer)
-      } else {
-        queuer.stop()
-      }
+  useOnUnmount(() => {
+    if (mergedOptions.onUnmount) {
+      mergedOptions.onUnmount(queuer)
+    } else {
+      queuer.stop()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps */
+  })
 
   const state = useSelector(queuer.store, selector, { compare: shallow })
 

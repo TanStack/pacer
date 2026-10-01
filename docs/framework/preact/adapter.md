@@ -113,6 +113,12 @@ import { PacerProvider } from '@tanstack/preact-pacer'
 
 Hooks inside the provider use these defaults. Options passed to an individual hook override them.
 
+## Unmount cleanup
+
+The base hooks and their callback/value helpers use the `onUnmount` callback from the latest committed render. Updating the callback does not run cleanup. A render that is suspended or abandoned does not replace the committed callback.
+
+A custom `onUnmount` callback replaces the hook's default cleanup. If the latest options have no callback, the hook uses its default: batchers, debouncers, and throttlers cancel pending work; queuers stop processing; async utilities also abort active executions. The synchronous rate limiter has no default cleanup.
+
 ## Subscribing to state
 
 The Preact Adapter supports subscribing to state changes in two ways:

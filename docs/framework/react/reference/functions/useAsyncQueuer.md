@@ -10,7 +10,7 @@ function useAsyncQueuer<TValue, TSelected>(
 selector?): ReactAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [async-queuer/useAsyncQueuer.ts:235](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L235)
+Defined in: [async-queuer/useAsyncQueuer.ts:236](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L236)
 
 A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
