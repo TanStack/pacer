@@ -3,8 +3,6 @@ id: PacerDevtoolsWirePayload
 title: PacerDevtoolsWirePayload
 ---
 
-# Interface: PacerDevtoolsWirePayload
-
 Defined in: [event-client.ts:10](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/event-client.ts#L10)
 
 Payload on the devtools event bus must be JSON-serializable: `ClientEventBus`

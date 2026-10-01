@@ -3,16 +3,14 @@ id: createAsyncDebouncer
 title: createAsyncDebouncer
 ---
 
-# Function: createAsyncDebouncer()
-
 ```ts
 function createAsyncDebouncer<TFn, TSelected>(
-   fn, 
-   options, 
-selector): SolidAsyncDebouncer<TFn, TSelected>;
+   fn,
+   options,
+selector?): SolidAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-debouncer/createAsyncDebouncer.ts:175](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L175)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:174](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L174)
 
 A low-level Solid hook that creates an `AsyncDebouncer` instance to delay execution of an async function.
 
@@ -60,14 +58,13 @@ updates and gives you full control over when your component tracks state changes
 
 Available state properties:
 - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
-- `executionCount`: Number of function executions that have been completed
-- `hasError`: Whether the last execution resulted in an error
+- `settleCount`: Number of function executions that have completed (success or error)
+- `errorCount`: Number of function executions that have resulted in errors
 - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
 - `isExecuting`: Whether an async function execution is currently in progress
 - `lastArgs`: The arguments from the most recent call to maybeExecute
-- `lastError`: The error from the most recent failed execution (if any)
 - `lastResult`: The result from the most recent successful execution
-- `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
+- `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
 
 ## Unmount behavior
 
@@ -108,7 +105,7 @@ using onUnmount with flush.
 
 [`SolidAsyncDebouncerOptions`](../interfaces/SolidAsyncDebouncerOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 
@@ -152,7 +149,7 @@ const debouncer = createAsyncDebouncer(
       console.error('API call failed:', error);
     }
   },
-  (state) => ({ hasError: state.hasError, lastError: state.lastError })
+  (state) => ({ errorCount: state.errorCount })
 );
 
 // Access the selected state (will be empty object {} unless selector provided)

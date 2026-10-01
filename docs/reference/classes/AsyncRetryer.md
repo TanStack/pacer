@@ -3,8 +3,6 @@ id: AsyncRetryer
 title: AsyncRetryer
 ---
 
-# Class: AsyncRetryer\<TFn\>
-
 Defined in: [async-retryer.ts:298](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L298)
 
 Provides robust retry functionality for asynchronous functions, supporting configurable backoff strategies,
@@ -112,7 +110,7 @@ The async function type to be retried.
 ### Constructor
 
 ```ts
-new AsyncRetryer<TFn>(fn, initialOptions): AsyncRetryer<TFn>;
+new AsyncRetryer<TFn>(fn, initialOptions?): AsyncRetryer<TFn>;
 ```
 
 Defined in: [async-retryer.ts:311](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L311)
@@ -127,7 +125,7 @@ Creates a new AsyncRetryer instance
 
 The async function to retry
 
-##### initialOptions
+##### initialOptions?
 
 [`AsyncRetryerOptions`](../interfaces/AsyncRetryerOptions.md)\<`TFn`\> = `{}`
 
@@ -164,7 +162,7 @@ Defined in: [async-retryer.ts:302](https://github.com/TanStack/pacer/blob/main/p
 ### options
 
 ```ts
-options: AsyncRetryerOptions<TFn> & Omit<Required<AsyncRetryerOptions<any>>, 
+options: AsyncRetryerOptions<TFn> & Omit<Required<AsyncRetryerOptions<any>>,
   | "initialState"
   | "key"
   | "onAbort"
@@ -194,7 +192,7 @@ Defined in: [async-retryer.ts:299](https://github.com/TanStack/pacer/blob/main/p
 ### abort()
 
 ```ts
-abort(reason): void;
+abort(reason?): void;
 ```
 
 Defined in: [async-retryer.ts:612](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L612)
@@ -203,11 +201,11 @@ Cancels the current execution and any pending retries
 
 #### Parameters
 
-##### reason
+##### reason?
+
+`"manual"` \| `"execution-timeout"` \| `"total-timeout"` \| `"new-execution"`
 
 The reason for the abort (defaults to 'manual')
-
-`"manual"` | `"execution-timeout"` | `"total-timeout"` | `"new-execution"`
 
 #### Returns
 

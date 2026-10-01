@@ -58,6 +58,15 @@
     "test:sherif": {
       "cache": true,
       "inputs": ["{workspaceRoot}/**/package.json"]
+    },
+    "test:build": {
+      "cache": true,
+      "dependsOn": ["build"],
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/scripts/verify-package.ts"
+      ]
     }
   },
   "analytics": true

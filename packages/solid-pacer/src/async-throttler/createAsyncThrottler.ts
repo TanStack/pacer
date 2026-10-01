@@ -99,18 +99,15 @@ export interface SolidAsyncThrottler<
  * updates and gives you full control over when your component tracks state changes.
  *
  * Available state properties:
- * - `canLeadingExecute`: Whether the throttler can execute on the leading edge
- * - `canTrailingExecute`: Whether the throttler can execute on the trailing edge
- * - `executionCount`: Number of function executions that have been completed
- * - `hasError`: Whether the last execution resulted in an error
+ * - `settleCount`: Number of function executions that have completed (success or error)
+ * - `errorCount`: Number of function executions that have resulted in errors
  * - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
  * - `isExecuting`: Whether an async function execution is currently in progress
  * - `lastArgs`: The arguments from the most recent call to maybeExecute
- * - `lastError`: The error from the most recent failed execution (if any)
  * - `lastExecutionTime`: Timestamp of the last execution
  * - `lastResult`: The result from the most recent successful execution
  * - `nextExecutionTime`: Timestamp of the next allowed execution
- * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing')
+ * - `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
  *
  * ## Unmount behavior
  *
@@ -165,7 +162,7 @@ export interface SolidAsyncThrottler<
  *       console.error('API call failed:', error);
  *     }
  *   },
- *   (state) => ({ hasError: state.hasError, lastError: state.lastError })
+ *   (state) => ({ errorCount: state.errorCount })
  * );
  *
  * // Access the selected state (will be empty object {} unless selector provided)

@@ -3,8 +3,6 @@ id: "@tanstack/pacer"
 title: "@tanstack/pacer"
 ---
 
-# @tanstack/pacer
-
 ## Classes
 
 - [AsyncBatcher](classes/AsyncBatcher.md)

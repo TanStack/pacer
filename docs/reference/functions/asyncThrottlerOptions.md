@@ -3,8 +3,6 @@ id: asyncThrottlerOptions
 title: asyncThrottlerOptions
 ---
 
-# Function: asyncThrottlerOptions()
-
 ```ts
 function asyncThrottlerOptions<TFn, TOptions>(options): TOptions;
 ```

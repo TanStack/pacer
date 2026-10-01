@@ -3,8 +3,6 @@ id: asyncDebouncerOptions
 title: asyncDebouncerOptions
 ---
 
-# Function: asyncDebouncerOptions()
-
 ```ts
 function asyncDebouncerOptions<TFn, TOptions>(options): TOptions;
 ```

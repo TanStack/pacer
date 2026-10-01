@@ -3,16 +3,14 @@ id: createRateLimiter
 title: createRateLimiter
 ---
 
-# Function: createRateLimiter()
-
 ```ts
 function createRateLimiter<TFn, TSelected>(
-   fn, 
-   options, 
-selector): SolidRateLimiter<TFn, TSelected>;
+   fn,
+   options,
+selector?): SolidRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/rate-limiter/createRateLimiter.ts:185](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L185)
+Defined in: [rate-limiter/createRateLimiter.ts:186](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L186)
 
 A low-level Solid hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 
@@ -55,12 +53,13 @@ state changes occur.
 tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
 updates and gives you full control over when your component tracks state changes.
 
+Use `getRemainingInWindow()` and `getMsUntilNextWindow()` for current window capacity and timing.
+
 Available state properties:
+- `executionTimes`: Timestamps of executions tracked for the current window
+- `isExceeded`: Whether the rate limit has been reached
 - `executionCount`: Number of function executions that have been completed
 - `rejectionCount`: Number of function calls that were rejected due to rate limiting
-- `remainingInWindow`: Number of executions remaining in the current window
-- `nextWindowTime`: Timestamp when the next window begins
-- `currentWindowStart`: Timestamp when the current window started
 
 ## Type Parameters
 
@@ -83,7 +82,7 @@ Available state properties:
 
 [`SolidRateLimiterOptions`](../interfaces/SolidRateLimiterOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

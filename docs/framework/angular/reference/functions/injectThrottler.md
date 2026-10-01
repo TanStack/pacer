@@ -3,16 +3,14 @@ id: injectThrottler
 title: injectThrottler
 ---
 
-# Function: injectThrottler()
-
 ```ts
 function injectThrottler<TFn, TSelected>(
-   fn, 
-   options, 
-selector): AngularThrottler<TFn, TSelected>;
+   fn,
+   options,
+selector?): AngularThrottler<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/throttler/injectThrottler.ts:109](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L109)
+Defined in: [throttler/injectThrottler.ts:107](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L107)
 
 An Angular function that creates and manages a Throttler instance.
 
@@ -36,8 +34,6 @@ tracking by providing a selector function. This prevents unnecessary updates and
 full control over when your component tracks state changes.
 
 Available state properties:
-- `canLeadingExecute`: Whether the throttler can execute on the leading edge
-- `canTrailingExecute`: Whether the throttler can execute on the trailing edge
 - `executionCount`: Number of function executions that have been completed
 - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
 - `lastArgs`: The arguments from the most recent call to maybeExecute
@@ -78,7 +74,7 @@ const throttler = injectThrottler(fn, {
 
 [`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

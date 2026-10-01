@@ -3,8 +3,6 @@ id: queue
 title: queue
 ---
 
-# Function: queue()
-
 ```ts
 function queue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean;
 ```
@@ -65,9 +63,9 @@ processPriority(3); // Processed before 1
 
 ```ts
 (
-   item, 
-   position, 
-   runOnItemsChange): boolean;
+   item,
+   position?,
+   runOnItemsChange?): boolean;
 ```
 
 Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
@@ -88,11 +86,11 @@ queuer.addItem('task2', 'front');
 
 `TValue`
 
-#### position
+#### position?
 
 [`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
-#### runOnItemsChange
+#### runOnItemsChange?
 
 `boolean` = `true`
 

@@ -3,8 +3,6 @@ id: asyncQueue
 title: asyncQueue
 ---
 
-# Function: asyncQueue()
-
 ```ts
 function asyncQueue<TValue>(fn, initialOptions): (item, position, runOnItemsChange) => boolean;
 ```
@@ -82,9 +80,9 @@ State Management:
 
 ```ts
 (
-   item, 
-   position, 
-   runOnItemsChange): boolean;
+   item,
+   position?,
+   runOnItemsChange?): boolean;
 ```
 
 Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
@@ -97,11 +95,11 @@ Items can be inserted based on priority or at the front/back depending on config
 
 `TValue`
 
-#### position
+#### position?
 
 [`QueuePosition`](../type-aliases/QueuePosition.md) = `...`
 
-#### runOnItemsChange
+#### runOnItemsChange?
 
 `boolean` = `true`
 

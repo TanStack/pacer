@@ -3,16 +3,14 @@ id: createAsyncQueuer
 title: createAsyncQueuer
 ---
 
-# Function: createAsyncQueuer()
-
 ```ts
 function createAsyncQueuer<TValue, TSelected>(
-   fn, 
-   options, 
-selector): SolidAsyncQueuer<TValue, TSelected>;
+   fn,
+   options?,
+selector?): SolidAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:181](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L181)
+Defined in: [async-queuer/createAsyncQueuer.ts:181](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L181)
 
 Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
 
@@ -61,7 +59,7 @@ Available state properties:
 - `activeItems`: Array of items currently being processed
 - `errorCount`: Number of items that failed processing
 - `isRunning`: Whether the queuer is currently running (not stopped)
-- `pendingItems`: Array of items waiting to be processed
+- `items`: Array of items waiting to be processed
 - `rejectionCount`: Number of items that were rejected (expired or failed validation)
 - `settleCount`: Number of items that have completed processing (successful or failed)
 - `successCount`: Number of items that were processed successfully
@@ -109,7 +107,7 @@ const asyncQueuer = createAsyncQueuer(
   async (item) => await fetchData(item),
   { concurrency: 2, started: true },
   (state) => ({
-    pendingItems: state.pendingItems,
+    items: state.items,
     activeItems: state.activeItems,
     isRunning: state.isRunning
   })
@@ -133,7 +131,7 @@ asyncQueuer.addItem(newItem);
 asyncQueuer.start();
 
 // Access the selected state (will be empty object {} unless selector provided)
-const { pendingItems, activeItems } = asyncQueuer.state();
+const { items, activeItems } = asyncQueuer.state();
 ```
 
 ## Type Parameters
@@ -153,11 +151,11 @@ const { pendingItems, activeItems } = asyncQueuer.state();
 
 (`value`) => `Promise`\<`any`\>
 
-### options
+### options?
 
 [`SolidAsyncQueuerOptions`](../interfaces/SolidAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

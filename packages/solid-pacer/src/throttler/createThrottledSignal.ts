@@ -31,8 +31,6 @@ import type { ThrottlerState } from '@tanstack/pacer/throttler'
  * the reactive system track the selected state values.
  *
  * Available throttler state properties:
- * - `canLeadingExecute`: Whether the throttler can execute on the leading edge
- * - `canTrailingExecute`: Whether the throttler can execute on the trailing edge
  * - `executionCount`: Number of function executions that have been completed
  * - `isPending`: Whether the throttler is waiting for the timeout to trigger trailing execution
  * - `lastArgs`: The arguments from the most recent call to maybeExecute

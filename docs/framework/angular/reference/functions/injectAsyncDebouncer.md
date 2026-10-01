@@ -3,16 +3,14 @@ id: injectAsyncDebouncer
 title: injectAsyncDebouncer
 ---
 
-# Function: injectAsyncDebouncer()
-
 ```ts
 function injectAsyncDebouncer<TFn, TSelected>(
-   fn, 
-   options, 
-selector): AngularAsyncDebouncer<TFn, TSelected>;
+   fn,
+   options,
+selector?): AngularAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:119](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L119)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:119](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L119)
 
 An Angular function that creates and manages an AsyncDebouncer instance.
 
@@ -82,7 +80,7 @@ When using onUnmount with flush, guard your callbacks since the component may al
 
 [`AngularAsyncDebouncerOptions`](../interfaces/AngularAsyncDebouncerOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

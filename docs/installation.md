@@ -3,6 +3,8 @@ title: Installation
 id: installation
 ---
 
+Pacer packages are ESM-only, target ES2022, and require Node.js 20 or newer when running in Node.js. Use ESM imports or dynamic `import()` when consuming them.
+
 Install the adapter for your framework with your preferred package manager:
 
 <!-- ::start:tabs variant="package-managers" -->

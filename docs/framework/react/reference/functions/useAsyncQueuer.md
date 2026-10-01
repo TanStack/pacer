@@ -3,16 +3,14 @@ id: useAsyncQueuer
 title: useAsyncQueuer
 ---
 
-# Function: useAsyncQueuer()
-
 ```ts
 function useAsyncQueuer<TValue, TSelected>(
-   fn, 
-   options, 
-selector): ReactAsyncQueuer<TValue, TSelected>;
+   fn,
+   options?,
+selector?): ReactAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-queuer/useAsyncQueuer.ts:235](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L235)
+Defined in: [async-queuer/useAsyncQueuer.ts:235](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-queuer/useAsyncQueuer.ts#L235)
 
 A lower-level React hook that creates an `AsyncQueuer` instance for managing an async queue of items.
 
@@ -69,7 +67,7 @@ Available state properties:
 - `lastResult`: The result from the most recent task execution
 - `pendingTick`: Whether the queuer has a pending timeout for processing the next item
 - `rejectionCount`: Number of items that have been rejected from being added
-- `settledCount`: Number of task executions that have completed (success or error)
+- `settleCount`: Number of task executions that have completed (success or error)
 - `size`: Number of items currently in the queue
 - `status`: Current processing status ('idle' | 'running' | 'stopped')
 - `successCount`: Number of task executions that have completed successfully
@@ -110,11 +108,11 @@ accordingly when using onUnmount with flush.
 
 (`value`) => `Promise`\<`any`\>
 
-### options
+### options?
 
 [`ReactAsyncQueuerOptions`](../interfaces/ReactAsyncQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 
@@ -181,7 +179,7 @@ const asyncQueuer = useAsyncQueuer(
   (state) => ({
     successCount: state.successCount,
     errorCount: state.errorCount,
-    settledCount: state.settledCount,
+    settleCount: state.settleCount,
     expirationCount: state.expirationCount,
     rejectionCount: state.rejectionCount
   })

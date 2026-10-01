@@ -3,8 +3,6 @@ id: debounce
 title: debounce
 ---
 
-# Function: debounce()
-
 ```ts
 function debounce<TFn>(fn, initialOptions): (...args) => void;
 ```
@@ -45,19 +43,7 @@ State Management:
 
 ## Returns
 
-```ts
-(...args): void;
-```
-
-### Parameters
-
-#### args
-
-...`Parameters`\<`TFn`\>
-
-### Returns
-
-`void`
+(...`args`) => `void`
 
 ## Example
 

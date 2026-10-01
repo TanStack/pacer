@@ -156,7 +156,7 @@ const batcher = useAsyncBatcher(
 batcher.abort()
 ```
 
-When executions overlap, pass an `executeCount` to `getAbortSignal()` when you need a specific execution's signal.
+When executions overlap, pass an `executionCount` to `getAbortSignal()` when you need a specific execution's signal.
 
 ### Resetting safely
 

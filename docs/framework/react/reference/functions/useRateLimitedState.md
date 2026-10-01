@@ -3,16 +3,14 @@ id: useRateLimitedState
 title: useRateLimitedState
 ---
 
-# Function: useRateLimitedState()
-
 ```ts
 function useRateLimitedState<TValue, TSelected>(
-   value, 
-   options, 
+   value,
+   options,
    selector?): [TValue, Dispatch<SetStateAction<TValue>>, ReactRateLimiter<Dispatch<SetStateAction<TValue>>, TSelected>];
 ```
 
-Defined in: [react-pacer/src/rate-limiter/useRateLimitedState.ts:107](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedState.ts#L107)
+Defined in: [rate-limiter/useRateLimitedState.ts:107](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/rate-limiter/useRateLimitedState.ts#L107)
 
 A React hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
 This hook combines React's useState with rate limiting functionality to provide controlled state updates.

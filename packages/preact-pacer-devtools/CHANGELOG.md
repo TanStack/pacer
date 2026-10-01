@@ -1,5 +1,16 @@
 # @tanstack/preact-pacer-devtools
 
+## 0.8.0
+
+### Minor Changes
+
+- [#267](https://github.com/TanStack/pacer/pull/267) [`d01174b`](https://github.com/TanStack/pacer/commit/d01174ba33e0f3dfa5f0b9a46862b2041b33753d) - Target ES2022 and Node.js 20 with ESM-only packages and declarations. Stop publishing CommonJS, source files, and source maps while preserving existing subpath and browser/server exports. Update runtime dependencies, including the Preact Store selector-cache fix.
+
+### Patch Changes
+
+- Updated dependencies [[`d01174b`](https://github.com/TanStack/pacer/commit/d01174ba33e0f3dfa5f0b9a46862b2041b33753d), [`583e179`](https://github.com/TanStack/pacer/commit/583e179ab6b085713b59adaf7ea3a65062e20902)]:
+  - @tanstack/pacer-devtools@1.5.0
+
 ## 0.7.0
 
 ### Minor Changes

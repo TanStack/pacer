@@ -3,16 +3,14 @@ id: createThrottler
 title: createThrottler
 ---
 
-# Function: createThrottler()
-
 ```ts
 function createThrottler<TFn, TSelected>(
-   fn, 
-   options, 
-selector): SolidThrottler<TFn, TSelected>;
+   fn,
+   options,
+selector?): SolidThrottler<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/throttler/createThrottler.ts:159](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L159)
+Defined in: [throttler/createThrottler.ts:157](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottler.ts#L157)
 
 A low-level Solid hook that creates a `Throttler` instance that limits how often the provided function can execute.
 
@@ -46,8 +44,6 @@ tracking by providing a selector function or using the `Subscribe` component. Th
 updates and gives you full control over when your component tracks state changes.
 
 Available state properties:
-- `canLeadingExecute`: Whether the throttler can execute on the leading edge
-- `canTrailingExecute`: Whether the throttler can execute on the trailing edge
 - `executionCount`: Number of function executions that have been completed
 - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
 - `lastArgs`: The arguments from the most recent call to maybeExecute
@@ -88,7 +84,7 @@ const throttler = createThrottler(fn, {
 
 [`SolidThrottlerOptions`](../interfaces/SolidThrottlerOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

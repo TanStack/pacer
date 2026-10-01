@@ -3,16 +3,14 @@ id: createQueuer
 title: createQueuer
 ---
 
-# Function: createQueuer()
-
 ```ts
 function createQueuer<TValue, TSelected>(
-   fn, 
-   options, 
-selector): SolidQueuer<TValue, TSelected>;
+   fn,
+   options?,
+selector?): SolidQueuer<TValue, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/queuer/createQueuer.ts:156](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L156)
+Defined in: [queuer/createQueuer.ts:156](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L156)
 
 Creates a Solid-compatible Queuer instance for managing a synchronous queue of items, exposing Solid signals for all stateful properties.
 
@@ -131,11 +129,11 @@ const { items, isRunning } = queue.state();
 
 (`item`) => `void`
 
-### options
+### options?
 
 [`SolidQueuerOptions`](../interfaces/SolidQueuerOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

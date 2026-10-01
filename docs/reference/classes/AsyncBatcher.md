@@ -3,8 +3,6 @@ id: AsyncBatcher
 title: AsyncBatcher
 ---
 
-# Class: AsyncBatcher\<TValue\>
-
 Defined in: [async-batcher.ts:265](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L265)
 
 A class that collects items and processes them in batches asynchronously.
@@ -116,7 +114,7 @@ Defined in: [async-batcher.ts:271](https://github.com/TanStack/pacer/blob/main/p
 
 ***
 
-### fn()
+### fn
 
 ```ts
 fn: (items) => Promise<any>;
@@ -266,18 +264,18 @@ Processes the current batch of items immediately
 ### getAbortSignal()
 
 ```ts
-getAbortSignal(executeCount?): AbortSignal | null;
+getAbortSignal(executionCount?): AbortSignal | null;
 ```
 
 Defined in: [async-batcher.ts:483](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L483)
 
 Returns the AbortSignal for a specific execution.
-If no executeCount is provided, returns the signal for the most recent execution.
+If no executionCount is provided, returns the signal for the most recent execution.
 Returns null if no execution is found or not currently executing.
 
 #### Parameters
 
-##### executeCount?
+##### executionCount?
 
 `number`
 

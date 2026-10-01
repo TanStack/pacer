@@ -3,16 +3,14 @@ id: useAsyncBatcher
 title: useAsyncBatcher
 ---
 
-# Function: useAsyncBatcher()
-
 ```ts
 function useAsyncBatcher<TValue, TSelected>(
-   fn, 
-   options, 
-selector): ReactAsyncBatcher<TValue, TSelected>;
+   fn,
+   options?,
+selector?): ReactAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [react-pacer/src/async-batcher/useAsyncBatcher.ts:235](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L235)
+Defined in: [async-batcher/useAsyncBatcher.ts:234](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L234)
 
 A React hook that creates an `AsyncBatcher` instance for managing asynchronous batches of items.
 
@@ -69,7 +67,6 @@ Available state properties:
 - `isEmpty`: Whether the batcher has no items to process
 - `isExecuting`: Whether a batch is currently being processed asynchronously
 - `isPending`: Whether the batcher is waiting for the timeout to trigger batch processing
-- `isRunning`: Whether the batcher is active and will process items automatically
 - `items`: Array of items currently queued for batch processing
 - `lastResult`: The result from the most recent batch execution
 - `settleCount`: Number of batch executions that have completed (success or error)
@@ -115,11 +112,11 @@ accordingly when using onUnmount with flush.
 
 (`items`) => `Promise`\<`any`\>
 
-### options
+### options?
 
 [`ReactAsyncBatcherOptions`](../interfaces/ReactAsyncBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 

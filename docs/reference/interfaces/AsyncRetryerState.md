@@ -3,8 +3,6 @@ id: AsyncRetryerState
 title: AsyncRetryerState
 ---
 
-# Interface: AsyncRetryerState\<TFn\>
-
 Defined in: [async-retryer.ts:5](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L5)
 
 ## Type Parameters

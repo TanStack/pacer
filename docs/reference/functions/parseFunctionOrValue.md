@@ -3,8 +3,6 @@ id: parseFunctionOrValue
 title: parseFunctionOrValue
 ---
 
-# Function: parseFunctionOrValue()
-
 ```ts
 function parseFunctionOrValue<T, TArgs>(value, ...args): T;
 ```
@@ -25,7 +23,7 @@ Defined in: [utils.ts:7](https://github.com/TanStack/pacer/blob/main/packages/pa
 
 ### value
 
-`T` | (...`args`) => `T`
+`T` \| ((...`args`) => `T`)
 
 ### args
 

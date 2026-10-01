@@ -3,9 +3,7 @@ id: SolidAsyncQueuer
 title: SolidAsyncQueuer
 ---
 
-# Interface: SolidAsyncQueuer\<TValue, TSelected\>
-
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L23)
+Defined in: [async-queuer/createAsyncQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L23)
 
 ## Extends
 
@@ -30,7 +28,7 @@ Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:23](https://githu
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L49)
+Defined in: [async-queuer/createAsyncQueuer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L49)
 
 Reactive state that will be updated when the queuer state changes
 
@@ -44,7 +42,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L55)
+Defined in: [async-queuer/createAsyncQueuer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L55)
 
 #### Deprecated
 
@@ -54,13 +52,13 @@ Although, you can make the state reactive by using the `useSelector` in your own
 
 ***
 
-### Subscribe()
+### Subscribe
 
 ```ts
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [solid-pacer/src/async-queuer/createAsyncQueuer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L40)
+Defined in: [async-queuer/createAsyncQueuer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L40)
 
 A Solid component that allows you to subscribe to the queuer state.
 
@@ -79,7 +77,7 @@ deep in your component tree without needing to pass a selector to the hook.
 
 ###### children
 
-`Element` \| (`state`) => `Element`
+`Element` \| ((`state`) => `Element`)
 
 ###### selector
 
@@ -92,9 +90,9 @@ deep in your component tree without needing to pass a selector to the hook.
 #### Example
 
 ```ts
-<queuer.Subscribe selector={(state) => ({ pendingItems: state.pendingItems, activeItems: state.activeItems })}>
+<queuer.Subscribe selector={(state) => ({ items: state.items, activeItems: state.activeItems })}>
   {(state) => (
-    <div>Pending: {state().pendingItems.length}, Active: {state().activeItems.length}</div>
+    <div>Pending: {state().items.length}, Active: {state().activeItems.length}</div>
   )}
 </queuer.Subscribe>
 ```

@@ -3,16 +3,14 @@ id: createAsyncRateLimiter
 title: createAsyncRateLimiter
 ---
 
-# Function: createAsyncRateLimiter()
-
 ```ts
 function createAsyncRateLimiter<TFn, TSelected>(
-   fn, 
-   options, 
-selector): SolidAsyncRateLimiter<TFn, TSelected>;
+   fn,
+   options,
+selector?): SolidAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts:220](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L220)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:220](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L220)
 
 A low-level Solid hook that creates an `AsyncRateLimiter` instance to limit how many times an async function can execute within a time window.
 
@@ -69,16 +67,16 @@ state changes occur.
 tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
 updates and gives you full control over when your component tracks state changes.
 
+Use `getRemainingInWindow()` and `getMsUntilNextWindow()` for current window capacity and timing.
+
 Available state properties:
-- `currentWindowStart`: Timestamp when the current window started
-- `executionCount`: Number of function executions that have been completed
-- `hasError`: Whether the last execution resulted in an error
+- `executionTimes`: Timestamps of executions tracked for the current window
+- `isExceeded`: Whether the rate limit has been reached
+- `settleCount`: Number of function executions that have completed (success or error)
+- `errorCount`: Number of function executions that have resulted in errors
 - `isExecuting`: Whether an async function execution is currently in progress
-- `lastError`: The error from the most recent failed execution (if any)
 - `lastResult`: The result from the most recent successful execution
-- `nextWindowTime`: Timestamp when the next window begins
 - `rejectionCount`: Number of function calls that were rejected due to rate limiting
-- `remainingInWindow`: Number of executions remaining in the current window
 
 ## Unmount behavior
 
@@ -107,7 +105,7 @@ Use the `onUnmount` option to customize this.
 
 [`SolidAsyncRateLimiterOptions`](../interfaces/SolidAsyncRateLimiterOptions.md)\<`TFn`, `TSelected`\>
 
-### selector
+### selector?
 
 (`state`) => `TSelected`
 
