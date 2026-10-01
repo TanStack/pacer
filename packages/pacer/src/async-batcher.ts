@@ -272,6 +272,10 @@ export class AsyncBatcher<TValue> {
     number,
     AsyncRetryer<(items: Array<TValue>) => Promise<any>>
   >()
+  // Retryer identity survives reset, while public execution counts start over.
+  #activeRetryers = new Set<
+    AsyncRetryer<(items: Array<TValue>) => Promise<any>>
+  >()
   #timeoutId: ReturnType<typeof setTimeout> | null = null
 
   constructor(
@@ -387,12 +391,13 @@ export class AsyncBatcher<TValue> {
 
     this.#setState({ isExecuting: true, executionCount: currentExecutionCount })
 
+    const currentAsyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
+    this.#activeRetryers.add(currentAsyncRetryer)
+    this.asyncRetryers.set(currentExecutionCount, currentAsyncRetryer)
     try {
-      const currentAsyncRetryer = new AsyncRetryer(
-        this.fn,
-        this.options.asyncRetryerOptions,
-      )
-      this.asyncRetryers.set(currentExecutionCount, currentAsyncRetryer)
       const result = await currentAsyncRetryer.execute(batch) // EXECUTE
       this.#setState({
         totalItemsProcessed:
@@ -414,9 +419,15 @@ export class AsyncBatcher<TValue> {
       }
       return undefined
     } finally {
-      this.asyncRetryers.delete(currentExecutionCount) // dispose retryer
+      // A reset can reuse the public execution count while this batch is running.
+      if (
+        this.asyncRetryers.get(currentExecutionCount) === currentAsyncRetryer
+      ) {
+        this.asyncRetryers.delete(currentExecutionCount)
+      }
+      this.#activeRetryers.delete(currentAsyncRetryer)
       this.#setState({
-        isExecuting: false,
+        isExecuting: this.#activeRetryers.size > 0,
         settleCount: this.store.state.settleCount + 1,
       })
       this.options.onSettled?.(batch, this)
@@ -458,7 +469,9 @@ export class AsyncBatcher<TValue> {
 
   /**
    * Returns the AbortSignal for a specific execution.
-   * If no executionCount is provided, returns the signal for the most recent execution.
+   * If no executionCount is provided, returns the signal for the latest active execution,
+   * including executions started before reset(). Explicit counts refer to executions
+   * started since the most recent reset(). Capture the signal before awaiting work.
    * Returns null if no execution is found or not currently executing.
    *
    * @param executionCount - Optional specific execution to get signal for
@@ -481,8 +494,10 @@ export class AsyncBatcher<TValue> {
    * ```
    */
   getAbortSignal = (executionCount?: number): AbortSignal | null => {
-    const count = executionCount ?? this.store.state.executionCount
-    const retryer = this.asyncRetryers.get(count)
+    const retryer =
+      executionCount === undefined
+        ? [...this.#activeRetryers].pop()
+        : this.asyncRetryers.get(executionCount)
     return retryer?.getAbortSignal() ?? null
   }
 
@@ -492,7 +507,8 @@ export class AsyncBatcher<TValue> {
    * Does NOT clear out the items.
    */
   abort = (): void => {
-    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.#activeRetryers.forEach((retryer) => retryer.abort())
+    this.#activeRetryers.clear()
     this.asyncRetryers.clear()
     this.#setState({
       isExecuting: false,
@@ -512,12 +528,19 @@ export class AsyncBatcher<TValue> {
   }
 
   /**
-   * Resets the async batcher state to its default values
+   * Resets counters and collected items without aborting active executions.
+   * Active executions remain abortable and keep isExecuting true until they settle.
+   * Their completions contribute to the reset outcome counters. Explicit execution
+   * count lookups start over; previously captured abort signals remain valid.
    */
   reset = (): void => {
-    this.#setState(getDefaultAsyncBatcherState<TValue>())
+    this.asyncRetryers.clear()
+    this.#setState({
+      ...getDefaultAsyncBatcherState<TValue>(),
+      isExecuting: this.#activeRetryers.size > 0,
+    })
     this.options.onItemsChange?.(this)
-    this.asyncRetryers.forEach((retryer) => retryer.reset())
+    this.#activeRetryers.forEach((retryer) => retryer.reset())
   }
 }
 
