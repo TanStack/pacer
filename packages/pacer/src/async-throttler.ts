@@ -390,15 +390,18 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
 
           this.#timeoutId = setTimeout(async () => {
             this.#clearTimeout()
+            // A call made during this execution must not resolve this promise early
+            this.#resolvePreviousPromise = null
+            this.#setState({ isPending: false })
+            let result = this.store.state.lastResult
             if (this.store.state.lastArgs !== undefined) {
               try {
-                await this.#execute(...this.store.state.lastArgs) // Trailing EXECUTE!
+                result = await this.#execute(...this.store.state.lastArgs) // Trailing EXECUTE!
               } catch (error) {
                 reject(error)
               }
             }
-            this.#resolvePreviousPromise = null
-            resolve(this.store.state.lastResult)
+            resolve(result)
           }, timeoutDuration)
         },
       )
@@ -440,7 +443,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
       const wait = this.#getWait()
       const nextExecutionTime = lastExecutionTime + wait
       this.#setState({
-        isExecuting: false,
+        isExecuting: this.asyncRetryers.size > 0,
         isPending: !!this.#timeoutId,
         settleCount: this.store.state.settleCount + 1,
         lastExecutionTime,

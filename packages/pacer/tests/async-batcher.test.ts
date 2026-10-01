@@ -695,6 +695,23 @@ describe('AsyncBatcher', () => {
       expect(mockFn).toHaveBeenCalledTimes(1)
       expect(flushResult).toBeUndefined()
     })
+
+    it('should stay executing until all overlapping executions settle', async () => {
+      const mockFn = vi.fn(async (items: Array<number>) => {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        return items
+      })
+      const batcher = new AsyncBatcher(mockFn, { maxSize: 1, wait: 1000 })
+
+      batcher.addItem(1) // runs 0-100ms
+      await vi.advanceTimersByTimeAsync(50)
+      batcher.addItem(2) // runs 50-150ms
+      await vi.advanceTimersByTimeAsync(70)
+      expect(batcher.store.state.isExecuting).toBe(true)
+
+      await vi.advanceTimersByTimeAsync(50)
+      expect(batcher.store.state.isExecuting).toBe(false)
+    })
   })
 })
 
