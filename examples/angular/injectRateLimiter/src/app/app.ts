@@ -37,11 +37,7 @@ export class App {
         limit: 5,
         window: 5000,
         onReject: (limiter) =>
-          console.log(
-            'Rejected; retry in',
-            limiter.getMsUntilNextWindow(),
-            'ms',
-          ),
+          console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
         enabled: () => this.search().length > 2,
       }
     },
@@ -73,10 +69,6 @@ export class App {
   }
   reduction(): number {
     const count = this.instantExecutions()
-    return count
-      ? Math.round(
-          ((count - this.rangeRunner.state().executionCount) / count) * 100,
-        )
-      : 0
+    return count ? Math.round(((count - this.rangeRunner.state().executionCount) / count) * 100) : 0
   }
 }

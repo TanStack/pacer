@@ -1,11 +1,7 @@
 <h1>TanStack Pacer queue Example</h1>
 <section>
   <h2>Number queue</h2>
-  <button
-    type="button"
-    (click)="addNumber()"
-    [disabled]="numberItems().length >= 25"
-  >
+  <button type="button" (click)="addNumber()" [disabled]="numberItems().length >= 25">
     Add Number
   </button>
   <p>Queue Size: {{ numberItems().length }}</p>
@@ -40,8 +36,7 @@
   /></label>
   <p>Instant Value: {{ currentValue() }}</p>
   <label
-    >Queued Range
-    <input type="range" min="0" max="100" [value]="rangeValue()" disabled
+    >Queued Range <input type="range" min="0" max="100" [value]="rangeValue()" disabled
   /></label>
   <p>Queued Value: {{ rangeValue() }}</p>
   <p>Values Submitted: {{ instantExecutions() }}</p>

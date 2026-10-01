@@ -1,17 +1,12 @@
 <h1>TanStack Pacer injectAsyncBatcher Example</h1>
 <h2>Batch Status</h2>
 <p>Pending Items: {{ pendingItems().length }} / 5</p>
-<p>
-  Wait up to 4000ms, process for 1000ms. Urgent items trigger immediate
-  processing.
-</p>
+<p>Wait up to 4000ms, process for 1000ms. Urgent items trigger immediate processing.</p>
 <p>Is Processing: {{ runner.state().isExecuting }}</p>
+<p>Successful Batches: {{ successCount() }}, Failed Batches: {{ errorCount() }}</p>
 <p>
-  Successful Batches: {{ successCount() }}, Failed Batches: {{ errorCount() }}
-</p>
-<p>
-  Status: {{ runner.state().status }}, Total Items Processed: {{
-  runner.state().totalItemsProcessed }}
+  Status: {{ runner.state().status }}, Total Items Processed: {{ runner.state().totalItemsProcessed
+  }}
 </p>
 <h2>Current Batch Items</h2>
 <ul>

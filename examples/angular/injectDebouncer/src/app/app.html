@@ -49,10 +49,7 @@
         (change)="enabled.set($any($event.target).checked)"
       />Enabled</label
     >
-    <p>
-      Delay changes affect the next scheduled call. Disabling cancels pending
-      work.
-    </p>
+    <p>Delay changes affect the next scheduled call. Disabling cancels pending work.</p>
   </fieldset>
   <label
     >Current Range
@@ -65,17 +62,13 @@
   /></label>
   <p>Current Value: {{ currentValue() }}</p>
   <label
-    >Debounced Range
-    <input type="range" min="0" max="100" [value]="controlledValue()" disabled
+    >Debounced Range <input type="range" min="0" max="100" [value]="controlledValue()" disabled
   /></label>
   <p>Debounced Value: {{ controlledValue() }}</p>
   <p>Executions: {{ rangeRunner.state().executionCount }}</p>
   <p>Pending: {{ rangeRunner.state().isPending }}</p>
   <p>Instant Executions: {{ instantExecutions() }}</p>
-  <p>
-    Saved Executions: {{ instantExecutions() -
-    rangeRunner.state().executionCount }}
-  </p>
+  <p>Saved Executions: {{ instantExecutions() - rangeRunner.state().executionCount }}</p>
   <p>Reduction: {{ reduction() }}%</p>
   <button type="button" (click)="rangeRunner.flush()">Flush</button>
   <pre>{{ rangeRunner.state() | json }}</pre>

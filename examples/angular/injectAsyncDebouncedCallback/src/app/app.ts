@@ -53,9 +53,7 @@ export class App {
     await this.incrementCallback(value)
   }
   readonly email = signal('')
-  readonly validation = signal<{ isValid: boolean; message: string } | null>(
-    null,
-  )
+  readonly validation = signal<{ isValid: boolean; message: string } | null>(null)
   readonly isValidating = signal(false)
   private readonly validate = injectAsyncDebouncedCallback(
     async (email: string) => {
@@ -69,9 +67,7 @@ export class App {
         const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
         this.validation.set({
           isValid,
-          message: isValid
-            ? 'Email is valid!'
-            : 'Please enter a valid email address',
+          message: isValid ? 'Email is valid!' : 'Please enter a valid email address',
         })
       } finally {
         this.isValidating.set(false)

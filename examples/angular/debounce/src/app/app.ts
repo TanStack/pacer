@@ -9,18 +9,11 @@ export class App {
   readonly controlledCount = signal(0)
   readonly controlledSearch = signal('')
   readonly controlledValue = signal(50)
-  readonly countRunner = debounce(
-    (value: number) => this.controlledCount.set(value),
-    { wait: 500 },
-  )
-  readonly searchRunner = debounce(
-    (value: string) => this.controlledSearch.set(value),
-    { wait: 500 },
-  )
-  readonly rangeRunner = debounce(
-    (value: number) => this.controlledValue.set(value),
-    { wait: 250 },
-  )
+  readonly countRunner = debounce((value: number) => this.controlledCount.set(value), { wait: 500 })
+  readonly searchRunner = debounce((value: string) => this.controlledSearch.set(value), {
+    wait: 500,
+  })
+  readonly rangeRunner = debounce((value: number) => this.controlledValue.set(value), { wait: 250 })
   increment(): void {
     const next = this.instantCount() + 1
     this.instantCount.set(next)

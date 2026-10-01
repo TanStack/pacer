@@ -85,8 +85,7 @@
   /></label>
   <p>Current Value: {{ currentValue() }}</p>
   <label
-    >Rate Limited Range
-    <input type="range" min="0" max="100" [value]="controlledValue()" disabled
+    >Rate Limited Range <input type="range" min="0" max="100" [value]="controlledValue()" disabled
   /></label>
   <p>Rate Limited Value: {{ controlledValue() }}</p>
   <p>Rate limited to 30 updates per 2 seconds.</p>

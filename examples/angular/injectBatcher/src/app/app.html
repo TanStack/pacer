@@ -3,9 +3,7 @@
 <p>Process after 3000ms, at 5 items, or when the batch includes 42.</p>
 <p>Batch Items: {{ pendingItems().join(', ') }}</p>
 <button (click)="add()">Add Number</button>
-<button (click)="runner.flush()" [disabled]="runner.state().size === 0">
-  Flush Current Batch
-</button>
+<button (click)="runner.flush()" [disabled]="runner.state().size === 0">Flush Current Batch</button>
 <p>Batches Processed: {{ runner.state().executionCount }}</p>
 <p>Items Processed: {{ runner.state().totalItemsProcessed }}</p>
 <h2>Processed Batches</h2>

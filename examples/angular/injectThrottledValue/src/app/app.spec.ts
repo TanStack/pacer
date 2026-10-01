@@ -61,9 +61,7 @@ describe('example behavior', () => {
     fixture.detectChanges()
     TestBed.tick()
     await vi.advanceTimersByTimeAsync(1100)
-    expect(
-      app.instantExecutions() - app.rangeRunner.state().executionCount,
-    ).toBe(0)
+    expect(app.instantExecutions() - app.rangeRunner.state().executionCount).toBe(0)
     expect(app.reduction()).toBe(0)
   })
 })

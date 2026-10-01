@@ -15,13 +15,9 @@ import { injectQueuedValue } from '@tanstack/angular-pacer'
 export class InputApp {
   readonly value = input.required<string>()
 
-  protected readonly queued = injectQueuedValue(
-    this.value,
-    { wait: 500 },
-    (state) => ({
-      items: state.items,
-    }),
-  )
+  protected readonly queued = injectQueuedValue(this.value, { wait: 500 }, (state) => ({
+    items: state.items,
+  }))
 
   protected enqueueRandom(): void {
     // You can also enqueue values directly without touching `value`

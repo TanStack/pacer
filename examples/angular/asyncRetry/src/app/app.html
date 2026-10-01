@@ -1,7 +1,7 @@
 <h1>TanStack Pacer asyncRetry Example</h1>
 <p>
-  Compare exponential and linear backoff, jitter, per-attempt timeouts, and
-  total timeouts. The simulated API fails 60% of requests.
+  Compare exponential and linear backoff, jitter, per-attempt timeouts, and total timeouts. The
+  simulated API fails 60% of requests.
 </p>
 <h2>Configuration</h2>
 <label
@@ -31,10 +31,7 @@
 <h3>Current Options</h3>
 <pre>{{ options() | json }}</pre>
 <h2>State</h2>
-<p>
-  Status: {{ isLoading() ? (currentAttempt() > 1 ? 'retrying' : 'executing') :
-  'idle' }}
-</p>
+<p>Status: {{ isLoading() ? (currentAttempt() > 1 ? 'retrying' : 'executing') : 'idle' }}</p>
 @if (currentAttempt()) {
 <p>Current Attempt: {{ currentAttempt() }} / {{ options().maxAttempts }}</p>
 } @if (error()) {
@@ -50,6 +47,6 @@
 <p>No activity yet</p>
 }
 <p>
-  Each call to the returned function creates a fresh retry context. The timeout
-  scenario uses a 3000ms API delay and a 2000ms per-attempt timeout.
+  Each call to the returned function creates a fresh retry context. The timeout scenario uses a
+  3000ms API delay and a 2000ms per-attempt timeout.
 </p>

@@ -23,17 +23,9 @@ export class App {
       started: false,
       wait: 100,
       onReject: (item, queuer) =>
-        console.log(
-          'Queue is full, rejecting item',
-          item,
-          queuer.store.state.rejectionCount,
-        ),
+        console.log('Queue is full, rejecting item', item, queuer.store.state.rejectionCount),
       onError: (error, item, queuer) =>
-        console.error(
-          `Error processing item: ${item}`,
-          error,
-          queuer.store.state.errorCount,
-        ),
+        console.error(`Error processing item: ${item}`, error, queuer.store.state.errorCount),
     }),
     (state) => state,
   )

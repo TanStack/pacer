@@ -9,18 +9,13 @@ export class App {
   readonly controlledCount = signal(0)
   readonly controlledSearch = signal('')
   readonly controlledValue = signal(50)
-  readonly countRunner = throttle(
-    (value: number) => this.controlledCount.set(value),
-    { wait: 1000 },
-  )
-  readonly searchRunner = throttle(
-    (value: string) => this.controlledSearch.set(value),
-    { wait: 1000 },
-  )
-  readonly rangeRunner = throttle(
-    (value: number) => this.controlledValue.set(value),
-    { wait: 250 },
-  )
+  readonly countRunner = throttle((value: number) => this.controlledCount.set(value), {
+    wait: 1000,
+  })
+  readonly searchRunner = throttle((value: string) => this.controlledSearch.set(value), {
+    wait: 1000,
+  })
+  readonly rangeRunner = throttle((value: number) => this.controlledValue.set(value), { wait: 250 })
   increment(): void {
     const next = this.instantCount() + 1
     this.instantCount.set(next)

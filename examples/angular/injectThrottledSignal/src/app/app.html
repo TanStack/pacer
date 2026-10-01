@@ -37,17 +37,13 @@
   /></label>
   <p>Current Value: {{ currentValue() }}</p>
   <label
-    >Throttled Range
-    <input type="range" min="0" max="100" [value]="controlledValue()" disabled
+    >Throttled Range <input type="range" min="0" max="100" [value]="controlledValue()" disabled
   /></label>
   <p>Throttled Value: {{ controlledValue() }}</p>
   <p>Executions: {{ rangeRunner.state().executionCount }}</p>
   <p>Pending: {{ rangeRunner.state().isPending }}</p>
   <p>Instant Executions: {{ instantExecutions() }}</p>
-  <p>
-    Saved Executions: {{ instantExecutions() -
-    rangeRunner.state().executionCount }}
-  </p>
+  <p>Saved Executions: {{ instantExecutions() - rangeRunner.state().executionCount }}</p>
   <p>Reduction: {{ reduction() }}%</p>
   <pre>{{ rangeRunner.state() | json }}</pre>
   <p>Throttled with a 250 ms wait.</p>

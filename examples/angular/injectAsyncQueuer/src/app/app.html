@@ -1,17 +1,17 @@
 <h1>TanStack Pacer injectAsyncQueuer Example</h1>
 <p>Queue Size: {{ queue.state().size }} / 25</p>
 <p>
-  Queue Full: {{ queue.state().isFull }}, Empty: {{ queue.state().isEmpty }},
-  Idle: {{ queue.state().isIdle }}
+  Queue Full: {{ queue.state().isFull }}, Empty: {{ queue.state().isEmpty }}, Idle: {{
+  queue.state().isIdle }}
 </p>
 <p>Queuer Status: {{ queue.state().status }}</p>
 <p>
-  Items Processed: {{ queue.state().successCount }}, Items Rejected: {{
-  queue.state().rejectionCount }}
+  Items Processed: {{ queue.state().successCount }}, Items Rejected: {{ queue.state().rejectionCount
+  }}
 </p>
 <p>
-  Active Tasks: {{ queue.state().activeItems.length }}, Pending Tasks: {{
-  queue.state().items.length }}
+  Active Tasks: {{ queue.state().activeItems.length }}, Pending Tasks: {{ queue.state().items.length
+  }}
 </p>
 <label
   >Concurrency:
@@ -27,20 +27,11 @@
   <li>{{ item }}</li>
   }
 </ol>
-<button (click)="add()" [disabled]="queue.state().isFull">
-  Add Async Task
-</button>
+<button (click)="add()" [disabled]="queue.state().isFull">Add Async Task</button>
 <button (click)="queue.getNextItem()">Get Next Item</button>
-<button (click)="queue.clear()" [disabled]="queue.state().isEmpty">
-  Clear Queue
-</button>
-<button (click)="queue.start()" [disabled]="queue.state().isRunning">
-  Start Processing
-</button>
-<button (click)="queue.stop()" [disabled]="!queue.state().isRunning">
-  Stop Processing
-</button>
-<button (click)="queue.flush()">Flush</button
-><button (click)="queue.reset()">Reset</button>
+<button (click)="queue.clear()" [disabled]="queue.state().isEmpty">Clear Queue</button>
+<button (click)="queue.start()" [disabled]="queue.state().isRunning">Start Processing</button>
+<button (click)="queue.stop()" [disabled]="!queue.state().isRunning">Stop Processing</button>
+<button (click)="queue.flush()">Flush</button><button (click)="queue.reset()">Reset</button>
 <p>Completed values: {{ processed().join(', ') }}</p>
 <pre>{{ queue.state() | json }}</pre>

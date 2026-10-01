@@ -23,15 +23,15 @@
 <p>Current Count: {{ count() }}, API Calls Made: {{ apiCalls() }}</p>
 <button (click)="increment()">Increment (throttled API call)</button>
 <p>
-  UI increments immediately; the API returns one additional increment after
-  300ms. Calls have a 1000ms wait.
+  UI increments immediately; the API returns one additional increment after 300ms. Calls have a
+  1000ms wait.
 </p>
 <hr />
 <h1>TanStack Pacer injectAsyncThrottledCallback Example 3</h1>
 <h2>Save scroll position</h2>
 <p>
-  Current Position: {{ scrollPosition() }}px, Last Saved: {{ lastSavedPosition()
-  }}px, API Saves: {{ saveCount() }}
+  Current Position: {{ scrollPosition() }}px, Last Saved: {{ lastSavedPosition() }}px, API Saves: {{
+  saveCount() }}
 </p>
 @if (isSaving()) {
 <p>Saving scroll position...</p>

@@ -1,11 +1,7 @@
 <h1>TanStack Pacer injectQueuedSignal Example</h1>
 <section>
   <h2>Number queue</h2>
-  <button
-    type="button"
-    (click)="addNumber()"
-    [disabled]="numberQueue.state().isFull"
-  >
+  <button type="button" (click)="addNumber()" [disabled]="numberQueue.state().isFull">
     Add Number
   </button>
   <p>Queue Size: {{ numberQueue.state().size }}</p>
@@ -16,39 +12,19 @@
   <p>Items Processed: {{ numberQueue.state().executionCount }}</p>
   <p>Queue Items: {{ queued().join(", ") }}</p>
   <p>Queue Peek: {{ numberQueue.peekNextItem() ?? "None" }}</p>
-  <button
-    type="button"
-    (click)="numberQueue.execute()"
-    [disabled]="numberQueue.state().isEmpty"
-  >
+  <button type="button" (click)="numberQueue.execute()" [disabled]="numberQueue.state().isEmpty">
     Process Next
   </button>
-  <button
-    type="button"
-    (click)="numberQueue.clear()"
-    [disabled]="numberQueue.state().isEmpty"
-  >
+  <button type="button" (click)="numberQueue.clear()" [disabled]="numberQueue.state().isEmpty">
     Clear Queue
   </button>
-  <button
-    type="button"
-    (click)="numberQueue.reset()"
-    [disabled]="numberQueue.state().isEmpty"
-  >
+  <button type="button" (click)="numberQueue.reset()" [disabled]="numberQueue.state().isEmpty">
     Reset Queue
   </button>
-  <button
-    type="button"
-    (click)="numberQueue.start()"
-    [disabled]="numberQueue.state().isRunning"
-  >
+  <button type="button" (click)="numberQueue.start()" [disabled]="numberQueue.state().isRunning">
     Start Processing
   </button>
-  <button
-    type="button"
-    (click)="numberQueue.stop()"
-    [disabled]="!numberQueue.state().isRunning"
-  >
+  <button type="button" (click)="numberQueue.stop()" [disabled]="!numberQueue.state().isRunning">
     Stop Processing
   </button>
   <pre>{{ numberQueue.state() | json }}</pre>
@@ -66,8 +42,7 @@
   /></label>
   <p>Instant Value: {{ currentValue() }}</p>
   <label
-    >Queued Range
-    <input type="range" min="0" max="100" [value]="rangeValue()" disabled
+    >Queued Range <input type="range" min="0" max="100" [value]="rangeValue()" disabled
   /></label>
   <p>Queued Value: {{ rangeValue() }}</p>
   <p>Values Submitted: {{ instantExecutions() }}</p>

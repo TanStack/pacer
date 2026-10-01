@@ -55,10 +55,7 @@ export class App {
     this.currentValue.set(value)
     this.rangeRunner(value)
   }
-  changeWindow(
-    scenario: 'count' | 'search' | 'range',
-    value: 'fixed' | 'sliding',
-  ): void {
+  changeWindow(scenario: 'count' | 'search' | 'range', value: 'fixed' | 'sliding'): void {
     if (scenario === 'count') {
       this.countWindow.set(value)
       this.countRunner = this.createCountRunner()

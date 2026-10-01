@@ -17,8 +17,8 @@
 ><button (click)="trackEvent('view', 'page')">Track Page View</button
 ><button (click)="trackEvent('form', 'submit')">Track Form Submit</button>
 <p>
-  Total Events Created: {{ totalEvents() }}, Events Sent: {{ events().length }},
-  Batches Processed: {{ batchesProcessed() }}
+  Total Events Created: {{ totalEvents() }}, Events Sent: {{ events().length }}, Batches Processed:
+  {{ batchesProcessed() }}
 </p>
 @for (event of events(); track $index) {
 <p>{{ event.timestamp }}: {{ event.type }} - {{ event.target }}</p>
@@ -32,9 +32,8 @@
 ><button (click)="makeRequest('delete', 'file')">Delete File</button
 ><button (click)="makeRequest('create', 'folder')">Create Folder</button>
 <p>
-  Total Requests Made: {{ requests().length }}, Requests Queued: {{
-  pendingRequests().length }}, Requests Processed: {{ processedRequests().length
-  }}
+  Total Requests Made: {{ requests().length }}, Requests Queued: {{ pendingRequests().length }},
+  Requests Processed: {{ processedRequests().length }}
 </p>
 <h3>Queued Requests</h3>
 @for (request of pendingRequests(); track request.id) {

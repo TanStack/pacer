@@ -1,14 +1,9 @@
 <h1>TanStack Pacer asyncBatch Example</h1>
 <h2>Batch Status</h2>
 <p>Pending Items: {{ pendingItems().length }} / 5</p>
-<p>
-  Wait up to 3000ms, process for 1000ms. Urgent items trigger immediate
-  processing.
-</p>
+<p>Wait up to 3000ms, process for 1000ms. Urgent items trigger immediate processing.</p>
 <p>Is Processing: {{ isProcessing() }}</p>
-<p>
-  Successful Batches: {{ successCount() }}, Failed Batches: {{ errorCount() }}
-</p>
+<p>Successful Batches: {{ successCount() }}, Failed Batches: {{ errorCount() }}</p>
 
 <h2>Current Batch Items</h2>
 <ul>

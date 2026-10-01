@@ -52,10 +52,7 @@ describe('example behavior', () => {
     void app.addEmail('invalid-email')
     void app.addData('sales')
     await vi.advanceTimersByTimeAsync(3600)
-    expect(app.validations().map((result) => result.isValid)).toEqual([
-      true,
-      false,
-    ])
+    expect(app.validations().map((result) => result.isValid)).toEqual([true, false])
     expect(app.processed()).toHaveLength(1)
     expect(app.processed()[0]!.value).toBe(app.points()[0]!.value * 2)
     expect(app.summaries()[0]!.categories).toBe(1)

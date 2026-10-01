@@ -23,11 +23,7 @@ export class App {
         window: 5000,
         windowType: this.countWindow(),
         onReject: (limiter) =>
-          console.log(
-            'Rejected; retry in',
-            limiter.getMsUntilNextWindow(),
-            'ms',
-          ),
+          console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
         enabled: () => this.instantCount() > 2,
       }
     },
@@ -43,11 +39,7 @@ export class App {
         window: 5000,
         windowType: this.searchWindow(),
         onReject: (limiter) =>
-          console.log(
-            'Rejected; retry in',
-            limiter.getMsUntilNextWindow(),
-            'ms',
-          ),
+          console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
         enabled: () => this.search().length > 2,
       }
     },

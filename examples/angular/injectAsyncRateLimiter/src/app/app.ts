@@ -20,9 +20,7 @@ export class App {
       window: 3000,
       windowType: this.windowType(),
       onReject: (_args, limiter) =>
-        console.log(
-          `Rate limit reached. Try again in ${limiter.getMsUntilNextWindow()}ms`,
-        ),
+        console.log(`Rate limit reached. Try again in ${limiter.getMsUntilNextWindow()}ms`),
       onError: (error) => {
         this.error.set(error.message)
         this.results.set([])

@@ -95,8 +95,7 @@
   /></label>
   <p>Current Value: {{ currentValue() }}</p>
   <label
-    >Rate Limited Range
-    <input type="range" min="0" max="100" [value]="controlledValue()" disabled
+    >Rate Limited Range <input type="range" min="0" max="100" [value]="controlledValue()" disabled
   /></label>
   <p>Rate Limited Value: {{ controlledValue() }}</p>
   <p>Executions: {{ rangeRunner.state().executionCount }}</p>
@@ -104,10 +103,7 @@
   <p>Remaining in Window: {{ rangeRunner.getRemainingInWindow() }}</p>
   <p>Ms Until Next Window: {{ rangeRunner.getMsUntilNextWindow() }}</p>
   <p>Values Submitted: {{ instantExecutions() }}</p>
-  <p>
-    Saved Executions: {{ instantExecutions() -
-    rangeRunner.state().executionCount }}
-  </p>
+  <p>Saved Executions: {{ instantExecutions() - rangeRunner.state().executionCount }}</p>
   <p>Reduction: {{ reduction() }}%</p>
   <pre>{{ rangeRunner.state() | json }}</pre>
   <p>Rate limited to 20 updates per 2 seconds.</p>

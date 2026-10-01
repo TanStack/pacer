@@ -21,15 +21,11 @@ export class App {
   readonly processedRequests = signal<Array<ApiRequest>>([])
   readonly pendingRequests = computed(() =>
     this.requests().filter(
-      (request) =>
-        !this.processedRequests().some(
-          (processed) => processed.id === request.id,
-        ),
+      (request) => !this.processedRequests().some((processed) => processed.id === request.id),
     ),
   )
   private readonly logger = injectBatchedCallback(
-    (entries: Array<LogEntry>) =>
-      this.logs.update((logs) => [...logs, ...entries]),
+    (entries: Array<LogEntry>) => this.logs.update((logs) => [...logs, ...entries]),
     { maxSize: 3, wait: 2000 },
   )
   private readonly tracker = injectBatchedCallback(

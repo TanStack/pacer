@@ -41,8 +41,7 @@ export class App {
       this.searchError.set('')
       try {
         await new Promise((resolve) => setTimeout(resolve, 800))
-        if (queries.includes('error'))
-          throw new Error('Simulated batch API error')
+        if (queries.includes('error')) throw new Error('Simulated batch API error')
         const results = queries.flatMap((query) =>
           [1, 2].map((id) => ({ query, title: `${query} result ${id}` })),
         )
