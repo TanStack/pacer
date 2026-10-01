@@ -1,3 +1,4 @@
+import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createBatcher } from '@tanstack/solid-pacer/batcher'
@@ -71,7 +72,7 @@ function App1() {
                   batcher.flush()
                 }}
               >
-                Process Current Batch
+                Flush Current Batch
               </button>
             </div>
           </>
@@ -80,7 +81,7 @@ function App1() {
       <batcher.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </batcher.Subscribe>
@@ -90,9 +91,11 @@ function App1() {
 
 render(
   () => (
-    <div>
-      <App1 />
-    </div>
+    <PacerProvider>
+      <div>
+        <App1 />
+      </div>
+    </PacerProvider>
   ),
   document.getElementById('root')!,
 )

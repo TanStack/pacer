@@ -1,34 +1,61 @@
-<h1>injectAsyncBatchedCallback</h1>
-
+<h1>TanStack Pacer injectAsyncBatchedCallback Example 1</h1>
+<h2>Batched searches</h2>
 <p>
-  Queue items quickly; the async callback runs with an array of items when a batch flushes. This
-  example batches up to 5 items or flushes after 1 second.
+  Max 3 queries or 2000ms wait, 800ms API delay. The query "error" fails the
+  entire batch.
 </p>
-
-<div>
-  <label>
-    Value
-    <input [value]="value()" (input)="value.set(($any($event.target).value ?? '').toString())" />
-  </label>
-  <button (click)="enqueue()">Enqueue</button>
-  <button (click)="enqueueMany(10)">Enqueue 10</button>
-  <button (click)="reset()">Reset</button>
-</div>
-
-<p>Queued (not yet processed): {{ queuedCount() }}</p>
-<p>Processing: {{ isProcessing() }}</p>
-
-<h2>Processed Batches</h2>
-
-@if (processedBatches.length === 0) {
-<p>No batches processed yet. Click "Enqueue" a few times.</p>
-} @else {
-<ul>
-  @for (batch of processedBatches; track $index) {
-  <li>
-    <div>{{ batch.timestamp }} ({{ batch.items.length }} items)</div>
-    <div>{{ batch.items.join(', ') }}</div>
-  </li>
-  }
-</ul>
+@for (query of searchChoices; track query) {
+<button (click)="addSearch(query)">Search "{{ query }}"</button> } @if
+(isSearching()) {
+<p>Processing batch search...</p>
+}@if (searchError()) {
+<p role="alert">Error: {{ searchError() }}</p>
+}
+<p>
+  Total Searches Made: {{ queries().length }}, Results Found: {{
+  results().length }}, Batches Processed: {{ searchBatches() }}
+</p>
+@for (result of results(); track $index) {
+<p>{{ result.query }}: {{ result.title }}</p>
+}
+<hr />
+<h1>TanStack Pacer injectAsyncBatchedCallback Example 2</h1>
+<h2>Batched email validation</h2>
+<p>Max 4 emails or 1500ms wait, 600ms API delay.</p>
+@for (email of emailChoices; track email) {
+<button (click)="addEmail(email)">Validate {{ email }}</button> } @if
+(isValidating()) {
+<p>Validating email batch...</p>
+}
+<p>
+  Emails Submitted: {{ emails().length }}, Emails Validated: {{
+  validations().length }}, Batches Processed: {{ validationBatches() }}
+</p>
+@for (result of validations(); track $index) {
+<p [style.color]="result.isValid ? 'green' : 'red'">
+  {{ result.email }}: {{ result.message }}
+</p>
+}
+<hr />
+<h1>TanStack Pacer injectAsyncBatchedCallback Example 3</h1>
+<h2>Batched data processing</h2>
+<p>
+  Max 5 data points or 2500ms wait, 1000ms API delay. Each value is doubled.
+</p>
+@for (category of categories; track category) {
+<button (click)="addData(category)">Add {{ category }} Data</button> } @if
+(isProcessing()) {
+<p>Processing data batch...</p>
+}
+<p>
+  Data Points Submitted: {{ points().length }}, Data Points Processed: {{
+  processed().length }}, Batches Completed: {{ summaries().length }}
+</p>
+<h3>Processed Data</h3>
+@for (point of processed(); track point.id) {
+<p>{{ point.category }}: {{ point.value }}</p>
+}
+<h3>Batch Summaries</h3>
+@for (summary of summaries(); track $index) {
+<pre>{{ summary | json }}</pre>
 }

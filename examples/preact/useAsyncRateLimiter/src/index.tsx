@@ -41,24 +41,27 @@ function App() {
 
   // hook that gives you an async rate limiter instance
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const setSearchAsyncRateLimiter = useAsyncRateLimiter(handleSearch, {
-    windowType: windowType,
-    limit: 3, // Maximum 2 requests
-    window: 3000, // per 1 second
-    onReject: (_args, rateLimiter) => {
-      console.log(
-        `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
-      )
+  const setSearchAsyncRateLimiter = useAsyncRateLimiter(
+    handleSearch,
+    {
+      windowType: windowType,
+      limit: 3, // Maximum 3 requests
+      window: 3000, // per 3 seconds
+      onReject: (_args, rateLimiter) => {
+        console.log(
+          `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
+        )
+      },
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setError(error as Error)
+        setResults([])
+      },
     },
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setError(error as Error)
-      setResults([])
-    },
-  })
-  // Alternative to setSearchAsyncRateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+    // Alternative to setSearchAsyncRateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   // get and name our rate limited function
   const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute

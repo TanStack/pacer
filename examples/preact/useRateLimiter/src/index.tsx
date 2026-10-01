@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import { render } from 'preact'
 import type { JSX } from 'preact'
 import {
@@ -17,30 +17,31 @@ function App1() {
 
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0) // not rate-limited
+  const instantCountRef = useRef(0)
   const [limitedCount, setLimitedCount] = useState(0) // rate-limited
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const rateLimiter = useRateLimiter(setLimitedCount, {
-    // enabled: () => instantCount > 2,
-    ...commonRateLimiterOptions,
-    windowType: windowType,
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
-  // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+  const rateLimiter = useRateLimiter(
+    setLimitedCount,
+    {
+      // enabled: () => instantCountRef.current > 2,
+      ...commonRateLimiterOptions,
+      windowType: windowType,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newCount = c + 1 // common new value for both
-      rateLimiter.maybeExecute(newCount) // rate-limited state update
-      return newCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    rateLimiter.maybeExecute(nextCount)
   }
 
   return (
@@ -129,25 +130,30 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = useState('')
+  const instantSearchRef = useRef('')
   const [limitedSearch, setLimitedSearch] = useState('')
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const rateLimiter = useRateLimiter(setLimitedSearch, {
-    enabled: instantSearch.length > 2, // optional, defaults to true
-    ...commonRateLimiterOptions,
-    // windowType: 'sliding', // default is 'fixed'
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
-  // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+  const rateLimiter = useRateLimiter(
+    setLimitedSearch,
+    {
+      enabled: () => instantSearchRef.current.length > 2, // optional, defaults to true
+      ...commonRateLimiterOptions,
+      // windowType: 'sliding', // default is 'fixed'
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
+    instantSearchRef.current = newValue
     setInstantSearch(newValue)
     rateLimiter.maybeExecute(newValue)
   }
@@ -230,17 +236,20 @@ function App3() {
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const rateLimiter = useRateLimiter(setLimitedValue, {
-    limit: 20,
-    window: 2000,
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
-  // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+  const rateLimiter = useRateLimiter(
+    setLimitedValue,
+    {
+      limit: 20,
+      window: 2000,
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    },
+    // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
@@ -274,7 +283,7 @@ function App3() {
             min="0"
             max="100"
             value={limitedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{limitedValue}</span>

@@ -1,38 +1,45 @@
-<h1>injectAsyncDebouncedCallback</h1>
-
-<p>
-  Debounce waits for a pause before executing. Calls made while the timer is pending resolve to
-  <code>undefined</code>. Only the final call after the pause runs.
-</p>
-
-<div>
-  <label>
-    Query
-    <input [value]="query()" (input)="onQueryInput(($any($event.target).value ?? '').toString())" />
-  </label>
-  <button (click)="runBurst()">Simulate Typing</button>
-  <button (click)="reset()">Reset</button>
-</div>
-
-<p>Executing: {{ isExecuting() }}</p>
-<p>Last outcome: {{ lastOutcome() }}</p>
-<p>Last result: {{ lastResult() ?? 'none' }}</p>
-
-<h2>History</h2>
-
-@if (history.length === 0) {
-<p>No calls yet.</p>
-} @else {
+<h1>TanStack Pacer injectAsyncDebouncedCallback Example 1</h1>
+<h2>Search</h2>
+<input
+  type="search"
+  [value]="search()"
+  (input)="onSearch($any($event.target).value)"
+  placeholder="Type to search, or 'error' to test failure..."
+/>
+@if (isLoading()) {
+<p>Loading...</p>
+}@if (error()) {
+<p role="alert">Error: {{ error() }}</p>
+}
 <ul>
-  @for (entry of history; track $index) {
-  <li>
-    <div>
-      {{ entry.timestamp }} - {{ entry.value }} - {{ entry.executed ? 'EXECUTED' : 'DEBOUNCED' }}
-    </div>
-    @if (entry.executed) {
-    <div>Result: {{ entry.result }}</div>
-    }
-  </li>
+  @for (result of results(); track $index) {
+  <li>{{ result }}</li>
   }
 </ul>
+<p>500ms wait, 500ms API delay.</p>
+<hr />
+<h1>TanStack Pacer injectAsyncDebouncedCallback Example 2</h1>
+<h2>Async counter</h2>
+<p>Current Count: {{ count() }}, API Calls Made: {{ apiCalls() }}</p>
+<button (click)="increment()">Increment (debounced API call)</button>
+<p>
+  UI increments immediately; the API returns one additional increment after
+  300ms. Calls have a 1000ms wait.
+</p>
+<hr />
+<h1>TanStack Pacer injectAsyncDebouncedCallback Example 3</h1>
+<h2>Email validation</h2>
+<label
+  >Email Address:
+  <input
+    type="email"
+    [value]="email()"
+    (input)="onEmail($any($event.target).value)"
+    placeholder="Enter your email..."
+/></label>
+@if (isValidating()) {
+<p>Validating email...</p>
+} @if (validation(); as result) {
+<p [style.color]="result.isValid ? 'green' : 'red'">{{ result.message }}</p>
 }
+<p>Email validation runs 750ms after typing stops, with a 400ms API delay.</p>

@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import { TestBed } from '@angular/core/testing'
 import { App } from './app'
 
@@ -18,6 +19,38 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App)
     await fixture.whenStable()
     const compiled = fixture.nativeElement as HTMLElement
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, basic')
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'TanStack Pacer asyncDebounce Example',
+    )
+  })
+})
+
+// Exercise the real adapter and component with a deterministic clock.
+describe('example behavior', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({ imports: [App] }).compileComponents()
+  })
+  afterEach(() => {
+    TestBed.resetTestingModule()
+    vi.clearAllTimers()
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
+  it('completes a search and renders its results', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] })
+    const fixture = TestBed.createComponent(App)
+    const app = fixture.componentInstance
+    fixture.detectChanges()
+    TestBed.tick()
+    void app.onSearch('angular')
+    await vi.advanceTimersByTimeAsync(2500)
+    TestBed.tick()
+    expect(app.results()).toEqual([
+      'Result 1 for angular',
+      'Result 2 for angular',
+      'Result 3 for angular',
+    ])
+    expect(app.loading()).toBe(false)
+    expect(fixture.nativeElement.textContent).toContain('Result 1 for angular')
   })
 })

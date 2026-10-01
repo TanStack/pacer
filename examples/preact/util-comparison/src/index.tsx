@@ -314,7 +314,7 @@ function ComparisonApp() {
                       min="0"
                       max="100"
                       value={utility.value}
-                      readOnly
+                      disabled
                       style={{
                         width: '100%',
                         margin: '2px 0',
@@ -455,9 +455,6 @@ function ComparisonApp() {
   )
 }
 
-const root = document.getElementById('root')!
-render(<ComparisonApp />, root)
-
 // Warning icon SVG
 const WarningIcon = ({ size = 16 }: { size?: number }) => (
   <svg
@@ -490,3 +487,6 @@ const SuccessIcon = ({ size = 16 }: { size?: number }) => (
     <polyline points="22,4 12,14.01 9,11.01" />
   </svg>
 )
+
+const root = document.getElementById('root')!
+render(<ComparisonApp />, root)

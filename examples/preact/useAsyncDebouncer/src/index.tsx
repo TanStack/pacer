@@ -39,22 +39,25 @@ function App() {
 
   // hook that gives you an async debouncer instance
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const asyncDebouncer = useAsyncDebouncer(handleSearch, {
-    // leading: true, // optional leading execution
-    wait: 500, // Wait 500ms between API calls
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setResults([])
+  const asyncDebouncer = useAsyncDebouncer(
+    handleSearch,
+    {
+      // leading: true, // optional leading execution
+      wait: 500, // Wait 500ms between API calls
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setResults([])
+      },
+      // throwOnError: true,
+      asyncRetryerOptions: {
+        maxAttempts: 3,
+        maxExecutionTime: 3000,
+      },
     },
-    // throwOnError: true,
-    asyncRetryerOptions: {
-      maxAttempts: 3,
-      maxExecutionTime: 1000,
-    },
-  })
-  // Alternative to asyncDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+    // Alternative to asyncDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   // get and name our debounced function
   const handleSearchDebounced = asyncDebouncer.maybeExecute

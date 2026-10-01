@@ -42,20 +42,23 @@ function App() {
 
   // hook that gives you an async throttler instance
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const setSearchAsyncThrottler = useAsyncThrottler(handleSearch, {
-    // leading: true, // default
-    // trailing: true, // default
-    wait: 1000, // Wait 1 second between API calls
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setError(error as Error)
-      setResults([])
+  const setSearchAsyncThrottler = useAsyncThrottler(
+    handleSearch,
+    {
+      // leading: true, // default
+      // trailing: true, // default
+      wait: 1000, // Wait 1 second between API calls
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setError(error as Error)
+        setResults([])
+      },
+      // throwOnError: true,
     },
-    // throwOnError: true,
-  })
-  // Alternative to setSearchAsyncThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+    // Alternative to setSearchAsyncThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   // get and name our throttled function
   const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute

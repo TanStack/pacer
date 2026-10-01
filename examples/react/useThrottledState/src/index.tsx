@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useThrottledState } from '@tanstack/react-pacer/throttler'
 
 function App1() {
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
 
   // higher-level hook that uses React.useState with the state setter automatically throttled
   // optionally, grab the throttler from the last index of the returned array
@@ -11,19 +12,16 @@ function App1() {
     instantCount,
     {
       wait: 1000,
-      // enabled: () => instantCount > 2, // optional, defaults to true
+      // enabled: () => instantCountRef.current > 2, // optional, defaults to true
     },
     // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setThrottledCount(newInstantCount) // throttled state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    setThrottledCount(nextCount)
   }
 
   return (
@@ -69,13 +67,14 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = useState('')
+  const instantSearchRef = useRef('')
 
   // higher-level hook that uses React.useState with the state setter automatically throttled
   const [throttledSearch, setThrottledSearch, throttler] = useThrottledState(
     instantSearch,
     {
       wait: 1000,
-      // enabled: instantSearch.length > 2, // optional, defaults to true
+      // enabled: () => instantSearchRef.current.length > 2, // optional, defaults to true
     },
     // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
@@ -83,6 +82,7 @@ function App2() {
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
+    instantSearchRef.current = newValue
     setInstantSearch(newValue)
     setThrottledSearch(newValue)
   }
@@ -181,7 +181,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue}</span>

@@ -1,33 +1,46 @@
-<h1>injectBatchedCallback</h1>
-
+<h1>TanStack Pacer injectBatchedCallback Example 1</h1>
+<h2>Batched logs</h2>
+<p>Max 3 logs or 2000ms wait.</p>
+<button (click)="addLog('Log entry')">Add Log Entry</button
+><button (click)="addLog('Warning')">Add Warning</button
+><button (click)="addLog('Error')">Add Error</button>
+<p>Total Logs Created: {{ logCount() }}, Logs Processed: {{ logs().length }}</p>
+@for (log of logs(); track log.id) {
+<p>{{ log.timestamp }}: {{ log.message }}</p>
+}
+<hr />
+<h1>TanStack Pacer injectBatchedCallback Example 2</h1>
+<h2>Batched analytics</h2>
+<p>Max 5 events or 3000ms wait.</p>
+<button (click)="trackEvent('click', 'button-1')">Track Button Click</button
+><button (click)="trackEvent('hover', 'card')">Track Hover Event</button
+><button (click)="trackEvent('view', 'page')">Track Page View</button
+><button (click)="trackEvent('form', 'submit')">Track Form Submit</button>
 <p>
-  Queue items quickly; they get delivered to the callback in batches. This example batches up to 5
-  items, or flushes after 1 second.
+  Total Events Created: {{ totalEvents() }}, Events Sent: {{ events().length }},
+  Batches Processed: {{ batchesProcessed() }}
 </p>
-
-<div>
-  <label>
-    Value
-    <input [value]="value()" (input)="value.set(($any($event.target).value ?? '').toString())" />
-  </label>
-  <button (click)="enqueue()">Enqueue</button>
-  <button (click)="enqueueMany(10)">Enqueue 10</button>
-  <button (click)="reset()">Reset</button>
-</div>
-
-<p>Queued (not yet processed): {{ queuedCount() }}</p>
-
-<h2>Processed Batches</h2>
-
-@if (processedBatches.length === 0) {
-<p>No batches processed yet. Click "Enqueue" a few times.</p>
-} @else {
-<ul>
-  @for (batch of processedBatches; track $index) {
-  <li>
-    <div>{{ batch.timestamp }} ({{ batch.items.length }} items)</div>
-    <div>{{ batch.items.join(', ') }}</div>
-  </li>
-  }
-</ul>
+@for (event of events(); track $index) {
+<p>{{ event.timestamp }}: {{ event.type }} - {{ event.target }}</p>
+}
+<hr />
+<h1>TanStack Pacer injectBatchedCallback Example 3</h1>
+<h2>Batched API requests</h2>
+<p>Max 4 requests or 1500ms wait.</p>
+<button (click)="makeRequest('save', 'document')">Save Document</button
+><button (click)="makeRequest('update', 'profile')">Update Profile</button
+><button (click)="makeRequest('delete', 'file')">Delete File</button
+><button (click)="makeRequest('create', 'folder')">Create Folder</button>
+<p>
+  Total Requests Made: {{ requests().length }}, Requests Queued: {{
+  pendingRequests().length }}, Requests Processed: {{ processedRequests().length
+  }}
+</p>
+<h3>Queued Requests</h3>
+@for (request of pendingRequests(); track request.id) {
+<p>{{ request.id }}: {{ request.data | json }}</p>
+}
+<h3>Processed Requests</h3>
+@for (request of processedRequests(); track request.id) {
+<p>{{ request.id }}: {{ request.data | json }}</p>
 }

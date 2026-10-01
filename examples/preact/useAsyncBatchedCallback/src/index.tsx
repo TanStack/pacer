@@ -42,11 +42,6 @@ function App1() {
         setResults((current) => [...current, ...data])
         setBatchesProcessed((count) => count + 1)
         return data
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : 'Unknown error'
-        setError(errorMessage)
-        throw err
       } finally {
         setIsLoading(false)
       }
@@ -54,6 +49,10 @@ function App1() {
     {
       maxSize: 3, // Process when 3 queries collected
       wait: 2000, // Or after 2 seconds
+      throwOnError: false,
+      onError: (error) => {
+        setError(error instanceof Error ? error.message : 'Unknown error')
+      },
     },
   )
 

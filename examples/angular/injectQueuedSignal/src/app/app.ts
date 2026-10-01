@@ -1,45 +1,41 @@
 import { Component, signal } from '@angular/core'
+import { JsonPipe } from '@angular/common'
 import { injectQueuedSignal } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  imports: [JsonPipe],
 })
 export class App {
-  protected readonly next = signal(1)
-  protected readonly lastProcessed = signal<number | null>(null)
-  protected readonly processed = signal<Array<number>>([])
-
-  private readonly queued = injectQueuedSignal<number>(
-    (item) => {
-      this.lastProcessed.set(item)
-      this.processed.update((prev) => [...prev, item])
-    },
+  readonly currentValue = signal(50)
+  readonly rangeValue = signal(50)
+  readonly instantExecutions = signal(0)
+  readonly processed = signal<Array<number>>([])
+  readonly queued = injectQueuedSignal(
+    (item: number) => this.processed.update((items) => [...items, item]),
     {
-      wait: 500,
-      started: true,
+      maxSize: 25,
+      initialItems: Array.from({ length: 10 }, (_, index) => index + 1),
+      started: false,
+      wait: 1000,
     },
+    (state) => state,
   )
-
-  protected readonly items = this.queued
-  private readonly addItem = this.queued.addItem
-  protected readonly queue = this.queued.queuer
-
-  protected enqueue(): void {
-    const value = this.next()
-    this.next.set(value + 1)
-    this.addItem(value)
+  readonly numberQueue = this.queued.queuer
+  readonly rangeQueued = injectQueuedSignal(
+    (item: number) => this.rangeValue.set(item),
+    { maxSize: 100, wait: 100 },
+    (state) => state,
+  )
+  readonly rangeQueue = this.rangeQueued.queuer
+  addNumber(): void {
+    const items = this.numberQueue.peekAllItems()
+    this.numberQueue.addItem(items.length ? items[items.length - 1]! + 1 : 1)
   }
-
-  protected enqueueFive(): void {
-    for (let i = 0; i < 5; i++) {
-      this.enqueue()
-    }
-  }
-
-  protected clearProcessed(): void {
-    this.lastProcessed.set(null)
-    this.processed.set([])
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
+    this.rangeQueue.addItem(value)
   }
 }

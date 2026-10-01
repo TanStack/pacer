@@ -1,58 +1,78 @@
 import { Component, signal } from '@angular/core'
 import { injectRateLimitedCallback } from '@tanstack/angular-pacer'
 
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  templateUrl: './app.html',
-})
+@Component({ selector: 'app-root', templateUrl: './app.html', imports: [] })
 export class App {
-  private run: (value: number) => boolean
-
-  readonly rawCount = signal(0)
-  readonly executedCount = signal(0)
-  readonly blockedCount = signal(0)
-  readonly lastExecutedValue = signal<number | null>(null)
-  readonly lastExecutedAt = signal<string | null>(null)
-
-  readonly limit = 3
-  readonly windowMs = 2000
-
-  constructor() {
-    this.run = this.createLimiter()
+  readonly instantCount = signal(0)
+  readonly search = signal('')
+  readonly currentValue = signal(50)
+  readonly controlledCount = signal(0)
+  readonly controlledSearch = signal('')
+  readonly controlledValue = signal(50)
+  readonly countWindow = signal<'fixed' | 'sliding'>('fixed')
+  readonly searchWindow = signal<'fixed' | 'sliding'>('fixed')
+  readonly rangeWindow = signal<'fixed' | 'sliding'>('fixed')
+  readonly countRunner = injectRateLimitedCallback(
+    (value: number) => this.controlledCount.set(value),
+    () => {
+      // Update options when the signal changes so disabling cancels pending work.
+      // The callback reads the current event value before the next effect runs.
+      this.instantCount()
+      return {
+        limit: 5,
+        window: 5000,
+        windowType: this.countWindow(),
+        onReject: (limiter) =>
+          console.log(
+            'Rejected; retry in',
+            limiter.getMsUntilNextWindow(),
+            'ms',
+          ),
+        enabled: () => this.instantCount() > 2,
+      }
+    },
+  )
+  readonly searchRunner = injectRateLimitedCallback(
+    (value: string) => this.controlledSearch.set(value),
+    () => {
+      // Update options when the signal changes so disabling cancels pending work.
+      // The callback reads the current event value before the next effect runs.
+      this.search()
+      return {
+        limit: 5,
+        window: 5000,
+        windowType: this.searchWindow(),
+        onReject: (limiter) =>
+          console.log(
+            'Rejected; retry in',
+            limiter.getMsUntilNextWindow(),
+            'ms',
+          ),
+        enabled: () => this.search().length > 2,
+      }
+    },
+  )
+  readonly rangeRunner = injectRateLimitedCallback(
+    (value: number) => this.controlledValue.set(value),
+    () => ({
+      limit: 20,
+      window: 2000,
+      windowType: this.rangeWindow(),
+      onReject: (limiter) =>
+        console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
+    }),
+  )
+  increment(): void {
+    const next = this.instantCount() + 1
+    this.instantCount.set(next)
+    this.countRunner(next)
   }
-
-  private createLimiter() {
-    return injectRateLimitedCallback(
-      (value: number) => {
-        this.executedCount.update((current) => current + 1)
-        this.lastExecutedValue.set(value)
-        this.lastExecutedAt.set(new Date().toLocaleTimeString())
-      },
-      {
-        limit: this.limit,
-        window: this.windowMs,
-        windowType: 'sliding',
-      },
-    )
+  onSearch(value: string): void {
+    this.search.set(value)
+    this.searchRunner(value)
   }
-
-  trigger(): void {
-    const next = this.rawCount() + 1
-    this.rawCount.set(next)
-
-    const executed = this.run(next)
-    if (!executed) {
-      this.blockedCount.update((current) => current + 1)
-    }
-  }
-
-  reset(): void {
-    this.rawCount.set(0)
-    this.executedCount.set(0)
-    this.blockedCount.set(0)
-    this.lastExecutedValue.set(null)
-    this.lastExecutedAt.set(null)
-    this.run = this.createLimiter()
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.rangeRunner(value)
   }
 }

@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import { TestBed } from '@angular/core/testing'
 import { App } from './app'
 
@@ -18,6 +19,66 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App)
     await fixture.whenStable()
     const compiled = fixture.nativeElement as HTMLElement
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, basic')
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'TanStack Pacer injectThrottledCallback Example',
+    )
+  })
+})
+
+// Exercise the real adapter and component with a deterministic clock.
+describe('example behavior', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({ imports: [App] }).compileComponents()
+  })
+  afterEach(() => {
+    TestBed.resetTestingModule()
+    vi.clearAllTimers()
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
+  it('runs the counter, search, and range scenarios', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] })
+    const fixture = TestBed.createComponent(App)
+    const app = fixture.componentInstance
+    fixture.detectChanges()
+    TestBed.tick()
+    app.increment()
+    app.increment()
+    app.increment()
+    app.onSearch('angular')
+    app.onRange(73)
+    TestBed.tick()
+    await vi.advanceTimersByTimeAsync(1100)
+    TestBed.tick()
+    expect(app.controlledCount()).toBe(3)
+    expect(app.controlledSearch()).toBe('angular')
+    expect(app.controlledValue()).toBe(73)
+  })
+  it('enables the third counter event without waiting for a render', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] })
+    const fixture = TestBed.createComponent(App)
+    const app = fixture.componentInstance
+    fixture.detectChanges()
+    TestBed.tick()
+    app.increment()
+    app.increment()
+    expect(app.controlledCount()).toBe(0)
+    app.increment()
+    expect(app.controlledCount()).toBe(3)
+  })
+  it('gates short search text and accepts the same event that passes the condition', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] })
+    const fixture = TestBed.createComponent(App)
+    const app = fixture.componentInstance
+    fixture.detectChanges()
+    TestBed.tick()
+    app.onSearch('ab')
+    TestBed.tick()
+    await vi.advanceTimersByTimeAsync(1100)
+    expect(app.controlledSearch()).toBe('')
+    app.onSearch('abc')
+    TestBed.tick()
+    await vi.advanceTimersByTimeAsync(1100)
+    expect(app.controlledSearch()).toBe('abc')
   })
 })

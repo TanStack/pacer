@@ -9,7 +9,9 @@
     "test:types": "tsc"
   },
   "dependencies": {
+    "@tanstack/preact-devtools": "^0.10.13",
     "@tanstack/preact-pacer": "^0.24.0",
+    "@tanstack/preact-pacer-devtools": "workspace:*",
     "preact": "^10.29.8"
   },
   "devDependencies": {

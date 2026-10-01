@@ -1,54 +1,55 @@
-<div>
-  <h1>TanStack Pacer - Async Retry Example</h1>
-
-  <section>
-    <h2>AsyncRetry</h2>
-    <p>
-      Click "Run" to execute an async task that fails the first N times, then succeeds. The
-      decorator retries with backoff.
-    </p>
-
-    <div>
-      <h3>Controls</h3>
-      <div>
-        <label>
-          <span>Fail first</span>
-          <input
-            type="number"
-            min="0"
-            [value]="failTimes()"
-            (input)="setFailTimes($any($event.target).valueAsNumber ?? 0)"
-          />
-          <span>attempts</span>
-        </label>
-
-        <button (click)="start()">Run</button>
-
-        <button (click)="reset()">Reset</button>
-      </div>
-    </div>
-
-    <div>
-      <h3>Status</h3>
-      <div>
-        <div><strong>Status:</strong> {{ status() }}</div>
-        <div><strong>Attempt:</strong> {{ attempt() }}</div>
-        <div><strong>Result:</strong> {{ result() ?? '-' }}</div>
-        <div><strong>Error:</strong> {{ error() ?? '-' }}</div>
-      </div>
-    </div>
-
-    <div>
-      <h3>Log</h3>
-      <div>
-        @if (log().length === 0) {
-        <span>No logs yet. Click "Run" to start.</span>
-        } @for (entry of log(); track $index) {
-        <div><strong>{{ entry.time }}</strong> — {{ entry.message }}</div>
-        }
-      </div>
-    </div>
-  </section>
-
-  <router-outlet />
-</div>
+<h1>TanStack Pacer asyncRetry Example</h1>
+<p>
+  Compare exponential and linear backoff, jitter, per-attempt timeouts, and
+  total timeouts. The simulated API fails 60% of requests.
+</p>
+<h2>Configuration</h2>
+<label
+  >Scenario:
+  <select
+    [value]="scenario()"
+    (change)="setScenario($any($event.target).value)"
+    [disabled]="isLoading()"
+  >
+    <option value="default">Default (Exponential Backoff)</option>
+    <option value="timeout">With Timeouts</option>
+    <option value="jitter">With Jitter (30%)</option>
+    <option value="linear">Linear Backoff</option>
+  </select></label
+>
+<label
+  >User ID:
+  <input
+    [value]="userId()"
+    (input)="userId.set($any($event.target).value)"
+    [disabled]="isLoading()"
+/></label>
+<button (click)="fetchUser()" [disabled]="isLoading()">
+  {{ isLoading() ? 'Fetching...' : 'Fetch User' }}
+</button>
+<button (click)="reset()" [disabled]="isLoading()">Reset</button>
+<h3>Current Options</h3>
+<pre>{{ options() | json }}</pre>
+<h2>State</h2>
+<p>
+  Status: {{ isLoading() ? (currentAttempt() > 1 ? 'retrying' : 'executing') :
+  'idle' }}
+</p>
+@if (currentAttempt()) {
+<p>Current Attempt: {{ currentAttempt() }} / {{ options().maxAttempts }}</p>
+} @if (error()) {
+<p role="alert">Error: {{ error() }}</p>
+} @if (userData(); as user) {
+<h3>User Data</h3>
+<p>ID: {{ user.id }}, Name: {{ user.name }}, Email: {{ user.email }}</p>
+}
+<h2>Activity Log</h2>
+@for (log of logs(); track $index) {
+<p>{{ log }}</p>
+} @empty {
+<p>No activity yet</p>
+}
+<p>
+  Each call to the returned function creates a fresh retry context. The timeout
+  scenario uses a 3000ms API delay and a 2000ms per-attempt timeout.
+</p>

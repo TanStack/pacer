@@ -1,76 +1,86 @@
 import { Component, signal } from '@angular/core'
 import { injectAsyncDebouncedCallback } from '@tanstack/angular-pacer'
 
-type HistoryEntry = {
-  timestamp: string
-  value: string
-  executed: boolean
-  result?: string
-}
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.html',
-  styleUrl: './app.css',
-})
+@Component({ selector: 'app-root', templateUrl: './app.html' })
 export class App {
-  protected readonly query = signal('')
-  protected readonly isExecuting = signal(false)
-  protected readonly lastOutcome = signal<'idle' | 'executed' | 'debounced'>('idle')
-  protected readonly lastResult = signal<string | null>(null)
-
-  protected readonly history: Array<HistoryEntry> = []
-
-  protected readonly search = injectAsyncDebouncedCallback(
+  readonly search = signal('')
+  readonly results = signal<Array<string>>([])
+  readonly isLoading = signal(false)
+  readonly error = signal('')
+  readonly count = signal(0)
+  readonly apiCalls = signal(0)
+  private readonly searchCallback = injectAsyncDebouncedCallback(
     async (query: string) => {
-      this.isExecuting.set(true)
+      if (!query.trim()) {
+        this.results.set([])
+        return
+      }
+      this.isLoading.set(true)
+      this.error.set('')
       try {
-        await new Promise<void>((resolve) => setTimeout(resolve, 300))
-        const result = `results-for:${query}`
-        this.lastResult.set(result)
-        return result
+        await new Promise((resolve) => setTimeout(resolve, 500))
+        if (query === 'error') throw new Error('Simulated API error')
+        this.results.set([1, 2, 3].map((id) => `${query} result ${id}`))
       } finally {
-        this.isExecuting.set(false)
+        this.isLoading.set(false)
       }
     },
     {
-      wait: 600,
+      wait: 500,
+      throwOnError: false,
+      onError: (error) => {
+        this.error.set(error.message)
+        this.results.set([])
+      },
     },
   )
-
-  protected onQueryInput(value: string): void {
-    this.query.set(value)
-    void this.attempt(value)
+  private readonly incrementCallback = injectAsyncDebouncedCallback(
+    async (value: number) => {
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      this.apiCalls.update((count) => count + 1)
+      this.count.set(value + 1)
+      return value + 1
+    },
+    { wait: 1000, leading: false, trailing: true },
+  )
+  async onSearch(value: string): Promise<void> {
+    this.search.set(value)
+    await this.searchCallback(value)
   }
-
-  protected runBurst(): void {
-    const parts = ['t', 'ta', 'tan', 'tans', 'tanst', 'tansta', 'tanstack']
-    for (const q of parts) {
-      this.query.set(q)
-      void this.attempt(q)
-    }
+  async increment(): Promise<void> {
+    const value = this.count() + 1
+    this.count.set(value)
+    await this.incrementCallback(value)
   }
-
-  protected reset(): void {
-    this.query.set('')
-    this.isExecuting.set(false)
-    this.lastOutcome.set('idle')
-    this.lastResult.set(null)
-    this.history.length = 0
-  }
-
-  private async attempt(query: string): Promise<void> {
-    const timestamp = new Date().toLocaleTimeString()
-
-    const result = await this.search(query)
-
-    if (result === undefined) {
-      this.lastOutcome.set('debounced')
-      this.history.unshift({ timestamp, value: query, executed: false })
-      return
-    }
-
-    this.lastOutcome.set('executed')
-    this.history.unshift({ timestamp, value: query, executed: true, result })
+  readonly email = signal('')
+  readonly validation = signal<{ isValid: boolean; message: string } | null>(
+    null,
+  )
+  readonly isValidating = signal(false)
+  private readonly validate = injectAsyncDebouncedCallback(
+    async (email: string) => {
+      if (!email.trim()) {
+        this.validation.set(null)
+        return
+      }
+      this.isValidating.set(true)
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 400))
+        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+        this.validation.set({
+          isValid,
+          message: isValid
+            ? 'Email is valid!'
+            : 'Please enter a valid email address',
+        })
+      } finally {
+        this.isValidating.set(false)
+      }
+    },
+    { wait: 750, leading: false },
+  )
+  async onEmail(value: string): Promise<void> {
+    this.email.set(value)
+    await this.validate(value)
   }
 }

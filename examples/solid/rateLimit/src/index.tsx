@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createMemo, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { rateLimit } from '@tanstack/solid-pacer/rate-limiter'
 
@@ -8,25 +8,24 @@ function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
   const [rateLimitedCount, setRateLimitedCount] = createSignal(0)
 
-  // Create rate-limited setter function - Stable reference required!
-  const rateLimitedSetCount = rateLimit(setRateLimitedCount, {
-    limit: 5,
-    window: 5000,
-    windowType: windowType(),
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
+  // Recreate the bound helper when the window type changes.
+  const rateLimitedSetCount = createMemo(() =>
+    rateLimit(setRateLimitedCount, {
+      limit: 5,
+      window: 5000,
+      windowType: windowType(),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    }),
+  )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      rateLimitedSetCount(newInstantCount) // rate-limited state update
-      return newInstantCount // instant state update
-    })
+    const newInstantCount = instantCount() + 1
+    setInstantCount(newInstantCount)
+    rateLimitedSetCount()(newInstantCount) // rate-limited state update
   }
 
   return (
@@ -78,23 +77,25 @@ function App2() {
   const [text, setText] = createSignal('')
   const [rateLimitedText, setRateLimitedText] = createSignal('')
 
-  // Create rate-limited setter function - Stable reference required!
-  const rateLimitedSetText = rateLimit(setRateLimitedText, {
-    limit: 5,
-    window: 5000,
-    windowType: windowType(),
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
+  // Recreate the bound helper when the window type changes.
+  const rateLimitedSetText = createMemo(() =>
+    rateLimit(setRateLimitedText, {
+      limit: 5,
+      window: 5000,
+      windowType: windowType(),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    }),
+  )
 
   function handleTextChange(e: Event) {
     const target = e.target as HTMLInputElement
     const newValue = target.value
     setText(newValue)
-    rateLimitedSetText(newValue)
+    rateLimitedSetText()(newValue)
   }
 
   return (
@@ -128,7 +129,7 @@ function App2() {
           type="search"
           value={text()}
           onInput={handleTextChange}
-          placeholder="Type text (rate limited to 3 updates per 5 seconds)..."
+          placeholder="Type text (rate limited to 5 updates per 5 seconds)..."
           style={{ width: '100%' }}
         />
       </div>
@@ -153,23 +154,25 @@ function App3() {
   const [currentValue, setCurrentValue] = createSignal(50)
   const [rateLimitedValue, setRateLimitedValue] = createSignal(50)
 
-  // Create rate-limited setter function - Stable reference required!
-  const rateLimitedSetValue = rateLimit(setRateLimitedValue, {
-    limit: 20,
-    window: 2000,
-    windowType: windowType(),
-    onReject: (rateLimiter) =>
-      console.log(
-        'Rejected by rate limiter',
-        rateLimiter.getMsUntilNextWindow(),
-      ),
-  })
+  // Recreate the bound helper when the window type changes.
+  const rateLimitedSetValue = createMemo(() =>
+    rateLimit(setRateLimitedValue, {
+      limit: 30,
+      window: 2000,
+      windowType: windowType(),
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
+    }),
+  )
 
   function handleRangeChange(e: Event) {
     const target = e.target as HTMLInputElement
     const newValue = parseInt(target.value, 10)
     setCurrentValue(newValue)
-    rateLimitedSetValue(newValue)
+    rateLimitedSetValue()(newValue)
   }
 
   return (
@@ -219,14 +222,14 @@ function App3() {
             min="0"
             max="100"
             value={rateLimitedValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{rateLimitedValue()}</span>
         </label>
       </div>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
-        <p>Rate limited to 20 updates per 2 seconds</p>
+        <p>Rate limited to 30 updates per 2000ms window</p>
       </div>
     </div>
   )

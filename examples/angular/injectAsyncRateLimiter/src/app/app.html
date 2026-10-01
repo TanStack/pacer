@@ -1,47 +1,44 @@
-<h1>injectAsyncRateLimiter</h1>
-
-<p>
-  This example limits an async function to 3 executions per 2 seconds. Calls over the limit are
-  rejected and resolve to <code>undefined</code>.
-</p>
-
-<div>
-  <label>
-    Value
-    <input [value]="value()" (input)="value.set(($any($event.target).value ?? '').toString())" />
-  </label>
-  <button (click)="runOnce()">Run Once</button>
-  <button (click)="runBurst(10)">Run Burst (10)</button>
-  <button (click)="reset()">Reset</button>
-</div>
-
-<h2>Status</h2>
-
-<div>status: {{ rateLimiter.state().status }}</div>
-<div>isExecuting: {{ rateLimiter.state().isExecuting }}</div>
-<div>remainingInWindow: {{ rateLimiter.getRemainingInWindow() }}</div>
-<div>msUntilNextWindow: {{ rateLimiter.getMsUntilNextWindow() }}</div>
-<div>successCount: {{ rateLimiter.state().successCount }}</div>
-<div>rejectionCount: {{ rateLimiter.state().rejectionCount }}</div>
-<div>maybeExecuteCount: {{ rateLimiter.state().maybeExecuteCount }}</div>
-<div>lastOutcome: {{ lastOutcome() }}</div>
-<div>lastResult: {{ lastResult() ?? 'none' }}</div>
-
-<h2>History</h2>
-
-@if (history.length === 0) {
-<p>No calls yet.</p>
-} @else {
+<h1>TanStack Pacer injectAsyncRateLimiter Example</h1>
+<fieldset>
+  <legend>Window type</legend>
+  <label
+    ><input
+      type="radio"
+      name="windowType"
+      [checked]="windowType() === 'fixed'"
+      (change)="changeWindow('fixed')"
+    />
+    Fixed Window</label
+  ><label
+    ><input
+      type="radio"
+      name="windowType"
+      [checked]="windowType() === 'sliding'"
+      (change)="changeWindow('sliding')"
+    />
+    Sliding Window</label
+  >
+</fieldset>
+<p>3 requests per 3000ms.</p>
+<input
+  type="search"
+  [value]="searchTerm()"
+  (input)="onSearch($any($event.target).value)"
+  placeholder="Type to search..."
+  autocomplete="new-password"
+/>
+@if (loading()) {
+<p>Loading...</p>
+} @if (error()) {
+<p role="alert">Error: {{ error() }}</p>
+}
+<p>API calls made: {{ runner.state().successCount }}</p>
+<p>Is executing: {{ runner.state().isExecuting }}</p>
+<p>Rejected calls: {{ runner.state().rejectionCount }}</p>
+<pre>{{ runner.state() | json }}</pre>
+<h2>Search Results</h2>
 <ul>
-  @for (entry of history; track $index) {
-  <li>
-    <div>
-      {{ entry.timestamp }} - {{ entry.value }} - {{ entry.executed ? 'EXECUTED' : 'REJECTED' }}
-    </div>
-    @if (entry.executed) {
-    <div>Result: {{ entry.result }}</div>
-    }
-  </li>
+  @for (result of results(); track $index) {
+  <li>{{ result }}</li>
   }
 </ul>
-}

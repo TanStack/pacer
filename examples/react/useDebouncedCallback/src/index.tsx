@@ -1,26 +1,24 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer'
 
 function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
   const [debouncedCount, setDebouncedCount] = useState(0)
 
   // Create debounced setter function - Stable reference provided by useDebouncedCallback
   const debouncedSetCount = useDebouncedCallback(setDebouncedCount, {
     wait: 500,
-    // enabled: () => instantCount > 2, // optional, defaults to true
+    // enabled: () => instantCountRef.current > 2, // optional, defaults to true
     // leading: true, // optional, defaults to false
   })
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      debouncedSetCount(newInstantCount) // debounced state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    debouncedSetCount(nextCount)
   }
 
   return (
@@ -47,16 +45,18 @@ function App1() {
 
 function App2() {
   const [searchText, setSearchText] = useState('')
+  const searchTextRef = useRef('')
   const [debouncedSearchText, setDebouncedSearchText] = useState('')
 
   // Create debounced setter function - Stable reference provided by useDebouncedCallback
   const debouncedSetSearch = useDebouncedCallback(setDebouncedSearchText, {
     wait: 500,
-    enabled: () => searchText.length > 2,
+    enabled: () => searchTextRef.current.length > 2,
   })
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
+    searchTextRef.current = newValue
     setSearchText(newValue)
     debouncedSetSearch(newValue)
   }
@@ -130,7 +130,7 @@ function App3() {
             min="0"
             max="100"
             value={debouncedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{debouncedValue}</span>

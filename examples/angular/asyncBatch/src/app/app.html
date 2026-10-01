@@ -1,29 +1,43 @@
-<div style="padding: 24px; max-width: 480px; margin: 0 auto">
-  <h1>Async batcher</h1>
-  <p>Collects items, batches every 3 or after 3s, process takes 1s.</p>
+<h1>TanStack Pacer asyncBatch Example</h1>
+<h2>Batch Status</h2>
+<p>Pending Items: {{ pendingItems().length }} / 5</p>
+<p>
+  Wait up to 3000ms, process for 1000ms. Urgent items trigger immediate
+  processing.
+</p>
+<p>Is Processing: {{ isProcessing() }}</p>
+<p>
+  Successful Batches: {{ successCount() }}, Failed Batches: {{ errorCount() }}
+</p>
 
-  <div style="display: flex; gap: 12px; margin: 16px 0">
-    <button (click)="add()">Add item</button>
-    <button type="button" (click)="flush()">Flush</button>
-    <button type="button" (click)="reset()">Reset</button>
-  </div>
+<h2>Current Batch Items</h2>
+<ul>
+  @for (item of pendingItems(); track item.id) {
+  <li>{{ item.value }}</li>
+  } @empty {
+  <li>No items pending</li>
+  }
+</ul>
+<button (click)="add()">Add Regular Item</button
+><button (click)="add(true)">Add Urgent Item (Processes Immediately)</button>
 
-  <section>
-    <h2>Status</h2>
-    <p>Pending: {{ batcher.state().items }}</p>
-    <p>Executing: {{ batcher.state().isExecuting }}</p>
-  </section>
-
-  <section>
-    <h2>Batches</h2>
-    @if (logs().length === 0) {
-    <p>No batches yet. Add items to start batching.</p>
-    } @else {
-    <ul>
-      @for (entry of logs(); track $index) {
-      <li>{{ entry }}</li>
-      }
-    </ul>
-    }
-  </section>
-</div>
+<label
+  ><input
+    type="checkbox"
+    [checked]="shouldFail()"
+    (change)="shouldFail.set($any($event.target).checked)"
+  />
+  Simulate random failures (30% chance)</label
+>
+<h2>Processed Batches ({{ processedBatches().length }})</h2>
+@for (batch of processedBatches(); track $index) {
+<p>{{ batch.result }}</p>
+} @if (errors().length) {
+<h2>Errors ({{ errors().length }})</h2>
+@for (error of errors(); track $index) {
+<p role="alert">{{ error }}</p>
+}<button (click)="errors.set([])">Clear Errors</button> }
+<details>
+  <summary>Processed batch data</summary>
+  <pre>{{ processedBatches() | json }}</pre>
+</details>

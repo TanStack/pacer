@@ -1,10 +1,11 @@
-import { useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import { render } from 'preact'
 import type { JSX } from 'preact'
 import { useThrottledState } from '@tanstack/preact-pacer/throttler'
 
 function App1() {
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
 
   // higher-level hook that uses Preact.useState with the state setter automatically throttled
   // optionally, grab the throttler from the last index of the returned array
@@ -12,19 +13,16 @@ function App1() {
     instantCount,
     {
       wait: 1000,
-      // enabled: () => instantCount > 2, // optional, defaults to true
-      // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-      // (state) => state,
+      // enabled: () => instantCountRef.current > 2, // optional, defaults to true
     },
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setThrottledCount(newInstantCount) // throttled state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    setThrottledCount(nextCount)
   }
 
   return (
@@ -70,20 +68,22 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = useState('')
+  const instantSearchRef = useRef('')
 
   // higher-level hook that uses Preact.useState with the state setter automatically throttled
   const [throttledSearch, setThrottledSearch, throttler] = useThrottledState(
     instantSearch,
     {
       wait: 1000,
-      // enabled: instantSearch.length > 2, // optional, defaults to true
-      // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-      // (state) => state,
+      // enabled: () => instantSearchRef.current.length > 2, // optional, defaults to true
     },
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
+    instantSearchRef.current = newValue
     setInstantSearch(newValue)
     setThrottledSearch(newValue)
   }
@@ -145,9 +145,9 @@ function App3() {
     currentValue,
     {
       wait: 250,
-      // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-      // (state) => state,
     },
+    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
@@ -182,7 +182,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue}</span>

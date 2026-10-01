@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import { render } from 'preact'
 import type { JSX } from 'preact'
 import { useThrottledCallback } from '@tanstack/preact-pacer/throttler'
@@ -6,21 +6,19 @@ import { useThrottledCallback } from '@tanstack/preact-pacer/throttler'
 function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
   const [throttledCount, setThrottledCount] = useState(0)
 
   // Create throttled setter function - Stable reference provided by useThrottledCallback
   const throttledSetCount = useThrottledCallback(setThrottledCount, {
     wait: 1000,
-    enabled: () => instantCount > 2,
+    enabled: () => instantCountRef.current > 2,
   })
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      throttledSetCount(newInstantCount) // throttled state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    throttledSetCount(nextCount)
   }
 
   return (
@@ -47,16 +45,18 @@ function App1() {
 
 function App2() {
   const [searchText, setSearchText] = useState('')
+  const searchTextRef = useRef('')
   const [throttledSearchText, setThrottledSearchText] = useState('')
 
   // Create throttled setter function - Stable reference provided by useThrottledCallback
   const throttledSetSearch = useThrottledCallback(setThrottledSearchText, {
     wait: 1000,
-    enabled: () => searchText.length > 2,
+    enabled: () => searchTextRef.current.length > 2,
   })
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
+    searchTextRef.current = newValue
     setSearchText(newValue)
     throttledSetSearch(newValue)
   }
@@ -130,7 +130,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue}</span>

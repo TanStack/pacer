@@ -43,8 +43,8 @@ function App() {
     handleSearch,
     {
       windowType: windowType,
-      limit: 3, // Maximum 2 requests
-      window: 3000, // per 1 second
+      limit: 3, // Maximum 3 requests
+      window: 3000, // per 3 seconds
       onReject: (_args, rateLimiter) => {
         console.log(
           `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,

@@ -1,37 +1,46 @@
-<h1>TanStack Pacer - Async Batcher</h1>
-
-<p>Add items. They flush as a batch when max size is hit or the wait timer expires.</p>
-
-<label>
-  Item
-  <input [value]="item()" (input)="onItemInput($event.target.value)" />
-</label>
-
-<button type="button" (click)="addItem()">Add</button>
-<button type="button" (click)="addThree()">Add 3 Quickly</button>
-<button type="button" (click)="reset()">Reset</button>
-
-<p>Queued items: {{ batcher.state().items.length }}</p>
-<p>Executing: {{ batcher.state().isExecuting }}</p>
-
-<h2>Last Batch</h2>
-@if (lastBatch().length === 0) {
-<p>(none yet)</p>
-} @else {
+<h1>TanStack Pacer injectAsyncBatcher Example</h1>
+<h2>Batch Status</h2>
+<p>Pending Items: {{ pendingItems().length }} / 5</p>
+<p>
+  Wait up to 4000ms, process for 1000ms. Urgent items trigger immediate
+  processing.
+</p>
+<p>Is Processing: {{ runner.state().isExecuting }}</p>
+<p>
+  Successful Batches: {{ successCount() }}, Failed Batches: {{ errorCount() }}
+</p>
+<p>
+  Status: {{ runner.state().status }}, Total Items Processed: {{
+  runner.state().totalItemsProcessed }}
+</p>
+<h2>Current Batch Items</h2>
 <ul>
-  @for (x of lastBatch(); track x) {
-  <li>{{ x }}</li>
+  @for (item of pendingItems(); track item.id) {
+  <li>{{ item.value }}</li>
+  } @empty {
+  <li>No items pending</li>
   }
 </ul>
-}
+<button (click)="add()">Add Regular Item</button
+><button (click)="add(true)">Add Urgent Item (Processes Immediately)</button>
+<button
+  (click)="runner.flush()"
+  [disabled]="runner.state().isExecuting || runner.state().size === 0"
+>
+  Execute Current Batch</button
+><button
+  (click)="runner.clear()"
+  [disabled]="runner.state().isExecuting || runner.state().size === 0"
+>
+  Clear Current Batch
+</button>
 
-<h2>History</h2>
-@if (batchHistory().length === 0) {
-<p>(no batches yet)</p>
-} @else {
-<ol>
-  @for (batch of batchHistory(); track $index) {
-  <li>{{ batch.join(', ') }}</li>
-  }
-</ol>
-}
+<h2>Processed Batches ({{ processedBatches().length }})</h2>
+@for (batch of processedBatches(); track $index) {
+<p>{{ batch.result }}</p>
+} @if (errors().length) {
+<h2>Errors ({{ errors().length }})</h2>
+@for (error of errors(); track $index) {
+<p role="alert">{{ error }}</p>
+}<button (click)="errors.set([])">Clear Errors</button> }
+<pre>{{ runner.state() | json }}</pre>
