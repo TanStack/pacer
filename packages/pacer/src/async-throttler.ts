@@ -522,8 +522,10 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
    * ```
    */
   getAbortSignal = (maybeExecuteCount?: number): AbortSignal | null => {
-    const count = maybeExecuteCount ?? this.store.state.maybeExecuteCount
-    const retryer = this.asyncRetryers.get(count)
+    const retryer =
+      maybeExecuteCount === undefined
+        ? [...this.asyncRetryers.values()].pop()
+        : this.asyncRetryers.get(maybeExecuteCount)
     return retryer?.getAbortSignal() ?? null
   }
 

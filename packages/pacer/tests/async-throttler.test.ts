@@ -1006,6 +1006,27 @@ describe('AsyncThrottler', () => {
       expect(typeof throttler.getAbortSignal).toBe('function')
       expect(throttler.getAbortSignal()).toBeNull()
     })
+
+    it('should return the signal of the running execution while a newer call waits', async () => {
+      const signals: Array<AbortSignal | null> = []
+      const throttler = new AsyncThrottler(
+        async () => {
+          signals.push(throttler.getAbortSignal())
+          await new Promise((resolve) => setTimeout(resolve, 100))
+          signals.push(throttler.getAbortSignal())
+        },
+        { wait: 200 },
+      )
+
+      throttler.maybeExecute() // leading, runs 0-100ms
+      await vi.advanceTimersByTimeAsync(20)
+      throttler.maybeExecute() // waits for the running execution
+      await vi.advanceTimersByTimeAsync(90)
+
+      expect(signals).toHaveLength(2)
+      expect(signals[0]).toBeInstanceOf(AbortSignal)
+      expect(signals[1]).toBe(signals[0])
+    })
   })
 })
 
