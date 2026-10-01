@@ -23,6 +23,9 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
   Batcher<TValue>,
   'store'
 > {
+  options: Batcher<TValue>['options'] & SolidBatcherOptions<TValue, TSelected>
+  setOptions: (options: Partial<SolidBatcherOptions<TValue, TSelected>>) => void
+
   /**
    * A Solid component that allows you to subscribe to the batcher state.
    *
@@ -161,18 +164,15 @@ export function createBatcher<TValue, TSelected = {}>(
 ): SolidBatcher<TValue, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidBatcherOptions<TValue, TSelected>
-  >(options, useDefaultPacerOptions().batcher)
-  const batcher = new Batcher(fn, mergedOptions()) as unknown as SolidBatcher<
-    TValue,
-    TSelected
-  >
+  >(options, () => useDefaultPacerOptions().batcher)
+  const batcher = untrack(
+    () => new Batcher(fn, mergedOptions()),
+  ) as unknown as SolidBatcher<TValue, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => batcher.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => batcher.setOptions(latest))
+  })
 
   batcher.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: BatcherState<TValue>) => TSelected
@@ -191,16 +191,16 @@ export function createBatcher<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = batcher.options.onUnmount
       if (onUnmount) {
-        onUnmount(batcher)
+        onUnmount(result)
       } else {
         batcher.cancel()
       }
     })
   })
 
-  return {
+  const result = {
     ...batcher,
     get options() {
       return batcher.options
@@ -210,4 +210,6 @@ export function createBatcher<TValue, TSelected = {}>(
     },
     state,
   } as SolidBatcher<TValue, TSelected>
+
+  return result
 }

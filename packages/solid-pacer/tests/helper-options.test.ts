@@ -11,36 +11,48 @@ import { createQueuedSignal } from '../src/queuer/createQueuedSignal'
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
 
-it('updates options through signal and value helpers without replacing their utilities', () => {
-  let dispose = () => {}
-  let update = (_value: number) => {}
-  let utilities!: Array<{
-    options: { wait?: unknown; window?: unknown }
-    store: unknown
-  }>
-  createRoot((cleanup) => {
-    dispose = cleanup
-    const [wait, setWait] = createSignal(100)
-    update = setWait
-    const options = () => ({ wait: wait(), window: wait(), limit: 1 })
-    utilities = [
-      createDebouncedSignal('initial', options)[2],
-      createDebouncedValue(() => 'initial', options)[1],
-      createThrottledSignal('initial', options)[2],
-      createThrottledValue(() => 'initial', options)[1],
-      createRateLimitedSignal('initial', options)[2],
-      createRateLimitedValue(() => 'initial', options)[1],
-      createQueuedSignal((_value: string) => {}, options)[2],
-    ]
-  })
-  const stores = utilities.map((utility) => utility.store)
-  update(200)
-  utilities.forEach((utility, index) => {
-    expect(utility.options).toMatchObject({ wait: 200, window: 200 })
-    expect(utility.store).toBe(stores[index])
-  })
-  dispose()
-})
+it.each(['factory', 'getters'] as const)(
+  'updates %s options through signal and value helpers without replacing their utilities',
+  (form) => {
+    let dispose = () => {}
+    let update = (_value: number) => {}
+    let utilities!: Array<{
+      options: { wait?: unknown; window?: unknown }
+      store: unknown
+    }>
+    createRoot((cleanup) => {
+      dispose = cleanup
+      const [wait, setWait] = createSignal(100)
+      update = setWait
+      const source = {
+        get wait() {
+          return wait()
+        },
+        get window() {
+          return wait()
+        },
+        limit: 1,
+      }
+      const options = form === 'factory' ? () => ({ ...source }) : source
+      utilities = [
+        createDebouncedSignal('initial', options)[2],
+        createDebouncedValue(() => 'initial', options)[1],
+        createThrottledSignal('initial', options)[2],
+        createThrottledValue(() => 'initial', options)[1],
+        createRateLimitedSignal('initial', options)[2],
+        createRateLimitedValue(() => 'initial', options)[1],
+        createQueuedSignal((_value: string) => {}, options)[2],
+      ]
+    })
+    const stores = utilities.map((utility) => utility.store)
+    update(200)
+    utilities.forEach((utility, index) => {
+      expect(utility.options).toMatchObject({ wait: 200, window: 200 })
+      expect(utility.store).toBe(stores[index])
+    })
+    dispose()
+  },
+)
 
 it('uses updated options for subsequent debounced signal writes', () => {
   let dispose = () => {}

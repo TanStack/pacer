@@ -10,7 +10,7 @@ function injectDebouncer<TFn, TSelected>(
 selector?): AngularDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:111](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L111)
+Defined in: [debouncer/injectDebouncer.ts:115](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L115)
 
 An Angular function that creates and manages a Debouncer instance.
 

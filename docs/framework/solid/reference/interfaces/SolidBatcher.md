@@ -22,13 +22,57 @@ Defined in: [batcher/createBatcher.ts:22](https://github.com/TanStack/pacer/blob
 
 ## Properties
 
+### options
+
+```ts
+options: Omit<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute"> & Partial<Pick<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute">> & SolidBatcherOptions<TValue, TSelected>;
+```
+
+Defined in: [batcher/createBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L26)
+
+#### Overrides
+
+```ts
+Omit.options
+```
+
+***
+
+### setOptions
+
+```ts
+setOptions: (options) => void;
+```
+
+Defined in: [batcher/createBatcher.ts:27](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L27)
+
+Updates the batcher options
+
+#### Parameters
+
+##### options
+
+`Partial`\<[`SolidBatcherOptions`](SolidBatcherOptions.md)\<`TValue`, `TSelected`\>\>
+
+#### Returns
+
+`void`
+
+#### Overrides
+
+```ts
+Omit.setOptions
+```
+
+***
+
 ### state
 
 ```ts
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [batcher/createBatcher.ts:48](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L48)
+Defined in: [batcher/createBatcher.ts:51](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L51)
 
 Reactive state that will be updated when the batcher state changes
 
@@ -42,7 +86,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [batcher/createBatcher.ts:54](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L54)
+Defined in: [batcher/createBatcher.ts:57](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L57)
 
 #### Deprecated
 
@@ -58,7 +102,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [batcher/createBatcher.ts:39](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L39)
+Defined in: [batcher/createBatcher.ts:42](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L42)
 
 A Solid component that allows you to subscribe to the batcher state.
 

@@ -39,7 +39,7 @@ it('updates accessor options while retaining the limiter and store', () => {
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
 
-type OptionsFactory = () => {
+type SharedOptions = {
   wait: number
   limit: number
   window: number
@@ -47,90 +47,107 @@ type OptionsFactory = () => {
   onUnmount: () => void
 }
 
+type OptionsInput = SharedOptions | (() => SharedOptions)
+
 const cases = [
   {
     name: 'Batcher',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createBatcher((_value: Array<string>) => {}, options),
   },
   {
     name: 'Debouncer',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createDebouncer((_value: string) => {}, options),
   },
   {
     name: 'Queuer',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createQueuer((_value: string) => {}, options),
   },
   {
     name: 'RateLimiter',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createRateLimiter((_value: string) => {}, options),
   },
   {
     name: 'Throttler',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createThrottler((_value: string) => {}, options),
   },
   {
     name: 'AsyncBatcher',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createAsyncBatcher(async (_value: Array<string>) => {}, options),
   },
   {
     name: 'AsyncDebouncer',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createAsyncDebouncer(async (_value: string) => {}, options),
   },
   {
     name: 'AsyncQueuer',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createAsyncQueuer(async (_value: string) => {}, options),
   },
   {
     name: 'AsyncRateLimiter',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createAsyncRateLimiter(async (_value: string) => {}, options),
   },
   {
     name: 'AsyncThrottler',
-    create: (options: OptionsFactory) =>
+    create: (options: OptionsInput) =>
       createAsyncThrottler(async (_value: string) => {}, options),
   },
 ]
 
 for (const entry of cases) {
-  it(`${entry.name} updates factory options and uses the latest cleanup callback`, () => {
-    const first = vi.fn(),
-      latest = vi.fn()
-    let dispose = () => {},
-      update = (_value: number) => {}
-    let utility!: ReturnType<typeof entry.create>
-    createRoot((cleanup) => {
-      dispose = cleanup
-      const [value, setValue] = createSignal(1)
-      update = setValue
-      utility = entry.create(() => ({
-        wait: value(),
-        limit: value(),
-        window: 1000,
-        maxSize: value(),
-        onUnmount: value() === 1 ? first : latest,
-      }))
-    })
-    const store = utility.store
-    const initial = utility
-    expect(utility.options).toMatchObject({ wait: 1, limit: 1, maxSize: 1 })
-    update(2)
-    expect(utility).toBe(initial)
-    expect(utility.store).toBe(store)
-    expect(utility.options).toMatchObject({ wait: 2, limit: 2, maxSize: 2 })
-    expect(first).not.toHaveBeenCalled()
-    dispose()
-    expect(first).not.toHaveBeenCalled()
-    expect(latest).toHaveBeenCalledOnce()
-  })
+  it.each(['factory', 'getters'] as const)(
+    `${entry.name} updates %s options and uses the latest cleanup callback`,
+    (form) => {
+      const first = vi.fn(),
+        latest = vi.fn()
+      let dispose = () => {},
+        update = (_value: number) => {}
+      let utility!: ReturnType<typeof entry.create>
+      createRoot((cleanup) => {
+        dispose = cleanup
+        const [value, setValue] = createSignal(1)
+        update = setValue
+        const options = {
+          get wait() {
+            return value()
+          },
+          get limit() {
+            return value()
+          },
+          window: 1000,
+          get maxSize() {
+            return value()
+          },
+          get onUnmount() {
+            return value() === 1 ? first : latest
+          },
+        }
+        utility = entry.create(
+          form === 'factory' ? () => ({ ...options }) : options,
+        )
+      })
+      const store = utility.store
+      const initial = utility
+      expect(utility.options).toMatchObject({ wait: 1, limit: 1, maxSize: 1 })
+      update(2)
+      expect(utility).toBe(initial)
+      expect(utility.store).toBe(store)
+      expect(utility.options).toMatchObject({ wait: 2, limit: 2, maxSize: 2 })
+      expect(first).not.toHaveBeenCalled()
+      dispose()
+      expect(first).not.toHaveBeenCalled()
+      expect(latest).toHaveBeenCalledExactlyOnceWith(utility)
+      expect(latest.mock.calls[0]![0].state()).toEqual({})
+    },
+  )
 }
 
 it('keeps object options snapshots and cancels pending work on disposal', () => {
@@ -151,48 +168,68 @@ it('keeps object options snapshots and cancels pending work on disposal', () => 
   expect(callback).not.toHaveBeenCalled()
 })
 
-it('does not discard pending work when accessor options change', () => {
-  const callback = vi.fn()
-  let dispose = () => {},
-    update = (_value: number) => {}
-  let utility!: ReturnType<typeof createDebouncer<typeof callback>>
-  createRoot((cleanup) => {
-    dispose = cleanup
-    const [wait, setWait] = createSignal(100)
-    update = setWait
-    utility = createDebouncer(callback, () => ({ wait: wait() }))
-  })
-  utility.maybeExecute('value')
-  expect(Object.getPrototypeOf(utility)).toBe(Object.prototype)
-  expect(utility).not.toBeInstanceOf(Debouncer)
-  vi.advanceTimersByTime(50)
-  update(200)
-  vi.advanceTimersByTime(50)
-  expect(callback).toHaveBeenCalledExactlyOnceWith('value')
-  dispose()
-})
+it.each(['factory', 'getters'] as const)(
+  'does not discard pending work when %s options change',
+  (form) => {
+    const callback = vi.fn()
+    let dispose = () => {},
+      update = (_value: number) => {}
+    let utility!: ReturnType<typeof createDebouncer<typeof callback>>
+    createRoot((cleanup) => {
+      dispose = cleanup
+      const [wait, setWait] = createSignal(100)
+      update = setWait
+      const options = {
+        get wait() {
+          return wait()
+        },
+      }
+      utility = createDebouncer(
+        callback,
+        form === 'factory' ? () => ({ ...options }) : options,
+      )
+    })
+    utility.maybeExecute('value')
+    expect(Object.getPrototypeOf(utility)).toBe(Object.prototype)
+    expect(utility).not.toBeInstanceOf(Debouncer)
+    vi.advanceTimersByTime(50)
+    update(200)
+    vi.advanceTimersByTime(50)
+    expect(callback).toHaveBeenCalledExactlyOnceWith('value')
+    dispose()
+  },
+)
 
-it('uses default cleanup when the accessor removes onUnmount', () => {
-  const callback = vi.fn(),
-    onUnmount = vi.fn()
-  let dispose = () => {},
-    removeCallback = () => {}
-  createRoot((cleanup) => {
-    dispose = cleanup
-    const [custom, setCustom] = createSignal(true)
-    removeCallback = () => setCustom(false)
-    const utility = createDebouncer(callback, () => ({
-      wait: 100,
-      onUnmount: custom() ? onUnmount : undefined,
-    }))
-    utility.maybeExecute()
-  })
-  removeCallback()
-  dispose()
-  vi.advanceTimersByTime(100)
-  expect(callback).not.toHaveBeenCalled()
-  expect(onUnmount).not.toHaveBeenCalled()
-})
+it.each(['factory', 'getters'] as const)(
+  'uses default cleanup when %s options explicitly clear onUnmount',
+  (form) => {
+    const callback = vi.fn(),
+      onUnmount = vi.fn()
+    let dispose = () => {},
+      removeCallback = () => {}
+    createRoot((cleanup) => {
+      dispose = cleanup
+      const [custom, setCustom] = createSignal(true)
+      removeCallback = () => setCustom(false)
+      const options = {
+        wait: 100,
+        get onUnmount() {
+          return custom() ? onUnmount : undefined
+        },
+      }
+      const utility = createDebouncer(
+        callback,
+        form === 'factory' ? () => ({ ...options }) : options,
+      )
+      utility.maybeExecute()
+    })
+    removeCallback()
+    dispose()
+    vi.advanceTimersByTime(100)
+    expect(callback).not.toHaveBeenCalled()
+    expect(onUnmount).not.toHaveBeenCalled()
+  },
+)
 
 it('merges provider defaults on each factory update', () => {
   let dispose = () => {},

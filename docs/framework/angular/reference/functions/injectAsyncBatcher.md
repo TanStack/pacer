@@ -10,7 +10,7 @@ function injectAsyncBatcher<TValue, TSelected>(
 selector?): AngularAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:98](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L98)
+Defined in: [async-batcher/injectAsyncBatcher.ts:103](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L103)
 
 An Angular function that creates and manages an AsyncBatcher instance.
 

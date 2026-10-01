@@ -26,7 +26,11 @@ export interface AngularThrottlerOptions<
 export interface AngularThrottler<
   TFn extends AnyFunction,
   TSelected = {},
-> extends Omit<Throttler<TFn>, 'store'> {
+> extends Omit<Throttler<TFn>, 'store' | 'options' | 'setOptions'> {
+  options: Throttler<TFn>['options'] & AngularThrottlerOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<AngularThrottlerOptions<TFn, TSelected>>,
+  ) => void
   /**
    * Reactive state signal that will be updated when the throttler state changes
    *
@@ -111,51 +115,41 @@ export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
   options: AngularPacerOptions<AngularThrottlerOptions<TFn, TSelected>>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): AngularThrottler<TFn, TSelected> {
-  if (typeof options === 'function') {
-    const defaults = injectPacerOptions().throttler
-    return injectReactiveOptions<
-      AngularThrottlerOptions<TFn, TSelected>,
-      AngularThrottler<TFn, TSelected>
-    >(
-      () =>
-        ({ ...defaults, ...options() }) as AngularThrottlerOptions<
-          TFn,
-          TSelected
-        >,
-      (resolved) => injectThrottler(fn, resolved, selector),
-    )
-  }
+  return injectReactiveOptions<
+    AngularThrottlerOptions<TFn, TSelected>,
+    AngularThrottler<TFn, TSelected>
+  >(
+    options,
+    injectPacerOptions(),
+    'throttler',
+    (mergedOptions, getPublicInstance) => {
+      const throttler = new Throttler<TFn>(fn, mergedOptions)
+      const state = injectSelector(throttler.store, selector)
 
-  const mergedOptions = {
-    ...injectPacerOptions().throttler,
-    ...options,
-  } as AngularThrottlerOptions<TFn, TSelected>
+      const result = {
+        ...throttler,
+        get options() {
+          return throttler.options
+        },
+        set options(value) {
+          throttler.options = value
+        },
+        state,
+      } as AngularThrottler<TFn, TSelected>
 
-  const throttler = new Throttler<TFn>(fn, mergedOptions)
-  const state = injectSelector(throttler.store, selector)
+      const destroyRef = inject(DestroyRef, { optional: true })
+      destroyRef?.onDestroy(() => {
+        const onUnmount = (
+          throttler.options as AngularThrottlerOptions<TFn, TSelected>
+        ).onUnmount
+        if (onUnmount) {
+          onUnmount(getPublicInstance())
+        } else {
+          throttler.cancel()
+        }
+      })
 
-  const result = {
-    ...throttler,
-    get options() {
-      return throttler.options
+      return result
     },
-    set options(value) {
-      throttler.options = value
-    },
-    state,
-  } as AngularThrottler<TFn, TSelected>
-
-  const destroyRef = inject(DestroyRef, { optional: true })
-  destroyRef?.onDestroy(() => {
-    const onUnmount = (
-      throttler.options as AngularThrottlerOptions<TFn, TSelected>
-    ).onUnmount
-    if (onUnmount) {
-      onUnmount(result)
-    } else {
-      throttler.cancel()
-    }
-  })
-
-  return result
+  )
 }

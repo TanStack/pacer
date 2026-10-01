@@ -2,6 +2,30 @@
 
 <p>Type to trigger immediate updates and a debounced execution.</p>
 
+<fieldset>
+  <legend>Reactive options</legend>
+  <label>
+    Delay: {{ wait() }} ms
+    <input
+      type="range"
+      min="0"
+      max="1500"
+      step="50"
+      [value]="wait()"
+      (input)="wait.set($any($event.target).valueAsNumber)"
+    />
+  </label>
+  <label>
+    <input
+      type="checkbox"
+      [checked]="enabled()"
+      (change)="enabled.set($any($event.target).checked)"
+    />
+    Enabled
+  </label>
+  <p>Changing the delay affects the next scheduled call. Disabling cancels pending work.</p>
+</fieldset>
+
 <label>
   Query
   <input

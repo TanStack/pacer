@@ -27,6 +27,12 @@ export interface SolidAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 > extends Omit<AsyncDebouncer<TFn>, 'store'> {
+  options: AsyncDebouncer<TFn>['options'] &
+    SolidAsyncDebouncerOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<SolidAsyncDebouncerOptions<TFn, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the debouncer state.
    *
@@ -184,18 +190,15 @@ export function createAsyncDebouncer<
 ): SolidAsyncDebouncer<TFn, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidAsyncDebouncerOptions<TFn, TSelected>
-  >(options, useDefaultPacerOptions().asyncDebouncer)
-  const asyncDebouncer = new AsyncDebouncer<TFn>(
-    fn,
-    mergedOptions(),
+  >(options, () => useDefaultPacerOptions().asyncDebouncer)
+  const asyncDebouncer = untrack(
+    () => new AsyncDebouncer<TFn>(fn, mergedOptions()),
   ) as unknown as SolidAsyncDebouncer<TFn, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => asyncDebouncer.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncDebouncer.setOptions(latest))
+  })
 
   asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncDebouncerState<TFn>) => TSelected
@@ -216,9 +219,9 @@ export function createAsyncDebouncer<
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = asyncDebouncer.options.onUnmount
       if (onUnmount) {
-        onUnmount(asyncDebouncer)
+        onUnmount(result)
       } else {
         asyncDebouncer.cancel()
         asyncDebouncer.abort()
@@ -226,7 +229,7 @@ export function createAsyncDebouncer<
     })
   })
 
-  return {
+  const result = {
     ...asyncDebouncer,
     get options() {
       return asyncDebouncer.options
@@ -236,4 +239,6 @@ export function createAsyncDebouncer<
     },
     state,
   } as SolidAsyncDebouncer<TFn, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

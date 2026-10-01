@@ -7,31 +7,68 @@ import {
   runInInjectionContext,
   untracked,
 } from '@angular/core'
+import type { PacerProviderOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 
-/** Defer factory options until inputs are available without replacing the utility. */
+function hasEnumerableGetter(value: unknown): boolean {
+  if (!value || typeof value !== 'object') return false
+  return Reflect.ownKeys(value).some((key) => {
+    const descriptor = Object.getOwnPropertyDescriptor(value, key)
+    return descriptor?.enumerable && typeof descriptor.get === 'function'
+  })
+}
+
+function getPropertyDescriptor(
+  value: object,
+  key: PropertyKey,
+): PropertyDescriptor | undefined {
+  let current: object | null = value
+  while (current) {
+    const descriptor = Object.getOwnPropertyDescriptor(current, key)
+    if (descriptor) return descriptor
+    current = Object.getPrototypeOf(current) as object | null
+  }
+  return undefined
+}
+
+/** Track shallow options snapshots and defer getter reads until inputs are bound. */
 export function injectReactiveOptions<
-  TOptions extends { onUnmount?: (instance: TInstance) => void },
+  TOptions extends object,
   TInstance extends { setOptions: (options: Partial<TOptions>) => void },
 >(
-  options: () => TOptions,
-  create: (options: TOptions) => TInstance,
+  options: AngularPacerOptions<TOptions>,
+  defaults: PacerProviderOptions,
+  kind: keyof PacerProviderOptions,
+  create: (options: TOptions, getPublicInstance: () => TInstance) => TInstance,
 ): TInstance {
+  const defaultDescriptor = getPropertyDescriptor(defaults, kind)
+  const reactive =
+    typeof options === 'function' ||
+    hasEnumerableGetter(options) ||
+    typeof defaultDescriptor?.get === 'function' ||
+    hasEnumerableGetter(defaultDescriptor?.value)
+  const readOptions = (): TOptions =>
+    ({
+      ...defaults[kind],
+      ...(typeof options === 'function' ? options() : options),
+    }) as TOptions
+
+  if (!reactive) {
+    const result: TInstance = untracked(() =>
+      create(readOptions(), () => result),
+    )
+    return result
+  }
+
   const injector = inject(Injector)
   const destroyRef = inject(DestroyRef)
-  const currentOptions = computed(options)
+  const currentOptions = computed(readOptions)
   let instance: TInstance | undefined
   let destroyed = false
   destroyRef.onDestroy(() => {
     destroyed = true
   })
 
-  const resolveOptions = (): TOptions => {
-    const latest = currentOptions()
-    return {
-      ...latest,
-      onUnmount: latest.onUnmount ? () => latest.onUnmount!(result) : undefined,
-    }
-  }
   const getInstance = (): TInstance => {
     if (!instance) {
       if (destroyed) {
@@ -40,7 +77,9 @@ export function injectReactiveOptions<
         )
       }
       instance = untracked(() =>
-        runInInjectionContext(injector, () => create(resolveOptions())),
+        runInInjectionContext(injector, () =>
+          create(currentOptions(), () => result),
+        ),
       )
     }
     return instance
@@ -57,7 +96,7 @@ export function injectReactiveOptions<
   })
 
   effect(() => {
-    const latest = resolveOptions()
+    const latest = currentOptions()
     untracked(() => {
       if (instance) {
         instance.setOptions(latest)

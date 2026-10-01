@@ -27,6 +27,12 @@ export interface SolidAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 > extends Omit<AsyncRateLimiter<TFn>, 'store'> {
+  options: AsyncRateLimiter<TFn>['options'] &
+    SolidAsyncRateLimiterOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<SolidAsyncRateLimiterOptions<TFn, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the rate limiter state.
    *
@@ -230,18 +236,15 @@ export function createAsyncRateLimiter<
 ): SolidAsyncRateLimiter<TFn, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidAsyncRateLimiterOptions<TFn, TSelected>
-  >(options, useDefaultPacerOptions().asyncRateLimiter)
-  const asyncRateLimiter = new AsyncRateLimiter<TFn>(
-    fn,
-    mergedOptions(),
+  >(options, () => useDefaultPacerOptions().asyncRateLimiter)
+  const asyncRateLimiter = untrack(
+    () => new AsyncRateLimiter<TFn>(fn, mergedOptions()),
   ) as unknown as SolidAsyncRateLimiter<TFn, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => asyncRateLimiter.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncRateLimiter.setOptions(latest))
+  })
 
   asyncRateLimiter.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncRateLimiterState<TFn>) => TSelected
@@ -262,16 +265,16 @@ export function createAsyncRateLimiter<
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = asyncRateLimiter.options.onUnmount
       if (onUnmount) {
-        onUnmount(asyncRateLimiter)
+        onUnmount(result)
       } else {
         asyncRateLimiter.abort()
       }
     })
   })
 
-  return {
+  const result = {
     ...asyncRateLimiter,
     get options() {
       return asyncRateLimiter.options
@@ -281,4 +284,6 @@ export function createAsyncRateLimiter<
     },
     state,
   } as SolidAsyncRateLimiter<TFn, TSelected>
+
+  return result
 }

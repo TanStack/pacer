@@ -1,4 +1,4 @@
 export * from '@tanstack/pacer/types'
 
-/** Options snapshot, or a factory that reads reactive values. */
+/** An options object with optional reactive getters, or an options factory. */
 export type SolidPacerOptions<TOptions> = TOptions | (() => TOptions)

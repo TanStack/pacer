@@ -13,6 +13,9 @@ import { injectQueuedValue } from '../src/queuer/injectQueuedValue'
 import { injectQueuedSignal } from '../src/queuer/injectQueuedSignal'
 import { injectAsyncQueuedSignal } from '../src/async-queuer/injectAsyncQueuedSignal'
 import { injectDebouncedCallback } from '../src/debouncer/injectDebouncedCallback'
+import { injectDebouncedSignal } from '../src/debouncer/injectDebouncedSignal'
+import { injectThrottledSignal } from '../src/throttler/injectThrottledSignal'
+import { injectRateLimitedSignal } from '../src/rate-limiter/injectRateLimitedSignal'
 
 beforeAll(() =>
   TestBed.initTestEnvironment(BrowserTestingModule, platformBrowserTesting()),
@@ -23,39 +26,53 @@ afterEach(() => {
   vi.useRealTimers()
 })
 
-it('accepts factory options in each value helper with an explicit initial value', () => {
-  const wait = signal(100),
-    source = signal('source')
-  const helpers = TestBed.runInInjectionContext(() => [
-    injectDebouncedValue(source, 'initial', () => ({ wait: wait() }), undefined)
-      .debouncer,
-    injectThrottledValue(source, 'initial', () => ({ wait: wait() }), undefined)
-      .throttler,
-    injectRateLimitedValue(
-      source,
-      'initial',
-      () => ({ limit: 1, window: wait() }),
-      undefined,
-    ).rateLimiter,
-    injectQueuedValue(
-      source,
-      'initial',
-      () => ({ wait: wait(), started: false }),
-      undefined,
-    ).queuer,
-  ])
-  TestBed.tick()
-  for (const helper of helpers)
-    expect(helper.options).toMatchObject(
-      'window' in helper.options ? { window: 100 } : { wait: 100 },
+it.each(['factory', 'getters'] as const)(
+  'accepts %s options in each value helper with an explicit initial value',
+  (mode) => {
+    const wait = signal(100),
+      source = signal('source')
+    const options = {
+      get wait() {
+        return wait()
+      },
+      limit: 1,
+      get window() {
+        return wait()
+      },
+      started: false,
+    }
+    const helpers = TestBed.runInInjectionContext(() =>
+      mode === 'factory'
+        ? [
+            injectDebouncedValue(source, 'initial', () => options, undefined)
+              .debouncer,
+            injectThrottledValue(source, 'initial', () => options, undefined)
+              .throttler,
+            injectRateLimitedValue(source, 'initial', () => options, undefined)
+              .rateLimiter,
+            injectQueuedValue(source, 'initial', () => options, undefined)
+              .queuer,
+          ]
+        : [
+            injectDebouncedValue(source, 'initial', options).debouncer,
+            injectThrottledValue(source, 'initial', options).throttler,
+            injectRateLimitedValue(source, 'initial', options).rateLimiter,
+            injectQueuedValue(source, 'initial', options).queuer,
+          ],
     )
-  wait.set(200)
-  TestBed.tick()
-  for (const helper of helpers)
-    expect(helper.options).toMatchObject(
-      'window' in helper.options ? { window: 200 } : { wait: 200 },
-    )
-})
+    TestBed.tick()
+    for (const helper of helpers)
+      expect(helper.options).toMatchObject(
+        'window' in helper.options ? { window: 100 } : { wait: 100 },
+      )
+    wait.set(200)
+    TestBed.tick()
+    for (const helper of helpers)
+      expect(helper.options).toMatchObject(
+        'window' in helper.options ? { window: 200 } : { wait: 200 },
+      )
+  },
+)
 
 it('keeps factory options and selector arguments distinct', () => {
   const source = signal('value')
@@ -73,33 +90,69 @@ it('keeps factory options and selector arguments distinct', () => {
   expect(helper()).toBe('value')
 })
 
-it('defers callback and queue-signal helpers until required inputs are bound', () => {
-  const callback = vi.fn()
-  class Helpers {
-    wait = input.required<number>()
-    debounced = injectDebouncedCallback(callback, () => ({ wait: this.wait() }))
-    queued = injectQueuedSignal(callback, () => ({
-      wait: this.wait(),
-      started: false,
-    }))
-    asyncQueued = injectAsyncQueuedSignal(
-      (value: string) => Promise.resolve(callback(value)),
-      () => ({ wait: this.wait(), started: false }),
+it.each(['factory', 'getters'] as const)(
+  'defers %s in callback and queue-signal helpers until required inputs are bound',
+  (mode) => {
+    const callback = vi.fn()
+    const createOptions = (readWait: () => number) => {
+      const options = {
+        get wait() {
+          return readWait()
+        },
+        started: false,
+      }
+      return mode === 'factory' ? () => options : options
+    }
+    class Helpers {
+      wait = input.required<number>()
+      options = createOptions(this.wait)
+      debounced = injectDebouncedCallback(callback, this.options)
+      queued = injectQueuedSignal(callback, this.options)
+      asyncQueued = injectAsyncQueuedSignal(
+        (value: string) => Promise.resolve(callback(value)),
+        this.options,
+      )
+    }
+    Input({ required: true, isSignal: true } as Parameters<typeof Input>[0])(
+      Helpers.prototype,
+      'wait',
+    )
+    Component({ standalone: true, template: '' })(Helpers)
+    const fixture = TestBed.createComponent(Helpers)
+    fixture.componentRef.setInput('wait', 100)
+    fixture.detectChanges()
+    fixture.componentInstance.debounced('debounced')
+    fixture.componentInstance.queued.addItem('queued')
+    fixture.componentInstance.asyncQueued.addItem('asyncQueued')
+    expect(fixture.componentInstance.queued.queuer.options.wait).toBe(100)
+    expect(fixture.componentInstance.asyncQueued.queuer.options.wait).toBe(100)
+    vi.advanceTimersByTime(100)
+    expect(callback).toHaveBeenCalledExactlyOnceWith('debounced')
+  },
+)
+
+it('updates getter options in each managed signal helper', () => {
+  const wait = signal(100)
+  const options = {
+    get wait() {
+      return wait()
+    },
+    get window() {
+      return wait()
+    },
+    limit: 1,
+  }
+  const helpers = TestBed.runInInjectionContext(() => [
+    injectDebouncedSignal('initial', options).debouncer,
+    injectThrottledSignal('initial', options).throttler,
+    injectRateLimitedSignal('initial', options).rateLimiter,
+  ])
+  TestBed.tick()
+  wait.set(200)
+  TestBed.tick()
+  for (const helper of helpers) {
+    expect(helper.options).toMatchObject(
+      'window' in helper.options ? { window: 200 } : { wait: 200 },
     )
   }
-  Input({ required: true, isSignal: true } as Parameters<typeof Input>[0])(
-    Helpers.prototype,
-    'wait',
-  )
-  Component({ standalone: true, template: '' })(Helpers)
-  const fixture = TestBed.createComponent(Helpers)
-  fixture.componentRef.setInput('wait', 100)
-  fixture.detectChanges()
-  fixture.componentInstance.debounced('debounced')
-  fixture.componentInstance.queued.addItem('queued')
-  fixture.componentInstance.asyncQueued.addItem('asyncQueued')
-  expect(fixture.componentInstance.queued.queuer.options.wait).toBe(100)
-  expect(fixture.componentInstance.asyncQueued.queuer.options.wait).toBe(100)
-  vi.advanceTimersByTime(100)
-  expect(callback).toHaveBeenCalledExactlyOnceWith('debounced')
 })

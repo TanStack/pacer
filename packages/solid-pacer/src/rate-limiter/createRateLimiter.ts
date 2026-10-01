@@ -27,6 +27,11 @@ export interface SolidRateLimiter<
   TFn extends AnyFunction,
   TSelected = {},
 > extends Omit<RateLimiter<TFn>, 'store'> {
+  options: RateLimiter<TFn>['options'] & SolidRateLimiterOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<SolidRateLimiterOptions<TFn, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the rate limiter state.
    *
@@ -192,18 +197,15 @@ export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
 ): SolidRateLimiter<TFn, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidRateLimiterOptions<TFn, TSelected>
-  >(options, useDefaultPacerOptions().rateLimiter)
-  const rateLimiter = new RateLimiter<TFn>(
-    fn,
-    mergedOptions(),
+  >(options, () => useDefaultPacerOptions().rateLimiter)
+  const rateLimiter = untrack(
+    () => new RateLimiter<TFn>(fn, mergedOptions()),
   ) as unknown as SolidRateLimiter<TFn, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => rateLimiter.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => rateLimiter.setOptions(latest))
+  })
 
   rateLimiter.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: RateLimiterState) => TSelected
@@ -222,14 +224,14 @@ export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = rateLimiter.options.onUnmount
       if (onUnmount) {
-        onUnmount(rateLimiter)
+        onUnmount(result)
       }
     })
   })
 
-  return {
+  const result = {
     ...rateLimiter,
     get options() {
       return rateLimiter.options
@@ -239,4 +241,6 @@ export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
     },
     state,
   } as SolidRateLimiter<TFn, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

@@ -176,12 +176,19 @@ function App3() {
   const [currentValue, setCurrentValue] = createSignal(50)
   const [debouncedValue, setDebouncedValue] = createSignal(50)
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
+  const [wait, setWait] = createSignal(250)
+  const [enabled, setEnabled] = createSignal(true)
 
   // Lower-level createDebouncer hook - requires you to manage your own state
   const setValueDebouncer = createDebouncer(
     setDebouncedValue,
     {
-      wait: 250,
+      get wait() {
+        return wait()
+      },
+      get enabled() {
+        return enabled()
+      },
     },
     // Alternative to setValueDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
@@ -198,6 +205,32 @@ function App3() {
   return (
     <div>
       <h1>TanStack Pacer createDebouncer Example 3</h1>
+      <fieldset>
+        <legend>Reactive options</legend>
+        <label>
+          Delay: {wait()} ms
+          <input
+            type="range"
+            min="0"
+            max="1500"
+            step="50"
+            value={wait()}
+            onInput={(event) => setWait(event.currentTarget.valueAsNumber)}
+          />
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={enabled()}
+            onChange={(event) => setEnabled(event.currentTarget.checked)}
+          />
+          Enabled
+        </label>
+        <p>
+          Changing the delay affects the next scheduled call. Disabling cancels
+          pending work.
+        </p>
+      </fieldset>
       <div style={{ 'margin-bottom': '20px' }}>
         <label>
           Current Range:
@@ -271,7 +304,7 @@ function App3() {
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
-        <p>Debounced with 250ms wait time</p>
+        <p>Debounced with {wait()}ms wait time</p>
       </div>
       <setValueDebouncer.Subscribe selector={(state) => state}>
         {(state) => (

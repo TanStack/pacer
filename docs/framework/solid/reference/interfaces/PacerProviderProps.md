@@ -3,7 +3,7 @@ id: PacerProviderProps
 title: PacerProviderProps
 ---
 
-Defined in: [provider/PacerProvider.tsx:37](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L37)
+Defined in: [provider/PacerProvider.tsx:33](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L33)
 
 ## Properties
 
@@ -13,7 +13,7 @@ Defined in: [provider/PacerProvider.tsx:37](https://github.com/TanStack/pacer/bl
 children: Element;
 ```
 
-Defined in: [provider/PacerProvider.tsx:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L38)
+Defined in: [provider/PacerProvider.tsx:34](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L34)
 
 ***
 
@@ -23,4 +23,4 @@ Defined in: [provider/PacerProvider.tsx:38](https://github.com/TanStack/pacer/bl
 optional defaultOptions?: PacerProviderOptions;
 ```
 
-Defined in: [provider/PacerProvider.tsx:39](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L39)
+Defined in: [provider/PacerProvider.tsx:35](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L35)
