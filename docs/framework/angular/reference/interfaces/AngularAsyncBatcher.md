@@ -7,7 +7,7 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:26](https://github.com/TanStack
 
 ## Extends
 
-- `Omit`\<`AsyncBatcher`\<`TValue`\>, `"store"`\>
+- `Omit`\<`AsyncBatcher`\<`TValue`\>, `"store"` \| `"options"` \| `"setOptions"`\>
 
 ## Type Parameters
 
@@ -22,13 +22,55 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:26](https://github.com/TanStack
 
 ## Properties
 
+### options
+
+```ts
+options: Omit<Required<AsyncBatcherOptions<TValue>>,
+  | "initialState"
+  | "key"
+  | "onError"
+  | "onSettled"
+  | "onSuccess"
+  | "onItemsChange"> & Partial<Pick<Required<AsyncBatcherOptions<TValue>>,
+  | "initialState"
+  | "key"
+  | "onError"
+  | "onSettled"
+  | "onSuccess"
+| "onItemsChange">> & AngularAsyncBatcherOptions<TValue, TSelected>;
+```
+
+Defined in: [async-batcher/injectAsyncBatcher.ts:30](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L30)
+
+***
+
+### setOptions
+
+```ts
+setOptions: (options) => void;
+```
+
+Defined in: [async-batcher/injectAsyncBatcher.ts:32](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L32)
+
+#### Parameters
+
+##### options
+
+`Partial`\<[`AngularAsyncBatcherOptions`](AngularAsyncBatcherOptions.md)\<`TValue`, `TSelected`\>\>
+
+#### Returns
+
+`void`
+
+***
+
 ### state
 
 ```ts
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:35](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L35)
+Defined in: [async-batcher/injectAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L40)
 
 Reactive state signal that will be updated when the async batcher state changes
 
@@ -42,7 +84,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L40)
+Defined in: [async-batcher/injectAsyncBatcher.ts:45](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L45)
 
 #### Deprecated
 

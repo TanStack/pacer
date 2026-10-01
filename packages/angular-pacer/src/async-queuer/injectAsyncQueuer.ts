@@ -25,8 +25,13 @@ export interface AngularAsyncQueuerOptions<
 
 export interface AngularAsyncQueuer<TValue, TSelected = {}> extends Omit<
   AsyncQueuer<TValue>,
-  'store'
+  'store' | 'options' | 'setOptions'
 > {
+  options: AsyncQueuer<TValue>['options'] &
+    AngularAsyncQueuerOptions<TValue, TSelected>
+  setOptions: (
+    options: Partial<AngularAsyncQueuerOptions<TValue, TSelected>>,
+  ) => void
   /**
    * Reactive state signal that will be updated when the async queuer state changes
    *
@@ -103,52 +108,42 @@ export function injectAsyncQueuer<TValue, TSelected = {}>(
   selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): AngularAsyncQueuer<TValue, TSelected> {
-  if (typeof options === 'function') {
-    const defaults = injectPacerOptions().asyncQueuer
-    return injectReactiveOptions<
-      AngularAsyncQueuerOptions<TValue, TSelected>,
-      AngularAsyncQueuer<TValue, TSelected>
-    >(
-      () =>
-        ({ ...defaults, ...options() }) as AngularAsyncQueuerOptions<
-          TValue,
-          TSelected
-        >,
-      (resolved) => injectAsyncQueuer(fn, resolved, selector),
-    )
-  }
+  return injectReactiveOptions<
+    AngularAsyncQueuerOptions<TValue, TSelected>,
+    AngularAsyncQueuer<TValue, TSelected>
+  >(
+    options,
+    injectPacerOptions(),
+    'asyncQueuer',
+    (mergedOptions, getPublicInstance) => {
+      const queuer = new AsyncQueuer<TValue>(fn, mergedOptions)
+      const state = injectSelector(queuer.store, selector)
 
-  const mergedOptions = {
-    ...injectPacerOptions().asyncQueuer,
-    ...options,
-  } as AngularAsyncQueuerOptions<TValue, TSelected>
+      const result = {
+        ...queuer,
+        get options() {
+          return queuer.options
+        },
+        set options(value) {
+          queuer.options = value
+        },
+        state,
+      } as AngularAsyncQueuer<TValue, TSelected>
 
-  const queuer = new AsyncQueuer<TValue>(fn, mergedOptions)
-  const state = injectSelector(queuer.store, selector)
+      const destroyRef = inject(DestroyRef, { optional: true })
+      destroyRef?.onDestroy(() => {
+        const onUnmount = (
+          queuer.options as AngularAsyncQueuerOptions<TValue, TSelected>
+        ).onUnmount
+        if (onUnmount) {
+          onUnmount(getPublicInstance())
+        } else {
+          queuer.stop()
+          queuer.abort()
+        }
+      })
 
-  const result = {
-    ...queuer,
-    get options() {
-      return queuer.options
+      return result
     },
-    set options(value) {
-      queuer.options = value
-    },
-    state,
-  } as AngularAsyncQueuer<TValue, TSelected>
-
-  const destroyRef = inject(DestroyRef, { optional: true })
-  destroyRef?.onDestroy(() => {
-    const onUnmount = (
-      queuer.options as AngularAsyncQueuerOptions<TValue, TSelected>
-    ).onUnmount
-    if (onUnmount) {
-      onUnmount(result)
-    } else {
-      queuer.stop()
-      queuer.abort()
-    }
-  })
-
-  return result
+  )
 }

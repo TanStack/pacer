@@ -26,6 +26,12 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
   'store'
 > {
+  options: AsyncBatcher<TValue>['options'] &
+    SolidAsyncBatcherOptions<TValue, TSelected>
+  setOptions: (
+    options: Partial<SolidAsyncBatcherOptions<TValue, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the batcher state.
    *
@@ -194,18 +200,15 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
 ): SolidAsyncBatcher<TValue, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidAsyncBatcherOptions<TValue, TSelected>
-  >(options, useDefaultPacerOptions().asyncBatcher)
-  const asyncBatcher = new AsyncBatcher<TValue>(
-    fn,
-    mergedOptions(),
+  >(options, () => useDefaultPacerOptions().asyncBatcher)
+  const asyncBatcher = untrack(
+    () => new AsyncBatcher<TValue>(fn, mergedOptions()),
   ) as unknown as SolidAsyncBatcher<TValue, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => asyncBatcher.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncBatcher.setOptions(latest))
+  })
 
   asyncBatcher.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncBatcherState<TValue>) => TSelected
@@ -224,9 +227,9 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = asyncBatcher.options.onUnmount
       if (onUnmount) {
-        onUnmount(asyncBatcher)
+        onUnmount(result)
       } else {
         asyncBatcher.cancel()
         asyncBatcher.abort()
@@ -234,7 +237,7 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
     })
   })
 
-  return {
+  const result = {
     ...asyncBatcher,
     get options() {
       return asyncBatcher.options
@@ -244,4 +247,6 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
     },
     state,
   } as SolidAsyncBatcher<TValue, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

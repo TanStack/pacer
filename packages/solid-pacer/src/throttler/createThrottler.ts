@@ -27,6 +27,9 @@ export interface SolidThrottler<
   TFn extends AnyFunction,
   TSelected = {},
 > extends Omit<Throttler<TFn>, 'store'> {
+  options: Throttler<TFn>['options'] & SolidThrottlerOptions<TFn, TSelected>
+  setOptions: (options: Partial<SolidThrottlerOptions<TFn, TSelected>>) => void
+
   /**
    * A Solid component that allows you to subscribe to the throttler state.
    *
@@ -163,18 +166,15 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
 ): SolidThrottler<TFn, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidThrottlerOptions<TFn, TSelected>
-  >(options, useDefaultPacerOptions().throttler)
-  const asyncThrottler = new Throttler<TFn>(
-    fn,
-    mergedOptions(),
+  >(options, () => useDefaultPacerOptions().throttler)
+  const asyncThrottler = untrack(
+    () => new Throttler<TFn>(fn, mergedOptions()),
   ) as unknown as SolidThrottler<TFn, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => asyncThrottler.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncThrottler.setOptions(latest))
+  })
 
   asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: ThrottlerState<TFn>) => TSelected
@@ -195,16 +195,16 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = asyncThrottler.options.onUnmount
       if (onUnmount) {
-        onUnmount(asyncThrottler)
+        onUnmount(result)
       } else {
         asyncThrottler.cancel()
       }
     })
   })
 
-  return {
+  const result = {
     ...asyncThrottler,
     get options() {
       return asyncThrottler.options
@@ -214,4 +214,6 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
     },
     state,
   } as SolidThrottler<TFn, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

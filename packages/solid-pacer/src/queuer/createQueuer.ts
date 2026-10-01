@@ -23,6 +23,9 @@ export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
   Queuer<TValue>,
   'store'
 > {
+  options: Queuer<TValue>['options'] & SolidQueuerOptions<TValue, TSelected>
+  setOptions: (options: Partial<SolidQueuerOptions<TValue, TSelected>>) => void
+
   /**
    * A Solid component that allows you to subscribe to the queuer state.
    *
@@ -162,18 +165,15 @@ export function createQueuer<TValue, TSelected = {}>(
 ): SolidQueuer<TValue, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidQueuerOptions<TValue, TSelected>
-  >(options, useDefaultPacerOptions().queuer)
-  const queuer = new Queuer(fn, mergedOptions()) as unknown as SolidQueuer<
-    TValue,
-    TSelected
-  >
+  >(options, () => useDefaultPacerOptions().queuer)
+  const queuer = untrack(
+    () => new Queuer(fn, mergedOptions()),
+  ) as unknown as SolidQueuer<TValue, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => queuer.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => queuer.setOptions(latest))
+  })
 
   queuer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: QueuerState<TValue>) => TSelected
@@ -192,16 +192,16 @@ export function createQueuer<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = queuer.options.onUnmount
       if (onUnmount) {
-        onUnmount(queuer)
+        onUnmount(result)
       } else {
         queuer.stop()
       }
     })
   })
 
-  return {
+  const result = {
     ...queuer,
     get options() {
       return queuer.options
@@ -211,4 +211,6 @@ export function createQueuer<TValue, TSelected = {}>(
     },
     state,
   } as SolidQueuer<TValue, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

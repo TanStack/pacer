@@ -4,11 +4,12 @@ import type { SolidPacerOptions } from '../types'
 
 export function createPacerOptions<TOptions extends object>(
   options: SolidPacerOptions<TOptions>,
-  defaults: object | undefined,
+  defaults: () => object | undefined,
 ): Accessor<TOptions> {
-  if (typeof options === 'function') {
-    return createMemo(() => ({ ...defaults, ...options() }))
-  }
-  const initialOptions = { ...defaults, ...options }
-  return () => initialOptions
+  // Evaluate only top-level properties. Function-valued options stay opaque,
+  // and omitted keys retain the core's partial setOptions merge semantics.
+  return createMemo(() => ({
+    ...defaults(),
+    ...(typeof options === 'function' ? options() : options),
+  }))
 }

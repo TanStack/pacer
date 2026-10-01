@@ -22,13 +22,57 @@ Defined in: [rate-limiter/createRateLimiter.ts:26](https://github.com/TanStack/p
 
 ## Properties
 
+### options
+
+```ts
+options: RateLimiterOptions<TFn> & SolidRateLimiterOptions<TFn, TSelected>;
+```
+
+Defined in: [rate-limiter/createRateLimiter.ts:30](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L30)
+
+#### Overrides
+
+```ts
+Omit.options
+```
+
+***
+
+### setOptions
+
+```ts
+setOptions: (options) => void;
+```
+
+Defined in: [rate-limiter/createRateLimiter.ts:31](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L31)
+
+Updates the rate limiter options
+
+#### Parameters
+
+##### options
+
+`Partial`\<[`SolidRateLimiterOptions`](SolidRateLimiterOptions.md)\<`TFn`, `TSelected`\>\>
+
+#### Returns
+
+`void`
+
+#### Overrides
+
+```ts
+Omit.setOptions
+```
+
+***
+
 ### state
 
 ```ts
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:52](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L52)
+Defined in: [rate-limiter/createRateLimiter.ts:57](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L57)
 
 Reactive state that will be updated when the rate limiter state changes
 
@@ -42,7 +86,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<RateLimiterState>>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L58)
+Defined in: [rate-limiter/createRateLimiter.ts:63](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L63)
 
 #### Deprecated
 
@@ -58,7 +102,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:43](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L43)
+Defined in: [rate-limiter/createRateLimiter.ts:48](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L48)
 
 A Solid component that allows you to subscribe to the rate limiter state.
 

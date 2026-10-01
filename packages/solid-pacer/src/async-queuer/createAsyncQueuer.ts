@@ -26,6 +26,12 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
   AsyncQueuer<TValue>,
   'store'
 > {
+  options: AsyncQueuer<TValue>['options'] &
+    SolidAsyncQueuerOptions<TValue, TSelected>
+  setOptions: (
+    options: Partial<SolidAsyncQueuerOptions<TValue, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the queuer state.
    *
@@ -188,18 +194,15 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
 ): SolidAsyncQueuer<TValue, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidAsyncQueuerOptions<TValue, TSelected>
-  >(options, useDefaultPacerOptions().asyncQueuer)
-  const asyncQueuer = new AsyncQueuer<TValue>(
-    fn,
-    mergedOptions(),
+  >(options, () => useDefaultPacerOptions().asyncQueuer)
+  const asyncQueuer = untrack(
+    () => new AsyncQueuer<TValue>(fn, mergedOptions()),
   ) as unknown as SolidAsyncQueuer<TValue, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => asyncQueuer.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncQueuer.setOptions(latest))
+  })
 
   asyncQueuer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncQueuerState<TValue>) => TSelected
@@ -218,9 +221,9 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = asyncQueuer.options.onUnmount
       if (onUnmount) {
-        onUnmount(asyncQueuer)
+        onUnmount(result)
       } else {
         asyncQueuer.stop()
         asyncQueuer.abort()
@@ -228,7 +231,7 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
     })
   })
 
-  return {
+  const result = {
     ...asyncQueuer,
     get options() {
       return asyncQueuer.options
@@ -238,4 +241,6 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
     },
     state,
   } as SolidAsyncQueuer<TValue, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

@@ -12,6 +12,8 @@ export class App {
   protected readonly immediateCount = signal(0)
   protected readonly debouncedCount = signal(0)
   protected readonly debouncedValue = signal('')
+  protected readonly wait = signal(400)
+  protected readonly enabled = signal(true)
 
   protected readonly debouncer = injectDebouncer<
     (value: string) => void,
@@ -21,7 +23,7 @@ export class App {
       this.debouncedValue.set(value)
       this.debouncedCount.update((c) => c + 1)
     },
-    { wait: 400 },
+    () => ({ wait: this.wait(), enabled: this.enabled() }),
     (state) => ({
       isPending: state.isPending,
       executionCount: state.executionCount,

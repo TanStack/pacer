@@ -27,6 +27,9 @@ export interface SolidDebouncer<
   TFn extends AnyFunction,
   TSelected = {},
 > extends Omit<Debouncer<TFn>, 'store'> {
+  options: Debouncer<TFn>['options'] & SolidDebouncerOptions<TFn, TSelected>
+  setOptions: (options: Partial<SolidDebouncerOptions<TFn, TSelected>>) => void
+
   /**
    * A Solid component that allows you to subscribe to the debouncer state.
    *
@@ -162,18 +165,15 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
 ): SolidDebouncer<TFn, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidDebouncerOptions<TFn, TSelected>
-  >(options, useDefaultPacerOptions().debouncer)
-  const asyncDebouncer = new Debouncer<TFn>(
-    fn,
-    mergedOptions(),
+  >(options, () => useDefaultPacerOptions().debouncer)
+  const asyncDebouncer = untrack(
+    () => new Debouncer<TFn>(fn, mergedOptions()),
   ) as unknown as SolidDebouncer<TFn, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => asyncDebouncer.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncDebouncer.setOptions(latest))
+  })
 
   asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: DebouncerState<TFn>) => TSelected
@@ -194,16 +194,16 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = asyncDebouncer.options.onUnmount
       if (onUnmount) {
-        onUnmount(asyncDebouncer)
+        onUnmount(result)
       } else {
         asyncDebouncer.cancel()
       }
     })
   })
 
-  return {
+  const result = {
     ...asyncDebouncer,
     get options() {
       return asyncDebouncer.options
@@ -213,4 +213,6 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
     },
     state,
   } as SolidDebouncer<TFn, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

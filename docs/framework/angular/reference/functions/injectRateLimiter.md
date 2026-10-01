@@ -10,7 +10,7 @@ function injectRateLimiter<TFn, TSelected>(
 selector?): AngularRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:116](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L116)
+Defined in: [rate-limiter/injectRateLimiter.ts:121](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L121)
 
 An Angular function that creates and manages a RateLimiter instance.
 

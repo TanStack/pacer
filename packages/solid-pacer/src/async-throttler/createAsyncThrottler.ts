@@ -27,6 +27,12 @@ export interface SolidAsyncThrottler<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 > extends Omit<AsyncThrottler<TFn>, 'store'> {
+  options: AsyncThrottler<TFn>['options'] &
+    SolidAsyncThrottlerOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<SolidAsyncThrottlerOptions<TFn, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the throttler state.
    *
@@ -182,18 +188,15 @@ export function createAsyncThrottler<
 ): SolidAsyncThrottler<TFn, TSelected> {
   const mergedOptions = createPacerOptions<
     SolidAsyncThrottlerOptions<TFn, TSelected>
-  >(options, useDefaultPacerOptions().asyncThrottler)
-  const asyncThrottler = new AsyncThrottler(
-    fn,
-    mergedOptions(),
+  >(options, () => useDefaultPacerOptions().asyncThrottler)
+  const asyncThrottler = untrack(
+    () => new AsyncThrottler(fn, mergedOptions()),
   ) as unknown as SolidAsyncThrottler<TFn, TSelected>
 
-  if (typeof options === 'function') {
-    createRenderEffect(() => {
-      const latest = mergedOptions()
-      untrack(() => asyncThrottler.setOptions(latest))
-    })
-  }
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncThrottler.setOptions(latest))
+  })
 
   asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncThrottlerState<TFn>) => TSelected
@@ -214,9 +217,9 @@ export function createAsyncThrottler<
 
   createEffect(() => {
     onCleanup(() => {
-      const onUnmount = mergedOptions().onUnmount
+      const onUnmount = asyncThrottler.options.onUnmount
       if (onUnmount) {
-        onUnmount(asyncThrottler)
+        onUnmount(result)
       } else {
         asyncThrottler.cancel()
         asyncThrottler.abort()
@@ -224,7 +227,7 @@ export function createAsyncThrottler<
     })
   })
 
-  return {
+  const result = {
     ...asyncThrottler,
     get options() {
       return asyncThrottler.options
@@ -234,4 +237,6 @@ export function createAsyncThrottler<
     },
     state,
   } as SolidAsyncThrottler<TFn, TSelected>
+
+  return result
 }

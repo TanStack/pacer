@@ -7,7 +7,7 @@ Defined in: [batcher/injectBatcher.ts:22](https://github.com/TanStack/pacer/blob
 
 ## Extends
 
-- `Omit`\<`Batcher`\<`TValue`\>, `"store"`\>
+- `Omit`\<`Batcher`\<`TValue`\>, `"store"` \| `"options"` \| `"setOptions"`\>
 
 ## Type Parameters
 
@@ -22,13 +22,43 @@ Defined in: [batcher/injectBatcher.ts:22](https://github.com/TanStack/pacer/blob
 
 ## Properties
 
+### options
+
+```ts
+options: Omit<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute"> & Partial<Pick<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute">> & AngularBatcherOptions<TValue, TSelected>;
+```
+
+Defined in: [batcher/injectBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L26)
+
+***
+
+### setOptions
+
+```ts
+setOptions: (options) => void;
+```
+
+Defined in: [batcher/injectBatcher.ts:27](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L27)
+
+#### Parameters
+
+##### options
+
+`Partial`\<[`AngularBatcherOptions`](AngularBatcherOptions.md)\<`TValue`, `TSelected`\>\>
+
+#### Returns
+
+`void`
+
+***
+
 ### state
 
 ```ts
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [batcher/injectBatcher.ts:31](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L31)
+Defined in: [batcher/injectBatcher.ts:35](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L35)
 
 Reactive state signal that will be updated when the batcher state changes
 
@@ -42,7 +72,7 @@ Use this instead of `batcher.store.state`
 readonly store: Store<Readonly<BatcherState<TValue>>>;
 ```
 
-Defined in: [batcher/injectBatcher.ts:36](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L36)
+Defined in: [batcher/injectBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L40)
 
 #### Deprecated
 
