@@ -129,7 +129,7 @@ debouncer.maybeExecute('second')
 debouncer.maybeExecute('latest') // Executes after 1 second of inactivity.
 ```
 
-With both edges enabled, a single call executes only on the leading edge. A trailing execution occurs only when another call arrives during the wait period.
+With both edges enabled, a single call executes only on the leading edge. A trailing execution occurs only when another call arrives during the wait period. After the leading call, `isPending` is false even while the leading cooldown is active. Calling `flush()` at that point does nothing and preserves the cooldown. `LiteDebouncer` also leaves an already executed leading call untouched when flushed.
 
 ### No maximum wait
 
