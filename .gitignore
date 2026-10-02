@@ -61,3 +61,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 .angular
+
+# Playwright
+test-results/
+playwright-report/
