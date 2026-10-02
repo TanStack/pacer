@@ -52,6 +52,7 @@ Before proceeding with development, ensure you match one of the following criter
 - Document your changes in the appropriate documentation website markdown pages
 - Run `pnpm test` to ensure all tests pass before committing
 - For framework example changes, run `pnpm test:e2e`. Install Chromium once with `pnpm test:e2e:install`. See the [example e2e instructions](./tests/e2e/README.md) for individual examples and debugging.
+- To run package tests together from the repository root, build the packages with `pnpm build:all`, then run `pnpm exec vitest run`. Use `--project @tanstack/pacer` to select one package. `pnpm test:projects` checks project discovery without running the tests.
 - Every change that affects a published package must include a changeset. Create the changelog entry with `pnpm changeset`; documentation, CI, and development-only changes do not require one.
 - Commit your work and open a pull request
 - Submit PR for review
