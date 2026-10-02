@@ -8,6 +8,7 @@
     "../../playwright.config.ts",
     "../../scripts/verify-example-e2e.ts",
     "helpers/**/*.ts",
-    "../../examples/react/*/tests/e2e/**/*.ts"
+    "../../examples/*/*/tests/e2e/**/*.ts",
+    "../../examples/*/*/tests/e2e/**/*.mts"
   ]
 }

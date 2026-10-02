@@ -36,9 +36,9 @@ jobs:
       - name: Run Checks
         run: pnpm run test:pr
   e2e:
-    name: React Example E2E
+    name: Example E2E
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -59,7 +59,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: react-example-e2e-failures
+          name: example-e2e-failures
           path: test-results/
           if-no-files-found: ignore
           retention-days: 7

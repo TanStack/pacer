@@ -43,7 +43,7 @@
     "test:e2e:affected": "nx affected --target=test:e2e --parallel=2",
     "test:e2e:install": "playwright install chromium",
     "test:e2e:types": "node scripts/verify-example-e2e.ts && tsc --project tests/e2e/tsconfig.json",
-    "test:e2e:lint": "eslint playwright.config.ts scripts/verify-example-e2e.ts tests/e2e/helpers examples/react/*/tests/e2e"
+    "test:e2e:lint": "eslint --config eslint.config.js playwright.config.ts scripts/verify-example-e2e.ts tests/e2e/helpers examples/*/*/tests/e2e"
   },
   "nx": {
     "includedScripts": [

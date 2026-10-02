@@ -80,7 +80,18 @@ test('saves a scroll position and reports the completed save', async ({
     element.scrollTop = 150
     element.dispatchEvent(new Event('scroll'))
   })
-  await expect(scrollArea).toContainText('Current scroll position: 150px')
+  // The saving status can shift Chromium's scroll anchor after the input.
+  await expect
+    .poll(() =>
+      scrollArea.evaluate((element) => {
+        const position = Math.round(element.scrollTop)
+        return (
+          position > 0 &&
+          element.textContent.includes(`Current scroll position: ${position}px`)
+        )
+      }),
+    )
+    .toBe(true)
   await page.clock.runFor(300)
   await expect(scrollArea).toContainText('Saves triggered: 1')
   await expect(scrollArea).toContainText('Last saved at:')

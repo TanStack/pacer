@@ -16,7 +16,8 @@
       "ignoreDependencies": ["csstype"]
     },
     ".": {
-      "entry": ["tests/e2e/helpers/fixtures.ts"]
+      "entry": ["tests/e2e/helpers/fixtures.ts"],
+      "ignoreDependencies": ["@angular/cli"]
     }
   }
 }

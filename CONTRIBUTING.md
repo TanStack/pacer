@@ -51,7 +51,7 @@ Before proceeding with development, ensure you match one of the following criter
   - Build/watch for changes with `pnpm build`/`pnpm dev`
 - Document your changes in the appropriate documentation website markdown pages
 - Run `pnpm test` to ensure all tests pass before committing
-- For React example changes, run `pnpm test:e2e`. Install Chromium once with `pnpm test:e2e:install`. See the [example e2e instructions](./tests/e2e/README.md) for individual examples and debugging.
+- For framework example changes, run `pnpm test:e2e`. Install Chromium once with `pnpm test:e2e:install`. See the [example e2e instructions](./tests/e2e/README.md) for individual examples and debugging.
 - Every change that affects a published package must include a changeset. Create the changelog entry with `pnpm changeset`; documentation, CI, and development-only changes do not require one.
 - Commit your work and open a pull request
 - Submit PR for review

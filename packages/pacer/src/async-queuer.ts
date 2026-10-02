@@ -520,8 +520,8 @@ export class AsyncQueuer<TValue> {
         ? this.options.getPriority!(item)
         : (item as any)?.priority
 
-    const items = this.store.state.items
-    const itemTimestamps = this.store.state.itemTimestamps
+    const items = [...this.store.state.items]
+    const itemTimestamps = [...this.store.state.itemTimestamps]
 
     if (priority !== undefined) {
       // Insert based on priority - higher priority items go to front

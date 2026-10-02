@@ -6,10 +6,14 @@ const root = import.meta.dirname
 const selectedTestDir = process.env.PLAYWRIGHT_TEST_DIR
 const exampleDirs = selectedTestDir
   ? [path.resolve(selectedTestDir, '../..')]
-  : readdirSync(path.join(root, 'examples/react'), { withFileTypes: true })
-      .filter((entry) => entry.isDirectory())
-      .map((entry) => path.join(root, 'examples/react', entry.name))
-      .sort()
+  : ['react', 'preact', 'solid', 'angular'].flatMap((framework) =>
+      readdirSync(path.join(root, 'examples', framework), {
+        withFileTypes: true,
+      })
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => path.join(root, 'examples', framework, entry.name))
+        .sort(),
+    )
 
 function projectName(exampleDir: string) {
   return `${path.basename(path.dirname(exampleDir))}/${path.basename(exampleDir)}`
@@ -22,7 +26,7 @@ export default defineConfig({
     'test-results',
     selectedTestDir ? projectName(exampleDirs[0]!) : 'all',
   ),
-  testMatch: '**/*.spec.ts',
+  testMatch: '**/*.spec.{ts,mts}',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,

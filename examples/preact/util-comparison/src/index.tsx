@@ -445,12 +445,6 @@ function ComparisonApp() {
           ))}
         </div>
       </div>
-      <TanStackDevtools
-        eventBusConfig={{
-          debug: false,
-        }}
-        plugins={[pacerDevtoolsPlugin()]}
-      />
     </div>
   )
 }
@@ -489,4 +483,13 @@ const SuccessIcon = ({ size = 16 }: { size?: number }) => (
 )
 
 const root = document.getElementById('root')!
-render(<ComparisonApp />, root)
+render(
+  <>
+    <ComparisonApp />
+    <TanStackDevtools
+      eventBusConfig={{ debug: false }}
+      plugins={[pacerDevtoolsPlugin()]}
+    />
+  </>,
+  root,
+)

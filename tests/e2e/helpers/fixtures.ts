@@ -17,7 +17,7 @@ export const test = base.extend<{}, { exampleUrl: string }>({
         await server.close()
       }
     },
-    { scope: 'worker', timeout: 60_000 },
+    { scope: 'worker', timeout: 120_000 },
   ],
   page: async ({ page }, use, testInfo) => {
     const errors: Array<string> = []

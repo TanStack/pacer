@@ -4,9 +4,11 @@ import { readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 
 const root = path.resolve(import.meta.dirname, '..')
-const examples = readdirSync(path.join(root, 'examples/react'), {
-  withFileTypes: true,
-}).filter((entry) => entry.isDirectory())
+const examples = ['react', 'preact', 'solid', 'angular'].flatMap((framework) =>
+  readdirSync(path.join(root, 'examples', framework), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => `${framework}/${entry.name}`),
+)
 
 // Ask the runner what it discovers, rather than counting files that might never run.
 const result = spawnSync(
@@ -39,18 +41,17 @@ for (const suite of report.suites) visit(suite)
 
 for (const example of examples) {
   const manifest = JSON.parse(
-    readFileSync(
-      path.join(root, 'examples/react', example.name, 'package.json'),
-      'utf8',
-    ),
+    readFileSync(path.join(root, 'examples', example, 'package.json'), 'utf8'),
   ) as { scripts?: Record<string, string> }
   assert.ok(
     manifest.scripts?.['test:e2e'],
-    `${example.name} needs a test:e2e script`,
+    `${example} needs a test:e2e script`,
   )
   assert.ok(
-    (counts.get(`react/${example.name}`) ?? 0) >= 2,
-    `${example.name} needs a smoke test and a functionality test`,
+    (counts.get(example) ?? 0) >= 2,
+    `${example} needs a smoke test and a functionality test`,
   )
 }
-console.log(`Verified e2e discovery for all ${examples.length} React examples.`)
+console.log(
+  `Verified e2e discovery for all ${examples.length} framework examples.`,
+)
