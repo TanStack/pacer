@@ -28,6 +28,10 @@ title: "@tanstack/solid-pacer"
 - [SolidThrottler](interfaces/SolidThrottler.md)
 - [SolidThrottlerOptions](interfaces/SolidThrottlerOptions.md)
 
+## Type Aliases
+
+- [SolidPacerOptions](type-aliases/SolidPacerOptions.md)
+
 ## Functions
 
 - [createAsyncBatcher](functions/createAsyncBatcher.md)

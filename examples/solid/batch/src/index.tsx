@@ -26,7 +26,7 @@ function App1() {
 
   return (
     <div>
-      <h1>TanStack Pacer batcher Example 1</h1>
+      <h1>TanStack Pacer batcher Example</h1>
       <div>Batch Items: {batchItems().join(', ')}</div>
       <div>
         Processed Batches:{' '}

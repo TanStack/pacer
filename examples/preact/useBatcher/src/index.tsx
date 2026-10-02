@@ -16,14 +16,17 @@ function App1() {
   }
 
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const batcher = useBatcher(processBatch, {
-    // started: false, // true by default
-    maxSize: 5, // Process in batches of 5 (if comes before wait time)
-    wait: 3000, // wait up to 3 seconds before processing a batch (if time elapses before maxSize is reached)
-    getShouldExecute: (items, _batcher) => items.includes(42), // or pass in a custom function to determine if the batch should be processed
-  })
-  // Alternative to batcher.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+  const batcher = useBatcher(
+    processBatch,
+    {
+      // started: false, // true by default
+      maxSize: 5, // Process in batches of 5 (if comes before wait time)
+      wait: 3000, // wait up to 3 seconds before processing a batch (if time elapses before maxSize is reached)
+      getShouldExecute: (items, _batcher) => items.includes(42), // or pass in a custom function to determine if the batch should be processed
+    },
+    // Alternative to batcher.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   return (
     <div>
@@ -38,7 +41,7 @@ function App1() {
         {({ size, executionCount, totalItemsProcessed }) => (
           <>
             <div>Batch Size: {size}</div>
-            <div>Batch Max Size: {3}</div>
+            <div>Batch Max Size: {5}</div>
             <div>Batch Items: {batcher.peekAllItems().join(', ')}</div>
             <div>Batches Processed: {executionCount}</div>
             <div>Items Processed: {totalItemsProcessed}</div>

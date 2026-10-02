@@ -1,4 +1,5 @@
 import { injectAsyncBatcher } from './injectAsyncBatcher'
+import type { AngularPacerOptions } from '../types'
 import type { AsyncBatcherOptions } from '@tanstack/pacer/async-batcher'
 
 /**
@@ -41,7 +42,7 @@ import type { AsyncBatcherOptions } from '@tanstack/pacer/async-batcher'
  */
 export function injectAsyncBatchedCallback<TValue>(
   fn: (items: Array<TValue>) => Promise<any>,
-  options: AsyncBatcherOptions<TValue>,
+  options: AngularPacerOptions<AsyncBatcherOptions<TValue>>,
 ): (item: TValue) => Promise<void> {
   const batcher = injectAsyncBatcher(fn, options)
   return (item: TValue) => batcher.addItem(item)

@@ -139,7 +139,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue}</span>

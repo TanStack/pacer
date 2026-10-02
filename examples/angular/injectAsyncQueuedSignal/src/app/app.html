@@ -1,42 +1,34 @@
-<h1>injectAsyncQueuedSignal</h1>
-
+<h1>TanStack Pacer injectAsyncQueuedSignal Example</h1>
+<p>Queue Size: {{ runner.state().size }} / 25</p>
 <p>
-  This helper wires an async queue to Angular signals. <code>queue.items()</code> is reactive and
-  shows the current items waiting to be processed.
+  Queue Full: {{ runner.state().isFull }}, Empty: {{ runner.state().isEmpty }}, Idle: {{
+  runner.state().isIdle }}
 </p>
-
-<div>
-  <label>
-    Value
-    <input [value]="value()" (input)="value.set(($any($event.target).value ?? '').toString())" />
-  </label>
-  <button (click)="enqueue()">Enqueue</button>
-  <button (click)="enqueueMany(10)">Enqueue 10</button>
-  <button (click)="start()">Start</button>
-  <button (click)="stop()">Stop</button>
-  <button (click)="reset()">Reset</button>
-</div>
-
-<h2>Queued Items</h2>
-
-@if (queue().length === 0) {
-<p>Queue is empty.</p>
-} @else {
-<ul>
+<p>Queuer Status: {{ runner.state().status }}</p>
+<p>
+  Items Processed: {{ runner.state().successCount }}, Items Rejected: {{
+  runner.state().rejectionCount }}
+</p>
+<p>Active Tasks: {{ runner.state().activeItems.length }}, Pending Tasks: {{ queue().length }}</p>
+<label
+  >Concurrency:
+  <input
+    type="number"
+    min="1"
+    [value]="concurrency()"
+    (input)="setConcurrency($any($event.target).value)"
+/></label>
+<h2>Queue Items</h2>
+<ol>
   @for (item of queue(); track $index) {
   <li>{{ item }}</li>
   }
-</ul>
-}
+</ol>
+<button (click)="add()" [disabled]="runner.state().isFull">Add Async Task</button>
+<button (click)="runner.getNextItem()">Get Next Item</button>
+<button (click)="runner.clear()" [disabled]="runner.state().isEmpty">Clear Queue</button>
+<button (click)="runner.start()" [disabled]="runner.state().isRunning">Start Processing</button>
+<button (click)="runner.stop()" [disabled]="!runner.state().isRunning">Stop Processing</button>
 
-<h2>Processed</h2>
-
-@if (processed.length === 0) {
-<p>Nothing processed yet.</p>
-} @else {
-<ul>
-  @for (entry of processed; track $index) {
-  <li>{{ entry.timestamp }} - {{ entry.item }}</li>
-  }
-</ul>
-}
+<p>Completed values: {{ processed().join(', ') }}</p>
+<pre>{{ runner.state() | json }}</pre>

@@ -138,7 +138,7 @@ function App3() {
             min="0"
             max="100"
             value={debouncedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{debouncedValue}</span>

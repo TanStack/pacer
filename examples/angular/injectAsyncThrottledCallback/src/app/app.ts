@@ -1,78 +1,77 @@
 import { Component, signal } from '@angular/core'
 import { injectAsyncThrottledCallback } from '@tanstack/angular-pacer'
 
-type HistoryEntry = {
-  timestamp: string
-  value: string
-  executed: boolean
-  result?: string
-}
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.html',
-  styleUrl: './app.css',
-})
+@Component({ selector: 'app-root', templateUrl: './app.html' })
 export class App {
-  protected readonly value = signal('')
-  protected readonly isExecuting = signal(false)
-  protected readonly lastOutcome = signal<'idle' | 'executed' | 'throttled'>('idle')
-  protected readonly lastResult = signal<string | null>(null)
-
-  protected readonly history: Array<HistoryEntry> = []
-
-  private nextId = 1
-
-  protected readonly save = injectAsyncThrottledCallback(
-    async (value: string) => {
-      this.isExecuting.set(true)
+  readonly search = signal('')
+  readonly results = signal<Array<string>>([])
+  readonly isLoading = signal(false)
+  readonly error = signal('')
+  readonly count = signal(0)
+  readonly apiCalls = signal(0)
+  private readonly searchCallback = injectAsyncThrottledCallback(
+    async (query: string) => {
+      if (!query.trim()) {
+        this.results.set([])
+        return
+      }
+      this.isLoading.set(true)
+      this.error.set('')
       try {
-        await new Promise<void>((resolve) => setTimeout(resolve, 400))
-        const result = `saved:${value}`
-        this.lastResult.set(result)
-        return result
+        await new Promise((resolve) => setTimeout(resolve, 500))
+        if (query === 'error') throw new Error('Simulated API error')
+        this.results.set([1, 2, 3].map((id) => `${query} result ${id}`))
       } finally {
-        this.isExecuting.set(false)
+        this.isLoading.set(false)
       }
     },
     {
       wait: 1000,
+      throwOnError: false,
+      onError: (error) => {
+        this.error.set(error.message)
+        this.results.set([])
+      },
     },
   )
-
-  protected runOnce(): void {
-    const v = this.value().trim() || `value-${this.nextId++}`
-    this.value.set(v)
-    void this.attempt(v)
+  private readonly incrementCallback = injectAsyncThrottledCallback(
+    async (value: number) => {
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      this.apiCalls.update((count) => count + 1)
+      this.count.set(value + 1)
+      return value + 1
+    },
+    { wait: 1000, leading: true, trailing: true },
+  )
+  async onSearch(value: string): Promise<void> {
+    this.search.set(value)
+    await this.searchCallback(value)
   }
-
-  protected runBurst(count: number): void {
-    for (let i = 0; i < count; i++) {
-      void this.attempt(`value-${this.nextId++}`)
-    }
+  async increment(): Promise<void> {
+    const value = this.count() + 1
+    this.count.set(value)
+    await this.incrementCallback(value)
   }
-
-  protected reset(): void {
-    this.value.set('')
-    this.isExecuting.set(false)
-    this.lastOutcome.set('idle')
-    this.lastResult.set(null)
-    this.history.length = 0
-    this.nextId = 1
-  }
-
-  private async attempt(value: string): Promise<void> {
-    const timestamp = new Date().toLocaleTimeString()
-
-    const result = await this.save(value)
-
-    if (result === undefined) {
-      this.lastOutcome.set('throttled')
-      this.history.unshift({ timestamp, value, executed: false })
-      return
-    }
-
-    this.lastOutcome.set('executed')
-    this.history.unshift({ timestamp, value, executed: true, result })
+  readonly scrollPosition = signal(0)
+  readonly lastSavedPosition = signal(0)
+  readonly saveCount = signal(0)
+  readonly isSaving = signal(false)
+  readonly scrollRows = Array.from({ length: 50 }, (_, index) => index + 1)
+  private readonly savePosition = injectAsyncThrottledCallback(
+    async (position: number) => {
+      this.isSaving.set(true)
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 300))
+        this.lastSavedPosition.set(position)
+        this.saveCount.update((count) => count + 1)
+      } finally {
+        this.isSaving.set(false)
+      }
+    },
+    { wait: 1000, leading: true, trailing: true },
+  )
+  async onScroll(position: number): Promise<void> {
+    this.scrollPosition.set(position)
+    await this.savePosition(position)
   }
 }

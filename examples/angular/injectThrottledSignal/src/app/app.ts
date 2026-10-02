@@ -1,61 +1,51 @@
-import { Component, effect } from '@angular/core'
+import { Component, signal } from '@angular/core'
+import { JsonPipe } from '@angular/common'
 import { injectThrottledSignal } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   templateUrl: './app.html',
+  imports: [JsonPipe],
 })
 export class App {
-  // Throttled counter value
-  count = 0
-
-  // Raw click count (not throttled)
-  rawCount = 0
-
-  // Throttled state signals
-  readonly throttledState: ReturnType<
-    typeof injectThrottledSignal<number, { executionCount: number; isPending: boolean }>
-  >
-
-  constructor() {
-    this.throttledState = injectThrottledSignal(
-      0,
-      {
-        wait: 500,
-        leading: true,
-        trailing: true,
-      },
-      (state) => ({
-        executionCount: state.executionCount,
-        isPending: state.isPending,
-      }),
-    )
-
-    const throttledCount = this.throttledState
-
-    effect(() => {
-      this.count = throttledCount()
-    })
+  readonly instantCount = signal(0)
+  readonly search = signal('')
+  readonly currentValue = signal(50)
+  readonly instantExecutions = signal(0)
+  readonly controlledCount = injectThrottledSignal(
+    0,
+    () => ({ wait: 1000 }),
+    (state) => state,
+  )
+  readonly countRunner = this.controlledCount.throttler
+  readonly controlledSearch = injectThrottledSignal(
+    '',
+    () => ({ wait: 1000 }),
+    (state) => state,
+  )
+  readonly searchRunner = this.controlledSearch.throttler
+  readonly controlledValue = injectThrottledSignal(
+    50,
+    () => ({ wait: 250 }),
+    (state) => state,
+  )
+  readonly rangeRunner = this.controlledValue.throttler
+  increment(): void {
+    const next = this.instantCount() + 1
+    this.instantCount.set(next)
+    this.controlledCount.set(next)
   }
-
-  onClick() {
-    this.rawCount++
-    this.throttledState.set((prev) => prev + 1)
+  onSearch(value: string): void {
+    this.search.set(value)
+    this.controlledSearch.set(value)
   }
-
-  reset() {
-    this.rawCount = 0
-    this.throttledState.set(0)
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
+    this.controlledValue.set(value)
   }
-
-  get executionCount() {
-    const throttler = this.throttledState.throttler
-    return throttler.state().executionCount
-  }
-
-  get isPending() {
-    const throttler = this.throttledState.throttler
-    return throttler.state().isPending
+  reduction(): number {
+    const count = this.instantExecutions()
+    return count ? Math.round(((count - this.rangeRunner.state().executionCount) / count) * 100) : 0
   }
 }

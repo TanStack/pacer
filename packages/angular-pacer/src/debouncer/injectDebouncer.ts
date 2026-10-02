@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { Debouncer } from '@tanstack/pacer/debouncer'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -24,7 +26,11 @@ export interface AngularDebouncerOptions<
 export interface AngularDebouncer<
   TFn extends AnyFunction,
   TSelected = {},
-> extends Omit<Debouncer<TFn>, 'store'> {
+> extends Omit<Debouncer<TFn>, 'store' | 'options' | 'setOptions'> {
+  options: Debouncer<TFn>['options'] & AngularDebouncerOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<AngularDebouncerOptions<TFn, TSelected>>,
+  ) => void
   /**
    * Reactive state signal that will be updated when the debouncer state changes
    *
@@ -108,30 +114,44 @@ export interface AngularDebouncer<
  */
 export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: AngularDebouncerOptions<TFn, TSelected>,
+  options: AngularPacerOptions<AngularDebouncerOptions<TFn, TSelected>>,
   selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): AngularDebouncer<TFn, TSelected> {
-  const mergedOptions = {
-    ...injectPacerOptions().debouncer,
-    ...options,
-  } as AngularDebouncerOptions<TFn, TSelected>
+  return injectReactiveOptions<
+    AngularDebouncerOptions<TFn, TSelected>,
+    AngularDebouncer<TFn, TSelected>
+  >(
+    options,
+    injectPacerOptions(),
+    'debouncer',
+    (mergedOptions, getPublicInstance) => {
+      const debouncer = new Debouncer<TFn>(fn, mergedOptions)
+      const state = injectSelector(debouncer.store, selector)
 
-  const debouncer = new Debouncer<TFn>(fn, mergedOptions)
-  const state = injectSelector(debouncer.store, selector)
+      const result = {
+        ...debouncer,
+        get options() {
+          return debouncer.options
+        },
+        set options(value) {
+          debouncer.options = value
+        },
+        state,
+      } as AngularDebouncer<TFn, TSelected>
 
-  const result = {
-    ...debouncer,
-    state,
-  } as AngularDebouncer<TFn, TSelected>
+      const destroyRef = inject(DestroyRef, { optional: true })
+      destroyRef?.onDestroy(() => {
+        const onUnmount = (
+          debouncer.options as AngularDebouncerOptions<TFn, TSelected>
+        ).onUnmount
+        if (onUnmount) {
+          onUnmount(getPublicInstance())
+        } else {
+          debouncer.cancel()
+        }
+      })
 
-  const destroyRef = inject(DestroyRef, { optional: true })
-  destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
-    } else {
-      debouncer.cancel()
-    }
-  })
-
-  return result
+      return result
+    },
+  )
 }

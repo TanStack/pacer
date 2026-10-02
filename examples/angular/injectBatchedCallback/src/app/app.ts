@@ -1,57 +1,60 @@
-import { Component, signal } from '@angular/core'
+import { Component, computed, signal } from '@angular/core'
+import { JsonPipe } from '@angular/common'
 import { injectBatchedCallback } from '@tanstack/angular-pacer'
+
+type LogEntry = { id: number; message: string; timestamp: string }
+type AnalyticsEvent = { type: string; target: string; timestamp: string }
+type ApiRequest = { id: number; data: { action: string; item: string } }
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  imports: [JsonPipe],
 })
 export class App {
-  protected readonly value = signal('')
-  protected readonly queuedCount = signal(0)
-
-  protected readonly processedBatches: Array<{
-    timestamp: string
-    items: Array<string>
-  }> = []
-
-  private nextId = 1
-
-  protected readonly addToBatch = injectBatchedCallback<string>(
-    (items) => {
-      this.processedBatches.unshift({
-        timestamp: new Date().toLocaleTimeString(),
-        items: [...items],
-      })
-
-      this.queuedCount.update((c) => Math.max(0, c - items.length))
-    },
-    {
-      maxSize: 5,
-      wait: 1000,
-    },
+  readonly logs = signal<Array<LogEntry>>([])
+  readonly logCount = signal(0)
+  readonly events = signal<Array<AnalyticsEvent>>([])
+  readonly totalEvents = signal(0)
+  readonly batchesProcessed = signal(0)
+  readonly requests = signal<Array<ApiRequest>>([])
+  readonly processedRequests = signal<Array<ApiRequest>>([])
+  readonly pendingRequests = computed(() =>
+    this.requests().filter(
+      (request) => !this.processedRequests().some((processed) => processed.id === request.id),
+    ),
   )
-
-  protected enqueue(): void {
-    const raw = this.value().trim()
-    const item = raw.length > 0 ? raw : `item-${this.nextId++}`
-
-    this.queuedCount.update((c) => c + 1)
-    this.addToBatch(item)
-    this.value.set('')
+  private readonly logger = injectBatchedCallback(
+    (entries: Array<LogEntry>) => this.logs.update((logs) => [...logs, ...entries]),
+    { maxSize: 3, wait: 2000 },
+  )
+  private readonly tracker = injectBatchedCallback(
+    (events: Array<AnalyticsEvent>) => {
+      this.events.update((previous) => [...previous, ...events])
+      this.batchesProcessed.update((count) => count + 1)
+    },
+    { maxSize: 5, wait: 3000 },
+  )
+  private readonly requestBatch = injectBatchedCallback(
+    (requests: Array<ApiRequest>) =>
+      this.processedRequests.update((previous) => [...previous, ...requests]),
+    { maxSize: 4, wait: 1500 },
+  )
+  addLog(kind: string): void {
+    this.logCount.update((count) => count + 1)
+    this.logger({
+      id: this.logCount(),
+      message: `${kind} ${this.logCount()}`,
+      timestamp: new Date().toLocaleTimeString(),
+    })
   }
-
-  protected enqueueMany(count: number): void {
-    for (let i = 0; i < count; i++) {
-      this.value.set(`item-${this.nextId++}`)
-      this.enqueue()
-    }
+  trackEvent(type: string, target: string): void {
+    this.totalEvents.update((count) => count + 1)
+    this.tracker({ type, target, timestamp: new Date().toLocaleTimeString() })
   }
-
-  protected reset(): void {
-    this.value.set('')
-    this.queuedCount.set(0)
-    this.processedBatches.length = 0
-    this.nextId = 1
+  makeRequest(action: string, item: string): void {
+    const request = { id: this.requests().length + 1, data: { action, item } }
+    this.requests.update((requests) => [...requests, request])
+    this.requestBatch(request)
   }
 }

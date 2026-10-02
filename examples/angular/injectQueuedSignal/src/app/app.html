@@ -1,23 +1,58 @@
-<h1>injectQueuedSignal</h1>
-
-<p>Next: {{ next() }}</p>
-<p>Last processed: {{ lastProcessed() }}</p>
-
-<button (click)="enqueue()">Enqueue</button>
-<button (click)="enqueueFive()">Enqueue x5</button>
-<button (click)="queue.clear()">Clear queue</button>
-<button (click)="clearProcessed()">Clear processed</button>
-
-<p>Queued items: {{ items().length }}</p>
-<ul>
-  @for (item of items(); track $index) {
-  <li>{{ item }}</li>
-  }
-</ul>
-
-<p>Processed: {{ processed().length }}</p>
-<ul>
-  @for (item of processed(); track $index) {
-  <li>{{ item }}</li>
-  }
-</ul>
+<h1>TanStack Pacer injectQueuedSignal Example</h1>
+<section>
+  <h2>Number queue</h2>
+  <button type="button" (click)="addNumber()" [disabled]="numberQueue.state().isFull">
+    Add Number
+  </button>
+  <p>Queue Size: {{ numberQueue.state().size }}</p>
+  <p>Queue Full: {{ numberQueue.state().isFull }}</p>
+  <p>Queue Empty: {{ numberQueue.state().isEmpty }}</p>
+  <p>Queue Idle: {{ numberQueue.state().isIdle }}</p>
+  <p>Status: {{ numberQueue.state().status }}</p>
+  <p>Items Processed: {{ numberQueue.state().executionCount }}</p>
+  <p>Queue Items: {{ queued().join(", ") }}</p>
+  <p>Queue Peek: {{ numberQueue.peekNextItem() ?? "None" }}</p>
+  <button type="button" (click)="numberQueue.execute()" [disabled]="numberQueue.state().isEmpty">
+    Process Next
+  </button>
+  <button type="button" (click)="numberQueue.clear()" [disabled]="numberQueue.state().isEmpty">
+    Clear Queue
+  </button>
+  <button type="button" (click)="numberQueue.reset()" [disabled]="numberQueue.state().isEmpty">
+    Reset Queue
+  </button>
+  <button type="button" (click)="numberQueue.start()" [disabled]="numberQueue.state().isRunning">
+    Start Processing
+  </button>
+  <button type="button" (click)="numberQueue.stop()" [disabled]="!numberQueue.state().isRunning">
+    Stop Processing
+  </button>
+  <pre>{{ numberQueue.state() | json }}</pre>
+</section>
+<section>
+  <h2>Queued range</h2>
+  <label
+    >Current Range
+    <input
+      type="range"
+      min="0"
+      max="100"
+      [value]="currentValue()"
+      (input)="onRange($any($event.target).valueAsNumber)"
+  /></label>
+  <p>Instant Value: {{ currentValue() }}</p>
+  <label
+    >Queued Range <input type="range" min="0" max="100" [value]="rangeValue()" disabled
+  /></label>
+  <p>Queued Value: {{ rangeValue() }}</p>
+  <p>Values Submitted: {{ instantExecutions() }}</p>
+  <p>Pending Items: {{ rangeQueue.state().size }}</p>
+  <p>Queue Full: {{ rangeQueue.state().isFull }}</p>
+  <p>Queue Empty: {{ rangeQueue.state().isEmpty }}</p>
+  <p>Queue Idle: {{ rangeQueue.state().isIdle }}</p>
+  <p>Status: {{ rangeQueue.state().status }}</p>
+  <p>Items Processed: {{ rangeQueue.state().executionCount }}</p>
+  <p>Queue Items: {{ rangeQueued().join(", ") }}</p>
+  <p>Queue Peek: {{ rangeQueue.peekNextItem() ?? "None" }}</p>
+  <pre>{{ rangeQueue.state() | json }}</pre>
+</section>

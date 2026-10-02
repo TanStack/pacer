@@ -6,7 +6,8 @@
     "dev": "vite --port=3005",
     "build": "vite build",
     "preview": "vite preview",
-    "test:types": "tsc"
+    "test:types": "tsc",
+    "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
   },
   "dependencies": {
     "@tanstack/solid-devtools": "0.8.13",

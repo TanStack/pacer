@@ -50,7 +50,7 @@ function App() {
       // throwOnError: true,
       asyncRetryerOptions: {
         maxAttempts: 3,
-        maxExecutionTime: 1000,
+        maxExecutionTime: 3000,
       },
     },
     // Alternative to asyncDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state

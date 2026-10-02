@@ -1,80 +1,55 @@
 import { Component, signal } from '@angular/core'
+import { JsonPipe } from '@angular/common'
 import { injectAsyncRateLimiter } from '@tanstack/angular-pacer'
-
-type HistoryEntry = {
-  timestamp: string
-  value: string
-  executed: boolean
-  result?: string
-}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  imports: [JsonPipe],
 })
 export class App {
-  protected readonly value = signal('')
-  protected readonly lastOutcome = signal<'idle' | 'executed' | 'rejected'>('idle')
-  protected readonly lastResult = signal<string | null>(null)
-
-  protected readonly history: Array<HistoryEntry> = []
-
-  private nextId = 1
-
-  protected readonly rateLimiter = injectAsyncRateLimiter(
-    async (value: string) => {
-      await new Promise<void>((resolve) => setTimeout(resolve, 400))
-      return `saved:${value}`
-    },
-    {
+  readonly searchTerm = signal('')
+  readonly results = signal<Array<string>>([])
+  readonly loading = signal(false)
+  readonly error = signal('')
+  readonly windowType = signal<'fixed' | 'sliding'>('fixed')
+  readonly runner = injectAsyncRateLimiter(
+    (term: string) => this.search(term),
+    () => ({
       limit: 3,
-      window: 2000,
-      windowType: 'fixed',
-    },
-    (state) => ({
-      status: state.status,
-      isExecuting: state.isExecuting,
-      successCount: state.successCount,
-      rejectionCount: state.rejectionCount,
-      maybeExecuteCount: state.maybeExecuteCount,
+      window: 3000,
+      windowType: this.windowType(),
+      onReject: (_args, limiter) =>
+        console.log(`Rate limit reached. Try again in ${limiter.getMsUntilNextWindow()}ms`),
+      onError: (error) => {
+        this.error.set(error.message)
+        this.results.set([])
+      },
     }),
+    (state) => state,
   )
 
-  protected runOnce(): void {
-    const v = this.value().trim() || `value-${this.nextId++}`
-    this.value.set(v)
-    void this.attempt(v)
-  }
-
-  protected runBurst(count: number): void {
-    for (let i = 0; i < count; i++) {
-      void this.attempt(`value-${this.nextId++}`)
-    }
-  }
-
-  protected reset(): void {
-    this.value.set('')
-    this.lastOutcome.set('idle')
-    this.lastResult.set(null)
-    this.history.length = 0
-    this.nextId = 1
-    this.rateLimiter.reset()
-  }
-
-  private async attempt(value: string): Promise<void> {
-    const timestamp = new Date().toLocaleTimeString()
-
-    const result = await this.rateLimiter.maybeExecute(value)
-
-    if (result === undefined) {
-      this.lastOutcome.set('rejected')
-      this.history.unshift({ timestamp, value, executed: false })
+  private async search(term: string): Promise<Array<string> | undefined> {
+    if (!term) {
+      this.results.set([])
       return
     }
-
-    this.lastOutcome.set('executed')
-    this.lastResult.set(result)
-    this.history.unshift({ timestamp, value, executed: true, result })
+    this.loading.set(true)
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      const results = [1, 2, 3].map((id) => `Result ${id} for ${term}`)
+      this.results.set(results)
+      this.error.set('')
+      return results
+    } finally {
+      this.loading.set(false)
+    }
+  }
+  async onSearch(value: string): Promise<void> {
+    this.searchTerm.set(value)
+    await this.runner.maybeExecute(value)
+  }
+  changeWindow(value: 'fixed' | 'sliding'): void {
+    this.windowType.set(value)
   }
 }

@@ -1,7 +1,9 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -25,6 +27,11 @@ export interface SolidRateLimiter<
   TFn extends AnyFunction,
   TSelected = {},
 > extends Omit<RateLimiter<TFn>, 'store'> {
+  options: RateLimiter<TFn>['options'] & SolidRateLimiterOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<SolidRateLimiterOptions<TFn, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the rate limiter state.
    *
@@ -185,17 +192,20 @@ export interface SolidRateLimiter<
  */
 export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: SolidRateLimiterOptions<TFn, TSelected>,
+  options: SolidPacerOptions<SolidRateLimiterOptions<TFn, TSelected>>,
   selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
 ): SolidRateLimiter<TFn, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().rateLimiter,
-    ...options,
-  } as SolidRateLimiterOptions<TFn, TSelected>
-  const rateLimiter = new RateLimiter<TFn>(
-    fn,
-    mergedOptions,
+  const mergedOptions = createPacerOptions<
+    SolidRateLimiterOptions<TFn, TSelected>
+  >(options, () => useDefaultPacerOptions().rateLimiter)
+  const rateLimiter = untrack(
+    () => new RateLimiter<TFn>(fn, mergedOptions()),
   ) as unknown as SolidRateLimiter<TFn, TSelected>
+
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => rateLimiter.setOptions(latest))
+  })
 
   rateLimiter.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: RateLimiterState) => TSelected
@@ -214,14 +224,23 @@ export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(rateLimiter)
+      const onUnmount = rateLimiter.options.onUnmount
+      if (onUnmount) {
+        onUnmount(result)
       }
     })
   })
 
-  return {
+  const result = {
     ...rateLimiter,
+    get options() {
+      return rateLimiter.options
+    },
+    set options(value) {
+      rateLimiter.options = value
+    },
     state,
   } as SolidRateLimiter<TFn, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

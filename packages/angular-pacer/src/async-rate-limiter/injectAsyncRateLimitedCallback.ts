@@ -1,4 +1,5 @@
 import { injectAsyncRateLimiter } from './injectAsyncRateLimiter'
+import type { AngularPacerOptions } from '../types'
 import type { AsyncRateLimiterOptions } from '@tanstack/pacer/async-rate-limiter'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
@@ -42,7 +43,7 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  */
 export function injectAsyncRateLimitedCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AsyncRateLimiterOptions<TFn>,
+  options: AngularPacerOptions<AsyncRateLimiterOptions<TFn>>,
 ): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const rateLimiter = injectAsyncRateLimiter(fn, options)
   return async (...args: Parameters<TFn>) => {

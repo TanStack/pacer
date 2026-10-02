@@ -12,7 +12,9 @@ function App1() {
   // highest-level hook that watches an instant local state value and returns a debounced value
   const [debouncedCount] = createDebouncedValue(instantCount, {
     wait: 500,
-    // enabled: () => instantCount() > 2, // optional, defaults to true
+    // get enabled() {
+    //   return instantCount() > 2
+    // },
     // leading: true, // optional, defaults to false
   })
 
@@ -44,7 +46,9 @@ function App2() {
   // highest-level hook that watches an instant local state value and returns a debounced value
   const [debouncedSearch] = createDebouncedValue(instantSearch, {
     wait: 500,
-    // enabled: () => instantSearch().length > 2, // optional, defaults to true
+    get enabled() {
+      return instantSearch().length > 2
+    },
   })
 
   function handleSearchChange(e: Event) {
@@ -82,7 +86,8 @@ function App2() {
 
 function App3() {
   const [currentValue, setCurrentValue] = createSignal(50)
-  const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
+  // The value helper submits the initial slider value when its effect runs.
+  const [submittedCount, setSubmittedCount] = createSignal(1)
 
   // highest-level hook that watches an instant local state value and returns a debounced value
   const [debouncedValue, debouncer] = createDebouncedValue(
@@ -100,7 +105,7 @@ function App3() {
     const target = e.target as HTMLInputElement
     const newValue = parseInt(target.value, 10)
     setCurrentValue(newValue)
-    setInstantExecutionCount((c) => c + 1)
+    setSubmittedCount((c) => c + 1)
   }
 
   return (
@@ -128,7 +133,7 @@ function App3() {
             min="0"
             max="100"
             value={debouncedValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{debouncedValue()}</span>
@@ -137,32 +142,37 @@ function App3() {
       <table>
         <tbody>
           <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount()}</td>
+            <td>Values Submitted:</td>
+            <td>{submittedCount()}</td>
           </tr>
           <debouncer.Subscribe
             selector={(state) => ({
+              isPending: state.isPending,
               executionCount: state.executionCount,
             })}
           >
             {(state) => (
               <>
                 <tr>
+                  <td>Is Pending:</td>
+                  <td>{state().isPending ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
                   <td>Debounced Executions:</td>
                   <td>{state().executionCount}</td>
                 </tr>
                 <tr>
                   <td>Saved Executions:</td>
-                  <td>{instantExecutionCount() - state().executionCount}</td>
+                  <td>{submittedCount() - state().executionCount}</td>
                 </tr>
                 <tr>
                   <td>% Reduction:</td>
                   <td>
-                    {instantExecutionCount() === 0
+                    {submittedCount() === 0
                       ? '0'
                       : Math.round(
-                          ((instantExecutionCount() - state().executionCount) /
-                            instantExecutionCount()) *
+                          ((submittedCount() - state().executionCount) /
+                            submittedCount()) *
                             100,
                         )}
                     %
@@ -174,7 +184,7 @@ function App3() {
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
-        <p>Debounced with 250ms wait time</p>
+        <p>Debounced to 250ms wait time</p>
       </div>
     </div>
   )

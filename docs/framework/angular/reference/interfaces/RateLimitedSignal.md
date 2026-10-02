@@ -3,7 +3,7 @@ id: RateLimitedSignal
 title: RateLimitedSignal
 ---
 
-Defined in: [rate-limiter/injectRateLimitedSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L11)
+Defined in: [rate-limiter/injectRateLimitedSignal.ts:12](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L12)
 
 ## Type Parameters
 
@@ -20,7 +20,7 @@ Defined in: [rate-limiter/injectRateLimitedSignal.ts:11](https://github.com/TanS
 RateLimitedSignal(): TValue;
 ```
 
-Defined in: [rate-limiter/injectRateLimitedSignal.ts:12](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L12)
+Defined in: [rate-limiter/injectRateLimitedSignal.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L13)
 
 ## Returns
 
@@ -34,7 +34,7 @@ Defined in: [rate-limiter/injectRateLimitedSignal.ts:12](https://github.com/TanS
 rateLimiter: AngularRateLimiter<Setter<TValue>, TSelected>;
 ```
 
-Defined in: [rate-limiter/injectRateLimitedSignal.ts:14](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L14)
+Defined in: [rate-limiter/injectRateLimitedSignal.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L15)
 
 ***
 
@@ -44,4 +44,4 @@ Defined in: [rate-limiter/injectRateLimitedSignal.ts:14](https://github.com/TanS
 set: Setter<TValue>;
 ```
 
-Defined in: [rate-limiter/injectRateLimitedSignal.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L13)
+Defined in: [rate-limiter/injectRateLimitedSignal.ts:14](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L14)

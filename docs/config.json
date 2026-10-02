@@ -71,6 +71,10 @@
         {
           "label": "Which Utility Should I Choose?",
           "to": "guides/which-pacer-utility-should-i-choose"
+        },
+        {
+          "label": "Persist Pacer State",
+          "to": "guides/persistence"
         }
       ],
       "frameworks": [
@@ -1708,10 +1712,6 @@
               "to": "framework/react/examples/useRateLimiter"
             },
             {
-              "label": "useRateLimiterWithPersister",
-              "to": "framework/react/examples/useRateLimiterWithPersister"
-            },
-            {
               "label": "useRateLimitedCallback",
               "to": "framework/react/examples/useRateLimitedCallback"
             },
@@ -1726,10 +1726,6 @@
             {
               "label": "useAsyncRateLimiter",
               "to": "framework/react/examples/useAsyncRateLimiter"
-            },
-            {
-              "label": "useAsyncRateLimiterWithPersister",
-              "to": "framework/react/examples/useAsyncRateLimiterWithPersister"
             }
           ]
         },
@@ -1778,10 +1774,6 @@
               "to": "framework/preact/examples/useRateLimiter"
             },
             {
-              "label": "useRateLimiterWithPersister",
-              "to": "framework/preact/examples/useRateLimiterWithPersister"
-            },
-            {
               "label": "useRateLimitedCallback",
               "to": "framework/preact/examples/useRateLimitedCallback"
             },
@@ -1796,10 +1788,6 @@
             {
               "label": "useAsyncRateLimiter",
               "to": "framework/preact/examples/useAsyncRateLimiter"
-            },
-            {
-              "label": "useAsyncRateLimiterWithPersister",
-              "to": "framework/preact/examples/useAsyncRateLimiterWithPersister"
             }
           ]
         },
@@ -1831,20 +1819,8 @@
               "to": "framework/angular/examples/injectRateLimitedValue"
             },
             {
-              "label": "injectRateLimiterWithPersister",
-              "to": "framework/angular/examples/injectRateLimiterWithPersister"
-            },
-            {
               "label": "injectAsyncRateLimiter",
               "to": "framework/angular/examples/injectAsyncRateLimiter"
-            },
-            {
-              "label": "injectAsyncRateLimitedCallback",
-              "to": "framework/angular/examples/injectAsyncRateLimitedCallback"
-            },
-            {
-              "label": "injectAsyncRateLimiterWithPersister",
-              "to": "framework/angular/examples/injectAsyncRateLimiterWithPersister"
             }
           ]
         }
@@ -1877,10 +1853,6 @@
             {
               "label": "useQueuer",
               "to": "framework/react/examples/useQueuer"
-            },
-            {
-              "label": "useQueuerWithPersister",
-              "to": "framework/react/examples/useQueuerWithPersister"
             },
             {
               "label": "useQueuedState",
@@ -1933,10 +1905,6 @@
               "to": "framework/preact/examples/useQueuer"
             },
             {
-              "label": "useQueuerWithPersister",
-              "to": "framework/preact/examples/useQueuerWithPersister"
-            },
-            {
               "label": "useQueuedState",
               "to": "framework/preact/examples/useQueuedState"
             },
@@ -1972,10 +1940,6 @@
             {
               "label": "injectQueuedValue",
               "to": "framework/angular/examples/injectQueuedValue"
-            },
-            {
-              "label": "injectQueuerWithPersister",
-              "to": "framework/angular/examples/injectQueuerWithPersister"
             },
             {
               "label": "injectAsyncQueuer",

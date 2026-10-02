@@ -191,3 +191,54 @@ export class ApiComponent {
   }
 }
 ```
+
+## Reactive options
+
+Use property getters or an options factory to read Angular signals:
+
+```ts
+const wait = signal(300)
+const debouncer = injectDebouncer(save, {
+  get wait() {
+    return wait()
+  },
+})
+
+wait.set(600)
+```
+
+Factories also work with required component inputs:
+
+```ts
+import { input } from '@angular/core'
+import { injectDebouncer } from '@tanstack/angular-pacer'
+
+readonly wait = input.required<number>()
+readonly search = injectDebouncer(
+  (query: string) => this.fetchResults(query),
+  () => ({ wait: this.wait() }),
+)
+```
+
+Getter-based options and factories defer initialization until Angular's first effect, after component inputs are bound, or until you first access the returned utility. Accessing the utility before a required input is available throws Angular's required-input error. Destroying the component before initialization does not read those options or create a utility. Plain objects without getters initialize eagerly when their provider defaults also contain no getters.
+
+Later signal changes update the same utility through `setOptions` during change detection. Provider defaults are read during option tracking, and local options override them. This contract applies to synchronous and asynchronous inject functions and their callback, signal, and value helpers.
+
+Reading a signal before passing the options, such as `{ wait: wait() }`, produces a snapshot. Assigning to an ordinary object property does not trigger an update. Use a getter or factory for reactive values. Option reads are shallow: build nested configurations inside a getter or factory when they depend on signals. Callbacks and function-valued core options remain functions. Getters and factories should read signals and return options without side effects.
+
+Updates preserve the utility, store, queued items, and pending work. Changing `wait` does not reschedule an existing timer. Setting `enabled` to `false` still applies the utility's normal cancellation behavior. Construction options such as `key`, `initialState`, and `initialItems` apply only when the utility is created. Use `start()` and `stop()` to change running queues.
+
+Updates follow `setOptions` merge semantics. If a factory omits a previously supplied field, the provider default replaces it when one exists; otherwise, its previous value remains. Return `undefined` explicitly to clear an optional field. For example, `onUnmount: undefined` restores default cleanup. Disposal uses the latest `onUnmount` callback. The utility's `options` property exposes its current core options, including manual `setOptions` updates.
+
+For a value helper with an explicit initial value and factory options, pass a fourth argument for the selector. Pass `undefined` when no selector is needed:
+
+```ts
+const debounced = injectDebouncedValue(
+  query,
+  '',
+  () => ({ wait: wait() }),
+  undefined,
+)
+```
+
+The fourth argument distinguishes this form from `injectDebouncedValue(query, optionsFactory, selector)`. Object options still support the existing three-argument form with an initial value.

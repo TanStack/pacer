@@ -10,7 +10,7 @@ function injectQueuedSignal<TValue, TSelected>(
 selector?): QueuedSignal<TValue, TSelected>;
 ```
 
-Defined in: [queuer/injectQueuedSignal.ts:43](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L43)
+Defined in: [queuer/injectQueuedSignal.ts:44](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L44)
 
 An Angular function that creates a queuer with managed state, combining Angular's signals with queuing functionality.
 This function provides both the current queue state and queue control methods.
@@ -41,7 +41,7 @@ The function returns a callable object:
 
 ### options?
 
-`QueuerOptions`\<`TValue`\> = `{}`
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`QueuerOptions`\<`TValue`\>\> = `{}`
 
 ### selector?
 

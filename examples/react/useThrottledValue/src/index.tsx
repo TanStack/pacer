@@ -91,7 +91,7 @@ function App2() {
 }
 
 function App3() {
-  const [instantExecutionCount, setInstantExecutionCount] = useState(0)
+  const [submittedCount, setSubmittedCount] = useState(1)
   const [currentValue, setCurrentValue] = useState(50)
 
   // highest-level hook that watches an instant local state value and returns a throttled value
@@ -107,7 +107,7 @@ function App3() {
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)
     setCurrentValue(newValue)
-    setInstantExecutionCount((c) => c + 1)
+    setSubmittedCount((c) => c + 1)
   }
 
   return (
@@ -135,7 +135,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue}</span>
@@ -151,8 +151,8 @@ function App3() {
             <table>
               <tbody>
                 <tr>
-                  <td>Instant Execution Count:</td>
-                  <td>{instantExecutionCount}</td>
+                  <td>Values Submitted:</td>
+                  <td>{submittedCount}</td>
                 </tr>
                 <tr>
                   <td>Throttled Execution Count:</td>
@@ -161,11 +161,10 @@ function App3() {
                 <tr>
                   <td>Saved Executions:</td>
                   <td>
-                    {instantExecutionCount - executionCount} (
-                    {instantExecutionCount > 0
+                    {submittedCount - executionCount} (
+                    {submittedCount > 0
                       ? (
-                          ((instantExecutionCount - executionCount) /
-                            instantExecutionCount) *
+                          ((submittedCount - executionCount) / submittedCount) *
                           100
                         ).toFixed(2)
                       : 0}

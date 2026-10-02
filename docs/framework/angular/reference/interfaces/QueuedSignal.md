@@ -3,7 +3,7 @@ id: QueuedSignal
 title: QueuedSignal
 ---
 
-Defined in: [queuer/injectQueuedSignal.ts:6](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L6)
+Defined in: [queuer/injectQueuedSignal.ts:7](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L7)
 
 ## Type Parameters
 
@@ -20,7 +20,7 @@ Defined in: [queuer/injectQueuedSignal.ts:6](https://github.com/TanStack/pacer/b
 QueuedSignal(): TValue[];
 ```
 
-Defined in: [queuer/injectQueuedSignal.ts:7](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L7)
+Defined in: [queuer/injectQueuedSignal.ts:8](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L8)
 
 ## Returns
 
@@ -34,7 +34,7 @@ Defined in: [queuer/injectQueuedSignal.ts:7](https://github.com/TanStack/pacer/b
 addItem: (item, position?, runOnItemsChange?) => boolean;
 ```
 
-Defined in: [queuer/injectQueuedSignal.ts:8](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L8)
+Defined in: [queuer/injectQueuedSignal.ts:9](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L9)
 
 Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
 `undefined` cannot be queued (it is the internal "no item" sentinel) and is always rejected.
@@ -74,4 +74,4 @@ queuer.addItem('task2', 'front');
 queuer: AngularQueuer<TValue, TSelected>;
 ```
 
-Defined in: [queuer/injectQueuedSignal.ts:9](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L9)
+Defined in: [queuer/injectQueuedSignal.ts:10](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L10)

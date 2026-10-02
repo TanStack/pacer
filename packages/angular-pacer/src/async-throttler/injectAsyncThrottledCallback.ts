@@ -1,4 +1,5 @@
 import { injectAsyncThrottler } from './injectAsyncThrottler'
+import type { AngularPacerOptions } from '../types'
 import type { AsyncThrottlerOptions } from '@tanstack/pacer/async-throttler'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
@@ -40,7 +41,7 @@ import type { AnyAsyncFunction } from '@tanstack/pacer/types'
  */
 export function injectAsyncThrottledCallback<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AsyncThrottlerOptions<TFn>,
+  options: AngularPacerOptions<AsyncThrottlerOptions<TFn>>,
 ): (...args: Parameters<TFn>) => Promise<Awaited<ReturnType<TFn>> | undefined> {
   const throttler = injectAsyncThrottler(fn, options)
   return async (...args: Parameters<TFn>) => {

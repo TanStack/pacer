@@ -1,3 +1,4 @@
+import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createDebouncer } from '@tanstack/solid-pacer/debouncer'
@@ -12,7 +13,9 @@ function App1() {
     setDebouncedCount,
     {
       wait: 800,
-      enabled: () => instantCount() > 2, // optional, defaults to true
+      get enabled() {
+        return instantCount() > 2
+      }, // optional, defaults to true
       // leading: true, // optional, defaults to false
     },
     // Alternative to setCountDebouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
@@ -20,12 +23,9 @@ function App1() {
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setCountDebouncer.maybeExecute(newInstantCount) // debounced state update
-      return newInstantCount // instant state update
-    })
+    const newInstantCount = instantCount() + 1
+    setInstantCount(newInstantCount)
+    setCountDebouncer.maybeExecute(newInstantCount) // debounced state update
   }
 
   return (
@@ -96,9 +96,11 @@ function App2() {
     setDebouncedSearchText,
     {
       wait: 500,
-      enabled: () => searchText().length > 2, // optional, defaults to true
+      get enabled() {
+        return searchText().length > 2
+      }, // optional, defaults to true
     },
-    // Alternative to setSearchDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // Alternative to setSearchDebouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
     // (state) => state,
   )
 
@@ -126,15 +128,15 @@ function App2() {
         <tbody>
           <setSearchDebouncer.Subscribe
             selector={(state) => ({
-              status: state.status,
+              isPending: state.isPending,
               executionCount: state.executionCount,
             })}
           >
             {(state) => (
               <>
                 <tr>
-                  <td>Status:</td>
-                  <td>{state().status}</td>
+                  <td>Is Pending:</td>
+                  <td>{state().isPending ? 'Yes' : 'No'}</td>
                 </tr>
                 <tr>
                   <td>Execution Count:</td>
@@ -176,14 +178,21 @@ function App3() {
   const [currentValue, setCurrentValue] = createSignal(50)
   const [debouncedValue, setDebouncedValue] = createSignal(50)
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
+  const [wait, setWait] = createSignal(250)
+  const [enabled, setEnabled] = createSignal(true)
 
   // Lower-level createDebouncer hook - requires you to manage your own state
   const setValueDebouncer = createDebouncer(
     setDebouncedValue,
     {
-      wait: 250,
+      get wait() {
+        return wait()
+      },
+      get enabled() {
+        return enabled()
+      },
     },
-    // Alternative to setValueDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // Alternative to setValueDebouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
     // (state) => state,
   )
 
@@ -198,6 +207,32 @@ function App3() {
   return (
     <div>
       <h1>TanStack Pacer createDebouncer Example 3</h1>
+      <fieldset>
+        <legend>Reactive options</legend>
+        <label>
+          Delay: {wait()} ms
+          <input
+            type="range"
+            min="0"
+            max="1500"
+            step="50"
+            value={wait()}
+            onInput={(event) => setWait(event.currentTarget.valueAsNumber)}
+          />
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={enabled()}
+            onChange={(event) => setEnabled(event.currentTarget.checked)}
+          />
+          Enabled
+        </label>
+        <p>
+          Changing the delay affects the next scheduled call. Disabling cancels
+          pending work.
+        </p>
+      </fieldset>
       <div style={{ 'margin-bottom': '20px' }}>
         <label>
           Current Range:
@@ -220,7 +255,7 @@ function App3() {
             min="0"
             max="100"
             value={debouncedValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{debouncedValue()}</span>
@@ -230,15 +265,15 @@ function App3() {
         <tbody>
           <setValueDebouncer.Subscribe
             selector={(state) => ({
-              status: state.status,
+              isPending: state.isPending,
               executionCount: state.executionCount,
             })}
           >
             {(state) => (
               <>
                 <tr>
-                  <td>Status:</td>
-                  <td>{state().status}</td>
+                  <td>Is Pending:</td>
+                  <td>{state().isPending ? 'Yes' : 'No'}</td>
                 </tr>
                 <tr>
                   <td>Instant Executions:</td>
@@ -271,7 +306,10 @@ function App3() {
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
-        <p>Debounced with 250ms wait time</p>
+        <p>Debounced with {wait()}ms wait time</p>
+      </div>
+      <div>
+        <button onClick={() => setValueDebouncer.flush()}>Flush</button>
       </div>
       <setValueDebouncer.Subscribe selector={(state) => state}>
         {(state) => (
@@ -286,13 +324,15 @@ function App3() {
 
 render(
   () => (
-    <div>
-      <App1 />
-      <hr />
-      <App2 />
-      <hr />
-      <App3 />
-    </div>
+    <PacerProvider>
+      <div>
+        <App1 />
+        <hr />
+        <App2 />
+        <hr />
+        <App3 />
+      </div>
+    </PacerProvider>
   ),
   document.getElementById('root')!,
 )

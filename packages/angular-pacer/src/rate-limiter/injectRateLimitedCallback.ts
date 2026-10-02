@@ -1,4 +1,5 @@
 import { injectRateLimiter } from './injectRateLimiter'
+import type { AngularPacerOptions } from '../types'
 import type { RateLimiterOptions } from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
 
@@ -38,7 +39,7 @@ import type { AnyFunction } from '@tanstack/pacer/types'
  */
 export function injectRateLimitedCallback<TFn extends AnyFunction>(
   fn: TFn,
-  options: RateLimiterOptions<TFn>,
+  options: AngularPacerOptions<RateLimiterOptions<TFn>>,
 ): (...args: Parameters<TFn>) => boolean {
   const rateLimiter = injectRateLimiter(fn, options)
   return (...args: Parameters<TFn>) => rateLimiter.maybeExecute(...args)

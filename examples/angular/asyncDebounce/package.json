@@ -5,7 +5,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
   },
   "prettier": {
     "printWidth": 100,

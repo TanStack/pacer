@@ -35,6 +35,34 @@ jobs:
           main-branch-name: main
       - name: Run Checks
         run: pnpm run test:pr
+  e2e:
+    name: Example E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Tools
+        uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
+      - name: Get base and head commits for `nx affected`
+        uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
+        with:
+          main-branch-name: main
+      - name: Install Chromium
+        run: pnpm run test:e2e:install --with-deps
+      - name: Test affected examples
+        run: pnpm run test:e2e:affected
+      - name: Upload failure artifacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: example-e2e-failures
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
   preview:
     name: Preview
     runs-on: ubuntu-latest

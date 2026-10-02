@@ -7,7 +7,7 @@ title: injectDebouncedCallback
 function injectDebouncedCallback<TFn>(fn, options): (...args) => void;
 ```
 
-Defined in: [debouncer/injectDebouncedCallback.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedCallback.ts#L40)
+Defined in: [debouncer/injectDebouncedCallback.ts:41](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedCallback.ts#L41)
 
 An Angular function that creates a debounced version of a callback function.
 This function is essentially a wrapper around `injectDebouncer` that provides
@@ -41,7 +41,7 @@ Consider using the `injectDebouncer` function instead.
 
 ### options
 
-`DebouncerOptions`\<`TFn`\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`DebouncerOptions`\<`TFn`\>\>
 
 ## Returns
 

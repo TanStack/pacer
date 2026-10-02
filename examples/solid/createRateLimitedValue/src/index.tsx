@@ -12,7 +12,14 @@ function App1() {
     {
       limit: 5,
       window: 5000,
-      windowType: windowType(),
+      get windowType() {
+        return windowType()
+      },
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     },
     // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
     // (state) => ({
@@ -79,7 +86,14 @@ function App2() {
     {
       limit: 5,
       window: 5000,
-      windowType: windowType(),
+      get windowType() {
+        return windowType()
+      },
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     },
     // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
     // (state) => ({
@@ -146,15 +160,18 @@ function App2() {
 function App3() {
   const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
   const [currentValue, setCurrentValue] = createSignal(50)
-  const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
+  // The value helper submits the initial slider value when its effect runs.
+  const [submittedCount, setSubmittedCount] = createSignal(1)
 
-  // Using createRateLimitedValue with a rate limit of 5 executions per 5 seconds
+  // Using createRateLimitedValue with a rate limit of 20 executions per 2 seconds
   const [limitedValue, rateLimiter] = createRateLimitedValue(
     currentValue,
     {
       limit: 20,
       window: 2000,
-      windowType: windowType(),
+      get windowType() {
+        return windowType()
+      },
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -172,7 +189,7 @@ function App3() {
     const target = e.target as HTMLInputElement
     const newValue = parseInt(target.value, 10)
     setCurrentValue(newValue)
-    setInstantExecutionCount((c) => c + 1)
+    setSubmittedCount((c) => c + 1)
   }
 
   return (
@@ -222,7 +239,7 @@ function App3() {
             min="0"
             max="100"
             value={limitedValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{limitedValue()}</span>
@@ -231,33 +248,47 @@ function App3() {
       <table>
         <tbody>
           <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount()}</td>
+            <td>Values Submitted:</td>
+            <td>{submittedCount()}</td>
           </tr>
           <rateLimiter.Subscribe
             selector={(state) => ({
               executionCount: state.executionCount,
               rejectionCount: state.rejectionCount,
+              remainingInWindow: rateLimiter.getRemainingInWindow(),
+              msUntilNextWindow: rateLimiter.getMsUntilNextWindow(),
             })}
           >
             {(state) => (
               <>
                 <tr>
-                  <td>Rate Limited Executions:</td>
+                  <td>Execution Count:</td>
                   <td>{state().executionCount}</td>
                 </tr>
                 <tr>
-                  <td>Rejected Executions:</td>
+                  <td>Rejection Count:</td>
                   <td>{state().rejectionCount}</td>
+                </tr>
+                <tr>
+                  <td>Remaining in Window:</td>
+                  <td>{state().remainingInWindow}</td>
+                </tr>
+                <tr>
+                  <td>Ms Until Next Window:</td>
+                  <td>{state().msUntilNextWindow}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{submittedCount() - state().executionCount}</td>
                 </tr>
                 <tr>
                   <td>% Reduction:</td>
                   <td>
-                    {instantExecutionCount() === 0
+                    {submittedCount() === 0
                       ? '0'
                       : Math.round(
-                          ((instantExecutionCount() - state().executionCount) /
-                            instantExecutionCount()) *
+                          ((submittedCount() - state().executionCount) /
+                            submittedCount()) *
                             100,
                         )}
                     %
@@ -274,7 +305,7 @@ function App3() {
       <rateLimiter.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </rateLimiter.Subscribe>

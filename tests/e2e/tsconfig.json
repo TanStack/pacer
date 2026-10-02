@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "declaration": false
+  },
+  "include": [
+    "../../playwright.config.ts",
+    "../../scripts/verify-example-e2e.ts",
+    "helpers/**/*.ts",
+    "../../examples/*/*/tests/e2e/**/*.ts",
+    "../../examples/*/*/tests/e2e/**/*.mts"
+  ]
+}

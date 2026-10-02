@@ -1,30 +1,26 @@
 import { InjectionToken, inject } from '@angular/core'
-import type {
-  AnyAsyncFunction,
-  AnyFunction,
-  AsyncBatcherOptions,
-  AsyncDebouncerOptions,
-  AsyncQueuerOptions,
-  AsyncRateLimiterOptions,
-  AsyncThrottlerOptions,
-  BatcherOptions,
-  DebouncerOptions,
-  QueuerOptions,
-  RateLimiterOptions,
-  ThrottlerOptions,
-} from '@tanstack/pacer'
+import type { AngularAsyncBatcherOptions } from '../async-batcher/injectAsyncBatcher'
+import type { AngularAsyncDebouncerOptions } from '../async-debouncer/injectAsyncDebouncer'
+import type { AngularAsyncQueuerOptions } from '../async-queuer/injectAsyncQueuer'
+import type { AngularAsyncRateLimiterOptions } from '../async-rate-limiter/injectAsyncRateLimiter'
+import type { AngularAsyncThrottlerOptions } from '../async-throttler/injectAsyncThrottler'
+import type { AngularBatcherOptions } from '../batcher/injectBatcher'
+import type { AngularDebouncerOptions } from '../debouncer/injectDebouncer'
+import type { AngularQueuerOptions } from '../queuer/injectQueuer'
+import type { AngularRateLimiterOptions } from '../rate-limiter/injectRateLimiter'
+import type { AngularThrottlerOptions } from '../throttler/injectThrottler'
 
 export interface PacerProviderOptions {
-  asyncBatcher?: Partial<AsyncBatcherOptions<any>>
-  asyncDebouncer?: Partial<AsyncDebouncerOptions<AnyAsyncFunction>>
-  asyncQueuer?: Partial<AsyncQueuerOptions<any>>
-  asyncRateLimiter?: Partial<AsyncRateLimiterOptions<AnyAsyncFunction>>
-  asyncThrottler?: Partial<AsyncThrottlerOptions<AnyAsyncFunction>>
-  batcher?: Partial<BatcherOptions<any>>
-  debouncer?: Partial<DebouncerOptions<AnyFunction>>
-  queuer?: Partial<QueuerOptions<any>>
-  rateLimiter?: Partial<RateLimiterOptions<AnyFunction>>
-  throttler?: Partial<ThrottlerOptions<AnyFunction>>
+  asyncBatcher?: Partial<AngularAsyncBatcherOptions<any, any>>
+  asyncDebouncer?: Partial<AngularAsyncDebouncerOptions<any, any>>
+  asyncQueuer?: Partial<AngularAsyncQueuerOptions<any, any>>
+  asyncRateLimiter?: Partial<AngularAsyncRateLimiterOptions<any, any>>
+  asyncThrottler?: Partial<AngularAsyncThrottlerOptions<any, any>>
+  batcher?: Partial<AngularBatcherOptions<any, any>>
+  debouncer?: Partial<AngularDebouncerOptions<any, any>>
+  queuer?: Partial<AngularQueuerOptions<any, any>>
+  rateLimiter?: Partial<AngularRateLimiterOptions<any, any>>
+  throttler?: Partial<AngularThrottlerOptions<any, any>>
 }
 
 const DEFAULT_OPTIONS: PacerProviderOptions = {}

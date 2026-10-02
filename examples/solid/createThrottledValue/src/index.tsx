@@ -87,7 +87,8 @@ function App2() {
 
 function App3() {
   const [currentValue, setCurrentValue] = createSignal(50)
-  const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
+  // The value helper submits the initial slider value when its effect runs.
+  const [submittedCount, setSubmittedCount] = createSignal(1)
 
   // highest-level hook that watches an instant local state value and returns a throttled value
   const [throttledValue, throttler] = createThrottledValue(
@@ -105,7 +106,7 @@ function App3() {
     const target = e.target as HTMLInputElement
     const newValue = parseInt(target.value, 10)
     setCurrentValue(newValue)
-    setInstantExecutionCount((c) => c + 1)
+    setSubmittedCount((c) => c + 1)
   }
 
   return (
@@ -133,7 +134,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue()}</span>
@@ -142,8 +143,8 @@ function App3() {
       <table>
         <tbody>
           <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount()}</td>
+            <td>Values Submitted:</td>
+            <td>{submittedCount()}</td>
           </tr>
           <throttler.Subscribe
             selector={(state) => ({
@@ -153,24 +154,21 @@ function App3() {
             {(state) => (
               <>
                 <tr>
-                  <td>Throttled Executions:</td>
+                  <td>Throttled Execution Count:</td>
                   <td>{state().executionCount}</td>
                 </tr>
                 <tr>
                   <td>Saved Executions:</td>
-                  <td>{instantExecutionCount() - state().executionCount}</td>
-                </tr>
-                <tr>
-                  <td>% Reduction:</td>
                   <td>
-                    {instantExecutionCount() === 0
-                      ? '0'
-                      : Math.round(
-                          ((instantExecutionCount() - state().executionCount) /
-                            instantExecutionCount()) *
-                            100,
-                        )}
-                    %
+                    {submittedCount() - state().executionCount} (
+                    {submittedCount() > 0
+                      ? (
+                          ((submittedCount() - state().executionCount) /
+                            submittedCount()) *
+                          100
+                        ).toFixed(2)
+                      : 0}
+                    % Reduction in execution calls)
                   </td>
                 </tr>
               </>
@@ -179,7 +177,7 @@ function App3() {
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
-        <p>Throttled with 250ms wait time</p>
+        <p>Throttled to 1 update per 250ms</p>
       </div>
     </div>
   )

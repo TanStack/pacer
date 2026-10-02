@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import { render } from 'preact'
 import type { JSX } from 'preact'
 import { useThrottler } from '@tanstack/preact-pacer/throttler'
@@ -7,26 +7,27 @@ import { PacerProvider } from '@tanstack/preact-pacer/provider'
 function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
   const [throttledCount, setThrottledCount] = useState(0)
 
   // Lower-level useThrottler hook - requires you to manage your own state
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const setCountThrottler = useThrottler(setThrottledCount, {
-    wait: 1000,
-    // leading: true, // default
-    // trailing: true, // default
-    // enabled: () => instantCount > 2,
-  })
-  // Alternative to setCountThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+  const setCountThrottler = useThrottler(
+    setThrottledCount,
+    {
+      wait: 1000,
+      // leading: true, // default
+      // trailing: true, // default
+      // enabled: () => instantCountRef.current > 2,
+    },
+    // Alternative to setCountThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setCountThrottler.maybeExecute(newInstantCount) // throttled state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    setCountThrottler.maybeExecute(nextCount)
   }
 
   return (
@@ -78,19 +79,24 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = useState('')
+  const instantSearchRef = useRef('')
   const [throttledSearch, setThrottledSearch] = useState('')
 
   // Lower-level useThrottler hook - requires you to manage your own state
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const setSearchThrottler = useThrottler(setThrottledSearch, {
-    wait: 1000,
-    enabled: instantSearch.length > 2,
-  })
-  // Alternative to setSearchThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+  const setSearchThrottler = useThrottler(
+    setThrottledSearch,
+    {
+      wait: 1000,
+      enabled: () => instantSearchRef.current.length > 2,
+    },
+    // Alternative to setSearchThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
+    instantSearchRef.current = newValue
     setInstantSearch(newValue)
     setSearchThrottler.maybeExecute(newValue)
   }
@@ -153,13 +159,16 @@ function App3() {
 
   // Lower-level useThrottler hook - requires you to manage your own state
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const setValueThrottler = useThrottler(setThrottledValue, {
-    wait: 250,
-    // leading: true, // default
-    // trailing: true, // default
-  })
-  // Alternative to setValueThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+  const setValueThrottler = useThrottler(
+    setThrottledValue,
+    {
+      wait: 250,
+      // leading: true, // default
+      // trailing: true, // default
+    },
+    // Alternative to setValueThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
@@ -197,7 +206,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue}</span>

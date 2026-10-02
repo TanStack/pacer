@@ -31,6 +31,11 @@ title: "@tanstack/angular-pacer"
 - [RateLimitedSignal](interfaces/RateLimitedSignal.md)
 - [ThrottledSignal](interfaces/ThrottledSignal.md)
 
+## Type Aliases
+
+- [AngularPacerOptions](type-aliases/AngularPacerOptions.md)
+- [QueuedValueSignal](type-aliases/QueuedValueSignal.md)
+
 ## Functions
 
 - [injectAsyncBatchedCallback](functions/injectAsyncBatchedCallback.md)

@@ -29,23 +29,30 @@
     "lint:fix:all": "nx run-many --targets=lint --fix",
     "size": "size-limit",
     "test": "pnpm run test:ci",
-    "test:ci": "pnpm run test:projects && nx run-many --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build,test:build && size-limit",
+    "test:ci": "pnpm run test:projects && nx run-many --targets=test:e2e:types,test:e2e:lint,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build,test:build && size-limit",
     "test:docs": "node scripts/verify-links.ts",
     "test:eslint": "nx affected --target=test:eslint --exclude=examples/**",
     "test:knip": "knip",
     "test:lib": "nx affected --targets=test:lib --exclude=examples/**",
     "test:lib:dev": "pnpm test:lib && nx watch --all -- pnpm test:lib",
-    "test:pr": "pnpm run test:projects && nx affected --targets=test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build,test:build",
+    "test:pr": "pnpm run test:projects && nx affected --targets=test:e2e:types,test:e2e:lint,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build,test:build",
     "test:projects": "node scripts/verify-test-projects.ts",
     "test:sherif": "sherif",
     "test:types": "nx affected --targets=test:types --exclude=examples/**",
-    "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all"
+    "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all",
+    "test:e2e": "nx run-many --target=test:e2e --parallel=2",
+    "test:e2e:affected": "nx affected --target=test:e2e --parallel=2",
+    "test:e2e:install": "playwright install chromium",
+    "test:e2e:types": "node scripts/verify-example-e2e.ts && tsc --project tests/e2e/tsconfig.json",
+    "test:e2e:lint": "eslint --config eslint.config.js playwright.config.ts scripts/verify-example-e2e.ts tests/e2e/helpers examples/*/*/tests/e2e"
   },
   "nx": {
     "includedScripts": [
       "test:docs",
       "test:knip",
-      "test:sherif"
+      "test:sherif",
+      "test:e2e:types",
+      "test:e2e:lint"
     ]
   },
   "size-limit": [
@@ -58,6 +65,7 @@
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
     "@faker-js/faker": "^10.6.0",
+    "@playwright/test": "^1.63.0",
     "@size-limit/preset-small-lib": "^14.0.0",
     "@tanstack/eslint-config": "0.4.0",
     "@tanstack/typedoc-config": "0.3.4",
@@ -78,6 +86,7 @@
     "tinyglobby": "^0.2.17",
     "tsdown": "^0.23.0",
     "typescript": "6.0.3",
+    "vite": "^8.3.1",
     "vitest": "^5.0.1"
   },
   "volta": {

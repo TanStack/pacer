@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useDebouncedState } from '@tanstack/react-pacer/debouncer'
 
 function App1() {
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
 
   // higher-level hook that uses React.useState with the state setter automatically debounced
   // optionally, grab the debouncer from the last index of the returned array
@@ -11,7 +12,7 @@ function App1() {
     instantCount,
     {
       wait: 500,
-      // enabled: () => instantCount > 2, // optional, defaults to true
+      // enabled: () => instantCountRef.current > 2, // optional, defaults to true
       // leading: true, // optional, defaults to false
     },
     // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
@@ -19,12 +20,9 @@ function App1() {
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setDebouncedCount(newInstantCount) // debounced state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    setDebouncedCount(nextCount)
   }
 
   return (
@@ -82,13 +80,14 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = useState('')
+  const instantSearchRef = useRef('')
 
   // higher-level hook that uses React.useState with the state setter automatically debounced
   const [debouncedSearch, setDebouncedSearch, debouncer] = useDebouncedState(
     instantSearch,
     {
       wait: 500,
-      enabled: instantSearch.length > 2, // optional, defaults to true
+      enabled: () => instantSearchRef.current.length > 2, // optional, defaults to true
     },
     // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
@@ -96,6 +95,7 @@ function App2() {
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
+    instantSearchRef.current = newValue
     setInstantSearch(newValue)
     setDebouncedSearch(newValue)
   }
@@ -206,7 +206,7 @@ function App3() {
             min="0"
             max="100"
             value={debouncedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{debouncedValue}</span>
