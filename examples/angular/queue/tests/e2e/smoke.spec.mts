@@ -16,34 +16,20 @@ test.beforeEach(async ({ page, exampleUrl }) => {
 test('renders empty number, text, and range queues', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 2 })).toHaveCount(3)
   await expect(page.getByRole('searchbox')).toBeVisible()
-  await expect(
-    page.getByRole('slider', { name: 'Queued Range', exact: true }),
-  ).toBeDisabled()
+  await expect(page.getByRole('slider', { name: 'Queued Range', exact: true })).toBeDisabled()
 })
 
-test('processes every submitted search value in FIFO order', async ({
-  page,
-}) => {
-  const queue = page
-    .locator('section')
-    .filter({
-      has: page.getByRole('heading', { name: 'Text changes', exact: true }),
-    })
+test('processes every submitted search value in FIFO order', async ({ page }) => {
+  const queue = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'Text changes', exact: true }),
+  })
   await page.getByRole('searchbox').fill('first')
   await page.getByRole('searchbox').fill('second')
   await page.clock.runFor(32)
-  await expect(
-    queue.getByText('Current Value: first', { exact: true }),
-  ).toBeVisible()
-  await expect(
-    queue.getByText('Items Processed: 1', { exact: true }),
-  ).toBeVisible()
+  await expect(queue.getByText('Current Value: first', { exact: true })).toBeVisible()
+  await expect(queue.getByText('Items Processed: 1', { exact: true })).toBeVisible()
   await page.clock.runFor(500)
-  await expect(
-    queue.getByText('Current Value: second', { exact: true }),
-  ).toBeVisible()
-  await expect(
-    queue.getByText('Items Processed: 2', { exact: true }),
-  ).toBeVisible()
+  await expect(queue.getByText('Current Value: second', { exact: true })).toBeVisible()
+  await expect(queue.getByText('Items Processed: 2', { exact: true })).toBeVisible()
   await expect(queue.getByText('Queue Size: 0', { exact: true })).toBeVisible()
 })

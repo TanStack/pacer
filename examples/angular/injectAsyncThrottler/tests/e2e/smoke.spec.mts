@@ -15,15 +15,11 @@ test.beforeEach(async ({ page, exampleUrl }) => {
 
 test('renders the search example with no results', async ({ page }) => {
   await expect(page.getByRole('searchbox')).toBeVisible()
-  await expect(
-    page.getByRole('heading', { name: 'Search Results', exact: true }),
-  ).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Search Results', exact: true })).toBeVisible()
   await expect(page.getByRole('listitem')).toHaveCount(0)
 })
 
-test('returns the simulated search results after the asynchronous call', async ({
-  page,
-}) => {
+test('returns the simulated search results after the asynchronous call', async ({ page }) => {
   await page.getByRole('searchbox').fill('pacer')
   await page.clock.runFor(32)
   await page.clock.runFor(32)

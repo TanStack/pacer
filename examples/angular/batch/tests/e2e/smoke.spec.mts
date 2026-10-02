@@ -14,37 +14,25 @@ test.beforeEach(async ({ page, exampleUrl }) => {
 })
 
 test('renders an empty batch', async ({ page }) => {
-  await expect(
-    page.getByText('Batch Size: 0 / 5', { exact: true }),
-  ).toBeVisible()
-  await expect(
-    page.getByRole('button', { name: 'Add Number', exact: true }),
-  ).toBeVisible()
+  await expect(page.getByText('Batch Size: 0 / 5', { exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Add Number', exact: true })).toBeVisible()
 })
 
 test('processes five items together when the batch fills', async ({ page }) => {
   const add = page.getByRole('button', { name: 'Add Number', exact: true })
   for (let i = 0; i < 4; i++) await add.click()
   await page.clock.runFor(32)
-  await expect(
-    page.getByText('Batch Size: 4 / 5', { exact: true }),
-  ).toBeVisible()
-  await expect(page.getByText('[1, 2, 3, 4, 5]', { exact: true })).toHaveCount(
-    0,
-  )
+  await expect(page.getByText('Batch Size: 4 / 5', { exact: true })).toBeVisible()
+  await expect(page.getByText('[1, 2, 3, 4, 5]', { exact: true })).toHaveCount(0)
   await add.click()
   await page.clock.runFor(32)
   await expect(page.getByText('[1, 2, 3, 4, 5]', { exact: true })).toBeVisible()
-  await expect(
-    page.getByText('Batch Size: 0 / 5', { exact: true }),
-  ).toBeVisible()
+  await expect(page.getByText('Batch Size: 0 / 5', { exact: true })).toBeVisible()
 })
 
 test('processes a partial batch when its wait elapses', async ({ page }) => {
   await page.getByRole('button', { name: 'Add Number', exact: true }).click()
   await page.clock.runFor(3050)
   await expect(page.getByText('[1]', { exact: true })).toBeVisible()
-  await expect(
-    page.getByText('Batch Size: 0 / 5', { exact: true }),
-  ).toBeVisible()
+  await expect(page.getByText('Batch Size: 0 / 5', { exact: true })).toBeVisible()
 })

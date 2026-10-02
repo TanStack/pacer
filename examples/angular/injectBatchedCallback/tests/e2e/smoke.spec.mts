@@ -15,17 +15,13 @@ test.beforeEach(async ({ page, exampleUrl }) => {
 
 test('renders the log, analytics, and API request demos', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(3)
-  await expect(
-    page.getByRole('heading', { name: 'Batched analytics', exact: true }),
-  ).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Batched analytics', exact: true })).toBeVisible()
   await expect(
     page.getByRole('heading', { name: 'Batched API requests', exact: true }),
   ).toBeVisible()
 })
 
-test('processes logs once the third entry fills the batch', async ({
-  page,
-}) => {
+test('processes logs once the third entry fills the batch', async ({ page }) => {
   await page.getByRole('button', { name: 'Add Log Entry', exact: true }).click()
   await page.getByRole('button', { name: 'Add Warning', exact: true }).click()
   await page.clock.runFor(32)

@@ -26,51 +26,29 @@ test('renders all asynchronous batch demos', async ({ page }) => {
   ).toBeVisible()
 })
 
-test('returns two results per query when three searches fill the batch', async ({
-  page,
-}) => {
+test('returns two results per query when three searches fill the batch', async ({ page }) => {
   for (const query of ['javascript', 'react', 'typescript']) {
-    await page
-      .getByRole('button', { name: `Search "${query}"`, exact: true })
-      .click()
+    await page.getByRole('button', { name: `Search "${query}"`, exact: true }).click()
   }
   await page.clock.runFor(32)
-  await expect(
-    page.getByText('Processing batch search...', { exact: true }),
-  ).toBeVisible()
+  await expect(page.getByText('Processing batch search...', { exact: true })).toBeVisible()
   await page.clock.runFor(850)
   await expect(
-    page.getByText(
-      'Total Searches Made: 3, Results Found: 6, Batches Processed: 1',
-      {
-        exact: true,
-      },
-    ),
+    page.getByText('Total Searches Made: 3, Results Found: 6, Batches Processed: 1', {
+      exact: true,
+    }),
   ).toBeVisible()
-  await expect(
-    page.getByText('typescript: typescript result 2', { exact: true }),
-  ).toBeVisible()
+  await expect(page.getByText('typescript: typescript result 2', { exact: true })).toBeVisible()
 })
 
-test('displays a failed batch without an unhandled rejection', async ({
-  page,
-}) => {
-  await page
-    .getByRole('button', { name: 'Search "error"', exact: true })
-    .click()
+test('displays a failed batch without an unhandled rejection', async ({ page }) => {
+  await page.getByRole('button', { name: 'Search "error"', exact: true }).click()
   await page.clock.runFor(2850)
-  await expect(page.getByRole('alert')).toHaveText(
-    'Error: Simulated batch API error',
-  )
+  await expect(page.getByRole('alert')).toHaveText('Error: Simulated batch API error')
   await expect(
-    page.getByText(
-      'Total Searches Made: 1, Results Found: 0, Batches Processed: 0',
-      {
-        exact: true,
-      },
-    ),
+    page.getByText('Total Searches Made: 1, Results Found: 0, Batches Processed: 0', {
+      exact: true,
+    }),
   ).toBeVisible()
-  await expect(
-    page.getByText('Processing batch search...', { exact: true }),
-  ).toHaveCount(0)
+  await expect(page.getByText('Processing batch search...', { exact: true })).toHaveCount(0)
 })

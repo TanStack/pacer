@@ -16,14 +16,10 @@ test.beforeEach(async ({ page, exampleUrl }) => {
 test('renders all three asynchronous callback demos', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(3)
   await expect(page.getByRole('searchbox')).toBeVisible()
-  await expect(
-    page.getByRole('heading', { name: 'Async counter', exact: true }),
-  ).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Async counter', exact: true })).toBeVisible()
 })
 
-test('shows successful results and handles a simulated search error', async ({
-  page,
-}) => {
+test('shows successful results and handles a simulated search error', async ({ page }) => {
   const input = page.getByRole('searchbox')
   await input.fill('pacer')
   await page.clock.runFor(1050)

@@ -15,14 +15,10 @@ test.beforeEach(async ({ page, exampleUrl }) => {
 test('renders the counter, search, and range controls', async ({ page }) => {
   await expect(page.getByRole('region')).toHaveCount(3)
   await expect(page.getByRole('searchbox')).toBeVisible()
-  await expect(
-    page.getByRole('slider', { name: 'Debounced Range', exact: true }),
-  ).toBeDisabled()
+  await expect(page.getByRole('slider', { name: 'Debounced Range', exact: true })).toBeDisabled()
 })
 
-test('waits until the third increment and flushes its pending value', async ({
-  page,
-}) => {
+test('waits until the third increment and flushes its pending value', async ({ page }) => {
   const counter = page.getByRole('region', { name: 'Counter' })
   const increment = counter.getByRole('button', {
     name: 'Increment',
@@ -31,30 +27,18 @@ test('waits until the third increment and flushes its pending value', async ({
   await increment.click()
   await increment.click()
   await page.clock.runFor(1000)
-  await expect(
-    counter.getByText('Instant Count: 2', { exact: true }),
-  ).toBeVisible()
-  await expect(
-    counter.getByText('Debounced Count: 0', { exact: true }),
-  ).toBeVisible()
+  await expect(counter.getByText('Instant Count: 2', { exact: true })).toBeVisible()
+  await expect(counter.getByText('Debounced Count: 0', { exact: true })).toBeVisible()
   await increment.click()
   await page.clock.runFor(32)
-  await expect(
-    counter.getByText('Pending: true', { exact: true }),
-  ).toBeVisible()
+  await expect(counter.getByText('Pending: true', { exact: true })).toBeVisible()
   await counter.getByRole('button', { name: 'Flush', exact: true }).click()
   await page.clock.runFor(32)
-  await expect(
-    counter.getByText('Debounced Count: 3', { exact: true }),
-  ).toBeVisible()
-  await expect(
-    counter.getByText('Pending: false', { exact: true }),
-  ).toBeVisible()
+  await expect(counter.getByText('Debounced Count: 3', { exact: true })).toBeVisible()
+  await expect(counter.getByText('Pending: false', { exact: true })).toBeVisible()
 })
 
-test('updates the range delay and cancels pending work when disabled', async ({
-  page,
-}) => {
+test('updates the range delay and cancels pending work when disabled', async ({ page }) => {
   const range = page.getByRole('region', { name: 'Range' })
   const input = range.getByRole('slider', {
     name: 'Current Range',
@@ -64,9 +48,7 @@ test('updates the range delay and cancels pending work when disabled', async ({
     name: 'Debounced Range',
     exact: true,
   })
-  await range
-    .getByRole('slider', { name: 'Debounce delay', exact: true })
-    .press('End')
+  await range.getByRole('slider', { name: 'Debounce delay', exact: true }).press('End')
   await page.clock.runFor(32)
   await input.press('ArrowRight')
   await page.clock.runFor(1000)
