@@ -1,20 +1,12 @@
-import { UseAsyncBatchedCallback } from '../async-batcher/useAsyncBatchedCallback'
-import { UseAsyncThrottledCallback } from '../async-throttler/useAsyncThrottledCallback'
-import { UseDebouncedCallback } from '../debouncer/useDebouncedCallback'
 import { UseDebouncedValue } from '../debouncer/useDebouncedValue'
 import { UseDebouncedState } from '../debouncer/useDebouncedState'
-import { UseBatchedCallback } from '../batcher/useBatchedCallback'
 import { UseRateLimitedValue } from '../rate-limiter/useRateLimitedValue'
 import { UseRateLimitedState } from '../rate-limiter/useRateLimitedState'
-import { UseRateLimitedCallback } from '../rate-limiter/useRateLimitedCallback'
 import { UseQueuedValue } from '../queuer/useQueuedValue'
 import { UseQueuedState } from '../queuer/useQueuedState'
-import { UseAsyncRateLimitedCallback } from '../async-rate-limiter/useAsyncRateLimitedCallback'
 import { UseAsyncQueuedState } from '../async-queuer/useAsyncQueuedState'
-import { UseThrottledCallback } from '../throttler/useThrottledCallback'
 import { UseThrottledValue } from '../throttler/useThrottledValue'
 import { UseThrottledState } from '../throttler/useThrottledState'
-import { UseAsyncDebouncedCallback } from '../async-debouncer/useAsyncDebouncedCallback'
 import { UseAsyncBatcher } from '../async-batcher/useAsyncBatcher'
 import { UseAsyncDebouncer } from '../async-debouncer/useAsyncDebouncer'
 import { UseAsyncQueuer } from '../async-queuer/useAsyncQueuer'
@@ -57,23 +49,15 @@ export interface PacerProviderOptions {
 }
 
 export interface EmberPacerScope {
-  useAsyncBatchedCallback: typeof UseAsyncBatchedCallback
-  useAsyncThrottledCallback: typeof UseAsyncThrottledCallback
-  useDebouncedCallback: typeof UseDebouncedCallback
   useDebouncedValue: typeof UseDebouncedValue
   useDebouncedState: typeof UseDebouncedState
-  useBatchedCallback: typeof UseBatchedCallback
   useRateLimitedValue: typeof UseRateLimitedValue
   useRateLimitedState: typeof UseRateLimitedState
-  useRateLimitedCallback: typeof UseRateLimitedCallback
   useQueuedValue: typeof UseQueuedValue
   useQueuedState: typeof UseQueuedState
-  useAsyncRateLimitedCallback: typeof UseAsyncRateLimitedCallback
   useAsyncQueuedState: typeof UseAsyncQueuedState
-  useThrottledCallback: typeof UseThrottledCallback
   useThrottledValue: typeof UseThrottledValue
   useThrottledState: typeof UseThrottledState
-  useAsyncDebouncedCallback: typeof UseAsyncDebouncedCallback
   useAsyncBatcher: typeof UseAsyncBatcher
   useAsyncDebouncer: typeof UseAsyncDebouncer
   useAsyncQueuer: typeof UseAsyncQueuer
@@ -93,42 +77,6 @@ export function createPacerScope(
   const read = () =>
     typeof defaultOptions === 'function' ? defaultOptions() : defaultOptions
   return {
-    useAsyncBatchedCallback: class<
-      TValue,
-      TSelected = {},
-    > extends UseAsyncBatchedCallback<TValue, TSelected> {
-      override compute(
-        ...[args, options]: Parameters<
-          UseAsyncBatchedCallback<TValue, TSelected>['compute']
-        >
-      ) {
-        return super.compute(args, { ...read().asyncBatcher, ...options })
-      }
-    },
-    useAsyncThrottledCallback: class<
-      TFn extends AnyAsyncFunction,
-      TSelected = {},
-    > extends UseAsyncThrottledCallback<TFn, TSelected> {
-      override compute(
-        ...[args, options]: Parameters<
-          UseAsyncThrottledCallback<TFn, TSelected>['compute']
-        >
-      ) {
-        return super.compute(args, { ...read().asyncThrottler, ...options })
-      }
-    },
-    useDebouncedCallback: class<
-      TFn extends AnyFunction,
-      TSelected = {},
-    > extends UseDebouncedCallback<TFn, TSelected> {
-      override compute(
-        ...[args, options]: Parameters<
-          UseDebouncedCallback<TFn, TSelected>['compute']
-        >
-      ) {
-        return super.compute(args, { ...read().debouncer, ...options })
-      }
-    },
     useDebouncedValue: class<TValue, TSelected = {}> extends UseDebouncedValue<
       TValue,
       TSelected
@@ -153,18 +101,6 @@ export function createPacerScope(
         return super.compute(args, { ...read().debouncer, ...options })
       }
     },
-    useBatchedCallback: class<
-      TValue,
-      TSelected = {},
-    > extends UseBatchedCallback<TValue, TSelected> {
-      override compute(
-        ...[args, options]: Parameters<
-          UseBatchedCallback<TValue, TSelected>['compute']
-        >
-      ) {
-        return super.compute(args, { ...read().batcher, ...options })
-      }
-    },
     useRateLimitedValue: class<
       TValue,
       TSelected = {},
@@ -184,18 +120,6 @@ export function createPacerScope(
       override compute(
         ...[args, options]: Parameters<
           UseRateLimitedState<TValue, TSelected>['compute']
-        >
-      ) {
-        return super.compute(args, { ...read().rateLimiter, ...options })
-      }
-    },
-    useRateLimitedCallback: class<
-      TFn extends AnyFunction,
-      TSelected = {},
-    > extends UseRateLimitedCallback<TFn, TSelected> {
-      override compute(
-        ...[args, options]: Parameters<
-          UseRateLimitedCallback<TFn, TSelected>['compute']
         >
       ) {
         return super.compute(args, { ...read().rateLimiter, ...options })
@@ -228,18 +152,6 @@ export function createPacerScope(
         return super.compute(args, { ...read().queuer, ...options })
       }
     },
-    useAsyncRateLimitedCallback: class<
-      TFn extends AnyAsyncFunction,
-      TSelected = {},
-    > extends UseAsyncRateLimitedCallback<TFn, TSelected> {
-      override compute(
-        ...[args, options]: Parameters<
-          UseAsyncRateLimitedCallback<TFn, TSelected>['compute']
-        >
-      ) {
-        return super.compute(args, { ...read().asyncRateLimiter, ...options })
-      }
-    },
     useAsyncQueuedState: class<
       TValue,
       TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
@@ -253,18 +165,6 @@ export function createPacerScope(
         >
       ) {
         return super.compute(args, { ...read().asyncQueuer, ...options })
-      }
-    },
-    useThrottledCallback: class<
-      TFn extends AnyFunction,
-      TSelected = {},
-    > extends UseThrottledCallback<TFn, TSelected> {
-      override compute(
-        ...[args, options]: Parameters<
-          UseThrottledCallback<TFn, TSelected>['compute']
-        >
-      ) {
-        return super.compute(args, { ...read().throttler, ...options })
       }
     },
     useThrottledValue: class<TValue, TSelected = {}> extends UseThrottledValue<
@@ -289,18 +189,6 @@ export function createPacerScope(
         >
       ) {
         return super.compute(args, { ...read().throttler, ...options })
-      }
-    },
-    useAsyncDebouncedCallback: class<
-      TFn extends AnyAsyncFunction,
-      TSelected = {},
-    > extends UseAsyncDebouncedCallback<TFn, TSelected> {
-      override compute(
-        ...[args, options]: Parameters<
-          UseAsyncDebouncedCallback<TFn, TSelected>['compute']
-        >
-      ) {
-        return super.compute(args, { ...read().asyncDebouncer, ...options })
       }
     },
     useAsyncBatcher: class<TValue, TSelected = {}> extends UseAsyncBatcher<

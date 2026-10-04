@@ -3,19 +3,9 @@ id: EmberPacerScope
 title: EmberPacerScope
 ---
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:59](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L59)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:51](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L51)
 
 ## Properties
-
-### useAsyncBatchedCallback
-
-```ts
-useAsyncBatchedCallback: typeof UseAsyncBatchedCallback;
-```
-
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:60](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L60)
-
-***
 
 ### useAsyncBatcher
 
@@ -23,17 +13,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:60](https://gith
 useAsyncBatcher: typeof UseAsyncBatcher;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:77](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L77)
-
-***
-
-### useAsyncDebouncedCallback
-
-```ts
-useAsyncDebouncedCallback: typeof UseAsyncDebouncedCallback;
-```
-
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:76](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L76)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:61](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L61)
 
 ***
 
@@ -43,7 +23,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:76](https://gith
 useAsyncDebouncer: typeof UseAsyncDebouncer;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:78](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L78)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:62](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L62)
 
 ***
 
@@ -53,7 +33,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:78](https://gith
 useAsyncQueuedState: typeof UseAsyncQueuedState;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:72](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L72)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:58](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L58)
 
 ***
 
@@ -63,17 +43,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:72](https://gith
 useAsyncQueuer: typeof UseAsyncQueuer;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:79](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L79)
-
-***
-
-### useAsyncRateLimitedCallback
-
-```ts
-useAsyncRateLimitedCallback: typeof UseAsyncRateLimitedCallback;
-```
-
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:71](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L71)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:63](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L63)
 
 ***
 
@@ -83,17 +53,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:71](https://gith
 useAsyncRateLimiter: typeof UseAsyncRateLimiter;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:80](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L80)
-
-***
-
-### useAsyncThrottledCallback
-
-```ts
-useAsyncThrottledCallback: typeof UseAsyncThrottledCallback;
-```
-
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:61](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L61)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:64](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L64)
 
 ***
 
@@ -101,16 +61,6 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:61](https://gith
 
 ```ts
 useAsyncThrottler: typeof UseAsyncThrottler;
-```
-
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:81](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L81)
-
-***
-
-### useBatchedCallback
-
-```ts
-useBatchedCallback: typeof UseBatchedCallback;
 ```
 
 Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:65](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L65)
@@ -123,17 +73,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:65](https://gith
 useBatcher: typeof UseBatcher;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:82](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L82)
-
-***
-
-### useDebouncedCallback
-
-```ts
-useDebouncedCallback: typeof UseDebouncedCallback;
-```
-
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:62](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L62)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:66](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L66)
 
 ***
 
@@ -143,7 +83,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:62](https://gith
 useDebouncedState: typeof UseDebouncedState;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:64](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L64)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:53](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L53)
 
 ***
 
@@ -153,7 +93,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:64](https://gith
 useDebouncedValue: typeof UseDebouncedValue;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:63](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L63)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:52](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L52)
 
 ***
 
@@ -163,7 +103,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:63](https://gith
 useDebouncer: typeof UseDebouncer;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:83](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L83)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:67](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L67)
 
 ***
 
@@ -173,7 +113,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:83](https://gith
 useQueuedState: typeof UseQueuedState;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:70](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L70)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:57](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L57)
 
 ***
 
@@ -183,7 +123,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:70](https://gith
 useQueuedValue: typeof UseQueuedValue;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:69](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L69)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:56](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L56)
 
 ***
 
@@ -191,16 +131,6 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:69](https://gith
 
 ```ts
 useQueuer: typeof UseQueuer;
-```
-
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:84](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L84)
-
-***
-
-### useRateLimitedCallback
-
-```ts
-useRateLimitedCallback: typeof UseRateLimitedCallback;
 ```
 
 Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:68](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L68)
@@ -213,7 +143,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:68](https://gith
 useRateLimitedState: typeof UseRateLimitedState;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:67](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L67)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:55](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L55)
 
 ***
 
@@ -223,7 +153,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:67](https://gith
 useRateLimitedValue: typeof UseRateLimitedValue;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:66](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L66)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:54](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L54)
 
 ***
 
@@ -233,17 +163,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:66](https://gith
 useRateLimiter: typeof UseRateLimiter;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:85](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L85)
-
-***
-
-### useThrottledCallback
-
-```ts
-useThrottledCallback: typeof UseThrottledCallback;
-```
-
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:73](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L73)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:69](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L69)
 
 ***
 
@@ -253,7 +173,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:73](https://gith
 useThrottledState: typeof UseThrottledState;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:75](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L75)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:60](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L60)
 
 ***
 
@@ -263,7 +183,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:75](https://gith
 useThrottledValue: typeof UseThrottledValue;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:74](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L74)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:59](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L59)
 
 ***
 
@@ -273,4 +193,4 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:74](https://gith
 useThrottler: typeof UseThrottler;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:86](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L86)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:70](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L70)

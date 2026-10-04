@@ -3,7 +3,7 @@ id: PacerProviderOptions
 title: PacerProviderOptions
 ---
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:46](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L46)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:38](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L38)
 
 ## Properties
 
@@ -13,7 +13,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:46](https://gith
 optional asyncBatcher?: Partial<EmberAsyncBatcherOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:47](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L47)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:39](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L39)
 
 ***
 
@@ -23,7 +23,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:47](https://gith
 optional asyncDebouncer?: Partial<EmberAsyncDebouncerOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:48](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L48)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:40](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L40)
 
 ***
 
@@ -33,7 +33,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:48](https://gith
 optional asyncQueuer?: Partial<EmberAsyncQueuerOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:49](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L49)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:41](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L41)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:49](https://gith
 optional asyncRateLimiter?: Partial<EmberAsyncRateLimiterOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:50](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L50)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:42](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L42)
 
 ***
 
@@ -53,7 +53,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:50](https://gith
 optional asyncThrottler?: Partial<EmberAsyncThrottlerOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:51](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L51)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:43](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L43)
 
 ***
 
@@ -63,7 +63,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:51](https://gith
 optional batcher?: Partial<EmberBatcherOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:52](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L52)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:44](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L44)
 
 ***
 
@@ -73,7 +73,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:52](https://gith
 optional debouncer?: Partial<EmberDebouncerOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:53](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L53)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:45](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L45)
 
 ***
 
@@ -83,7 +83,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:53](https://gith
 optional queuer?: Partial<EmberQueuerOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:54](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L54)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:46](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L46)
 
 ***
 
@@ -93,7 +93,7 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:54](https://gith
 optional rateLimiter?: Partial<EmberRateLimiterOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:55](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L55)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:47](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L47)
 
 ***
 
@@ -103,4 +103,4 @@ Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:55](https://gith
 optional throttler?: Partial<EmberThrottlerOptions<any, any>>;
 ```
 
-Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:56](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L56)
+Defined in: [packages/ember-pacer/src/provider/PacerProvider.ts:48](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/provider/PacerProvider.ts#L48)

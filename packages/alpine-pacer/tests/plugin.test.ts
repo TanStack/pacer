@@ -8,7 +8,7 @@ it('owns magic-created callbacks until the Alpine element is destroyed', async (
   element.setAttribute('x-data', '{ calls: [], callback: null }')
   element.setAttribute(
     'x-init',
-    'callback = $pacer.createDebouncedCallback(value => calls.push(value), { wait: 10 })',
+    'callback = $pacer.createDebouncer(value => calls.push(value), { wait: 10 }).maybeExecute',
   )
   document.body.append(element)
   Alpine.initTree(element)

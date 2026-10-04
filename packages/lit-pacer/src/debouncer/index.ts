@@ -1,6 +1,5 @@
 export * from '@tanstack/pacer/debouncer'
 export * from './createDebouncer'
 export * from './DebouncerController'
-export * from './createDebouncedCallback'
 export * from './createDebouncedState'
 export * from './createDebouncedValue'

@@ -9,7 +9,6 @@ Use it when a throttled operation returns a value you need, can reject, or needs
 
 ## Choose an API
 
-- `useAsyncThrottledCallback` for a stable Promise-returning handler
 - `useAsyncThrottler` for lifecycle methods and selected execution state
 
 ## Ember example

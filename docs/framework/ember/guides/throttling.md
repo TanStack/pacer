@@ -44,11 +44,10 @@ Choose another utility when:
 
 ## Choose an API
 
-- `useThrottledCallback` for a stable throttled event handler
 - `useThrottledState` or `useThrottledValue` for throttled Ember state
 - `useThrottler` for lifecycle methods and selected state
 
-Use the callback API for event handlers, the state or value API for rate-controlled UI state, and the instance API for lifecycle methods and timing state.
+Use instance methods for event handlers, and state or value helpers for rate-controlled UI state.
 
 ## Ember example
 
@@ -81,22 +80,22 @@ The focused TypeScript snippets below demonstrate the core `Throttler` class re-
 
 ### Throttled callback
 
-Use `useThrottledCallback` when an event should invoke a throttled side effect:
+Use the yielded utility's `maybeExecute` method when an event should invoke a throttled side effect:
 
 ```gts
 import { on } from '@ember/modifier'
 import { fn } from '@ember/helper'
-import { useThrottledCallback } from '@tanstack/ember-pacer'
+import { useThrottler } from '@tanstack/ember-pacer'
 
 // In a component template; this.search accepts a query string:
 <template>
-  {{#let (useThrottledCallback this.search wait=500) as |search|}}
-    <button {{on 'click' (fn search @query)}}>Search</button>
+  {{#let (useThrottler this.search wait=500) as |search|}}
+    <button {{on 'click' (fn search.maybeExecute @query)}}>Search</button>
   {{/let}}
 </template>
 ```
 
-The callback does not expose `cancel()` or `flush()`. Use `useThrottler` when the component needs that control.
+Keep the utility instance when the component also needs `cancel()` or `flush()`. Its bound `maybeExecute` method can be passed directly as an event handler.
 
 ### Throttled state and values
 

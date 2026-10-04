@@ -44,11 +44,10 @@ Choose another utility when:
 
 ## Choose an API
 
-- `createThrottledCallback` for a stable throttled event handler
 - `createThrottledSignal` or `createThrottledValue` for throttled Svelte state
 - `createThrottler` for lifecycle methods and selected state
 
-Use the callback API for event handlers, the state or value API for rate-controlled UI state, and the instance API for lifecycle methods and timing state.
+Use instance methods for event handlers, and state or value helpers for rate-controlled UI state.
 
 ## Svelte example
 
@@ -73,21 +72,21 @@ The focused snippets below use `createThrottler` during component initialization
 
 ### Throttled callback
 
-Use `createThrottledCallback` when an event should invoke a throttled side effect:
+Use `createThrottler(...).maybeExecute` when an event should invoke a throttled side effect:
 
 ```ts
-import { createThrottledCallback } from '@tanstack/svelte-pacer'
+import { createThrottler } from '@tanstack/svelte-pacer'
 
-const search = createThrottledCallback(
+const search = createThrottler(
   (query: string) => updateSearchResults(query),
   { wait: 500 },
-)
+).maybeExecute
 function onInput(event: Event) {
   search((event.target as HTMLInputElement).value)
 }
 ```
 
-The callback does not expose `cancel()` or `flush()`. Use `createThrottler` when the component needs that control.
+Keep the utility instance when the component also needs `cancel()` or `flush()`. Its bound `maybeExecute` method can be passed directly as an event handler.
 
 ### Throttled state and values
 

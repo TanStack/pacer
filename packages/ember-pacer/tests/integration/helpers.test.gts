@@ -4,12 +4,13 @@ import { setupRenderingTest } from 'ember-qunit'
 import Component from '@glimmer/component'
 import { tracked } from '@glimmer/tracking'
 import {
-  useDebouncedCallback,
+  useDebouncer,
   useDebouncedState,
   useDebouncedValue,
   useQueuedState,
 } from '@tanstack/ember-pacer'
 import type {
+  EmberDebouncer,
   EmberDebouncedState,
   EmberDebouncedValue,
   EmberQueuer,
@@ -32,8 +33,8 @@ const captureQueue = (value: typeof queue) => {
   queue = value
   return ''
 }
-const captureCallback = (value: typeof callback) => {
-  callback = value
+const captureCallback = (value: EmberDebouncer<(value: string) => void>) => {
+  callback = value.maybeExecute
   return ''
 }
 class Fixture extends Component {
@@ -46,7 +47,7 @@ class Fixture extends Component {
     component = this
   }
   <template>
-    {{captureCallback (useDebouncedCallback this.execute wait=20)}}
+    {{captureCallback (useDebouncer this.execute wait=20)}}
     {{#let (useDebouncedState 1 wait=20) as |value|}}
       {{captureState value}}<output id='state'>{{value.value}}</output>
     {{/let}}

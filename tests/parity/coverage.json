@@ -780,7 +780,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "async-batched-callback"
       },
       "svelte": {
         "status": "verified",
@@ -789,7 +790,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "async-batched-callback"
       },
       "lit": {
         "status": "verified",
@@ -798,7 +800,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "async-batched-callback"
       },
       "alpine": {
         "status": "verified",
@@ -807,7 +810,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "async-batched-callback"
       },
       "ember": {
         "status": "verified",
@@ -816,7 +820,8 @@
           "computed styles and bounds match React at 1280px and 390px",
           "native Ember TypeScript checks pass",
           "template helpers own utility initialization and cleanup"
-        ]
+        ],
+        "example": "async-batched-callback"
       },
       "octane": {
         "status": "verified",
@@ -892,7 +897,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "async-debounced-callback"
       },
       "svelte": {
         "status": "verified",
@@ -901,7 +907,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "async-debounced-callback"
       },
       "lit": {
         "status": "verified",
@@ -910,7 +917,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "async-debounced-callback"
       },
       "alpine": {
         "status": "verified",
@@ -919,7 +927,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "async-debounced-callback"
       },
       "ember": {
         "status": "verified",
@@ -928,7 +937,8 @@
           "computed styles and bounds match React at 1280px and 390px",
           "native Ember TypeScript checks pass",
           "template helpers own utility initialization and cleanup"
-        ]
+        ],
+        "example": "async-debounced-callback"
       },
       "octane": {
         "status": "verified",
@@ -1172,7 +1182,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "async-throttled-callback"
       },
       "svelte": {
         "status": "verified",
@@ -1181,7 +1192,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "async-throttled-callback"
       },
       "lit": {
         "status": "verified",
@@ -1190,7 +1202,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "async-throttled-callback"
       },
       "alpine": {
         "status": "verified",
@@ -1199,7 +1212,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "async-throttled-callback"
       },
       "ember": {
         "status": "verified",
@@ -1208,7 +1222,8 @@
           "computed styles and bounds match React at 1280px and 390px",
           "native Ember TypeScript checks pass",
           "template helpers own utility initialization and cleanup"
-        ]
+        ],
+        "example": "async-throttled-callback"
       },
       "octane": {
         "status": "verified",
@@ -1284,7 +1299,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "batched-callback"
       },
       "svelte": {
         "status": "verified",
@@ -1293,7 +1309,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "batched-callback"
       },
       "lit": {
         "status": "verified",
@@ -1302,7 +1319,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "batched-callback"
       },
       "alpine": {
         "status": "verified",
@@ -1311,7 +1329,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "batched-callback"
       },
       "ember": {
         "status": "verified",
@@ -1320,7 +1339,8 @@
           "computed styles and bounds match React at 1280px and 390px",
           "native Ember TypeScript checks pass",
           "template helpers own utility initialization and cleanup"
-        ]
+        ],
+        "example": "batched-callback"
       },
       "octane": {
         "status": "verified",
@@ -1396,7 +1416,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "debounced-callback"
       },
       "svelte": {
         "status": "verified",
@@ -1405,7 +1426,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "debounced-callback"
       },
       "lit": {
         "status": "verified",
@@ -1414,7 +1436,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "debounced-callback"
       },
       "alpine": {
         "status": "verified",
@@ -1423,7 +1446,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "debounced-callback"
       },
       "ember": {
         "status": "verified",
@@ -1432,7 +1456,8 @@
           "computed styles and bounds match React at 1280px and 390px",
           "native Ember TypeScript checks pass",
           "template helpers own utility initialization and cleanup"
-        ]
+        ],
+        "example": "debounced-callback"
       },
       "octane": {
         "status": "verified",
@@ -1788,7 +1813,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "rate-limited-callback"
       },
       "svelte": {
         "status": "verified",
@@ -1797,7 +1823,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "rate-limited-callback"
       },
       "lit": {
         "status": "verified",
@@ -1806,7 +1833,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "rate-limited-callback"
       },
       "alpine": {
         "status": "verified",
@@ -1815,7 +1843,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "rate-limited-callback"
       },
       "ember": {
         "status": "verified",
@@ -1824,7 +1853,8 @@
           "computed styles and bounds match React at 1280px and 390px",
           "native Ember TypeScript checks pass",
           "template helpers own utility initialization and cleanup"
-        ]
+        ],
+        "example": "rate-limited-callback"
       },
       "octane": {
         "status": "verified",
@@ -2012,7 +2042,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "throttled-callback"
       },
       "svelte": {
         "status": "verified",
@@ -2021,7 +2052,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native framework TypeScript checks pass",
           "additional rate-limit readout and queue peek checks cover reactive method results"
-        ]
+        ],
+        "example": "throttled-callback"
       },
       "lit": {
         "status": "verified",
@@ -2030,7 +2062,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "throttled-callback"
       },
       "alpine": {
         "status": "verified",
@@ -2039,7 +2072,8 @@
           "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
           "native TypeScript checks pass",
           "native lifecycle owns utility initialization and cleanup"
-        ]
+        ],
+        "example": "throttled-callback"
       },
       "ember": {
         "status": "verified",
@@ -2048,7 +2082,8 @@
           "computed styles and bounds match React at 1280px and 390px",
           "native Ember TypeScript checks pass",
           "template helpers own utility initialization and cleanup"
-        ]
+        ],
+        "example": "throttled-callback"
       },
       "octane": {
         "status": "verified",
@@ -2287,56 +2322,56 @@
   },
   "adapters": {
     "vue": {
-      "api-contracts": "verified: all 27 React utility and convenience APIs have native equivalents; constructor and helper tests cover stable instances, reactive options, state, and queue return shapes",
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
       "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
       "provider-defaults": "verified: native provider tests cover reactive defaults, retained utility identity, and local overrides",
       "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests",
-      "helper-semantics": "verified: native callback/state/value/queue helper tests and matching browser scenarios for every React helper example",
-      "jsdoc": "all constructors and callback/state/value helpers expanded with native examples; references regenerated",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
       "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
       "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
       "reactive-selection": "verified: selection.test.ts"
     },
     "svelte": {
-      "api-contracts": "verified: all 27 React utility and convenience APIs have native equivalents; constructor and helper tests cover stable instances, reactive options, state, and queue return shapes",
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
       "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
       "provider-defaults": "verified: native provider tests cover reactive defaults, retained utility identity, and local overrides",
       "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests",
-      "helper-semantics": "verified: native callback/state/value/queue helper tests and matching browser scenarios for every React helper example",
-      "jsdoc": "all constructors and callback/state/value helpers expanded with native examples; references regenerated",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
       "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
       "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
       "reactive-selection": "verified: selection.test.ts"
     },
     "lit": {
-      "api-contracts": "verified: all 27 React utility and convenience APIs have native equivalents; constructor and helper tests cover stable instances, reactive options, state, and queue return shapes",
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
       "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
       "provider-defaults": "implemented and tested: subtree inheritance across shadow roots, reactive updates, local overrides, and reconnection",
       "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests; host disconnection and reconnection preserve the utility and restore subscriptions",
-      "helper-semantics": "verified: native callback/state/value/queue helper tests and matching browser scenarios for every React helper example",
-      "jsdoc": "all constructors and callback/state/value helpers expanded with native examples; references regenerated",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
       "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
       "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
       "reactive-selection": "verified: selection.test.ts"
     },
     "alpine": {
-      "api-contracts": "verified: all 27 React utility and convenience APIs have native equivalents; constructor and helper tests cover stable instances, reactive options, state, and queue return shapes",
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
       "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
       "provider-defaults": "verified: native provider tests cover reactive defaults, retained utility identity, and local overrides",
       "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests",
-      "helper-semantics": "verified: native callback/state/value/queue helper tests and matching browser scenarios for every React helper example",
-      "jsdoc": "all constructors and callback/state/value helpers expanded with native examples; references regenerated",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
       "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
       "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
       "reactive-selection": "verified: selection.test.ts"
     },
     "ember": {
-      "api-contracts": "verified: all 27 React utility and convenience APIs have native equivalents; constructor and helper tests cover stable instances, reactive options, state, and queue return shapes",
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
       "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
       "provider-defaults": "verified: native provider tests cover reactive defaults, retained utility identity, and local overrides",
       "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests; native queue initialization tests cover post-render callbacks and restored state precedence",
-      "helper-semantics": "verified: native callback/state/value/queue helper tests and matching browser scenarios for every React helper example",
-      "jsdoc": "all constructors and callback/state/value helpers expanded with native examples; references regenerated",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
       "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
       "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
       "reactive-selection": "verified: tests/integration/reactive-selection.test.gts in native Ember browser suite"

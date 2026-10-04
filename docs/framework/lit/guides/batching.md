@@ -41,10 +41,9 @@ Choose another utility when:
 
 ## Choose an API
 
-- `createBatchedCallback` for a stable item-adder
 - `createBatcher` for flush, cancel, collected items, and selected state
 
-Use the callback API when adding items is all the component needs. Use the instance API for `flush()`, `cancel()`, collected items, selected state, and dynamic options.
+Use the batcher's bound `addItem` method as an event handler. Keep the instance for `flush()`, `cancel()`, collected items, selected state, and dynamic options.
 
 ## Lit example
 

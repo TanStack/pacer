@@ -5,30 +5,22 @@ title: "@tanstack/ember-pacer"
 
 ## Classes
 
-- [UseAsyncBatchedCallback](classes/UseAsyncBatchedCallback.md)
 - [UseAsyncBatcher](classes/UseAsyncBatcher.md)
-- [UseAsyncDebouncedCallback](classes/UseAsyncDebouncedCallback.md)
 - [UseAsyncDebouncer](classes/UseAsyncDebouncer.md)
 - [UseAsyncQueuedState](classes/UseAsyncQueuedState.md)
 - [UseAsyncQueuer](classes/UseAsyncQueuer.md)
-- [UseAsyncRateLimitedCallback](classes/UseAsyncRateLimitedCallback.md)
 - [UseAsyncRateLimiter](classes/UseAsyncRateLimiter.md)
-- [UseAsyncThrottledCallback](classes/UseAsyncThrottledCallback.md)
 - [UseAsyncThrottler](classes/UseAsyncThrottler.md)
-- [UseBatchedCallback](classes/UseBatchedCallback.md)
 - [UseBatcher](classes/UseBatcher.md)
-- [UseDebouncedCallback](classes/UseDebouncedCallback.md)
 - [UseDebouncedState](classes/UseDebouncedState.md)
 - [UseDebouncedValue](classes/UseDebouncedValue.md)
 - [UseDebouncer](classes/UseDebouncer.md)
 - [UseQueuedState](classes/UseQueuedState.md)
 - [UseQueuedValue](classes/UseQueuedValue.md)
 - [UseQueuer](classes/UseQueuer.md)
-- [UseRateLimitedCallback](classes/UseRateLimitedCallback.md)
 - [UseRateLimitedState](classes/UseRateLimitedState.md)
 - [UseRateLimitedValue](classes/UseRateLimitedValue.md)
 - [UseRateLimiter](classes/UseRateLimiter.md)
-- [UseThrottledCallback](classes/UseThrottledCallback.md)
 - [UseThrottledState](classes/UseThrottledState.md)
 - [UseThrottledValue](classes/UseThrottledValue.md)
 - [UseThrottler](classes/UseThrottler.md)
@@ -75,21 +67,9 @@ title: "@tanstack/ember-pacer"
 
 ## References
 
-### useAsyncBatchedCallback
-
-Renames and re-exports [UseAsyncBatchedCallback](classes/UseAsyncBatchedCallback.md)
-
-***
-
 ### useAsyncBatcher
 
 Renames and re-exports [UseAsyncBatcher](classes/UseAsyncBatcher.md)
-
-***
-
-### useAsyncDebouncedCallback
-
-Renames and re-exports [UseAsyncDebouncedCallback](classes/UseAsyncDebouncedCallback.md)
 
 ***
 
@@ -111,21 +91,9 @@ Renames and re-exports [UseAsyncQueuer](classes/UseAsyncQueuer.md)
 
 ***
 
-### useAsyncRateLimitedCallback
-
-Renames and re-exports [UseAsyncRateLimitedCallback](classes/UseAsyncRateLimitedCallback.md)
-
-***
-
 ### useAsyncRateLimiter
 
 Renames and re-exports [UseAsyncRateLimiter](classes/UseAsyncRateLimiter.md)
-
-***
-
-### useAsyncThrottledCallback
-
-Renames and re-exports [UseAsyncThrottledCallback](classes/UseAsyncThrottledCallback.md)
 
 ***
 
@@ -135,21 +103,9 @@ Renames and re-exports [UseAsyncThrottler](classes/UseAsyncThrottler.md)
 
 ***
 
-### useBatchedCallback
-
-Renames and re-exports [UseBatchedCallback](classes/UseBatchedCallback.md)
-
-***
-
 ### useBatcher
 
 Renames and re-exports [UseBatcher](classes/UseBatcher.md)
-
-***
-
-### useDebouncedCallback
-
-Renames and re-exports [UseDebouncedCallback](classes/UseDebouncedCallback.md)
 
 ***
 
@@ -189,12 +145,6 @@ Renames and re-exports [UseQueuer](classes/UseQueuer.md)
 
 ***
 
-### useRateLimitedCallback
-
-Renames and re-exports [UseRateLimitedCallback](classes/UseRateLimitedCallback.md)
-
-***
-
 ### useRateLimitedState
 
 Renames and re-exports [UseRateLimitedState](classes/UseRateLimitedState.md)
@@ -210,12 +160,6 @@ Renames and re-exports [UseRateLimitedValue](classes/UseRateLimitedValue.md)
 ### useRateLimiter
 
 Renames and re-exports [UseRateLimiter](classes/UseRateLimiter.md)
-
-***
-
-### useThrottledCallback
-
-Renames and re-exports [UseThrottledCallback](classes/UseThrottledCallback.md)
 
 ***
 

@@ -85,7 +85,7 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
   - Easily integrate with your own state management library of choice
   - Persist state to local or session storage for some utilities like rate limiting and queuing
 - **Convenient Hooks**
-  - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuedState`, and more.
+  - Framework adapters provide lifecycle-owned utilities and state/value helpers. React, Preact, and Octane also provide callback-only hooks.
   - Multiple layers of abstraction to choose from depending on your use case.
   - Works with each framework's default state management solutions, or with whatever custom state management library that you prefer.
 - **Type Safety**

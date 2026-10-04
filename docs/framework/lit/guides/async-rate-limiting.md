@@ -9,7 +9,6 @@ Use it when accepted operations return values you need, can reject, or need retr
 
 ## Choose an API
 
-- `createAsyncRateLimitedCallback` for a quota-controlled handler
 - `createAsyncRateLimiter` for capacity helpers and selected execution state
 
 ## Lit example

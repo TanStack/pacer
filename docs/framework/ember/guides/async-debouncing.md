@@ -9,7 +9,6 @@ Use async debouncing when the debounced operation returns a value you need, can 
 
 ## Choose an API
 
-- `useAsyncDebouncedCallback` for a stable Promise-returning handler
 - `useAsyncDebouncer` for lifecycle methods and selected execution state
 
 ## Ember example

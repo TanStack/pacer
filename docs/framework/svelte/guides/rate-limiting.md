@@ -81,11 +81,10 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 ## Choose an API
 
-- `createRateLimitedCallback` for a quota-controlled event handler
 - `createRateLimitedSignal` or `createRateLimitedValue` for Svelte state
 - `createRateLimiter` for capacity helpers and selected state
 
-Use the callback API for operations, the state or value API for quota-controlled UI updates, and the instance API when you need capacity helpers or rejection state.
+Call `maybeExecute()` for quota-controlled operations. Use state or value helpers for UI updates, and the instance for capacity helpers and rejection state.
 
 ## Svelte example
 
@@ -114,15 +113,15 @@ The focused snippets below use `createRateLimiter` during component initializati
 
 ### Rate-limited callback
 
-Use `createRateLimitedCallback` when an event should invoke a rate-limited side effect:
+Use `createRateLimiter(...).maybeExecute` when an event should invoke a rate-limited side effect:
 
 ```ts
-import { createRateLimitedCallback } from '@tanstack/svelte-pacer'
+import { createRateLimiter } from '@tanstack/svelte-pacer'
 
-const search = createRateLimitedCallback(
+const search = createRateLimiter(
   (query: string) => updateSearchResults(query),
   { limit: 3, window: 1000 },
-)
+).maybeExecute
 function onInput(event: Event) {
   search((event.target as HTMLInputElement).value)
 }

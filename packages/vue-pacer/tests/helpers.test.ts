@@ -2,7 +2,7 @@ import { useThrottledValue, useRateLimitedValue } from '../src'
 import { useAsyncQueuedState } from '../src'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import {
-  useDebouncedCallback,
+  useDebouncer,
   useDebouncedState,
   useDebouncedValue,
   useQueuedState,
@@ -13,8 +13,8 @@ beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
 it('debounces callbacks and cancels pending work on disposal', async () => {
   const fn = vi.fn()
-  const { result: callback, destroy } = setup(() =>
-    useDebouncedCallback(fn, { wait: 100 }),
+  const { result: callback, destroy } = setup(
+    () => useDebouncer(fn, { wait: 100 }).maybeExecute,
   )
   callback('first')
   callback('last')

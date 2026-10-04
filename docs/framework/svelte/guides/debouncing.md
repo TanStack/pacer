@@ -47,9 +47,8 @@ Choose another utility when:
 
 ## Using debouncing in Svelte
 
-The adapter provides three levels of debouncing API:
+The adapter provides two levels of debouncing API:
 
-- `createDebouncedCallback` creates a stable debounced event handler.
 - `createDebouncedSignal` and `createDebouncedValue` delay state or a changing value.
 - `createDebouncer` exposes lifecycle methods, dynamic options, callbacks, and selected state.
 
@@ -59,21 +58,21 @@ The snippets use application functions such as `saveDraft` and `updateSearchResu
 
 ### Debounced callback
 
-Use `createDebouncedCallback` when an event should invoke a debounced side effect:
+Use `createDebouncer(...).maybeExecute` when an event should invoke a debounced side effect:
 
 ```ts
-import { createDebouncedCallback } from '@tanstack/svelte-pacer'
+import { createDebouncer } from '@tanstack/svelte-pacer'
 
-const search = createDebouncedCallback(
+const search = createDebouncer(
   (query: string) => updateSearchResults(query),
   { wait: 500 },
-)
+).maybeExecute
 function onInput(event: Event) {
   search((event.target as HTMLInputElement).value)
 }
 ```
 
-The callback does not expose `cancel()` or `flush()`. Use `createDebouncer` when the component needs that control.
+Keep the utility instance when the component also needs `cancel()` or `flush()`. Its bound `maybeExecute` method can be passed directly as an event handler.
 
 ### Debounced state and values
 
@@ -101,7 +100,7 @@ function saveNow() {
 }
 ```
 
-Both the callback and `maybeExecute()` return `void`. The synchronous adapter does not retain return values or catch errors. Handle errors inside a trailing callback, or use [async debouncing](./async-debouncing.md) when the caller needs a Promise result.
+The bound `maybeExecute()` method returns `void`. The synchronous adapter does not retain return values or catch errors. Handle errors inside a trailing callback, or use [async debouncing](./async-debouncing.md) when the caller needs a Promise result.
 
 The following timing and control snippets use the `debouncer` instance created in your component. Run those operations from event handlers or other application code.
 

@@ -81,11 +81,10 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 ## Choose an API
 
-- `useRateLimitedCallback` for a quota-controlled event handler
 - `useRateLimitedState` or `useRateLimitedValue` for Vue state
 - `useRateLimiter` for capacity helpers and selected state
 
-Use the callback API for operations, the state or value API for quota-controlled UI updates, and the instance API when you need capacity helpers or rejection state.
+Call `maybeExecute()` for quota-controlled operations. Use state or value helpers for UI updates, and the instance for capacity helpers and rejection state.
 
 ## Vue example
 
@@ -117,15 +116,15 @@ The focused snippets below use `useRateLimiter` during setup, and instance metho
 
 ### Rate-limited callback
 
-Use `useRateLimitedCallback` when an event should invoke a rate-limited side effect:
+Use `useRateLimiter(...).maybeExecute` when an event should invoke a rate-limited side effect:
 
 ```ts
-import { useRateLimitedCallback } from '@tanstack/vue-pacer'
+import { useRateLimiter } from '@tanstack/vue-pacer'
 
-const search = useRateLimitedCallback(
+const search = useRateLimiter(
   (query: string) => updateSearchResults(query),
   { limit: 3, window: 1000 },
-)
+).maybeExecute
 function onInput(event: Event) {
   search((event.target as HTMLInputElement).value)
 }

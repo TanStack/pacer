@@ -81,22 +81,18 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 ## Choose an API
 
-- `injectRateLimitedCallback` for a quota-controlled handler
 - `injectRateLimitedSignal` or `injectRateLimitedValue` for signals
 - `injectRateLimiter` for capacity helpers and selected state
 
-Use the callback API for operations, the state or value API for quota-controlled UI updates, and the instance API when you need capacity helpers or rejection state.
+Call `maybeExecute()` for quota-controlled operations. Use state or value helpers for UI updates, and the instance for capacity helpers and rejection state.
 
 ## Angular example
 
 ```ts
-import {
-  injectRateLimitedCallback,
-  injectRateLimiter,
-} from '@tanstack/angular-pacer'
+import { injectRateLimiter } from '@tanstack/angular-pacer'
 
 export class SendComponent {
-  readonly send = injectRateLimitedCallback(sendEvent, {
+  readonly send = injectRateLimiter(sendEvent, {
     limit: 3,
     window: 10_000,
   })

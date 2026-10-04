@@ -9,7 +9,6 @@ Use async debouncing when the debounced operation returns a value you need, can 
 
 ## Choose an API
 
-- `createAsyncDebouncedCallback` for a stable Promise-returning handler
 - `createAsyncDebouncer` for lifecycle methods and selected execution state
 
 ## Alpine example

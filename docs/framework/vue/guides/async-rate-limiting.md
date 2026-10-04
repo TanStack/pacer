@@ -9,7 +9,6 @@ Use it when accepted operations return values you need, can reject, or need retr
 
 ## Choose an API
 
-- `useAsyncRateLimitedCallback` for a quota-controlled handler
 - `useAsyncRateLimiter` for capacity helpers and selected execution state
 
 ## Vue example

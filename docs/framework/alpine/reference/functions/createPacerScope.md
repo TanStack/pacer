@@ -7,7 +7,7 @@ title: createPacerScope
 function createPacerScope(defaultOptions?): object;
 ```
 
-Defined in: [provider/createPacerScope.ts:34](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/provider/createPacerScope.ts#L34)
+Defined in: [provider/createPacerScope.ts:26](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/provider/createPacerScope.ts#L26)
 
 Creates typed Pacer factories sharing an Alpine lifecycle and reactive defaults.
 
@@ -42,54 +42,6 @@ get destroyed(): boolean;
 ##### Returns
 
 `boolean`
-
-### createAsyncBatchedCallback()
-
-```ts
-createAsyncBatchedCallback<TValue>(fn, options): (item) => Promise<any>;
-```
-
-#### Type Parameters
-
-##### TValue
-
-`TValue`
-
-#### Parameters
-
-##### fn
-
-(`items`) => `Promise`\<`any`\>
-
-##### options
-
-[`AlpinePacerOptions`](../type-aliases/AlpinePacerOptions.md)\<[`AlpineAsyncBatcherOptions`](../interfaces/AlpineAsyncBatcherOptions.md)\<`TValue`, \{
-\}\>\>
-
-#### Returns
-
-```ts
-(item): Promise<any>;
-```
-
-Adds an item to the async batcher
-If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
-
-##### Parameters
-
-###### item
-
-`TValue`
-
-##### Returns
-
-`Promise`\<`any`\>
-
-The result from the batch function, or undefined if an error occurred and was handled by onError
-
-##### Throws
-
-The error from the batch function if no onError handler is configured or throwOnError is true
 
 ### createAsyncBatcher()
 
@@ -128,61 +80,6 @@ selector?): AlpineAsyncBatcher<TValue, TSelected>;
 #### Returns
 
 [`AlpineAsyncBatcher`](../interfaces/AlpineAsyncBatcher.md)\<`TValue`, `TSelected`\>
-
-### createAsyncDebouncedCallback()
-
-```ts
-createAsyncDebouncedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
-```
-
-#### Type Parameters
-
-##### TFn
-
-`TFn` *extends* `AnyAsyncFunction`
-
-#### Parameters
-
-##### fn
-
-`TFn`
-
-##### options
-
-[`AlpinePacerOptions`](../type-aliases/AlpinePacerOptions.md)\<[`AlpineAsyncDebouncerOptions`](../interfaces/AlpineAsyncDebouncerOptions.md)\<`TFn`, \{
-\}\>\>
-
-#### Returns
-
-```ts
-(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
-```
-
-Attempts to execute the debounced function.
-If a call is already in progress, it will be queued.
-
-Error Handling:
-- If the debounced function throws and no `onError` handler is configured,
-  the error will be thrown from this method.
-- If an `onError` handler is configured, errors will be caught and passed to the handler,
-  and this method will return undefined.
-- The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
-
-##### Parameters
-
-###### args
-
-...`Parameters`\<`TFn`\>
-
-##### Returns
-
-`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
-
-A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
-
-##### Throws
-
-The error from the debounced function if no onError handler is configured
 
 ### createAsyncDebouncer()
 
@@ -297,73 +194,6 @@ selector?): AlpineAsyncQueuer<TValue, TSelected>;
 
 [`AlpineAsyncQueuer`](../interfaces/AlpineAsyncQueuer.md)\<`TValue`, `TSelected`\>
 
-### createAsyncRateLimitedCallback()
-
-```ts
-createAsyncRateLimitedCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
-```
-
-#### Type Parameters
-
-##### TFn
-
-`TFn` *extends* `AnyAsyncFunction`
-
-#### Parameters
-
-##### fn
-
-`TFn`
-
-##### options
-
-[`AlpinePacerOptions`](../type-aliases/AlpinePacerOptions.md)\<[`AlpineAsyncRateLimiterOptions`](../interfaces/AlpineAsyncRateLimiterOptions.md)\<`TFn`, \{
-\}\>\>
-
-#### Returns
-
-```ts
-(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
-```
-
-Attempts to execute the rate-limited function if within the configured limits.
-Will reject execution if the number of calls in the current window exceeds the limit.
-
-Error Handling:
-- If the rate-limited function throws and no `onError` handler is configured,
-  the error will be thrown from this method.
-- If an `onError` handler is configured, errors will be caught and passed to the handler,
-  and this method will return undefined.
-- The error state can be checked using `getErrorCount()` and `getIsExecuting()`.
-
-##### Parameters
-
-###### args
-
-...`Parameters`\<`TFn`\>
-
-##### Returns
-
-`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
-
-A promise that resolves with the function's return value, or undefined if an error occurred and was handled by onError
-
-##### Throws
-
-The error from the rate-limited function if no onError handler is configured
-
-##### Example
-
-```ts
-const rateLimiter = new AsyncRateLimiter(fn, { limit: 5, window: 1000 });
-
-// First 5 calls will return a promise that resolves with the result
-const result = await rateLimiter.maybeExecute('arg1', 'arg2');
-
-// Additional calls within the window will return undefined
-const result2 = await rateLimiter.maybeExecute('arg1', 'arg2'); // undefined
-```
-
 ### createAsyncRateLimiter()
 
 ```ts
@@ -401,67 +231,6 @@ selector?): AlpineAsyncRateLimiter<TFn, TSelected>;
 #### Returns
 
 [`AlpineAsyncRateLimiter`](../interfaces/AlpineAsyncRateLimiter.md)\<`TFn`, `TSelected`\>
-
-### createAsyncThrottledCallback()
-
-```ts
-createAsyncThrottledCallback<TFn>(fn, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
-```
-
-#### Type Parameters
-
-##### TFn
-
-`TFn` *extends* `AnyAsyncFunction`
-
-#### Parameters
-
-##### fn
-
-`TFn`
-
-##### options
-
-[`AlpinePacerOptions`](../type-aliases/AlpinePacerOptions.md)\<[`AlpineAsyncThrottlerOptions`](../interfaces/AlpineAsyncThrottlerOptions.md)\<`TFn`, \{
-\}\>\>
-
-#### Returns
-
-```ts
-(...args): Promise<Awaited<ReturnType<TFn>> | undefined>;
-```
-
-Attempts to execute the throttled function. The execution behavior depends on the throttler options:
-
-- If enough time has passed since the last execution (>= wait period):
-  - With leading=true: Executes immediately
-  - With leading=false: Waits for the next trailing execution
-
-- If within the wait period:
-  - With trailing=true: Schedules execution for end of wait period
-  - With trailing=false: Drops the execution
-
-##### Parameters
-
-###### args
-
-...`Parameters`\<`TFn`\>
-
-##### Returns
-
-`Promise`\<`Awaited`\<`ReturnType`\<`TFn`\>\> \| `undefined`\>
-
-##### Example
-
-```ts
-const throttled = new AsyncThrottler(fn, { wait: 1000 });
-
-// First call executes immediately
-await throttled.maybeExecute('a', 'b');
-
-// Call during wait period - gets throttled
-await throttled.maybeExecute('c', 'd');
-```
 
 ### createAsyncThrottler()
 
@@ -501,48 +270,6 @@ selector?): AlpineAsyncThrottler<TFn, TSelected>;
 
 [`AlpineAsyncThrottler`](../interfaces/AlpineAsyncThrottler.md)\<`TFn`, `TSelected`\>
 
-### createBatchedCallback()
-
-```ts
-createBatchedCallback<TValue>(fn, options): (item) => void;
-```
-
-#### Type Parameters
-
-##### TValue
-
-`TValue`
-
-#### Parameters
-
-##### fn
-
-(`items`) => `void`
-
-##### options
-
-[`AlpinePacerOptions`](../type-aliases/AlpinePacerOptions.md)\<[`AlpineBatcherOptions`](../interfaces/AlpineBatcherOptions.md)\<`TValue`, \{
-\}\>\>
-
-#### Returns
-
-```ts
-(item): void;
-```
-
-Adds an item to the batcher
-If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
-
-##### Parameters
-
-###### item
-
-`TValue`
-
-##### Returns
-
-`void`
-
 ### createBatcher()
 
 ```ts
@@ -580,48 +307,6 @@ selector?): AlpineBatcher<TValue, TSelected>;
 #### Returns
 
 [`AlpineBatcher`](../interfaces/AlpineBatcher.md)\<`TValue`, `TSelected`\>
-
-### createDebouncedCallback()
-
-```ts
-createDebouncedCallback<TFn>(fn, options): (...args) => void;
-```
-
-#### Type Parameters
-
-##### TFn
-
-`TFn` *extends* `AnyFunction`
-
-#### Parameters
-
-##### fn
-
-`TFn`
-
-##### options
-
-[`AlpinePacerOptions`](../type-aliases/AlpinePacerOptions.md)\<[`AlpineDebouncerOptions`](../interfaces/AlpineDebouncerOptions.md)\<`TFn`, \{
-\}\>\>
-
-#### Returns
-
-```ts
-(...args): void;
-```
-
-Attempts to execute the debounced function
-If a call is already in progress, it will be queued
-
-##### Parameters
-
-###### args
-
-...`Parameters`\<`TFn`\>
-
-##### Returns
-
-`void`
 
 ### createDebouncedState()
 
@@ -850,60 +535,6 @@ selector?): AlpineQueuer<TValue, TSelected>;
 
 [`AlpineQueuer`](../interfaces/AlpineQueuer.md)\<`TValue`, `TSelected`\>
 
-### createRateLimitedCallback()
-
-```ts
-createRateLimitedCallback<TFn>(fn, options): (...args) => boolean;
-```
-
-#### Type Parameters
-
-##### TFn
-
-`TFn` *extends* `AnyFunction`
-
-#### Parameters
-
-##### fn
-
-`TFn`
-
-##### options
-
-[`AlpinePacerOptions`](../type-aliases/AlpinePacerOptions.md)\<[`AlpineRateLimiterOptions`](../interfaces/AlpineRateLimiterOptions.md)\<`TFn`, \{
-\}\>\>
-
-#### Returns
-
-```ts
-(...args): boolean;
-```
-
-Attempts to execute the rate-limited function if within the configured limits.
-Will reject execution if the number of calls in the current window exceeds the limit.
-
-##### Parameters
-
-###### args
-
-...`Parameters`\<`TFn`\>
-
-##### Returns
-
-`boolean`
-
-##### Example
-
-```ts
-const rateLimiter = new RateLimiter(fn, { limit: 5, window: 1000 });
-
-// First 5 calls will return true
-rateLimiter.maybeExecute('arg1', 'arg2'); // true
-
-// Additional calls within the window will return false
-rateLimiter.maybeExecute('arg1', 'arg2'); // false
-```
-
 ### createRateLimitedState()
 
 ```ts
@@ -1017,67 +648,6 @@ selector?): AlpineRateLimiter<TFn, TSelected>;
 #### Returns
 
 [`AlpineRateLimiter`](../interfaces/AlpineRateLimiter.md)\<`TFn`, `TSelected`\>
-
-### createThrottledCallback()
-
-```ts
-createThrottledCallback<TFn>(fn, options): (...args) => void;
-```
-
-#### Type Parameters
-
-##### TFn
-
-`TFn` *extends* `AnyFunction`
-
-#### Parameters
-
-##### fn
-
-`TFn`
-
-##### options
-
-[`AlpinePacerOptions`](../type-aliases/AlpinePacerOptions.md)\<[`AlpineThrottlerOptions`](../interfaces/AlpineThrottlerOptions.md)\<`TFn`, \{
-\}\>\>
-
-#### Returns
-
-```ts
-(...args): void;
-```
-
-Attempts to execute the throttled function. The execution behavior depends on the throttler options:
-
-- If enough time has passed since the last execution (>= wait period):
-  - With leading=true: Executes immediately
-  - With leading=false: Waits for the next trailing execution
-
-- If within the wait period:
-  - With trailing=true: Schedules execution for end of wait period
-  - With trailing=false: Drops the execution
-
-##### Parameters
-
-###### args
-
-...`Parameters`\<`TFn`\>
-
-##### Returns
-
-`void`
-
-##### Example
-
-```ts
-const throttled = new Throttler(fn, { wait: 1000 });
-
-// First call executes immediately
-throttled.maybeExecute('a', 'b');
-
-// Call during wait period - gets throttled
-throttled.maybeExecute('c', 'd');
-```
 
 ### createThrottledState()
 

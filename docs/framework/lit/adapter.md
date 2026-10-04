@@ -21,18 +21,18 @@ By default, the selected state is `{}`. Pass a selector to subscribe only to the
 
 ## API overview
 
-| Utility                                                | Instance API             | Convenience APIs                                                                |
+| Utility | Instance API | State and value helpers |
 | ------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------- |
-| [batching](./guides/batching.md)                       | `createBatcher`          | `createBatchedCallback`                                                         |
-| [debouncing](./guides/debouncing.md)                   | `createDebouncer`        | `createDebouncedCallback`, `createDebouncedState`, `createDebouncedValue`       |
-| [queuing](./guides/queuing.md)                         | `createQueuer`           | `createQueuedState`, `createQueuedValue`                                        |
-| [rate limiting](./guides/rate-limiting.md)             | `createRateLimiter`      | `createRateLimitedCallback`, `createRateLimitedState`, `createRateLimitedValue` |
-| [throttling](./guides/throttling.md)                   | `createThrottler`        | `createThrottledCallback`, `createThrottledState`, `createThrottledValue`       |
-| [async batching](./guides/async-batching.md)           | `createAsyncBatcher`     | `createAsyncBatchedCallback`                                                    |
-| [async debouncing](./guides/async-debouncing.md)       | `createAsyncDebouncer`   | `createAsyncDebouncedCallback`                                                  |
-| [async queuing](./guides/async-queuing.md)             | `createAsyncQueuer`      | `createAsyncQueuedState`                                                        |
-| [async rate limiting](./guides/async-rate-limiting.md) | `createAsyncRateLimiter` | `createAsyncRateLimitedCallback`                                                |
-| [async throttling](./guides/async-throttling.md)       | `createAsyncThrottler`   | `createAsyncThrottledCallback`                                                  |
+| [batching](./guides/batching.md) | `createBatcher` | None |
+| [debouncing](./guides/debouncing.md) | `createDebouncer` | `createDebouncedState`, `createDebouncedValue` |
+| [queuing](./guides/queuing.md) | `createQueuer` | `createQueuedState`, `createQueuedValue` |
+| [rate limiting](./guides/rate-limiting.md) | `createRateLimiter` | `createRateLimitedState`, `createRateLimitedValue` |
+| [throttling](./guides/throttling.md) | `createThrottler` | `createThrottledState`, `createThrottledValue` |
+| [async batching](./guides/async-batching.md) | `createAsyncBatcher` | None |
+| [async debouncing](./guides/async-debouncing.md) | `createAsyncDebouncer` | None |
+| [async queuing](./guides/async-queuing.md) | `createAsyncQueuer` | `createAsyncQueuedState` |
+| [async rate limiting](./guides/async-rate-limiting.md) | `createAsyncRateLimiter` | None |
+| [async throttling](./guides/async-throttling.md) | `createAsyncThrottler` | None |
 
 ## TypeScript configuration
 
@@ -102,9 +102,9 @@ Debouncers, throttlers, and batchers cancel pending timers by default. Queuers s
 
 Set `onUnmount` to replace the default cleanup, for example to call `flush()` before leaving a page. The callback receives the adapter instance and its selected state. If you replace cleanup for an async utility, call its cancellation or abort methods when needed.
 
-## Callback and value helpers
+## Event handlers and value helpers
 
-Callback helpers return only the scheduled function. Use an instance API when you need `flush`, `cancel`, queue controls, or state subscriptions.
+Use an instance method as the event handler: `maybeExecute` for debouncing, throttling, and rate limiting, or `addItem` for batching. The instance also provides control methods and state subscriptions.
 
 State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Read values by calling their accessors. Setters accept a new value or a functional update. Synchronous queue state helpers return `[itemsAccessor, addItem, utility]`. Async queue state helpers return `[itemsAccessor, utility]`; call `utility.addItem()` to enqueue an item. Queued value helpers return the last processed value, rather than the list of pending items.
 

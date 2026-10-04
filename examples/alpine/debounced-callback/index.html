@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine createDebouncer</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="counter">
+          <h1>TanStack Pacer createDebouncer Example 1</h1>
+          <table>
+            <tbody>
+              <tr>
+                <td>Instant Count:</td>
+                <td x-text="(instantCount)"></td>
+              </tr>
+              <tr>
+                <td>Debounced Count:</td>
+                <td x-text="(debouncedCount)"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div><button @click="((increment))($event)">Increment</button></div>
+        </div>
+        <hr />
+        <div x-data="search">
+          <h1>TanStack Pacer createDebouncer Example 2</h1>
+          <div>
+            <input
+              type="search"
+              :value="(searchText)"
+              @input="((handleSearchChange))($event)"
+              placeholder="Type to search..."
+              :style="({ width: '100%' })"
+            />
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Instant Search:</td>
+                <td x-text="(searchText)"></td>
+              </tr>
+              <tr>
+                <td>Debounced Search:</td>
+                <td x-text="(debouncedSearchText)"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <div x-data="range">
+          <h1>TanStack Pacer createDebouncer Example 3</h1>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Current Range:<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(currentValue)"
+                @input="((handleRangeChange))($event)"
+                :style="({ width: '100%' })" /><span
+                x-text="(currentValue)"
+              ></span
+            ></label>
+          </div>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Debounced Range (Readonly):<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(debouncedValue)"
+                disabled
+                :style="({ width: '100%' })" /><span
+                x-text="(debouncedValue)"
+              ></span
+            ></label>
+          </div>
+          <div :style="({ color: '#666', fontSize: '0.9em' })">
+            <p>Debounced to 250ms wait time</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

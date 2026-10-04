@@ -29,7 +29,6 @@ Both `maxSize` and `wait` default to `Infinity`, so configure at least one trigg
 
 ## Choose an API
 
-- `useAsyncBatchedCallback` for adding items
 - `useAsyncBatcher` for flush, failed items, and selected execution state
 
 ## Vue example

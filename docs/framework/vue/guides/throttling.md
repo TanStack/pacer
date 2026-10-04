@@ -44,11 +44,10 @@ Choose another utility when:
 
 ## Choose an API
 
-- `useThrottledCallback` for a stable throttled event handler
 - `useThrottledState` or `useThrottledValue` for throttled Vue state
 - `useThrottler` for lifecycle methods and selected state
 
-Use the callback API for event handlers, the state or value API for rate-controlled UI state, and the instance API for lifecycle methods and timing state.
+Use instance methods for event handlers, and state or value helpers for rate-controlled UI state.
 
 ## Vue example
 
@@ -76,21 +75,21 @@ The focused snippets below use `useThrottler` during setup, and instance methods
 
 ### Throttled callback
 
-Use `useThrottledCallback` when an event should invoke a throttled side effect:
+Use `useThrottler(...).maybeExecute` when an event should invoke a throttled side effect:
 
 ```ts
-import { useThrottledCallback } from '@tanstack/vue-pacer'
+import { useThrottler } from '@tanstack/vue-pacer'
 
-const search = useThrottledCallback(
+const search = useThrottler(
   (query: string) => updateSearchResults(query),
   { wait: 500 },
-)
+).maybeExecute
 function onInput(event: Event) {
   search((event.target as HTMLInputElement).value)
 }
 ```
 
-The callback does not expose `cancel()` or `flush()`. Use `useThrottler` when the component needs that control.
+Keep the utility instance when the component also needs `cancel()` or `flush()`. Its bound `maybeExecute` method can be passed directly as an event handler.
 
 ### Throttled state and values
 

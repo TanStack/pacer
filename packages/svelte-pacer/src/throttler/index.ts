@@ -1,5 +1,4 @@
 export * from '@tanstack/pacer/throttler'
 export * from './createThrottler'
-export * from './createThrottledCallback'
 export * from './createThrottledSignal'
 export * from './createThrottledValue'

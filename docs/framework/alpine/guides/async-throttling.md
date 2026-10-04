@@ -9,7 +9,6 @@ Use it when a throttled operation returns a value you need, can reject, or needs
 
 ## Choose an API
 
-- `createAsyncThrottledCallback` for a stable Promise-returning handler
 - `createAsyncThrottler` for lifecycle methods and selected execution state
 
 ## Alpine example

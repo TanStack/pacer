@@ -21,18 +21,18 @@ By default, the selected state is `{}`. Pass a selector to subscribe only to the
 
 ## API overview
 
-| Utility                                                | Instance API          | Convenience APIs                                                       |
+| Utility | Instance API | State and value helpers |
 | ------------------------------------------------------ | --------------------- | ---------------------------------------------------------------------- |
-| [batching](./guides/batching.md)                       | `useBatcher`          | `useBatchedCallback`                                                   |
-| [debouncing](./guides/debouncing.md)                   | `useDebouncer`        | `useDebouncedCallback`, `useDebouncedState`, `useDebouncedValue`       |
-| [queuing](./guides/queuing.md)                         | `useQueuer`           | `useQueuedState`, `useQueuedValue`                                     |
-| [rate limiting](./guides/rate-limiting.md)             | `useRateLimiter`      | `useRateLimitedCallback`, `useRateLimitedState`, `useRateLimitedValue` |
-| [throttling](./guides/throttling.md)                   | `useThrottler`        | `useThrottledCallback`, `useThrottledState`, `useThrottledValue`       |
-| [async batching](./guides/async-batching.md)           | `useAsyncBatcher`     | `useAsyncBatchedCallback`                                              |
-| [async debouncing](./guides/async-debouncing.md)       | `useAsyncDebouncer`   | `useAsyncDebouncedCallback`                                            |
-| [async queuing](./guides/async-queuing.md)             | `useAsyncQueuer`      | `useAsyncQueuedState`                                                  |
-| [async rate limiting](./guides/async-rate-limiting.md) | `useAsyncRateLimiter` | `useAsyncRateLimitedCallback`                                          |
-| [async throttling](./guides/async-throttling.md)       | `useAsyncThrottler`   | `useAsyncThrottledCallback`                                            |
+| [batching](./guides/batching.md) | `useBatcher` | None |
+| [debouncing](./guides/debouncing.md) | `useDebouncer` | `useDebouncedState`, `useDebouncedValue` |
+| [queuing](./guides/queuing.md) | `useQueuer` | `useQueuedState`, `useQueuedValue` |
+| [rate limiting](./guides/rate-limiting.md) | `useRateLimiter` | `useRateLimitedState`, `useRateLimitedValue` |
+| [throttling](./guides/throttling.md) | `useThrottler` | `useThrottledState`, `useThrottledValue` |
+| [async batching](./guides/async-batching.md) | `useAsyncBatcher` | None |
+| [async debouncing](./guides/async-debouncing.md) | `useAsyncDebouncer` | None |
+| [async queuing](./guides/async-queuing.md) | `useAsyncQueuer` | `useAsyncQueuedState` |
+| [async rate limiting](./guides/async-rate-limiting.md) | `useAsyncRateLimiter` | None |
+| [async throttling](./guides/async-throttling.md) | `useAsyncThrottler` | None |
 
 ## Example
 
@@ -96,9 +96,9 @@ Debouncers, throttlers, and batchers cancel pending timers by default. Queuers s
 
 Set `onUnmount` to replace the default cleanup, for example to call `flush()` before leaving a page. The callback receives the adapter instance and its selected state. If you replace cleanup for an async utility, call its cancellation or abort methods when needed.
 
-## Callback and value helpers
+## Event handlers and value helpers
 
-Callback helpers return only the scheduled function. Use an instance API when you need `flush`, `cancel`, queue controls, or state subscriptions.
+Use an instance method as the event handler: `maybeExecute` for debouncing, throttling, and rate limiting, or `addItem` for batching. The instance also provides control methods and state subscriptions.
 
 State and value helpers return an object with `value`, `setValue`, and `utility`. Read `value` in the template so Ember tracks it. State helpers initialize once; value helpers process changes to their positional input. Queue state helpers return the queue with `items` selected by default.
 

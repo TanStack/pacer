@@ -1,27 +1,19 @@
-import { createAsyncBatchedCallback } from '../async-batcher/createAsyncBatchedCallback'
 import { createAsyncBatcher } from '../async-batcher/createAsyncBatcher'
-import { createAsyncDebouncedCallback } from '../async-debouncer/createAsyncDebouncedCallback'
 import { createAsyncDebouncer } from '../async-debouncer/createAsyncDebouncer'
 import { createAsyncQueuedState } from '../async-queuer/createAsyncQueuedState'
 import { createAsyncQueuer } from '../async-queuer/createAsyncQueuer'
-import { createAsyncRateLimitedCallback } from '../async-rate-limiter/createAsyncRateLimitedCallback'
 import { createAsyncRateLimiter } from '../async-rate-limiter/createAsyncRateLimiter'
-import { createAsyncThrottledCallback } from '../async-throttler/createAsyncThrottledCallback'
 import { createAsyncThrottler } from '../async-throttler/createAsyncThrottler'
-import { createBatchedCallback } from '../batcher/createBatchedCallback'
 import { createBatcher } from '../batcher/createBatcher'
-import { createDebouncedCallback } from '../debouncer/createDebouncedCallback'
 import { createDebouncedState } from '../debouncer/createDebouncedState'
 import { createDebouncedValue } from '../debouncer/createDebouncedValue'
 import { createDebouncer } from '../debouncer/createDebouncer'
 import { createQueuedState } from '../queuer/createQueuedState'
 import { createQueuedValue } from '../queuer/createQueuedValue'
 import { createQueuer } from '../queuer/createQueuer'
-import { createRateLimitedCallback } from '../rate-limiter/createRateLimitedCallback'
 import { createRateLimitedState } from '../rate-limiter/createRateLimitedState'
 import { createRateLimitedValue } from '../rate-limiter/createRateLimitedValue'
 import { createRateLimiter } from '../rate-limiter/createRateLimiter'
-import { createThrottledCallback } from '../throttler/createThrottledCallback'
 import { createThrottledState } from '../throttler/createThrottledState'
 import { createThrottledValue } from '../throttler/createThrottledValue'
 import { createThrottler } from '../throttler/createThrottler'
@@ -40,12 +32,6 @@ export function createPacerScope(
     get destroyed() {
       return scope.destroyed
     },
-    createAsyncBatchedCallback<TValue>(
-      fn: (items: Array<TValue>) => Promise<any>,
-      options: P.AlpinePacerOptions<P.AlpineAsyncBatcherOptions<TValue>>,
-    ): P.AlpineAsyncBatcher<TValue>['addItem'] {
-      return createAsyncBatchedCallback(scope, fn, options)
-    },
     createAsyncBatcher<TValue, TSelected = {}>(
       fn: (items: Array<TValue>) => Promise<any>,
       options: P.AlpinePacerOptions<
@@ -55,12 +41,6 @@ export function createPacerScope(
         ({}) as TSelected,
     ): P.AlpineAsyncBatcher<TValue, TSelected> {
       return createAsyncBatcher(scope, fn, options, selector)
-    },
-    createAsyncDebouncedCallback<TFn extends P.AnyAsyncFunction>(
-      fn: TFn,
-      options: P.AlpinePacerOptions<P.AlpineAsyncDebouncerOptions<TFn>>,
-    ): P.AlpineAsyncDebouncer<TFn>['maybeExecute'] {
-      return createAsyncDebouncedCallback(scope, fn, options)
     },
     createAsyncDebouncer<TFn extends P.AnyAsyncFunction, TSelected = {}>(
       fn: TFn,
@@ -98,12 +78,6 @@ export function createPacerScope(
     ): P.AlpineAsyncQueuer<TValue, TSelected> {
       return createAsyncQueuer(scope, fn, options, selector)
     },
-    createAsyncRateLimitedCallback<TFn extends P.AnyAsyncFunction>(
-      fn: TFn,
-      options: P.AlpinePacerOptions<P.AlpineAsyncRateLimiterOptions<TFn>>,
-    ): P.AlpineAsyncRateLimiter<TFn>['maybeExecute'] {
-      return createAsyncRateLimitedCallback(scope, fn, options)
-    },
     createAsyncRateLimiter<TFn extends P.AnyAsyncFunction, TSelected = {}>(
       fn: TFn,
       options: P.AlpinePacerOptions<
@@ -113,12 +87,6 @@ export function createPacerScope(
         ({}) as TSelected,
     ): P.AlpineAsyncRateLimiter<TFn, TSelected> {
       return createAsyncRateLimiter(scope, fn, options, selector)
-    },
-    createAsyncThrottledCallback<TFn extends P.AnyAsyncFunction>(
-      fn: TFn,
-      options: P.AlpinePacerOptions<P.AlpineAsyncThrottlerOptions<TFn>>,
-    ): P.AlpineAsyncThrottler<TFn>['maybeExecute'] {
-      return createAsyncThrottledCallback(scope, fn, options)
     },
     createAsyncThrottler<TFn extends P.AnyAsyncFunction, TSelected = {}>(
       fn: TFn,
@@ -130,12 +98,6 @@ export function createPacerScope(
     ): P.AlpineAsyncThrottler<TFn, TSelected> {
       return createAsyncThrottler(scope, fn, options, selector)
     },
-    createBatchedCallback<TValue>(
-      fn: (items: Array<TValue>) => void,
-      options: P.AlpinePacerOptions<P.AlpineBatcherOptions<TValue>>,
-    ): P.AlpineBatcher<TValue>['addItem'] {
-      return createBatchedCallback(scope, fn, options)
-    },
     createBatcher<TValue, TSelected = {}>(
       fn: (items: Array<TValue>) => void,
       options: P.AlpinePacerOptions<
@@ -145,12 +107,6 @@ export function createPacerScope(
         ({}) as TSelected,
     ): P.AlpineBatcher<TValue, TSelected> {
       return createBatcher(scope, fn, options, selector)
-    },
-    createDebouncedCallback<TFn extends P.AnyFunction>(
-      fn: TFn,
-      options: P.AlpinePacerOptions<P.AlpineDebouncerOptions<TFn>>,
-    ): P.AlpineDebouncer<TFn>['maybeExecute'] {
-      return createDebouncedCallback(scope, fn, options)
     },
     createDebouncedState<TValue, TSelected = {}>(
       initialValue: TValue,
@@ -221,12 +177,6 @@ export function createPacerScope(
     ): P.AlpineQueuer<TValue, TSelected> {
       return createQueuer(scope, fn, options, selector)
     },
-    createRateLimitedCallback<TFn extends P.AnyFunction>(
-      fn: TFn,
-      options: P.AlpinePacerOptions<P.AlpineRateLimiterOptions<TFn>>,
-    ): P.AlpineRateLimiter<TFn>['maybeExecute'] {
-      return createRateLimitedCallback(scope, fn, options)
-    },
     createRateLimitedState<TValue, TSelected = {}>(
       initialValue: TValue,
       options: P.AlpinePacerOptions<
@@ -259,12 +209,6 @@ export function createPacerScope(
         ({}) as TSelected,
     ): P.AlpineRateLimiter<TFn, TSelected> {
       return createRateLimiter(scope, fn, options, selector)
-    },
-    createThrottledCallback<TFn extends P.AnyFunction>(
-      fn: TFn,
-      options: P.AlpinePacerOptions<P.AlpineThrottlerOptions<TFn>>,
-    ): P.AlpineThrottler<TFn>['maybeExecute'] {
-      return createThrottledCallback(scope, fn, options)
     },
     createThrottledState<TValue, TSelected = {}>(
       initialValue: TValue,

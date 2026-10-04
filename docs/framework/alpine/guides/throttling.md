@@ -44,11 +44,10 @@ Choose another utility when:
 
 ## Choose an API
 
-- `createThrottledCallback` for a stable throttled event handler
 - `createThrottledState` or `createThrottledValue` for throttled Alpine state
 - `createThrottler` for lifecycle methods and selected state
 
-Use the callback API for event handlers, the state or value API for rate-controlled UI state, and the instance API for lifecycle methods and timing state.
+Use instance methods for event handlers, and state or value helpers for rate-controlled UI state.
 
 ## Alpine example
 
@@ -94,18 +93,18 @@ The focused snippets below use the component-owned `scope` created above. Call t
 
 ### Throttled callback
 
-Use `createThrottledCallback` when an event should invoke a throttled side effect:
+Use `createThrottler(...).maybeExecute` when an event should invoke a throttled side effect:
 
 ```ts
-const search = scope.createThrottledCallback(
+const search = scope.createThrottler(
   (query: string) => updateSearchResults(query),
   { wait: 500 },
-)
+).maybeExecute
 // In the component's input handler:
 search(this.query)
 ```
 
-The callback does not expose `cancel()` or `flush()`. Use `createThrottler` when the component needs that control.
+Keep the utility instance when the component also needs `cancel()` or `flush()`. Its bound `maybeExecute` method can be passed directly as an event handler.
 
 ### Throttled state and values
 

@@ -85,11 +85,10 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 ## Choose an API
 
-- `useRateLimitedCallback` for a quota-controlled event handler
 - `useRateLimitedState` or `useRateLimitedValue` for Ember state
 - `useRateLimiter` for capacity helpers and selected state
 
-Use the callback API for operations, the state or value API for quota-controlled UI updates, and the instance API when you need capacity helpers or rejection state.
+Call `maybeExecute()` for quota-controlled operations. Use state or value helpers for UI updates, and the instance for capacity helpers and rejection state.
 
 ## Ember example
 
@@ -122,17 +121,17 @@ The focused TypeScript snippets below demonstrate the core `RateLimiter` class r
 
 ### Rate-limited callback
 
-Use `useRateLimitedCallback` when an event should invoke a rate-limited side effect:
+Use the yielded utility's `maybeExecute` method when an event should invoke a rate-limited side effect:
 
 ```gts
 import { on } from '@ember/modifier'
 import { fn } from '@ember/helper'
-import { useRateLimitedCallback } from '@tanstack/ember-pacer'
+import { useRateLimiter } from '@tanstack/ember-pacer'
 
 // In a component template; this.search accepts a query string:
 <template>
-  {{#let (useRateLimitedCallback this.search limit=3 window=1000) as |search|}}
-    <button {{on 'click' (fn search @query)}}>Search</button>
+  {{#let (useRateLimiter this.search limit=3 window=1000) as |search|}}
+    <button {{on 'click' (fn search.maybeExecute @query)}}>Search</button>
   {{/let}}
 </template>
 ```

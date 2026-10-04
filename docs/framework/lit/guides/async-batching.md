@@ -29,7 +29,6 @@ Both `maxSize` and `wait` default to `Infinity`, so configure at least one trigg
 
 ## Choose an API
 
-- `createAsyncBatchedCallback` for adding items
 - `createAsyncBatcher` for flush, failed items, and selected execution state
 
 ## Lit example

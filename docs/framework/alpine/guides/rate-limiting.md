@@ -81,11 +81,10 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 ## Choose an API
 
-- `createRateLimitedCallback` for a quota-controlled event handler
 - `createRateLimitedState` or `createRateLimitedValue` for Alpine state
 - `createRateLimiter` for capacity helpers and selected state
 
-Use the callback API for operations, the state or value API for quota-controlled UI updates, and the instance API when you need capacity helpers or rejection state.
+Call `maybeExecute()` for quota-controlled operations. Use state or value helpers for UI updates, and the instance for capacity helpers and rejection state.
 
 ## Alpine example
 
@@ -131,13 +130,13 @@ The focused snippets below use the component-owned `scope` created above. Call t
 
 ### Rate-limited callback
 
-Use `createRateLimitedCallback` when an event should invoke a rate-limited side effect:
+Use `createRateLimiter(...).maybeExecute` when an event should invoke a rate-limited side effect:
 
 ```ts
-const search = scope.createRateLimitedCallback(
+const search = scope.createRateLimiter(
   (query: string) => updateSearchResults(query),
   { limit: 3, window: 1000 },
-)
+).maybeExecute
 // In the component's input handler:
 search(this.query)
 ```

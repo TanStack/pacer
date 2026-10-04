@@ -47,9 +47,8 @@ Choose another utility when:
 
 ## Using debouncing in Ember
 
-The adapter provides three levels of debouncing API:
+The adapter provides two levels of debouncing API:
 
-- `useDebouncedCallback` creates a stable debounced event handler.
 - `useDebouncedState` and `useDebouncedValue` delay state or a changing value.
 - `useDebouncer` exposes lifecycle methods, dynamic options, callbacks, and selected state.
 
@@ -59,22 +58,22 @@ The snippets use application functions such as `saveDraft` and `updateSearchResu
 
 ### Debounced callback
 
-Use `useDebouncedCallback` when an event should invoke a debounced side effect:
+Use the yielded utility's `maybeExecute` method when an event should invoke a debounced side effect:
 
 ```gts
 import { on } from '@ember/modifier'
 import { fn } from '@ember/helper'
-import { useDebouncedCallback } from '@tanstack/ember-pacer'
+import { useDebouncer } from '@tanstack/ember-pacer'
 
 // In a component template; this.search accepts a query string:
 <template>
-  {{#let (useDebouncedCallback this.search wait=500) as |search|}}
-    <button {{on 'click' (fn search @query)}}>Search</button>
+  {{#let (useDebouncer this.search wait=500) as |search|}}
+    <button {{on 'click' (fn search.maybeExecute @query)}}>Search</button>
   {{/let}}
 </template>
 ```
 
-The callback does not expose `cancel()` or `flush()`. Use `useDebouncer` when the component needs that control.
+Keep the utility instance when the component also needs `cancel()` or `flush()`. Its bound `maybeExecute` method can be passed directly as an event handler.
 
 ### Debounced state and values
 
@@ -114,7 +113,7 @@ const selectPending = (state: DebouncerState<(draft: string) => void>) => ({
 </template>
 ```
 
-Both the callback and `maybeExecute()` return `void`. The synchronous adapter does not retain return values or catch errors. Handle errors inside a trailing callback, or use [async debouncing](./async-debouncing.md) when the caller needs a Promise result.
+The bound `maybeExecute()` method returns `void`. The synchronous adapter does not retain return values or catch errors. Handle errors inside a trailing callback, or use [async debouncing](./async-debouncing.md) when the caller needs a Promise result.
 
 The following timing and control snippets use the `debouncer` instance created in your component or supplied by the Ember helper. Run those operations from event handlers or other application code.
 
