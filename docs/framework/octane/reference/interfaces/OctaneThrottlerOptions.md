@@ -3,7 +3,7 @@ id: OctaneThrottlerOptions
 title: OctaneThrottlerOptions
 ---
 
-Defined in: [throttler/useThrottler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L14)
+Defined in: [throttler/useThrottler.ts:16](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L16)
 
 Options for useThrottler, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useThrottler, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [throttler/useThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L19)
+Defined in: [throttler/useThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L21)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

@@ -87,49 +87,180 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 Use the callback API for operations, the state or value API for quota-controlled UI updates, and the instance API when you need capacity helpers or rejection state.
 
-## Use useRateLimiter
+## Octane example
 
-Call hooks at the top level of a compiled Octane component. The compiler assigns each call its own hook slot. The hook retains its utility across renders and commits the current callback and options in a layout effect. Selected state triggers rendering, and unmounting cleans up the utility. Use Octane 0.1.36; this package does not support the 0.2 line yet.
+Call the hook during component rendering. Removing the component runs its cleanup.
 
 ```tsx
-import { createRoot, useState } from 'octane';
-import { useRateLimiter } from '@tanstack/octane-pacer';
-function Example() @{
-  const [input, setInput] = useState('hello');
-  const [wait, setWait] = useState(200);
-  const [history, setHistory] = useState<Array<string>>([]);
-  const utility = useRateLimiter((value: string) => { setHistory((previous) => [...previous, value]); }, { limit: 2, window: wait }, (state) => state);
-  <main>
-<h1>Octane useRateLimiter</h1><p>Accept up to two executions per time window and track rejected calls.</p>
-<label>Task <input value={input} onInput={(event) => setInput(event.currentTarget.value)} /></label><label>Wait (ms) <input value={wait} onInput={(event) => setWait(Number(event.currentTarget.value))} type="number" min="0" /></label>
-<div><button onClick={() => { void utility.maybeExecute(input); }}>Schedule</button><button onClick={() => { for (let i = 1; i <= 3; i++) void utility.maybeExecute(`${input} ${i}`); }}>Schedule three</button><button onClick={() => { void utility.reset(); }}>Reset window</button><button onClick={() => { utility.reset(); }}>Reset</button><button onClick={() => setHistory([])}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{JSON.stringify(history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>{JSON.stringify(utility.state, null, 2)}</pre></section>
-<p class="caption">The hook retains one utility across renders and commits current options and callbacks.</p>
-</main>
+import { useRateLimiter } from '@tanstack/octane-pacer'
+
+function SendButton() {
+  const limiter = useRateLimiter(
+    sendEvent,
+    { limit: 3, window: 10_000 },
+    (state) => ({
+      rejectionCount: state.rejectionCount,
+    }),
+  )
+
+  return (
+    <button onClick={() => limiter.maybeExecute('clicked')}>
+      Send ({limiter.state.rejectionCount} rejected)
+    </button>
+  )
 }
-createRoot(document.getElementById('app')!).render(Example);
 ```
 
-## Options and controls
+The focused snippets below use `useRateLimiter` inside a component or another hook.
 
-`maybeExecute` accepts or rejects each call based on `limit` and `window`. Rejected calls are not queued for later. `reset()` clears the window and state. Function-valued limits can inspect the limiter at execution time. Select `executionCount` and `rejectionCount` to show accepted and rejected attempts.
-## Reactive options and cleanup
+### Rate-limited callback
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+Use `useRateLimitedCallback` when an event should invoke a rate-limited side effect:
 
-The owning component supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+```tsx
+import { useRateLimitedCallback } from '@tanstack/octane-pacer'
 
-## State and convenience helpers
+function SearchBox() {
+  const search = useRateLimitedCallback(
+    (query: string) => updateSearchResults(query),
+    { limit: 3, window: 1000 },
+  )
+  return (
+    <input
+      onInput={(event) => search(event.currentTarget.value)}
+      placeholder="Search"
+    />
+  )
+}
+```
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+The callback returns whether the call was accepted. It does not expose capacity helpers or `reset()`. Use `useRateLimiter` when the component needs that control.
 
-`useRateLimitedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+### Rate-limited state and values
 
-`useRateLimitedState` owns a delayed value. `useRateLimitedValue` derives one from an existing reactive input. See the [adapter guide](../adapter.md) for each helper's return shape.
+Use `useRateLimitedState` when Pacer should own the rate-limited state, or `useRateLimitedValue` when a value already changes elsewhere:
 
-## Related documentation
+```tsx
+import { useRateLimitedValue } from '@tanstack/octane-pacer'
 
-- [Octane adapter](../adapter.md)
-- [Core rate limiting guide](../../../guides/rate-limiting.md)
-- [API reference](../reference/index.md)
+function Results({ query }: { query: string }) {
+  const [rateLimitedQuery] = useRateLimitedValue(query, {
+    limit: 3,
+    window: 1000,
+  })
+  return <SearchResults query={rateLimitedQuery} />
+}
+```
+
+## Handling rejected calls
+
+Rejected calls do not run later. Use the boolean return value or `onReject` to provide feedback, retry elsewhere, or place work into a queue.
+
+```ts
+const limiter = useRateLimiter(sendEvent, {
+  limit: 2,
+  window: 1000,
+  onReject: (limiter) => {
+    console.log('Rejected calls:', limiter.store.state.rejectionCount)
+  },
+})
+```
+
+If rejected operations must eventually run, a [queuer](./queuing.md) is usually a better fit.
+
+## Inspecting capacity
+
+The instance API provides two computed helpers:
+
+```ts
+limiter.getRemainingInWindow() // Accepted executions still available.
+limiter.getMsUntilNextWindow() // Time until at least one execution is available.
+```
+
+Both helpers use the current `limit`, `window`, `windowType`, and execution history.
+
+## Resetting and configuring the limiter
+
+`reset()` clears execution timestamps, counters, and cleanup timers. The next call starts with full capacity.
+
+```ts
+limiter.reset()
+```
+
+Use `setOptions()` to update the configuration:
+
+```ts
+limiter.setOptions({
+  limit: 10,
+  window: 30_000,
+})
+```
+
+Changing options does not erase existing execution history. Call `reset()` when the new configuration should begin with a fresh window.
+
+The `enabled`, `limit`, and `window` options may be functions that receive the limiter instance:
+
+```ts
+const limiter = useRateLimiter(sendEvent, {
+  enabled: (limiter) => limiter.store.state.executionCount < 100,
+  limit: (limiter) => (limiter.store.state.rejectionCount > 10 ? 2 : 5),
+  window: 60_000,
+})
+```
+
+Disabling the limiter prevents the wrapped function from executing. It does not delete existing execution history.
+
+### Observing executions
+
+`onExecute` receives the executed arguments and limiter instance. `onReject` receives the limiter instance.
+
+```ts
+const limiter = useRateLimiter(sendEvent, {
+  limit: 5,
+  window: 1000,
+  onExecute: (args, limiter) => {
+    console.log('Sent:', args)
+    console.log('Remaining:', limiter.getRemainingInWindow())
+  },
+  onReject: (limiter) => {
+    console.log('Rejected:', limiter.store.state.rejectionCount)
+  },
+})
+```
+
+## Octane lifecycle
+
+The adapter has no default operation cleanup because a synchronous limiter has no pending or active work. Use `onUnmount` only when the component needs custom teardown related to the limiter.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility during component rendering and select only fields used by the view:
+
+```ts
+const limiter = useRateLimiter(
+  sendEvent,
+  { limit: 5, window: 60_000 },
+  (state) => ({
+    isExceeded: state.isExceeded,
+    rejectionCount: state.rejectionCount,
+  }),
+)
+
+console.log(limiter.state.isExceeded, limiter.state.rejectionCount)
+```
+
+Use `utility.Subscribe` with a selector and a JSX render callback for an independently subscribed child.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
+
+Commonly useful state includes:
+
+- `executionCount`: Total accepted executions that completed.
+- `executionTimes`: Timestamps currently used for window calculations.
+- `isExceeded`: Whether the current limit has been reached.
+- `rejectionCount`: Calls rejected because the window was full.
+- `status`: `'disabled'`, `'exceeded'`, or `'idle'`.
+
+See the [Octane API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

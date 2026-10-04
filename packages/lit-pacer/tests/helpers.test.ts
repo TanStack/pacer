@@ -1,3 +1,5 @@
+import { createThrottledValue, createRateLimitedValue } from '../src'
+import { createAsyncQueuedState } from '../src'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import {
   createDebouncedCallback,
@@ -102,3 +104,58 @@ it('preserves function-valued queue input as data', async () => {
   expect(value()).toBe(second)
   destroy()
 })
+
+it('returns the async queue as the second tuple entry', async () => {
+  const calls: Array<string> = []
+  const {
+    result: [items, queue],
+    destroy,
+  } = setup((owner) =>
+    createAsyncQueuedState(
+      owner,
+      async (item: string) => {
+        calls.push(item)
+      },
+      { started: false },
+    ),
+  )
+  queue.addItem('queued')
+  await flush()
+  expect(items()).toEqual(['queued'])
+  queue.start()
+  await vi.runAllTimersAsync()
+  await flush()
+  expect(calls).toEqual(['queued'])
+  expect(items()).toEqual([])
+  destroy()
+})
+
+it.each([
+  ['debounced', createDebouncedValue],
+  ['throttled', createThrottledValue],
+  ['rate limited', createRateLimitedValue],
+] as const)(
+  'preserves function-valued %s inputs as data',
+  async (_name, derive) => {
+    const first = () => 'first'
+    const second = () => 'second'
+    const input = source(first)
+    const {
+      result: [value],
+      destroy,
+    } = setup((owner) =>
+      derive(owner, input.get, { wait: 100, window: 100, limit: 2 }),
+    )
+    try {
+      await flush()
+      await vi.runAllTimersAsync()
+      input.set(second)
+      await flush()
+      await vi.runAllTimersAsync()
+      await flush()
+      expect(value()).toBe(second)
+    } finally {
+      destroy()
+    }
+  },
+)

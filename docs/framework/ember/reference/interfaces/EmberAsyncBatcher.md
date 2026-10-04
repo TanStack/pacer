@@ -3,9 +3,9 @@ id: EmberAsyncBatcher
 title: EmberAsyncBatcher
 ---
 
-Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:25](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L25)
+Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:27](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L27)
 
-A AsyncBatcher with framework-reactive selected state. All core methods remain available.
+An AsyncBatcher with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -42,7 +42,7 @@ options: Omit<Required<AsyncBatcherOptions<TValue>>,
 | "onItemsChange">> & EmberAsyncBatcherOptions<TValue, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:29](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L29)
+Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:31](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L31)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:29](https
 setOptions: (options) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:31](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L31)
+Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:33](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L33)
 
 #### Parameters
 
@@ -72,6 +72,18 @@ Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:31](https
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:35](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L35)
+Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:39](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L39)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: EmberPacerSubscribe<AsyncBatcherState<TValue>>;
+```
+
+Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:37](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L37)
+
+Selects state in a child without subscribing the utility owner.

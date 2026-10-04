@@ -3,7 +3,7 @@ id: SvelteRateLimiter
 title: SvelteRateLimiter
 ---
 
-Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L21)
+Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L22)
 
 A RateLimiter with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A RateLimiter with framework-reactive selected state. All core methods remain av
 options: RateLimiterOptions<TFn> & SvelteRateLimiterOptions<TFn, TSelected>;
 ```
 
-Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:25](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L25)
+Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L26)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:25](htt
 setOptions: (options) => void;
 ```
 
-Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:27](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L27)
+Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:28](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L28)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:27](htt
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:31](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L31)
+Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:34](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L34)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: SveltePacerSubscribe<RateLimiterState>;
+```
+
+Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L32)
+
+Subscribes a child snippet to state without updating the utility owner.

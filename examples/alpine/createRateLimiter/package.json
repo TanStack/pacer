@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@tanstack/alpine-pacer": "workspace:*",
+    "@tanstack/devtools": "^0.15.0",
+    "@tanstack/pacer-devtools": "workspace:*",
     "alpinejs": "^3.17.4"
   },
   "devDependencies": {

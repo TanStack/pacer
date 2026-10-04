@@ -1,3 +1,4 @@
+import { ContextConsumer, ContextProvider, createContext } from '@lit/context'
 import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
 import type { LitAsyncBatcherOptions } from '../async-batcher/createAsyncBatcher'
@@ -24,22 +25,75 @@ export interface PacerProviderOptions {
   throttler?: Partial<LitThrottlerOptions<any, any>>
 }
 
+const pacerContext = createContext<PacerProviderOptions>(
+  Symbol.for('@tanstack/lit-pacer/defaults'),
+)
 const defaults = new WeakMap<
   ReactiveControllerHost,
   () => PacerProviderOptions
 >()
-/** Supplies reactive defaults for utilities owned by this host. Call before constructing utilities. */
+const inherited = new WeakMap<
+  ReactiveControllerHost,
+  () => PacerProviderOptions
+>()
+
+/**
+ * Supplies reactive defaults for this host and its descendants, including across
+ * shadow roots. Call during construction, before creating utilities. The nearest
+ * provider wins, and each utility's local options override provider defaults.
+ *
+ * @example
+ * ```ts
+ * constructor() {
+ *   super()
+ *   providePacerOptions(this, () => ({
+ *     debouncer: { leading: this.leading },
+ *   }))
+ * }
+ * ```
+ */
 export function providePacerOptions(
   host: ReactiveControllerHost,
   options: LitPacerOptions<PacerProviderOptions>,
 ) {
-  defaults.set(host, () =>
-    typeof options === 'function' ? options() : options,
+  const read = () => (typeof options === 'function' ? options() : options)
+  defaults.set(host, read)
+  // Controller-only hosts still support local defaults. DOM hosts also provide
+  // the same values through Lit's context protocol to descendant components.
+  if (!('dispatchEvent' in host)) return
+  const provider = new ContextProvider(
+    host as ReactiveControllerHost & HTMLElement,
+    {
+      context: pacerContext,
+      initialValue: read(),
+    },
   )
+  host.addController({
+    hostUpdate() {
+      provider.setValue(read(), true)
+    },
+  })
 }
-/** Reads defaults for the host on each update. */
+
+/** Reads local or inherited defaults and refreshes the host when its provider updates. */
 export function useDefaultPacerOptions(
   host: ReactiveControllerHost,
 ): () => PacerProviderOptions {
-  return () => defaults.get(host)?.() ?? {}
+  let readInherited = inherited.get(host)
+  if (!readInherited) {
+    let value: PacerProviderOptions = {}
+    readInherited = () => value
+    inherited.set(host, readInherited)
+    if ('dispatchEvent' in host) {
+      new ContextConsumer(host as ReactiveControllerHost & HTMLElement, {
+        context: pacerContext,
+        subscribe: true,
+        callback(next) {
+          value = next
+          host.requestUpdate()
+        },
+      })
+    }
+  }
+  return () => defaults.get(host)?.() ?? readInherited()
 }

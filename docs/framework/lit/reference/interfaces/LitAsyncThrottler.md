@@ -3,9 +3,9 @@ id: LitAsyncThrottler
 title: LitAsyncThrottler
 ---
 
-Defined in: [async-throttler/createAsyncThrottler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L22)
+Defined in: [async-throttler/createAsyncThrottler.ts:23](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L23)
 
-A AsyncThrottler with framework-reactive selected state. All core methods remain available.
+An AsyncThrottler with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncThrottler with framework-reactive selected state. All core methods remain
 options: AsyncThrottlerOptions<TFn> & LitAsyncThrottlerOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L26)
+Defined in: [async-throttler/createAsyncThrottler.ts:27](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L27)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-throttler/createAsyncThrottler.ts:26](https://github.com/TanS
 setOptions: (options) => void;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:28](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L28)
+Defined in: [async-throttler/createAsyncThrottler.ts:29](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L29)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [async-throttler/createAsyncThrottler.ts:28](https://github.com/TanS
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L32)
+Defined in: [async-throttler/createAsyncThrottler.ts:35](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L35)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: LitPacerSubscribe<AsyncThrottlerState<TFn>>;
+```
+
+Defined in: [async-throttler/createAsyncThrottler.ts:33](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L33)
+
+Subscribes a child owner to selected state with automatic cleanup.

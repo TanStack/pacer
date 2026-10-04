@@ -10,7 +10,9 @@
     "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
   },
   "dependencies": {
+    "@tanstack/devtools": "^0.15.0",
     "@tanstack/lit-pacer": "workspace:*",
+    "@tanstack/pacer-devtools": "workspace:*",
     "lit": "^3.3.3"
   },
   "devDependencies": {

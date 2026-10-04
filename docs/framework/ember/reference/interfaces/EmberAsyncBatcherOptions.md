@@ -3,7 +3,7 @@ id: EmberAsyncBatcherOptions
 title: EmberAsyncBatcherOptions
 ---
 
-Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:16](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L16)
+Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L18)
 
 Options for useAsyncBatcher, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useAsyncBatcher, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L21)
+Defined in: [packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-batcher/useAsyncBatcher.ts#L23)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

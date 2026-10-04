@@ -3,9 +3,9 @@ id: AlpineAsyncRateLimiter
 title: AlpineAsyncRateLimiter
 ---
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L21)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L22)
 
-A AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
+An AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncRateLimiter with framework-reactive selected state. All core methods rema
 options: AsyncRateLimiterOptions<TFn> & AlpineAsyncRateLimiterOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:25](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L25)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L26)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:25](https://github.com
 setOptions: (options) => void;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:27](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L27)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:28](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L28)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:27](https://github.com
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:31](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L31)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:34](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L34)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: AlpinePacerSubscribe<AsyncRateLimiterState<TFn>>;
+```
+
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L32)
+
+Subscribes a child owner to selected state with automatic cleanup.

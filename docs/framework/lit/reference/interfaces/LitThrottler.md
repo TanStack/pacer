@@ -3,7 +3,7 @@ id: LitThrottler
 title: LitThrottler
 ---
 
-Defined in: [throttler/createThrottler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L22)
+Defined in: [throttler/createThrottler.ts:23](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L23)
 
 A Throttler with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Throttler with framework-reactive selected state. All core methods remain avai
 options: ThrottlerOptions<TFn> & LitThrottlerOptions<TFn, TSelected>;
 ```
 
-Defined in: [throttler/createThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L26)
+Defined in: [throttler/createThrottler.ts:27](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L27)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [throttler/createThrottler.ts:26](https://github.com/TanStack/pacer/
 setOptions: (options) => void;
 ```
 
-Defined in: [throttler/createThrottler.ts:27](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L27)
+Defined in: [throttler/createThrottler.ts:28](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L28)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [throttler/createThrottler.ts:27](https://github.com/TanStack/pacer/
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [throttler/createThrottler.ts:29](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L29)
+Defined in: [throttler/createThrottler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L32)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: LitPacerSubscribe<ThrottlerState<TFn>>;
+```
+
+Defined in: [throttler/createThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L30)
+
+Subscribes a child owner to selected state with automatic cleanup.

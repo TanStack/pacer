@@ -10,10 +10,23 @@ function createAsyncRateLimitedCallback<TFn>(
 options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimitedCallback.ts:13](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimitedCallback.ts#L13)
+Defined in: [async-rate-limiter/createAsyncRateLimitedCallback.ts:37](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimitedCallback.ts#L37)
 
-Returns a stable ratelimited callback with the same options and cleanup as createAsyncRateLimiter.
-Use the constructor instead when you also need selected state or control methods.
+Returns a stable rate-limited callback owned by the Lit lifecycle.
+
+Accepts updates while the configured limit has capacity in its fixed or sliding window. Rejected updates are discarded instead of delayed.
+
+## Return value
+
+Returns the bound maybeExecute method with the wrapped function's parameter types. The returned Promise preserves the core result and error contract. A rejected rate-limit call resolves with undefined.
+
+## State and ownership
+
+Use createAsyncRateLimiter when you need selected state or control methods. This callback does not expose the utility, its store, or a child subscription.
+
+Pass the owning ReactiveControllerHost first. Host updates refresh options. Disconnecting runs cleanup; reconnecting restores subscriptions to the same utility.
+Options accept an object with top-level getters or an options factory. Function-valued core options remain callbacks. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
 
 ## Type Parameters
 
@@ -79,3 +92,17 @@ const result = await rateLimiter.maybeExecute('arg1', 'arg2');
 // Additional calls within the window will return undefined
 const result2 = await rateLimiter.maybeExecute('arg1', 'arg2'); // undefined
 ```
+
+## Example
+
+```ts
+import { createAsyncRateLimitedCallback } from '@tanstack/lit-pacer'
+
+// In a LitElement constructor:
+const schedule = createAsyncRateLimitedCallback(this, async (value: number) => { console.log(value) }, { limit: 3, window: 1000 })
+void schedule(1)
+```
+
+## See
+
+createAsyncRateLimiter

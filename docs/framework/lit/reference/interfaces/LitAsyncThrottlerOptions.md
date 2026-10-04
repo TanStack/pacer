@@ -3,7 +3,7 @@ id: LitAsyncThrottlerOptions
 title: LitAsyncThrottlerOptions
 ---
 
-Defined in: [async-throttler/createAsyncThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L13)
+Defined in: [async-throttler/createAsyncThrottler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L14)
 
 Options for createAsyncThrottler, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createAsyncThrottler, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L18)
+Defined in: [async-throttler/createAsyncThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-throttler/createAsyncThrottler.ts#L19)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

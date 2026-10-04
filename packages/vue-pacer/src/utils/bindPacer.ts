@@ -1,5 +1,6 @@
-import { shallow, useSelector } from '@tanstack/vue-store'
 import { getCurrentScope, onScopeDispose, watch } from 'vue'
+import { createSubscribe } from './Subscribe'
+import { select } from './select'
 import type { ReadonlyStore } from '@tanstack/vue-store'
 
 /** Connects a core utility to the current Vue effect scope. */
@@ -14,13 +15,17 @@ export function bindPacer<TState, TSelected, TOptions, TInstance>(
 ): TInstance {
   if (!getCurrentScope())
     throw new Error('Pacer composables require an active Vue effect scope')
-  const selected = useSelector(instance.store, selector, { compare: shallow })
+  const selected = select(instance.store, selector)
   // A watch callback does not track reads performed inside the core utility.
   const stop = watch(options, (value) => instance.setOptions(value), {
     flush: 'sync',
   })
   Object.defineProperty(instance, 'state', {
     value: selected,
+    enumerable: true,
+  })
+  Object.defineProperty(instance, 'Subscribe', {
+    value: createSubscribe(instance.store),
     enumerable: true,
   })
   onScopeDispose(() => {

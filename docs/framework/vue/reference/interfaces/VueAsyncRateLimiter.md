@@ -3,9 +3,9 @@ id: VueAsyncRateLimiter
 title: VueAsyncRateLimiter
 ---
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L22)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L23)
 
-A AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
+An AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncRateLimiter with framework-reactive selected state. All core methods rema
 options: AsyncRateLimiterOptions<TFn> & VueAsyncRateLimiterOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L26)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:27](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L27)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:26](https://github.com/Ta
 setOptions: (options) => void;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:28](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L28)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:29](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L29)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:28](https://github.com/Ta
 readonly state: Readonly<ShallowRef<TSelected>>;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L32)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:35](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L35)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: VuePacerSubscribe<AsyncRateLimiterState<TFn>>;
+```
+
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:33](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L33)
+
+Subscribes a scoped slot to state without re-rendering the utility owner.

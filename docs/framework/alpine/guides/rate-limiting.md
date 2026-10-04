@@ -48,7 +48,7 @@ The `windowType` option controls when capacity returns.
 A fixed window starts when its first execution is accepted. All accepted executions remain counted until that window ends. Capacity then resets together.
 
 ```ts
-const limiter = useRateLimiter(sendEvent, {
+const limiter = scope.createRateLimiter(sendEvent, {
   limit: 3,
   window: 1000,
   windowType: 'fixed',
@@ -70,7 +70,7 @@ Executed:     ✅     ✅     ✅     ❌           ✅
 ```
 
 ```ts
-const limiter = useRateLimiter(sendEvent, {
+const limiter = scope.createRateLimiter(sendEvent, {
   limit: 3,
   window: 1000,
   windowType: 'sliding',
@@ -81,54 +81,190 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 ## Choose an API
 
-- `useRateLimitedCallback` for a quota-controlled event handler
-- `useRateLimitedState` or `useRateLimitedValue` for Alpine state
-- `useRateLimiter` for capacity helpers and selected state
+- `createRateLimitedCallback` for a quota-controlled event handler
+- `createRateLimitedState` or `createRateLimitedValue` for Alpine state
+- `createRateLimiter` for capacity helpers and selected state
 
 Use the callback API for operations, the state or value API for quota-controlled UI updates, and the instance API when you need capacity helpers or rejection state.
 
-## Use createRateLimiter
+## Alpine example
 
-Create a `createPacerScope()` for each component and call `scope.destroy()` from Alpine's `destroy` hook. Scope methods own option effects, state subscriptions, and utility cleanup. Alternatively, install `pacerPlugin` to use the automatically owned `$pacer` magic. Read selected state through `utility.state`.
+Create one Pacer scope for each Alpine component and destroy it from the component's `destroy` method. The example imports application operations from `./api`.
 
 ```ts
 import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
-import type { AlpineRateLimiter } from '@tanstack/alpine-pacer'
-import type { RateLimiterState } from '@tanstack/alpine-pacer'
-Alpine.data('example', () => ({
-  input: 'hello', wait: 200, history: [] as Array<string>,
-  scope: createPacerScope(),
-  utility: null as AlpineRateLimiter<(value: string) => void, RateLimiterState> | null,
-  init() {
-    this.utility = this.scope.createRateLimiter((value: string) => { this.history = [...this.history, value] }, () => ({ limit: 2, window: this.wait }), (state) => state)
-  },
-  schedule() { void this.utility?.maybeExecute(this.input) },
-  burst() { for (let i = 1; i <= 3; i++) void this.utility?.maybeExecute(`${this.input} ${i}`) },
-  destroy() { this.scope.destroy() },
-}))
+import { sendEvent } from './api'
+
+Alpine.data('example', () => {
+  const scope = createPacerScope()
+  const limiter = scope.createRateLimiter(
+    sendEvent,
+    { limit: 3, window: 10_000 },
+    (state) => ({
+      rejectionCount: state.rejectionCount,
+      executionCount: state.executionCount,
+    }),
+  )
+  return {
+    limiter,
+    schedule() {
+      void limiter.maybeExecute('clicked')
+    },
+    destroy() {
+      scope.destroy()
+    },
+  }
+})
+
 Alpine.start()
 ```
 
-## Options and controls
+```html
+<div x-data="example">
+  <button @click="schedule">Send</button>
+  <output x-text="limiter.state.rejectionCount"></output>
+</div>
+```
 
-`maybeExecute` accepts or rejects each call based on `limit` and `window`. Rejected calls are not queued for later. `reset()` clears the window and state. Function-valued limits can inspect the limiter at execution time. Select `executionCount` and `rejectionCount` to show accepted and rejected attempts.
-## Reactive options and cleanup
+The focused snippets below use the component-owned `scope` created above. Call their control methods from event handlers.
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+### Rate-limited callback
 
-The owning scope supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+Use `createRateLimitedCallback` when an event should invoke a rate-limited side effect:
 
-## State and convenience helpers
+```ts
+const search = scope.createRateLimitedCallback(
+  (query: string) => updateSearchResults(query),
+  { limit: 3, window: 1000 },
+)
+// In the component's input handler:
+search(this.query)
+```
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+The callback returns whether the call was accepted. It does not expose capacity helpers or `reset()`. Use `createRateLimiter` when the component needs that control.
 
-`createRateLimitedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+### Rate-limited state and values
 
-`createRateLimitedState` owns a delayed value. `createRateLimitedValue` derives one from an existing reactive input. See the [adapter guide](../adapter.md) for each helper's return shape.
+Use `createRateLimitedState` when Pacer should own the rate-limited state, or `createRateLimitedValue` when a value already changes elsewhere:
 
-## Related documentation
+```ts
+const [rateLimitedQuery] = scope.createRateLimitedValue(() => this.query, {
+  limit: 3,
+  window: 1000,
+})
+// Return rateLimitedQuery from the data object and read rateLimitedQuery() in x-text.
+```
 
-- [Alpine adapter](../adapter.md)
-- [Core rate limiting guide](../../../guides/rate-limiting.md)
-- [API reference](../reference/index.md)
+## Handling rejected calls
+
+Rejected calls do not run later. Use the boolean return value or `onReject` to provide feedback, retry elsewhere, or place work into a queue.
+
+```ts
+const limiter = scope.createRateLimiter(sendEvent, {
+  limit: 2,
+  window: 1000,
+  onReject: (limiter) => {
+    console.log('Rejected calls:', limiter.store.state.rejectionCount)
+  },
+})
+```
+
+If rejected operations must eventually run, a [queuer](./queuing.md) is usually a better fit.
+
+## Inspecting capacity
+
+The instance API provides two computed helpers:
+
+```ts
+limiter.getRemainingInWindow() // Accepted executions still available.
+limiter.getMsUntilNextWindow() // Time until at least one execution is available.
+```
+
+Both helpers use the current `limit`, `window`, `windowType`, and execution history.
+
+## Resetting and configuring the limiter
+
+`reset()` clears execution timestamps, counters, and cleanup timers. The next call starts with full capacity.
+
+```ts
+limiter.reset()
+```
+
+Use `setOptions()` to update the configuration:
+
+```ts
+limiter.setOptions({
+  limit: 10,
+  window: 30_000,
+})
+```
+
+Changing options does not erase existing execution history. Call `reset()` when the new configuration should begin with a fresh window.
+
+The `enabled`, `limit`, and `window` options may be functions that receive the limiter instance:
+
+```ts
+const limiter = scope.createRateLimiter(sendEvent, {
+  enabled: (limiter) => limiter.store.state.executionCount < 100,
+  limit: (limiter) => (limiter.store.state.rejectionCount > 10 ? 2 : 5),
+  window: 60_000,
+})
+```
+
+Disabling the limiter prevents the wrapped function from executing. It does not delete existing execution history.
+
+### Observing executions
+
+`onExecute` receives the executed arguments and limiter instance. `onReject` receives the limiter instance.
+
+```ts
+const limiter = scope.createRateLimiter(sendEvent, {
+  limit: 5,
+  window: 1000,
+  onExecute: (args, limiter) => {
+    console.log('Sent:', args)
+    console.log('Remaining:', limiter.getRemainingInWindow())
+  },
+  onReject: (limiter) => {
+    console.log('Rejected:', limiter.store.state.rejectionCount)
+  },
+})
+```
+
+## Alpine lifecycle
+
+The adapter has no default operation cleanup because a synchronous limiter has no pending or active work. Use `onUnmount` only when the component needs custom teardown related to the limiter.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in its owning scope and select fields used by `x-text` and `x-bind`:
+
+```ts
+const limiter = scope.createRateLimiter(
+  sendEvent,
+  { limit: 5, window: 60_000 },
+  (state) => ({
+    isExceeded: state.isExceeded,
+    rejectionCount: state.rejectionCount,
+  }),
+)
+
+console.log(limiter.state.isExceeded, limiter.state.rejectionCount)
+```
+
+Use `utility.subscribe(childScope, selector)` for an independently subscribed child scope. It returns a selected-state getter and cleans up with that child scope.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
+
+Commonly useful state includes:
+
+- `executionCount`: Total accepted executions that completed.
+- `executionTimes`: Timestamps currently used for window calculations.
+- `isExceeded`: Whether the current limit has been reached.
+- `rejectionCount`: Calls rejected because the window was full.
+- `status`: `'disabled'`, `'exceeded'`, or `'idle'`.
+
+See the [Alpine API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

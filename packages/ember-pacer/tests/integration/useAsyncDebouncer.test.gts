@@ -8,15 +8,28 @@ import type { EmberAsyncDebouncer } from '@tanstack/ember-pacer'
 let component: Fixture
 let utility: EmberAsyncDebouncer<() => Promise<void>, { count: number }>
 let cleanups: number[] = []
-const capture = (value: typeof utility) => { utility = value; return '' }
+const capture = (value: typeof utility) => {
+  utility = value
+  return ''
+}
 class Fixture extends Component {
   @tracked amount = 100
   execute = async () => {}
   select = (state: { settleCount: number }) => ({ count: state.settleCount })
-  cleanup = () => { cleanups.push(this.amount) }
-  constructor(...args: ConstructorParameters<typeof Component>) { super(...args); component = this }
+  cleanup = () => {
+    cleanups.push(this.amount)
+  }
+  constructor(...args: ConstructorParameters<typeof Component>) {
+    super(...args)
+    component = this
+  }
   <template>
-    {{#let (useAsyncDebouncer this.execute this.select wait=this.amount onUnmount=this.cleanup) as |instance|}}
+    {{#let
+      (useAsyncDebouncer
+        this.execute this.select wait=this.amount onUnmount=this.cleanup
+      )
+      as |instance|
+    }}
       {{capture instance}}
       <output>{{instance.state.count}}</output>
     {{/let}}
@@ -24,10 +37,14 @@ class Fixture extends Component {
 }
 module('useAsyncDebouncer', (hooks) => {
   setupRenderingTest(hooks)
-  hooks.afterEach(async () => { await clearRender(); cleanups = [] })
+  hooks.afterEach(async () => {
+    await clearRender()
+    cleanups = []
+  })
   test('updates named arguments, publishes selected state, and cleans up once', async (assert) => {
     await render(<template><Fixture /></template>)
-    const original = utility, store = utility.store
+    const original = utility,
+      store = utility.store
     component.amount = 200
     await settled()
     assert.strictEqual(utility, original)
@@ -42,17 +59,25 @@ module('useAsyncDebouncer', (hooks) => {
   test('aborts active work on helper destruction', async (assert) => {
     await render(<template><Fixture /></template>)
     let resolve!: () => void
-    const pending = new Promise<void>(done => { resolve = done })
+    const pending = new Promise<void>((done) => {
+      resolve = done
+    })
     utility.fn = () => pending
     utility.setOptions({ wait: 0, leading: true, onUnmount: undefined })
     let aborted = false
- utility.setOptions({ asyncRetryerOptions: { onAbort: () => { aborted = true } } })
- const execution = utility.maybeExecute()
+    utility.setOptions({
+      asyncRetryerOptions: {
+        onAbort: () => {
+          aborted = true
+        },
+      },
+    })
+    const execution = utility.maybeExecute()
 
     assert.false(aborted)
     await clearRender()
     assert.true(aborted)
-    resolve(); await execution
+    resolve()
+    await execution
   })
-
 })

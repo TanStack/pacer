@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TanStack Pacer | Alpine createAsyncBatchedCallback</title>
+  </head>
+  <body>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="counter">
+          <h1>TanStack Pacer createAsyncBatchedCallback Example 1</h1>
+          <div :style="({ marginBottom: '20px' })">
+            <button @click="((() => handleSearch('javascript')))($event)">
+              Search "javascript"</button
+            ><button
+              @click="((() => handleSearch('react')))($event)"
+              :style="({ marginLeft: '10px' })"
+            >
+              Search "react"</button
+            ><button
+              @click="((() => handleSearch('typescript')))($event)"
+              :style="({ marginLeft: '10px' })"
+            >
+              Search "typescript"</button
+            ><button
+              @click="((() => handleSearch('error')))($event)"
+              :style="({ marginLeft: '10px' })"
+            >
+              Search "error" (will fail)
+            </button>
+          </div>
+          <template x-if="(isLoading)"
+            ><p :style="({ color: 'blue' })">
+              Processing batch search...
+            </p></template
+          ><template x-if="(displayedError)"
+            ><p :style="({ color: 'red' })">
+              Error: <span x-text="(displayedError)"></span></p
+          ></template>
+          <table>
+            <tbody>
+              <tr>
+                <td>Total Searches Made:</td>
+                <td x-text="(searchQueries.length)"></td>
+              </tr>
+              <tr>
+                <td>Results Found:</td>
+                <td x-text="(results.length)"></td>
+              </tr>
+              <tr>
+                <td>Batches Processed:</td>
+                <td x-text="(batchesProcessed)"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div :style="({ marginTop: '20px' })">
+            <h3>Search Results:</h3>
+            <div
+              :style="({
+    maxHeight: '200px',
+    overflowY: 'auto',
+    border: '1px solid #ccc',
+    padding: '10px',
+})"
+            >
+              <template x-if="(results.length === 0)"
+                ><p :style="({ color: '#666' })">No results yet...</p></template
+              ><template x-if="!((results.length === 0))"
+                ><template x-for="(result, index) in (results)" :key="index"
+                  ><div :style="({ marginBottom: '5px', fontSize: '0.9em' })">
+                    <strong x-text="(result.query)"></strong>:
+                    <span x-text="(result.title)"></span></div></template
+              ></template>
+            </div>
+          </div>
+          <p :style="({ fontSize: '0.9em', color: '#666' })">
+            Searches are batched - max 3 queries or 2 second wait time
+          </p>
+        </div>
+        <hr />
+        <div x-data="search">
+          <h1>TanStack Pacer createAsyncBatchedCallback Example 2</h1>
+          <div :style="({ marginBottom: '20px' })">
+            <template x-for="(email, index) in (sampleEmails)" :key="index"
+              ><button
+                @click="((() => validateEmail(email)))($event)"
+                :style="({ marginRight: '10px', marginBottom: '5px' })"
+              >
+                Validate "<span x-text="(email)"></span>"
+              </button></template
+            >
+          </div>
+          <template x-if="(isValidating)"
+            ><p :style="({ color: 'blue' })">
+              Validating email batch...
+            </p></template
+          >
+          <table>
+            <tbody>
+              <tr>
+                <td>Total Validations Requested:</td>
+                <td x-text="(emailRequests.length)"></td>
+              </tr>
+              <tr>
+                <td>Validations Completed:</td>
+                <td x-text="(validationResults.length)"></td>
+              </tr>
+              <tr>
+                <td>Batches Processed:</td>
+                <td x-text="(batchesProcessed)"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div :style="({ marginTop: '20px' })">
+            <h3>Validation Results:</h3>
+            <div
+              :style="({
+    maxHeight: '200px',
+    overflowY: 'auto',
+    border: '1px solid #ccc',
+    padding: '10px',
+})"
+            >
+              <template x-if="(validationResults.length === 0)"
+                ><p :style="({ color: '#666' })">
+                  No validations completed yet...
+                </p></template
+              ><template x-if="!((validationResults.length === 0))"
+                ><template
+                  x-for="(result, index) in (validationResults)"
+                  :key="index"
+                  ><div
+                    :style="({
+    marginBottom: '5px',
+    fontSize: '0.9em',
+    color: result.isValid ? 'green' : 'red',
+})"
+                  >
+                    <strong x-text="(result.email)"></strong>:
+                    <span x-text="(result.message)"></span></div></template
+              ></template>
+            </div>
+          </div>
+          <p :style="({ fontSize: '0.9em', color: '#666' })">
+            Email validations are batched - max 4 emails or 1.5 second wait time
+          </p>
+        </div>
+        <hr />
+        <div x-data="range">
+          <h1>TanStack Pacer createAsyncBatchedCallback Example 3</h1>
+          <div :style="({ marginBottom: '20px' })">
+            <button @click="((() => addDataPoint('sales')))($event)">
+              Add Sales Data</button
+            ><button
+              @click="((() => addDataPoint('marketing')))($event)"
+              :style="({ marginLeft: '10px' })"
+            >
+              Add Marketing Data</button
+            ><button
+              @click="((() => addDataPoint('operations')))($event)"
+              :style="({ marginLeft: '10px' })"
+            >
+              Add Operations Data</button
+            ><button
+              @click="((() => addDataPoint('finance')))($event)"
+              :style="({ marginLeft: '10px' })"
+            >
+              Add Finance Data
+            </button>
+          </div>
+          <template x-if="(isProcessing)"
+            ><p :style="({ color: 'blue' })">
+              Processing data batch...
+            </p></template
+          >
+          <table>
+            <tbody>
+              <tr>
+                <td>Data Points Queued:</td>
+                <td x-text="(dataQueue.length)"></td>
+              </tr>
+              <tr>
+                <td>Data Points Processed:</td>
+                <td x-text="(processedData.length)"></td>
+              </tr>
+              <tr>
+                <td>Batches Completed:</td>
+                <td x-text="(batchesProcessed)"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div :style="({ marginTop: '20px', display: 'flex', gap: '20px' })">
+            <div :style="({ flex: 1 })">
+              <h3>Processed Data:</h3>
+              <div
+                :style="({
+    maxHeight: '150px',
+    overflowY: 'auto',
+    border: '1px solid #ccc',
+    padding: '10px',
+})"
+              >
+                <template x-if="(processedData.length === 0)"
+                  ><p :style="({ color: '#666' })">
+                    No data processed yet...
+                  </p></template
+                ><template x-if="!((processedData.length === 0))"
+                  ><template
+                    x-for="(point, index) in (processedData)"
+                    :key="index"
+                    ><div :style="({ marginBottom: '5px', fontSize: '0.9em' })">
+                      <strong x-text="(point.category)"></strong>:
+                      <span x-text="(point.value)"></span> (<span
+                        x-text="(point.id)"
+                      ></span
+                      >)
+                    </div></template
+                  ></template
+                >
+              </div>
+            </div>
+            <div :style="({ flex: 1 })">
+              <h3>Batch Summaries:</h3>
+              <div
+                :style="({
+    maxHeight: '150px',
+    overflowY: 'auto',
+    border: '1px solid #ccc',
+    padding: '10px',
+})"
+              >
+                <template x-if="(summaries.length === 0)"
+                  ><p :style="({ color: '#666' })">
+                    No summaries yet...
+                  </p></template
+                ><template x-if="!((summaries.length === 0))"
+                  ><template
+                    x-for="(summary, index) in (summaries)"
+                    :key="index"
+                    ><div :style="({ marginBottom: '5px', fontSize: '0.9em' })">
+                      <strong>Batch <span x-text="(index + 1)"></span></strong>:
+                      <span x-text="(summary.totalItems)"></span
+                      ><span x-text="(' ')"></span>items, total value:
+                      <span x-text="(summary.totalValue)"></span>,
+                      categories:<span x-text="(' ')"></span
+                      ><span
+                        x-text="(summary.categories)"
+                      ></span></div></template
+                ></template>
+              </div>
+            </div>
+          </div>
+          <p :style="({ fontSize: '0.9em', color: '#666' })">
+            Data processing is batched - max 5 items or 2.5 second wait time
+          </p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

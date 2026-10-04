@@ -10,10 +10,23 @@ function createDebouncedCallback<TFn>(
    options): (...args) => void;
 ```
 
-Defined in: [debouncer/createDebouncedCallback.ts:10](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/debouncer/createDebouncedCallback.ts#L10)
+Defined in: [debouncer/createDebouncedCallback.ts:34](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/debouncer/createDebouncedCallback.ts#L34)
 
-Returns a stable debounced callback with the same options and cleanup as createDebouncer.
-Use the constructor instead when you also need selected state or control methods.
+Returns a stable debounced callback owned by the Alpine lifecycle.
+
+With the default trailing behavior, each call restarts the wait timer and only the latest pending update executes. Leading and trailing options control the edges.
+
+## Return value
+
+Returns the bound maybeExecute method with the wrapped function's parameter types. It returns void, independently of the wrapped callback's return value.
+
+## State and ownership
+
+Use createDebouncer when you need selected state or control methods. This callback does not expose the utility, its store, or a child subscription.
+
+Pass the owning PacerScope first, or call the method on that scope. Destroy the scope in the Alpine component's destroy method.
+Options accept an object with top-level getters or an options factory. Function-valued core options remain callbacks. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
 
 ## Type Parameters
 
@@ -54,3 +67,17 @@ If a call is already in progress, it will be queued
 ### Returns
 
 `void`
+
+## Example
+
+```ts
+import { createDebouncedCallback } from '@tanstack/alpine-pacer'
+
+// scope belongs to the current Alpine component.
+const schedule = createDebouncedCallback(scope, (value: number) => { console.log(value) }, { wait: 500 })
+schedule(1)
+```
+
+## See
+
+createDebouncer

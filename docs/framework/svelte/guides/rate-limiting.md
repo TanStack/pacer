@@ -48,7 +48,7 @@ The `windowType` option controls when capacity returns.
 A fixed window starts when its first execution is accepted. All accepted executions remain counted until that window ends. Capacity then resets together.
 
 ```ts
-const limiter = useRateLimiter(sendEvent, {
+const limiter = createRateLimiter(sendEvent, {
   limit: 3,
   window: 1000,
   windowType: 'fixed',
@@ -70,7 +70,7 @@ Executed:     ✅     ✅     ✅     ❌           ✅
 ```
 
 ```ts
-const limiter = useRateLimiter(sendEvent, {
+const limiter = createRateLimiter(sendEvent, {
   limit: 3,
   window: 1000,
   windowType: 'sliding',
@@ -81,55 +81,179 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 ## Choose an API
 
-- `useRateLimitedCallback` for a quota-controlled event handler
-- `useRateLimitedState` or `useRateLimitedValue` for Svelte state
-- `useRateLimiter` for capacity helpers and selected state
+- `createRateLimitedCallback` for a quota-controlled event handler
+- `createRateLimitedSignal` or `createRateLimitedValue` for Svelte state
+- `createRateLimiter` for capacity helpers and selected state
 
 Use the callback API for operations, the state or value API for quota-controlled UI updates, and the instance API when you need capacity helpers or rejection state.
 
-## Use createRateLimiter
+## Svelte example
 
-Call factories during component initialization. Options update in a pre-render effect. Read selected state through `utility.state` without destructuring it outside a reactive expression. Component destruction releases subscriptions and cleans up the utility.
+Create the utility during component initialization. Destroying the component runs its cleanup. The example imports application operations from `./api`.
 
 ```svelte
 <script lang="ts">
-import { createRateLimiter } from '@tanstack/svelte-pacer'
-let input = $state('hello')
-let wait = $state(200)
-let history = $state<Array<string>>([])
-const utility = createRateLimiter((value: string) => { history = [...history, value] }, () => ({ limit: 2, window: wait }), (state) => state)
-function schedule() { void utility.maybeExecute(input) }
-function burst() { for (let i = 1; i <= 3; i++) void utility.maybeExecute(`${input} ${i}`) }
+  import { createRateLimiter } from '@tanstack/svelte-pacer'
+  import { sendEvent } from './api'
+
+  const limiter = createRateLimiter(
+    sendEvent,
+    { limit: 3, window: 10_000 },
+    (state) => ({
+      rejectionCount: state.rejectionCount,
+      executionCount: state.executionCount,
+    }),
+  )
 </script>
-<main>
-<h1>Svelte createRateLimiter</h1><p>Accept up to two executions per time window and track rejected calls.</p>
-<label>Task <input bind:value={input} /></label><label>Wait (ms) <input bind:value={wait} type="number" min="0" /></label>
-<div><button onclick={schedule}>Schedule</button><button onclick={burst}>Schedule three</button><button onclick={() => utility.reset()}>Reset window</button><button onclick={() => utility.reset()}>Reset</button><button onclick={() => history = []}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{JSON.stringify(history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>{JSON.stringify(utility.state, null, 2)}</pre></section>
-<p class="caption">Reactive options preserve pending work. Component teardown cleans up the utility.</p>
-</main>
+
+<button onclick={() => void limiter.maybeExecute('clicked')}>Send</button>
+<output>{limiter.state.rejectionCount}</output>
 ```
 
-## Options and controls
+The focused snippets below use `createRateLimiter` during component initialization, and instance methods from event handlers.
 
-`maybeExecute` accepts or rejects each call based on `limit` and `window`. Rejected calls are not queued for later. `reset()` clears the window and state. Function-valued limits can inspect the limiter at execution time. Select `executionCount` and `rejectionCount` to show accepted and rejected attempts.
-## Reactive options and cleanup
+### Rate-limited callback
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+Use `createRateLimitedCallback` when an event should invoke a rate-limited side effect:
 
-The owning component supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+```ts
+import { createRateLimitedCallback } from '@tanstack/svelte-pacer'
 
-## State and convenience helpers
+const search = createRateLimitedCallback(
+  (query: string) => updateSearchResults(query),
+  { limit: 3, window: 1000 },
+)
+function onInput(event: Event) {
+  search((event.target as HTMLInputElement).value)
+}
+```
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+The callback returns whether the call was accepted. It does not expose capacity helpers or `reset()`. Use `createRateLimiter` when the component needs that control.
 
-`createRateLimitedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+### Rate-limited state and values
 
-`createRateLimitedSignal` owns a delayed value. `createRateLimitedValue` derives one from an existing reactive input. See the [adapter guide](../adapter.md) for each helper's return shape.
+Use `createRateLimitedSignal` when Pacer should own the rate-limited state, or `createRateLimitedValue` when a value already changes elsewhere:
 
-## Related documentation
+```ts
+import { createRateLimitedValue } from '@tanstack/svelte-pacer'
 
-- [Svelte adapter](../adapter.md)
-- [Core rate limiting guide](../../../guides/rate-limiting.md)
-- [API reference](../reference/index.md)
+let query = $state('')
+const [rateLimitedQuery] = createRateLimitedValue(() => query, {
+  limit: 3,
+  window: 1000,
+})
+// Read rateLimitedQuery() in the template.
+```
+
+## Handling rejected calls
+
+Rejected calls do not run later. Use the boolean return value or `onReject` to provide feedback, retry elsewhere, or place work into a queue.
+
+```ts
+const limiter = createRateLimiter(sendEvent, {
+  limit: 2,
+  window: 1000,
+  onReject: (limiter) => {
+    console.log('Rejected calls:', limiter.store.state.rejectionCount)
+  },
+})
+```
+
+If rejected operations must eventually run, a [queuer](./queuing.md) is usually a better fit.
+
+## Inspecting capacity
+
+The instance API provides two computed helpers:
+
+```ts
+limiter.getRemainingInWindow() // Accepted executions still available.
+limiter.getMsUntilNextWindow() // Time until at least one execution is available.
+```
+
+Both helpers use the current `limit`, `window`, `windowType`, and execution history.
+
+## Resetting and configuring the limiter
+
+`reset()` clears execution timestamps, counters, and cleanup timers. The next call starts with full capacity.
+
+```ts
+limiter.reset()
+```
+
+Use `setOptions()` to update the configuration:
+
+```ts
+limiter.setOptions({
+  limit: 10,
+  window: 30_000,
+})
+```
+
+Changing options does not erase existing execution history. Call `reset()` when the new configuration should begin with a fresh window.
+
+The `enabled`, `limit`, and `window` options may be functions that receive the limiter instance:
+
+```ts
+const limiter = createRateLimiter(sendEvent, {
+  enabled: (limiter) => limiter.store.state.executionCount < 100,
+  limit: (limiter) => (limiter.store.state.rejectionCount > 10 ? 2 : 5),
+  window: 60_000,
+})
+```
+
+Disabling the limiter prevents the wrapped function from executing. It does not delete existing execution history.
+
+### Observing executions
+
+`onExecute` receives the executed arguments and limiter instance. `onReject` receives the limiter instance.
+
+```ts
+const limiter = createRateLimiter(sendEvent, {
+  limit: 5,
+  window: 1000,
+  onExecute: (args, limiter) => {
+    console.log('Sent:', args)
+    console.log('Remaining:', limiter.getRemainingInWindow())
+  },
+  onReject: (limiter) => {
+    console.log('Rejected:', limiter.store.state.rejectionCount)
+  },
+})
+```
+
+## Svelte lifecycle
+
+The adapter has no default operation cleanup because a synchronous limiter has no pending or active work. Use `onUnmount` only when the component needs custom teardown related to the limiter.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Read selected state from the utility in the template. Imperative methods such as capacity and peek helpers do not create reactive dependencies; derive their readouts from selected state:
+
+```ts
+const limiter = createRateLimiter(
+  sendEvent,
+  { limit: 5, window: 60_000 },
+  (state) => ({
+    isExceeded: state.isExceeded,
+    rejectionCount: state.rejectionCount,
+  }),
+)
+
+console.log(limiter.state.isExceeded, limiter.state.rejectionCount)
+```
+
+Use `utility.Subscribe` with a selector and a `children` snippet for an independently subscribed child.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
+
+Commonly useful state includes:
+
+- `executionCount`: Total accepted executions that completed.
+- `executionTimes`: Timestamps currently used for window calculations.
+- `isExceeded`: Whether the current limit has been reached.
+- `rejectionCount`: Calls rejected because the window was full.
+- `status`: `'disabled'`, `'exceeded'`, or `'idle'`.
+
+See the [Svelte API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

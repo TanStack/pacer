@@ -10,17 +10,44 @@ function useAsyncDebouncer<TFn, TSelected>(
 selector?): OctaneAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [async-debouncer/useAsyncDebouncer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-debouncer/useAsyncDebouncer.ts#L52)
+Defined in: [async-debouncer/useAsyncDebouncer.ts:95](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-debouncer/useAsyncDebouncer.ts#L95)
 
-Creates a Octane AsyncDebouncer with reactive options and automatic owner cleanup.
+Creates and retains the AsyncDebouncer for its Octane owner.
 
-Pass an options object with property getters or a factory. Only top-level properties
-are evaluated; function-valued core options remain callbacks. Local options override
-provider defaults. Options update the same instance, preserving pending work and counters.
+Waits for a quiet period, then executes the latest call. Each new call restarts the trailing timer. Configure leading and trailing edges for search, autosave, or resize handlers.
 
-Pass a selector to subscribe to the state your UI reads. The core store remains available
-for additional subscriptions. Cleanup uses the latest onUnmount option, or the core's
-default cancellation/stop behavior, including aborting active asynchronous work.
+The callback may return a Promise. Core result, error, retry, and abort behavior is preserved.
+Use onSuccess, onError, and onSettled for execution outcomes.
+
+## State and subscriptions
+
+Pass a selector to track only the state consumed by the owner. The default selection is {},
+so utility state changes do not update the owner unless it opts in. Selection uses shallow
+comparison. The raw store remains available for additional subscriptions.
+Read selected state through utility.state. Use utility.Subscribe with a render callback
+to select state in a child without subscribing the owner.
+
+Available state fields:
+
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge of the timeout
+- `errorCount`: Number of function executions that have resulted in errors
+- `isExecuting`: Whether the debounced function is currently executing asynchronously
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `lastResult`: The result from the most recent successful function execution
+- `maybeExecuteCount`: Number of times maybeExecute has been called (for reduction calculations)
+- `settleCount`: Number of function executions that have completed (either successfully or with errors)
+- `status`: Current execution status - 'idle' when not active, 'pending' when waiting, 'executing' when running, 'settled' when completed
+- `successCount`: Number of function executions that have completed successfully
+
+## Options and ownership
+
+Pass an options object with property getters or a factory. Top-level properties are read
+reactively; function-valued core options remain callbacks. Local options override provider
+defaults. Updates retain the utility, its store, counters, and pending work.
+Unmounting the component calls cancel() and abort().
+onUnmount replaces default cleanup and receives the same adapter instance. A custom callback
+must perform all required cleanup. Use flush() where supported to finish pending work.
 
 ## Type Parameters
 
@@ -45,16 +72,30 @@ Function executed by the utility.
 
 [`OctanePacerOptions`](../type-aliases/OctanePacerOptions.md)\<[`OctaneAsyncDebouncerOptions`](../interfaces/OctaneAsyncDebouncerOptions.md)\<`TFn`, `TSelected`\>\>
 
-Core options and an optional cleanup callback.
+Core options or a reactive factory, plus an optional onUnmount callback.
 
 ### selector?
 
 (`state`) => `TSelected`
 
-Selects the state consumed by the component.
+Selects state that updates the owner. Omit to leave selected state empty.
 
 ## Returns
 
 [`OctaneAsyncDebouncer`](../interfaces/OctaneAsyncDebouncer.md)\<`TFn`, `TSelected`\>
 
-The utility instance with reactive selected state.
+The retained utility instance with selected state and child subscriptions.
+
+## Example
+
+```ts
+import { useAsyncDebouncer } from '@tanstack/octane-pacer'
+
+const utility = useAsyncDebouncer(
+  async (value: string) => { console.log(value) },
+  { wait: 500 },
+  (state) => ({ isPending: state.isPending }),
+)
+utility.maybeExecute('item')
+// Selected state: utility.state.isPending
+```

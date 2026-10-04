@@ -45,48 +45,206 @@ Choose another utility when:
 - Several items should be processed together. Use [batching](./batching.md).
 - You need to await a result, handle errors, retry, or abort in-flight work. Use [async debouncing](./async-debouncing.md).
 
-## Use createDebouncer
+## Using debouncing in Alpine
 
-Create a `createPacerScope()` for each component and call `scope.destroy()` from Alpine's `destroy` hook. Scope methods own option effects, state subscriptions, and utility cleanup. Alternatively, install `pacerPlugin` to use the automatically owned `$pacer` magic. Read selected state through `utility.state`.
+The adapter provides three levels of debouncing API:
+
+- `createDebouncedCallback` creates a stable debounced event handler.
+- `createDebouncedState` and `createDebouncedValue` delay state or a changing value.
+- `createDebouncer` exposes lifecycle methods, dynamic options, callbacks, and selected state.
+
+Create a Pacer scope for an Alpine component and create utilities from its `init()` method. Call `scope.destroy()` from the component's `destroy()` method. The snippets below assume that `scope` is this component-owned scope.
+
+The snippets use application functions such as `saveDraft` and `updateSearchResults`. Supply those functions in your component.
+
+### Debounced callback
+
+Use `createDebouncedCallback` when an event should invoke a debounced side effect:
 
 ```ts
-import Alpine from 'alpinejs'
-import { createPacerScope } from '@tanstack/alpine-pacer'
-import type { AlpineDebouncer } from '@tanstack/alpine-pacer'
-import type { DebouncerState } from '@tanstack/alpine-pacer'
-Alpine.data('example', () => ({
-  input: 'hello', wait: 200, history: [] as Array<string>,
-  scope: createPacerScope(),
-  utility: null as AlpineDebouncer<(value: string) => void, DebouncerState<(value: string) => void>> | null,
-  init() {
-    this.utility = this.scope.createDebouncer((value: string) => { this.history = [...this.history, value] }, () => ({ wait: this.wait }), (state) => state)
-  },
-  schedule() { void this.utility?.maybeExecute(this.input) },
-  burst() { for (let i = 1; i <= 3; i++) void this.utility?.maybeExecute(`${this.input} ${i}`) },
-  destroy() { this.scope.destroy() },
-}))
-Alpine.start()
+const search = scope.createDebouncedCallback(
+  (query: string) => updateSearchResults(query),
+  { wait: 500 },
+)
+// In the component's input handler:
+search(this.query)
 ```
 
-## Options and controls
+The callback does not expose `cancel()` or `flush()`. Use `createDebouncer` when the component needs that control.
 
-`maybeExecute` schedules the latest arguments. `wait` resets after each call. `leading` runs the first call immediately and `trailing` controls the deferred call. Use `flush()` to execute pending work, `cancel()` to discard its timer, and `reset()` to reset counters. Select `isPending`, `lastArgs`, or `executionCount` for your UI.
-## Reactive options and cleanup
+### Debounced state and values
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+Use `createDebouncedState` when Pacer should own the delayed state, or `createDebouncedValue` when a value already changes elsewhere:
 
-The owning scope supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+```ts
+const [debouncedQuery] = scope.createDebouncedValue(() => this.query, {
+  wait: 500,
+})
+// Return debouncedQuery from the data object and read debouncedQuery() in x-text.
+```
 
-## State and convenience helpers
+### Instance API
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+```ts
+this.debouncer = scope.createDebouncer(saveDraft, { wait: 500 }, (state) => ({
+  isPending: state.isPending,
+}))
+// Use :disabled="!debouncer.state.isPending" and @click="debouncer.flush()".
+```
 
-`createDebouncedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+Both the callback and `maybeExecute()` return `void`. The synchronous adapter does not retain return values or catch errors. Handle errors inside a trailing callback, or use [async debouncing](./async-debouncing.md) when the caller needs a Promise result.
 
-`createDebouncedState` owns a delayed value. `createDebouncedValue` derives one from an existing reactive input. See the [adapter guide](../adapter.md) for each helper's return shape.
+The following timing and control snippets use the `debouncer` instance created in your component. Run those operations from event handlers or other application code.
 
-## Related documentation
+## Execution timing
 
-- [Alpine adapter](../adapter.md)
-- [Core debouncing guide](../../../guides/debouncing.md)
-- [API reference](../reference/index.md)
+The `leading` and `trailing` options control which edge of the wait period may execute.
+
+| `leading` | `trailing` | Behavior                                                                                                                               |
+| --------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `false`   | `true`     | Wait for inactivity, then execute the most recent call. This is the default.                                                           |
+| `true`    | `false`    | Execute the first call immediately. Later calls do not execute and restart the wait period.                                            |
+| `true`    | `true`     | Execute the first call immediately. If another call arrives during the wait period, execute the most recent call at the trailing edge. |
+| `false`   | `false`    | Do not execute any calls.                                                                                                              |
+
+```ts
+debouncer.setOptions({
+  wait: 1000,
+  leading: true,
+  trailing: true,
+})
+
+debouncer.maybeExecute('first') // Executes immediately.
+debouncer.maybeExecute('second')
+debouncer.maybeExecute('latest') // Executes after 1 second of inactivity.
+```
+
+With both edges enabled, a single call executes only on the leading edge. A trailing execution occurs only when another call arrives during the wait period.
+
+### No maximum wait
+
+`createDebouncer` does not provide a `maxWait` option. A continuous stream of calls can keep postponing a trailing execution indefinitely. Use [throttling](./throttling.md) when work must continue at a bounded interval while calls are still arriving.
+
+## Controlling pending work
+
+The instance API distinguishes between executing, canceling, and resetting pending work.
+
+### Flush
+
+`flush()` immediately executes the pending trailing call with the most recent arguments. It does nothing when no trailing call is pending.
+
+```ts
+debouncer.setOptions({ wait: 1000 })
+
+debouncer.maybeExecute('draft')
+debouncer.flush() // Executes saveDraft('draft') now.
+```
+
+### Cancel
+
+`cancel()` clears the pending timeout without executing the function. It also allows a leading call to execute immediately the next time `maybeExecute()` is called.
+
+```ts
+debouncer.maybeExecute('discarded draft')
+debouncer.cancel()
+```
+
+### Reset
+
+`reset()` restores the debouncer's state counters and flags to their defaults. It does not clear an already scheduled timeout. Call `cancel()` first when you need to discard pending work and reset state.
+
+```ts
+debouncer.cancel()
+debouncer.reset()
+```
+
+## Configuring behavior at runtime
+
+Use `setOptions()` to change options after construction:
+
+```ts
+debouncer.setOptions({
+  wait: 1000,
+  leading: true,
+  trailing: false,
+})
+```
+
+A new `wait` value applies when the next call schedules a timeout. It does not reschedule a timeout that is already pending. Calling `maybeExecute()` again clears the old timeout and schedules a new one using the current options.
+
+### Enabling and disabling
+
+Set `enabled` to `false` to prevent execution. Disabling a debouncer through `setOptions()` also cancels its pending call.
+
+```ts
+debouncer.setOptions({
+  wait: 500,
+  enabled: false,
+})
+
+debouncer.maybeExecute('ignored')
+debouncer.setOptions({ enabled: true })
+debouncer.maybeExecute('saved')
+```
+
+The `enabled` and `wait` options may also be functions that receive the debouncer instance:
+
+```ts
+debouncer.setOptions({
+  enabled: (debouncer) => debouncer.store.state.executionCount < 10,
+  wait: (debouncer) => (debouncer.store.state.executionCount === 0 ? 300 : 500),
+})
+```
+
+### Observing executions
+
+Use `onExecute` for a side effect after the wrapped function runs. The callback receives the executed arguments followed by the debouncer instance.
+
+```ts
+debouncer.setOptions({
+  wait: 500,
+  onExecute: (args, debouncer) => {
+    console.log('Saved arguments:', args)
+    console.log('Execution count:', debouncer.store.state.executionCount)
+  },
+})
+```
+
+### Reactive options
+
+Pass an options factory or property getters to read reactive settings. Local options override provider defaults, and option changes retain the same utility instance.
+
+```ts
+this.debouncer = scope.createDebouncer(saveDraft, () => ({ wait: this.wait }))
+```
+
+## Alpine lifecycle
+
+Destroying the Pacer scope cancels pending work, releases reactive effects, and unsubscribes from state. Connect that cleanup to Alpine's `destroy()` method. Providing `onUnmount` replaces the default cleanup, so a custom callback must perform every required lifecycle action. Flushing during teardown can run callbacks after the component has begun to be destroyed.
+
+## Reactive state
+
+Pass a selector to subscribe to the state your component reads. Without a selector, selected state is an empty object. Read the selection through `debouncer.state`. The core store remains available even when you do not select state for rendering.
+
+Option functions and lifecycle callbacks receive the public utility instance. Reading `.store.state` in those callbacks is supported. Component rendering should read the selected adapter state.
+
+### Child subscriptions
+
+A child can select state without subscribing the utility owner. The child subscription cleans up when its own scope or component is destroyed:
+
+```ts
+const selected = debouncer.subscribe(childScope, (state) => ({
+  isPending: state.isPending,
+}))
+// Read selected().isPending in the child component.
+// childScope.destroy() removes this subscription without canceling the parent utility.
+```
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields; pending timers are not restored.
+
+- `isPending`: Whether a trailing execution is waiting.
+- `executionCount`: How many times the wrapped function has executed.
+- `lastArgs`: The arguments recorded by the most recent trailing-enabled call. Check `isPending` before treating them as pending work.
+- `status`: `'disabled'`, `'idle'`, or `'pending'`.
+
+See the [Alpine API reference](../reference/index.md) for adapter signatures and the [adapter guide](../adapter.md) for provider and helper return shapes.

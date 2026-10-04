@@ -3,7 +3,7 @@ id: SvelteDebouncerOptions
 title: SvelteDebouncerOptions
 ---
 
-Defined in: [packages/svelte-pacer/src/debouncer/createDebouncer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/debouncer/createDebouncer.ts#L12)
+Defined in: [packages/svelte-pacer/src/debouncer/createDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/debouncer/createDebouncer.ts#L13)
 
 Options for createDebouncer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createDebouncer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/svelte-pacer/src/debouncer/createDebouncer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/debouncer/createDebouncer.ts#L17)
+Defined in: [packages/svelte-pacer/src/debouncer/createDebouncer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/debouncer/createDebouncer.ts#L18)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

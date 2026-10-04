@@ -10,10 +10,23 @@ function createThrottledCallback<TFn>(
    options): (...args) => void;
 ```
 
-Defined in: [throttler/createThrottledCallback.ts:10](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/throttler/createThrottledCallback.ts#L10)
+Defined in: [throttler/createThrottledCallback.ts:34](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/throttler/createThrottledCallback.ts#L34)
 
-Returns a stable throttled callback with the same options and cleanup as createThrottler.
-Use the constructor instead when you also need selected state or control methods.
+Returns a stable throttled callback owned by the Alpine lifecycle.
+
+Limits execution to the configured wait interval. Leading and trailing execution are enabled by default, and the latest blocked update is retained for the trailing edge.
+
+## Return value
+
+Returns the bound maybeExecute method with the wrapped function's parameter types. It returns void, independently of the wrapped callback's return value.
+
+## State and ownership
+
+Use createThrottler when you need selected state or control methods. This callback does not expose the utility, its store, or a child subscription.
+
+Pass the owning PacerScope first, or call the method on that scope. Destroy the scope in the Alpine component's destroy method.
+Options accept an object with top-level getters or an options factory. Function-valued core options remain callbacks. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
 
 ## Type Parameters
 
@@ -73,3 +86,17 @@ throttled.maybeExecute('a', 'b');
 // Call during wait period - gets throttled
 throttled.maybeExecute('c', 'd');
 ```
+
+## Example
+
+```ts
+import { createThrottledCallback } from '@tanstack/alpine-pacer'
+
+// scope belongs to the current Alpine component.
+const schedule = createThrottledCallback(scope, (value: number) => { console.log(value) }, { wait: 500 })
+schedule(1)
+```
+
+## See
+
+createThrottler

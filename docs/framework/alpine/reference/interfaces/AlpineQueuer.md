@@ -3,7 +3,7 @@ id: AlpineQueuer
 title: AlpineQueuer
 ---
 
-Defined in: [queuer/createQueuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/queuer/createQueuer.ts#L17)
+Defined in: [queuer/createQueuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/queuer/createQueuer.ts#L18)
 
 A Queuer with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Queuer with framework-reactive selected state. All core methods remain availab
 options: QueuerOptions<TValue> & AlpineQueuerOptions<TValue, TSelected>;
 ```
 
-Defined in: [queuer/createQueuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/queuer/createQueuer.ts#L21)
+Defined in: [queuer/createQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/queuer/createQueuer.ts#L22)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [queuer/createQueuer.ts:21](https://github.com/TanStack/pacer/blob/m
 setOptions: (options) => void;
 ```
 
-Defined in: [queuer/createQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/queuer/createQueuer.ts#L22)
+Defined in: [queuer/createQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/queuer/createQueuer.ts#L23)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [queuer/createQueuer.ts:22](https://github.com/TanStack/pacer/blob/m
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [queuer/createQueuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/queuer/createQueuer.ts#L24)
+Defined in: [queuer/createQueuer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/queuer/createQueuer.ts#L27)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: AlpinePacerSubscribe<QueuerState<TValue>>;
+```
+
+Defined in: [queuer/createQueuer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/queuer/createQueuer.ts#L25)
+
+Subscribes a child owner to selected state with automatic cleanup.

@@ -64,7 +64,8 @@
   ],
   "dependencies": {
     "@embroider/addon-shim": "^1.10.3",
-    "@tanstack/pacer": "workspace:*"
+    "@tanstack/pacer": "workspace:*",
+    "@tanstack/store": "^0.11.2"
   },
   "devDependencies": {
     "@babel/core": "7.29.7",

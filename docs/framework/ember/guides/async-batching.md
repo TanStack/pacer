@@ -32,65 +32,208 @@ Both `maxSize` and `wait` default to `Infinity`, so configure at least one trigg
 - `useAsyncBatchedCallback` for adding items
 - `useAsyncBatcher` for flush, failed items, and selected execution state
 
-## Use useAsyncBatcher
+## Ember example
 
-Call the `use*` template helpers inside a `{{#let}}` block. The execution callback is the first positional argument and the optional state selector is the second. Pass options as named arguments. Ember tracks named arguments and updates the same utility after rendering. Removing the helper from the template releases its subscriptions and cleans up pending work.
+Invoke the helper in a template. Named arguments supply options, and the second positional argument selects state. Removing the helper invocation runs cleanup. The example imports application operations from `./api`.
 
 ```gts
 import Component from '@glimmer/component'
-import { tracked } from '@glimmer/tracking'
 import { on } from '@ember/modifier'
-import { fn } from '@ember/helper'
+import { fn, hash } from '@ember/helper'
 import { useAsyncBatcher } from '@tanstack/ember-pacer'
 import type { AsyncBatcherState } from '@tanstack/ember-pacer'
-const json = (value: unknown) => JSON.stringify(value, null, 2)
+import { sendEvents } from './api'
+
+const select = (state: AsyncBatcherState<{ type: string }>) => ({
+  size: state.size,
+  isExecuting: state.isExecuting,
+})
+
 export default class Example extends Component {
-  @tracked input = 'hello'
-  @tracked wait = 200
-  @tracked history: Array<Array<string>> = []
-  execute = async (value: Array<string>) => { this.history = [...this.history, value] }
-  select = (state: AsyncBatcherState<string>) => state
-  updateInput = (event: Event) => { this.input = (event.target as HTMLInputElement).value }
-  updateWait = (event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }
-  clear = () => { this.history = [] }
-  burst = (schedule: (value: string) => unknown) => { for (let i = 1; i <= 3; i++) void schedule(`${this.input} ${i}`) }
   <template>
-{{#let (useAsyncBatcher this.execute this.select wait=this.wait maxSize=3) as |utility|}}
-<main>
-<h1>Ember useAsyncBatcher</h1><p>Collect events into batches of up to three items, or process them after the wait period.</p>
-<label>Task <input value={{this.input}} {{on "input" this.updateInput}} /></label><label>Wait (ms) <input value={{this.wait}} {{on "input" this.updateWait}} type="number" min="0" /></label>
-<div><button {{on "click" (fn utility.addItem this.input)}}>Schedule</button><button {{on "click" (fn this.burst utility.addItem)}}>Schedule three</button><button {{on "click" utility.flush}}>Flush</button><button {{on "click" utility.cancel}}>Cancel</button><button {{on "click" this.clear}}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{{json this.history}}</pre></section>
-<section><h2>Utility state</h2><pre>{{json utility.state}}</pre></section>
-<p class="caption">Tracked named arguments update the same utility. The helper owns cleanup when it leaves the template.</p>
-</main>
-{{/let}}
+    {{#let
+      (useAsyncBatcher sendEvents select maxSize=20 wait=1000)
+      as |batcher|
+    }}
+      <button
+        {{on 'click' (fn batcher.addItem (hash type='click'))}}
+      >Track</button>
+      <output>{{batcher.state.size}}</output>
+    {{/let}}
   </template>
 }
 ```
 
-## Options and controls
+The focused TypeScript snippets below demonstrate the core `AsyncBatcher` class re-exported by the adapter. In a component, use `useAsyncBatcher` as above to own the instance, pass configuration as named arguments, and pass the yielded instance to event handlers. Core class instances require explicit cleanup.
 
-`addItem` appends one item. `maxSize` executes a full batch; `wait` bounds how long a partial batch waits. Use `flush()` to process pending items immediately, `cancel()` to cancel the timer, and `reset()` to restore state. Read `items`, `size`, and `settleCount` with a selector.
+## Promise results
 
-The async variant awaits your callback. `onSuccess` receives the result, `onError` handles failures, and `onSettled` runs after an outcome. Configure `throwOnError` to decide whether a failed execution rejects its returned promise. `asyncRetryerOptions` configures retries inside the scheduled operation. Select `successCount`, `errorCount`, and `settleCount` where the utility exposes them.
+`flush()` returns the batch function's result and is the clearest way to await a specific batch.
 
-`abort()` signals active work to stop. Pass the utility's abort signal to cancellable operations such as `fetch`. Cancellation is cooperative and cannot undo an operation that already completed.
+`addItem()` also returns a Promise, but it should not be treated as an individual item's result receipt:
 
-## Reactive options and cleanup
+- If that addition reaches `maxSize` or satisfies `getShouldExecute`, its Promise owns the triggered execution and resolves with the batch result.
+- If it only schedules the wait timer, its Promise resolves without the later batch result.
+- Another addition may reset the timer and change which items execute together.
 
-Use tracked named arguments to change options. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+Use `onSuccess`, `onError`, and `onSettled` when all additions need to observe the eventual batch outcome.
 
-The owning helper supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+## Batch boundaries and overlapping work
 
-## State and convenience helpers
+The batcher copies and clears the current items before calling the async function. Items added while that function is active collect in a new batch:
 
-Pass a selector as the final argument after the execution callback to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+```text
+execute [A, B] ───────────────── finish
+       add C ─── add D ─── execute [C, D] ─── finish
+```
 
-`useAsyncBatchedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+If the second batch's trigger fires before the first finishes, both batch functions can overlap. `useAsyncBatcher` does not have a concurrency option. Serialize batch executions outside the batcher or send the completed batches through an async queue when overlap is unsafe.
 
-## Related documentation
+## Errors and failed items
 
-- [Ember adapter](../adapter.md)
-- [Core async batching guide](../../../guides/async-batching.md)
-- [API reference](../reference/index.md)
+Async batchers provide these callbacks:
+
+- `onSuccess(result, batch, batcher)` after success.
+- `onError(error, batch, batcher)` after the batch's retries fail.
+- `onSettled(batch, batcher)` after either outcome.
+- `onItemsChange(batcher)` when items are added or removed for execution.
+
+Without `onError`, `throwOnError` defaults to `true`, so `flush()` or a size-triggering `addItem()` rejects on failure. Providing `onError` changes that default to `false`; the Promise then resolves with `undefined`.
+
+Items are removed from the pending collection before execution. A failed batch is not automatically requeued. Its items are added to `failedItems` and are available through `peekFailedItems()` until `clear()` or a later execution clears that collection.
+
+```ts
+const failed = batcher.peekFailedItems()
+for (const item of failed) {
+  saveForManualRecovery(item)
+}
+```
+
+For non-idempotent operations, verify the server outcome before resubmitting a failed batch.
+
+## Retrying batches
+
+Configure retries for each batch execution with `asyncRetryerOptions`:
+
+```ts
+import { AsyncBatcher } from '@tanstack/ember-pacer'
+
+const batcher = new AsyncBatcher(sendEvents, {
+  maxSize: 20,
+  wait: 1000,
+  asyncRetryerOptions: {
+    maxAttempts: 3,
+    backoff: 'exponential',
+    baseWait: 500,
+    jitter: 0.2,
+  },
+})
+```
+
+`maxAttempts` includes the first attempt, and every retry receives the same copied batch. See the [Async Retrying Guide](./async-retrying.md) before retrying operations with side effects.
+
+## Flushing, canceling, and clearing
+
+- `flush()` clears the pending timer and immediately executes the current items.
+- `cancel()` clears the pending timer but keeps the collected items.
+- `clear()` removes collected items and failed items, but does not clear a scheduled timer.
+- `peekAllItems()` returns a copy of the currently collected items.
+
+Because `clear()` leaves the timer in place, use `cancel()` followed by `clear()` when no empty timer should remain:
+
+```ts
+batcher.cancel()
+batcher.clear()
+```
+
+The batch function is not called when an eventual timer or `flush()` finds no items.
+
+## Aborting active work
+
+`abort()` aborts active retryers. It does not cancel a pending batch or remove collected items. Pass the batcher's signal to the underlying API for cancellation to propagate:
+
+```ts
+import { AsyncBatcher } from '@tanstack/ember-pacer'
+
+const batcher = new AsyncBatcher(
+  async (events: Array<AnalyticsEvent>) => {
+    return fetch('/api/analytics/batch', {
+      method: 'POST',
+      body: JSON.stringify(events),
+      signal: batcher.getAbortSignal() ?? undefined,
+    })
+  },
+  { maxSize: 20, wait: 1000 },
+)
+
+batcher.abort()
+```
+
+When executions overlap, pass an `executionCount` to `getAbortSignal()` when you need a specific execution's signal.
+
+### Resetting safely
+
+`reset()` restores default state, but it does not clear a scheduled timer or guarantee that active underlying work stops. Use the lifecycle methods first when a complete cleanup is required:
+
+```ts
+batcher.cancel()
+batcher.abort()
+batcher.reset()
+```
+
+## Ember lifecycle
+
+The adapter cancels the pending wait timer and aborts active work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Configuration and reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Use the helper's second positional argument to select fields, as shown above. Read those fields from the yielded instance's `.state` in the template.
+
+```gts
+import Component from '@glimmer/component'
+import { on } from '@ember/modifier'
+import { fn, hash } from '@ember/helper'
+import { useAsyncBatcher } from '@tanstack/ember-pacer'
+import type { AsyncBatcherState } from '@tanstack/ember-pacer'
+import { sendEvents } from './api'
+
+const select = (state: AsyncBatcherState<{ type: string }>) => ({
+  size: state.size,
+  isExecuting: state.isExecuting,
+})
+
+export default class Example extends Component {
+  <template>
+    {{#let
+      (useAsyncBatcher sendEvents select maxSize=20 wait=1000)
+      as |batcher|
+    }}
+      <button
+        {{on 'click' (fn batcher.addItem (hash type='click'))}}
+      >Track</button>
+      <output>{{batcher.state.size}}</output>
+    {{/let}}
+  </template>
+}
+```
+
+The contextual `utility.Subscribe` helper selects state for a child template without subscribing the utility owner.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+`wait` may be a number or a function that receives the batcher instance. `setOptions()` merges new options, and `asyncBatcherOptions()` creates reusable, type-checked option objects.
+
+Do not use `started` to pause a batcher. It is currently a no-op, so every `addItem()` call evaluates the configured triggers.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
+
+Common state includes:
+
+- `items`, `size`, and `isPending`: The next batch and its timer state.
+- `isExecuting`: Whether a batch is reported as executing.
+- `lastResult`: The most recent successful result.
+- `failedItems` and `totalItemsFailed`: Failure tracking.
+- `successCount`, `errorCount`, and `settleCount`: Batch outcome counts.
+- `totalItemsProcessed`: Items in successful batch executions.
+
+See the [Ember API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

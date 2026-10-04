@@ -8,15 +8,32 @@ import type { EmberAsyncRateLimiter } from '@tanstack/ember-pacer'
 let component: Fixture
 let utility: EmberAsyncRateLimiter<() => Promise<void>, { count: number }>
 let cleanups: number[] = []
-const capture = (value: typeof utility) => { utility = value; return '' }
+const capture = (value: typeof utility) => {
+  utility = value
+  return ''
+}
 class Fixture extends Component {
   @tracked amount = 100
   execute = async () => {}
   select = (state: { settleCount: number }) => ({ count: state.settleCount })
-  cleanup = () => { cleanups.push(this.amount) }
-  constructor(...args: ConstructorParameters<typeof Component>) { super(...args); component = this }
+  cleanup = () => {
+    cleanups.push(this.amount)
+  }
+  constructor(...args: ConstructorParameters<typeof Component>) {
+    super(...args)
+    component = this
+  }
   <template>
-    {{#let (useAsyncRateLimiter this.execute this.select limit=this.amount window=1000 onUnmount=this.cleanup) as |instance|}}
+    {{#let
+      (useAsyncRateLimiter
+        this.execute
+        this.select
+        limit=this.amount
+        window=1000
+        onUnmount=this.cleanup
+      )
+      as |instance|
+    }}
       {{capture instance}}
       <output>{{instance.state.count}}</output>
     {{/let}}
@@ -24,10 +41,14 @@ class Fixture extends Component {
 }
 module('useAsyncRateLimiter', (hooks) => {
   setupRenderingTest(hooks)
-  hooks.afterEach(async () => { await clearRender(); cleanups = [] })
+  hooks.afterEach(async () => {
+    await clearRender()
+    cleanups = []
+  })
   test('updates named arguments, publishes selected state, and cleans up once', async (assert) => {
     await render(<template><Fixture /></template>)
-    const original = utility, store = utility.store
+    const original = utility,
+      store = utility.store
     component.amount = 200
     await settled()
     assert.strictEqual(utility, original)

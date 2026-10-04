@@ -3,7 +3,7 @@ id: EmberRateLimiterOptions
 title: EmberRateLimiterOptions
 ---
 
-Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimiter.ts:17](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimiter.ts#L17)
+Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimiter.ts#L19)
 
 Options for useRateLimiter, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useRateLimiter, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimiter.ts#L22)
+Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimiter.ts:24](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimiter.ts#L24)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

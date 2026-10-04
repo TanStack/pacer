@@ -228,7 +228,7 @@ selector?): AlpineAsyncDebouncer<TFn, TSelected>;
 createAsyncQueuedState<TValue, TSelected>(
    fn,
    options?,
-   selector?): [() => TValue[], (item, position?, runOnItemsChange?) => boolean, AlpineAsyncQueuer<TValue, TSelected>];
+   selector?): [() => TValue[], AlpineAsyncQueuer<TValue, TSelected>];
 ```
 
 #### Type Parameters
@@ -257,7 +257,7 @@ createAsyncQueuedState<TValue, TSelected>(
 
 #### Returns
 
-\[() => `TValue`[], (`item`, `position?`, `runOnItemsChange?`) => `boolean`, [`AlpineAsyncQueuer`](../interfaces/AlpineAsyncQueuer.md)\<`TValue`, `TSelected`\>\]
+\[() => `TValue`[], [`AlpineAsyncQueuer`](../interfaces/AlpineAsyncQueuer.md)\<`TValue`, `TSelected`\>\]
 
 ### createAsyncQueuer()
 

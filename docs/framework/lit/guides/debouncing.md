@@ -45,55 +45,219 @@ Choose another utility when:
 - Several items should be processed together. Use [batching](./batching.md).
 - You need to await a result, handle errors, retry, or abort in-flight work. Use [async debouncing](./async-debouncing.md).
 
-## Use createDebouncer
+## Using debouncing in Lit
 
-Pass the owning `ReactiveControllerHost` as the first argument. The factory registers its controller automatically. Host updates refresh options, store updates request a render, and disconnecting cleans up pending work. Reconnecting subscribes again to the same utility. `DebouncerController` and the other controller classes expose the utility through `.pacer` and selected state through `.state`.
+The adapter provides three levels of debouncing API:
+
+- `createDebouncedCallback` creates a stable debounced event handler.
+- `createDebouncedState` and `createDebouncedValue` delay state or a changing value.
+- `createDebouncer` exposes lifecycle methods, dynamic options, callbacks, and selected state.
+
+Create utilities as fields or during construction of a Lit element, and pass the element as the first argument. The snippets below belong to that element. Reactive options refresh when its host updates.
+
+The snippets use application functions such as `saveDraft` and `updateSearchResults`. Supply those functions in your component.
+
+### Debounced callback
+
+Use `createDebouncedCallback` when an event should invoke a debounced side effect:
 
 ```ts
-import { LitElement, html } from 'lit'
-import { createDebouncer } from '@tanstack/lit-pacer'
-class Example extends LitElement {
-  static properties = { input: { state: true }, wait: { state: true }, history: { state: true } }
-  input = 'hello'
-  wait = 200
-  history: Array<string> = []
-  utility = createDebouncer(this, (value: string) => { this.history = [...this.history, value] }, () => ({ wait: this.wait }), (state) => state)
-  override createRenderRoot() { return this }
-  schedule = () => { void this.utility.maybeExecute(this.input) }
-  burst = () => { for (let i = 1; i <= 3; i++) void this.utility.maybeExecute(`${this.input} ${i}`) }
-  override render() { return html`
-<main>
-<h1>Lit createDebouncer</h1><p>Wait until typing stops, then execute the latest call.</p>
-<label>Task <input .value=${this.input} @input=${(event: Event) => { this.input = (event.target as HTMLInputElement).value }} /></label><label>Wait (ms) <input .value=${String(this.wait)} @input=${(event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }} type="number" min="0" /></label>
-<div><button @click=${this.schedule}>Schedule</button><button @click=${this.burst}>Schedule three</button><button @click=${() => this.utility.flush()}>Flush</button><button @click=${() => this.utility.cancel()}>Cancel</button><button @click=${() => { this.history = [] }}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">${JSON.stringify(this.history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>${JSON.stringify(this.utility.state, null, 2)}</pre></section>
-<p class="caption">Host updates refresh options. Disconnecting the element cleans up its utility.</p>
-</main>` }
+import { createDebouncedCallback } from '@tanstack/lit-pacer'
+
+// Fields on a LitElement:
+search = createDebouncedCallback(
+  this,
+  (query: string) => updateSearchResults(query),
+  {
+    wait: 500,
+  },
+)
+onInput = (event: Event) => {
+  this.search((event.target as HTMLInputElement).value)
 }
-customElements.define('pacer-example', Example)
-document.getElementById('app')!.append(document.createElement('pacer-example'))
 ```
 
-## Options and controls
+The callback does not expose `cancel()` or `flush()`. Use `createDebouncer` when the component needs that control.
 
-`maybeExecute` schedules the latest arguments. `wait` resets after each call. `leading` runs the first call immediately and `trailing` controls the deferred call. Use `flush()` to execute pending work, `cancel()` to discard its timer, and `reset()` to reset counters. Select `isPending`, `lastArgs`, or `executionCount` for your UI.
-## Reactive options and cleanup
+### Debounced state and values
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+Use `createDebouncedState` when Pacer should own the delayed state, or `createDebouncedValue` when a value already changes elsewhere:
 
-The owning component supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+```ts
+import { createDebouncedValue } from '@tanstack/lit-pacer'
 
-## State and convenience helpers
+// query is a reactive property on this LitElement.
+delayed = createDebouncedValue(this, () => this.query, { wait: 500 })
+// Read this.delayed[0]() in render().
+```
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+### Instance API
 
-`createDebouncedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+```ts
+import { createDebouncer } from '@tanstack/lit-pacer'
 
-`createDebouncedState` owns a delayed value. `createDebouncedValue` derives one from an existing reactive input. See the [adapter guide](../adapter.md) for each helper's return shape.
+debouncer = createDebouncer(this, saveDraft, { wait: 500 }, (state) => ({
+  isPending: state.isPending,
+}))
+// In render():
+// html`<button ?disabled=${!this.debouncer.state.isPending}
+//   @click=${() => this.debouncer.flush()}>Save now</button>`
+```
 
-## Related documentation
+Both the callback and `maybeExecute()` return `void`. The synchronous adapter does not retain return values or catch errors. Handle errors inside a trailing callback, or use [async debouncing](./async-debouncing.md) when the caller needs a Promise result.
 
-- [Lit adapter](../adapter.md)
-- [Core debouncing guide](../../../guides/debouncing.md)
-- [API reference](../reference/index.md)
+The following timing and control snippets use the `debouncer` instance created in your component. Run those operations from event handlers or other application code.
+
+## Execution timing
+
+The `leading` and `trailing` options control which edge of the wait period may execute.
+
+| `leading` | `trailing` | Behavior                                                                                                                               |
+| --------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `false`   | `true`     | Wait for inactivity, then execute the most recent call. This is the default.                                                           |
+| `true`    | `false`    | Execute the first call immediately. Later calls do not execute and restart the wait period.                                            |
+| `true`    | `true`     | Execute the first call immediately. If another call arrives during the wait period, execute the most recent call at the trailing edge. |
+| `false`   | `false`    | Do not execute any calls.                                                                                                              |
+
+```ts
+debouncer.setOptions({
+  wait: 1000,
+  leading: true,
+  trailing: true,
+})
+
+debouncer.maybeExecute('first') // Executes immediately.
+debouncer.maybeExecute('second')
+debouncer.maybeExecute('latest') // Executes after 1 second of inactivity.
+```
+
+With both edges enabled, a single call executes only on the leading edge. A trailing execution occurs only when another call arrives during the wait period.
+
+### No maximum wait
+
+`createDebouncer` does not provide a `maxWait` option. A continuous stream of calls can keep postponing a trailing execution indefinitely. Use [throttling](./throttling.md) when work must continue at a bounded interval while calls are still arriving.
+
+## Controlling pending work
+
+The instance API distinguishes between executing, canceling, and resetting pending work.
+
+### Flush
+
+`flush()` immediately executes the pending trailing call with the most recent arguments. It does nothing when no trailing call is pending.
+
+```ts
+debouncer.setOptions({ wait: 1000 })
+
+debouncer.maybeExecute('draft')
+debouncer.flush() // Executes saveDraft('draft') now.
+```
+
+### Cancel
+
+`cancel()` clears the pending timeout without executing the function. It also allows a leading call to execute immediately the next time `maybeExecute()` is called.
+
+```ts
+debouncer.maybeExecute('discarded draft')
+debouncer.cancel()
+```
+
+### Reset
+
+`reset()` restores the debouncer's state counters and flags to their defaults. It does not clear an already scheduled timeout. Call `cancel()` first when you need to discard pending work and reset state.
+
+```ts
+debouncer.cancel()
+debouncer.reset()
+```
+
+## Configuring behavior at runtime
+
+Use `setOptions()` to change options after construction:
+
+```ts
+debouncer.setOptions({
+  wait: 1000,
+  leading: true,
+  trailing: false,
+})
+```
+
+A new `wait` value applies when the next call schedules a timeout. It does not reschedule a timeout that is already pending. Calling `maybeExecute()` again clears the old timeout and schedules a new one using the current options.
+
+### Enabling and disabling
+
+Set `enabled` to `false` to prevent execution. Disabling a debouncer through `setOptions()` also cancels its pending call.
+
+```ts
+debouncer.setOptions({
+  wait: 500,
+  enabled: false,
+})
+
+debouncer.maybeExecute('ignored')
+debouncer.setOptions({ enabled: true })
+debouncer.maybeExecute('saved')
+```
+
+The `enabled` and `wait` options may also be functions that receive the debouncer instance:
+
+```ts
+debouncer.setOptions({
+  enabled: (debouncer) => debouncer.store.state.executionCount < 10,
+  wait: (debouncer) => (debouncer.store.state.executionCount === 0 ? 300 : 500),
+})
+```
+
+### Observing executions
+
+Use `onExecute` for a side effect after the wrapped function runs. The callback receives the executed arguments followed by the debouncer instance.
+
+```ts
+debouncer.setOptions({
+  wait: 500,
+  onExecute: (args, debouncer) => {
+    console.log('Saved arguments:', args)
+    console.log('Execution count:', debouncer.store.state.executionCount)
+  },
+})
+```
+
+### Reactive options
+
+Pass an options factory or property getters to read reactive settings. Local options override provider defaults, and option changes retain the same utility instance.
+
+```ts
+// wait is a reactive property on this LitElement.
+debouncer = createDebouncer(this, saveDraft, () => ({ wait: this.wait }))
+```
+
+## Lit lifecycle
+
+Disconnecting the Lit host cancels pending work and unsubscribes from state. Reconnection refreshes options and restores subscriptions to the same utility. Providing `onUnmount` replaces the default cleanup, so a custom callback must perform every required lifecycle action. Flushing during teardown can run callbacks after the component has begun to be destroyed.
+
+## Reactive state
+
+Pass a selector to subscribe to the state your component reads. Without a selector, selected state is an empty object. Read the selection through `this.debouncer.state`. The core store remains available even when you do not select state for rendering.
+
+Option functions and lifecycle callbacks receive the public utility instance. Reading `.store.state` in those callbacks is supported. Component rendering should read the selected adapter state.
+
+### Child subscriptions
+
+A child can select state without subscribing the utility owner. The child subscription cleans up when its own scope or component is destroyed:
+
+```ts
+// In a child LitElement, using a utility supplied by its parent:
+const selected = debouncer.subscribe(this, (state) => ({
+  isPending: state.isPending,
+}))
+// Read selected().isPending in the child's render().
+```
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields; pending timers are not restored.
+
+- `isPending`: Whether a trailing execution is waiting.
+- `executionCount`: How many times the wrapped function has executed.
+- `lastArgs`: The arguments recorded by the most recent trailing-enabled call. Check `isPending` before treating them as pending work.
+- `status`: `'disabled'`, `'idle'`, or `'pending'`.
+
+See the [Lit API reference](../reference/index.md) for adapter signatures and the [adapter guide](../adapter.md) for provider and helper return shapes.

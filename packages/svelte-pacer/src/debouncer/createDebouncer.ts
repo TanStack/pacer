@@ -1,6 +1,7 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { bindPacer } from '../utils/bindPacer.svelte'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SveltePacerSubscribe } from '../utils/createSubscribe'
 import type {
   DebouncerOptions,
   DebouncerState,
@@ -24,25 +25,59 @@ export interface SvelteDebouncer<
 > extends Omit<Debouncer<TFn>, 'options' | 'setOptions'> {
   options: Debouncer<TFn>['options'] & SvelteDebouncerOptions<TFn, TSelected>
   setOptions: (options: Partial<SvelteDebouncerOptions<TFn, TSelected>>) => void
+  /** Subscribes a child snippet to state without updating the utility owner. */
+  Subscribe: SveltePacerSubscribe<DebouncerState<TFn>>
   /** Selected state. Pass a selector to opt in; the default selection is an empty object. */
   readonly state: Readonly<TSelected>
 }
 
 /**
- * Creates a Svelte Debouncer with reactive options and automatic owner cleanup.
+ * Creates and retains the Debouncer for its Svelte owner.
  *
- * Pass an options object with property getters or a factory. Only top-level properties
- * are evaluated; function-valued core options remain callbacks. Local options override
- * provider defaults. Options update the same instance, preserving pending work and counters.
+ * Waits for a quiet period, then executes the latest call. Each new call restarts the trailing timer. Configure leading and trailing edges for search, autosave, or resize handlers.
  *
- * Pass a selector to subscribe to the state your UI reads. The core store remains available
- * for additional subscriptions. Cleanup uses the latest onUnmount option, or the core's
- * default cancellation/stop behavior, including aborting active asynchronous work.
+ * ## State and subscriptions
  *
+ * Pass a selector to track only the state consumed by the owner. The default selection is {},
+ * so utility state changes do not update the owner unless it opts in. Selection uses shallow
+ * comparison. The raw store remains available for additional subscriptions.
+ * Read selected state through utility.state. Use utility.Subscribe with a children snippet
+ * to select state in a child without updating the owner.
+ *
+ * Available state fields:
+ *
+ * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge of the timeout
+ * - `executionCount`: Number of function executions that have been completed
+ * - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+ * - `lastArgs`: The arguments from the most recent call to maybeExecute
+ * - `maybeExecuteCount`: Number of times maybeExecute has been called (for reduction calculations)
+ * - `status`: Current execution status - 'idle' when not active, 'pending' when waiting for timeout
+ *
+ * ## Options and ownership
+ *
+ * Pass an options object with property getters or a factory. Top-level properties are read
+ * reactively; function-valued core options remain callbacks. Local options override provider
+ * defaults. Updates retain the utility, its store, counters, and pending work.
+ * Destroying the component calls cancel().
+ * onUnmount replaces default cleanup and receives the same adapter instance. A custom callback
+ * must perform all required cleanup. Use flush() where supported to finish pending work.
+ *
+ * @example
+ * ```ts
+ * import { createDebouncer } from '@tanstack/svelte-pacer'
+ *
+ * const utility = createDebouncer(
+ *   (value: string) => { console.log(value) },
+ *   { wait: 500 },
+ *   (state) => ({ isPending: state.isPending }),
+ * )
+ * utility.maybeExecute('item')
+ * // Selected state: utility.state.isPending
+ * ```
  * @param fn - Function executed by the utility.
- * @param options - Core options and an optional cleanup callback.
- * @param selector - Selects the state consumed by the component.
- * @returns The utility instance with reactive selected state.
+ * @param options - Core options or a reactive factory, plus an optional onUnmount callback.
+ * @param selector - Selects state that updates the owner. Omit to leave selected state empty.
+ * @returns The retained utility instance with selected state and child subscriptions.
  */
 export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,

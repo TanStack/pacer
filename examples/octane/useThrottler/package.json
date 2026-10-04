@@ -10,7 +10,10 @@
     "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
   },
   "dependencies": {
+    "@tanstack/devtools": "^0.15.0",
     "@tanstack/octane-pacer": "workspace:*",
+    "@tanstack/pacer": "workspace:*",
+    "@tanstack/pacer-devtools": "workspace:*",
     "octane": "0.1.36"
   },
   "devDependencies": {

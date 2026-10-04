@@ -1,41 +1,205 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pacer | Alpine createDebouncer</title>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>TanStack Pacer Example</title>
   </head>
   <body>
-    <main x-data="example">
-      <h1>Alpine createDebouncer</h1>
-      <p>Wait until typing stops, then execute the latest call.</p>
-      <label>Task <input x-model="input" /></label
-      ><label
-        >Wait (ms) <input x-model.number="wait" type="number" min="0"
-      /></label>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
       <div>
-        <button @click="schedule">Schedule</button
-        ><button @click="burst">Schedule three</button
-        ><button @click="utility.flush()">Flush</button
-        ><button @click="utility.cancel()">Cancel</button
-        ><button @click="history = []">Clear history</button>
+        <div x-data="counter">
+          <h1>TanStack Pacer createDebouncer Example 1</h1>
+          <table>
+            <tbody>
+              <tr>
+                <td>Status:</td>
+                <td><span x-text="debouncer.state.status"></span></td>
+              </tr>
+              <tr>
+                <td>Execution Count:</td>
+                <td><span x-text="debouncer.state.executionCount"></span></td>
+              </tr>
+              <tr>
+                <td colspan="2"><hr /></td>
+              </tr>
+              <tr>
+                <td>Instant Count:</td>
+                <td><span x-text="instantCount"></span></td>
+              </tr>
+              <tr>
+                <td>Debounced Count:</td>
+                <td><span x-text="debouncedCount"></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <button @click="increment">Increment</button
+            ><button @click="debouncer.flush()" style="margin-left: 10px">
+              Flush
+            </button>
+          </div>
+          <pre
+            style="margin-top: 20px"
+            x-text="JSON.stringify(debouncer.state, null, 2)"
+          ></pre>
+        </div>
+        <hr />
+        <div x-data="search">
+          <h1>TanStack Pacer createDebouncer Example 2</h1>
+          <div>
+            <input
+              autofocus
+              type="search"
+              :value="searchText"
+              @input="handleSearchChange($event)"
+              placeholder="Type to search..."
+              style="width: 100%; margin-bottom: 1rem"
+            />
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Is Pending:</td>
+                <td>
+                  <span
+                    x-text="setSearchDebouncer.state.isPending.toString()"
+                  ></span>
+                </td>
+              </tr>
+              <tr>
+                <td>Execution Count:</td>
+                <td>
+                  <span x-text="setSearchDebouncer.state.executionCount"></span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2"><hr /></td>
+              </tr>
+              <tr>
+                <td>Instant Search:</td>
+                <td><span x-text="searchText"></span></td>
+              </tr>
+              <tr>
+                <td>Debounced Search:</td>
+                <td><span x-text="debouncedSearchText"></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div><button @click="setSearchDebouncer.flush()">Flush</button></div>
+          <pre
+            style="margin-top: 20px"
+            x-text="JSON.stringify(setSearchDebouncer.state, null, 2)"
+          ></pre>
+        </div>
+        <hr />
+        <div x-data="range">
+          <h1>TanStack Pacer createDebouncer Example 3</h1>
+          <fieldset>
+            <legend>Reactive options</legend>
+            <label
+              >Delay: <span x-text="wait"></span> ms<input
+                type="range"
+                min="0"
+                max="1500"
+                step="50"
+                :value="wait"
+                @input="wait = $event.target.valueAsNumber" /></label
+            ><label
+              ><input
+                type="checkbox"
+                :checked="enabled"
+                @input="enabled = $event.target.checked"
+              />Enabled</label
+            >
+            <p>
+              Changing the delay affects the next scheduled call. Disabling
+              cancels pending work.
+            </p>
+          </fieldset>
+          <div style="margin-bottom: 20px">
+            <label
+              >Current Range:<input
+                type="range"
+                min="0"
+                max="100"
+                :value="currentValue"
+                @input="handleRangeChange($event)"
+                style="width: 100%" /><span
+                ><span x-text="currentValue"></span></span
+            ></label>
+          </div>
+          <div style="margin-bottom: 20px">
+            <label
+              >Debounced Range (Readonly):<input
+                type="range"
+                min="0"
+                max="100"
+                :value="debouncedValue"
+                disabled
+                style="width: 100%" /><span
+                ><span x-text="debouncedValue"></span></span
+            ></label>
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Is Pending:</td>
+                <td>
+                  <span
+                    x-text="setValueDebouncer.state.isPending.toString()"
+                  ></span>
+                </td>
+              </tr>
+              <tr>
+                <td>Instant Executions:</td>
+                <td><span x-text="instantExecutionCount"></span></td>
+              </tr>
+              <tr>
+                <td>Debounced Executions:</td>
+                <td>
+                  <span x-text="setValueDebouncer.state.executionCount"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>Saved Executions:</td>
+                <td>
+                  <span
+                    x-text="instantExecutionCount - setValueDebouncer.state.executionCount"
+                  ></span>
+                </td>
+              </tr>
+              <tr>
+                <td>% Reduction:</td>
+                <td>
+                  <span
+                    x-text="instantExecutionCount === 0
+                      ? '0'
+                      : Math.round(
+                          ((instantExecutionCount - setValueDebouncer.state.executionCount) /
+                            instantExecutionCount) *
+                            100,
+                        )"
+                  ></span
+                  >%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="color: #666; font-size: 0.9em">
+            <p>Debounced to <span x-text="wait"></span>ms wait time</p>
+          </div>
+          <div><button @click="setValueDebouncer.flush()">Flush</button></div>
+          <pre
+            style="margin-top: 20px"
+            x-text="JSON.stringify(setValueDebouncer.state, null, 2)"
+          ></pre>
+        </div>
       </div>
-      <section>
-        <h2>Processed results</h2>
-        <pre
-          data-testid="history"
-          x-text="JSON.stringify(history, null, 2)"
-        ></pre>
-      </section>
-      <section>
-        <h2>Utility state</h2>
-        <pre x-text="JSON.stringify(utility?.state, null, 2)"></pre>
-      </section>
-      <p class="caption">
-        The scope owns reactive options and subscriptions. Alpine calls destroy
-        when this component is removed.
-      </p>
-    </main>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

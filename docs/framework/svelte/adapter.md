@@ -21,39 +21,57 @@ By default, the selected state is `{}`. Pass a selector to subscribe only to the
 
 ## API overview
 
-| Utility | Instance API | Convenience APIs |
-| --- | --- | --- |
-| [batching](./guides/batching.md) | `createBatcher` | `createBatchedCallback` |
-| [debouncing](./guides/debouncing.md) | `createDebouncer` | `createDebouncedCallback`, `createDebouncedSignal`, `createDebouncedValue` |
-| [queuing](./guides/queuing.md) | `createQueuer` | `createQueuedSignal`, `createQueuedValue` |
-| [rate limiting](./guides/rate-limiting.md) | `createRateLimiter` | `createRateLimitedCallback`, `createRateLimitedSignal`, `createRateLimitedValue` |
-| [throttling](./guides/throttling.md) | `createThrottler` | `createThrottledCallback`, `createThrottledSignal`, `createThrottledValue` |
-| [async batching](./guides/async-batching.md) | `createAsyncBatcher` | `createAsyncBatchedCallback` |
-| [async debouncing](./guides/async-debouncing.md) | `createAsyncDebouncer` | `createAsyncDebouncedCallback` |
-| [async queuing](./guides/async-queuing.md) | `createAsyncQueuer` | `createAsyncQueuedSignal` |
-| [async rate limiting](./guides/async-rate-limiting.md) | `createAsyncRateLimiter` | `createAsyncRateLimitedCallback` |
-| [async throttling](./guides/async-throttling.md) | `createAsyncThrottler` | `createAsyncThrottledCallback` |
+| Utility                                                | Instance API             | Convenience APIs                                                                 |
+| ------------------------------------------------------ | ------------------------ | -------------------------------------------------------------------------------- |
+| [batching](./guides/batching.md)                       | `createBatcher`          | `createBatchedCallback`                                                          |
+| [debouncing](./guides/debouncing.md)                   | `createDebouncer`        | `createDebouncedCallback`, `createDebouncedSignal`, `createDebouncedValue`       |
+| [queuing](./guides/queuing.md)                         | `createQueuer`           | `createQueuedSignal`, `createQueuedValue`                                        |
+| [rate limiting](./guides/rate-limiting.md)             | `createRateLimiter`      | `createRateLimitedCallback`, `createRateLimitedSignal`, `createRateLimitedValue` |
+| [throttling](./guides/throttling.md)                   | `createThrottler`        | `createThrottledCallback`, `createThrottledSignal`, `createThrottledValue`       |
+| [async batching](./guides/async-batching.md)           | `createAsyncBatcher`     | `createAsyncBatchedCallback`                                                     |
+| [async debouncing](./guides/async-debouncing.md)       | `createAsyncDebouncer`   | `createAsyncDebouncedCallback`                                                   |
+| [async queuing](./guides/async-queuing.md)             | `createAsyncQueuer`      | `createAsyncQueuedSignal`                                                        |
+| [async rate limiting](./guides/async-rate-limiting.md) | `createAsyncRateLimiter` | `createAsyncRateLimitedCallback`                                                 |
+| [async throttling](./guides/async-throttling.md)       | `createAsyncThrottler`   | `createAsyncThrottledCallback`                                                   |
 
 ## Example
 
+This counter coalesces rapid clicks into one update after 500 ms. Flush applies the latest pending count immediately.
+
 ```svelte
 <script lang="ts">
-import { createDebouncer } from '@tanstack/svelte-pacer'
-let input = $state('hello')
-let wait = $state(200)
-let history = $state<Array<string>>([])
-const utility = createDebouncer((value: string) => { history = [...history, value] }, () => ({ wait: wait }), (state) => state)
-function schedule() { void utility.maybeExecute(input) }
-function burst() { for (let i = 1; i <= 3; i++) void utility.maybeExecute(`${input} ${i}`) }
+  import { createDebouncer } from '@tanstack/svelte-pacer'
+
+  let count = $state(0)
+  let debouncedCount = $state(0)
+  const debouncer = createDebouncer(
+    (value: number) => {
+      debouncedCount = value
+    },
+    { wait: 500 },
+    (state) => ({ isPending: state.isPending }),
+  )
+  function increment() {
+    debouncer.maybeExecute(++count)
+  }
 </script>
-<main>
-<h1>Svelte createDebouncer</h1><p>Wait until typing stops, then execute the latest call.</p>
-<label>Task <input bind:value={input} /></label><label>Wait (ms) <input bind:value={wait} type="number" min="0" /></label>
-<div><button onclick={schedule}>Schedule</button><button onclick={burst}>Schedule three</button><button onclick={() => utility.flush()}>Flush</button><button onclick={() => utility.cancel()}>Cancel</button><button onclick={() => history = []}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{JSON.stringify(history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>{JSON.stringify(utility.state, null, 2)}</pre></section>
-<p class="caption">Reactive options preserve pending work. Component teardown cleans up the utility.</p>
-</main>
+
+<button onclick={increment}>Increment</button>
+<p>Count: {count}. Debounced: {debouncedCount}.</p>
+<p>Pending: {debouncer.state.isPending}</p>
+<button onclick={() => debouncer.flush()}>Flush</button>
+```
+
+## Child subscriptions
+
+Use `utility.Subscribe` with a child snippet to select state without updating the utility owner's selection. Removing the component releases its subscription.
+
+```svelte
+<debouncer.Subscribe selector={(state) => ({ isPending: state.isPending })}>
+  {#snippet children({ isPending })}
+    <span>Pending: {isPending}</span>
+  {/snippet}
+</debouncer.Subscribe>
 ```
 
 ## Reactive options
@@ -76,7 +94,7 @@ Set `onUnmount` to replace the default cleanup, for example to call `flush()` be
 
 Callback helpers return only the scheduled function. Use an instance API when you need `flush`, `cancel`, queue controls, or state subscriptions.
 
-State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Read values by calling their accessors. Setters accept a new value or a functional update. Queue state helpers return `[itemsAccessor, addItem, utility]`. Queued value helpers return the last processed value, rather than the list of pending items.
+State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Read values by calling their accessors. Setters accept a new value or a functional update. Synchronous queue state helpers return `[itemsAccessor, addItem, utility]`. Async queue state helpers return `[itemsAccessor, utility]`; call `utility.addItem()` to enqueue an item. Queued value helpers return the last processed value, rather than the list of pending items.
 
 ## Async utilities
 

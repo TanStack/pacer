@@ -3,7 +3,7 @@ id: OctaneDebouncerOptions
 title: OctaneDebouncerOptions
 ---
 
-Defined in: [debouncer/useDebouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L14)
+Defined in: [debouncer/useDebouncer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L16)
 
 Options for useDebouncer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useDebouncer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [debouncer/useDebouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L19)
+Defined in: [debouncer/useDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L21)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

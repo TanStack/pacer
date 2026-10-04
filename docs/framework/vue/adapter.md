@@ -21,43 +21,62 @@ By default, the selected state is `{}`. Pass a selector to subscribe only to the
 
 ## API overview
 
-| Utility | Instance API | Convenience APIs |
-| --- | --- | --- |
-| [batching](./guides/batching.md) | `useBatcher` | `useBatchedCallback` |
-| [debouncing](./guides/debouncing.md) | `useDebouncer` | `useDebouncedCallback`, `useDebouncedState`, `useDebouncedValue` |
-| [queuing](./guides/queuing.md) | `useQueuer` | `useQueuedState`, `useQueuedValue` |
-| [rate limiting](./guides/rate-limiting.md) | `useRateLimiter` | `useRateLimitedCallback`, `useRateLimitedState`, `useRateLimitedValue` |
-| [throttling](./guides/throttling.md) | `useThrottler` | `useThrottledCallback`, `useThrottledState`, `useThrottledValue` |
-| [async batching](./guides/async-batching.md) | `useAsyncBatcher` | `useAsyncBatchedCallback` |
-| [async debouncing](./guides/async-debouncing.md) | `useAsyncDebouncer` | `useAsyncDebouncedCallback` |
-| [async queuing](./guides/async-queuing.md) | `useAsyncQueuer` | `useAsyncQueuedState` |
-| [async rate limiting](./guides/async-rate-limiting.md) | `useAsyncRateLimiter` | `useAsyncRateLimitedCallback` |
-| [async throttling](./guides/async-throttling.md) | `useAsyncThrottler` | `useAsyncThrottledCallback` |
+| Utility                                                | Instance API          | Convenience APIs                                                       |
+| ------------------------------------------------------ | --------------------- | ---------------------------------------------------------------------- |
+| [batching](./guides/batching.md)                       | `useBatcher`          | `useBatchedCallback`                                                   |
+| [debouncing](./guides/debouncing.md)                   | `useDebouncer`        | `useDebouncedCallback`, `useDebouncedState`, `useDebouncedValue`       |
+| [queuing](./guides/queuing.md)                         | `useQueuer`           | `useQueuedState`, `useQueuedValue`                                     |
+| [rate limiting](./guides/rate-limiting.md)             | `useRateLimiter`      | `useRateLimitedCallback`, `useRateLimitedState`, `useRateLimitedValue` |
+| [throttling](./guides/throttling.md)                   | `useThrottler`        | `useThrottledCallback`, `useThrottledState`, `useThrottledValue`       |
+| [async batching](./guides/async-batching.md)           | `useAsyncBatcher`     | `useAsyncBatchedCallback`                                              |
+| [async debouncing](./guides/async-debouncing.md)       | `useAsyncDebouncer`   | `useAsyncDebouncedCallback`                                            |
+| [async queuing](./guides/async-queuing.md)             | `useAsyncQueuer`      | `useAsyncQueuedState`                                                  |
+| [async rate limiting](./guides/async-rate-limiting.md) | `useAsyncRateLimiter` | `useAsyncRateLimitedCallback`                                          |
+| [async throttling](./guides/async-throttling.md)       | `useAsyncThrottler`   | `useAsyncThrottledCallback`                                            |
 
 ## Example
+
+This counter coalesces rapid clicks into one update after 500 ms. Flush applies the latest pending count immediately.
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useDebouncer } from '@tanstack/vue-pacer'
-const input = ref('hello')
-const wait = ref(200)
-const history = ref<Array<string>>([])
-const utility = useDebouncer((value: string) => { history.value = [...history.value, value] }, () => ({ wait: wait.value }), (state) => state)
-const state = utility.state
-function schedule() { void utility.maybeExecute(input.value) }
-function burst() { for (let i = 1; i <= 3; i++) void utility.maybeExecute(`${input.value} ${i}`) }
+
+const count = ref(0)
+const debouncedCount = ref(0)
+const debouncer = useDebouncer(
+  (value: number) => {
+    debouncedCount.value = value
+  },
+  { wait: 500 },
+  (state) => ({ isPending: state.isPending }),
+)
+const state = debouncer.state
+function increment() {
+  debouncer.maybeExecute(++count.value)
+}
 </script>
+
 <template>
-<main>
-<h1>Vue useDebouncer</h1><p>Wait until typing stops, then execute the latest call.</p>
-<label>Task <input v-model="input" /></label><label>Wait (ms) <input v-model.number="wait" type="number" min="0" /></label>
-<div><button @click="schedule">Schedule</button><button @click="burst">Schedule three</button><button @click="utility.flush()">Flush</button><button @click="utility.cancel()">Cancel</button><button @click="history = []">Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{{ JSON.stringify(history, null, 2) }}</pre></section>
-<section><h2>Utility state</h2><pre>{{ JSON.stringify(state, null, 2) }}</pre></section>
-<p class="caption">Change the wait while work is pending to update options on the same instance. Removing this component cleans up its utility.</p>
-</main>
+  <button @click="increment">Increment</button>
+  <p>Count: {{ count }}. Debounced: {{ debouncedCount }}.</p>
+  <p>Pending: {{ state.isPending }}</p>
+  <button @click="debouncer.flush()">Flush</button>
 </template>
+```
+
+## Child subscriptions
+
+Use `utility.Subscribe` to select state for a child slot without subscribing the owning component to those fields. The slot receives the selected value and releases its subscription when removed.
+
+```vue
+<debouncer.Subscribe
+  :selector="(state) => ({ isPending: state.isPending })"
+  v-slot="{ isPending }"
+>
+  <span>Pending: {{ isPending }}</span>
+</debouncer.Subscribe>
 ```
 
 ## Reactive options
@@ -80,7 +99,7 @@ Set `onUnmount` to replace the default cleanup, for example to call `flush()` be
 
 Callback helpers return only the scheduled function. Use an instance API when you need `flush`, `cancel`, queue controls, or state subscriptions.
 
-State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Read the Vue ref through `.value` in JavaScript. Setters accept a new value or a functional update. Queue state helpers return `[itemsAccessor, addItem, utility]`. Queued value helpers return the last processed value, rather than the list of pending items.
+State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Read the Vue ref through `.value` in JavaScript. Setters accept a new value or a functional update. Synchronous queue state helpers return `[itemsAccessor, addItem, utility]`. Async queue state helpers return `[itemsAccessor, utility]`; call `utility.addItem()` to enqueue an item. Queued value helpers return the last processed value, rather than the list of pending items.
 
 ## Async utilities
 
@@ -88,7 +107,7 @@ The five async utilities preserve typed results and core error behavior. Use `on
 
 ## Devtools
 
-Install `@tanstack/vue-pacer-devtools` and render `PacerDevtoolsPanel` inside a container with a defined height. See the [devtools setup](../../devtools.md) for an example. The `/production` entry explicitly includes the panel in production builds.
+Install `@tanstack/vue-pacer-devtools` and `@tanstack/vue-devtools`. Pass `pacerDevtoolsPlugin()` to the host's `plugins` prop. See the [devtools setup](../../devtools.md) for an example. The `/production` entry explicitly includes the panel in production builds.
 
 ## API reference
 

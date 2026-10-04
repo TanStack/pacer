@@ -55,6 +55,20 @@ it('keeps no-op panels inert', () => {
   render(PacerDevtoolsPanelNoOp)
   expect(core.mount).not.toHaveBeenCalled()
 })
+it('accepts the Vue host payload wrapped in the theme prop', async () => {
+  const props = reactive({ theme: { theme: 'light', devtoolsOpen: true } })
+  render(PacerDevtoolsPanel, props)
+  expect(core.mount).toHaveBeenLastCalledWith(target.firstElementChild, {
+    theme: 'light',
+    devtoolsOpen: true,
+  })
+  props.theme = { theme: 'dark', devtoolsOpen: false }
+  await nextTick()
+  expect(core.mount).toHaveBeenLastCalledWith(target.firstElementChild, {
+    theme: 'dark',
+    devtoolsOpen: false,
+  })
+})
 it.each(['development', 'production'])(
   'selects the root exports in %s',
   async (mode) => {

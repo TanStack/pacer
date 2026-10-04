@@ -16,7 +16,7 @@
       "ignoreDependencies": ["csstype"]
     },
     ".": {
-      "entry": ["tests/e2e/helpers/fixtures.ts"]
+      "entry": ["tests/e2e/helpers/*.ts"]
     },
     "packages/ember-pacer": {
       "entry": [
@@ -24,7 +24,6 @@
         "tests/test-helper.ts",
         "tests/integration/*.gts"
       ],
-      "ignore": ["dist-tests/**"],
       "ignoreDependencies": [
         "@ember/component",
         "@ember/destroyable",

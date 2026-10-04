@@ -3,7 +3,7 @@ id: VueAsyncRateLimiterOptions
 title: VueAsyncRateLimiterOptions
 ---
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L13)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:14](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L14)
 
 Options for useAsyncRateLimiter, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useAsyncRateLimiter, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L18)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L19)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

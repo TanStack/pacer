@@ -3,21 +3,53 @@ id: UseDebouncer
 title: UseDebouncer
 ---
 
-Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:51](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L51)
+Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:87](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L87)
 
-Creates an owned Debouncer from an Ember template.
+Creates and retains the Debouncer for its Ember owner.
 
-Positional arguments are the execution function and an optional state selector.
-Named arguments are core options and onUnmount. Ember tracks argument changes,
-updates the same utility after rendering, and cleans it up when the helper leaves
-the template. Function-valued options are passed through without invocation.
+Waits for a quiet period, then executes the latest call. Each new call restarts the trailing timer. Configure leading and trailing edges for search, autosave, or resize handlers.
+
+## State and subscriptions
+
+Pass a selector to track only the state consumed by the owner. The default selection is {},
+so utility state changes do not update the owner unless it opts in. Selection uses shallow
+comparison. The raw store remains available for additional subscriptions.
+The selector is the second positional argument. Read utility.state from the template.
+The contextual utility.Subscribe helper selects state for a child template.
+
+Available state fields:
+
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge of the timeout
+- `executionCount`: Number of function executions that have been completed
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `maybeExecuteCount`: Number of times maybeExecute has been called (for reduction calculations)
+- `status`: Current execution status - 'idle' when not active, 'pending' when waiting for timeout
+
+## Options and ownership
+
+Tracked named arguments update options after rendering. createPacerScope supplies shared
+defaults through contextual helpers. Local named options override those defaults.
+Removing the helper invocation calls cancel().
+onUnmount replaces default cleanup and receives the same adapter instance. A custom callback
+must perform all required cleanup. Use flush() where supported to finish pending work.
 
 ## Example
 
-```hbs
-{{#let (useDebouncer this.execute wait=this.wait) as |utility|}}
-  {{utility.state}}
-{{/let}}
+```gts
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useDebouncer } from '@tanstack/ember-pacer'
+import type { DebouncerState } from '@tanstack/ember-pacer'
+
+const select = (state: DebouncerState<(value: string) => void>) => ({ isPending: state.isPending })
+
+<template>
+  {{#let (useDebouncer @process select wait=500) as |utility|}}
+    <button {{on "click" (fn utility.maybeExecute "item")}}>Schedule</button>
+    <span>{{utility.state.isPending}}</span>
+  {{/let}}
+</template>
 ```
 
 ## Extends
@@ -82,7 +114,7 @@ Helper<{
 compute(positional, options): EmberDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:67](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L67)
+Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:103](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L103)
 
 Override this function when writing a class-based helper.
 

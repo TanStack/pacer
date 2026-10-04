@@ -29,54 +29,202 @@ Both `maxSize` and `wait` default to `Infinity`, so configure at least one trigg
 
 ## Choose an API
 
-- `useAsyncBatchedCallback` for adding items
-- `useAsyncBatcher` for flush, failed items, and selected execution state
+- `createAsyncBatchedCallback` for adding items
+- `createAsyncBatcher` for flush, failed items, and selected execution state
 
-## Use createAsyncBatcher
+## Alpine example
 
-Create a `createPacerScope()` for each component and call `scope.destroy()` from Alpine's `destroy` hook. Scope methods own option effects, state subscriptions, and utility cleanup. Alternatively, install `pacerPlugin` to use the automatically owned `$pacer` magic. Read selected state through `utility.state`.
+Create one Pacer scope for each Alpine component and destroy it from the component's `destroy` method. The example imports application operations from `./api`.
 
 ```ts
 import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
-import type { AlpineAsyncBatcher } from '@tanstack/alpine-pacer'
-import type { AsyncBatcherState } from '@tanstack/alpine-pacer'
-Alpine.data('example', () => ({
-  input: 'hello', wait: 200, history: [] as Array<Array<string>>,
-  scope: createPacerScope(),
-  utility: null as AlpineAsyncBatcher<string, AsyncBatcherState<string>> | null,
-  init() {
-    this.utility = this.scope.createAsyncBatcher(async (value: Array<string>) => { this.history = [...this.history, value] }, () => ({ wait: this.wait, maxSize: 3 }), (state) => state)
-  },
-  schedule() { void this.utility?.addItem(this.input) },
-  burst() { for (let i = 1; i <= 3; i++) void this.utility?.addItem(`${this.input} ${i}`) },
-  destroy() { this.scope.destroy() },
-}))
+import { sendEvents } from './api'
+
+Alpine.data('example', () => {
+  const scope = createPacerScope()
+  const batcher = scope.createAsyncBatcher(
+    sendEvents,
+    { maxSize: 20, wait: 1000 },
+    (state) => ({ size: state.size, isExecuting: state.isExecuting }),
+  )
+  return {
+    batcher,
+    schedule() {
+      void batcher.addItem({ type: 'click' })
+    },
+    destroy() {
+      scope.destroy()
+    },
+  }
+})
+
 Alpine.start()
 ```
 
-## Options and controls
+```html
+<div x-data="example">
+  <button @click="schedule">Track</button>
+  <output x-text="batcher.state.size"></output>
+</div>
+```
 
-`addItem` appends one item. `maxSize` executes a full batch; `wait` bounds how long a partial batch waits. Use `flush()` to process pending items immediately, `cancel()` to cancel the timer, and `reset()` to restore state. Read `items`, `size`, and `settleCount` with a selector.
+The focused snippets below use the component-owned `scope` created above. Call their control methods from event handlers.
 
-The async variant awaits your callback. `onSuccess` receives the result, `onError` handles failures, and `onSettled` runs after an outcome. Configure `throwOnError` to decide whether a failed execution rejects its returned promise. `asyncRetryerOptions` configures retries inside the scheduled operation. Select `successCount`, `errorCount`, and `settleCount` where the utility exposes them.
+## Promise results
 
-`abort()` signals active work to stop. Pass the utility's abort signal to cancellable operations such as `fetch`. Cancellation is cooperative and cannot undo an operation that already completed.
+`flush()` returns the batch function's result and is the clearest way to await a specific batch.
 
-## Reactive options and cleanup
+`addItem()` also returns a Promise, but it should not be treated as an individual item's result receipt:
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+- If that addition reaches `maxSize` or satisfies `getShouldExecute`, its Promise owns the triggered execution and resolves with the batch result.
+- If it only schedules the wait timer, its Promise resolves without the later batch result.
+- Another addition may reset the timer and change which items execute together.
 
-The owning scope supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+Use `onSuccess`, `onError`, and `onSettled` when all additions need to observe the eventual batch outcome.
 
-## State and convenience helpers
+## Batch boundaries and overlapping work
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+The batcher copies and clears the current items before calling the async function. Items added while that function is active collect in a new batch:
 
-`createAsyncBatchedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+```text
+execute [A, B] ───────────────── finish
+       add C ─── add D ─── execute [C, D] ─── finish
+```
 
-## Related documentation
+If the second batch's trigger fires before the first finishes, both batch functions can overlap. `createAsyncBatcher` does not have a concurrency option. Serialize batch executions outside the batcher or send the completed batches through an async queue when overlap is unsafe.
 
-- [Alpine adapter](../adapter.md)
-- [Core async batching guide](../../../guides/async-batching.md)
-- [API reference](../reference/index.md)
+## Errors and failed items
+
+Async batchers provide these callbacks:
+
+- `onSuccess(result, batch, batcher)` after success.
+- `onError(error, batch, batcher)` after the batch's retries fail.
+- `onSettled(batch, batcher)` after either outcome.
+- `onItemsChange(batcher)` when items are added or removed for execution.
+
+Without `onError`, `throwOnError` defaults to `true`, so `flush()` or a size-triggering `addItem()` rejects on failure. Providing `onError` changes that default to `false`; the Promise then resolves with `undefined`.
+
+Items are removed from the pending collection before execution. A failed batch is not automatically requeued. Its items are added to `failedItems` and are available through `peekFailedItems()` until `clear()` or a later execution clears that collection.
+
+```ts
+const failed = batcher.peekFailedItems()
+for (const item of failed) {
+  saveForManualRecovery(item)
+}
+```
+
+For non-idempotent operations, verify the server outcome before resubmitting a failed batch.
+
+## Retrying batches
+
+Configure retries for each batch execution with `asyncRetryerOptions`:
+
+```ts
+const batcher = scope.createAsyncBatcher(sendEvents, {
+  maxSize: 20,
+  wait: 1000,
+  asyncRetryerOptions: {
+    maxAttempts: 3,
+    backoff: 'exponential',
+    baseWait: 500,
+    jitter: 0.2,
+  },
+})
+```
+
+`maxAttempts` includes the first attempt, and every retry receives the same copied batch. See the [Async Retrying Guide](./async-retrying.md) before retrying operations with side effects.
+
+## Flushing, canceling, and clearing
+
+- `flush()` clears the pending timer and immediately executes the current items.
+- `cancel()` clears the pending timer but keeps the collected items.
+- `clear()` removes collected items and failed items, but does not clear a scheduled timer.
+- `peekAllItems()` returns a copy of the currently collected items.
+
+Because `clear()` leaves the timer in place, use `cancel()` followed by `clear()` when no empty timer should remain:
+
+```ts
+batcher.cancel()
+batcher.clear()
+```
+
+The batch function is not called when an eventual timer or `flush()` finds no items.
+
+## Aborting active work
+
+`abort()` aborts active retryers. It does not cancel a pending batch or remove collected items. Pass the batcher's signal to the underlying API for cancellation to propagate:
+
+```ts
+const batcher = scope.createAsyncBatcher(
+  async (events: Array<AnalyticsEvent>) => {
+    return fetch('/api/analytics/batch', {
+      method: 'POST',
+      body: JSON.stringify(events),
+      signal: batcher.getAbortSignal() ?? undefined,
+    })
+  },
+  { maxSize: 20, wait: 1000 },
+)
+
+batcher.abort()
+```
+
+When executions overlap, pass an `executionCount` to `getAbortSignal()` when you need a specific execution's signal.
+
+### Resetting safely
+
+`reset()` restores default state, but it does not clear a scheduled timer or guarantee that active underlying work stops. Use the lifecycle methods first when a complete cleanup is required:
+
+```ts
+batcher.cancel()
+batcher.abort()
+batcher.reset()
+```
+
+## Alpine lifecycle
+
+The adapter cancels the pending wait timer and aborts active work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Configuration and reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in its owning scope and select fields used by `x-text` and `x-bind`:
+
+```ts
+const batcher = scope.createAsyncBatcher(
+  sendEvents,
+  { maxSize: 20, wait: 1000 },
+  (state) => ({
+    size: state.size,
+    isExecuting: state.isExecuting,
+    failedItems: state.failedItems,
+  }),
+)
+
+console.log(
+  batcher.state.size,
+  batcher.state.isExecuting,
+  batcher.state.failedItems,
+)
+```
+
+Use `utility.subscribe(childScope, selector)` for an independently subscribed child scope. It returns a selected-state getter and cleans up with that child scope.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+`wait` may be a number or a function that receives the batcher instance. `setOptions()` merges new options, and `asyncBatcherOptions()` creates reusable, type-checked option objects.
+
+Do not use `started` to pause a batcher. It is currently a no-op, so every `addItem()` call evaluates the configured triggers.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
+
+Common state includes:
+
+- `items`, `size`, and `isPending`: The next batch and its timer state.
+- `isExecuting`: Whether a batch is reported as executing.
+- `lastResult`: The most recent successful result.
+- `failedItems` and `totalItemsFailed`: Failure tracking.
+- `successCount`, `errorCount`, and `settleCount`: Batch outcome counts.
+- `totalItemsProcessed`: Items in successful batch executions.
+
+See the [Alpine API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

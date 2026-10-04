@@ -21,40 +21,62 @@ By default, the selected state is `{}`. Pass a selector to subscribe only to the
 
 ## API overview
 
-| Utility | Instance API | Convenience APIs |
-| --- | --- | --- |
-| [batching](./guides/batching.md) | `useBatcher` | `useBatchedCallback` |
-| [debouncing](./guides/debouncing.md) | `useDebouncer` | `useDebouncedCallback`, `useDebouncedState`, `useDebouncedValue` |
-| [queuing](./guides/queuing.md) | `useQueuer` | `useQueuedState`, `useQueuedValue` |
-| [rate limiting](./guides/rate-limiting.md) | `useRateLimiter` | `useRateLimitedCallback`, `useRateLimitedState`, `useRateLimitedValue` |
-| [throttling](./guides/throttling.md) | `useThrottler` | `useThrottledCallback`, `useThrottledState`, `useThrottledValue` |
-| [async batching](./guides/async-batching.md) | `useAsyncBatcher` | `useAsyncBatchedCallback` |
-| [async debouncing](./guides/async-debouncing.md) | `useAsyncDebouncer` | `useAsyncDebouncedCallback` |
-| [async queuing](./guides/async-queuing.md) | `useAsyncQueuer` | `useAsyncQueuedState` |
-| [async rate limiting](./guides/async-rate-limiting.md) | `useAsyncRateLimiter` | `useAsyncRateLimitedCallback` |
-| [async throttling](./guides/async-throttling.md) | `useAsyncThrottler` | `useAsyncThrottledCallback` |
+| Utility                                                | Instance API          | Convenience APIs                                                       |
+| ------------------------------------------------------ | --------------------- | ---------------------------------------------------------------------- |
+| [batching](./guides/batching.md)                       | `useBatcher`          | `useBatchedCallback`                                                   |
+| [debouncing](./guides/debouncing.md)                   | `useDebouncer`        | `useDebouncedCallback`, `useDebouncedState`, `useDebouncedValue`       |
+| [queuing](./guides/queuing.md)                         | `useQueuer`           | `useQueuedState`, `useQueuedValue`                                     |
+| [rate limiting](./guides/rate-limiting.md)             | `useRateLimiter`      | `useRateLimitedCallback`, `useRateLimitedState`, `useRateLimitedValue` |
+| [throttling](./guides/throttling.md)                   | `useThrottler`        | `useThrottledCallback`, `useThrottledState`, `useThrottledValue`       |
+| [async batching](./guides/async-batching.md)           | `useAsyncBatcher`     | `useAsyncBatchedCallback`                                              |
+| [async debouncing](./guides/async-debouncing.md)       | `useAsyncDebouncer`   | `useAsyncDebouncedCallback`                                            |
+| [async queuing](./guides/async-queuing.md)             | `useAsyncQueuer`      | `useAsyncQueuedState`                                                  |
+| [async rate limiting](./guides/async-rate-limiting.md) | `useAsyncRateLimiter` | `useAsyncRateLimitedCallback`                                          |
+| [async throttling](./guides/async-throttling.md)       | `useAsyncThrottler`   | `useAsyncThrottledCallback`                                            |
 
 ## Example
 
+This counter coalesces rapid clicks into one update after 500 ms. Flush applies the latest pending count immediately.
+
 ```tsx
-import { createRoot, useState } from 'octane';
-import { useDebouncer } from '@tanstack/octane-pacer';
-function Example() @{
-  const [input, setInput] = useState('hello');
-  const [wait, setWait] = useState(200);
-  const [history, setHistory] = useState<Array<string>>([]);
-  const utility = useDebouncer((value: string) => { setHistory((previous) => [...previous, value]); }, { wait: wait }, (state) => state);
-  <main>
-<h1>Octane useDebouncer</h1><p>Wait until typing stops, then execute the latest call.</p>
-<label>Task <input value={input} onInput={(event) => setInput(event.currentTarget.value)} /></label><label>Wait (ms) <input value={wait} onInput={(event) => setWait(Number(event.currentTarget.value))} type="number" min="0" /></label>
-<div><button onClick={() => { void utility.maybeExecute(input); }}>Schedule</button><button onClick={() => { for (let i = 1; i <= 3; i++) void utility.maybeExecute(`${input} ${i}`); }}>Schedule three</button><button onClick={() => { void utility.flush(); }}>Flush</button><button onClick={() => { utility.cancel(); }}>Cancel</button><button onClick={() => setHistory([])}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{JSON.stringify(history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>{JSON.stringify(utility.state, null, 2)}</pre></section>
-<p class="caption">The hook retains one utility across renders and commits current options and callbacks.</p>
-</main>
+import { useState } from 'octane'
+import { useDebouncer } from '@tanstack/octane-pacer'
+
+export function Counter() {
+  const [count, setCount] = useState(0)
+  const [debouncedCount, setDebouncedCount] = useState(0)
+  const debouncer = useDebouncer(setDebouncedCount, { wait: 500 }, (state) => ({
+    isPending: state.isPending,
+  }))
+  function increment() {
+    const next = count + 1
+    setCount(next)
+    debouncer.maybeExecute(next)
+  }
+  return (
+    <div>
+      <button onClick={increment}>Increment</button>
+      <p>
+        Count: {count}. Debounced: {debouncedCount}.
+      </p>
+      <p>Pending: {String(debouncer.state.isPending)}</p>
+      <button onClick={() => debouncer.flush()}>Flush</button>
+    </div>
+  )
 }
-createRoot(document.getElementById('app')!).render(Example);
 ```
+
+## Child subscriptions
+
+Use `utility.Subscribe` with an ordinary JSX render callback. The child subscribes to its selection without changing the utility owner's selection, and unmounting releases it.
+
+```tsx
+<debouncer.Subscribe selector={(state) => ({ isPending: state.isPending })}>
+  {({ isPending }) => <span>Pending: {String(isPending)}</span>}
+</debouncer.Subscribe>
+```
+
+Use the JSX callback syntax shown here with Octane 0.1.36. Native `@{...}` template blocks are not supported as this component's render callback.
 
 ## Reactive options
 
@@ -76,7 +98,7 @@ Set `onUnmount` to replace the default cleanup, for example to call `flush()` be
 
 Callback helpers return only the scheduled function. Use an instance API when you need `flush`, `cancel`, queue controls, or state subscriptions.
 
-State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Setters accept a new value or a functional update. Queue state helpers return `[items, utility]`.
+State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Setters accept a new value or a functional update. Synchronous queue state helpers return `[items, addItem, utility]`. Async queue state helpers return `[items, utility]`; call `utility.addItem()` to enqueue an item.
 
 ## Async utilities
 
@@ -84,7 +106,9 @@ The five async utilities preserve typed results and core error behavior. Use `on
 
 ## Devtools
 
-The utilities emit the same Pacer devtools events as the other adapters. Use the framework-independent `@tanstack/pacer-devtools` panel when your application supplies a devtools host.
+Install `@tanstack/devtools` and `@tanstack/pacer-devtools`. Mount `TanStackDevtoolsCore` with `plugins: [pacerDevtoolsPlugin()]` once in your application and unmount it during cleanup. Give each utility a `key` to make it appear in the Pacer panel.
+
+See the [devtools setup guide](../../devtools.md#lit-alpine-ember-and-octane-setup) for this framework's mount and cleanup code.
 
 ## API reference
 

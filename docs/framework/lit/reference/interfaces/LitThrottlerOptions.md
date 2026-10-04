@@ -3,7 +3,7 @@ id: LitThrottlerOptions
 title: LitThrottlerOptions
 ---
 
-Defined in: [throttler/createThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L13)
+Defined in: [throttler/createThrottler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L14)
 
 Options for createThrottler, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createThrottler, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [throttler/createThrottler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L18)
+Defined in: [throttler/createThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/throttler/createThrottler.ts#L19)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

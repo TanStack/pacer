@@ -1,0 +1,54 @@
+{
+  "name": "@tanstack/pacer-example-ember-use-async-debounced-callback",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port=3005",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:types": "ember-tsc --noEmit",
+    "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
+  },
+  "dependencies": {
+    "@embroider/macros": "1.21.1",
+    "@embroider/router": "3.0.6",
+    "@glimmer/component": "2.1.1",
+    "@tanstack/devtools": "^0.15.0",
+    "@tanstack/ember-pacer": "workspace:*",
+    "@tanstack/pacer-devtools": "workspace:*",
+    "decorator-transforms": "2.4.0",
+    "ember-source": "7.3.0",
+    "ember-strict-application-resolver": "0.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.29.7",
+    "@babel/plugin-transform-runtime": "7.29.7",
+    "@babel/plugin-transform-typescript": "7.29.9",
+    "@babel/runtime": "7.29.7",
+    "@ember/app-tsconfig": "2.1.0",
+    "@embroider/core": "4.6.7",
+    "@glint/ember-tsc": "1.11.6",
+    "@glint/template": "1.9.0",
+    "@glint/tsserver-plugin": "2.7.9",
+    "@nullvoxpopuli/ember-vite": "1.2.0",
+    "@rollup/plugin-babel": "7.1.0",
+    "babel-plugin-ember-template-compilation": "4.0.0",
+    "typescript": "6.0.3",
+    "vite": "^8.3.2"
+  },
+  "imports": {
+    "#app/*": "./app/*",
+    "#config": "./app/config.ts",
+    "#components/*": "./app/components/*",
+    "#services/*": "./app/services/*",
+    "#test-helpers/*": "./tests/helpers/*",
+    "#utils/*": "./app/utils/*"
+  },
+  "exports": {
+    "./tests/*": "./tests/*",
+    "./*": "./app/*"
+  },
+  "ember": {
+    "edition": "octane"
+  }
+}

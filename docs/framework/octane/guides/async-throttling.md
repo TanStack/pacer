@@ -12,52 +12,178 @@ Use it when a throttled operation returns a value you need, can reject, or needs
 - `useAsyncThrottledCallback` for a stable Promise-returning handler
 - `useAsyncThrottler` for lifecycle methods and selected execution state
 
-## Use useAsyncThrottler
+## Octane example
 
-Call hooks at the top level of a compiled Octane component. The compiler assigns each call its own hook slot. The hook retains its utility across renders and commits the current callback and options in a layout effect. Selected state triggers rendering, and unmounting cleans up the utility. Use Octane 0.1.36; this package does not support the 0.2 line yet.
+Call the hook during component rendering. Removing the component runs its cleanup.
 
 ```tsx
-import { createRoot, useState } from 'octane';
-import { useAsyncThrottler } from '@tanstack/octane-pacer';
-function Example() @{
-  const [input, setInput] = useState('hello');
-  const [wait, setWait] = useState(200);
-  const [history, setHistory] = useState<Array<string>>([]);
-  const utility = useAsyncThrottler(async (value: string) => { setHistory((previous) => [...previous, value]); }, { wait: wait, leading: false }, (state) => state);
-  <main>
-<h1>Octane useAsyncThrottler</h1><p>Limit executions to one per interval while retaining the latest trailing call.</p>
-<label>Task <input value={input} onInput={(event) => setInput(event.currentTarget.value)} /></label><label>Wait (ms) <input value={wait} onInput={(event) => setWait(Number(event.currentTarget.value))} type="number" min="0" /></label>
-<div><button onClick={() => { void utility.maybeExecute(input); }}>Schedule</button><button onClick={() => { for (let i = 1; i <= 3; i++) void utility.maybeExecute(`${input} ${i}`); }}>Schedule three</button><button onClick={() => { void utility.flush(); }}>Flush</button><button onClick={() => { utility.cancel(); }}>Cancel</button><button onClick={() => setHistory([])}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{JSON.stringify(history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>{JSON.stringify(utility.state, null, 2)}</pre></section>
-<p class="caption">The hook retains one utility across renders and commits current options and callbacks.</p>
-</main>
+import { useAsyncThrottler } from '@tanstack/octane-pacer'
+
+function SaveButton() {
+  const saver = useAsyncThrottler(savePosition, { wait: 1000 }, (state) => ({
+    isExecuting: state.isExecuting,
+    isPending: state.isPending,
+  }))
+
+  return (
+    <button
+      onClick={() => void saver.maybeExecute(42)}
+      disabled={saver.state.isExecuting}
+    >
+      Save
+    </button>
+  )
 }
-createRoot(document.getElementById('app')!).render(Example);
 ```
 
-## Options and controls
+The focused snippets below use `useAsyncThrottler` inside a component or another hook.
 
-`maybeExecute` limits executions to one per `wait` interval. `leading` controls the first execution and `trailing` retains the most recent deferred call. Use `flush()` to execute pending work and `cancel()` to discard its timer. Select `isPending`, `lastArgs`, and `settleCount` to render progress.
+## Promise results
 
-The async variant awaits your callback. `onSuccess` receives the result, `onError` handles failures, and `onSettled` runs after an outcome. Configure `throwOnError` to decide whether a failed execution rejects its returned promise. `asyncRetryerOptions` configures retries inside the scheduled operation. Select `successCount`, `errorCount`, and `settleCount` where the utility exposes them.
+`maybeExecute()` returns a Promise. An immediate or trailing execution resolves with its result. When another call replaces pending trailing work, the older pending Promise resolves with the throttler's current `lastResult`:
 
-`abort()` signals active work to stop. Pass the utility's abort signal to cancellable operations such as `fetch`. Cancellation is cooperative and cannot undo an operation that already completed.
+```text
+call A ─── execute A ─── result A
+                  call B ───┐
+                            ├─ call C replaces B ─── execute C
+Promise B ──────────────────┘ resolves with result A
+Promise C ────────────────────────────────────────── resolves with result C
+```
 
-## Reactive options and cleanup
+The replaced call does not wait for the newer trailing execution. If every call needs its own execution and result, use an [Async Queue](./async-queuing.md).
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+An async throttler also avoids starting its next scheduled execution while the current execution is still active. The `wait` interval still controls throttle timing, while the Promise lifecycle can delay when later work is scheduled.
 
-The owning component supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+## Leading and trailing execution
 
-## State and convenience helpers
+The edge combinations match synchronous throttling:
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+| `leading` | `trailing` | Behavior                                                                                        |
+| --------- | ---------- | ----------------------------------------------------------------------------------------------- |
+| `true`    | `true`     | Execute immediately and retain the latest call for one trailing execution. This is the default. |
+| `true`    | `false`    | Execute immediately and discard calls made during the interval.                                 |
+| `false`   | `true`     | Wait one interval before the first execution, then retain the latest call in each interval.     |
+| `false`   | `false`    | Record calls without executing the function.                                                    |
 
-`useAsyncThrottledCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+Unlike debouncing, calls during the interval do not restart the interval. They only replace the pending trailing arguments.
 
-## Related documentation
+## Errors and callbacks
 
-- [Octane adapter](../adapter.md)
-- [Core async throttling guide](../../../guides/async-throttling.md)
-- [API reference](../reference/index.md)
+Async throttlers provide callbacks around each actual execution:
+
+- `onSuccess(result, args, throttler)` runs after success.
+- `onError(error, args, throttler)` runs after the retries for an execution fail.
+- `onSettled(args, throttler)` runs after either outcome.
+
+Without `onError`, `throwOnError` defaults to `true`, so a failure rejects the Promise that owns the execution. Providing `onError` changes that default to `false`; the Promise then resolves with the current `lastResult`. Set `throwOnError` explicitly to override the default.
+
+Callbacks describe executions, not every call to `maybeExecute()`. Replaced or discarded calls do not produce execution callbacks.
+
+## Retrying failed executions
+
+Configure the retryer used for each execution with `asyncRetryerOptions`:
+
+```ts
+const saver = useAsyncThrottler(savePositionToServer, {
+  wait: 1000,
+  asyncRetryerOptions: {
+    maxAttempts: 3,
+    backoff: 'exponential',
+    baseWait: 500,
+    jitter: 0.2,
+  },
+})
+```
+
+`maxAttempts` includes the first attempt. Throttling controls logical executions; retrying controls the attempts within each execution. See the [Async Retrying Guide](./async-retrying.md) before enabling retries for operations with side effects.
+
+## Canceling pending work and aborting active work
+
+- `cancel()` clears a pending trailing execution. It does not stop active work or reset the current throttle interval.
+- `abort()` aborts active executions. It does not clear pending trailing work.
+- `flush()` runs pending trailing work immediately and returns its result.
+
+Pass the throttler's signal to the underlying API when it supports cancellation:
+
+```ts
+const saver = useAsyncThrottler(
+  async (position: number) => {
+    return fetch('/api/position', {
+      method: 'POST',
+      body: JSON.stringify({ position }),
+      signal: saver.getAbortSignal() ?? undefined,
+    })
+  },
+  { wait: 1000 },
+)
+
+saver.abort()
+```
+
+Calling `abort()` without using the signal stops retry management but cannot force an arbitrary Promise to stop.
+
+### Resetting safely
+
+`reset()` restores default state, but it does not clear a scheduled timeout or guarantee that active work stops. Clean up the lifecycle first when necessary:
+
+```ts
+saver.cancel()
+saver.abort()
+saver.reset()
+```
+
+## Configuration
+
+`wait` and `enabled` may be values or functions that receive the throttler instance. `setOptions()` merges new options into the existing configuration.
+
+```ts
+saver.setOptions({
+  enabled: (throttler) => throttler.store.state.errorCount < 3,
+  wait: (throttler) => (throttler.store.state.successCount < 10 ? 500 : 1000),
+})
+```
+
+A changed `wait` value does not reschedule existing trailing work. It applies to later scheduling and executions. Disabling the throttler through `setOptions()` cancels pending trailing work.
+
+Use `asyncThrottlerOptions()` to define reusable, type-checked option objects.
+
+## Octane lifecycle
+
+The adapter cancels pending work and aborts active work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility during component rendering and select only fields used by the view:
+
+```ts
+const throttler = useAsyncThrottler(
+  savePositionToServer,
+  { wait: 1000 },
+  (state) => ({
+    isPending: state.isPending,
+    isExecuting: state.isExecuting,
+    lastResult: state.lastResult,
+  }),
+)
+
+console.log(
+  throttler.state.isPending,
+  throttler.state.isExecuting,
+  throttler.state.lastResult,
+)
+```
+
+Use `utility.Subscribe` with a selector and a JSX render callback for an independently subscribed child.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
+
+- `isPending`: Whether a trailing execution is scheduled.
+- `isExecuting`: Whether the wrapped function is active.
+- `lastArgs`: The latest arguments retained for trailing work.
+- `lastResult`: The most recent successful result.
+- `lastExecutionTime` and `nextExecutionTime`: Current timing boundaries.
+- `successCount`, `errorCount`, and `settleCount`: Execution outcome counts.
+
+See the [Octane API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

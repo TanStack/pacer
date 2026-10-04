@@ -3,7 +3,7 @@ id: SvelteRateLimiterOptions
 title: SvelteRateLimiterOptions
 ---
 
-Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:12](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L12)
+Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L13)
 
 Options for createRateLimiter, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createRateLimiter, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:17](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L17)
+Defined in: [packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/rate-limiter/createRateLimiter.ts#L18)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

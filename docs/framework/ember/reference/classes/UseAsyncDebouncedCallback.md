@@ -3,9 +3,42 @@ id: UseAsyncDebouncedCallback
 title: UseAsyncDebouncedCallback
 ---
 
-Defined in: [packages/ember-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:18](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L18)
+Defined in: [packages/ember-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:51](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L51)
 
-Returns a asyncdebounced callback from an owned Ember helper. Named arguments update the same utility.
+Returns a stable debounced callback owned by the Ember lifecycle.
+
+With the default trailing behavior, each call restarts the wait timer and only the latest pending update executes. Leading and trailing options control the edges.
+
+## Return value
+
+Returns the bound maybeExecute method with the wrapped function's parameter types. The returned Promise preserves the core result and error contract. A replaced trailing call resolves with the previous lastResult; it does not wait for the newer call.
+
+## State and ownership
+
+Use useAsyncDebouncer when you need selected state or control methods. This callback does not expose the utility, its store, or a child subscription.
+
+Invoke in a Glimmer template. Positional arguments provide the callback or value and optional selector. Named arguments provide options. Removing the invocation runs cleanup.
+Tracked named arguments refresh options after rendering. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
+
+## Example
+
+```gts
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useAsyncDebouncedCallback } from '@tanstack/ember-pacer'
+
+// Inside a component template:
+<template>
+{{#let (useAsyncDebouncedCallback @process wait=500) as |schedule|}}
+  <button {{on "click" (fn schedule 1)}}>Schedule</button>
+{{/let}}
+</template>
+```
+
+## See
+
+useAsyncDebouncer
 
 ## Extends
 
@@ -70,7 +103,7 @@ Helper<{
 compute(positional, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:38](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L38)
+Defined in: [packages/ember-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts:71](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-debouncer/useAsyncDebouncedCallback.ts#L71)
 
 Override this function when writing a class-based helper.
 

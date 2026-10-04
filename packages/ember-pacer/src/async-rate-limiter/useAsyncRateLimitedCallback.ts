@@ -6,6 +6,7 @@ import {
   registerDestructor,
 } from '@ember/destroyable'
 import { scheduleOnce } from '@ember/runloop'
+import { createSubscribe } from '../utils/Subscribe'
 import { select } from '../utils/select'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { AsyncRateLimiterState } from '@tanstack/pacer/async-rate-limiter'
@@ -14,7 +15,39 @@ import type {
   EmberAsyncRateLimiter,
   EmberAsyncRateLimiterOptions,
 } from './useAsyncRateLimiter'
-/** Returns a asyncratelimited callback from an owned Ember helper. Named arguments update the same utility. */
+/**
+ * Returns a stable rate-limited callback owned by the Ember lifecycle.
+ *
+ * Accepts updates while the configured limit has capacity in its fixed or sliding window. Rejected updates are discarded instead of delayed.
+ *
+ * ## Return value
+ *
+ * Returns the bound maybeExecute method with the wrapped function's parameter types. The returned Promise preserves the core result and error contract. A rejected rate-limit call resolves with undefined.
+ *
+ * ## State and ownership
+ *
+ * Use useAsyncRateLimiter when you need selected state or control methods. This callback does not expose the utility, its store, or a child subscription.
+ *
+ * Invoke in a Glimmer template. Positional arguments provide the callback or value and optional selector. Named arguments provide options. Removing the invocation runs cleanup.
+ * Tracked named arguments refresh options after rendering. Local options override provider defaults without replacing the utility or its pending work.
+ * onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
+ *
+ * @example
+ * ```gts
+ * import { on } from '@ember/modifier'
+ * import { fn } from '@ember/helper'
+ * import { useAsyncRateLimitedCallback } from '@tanstack/ember-pacer'
+ *
+ * // Inside a component template:
+ * <template>
+ * {{#let (useAsyncRateLimitedCallback @process limit=3 window=1000) as |schedule|}}
+ *   <button {{on "click" (fn schedule 1)}}>Schedule</button>
+ * {{/let}}
+ * </template>
+ * ```
+ *
+ * @see useAsyncRateLimiter
+ */
 export class UseAsyncRateLimitedCallback<
   TFn extends AnyAsyncFunction,
   TSelected = {},
@@ -52,6 +85,10 @@ export class UseAsyncRateLimitedCallback<
       const selected = select(this, instance.store, (state) =>
         this.selector(state),
       )
+      Object.defineProperty(instance, 'Subscribe', {
+        value: createSubscribe(instance.store),
+        enumerable: true,
+      })
       Object.defineProperty(instance, 'state', {
         get: () => selected.value,
         enumerable: true,

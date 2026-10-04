@@ -3,7 +3,7 @@ id: SvelteAsyncBatcherOptions
 title: SvelteAsyncBatcherOptions
 ---
 
-Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:11](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L11)
+Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:12](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L12)
 
 Options for createAsyncBatcher, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createAsyncBatcher, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:16](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L16)
+Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L17)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

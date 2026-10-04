@@ -3,7 +3,7 @@ id: LitDebouncer
 title: LitDebouncer
 ---
 
-Defined in: [debouncer/createDebouncer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/debouncer/createDebouncer.ts#L22)
+Defined in: [debouncer/createDebouncer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/debouncer/createDebouncer.ts#L23)
 
 A Debouncer with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Debouncer with framework-reactive selected state. All core methods remain avai
 options: DebouncerOptions<TFn> & LitDebouncerOptions<TFn, TSelected>;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/debouncer/createDebouncer.ts#L26)
+Defined in: [debouncer/createDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/debouncer/createDebouncer.ts#L27)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [debouncer/createDebouncer.ts:26](https://github.com/TanStack/pacer/
 setOptions: (options) => void;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/debouncer/createDebouncer.ts#L27)
+Defined in: [debouncer/createDebouncer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/debouncer/createDebouncer.ts#L28)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [debouncer/createDebouncer.ts:27](https://github.com/TanStack/pacer/
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/debouncer/createDebouncer.ts#L29)
+Defined in: [debouncer/createDebouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/debouncer/createDebouncer.ts#L32)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: LitPacerSubscribe<DebouncerState<TFn>>;
+```
+
+Defined in: [debouncer/createDebouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/debouncer/createDebouncer.ts#L30)
+
+Subscribes a child owner to selected state with automatic cleanup.

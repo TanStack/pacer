@@ -6,7 +6,9 @@ import {
   registerDestructor,
 } from '@ember/destroyable'
 import { scheduleOnce } from '@ember/runloop'
+import { createSubscribe } from '../utils/Subscribe'
 import { select } from '../utils/select'
+import type { EmberPacerSubscribe } from '../utils/Subscribe'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
@@ -21,7 +23,7 @@ export interface EmberAsyncBatcherOptions<
   onUnmount?: (instance: EmberAsyncBatcher<TValue, TSelected>) => void
 }
 
-/** A AsyncBatcher with framework-reactive selected state. All core methods remain available. */
+/** An AsyncBatcher with framework-reactive selected state. All core methods remain available. */
 export interface EmberAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
   'options' | 'setOptions'
@@ -31,23 +33,68 @@ export interface EmberAsyncBatcher<TValue, TSelected = {}> extends Omit<
   setOptions: (
     options: Partial<EmberAsyncBatcherOptions<TValue, TSelected>>,
   ) => void
+  /** Selects state in a child without subscribing the utility owner. */
+  Subscribe: EmberPacerSubscribe<AsyncBatcherState<TValue>>
   /** Selected state. Pass a selector to opt in; the default selection is an empty object. */
   readonly state: Readonly<TSelected>
 }
 
 /**
- * Creates an owned AsyncBatcher from an Ember template.
+ * Creates and retains the AsyncBatcher for its Ember owner.
  *
- * Positional arguments are the execution function and an optional state selector.
- * Named arguments are core options and onUnmount. Ember tracks argument changes,
- * updates the same utility after rendering, and cleans it up when the helper leaves
- * the template. Function-valued options are passed through without invocation.
+ * Collects items and processes them together when maxSize, wait, or getShouldExecute triggers a batch. Use addItem to accumulate work and flush to process a partial batch.
+ *
+ * The callback may return a Promise. Core result, error, retry, and abort behavior is preserved.
+ * Use onSuccess, onError, and onSettled for execution outcomes.
+ *
+ * ## State and subscriptions
+ *
+ * Pass a selector to track only the state consumed by the owner. The default selection is {},
+ * so utility state changes do not update the owner unless it opts in. Selection uses shallow
+ * comparison. The raw store remains available for additional subscriptions.
+ * The selector is the second positional argument. Read utility.state from the template.
+ * The contextual utility.Subscribe helper selects state for a child template.
+ *
+ * Available state fields:
+ *
+ * - `errorCount`: Number of batch executions that have resulted in errors
+ * - `executionCount`: Number of batch executions that have been started
+ * - `failedItems`: Array of items that failed during batch processing
+ * - `isEmpty`: Whether the batcher has no items to process (items array is empty)
+ * - `isExecuting`: Whether a batch is currently being processed asynchronously
+ * - `isPending`: Whether the batcher is waiting for the timeout to trigger batch processing
+ * - `items`: Array of items currently queued for batch processing
+ * - `lastResult`: The result from the most recent batch execution
+ * - `settleCount`: Number of batch executions that have completed (either successfully or with errors)
+ * - `size`: Number of items currently in the batch queue
+ * - `status`: Current processing status - 'idle' when not processing, 'pending' when waiting for timeout, 'executing' when processing, 'populated' when items are present, but no wait is configured
+ * - `successCount`: Number of batch executions that have completed successfully
+ * - `totalItemsFailed`: Total number of items that have failed processing across all batches
+ * - `totalItemsProcessed`: Total number of items that have been processed across all batches
+ *
+ * ## Options and ownership
+ *
+ * Tracked named arguments update options after rendering. createPacerScope supplies shared
+ * defaults through contextual helpers. Local named options override those defaults.
+ * Removing the helper invocation calls cancel() and abort().
+ * onUnmount replaces default cleanup and receives the same adapter instance. A custom callback
+ * must perform all required cleanup. Use flush() where supported to finish pending work.
  *
  * @example
- * ```hbs
- * {{#let (useAsyncBatcher this.execute wait=this.wait) as |utility|}}
- *   {{utility.state}}
- * {{/let}}
+ * ```gts
+ * import { on } from '@ember/modifier'
+ * import { fn } from '@ember/helper'
+ * import { useAsyncBatcher } from '@tanstack/ember-pacer'
+ * import type { AsyncBatcherState } from '@tanstack/ember-pacer'
+ *
+ * const select = (state: AsyncBatcherState<string>) => ({ size: state.size })
+ *
+ * <template>
+ *   {{#let (useAsyncBatcher @process select maxSize=5 wait=1000) as |utility|}}
+ *     <button {{on "click" (fn utility.addItem "item")}}>Schedule</button>
+ *     <span>{{utility.state.size}}</span>
+ *   {{/let}}
+ * </template>
  * ```
  */
 export class UseAsyncBatcher<TValue, TSelected = {}> extends Helper<{
@@ -87,6 +134,10 @@ export class UseAsyncBatcher<TValue, TSelected = {}> extends Helper<{
       const selected = select(this, instance.store, (state) =>
         this.selector(state),
       )
+      Object.defineProperty(instance, 'Subscribe', {
+        value: createSubscribe(instance.store),
+        enumerable: true,
+      })
       Object.defineProperty(instance, 'state', {
         get: () => selected.value,
         enumerable: true,

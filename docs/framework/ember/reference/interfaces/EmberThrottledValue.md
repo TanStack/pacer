@@ -3,7 +3,7 @@ id: EmberThrottledValue
 title: EmberThrottledValue
 ---
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:14](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledValue.ts#L14)
+Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:15](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledValue.ts#L15)
 
 Reactive value, update method, and underlying utility returned by useThrottledValue.
 
@@ -26,7 +26,7 @@ Reactive value, update method, and underlying utility returned by useThrottledVa
 setValue: (value) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:16](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledValue.ts#L16)
+Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:17](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledValue.ts#L17)
 
 #### Parameters
 
@@ -46,7 +46,7 @@ Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:16](https:/
 utility: EmberThrottler<(value) => void, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:17](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledValue.ts#L17)
+Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:18](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledValue.ts#L18)
 
 ***
 
@@ -56,4 +56,4 @@ Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:17](https:/
 readonly value: TValue;
 ```
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:15](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledValue.ts#L15)
+Defined in: [packages/ember-pacer/src/throttler/useThrottledValue.ts:16](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledValue.ts#L16)

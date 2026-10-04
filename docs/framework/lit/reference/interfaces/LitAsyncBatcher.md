@@ -3,9 +3,9 @@ id: LitAsyncBatcher
 title: LitAsyncBatcher
 ---
 
-Defined in: [async-batcher/createAsyncBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-batcher/createAsyncBatcher.ts#L21)
+Defined in: [async-batcher/createAsyncBatcher.ts:22](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-batcher/createAsyncBatcher.ts#L22)
 
-A AsyncBatcher with framework-reactive selected state. All core methods remain available.
+An AsyncBatcher with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -42,7 +42,7 @@ options: Omit<Required<AsyncBatcherOptions<TValue>>,
 | "onItemsChange">> & LitAsyncBatcherOptions<TValue, TSelected>;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:25](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-batcher/createAsyncBatcher.ts#L25)
+Defined in: [async-batcher/createAsyncBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-batcher/createAsyncBatcher.ts#L26)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [async-batcher/createAsyncBatcher.ts:25](https://github.com/TanStack
 setOptions: (options) => void;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:27](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-batcher/createAsyncBatcher.ts#L27)
+Defined in: [async-batcher/createAsyncBatcher.ts:28](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-batcher/createAsyncBatcher.ts#L28)
 
 #### Parameters
 
@@ -72,6 +72,18 @@ Defined in: [async-batcher/createAsyncBatcher.ts:27](https://github.com/TanStack
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:31](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-batcher/createAsyncBatcher.ts#L31)
+Defined in: [async-batcher/createAsyncBatcher.ts:34](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-batcher/createAsyncBatcher.ts#L34)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: LitPacerSubscribe<AsyncBatcherState<TValue>>;
+```
+
+Defined in: [async-batcher/createAsyncBatcher.ts:32](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-batcher/createAsyncBatcher.ts#L32)
+
+Subscribes a child owner to selected state with automatic cleanup.

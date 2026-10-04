@@ -21,18 +21,18 @@ By default, the selected state is `{}`. Pass a selector to subscribe only to the
 
 ## API overview
 
-| Utility | Instance API | Convenience APIs |
-| --- | --- | --- |
-| [batching](./guides/batching.md) | `createBatcher` | `createBatchedCallback` |
-| [debouncing](./guides/debouncing.md) | `createDebouncer` | `createDebouncedCallback`, `createDebouncedState`, `createDebouncedValue` |
-| [queuing](./guides/queuing.md) | `createQueuer` | `createQueuedState`, `createQueuedValue` |
-| [rate limiting](./guides/rate-limiting.md) | `createRateLimiter` | `createRateLimitedCallback`, `createRateLimitedState`, `createRateLimitedValue` |
-| [throttling](./guides/throttling.md) | `createThrottler` | `createThrottledCallback`, `createThrottledState`, `createThrottledValue` |
-| [async batching](./guides/async-batching.md) | `createAsyncBatcher` | `createAsyncBatchedCallback` |
-| [async debouncing](./guides/async-debouncing.md) | `createAsyncDebouncer` | `createAsyncDebouncedCallback` |
-| [async queuing](./guides/async-queuing.md) | `createAsyncQueuer` | `createAsyncQueuedState` |
-| [async rate limiting](./guides/async-rate-limiting.md) | `createAsyncRateLimiter` | `createAsyncRateLimitedCallback` |
-| [async throttling](./guides/async-throttling.md) | `createAsyncThrottler` | `createAsyncThrottledCallback` |
+| Utility                                                | Instance API             | Convenience APIs                                                                |
+| ------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------- |
+| [batching](./guides/batching.md)                       | `createBatcher`          | `createBatchedCallback`                                                         |
+| [debouncing](./guides/debouncing.md)                   | `createDebouncer`        | `createDebouncedCallback`, `createDebouncedState`, `createDebouncedValue`       |
+| [queuing](./guides/queuing.md)                         | `createQueuer`           | `createQueuedState`, `createQueuedValue`                                        |
+| [rate limiting](./guides/rate-limiting.md)             | `createRateLimiter`      | `createRateLimitedCallback`, `createRateLimitedState`, `createRateLimitedValue` |
+| [throttling](./guides/throttling.md)                   | `createThrottler`        | `createThrottledCallback`, `createThrottledState`, `createThrottledValue`       |
+| [async batching](./guides/async-batching.md)           | `createAsyncBatcher`     | `createAsyncBatchedCallback`                                                    |
+| [async debouncing](./guides/async-debouncing.md)       | `createAsyncDebouncer`   | `createAsyncDebouncedCallback`                                                  |
+| [async queuing](./guides/async-queuing.md)             | `createAsyncQueuer`      | `createAsyncQueuedState`                                                        |
+| [async rate limiting](./guides/async-rate-limiting.md) | `createAsyncRateLimiter` | `createAsyncRateLimitedCallback`                                                |
+| [async throttling](./guides/async-throttling.md)       | `createAsyncThrottler`   | `createAsyncThrottledCallback`                                                  |
 
 ## TypeScript configuration
 
@@ -40,30 +40,50 @@ Set `"useDefineForClassFields": false` when declaring Lit reactive properties wi
 
 ## Example
 
+This counter coalesces rapid clicks into one update after 500 ms. Flush applies the latest pending count immediately.
+
 ```ts
 import { LitElement, html } from 'lit'
 import { createDebouncer } from '@tanstack/lit-pacer'
-class Example extends LitElement {
-  static properties = { input: { state: true }, wait: { state: true }, history: { state: true } }
-  input = 'hello'
-  wait = 200
-  history: Array<string> = []
-  utility = createDebouncer(this, (value: string) => { this.history = [...this.history, value] }, () => ({ wait: this.wait }), (state) => state)
-  override createRenderRoot() { return this }
-  schedule = () => { void this.utility.maybeExecute(this.input) }
-  burst = () => { for (let i = 1; i <= 3; i++) void this.utility.maybeExecute(`${this.input} ${i}`) }
-  override render() { return html`
-<main>
-<h1>Lit createDebouncer</h1><p>Wait until typing stops, then execute the latest call.</p>
-<label>Task <input .value=${this.input} @input=${(event: Event) => { this.input = (event.target as HTMLInputElement).value }} /></label><label>Wait (ms) <input .value=${String(this.wait)} @input=${(event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }} type="number" min="0" /></label>
-<div><button @click=${this.schedule}>Schedule</button><button @click=${this.burst}>Schedule three</button><button @click=${() => this.utility.flush()}>Flush</button><button @click=${() => this.utility.cancel()}>Cancel</button><button @click=${() => { this.history = [] }}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">${JSON.stringify(this.history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>${JSON.stringify(this.utility.state, null, 2)}</pre></section>
-<p class="caption">Host updates refresh options. Disconnecting the element cleans up its utility.</p>
-</main>` }
+
+class Counter extends LitElement {
+  static properties = {
+    count: { state: true },
+    debouncedCount: { state: true },
+  }
+  count = 0
+  debouncedCount = 0
+  debouncer = createDebouncer(
+    this,
+    (value: number) => {
+      this.debouncedCount = value
+    },
+    { wait: 500 },
+    (state) => ({ isPending: state.isPending }),
+  )
+  increment = () => this.debouncer.maybeExecute(++this.count)
+
+  override render() {
+    return html`
+      <button @click=${this.increment}>Increment</button>
+      <p>Count: ${this.count}. Debounced: ${this.debouncedCount}.</p>
+      <p>Pending: ${this.debouncer.state.isPending}</p>
+      <button @click=${() => this.debouncer.flush()}>Flush</button>
+    `
+  }
 }
-customElements.define('pacer-example', Example)
-document.getElementById('app')!.append(document.createElement('pacer-example'))
+customElements.define('pacer-counter', Counter)
+```
+
+## Child subscriptions
+
+Call `utility.subscribe(childHost, selector)` during the child host's construction. It returns a getter for selected state and requests a child update only when that selection changes. Disconnecting releases the subscription; reconnecting restores it.
+
+```ts
+const selected = debouncer.subscribe(childHost, (state) => ({
+  isPending: state.isPending,
+}))
+// Read selected().isPending in the child host's render method.
 ```
 
 ## Reactive options
@@ -74,7 +94,7 @@ Options retain the core partial-merge behavior. Omitting a key preserves the pre
 
 ## Default options
 
-Call `providePacerOptions(this, () => defaults)` before creating utilities. Defaults belong to that host and use utility keys such as `debouncer` and `asyncQueuer`. Share the defaults source explicitly when multiple hosts need the same configuration.
+Call `providePacerOptions(host, defaults)` during construction. Defaults apply to utilities on that host and descendant elements, including across shadow roots. The nearest provider wins. Use a factory or getters to read reactive host properties; provider updates notify descendant hosts. Local utility options take precedence.
 
 ## Cleanup
 
@@ -86,7 +106,7 @@ Set `onUnmount` to replace the default cleanup, for example to call `flush()` be
 
 Callback helpers return only the scheduled function. Use an instance API when you need `flush`, `cancel`, queue controls, or state subscriptions.
 
-State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Read values by calling their accessors. Setters accept a new value or a functional update. Queue state helpers return `[itemsAccessor, addItem, utility]`. Queued value helpers return the last processed value, rather than the list of pending items.
+State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Read values by calling their accessors. Setters accept a new value or a functional update. Synchronous queue state helpers return `[itemsAccessor, addItem, utility]`. Async queue state helpers return `[itemsAccessor, utility]`; call `utility.addItem()` to enqueue an item. Queued value helpers return the last processed value, rather than the list of pending items.
 
 ## Async utilities
 
@@ -94,7 +114,9 @@ The five async utilities preserve typed results and core error behavior. Use `on
 
 ## Devtools
 
-The utilities emit the same Pacer devtools events as the other adapters. Use the framework-independent `@tanstack/pacer-devtools` panel when your application supplies a devtools host.
+Install `@tanstack/devtools` and `@tanstack/pacer-devtools`. Mount `TanStackDevtoolsCore` with `plugins: [pacerDevtoolsPlugin()]` once in your application and unmount it during cleanup. Give each utility a `key` to make it appear in the Pacer panel.
+
+See the [devtools setup guide](../../devtools.md#lit-alpine-ember-and-octane-setup) for this framework's mount and cleanup code.
 
 ## API reference
 

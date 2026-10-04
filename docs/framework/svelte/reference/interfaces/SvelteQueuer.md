@@ -3,7 +3,7 @@ id: SvelteQueuer
 title: SvelteQueuer
 ---
 
-Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/queuer/createQueuer.ts#L17)
+Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/queuer/createQueuer.ts#L18)
 
 A Queuer with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Queuer with framework-reactive selected state. All core methods remain availab
 options: QueuerOptions<TValue> & SvelteQueuerOptions<TValue, TSelected>;
 ```
 
-Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/queuer/createQueuer.ts#L21)
+Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/queuer/createQueuer.ts#L22)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:21](https://github
 setOptions: (options) => void;
 ```
 
-Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/queuer/createQueuer.ts#L22)
+Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/queuer/createQueuer.ts#L23)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:22](https://github
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/queuer/createQueuer.ts#L24)
+Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/queuer/createQueuer.ts#L27)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: SveltePacerSubscribe<QueuerState<TValue>>;
+```
+
+Defined in: [packages/svelte-pacer/src/queuer/createQueuer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/queuer/createQueuer.ts#L25)
+
+Subscribes a child snippet to state without updating the utility owner.

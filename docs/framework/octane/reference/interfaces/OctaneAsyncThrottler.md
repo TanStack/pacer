@@ -3,9 +3,9 @@ id: OctaneAsyncThrottler
 title: OctaneAsyncThrottler
 ---
 
-Defined in: [async-throttler/useAsyncThrottler.ts:23](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-throttler/useAsyncThrottler.ts#L23)
+Defined in: [async-throttler/useAsyncThrottler.ts:25](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-throttler/useAsyncThrottler.ts#L25)
 
-A AsyncThrottler with framework-reactive selected state. All core methods remain available.
+An AsyncThrottler with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncThrottler with framework-reactive selected state. All core methods remain
 options: AsyncThrottlerOptions<TFn> & OctaneAsyncThrottlerOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-throttler/useAsyncThrottler.ts:27](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-throttler/useAsyncThrottler.ts#L27)
+Defined in: [async-throttler/useAsyncThrottler.ts:29](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-throttler/useAsyncThrottler.ts#L29)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-throttler/useAsyncThrottler.ts:27](https://github.com/TanStac
 setOptions: (options) => void;
 ```
 
-Defined in: [async-throttler/useAsyncThrottler.ts:29](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-throttler/useAsyncThrottler.ts#L29)
+Defined in: [async-throttler/useAsyncThrottler.ts:31](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-throttler/useAsyncThrottler.ts#L31)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [async-throttler/useAsyncThrottler.ts:29](https://github.com/TanStac
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-throttler/useAsyncThrottler.ts:33](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-throttler/useAsyncThrottler.ts#L33)
+Defined in: [async-throttler/useAsyncThrottler.ts:37](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-throttler/useAsyncThrottler.ts#L37)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: OctanePacerSubscribe<AsyncThrottlerState<TFn>>;
+```
+
+Defined in: [async-throttler/useAsyncThrottler.ts:35](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-throttler/useAsyncThrottler.ts#L35)
+
+Selects state in a child without subscribing the utility owner.

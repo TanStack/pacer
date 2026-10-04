@@ -7,10 +7,23 @@ title: createThrottledCallback
 function createThrottledCallback<TFn>(fn, options): (...args) => void;
 ```
 
-Defined in: [packages/svelte-pacer/src/throttler/createThrottledCallback.ts:9](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/throttler/createThrottledCallback.ts#L9)
+Defined in: [packages/svelte-pacer/src/throttler/createThrottledCallback.ts:33](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/throttler/createThrottledCallback.ts#L33)
 
-Returns a stable throttled callback with the same options and cleanup as createThrottler.
-Use the constructor instead when you also need selected state or control methods.
+Returns a stable throttled callback owned by the Svelte lifecycle.
+
+Limits execution to the configured wait interval. Leading and trailing execution are enabled by default, and the latest blocked update is retained for the trailing edge.
+
+## Return value
+
+Returns the bound maybeExecute method with the wrapped function's parameter types. It returns void, independently of the wrapped callback's return value.
+
+## State and ownership
+
+Use createThrottler when you need selected state or control methods. This callback does not expose the utility, its store, or a child subscription.
+
+Call during component initialization. Component destruction removes effects and subscriptions and runs utility cleanup.
+Options accept an object with top-level getters or an options factory. Function-valued core options remain callbacks. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
 
 ## Type Parameters
 
@@ -66,3 +79,17 @@ throttled.maybeExecute('a', 'b');
 // Call during wait period - gets throttled
 throttled.maybeExecute('c', 'd');
 ```
+
+## Example
+
+```ts
+import { createThrottledCallback } from '@tanstack/svelte-pacer'
+
+// During component initialization:
+const schedule = createThrottledCallback((value: number) => { console.log(value) }, { wait: 500 })
+schedule(1)
+```
+
+## See
+
+createThrottler

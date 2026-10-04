@@ -1,5 +1,6 @@
-import { shallow, useSelector } from '@tanstack/svelte-store'
 import { onDestroy, untrack } from 'svelte'
+import { createSubscribe } from './createSubscribe'
+import { select } from './select.svelte'
 import type { ReadonlyStore } from '@tanstack/svelte-store'
 
 /** Connects a core utility to the current Svelte component. */
@@ -12,13 +13,17 @@ export function bindPacer<TState, TSelected, TOptions, TInstance>(
   selector: (state: TState) => TSelected,
   cleanup: () => void,
 ): TInstance {
-  const selected = useSelector(instance.store, selector, { compare: shallow })
+  const selected = select(instance.store, selector)
   $effect.pre(() => {
     const latest = options()
     untrack(() => instance.setOptions(latest))
   })
   Object.defineProperty(instance, 'state', {
     get: () => selected.current,
+    enumerable: true,
+  })
+  Object.defineProperty(instance, 'Subscribe', {
+    value: createSubscribe(instance.store),
     enumerable: true,
   })
   onDestroy(() => {

@@ -3,9 +3,9 @@ id: SvelteAsyncDebouncer
 title: SvelteAsyncDebouncer
 ---
 
-Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts#L21)
+Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts#L22)
 
-A AsyncDebouncer with framework-reactive selected state. All core methods remain available.
+An AsyncDebouncer with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncDebouncer with framework-reactive selected state. All core methods remain
 options: AsyncDebouncerOptions<TFn> & SvelteAsyncDebouncerOptions<TFn, TSelected>;
 ```
 
-Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts#L25)
+Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts#L26)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:2
 setOptions: (options) => void;
 ```
 
-Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts#L27)
+Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts#L28)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:2
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts#L31)
+Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts#L34)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: SveltePacerSubscribe<AsyncDebouncerState<TFn>>;
+```
+
+Defined in: [packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-debouncer/createAsyncDebouncer.ts#L32)
+
+Subscribes a child snippet to state without updating the utility owner.

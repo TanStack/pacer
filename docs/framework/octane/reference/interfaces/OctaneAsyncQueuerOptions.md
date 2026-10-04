@@ -3,7 +3,7 @@ id: OctaneAsyncQueuerOptions
 title: OctaneAsyncQueuerOptions
 ---
 
-Defined in: [async-queuer/useAsyncQueuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-queuer/useAsyncQueuer.ts#L13)
+Defined in: [async-queuer/useAsyncQueuer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-queuer/useAsyncQueuer.ts#L15)
 
 Options for useAsyncQueuer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useAsyncQueuer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [async-queuer/useAsyncQueuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-queuer/useAsyncQueuer.ts#L18)
+Defined in: [async-queuer/useAsyncQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-queuer/useAsyncQueuer.ts#L20)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

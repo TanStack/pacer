@@ -3,7 +3,7 @@ id: VueBatcher
 title: VueBatcher
 ---
 
-Defined in: [batcher/useBatcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/batcher/useBatcher.ts#L18)
+Defined in: [batcher/useBatcher.ts:19](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/batcher/useBatcher.ts#L19)
 
 A Batcher with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Batcher with framework-reactive selected state. All core methods remain availa
 options: Omit<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute"> & Partial<Pick<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute">> & VueBatcherOptions<TValue, TSelected>;
 ```
 
-Defined in: [batcher/useBatcher.ts:22](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/batcher/useBatcher.ts#L22)
+Defined in: [batcher/useBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/batcher/useBatcher.ts#L23)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [batcher/useBatcher.ts:22](https://github.com/TanStack/pacer/blob/ma
 setOptions: (options) => void;
 ```
 
-Defined in: [batcher/useBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/batcher/useBatcher.ts#L23)
+Defined in: [batcher/useBatcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/batcher/useBatcher.ts#L24)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [batcher/useBatcher.ts:23](https://github.com/TanStack/pacer/blob/ma
 readonly state: Readonly<ShallowRef<TSelected>>;
 ```
 
-Defined in: [batcher/useBatcher.ts:25](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/batcher/useBatcher.ts#L25)
+Defined in: [batcher/useBatcher.ts:28](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/batcher/useBatcher.ts#L28)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: VuePacerSubscribe<BatcherState<TValue>>;
+```
+
+Defined in: [batcher/useBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/batcher/useBatcher.ts#L26)
+
+Subscribes a scoped slot to state without re-rendering the utility owner.

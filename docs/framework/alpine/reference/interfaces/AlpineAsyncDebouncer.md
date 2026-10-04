@@ -3,9 +3,9 @@ id: AlpineAsyncDebouncer
 title: AlpineAsyncDebouncer
 ---
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-debouncer/createAsyncDebouncer.ts#L21)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-debouncer/createAsyncDebouncer.ts#L22)
 
-A AsyncDebouncer with framework-reactive selected state. All core methods remain available.
+An AsyncDebouncer with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncDebouncer with framework-reactive selected state. All core methods remain
 options: AsyncDebouncerOptions<TFn> & AlpineAsyncDebouncerOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-debouncer/createAsyncDebouncer.ts#L25)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-debouncer/createAsyncDebouncer.ts#L26)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:25](https://github.com/TanS
 setOptions: (options) => void;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-debouncer/createAsyncDebouncer.ts#L27)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-debouncer/createAsyncDebouncer.ts#L28)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:27](https://github.com/TanS
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-debouncer/createAsyncDebouncer.ts#L31)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-debouncer/createAsyncDebouncer.ts#L34)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: AlpinePacerSubscribe<AsyncDebouncerState<TFn>>;
+```
+
+Defined in: [async-debouncer/createAsyncDebouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-debouncer/createAsyncDebouncer.ts#L32)
+
+Subscribes a child owner to selected state with automatic cleanup.

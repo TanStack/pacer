@@ -3,11 +3,40 @@ id: UseRateLimitedValue
 title: UseRateLimitedValue
 ---
 
-Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedValue.ts:28](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedValue.ts#L28)
+Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedValue.ts:55](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedValue.ts#L55)
 
-Derives a ratelimited value from its tracked positional input.
-Reads and renders through the returned value property. The utility exposes all control methods.
-Named options update after rendering; pending work is preserved until owner cleanup.
+Derives a rate-limited value from its current source.
+
+Accepts updates while the configured limit has capacity in its fixed or sliding window. Rejected updates are discarded instead of delayed.
+
+## Return value
+
+Yields an object with value, setValue, and utility. Read value in the template; utility exposes controls and selected state. Pass the current tracked value as the first positional argument. The initial value is available immediately. Source changes schedule updates on the existing utility.
+
+## State and ownership
+
+The value updates independently of the utility selector. The default utility selection is {}. Pass a selector to subscribe to fields such as executionCount, isPending, or status where the underlying utility exposes them.
+
+Invoke in a Glimmer template. Positional arguments provide the callback or value and optional selector. Named arguments provide options. Removing the invocation runs cleanup.
+Tracked named arguments refresh options after rendering. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
+
+## Example
+
+```gts
+import { useRateLimitedValue } from '@tanstack/ember-pacer'
+
+// Inside a component template:
+<template>
+{{#let (useRateLimitedValue @source limit=3 window=1000) as |result|}}
+  <output>{{result.value}}</output>
+{{/let}}
+</template>
+```
+
+## See
+
+useRateLimiter
 
 ## Extends
 
@@ -72,7 +101,7 @@ Helper<{
 compute(positional, options): EmberRateLimitedValue<TValue, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedValue.ts:45](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedValue.ts#L45)
+Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedValue.ts:73](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedValue.ts#L73)
 
 Override this function when writing a class-based helper.
 

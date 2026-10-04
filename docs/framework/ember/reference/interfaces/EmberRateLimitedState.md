@@ -3,7 +3,7 @@ id: EmberRateLimitedState
 title: EmberRateLimitedState
 ---
 
-Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:18](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts#L18)
+Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:19](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts#L19)
 
 Reactive value, update method, and underlying utility returned by useRateLimitedState.
 
@@ -26,7 +26,7 @@ Reactive value, update method, and underlying utility returned by useRateLimited
 setValue: SetValue<TValue>;
 ```
 
-Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:20](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts#L20)
+Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:21](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts#L21)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:20](ht
 utility: EmberRateLimiter<SetValue<TValue>, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:21](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts#L21)
+Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:22](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts#L22)
 
 ***
 
@@ -46,4 +46,4 @@ Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:21](ht
 readonly value: TValue;
 ```
 
-Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:19](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts#L19)
+Defined in: [packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts:20](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/rate-limiter/useRateLimitedState.ts#L20)

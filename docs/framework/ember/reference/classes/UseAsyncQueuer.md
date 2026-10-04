@@ -3,21 +3,69 @@ id: UseAsyncQueuer
 title: UseAsyncQueuer
 ---
 
-Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts:53](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts#L53)
+Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts:106](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts#L106)
 
-Creates an owned AsyncQueuer from an Ember template.
+Creates and retains the AsyncQueuer for its Ember owner.
 
-Positional arguments are the execution function and an optional state selector.
-Named arguments are core options and onUnmount. Ember tracks argument changes,
-updates the same utility after rendering, and cleans it up when the helper leaves
-the template. Function-valued options are passed through without invocation.
+Retains items until they are processed. Use addItem to enqueue work and start, stop, execute, clear, or flush to control processing. Selected state exposes pending items, capacity, and completed work.
+
+The callback may return a Promise. Core result, error, retry, and abort behavior is preserved.
+Use onSuccess, onError, and onSettled for execution outcomes.
+
+## State and subscriptions
+
+Pass a selector to track only the state consumed by the owner. The default selection is {},
+so utility state changes do not update the owner unless it opts in. Selection uses shallow
+comparison. The raw store remains available for additional subscriptions.
+The selector is the second positional argument. Read utility.state from the template.
+The contextual utility.Subscribe helper selects state for a child template.
+
+Available state fields:
+
+- `activeItems`: Items currently being processed by the queuer
+- `addItemCount`: Number of times addItem has been called (for reduction calculations)
+- `errorCount`: Number of task executions that have resulted in errors
+- `executionCount`: Number of times execute has been called
+- `expirationCount`: Number of items that have been removed from the queue due to expiration
+- `isEmpty`: Whether the queuer has no items to process (items array is empty)
+- `isExecuting`: Whether the queuer is currently executing
+- `isFull`: Whether the queuer has reached its maximum capacity
+- `isIdle`: Whether the queuer is not currently processing any items
+- `isRunning`: Whether the queuer is active and will process items automatically
+- `items`: Array of items currently waiting to be processed
+- `itemTimestamps`: Timestamps when items were added to the queue for expiration tracking
+- `lastResult`: The result from the most recent task execution
+- `pendingTick`: Whether the queuer has a pending timeout for processing the next item
+- `rejectionCount`: Number of items that have been rejected from being added to the queue
+- `settleCount`: Number of task executions that have completed (either successfully or with errors)
+- `size`: Number of items currently in the queue
+- `status`: Current processing status - 'idle' when not processing, 'running' when active, 'stopped' when paused
+- `successCount`: Number of task executions that have completed successfully
+
+## Options and ownership
+
+Tracked named arguments update options after rendering. createPacerScope supplies shared
+defaults through contextual helpers. Local named options override those defaults.
+Removing the helper invocation calls stop() and abort().
+onUnmount replaces default cleanup and receives the same adapter instance. A custom callback
+must perform all required cleanup. Use flush() where supported to finish pending work.
 
 ## Example
 
-```hbs
-{{#let (useAsyncQueuer this.execute wait=this.wait) as |utility|}}
-  {{utility.state}}
-{{/let}}
+```gts
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useAsyncQueuer } from '@tanstack/ember-pacer'
+import type { AsyncQueuerState } from '@tanstack/ember-pacer'
+
+const select = (state: AsyncQueuerState<string>) => ({ size: state.size })
+
+<template>
+  {{#let (useAsyncQueuer @process select wait=100) as |utility|}}
+    <button {{on "click" (fn utility.addItem "item")}}>Schedule</button>
+    <span>{{utility.state.size}}</span>
+  {{/let}}
+</template>
 ```
 
 ## Extends
@@ -87,7 +135,7 @@ Helper<{
 compute(positional, options): EmberAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts:73](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts#L73)
+Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts:126](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts#L126)
 
 Override this function when writing a class-based helper.
 

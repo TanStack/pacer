@@ -3,7 +3,7 @@ id: OctaneAsyncBatcherOptions
 title: OctaneAsyncBatcherOptions
 ---
 
-Defined in: [async-batcher/useAsyncBatcher.ts:13](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-batcher/useAsyncBatcher.ts#L13)
+Defined in: [async-batcher/useAsyncBatcher.ts:15](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-batcher/useAsyncBatcher.ts#L15)
 
 Options for useAsyncBatcher, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useAsyncBatcher, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [async-batcher/useAsyncBatcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-batcher/useAsyncBatcher.ts#L18)
+Defined in: [async-batcher/useAsyncBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-batcher/useAsyncBatcher.ts#L20)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

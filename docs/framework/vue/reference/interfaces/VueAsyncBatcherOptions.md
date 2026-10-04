@@ -3,7 +3,7 @@ id: VueAsyncBatcherOptions
 title: VueAsyncBatcherOptions
 ---
 
-Defined in: [async-batcher/useAsyncBatcher.ts:12](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L12)
+Defined in: [async-batcher/useAsyncBatcher.ts:13](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L13)
 
 Options for useAsyncBatcher, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useAsyncBatcher, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [async-batcher/useAsyncBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L17)
+Defined in: [async-batcher/useAsyncBatcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L18)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

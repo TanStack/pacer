@@ -3,9 +3,9 @@ id: AlpineAsyncQueuer
 title: AlpineAsyncQueuer
 ---
 
-Defined in: [async-queuer/createAsyncQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-queuer/createAsyncQueuer.ts#L20)
+Defined in: [async-queuer/createAsyncQueuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-queuer/createAsyncQueuer.ts#L21)
 
-A AsyncQueuer with framework-reactive selected state. All core methods remain available.
+An AsyncQueuer with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncQueuer with framework-reactive selected state. All core methods remain av
 options: AsyncQueuerOptions<TValue> & AlpineAsyncQueuerOptions<TValue, TSelected>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-queuer/createAsyncQueuer.ts#L24)
+Defined in: [async-queuer/createAsyncQueuer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-queuer/createAsyncQueuer.ts#L25)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-queuer/createAsyncQueuer.ts:24](https://github.com/TanStack/p
 setOptions: (options) => void;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-queuer/createAsyncQueuer.ts#L26)
+Defined in: [async-queuer/createAsyncQueuer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-queuer/createAsyncQueuer.ts#L27)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [async-queuer/createAsyncQueuer.ts:26](https://github.com/TanStack/p
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-queuer/createAsyncQueuer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-queuer/createAsyncQueuer.ts#L30)
+Defined in: [async-queuer/createAsyncQueuer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-queuer/createAsyncQueuer.ts#L33)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: AlpinePacerSubscribe<AsyncQueuerState<TValue>>;
+```
+
+Defined in: [async-queuer/createAsyncQueuer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-queuer/createAsyncQueuer.ts#L31)
+
+Subscribes a child owner to selected state with automatic cleanup.

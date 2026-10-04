@@ -50,62 +50,209 @@ Choose another utility when:
 
 Use the callback API for event handlers, the state or value API for rate-controlled UI state, and the instance API for lifecycle methods and timing state.
 
-## Use useThrottler
+## Ember example
 
-Call the `use*` template helpers inside a `{{#let}}` block. The execution callback is the first positional argument and the optional state selector is the second. Pass options as named arguments. Ember tracks named arguments and updates the same utility after rendering. Removing the helper from the template releases its subscriptions and cleans up pending work.
+Invoke the helper in a template. Named arguments supply options, and the second positional argument selects state. Removing the helper invocation runs cleanup. The example imports application operations from `./api`.
 
 ```gts
 import Component from '@glimmer/component'
-import { tracked } from '@glimmer/tracking'
 import { on } from '@ember/modifier'
 import { fn } from '@ember/helper'
 import { useThrottler } from '@tanstack/ember-pacer'
 import type { ThrottlerState } from '@tanstack/ember-pacer'
-const json = (value: unknown) => JSON.stringify(value, null, 2)
+import { sendPosition } from './api'
+
+const select = (state: ThrottlerState<typeof sendPosition>) => ({
+  isPending: state.isPending,
+  executionCount: state.executionCount,
+})
+
 export default class Example extends Component {
-  @tracked input = 'hello'
-  @tracked wait = 200
-  @tracked history: Array<string> = []
-  execute = (value: string) => { this.history = [...this.history, value] }
-  select = (state: ThrottlerState<(value: string) => void>) => state
-  updateInput = (event: Event) => { this.input = (event.target as HTMLInputElement).value }
-  updateWait = (event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }
-  clear = () => { this.history = [] }
-  burst = (schedule: (value: string) => unknown) => { for (let i = 1; i <= 3; i++) void schedule(`${this.input} ${i}`) }
   <template>
-{{#let (useThrottler this.execute this.select wait=this.wait leading=false) as |utility|}}
-<main>
-<h1>Ember useThrottler</h1><p>Limit executions to one per interval while retaining the latest trailing call.</p>
-<label>Task <input value={{this.input}} {{on "input" this.updateInput}} /></label><label>Wait (ms) <input value={{this.wait}} {{on "input" this.updateWait}} type="number" min="0" /></label>
-<div><button {{on "click" (fn utility.maybeExecute this.input)}}>Schedule</button><button {{on "click" (fn this.burst utility.maybeExecute)}}>Schedule three</button><button {{on "click" utility.flush}}>Flush</button><button {{on "click" utility.cancel}}>Cancel</button><button {{on "click" this.clear}}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{{json this.history}}</pre></section>
-<section><h2>Utility state</h2><pre>{{json utility.state}}</pre></section>
-<p class="caption">Tracked named arguments update the same utility. The helper owns cleanup when it leaves the template.</p>
-</main>
-{{/let}}
+    {{#let (useThrottler sendPosition select wait=250) as |throttler|}}
+      <button {{on 'click' (fn throttler.maybeExecute 42)}}>Report</button>
+      <output>{{throttler.state.isPending}}</output>
+    {{/let}}
   </template>
 }
 ```
 
-## Options and controls
+The focused TypeScript snippets below demonstrate the core `Throttler` class re-exported by the adapter. In a component, use `useThrottler` as above to own the instance, pass configuration as named arguments, and pass the yielded instance to event handlers. Core class instances require explicit cleanup.
 
-`maybeExecute` limits executions to one per `wait` interval. `leading` controls the first execution and `trailing` retains the most recent deferred call. Use `flush()` to execute pending work and `cancel()` to discard its timer. Select `isPending`, `lastArgs`, and `executionCount` to render progress.
-## Reactive options and cleanup
+### Throttled callback
 
-Use tracked named arguments to change options. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+Use `useThrottledCallback` when an event should invoke a throttled side effect:
 
-The owning helper supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+```gts
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useThrottledCallback } from '@tanstack/ember-pacer'
 
-## State and convenience helpers
+// In a component template; this.search accepts a query string:
+<template>
+  {{#let (useThrottledCallback this.search wait=500) as |search|}}
+    <button {{on 'click' (fn search @query)}}>Search</button>
+  {{/let}}
+</template>
+```
 
-Pass a selector as the final argument after the execution callback to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+The callback does not expose `cancel()` or `flush()`. Use `useThrottler` when the component needs that control.
 
-`useThrottledCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+### Throttled state and values
 
-`useThrottledState` owns a delayed value. `useThrottledValue` derives one from an existing reactive input. See the [adapter guide](../adapter.md) for each helper's return shape.
+Use `useThrottledState` when Pacer should own the throttled state, or `useThrottledValue` when a value already changes elsewhere:
 
-## Related documentation
+```gts
+import { useThrottledValue } from '@tanstack/ember-pacer'
 
-- [Ember adapter](../adapter.md)
-- [Core throttling guide](../../../guides/throttling.md)
-- [API reference](../reference/index.md)
+<template>
+  {{#let (useThrottledValue @query wait=500) as |delayed|}}
+    <SearchResults @query={{delayed.value}} />
+  {{/let}}
+</template>
+```
+
+## Execution timing
+
+The `leading` and `trailing` options control which edges of the throttle interval may execute.
+
+| `leading` | `trailing` | Behavior                                                                                                     |
+| --------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
+| `true`    | `true`     | Execute the first call immediately and the latest blocked call at the trailing edge. This is the default.    |
+| `true`    | `false`    | Execute immediately when allowed and discard calls during the interval.                                      |
+| `false`   | `true`     | Delay the first execution until the trailing edge and use the latest arguments received during the interval. |
+| `false`   | `false`    | Do not execute any calls.                                                                                    |
+
+```ts
+import { Throttler } from '@tanstack/ember-pacer'
+
+const throttler = new Throttler(updateProgress, {
+  wait: 1000,
+  leading: true,
+  trailing: true,
+})
+
+throttler.maybeExecute(10) // Executes immediately.
+throttler.maybeExecute(20)
+throttler.maybeExecute(30) // Executes at the trailing edge with 30.
+```
+
+Calls received during an existing interval update the trailing arguments without restarting that interval. This is the central difference from debouncing.
+
+## Controlling pending work
+
+### Flush
+
+`flush()` immediately executes the pending trailing call. It does nothing when no trailing call is pending.
+
+```ts
+throttler.maybeExecute(10) // Leading execution.
+throttler.maybeExecute(20) // Pending trailing execution.
+throttler.flush() // Executes with 20 now.
+```
+
+### Cancel
+
+`cancel()` discards the pending trailing call and clears its stored arguments. It does not reset the timing of the most recent completed execution.
+
+```ts
+throttler.maybeExecute(20)
+throttler.cancel()
+```
+
+### Reset
+
+`reset()` restores state counters and timing values to their defaults. It does not clear an already scheduled timeout. Call `cancel()` before `reset()` when pending work must be discarded.
+
+```ts
+throttler.cancel()
+throttler.reset()
+```
+
+## Configuring behavior at runtime
+
+Use `setOptions()` to update options after construction:
+
+```ts
+throttler.setOptions({
+  wait: 250,
+  trailing: false,
+})
+```
+
+A changed `wait` value does not reschedule an existing trailing timeout. It applies to later scheduling and executions.
+
+The `enabled` and `wait` options may be functions that receive the throttler instance:
+
+```ts
+import { Throttler } from '@tanstack/ember-pacer'
+
+const throttler = new Throttler(updateProgress, {
+  enabled: (throttler) => throttler.store.state.executionCount < 100,
+  wait: (throttler) => (throttler.store.state.executionCount < 10 ? 100 : 250),
+})
+```
+
+Disabling a throttler through `setOptions()` cancels a pending trailing execution.
+
+### Observing executions
+
+`onExecute` runs after the wrapped function and receives the executed arguments followed by the throttler instance:
+
+```ts
+import { Throttler } from '@tanstack/ember-pacer'
+
+const throttler = new Throttler(updateProgress, {
+  wait: 100,
+  onExecute: (args, throttler) => {
+    console.log('Rendered value:', args[0])
+    console.log('Executions:', throttler.store.state.executionCount)
+  },
+})
+```
+
+## Ember lifecycle
+
+The adapter cancels pending work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Use the helper's second positional argument to select fields, as shown above. Read those fields from the yielded instance's `.state` in the template.
+
+```gts
+import Component from '@glimmer/component'
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useThrottler } from '@tanstack/ember-pacer'
+import type { ThrottlerState } from '@tanstack/ember-pacer'
+import { sendPosition } from './api'
+
+const select = (state: ThrottlerState<typeof sendPosition>) => ({
+  isPending: state.isPending,
+  executionCount: state.executionCount,
+})
+
+export default class Example extends Component {
+  <template>
+    {{#let (useThrottler sendPosition select wait=250) as |throttler|}}
+      <button {{on 'click' (fn throttler.maybeExecute 42)}}>Report</button>
+      <output>{{throttler.state.isPending}}</output>
+    {{/let}}
+  </template>
+}
+```
+
+The contextual `utility.Subscribe` helper selects state for a child template without subscribing the utility owner.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
+
+- `isPending`: Whether a trailing execution is waiting.
+- `lastArgs`: The arguments retained for a possible trailing execution.
+- `lastExecutionTime`: When the wrapped function last executed.
+- `nextExecutionTime`: When another execution can occur.
+- `executionCount`: How many times the wrapped function has executed.
+- `status`: `'disabled'`, `'idle'`, or `'pending'`.
+
+See the [Ember API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

@@ -44,54 +44,205 @@ Choose another utility when:
 
 ## Choose an API
 
-- `useThrottledCallback` for a stable throttled event handler
-- `useThrottledState` or `useThrottledValue` for throttled Alpine state
-- `useThrottler` for lifecycle methods and selected state
+- `createThrottledCallback` for a stable throttled event handler
+- `createThrottledState` or `createThrottledValue` for throttled Alpine state
+- `createThrottler` for lifecycle methods and selected state
 
 Use the callback API for event handlers, the state or value API for rate-controlled UI state, and the instance API for lifecycle methods and timing state.
 
-## Use createThrottler
+## Alpine example
 
-Create a `createPacerScope()` for each component and call `scope.destroy()` from Alpine's `destroy` hook. Scope methods own option effects, state subscriptions, and utility cleanup. Alternatively, install `pacerPlugin` to use the automatically owned `$pacer` magic. Read selected state through `utility.state`.
+Create one Pacer scope for each Alpine component and destroy it from the component's `destroy` method. The example imports application operations from `./api`.
 
 ```ts
 import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
-import type { AlpineThrottler } from '@tanstack/alpine-pacer'
-import type { ThrottlerState } from '@tanstack/alpine-pacer'
-Alpine.data('example', () => ({
-  input: 'hello', wait: 200, history: [] as Array<string>,
-  scope: createPacerScope(),
-  utility: null as AlpineThrottler<(value: string) => void, ThrottlerState<(value: string) => void>> | null,
-  init() {
-    this.utility = this.scope.createThrottler((value: string) => { this.history = [...this.history, value] }, () => ({ wait: this.wait, leading: false }), (state) => state)
-  },
-  schedule() { void this.utility?.maybeExecute(this.input) },
-  burst() { for (let i = 1; i <= 3; i++) void this.utility?.maybeExecute(`${this.input} ${i}`) },
-  destroy() { this.scope.destroy() },
-}))
+import { sendPosition } from './api'
+
+Alpine.data('example', () => {
+  const scope = createPacerScope()
+  const throttler = scope.createThrottler(
+    sendPosition,
+    { wait: 250 },
+    (state) => ({
+      isPending: state.isPending,
+      executionCount: state.executionCount,
+    }),
+  )
+  return {
+    throttler,
+    schedule() {
+      void throttler.maybeExecute(42)
+    },
+    destroy() {
+      scope.destroy()
+    },
+  }
+})
+
 Alpine.start()
 ```
 
-## Options and controls
+```html
+<div x-data="example">
+  <button @click="schedule">Report</button>
+  <output x-text="throttler.state.isPending"></output>
+</div>
+```
 
-`maybeExecute` limits executions to one per `wait` interval. `leading` controls the first execution and `trailing` retains the most recent deferred call. Use `flush()` to execute pending work and `cancel()` to discard its timer. Select `isPending`, `lastArgs`, and `executionCount` to render progress.
-## Reactive options and cleanup
+The focused snippets below use the component-owned `scope` created above. Call their control methods from event handlers.
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+### Throttled callback
 
-The owning scope supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+Use `createThrottledCallback` when an event should invoke a throttled side effect:
 
-## State and convenience helpers
+```ts
+const search = scope.createThrottledCallback(
+  (query: string) => updateSearchResults(query),
+  { wait: 500 },
+)
+// In the component's input handler:
+search(this.query)
+```
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+The callback does not expose `cancel()` or `flush()`. Use `createThrottler` when the component needs that control.
 
-`createThrottledCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+### Throttled state and values
 
-`createThrottledState` owns a delayed value. `createThrottledValue` derives one from an existing reactive input. See the [adapter guide](../adapter.md) for each helper's return shape.
+Use `createThrottledState` when Pacer should own the throttled state, or `createThrottledValue` when a value already changes elsewhere:
 
-## Related documentation
+```ts
+const [throttledQuery] = scope.createThrottledValue(() => this.query, {
+  wait: 500,
+})
+// Return throttledQuery from the data object and read throttledQuery() in x-text.
+```
 
-- [Alpine adapter](../adapter.md)
-- [Core throttling guide](../../../guides/throttling.md)
-- [API reference](../reference/index.md)
+## Execution timing
+
+The `leading` and `trailing` options control which edges of the throttle interval may execute.
+
+| `leading` | `trailing` | Behavior                                                                                                     |
+| --------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
+| `true`    | `true`     | Execute the first call immediately and the latest blocked call at the trailing edge. This is the default.    |
+| `true`    | `false`    | Execute immediately when allowed and discard calls during the interval.                                      |
+| `false`   | `true`     | Delay the first execution until the trailing edge and use the latest arguments received during the interval. |
+| `false`   | `false`    | Do not execute any calls.                                                                                    |
+
+```ts
+const throttler = scope.createThrottler(updateProgress, {
+  wait: 1000,
+  leading: true,
+  trailing: true,
+})
+
+throttler.maybeExecute(10) // Executes immediately.
+throttler.maybeExecute(20)
+throttler.maybeExecute(30) // Executes at the trailing edge with 30.
+```
+
+Calls received during an existing interval update the trailing arguments without restarting that interval. This is the central difference from debouncing.
+
+## Controlling pending work
+
+### Flush
+
+`flush()` immediately executes the pending trailing call. It does nothing when no trailing call is pending.
+
+```ts
+throttler.maybeExecute(10) // Leading execution.
+throttler.maybeExecute(20) // Pending trailing execution.
+throttler.flush() // Executes with 20 now.
+```
+
+### Cancel
+
+`cancel()` discards the pending trailing call and clears its stored arguments. It does not reset the timing of the most recent completed execution.
+
+```ts
+throttler.maybeExecute(20)
+throttler.cancel()
+```
+
+### Reset
+
+`reset()` restores state counters and timing values to their defaults. It does not clear an already scheduled timeout. Call `cancel()` before `reset()` when pending work must be discarded.
+
+```ts
+throttler.cancel()
+throttler.reset()
+```
+
+## Configuring behavior at runtime
+
+Use `setOptions()` to update options after construction:
+
+```ts
+throttler.setOptions({
+  wait: 250,
+  trailing: false,
+})
+```
+
+A changed `wait` value does not reschedule an existing trailing timeout. It applies to later scheduling and executions.
+
+The `enabled` and `wait` options may be functions that receive the throttler instance:
+
+```ts
+const throttler = scope.createThrottler(updateProgress, {
+  enabled: (throttler) => throttler.store.state.executionCount < 100,
+  wait: (throttler) => (throttler.store.state.executionCount < 10 ? 100 : 250),
+})
+```
+
+Disabling a throttler through `setOptions()` cancels a pending trailing execution.
+
+### Observing executions
+
+`onExecute` runs after the wrapped function and receives the executed arguments followed by the throttler instance:
+
+```ts
+const throttler = scope.createThrottler(updateProgress, {
+  wait: 100,
+  onExecute: (args, throttler) => {
+    console.log('Rendered value:', args[0])
+    console.log('Executions:', throttler.store.state.executionCount)
+  },
+})
+```
+
+## Alpine lifecycle
+
+The adapter cancels pending work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in its owning scope and select fields used by `x-text` and `x-bind`:
+
+```ts
+const throttler = scope.createThrottler(
+  updateProgress,
+  { wait: 100 },
+  (state) => ({
+    isPending: state.isPending,
+    executionCount: state.executionCount,
+  }),
+)
+
+console.log(throttler.state.isPending, throttler.state.executionCount)
+```
+
+Use `utility.subscribe(childScope, selector)` for an independently subscribed child scope. It returns a selected-state getter and cleans up with that child scope.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
+
+- `isPending`: Whether a trailing execution is waiting.
+- `lastArgs`: The arguments retained for a possible trailing execution.
+- `lastExecutionTime`: When the wrapped function last executed.
+- `nextExecutionTime`: When another execution can occur.
+- `executionCount`: How many times the wrapped function has executed.
+- `status`: `'disabled'`, `'idle'`, or `'pending'`.
+
+See the [Alpine API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

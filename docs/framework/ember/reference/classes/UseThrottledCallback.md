@@ -3,9 +3,42 @@ id: UseThrottledCallback
 title: UseThrottledCallback
 ---
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottledCallback.ts:15](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledCallback.ts#L15)
+Defined in: [packages/ember-pacer/src/throttler/useThrottledCallback.ts:48](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledCallback.ts#L48)
 
-Returns a throttled callback from an owned Ember helper. Named arguments update the same utility.
+Returns a stable throttled callback owned by the Ember lifecycle.
+
+Limits execution to the configured wait interval. Leading and trailing execution are enabled by default, and the latest blocked update is retained for the trailing edge.
+
+## Return value
+
+Returns the bound maybeExecute method with the wrapped function's parameter types. It returns void, independently of the wrapped callback's return value.
+
+## State and ownership
+
+Use useThrottler when you need selected state or control methods. This callback does not expose the utility, its store, or a child subscription.
+
+Invoke in a Glimmer template. Positional arguments provide the callback or value and optional selector. Named arguments provide options. Removing the invocation runs cleanup.
+Tracked named arguments refresh options after rendering. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
+
+## Example
+
+```gts
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useThrottledCallback } from '@tanstack/ember-pacer'
+
+// Inside a component template:
+<template>
+{{#let (useThrottledCallback @process wait=500) as |schedule|}}
+  <button {{on "click" (fn schedule 1)}}>Schedule</button>
+{{/let}}
+</template>
+```
+
+## See
+
+useThrottler
 
 ## Extends
 
@@ -69,7 +102,7 @@ Helper<{
 compute(positional, options): (...args) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottledCallback.ts:31](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledCallback.ts#L31)
+Defined in: [packages/ember-pacer/src/throttler/useThrottledCallback.ts:64](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottledCallback.ts#L64)
 
 Override this function when writing a class-based helper.
 

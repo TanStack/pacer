@@ -13,10 +13,16 @@
 '@tanstack/preact-pacer': patch
 '@tanstack/solid-pacer': patch
 '@tanstack/angular-pacer': patch
-'@tanstack/pacer-devtools': patch
+'@tanstack/pacer-devtools': minor
 '@tanstack/react-pacer-devtools': patch
 '@tanstack/preact-pacer-devtools': patch
 '@tanstack/solid-pacer-devtools': patch
 ---
 
-Add Vue, Svelte, Lit, Alpine, Ember, and Octane adapters with reactive options, selected state, lifecycle cleanup, callback and value helpers, and framework guides and examples. Add Vue, Svelte, and Angular devtools integrations. Update compatible dependencies while retaining TypeScript 6 and the workspace minimum release age.
+Add Vue, Svelte, Lit, Alpine, Ember, and Octane adapters with reactive options, selected state, child subscriptions, lifecycle cleanup, callback and value helpers, and framework guides and examples. Add Vue, Svelte, and Angular devtools integrations and a framework-independent Pacer plugin for the TanStack Devtools host. Update compatible dependencies while retaining TypeScript 6 and the workspace minimum release age.
+
+Lit defaults inherit through the component subtree, including shadow roots, and update descendant utilities when provider options change.
+
+Vue, Svelte, Lit, and Alpine selectors also refresh when their reactive inputs change without a utility store update.
+
+Ember queues process initial items after rendering so their callbacks can update tracked state safely.

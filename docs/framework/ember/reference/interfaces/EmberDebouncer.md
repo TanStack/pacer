@@ -3,7 +3,7 @@ id: EmberDebouncer
 title: EmberDebouncer
 ---
 
-Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L26)
+Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L28)
 
 A Debouncer with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Debouncer with framework-reactive selected state. All core methods remain avai
 options: DebouncerOptions<TFn> & EmberDebouncerOptions<TFn, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L30)
+Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L32)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:30](https://gith
 setOptions: (options) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L31)
+Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L33)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:31](https://gith
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L33)
+Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L37)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: EmberPacerSubscribe<DebouncerState<TFn>>;
+```
+
+Defined in: [packages/ember-pacer/src/debouncer/useDebouncer.ts:35](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/debouncer/useDebouncer.ts#L35)
+
+Selects state in a child without subscribing the utility owner.

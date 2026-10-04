@@ -3,9 +3,9 @@ id: VueAsyncBatcher
 title: VueAsyncBatcher
 ---
 
-Defined in: [async-batcher/useAsyncBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L21)
+Defined in: [async-batcher/useAsyncBatcher.ts:22](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L22)
 
-A AsyncBatcher with framework-reactive selected state. All core methods remain available.
+An AsyncBatcher with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -42,7 +42,7 @@ options: Omit<Required<AsyncBatcherOptions<TValue>>,
 | "onItemsChange">> & VueAsyncBatcherOptions<TValue, TSelected>;
 ```
 
-Defined in: [async-batcher/useAsyncBatcher.ts:25](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L25)
+Defined in: [async-batcher/useAsyncBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L26)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [async-batcher/useAsyncBatcher.ts:25](https://github.com/TanStack/pa
 setOptions: (options) => void;
 ```
 
-Defined in: [async-batcher/useAsyncBatcher.ts:27](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L27)
+Defined in: [async-batcher/useAsyncBatcher.ts:28](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L28)
 
 #### Parameters
 
@@ -72,6 +72,18 @@ Defined in: [async-batcher/useAsyncBatcher.ts:27](https://github.com/TanStack/pa
 readonly state: Readonly<ShallowRef<TSelected>>;
 ```
 
-Defined in: [async-batcher/useAsyncBatcher.ts:31](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L31)
+Defined in: [async-batcher/useAsyncBatcher.ts:34](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L34)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: VuePacerSubscribe<AsyncBatcherState<TValue>>;
+```
+
+Defined in: [async-batcher/useAsyncBatcher.ts:32](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-batcher/useAsyncBatcher.ts#L32)
+
+Subscribes a scoped slot to state without re-rendering the utility owner.

@@ -7,9 +7,9 @@ title: useDefaultPacerOptions
 function useDefaultPacerOptions(host): () => PacerProviderOptions;
 ```
 
-Defined in: [provider/PacerProvider.ts:41](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L41)
+Defined in: [provider/PacerProvider.ts:79](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L79)
 
-Reads defaults for the host on each update.
+Reads local or inherited defaults and refreshes the host when its provider updates.
 
 ## Parameters
 

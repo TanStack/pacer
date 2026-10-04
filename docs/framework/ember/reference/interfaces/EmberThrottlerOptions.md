@@ -3,7 +3,7 @@ id: EmberThrottlerOptions
 title: EmberThrottlerOptions
 ---
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:17](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L17)
+Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L19)
 
 Options for useThrottler, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useThrottler, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:22](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L22)
+Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L24)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

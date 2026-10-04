@@ -3,9 +3,42 @@ id: UseAsyncRateLimitedCallback
 title: UseAsyncRateLimitedCallback
 ---
 
-Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:18](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L18)
+Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:51](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L51)
 
-Returns a asyncratelimited callback from an owned Ember helper. Named arguments update the same utility.
+Returns a stable rate-limited callback owned by the Ember lifecycle.
+
+Accepts updates while the configured limit has capacity in its fixed or sliding window. Rejected updates are discarded instead of delayed.
+
+## Return value
+
+Returns the bound maybeExecute method with the wrapped function's parameter types. The returned Promise preserves the core result and error contract. A rejected rate-limit call resolves with undefined.
+
+## State and ownership
+
+Use useAsyncRateLimiter when you need selected state or control methods. This callback does not expose the utility, its store, or a child subscription.
+
+Invoke in a Glimmer template. Positional arguments provide the callback or value and optional selector. Named arguments provide options. Removing the invocation runs cleanup.
+Tracked named arguments refresh options after rendering. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
+
+## Example
+
+```gts
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useAsyncRateLimitedCallback } from '@tanstack/ember-pacer'
+
+// Inside a component template:
+<template>
+{{#let (useAsyncRateLimitedCallback @process limit=3 window=1000) as |schedule|}}
+  <button {{on "click" (fn schedule 1)}}>Schedule</button>
+{{/let}}
+</template>
+```
+
+## See
+
+useAsyncRateLimiter
 
 ## Extends
 
@@ -70,7 +103,7 @@ Helper<{
 compute(positional, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:38](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L38)
+Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts:71](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimitedCallback.ts#L71)
 
 Override this function when writing a class-based helper.
 

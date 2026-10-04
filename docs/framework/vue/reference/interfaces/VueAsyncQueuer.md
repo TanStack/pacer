@@ -3,9 +3,9 @@ id: VueAsyncQueuer
 title: VueAsyncQueuer
 ---
 
-Defined in: [async-queuer/useAsyncQueuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L21)
+Defined in: [async-queuer/useAsyncQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L22)
 
-A AsyncQueuer with framework-reactive selected state. All core methods remain available.
+An AsyncQueuer with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncQueuer with framework-reactive selected state. All core methods remain av
 options: AsyncQueuerOptions<TValue> & VueAsyncQueuerOptions<TValue, TSelected>;
 ```
 
-Defined in: [async-queuer/useAsyncQueuer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L25)
+Defined in: [async-queuer/useAsyncQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L26)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-queuer/useAsyncQueuer.ts:25](https://github.com/TanStack/pace
 setOptions: (options) => void;
 ```
 
-Defined in: [async-queuer/useAsyncQueuer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L27)
+Defined in: [async-queuer/useAsyncQueuer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L28)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [async-queuer/useAsyncQueuer.ts:27](https://github.com/TanStack/pace
 readonly state: Readonly<ShallowRef<TSelected>>;
 ```
 
-Defined in: [async-queuer/useAsyncQueuer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L31)
+Defined in: [async-queuer/useAsyncQueuer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L34)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: VuePacerSubscribe<AsyncQueuerState<TValue>>;
+```
+
+Defined in: [async-queuer/useAsyncQueuer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L32)
+
+Subscribes a scoped slot to state without re-rendering the utility owner.

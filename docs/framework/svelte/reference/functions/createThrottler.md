@@ -10,17 +10,38 @@ function createThrottler<TFn, TSelected>(
 selector?): SvelteThrottler<TFn, TSelected>;
 ```
 
-Defined in: [packages/svelte-pacer/src/throttler/createThrottler.ts:47](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/throttler/createThrottler.ts#L47)
+Defined in: [packages/svelte-pacer/src/throttler/createThrottler.ts:83](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/throttler/createThrottler.ts#L83)
 
-Creates a Svelte Throttler with reactive options and automatic owner cleanup.
+Creates and retains the Throttler for its Svelte owner.
 
-Pass an options object with property getters or a factory. Only top-level properties
-are evaluated; function-valued core options remain callbacks. Local options override
-provider defaults. Options update the same instance, preserving pending work and counters.
+Limits execution to at most one call per wait interval. Leading and trailing options control immediate and deferred execution; the trailing call uses the latest arguments.
 
-Pass a selector to subscribe to the state your UI reads. The core store remains available
-for additional subscriptions. Cleanup uses the latest onUnmount option, or the core's
-default cancellation/stop behavior, including aborting active asynchronous work.
+## State and subscriptions
+
+Pass a selector to track only the state consumed by the owner. The default selection is {},
+so utility state changes do not update the owner unless it opts in. Selection uses shallow
+comparison. The raw store remains available for additional subscriptions.
+Read selected state through utility.state. Use utility.Subscribe with a children snippet
+to select state in a child without updating the owner.
+
+Available state fields:
+
+- `executionCount`: Number of function executions that have been completed
+- `isPending`: Whether the throttler is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `lastExecutionTime`: Timestamp of the last function execution in milliseconds
+- `maybeExecuteCount`: Number of times maybeExecute has been called (for reduction calculations)
+- `nextExecutionTime`: Timestamp when the next execution can occur in milliseconds
+- `status`: Current execution status - 'idle' when not active, 'pending' when waiting for timeout
+
+## Options and ownership
+
+Pass an options object with property getters or a factory. Top-level properties are read
+reactively; function-valued core options remain callbacks. Local options override provider
+defaults. Updates retain the utility, its store, counters, and pending work.
+Destroying the component calls cancel().
+onUnmount replaces default cleanup and receives the same adapter instance. A custom callback
+must perform all required cleanup. Use flush() where supported to finish pending work.
 
 ## Type Parameters
 
@@ -45,16 +66,30 @@ Function executed by the utility.
 
 [`SveltePacerOptions`](../type-aliases/SveltePacerOptions.md)\<[`SvelteThrottlerOptions`](../interfaces/SvelteThrottlerOptions.md)\<`TFn`, `TSelected`\>\>
 
-Core options and an optional cleanup callback.
+Core options or a reactive factory, plus an optional onUnmount callback.
 
 ### selector?
 
 (`state`) => `TSelected`
 
-Selects the state consumed by the component.
+Selects state that updates the owner. Omit to leave selected state empty.
 
 ## Returns
 
 [`SvelteThrottler`](../interfaces/SvelteThrottler.md)\<`TFn`, `TSelected`\>
 
-The utility instance with reactive selected state.
+The retained utility instance with selected state and child subscriptions.
+
+## Example
+
+```ts
+import { createThrottler } from '@tanstack/svelte-pacer'
+
+const utility = createThrottler(
+  (value: string) => { console.log(value) },
+  { wait: 500 },
+  (state) => ({ isPending: state.isPending }),
+)
+utility.maybeExecute('item')
+// Selected state: utility.state.isPending
+```

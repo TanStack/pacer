@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine batch</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="demo">
+          <h1>TanStack Pacer batcher Example</h1>
+          <div>Batch Items: <span x-text="(batchItems.join(', '))"></span></div>
+          <div>
+            <span x-text="('Processed Batches: ')"></span
+            ><template x-for="(b, i) in (processedBatches)" :key="i"
+              ><span>[<span x-text="(b.join(', '))"></span>], </span></template
+            >
+          </div>
+          <button
+            @click="((() => {
+    const nextNumber = batchItems.length
+        ? batchItems[batchItems.length - 1] + 1
+        : 1;
+    addToBatch(nextNumber);
+}))($event)"
+          >
+            Add Number
+          </button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

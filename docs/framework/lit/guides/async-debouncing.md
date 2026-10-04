@@ -9,61 +9,190 @@ Use async debouncing when the debounced operation returns a value you need, can 
 
 ## Choose an API
 
-- `useAsyncDebouncedCallback` for a stable Promise-returning handler
-- `useAsyncDebouncer` for lifecycle methods and selected execution state
+- `createAsyncDebouncedCallback` for a stable Promise-returning handler
+- `createAsyncDebouncer` for lifecycle methods and selected execution state
 
-## Use createAsyncDebouncer
+## Lit example
 
-Pass the owning `ReactiveControllerHost` as the first argument. The factory registers its controller automatically. Host updates refresh options, store updates request a render, and disconnecting cleans up pending work. Reconnecting subscribes again to the same utility. `DebouncerController` and the other controller classes expose the utility through `.pacer` and selected state through `.state`.
+Pass the owning Lit controller host as the first argument. Disconnecting the host runs cleanup; reconnecting restores its subscription. The example imports application operations from `./api`.
 
 ```ts
 import { LitElement, html } from 'lit'
 import { createAsyncDebouncer } from '@tanstack/lit-pacer'
+import { fetchSearchResults } from './api'
+
 class Example extends LitElement {
-  static properties = { input: { state: true }, wait: { state: true }, history: { state: true } }
-  input = 'hello'
-  wait = 200
-  history: Array<string> = []
-  utility = createAsyncDebouncer(this, async (value: string) => { this.history = [...this.history, value] }, () => ({ wait: this.wait }), (state) => state)
-  override createRenderRoot() { return this }
-  schedule = () => { void this.utility.maybeExecute(this.input) }
-  burst = () => { for (let i = 1; i <= 3; i++) void this.utility.maybeExecute(`${this.input} ${i}`) }
-  override render() { return html`
-<main>
-<h1>Lit createAsyncDebouncer</h1><p>Wait until typing stops, then execute the latest call.</p>
-<label>Task <input .value=${this.input} @input=${(event: Event) => { this.input = (event.target as HTMLInputElement).value }} /></label><label>Wait (ms) <input .value=${String(this.wait)} @input=${(event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }} type="number" min="0" /></label>
-<div><button @click=${this.schedule}>Schedule</button><button @click=${this.burst}>Schedule three</button><button @click=${() => this.utility.flush()}>Flush</button><button @click=${() => this.utility.cancel()}>Cancel</button><button @click=${() => { this.history = [] }}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">${JSON.stringify(this.history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>${JSON.stringify(this.utility.state, null, 2)}</pre></section>
-<p class="caption">Host updates refresh options. Disconnecting the element cleans up its utility.</p>
-</main>` }
+  debouncer = createAsyncDebouncer(
+    this,
+    fetchSearchResults,
+    { wait: 300 },
+    (state) => ({ isPending: state.isPending, isExecuting: state.isExecuting }),
+  )
+
+  override render() {
+    return html`
+      <button @click=${() => void this.debouncer.maybeExecute('pacer')}>
+        Search
+      </button>
+      <output>${this.debouncer.state.isPending}</output>
+    `
+  }
 }
+
 customElements.define('pacer-example', Example)
-document.getElementById('app')!.append(document.createElement('pacer-example'))
 ```
 
-## Options and controls
+The focused snippets below create utilities in a Lit component constructor, where `this` is the controller host. Call their control methods from event handlers.
 
-`maybeExecute` schedules the latest arguments. `wait` resets after each call. `leading` runs the first call immediately and `trailing` controls the deferred call. Use `flush()` to execute pending work, `cancel()` to discard its timer, and `reset()` to reset counters. Select `isPending`, `lastArgs`, or `settleCount` for your UI.
+## Promise results
 
-The async variant awaits your callback. `onSuccess` receives the result, `onError` handles failures, and `onSettled` runs after an outcome. Configure `throwOnError` to decide whether a failed execution rejects its returned promise. `asyncRetryerOptions` configures retries inside the scheduled operation. Select `successCount`, `errorCount`, and `settleCount` where the utility exposes them.
+`maybeExecute()` returns a Promise. A call that owns an execution resolves with that execution's result. There is one important consequence when a pending trailing call is replaced:
 
-`abort()` signals active work to stop. Pass the utility's abort signal to cancellable operations such as `fetch`. Cancellation is cooperative and cannot undo an operation that already completed.
+```text
+call A ──────┐
+             ├─ call B replaces A ───── wait ───── execute B
+Promise A ───┘ resolves with the previous lastResult
+Promise B ─────────────────────────────── resolves with result B
+```
 
-## Reactive options and cleanup
+The replaced call resolves immediately with the debouncer's current `lastResult`, which is often `undefined` before the first successful execution. It does not wait for the newer call. Treat the Promise returned by the latest call as the owner of the pending result.
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+If you need every invocation to execute and produce its own result, use an [Async Queue](./async-queuing.md) instead.
 
-The owning component supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+## Leading and trailing execution
 
-## State and convenience helpers
+The four combinations match synchronous debouncing:
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+| `leading` | `trailing` | Behavior                                                                           |
+| --------- | ---------- | ---------------------------------------------------------------------------------- |
+| `false`   | `true`     | Execute after calls stop for `wait` milliseconds. This is the default.             |
+| `true`    | `false`    | Execute immediately, then ignore calls until the quiet period ends.                |
+| `true`    | `true`     | Execute the first call immediately and the latest later call on the trailing edge. |
+| `false`   | `false`    | Record calls without executing the function.                                       |
 
-`createAsyncDebouncedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+With both edges enabled, a single call executes only on the leading edge. A trailing execution requires another call during the wait period.
 
-## Related documentation
+## Errors and callbacks
 
-- [Lit adapter](../adapter.md)
-- [Core async debouncing guide](../../../guides/async-debouncing.md)
-- [API reference](../reference/index.md)
+Async debouncers provide callbacks around each actual execution:
+
+- `onSuccess(result, args, debouncer)` runs after a successful execution.
+- `onError(error, args, debouncer)` runs after the retries for an execution fail.
+- `onSettled(args, debouncer)` runs after either outcome.
+
+Without `onError`, `throwOnError` defaults to `true`, so an execution failure rejects the Promise. Providing `onError` changes that default to `false`; the Promise then resolves with the current `lastResult`. Set `throwOnError` explicitly when you want different behavior.
+
+Callbacks run for executions, not for every call to `maybeExecute()`. Replaced or canceled pending calls never reach the wrapped function.
+
+## Retrying failed executions
+
+Pass `asyncRetryerOptions` to retry an execution after it starts:
+
+```ts
+const save = createAsyncDebouncer(this, saveDraft, {
+  wait: 500,
+  asyncRetryerOptions: {
+    maxAttempts: 3,
+    backoff: 'exponential',
+    baseWait: 500,
+    jitter: 0.2,
+  },
+})
+```
+
+`maxAttempts` includes the first attempt. Debouncing decides when one logical execution starts; the retryer then manages attempts for that execution. See the [Async Retrying Guide](./async-retrying.md) for retry safety, backoff, and timeout behavior.
+
+## Canceling pending work and aborting active work
+
+Pending and active work have separate controls:
+
+- `cancel()` clears a trailing execution that has not started. It does not stop an active Promise.
+- `abort()` aborts active executions. It does not clear a pending trailing execution.
+- `flush()` starts pending work immediately and returns its result. It does not affect active work.
+
+For an underlying operation such as `fetch` to stop, pass the debouncer's signal to it:
+
+```ts
+const search = createAsyncDebouncer(
+  this,
+  async (query: string) => {
+    const response = await fetch(`/api/search?q=${query}`, {
+      signal: search.getAbortSignal() ?? undefined,
+    })
+    return response.json()
+  },
+  { wait: 300 },
+)
+
+search.maybeExecute('pacer')
+search.abort()
+```
+
+Calling `abort()` without using the signal stops retry management but cannot force an arbitrary Promise to stop.
+
+### Resetting safely
+
+`reset()` restores default state, but it does not clear a scheduled trailing timeout or guarantee that active work stops. Use the lifecycle methods first when you need a complete cleanup:
+
+```ts
+search.cancel()
+search.abort()
+search.reset()
+```
+
+## Configuration
+
+`wait` and `enabled` may be values or functions that receive the debouncer instance. `setOptions()` merges new options into the current configuration.
+
+```ts
+search.setOptions({
+  enabled: (debouncer) => debouncer.store.state.errorCount < 3,
+  wait: (debouncer) => (debouncer.store.state.successCount === 0 ? 200 : 500),
+})
+```
+
+Changing `wait` does not reschedule an existing timeout. The new value applies when later work is scheduled.
+
+Use `asyncDebouncerOptions()` to define reusable, type-checked option objects.
+
+## Lit lifecycle
+
+The adapter cancels pending work and aborts active work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility on its owning host and select the fields used by `render()`. Store changes request a host update:
+
+```ts
+const debouncer = createAsyncDebouncer(
+  this,
+  fetchSearchResults,
+  { wait: 300 },
+  (state) => ({
+    isPending: state.isPending,
+    isExecuting: state.isExecuting,
+    lastResult: state.lastResult,
+  }),
+)
+
+console.log(
+  debouncer.state.isPending,
+  debouncer.state.isExecuting,
+  debouncer.state.lastResult,
+)
+```
+
+Use `utility.subscribe(childHost, selector)` for an independently subscribed child host. It returns a selected-state getter and cleans up when that child disconnects.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
+
+- `isPending`: Whether a trailing execution is scheduled.
+- `isExecuting`: Whether the wrapped function is active.
+- `lastArgs`: The arguments retained for pending work.
+- `lastResult`: The most recent successful result.
+- `successCount`, `errorCount`, and `settleCount`: Execution outcome counts.
+- `status`: `'disabled'`, `'idle'`, `'pending'`, `'executing'`, or `'settled'`.
+
+See the [Lit API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

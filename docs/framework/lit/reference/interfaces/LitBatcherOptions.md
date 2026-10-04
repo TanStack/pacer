@@ -3,7 +3,7 @@ id: LitBatcherOptions
 title: LitBatcherOptions
 ---
 
-Defined in: [batcher/createBatcher.ts:9](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L9)
+Defined in: [batcher/createBatcher.ts:10](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L10)
 
 Options for createBatcher, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createBatcher, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [batcher/createBatcher.ts:14](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L14)
+Defined in: [batcher/createBatcher.ts:15](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L15)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

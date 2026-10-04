@@ -1,44 +1,124 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pacer | Alpine createAsyncQueuer</title>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer Example</title>
   </head>
   <body>
-    <main x-data="example">
-      <h1>Alpine createAsyncQueuer</h1>
-      <p>
-        Keep each task in order. Start and stop processing without losing
-        pending items.
-      </p>
-      <label>Task <input x-model="input" /></label
-      ><label
-        >Wait (ms) <input x-model.number="wait" type="number" min="0"
-      /></label>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
       <div>
-        <button @click="schedule">Schedule</button
-        ><button @click="burst">Schedule three</button
-        ><button @click="utility.start()">Start queue</button
-        ><button @click="utility.stop()">Stop queue</button
-        ><button @click="history = []">Clear history</button>
+        <div x-data="demo">
+          <h1>TanStack Pacer createAsyncQueuer Example</h1>
+          <div></div>
+          <div>Queue Size: <span x-text="(asyncQueuer.state.size)"></span></div>
+          <div>Queue Max Size: <span x-text="(25)"></span></div>
+          <div>
+            Queue Full:
+            <span x-text="(asyncQueuer.state.isFull ? 'Yes' : 'No')"></span>
+          </div>
+          <div>
+            Queue Empty:
+            <span x-text="(asyncQueuer.state.isEmpty ? 'Yes' : 'No')"></span>
+          </div>
+          <div>
+            Queue Idle:
+            <span x-text="(asyncQueuer.state.isIdle ? 'Yes' : 'No')"></span>
+          </div>
+          <div>
+            Queuer Status: <span x-text="(asyncQueuer.state.status)"></span>
+          </div>
+          <div>
+            Items Processed:
+            <span x-text="(asyncQueuer.state.successCount)"></span>
+          </div>
+          <div>
+            Items Rejected:
+            <span x-text="(asyncQueuer.state.rejectionCount)"></span>
+          </div>
+          <div>
+            Active Tasks:
+            <span x-text="(asyncQueuer.state.activeItems.length)"></span>
+          </div>
+          <div>
+            Pending Tasks:
+            <span x-text="(asyncQueuer.state.items.length)"></span>
+          </div>
+          <div>
+            Concurrency:<span x-text="(' ')"></span
+            ><input
+              type="number"
+              :min="(1)"
+              :value="(concurrency)"
+              @input="(((e) => (concurrency = Math.max(1, parseInt(e.target.value) || 1))))($event)"
+              style="width: 60px"
+            />
+          </div>
+          <div style="min-height: 250px">
+            Queue Items:<template
+              x-for="(item, index) in (asyncQueuer.state.items)"
+              :key="index"
+              ><div>
+                <span x-text="(index)"></span>:
+                <span x-text="(item)"></span></div
+            ></template>
+          </div>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 8px;
+              max-width: 600px;
+              margin: 16px 0;
+            "
+          >
+            <button
+              @click="((() => {
+    const nextNumber = asyncQueuer.state.items.length
+        ? Math.max(...asyncQueuer.state.items) + 1
+        : 1;
+    asyncQueuer.addItem(nextNumber);
+}))($event)"
+              :disabled="(asyncQueuer.state.isFull)"
+            >
+              Add Async Task</button
+            ><button @click="((() => asyncQueuer.getNextItem()))($event)">
+              Get Next Item</button
+            ><button
+              @click="((() => asyncQueuer.clear()))($event)"
+              :disabled="(asyncQueuer.state.isEmpty)"
+            >
+              Clear Queue</button
+            ><button
+              @click="((() => asyncQueuer.flush()))($event)"
+              :disabled="(asyncQueuer.state.isEmpty)"
+            >
+              Flush Queue</button
+            ><button
+              @click="((() => asyncQueuer.start()))($event)"
+              :disabled="(asyncQueuer.state.isRunning)"
+            >
+              Start Processing</button
+            ><button
+              @click="((() => asyncQueuer.stop()))($event)"
+              :disabled="(!asyncQueuer.state.isRunning)"
+            >
+              Stop Processing</button
+            ><button @click="((() => asyncQueuer.reset()))($event)">
+              Reset Queue
+            </button>
+          </div>
+          <pre
+            style="margin-top: 20px"
+            x-text="(JSON.stringify(asyncQueuer.state, null, 2))"
+          ></pre>
+        </div>
       </div>
-      <section>
-        <h2>Processed results</h2>
-        <pre
-          data-testid="history"
-          x-text="JSON.stringify(history, null, 2)"
-        ></pre>
-      </section>
-      <section>
-        <h2>Utility state</h2>
-        <pre x-text="JSON.stringify(utility?.state, null, 2)"></pre>
-      </section>
-      <p class="caption">
-        The scope owns reactive options and subscriptions. Alpine calls destroy
-        when this component is removed.
-      </p>
-    </main>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

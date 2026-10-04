@@ -3,9 +3,9 @@ id: LitAsyncRateLimiter
 title: LitAsyncRateLimiter
 ---
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L22)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L23)
 
-A AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
+An AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncRateLimiter with framework-reactive selected state. All core methods rema
 options: AsyncRateLimiterOptions<TFn> & LitAsyncRateLimiterOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L26)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:27](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L27)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:26](https://github.com
 setOptions: (options) => void;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:28](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L28)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:29](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L29)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:28](https://github.com
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L32)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:35](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L35)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: LitPacerSubscribe<AsyncRateLimiterState<TFn>>;
+```
+
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:33](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L33)
+
+Subscribes a child owner to selected state with automatic cleanup.

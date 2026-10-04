@@ -3,7 +3,7 @@ id: SvelteAsyncQueuerOptions
 title: SvelteAsyncQueuerOptions
 ---
 
-Defined in: [packages/svelte-pacer/src/async-queuer/createAsyncQueuer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-queuer/createAsyncQueuer.ts#L11)
+Defined in: [packages/svelte-pacer/src/async-queuer/createAsyncQueuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-queuer/createAsyncQueuer.ts#L12)
 
 Options for createAsyncQueuer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createAsyncQueuer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/svelte-pacer/src/async-queuer/createAsyncQueuer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-queuer/createAsyncQueuer.ts#L16)
+Defined in: [packages/svelte-pacer/src/async-queuer/createAsyncQueuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-queuer/createAsyncQueuer.ts#L17)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

@@ -3,9 +3,43 @@ id: UseAsyncQueuedState
 title: UseAsyncQueuedState
 ---
 
-Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuedState.ts:17](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuedState.ts#L17)
+Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuedState.ts:52](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuedState.ts#L52)
 
-Returns the queue with pending items selected by default.
+Exposes pending queue items together with the queue that processes them.
+
+Retains accepted items until processing. Ordering, capacity, wait, and started options follow the underlying queue.
+
+## Return value
+
+Yields the queue instance. Read pending items from queue.state.items and enqueue with queue.addItem().
+
+## State and ownership
+
+Items are selected by default. A custom selector must retain items and may add other state fields. The returned collection contains pending items; async active items are separate.
+
+Invoke in a Glimmer template. Positional arguments provide the callback or value and optional selector. Named arguments provide options. Removing the invocation runs cleanup.
+Tracked named arguments refresh options after rendering. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
+
+## Example
+
+```gts
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useAsyncQueuedState } from '@tanstack/ember-pacer'
+
+// Inside a component template:
+<template>
+{{#let (useAsyncQueuedState @process wait=500) as |queue|}}
+  <button {{on "click" (fn queue.addItem 1)}}>Add</button>
+  <output>{{queue.state.items.length}}</output>
+{{/let}}
+</template>
+```
+
+## See
+
+useAsyncQueuer
 
 ## Extends
 
@@ -73,7 +107,7 @@ Helper<{
 compute(positional, options): EmberAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuedState.ts:43](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuedState.ts#L43)
+Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuedState.ts:78](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuedState.ts#L78)
 
 Override this function when writing a class-based helper.
 

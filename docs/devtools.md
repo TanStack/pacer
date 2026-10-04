@@ -41,7 +41,7 @@ npm install @tanstack/svelte-devtools @tanstack/svelte-pacer-devtools
 ### Vue
 
 ```sh
-npm install @tanstack/vue-pacer-devtools
+npm install @tanstack/vue-devtools @tanstack/vue-pacer-devtools
 ```
 
 ### Preact
@@ -50,7 +50,13 @@ npm install @tanstack/vue-pacer-devtools
 npm install @tanstack/preact-devtools @tanstack/preact-pacer-devtools
 ```
 
-Alpine, Ember, Lit, and Octane can use the framework-independent panel. They do not have dedicated devtools adapters.
+### Lit, Alpine, Ember, and Octane
+
+```sh
+npm install @tanstack/devtools @tanstack/pacer-devtools
+```
+
+These frameworks use the framework-independent Pacer plugin inside the TanStack Devtools dock.
 
 ## Basic setup
 
@@ -64,7 +70,7 @@ function App() {
   return (
     <div>
       {/* Your app content */}
-      
+
       <TanStackDevtools
         eventBusConfig={{
           debug: false,
@@ -86,7 +92,7 @@ function App() {
   return (
     <div>
       {/* Your app content */}
-      
+
       <TanStackDevtools
         eventBusConfig={{
           debug: false,
@@ -123,7 +129,6 @@ export const appConfig: ApplicationConfig = {
 
 Keep your existing application providers alongside this provider.
 
-
 ### Svelte setup
 
 Add the dock once in your root component. This example uses Vite's `import.meta.env.DEV` flag to keep the dock out of production builds.
@@ -141,22 +146,178 @@ Add the dock once in your root component. This example uses Vite's `import.meta.
 
 In SvelteKit, you can use `dev` from `$app/environment` as the condition instead.
 
-
 ### Vue setup
 
 ```vue
 <script setup lang="ts">
-import { PacerDevtoolsPanel } from '@tanstack/vue-pacer-devtools'
+import { TanStackDevtools } from '@tanstack/vue-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/vue-pacer-devtools'
+
+const dev = import.meta.env.DEV
+const plugins = [pacerDevtoolsPlugin()]
 </script>
 
 <template>
   <AppContent />
-  <section style="height: 400px"><PacerDevtoolsPanel /></section>
+  <TanStackDevtools v-if="dev" :plugins="plugins" />
 </template>
 ```
 
-For Angular, Svelte, React, Preact, and Solid, the Pacer panel appears alongside any other TanStack devtools plugins you have installed.
+The Pacer panel appears alongside any other TanStack Devtools plugins you have installed.
 
+### Lit, Alpine, Ember, and Octane setup
+
+These frameworks use `TanStackDevtoolsCore` to mount the dock and `pacerDevtoolsPlugin()` to add the Pacer panel. Mount one dock for your application and unmount it with the owning component.
+
+Create a shared mount function. The following examples use Vite's development flag.
+
+```ts
+// devtools.ts
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+
+export function mountDevtools() {
+  if (!import.meta.env.DEV) return () => {}
+
+  const target = document.createElement('div')
+  document.body.append(target)
+  const devtools = new TanStackDevtoolsCore({
+    plugins: [pacerDevtoolsPlugin()],
+  })
+  devtools.mount(target)
+
+  return () => {
+    devtools.unmount()
+    target.remove()
+  }
+}
+```
+
+#### Lit
+
+Mount in `connectedCallback` and clean up in `disconnectedCallback`. This also supports removing and reconnecting the application element.
+
+```ts
+import { LitElement, html } from 'lit'
+import { mountDevtools } from './devtools'
+
+class App extends LitElement {
+  private cleanupDevtools?: () => void
+
+  override connectedCallback() {
+    super.connectedCallback()
+    this.cleanupDevtools = mountDevtools()
+  }
+
+  override disconnectedCallback() {
+    this.cleanupDevtools?.()
+    this.cleanupDevtools = undefined
+    super.disconnectedCallback()
+  }
+
+  override render() {
+    return html`<slot></slot>`
+  }
+}
+
+customElements.define('pacer-app', App)
+```
+
+#### Alpine
+
+Give the dock its own Alpine component so that it has one lifecycle owner.
+
+```ts
+import Alpine from 'alpinejs'
+import { mountDevtools } from './devtools'
+
+Alpine.data('devtools', () => {
+  let cleanup: (() => void) | undefined
+  return {
+    init() {
+      cleanup = mountDevtools()
+    },
+    destroy() {
+      cleanup?.()
+    },
+  }
+})
+
+Alpine.start()
+```
+
+```html
+<div x-data="devtools"></div>
+```
+
+#### Ember
+
+Mount after rendering and register cleanup on the component. Check its lifecycle state because it can be destroyed before the scheduled callback runs.
+
+```gts
+import Component from '@glimmer/component'
+import {
+  isDestroyed,
+  isDestroying,
+  registerDestructor,
+} from '@ember/destroyable'
+import { scheduleOnce } from '@ember/runloop'
+import { mountDevtools } from './devtools'
+
+export default class App extends Component {
+  constructor(...args: ConstructorParameters<typeof Component>) {
+    super(...args)
+    if (import.meta.env.DEV) {
+      scheduleOnce('afterRender', this, this.mountDevtools)
+    }
+  }
+
+  private mountDevtools() {
+    if (isDestroyed(this) || isDestroying(this)) return
+    registerDestructor(this, mountDevtools())
+  }
+
+  <template>{{yield}}</template>
+}
+```
+
+#### Octane
+
+Mount the dock in a layout effect and return its cleanup function. With Octane 0.1.36, keep application click and input events inside the Octane root. The dock uses Solid internally; both renderers use the same delegated event property names, which can otherwise invoke application handlers twice. The dock target created above is outside this boundary.
+
+```tsx
+import { useLayoutEffect } from 'octane'
+import { mountDevtools } from './devtools'
+
+function App() {
+  useLayoutEffect(mountDevtools, [])
+
+  return (
+    <div
+      onClick={(event) => event.stopPropagation()}
+      onInput={(event) => event.stopPropagation()}
+    >
+      <AppContent />
+    </div>
+  )
+}
+```
+
+For a Vite workspace example, keep Pacer's registry shared between the adapter and the devtools. Add `@tanstack/pacer` as a direct dependency and use these optimization settings alongside your Octane plugin:
+
+```ts
+optimizeDeps: {
+  exclude: ['@tanstack/pacer'],
+  include: [
+    '@tanstack/devtools',
+    '@tanstack/pacer-devtools',
+    '@tanstack/octane-pacer > @tanstack/pacer > @tanstack/store',
+    '@tanstack/octane-pacer > @tanstack/pacer > @tanstack/devtools-event-client',
+  ],
+},
+```
+
+The [Octane debouncer example](./framework/octane/examples/useDebouncer) includes this configuration and a live devtools plugin.
 
 ## Production builds
 

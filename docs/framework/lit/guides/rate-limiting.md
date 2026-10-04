@@ -48,7 +48,7 @@ The `windowType` option controls when capacity returns.
 A fixed window starts when its first execution is accepted. All accepted executions remain counted until that window ends. Capacity then resets together.
 
 ```ts
-const limiter = useRateLimiter(sendEvent, {
+const limiter = createRateLimiter(this, sendEvent, {
   limit: 3,
   window: 1000,
   windowType: 'fixed',
@@ -70,7 +70,7 @@ Executed:     ✅     ✅     ✅     ❌           ✅
 ```
 
 ```ts
-const limiter = useRateLimiter(sendEvent, {
+const limiter = createRateLimiter(this, sendEvent, {
   limit: 3,
   window: 1000,
   windowType: 'sliding',
@@ -81,61 +81,195 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 ## Choose an API
 
-- `useRateLimitedCallback` for a quota-controlled event handler
-- `useRateLimitedState` or `useRateLimitedValue` for Lit state
-- `useRateLimiter` for capacity helpers and selected state
+- `createRateLimitedCallback` for a quota-controlled event handler
+- `createRateLimitedState` or `createRateLimitedValue` for Lit state
+- `createRateLimiter` for capacity helpers and selected state
 
 Use the callback API for operations, the state or value API for quota-controlled UI updates, and the instance API when you need capacity helpers or rejection state.
 
-## Use createRateLimiter
+## Lit example
 
-Pass the owning `ReactiveControllerHost` as the first argument. The factory registers its controller automatically. Host updates refresh options, store updates request a render, and disconnecting cleans up pending work. Reconnecting subscribes again to the same utility. `DebouncerController` and the other controller classes expose the utility through `.pacer` and selected state through `.state`.
+Pass the owning Lit controller host as the first argument. Disconnecting the host runs cleanup; reconnecting restores its subscription. The example imports application operations from `./api`.
 
 ```ts
 import { LitElement, html } from 'lit'
 import { createRateLimiter } from '@tanstack/lit-pacer'
+import { sendEvent } from './api'
+
 class Example extends LitElement {
-  static properties = { input: { state: true }, wait: { state: true }, history: { state: true } }
-  input = 'hello'
-  wait = 200
-  history: Array<string> = []
-  utility = createRateLimiter(this, (value: string) => { this.history = [...this.history, value] }, () => ({ limit: 2, window: this.wait }), (state) => state)
-  override createRenderRoot() { return this }
-  schedule = () => { void this.utility.maybeExecute(this.input) }
-  burst = () => { for (let i = 1; i <= 3; i++) void this.utility.maybeExecute(`${this.input} ${i}`) }
-  override render() { return html`
-<main>
-<h1>Lit createRateLimiter</h1><p>Accept up to two executions per time window and track rejected calls.</p>
-<label>Task <input .value=${this.input} @input=${(event: Event) => { this.input = (event.target as HTMLInputElement).value }} /></label><label>Wait (ms) <input .value=${String(this.wait)} @input=${(event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }} type="number" min="0" /></label>
-<div><button @click=${this.schedule}>Schedule</button><button @click=${this.burst}>Schedule three</button><button @click=${() => this.utility.reset()}>Reset window</button><button @click=${() => this.utility.reset()}>Reset</button><button @click=${() => { this.history = [] }}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">${JSON.stringify(this.history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>${JSON.stringify(this.utility.state, null, 2)}</pre></section>
-<p class="caption">Host updates refresh options. Disconnecting the element cleans up its utility.</p>
-</main>` }
+  limiter = createRateLimiter(
+    this,
+    sendEvent,
+    { limit: 3, window: 10_000 },
+    (state) => ({
+      rejectionCount: state.rejectionCount,
+      executionCount: state.executionCount,
+    }),
+  )
+
+  override render() {
+    return html`
+      <button @click=${() => void this.limiter.maybeExecute('clicked')}>
+        Send
+      </button>
+      <output>${this.limiter.state.rejectionCount}</output>
+    `
+  }
 }
+
 customElements.define('pacer-example', Example)
-document.getElementById('app')!.append(document.createElement('pacer-example'))
 ```
 
-## Options and controls
+The focused snippets below create utilities in a Lit component constructor, where `this` is the controller host. Call their control methods from event handlers.
 
-`maybeExecute` accepts or rejects each call based on `limit` and `window`. Rejected calls are not queued for later. `reset()` clears the window and state. Function-valued limits can inspect the limiter at execution time. Select `executionCount` and `rejectionCount` to show accepted and rejected attempts.
-## Reactive options and cleanup
+### Rate-limited callback
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+Use `createRateLimitedCallback` when an event should invoke a rate-limited side effect:
 
-The owning component supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+```ts
+import { createRateLimitedCallback } from '@tanstack/lit-pacer'
 
-## State and convenience helpers
+// Fields on a LitElement:
+search = createRateLimitedCallback(
+  this,
+  (query: string) => updateSearchResults(query),
+  {
+    limit: 3,
+    window: 1000,
+  },
+)
+onInput = (event: Event) => {
+  this.search((event.target as HTMLInputElement).value)
+}
+```
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+The callback returns whether the call was accepted. It does not expose capacity helpers or `reset()`. Use `createRateLimiter` when the component needs that control.
 
-`createRateLimitedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+### Rate-limited state and values
 
-`createRateLimitedState` owns a delayed value. `createRateLimitedValue` derives one from an existing reactive input. See the [adapter guide](../adapter.md) for each helper's return shape.
+Use `createRateLimitedState` when Pacer should own the rate-limited state, or `createRateLimitedValue` when a value already changes elsewhere:
 
-## Related documentation
+```ts
+import { createRateLimitedValue } from '@tanstack/lit-pacer'
 
-- [Lit adapter](../adapter.md)
-- [Core rate limiting guide](../../../guides/rate-limiting.md)
-- [API reference](../reference/index.md)
+// query is a reactive property on this LitElement.
+delayed = createRateLimitedValue(this, () => this.query, {
+  limit: 3,
+  window: 1000,
+})
+// Read this.delayed[0]() in render().
+```
+
+## Handling rejected calls
+
+Rejected calls do not run later. Use the boolean return value or `onReject` to provide feedback, retry elsewhere, or place work into a queue.
+
+```ts
+const limiter = createRateLimiter(this, sendEvent, {
+  limit: 2,
+  window: 1000,
+  onReject: (limiter) => {
+    console.log('Rejected calls:', limiter.store.state.rejectionCount)
+  },
+})
+```
+
+If rejected operations must eventually run, a [queuer](./queuing.md) is usually a better fit.
+
+## Inspecting capacity
+
+The instance API provides two computed helpers:
+
+```ts
+limiter.getRemainingInWindow() // Accepted executions still available.
+limiter.getMsUntilNextWindow() // Time until at least one execution is available.
+```
+
+Both helpers use the current `limit`, `window`, `windowType`, and execution history.
+
+## Resetting and configuring the limiter
+
+`reset()` clears execution timestamps, counters, and cleanup timers. The next call starts with full capacity.
+
+```ts
+limiter.reset()
+```
+
+Use `setOptions()` to update the configuration:
+
+```ts
+limiter.setOptions({
+  limit: 10,
+  window: 30_000,
+})
+```
+
+Changing options does not erase existing execution history. Call `reset()` when the new configuration should begin with a fresh window.
+
+The `enabled`, `limit`, and `window` options may be functions that receive the limiter instance:
+
+```ts
+const limiter = createRateLimiter(this, sendEvent, {
+  enabled: (limiter) => limiter.store.state.executionCount < 100,
+  limit: (limiter) => (limiter.store.state.rejectionCount > 10 ? 2 : 5),
+  window: 60_000,
+})
+```
+
+Disabling the limiter prevents the wrapped function from executing. It does not delete existing execution history.
+
+### Observing executions
+
+`onExecute` receives the executed arguments and limiter instance. `onReject` receives the limiter instance.
+
+```ts
+const limiter = createRateLimiter(this, sendEvent, {
+  limit: 5,
+  window: 1000,
+  onExecute: (args, limiter) => {
+    console.log('Sent:', args)
+    console.log('Remaining:', limiter.getRemainingInWindow())
+  },
+  onReject: (limiter) => {
+    console.log('Rejected:', limiter.store.state.rejectionCount)
+  },
+})
+```
+
+## Lit lifecycle
+
+The adapter has no default operation cleanup because a synchronous limiter has no pending or active work. Use `onUnmount` only when the component needs custom teardown related to the limiter.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility on its owning host and select the fields used by `render()`. Store changes request a host update:
+
+```ts
+const limiter = createRateLimiter(
+  this,
+  sendEvent,
+  { limit: 5, window: 60_000 },
+  (state) => ({
+    isExceeded: state.isExceeded,
+    rejectionCount: state.rejectionCount,
+  }),
+)
+
+console.log(limiter.state.isExceeded, limiter.state.rejectionCount)
+```
+
+Use `utility.subscribe(childHost, selector)` for an independently subscribed child host. It returns a selected-state getter and cleans up when that child disconnects.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
+
+Commonly useful state includes:
+
+- `executionCount`: Total accepted executions that completed.
+- `executionTimes`: Timestamps currently used for window calculations.
+- `isExceeded`: Whether the current limit has been reached.
+- `rejectionCount`: Calls rejected because the window was full.
+- `status`: `'disabled'`, `'exceeded'`, or `'idle'`.
+
+See the [Lit API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

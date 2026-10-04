@@ -3,9 +3,9 @@ id: OctaneAsyncRateLimiter
 title: OctaneAsyncRateLimiter
 ---
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L23)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:25](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L25)
 
-A AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
+An AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncRateLimiter with framework-reactive selected state. All core methods rema
 options: AsyncRateLimiterOptions<TFn> & OctaneAsyncRateLimiterOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:27](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L27)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:29](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L29)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:27](https://github.com/Ta
 setOptions: (options) => void;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:29](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L29)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:31](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L31)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:29](https://github.com/Ta
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:33](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L33)
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:37](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L37)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: OctanePacerSubscribe<AsyncRateLimiterState<TFn>>;
+```
+
+Defined in: [async-rate-limiter/useAsyncRateLimiter.ts:35](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L35)
+
+Selects state in a child without subscribing the utility owner.

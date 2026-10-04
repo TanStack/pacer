@@ -3,7 +3,7 @@ id: LitAsyncDebouncerOptions
 title: LitAsyncDebouncerOptions
 ---
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-debouncer/createAsyncDebouncer.ts#L13)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-debouncer/createAsyncDebouncer.ts#L14)
 
 Options for createAsyncDebouncer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createAsyncDebouncer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-debouncer/createAsyncDebouncer.ts#L18)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-debouncer/createAsyncDebouncer.ts#L19)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

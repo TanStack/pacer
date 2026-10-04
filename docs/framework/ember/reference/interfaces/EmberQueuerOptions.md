@@ -3,7 +3,7 @@ id: EmberQueuerOptions
 title: EmberQueuerOptions
 ---
 
-Defined in: [packages/ember-pacer/src/queuer/useQueuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/queuer/useQueuer.ts#L13)
+Defined in: [packages/ember-pacer/src/queuer/useQueuer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/queuer/useQueuer.ts#L16)
 
 Options for useQueuer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useQueuer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/queuer/useQueuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/queuer/useQueuer.ts#L18)
+Defined in: [packages/ember-pacer/src/queuer/useQueuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/queuer/useQueuer.ts#L21)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

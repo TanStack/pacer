@@ -3,7 +3,7 @@ id: PacerProviderOptions
 title: PacerProviderOptions
 ---
 
-Defined in: [provider/PacerProvider.ts:14](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L14)
+Defined in: [provider/PacerProvider.ts:15](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L15)
 
 ## Properties
 
@@ -13,7 +13,7 @@ Defined in: [provider/PacerProvider.ts:14](https://github.com/TanStack/pacer/blo
 optional asyncBatcher?: Partial<LitAsyncBatcherOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:15](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L15)
+Defined in: [provider/PacerProvider.ts:16](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L16)
 
 ***
 
@@ -23,7 +23,7 @@ Defined in: [provider/PacerProvider.ts:15](https://github.com/TanStack/pacer/blo
 optional asyncDebouncer?: Partial<LitAsyncDebouncerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:16](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L16)
+Defined in: [provider/PacerProvider.ts:17](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L17)
 
 ***
 
@@ -33,7 +33,7 @@ Defined in: [provider/PacerProvider.ts:16](https://github.com/TanStack/pacer/blo
 optional asyncQueuer?: Partial<LitAsyncQueuerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:17](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L17)
+Defined in: [provider/PacerProvider.ts:18](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L18)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [provider/PacerProvider.ts:17](https://github.com/TanStack/pacer/blo
 optional asyncRateLimiter?: Partial<LitAsyncRateLimiterOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:18](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L18)
+Defined in: [provider/PacerProvider.ts:19](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L19)
 
 ***
 
@@ -53,7 +53,7 @@ Defined in: [provider/PacerProvider.ts:18](https://github.com/TanStack/pacer/blo
 optional asyncThrottler?: Partial<LitAsyncThrottlerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:19](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L19)
+Defined in: [provider/PacerProvider.ts:20](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L20)
 
 ***
 
@@ -63,7 +63,7 @@ Defined in: [provider/PacerProvider.ts:19](https://github.com/TanStack/pacer/blo
 optional batcher?: Partial<LitBatcherOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:20](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L20)
+Defined in: [provider/PacerProvider.ts:21](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L21)
 
 ***
 
@@ -73,7 +73,7 @@ Defined in: [provider/PacerProvider.ts:20](https://github.com/TanStack/pacer/blo
 optional debouncer?: Partial<LitDebouncerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:21](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L21)
+Defined in: [provider/PacerProvider.ts:22](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L22)
 
 ***
 
@@ -83,7 +83,7 @@ Defined in: [provider/PacerProvider.ts:21](https://github.com/TanStack/pacer/blo
 optional queuer?: Partial<LitQueuerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:22](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L22)
+Defined in: [provider/PacerProvider.ts:23](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L23)
 
 ***
 
@@ -93,7 +93,7 @@ Defined in: [provider/PacerProvider.ts:22](https://github.com/TanStack/pacer/blo
 optional rateLimiter?: Partial<LitRateLimiterOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:23](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L23)
+Defined in: [provider/PacerProvider.ts:24](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L24)
 
 ***
 
@@ -103,4 +103,4 @@ Defined in: [provider/PacerProvider.ts:23](https://github.com/TanStack/pacer/blo
 optional throttler?: Partial<LitThrottlerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.ts:24](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L24)
+Defined in: [provider/PacerProvider.ts:25](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/provider/PacerProvider.ts#L25)

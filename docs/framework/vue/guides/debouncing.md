@@ -45,53 +45,219 @@ Choose another utility when:
 - Several items should be processed together. Use [batching](./batching.md).
 - You need to await a result, handle errors, retry, or abort in-flight work. Use [async debouncing](./async-debouncing.md).
 
-## Use useDebouncer
+## Using debouncing in Vue
 
-Call composables during component setup or inside an active Vue effect scope. Disposing the scope stops option watchers and subscriptions and cleans up the utility. Read selected state through `utility.state.value` in JavaScript; Vue templates unwrap refs.
+The adapter provides three levels of debouncing API:
 
-```vue
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useDebouncer } from '@tanstack/vue-pacer'
-const input = ref('hello')
-const wait = ref(200)
-const history = ref<Array<string>>([])
-const utility = useDebouncer((value: string) => { history.value = [...history.value, value] }, () => ({ wait: wait.value }), (state) => state)
-const state = utility.state
-function schedule() { void utility.maybeExecute(input.value) }
-function burst() { for (let i = 1; i <= 3; i++) void utility.maybeExecute(`${input.value} ${i}`) }
-</script>
-<template>
-<main>
-<h1>Vue useDebouncer</h1><p>Wait until typing stops, then execute the latest call.</p>
-<label>Task <input v-model="input" /></label><label>Wait (ms) <input v-model.number="wait" type="number" min="0" /></label>
-<div><button @click="schedule">Schedule</button><button @click="burst">Schedule three</button><button @click="utility.flush()">Flush</button><button @click="utility.cancel()">Cancel</button><button @click="history = []">Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{{ JSON.stringify(history, null, 2) }}</pre></section>
-<section><h2>Utility state</h2><pre>{{ JSON.stringify(state, null, 2) }}</pre></section>
-<p class="caption">Change the wait while work is pending to update options on the same instance. Removing this component cleans up its utility.</p>
-</main>
-</template>
+- `useDebouncedCallback` creates a stable debounced event handler.
+- `useDebouncedState` and `useDebouncedValue` delay state or a changing value.
+- `useDebouncer` exposes lifecycle methods, dynamic options, callbacks, and selected state.
+
+Call composables during component setup or inside an active Vue effect scope. The snippets below belong in that scope. Read returned refs through `.value` in JavaScript; Vue templates unwrap top-level refs.
+
+The snippets use application functions such as `saveDraft` and `updateSearchResults`. Supply those functions in your component.
+
+### Debounced callback
+
+Use `useDebouncedCallback` when an event should invoke a debounced side effect:
+
+```ts
+import { useDebouncedCallback } from '@tanstack/vue-pacer'
+
+const search = useDebouncedCallback(
+  (query: string) => updateSearchResults(query),
+  { wait: 500 },
+)
+function onInput(event: Event) {
+  search((event.target as HTMLInputElement).value)
+}
 ```
 
-## Options and controls
+The callback does not expose `cancel()` or `flush()`. Use `useDebouncer` when the component needs that control.
 
-`maybeExecute` schedules the latest arguments. `wait` resets after each call. `leading` runs the first call immediately and `trailing` controls the deferred call. Use `flush()` to execute pending work, `cancel()` to discard its timer, and `reset()` to reset counters. Select `isPending`, `lastArgs`, or `executionCount` for your UI.
-## Reactive options and cleanup
+### Debounced state and values
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+Use `useDebouncedState` when Pacer should own the delayed state, or `useDebouncedValue` when a value already changes elsewhere:
 
-The owning scope supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+```ts
+import { ref } from 'vue'
+import { useDebouncedValue } from '@tanstack/vue-pacer'
 
-## State and convenience helpers
+const query = ref('')
+const [debouncedQuery] = useDebouncedValue(query, { wait: 500 })
+// Bind debouncedQuery to the results component in the template.
+```
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+### Instance API
 
-`useDebouncedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+```ts
+import { useDebouncer } from '@tanstack/vue-pacer'
 
-`useDebouncedState` owns a delayed value. `useDebouncedValue` derives one from an existing reactive input. See the [adapter guide](../adapter.md) for each helper's return shape.
+const debouncer = useDebouncer(saveDraft, { wait: 500 }, (state) => ({
+  isPending: state.isPending,
+}))
+const state = debouncer.state
+// Bind !state.isPending to the Save now button's disabled attribute.
+function saveNow() {
+  debouncer.flush()
+}
+```
 
-## Related documentation
+Both the callback and `maybeExecute()` return `void`. The synchronous adapter does not retain return values or catch errors. Handle errors inside a trailing callback, or use [async debouncing](./async-debouncing.md) when the caller needs a Promise result.
 
-- [Vue adapter](../adapter.md)
-- [Core debouncing guide](../../../guides/debouncing.md)
-- [API reference](../reference/index.md)
+The following timing and control snippets use the `debouncer` instance created in your component. Run those operations from event handlers or other application code.
+
+## Execution timing
+
+The `leading` and `trailing` options control which edge of the wait period may execute.
+
+| `leading` | `trailing` | Behavior                                                                                                                               |
+| --------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `false`   | `true`     | Wait for inactivity, then execute the most recent call. This is the default.                                                           |
+| `true`    | `false`    | Execute the first call immediately. Later calls do not execute and restart the wait period.                                            |
+| `true`    | `true`     | Execute the first call immediately. If another call arrives during the wait period, execute the most recent call at the trailing edge. |
+| `false`   | `false`    | Do not execute any calls.                                                                                                              |
+
+```ts
+debouncer.setOptions({
+  wait: 1000,
+  leading: true,
+  trailing: true,
+})
+
+debouncer.maybeExecute('first') // Executes immediately.
+debouncer.maybeExecute('second')
+debouncer.maybeExecute('latest') // Executes after 1 second of inactivity.
+```
+
+With both edges enabled, a single call executes only on the leading edge. A trailing execution occurs only when another call arrives during the wait period.
+
+### No maximum wait
+
+`useDebouncer` does not provide a `maxWait` option. A continuous stream of calls can keep postponing a trailing execution indefinitely. Use [throttling](./throttling.md) when work must continue at a bounded interval while calls are still arriving.
+
+## Controlling pending work
+
+The instance API distinguishes between executing, canceling, and resetting pending work.
+
+### Flush
+
+`flush()` immediately executes the pending trailing call with the most recent arguments. It does nothing when no trailing call is pending.
+
+```ts
+debouncer.setOptions({ wait: 1000 })
+
+debouncer.maybeExecute('draft')
+debouncer.flush() // Executes saveDraft('draft') now.
+```
+
+### Cancel
+
+`cancel()` clears the pending timeout without executing the function. It also allows a leading call to execute immediately the next time `maybeExecute()` is called.
+
+```ts
+debouncer.maybeExecute('discarded draft')
+debouncer.cancel()
+```
+
+### Reset
+
+`reset()` restores the debouncer's state counters and flags to their defaults. It does not clear an already scheduled timeout. Call `cancel()` first when you need to discard pending work and reset state.
+
+```ts
+debouncer.cancel()
+debouncer.reset()
+```
+
+## Configuring behavior at runtime
+
+Use `setOptions()` to change options after construction:
+
+```ts
+debouncer.setOptions({
+  wait: 1000,
+  leading: true,
+  trailing: false,
+})
+```
+
+A new `wait` value applies when the next call schedules a timeout. It does not reschedule a timeout that is already pending. Calling `maybeExecute()` again clears the old timeout and schedules a new one using the current options.
+
+### Enabling and disabling
+
+Set `enabled` to `false` to prevent execution. Disabling a debouncer through `setOptions()` also cancels its pending call.
+
+```ts
+debouncer.setOptions({
+  wait: 500,
+  enabled: false,
+})
+
+debouncer.maybeExecute('ignored')
+debouncer.setOptions({ enabled: true })
+debouncer.maybeExecute('saved')
+```
+
+The `enabled` and `wait` options may also be functions that receive the debouncer instance:
+
+```ts
+debouncer.setOptions({
+  enabled: (debouncer) => debouncer.store.state.executionCount < 10,
+  wait: (debouncer) => (debouncer.store.state.executionCount === 0 ? 300 : 500),
+})
+```
+
+### Observing executions
+
+Use `onExecute` for a side effect after the wrapped function runs. The callback receives the executed arguments followed by the debouncer instance.
+
+```ts
+debouncer.setOptions({
+  wait: 500,
+  onExecute: (args, debouncer) => {
+    console.log('Saved arguments:', args)
+    console.log('Execution count:', debouncer.store.state.executionCount)
+  },
+})
+```
+
+### Reactive options
+
+Pass an options factory or property getters to read reactive settings. Local options override provider defaults, and option changes retain the same utility instance.
+
+```ts
+const wait = ref(500)
+const debouncer = useDebouncer(saveDraft, () => ({ wait: wait.value }))
+```
+
+## Vue lifecycle
+
+Disposing the Vue component or effect scope cancels pending work and stops option watchers and subscriptions. Providing `onUnmount` replaces the default cleanup, so a custom callback must perform every required lifecycle action. Flushing during teardown can run callbacks after the component has begun to be destroyed.
+
+## Reactive state
+
+Pass a selector to subscribe to the state your component reads. Without a selector, selected state is an empty object. Read the selection through `debouncer.state.value`. The core store remains available even when you do not select state for rendering.
+
+Option functions and lifecycle callbacks receive the public utility instance. Reading `.store.state` in those callbacks is supported. Component rendering should read the selected adapter state.
+
+### Child subscriptions
+
+A child can select state without subscribing the utility owner. The child subscription cleans up when its own scope or component is destroyed:
+
+```vue
+<debouncer.Subscribe
+  :selector="(state) => ({ isPending: state.isPending })"
+  v-slot="{ isPending }"
+>
+  <span>{{ isPending }}</span>
+</debouncer.Subscribe>
+```
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields; pending timers are not restored.
+
+- `isPending`: Whether a trailing execution is waiting.
+- `executionCount`: How many times the wrapped function has executed.
+- `lastArgs`: The arguments recorded by the most recent trailing-enabled call. Check `isPending` before treating them as pending work.
+- `status`: `'disabled'`, `'idle'`, or `'pending'`.
+
+See the [Vue API reference](../reference/index.md) for adapter signatures and the [adapter guide](../adapter.md) for provider and helper return shapes.

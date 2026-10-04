@@ -3,9 +3,9 @@ id: AlpineAsyncBatcher
 title: AlpineAsyncBatcher
 ---
 
-Defined in: [async-batcher/createAsyncBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-batcher/createAsyncBatcher.ts#L20)
+Defined in: [async-batcher/createAsyncBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-batcher/createAsyncBatcher.ts#L21)
 
-A AsyncBatcher with framework-reactive selected state. All core methods remain available.
+An AsyncBatcher with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -42,7 +42,7 @@ options: Omit<Required<AsyncBatcherOptions<TValue>>,
 | "onItemsChange">> & AlpineAsyncBatcherOptions<TValue, TSelected>;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-batcher/createAsyncBatcher.ts#L24)
+Defined in: [async-batcher/createAsyncBatcher.ts:25](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-batcher/createAsyncBatcher.ts#L25)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [async-batcher/createAsyncBatcher.ts:24](https://github.com/TanStack
 setOptions: (options) => void;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-batcher/createAsyncBatcher.ts#L26)
+Defined in: [async-batcher/createAsyncBatcher.ts:27](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-batcher/createAsyncBatcher.ts#L27)
 
 #### Parameters
 
@@ -72,6 +72,18 @@ Defined in: [async-batcher/createAsyncBatcher.ts:26](https://github.com/TanStack
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:30](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-batcher/createAsyncBatcher.ts#L30)
+Defined in: [async-batcher/createAsyncBatcher.ts:33](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-batcher/createAsyncBatcher.ts#L33)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: AlpinePacerSubscribe<AsyncBatcherState<TValue>>;
+```
+
+Defined in: [async-batcher/createAsyncBatcher.ts:31](https://github.com/TanStack/pacer/blob/main/packages/alpine-pacer/src/async-batcher/createAsyncBatcher.ts#L31)
+
+Subscribes a child owner to selected state with automatic cleanup.

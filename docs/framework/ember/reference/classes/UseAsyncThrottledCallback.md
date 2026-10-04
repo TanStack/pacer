@@ -3,9 +3,42 @@ id: UseAsyncThrottledCallback
 title: UseAsyncThrottledCallback
 ---
 
-Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottledCallback.ts:18](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L18)
+Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottledCallback.ts:51](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L51)
 
-Returns a asyncthrottled callback from an owned Ember helper. Named arguments update the same utility.
+Returns a stable throttled callback owned by the Ember lifecycle.
+
+Limits execution to the configured wait interval. Leading and trailing execution are enabled by default, and the latest blocked update is retained for the trailing edge.
+
+## Return value
+
+Returns the bound maybeExecute method with the wrapped function's parameter types. The returned Promise preserves the core result and error contract. A replaced trailing call resolves with the previous lastResult; it does not wait for the newer call.
+
+## State and ownership
+
+Use useAsyncThrottler when you need selected state or control methods. This callback does not expose the utility, its store, or a child subscription.
+
+Invoke in a Glimmer template. Positional arguments provide the callback or value and optional selector. Named arguments provide options. Removing the invocation runs cleanup.
+Tracked named arguments refresh options after rendering. Local options override provider defaults without replacing the utility or its pending work.
+onUnmount replaces default cleanup and receives the utility instance. A custom callback must perform every needed cancel, stop, or abort action.
+
+## Example
+
+```gts
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useAsyncThrottledCallback } from '@tanstack/ember-pacer'
+
+// Inside a component template:
+<template>
+{{#let (useAsyncThrottledCallback @process wait=500) as |schedule|}}
+  <button {{on "click" (fn schedule 1)}}>Schedule</button>
+{{/let}}
+</template>
+```
+
+## See
+
+useAsyncThrottler
 
 ## Extends
 
@@ -70,7 +103,7 @@ Helper<{
 compute(positional, options): (...args) => Promise<Awaited<ReturnType<TFn>> | undefined>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottledCallback.ts:38](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L38)
+Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottledCallback.ts:71](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottledCallback.ts#L71)
 
 Override this function when writing a class-based helper.
 

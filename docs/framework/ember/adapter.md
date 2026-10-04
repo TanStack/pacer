@@ -21,20 +21,22 @@ By default, the selected state is `{}`. Pass a selector to subscribe only to the
 
 ## API overview
 
-| Utility | Instance API | Convenience APIs |
-| --- | --- | --- |
-| [batching](./guides/batching.md) | `useBatcher` | `useBatchedCallback` |
-| [debouncing](./guides/debouncing.md) | `useDebouncer` | `useDebouncedCallback`, `useDebouncedState`, `useDebouncedValue` |
-| [queuing](./guides/queuing.md) | `useQueuer` | `useQueuedState`, `useQueuedValue` |
-| [rate limiting](./guides/rate-limiting.md) | `useRateLimiter` | `useRateLimitedCallback`, `useRateLimitedState`, `useRateLimitedValue` |
-| [throttling](./guides/throttling.md) | `useThrottler` | `useThrottledCallback`, `useThrottledState`, `useThrottledValue` |
-| [async batching](./guides/async-batching.md) | `useAsyncBatcher` | `useAsyncBatchedCallback` |
-| [async debouncing](./guides/async-debouncing.md) | `useAsyncDebouncer` | `useAsyncDebouncedCallback` |
-| [async queuing](./guides/async-queuing.md) | `useAsyncQueuer` | `useAsyncQueuedState` |
-| [async rate limiting](./guides/async-rate-limiting.md) | `useAsyncRateLimiter` | `useAsyncRateLimitedCallback` |
-| [async throttling](./guides/async-throttling.md) | `useAsyncThrottler` | `useAsyncThrottledCallback` |
+| Utility                                                | Instance API          | Convenience APIs                                                       |
+| ------------------------------------------------------ | --------------------- | ---------------------------------------------------------------------- |
+| [batching](./guides/batching.md)                       | `useBatcher`          | `useBatchedCallback`                                                   |
+| [debouncing](./guides/debouncing.md)                   | `useDebouncer`        | `useDebouncedCallback`, `useDebouncedState`, `useDebouncedValue`       |
+| [queuing](./guides/queuing.md)                         | `useQueuer`           | `useQueuedState`, `useQueuedValue`                                     |
+| [rate limiting](./guides/rate-limiting.md)             | `useRateLimiter`      | `useRateLimitedCallback`, `useRateLimitedState`, `useRateLimitedValue` |
+| [throttling](./guides/throttling.md)                   | `useThrottler`        | `useThrottledCallback`, `useThrottledState`, `useThrottledValue`       |
+| [async batching](./guides/async-batching.md)           | `useAsyncBatcher`     | `useAsyncBatchedCallback`                                              |
+| [async debouncing](./guides/async-debouncing.md)       | `useAsyncDebouncer`   | `useAsyncDebouncedCallback`                                            |
+| [async queuing](./guides/async-queuing.md)             | `useAsyncQueuer`      | `useAsyncQueuedState`                                                  |
+| [async rate limiting](./guides/async-rate-limiting.md) | `useAsyncRateLimiter` | `useAsyncRateLimitedCallback`                                          |
+| [async throttling](./guides/async-throttling.md)       | `useAsyncThrottler`   | `useAsyncThrottledCallback`                                            |
 
 ## Example
+
+This counter coalesces rapid clicks into one update after 500 ms. Flush applies the latest pending count immediately.
 
 ```gts
 import Component from '@glimmer/component'
@@ -42,31 +44,40 @@ import { tracked } from '@glimmer/tracking'
 import { on } from '@ember/modifier'
 import { fn } from '@ember/helper'
 import { useDebouncer } from '@tanstack/ember-pacer'
-import type { DebouncerState } from '@tanstack/ember-pacer'
-const json = (value: unknown) => JSON.stringify(value, null, 2)
-export default class Example extends Component {
-  @tracked input = 'hello'
-  @tracked wait = 200
-  @tracked history: Array<string> = []
-  execute = (value: string) => { this.history = [...this.history, value] }
-  select = (state: DebouncerState<(value: string) => void>) => state
-  updateInput = (event: Event) => { this.input = (event.target as HTMLInputElement).value }
-  updateWait = (event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }
-  clear = () => { this.history = [] }
-  burst = (schedule: (value: string) => unknown) => { for (let i = 1; i <= 3; i++) void schedule(`${this.input} ${i}`) }
+import type { DebouncerState, EmberDebouncer } from '@tanstack/ember-pacer'
+
+export default class Counter extends Component {
+  @tracked count = 0
+  @tracked debouncedCount = 0
+  execute = (value: number) => {
+    this.debouncedCount = value
+  }
+  select = (state: DebouncerState<(value: number) => void>) => ({
+    isPending: state.isPending,
+  })
+  increment = (debouncer: EmberDebouncer<(value: number) => void>) => {
+    debouncer.maybeExecute(++this.count)
+  }
+
   <template>
-{{#let (useDebouncer this.execute this.select wait=this.wait) as |utility|}}
-<main>
-<h1>Ember useDebouncer</h1><p>Wait until typing stops, then execute the latest call.</p>
-<label>Task <input value={{this.input}} {{on "input" this.updateInput}} /></label><label>Wait (ms) <input value={{this.wait}} {{on "input" this.updateWait}} type="number" min="0" /></label>
-<div><button {{on "click" (fn utility.maybeExecute this.input)}}>Schedule</button><button {{on "click" (fn this.burst utility.maybeExecute)}}>Schedule three</button><button {{on "click" utility.flush}}>Flush</button><button {{on "click" utility.cancel}}>Cancel</button><button {{on "click" this.clear}}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{{json this.history}}</pre></section>
-<section><h2>Utility state</h2><pre>{{json utility.state}}</pre></section>
-<p class="caption">Tracked named arguments update the same utility. The helper owns cleanup when it leaves the template.</p>
-</main>
-{{/let}}
+    {{#let (useDebouncer this.execute this.select wait=500) as |debouncer|}}
+      <button {{on 'click' (fn this.increment debouncer)}}>Increment</button>
+      <p>Count: {{this.count}}. Debounced: {{this.debouncedCount}}.</p>
+      <p>Pending: {{debouncer.state.isPending}}</p>
+      <button {{on 'click' debouncer.flush}}>Flush</button>
+    {{/let}}
   </template>
 }
+```
+
+## Child subscriptions
+
+Invoke the contextual `utility.Subscribe` helper with a selector. Reading its result in a template tracks only that selection; removing the helper releases the subscription.
+
+```hbs
+{{#let (debouncer.Subscribe this.select) as |state|}}
+  <span>Pending: {{state.isPending}}</span>
+{{/let}}
 ```
 
 ## Reactive options
@@ -97,7 +108,9 @@ The five async utilities preserve typed results and core error behavior. Use `on
 
 ## Devtools
 
-The utilities emit the same Pacer devtools events as the other adapters. Use the framework-independent `@tanstack/pacer-devtools` panel when your application supplies a devtools host.
+Install `@tanstack/devtools` and `@tanstack/pacer-devtools`. Mount `TanStackDevtoolsCore` with `plugins: [pacerDevtoolsPlugin()]` once in your application and unmount it during cleanup. Give each utility a `key` to make it appear in the Pacer panel.
+
+See the [devtools setup guide](../../devtools.md#lit-alpine-ember-and-octane-setup) for this framework's mount and cleanup code.
 
 ## API reference
 

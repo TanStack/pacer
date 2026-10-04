@@ -1072,6 +1072,22 @@
             {
               "label": "SvelteDebouncerOptions",
               "to": "framework/svelte/reference/interfaces/SvelteDebouncerOptions"
+            },
+            {
+              "label": "createDebouncedCallback",
+              "to": "framework/svelte/examples/createDebouncedCallback"
+            },
+            {
+              "label": "createDebouncedSignal",
+              "to": "framework/svelte/examples/createDebouncedSignal"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/svelte/examples/createDebouncedValue"
+            },
+            {
+              "label": "createAsyncDebouncedCallback",
+              "to": "framework/svelte/examples/createAsyncDebouncedCallback"
             }
           ]
         },
@@ -1125,6 +1141,22 @@
             {
               "label": "LitDebouncerOptions",
               "to": "framework/lit/reference/interfaces/LitDebouncerOptions"
+            },
+            {
+              "label": "createDebouncedCallback",
+              "to": "framework/lit/examples/createDebouncedCallback"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/lit/examples/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/lit/examples/createDebouncedValue"
+            },
+            {
+              "label": "createAsyncDebouncedCallback",
+              "to": "framework/lit/examples/createAsyncDebouncedCallback"
             }
           ]
         },
@@ -1170,6 +1202,22 @@
             {
               "label": "AlpineDebouncerOptions",
               "to": "framework/alpine/reference/interfaces/AlpineDebouncerOptions"
+            },
+            {
+              "label": "createDebouncedCallback",
+              "to": "framework/alpine/examples/createDebouncedCallback"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/alpine/examples/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/alpine/examples/createDebouncedValue"
+            },
+            {
+              "label": "createAsyncDebouncedCallback",
+              "to": "framework/alpine/examples/createAsyncDebouncedCallback"
             }
           ]
         },
@@ -1571,6 +1619,22 @@
             {
               "label": "SvelteThrottlerOptions",
               "to": "framework/svelte/reference/interfaces/SvelteThrottlerOptions"
+            },
+            {
+              "label": "createThrottledCallback",
+              "to": "framework/svelte/examples/createThrottledCallback"
+            },
+            {
+              "label": "createThrottledSignal",
+              "to": "framework/svelte/examples/createThrottledSignal"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/svelte/examples/createThrottledValue"
+            },
+            {
+              "label": "createAsyncThrottledCallback",
+              "to": "framework/svelte/examples/createAsyncThrottledCallback"
             }
           ]
         },
@@ -1624,6 +1688,22 @@
             {
               "label": "LitThrottlerOptions",
               "to": "framework/lit/reference/interfaces/LitThrottlerOptions"
+            },
+            {
+              "label": "createThrottledCallback",
+              "to": "framework/lit/examples/createThrottledCallback"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/lit/examples/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/lit/examples/createThrottledValue"
+            },
+            {
+              "label": "createAsyncThrottledCallback",
+              "to": "framework/lit/examples/createAsyncThrottledCallback"
             }
           ]
         },
@@ -1669,6 +1749,22 @@
             {
               "label": "AlpineThrottlerOptions",
               "to": "framework/alpine/reference/interfaces/AlpineThrottlerOptions"
+            },
+            {
+              "label": "createThrottledCallback",
+              "to": "framework/alpine/examples/createThrottledCallback"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/alpine/examples/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/alpine/examples/createThrottledValue"
+            },
+            {
+              "label": "createAsyncThrottledCallback",
+              "to": "framework/alpine/examples/createAsyncThrottledCallback"
             }
           ]
         },
@@ -2046,6 +2142,18 @@
             {
               "label": "SvelteRateLimiterOptions",
               "to": "framework/svelte/reference/interfaces/SvelteRateLimiterOptions"
+            },
+            {
+              "label": "createRateLimitedCallback",
+              "to": "framework/svelte/examples/createRateLimitedCallback"
+            },
+            {
+              "label": "createRateLimitedSignal",
+              "to": "framework/svelte/examples/createRateLimitedSignal"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/svelte/examples/createRateLimitedValue"
             }
           ]
         },
@@ -2099,6 +2207,18 @@
             {
               "label": "LitRateLimiterOptions",
               "to": "framework/lit/reference/interfaces/LitRateLimiterOptions"
+            },
+            {
+              "label": "createRateLimitedCallback",
+              "to": "framework/lit/examples/createRateLimitedCallback"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/lit/examples/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/lit/examples/createRateLimitedValue"
             }
           ]
         },
@@ -2144,6 +2264,18 @@
             {
               "label": "AlpineRateLimiterOptions",
               "to": "framework/alpine/reference/interfaces/AlpineRateLimiterOptions"
+            },
+            {
+              "label": "createRateLimitedCallback",
+              "to": "framework/alpine/examples/createRateLimitedCallback"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/alpine/examples/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/alpine/examples/createRateLimitedValue"
             }
           ]
         },
@@ -2521,6 +2653,18 @@
             {
               "label": "SvelteQueuerOptions",
               "to": "framework/svelte/reference/interfaces/SvelteQueuerOptions"
+            },
+            {
+              "label": "createQueuedSignal",
+              "to": "framework/svelte/examples/createQueuedSignal"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/svelte/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedSignal",
+              "to": "framework/svelte/examples/createAsyncQueuedSignal"
             }
           ]
         },
@@ -2570,6 +2714,18 @@
             {
               "label": "LitQueuerOptions",
               "to": "framework/lit/reference/interfaces/LitQueuerOptions"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/lit/examples/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/lit/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/lit/examples/createAsyncQueuedState"
             }
           ]
         },
@@ -2611,6 +2767,18 @@
             {
               "label": "AlpineQueuerOptions",
               "to": "framework/alpine/reference/interfaces/AlpineQueuerOptions"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/alpine/examples/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/alpine/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/alpine/examples/createAsyncQueuedState"
             }
           ]
         },
@@ -2952,6 +3120,14 @@
             {
               "label": "SvelteBatcherOptions",
               "to": "framework/svelte/reference/interfaces/SvelteBatcherOptions"
+            },
+            {
+              "label": "createBatchedCallback",
+              "to": "framework/svelte/examples/createBatchedCallback"
+            },
+            {
+              "label": "createAsyncBatchedCallback",
+              "to": "framework/svelte/examples/createAsyncBatchedCallback"
             }
           ]
         },
@@ -2997,6 +3173,14 @@
             {
               "label": "LitBatcherOptions",
               "to": "framework/lit/reference/interfaces/LitBatcherOptions"
+            },
+            {
+              "label": "createBatchedCallback",
+              "to": "framework/lit/examples/createBatchedCallback"
+            },
+            {
+              "label": "createAsyncBatchedCallback",
+              "to": "framework/lit/examples/createAsyncBatchedCallback"
             }
           ]
         },
@@ -3034,6 +3218,14 @@
             {
               "label": "AlpineBatcherOptions",
               "to": "framework/alpine/reference/interfaces/AlpineBatcherOptions"
+            },
+            {
+              "label": "createBatchedCallback",
+              "to": "framework/alpine/examples/createBatchedCallback"
+            },
+            {
+              "label": "createAsyncBatchedCallback",
+              "to": "framework/alpine/examples/createAsyncBatchedCallback"
             }
           ]
         },
@@ -3280,6 +3472,30 @@
             {
               "label": "useAsyncDebouncer",
               "to": "framework/vue/examples/useAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/vue/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/vue/examples/asyncDebounce"
+            },
+            {
+              "label": "useDebouncedCallback",
+              "to": "framework/vue/examples/useDebouncedCallback"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/vue/examples/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/vue/examples/useDebouncedValue"
+            },
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/vue/examples/useAsyncDebouncedCallback"
             }
           ]
         },
@@ -3293,6 +3509,30 @@
             {
               "label": "createAsyncDebouncer",
               "to": "framework/svelte/examples/createAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/svelte/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/svelte/examples/asyncDebounce"
+            },
+            {
+              "label": "createDebouncedCallback",
+              "to": "framework/svelte/examples/createDebouncedCallback"
+            },
+            {
+              "label": "createDebouncedSignal",
+              "to": "framework/svelte/examples/createDebouncedSignal"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/svelte/examples/createDebouncedValue"
+            },
+            {
+              "label": "createAsyncDebouncedCallback",
+              "to": "framework/svelte/examples/createAsyncDebouncedCallback"
             }
           ]
         },
@@ -3306,6 +3546,30 @@
             {
               "label": "createAsyncDebouncer",
               "to": "framework/lit/examples/createAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/lit/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/lit/examples/asyncDebounce"
+            },
+            {
+              "label": "createDebouncedCallback",
+              "to": "framework/lit/examples/createDebouncedCallback"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/lit/examples/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/lit/examples/createDebouncedValue"
+            },
+            {
+              "label": "createAsyncDebouncedCallback",
+              "to": "framework/lit/examples/createAsyncDebouncedCallback"
             }
           ]
         },
@@ -3319,6 +3583,30 @@
             {
               "label": "createAsyncDebouncer",
               "to": "framework/alpine/examples/createAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/alpine/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/alpine/examples/asyncDebounce"
+            },
+            {
+              "label": "createDebouncedCallback",
+              "to": "framework/alpine/examples/createDebouncedCallback"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/alpine/examples/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/alpine/examples/createDebouncedValue"
+            },
+            {
+              "label": "createAsyncDebouncedCallback",
+              "to": "framework/alpine/examples/createAsyncDebouncedCallback"
             }
           ]
         },
@@ -3345,6 +3633,30 @@
             {
               "label": "useAsyncDebouncer",
               "to": "framework/octane/examples/useAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/octane/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/octane/examples/asyncDebounce"
+            },
+            {
+              "label": "useDebouncedCallback",
+              "to": "framework/octane/examples/useDebouncedCallback"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/octane/examples/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/octane/examples/useDebouncedValue"
+            },
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/octane/examples/useAsyncDebouncedCallback"
             }
           ]
         }
@@ -3513,6 +3825,26 @@
             {
               "label": "useAsyncThrottler",
               "to": "framework/vue/examples/useAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/vue/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/vue/examples/asyncThrottle"
+            },
+            {
+              "label": "useThrottledCallback",
+              "to": "framework/vue/examples/useThrottledCallback"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/vue/examples/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/vue/examples/useThrottledValue"
             }
           ]
         },
@@ -3526,6 +3858,26 @@
             {
               "label": "createAsyncThrottler",
               "to": "framework/svelte/examples/createAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/svelte/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/svelte/examples/asyncThrottle"
+            },
+            {
+              "label": "createThrottledCallback",
+              "to": "framework/svelte/examples/createThrottledCallback"
+            },
+            {
+              "label": "createThrottledSignal",
+              "to": "framework/svelte/examples/createThrottledSignal"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/svelte/examples/createThrottledValue"
             }
           ]
         },
@@ -3539,6 +3891,26 @@
             {
               "label": "createAsyncThrottler",
               "to": "framework/lit/examples/createAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/lit/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/lit/examples/asyncThrottle"
+            },
+            {
+              "label": "createThrottledCallback",
+              "to": "framework/lit/examples/createThrottledCallback"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/lit/examples/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/lit/examples/createThrottledValue"
             }
           ]
         },
@@ -3552,6 +3924,26 @@
             {
               "label": "createAsyncThrottler",
               "to": "framework/alpine/examples/createAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/alpine/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/alpine/examples/asyncThrottle"
+            },
+            {
+              "label": "createThrottledCallback",
+              "to": "framework/alpine/examples/createThrottledCallback"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/alpine/examples/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/alpine/examples/createThrottledValue"
             }
           ]
         },
@@ -3578,6 +3970,26 @@
             {
               "label": "useAsyncThrottler",
               "to": "framework/octane/examples/useAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/octane/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/octane/examples/asyncThrottle"
+            },
+            {
+              "label": "useThrottledCallback",
+              "to": "framework/octane/examples/useThrottledCallback"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/octane/examples/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/octane/examples/useThrottledValue"
             }
           ]
         }
@@ -3738,6 +4150,26 @@
             {
               "label": "useAsyncRateLimiter",
               "to": "framework/vue/examples/useAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/vue/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/vue/examples/asyncRateLimit"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/vue/examples/useRateLimitedCallback"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/vue/examples/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/vue/examples/useRateLimitedValue"
             }
           ]
         },
@@ -3751,6 +4183,26 @@
             {
               "label": "createAsyncRateLimiter",
               "to": "framework/svelte/examples/createAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/svelte/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/svelte/examples/asyncRateLimit"
+            },
+            {
+              "label": "createRateLimitedCallback",
+              "to": "framework/svelte/examples/createRateLimitedCallback"
+            },
+            {
+              "label": "createRateLimitedSignal",
+              "to": "framework/svelte/examples/createRateLimitedSignal"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/svelte/examples/createRateLimitedValue"
             }
           ]
         },
@@ -3764,6 +4216,26 @@
             {
               "label": "createAsyncRateLimiter",
               "to": "framework/lit/examples/createAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/lit/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/lit/examples/asyncRateLimit"
+            },
+            {
+              "label": "createRateLimitedCallback",
+              "to": "framework/lit/examples/createRateLimitedCallback"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/lit/examples/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/lit/examples/createRateLimitedValue"
             }
           ]
         },
@@ -3777,6 +4249,26 @@
             {
               "label": "createAsyncRateLimiter",
               "to": "framework/alpine/examples/createAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/alpine/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/alpine/examples/asyncRateLimit"
+            },
+            {
+              "label": "createRateLimitedCallback",
+              "to": "framework/alpine/examples/createRateLimitedCallback"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/alpine/examples/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/alpine/examples/createRateLimitedValue"
             }
           ]
         },
@@ -3803,6 +4295,26 @@
             {
               "label": "useAsyncRateLimiter",
               "to": "framework/octane/examples/useAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/octane/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/octane/examples/asyncRateLimit"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/octane/examples/useRateLimitedCallback"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/octane/examples/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/octane/examples/useRateLimitedValue"
             }
           ]
         }
@@ -3943,6 +4455,22 @@
             {
               "label": "useAsyncQueuer",
               "to": "framework/vue/examples/useAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/vue/examples/queue"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/vue/examples/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/vue/examples/useQueuedValue"
+            },
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/vue/examples/useAsyncQueuedState"
             }
           ]
         },
@@ -3956,6 +4484,22 @@
             {
               "label": "createAsyncQueuer",
               "to": "framework/svelte/examples/createAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/svelte/examples/queue"
+            },
+            {
+              "label": "createQueuedSignal",
+              "to": "framework/svelte/examples/createQueuedSignal"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/svelte/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedSignal",
+              "to": "framework/svelte/examples/createAsyncQueuedSignal"
             }
           ]
         },
@@ -3969,6 +4513,22 @@
             {
               "label": "createAsyncQueuer",
               "to": "framework/lit/examples/createAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/lit/examples/queue"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/lit/examples/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/lit/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/lit/examples/createAsyncQueuedState"
             }
           ]
         },
@@ -3982,6 +4542,22 @@
             {
               "label": "createAsyncQueuer",
               "to": "framework/alpine/examples/createAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/alpine/examples/queue"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/alpine/examples/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/alpine/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/alpine/examples/createAsyncQueuedState"
             }
           ]
         },
@@ -4008,6 +4584,22 @@
             {
               "label": "useAsyncQueuer",
               "to": "framework/octane/examples/useAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/octane/examples/queue"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/octane/examples/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/octane/examples/useQueuedValue"
+            },
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/octane/examples/useAsyncQueuedState"
             }
           ]
         }
@@ -4144,6 +4736,22 @@
             {
               "label": "useAsyncBatcher",
               "to": "framework/vue/examples/useAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/vue/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/vue/examples/asyncBatch"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/vue/examples/useBatchedCallback"
+            },
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/vue/examples/useAsyncBatchedCallback"
             }
           ]
         },
@@ -4157,6 +4765,22 @@
             {
               "label": "createAsyncBatcher",
               "to": "framework/svelte/examples/createAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/svelte/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/svelte/examples/asyncBatch"
+            },
+            {
+              "label": "createBatchedCallback",
+              "to": "framework/svelte/examples/createBatchedCallback"
+            },
+            {
+              "label": "createAsyncBatchedCallback",
+              "to": "framework/svelte/examples/createAsyncBatchedCallback"
             }
           ]
         },
@@ -4170,6 +4794,22 @@
             {
               "label": "createAsyncBatcher",
               "to": "framework/lit/examples/createAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/lit/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/lit/examples/asyncBatch"
+            },
+            {
+              "label": "createBatchedCallback",
+              "to": "framework/lit/examples/createBatchedCallback"
+            },
+            {
+              "label": "createAsyncBatchedCallback",
+              "to": "framework/lit/examples/createAsyncBatchedCallback"
             }
           ]
         },
@@ -4183,6 +4823,22 @@
             {
               "label": "createAsyncBatcher",
               "to": "framework/alpine/examples/createAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/alpine/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/alpine/examples/asyncBatch"
+            },
+            {
+              "label": "createBatchedCallback",
+              "to": "framework/alpine/examples/createBatchedCallback"
+            },
+            {
+              "label": "createAsyncBatchedCallback",
+              "to": "framework/alpine/examples/createAsyncBatchedCallback"
             }
           ]
         },
@@ -4209,6 +4865,22 @@
             {
               "label": "useAsyncBatcher",
               "to": "framework/octane/examples/useAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/octane/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/octane/examples/asyncBatch"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/octane/examples/useBatchedCallback"
+            },
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/octane/examples/useAsyncBatchedCallback"
             }
           ]
         }

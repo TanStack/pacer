@@ -3,21 +3,60 @@ id: UseAsyncRateLimiter
 title: UseAsyncRateLimiter
 ---
 
-Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:54](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L54)
+Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:97](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L97)
 
-Creates an owned AsyncRateLimiter from an Ember template.
+Creates and retains the AsyncRateLimiter for its Ember owner.
 
-Positional arguments are the execution function and an optional state selector.
-Named arguments are core options and onUnmount. Ember tracks argument changes,
-updates the same utility after rendering, and cleans it up when the helper leaves
-the template. Function-valued options are passed through without invocation.
+Accepts at most a configured number of calls in a fixed or sliding window. Calls beyond the limit are rejected rather than queued. Use the state and timing methods to display capacity and retry timing.
+
+The callback may return a Promise. Core result, error, retry, and abort behavior is preserved.
+Use onSuccess, onError, and onSettled for execution outcomes.
+
+## State and subscriptions
+
+Pass a selector to track only the state consumed by the owner. The default selection is {},
+so utility state changes do not update the owner unless it opts in. Selection uses shallow
+comparison. The raw store remains available for additional subscriptions.
+The selector is the second positional argument. Read utility.state from the template.
+The contextual utility.Subscribe helper selects state for a child template.
+
+Available state fields:
+
+- `errorCount`: Number of function executions that have resulted in errors
+- `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
+- `isExceeded`: Whether the rate limiter has exceeded the limit
+- `isExecuting`: Whether the rate-limited function is currently executing asynchronously
+- `lastResult`: The result from the most recent successful function execution
+- `rejectionCount`: Number of function executions that have been rejected due to rate limiting
+- `settleCount`: Number of function executions that have completed (either successfully or with errors)
+- `status`: Current execution status - 'disabled' when not active, 'executing' when executing, 'idle' when not executing, 'exceeded' when rate limit is exceeded
+- `successCount`: Number of function executions that have completed successfully
+- `maybeExecuteCount`: Number of times maybeExecute has been called (for reduction calculations)
+
+## Options and ownership
+
+Tracked named arguments update options after rendering. createPacerScope supplies shared
+defaults through contextual helpers. Local named options override those defaults.
+Removing the helper invocation calls abort().
+onUnmount replaces default cleanup and receives the same adapter instance. A custom callback
+must perform all required cleanup. Use flush() where supported to finish pending work.
 
 ## Example
 
-```hbs
-{{#let (useAsyncRateLimiter this.execute wait=this.wait) as |utility|}}
-  {{utility.state}}
-{{/let}}
+```gts
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useAsyncRateLimiter } from '@tanstack/ember-pacer'
+import type { AsyncRateLimiterState } from '@tanstack/ember-pacer'
+
+const select = (state: AsyncRateLimiterState<(value: string) => Promise<void>>) => ({ executionCount: state.executionCount })
+
+<template>
+  {{#let (useAsyncRateLimiter @process select limit=5 window=1000) as |utility|}}
+    <button {{on "click" (fn utility.maybeExecute "item")}}>Schedule</button>
+    <span>{{utility.state.executionCount}}</span>
+  {{/let}}
+</template>
 ```
 
 ## Extends
@@ -83,7 +122,7 @@ Helper<{
 compute(positional, options): EmberAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:74](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L74)
+Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:117](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L117)
 
 Override this function when writing a class-based helper.
 

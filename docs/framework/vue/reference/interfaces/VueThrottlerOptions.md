@@ -3,7 +3,7 @@ id: VueThrottlerOptions
 title: VueThrottlerOptions
 ---
 
-Defined in: [throttler/useThrottler.ts:13](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/throttler/useThrottler.ts#L13)
+Defined in: [throttler/useThrottler.ts:14](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/throttler/useThrottler.ts#L14)
 
 Options for useThrottler, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useThrottler, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [throttler/useThrottler.ts:18](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/throttler/useThrottler.ts#L18)
+Defined in: [throttler/useThrottler.ts:19](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/throttler/useThrottler.ts#L19)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

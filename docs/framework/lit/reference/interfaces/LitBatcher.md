@@ -3,7 +3,7 @@ id: LitBatcher
 title: LitBatcher
 ---
 
-Defined in: [batcher/createBatcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L18)
+Defined in: [batcher/createBatcher.ts:19](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L19)
 
 A Batcher with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Batcher with framework-reactive selected state. All core methods remain availa
 options: Omit<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute"> & Partial<Pick<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute">> & LitBatcherOptions<TValue, TSelected>;
 ```
 
-Defined in: [batcher/createBatcher.ts:22](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L22)
+Defined in: [batcher/createBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L23)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [batcher/createBatcher.ts:22](https://github.com/TanStack/pacer/blob
 setOptions: (options) => void;
 ```
 
-Defined in: [batcher/createBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L23)
+Defined in: [batcher/createBatcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L24)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [batcher/createBatcher.ts:23](https://github.com/TanStack/pacer/blob
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [batcher/createBatcher.ts:25](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L25)
+Defined in: [batcher/createBatcher.ts:28](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L28)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### subscribe
+
+```ts
+subscribe: LitPacerSubscribe<BatcherState<TValue>>;
+```
+
+Defined in: [batcher/createBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/batcher/createBatcher.ts#L26)
+
+Subscribes a child owner to selected state with automatic cleanup.

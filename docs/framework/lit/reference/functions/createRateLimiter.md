@@ -11,17 +11,38 @@ function createRateLimiter<TFn, TSelected>(
 selector?): LitRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:48](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/rate-limiter/createRateLimiter.ts#L48)
+Defined in: [rate-limiter/createRateLimiter.ts:86](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/rate-limiter/createRateLimiter.ts#L86)
 
-Creates a Lit RateLimiter with reactive options and automatic owner cleanup.
+Creates and retains the RateLimiter for its Lit owner.
 
-Pass an options object with property getters or a factory. Only top-level properties
-are evaluated; function-valued core options remain callbacks. Local options override
-provider defaults. Options update the same instance, preserving pending work and counters.
+Accepts at most a configured number of calls in a fixed or sliding window. Calls beyond the limit are rejected rather than queued. Use the state and timing methods to display capacity and retry timing.
 
-Pass a selector to subscribe to the state your UI reads. The core store remains available
-for additional subscriptions. Cleanup uses the latest onUnmount option, or the core's
-default cancellation/stop behavior, including aborting active asynchronous work.
+## State and subscriptions
+
+Pass a selector to track only the state consumed by the owner. The default selection is {},
+so utility state changes do not update the owner unless it opts in. Selection uses shallow
+comparison. The raw store remains available for additional subscriptions.
+Use utility.subscribe(childHost, selector) for a child subscription. It returns a getter
+and cleans up with the child without canceling the parent utility.
+
+Available state fields:
+
+- `executionCount`: Number of function executions that have been completed
+- `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
+- `isExceeded`: Whether the rate limiter has exceeded the limit
+- `maybeExecuteCount`: Number of times maybeExecute has been called (for reduction calculations)
+- `rejectionCount`: Number of function executions that have been rejected due to rate limiting
+- `status`: Current execution status - 'disabled' when not active, 'executing' when executing, 'idle' when not executing, 'exceeded' when rate limit is exceeded
+
+## Options and ownership
+
+Pass an options object with property getters or a factory. Top-level properties are read
+reactively; function-valued core options remain callbacks. Local options override provider
+defaults. Updates retain the utility, its store, counters, and pending work.
+The synchronous rate limiter has no pending timer to cancel during teardown.
+onUnmount replaces default cleanup and receives the same adapter instance. A custom callback
+must perform all required cleanup. Use flush() where supported to finish pending work.
+Reconnecting the host refreshes options and restores subscriptions to the same instance.
 
 ## Type Parameters
 
@@ -40,6 +61,8 @@ default cancellation/stop behavior, including aborting active asynchronous work.
 
 `ReactiveControllerHost`
 
+Owner of option updates, subscriptions, and cleanup.
+
 ### fn
 
 `TFn`
@@ -50,16 +73,30 @@ Function executed by the utility.
 
 [`LitPacerOptions`](../type-aliases/LitPacerOptions.md)\<[`LitRateLimiterOptions`](../interfaces/LitRateLimiterOptions.md)\<`TFn`, `TSelected`\>\>
 
-Core options and an optional cleanup callback.
+Core options or a reactive factory, plus an optional onUnmount callback.
 
 ### selector?
 
 (`state`) => `TSelected`
 
-Selects the state consumed by the component.
+Selects state that updates the owner. Omit to leave selected state empty.
 
 ## Returns
 
 [`LitRateLimiter`](../interfaces/LitRateLimiter.md)\<`TFn`, `TSelected`\>
 
-The utility instance with reactive selected state.
+The retained utility instance with selected state and child subscriptions.
+
+## Example
+
+```ts
+import { createRateLimiter } from '@tanstack/lit-pacer'
+
+const utility = createRateLimiter(
+  this, (value: string) => { console.log(value) },
+  { limit: 5, window: 1000 },
+  (state) => ({ executionCount: state.executionCount }),
+)
+utility.maybeExecute('item')
+// Selected state: utility.state.executionCount
+```

@@ -3,7 +3,7 @@ id: LitQueuerOptions
 title: LitQueuerOptions
 ---
 
-Defined in: [queuer/createQueuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/queuer/createQueuer.ts#L9)
+Defined in: [queuer/createQueuer.ts:10](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/queuer/createQueuer.ts#L10)
 
 Options for createQueuer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createQueuer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [queuer/createQueuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/queuer/createQueuer.ts#L14)
+Defined in: [queuer/createQueuer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/queuer/createQueuer.ts#L15)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

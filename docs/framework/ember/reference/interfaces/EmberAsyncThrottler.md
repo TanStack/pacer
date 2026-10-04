@@ -3,9 +3,9 @@ id: EmberAsyncThrottler
 title: EmberAsyncThrottler
 ---
 
-Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts#L26)
+Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:28](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts#L28)
 
-A AsyncThrottler with framework-reactive selected state. All core methods remain available.
+An AsyncThrottler with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncThrottler with framework-reactive selected state. All core methods remain
 options: AsyncThrottlerOptions<TFn> & EmberAsyncThrottlerOptions<TFn, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts#L30)
+Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts#L32)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:30](h
 setOptions: (options) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts#L32)
+Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:34](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts#L34)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:32](h
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:36](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts#L36)
+Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:40](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts#L40)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: EmberPacerSubscribe<AsyncThrottlerState<TFn>>;
+```
+
+Defined in: [packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts:38](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-throttler/useAsyncThrottler.ts#L38)
+
+Selects state in a child without subscribing the utility owner.

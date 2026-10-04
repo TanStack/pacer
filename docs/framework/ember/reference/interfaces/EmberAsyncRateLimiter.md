@@ -3,9 +3,9 @@ id: EmberAsyncRateLimiter
 title: EmberAsyncRateLimiter
 ---
 
-Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L26)
+Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:28](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L28)
 
-A AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
+An AsyncRateLimiter with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -30,7 +30,7 @@ A AsyncRateLimiter with framework-reactive selected state. All core methods rema
 options: AsyncRateLimiterOptions<TFn> & EmberAsyncRateLimiterOptions<TFn, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:30](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L30)
+Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L32)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:
 setOptions: (options) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L32)
+Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:34](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L34)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:36](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L36)
+Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:40](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L40)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: EmberPacerSubscribe<AsyncRateLimiterState<TFn>>;
+```
+
+Defined in: [packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts:38](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-rate-limiter/useAsyncRateLimiter.ts#L38)
+
+Selects state in a child without subscribing the utility owner.

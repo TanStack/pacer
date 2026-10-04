@@ -3,7 +3,7 @@ id: LitAsyncRateLimiterOptions
 title: LitAsyncRateLimiterOptions
 ---
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:13](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L13)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:14](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L14)
 
 Options for createAsyncRateLimiter, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for createAsyncRateLimiter, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:18](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L18)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/lit-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L19)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

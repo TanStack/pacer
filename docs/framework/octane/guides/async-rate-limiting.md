@@ -12,52 +12,186 @@ Use it when accepted operations return values you need, can reject, or need retr
 - `useAsyncRateLimitedCallback` for a quota-controlled handler
 - `useAsyncRateLimiter` for capacity helpers and selected execution state
 
-## Use useAsyncRateLimiter
+## Octane example
 
-Call hooks at the top level of a compiled Octane component. The compiler assigns each call its own hook slot. The hook retains its utility across renders and commits the current callback and options in a layout effect. Selected state triggers rendering, and unmounting cleans up the utility. Use Octane 0.1.36; this package does not support the 0.2 line yet.
+Call the hook during component rendering. Removing the component runs its cleanup.
 
 ```tsx
-import { createRoot, useState } from 'octane';
-import { useAsyncRateLimiter } from '@tanstack/octane-pacer';
-function Example() @{
-  const [input, setInput] = useState('hello');
-  const [wait, setWait] = useState(200);
-  const [history, setHistory] = useState<Array<string>>([]);
-  const utility = useAsyncRateLimiter(async (value: string) => { setHistory((previous) => [...previous, value]); }, { limit: 2, window: wait }, (state) => state);
-  <main>
-<h1>Octane useAsyncRateLimiter</h1><p>Accept up to two executions per time window and track rejected calls.</p>
-<label>Task <input value={input} onInput={(event) => setInput(event.currentTarget.value)} /></label><label>Wait (ms) <input value={wait} onInput={(event) => setWait(Number(event.currentTarget.value))} type="number" min="0" /></label>
-<div><button onClick={() => { void utility.maybeExecute(input); }}>Schedule</button><button onClick={() => { for (let i = 1; i <= 3; i++) void utility.maybeExecute(`${input} ${i}`); }}>Schedule three</button><button onClick={() => { void utility.reset(); }}>Reset window</button><button onClick={() => { utility.abort(); }}>Reset</button><button onClick={() => setHistory([])}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{JSON.stringify(history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>{JSON.stringify(utility.state, null, 2)}</pre></section>
-<p class="caption">The hook retains one utility across renders and commits current options and callbacks.</p>
-</main>
+import { useAsyncRateLimiter } from '@tanstack/octane-pacer'
+
+function LoadButton() {
+  const limiter = useAsyncRateLimiter(
+    loadUser,
+    { limit: 3, window: 10_000 },
+    (state) => ({
+      rejectionCount: state.rejectionCount,
+      isExecuting: state.isExecuting,
+    }),
+  )
+
+  return (
+    <button onClick={() => void limiter.maybeExecute('123')}>
+      Load ({limiter.state.rejectionCount} rejected)
+    </button>
+  )
 }
-createRoot(document.getElementById('app')!).render(Example);
 ```
 
-## Options and controls
+The focused snippets below use `useAsyncRateLimiter` inside a component or another hook.
 
-`maybeExecute` accepts or rejects each call based on `limit` and `window`. Rejected calls are not queued for later. `reset()` clears the window and state. Function-valued limits can inspect the limiter at execution time. Select `settleCount` and `rejectionCount` to show accepted and rejected attempts.
+## Accepted and rejected calls
 
-The async variant awaits your callback. `onSuccess` receives the result, `onError` handles failures, and `onSettled` runs after an outcome. Configure `throwOnError` to decide whether a failed execution rejects its returned promise. `asyncRetryerOptions` configures retries inside the scheduled operation. Select `successCount`, `errorCount`, and `settleCount` where the utility exposes them.
+`maybeExecute()` returns a Promise with two normal outcomes:
 
-`abort()` signals active work to stop. Pass the utility's abort signal to cancellable operations such as `fetch`. Cancellation is cooperative and cannot undo an operation that already completed.
+- An accepted call executes the function and resolves with its result.
+- A call rejected by the window does not execute the function and resolves with `undefined`.
 
-## Reactive options and cleanup
+Use `onReject` or compare capacity before calling when `undefined` is also a valid function result.
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+```ts
+if (limiter.getRemainingInWindow() > 0) {
+  const result = await limiter.maybeExecute('123')
+}
+```
 
-The owning component supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+Unlike the synchronous limiter, accepted calls can overlap. `limit` controls how many executions may start in the window, not how many may be active at once:
 
-## State and convenience helpers
+```text
+limit: 3
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+start A ───────────────── finish A
+  start B ───── finish B
+    start C ─────────────────── finish C
+      call D rejected
+```
 
-`useAsyncRateLimitedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+Use an [Async Queue](./async-queuing.md) when you need a concurrency limit or need excess work to wait instead of being rejected.
 
-## Related documentation
+## Window behavior
 
-- [Octane adapter](../adapter.md)
-- [Core async rate limiting guide](../../../guides/async-rate-limiting.md)
-- [API reference](../reference/index.md)
+The window types match the synchronous limiter:
+
+- `fixed` starts a window with the first accepted execution. All timestamps in that window expire together.
+- `sliding` keeps each accepted timestamp until its own `window` duration has elapsed.
+
+The default is `fixed`. `getRemainingInWindow()` reports available starts, and `getMsUntilNextWindow()` reports how long a rejected caller must wait for capacity.
+
+An accepted execution consumes capacity when it starts. It still counts if the async function later fails or is aborted. Retries for that accepted execution do not add more rate-limit timestamps.
+
+## Errors and callbacks
+
+Async rate limiters provide callbacks for each outcome:
+
+- `onSuccess(result, args, limiter)` runs after an accepted execution succeeds.
+- `onError(error, args, limiter)` runs after its retries fail.
+- `onSettled(args, limiter)` runs after either execution outcome.
+- `onReject(args, limiter)` runs when the window has no capacity.
+
+Rejection is not an execution error. It does not call `onError` or `onSettled`.
+
+Without `onError`, `throwOnError` defaults to `true`, so a failed accepted execution rejects its Promise. Providing `onError` changes that default to `false`; the Promise then resolves with the current `lastResult`. Set `throwOnError` explicitly when you want different behavior.
+
+## Retrying accepted executions
+
+Configure retries for each accepted execution with `asyncRetryerOptions`:
+
+```ts
+const limiter = useAsyncRateLimiter(sendRequest, {
+  limit: 5,
+  window: 60_000,
+  asyncRetryerOptions: {
+    maxAttempts: 3,
+    backoff: 'exponential',
+    baseWait: 1000,
+    jitter: 0.2,
+  },
+})
+```
+
+`maxAttempts` includes the first attempt. One accepted rate-limit slot may therefore produce multiple attempts against the downstream service. Account for that service's own limits before combining rate limiting and retries. See the [Async Retrying Guide](./async-retrying.md) for retry safety.
+
+## Aborting active work
+
+`abort()` aborts all active executions. It does not remove their timestamps or restore window capacity. Pass each execution's signal to the underlying operation for cancellation to propagate:
+
+```ts
+const limiter = useAsyncRateLimiter(
+  async (id: string) => {
+    return fetch(`/api/users/${id}`, {
+      signal: limiter.getAbortSignal() ?? undefined,
+    })
+  },
+  { limit: 5, window: 60_000 },
+)
+
+limiter.abort()
+```
+
+When several executions overlap, `getAbortSignal()` without an argument refers to the most recently started execution. Pass its `maybeExecuteCount` to target a specific active execution.
+
+### Resetting
+
+`reset()` clears the rate-limit timestamps and restores default state. It does not guarantee that active underlying work stops, so abort first when a full cleanup is required:
+
+```ts
+limiter.abort()
+limiter.reset()
+```
+
+Resetting restores capacity immediately. Only do this when starting a genuinely new limiting period, not as a way to bypass the configured limit.
+
+## Configuration
+
+`enabled`, `limit`, and `window` may be values or functions that receive the limiter instance. `setOptions()` merges new options into the current configuration.
+
+```ts
+limiter.setOptions({
+  enabled: (limiter) => limiter.store.state.errorCount < 3,
+  limit: (limiter) => (limiter.store.state.rejectionCount > 10 ? 2 : 5),
+})
+```
+
+Changing `limit`, `window`, or `windowType` does not erase existing execution history. Call `reset()` if a new configuration should begin with a fresh window. A disabled limiter does not execute the function or consume capacity; its calls resolve with `undefined`.
+
+Use `asyncRateLimiterOptions()` to define reusable, type-checked option objects.
+
+## Octane lifecycle
+
+The adapter aborts active work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must call `abort()` when active work should still be stopped.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility during component rendering and select only fields used by the view:
+
+```ts
+const limiter = useAsyncRateLimiter(
+  loadUserFromApi,
+  { limit: 5, window: 60_000 },
+  (state) => ({
+    isExceeded: state.isExceeded,
+    isExecuting: state.isExecuting,
+    rejectionCount: state.rejectionCount,
+  }),
+)
+
+console.log(
+  limiter.state.isExceeded,
+  limiter.state.isExecuting,
+  limiter.state.rejectionCount,
+)
+```
+
+Use `utility.Subscribe` with a selector and a JSX render callback for an independently subscribed child.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
+
+- `executionTimes`: Accepted start times still used by the window.
+- `isExceeded`: Whether the current limit has been reached.
+- `isExecuting`: Whether at least one accepted execution is active.
+- `rejectionCount`: Calls rejected by the window.
+- `lastResult`: The most recent successful result.
+- `successCount`, `errorCount`, and `settleCount`: Execution outcome counts.
+
+See the [Octane API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

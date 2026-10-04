@@ -85,11 +85,7 @@ export function createPacerScope(
       > = {},
       selector: (state: P.AsyncQueuerState<TValue>) => TSelected = (state) =>
         ({ items: state.items }) as TSelected,
-    ): [
-      () => Array<TValue>,
-      P.AlpineAsyncQueuer<TValue, TSelected>['addItem'],
-      P.AlpineAsyncQueuer<TValue, TSelected>,
-    ] {
+    ): [() => Array<TValue>, P.AlpineAsyncQueuer<TValue, TSelected>] {
       return createAsyncQueuedState(scope, fn, options, selector)
     },
     createAsyncQueuer<TValue, TSelected = {}>(

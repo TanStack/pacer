@@ -1,6 +1,6 @@
 # Example end-to-end tests
 
-React, Preact, Solid, and Angular examples keep their Playwright specs in `examples/<framework>/<example>/tests/e2e`. Angular specs use `.spec.mts` so Playwright loads them as ES modules without changing the Angular application's module type. Each example has a smoke test and tests for the utility's visible behavior.
+React, Preact, Solid, Angular, Vue, Svelte, Lit, Alpine, Ember, and Octane examples keep their Playwright specs in `examples/<framework>/<example>/tests/e2e`. Angular specs use `.spec.mts` so Playwright loads them as ES modules without changing the Angular application's module type. Each example has a smoke test and tests for the utility's visible behavior.
 
 ## Run tests
 

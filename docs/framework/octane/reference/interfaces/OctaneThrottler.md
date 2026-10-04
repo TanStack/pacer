@@ -3,7 +3,7 @@ id: OctaneThrottler
 title: OctaneThrottler
 ---
 
-Defined in: [throttler/useThrottler.ts:23](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L23)
+Defined in: [throttler/useThrottler.ts:25](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L25)
 
 A Throttler with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Throttler with framework-reactive selected state. All core methods remain avai
 options: ThrottlerOptions<TFn> & OctaneThrottlerOptions<TFn, TSelected>;
 ```
 
-Defined in: [throttler/useThrottler.ts:27](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L27)
+Defined in: [throttler/useThrottler.ts:29](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L29)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [throttler/useThrottler.ts:27](https://github.com/TanStack/pacer/blo
 setOptions: (options) => void;
 ```
 
-Defined in: [throttler/useThrottler.ts:28](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L28)
+Defined in: [throttler/useThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L30)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [throttler/useThrottler.ts:28](https://github.com/TanStack/pacer/blo
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [throttler/useThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L30)
+Defined in: [throttler/useThrottler.ts:34](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L34)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: OctanePacerSubscribe<ThrottlerState<TFn>>;
+```
+
+Defined in: [throttler/useThrottler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/throttler/useThrottler.ts#L32)
+
+Selects state in a child without subscribing the utility owner.

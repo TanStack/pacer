@@ -8,7 +8,7 @@ Retrying runs an async operation again after it fails. It can make transient fai
 > [!NOTE]
 > `AsyncRetryer` is an alpha API and may change before 1.0. Its current design also supports the retry behavior inside Pacer's other async utilities.
 
-Retrying is the exception among these framework guides: TanStack Pacer does not provide a Alpine-specific retry primitive. The adapter re-exports the public `asyncRetry` function and `AsyncRetryer` class, so this guide uses those APIs.
+Retrying is the exception among these framework guides: TanStack Pacer does not provide a Alpine-specific retry primitive. The adapter re-exports the public `asyncRetry` function and `AsyncRetryer` class, so this guide uses those APIs and connects long-lived instances to the Alpine lifecycle.
 
 If TanStack Query already owns the request, use its retry support so one system controls request state and cancellation.
 
@@ -70,10 +70,200 @@ async function loadOneUser(id: string) {
 }
 ```
 
-## Ownership and cancellation
+## Create one retryer per component
 
-`AsyncRetryer` is a core class, so it does not automatically join adapter cleanup. Prefer the async scheduling utilities with `asyncRetryerOptions` when the operation belongs to a component. They expose the same retry settings and participate in framework teardown.
+The example imports your application's `loadUser` function from `./api`. Its retryer is created once and aborted during owner cleanup.
 
-For a manually owned retryer, call `abort()` from the owner's cleanup. Use a fresh instance for independent overlapping calls. Do not create a new retryer every time a component renders.
+```ts
+import Alpine from 'alpinejs'
+import { AsyncRetryer } from '@tanstack/alpine-pacer'
+import { loadUser } from './api'
 
-See the [core retrying guide](../../../guides/async-retrying.md) for backoff, jitter, failure handling, and abort signals.
+Alpine.data('userPanel', () => {
+  const retryer = new AsyncRetryer(loadUser, {
+    maxAttempts: 3,
+    baseWait: 1000,
+    jitter: 0.2,
+    backoff: 'exponential',
+    maxWait: 5000,
+    onRetry: (attempt, error) => {
+      console.log(`Attempt ${attempt} failed; retrying`, error)
+    },
+    onLastError: (error) => {
+      console.error('Attempts exhausted:', error)
+    },
+  })
+  return {
+    id: '123',
+    reload() {
+      void retryer.execute(this.id)
+    },
+    destroy() {
+      retryer.abort()
+    },
+  }
+})
+
+Alpine.start()
+```
+
+```html
+<div x-data="userPanel">
+  <button @click="reload">Reload</button>
+</div>
+```
+
+Update `retryer.fn` when the function closes over changing props or state. Starting a second `execute()` on the same instance aborts its earlier retry flow. Create separate instances when executions may overlap.
+
+Use a long-lived `AsyncRetryer` when you need callbacks, state, changing options, or manual abort control. `maxAttempts` includes the first call. A value of `1` disables retries while retaining result, error, timeout, callback, and abort behavior.
+
+## Attempts and backoff
+
+The first attempt starts immediately. A delay is calculated only after a failed attempt that has another attempt available.
+
+With `baseWait: 1000`, the nominal delays are:
+
+| Failed attempt | Exponential |  Linear |   Fixed |
+| -------------- | ----------: | ------: | ------: |
+| 1              |     1000 ms | 1000 ms | 1000 ms |
+| 2              |     2000 ms | 2000 ms | 1000 ms |
+| 3              |     4000 ms | 3000 ms | 1000 ms |
+| 4              |     8000 ms | 4000 ms | 1000 ms |
+
+`maxWait` caps the nominal delay before jitter. `baseWait`, `maxWait`, and `maxAttempts` can also be functions that receive the retryer instance.
+
+### Add jitter for shared services
+
+Many clients can fail at the same time and otherwise retry in synchronized waves. `jitter` adds random variation above or below each nominal delay:
+
+```ts
+const retryer = new AsyncRetryer(loadUser, {
+  maxAttempts: 4,
+  baseWait: 1000,
+  maxWait: 10_000,
+  jitter: 0.25,
+})
+```
+
+Use a value from `0` to `1`, where `0.25` allows up to 25 percent variation. Because jitter is applied after `maxWait`, the final randomized delay can be slightly greater than `maxWait`.
+
+## Errors and callbacks
+
+The error callbacks serve different levels of the retry lifecycle:
+
+- `onError(error, args, retryer)` runs for every failed attempt.
+- `onRetry(attempt, error, retryer)` runs after a failed attempt when another attempt remains. `attempt` is the number that just failed.
+- `onLastError(error, retryer)` runs after all attempts fail.
+- `onSuccess(result, args, retryer)` runs once after a successful attempt.
+- `onSettled(args, retryer)` runs as attempts settle.
+
+`throwOnError` controls the final failed result:
+
+- `'last'`, the default, rejects with the final error after all attempts fail.
+- `true` also runs the configured attempts, then rejects with the final error.
+- `false` resolves with `undefined` after all attempts fail.
+
+Providing `onError` changes the default `throwOnError` value to `false`. Set it explicitly if you want both observation and rejection:
+
+```ts
+const retryer = new AsyncRetryer(loadUser, {
+  onError: (error) => reportError(error),
+  throwOnError: 'last',
+})
+```
+
+An `AbortError` thrown by the wrapped function is treated as cancellation. It resolves with `undefined` without consuming further attempts or calling `onAbort` automatically.
+
+## Timeouts
+
+Two independent options limit retry work:
+
+- `maxExecutionTime` sets a deadline for one attempt.
+- `maxTotalExecutionTime` sets a deadline for the complete call, including attempts and backoff waits.
+
+```ts
+const retryer = new AsyncRetryer(loadUser, {
+  maxAttempts: 4,
+  maxExecutionTime: 5000,
+  maxTotalExecutionTime: 15_000,
+  onExecutionTimeout: () => console.warn('Attempt timed out'),
+  onTotalExecutionTimeout: () => console.warn('Retry operation timed out'),
+})
+```
+
+A timeout aborts the retry flow. `onAbort` receives either `'execution-timeout'` or `'total-timeout'`. A total timeout normally resolves with `undefined`. A per-attempt timeout can reject with its final timeout or abort error when `throwOnError` is enabled, and resolves with `undefined` when error throwing is disabled.
+
+JavaScript cannot forcibly stop an arbitrary Promise. A timeout prevents Pacer from continuing the retry flow, but the underlying operation stops only if it cooperates with the abort signal.
+
+## Aborting the underlying operation
+
+Call `getAbortSignal()` from the wrapped function and pass the signal to an API that supports it:
+
+```ts
+const retryer = new AsyncRetryer(
+  async (url: string) => {
+    const response = await fetch(url, {
+      signal: retryer.getAbortSignal() ?? undefined,
+    })
+    if (!response.ok) throw new Error(`Request failed: ${response.status}`)
+    return response.json()
+  },
+  { maxAttempts: 3 },
+)
+
+const request = retryer.execute('/api/data')
+retryer.abort()
+await request // undefined
+```
+
+`abort()` stops the active retry flow and pending backoff. `onAbort` receives `'manual'`. Starting another `execute()` on the same instance aborts the earlier flow with `'new-execution'`.
+
+Without passing the signal to the operation, `abort()` prevents later retry work but the active Promise may continue running in the background.
+
+## Resetting and changing options
+
+`setOptions()` merges new options into the current configuration. It does not restart an active execution.
+
+`reset()` restores default state only. It does not abort active work:
+
+```ts
+retryer.abort()
+retryer.reset()
+```
+
+Use `asyncRetryerOptions()` to define reusable, type-checked option objects:
+
+```ts
+const networkRetryOptions = asyncRetryerOptions({
+  maxAttempts: 3,
+  backoff: 'exponential',
+  baseWait: 1000,
+  jitter: 0.2,
+})
+```
+
+## State
+
+The retryer stores state at `retryer.store`.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
+
+Commonly useful properties include:
+
+- `currentAttempt`: The current or most recently started attempt number. It returns to `0` after success or reset.
+- `isExecuting`: Whether a retry flow is active.
+- `lastError`: The most recent failed attempt's error.
+- `lastResult`: The most recent successful result.
+- `executionCount`: Successful top-level executions, not individual attempts.
+- `lastExecutionTime` and `totalExecutionTime`: Timing recorded for the most recent success.
+- `status`: `'disabled'`, `'idle'`, `'executing'`, or `'retrying'`.
+
+`AsyncRetryer` does not expose a Alpine state selector. Use its callbacks to copy the fields needed by the view into Alpine state. If you subscribe to `retryer.store` directly, register the unsubscribe function with the same component or owner cleanup that aborts the retryer.
+
+For exact signatures, see the [`asyncRetry` function reference](../../../reference/functions/asyncRetry.md), [`AsyncRetryer` class reference](../../../reference/classes/AsyncRetryer.md), and [`AsyncRetryerOptions` reference](../../../reference/interfaces/AsyncRetryerOptions.md).
+
+## Related docs
+
+- [Alpine adapter](../adapter.md)
+- [Choose a Pacer utility](../../../guides/which-pacer-utility-should-i-choose.md)
+- [Select another framework](../../../guides/async-retrying.md)

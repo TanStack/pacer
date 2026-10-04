@@ -3,7 +3,7 @@ id: OctaneDebouncer
 title: OctaneDebouncer
 ---
 
-Defined in: [debouncer/useDebouncer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L23)
+Defined in: [debouncer/useDebouncer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L25)
 
 A Debouncer with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Debouncer with framework-reactive selected state. All core methods remain avai
 options: DebouncerOptions<TFn> & OctaneDebouncerOptions<TFn, TSelected>;
 ```
 
-Defined in: [debouncer/useDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L27)
+Defined in: [debouncer/useDebouncer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L29)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [debouncer/useDebouncer.ts:27](https://github.com/TanStack/pacer/blo
 setOptions: (options) => void;
 ```
 
-Defined in: [debouncer/useDebouncer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L28)
+Defined in: [debouncer/useDebouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L30)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [debouncer/useDebouncer.ts:28](https://github.com/TanStack/pacer/blo
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [debouncer/useDebouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L30)
+Defined in: [debouncer/useDebouncer.ts:34](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L34)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: OctanePacerSubscribe<DebouncerState<TFn>>;
+```
+
+Defined in: [debouncer/useDebouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/debouncer/useDebouncer.ts#L32)
+
+Selects state in a child without subscribing the utility owner.

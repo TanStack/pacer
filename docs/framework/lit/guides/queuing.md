@@ -43,58 +43,264 @@ Choose another utility when:
 
 ## Choose an API
 
-- `useQueuedState` or `useQueuedValue` for a queue connected to Lit state
-- `useQueuer` for direct queue lifecycle and ordering control
+- `createQueuedState` or `createQueuedValue` for a queue connected to Lit state
+- `createQueuer` for direct queue lifecycle and ordering control
 
 Use the queued state or value API when queue contents drive the UI. Use the instance API for ordering, capacity, expiration, pause, resume, flush, and manual processing.
 
-## Use createQueuer
+## Lit example
 
-Pass the owning `ReactiveControllerHost` as the first argument. The factory registers its controller automatically. Host updates refresh options, store updates request a render, and disconnecting cleans up pending work. Reconnecting subscribes again to the same utility. `DebouncerController` and the other controller classes expose the utility through `.pacer` and selected state through `.state`.
+Pass the owning Lit controller host as the first argument. Disconnecting the host runs cleanup; reconnecting restores its subscription. The example imports application operations from `./api`.
 
 ```ts
 import { LitElement, html } from 'lit'
 import { createQueuer } from '@tanstack/lit-pacer'
+import { processJob } from './api'
+
 class Example extends LitElement {
-  static properties = { input: { state: true }, wait: { state: true }, history: { state: true } }
-  input = 'hello'
-  wait = 200
-  history: Array<string> = []
-  utility = createQueuer(this, (value: string) => { this.history = [...this.history, value] }, () => ({ wait: this.wait, started: false }), (state) => state)
-  override createRenderRoot() { return this }
-  schedule = () => { void this.utility.addItem(this.input) }
-  burst = () => { for (let i = 1; i <= 3; i++) void this.utility.addItem(`${this.input} ${i}`) }
-  override render() { return html`
-<main>
-<h1>Lit createQueuer</h1><p>Keep each task in order. Start and stop processing without losing pending items.</p>
-<label>Task <input .value=${this.input} @input=${(event: Event) => { this.input = (event.target as HTMLInputElement).value }} /></label><label>Wait (ms) <input .value=${String(this.wait)} @input=${(event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }} type="number" min="0" /></label>
-<div><button @click=${this.schedule}>Schedule</button><button @click=${this.burst}>Schedule three</button><button @click=${() => this.utility.start()}>Start queue</button><button @click=${() => this.utility.stop()}>Stop queue</button><button @click=${() => { this.history = [] }}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">${JSON.stringify(this.history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>${JSON.stringify(this.utility.state, null, 2)}</pre></section>
-<p class="caption">Host updates refresh options. Disconnecting the element cleans up its utility.</p>
-</main>` }
+  queue = createQueuer(this, processJob, { wait: 500 }, (state) => ({
+    items: state.items,
+    isRunning: state.isRunning,
+  }))
+
+  override render() {
+    return html`
+      <button @click=${() => void this.queue.addItem('task')}>Add job</button>
+      <output>${this.queue.state.items.length}</output>
+    `
+  }
 }
+
 customElements.define('pacer-example', Example)
-document.getElementById('app')!.append(document.createElement('pacer-example'))
 ```
 
-## Options and controls
+The focused snippets below create utilities in a Lit component constructor, where `this` is the controller host. Call their control methods from event handlers.
 
-`addItem` adds a task; `start()` and `stop()` control processing. `wait` spaces executions, `maxSize` limits pending items, and `getPriority` controls priority. `initialItems` supplies initial work. Expiration options remove obsolete items. Select `items`, `size`, `isRunning`, and `executionCount` to display progress. Stopping preserves pending items.
-## Reactive options and cleanup
+Pass `initialItems` when work is already available at creation time. The queue applies its normal insertion and capacity rules, and automatic processing can begin immediately unless `started: false` is set.
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+`createQueuedState` returns `[itemsAccessor, addItem, queue]`. Call `itemsAccessor()` to read pending items.
 
-The owning component supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+## Ordering items
 
-## State and convenience helpers
+Automatic processing uses `addItemsTo` to choose where new items enter and `getItemsFrom` to choose where items leave.
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+### FIFO
 
-`createQueuedState` selects pending items by default. `createQueuedValue` tracks the last processed value from a changing source.
+FIFO processes the oldest item first. This is the default.
 
-## Related documentation
+```ts
+const queuer = createQueuer(this, processItem, {
+  addItemsTo: 'back',
+  getItemsFrom: 'front',
+  started: false,
+})
 
-- [Lit adapter](../adapter.md)
-- [Core queuing guide](../../../guides/queuing.md)
-- [API reference](../reference/index.md)
+queuer.addItem(1)
+queuer.addItem(2)
+queuer.addItem(3)
+queuer.start() // Processes 1, 2, 3.
+```
+
+### LIFO
+
+LIFO processes the newest item first.
+
+```ts
+const queuer = createQueuer(this, processItem, {
+  addItemsTo: 'back',
+  getItemsFrom: 'back',
+  started: false,
+})
+
+queuer.addItem(1)
+queuer.addItem(2)
+queuer.addItem(3)
+queuer.start() // Processes 3, 2, 1.
+```
+
+### Priority
+
+Provide `getPriority` to process higher numeric priorities first. Priority ordering takes precedence over front and back retrieval.
+
+```ts
+type Task = { name: string; priority: number }
+
+const queuer = createQueuer<Task>(processTask, {
+  getPriority: (task) => task.priority,
+  started: false,
+})
+
+queuer.addItem({ name: 'low', priority: 1 })
+queuer.addItem({ name: 'high', priority: 3 })
+queuer.addItem({ name: 'medium', priority: 2 })
+queuer.start() // Processes high, medium, low.
+```
+
+## Automatic and manual processing
+
+Queues start automatically by default. The first accepted item processes immediately, then `wait` controls the delay before later items.
+
+```ts
+const queuer = createQueuer(this, processItem, {
+  wait: 1000,
+})
+```
+
+Set `started: false` to collect items before processing:
+
+```ts
+const queuer = createQueuer(this, processItem, { started: false })
+
+queuer.addItem(1)
+queuer.addItem(2)
+queuer.start()
+queuer.stop()
+```
+
+`stop()` cancels the scheduled tick and retains queued items. `start()` resumes automatic processing.
+
+For manual control:
+
+- `execute()` removes and processes the next item immediately.
+- `getNextItem()` removes and returns the next item without processing it.
+- `peekNextItem()` returns the next item without removing it.
+- `peekAllItems()` returns a copy of the current queue.
+
+## Capacity and rejection
+
+Set `maxSize` to bound the number of waiting items. An item added to a full queue is rejected, `addItem()` returns `false`, and `onReject` runs.
+
+```ts
+const queuer = createQueuer(this, processItem, {
+  maxSize: 2,
+  started: false,
+  onReject: (item, queuer) => {
+    console.log('Rejected:', item)
+    console.log('Total rejections:', queuer.store.state.rejectionCount)
+  },
+})
+
+queuer.addItem(1) // true
+queuer.addItem(2) // true
+queuer.addItem(3) // false
+```
+
+The active synchronous execution is not part of `size`; `size` counts items still waiting in the queue.
+
+## Expiring stale items
+
+Use `expirationDuration` to remove items that have waited too long:
+
+```ts
+const queuer = createQueuer(this, processItem, {
+  expirationDuration: 5000,
+  onExpire: (item) => {
+    console.log('Expired:', item)
+  },
+})
+```
+
+Use `getIsExpired` for custom logic:
+
+```ts
+const queuer = createQueuer(this, processItem, {
+  getIsExpired: (item, addedAt) => Date.now() - addedAt > item.maxAge,
+})
+```
+
+Expiration is checked while the automatic processing loop runs. A stopped queue evaluates stale items when processing resumes.
+
+## Flushing, clearing, and resetting
+
+### Flush
+
+`flush()` processes waiting items immediately without the configured delay. Pass a count to process only part of the queue.
+
+```ts
+queuer.flush() // Process all waiting items.
+queuer.flush(2) // Process at most two waiting items.
+```
+
+`flushAsBatch()` removes all waiting items and passes them to a separate batch function:
+
+```ts
+queuer.flushAsBatch((items) => {
+  saveItems(items)
+})
+```
+
+### Clear
+
+`clear()` removes all waiting items without processing them. It does not change whether the queue is running.
+
+```ts
+queuer.clear()
+```
+
+### Reset
+
+`reset()` restores state to the default running, empty queue. It does not clear an already scheduled timeout. Call `stop()` before `reset()` when scheduled work must be canceled.
+
+```ts
+queuer.stop()
+queuer.reset()
+```
+
+## Configuring and observing the queue
+
+Use `setOptions()` to update future behavior. Changing `started` through `setOptions()` does not call `start()` or `stop()`.
+
+```ts
+queuer.setOptions({ wait: 250, maxSize: 20 })
+queuer.start()
+```
+
+The `wait` option may be a function that receives the queuer instance:
+
+```ts
+const queuer = createQueuer(this, processItem, {
+  wait: (queuer) => (queuer.store.state.size > 20 ? 50 : 250),
+})
+```
+
+Use callbacks for queue events:
+
+- `onItemsChange`: An item was added or removed.
+- `onExecute`: An item was processed.
+- `onReject`: An item was rejected.
+- `onExpire`: An item expired.
+
+## Lit lifecycle
+
+The adapter stops automatic processing when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility on its owning host and select the fields used by `render()`. Store changes request a host update:
+
+```ts
+const queuer = createQueuer(this, processItem, { wait: 250 }, (state) => ({
+  size: state.size,
+  isRunning: state.isRunning,
+}))
+
+console.log(queuer.state.size, queuer.state.isRunning)
+```
+
+Use `utility.subscribe(childHost, selector)` for an independently subscribed child host. It returns a selected-state getter and cleans up when that child disconnects.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+`initialState` can restore selected queue state that your app has persisted. If it includes `items`, they take precedence over `initialItems`; `initialState.isRunning` likewise takes precedence over `started`. Restore only durable fields. Pending timers are not restored.
+
+Commonly useful state includes:
+
+- `items` and `size`: Items still waiting.
+- `isRunning`: Whether automatic processing is enabled.
+- `isIdle`: Whether a running queue is empty.
+- `isFull`: Whether `maxSize` has been reached.
+- `executionCount`: Items whose wrapped function returned successfully.
+- `rejectionCount` and `expirationCount`: Items removed without processing.
+- `status`: `'idle'`, `'running'`, or `'stopped'`.
+
+See the [Lit API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

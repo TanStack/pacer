@@ -28,6 +28,8 @@ const result = spawnSync(
   {
     cwd: root,
     encoding: 'utf8',
+    // The full framework matrix exceeds spawnSync's default 1 MiB output limit.
+    maxBuffer: 16 * 1024 * 1024,
     env: { ...process.env, PLAYWRIGHT_TEST_DIR: '' },
   },
 )

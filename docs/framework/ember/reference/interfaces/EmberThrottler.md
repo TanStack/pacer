@@ -3,7 +3,7 @@ id: EmberThrottler
 title: EmberThrottler
 ---
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L26)
+Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:28](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L28)
 
 A Throttler with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Throttler with framework-reactive selected state. All core methods remain avai
 options: ThrottlerOptions<TFn> & EmberThrottlerOptions<TFn, TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L30)
+Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L32)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:30](https://gith
 setOptions: (options) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:31](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L31)
+Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:33](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L33)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:31](https://gith
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:33](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L33)
+Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:37](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L37)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: EmberPacerSubscribe<ThrottlerState<TFn>>;
+```
+
+Defined in: [packages/ember-pacer/src/throttler/useThrottler.ts:35](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/throttler/useThrottler.ts#L35)
+
+Selects state in a child without subscribing the utility owner.

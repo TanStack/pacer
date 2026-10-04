@@ -9,54 +9,195 @@ Use async debouncing when the debounced operation returns a value you need, can 
 
 ## Choose an API
 
-- `useAsyncDebouncedCallback` for a stable Promise-returning handler
-- `useAsyncDebouncer` for lifecycle methods and selected execution state
+- `createAsyncDebouncedCallback` for a stable Promise-returning handler
+- `createAsyncDebouncer` for lifecycle methods and selected execution state
 
-## Use createAsyncDebouncer
+## Alpine example
 
-Create a `createPacerScope()` for each component and call `scope.destroy()` from Alpine's `destroy` hook. Scope methods own option effects, state subscriptions, and utility cleanup. Alternatively, install `pacerPlugin` to use the automatically owned `$pacer` magic. Read selected state through `utility.state`.
+Create one Pacer scope for each Alpine component and destroy it from the component's `destroy` method. The example imports application operations from `./api`.
 
 ```ts
 import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
-import type { AlpineAsyncDebouncer } from '@tanstack/alpine-pacer'
-import type { AsyncDebouncerState } from '@tanstack/alpine-pacer'
-Alpine.data('example', () => ({
-  input: 'hello', wait: 200, history: [] as Array<string>,
-  scope: createPacerScope(),
-  utility: null as AlpineAsyncDebouncer<(value: string) => Promise<void>, AsyncDebouncerState<(value: string) => Promise<void>>> | null,
-  init() {
-    this.utility = this.scope.createAsyncDebouncer(async (value: string) => { this.history = [...this.history, value] }, () => ({ wait: this.wait }), (state) => state)
-  },
-  schedule() { void this.utility?.maybeExecute(this.input) },
-  burst() { for (let i = 1; i <= 3; i++) void this.utility?.maybeExecute(`${this.input} ${i}`) },
-  destroy() { this.scope.destroy() },
-}))
+import { fetchSearchResults } from './api'
+
+Alpine.data('example', () => {
+  const scope = createPacerScope()
+  const debouncer = scope.createAsyncDebouncer(
+    fetchSearchResults,
+    { wait: 300 },
+    (state) => ({ isPending: state.isPending, isExecuting: state.isExecuting }),
+  )
+  return {
+    debouncer,
+    schedule() {
+      void debouncer.maybeExecute('pacer')
+    },
+    destroy() {
+      scope.destroy()
+    },
+  }
+})
+
 Alpine.start()
 ```
 
-## Options and controls
+```html
+<div x-data="example">
+  <button @click="schedule">Search</button>
+  <output x-text="debouncer.state.isPending"></output>
+</div>
+```
 
-`maybeExecute` schedules the latest arguments. `wait` resets after each call. `leading` runs the first call immediately and `trailing` controls the deferred call. Use `flush()` to execute pending work, `cancel()` to discard its timer, and `reset()` to reset counters. Select `isPending`, `lastArgs`, or `settleCount` for your UI.
+The focused snippets below use the component-owned `scope` created above. Call their control methods from event handlers.
 
-The async variant awaits your callback. `onSuccess` receives the result, `onError` handles failures, and `onSettled` runs after an outcome. Configure `throwOnError` to decide whether a failed execution rejects its returned promise. `asyncRetryerOptions` configures retries inside the scheduled operation. Select `successCount`, `errorCount`, and `settleCount` where the utility exposes them.
+## Promise results
 
-`abort()` signals active work to stop. Pass the utility's abort signal to cancellable operations such as `fetch`. Cancellation is cooperative and cannot undo an operation that already completed.
+`maybeExecute()` returns a Promise. A call that owns an execution resolves with that execution's result. There is one important consequence when a pending trailing call is replaced:
 
-## Reactive options and cleanup
+```text
+call A ──────┐
+             ├─ call B replaces A ───── wait ───── execute B
+Promise A ───┘ resolves with the previous lastResult
+Promise B ─────────────────────────────── resolves with result B
+```
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+The replaced call resolves immediately with the debouncer's current `lastResult`, which is often `undefined` before the first successful execution. It does not wait for the newer call. Treat the Promise returned by the latest call as the owner of the pending result.
 
-The owning scope supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+If you need every invocation to execute and produce its own result, use an [Async Queue](./async-queuing.md) instead.
 
-## State and convenience helpers
+## Leading and trailing execution
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+The four combinations match synchronous debouncing:
 
-`createAsyncDebouncedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+| `leading` | `trailing` | Behavior                                                                           |
+| --------- | ---------- | ---------------------------------------------------------------------------------- |
+| `false`   | `true`     | Execute after calls stop for `wait` milliseconds. This is the default.             |
+| `true`    | `false`    | Execute immediately, then ignore calls until the quiet period ends.                |
+| `true`    | `true`     | Execute the first call immediately and the latest later call on the trailing edge. |
+| `false`   | `false`    | Record calls without executing the function.                                       |
 
-## Related documentation
+With both edges enabled, a single call executes only on the leading edge. A trailing execution requires another call during the wait period.
 
-- [Alpine adapter](../adapter.md)
-- [Core async debouncing guide](../../../guides/async-debouncing.md)
-- [API reference](../reference/index.md)
+## Errors and callbacks
+
+Async debouncers provide callbacks around each actual execution:
+
+- `onSuccess(result, args, debouncer)` runs after a successful execution.
+- `onError(error, args, debouncer)` runs after the retries for an execution fail.
+- `onSettled(args, debouncer)` runs after either outcome.
+
+Without `onError`, `throwOnError` defaults to `true`, so an execution failure rejects the Promise. Providing `onError` changes that default to `false`; the Promise then resolves with the current `lastResult`. Set `throwOnError` explicitly when you want different behavior.
+
+Callbacks run for executions, not for every call to `maybeExecute()`. Replaced or canceled pending calls never reach the wrapped function.
+
+## Retrying failed executions
+
+Pass `asyncRetryerOptions` to retry an execution after it starts:
+
+```ts
+const save = scope.createAsyncDebouncer(saveDraft, {
+  wait: 500,
+  asyncRetryerOptions: {
+    maxAttempts: 3,
+    backoff: 'exponential',
+    baseWait: 500,
+    jitter: 0.2,
+  },
+})
+```
+
+`maxAttempts` includes the first attempt. Debouncing decides when one logical execution starts; the retryer then manages attempts for that execution. See the [Async Retrying Guide](./async-retrying.md) for retry safety, backoff, and timeout behavior.
+
+## Canceling pending work and aborting active work
+
+Pending and active work have separate controls:
+
+- `cancel()` clears a trailing execution that has not started. It does not stop an active Promise.
+- `abort()` aborts active executions. It does not clear a pending trailing execution.
+- `flush()` starts pending work immediately and returns its result. It does not affect active work.
+
+For an underlying operation such as `fetch` to stop, pass the debouncer's signal to it:
+
+```ts
+const search = scope.createAsyncDebouncer(
+  async (query: string) => {
+    const response = await fetch(`/api/search?q=${query}`, {
+      signal: search.getAbortSignal() ?? undefined,
+    })
+    return response.json()
+  },
+  { wait: 300 },
+)
+
+search.maybeExecute('pacer')
+search.abort()
+```
+
+Calling `abort()` without using the signal stops retry management but cannot force an arbitrary Promise to stop.
+
+### Resetting safely
+
+`reset()` restores default state, but it does not clear a scheduled trailing timeout or guarantee that active work stops. Use the lifecycle methods first when you need a complete cleanup:
+
+```ts
+search.cancel()
+search.abort()
+search.reset()
+```
+
+## Configuration
+
+`wait` and `enabled` may be values or functions that receive the debouncer instance. `setOptions()` merges new options into the current configuration.
+
+```ts
+search.setOptions({
+  enabled: (debouncer) => debouncer.store.state.errorCount < 3,
+  wait: (debouncer) => (debouncer.store.state.successCount === 0 ? 200 : 500),
+})
+```
+
+Changing `wait` does not reschedule an existing timeout. The new value applies when later work is scheduled.
+
+Use `asyncDebouncerOptions()` to define reusable, type-checked option objects.
+
+## Alpine lifecycle
+
+The adapter cancels pending work and aborts active work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in its owning scope and select fields used by `x-text` and `x-bind`:
+
+```ts
+const debouncer = scope.createAsyncDebouncer(
+  fetchSearchResults,
+  { wait: 300 },
+  (state) => ({
+    isPending: state.isPending,
+    isExecuting: state.isExecuting,
+    lastResult: state.lastResult,
+  }),
+)
+
+console.log(
+  debouncer.state.isPending,
+  debouncer.state.isExecuting,
+  debouncer.state.lastResult,
+)
+```
+
+Use `utility.subscribe(childScope, selector)` for an independently subscribed child scope. It returns a selected-state getter and cleans up with that child scope.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
+
+- `isPending`: Whether a trailing execution is scheduled.
+- `isExecuting`: Whether the wrapped function is active.
+- `lastArgs`: The arguments retained for pending work.
+- `lastResult`: The most recent successful result.
+- `successCount`, `errorCount`, and `settleCount`: Execution outcome counts.
+- `status`: `'disabled'`, `'idle'`, `'pending'`, `'executing'`, or `'settled'`.
+
+See the [Alpine API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

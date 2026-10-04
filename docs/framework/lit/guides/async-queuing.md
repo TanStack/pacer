@@ -26,63 +26,206 @@ The queue controls start order. With concurrency greater than `1`, completion or
 
 ## Choose an API
 
-- `useAsyncQueuedState` for reactive pending items
-- `useAsyncQueuer` for concurrency, ordering, and lifecycle control
+- `createAsyncQueuedState` for reactive pending items
+- `createAsyncQueuer` for concurrency, ordering, and lifecycle control
 
-## Use createAsyncQueuer
+## Lit example
 
-Pass the owning `ReactiveControllerHost` as the first argument. The factory registers its controller automatically. Host updates refresh options, store updates request a render, and disconnecting cleans up pending work. Reconnecting subscribes again to the same utility. `DebouncerController` and the other controller classes expose the utility through `.pacer` and selected state through `.state`.
+Pass the owning Lit controller host as the first argument. Disconnecting the host runs cleanup; reconnecting restores its subscription. The example imports application operations from `./api`.
 
 ```ts
 import { LitElement, html } from 'lit'
 import { createAsyncQueuer } from '@tanstack/lit-pacer'
+import { uploadFile, nextFile } from './api'
+
 class Example extends LitElement {
-  static properties = { input: { state: true }, wait: { state: true }, history: { state: true } }
-  input = 'hello'
-  wait = 200
-  history: Array<string> = []
-  utility = createAsyncQueuer(this, async (value: string) => { this.history = [...this.history, value] }, () => ({ wait: this.wait, started: false }), (state) => state)
-  override createRenderRoot() { return this }
-  schedule = () => { void this.utility.addItem(this.input) }
-  burst = () => { for (let i = 1; i <= 3; i++) void this.utility.addItem(`${this.input} ${i}`) }
-  override render() { return html`
-<main>
-<h1>Lit createAsyncQueuer</h1><p>Keep each task in order. Start and stop processing without losing pending items.</p>
-<label>Task <input .value=${this.input} @input=${(event: Event) => { this.input = (event.target as HTMLInputElement).value }} /></label><label>Wait (ms) <input .value=${String(this.wait)} @input=${(event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }} type="number" min="0" /></label>
-<div><button @click=${this.schedule}>Schedule</button><button @click=${this.burst}>Schedule three</button><button @click=${() => this.utility.start()}>Start queue</button><button @click=${() => this.utility.stop()}>Stop queue</button><button @click=${() => { this.history = [] }}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">${JSON.stringify(this.history, null, 2)}</pre></section>
-<section><h2>Utility state</h2><pre>${JSON.stringify(this.utility.state, null, 2)}</pre></section>
-<p class="caption">Host updates refresh options. Disconnecting the element cleans up its utility.</p>
-</main>` }
+  queue = createAsyncQueuer(this, uploadFile, { concurrency: 2 }, (state) => ({
+    items: state.items,
+    activeItems: state.activeItems,
+  }))
+
+  override render() {
+    return html`
+      <button @click=${() => void this.queue.addItem(nextFile())}>
+        Upload
+      </button>
+      <output>${this.queue.state.items.length}</output>
+    `
+  }
 }
+
 customElements.define('pacer-example', Example)
-document.getElementById('app')!.append(document.createElement('pacer-example'))
 ```
 
-## Options and controls
+The focused snippets below create utilities in a Lit component constructor, where `this` is the controller host. Call their control methods from event handlers.
 
-`addItem` adds a task; `start()` and `stop()` control processing. `wait` spaces executions, `maxSize` limits pending items, and `getPriority` controls priority. `initialItems` supplies initial work. Expiration options remove obsolete items. Select `items`, `size`, `isRunning`, and `settleCount` to display progress. Stopping preserves pending items.
+Pass `initialItems` when work is already available at creation time. The queue applies its normal insertion and capacity rules, and automatic processing can begin immediately unless `started: false` is set.
 
-The async variant awaits your callback. `onSuccess` receives the result, `onError` handles failures, and `onSettled` runs after an outcome. Configure `throwOnError` to decide whether a failed execution rejects its returned promise. `asyncRetryerOptions` configures retries inside the scheduled operation. Select `successCount`, `errorCount`, and `settleCount` where the utility exposes them.
+`createAsyncQueuedState` returns `[itemsAccessor, queue]`. Call `itemsAccessor()` to read pending items and `queue.addItem()` to enqueue work.
 
-Use `concurrency` to bound active tasks. `items` contains pending work; use `activeItems` and `isRunning` when presenting task status. Stopping prevents new tasks from starting; aborting signals active tasks to stop.
+## Ordering pending items
 
-`abort()` signals active work to stop. Pass the utility's abort signal to cancellable operations such as `fetch`. Cancellation is cooperative and cannot undo an operation that already completed.
+The synchronous ordering rules still apply:
 
-## Reactive options and cleanup
+- The default adds at the back and reads from the front, producing FIFO order.
+- Set `getItemsFrom: 'back'` for LIFO order.
+- Set `addItemsTo` or pass a position to `addItem()` to control insertion.
+- Set `getPriority(item)` to order higher numeric priorities first.
 
-Use an options factory or property getters to read reactive settings. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+Priority ordering takes precedence over front or back removal.
 
-The owning component supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+```ts
+const queue = createAsyncQueuer(this, processJob, {
+  started: false,
+  concurrency: 2,
+  getPriority: (job) => job.priority,
+})
 
-## State and convenience helpers
+queue.addItem({ id: 'low', priority: 1 })
+queue.addItem({ id: 'high', priority: 10 })
+queue.addItem({ id: 'medium', priority: 5 })
+queue.start()
+```
 
-Pass a selector as the final argument to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+The high and medium jobs start first. Their relative completion order is not guaranteed.
 
-`createAsyncQueuedState` selects pending items by default. It retains the async queue controls, including concurrency and abort.
+## Capacity and rejection
 
-## Related documentation
+`maxSize` limits pending items, not active items. Once an item starts, it leaves the pending queue and frees one pending slot. `addItem()` returns `false` and calls `onReject` when the pending queue is full. `undefined` is also rejected because the queue uses it internally to mean that no item is available.
 
-- [Lit adapter](../adapter.md)
-- [Core async queuing guide](../../../guides/async-queuing.md)
-- [API reference](../reference/index.md)
+```ts
+if (!queue.addItem(job)) {
+  saveForLater(job)
+}
+```
+
+Capacity does not provide backpressure by itself because callers do not await an open slot. Handle rejection explicitly when dropping an item is unacceptable.
+
+## Results and errors
+
+Automatically scheduled work runs in the background. Observe results through `onSuccess` or by selecting `lastResult` through the adapter state. Observe failures through `onError` and selected error counters.
+
+For direct control, `execute()` removes and processes one pending item. Its Promise resolves with the item that was processed, not the wrapped function's result. The result is passed to `onSuccess` and stored as `lastResult`.
+
+Without `onError`, `throwOnError` defaults to `true`. Background scheduling catches that rejection after updating callbacks and state so the queue can continue. A direct call to `execute()` or `flush()` can reject to its caller. Providing `onError` changes the default to `false`.
+
+Callbacks include:
+
+- `onSuccess(result, item, queue)` after a successful item.
+- `onError(error, item, queue)` after its retries fail.
+- `onSettled(item, queue)` after either outcome.
+- `onItemsChange(queue)` when the pending collection changes.
+- `onReject(item, queue)` and `onExpire(item, queue)` for items that never execute.
+
+An item is removed from the pending queue before its function starts. A failed item is not automatically added back.
+
+## Retrying items
+
+Each started item receives its own retryer:
+
+```ts
+const queue = createAsyncQueuer(this, processJob, {
+  concurrency: 2,
+  asyncRetryerOptions: {
+    maxAttempts: 3,
+    backoff: 'exponential',
+    baseWait: 500,
+    jitter: 0.2,
+  },
+})
+```
+
+A retry remains part of the same active item and continues to occupy a concurrency slot. `maxAttempts` includes the first attempt. See the [Async Retrying Guide](./async-retrying.md) before retrying jobs with side effects.
+
+## Starting, stopping, and flushing
+
+Queues start automatically unless `started: false` is set.
+
+- `stop()` prevents new automatic starts and clears pending wait timers. It does not abort active items or remove pending items.
+- `start()` resumes automatic processing.
+- `clear()` removes pending items. It does not affect active items.
+- `flush(count?)` starts pending items immediately without normal wait spacing.
+- `flushAsBatch(fn)` removes all pending items and passes them to one async batch function.
+
+`flush()` uses direct executions and can start more work than the configured `concurrency`. Use it as an intentional drain operation, not as normal scheduling.
+
+If any directly flushed item rejects with `throwOnError: true`, `flush()` rejects after all requested executions settle. Remaining pending work resumes afterward when the queue is running.
+
+## Expiration
+
+Pending items can expire through `expirationDuration` or `getIsExpired(item, addedAt)`. Expiration is checked when the queue ticks, not by a timer dedicated to each item. A stopped queue therefore evaluates stale items after it resumes.
+
+Expired items are removed, call `onExpire`, and never reach the processing function. Active items do not expire.
+
+## Aborting active work
+
+`abort()` aborts the retryers for all active executions. It does not clear pending items. Cancellation reaches the underlying API only when the processing function uses its signal:
+
+```ts
+const queue = createAsyncQueuer(
+  this,
+  async (job: Job) => {
+    return fetch(`/api/jobs/${job.id}`, {
+      method: 'POST',
+      signal: queue.getAbortSignal() ?? undefined,
+    })
+  },
+  { concurrency: 2 },
+)
+
+queue.abort()
+```
+
+When multiple executions overlap, pass an `executionCount` to `getAbortSignal()` when you need a specific execution's signal.
+
+### Resetting safely
+
+`reset()` restores default state, including an empty pending queue and a running status. It does not clear the queue's wait timers or guarantee that active underlying work stops. Use explicit lifecycle methods first:
+
+```ts
+queue.stop()
+queue.abort()
+queue.reset()
+```
+
+## Lit lifecycle
+
+The adapter stops automatic processing and aborts active work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Configuration and reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility on its owning host and select the fields used by `render()`. Store changes request a host update:
+
+```ts
+const queue = createAsyncQueuer(
+  this,
+  processJob,
+  { concurrency: 2 },
+  (state) => ({
+    size: state.size,
+    activeItems: state.activeItems,
+    status: state.status,
+  }),
+)
+
+console.log(queue.state.size, queue.state.activeItems, queue.state.status)
+```
+
+Use `utility.subscribe(childHost, selector)` for an independently subscribed child host. It returns a selected-state getter and cleans up when that child disconnects.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+`concurrency` and `wait` may be values or functions that receive the queue instance. `setOptions()` merges new options, and `asyncQueuerOptions()` creates reusable, type-checked option objects.
+
+`initialState` can restore selected queue state that your app has persisted. If it includes `items`, they take precedence over `initialItems`; `initialState.isRunning` likewise takes precedence over `started`. Restore only durable fields. Pending timers and active executions are not restored.
+
+Common state includes:
+
+- `items` and `size`: Pending work.
+- `activeItems`: Work currently tracked as active.
+- `isRunning`, `isIdle`, and `status`: Scheduler state.
+- `isFull` and `rejectionCount`: Pending capacity state.
+- `successCount`, `errorCount`, and `settleCount`: Execution outcomes.
+- `lastResult`: The most recent successful processing result.
+
+Use `peekPendingItems()`, `peekActiveItems()`, and `peekAllItems()` for copied item arrays. See the [Lit API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

@@ -1,5 +1,4 @@
-import { shallow } from '@tanstack/store'
-import Alpine from 'alpinejs'
+import { createSubscribe } from './subscribe'
 import type { PacerScope } from '../provider/PacerProvider'
 
 /** Connects core state and options to an owned Alpine scope. */
@@ -17,11 +16,7 @@ export function bindPacer<TState, TSelected, TOptions, TInstance>(
   cleanup: () => void,
 ): TInstance {
   scope.assertActive()
-  const selected = Alpine.reactive({ value: selector(instance.store.state) })
-  const subscription = instance.store.subscribe(() => {
-    const next = selector(instance.store.state)
-    if (!shallow(next, Alpine.raw(selected.value))) selected.value = next
-  })
+  const selected = createSubscribe(instance.store)(scope, selector)
   // Defer core updates so core callbacks cannot become Alpine effect dependencies.
   let initial = true
   scope.effect(() => {
@@ -34,13 +29,14 @@ export function bindPacer<TState, TSelected, TOptions, TInstance>(
       if (!scope.destroyed) instance.setOptions(latest)
     })
   })
-  Object.defineProperty(instance, 'state', {
-    get: () => selected.value,
+  Object.defineProperty(instance, 'subscribe', {
+    value: createSubscribe(instance.store),
     enumerable: true,
   })
-  scope.addCleanup(() => {
-    subscription.unsubscribe()
-    cleanup()
+  Object.defineProperty(instance, 'state', {
+    get: selected,
+    enumerable: true,
   })
+  scope.addCleanup(cleanup)
   return instance
 }

@@ -21,38 +21,78 @@ By default, the selected state is `{}`. Pass a selector to subscribe only to the
 
 ## API overview
 
-| Utility | Instance API | Convenience APIs |
-| --- | --- | --- |
-| [batching](./guides/batching.md) | `createBatcher` | `createBatchedCallback` |
-| [debouncing](./guides/debouncing.md) | `createDebouncer` | `createDebouncedCallback`, `createDebouncedState`, `createDebouncedValue` |
-| [queuing](./guides/queuing.md) | `createQueuer` | `createQueuedState`, `createQueuedValue` |
-| [rate limiting](./guides/rate-limiting.md) | `createRateLimiter` | `createRateLimitedCallback`, `createRateLimitedState`, `createRateLimitedValue` |
-| [throttling](./guides/throttling.md) | `createThrottler` | `createThrottledCallback`, `createThrottledState`, `createThrottledValue` |
-| [async batching](./guides/async-batching.md) | `createAsyncBatcher` | `createAsyncBatchedCallback` |
-| [async debouncing](./guides/async-debouncing.md) | `createAsyncDebouncer` | `createAsyncDebouncedCallback` |
-| [async queuing](./guides/async-queuing.md) | `createAsyncQueuer` | `createAsyncQueuedState` |
-| [async rate limiting](./guides/async-rate-limiting.md) | `createAsyncRateLimiter` | `createAsyncRateLimitedCallback` |
-| [async throttling](./guides/async-throttling.md) | `createAsyncThrottler` | `createAsyncThrottledCallback` |
+| Utility                                                | Instance API             | Convenience APIs                                                                |
+| ------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------- |
+| [batching](./guides/batching.md)                       | `createBatcher`          | `createBatchedCallback`                                                         |
+| [debouncing](./guides/debouncing.md)                   | `createDebouncer`        | `createDebouncedCallback`, `createDebouncedState`, `createDebouncedValue`       |
+| [queuing](./guides/queuing.md)                         | `createQueuer`           | `createQueuedState`, `createQueuedValue`                                        |
+| [rate limiting](./guides/rate-limiting.md)             | `createRateLimiter`      | `createRateLimitedCallback`, `createRateLimitedState`, `createRateLimitedValue` |
+| [throttling](./guides/throttling.md)                   | `createThrottler`        | `createThrottledCallback`, `createThrottledState`, `createThrottledValue`       |
+| [async batching](./guides/async-batching.md)           | `createAsyncBatcher`     | `createAsyncBatchedCallback`                                                    |
+| [async debouncing](./guides/async-debouncing.md)       | `createAsyncDebouncer`   | `createAsyncDebouncedCallback`                                                  |
+| [async queuing](./guides/async-queuing.md)             | `createAsyncQueuer`      | `createAsyncQueuedState`                                                        |
+| [async rate limiting](./guides/async-rate-limiting.md) | `createAsyncRateLimiter` | `createAsyncRateLimitedCallback`                                                |
+| [async throttling](./guides/async-throttling.md)       | `createAsyncThrottler`   | `createAsyncThrottledCallback`                                                  |
 
 ## Example
+
+This counter coalesces rapid clicks into one update after 500 ms. Flush applies the latest pending count immediately.
 
 ```ts
 import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
 import type { AlpineDebouncer } from '@tanstack/alpine-pacer'
-import type { DebouncerState } from '@tanstack/alpine-pacer'
-Alpine.data('example', () => ({
-  input: 'hello', wait: 200, history: [] as Array<string>,
-  scope: createPacerScope(),
-  utility: null as AlpineDebouncer<(value: string) => void, DebouncerState<(value: string) => void>> | null,
-  init() {
-    this.utility = this.scope.createDebouncer((value: string) => { this.history = [...this.history, value] }, () => ({ wait: this.wait }), (state) => state)
-  },
-  schedule() { void this.utility?.maybeExecute(this.input) },
-  burst() { for (let i = 1; i <= 3; i++) void this.utility?.maybeExecute(`${this.input} ${i}`) },
-  destroy() { this.scope.destroy() },
-}))
+
+Alpine.data('counter', () => {
+  const scope = createPacerScope()
+  return {
+    count: 0,
+    debouncedCount: 0,
+    debouncer: null as AlpineDebouncer<
+      (value: number) => void,
+      { isPending: boolean }
+    > | null,
+    init() {
+      this.debouncer = scope.createDebouncer(
+        (value: number) => {
+          this.debouncedCount = value
+        },
+        { wait: 500 },
+        (state) => ({ isPending: state.isPending }),
+      )
+    },
+    increment() {
+      this.debouncer!.maybeExecute(++this.count)
+    },
+    destroy() {
+      scope.destroy()
+    },
+  }
+})
 Alpine.start()
+```
+
+```html
+<div x-data="counter">
+  <button @click="increment">Increment</button>
+  <p>
+    Count: <span x-text="count"></span>. Debounced:
+    <span x-text="debouncedCount"></span>.
+  </p>
+  <p>Pending: <span x-text="debouncer.state.isPending"></span></p>
+  <button @click="debouncer.flush()">Flush</button>
+</div>
+```
+
+## Child subscriptions
+
+Call `utility.subscribe(childScope, selector)` for a child Alpine component. It returns a reactive getter without changing the utility owner's selection. Destroy the child scope in the component's `destroy` hook.
+
+```ts
+const selected = debouncer.subscribe(childScope, (state) => ({
+  isPending: state.isPending,
+}))
+// Read selected().isPending in the child's template or reactive getter.
 ```
 
 ## Reactive options
@@ -75,7 +115,7 @@ Set `onUnmount` to replace the default cleanup, for example to call `flush()` be
 
 Callback helpers return only the scheduled function. Use an instance API when you need `flush`, `cancel`, queue controls, or state subscriptions.
 
-State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Read values by calling their accessors. Setters accept a new value or a functional update. Queue state helpers return `[itemsAccessor, addItem, utility]`. Queued value helpers return the last processed value, rather than the list of pending items.
+State helpers return `[value, setValue, utility]`; value helpers return `[value, utility]`. Read values by calling their accessors. Setters accept a new value or a functional update. Synchronous queue state helpers return `[itemsAccessor, addItem, utility]`. Async queue state helpers return `[itemsAccessor, utility]`; call `utility.addItem()` to enqueue an item. Queued value helpers return the last processed value, rather than the list of pending items.
 
 ## Async utilities
 
@@ -83,7 +123,9 @@ The five async utilities preserve typed results and core error behavior. Use `on
 
 ## Devtools
 
-The utilities emit the same Pacer devtools events as the other adapters. Use the framework-independent `@tanstack/pacer-devtools` panel when your application supplies a devtools host.
+Install `@tanstack/devtools` and `@tanstack/pacer-devtools`. Mount `TanStackDevtoolsCore` with `plugins: [pacerDevtoolsPlugin()]` once in your application and unmount it during cleanup. Give each utility a `key` to make it appear in the Pacer panel.
+
+See the [devtools setup guide](../../devtools.md#lit-alpine-ember-and-octane-setup) for this framework's mount and cleanup code.
 
 ## API reference
 

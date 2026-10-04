@@ -3,7 +3,7 @@ id: VueDebouncer
 title: VueDebouncer
 ---
 
-Defined in: [debouncer/useDebouncer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/debouncer/useDebouncer.ts#L22)
+Defined in: [debouncer/useDebouncer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/debouncer/useDebouncer.ts#L23)
 
 A Debouncer with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Debouncer with framework-reactive selected state. All core methods remain avai
 options: DebouncerOptions<TFn> & VueDebouncerOptions<TFn, TSelected>;
 ```
 
-Defined in: [debouncer/useDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/debouncer/useDebouncer.ts#L26)
+Defined in: [debouncer/useDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/debouncer/useDebouncer.ts#L27)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [debouncer/useDebouncer.ts:26](https://github.com/TanStack/pacer/blo
 setOptions: (options) => void;
 ```
 
-Defined in: [debouncer/useDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/debouncer/useDebouncer.ts#L27)
+Defined in: [debouncer/useDebouncer.ts:28](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/debouncer/useDebouncer.ts#L28)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [debouncer/useDebouncer.ts:27](https://github.com/TanStack/pacer/blo
 readonly state: Readonly<ShallowRef<TSelected>>;
 ```
 
-Defined in: [debouncer/useDebouncer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/debouncer/useDebouncer.ts#L29)
+Defined in: [debouncer/useDebouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/debouncer/useDebouncer.ts#L32)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: VuePacerSubscribe<DebouncerState<TFn>>;
+```
+
+Defined in: [debouncer/useDebouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/debouncer/useDebouncer.ts#L30)
+
+Subscribes a scoped slot to state without re-rendering the utility owner.

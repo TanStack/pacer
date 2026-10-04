@@ -3,7 +3,7 @@ id: VueAsyncQueuerOptions
 title: VueAsyncQueuerOptions
 ---
 
-Defined in: [async-queuer/useAsyncQueuer.ts:12](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L12)
+Defined in: [async-queuer/useAsyncQueuer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L13)
 
 Options for useAsyncQueuer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useAsyncQueuer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [async-queuer/useAsyncQueuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L17)
+Defined in: [async-queuer/useAsyncQueuer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-queuer/useAsyncQueuer.ts#L18)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

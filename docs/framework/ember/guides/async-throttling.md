@@ -12,65 +12,196 @@ Use it when a throttled operation returns a value you need, can reject, or needs
 - `useAsyncThrottledCallback` for a stable Promise-returning handler
 - `useAsyncThrottler` for lifecycle methods and selected execution state
 
-## Use useAsyncThrottler
+## Ember example
 
-Call the `use*` template helpers inside a `{{#let}}` block. The execution callback is the first positional argument and the optional state selector is the second. Pass options as named arguments. Ember tracks named arguments and updates the same utility after rendering. Removing the helper from the template releases its subscriptions and cleans up pending work.
+Invoke the helper in a template. Named arguments supply options, and the second positional argument selects state. Removing the helper invocation runs cleanup. The example imports application operations from `./api`.
 
 ```gts
 import Component from '@glimmer/component'
-import { tracked } from '@glimmer/tracking'
 import { on } from '@ember/modifier'
 import { fn } from '@ember/helper'
 import { useAsyncThrottler } from '@tanstack/ember-pacer'
 import type { AsyncThrottlerState } from '@tanstack/ember-pacer'
-const json = (value: unknown) => JSON.stringify(value, null, 2)
+import { savePosition } from './api'
+
+const select = (state: AsyncThrottlerState<typeof savePosition>) => ({
+  isExecuting: state.isExecuting,
+  isPending: state.isPending,
+})
+
 export default class Example extends Component {
-  @tracked input = 'hello'
-  @tracked wait = 200
-  @tracked history: Array<string> = []
-  execute = async (value: string) => { this.history = [...this.history, value] }
-  select = (state: AsyncThrottlerState<(value: string) => Promise<void>>) => state
-  updateInput = (event: Event) => { this.input = (event.target as HTMLInputElement).value }
-  updateWait = (event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }
-  clear = () => { this.history = [] }
-  burst = (schedule: (value: string) => unknown) => { for (let i = 1; i <= 3; i++) void schedule(`${this.input} ${i}`) }
   <template>
-{{#let (useAsyncThrottler this.execute this.select wait=this.wait leading=false) as |utility|}}
-<main>
-<h1>Ember useAsyncThrottler</h1><p>Limit executions to one per interval while retaining the latest trailing call.</p>
-<label>Task <input value={{this.input}} {{on "input" this.updateInput}} /></label><label>Wait (ms) <input value={{this.wait}} {{on "input" this.updateWait}} type="number" min="0" /></label>
-<div><button {{on "click" (fn utility.maybeExecute this.input)}}>Schedule</button><button {{on "click" (fn this.burst utility.maybeExecute)}}>Schedule three</button><button {{on "click" utility.flush}}>Flush</button><button {{on "click" utility.cancel}}>Cancel</button><button {{on "click" this.clear}}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{{json this.history}}</pre></section>
-<section><h2>Utility state</h2><pre>{{json utility.state}}</pre></section>
-<p class="caption">Tracked named arguments update the same utility. The helper owns cleanup when it leaves the template.</p>
-</main>
-{{/let}}
+    {{#let (useAsyncThrottler savePosition select wait=1000) as |saver|}}
+      <button
+        {{on 'click' (fn saver.maybeExecute 42)}}
+        disabled={{saver.state.isExecuting}}
+      >Save</button>
+      <output>{{saver.state.isExecuting}}</output>
+    {{/let}}
   </template>
 }
 ```
 
-## Options and controls
+The focused TypeScript snippets below demonstrate the core `AsyncThrottler` class re-exported by the adapter. In a component, use `useAsyncThrottler` as above to own the instance, pass configuration as named arguments, and pass the yielded instance to event handlers. Core class instances require explicit cleanup.
 
-`maybeExecute` limits executions to one per `wait` interval. `leading` controls the first execution and `trailing` retains the most recent deferred call. Use `flush()` to execute pending work and `cancel()` to discard its timer. Select `isPending`, `lastArgs`, and `settleCount` to render progress.
+## Promise results
 
-The async variant awaits your callback. `onSuccess` receives the result, `onError` handles failures, and `onSettled` runs after an outcome. Configure `throwOnError` to decide whether a failed execution rejects its returned promise. `asyncRetryerOptions` configures retries inside the scheduled operation. Select `successCount`, `errorCount`, and `settleCount` where the utility exposes them.
+`maybeExecute()` returns a Promise. An immediate or trailing execution resolves with its result. When another call replaces pending trailing work, the older pending Promise resolves with the throttler's current `lastResult`:
 
-`abort()` signals active work to stop. Pass the utility's abort signal to cancellable operations such as `fetch`. Cancellation is cooperative and cannot undo an operation that already completed.
+```text
+call A ─── execute A ─── result A
+                  call B ───┐
+                            ├─ call C replaces B ─── execute C
+Promise B ──────────────────┘ resolves with result A
+Promise C ────────────────────────────────────────── resolves with result C
+```
 
-## Reactive options and cleanup
+The replaced call does not wait for the newer trailing execution. If every call needs its own execution and result, use an [Async Queue](./async-queuing.md).
 
-Use tracked named arguments to change options. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+An async throttler also avoids starting its next scheduled execution while the current execution is still active. The `wait` interval still controls throttle timing, while the Promise lifecycle can delay when later work is scheduled.
 
-The owning helper supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+## Leading and trailing execution
 
-## State and convenience helpers
+The edge combinations match synchronous throttling:
 
-Pass a selector as the final argument after the execution callback to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+| `leading` | `trailing` | Behavior                                                                                        |
+| --------- | ---------- | ----------------------------------------------------------------------------------------------- |
+| `true`    | `true`     | Execute immediately and retain the latest call for one trailing execution. This is the default. |
+| `true`    | `false`    | Execute immediately and discard calls made during the interval.                                 |
+| `false`   | `true`     | Wait one interval before the first execution, then retain the latest call in each interval.     |
+| `false`   | `false`    | Record calls without executing the function.                                                    |
 
-`useAsyncThrottledCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+Unlike debouncing, calls during the interval do not restart the interval. They only replace the pending trailing arguments.
 
-## Related documentation
+## Errors and callbacks
 
-- [Ember adapter](../adapter.md)
-- [Core async throttling guide](../../../guides/async-throttling.md)
-- [API reference](../reference/index.md)
+Async throttlers provide callbacks around each actual execution:
+
+- `onSuccess(result, args, throttler)` runs after success.
+- `onError(error, args, throttler)` runs after the retries for an execution fail.
+- `onSettled(args, throttler)` runs after either outcome.
+
+Without `onError`, `throwOnError` defaults to `true`, so a failure rejects the Promise that owns the execution. Providing `onError` changes that default to `false`; the Promise then resolves with the current `lastResult`. Set `throwOnError` explicitly to override the default.
+
+Callbacks describe executions, not every call to `maybeExecute()`. Replaced or discarded calls do not produce execution callbacks.
+
+## Retrying failed executions
+
+Configure the retryer used for each execution with `asyncRetryerOptions`:
+
+```ts
+import { AsyncThrottler } from '@tanstack/ember-pacer'
+
+const saver = new AsyncThrottler(savePositionToServer, {
+  wait: 1000,
+  asyncRetryerOptions: {
+    maxAttempts: 3,
+    backoff: 'exponential',
+    baseWait: 500,
+    jitter: 0.2,
+  },
+})
+```
+
+`maxAttempts` includes the first attempt. Throttling controls logical executions; retrying controls the attempts within each execution. See the [Async Retrying Guide](./async-retrying.md) before enabling retries for operations with side effects.
+
+## Canceling pending work and aborting active work
+
+- `cancel()` clears a pending trailing execution. It does not stop active work or reset the current throttle interval.
+- `abort()` aborts active executions. It does not clear pending trailing work.
+- `flush()` runs pending trailing work immediately and returns its result.
+
+Pass the throttler's signal to the underlying API when it supports cancellation:
+
+```ts
+import { AsyncThrottler } from '@tanstack/ember-pacer'
+
+const saver = new AsyncThrottler(
+  async (position: number) => {
+    return fetch('/api/position', {
+      method: 'POST',
+      body: JSON.stringify({ position }),
+      signal: saver.getAbortSignal() ?? undefined,
+    })
+  },
+  { wait: 1000 },
+)
+
+saver.abort()
+```
+
+Calling `abort()` without using the signal stops retry management but cannot force an arbitrary Promise to stop.
+
+### Resetting safely
+
+`reset()` restores default state, but it does not clear a scheduled timeout or guarantee that active work stops. Clean up the lifecycle first when necessary:
+
+```ts
+saver.cancel()
+saver.abort()
+saver.reset()
+```
+
+## Configuration
+
+`wait` and `enabled` may be values or functions that receive the throttler instance. `setOptions()` merges new options into the existing configuration.
+
+```ts
+saver.setOptions({
+  enabled: (throttler) => throttler.store.state.errorCount < 3,
+  wait: (throttler) => (throttler.store.state.successCount < 10 ? 500 : 1000),
+})
+```
+
+A changed `wait` value does not reschedule existing trailing work. It applies to later scheduling and executions. Disabling the throttler through `setOptions()` cancels pending trailing work.
+
+Use `asyncThrottlerOptions()` to define reusable, type-checked option objects.
+
+## Ember lifecycle
+
+The adapter cancels pending work and aborts active work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Use the helper's second positional argument to select fields, as shown above. Read those fields from the yielded instance's `.state` in the template.
+
+```gts
+import Component from '@glimmer/component'
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useAsyncThrottler } from '@tanstack/ember-pacer'
+import type { AsyncThrottlerState } from '@tanstack/ember-pacer'
+import { savePosition } from './api'
+
+const select = (state: AsyncThrottlerState<typeof savePosition>) => ({
+  isExecuting: state.isExecuting,
+  isPending: state.isPending,
+})
+
+export default class Example extends Component {
+  <template>
+    {{#let (useAsyncThrottler savePosition select wait=1000) as |saver|}}
+      <button
+        {{on 'click' (fn saver.maybeExecute 42)}}
+        disabled={{saver.state.isExecuting}}
+      >Save</button>
+      <output>{{saver.state.isExecuting}}</output>
+    {{/let}}
+  </template>
+}
+```
+
+The contextual `utility.Subscribe` helper selects state for a child template without subscribing the utility owner.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
+
+- `isPending`: Whether a trailing execution is scheduled.
+- `isExecuting`: Whether the wrapped function is active.
+- `lastArgs`: The latest arguments retained for trailing work.
+- `lastResult`: The most recent successful result.
+- `lastExecutionTime` and `nextExecutionTime`: Current timing boundaries.
+- `successCount`, `errorCount`, and `settleCount`: Execution outcome counts.
+
+See the [Ember API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

@@ -3,7 +3,7 @@ id: EmberBatcherOptions
 title: EmberBatcherOptions
 ---
 
-Defined in: [packages/ember-pacer/src/batcher/useBatcher.ts:13](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/batcher/useBatcher.ts#L13)
+Defined in: [packages/ember-pacer/src/batcher/useBatcher.ts:15](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/batcher/useBatcher.ts#L15)
 
 Options for useBatcher, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useBatcher, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/batcher/useBatcher.ts:18](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/batcher/useBatcher.ts#L18)
+Defined in: [packages/ember-pacer/src/batcher/useBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/batcher/useBatcher.ts#L20)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

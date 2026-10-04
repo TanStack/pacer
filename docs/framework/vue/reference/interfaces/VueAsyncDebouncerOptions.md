@@ -3,7 +3,7 @@ id: VueAsyncDebouncerOptions
 title: VueAsyncDebouncerOptions
 ---
 
-Defined in: [async-debouncer/useAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-debouncer/useAsyncDebouncer.ts#L13)
+Defined in: [async-debouncer/useAsyncDebouncer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-debouncer/useAsyncDebouncer.ts#L14)
 
 Options for useAsyncDebouncer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useAsyncDebouncer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [async-debouncer/useAsyncDebouncer.ts:18](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-debouncer/useAsyncDebouncer.ts#L18)
+Defined in: [async-debouncer/useAsyncDebouncer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/vue-pacer/src/async-debouncer/useAsyncDebouncer.ts#L19)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

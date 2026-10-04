@@ -12,65 +12,197 @@ Use async debouncing when the debounced operation returns a value you need, can 
 - `useAsyncDebouncedCallback` for a stable Promise-returning handler
 - `useAsyncDebouncer` for lifecycle methods and selected execution state
 
-## Use useAsyncDebouncer
+## Ember example
 
-Call the `use*` template helpers inside a `{{#let}}` block. The execution callback is the first positional argument and the optional state selector is the second. Pass options as named arguments. Ember tracks named arguments and updates the same utility after rendering. Removing the helper from the template releases its subscriptions and cleans up pending work.
+Invoke the helper in a template. Named arguments supply options, and the second positional argument selects state. Removing the helper invocation runs cleanup. The example imports application operations from `./api`.
 
 ```gts
 import Component from '@glimmer/component'
-import { tracked } from '@glimmer/tracking'
 import { on } from '@ember/modifier'
 import { fn } from '@ember/helper'
 import { useAsyncDebouncer } from '@tanstack/ember-pacer'
 import type { AsyncDebouncerState } from '@tanstack/ember-pacer'
-const json = (value: unknown) => JSON.stringify(value, null, 2)
+import { fetchSearchResults } from './api'
+
+const select = (state: AsyncDebouncerState<typeof fetchSearchResults>) => ({
+  isPending: state.isPending,
+  isExecuting: state.isExecuting,
+})
+
 export default class Example extends Component {
-  @tracked input = 'hello'
-  @tracked wait = 200
-  @tracked history: Array<string> = []
-  execute = async (value: string) => { this.history = [...this.history, value] }
-  select = (state: AsyncDebouncerState<(value: string) => Promise<void>>) => state
-  updateInput = (event: Event) => { this.input = (event.target as HTMLInputElement).value }
-  updateWait = (event: Event) => { this.wait = Number((event.target as HTMLInputElement).value) }
-  clear = () => { this.history = [] }
-  burst = (schedule: (value: string) => unknown) => { for (let i = 1; i <= 3; i++) void schedule(`${this.input} ${i}`) }
   <template>
-{{#let (useAsyncDebouncer this.execute this.select wait=this.wait) as |utility|}}
-<main>
-<h1>Ember useAsyncDebouncer</h1><p>Wait until typing stops, then execute the latest call.</p>
-<label>Task <input value={{this.input}} {{on "input" this.updateInput}} /></label><label>Wait (ms) <input value={{this.wait}} {{on "input" this.updateWait}} type="number" min="0" /></label>
-<div><button {{on "click" (fn utility.maybeExecute this.input)}}>Schedule</button><button {{on "click" (fn this.burst utility.maybeExecute)}}>Schedule three</button><button {{on "click" utility.flush}}>Flush</button><button {{on "click" utility.cancel}}>Cancel</button><button {{on "click" this.clear}}>Clear history</button></div>
-<section><h2>Processed results</h2><pre data-testid="history">{{json this.history}}</pre></section>
-<section><h2>Utility state</h2><pre>{{json utility.state}}</pre></section>
-<p class="caption">Tracked named arguments update the same utility. The helper owns cleanup when it leaves the template.</p>
-</main>
-{{/let}}
+    {{#let
+      (useAsyncDebouncer fetchSearchResults select wait=300)
+      as |debouncer|
+    }}
+      <button {{on 'click' (fn debouncer.maybeExecute 'pacer')}}>Search</button>
+      <output>{{debouncer.state.isPending}}</output>
+    {{/let}}
   </template>
 }
 ```
 
-## Options and controls
+The focused TypeScript snippets below demonstrate the core `AsyncDebouncer` class re-exported by the adapter. In a component, use `useAsyncDebouncer` as above to own the instance, pass configuration as named arguments, and pass the yielded instance to event handlers. Core class instances require explicit cleanup.
 
-`maybeExecute` schedules the latest arguments. `wait` resets after each call. `leading` runs the first call immediately and `trailing` controls the deferred call. Use `flush()` to execute pending work, `cancel()` to discard its timer, and `reset()` to reset counters. Select `isPending`, `lastArgs`, or `settleCount` for your UI.
+## Promise results
 
-The async variant awaits your callback. `onSuccess` receives the result, `onError` handles failures, and `onSettled` runs after an outcome. Configure `throwOnError` to decide whether a failed execution rejects its returned promise. `asyncRetryerOptions` configures retries inside the scheduled operation. Select `successCount`, `errorCount`, and `settleCount` where the utility exposes them.
+`maybeExecute()` returns a Promise. A call that owns an execution resolves with that execution's result. There is one important consequence when a pending trailing call is replaced:
 
-`abort()` signals active work to stop. Pass the utility's abort signal to cancellable operations such as `fetch`. Cancellation is cooperative and cannot undo an operation that already completed.
+```text
+call A ──────┐
+             ├─ call B replaces A ───── wait ───── execute B
+Promise A ───┘ resolves with the previous lastResult
+Promise B ─────────────────────────────── resolves with result B
+```
 
-## Reactive options and cleanup
+The replaced call resolves immediately with the debouncer's current `lastResult`, which is often `undefined` before the first successful execution. It does not wait for the newer call. Treat the Promise returned by the latest call as the owner of the pending result.
 
-Use tracked named arguments to change options. Updating options preserves the utility and its pending work. An already scheduled timer keeps its current deadline unless you explicitly cancel or reschedule it.
+If you need every invocation to execute and produce its own result, use an [Async Queue](./async-queuing.md) instead.
 
-The owning helper supplies default cleanup. `onUnmount` replaces that behavior and receives the same adapter instance. To flush pending work, provide a callback that calls `flush()` where supported. For async work, also decide whether it should be aborted.
+## Leading and trailing execution
 
-## State and convenience helpers
+The four combinations match synchronous debouncing:
 
-Pass a selector as the final argument after the execution callback to choose state fields. Without a selector, selected state is `{}`. Core methods and the raw store remain available regardless of your selection.
+| `leading` | `trailing` | Behavior                                                                           |
+| --------- | ---------- | ---------------------------------------------------------------------------------- |
+| `false`   | `true`     | Execute after calls stop for `wait` milliseconds. This is the default.             |
+| `true`    | `false`    | Execute immediately, then ignore calls until the quiet period ends.                |
+| `true`    | `true`     | Execute the first call immediately and the latest later call on the trailing edge. |
+| `false`   | `false`    | Record calls without executing the function.                                       |
 
-`useAsyncDebouncedCallback` returns only the scheduled callback. Use it for event handlers that do not need access to state or control methods.
+With both edges enabled, a single call executes only on the leading edge. A trailing execution requires another call during the wait period.
 
-## Related documentation
+## Errors and callbacks
 
-- [Ember adapter](../adapter.md)
-- [Core async debouncing guide](../../../guides/async-debouncing.md)
-- [API reference](../reference/index.md)
+Async debouncers provide callbacks around each actual execution:
+
+- `onSuccess(result, args, debouncer)` runs after a successful execution.
+- `onError(error, args, debouncer)` runs after the retries for an execution fail.
+- `onSettled(args, debouncer)` runs after either outcome.
+
+Without `onError`, `throwOnError` defaults to `true`, so an execution failure rejects the Promise. Providing `onError` changes that default to `false`; the Promise then resolves with the current `lastResult`. Set `throwOnError` explicitly when you want different behavior.
+
+Callbacks run for executions, not for every call to `maybeExecute()`. Replaced or canceled pending calls never reach the wrapped function.
+
+## Retrying failed executions
+
+Pass `asyncRetryerOptions` to retry an execution after it starts:
+
+```ts
+import { AsyncDebouncer } from '@tanstack/ember-pacer'
+
+const save = new AsyncDebouncer(saveDraft, {
+  wait: 500,
+  asyncRetryerOptions: {
+    maxAttempts: 3,
+    backoff: 'exponential',
+    baseWait: 500,
+    jitter: 0.2,
+  },
+})
+```
+
+`maxAttempts` includes the first attempt. Debouncing decides when one logical execution starts; the retryer then manages attempts for that execution. See the [Async Retrying Guide](./async-retrying.md) for retry safety, backoff, and timeout behavior.
+
+## Canceling pending work and aborting active work
+
+Pending and active work have separate controls:
+
+- `cancel()` clears a trailing execution that has not started. It does not stop an active Promise.
+- `abort()` aborts active executions. It does not clear a pending trailing execution.
+- `flush()` starts pending work immediately and returns its result. It does not affect active work.
+
+For an underlying operation such as `fetch` to stop, pass the debouncer's signal to it:
+
+```ts
+import { AsyncDebouncer } from '@tanstack/ember-pacer'
+
+const search = new AsyncDebouncer(
+  async (query: string) => {
+    const response = await fetch(`/api/search?q=${query}`, {
+      signal: search.getAbortSignal() ?? undefined,
+    })
+    return response.json()
+  },
+  { wait: 300 },
+)
+
+search.maybeExecute('pacer')
+search.abort()
+```
+
+Calling `abort()` without using the signal stops retry management but cannot force an arbitrary Promise to stop.
+
+### Resetting safely
+
+`reset()` restores default state, but it does not clear a scheduled trailing timeout or guarantee that active work stops. Use the lifecycle methods first when you need a complete cleanup:
+
+```ts
+search.cancel()
+search.abort()
+search.reset()
+```
+
+## Configuration
+
+`wait` and `enabled` may be values or functions that receive the debouncer instance. `setOptions()` merges new options into the current configuration.
+
+```ts
+search.setOptions({
+  enabled: (debouncer) => debouncer.store.state.errorCount < 3,
+  wait: (debouncer) => (debouncer.store.state.successCount === 0 ? 200 : 500),
+})
+```
+
+Changing `wait` does not reschedule an existing timeout. The new value applies when later work is scheduled.
+
+Use `asyncDebouncerOptions()` to define reusable, type-checked option objects.
+
+## Ember lifecycle
+
+The adapter cancels pending work and aborts active work when its owner is destroyed. Providing `onUnmount` replaces that default cleanup, so a custom callback must perform every required lifecycle action. When custom cleanup flushes work, remember that user callbacks can run while the component is being destroyed.
+
+## Reactive state
+
+The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Use the helper's second positional argument to select fields, as shown above. Read those fields from the yielded instance's `.state` in the template.
+
+```gts
+import Component from '@glimmer/component'
+import { on } from '@ember/modifier'
+import { fn } from '@ember/helper'
+import { useAsyncDebouncer } from '@tanstack/ember-pacer'
+import type { AsyncDebouncerState } from '@tanstack/ember-pacer'
+import { fetchSearchResults } from './api'
+
+const select = (state: AsyncDebouncerState<typeof fetchSearchResults>) => ({
+  isPending: state.isPending,
+  isExecuting: state.isExecuting,
+})
+
+export default class Example extends Component {
+  <template>
+    {{#let
+      (useAsyncDebouncer fetchSearchResults select wait=300)
+      as |debouncer|
+    }}
+      <button {{on 'click' (fn debouncer.maybeExecute 'pacer')}}>Search</button>
+      <output>{{debouncer.state.isPending}}</output>
+    {{/let}}
+  </template>
+}
+```
+
+The contextual `utility.Subscribe` helper selects state for a child template without subscribing the utility owner.
+
+Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+
+To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
+
+- `isPending`: Whether a trailing execution is scheduled.
+- `isExecuting`: Whether the wrapped function is active.
+- `lastArgs`: The arguments retained for pending work.
+- `lastResult`: The most recent successful result.
+- `successCount`, `errorCount`, and `settleCount`: Execution outcome counts.
+- `status`: `'disabled'`, `'idle'`, `'pending'`, `'executing'`, or `'settled'`.
+
+See the [Ember API reference](../reference/index.md) for adapter signatures and the public core reference for complete option and state types.

@@ -3,7 +3,7 @@ id: OctaneBatcher
 title: OctaneBatcher
 ---
 
-Defined in: [batcher/useBatcher.ts:19](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/batcher/useBatcher.ts#L19)
+Defined in: [batcher/useBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/batcher/useBatcher.ts#L21)
 
 A Batcher with framework-reactive selected state. All core methods remain available.
 
@@ -30,7 +30,7 @@ A Batcher with framework-reactive selected state. All core methods remain availa
 options: Omit<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute"> & Partial<Pick<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute">> & OctaneBatcherOptions<TValue, TSelected>;
 ```
 
-Defined in: [batcher/useBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/batcher/useBatcher.ts#L23)
+Defined in: [batcher/useBatcher.ts:25](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/batcher/useBatcher.ts#L25)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [batcher/useBatcher.ts:23](https://github.com/TanStack/pacer/blob/ma
 setOptions: (options) => void;
 ```
 
-Defined in: [batcher/useBatcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/batcher/useBatcher.ts#L24)
+Defined in: [batcher/useBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/batcher/useBatcher.ts#L26)
 
 #### Parameters
 
@@ -60,6 +60,18 @@ Defined in: [batcher/useBatcher.ts:24](https://github.com/TanStack/pacer/blob/ma
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [batcher/useBatcher.ts:28](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/batcher/useBatcher.ts#L28)
+Defined in: [batcher/useBatcher.ts:32](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/batcher/useBatcher.ts#L32)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: OctanePacerSubscribe<BatcherState<TValue>>;
+```
+
+Defined in: [batcher/useBatcher.ts:30](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/batcher/useBatcher.ts#L30)
+
+Selects state in a child without subscribing the utility owner.

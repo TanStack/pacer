@@ -1,83 +1,182 @@
-import { LitElement, html } from 'lit'
-import { createAsyncRateLimiter } from '@tanstack/lit-pacer'
-import './style.css'
-class Example extends LitElement {
+import { LitElement, html, nothing } from 'lit'
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { createAsyncRateLimiter } from '@tanstack/lit-pacer/async-rate-limiter'
+interface SearchResult {
+  id: number
+  title: string
+}
+class Demo extends LitElement {
   static properties = {
-    input: { state: true },
-    wait: { state: true },
-    history: { state: true },
+    windowType: { state: true },
+    searchTerm: { state: true },
+    results: { state: true },
+    error: { state: true },
   }
-  input = 'hello'
-  wait = 200
-  history: Array<string> = []
-  utility = createAsyncRateLimiter(
+  fakeApi = async (term: string): Promise<Array<SearchResult>> => {
+    await new Promise((resolve) => setTimeout(resolve, 300)) // Simulate network delay
+    return [
+      { id: 1, title: `${term} result ${Math.floor(Math.random() * 100)}` },
+      { id: 2, title: `${term} result ${Math.floor(Math.random() * 100)}` },
+      { id: 3, title: `${term} result ${Math.floor(Math.random() * 100)}` },
+    ]
+  }
+  windowType: 'fixed' | 'sliding' = 'fixed'
+  searchTerm = ''
+  results: Array<SearchResult> = []
+  error: Error | null = null
+  handleSearch = async (term: string) => {
+    if (!term) {
+      this.results = []
+      return
+    }
+    // throw new Error('Test error') // you don't have to catch errors here (though you still can). The onError optional handler will catch it
+    const data = await this.fakeApi(term)
+    this.results = data
+    this.error = null
+  }
+  setSearchAsyncRateLimiter = createAsyncRateLimiter(
     this,
-    async (value: string) => {
-      this.history = [...this.history, value]
-    },
-    () => ({ limit: 2, window: this.wait }),
+    this.handleSearch,
+    () => ({
+      key: 'createAsyncRateLimiter',
+      windowType: this.windowType,
+      limit: 3, // Maximum 3 requests
+      window: 3000, // per 3 seconds
+      onReject: (_args, rateLimiter) => {
+        console.log(
+          `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
+        )
+      },
+      onError: (cause) => {
+        // optional error handler
+        console.error('Search failed:', cause)
+        this.error = cause as Error
+        this.results = []
+      },
+    }),
     (state) => state,
   )
+  handleSearchRateLimited = this.setSearchAsyncRateLimiter.maybeExecute
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+    ;(() => {
+      console.log('unmount')
+      this.setSearchAsyncRateLimiter.reset() // cancel any pending async calls when the component unmounts
+    })()
+  }
+  onSearchChange = async (e: Event) => {
+    const newTerm = (e.target as HTMLInputElement).value
+    this.searchTerm = newTerm
+    await this.handleSearchRateLimited(newTerm) // optionally await if you need to
+  }
   override createRenderRoot() {
     return this
   }
-  schedule = () => {
-    void this.utility.maybeExecute(this.input)
+  override render() {
+    return html`<div>
+      <h1>TanStack Pacer createAsyncRateLimiter Example</h1>
+      <div style="display: grid; gap: 0.5rem; margin-bottom: 1rem">
+        <label
+          ><input
+            type="radio"
+            name="windowType"
+            value="fixed"
+            .checked=${this.windowType === 'fixed'}
+            @input=${() => (this.windowType = 'fixed')}
+          />Fixed Window</label
+        ><label
+          ><input
+            type="radio"
+            name="windowType"
+            value="sliding"
+            .checked=${this.windowType === 'sliding'}
+            @input=${() => (this.windowType = 'sliding')}
+          />Sliding Window</label
+        >
+      </div>
+      <div>
+        <input
+          autofocus
+          type="search"
+          .value=${this.searchTerm}
+          @input=${this.onSearchChange}
+          placeholder="Type to search..."
+          style="width: 100%"
+          autocomplete="new-password"
+        />
+      </div>
+      ${this.error ? html`<div>Error: ${this.error.message}</div>` : nothing}
+      <div>
+        <table>
+          <tbody>
+            <tr>
+              <td>API calls made:</td>
+              <td>${this.setSearchAsyncRateLimiter.state.successCount}</td>
+            </tr>
+            <tr>
+              <td>Rejected calls:</td>
+              <td>${this.setSearchAsyncRateLimiter.state.rejectionCount}</td>
+            </tr>
+            <tr>
+              <td>Is executing:</td>
+              <td>
+                ${this.setSearchAsyncRateLimiter.state.isExecuting ? 'Yes' : 'No'}
+              </td>
+            </tr>
+            <tr>
+              <td>Results:</td>
+              <td>
+                ${
+                  this.results.length > 0
+                    ? html`<ul>
+                        ${this.results.map((item) => html`<li>${item.title}</li>`)}
+                      </ul>`
+                    : html`${'No results'}`
+                }
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pre style="margin-top: 20px">
+${JSON.stringify(this.setSearchAsyncRateLimiter.state, null, 2)}</pre>
+    </div>`
   }
-  burst = () => {
-    for (let i = 1; i <= 3; i++)
-      void this.utility.maybeExecute(`${this.input} ${i}`)
+}
+customElements.define('pacer-demo', Demo)
+class Example extends LitElement {
+  static properties = { mounted: { state: true } }
+  mounted = true
+  toggleMounted = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') this.mounted = !this.mounted
+  }
+  private devtools?: TanStackDevtoolsCore
+  private target?: HTMLDivElement
+  override createRenderRoot() {
+    return this
+  }
+  override connectedCallback() {
+    super.connectedCallback()
+    document.addEventListener('keydown', this.toggleMounted)
+    if (!import.meta.env.DEV) return
+    this.target = document.createElement('div')
+    document.body.append(this.target)
+    this.devtools = new TanStackDevtoolsCore({
+      plugins: [pacerDevtoolsPlugin()],
+    })
+    this.devtools.mount(this.target)
+  }
+  override disconnectedCallback() {
+    this.devtools?.unmount()
+    this.target?.remove()
+    this.devtools = undefined
+    this.target = undefined
+    document.removeEventListener('keydown', this.toggleMounted)
+    super.disconnectedCallback()
   }
   override render() {
-    return html` <main>
-      <h1>Lit createAsyncRateLimiter</h1>
-      <p>
-        Accept up to two executions per time window and track rejected calls.
-      </p>
-      <label
-        >Task
-        <input
-          .value=${this.input}
-          @input=${(event: Event) => {
-            this.input = (event.target as HTMLInputElement).value
-          }} /></label
-      ><label
-        >Wait (ms)
-        <input
-          .value=${String(this.wait)}
-          @input=${(event: Event) => {
-            this.wait = Number((event.target as HTMLInputElement).value)
-          }}
-          type="number"
-          min="0"
-      /></label>
-      <div>
-        <button @click=${this.schedule}>Schedule</button
-        ><button @click=${this.burst}>Schedule three</button
-        ><button @click=${() => this.utility.reset()}>Reset window</button
-        ><button @click=${() => this.utility.abort()}>Reset</button
-        ><button
-          @click=${() => {
-            this.history = []
-          }}
-        >
-          Clear history
-        </button>
-      </div>
-      <section>
-        <h2>Processed results</h2>
-        <pre data-testid="history">
-${JSON.stringify(this.history, null, 2)}</pre>
-      </section>
-      <section>
-        <h2>Utility state</h2>
-        <pre>${JSON.stringify(this.utility.state, null, 2)}</pre>
-      </section>
-      <p class="caption">
-        Host updates refresh options. Disconnecting the element cleans up its
-        utility.
-      </p>
-    </main>`
+    return html`${this.mounted ? html`<div><pacer-demo></pacer-demo></div>` : nothing}`
   }
 }
 customElements.define('pacer-example', Example)

@@ -3,7 +3,7 @@ id: OctaneRateLimiterOptions
 title: OctaneRateLimiterOptions
 ---
 
-Defined in: [rate-limiter/useRateLimiter.ts:14](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/rate-limiter/useRateLimiter.ts#L14)
+Defined in: [rate-limiter/useRateLimiter.ts:16](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/rate-limiter/useRateLimiter.ts#L16)
 
 Options for useRateLimiter, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useRateLimiter, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [rate-limiter/useRateLimiter.ts:19](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/rate-limiter/useRateLimiter.ts#L19)
+Defined in: [rate-limiter/useRateLimiter.ts:21](https://github.com/TanStack/pacer/blob/main/packages/octane-pacer/src/rate-limiter/useRateLimiter.ts#L21)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

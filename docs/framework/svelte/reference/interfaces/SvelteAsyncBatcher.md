@@ -3,9 +3,9 @@ id: SvelteAsyncBatcher
 title: SvelteAsyncBatcher
 ---
 
-Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:20](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L20)
+Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:21](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L21)
 
-A AsyncBatcher with framework-reactive selected state. All core methods remain available.
+An AsyncBatcher with framework-reactive selected state. All core methods remain available.
 
 ## Extends
 
@@ -42,7 +42,7 @@ options: Omit<Required<AsyncBatcherOptions<TValue>>,
 | "onItemsChange">> & SvelteAsyncBatcherOptions<TValue, TSelected>;
 ```
 
-Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:24](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L24)
+Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:25](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L25)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:24](h
 setOptions: (options) => void;
 ```
 
-Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L26)
+Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:27](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L27)
 
 #### Parameters
 
@@ -72,6 +72,18 @@ Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:26](h
 readonly state: Readonly<TSelected>;
 ```
 
-Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:30](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L30)
+Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:33](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L33)
 
 Selected state. Pass a selector to opt in; the default selection is an empty object.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: SveltePacerSubscribe<AsyncBatcherState<TValue>>;
+```
+
+Defined in: [packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts:31](https://github.com/TanStack/pacer/blob/main/packages/svelte-pacer/src/async-batcher/createAsyncBatcher.ts#L31)
+
+Subscribes a child snippet to state without updating the utility owner.

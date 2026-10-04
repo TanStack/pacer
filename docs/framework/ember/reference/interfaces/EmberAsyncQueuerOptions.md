@@ -3,7 +3,7 @@ id: EmberAsyncQueuerOptions
 title: EmberAsyncQueuerOptions
 ---
 
-Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts:16](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts#L16)
+Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts#L19)
 
 Options for useAsyncQueuer, including owner cleanup.
 
@@ -30,7 +30,7 @@ Options for useAsyncQueuer, including owner cleanup.
 optional onUnmount?: (instance) => void;
 ```
 
-Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts#L21)
+Defined in: [packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/ember-pacer/src/async-queuer/useAsyncQueuer.ts#L24)
 
 Replaces default cleanup. Use this to flush, cancel, or stop pending work.
 

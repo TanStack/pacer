@@ -1,4 +1,5 @@
 import { shallow } from '@tanstack/store'
+import { createSubscribe } from './subscribe'
 import type { ReactiveController, ReactiveControllerHost } from 'lit'
 
 /** Registers the utility with its Lit host, including reconnection support. */
@@ -38,7 +39,12 @@ export function bindPacer<TState, TSelected, TOptions, TInstance>(
       host.requestUpdate()
     },
     hostUpdate() {
-      if (subscription) updateOptions()
+      if (subscription) {
+        updateOptions()
+        // A selector can also read reactive host properties.
+        const next = selector(instance.store.state)
+        if (!shallow(next, selected)) selected = next
+      }
     },
     hostDisconnected() {
       if (!subscription) return
@@ -47,6 +53,10 @@ export function bindPacer<TState, TSelected, TOptions, TInstance>(
       cleanup()
     },
   }
+  Object.defineProperty(instance, 'subscribe', {
+    value: createSubscribe(instance.store),
+    enumerable: true,
+  })
   Object.defineProperty(instance, 'state', {
     get: () => selected,
     enumerable: true,
