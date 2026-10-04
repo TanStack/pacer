@@ -1,0 +1,19 @@
+{
+  "name": "@tanstack/pacer-example-lit-create-async-debouncer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port=3005",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:types": "tsc",
+    "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
+  },
+  "dependencies": {
+    "@tanstack/lit-pacer": "workspace:*",
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "vite": "^8.3.2"
+  }
+}

@@ -6,7 +6,18 @@ const root = import.meta.dirname
 const selectedTestDir = process.env.PLAYWRIGHT_TEST_DIR
 const exampleDirs = selectedTestDir
   ? [path.resolve(selectedTestDir, '../..')]
-  : ['react', 'preact', 'solid', 'angular'].flatMap((framework) =>
+  : [
+      'react',
+      'preact',
+      'solid',
+      'angular',
+      'vue',
+      'svelte',
+      'lit',
+      'alpine',
+      'ember',
+      'octane',
+    ].flatMap((framework) =>
       readdirSync(path.join(root, 'examples', framework), {
         withFileTypes: true,
       })

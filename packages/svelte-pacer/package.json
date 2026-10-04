@@ -1,0 +1,130 @@
+{
+  "name": "@tanstack/svelte-pacer",
+  "version": "0.1.0",
+  "description": "Svelte adapter for TanStack Pacer",
+  "author": "Tanner Linsley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanStack/pacer.git",
+    "directory": "packages/svelte-pacer"
+  },
+  "homepage": "https://tanstack.com/pacer",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/tannerlinsley"
+  },
+  "keywords": [
+    "svelte",
+    "debounce",
+    "throttle",
+    "rate-limit",
+    "queue",
+    "async"
+  ],
+  "scripts": {
+    "clean": "premove ./build ./dist",
+    "lint:fix": "eslint ./src --fix",
+    "test:eslint": "eslint ./src",
+    "test:lib": "vitest --passWithNoTests",
+    "test:lib:dev": "pnpm test:lib --watch",
+    "test:types": "tsc",
+    "build": "svelte-package --input ./src --output ./dist",
+    "test:build": "publint --strict && node ../../scripts/verify-package.ts"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./async-batcher": {
+      "types": "./dist/async-batcher/index.d.ts",
+      "svelte": "./dist/async-batcher/index.js",
+      "import": "./dist/async-batcher/index.js"
+    },
+    "./async-debouncer": {
+      "types": "./dist/async-debouncer/index.d.ts",
+      "svelte": "./dist/async-debouncer/index.js",
+      "import": "./dist/async-debouncer/index.js"
+    },
+    "./async-queuer": {
+      "types": "./dist/async-queuer/index.d.ts",
+      "svelte": "./dist/async-queuer/index.js",
+      "import": "./dist/async-queuer/index.js"
+    },
+    "./async-rate-limiter": {
+      "types": "./dist/async-rate-limiter/index.d.ts",
+      "svelte": "./dist/async-rate-limiter/index.js",
+      "import": "./dist/async-rate-limiter/index.js"
+    },
+    "./async-throttler": {
+      "types": "./dist/async-throttler/index.d.ts",
+      "svelte": "./dist/async-throttler/index.js",
+      "import": "./dist/async-throttler/index.js"
+    },
+    "./batcher": {
+      "types": "./dist/batcher/index.d.ts",
+      "svelte": "./dist/batcher/index.js",
+      "import": "./dist/batcher/index.js"
+    },
+    "./debouncer": {
+      "types": "./dist/debouncer/index.d.ts",
+      "svelte": "./dist/debouncer/index.js",
+      "import": "./dist/debouncer/index.js"
+    },
+    "./provider": {
+      "types": "./dist/provider/index.d.ts",
+      "svelte": "./dist/provider/index.js",
+      "import": "./dist/provider/index.js"
+    },
+    "./queuer": {
+      "types": "./dist/queuer/index.d.ts",
+      "svelte": "./dist/queuer/index.js",
+      "import": "./dist/queuer/index.js"
+    },
+    "./rate-limiter": {
+      "types": "./dist/rate-limiter/index.d.ts",
+      "svelte": "./dist/rate-limiter/index.js",
+      "import": "./dist/rate-limiter/index.js"
+    },
+    "./throttler": {
+      "types": "./dist/throttler/index.d.ts",
+      "svelte": "./dist/throttler/index.js",
+      "import": "./dist/throttler/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "svelte": "./dist/types/index.js",
+      "import": "./dist/types/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "svelte": "./dist/utils/index.js",
+      "import": "./dist/utils/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@tanstack/pacer": "workspace:*",
+    "@tanstack/svelte-store": "^0.12.2"
+  },
+  "devDependencies": {
+    "@sveltejs/package": "^3.0.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "svelte": "^5.57.1"
+  },
+  "peerDependencies": {
+    "svelte": "^5.25.0"
+  },
+  "svelte": "./dist/index.js"
+}

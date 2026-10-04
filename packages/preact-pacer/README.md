@@ -2,15 +2,15 @@
   <picture>
     <source
       media="(prefers-color-scheme: dark)"
-      srcset="https://tanstack.com/api/readme/pacer.png?framework=preact&theme=dark"
+      srcset="https://tanstack.com/api/readme/pacer.png?theme=dark"
     />
     <source
       media="(prefers-color-scheme: light)"
-      srcset="https://tanstack.com/api/readme/pacer.png?framework=preact"
+      srcset="https://tanstack.com/api/readme/pacer.png"
     />
     <img
-      src="https://tanstack.com/api/readme/pacer.png?framework=preact"
-      alt="TanStack Preact Pacer"
+      src="https://tanstack.com/api/readme/pacer.png"
+      alt="TanStack Pacer"
       width="900"
     />
   </picture>
@@ -25,8 +25,8 @@
 - <a href="https://github.com/TanStack/pacer" target="\_parent">
 	  <img alt="" src="https://img.shields.io/github/stars/TanStack/pacer.svg?style=social&label=Star" alt="GitHub stars" />
 	</a>
-	<a href="https://bundlephobia.com/result?p=@tanstack/preact-pacer@latest" target="\_parent">
-  <img alt="" src="https://badgen.net/bundlephobia/minzip/@tanstack/preact-pacer@latest" alt="Bundle size" />
+	<a href="https://bundlephobia.com/result?p=@tanstack/react-pacer@latest" target="\_parent">
+  <img alt="" src="https://badgen.net/bundlephobia/minzip/@tanstack/react-pacer@latest" alt="Bundle size" />
 </a>
 </div>
 
@@ -92,7 +92,7 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
   - Full type safety with TypeScript that makes sure that your functions will always be called with the correct arguments
   - Generics for flexible and reusable utilities
 - **Framework Adapters**
-  - React, Solid, and more
+  - React, Preact, Solid, Angular, Vue, Svelte, Lit, Alpine, Ember, and Octane
 - **Tree Shaking**
   - We, of course, get tree-shaking right for your applications by default, but we also provide extra deep imports for each utility, making it easier to embed these utilities into your libraries without increasing the bundle-phobia reports of your library.
 
@@ -101,12 +101,18 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
 <br />
 
 > [!NOTE]
-> You may know **TanSack Pacer** by our adapter names, too!
+> You may know **TanStack Pacer** by our adapter names, too!
 >
-> - [**React Pacer**](https://tanstack.com/pacer/latest/docs/framework/react/react-pacer)
-> - [**Solid Pacer**](https://tanstack.com/pacer/latest/docs/framework/solid/solid-pacer)
-> - Angular Pacer - needs a contributor!
-> - Preact Pacer - Coming soon! (After React Pacer is more fleshed out)
+> - [**React Pacer**](https://tanstack.com/pacer/latest/docs/framework/react)
+> - [**Preact Pacer**](https://tanstack.com/pacer/latest/docs/framework/preact)
+> - [**Solid Pacer**](https://tanstack.com/pacer/latest/docs/framework/solid)
+> - [**Angular Pacer**](https://tanstack.com/pacer/latest/docs/framework/angular)
+> - [**Vue Pacer**](https://tanstack.com/pacer/latest/docs/framework/vue)
+> - [**Svelte Pacer**](https://tanstack.com/pacer/latest/docs/framework/svelte)
+> - [**Lit Pacer**](https://tanstack.com/pacer/latest/docs/framework/lit)
+> - [**Alpine Pacer**](https://tanstack.com/pacer/latest/docs/framework/alpine)
+> - [**Ember Pacer**](https://tanstack.com/pacer/latest/docs/framework/ember)
+> - [**Octane Pacer**](https://tanstack.com/pacer/latest/docs/framework/octane)
 > - Svelte Pacer - needs a contributor!
 > - Vue Pacer - needs a contributor!
 
@@ -121,11 +127,11 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
 
 <table align="center">
   <tr>
-    <td>
+        <td>
       <a href="https://www.coderabbit.ai/?via=tanstack&dub_id=aCcEEdAOqqutX6OS" >
         <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://tanstack.com/assets/coderabbit-dark-D643Zkrv.svg" height="40" />
-          <source media="(prefers-color-scheme: light)" srcset="https://tanstack.com/assets/coderabbit-light-CIzGLYU_.svg" height="40" />
+          <source media="(prefers-color-scheme: dark)" srcset="https://tanstack.com/assets/coderabbit-dark-D643Zkrv.svg" />
+          <source media="(prefers-color-scheme: light)" srcset="https://tanstack.com/assets/coderabbit-light-CIzGLYU_.svg" />
           <img src="https://tanstack.com/assets/coderabbit-light-CIzGLYU_.svg" height="40" alt="CodeRabbit" />
         </picture>
       </a>
@@ -133,9 +139,9 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
     <td>
       <a href="https://www.cloudflare.com?utm_source=tanstack">
         <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://tanstack.com/assets/cloudflare-white-Co-Tyjbl.svg" height="60" />
-          <source media="(prefers-color-scheme: light)" srcset="https://tanstack.com/assets/cloudflare-black-6Ojsn8yh.svg" height="60" />
-          <img src="https://tanstack.com/assets/cloudflare-black-6Ojsn8yh.svg" height="60" alt="Cloudflare" />
+          <source media="(prefers-color-scheme: dark)" srcset="https://tanstack.com/assets/cloudflare-white-Co-Tyjbl.svg" />
+          <source media="(prefers-color-scheme: light)" srcset="https://tanstack.com/assets/cloudflare-black-6Ojsn8yh.svg" />
+          <img src="https://tanstack.com/assets/cloudflare-white-Co-Tyjbl.svg" height="60" alt="Cloudflare" />
         </picture>
       </a>
     </td>

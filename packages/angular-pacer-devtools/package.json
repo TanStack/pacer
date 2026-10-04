@@ -1,0 +1,59 @@
+{
+  "name": "@tanstack/angular-pacer-devtools",
+  "version": "0.1.0",
+  "description": "Angular devtools for TanStack Pacer",
+  "author": "Tanner Linsley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanStack/pacer.git",
+    "directory": "packages/angular-pacer-devtools"
+  },
+  "homepage": "https://tanstack.com/pacer",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/tannerlinsley"
+  },
+  "keywords": [
+    "angular",
+    "tanstack",
+    "keys",
+    "devtools",
+    "pacer"
+  ],
+  "scripts": {
+    "clean": "premove ./build ./dist",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "test:eslint": "eslint ./src",
+    "test:lib": "vitest --passWithNoTests",
+    "test:lib:dev": "pnpm test:lib --watch",
+    "test:types": "tsc",
+    "build": "tsdown",
+    "test:build": "publint --strict && node ../../scripts/verify-package.ts"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./production": "./dist/production.js",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "@angular/core": ">=21.0.0"
+  },
+  "dependencies": {
+    "@tanstack/devtools-utils": "^0.7.0",
+    "@tanstack/pacer-devtools": "workspace:*"
+  },
+  "devDependencies": {
+    "@angular/core": "^22.2.1"
+  }
+}

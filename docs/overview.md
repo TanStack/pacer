@@ -54,7 +54,7 @@ Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of th
   - Your functions are always called with the correct argument types
   - Generic utilities that adapt to your own types
 - **Framework Adapters**
-  - React, Preact, Solid, and Angular
+  - React, Preact, Solid, Angular, Vue, Svelte, Lit, Alpine, Ember, and Octane
 - **Tree Shaking**
   - Tree-shaking works by default, and each utility also has its own deep import, so a library can pull in one utility without inflating its bundle-phobia report
 

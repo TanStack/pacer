@@ -3,7 +3,7 @@ title: Installation
 id: installation
 ---
 
-Pacer packages are ESM-only, target ES2022, and require Node.js 20 or newer when running in Node.js. Use ESM imports or dynamic `import()` when consuming them.
+Pacer packages are ESM-only, target ES2022, and require Node.js 20 or newer when running in Node.js. The Octane adapter requires Node.js 22.22.2 or newer. Ember includes a CommonJS addon metadata shim for its build tooling; its runtime entry points are ESM. Use ESM imports or dynamic `import()` when consuming them.
 
 Install the adapter for your framework with your preferred package manager:
 
@@ -12,6 +12,13 @@ Install the adapter for your framework with your preferred package manager:
 react: @tanstack/react-pacer
 solid: @tanstack/solid-pacer
 angular: @tanstack/angular-pacer
+preact: @tanstack/preact-pacer
+vue: @tanstack/vue-pacer
+svelte: @tanstack/svelte-pacer
+lit: @tanstack/lit-pacer
+alpine: @tanstack/alpine-pacer
+ember: @tanstack/ember-pacer
+octane: @tanstack/octane-pacer
 
 <!-- ::end:tabs -->
 
@@ -56,3 +63,12 @@ See the [devtools](./devtools) page for setup and usage.
 See the [devtools](./devtools) page for setup and usage.
 
 <!-- ::end:framework -->
+
+Framework guides cover lifecycle ownership, reactive options, selected state, and helper return values:
+
+- [Vue](./framework/vue/adapter.md)
+- [Svelte](./framework/svelte/adapter.md)
+- [Lit](./framework/lit/adapter.md)
+- [Alpine](./framework/alpine/adapter.md)
+- [Ember](./framework/ember/adapter.md)
+- [Octane](./framework/octane/adapter.md)

@@ -7,7 +7,23 @@ import { createServer } from 'vite'
 
 export async function startExampleServer(exampleDir: string) {
   if (path.basename(path.dirname(exampleDir)) === 'angular') {
-    return startAngularServer(exampleDir)
+    return startCliServer(exampleDir, '@angular/cli', 'bin/ng.js', [
+      'serve',
+      '--host',
+      '127.0.0.1',
+      '--port',
+      '0',
+      '--no-open',
+    ])
+  }
+  if (path.basename(path.dirname(exampleDir)) === 'ember') {
+    // Ember resolves app metadata from cwd; isolate it from the test runner.
+    return startCliServer(exampleDir, 'vite', 'bin/vite.js', [
+      '--host',
+      '127.0.0.1',
+      '--port',
+      '0',
+    ])
   }
   const server = await createServer({
     root: exampleDir,
@@ -35,22 +51,23 @@ export async function startExampleServer(exampleDir: string) {
   }
 }
 
-async function startAngularServer(exampleDir: string) {
+async function startCliServer(
+  exampleDir: string,
+  packageName: string,
+  entry: string,
+  args: Array<string>,
+) {
   // Use the CLI version owned by the example, rather than a root dependency.
   const require = createRequire(path.join(exampleDir, 'package.json'))
   const cli = path.join(
-    path.dirname(require.resolve('@angular/cli/package.json')),
-    'bin/ng.js',
+    path.dirname(require.resolve(`${packageName}/package.json`)),
+    entry,
   )
-  const child = spawn(
-    process.execPath,
-    [cli, 'serve', '--host', '127.0.0.1', '--port', '0', '--no-open'],
-    {
-      cwd: exampleDir,
-      env: { ...process.env, NG_CLI_ANALYTICS: 'false', NO_COLOR: '1' },
-      stdio: ['ignore', 'pipe', 'pipe'],
-    },
-  )
+  const child = spawn(process.execPath, [cli, ...args], {
+    cwd: exampleDir,
+    env: { ...process.env, NG_CLI_ANALYTICS: 'false', NO_COLOR: '1' },
+    stdio: ['ignore', 'pipe', 'pipe'],
+  })
   let output = ''
   const exited = new Promise<void>((resolve) =>
     child.once('close', () => resolve()),
@@ -70,7 +87,7 @@ async function startAngularServer(exampleDir: string) {
       const timeout = setTimeout(
         () =>
           reject(
-            new Error(`Angular server timed out: ${exampleDir}\n${output}`),
+            new Error(`Example server timed out: ${exampleDir}\n${output}`),
           ),
         90_000,
       )
@@ -93,7 +110,7 @@ async function startAngularServer(exampleDir: string) {
         cleanup()
         reject(
           new Error(
-            `Angular server exited (${code}): ${exampleDir}\n${output}`,
+            `Example server exited (${code}): ${exampleDir}\n${output}`,
           ),
         )
       })

@@ -92,7 +92,7 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
   - Full type safety with TypeScript that makes sure that your functions will always be called with the correct arguments
   - Generics for flexible and reusable utilities
 - **Framework Adapters**
-  - React, Solid, and more
+  - React, Preact, Solid, Angular, Vue, Svelte, Lit, Alpine, Ember, and Octane
 - **Tree Shaking**
   - We, of course, get tree-shaking right for your applications by default, but we also provide extra deep imports for each utility, making it easier to embed these utilities into your libraries without increasing the bundle-phobia reports of your library.
 
@@ -107,6 +107,12 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
 > - [**Preact Pacer**](https://tanstack.com/pacer/latest/docs/framework/preact)
 > - [**Solid Pacer**](https://tanstack.com/pacer/latest/docs/framework/solid)
 > - [**Angular Pacer**](https://tanstack.com/pacer/latest/docs/framework/angular)
+> - [**Vue Pacer**](https://tanstack.com/pacer/latest/docs/framework/vue)
+> - [**Svelte Pacer**](https://tanstack.com/pacer/latest/docs/framework/svelte)
+> - [**Lit Pacer**](https://tanstack.com/pacer/latest/docs/framework/lit)
+> - [**Alpine Pacer**](https://tanstack.com/pacer/latest/docs/framework/alpine)
+> - [**Ember Pacer**](https://tanstack.com/pacer/latest/docs/framework/ember)
+> - [**Octane Pacer**](https://tanstack.com/pacer/latest/docs/framework/octane)
 > - Svelte Pacer - needs a contributor!
 > - Vue Pacer - needs a contributor!
 

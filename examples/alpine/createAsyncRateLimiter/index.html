@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pacer | Alpine createAsyncRateLimiter</title>
+  </head>
+  <body>
+    <main x-data="example">
+      <h1>Alpine createAsyncRateLimiter</h1>
+      <p>
+        Accept up to two executions per time window and track rejected calls.
+      </p>
+      <label>Task <input x-model="input" /></label
+      ><label
+        >Wait (ms) <input x-model.number="wait" type="number" min="0"
+      /></label>
+      <div>
+        <button @click="schedule">Schedule</button
+        ><button @click="burst">Schedule three</button
+        ><button @click="utility.reset()">Reset window</button
+        ><button @click="utility.abort()">Reset</button
+        ><button @click="history = []">Clear history</button>
+      </div>
+      <section>
+        <h2>Processed results</h2>
+        <pre
+          data-testid="history"
+          x-text="JSON.stringify(history, null, 2)"
+        ></pre>
+      </section>
+      <section>
+        <h2>Utility state</h2>
+        <pre x-text="JSON.stringify(utility?.state, null, 2)"></pre>
+      </section>
+      <p class="caption">
+        The scope owns reactive options and subscriptions. Alpine calls destroy
+        when this component is removed.
+      </p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+import { createRoot, useState } from 'octane';
+import { useAsyncRateLimiter } from '@tanstack/octane-pacer';
+import './style.css';
+function Example() @{
+  const [input, setInput] = useState('hello');
+  const [wait, setWait] = useState(200);
+  const [history, setHistory] = useState<Array<string>>([]);
+  const utility = useAsyncRateLimiter(async (value: string) => { setHistory((previous) => [...previous, value]); }, { limit: 2, window: wait }, (state) => state);
+  <main>
+<h1>Octane useAsyncRateLimiter</h1><p>Accept up to two executions per time window and track rejected calls.</p>
+<label>Task <input value={input} onInput={(event) => setInput(event.currentTarget.value)} /></label><label>Wait (ms) <input value={wait} onInput={(event) => setWait(Number(event.currentTarget.value))} type="number" min="0" /></label>
+<div><button onClick={() => { void utility.maybeExecute(input); }}>Schedule</button><button onClick={() => { for (let i = 1; i <= 3; i++) void utility.maybeExecute(`${input} ${i}`); }}>Schedule three</button><button onClick={() => { void utility.reset(); }}>Reset window</button><button onClick={() => { utility.abort(); }}>Reset</button><button onClick={() => setHistory([])}>Clear history</button></div>
+<section><h2>Processed results</h2><pre data-testid="history">{JSON.stringify(history, null, 2)}</pre></section>
+<section><h2>Utility state</h2><pre>{JSON.stringify(utility.state, null, 2)}</pre></section>
+<p class="caption">The hook retains one utility across renders and commits current options and callbacks.</p>
+</main>
+}
+createRoot(document.getElementById('app')!).render(Example);
