@@ -1,10 +1,31 @@
+import { QueryClient, QueryObserver, onlineManager } from '@tanstack/query-core'
 import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
-import { QueryObserver, onlineManager } from '@tanstack/query-core'
 import { TanstackQueryDevtools } from '@tanstack/query-devtools'
-import { fetchPosts, fetchPost, queryClient } from './api'
 import type { QueryObserverResult } from '@tanstack/query-core'
-import type { Post } from './api'
+
+interface Post {
+  id: number
+  title: string
+  body: string
+}
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 10_000 } },
+})
+
+async function fetchPosts(): Promise<Array<Post>> {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts')
+  return response.json()
+}
+
+async function fetchPost(id: number): Promise<Post> {
+  await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate a slow response.
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/posts/${id}`,
+  )
+  return response.json()
+}
 
 class Example {
   selectedPostId: number | null = null

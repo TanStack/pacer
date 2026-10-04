@@ -1,6 +1,9 @@
 import { createApp } from 'vue'
-import { VueQueryPlugin } from '@tanstack/vue-query'
+import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
 import App from './App.vue'
-import { queryClient } from './api'
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 10_000 } },
+})
 
 createApp(App).use(VueQueryPlugin, { queryClient }).mount('#app')
