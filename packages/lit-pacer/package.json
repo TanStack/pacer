@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/lit-pacer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Lit adapter for TanStack Pacer",
   "author": "Tanner Linsley",
   "license": "MIT",

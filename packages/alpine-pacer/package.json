@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/alpine-pacer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Alpine adapter for TanStack Pacer",
   "author": "Tanner Linsley",
   "license": "MIT",
