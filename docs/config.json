@@ -125,10 +125,6 @@
         {
           "label": "Which Utility Should I Choose?",
           "to": "guides/which-pacer-utility-should-i-choose"
-        },
-        {
-          "label": "Persist Pacer State",
-          "to": "guides/persistence"
         }
       ],
       "frameworks": [

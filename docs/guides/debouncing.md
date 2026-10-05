@@ -12,5 +12,11 @@ Debouncing waits until calls stop for a configured duration, then runs the lates
 - [Preact](../framework/preact/guides/debouncing.md)
 - [Solid](../framework/solid/guides/debouncing.md)
 - [Angular](../framework/angular/guides/debouncing.md)
+- [Vue](../framework/vue/guides/debouncing.md)
+- [Svelte](../framework/svelte/guides/debouncing.md)
+- [Lit](../framework/lit/guides/debouncing.md)
+- [Alpine](../framework/alpine/guides/debouncing.md)
+- [Ember](../framework/ember/guides/debouncing.md)
+- [Octane](../framework/octane/guides/debouncing.md)
 
 Not sure which operation fits your use case? Start with [Which Pacer Utility Should I Choose?](./which-pacer-utility-should-i-choose.md).

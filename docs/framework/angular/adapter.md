@@ -95,7 +95,7 @@ const debouncer = injectDebouncer(
 )
 ```
 
-For more on state and options per utility, see the guides (e.g. [Debouncing Guide](../../guides/debouncing.md), [Rate Limiting Guide](../../guides/rate-limiting.md)).
+For more on state and options per utility, see the guides (e.g. [Debouncing Guide](./guides/debouncing.md), [Rate Limiting Guide](./guides/rate-limiting.md)).
 
 ## Examples
 

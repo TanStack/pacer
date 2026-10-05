@@ -189,7 +189,7 @@ function SearchComponent() {
 }
 ```
 
-For more details on state management and available state properties, see the individual guide pages for each utility (e.g., [Rate Limiting Guide](../../guides/rate-limiting.md), [Debouncing Guide](../../guides/debouncing.md)).
+For more details on state management and available state properties, see the individual guide pages for each utility (e.g., [Rate Limiting Guide](./guides/rate-limiting.md), [Debouncing Guide](./guides/debouncing.md)).
 
 ## Examples
 
