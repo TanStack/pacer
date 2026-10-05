@@ -38,7 +38,7 @@ jobs:
   e2e:
     name: Example E2E
     runs-on: ubuntu-latest
-    # A full run covers 379 example projects with two browser workers.
+    # Run two example projects at a time to limit browser resource usage.
     timeout-minutes: 60
     steps:
       - name: Checkout

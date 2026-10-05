@@ -299,72 +299,6 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/alpine/async-batched-callback:
-    dependencies:
-      '@tanstack/alpine-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/alpine-pacer
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      alpinejs:
-        specifier: ^3.17.4
-        version: 3.17.4
-    devDependencies:
-      '@types/alpinejs':
-        specifier: ^3.17.0
-        version: 3.17.0
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/alpine/async-debounced-callback:
-    dependencies:
-      '@tanstack/alpine-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/alpine-pacer
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      alpinejs:
-        specifier: ^3.17.4
-        version: 3.17.4
-    devDependencies:
-      '@types/alpinejs':
-        specifier: ^3.17.0
-        version: 3.17.0
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/alpine/async-throttled-callback:
-    dependencies:
-      '@tanstack/alpine-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/alpine-pacer
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      alpinejs:
-        specifier: ^3.17.4
-        version: 3.17.4
-    devDependencies:
-      '@types/alpinejs':
-        specifier: ^3.17.0
-        version: 3.17.0
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/alpine/asyncBatch:
     dependencies:
       '@tanstack/alpine-pacer':
@@ -476,28 +410,6 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
   examples/alpine/batch:
-    dependencies:
-      '@tanstack/alpine-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/alpine-pacer
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      alpinejs:
-        specifier: ^3.17.4
-        version: 3.17.4
-    devDependencies:
-      '@types/alpinejs':
-        specifier: ^3.17.0
-        version: 3.17.0
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/alpine/batched-callback:
     dependencies:
       '@tanstack/alpine-pacer':
         specifier: workspace:*
@@ -959,28 +871,6 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/alpine/debounced-callback:
-    dependencies:
-      '@tanstack/alpine-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/alpine-pacer
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      alpinejs:
-        specifier: ^3.17.4
-        version: 3.17.4
-    devDependencies:
-      '@types/alpinejs':
-        specifier: ^3.17.0
-        version: 3.17.0
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/alpine/query-debounced-prefetch:
     dependencies:
       '@tanstack/alpine-pacer':
@@ -1069,28 +959,6 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/alpine/rate-limited-callback:
-    dependencies:
-      '@tanstack/alpine-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/alpine-pacer
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      alpinejs:
-        specifier: ^3.17.4
-        version: 3.17.4
-    devDependencies:
-      '@types/alpinejs':
-        specifier: ^3.17.0
-        version: 3.17.0
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/alpine/rateLimit:
     dependencies:
       '@tanstack/alpine-pacer':
@@ -1135,28 +1003,6 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/alpine/throttled-callback:
-    dependencies:
-      '@tanstack/alpine-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/alpine-pacer
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      alpinejs:
-        specifier: ^3.17.4
-        version: 3.17.4
-    devDependencies:
-      '@types/alpinejs':
-        specifier: ^3.17.0
-        version: 3.17.0
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/alpine/util-comparison:
     dependencies:
       '@tanstack/alpine-pacer':
@@ -1178,171 +1024,6 @@ importers:
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/angular/async-batched-callback:
-    dependencies:
-      '@angular/common':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/compiler':
-        specifier: ^22.2.1
-        version: 22.2.1
-      '@angular/core':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)
-      '@angular/forms':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/platform-browser':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
-      '@angular/router':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@tanstack/angular-devtools':
-        specifier: ^0.0.12
-        version: 0.0.12(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/angular-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer
-      '@tanstack/angular-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer-devtools
-      rxjs:
-        specifier: ~7.8.2
-        version: 7.8.2
-      tslib:
-        specifier: ^2.8.1
-        version: 2.8.1
-    devDependencies:
-      '@angular/build':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
-      '@angular/cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
-      '@angular/compiler-cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3)
-      jsdom:
-        specifier: ^30.1.1
-        version: 30.1.1(@noble/hashes@2.4.0)
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vitest:
-        specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-
-  examples/angular/async-debounced-callback:
-    dependencies:
-      '@angular/common':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/compiler':
-        specifier: ^22.2.1
-        version: 22.2.1
-      '@angular/core':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)
-      '@angular/forms':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/platform-browser':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
-      '@angular/router':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@tanstack/angular-devtools':
-        specifier: ^0.0.12
-        version: 0.0.12(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/angular-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer
-      '@tanstack/angular-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer-devtools
-      rxjs:
-        specifier: ~7.8.2
-        version: 7.8.2
-      tslib:
-        specifier: ^2.8.1
-        version: 2.8.1
-    devDependencies:
-      '@angular/build':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
-      '@angular/cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
-      '@angular/compiler-cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3)
-      jsdom:
-        specifier: ^30.1.1
-        version: 30.1.1(@noble/hashes@2.4.0)
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vitest:
-        specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-
-  examples/angular/async-throttled-callback:
-    dependencies:
-      '@angular/common':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/compiler':
-        specifier: ^22.2.1
-        version: 22.2.1
-      '@angular/core':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)
-      '@angular/forms':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/platform-browser':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
-      '@angular/router':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@tanstack/angular-devtools':
-        specifier: ^0.0.12
-        version: 0.0.12(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/angular-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer
-      '@tanstack/angular-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer-devtools
-      rxjs:
-        specifier: ~7.8.2
-        version: 7.8.2
-      tslib:
-        specifier: ^2.8.1
-        version: 2.8.1
-    devDependencies:
-      '@angular/build':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
-      '@angular/cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
-      '@angular/compiler-cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3)
-      jsdom:
-        specifier: ^30.1.1
-        version: 30.1.1(@noble/hashes@2.4.0)
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vitest:
-        specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
 
   examples/angular/asyncBatch:
     dependencies:
@@ -1674,61 +1355,6 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/batched-callback:
-    dependencies:
-      '@angular/common':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/compiler':
-        specifier: ^22.2.1
-        version: 22.2.1
-      '@angular/core':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)
-      '@angular/forms':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/platform-browser':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
-      '@angular/router':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@tanstack/angular-devtools':
-        specifier: ^0.0.12
-        version: 0.0.12(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/angular-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer
-      '@tanstack/angular-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer-devtools
-      rxjs:
-        specifier: ~7.8.2
-        version: 7.8.2
-      tslib:
-        specifier: ^2.8.1
-        version: 2.8.1
-    devDependencies:
-      '@angular/build':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
-      '@angular/cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
-      '@angular/compiler-cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3)
-      jsdom:
-        specifier: ^30.1.1
-        version: 30.1.1(@noble/hashes@2.4.0)
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vitest:
-        specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-
   examples/angular/debounce:
     dependencies:
       '@angular/common':
@@ -1783,61 +1409,6 @@ importers:
       vitest:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
-
-  examples/angular/debounced-callback:
-    dependencies:
-      '@angular/common':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/compiler':
-        specifier: ^22.2.1
-        version: 22.2.1
-      '@angular/core':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)
-      '@angular/forms':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/platform-browser':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
-      '@angular/router':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@tanstack/angular-devtools':
-        specifier: ^0.0.12
-        version: 0.0.12(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/angular-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer
-      '@tanstack/angular-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer-devtools
-      rxjs:
-        specifier: ~7.8.2
-        version: 7.8.2
-      tslib:
-        specifier: ^2.8.1
-        version: 2.8.1
-    devDependencies:
-      '@angular/build':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
-      '@angular/cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
-      '@angular/compiler-cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3)
-      jsdom:
-        specifier: ^30.1.1
-        version: 30.1.1(@noble/hashes@2.4.0)
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vitest:
-        specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
 
   examples/angular/injectAsyncBatcher:
     dependencies:
@@ -2939,61 +2510,6 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/rate-limited-callback:
-    dependencies:
-      '@angular/common':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/compiler':
-        specifier: ^22.2.1
-        version: 22.2.1
-      '@angular/core':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)
-      '@angular/forms':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/platform-browser':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
-      '@angular/router':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@tanstack/angular-devtools':
-        specifier: ^0.0.12
-        version: 0.0.12(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/angular-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer
-      '@tanstack/angular-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer-devtools
-      rxjs:
-        specifier: ~7.8.2
-        version: 7.8.2
-      tslib:
-        specifier: ^2.8.1
-        version: 2.8.1
-    devDependencies:
-      '@angular/build':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
-      '@angular/cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
-      '@angular/compiler-cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3)
-      jsdom:
-        specifier: ^30.1.1
-        version: 30.1.1(@noble/hashes@2.4.0)
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vitest:
-        specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-
   examples/angular/rateLimit:
     dependencies:
       '@angular/common':
@@ -3103,280 +2619,6 @@ importers:
       vitest:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
-
-  examples/angular/throttled-callback:
-    dependencies:
-      '@angular/common':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/compiler':
-        specifier: ^22.2.1
-        version: 22.2.1
-      '@angular/core':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)
-      '@angular/forms':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/platform-browser':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
-      '@angular/router':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@tanstack/angular-devtools':
-        specifier: ^0.0.12
-        version: 0.0.12(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/angular-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer
-      '@tanstack/angular-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/angular-pacer-devtools
-      rxjs:
-        specifier: ~7.8.2
-        version: 7.8.2
-      tslib:
-        specifier: ^2.8.1
-        version: 2.8.1
-    devDependencies:
-      '@angular/build':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
-      '@angular/cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
-      '@angular/compiler-cli':
-        specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3)
-      jsdom:
-        specifier: ^30.1.1
-        version: 30.1.1(@noble/hashes@2.4.0)
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vitest:
-        specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-
-  examples/ember/async-batched-callback:
-    dependencies:
-      '@embroider/macros':
-        specifier: 1.21.1
-        version: 1.21.1(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@embroider/router':
-        specifier: 3.0.6
-        version: 3.0.6(@embroider/core@4.6.7(@glint/template@1.9.0)(supports-color@7.2.0))(supports-color@7.2.0)
-      '@glimmer/component':
-        specifier: 2.1.1
-        version: 2.1.1(supports-color@7.2.0)
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/ember-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/ember-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      decorator-transforms:
-        specifier: 2.4.0
-        version: 2.4.0(@babel/core@7.29.7(supports-color@7.2.0))
-      ember-source:
-        specifier: 7.3.0
-        version: 7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0)
-      ember-strict-application-resolver:
-        specifier: 0.1.1
-        version: 0.1.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-    devDependencies:
-      '@babel/core':
-        specifier: 7.29.7
-        version: 7.29.7(supports-color@7.2.0)
-      '@babel/plugin-transform-runtime':
-        specifier: 7.29.7
-        version: 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/plugin-transform-typescript':
-        specifier: 7.29.9
-        version: 7.29.9(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/runtime':
-        specifier: 7.29.7
-        version: 7.29.7
-      '@ember/app-tsconfig':
-        specifier: 2.1.0
-        version: 2.1.0
-      '@embroider/core':
-        specifier: 4.6.7
-        version: 4.6.7(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@glint/ember-tsc':
-        specifier: 1.11.6
-        version: 1.11.6(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@glint/template':
-        specifier: 1.9.0
-        version: 1.9.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.9
-        version: 2.7.9(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)
-      '@nullvoxpopuli/ember-vite':
-        specifier: 1.2.0
-        version: 1.2.0(@glint/template@1.9.0)(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      '@rollup/plugin-babel':
-        specifier: 7.1.0
-        version: 7.1.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)
-      babel-plugin-ember-template-compilation:
-        specifier: 4.0.0
-        version: 4.0.0
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/ember/async-debounced-callback:
-    dependencies:
-      '@embroider/macros':
-        specifier: 1.21.1
-        version: 1.21.1(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@embroider/router':
-        specifier: 3.0.6
-        version: 3.0.6(@embroider/core@4.6.7(@glint/template@1.9.0)(supports-color@7.2.0))(supports-color@7.2.0)
-      '@glimmer/component':
-        specifier: 2.1.1
-        version: 2.1.1(supports-color@7.2.0)
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/ember-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/ember-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      decorator-transforms:
-        specifier: 2.4.0
-        version: 2.4.0(@babel/core@7.29.7(supports-color@7.2.0))
-      ember-source:
-        specifier: 7.3.0
-        version: 7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0)
-      ember-strict-application-resolver:
-        specifier: 0.1.1
-        version: 0.1.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-    devDependencies:
-      '@babel/core':
-        specifier: 7.29.7
-        version: 7.29.7(supports-color@7.2.0)
-      '@babel/plugin-transform-runtime':
-        specifier: 7.29.7
-        version: 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/plugin-transform-typescript':
-        specifier: 7.29.9
-        version: 7.29.9(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/runtime':
-        specifier: 7.29.7
-        version: 7.29.7
-      '@ember/app-tsconfig':
-        specifier: 2.1.0
-        version: 2.1.0
-      '@embroider/core':
-        specifier: 4.6.7
-        version: 4.6.7(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@glint/ember-tsc':
-        specifier: 1.11.6
-        version: 1.11.6(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@glint/template':
-        specifier: 1.9.0
-        version: 1.9.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.9
-        version: 2.7.9(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)
-      '@nullvoxpopuli/ember-vite':
-        specifier: 1.2.0
-        version: 1.2.0(@glint/template@1.9.0)(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      '@rollup/plugin-babel':
-        specifier: 7.1.0
-        version: 7.1.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)
-      babel-plugin-ember-template-compilation:
-        specifier: 4.0.0
-        version: 4.0.0
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/ember/async-throttled-callback:
-    dependencies:
-      '@embroider/macros':
-        specifier: 1.21.1
-        version: 1.21.1(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@embroider/router':
-        specifier: 3.0.6
-        version: 3.0.6(@embroider/core@4.6.7(@glint/template@1.9.0)(supports-color@7.2.0))(supports-color@7.2.0)
-      '@glimmer/component':
-        specifier: 2.1.1
-        version: 2.1.1(supports-color@7.2.0)
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/ember-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/ember-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      decorator-transforms:
-        specifier: 2.4.0
-        version: 2.4.0(@babel/core@7.29.7(supports-color@7.2.0))
-      ember-source:
-        specifier: 7.3.0
-        version: 7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0)
-      ember-strict-application-resolver:
-        specifier: 0.1.1
-        version: 0.1.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-    devDependencies:
-      '@babel/core':
-        specifier: 7.29.7
-        version: 7.29.7(supports-color@7.2.0)
-      '@babel/plugin-transform-runtime':
-        specifier: 7.29.7
-        version: 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/plugin-transform-typescript':
-        specifier: 7.29.9
-        version: 7.29.9(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/runtime':
-        specifier: 7.29.7
-        version: 7.29.7
-      '@ember/app-tsconfig':
-        specifier: 2.1.0
-        version: 2.1.0
-      '@embroider/core':
-        specifier: 4.6.7
-        version: 4.6.7(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@glint/ember-tsc':
-        specifier: 1.11.6
-        version: 1.11.6(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@glint/template':
-        specifier: 1.9.0
-        version: 1.9.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.9
-        version: 2.7.9(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)
-      '@nullvoxpopuli/ember-vite':
-        specifier: 1.2.0
-        version: 1.2.0(@glint/template@1.9.0)(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      '@rollup/plugin-babel':
-        specifier: 7.1.0
-        version: 7.1.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)
-      babel-plugin-ember-template-compilation:
-        specifier: 4.0.0
-        version: 4.0.0
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
   examples/ember/asyncBatch:
     dependencies:
@@ -3816,153 +3058,7 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/ember/batched-callback:
-    dependencies:
-      '@embroider/macros':
-        specifier: 1.21.1
-        version: 1.21.1(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@embroider/router':
-        specifier: 3.0.6
-        version: 3.0.6(@embroider/core@4.6.7(@glint/template@1.9.0)(supports-color@7.2.0))(supports-color@7.2.0)
-      '@glimmer/component':
-        specifier: 2.1.1
-        version: 2.1.1(supports-color@7.2.0)
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/ember-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/ember-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      decorator-transforms:
-        specifier: 2.4.0
-        version: 2.4.0(@babel/core@7.29.7(supports-color@7.2.0))
-      ember-source:
-        specifier: 7.3.0
-        version: 7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0)
-      ember-strict-application-resolver:
-        specifier: 0.1.1
-        version: 0.1.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-    devDependencies:
-      '@babel/core':
-        specifier: 7.29.7
-        version: 7.29.7(supports-color@7.2.0)
-      '@babel/plugin-transform-runtime':
-        specifier: 7.29.7
-        version: 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/plugin-transform-typescript':
-        specifier: 7.29.9
-        version: 7.29.9(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/runtime':
-        specifier: 7.29.7
-        version: 7.29.7
-      '@ember/app-tsconfig':
-        specifier: 2.1.0
-        version: 2.1.0
-      '@embroider/core':
-        specifier: 4.6.7
-        version: 4.6.7(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@glint/ember-tsc':
-        specifier: 1.11.6
-        version: 1.11.6(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@glint/template':
-        specifier: 1.9.0
-        version: 1.9.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.9
-        version: 2.7.9(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)
-      '@nullvoxpopuli/ember-vite':
-        specifier: 1.2.0
-        version: 1.2.0(@glint/template@1.9.0)(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      '@rollup/plugin-babel':
-        specifier: 7.1.0
-        version: 7.1.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)
-      babel-plugin-ember-template-compilation:
-        specifier: 4.0.0
-        version: 4.0.0
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/ember/debounce:
-    dependencies:
-      '@embroider/macros':
-        specifier: 1.21.1
-        version: 1.21.1(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@embroider/router':
-        specifier: 3.0.6
-        version: 3.0.6(@embroider/core@4.6.7(@glint/template@1.9.0)(supports-color@7.2.0))(supports-color@7.2.0)
-      '@glimmer/component':
-        specifier: 2.1.1
-        version: 2.1.1(supports-color@7.2.0)
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/ember-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/ember-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      decorator-transforms:
-        specifier: 2.4.0
-        version: 2.4.0(@babel/core@7.29.7(supports-color@7.2.0))
-      ember-source:
-        specifier: 7.3.0
-        version: 7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0)
-      ember-strict-application-resolver:
-        specifier: 0.1.1
-        version: 0.1.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-    devDependencies:
-      '@babel/core':
-        specifier: 7.29.7
-        version: 7.29.7(supports-color@7.2.0)
-      '@babel/plugin-transform-runtime':
-        specifier: 7.29.7
-        version: 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/plugin-transform-typescript':
-        specifier: 7.29.9
-        version: 7.29.9(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/runtime':
-        specifier: 7.29.7
-        version: 7.29.7
-      '@ember/app-tsconfig':
-        specifier: 2.1.0
-        version: 2.1.0
-      '@embroider/core':
-        specifier: 4.6.7
-        version: 4.6.7(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@glint/ember-tsc':
-        specifier: 1.11.6
-        version: 1.11.6(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@glint/template':
-        specifier: 1.9.0
-        version: 1.9.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.9
-        version: 2.7.9(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)
-      '@nullvoxpopuli/ember-vite':
-        specifier: 1.2.0
-        version: 1.2.0(@glint/template@1.9.0)(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      '@rollup/plugin-babel':
-        specifier: 7.1.0
-        version: 7.1.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)
-      babel-plugin-ember-template-compilation:
-        specifier: 4.0.0
-        version: 4.0.0
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/ember/debounced-callback:
     dependencies:
       '@embroider/macros':
         specifier: 1.21.1
@@ -4327,79 +3423,6 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/ember/rate-limited-callback:
-    dependencies:
-      '@embroider/macros':
-        specifier: 1.21.1
-        version: 1.21.1(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@embroider/router':
-        specifier: 3.0.6
-        version: 3.0.6(@embroider/core@4.6.7(@glint/template@1.9.0)(supports-color@7.2.0))(supports-color@7.2.0)
-      '@glimmer/component':
-        specifier: 2.1.1
-        version: 2.1.1(supports-color@7.2.0)
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/ember-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/ember-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      decorator-transforms:
-        specifier: 2.4.0
-        version: 2.4.0(@babel/core@7.29.7(supports-color@7.2.0))
-      ember-source:
-        specifier: 7.3.0
-        version: 7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0)
-      ember-strict-application-resolver:
-        specifier: 0.1.1
-        version: 0.1.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-    devDependencies:
-      '@babel/core':
-        specifier: 7.29.7
-        version: 7.29.7(supports-color@7.2.0)
-      '@babel/plugin-transform-runtime':
-        specifier: 7.29.7
-        version: 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/plugin-transform-typescript':
-        specifier: 7.29.9
-        version: 7.29.9(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/runtime':
-        specifier: 7.29.7
-        version: 7.29.7
-      '@ember/app-tsconfig':
-        specifier: 2.1.0
-        version: 2.1.0
-      '@embroider/core':
-        specifier: 4.6.7
-        version: 4.6.7(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@glint/ember-tsc':
-        specifier: 1.11.6
-        version: 1.11.6(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@glint/template':
-        specifier: 1.9.0
-        version: 1.9.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.9
-        version: 2.7.9(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)
-      '@nullvoxpopuli/ember-vite':
-        specifier: 1.2.0
-        version: 1.2.0(@glint/template@1.9.0)(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      '@rollup/plugin-babel':
-        specifier: 7.1.0
-        version: 7.1.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)
-      babel-plugin-ember-template-compilation:
-        specifier: 4.0.0
-        version: 4.0.0
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/ember/rateLimit:
     dependencies:
       '@embroider/macros':
@@ -4474,79 +3497,6 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
   examples/ember/throttle:
-    dependencies:
-      '@embroider/macros':
-        specifier: 1.21.1
-        version: 1.21.1(@babel/core@7.29.7(supports-color@7.2.0))(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@embroider/router':
-        specifier: 3.0.6
-        version: 3.0.6(@embroider/core@4.6.7(@glint/template@1.9.0)(supports-color@7.2.0))(supports-color@7.2.0)
-      '@glimmer/component':
-        specifier: 2.1.1
-        version: 2.1.1(supports-color@7.2.0)
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/ember-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/ember-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      decorator-transforms:
-        specifier: 2.4.0
-        version: 2.4.0(@babel/core@7.29.7(supports-color@7.2.0))
-      ember-source:
-        specifier: 7.3.0
-        version: 7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0)
-      ember-strict-application-resolver:
-        specifier: 0.1.1
-        version: 0.1.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-    devDependencies:
-      '@babel/core':
-        specifier: 7.29.7
-        version: 7.29.7(supports-color@7.2.0)
-      '@babel/plugin-transform-runtime':
-        specifier: 7.29.7
-        version: 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/plugin-transform-typescript':
-        specifier: 7.29.9
-        version: 7.29.9(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@babel/runtime':
-        specifier: 7.29.7
-        version: 7.29.7
-      '@ember/app-tsconfig':
-        specifier: 2.1.0
-        version: 2.1.0
-      '@embroider/core':
-        specifier: 4.6.7
-        version: 4.6.7(@glint/template@1.9.0)(supports-color@7.2.0)
-      '@glint/ember-tsc':
-        specifier: 1.11.6
-        version: 1.11.6(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@glint/template':
-        specifier: 1.9.0
-        version: 1.9.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.9
-        version: 2.7.9(ember-source@7.3.0(@glimmer/component@2.1.1(supports-color@7.2.0))(supports-color@7.2.0))(supports-color@7.2.0)
-      '@nullvoxpopuli/ember-vite':
-        specifier: 1.2.0
-        version: 1.2.0(@glint/template@1.9.0)(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      '@rollup/plugin-babel':
-        specifier: 7.1.0
-        version: 7.1.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/babel__core@7.20.5)(rollup@4.60.1)(supports-color@7.2.0)
-      babel-plugin-ember-template-compilation:
-        specifier: 4.0.0
-        version: 4.0.0
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/ember/throttled-callback:
     dependencies:
       '@embroider/macros':
         specifier: 1.21.1
@@ -6079,63 +5029,6 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/lit/async-batched-callback:
-    dependencies:
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/lit-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/lit-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      lit:
-        specifier: ^3.3.3
-        version: 3.3.3
-    devDependencies:
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/lit/async-debounced-callback:
-    dependencies:
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/lit-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/lit-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      lit:
-        specifier: ^3.3.3
-        version: 3.3.3
-    devDependencies:
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/lit/async-throttled-callback:
-    dependencies:
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/lit-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/lit-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      lit:
-        specifier: ^3.3.3
-        version: 3.3.3
-    devDependencies:
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/lit/asyncBatch:
     dependencies:
       '@tanstack/devtools':
@@ -6232,25 +5125,6 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
   examples/lit/batch:
-    dependencies:
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/lit-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/lit-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      lit:
-        specifier: ^3.3.3
-        version: 3.3.3
-    devDependencies:
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/lit/batched-callback:
     dependencies:
       '@tanstack/devtools':
         specifier: ^0.15.0
@@ -6649,25 +5523,6 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/lit/debounced-callback:
-    dependencies:
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/lit-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/lit-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      lit:
-        specifier: ^3.3.3
-        version: 3.3.3
-    devDependencies:
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/lit/lit-query-debounced-prefetch:
     dependencies:
       '@tanstack/lit-pacer':
@@ -6753,25 +5608,6 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/lit/rate-limited-callback:
-    dependencies:
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/lit-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/lit-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      lit:
-        specifier: ^3.3.3
-        version: 3.3.3
-    devDependencies:
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/lit/rateLimit:
     dependencies:
       '@tanstack/devtools':
@@ -6792,25 +5628,6 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
   examples/lit/throttle:
-    dependencies:
-      '@tanstack/devtools':
-        specifier: ^0.15.0
-        version: 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/lit-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/lit-pacer
-      '@tanstack/pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/pacer-devtools
-      lit:
-        specifier: ^3.3.3
-        version: 3.3.3
-    devDependencies:
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/lit/throttled-callback:
     dependencies:
       '@tanstack/devtools':
         specifier: ^0.15.0
@@ -9778,81 +8595,6 @@ importers:
         specifier: ^2.11.14
         version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/svelte/async-batched-callback:
-    dependencies:
-      '@tanstack/svelte-devtools':
-        specifier: ^0.1.7
-        version: 0.1.7(csstype@3.2.3)(solid-js@1.9.15)(svelte@5.57.1(@typescript-eslint/types@8.66.0))
-      '@tanstack/svelte-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer
-      '@tanstack/svelte-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer-devtools
-      svelte:
-        specifier: ^5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.66.0)
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^7.3.1
-        version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.66.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      svelte-check:
-        specifier: ^4.7.6
-        version: 4.7.6(picomatch@4.0.7)(svelte@5.57.1(@typescript-eslint/types@8.66.0))(typescript@6.0.3)
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/svelte/async-debounced-callback:
-    dependencies:
-      '@tanstack/svelte-devtools':
-        specifier: ^0.1.7
-        version: 0.1.7(csstype@3.2.3)(solid-js@1.9.15)(svelte@5.57.1(@typescript-eslint/types@8.66.0))
-      '@tanstack/svelte-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer
-      '@tanstack/svelte-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer-devtools
-      svelte:
-        specifier: ^5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.66.0)
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^7.3.1
-        version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.66.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      svelte-check:
-        specifier: ^4.7.6
-        version: 4.7.6(picomatch@4.0.7)(svelte@5.57.1(@typescript-eslint/types@8.66.0))(typescript@6.0.3)
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/svelte/async-throttled-callback:
-    dependencies:
-      '@tanstack/svelte-devtools':
-        specifier: ^0.1.7
-        version: 0.1.7(csstype@3.2.3)(solid-js@1.9.15)(svelte@5.57.1(@typescript-eslint/types@8.66.0))
-      '@tanstack/svelte-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer
-      '@tanstack/svelte-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer-devtools
-      svelte:
-        specifier: ^5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.66.0)
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^7.3.1
-        version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.66.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      svelte-check:
-        specifier: ^4.7.6
-        version: 4.7.6(picomatch@4.0.7)(svelte@5.57.1(@typescript-eslint/types@8.66.0))(typescript@6.0.3)
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/svelte/asyncBatch:
     dependencies:
       '@tanstack/svelte-devtools':
@@ -9979,31 +8721,6 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
   examples/svelte/batch:
-    dependencies:
-      '@tanstack/svelte-devtools':
-        specifier: ^0.1.7
-        version: 0.1.7(csstype@3.2.3)(solid-js@1.9.15)(svelte@5.57.1(@typescript-eslint/types@8.66.0))
-      '@tanstack/svelte-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer
-      '@tanstack/svelte-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer-devtools
-      svelte:
-        specifier: ^5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.66.0)
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^7.3.1
-        version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.66.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      svelte-check:
-        specifier: ^4.7.6
-        version: 4.7.6(picomatch@4.0.7)(svelte@5.57.1(@typescript-eslint/types@8.66.0))(typescript@6.0.3)
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/svelte/batched-callback:
     dependencies:
       '@tanstack/svelte-devtools':
         specifier: ^0.1.7
@@ -10528,57 +9245,7 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/svelte/debounced-callback:
-    dependencies:
-      '@tanstack/svelte-devtools':
-        specifier: ^0.1.7
-        version: 0.1.7(csstype@3.2.3)(solid-js@1.9.15)(svelte@5.57.1(@typescript-eslint/types@8.66.0))
-      '@tanstack/svelte-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer
-      '@tanstack/svelte-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer-devtools
-      svelte:
-        specifier: ^5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.66.0)
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^7.3.1
-        version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.66.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      svelte-check:
-        specifier: ^4.7.6
-        version: 4.7.6(picomatch@4.0.7)(svelte@5.57.1(@typescript-eslint/types@8.66.0))(typescript@6.0.3)
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/svelte/queue:
-    dependencies:
-      '@tanstack/svelte-devtools':
-        specifier: ^0.1.7
-        version: 0.1.7(csstype@3.2.3)(solid-js@1.9.15)(svelte@5.57.1(@typescript-eslint/types@8.66.0))
-      '@tanstack/svelte-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer
-      '@tanstack/svelte-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer-devtools
-      svelte:
-        specifier: ^5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.66.0)
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^7.3.1
-        version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.66.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      svelte-check:
-        specifier: ^4.7.6
-        version: 4.7.6(picomatch@4.0.7)(svelte@5.57.1(@typescript-eslint/types@8.66.0))(typescript@6.0.3)
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
-  examples/svelte/rate-limited-callback:
     dependencies:
       '@tanstack/svelte-devtools':
         specifier: ^0.1.7
@@ -10728,31 +9395,6 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  examples/svelte/throttled-callback:
-    dependencies:
-      '@tanstack/svelte-devtools':
-        specifier: ^0.1.7
-        version: 0.1.7(csstype@3.2.3)(solid-js@1.9.15)(svelte@5.57.1(@typescript-eslint/types@8.66.0))
-      '@tanstack/svelte-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer
-      '@tanstack/svelte-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/svelte-pacer-devtools
-      svelte:
-        specifier: ^5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.66.0)
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^7.3.1
-        version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.66.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      svelte-check:
-        specifier: ^4.7.6
-        version: 4.7.6(picomatch@4.0.7)(svelte@5.57.1(@typescript-eslint/types@8.66.0))(typescript@6.0.3)
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   examples/svelte/util-comparison:
     dependencies:
       '@tanstack/svelte-devtools':
@@ -10877,81 +9519,6 @@ importers:
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
-
-  examples/vue/async-batched-callback:
-    dependencies:
-      '@tanstack/vue-devtools':
-        specifier: ^0.2.27
-        version: 0.2.27(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/vue-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer
-      '@tanstack/vue-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer-devtools
-      vue:
-        specifier: ^3.5.43
-        version: 3.5.43(typescript@6.0.3)
-    devDependencies:
-      '@vitejs/plugin-vue':
-        specifier: ^6.0.9
-        version: 6.0.9(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.43(typescript@6.0.3))
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-      vue-tsc:
-        specifier: ^3.3.12
-        version: 3.3.12(typescript@6.0.3)
-
-  examples/vue/async-debounced-callback:
-    dependencies:
-      '@tanstack/vue-devtools':
-        specifier: ^0.2.27
-        version: 0.2.27(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/vue-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer
-      '@tanstack/vue-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer-devtools
-      vue:
-        specifier: ^3.5.43
-        version: 3.5.43(typescript@6.0.3)
-    devDependencies:
-      '@vitejs/plugin-vue':
-        specifier: ^6.0.9
-        version: 6.0.9(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.43(typescript@6.0.3))
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-      vue-tsc:
-        specifier: ^3.3.12
-        version: 3.3.12(typescript@6.0.3)
-
-  examples/vue/async-throttled-callback:
-    dependencies:
-      '@tanstack/vue-devtools':
-        specifier: ^0.2.27
-        version: 0.2.27(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/vue-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer
-      '@tanstack/vue-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer-devtools
-      vue:
-        specifier: ^3.5.43
-        version: 3.5.43(typescript@6.0.3)
-    devDependencies:
-      '@vitejs/plugin-vue':
-        specifier: ^6.0.9
-        version: 6.0.9(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.43(typescript@6.0.3))
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-      vue-tsc:
-        specifier: ^3.3.12
-        version: 3.3.12(typescript@6.0.3)
 
   examples/vue/asyncBatch:
     dependencies:
@@ -11103,31 +9670,6 @@ importers:
         specifier: ^3.3.12
         version: 3.3.12(typescript@6.0.3)
 
-  examples/vue/batched-callback:
-    dependencies:
-      '@tanstack/vue-devtools':
-        specifier: ^0.2.27
-        version: 0.2.27(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/vue-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer
-      '@tanstack/vue-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer-devtools
-      vue:
-        specifier: ^3.5.43
-        version: 3.5.43(typescript@6.0.3)
-    devDependencies:
-      '@vitejs/plugin-vue':
-        specifier: ^6.0.9
-        version: 6.0.9(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.43(typescript@6.0.3))
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-      vue-tsc:
-        specifier: ^3.3.12
-        version: 3.3.12(typescript@6.0.3)
-
   examples/vue/debounce:
     dependencies:
       '@tanstack/vue-devtools':
@@ -11153,57 +9695,7 @@ importers:
         specifier: ^3.3.12
         version: 3.3.12(typescript@6.0.3)
 
-  examples/vue/debounced-callback:
-    dependencies:
-      '@tanstack/vue-devtools':
-        specifier: ^0.2.27
-        version: 0.2.27(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/vue-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer
-      '@tanstack/vue-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer-devtools
-      vue:
-        specifier: ^3.5.43
-        version: 3.5.43(typescript@6.0.3)
-    devDependencies:
-      '@vitejs/plugin-vue':
-        specifier: ^6.0.9
-        version: 6.0.9(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.43(typescript@6.0.3))
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-      vue-tsc:
-        specifier: ^3.3.12
-        version: 3.3.12(typescript@6.0.3)
-
   examples/vue/queue:
-    dependencies:
-      '@tanstack/vue-devtools':
-        specifier: ^0.2.27
-        version: 0.2.27(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/vue-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer
-      '@tanstack/vue-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer-devtools
-      vue:
-        specifier: ^3.5.43
-        version: 3.5.43(typescript@6.0.3)
-    devDependencies:
-      '@vitejs/plugin-vue':
-        specifier: ^6.0.9
-        version: 6.0.9(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.43(typescript@6.0.3))
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-      vue-tsc:
-        specifier: ^3.3.12
-        version: 3.3.12(typescript@6.0.3)
-
-  examples/vue/rate-limited-callback:
     dependencies:
       '@tanstack/vue-devtools':
         specifier: ^0.2.27
@@ -11254,31 +9746,6 @@ importers:
         version: 3.3.12(typescript@6.0.3)
 
   examples/vue/throttle:
-    dependencies:
-      '@tanstack/vue-devtools':
-        specifier: ^0.2.27
-        version: 0.2.27(csstype@3.2.3)(solid-js@1.9.15)
-      '@tanstack/vue-pacer':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer
-      '@tanstack/vue-pacer-devtools':
-        specifier: workspace:*
-        version: link:../../../packages/vue-pacer-devtools
-      vue:
-        specifier: ^3.5.43
-        version: 3.5.43(typescript@6.0.3)
-    devDependencies:
-      '@vitejs/plugin-vue':
-        specifier: ^6.0.9
-        version: 6.0.9(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.43(typescript@6.0.3))
-      vite:
-        specifier: ^8.3.2
-        version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-      vue-tsc:
-        specifier: ^3.3.12
-        version: 3.3.12(typescript@6.0.3)
-
-  examples/vue/throttled-callback:
     dependencies:
       '@tanstack/vue-devtools':
         specifier: ^0.2.27
@@ -21138,59 +19605,6 @@ snapshots:
       - tsx
       - yaml
 
-  '@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)':
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@angular-devkit/architect': 0.2202.1(chokidar@5.0.0)
-      '@angular/compiler': 22.2.1
-      '@angular/compiler-cli': 22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3)
-      '@babel/core': 8.0.5
-      '@inquirer/confirm': 6.3.2(@types/node@26.6.4)
-      '@parcel/watcher': 2.6.0
-      '@vitejs/plugin-basic-ssl': 2.3.0(vite@8.3.0(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      beasties: 0.5.4
-      browserslist: 4.29.3
-      chokidar: 5.0.0
-      esbuild: 0.28.2
-      https-proxy-agent: 9.1.0(supports-color@7.2.0)
-      jsonc-parser: 3.3.1
-      listr2: 11.1.0
-      magic-string: 1.4.1
-      mrmime: 2.0.1
-      oxc-parser: 0.150.0
-      parse5-html-rewriting-stream: 8.0.1
-      picomatch: 4.0.7
-      piscina: 5.3.2
-      rolldown: 1.2.8
-      sass: 1.104.1
-      sass-embedded: 1.104.1
-      semver: 7.8.5
-      source-map-support: 0.5.21
-      tinyglobby: 0.2.17
-      tslib: 2.8.1
-      typescript: 6.0.3
-      vite: 8.3.0(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-      xxhash-wasm: 1.1.0
-    optionalDependencies:
-      '@angular/core': 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)
-      '@angular/platform-browser': 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
-      istanbul-lib-instrument: 6.0.3(supports-color@7.2.0)
-      lmdb: 3.5.6
-      postcss: 8.5.28
-      rollup: 4.60.1
-      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-    transitivePeerDependencies:
-      - '@types/node'
-      - '@vitejs/devtools'
-      - jiti
-      - kerberos
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
-      - yaml
-
   '@angular/cli@22.2.1(@types/node@26.6.4)(chokidar@5.0.0)':
     dependencies:
       '@angular-devkit/architect': 0.2202.1(chokidar@5.0.0)
@@ -25149,10 +23563,6 @@ snapshots:
     dependencies:
       vite: 8.3.0(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0)
 
-  '@vitejs/plugin-basic-ssl@2.3.0(vite@8.3.0(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))':
-    dependencies:
-      vite: 8.3.0(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
-
   '@vitejs/plugin-react@6.1.1(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
@@ -25181,15 +23591,6 @@ snapshots:
       magic-string: 1.4.2
     optionalDependencies:
       vite: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0)
-
-  '@vitest/mocker@5.0.3(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))':
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.31
-      '@vitest/spy': 5.0.3
-      estree-walker: 3.0.3
-      magic-string: 1.4.2
-    optionalDependencies:
-      vite: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
   '@vitest/spy@5.0.3': {}
 
@@ -30101,23 +28502,6 @@ snapshots:
       terser: 5.51.2
       yaml: 2.9.0
 
-  vite@8.3.0(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1):
-    dependencies:
-      lightningcss: 1.33.0
-      picomatch: 4.0.7
-      postcss: 8.5.28
-      rolldown: 1.2.12
-      tinyglobby: 0.2.17
-    optionalDependencies:
-      '@types/node': 26.6.4
-      esbuild: 0.28.2
-      fsevents: 2.3.3
-      jiti: 2.7.0
-      sass: 1.104.1
-      sass-embedded: 1.104.1
-      terser: 5.51.2
-      yaml: 2.9.1
-
   vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
@@ -30242,29 +28626,6 @@ snapshots:
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
       vite: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0)
-      why-is-node-running: 3.2.1
-    optionalDependencies:
-      '@types/node': 26.6.4
-      happy-dom: 20.14.5
-      jsdom: 30.1.1(@noble/hashes@2.4.0)
-    transitivePeerDependencies:
-      - msw
-
-  vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)):
-    dependencies:
-      '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.3(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
-      chai: 6.2.2
-      es-module-lexer: 2.3.2
-      expect-type: 1.4.0
-      magic-string: 1.4.2
-      obug: 2.2.1
-      picomatch: 4.0.7
-      std-env: 4.2.0
-      tinybench: 6.1.4
-      tinyexec: 1.3.1
-      tinyglobby: 0.2.17
-      vite: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 26.6.4

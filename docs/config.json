@@ -964,10 +964,6 @@
               "to": "framework/angular/reference/functions/injectDebouncer"
             },
             {
-              "label": "Debounced callback",
-              "to": "framework/angular/reference/functions/debounced-callback"
-            },
-            {
               "label": "injectDebouncedSignal",
               "to": "framework/angular/reference/functions/injectDebouncedSignal"
             },
@@ -978,10 +974,6 @@
             {
               "label": "injectAsyncDebouncer",
               "to": "framework/angular/reference/functions/injectAsyncDebouncer"
-            },
-            {
-              "label": "Async debounced callback",
-              "to": "framework/angular/reference/functions/async-debounced-callback"
             }
           ]
         },
@@ -989,16 +981,8 @@
           "label": "vue",
           "children": [
             {
-              "label": "Async debounced callback",
-              "to": "framework/vue/reference/functions/async-debounced-callback"
-            },
-            {
               "label": "useAsyncDebouncer",
               "to": "framework/vue/reference/functions/useAsyncDebouncer"
-            },
-            {
-              "label": "Debounced callback",
-              "to": "framework/vue/reference/functions/debounced-callback"
             },
             {
               "label": "useDebouncedState",
@@ -1034,16 +1018,8 @@
           "label": "svelte",
           "children": [
             {
-              "label": "Async debounced callback",
-              "to": "framework/svelte/reference/functions/async-debounced-callback"
-            },
-            {
               "label": "createAsyncDebouncer",
               "to": "framework/svelte/reference/functions/createAsyncDebouncer"
-            },
-            {
-              "label": "Debounced callback",
-              "to": "framework/svelte/reference/functions/debounced-callback"
             },
             {
               "label": "createDebouncedSignal",
@@ -1074,20 +1050,12 @@
               "to": "framework/svelte/reference/interfaces/SvelteDebouncerOptions"
             },
             {
-              "label": "Debounced callback",
-              "to": "framework/svelte/examples/debounced-callback"
-            },
-            {
               "label": "createDebouncedSignal",
               "to": "framework/svelte/examples/createDebouncedSignal"
             },
             {
               "label": "createDebouncedValue",
               "to": "framework/svelte/examples/createDebouncedValue"
-            },
-            {
-              "label": "Async debounced callback",
-              "to": "framework/svelte/examples/async-debounced-callback"
             }
           ]
         },
@@ -1103,16 +1071,8 @@
               "to": "framework/lit/reference/classes/DebouncerController"
             },
             {
-              "label": "Async debounced callback",
-              "to": "framework/lit/reference/functions/async-debounced-callback"
-            },
-            {
               "label": "createAsyncDebouncer",
               "to": "framework/lit/reference/functions/createAsyncDebouncer"
-            },
-            {
-              "label": "Debounced callback",
-              "to": "framework/lit/reference/functions/debounced-callback"
             },
             {
               "label": "createDebouncedState",
@@ -1143,20 +1103,12 @@
               "to": "framework/lit/reference/interfaces/LitDebouncerOptions"
             },
             {
-              "label": "Debounced callback",
-              "to": "framework/lit/examples/debounced-callback"
-            },
-            {
               "label": "createDebouncedState",
               "to": "framework/lit/examples/createDebouncedState"
             },
             {
               "label": "createDebouncedValue",
               "to": "framework/lit/examples/createDebouncedValue"
-            },
-            {
-              "label": "Async debounced callback",
-              "to": "framework/lit/examples/async-debounced-callback"
             }
           ]
         },
@@ -1164,16 +1116,8 @@
           "label": "alpine",
           "children": [
             {
-              "label": "Async debounced callback",
-              "to": "framework/alpine/reference/functions/async-debounced-callback"
-            },
-            {
               "label": "createAsyncDebouncer",
               "to": "framework/alpine/reference/functions/createAsyncDebouncer"
-            },
-            {
-              "label": "Debounced callback",
-              "to": "framework/alpine/reference/functions/debounced-callback"
             },
             {
               "label": "createDebouncedState",
@@ -1204,20 +1148,12 @@
               "to": "framework/alpine/reference/interfaces/AlpineDebouncerOptions"
             },
             {
-              "label": "Debounced callback",
-              "to": "framework/alpine/examples/debounced-callback"
-            },
-            {
               "label": "createDebouncedState",
               "to": "framework/alpine/examples/createDebouncedState"
             },
             {
               "label": "createDebouncedValue",
               "to": "framework/alpine/examples/createDebouncedValue"
-            },
-            {
-              "label": "Async debounced callback",
-              "to": "framework/alpine/examples/async-debounced-callback"
             }
           ]
         },
@@ -1503,10 +1439,6 @@
               "to": "framework/angular/reference/functions/injectThrottler"
             },
             {
-              "label": "Throttled callback",
-              "to": "framework/angular/reference/functions/throttled-callback"
-            },
-            {
               "label": "injectThrottledSignal",
               "to": "framework/angular/reference/functions/injectThrottledSignal"
             },
@@ -1517,10 +1449,6 @@
             {
               "label": "injectAsyncThrottler",
               "to": "framework/angular/reference/functions/injectAsyncThrottler"
-            },
-            {
-              "label": "Async throttled callback",
-              "to": "framework/angular/reference/functions/async-throttled-callback"
             }
           ]
         },
@@ -1528,16 +1456,8 @@
           "label": "vue",
           "children": [
             {
-              "label": "Async throttled callback",
-              "to": "framework/vue/reference/functions/async-throttled-callback"
-            },
-            {
               "label": "useAsyncThrottler",
               "to": "framework/vue/reference/functions/useAsyncThrottler"
-            },
-            {
-              "label": "Throttled callback",
-              "to": "framework/vue/reference/functions/throttled-callback"
             },
             {
               "label": "useThrottledState",
@@ -1573,16 +1493,8 @@
           "label": "svelte",
           "children": [
             {
-              "label": "Async throttled callback",
-              "to": "framework/svelte/reference/functions/async-throttled-callback"
-            },
-            {
               "label": "createAsyncThrottler",
               "to": "framework/svelte/reference/functions/createAsyncThrottler"
-            },
-            {
-              "label": "Throttled callback",
-              "to": "framework/svelte/reference/functions/throttled-callback"
             },
             {
               "label": "createThrottledSignal",
@@ -1613,20 +1525,12 @@
               "to": "framework/svelte/reference/interfaces/SvelteThrottlerOptions"
             },
             {
-              "label": "Throttled callback",
-              "to": "framework/svelte/examples/throttled-callback"
-            },
-            {
               "label": "createThrottledSignal",
               "to": "framework/svelte/examples/createThrottledSignal"
             },
             {
               "label": "createThrottledValue",
               "to": "framework/svelte/examples/createThrottledValue"
-            },
-            {
-              "label": "Async throttled callback",
-              "to": "framework/svelte/examples/async-throttled-callback"
             }
           ]
         },
@@ -1642,16 +1546,8 @@
               "to": "framework/lit/reference/classes/ThrottlerController"
             },
             {
-              "label": "Async throttled callback",
-              "to": "framework/lit/reference/functions/async-throttled-callback"
-            },
-            {
               "label": "createAsyncThrottler",
               "to": "framework/lit/reference/functions/createAsyncThrottler"
-            },
-            {
-              "label": "Throttled callback",
-              "to": "framework/lit/reference/functions/throttled-callback"
             },
             {
               "label": "createThrottledState",
@@ -1682,20 +1578,12 @@
               "to": "framework/lit/reference/interfaces/LitThrottlerOptions"
             },
             {
-              "label": "Throttled callback",
-              "to": "framework/lit/examples/throttled-callback"
-            },
-            {
               "label": "createThrottledState",
               "to": "framework/lit/examples/createThrottledState"
             },
             {
               "label": "createThrottledValue",
               "to": "framework/lit/examples/createThrottledValue"
-            },
-            {
-              "label": "Async throttled callback",
-              "to": "framework/lit/examples/async-throttled-callback"
             }
           ]
         },
@@ -1703,16 +1591,8 @@
           "label": "alpine",
           "children": [
             {
-              "label": "Async throttled callback",
-              "to": "framework/alpine/reference/functions/async-throttled-callback"
-            },
-            {
               "label": "createAsyncThrottler",
               "to": "framework/alpine/reference/functions/createAsyncThrottler"
-            },
-            {
-              "label": "Throttled callback",
-              "to": "framework/alpine/reference/functions/throttled-callback"
             },
             {
               "label": "createThrottledState",
@@ -1743,20 +1623,12 @@
               "to": "framework/alpine/reference/interfaces/AlpineThrottlerOptions"
             },
             {
-              "label": "Throttled callback",
-              "to": "framework/alpine/examples/throttled-callback"
-            },
-            {
               "label": "createThrottledState",
               "to": "framework/alpine/examples/createThrottledState"
             },
             {
               "label": "createThrottledValue",
               "to": "framework/alpine/examples/createThrottledValue"
-            },
-            {
-              "label": "Async throttled callback",
-              "to": "framework/alpine/examples/async-throttled-callback"
             }
           ]
         },
@@ -2018,10 +1890,6 @@
               "to": "framework/angular/reference/functions/injectRateLimiter"
             },
             {
-              "label": "Rate limited callback",
-              "to": "framework/angular/reference/functions/rate-limited-callback"
-            },
-            {
               "label": "injectRateLimitedSignal",
               "to": "framework/angular/reference/functions/injectRateLimitedSignal"
             },
@@ -2041,10 +1909,6 @@
             {
               "label": "useAsyncRateLimiter",
               "to": "framework/vue/reference/functions/useAsyncRateLimiter"
-            },
-            {
-              "label": "Rate limited callback",
-              "to": "framework/vue/reference/functions/rate-limited-callback"
             },
             {
               "label": "useRateLimitedState",
@@ -2084,10 +1948,6 @@
               "to": "framework/svelte/reference/functions/createAsyncRateLimiter"
             },
             {
-              "label": "Rate limited callback",
-              "to": "framework/svelte/reference/functions/rate-limited-callback"
-            },
-            {
               "label": "createRateLimitedSignal",
               "to": "framework/svelte/reference/functions/createRateLimitedSignal"
             },
@@ -2116,10 +1976,6 @@
               "to": "framework/svelte/reference/interfaces/SvelteRateLimiterOptions"
             },
             {
-              "label": "Rate limited callback",
-              "to": "framework/svelte/examples/rate-limited-callback"
-            },
-            {
               "label": "createRateLimitedSignal",
               "to": "framework/svelte/examples/createRateLimitedSignal"
             },
@@ -2143,10 +1999,6 @@
             {
               "label": "createAsyncRateLimiter",
               "to": "framework/lit/reference/functions/createAsyncRateLimiter"
-            },
-            {
-              "label": "Rate limited callback",
-              "to": "framework/lit/reference/functions/rate-limited-callback"
             },
             {
               "label": "createRateLimitedState",
@@ -2177,10 +2029,6 @@
               "to": "framework/lit/reference/interfaces/LitRateLimiterOptions"
             },
             {
-              "label": "Rate limited callback",
-              "to": "framework/lit/examples/rate-limited-callback"
-            },
-            {
               "label": "createRateLimitedState",
               "to": "framework/lit/examples/createRateLimitedState"
             },
@@ -2196,10 +2044,6 @@
             {
               "label": "createAsyncRateLimiter",
               "to": "framework/alpine/reference/functions/createAsyncRateLimiter"
-            },
-            {
-              "label": "Rate limited callback",
-              "to": "framework/alpine/reference/functions/rate-limited-callback"
             },
             {
               "label": "createRateLimitedState",
@@ -2228,10 +2072,6 @@
             {
               "label": "AlpineRateLimiterOptions",
               "to": "framework/alpine/reference/interfaces/AlpineRateLimiterOptions"
-            },
-            {
-              "label": "Rate limited callback",
-              "to": "framework/alpine/examples/rate-limited-callback"
             },
             {
               "label": "createRateLimitedState",
@@ -2992,16 +2832,8 @@
               "to": "framework/angular/reference/functions/injectBatcher"
             },
             {
-              "label": "Batched callback",
-              "to": "framework/angular/reference/functions/batched-callback"
-            },
-            {
               "label": "injectAsyncBatcher",
               "to": "framework/angular/reference/functions/injectAsyncBatcher"
-            },
-            {
-              "label": "Async batched callback",
-              "to": "framework/angular/reference/functions/async-batched-callback"
             }
           ]
         },
@@ -3009,16 +2841,8 @@
           "label": "vue",
           "children": [
             {
-              "label": "Async batched callback",
-              "to": "framework/vue/reference/functions/async-batched-callback"
-            },
-            {
               "label": "useAsyncBatcher",
               "to": "framework/vue/reference/functions/useAsyncBatcher"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/vue/reference/functions/batched-callback"
             },
             {
               "label": "useBatcher",
@@ -3046,16 +2870,8 @@
           "label": "svelte",
           "children": [
             {
-              "label": "Async batched callback",
-              "to": "framework/svelte/reference/functions/async-batched-callback"
-            },
-            {
               "label": "createAsyncBatcher",
               "to": "framework/svelte/reference/functions/createAsyncBatcher"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/svelte/reference/functions/batched-callback"
             },
             {
               "label": "createBatcher",
@@ -3076,14 +2892,6 @@
             {
               "label": "SvelteBatcherOptions",
               "to": "framework/svelte/reference/interfaces/SvelteBatcherOptions"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/svelte/examples/batched-callback"
-            },
-            {
-              "label": "Async batched callback",
-              "to": "framework/svelte/examples/async-batched-callback"
             }
           ]
         },
@@ -3099,16 +2907,8 @@
               "to": "framework/lit/reference/classes/BatcherController"
             },
             {
-              "label": "Async batched callback",
-              "to": "framework/lit/reference/functions/async-batched-callback"
-            },
-            {
               "label": "createAsyncBatcher",
               "to": "framework/lit/reference/functions/createAsyncBatcher"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/lit/reference/functions/batched-callback"
             },
             {
               "label": "createBatcher",
@@ -3129,14 +2929,6 @@
             {
               "label": "LitBatcherOptions",
               "to": "framework/lit/reference/interfaces/LitBatcherOptions"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/lit/examples/batched-callback"
-            },
-            {
-              "label": "Async batched callback",
-              "to": "framework/lit/examples/async-batched-callback"
             }
           ]
         },
@@ -3144,16 +2936,8 @@
           "label": "alpine",
           "children": [
             {
-              "label": "Async batched callback",
-              "to": "framework/alpine/reference/functions/async-batched-callback"
-            },
-            {
               "label": "createAsyncBatcher",
               "to": "framework/alpine/reference/functions/createAsyncBatcher"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/alpine/reference/functions/batched-callback"
             },
             {
               "label": "createBatcher",
@@ -3174,14 +2958,6 @@
             {
               "label": "AlpineBatcherOptions",
               "to": "framework/alpine/reference/interfaces/AlpineBatcherOptions"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/alpine/examples/batched-callback"
-            },
-            {
-              "label": "Async batched callback",
-              "to": "framework/alpine/examples/async-batched-callback"
             }
           ]
         },
@@ -3389,10 +3165,6 @@
               "to": "framework/angular/examples/injectDebouncer"
             },
             {
-              "label": "Debounced callback",
-              "to": "framework/angular/examples/debounced-callback"
-            },
-            {
               "label": "injectDebouncedSignal",
               "to": "framework/angular/examples/injectDebouncedSignal"
             },
@@ -3403,10 +3175,6 @@
             {
               "label": "injectAsyncDebouncer",
               "to": "framework/angular/examples/injectAsyncDebouncer"
-            },
-            {
-              "label": "Async debounced callback",
-              "to": "framework/angular/examples/async-debounced-callback"
             }
           ]
         },
@@ -3430,20 +3198,12 @@
               "to": "framework/vue/examples/asyncDebounce"
             },
             {
-              "label": "Debounced callback",
-              "to": "framework/vue/examples/debounced-callback"
-            },
-            {
               "label": "useDebouncedState",
               "to": "framework/vue/examples/useDebouncedState"
             },
             {
               "label": "useDebouncedValue",
               "to": "framework/vue/examples/useDebouncedValue"
-            },
-            {
-              "label": "Async debounced callback",
-              "to": "framework/vue/examples/async-debounced-callback"
             }
           ]
         },
@@ -3467,20 +3227,12 @@
               "to": "framework/svelte/examples/asyncDebounce"
             },
             {
-              "label": "Debounced callback",
-              "to": "framework/svelte/examples/debounced-callback"
-            },
-            {
               "label": "createDebouncedSignal",
               "to": "framework/svelte/examples/createDebouncedSignal"
             },
             {
               "label": "createDebouncedValue",
               "to": "framework/svelte/examples/createDebouncedValue"
-            },
-            {
-              "label": "Async debounced callback",
-              "to": "framework/svelte/examples/async-debounced-callback"
             }
           ]
         },
@@ -3504,20 +3256,12 @@
               "to": "framework/lit/examples/asyncDebounce"
             },
             {
-              "label": "Debounced callback",
-              "to": "framework/lit/examples/debounced-callback"
-            },
-            {
               "label": "createDebouncedState",
               "to": "framework/lit/examples/createDebouncedState"
             },
             {
               "label": "createDebouncedValue",
               "to": "framework/lit/examples/createDebouncedValue"
-            },
-            {
-              "label": "Async debounced callback",
-              "to": "framework/lit/examples/async-debounced-callback"
             }
           ]
         },
@@ -3541,20 +3285,12 @@
               "to": "framework/alpine/examples/asyncDebounce"
             },
             {
-              "label": "Debounced callback",
-              "to": "framework/alpine/examples/debounced-callback"
-            },
-            {
               "label": "createDebouncedState",
               "to": "framework/alpine/examples/createDebouncedState"
             },
             {
               "label": "createDebouncedValue",
               "to": "framework/alpine/examples/createDebouncedValue"
-            },
-            {
-              "label": "Async debounced callback",
-              "to": "framework/alpine/examples/async-debounced-callback"
             }
           ]
         },
@@ -3742,10 +3478,6 @@
               "to": "framework/angular/examples/injectThrottler"
             },
             {
-              "label": "Throttled callback",
-              "to": "framework/angular/examples/throttled-callback"
-            },
-            {
               "label": "injectThrottledSignal",
               "to": "framework/angular/examples/injectThrottledSignal"
             },
@@ -3756,10 +3488,6 @@
             {
               "label": "injectAsyncThrottler",
               "to": "framework/angular/examples/injectAsyncThrottler"
-            },
-            {
-              "label": "Async throttled callback",
-              "to": "framework/angular/examples/async-throttled-callback"
             }
           ]
         },
@@ -3781,10 +3509,6 @@
             {
               "label": "asyncThrottle",
               "to": "framework/vue/examples/asyncThrottle"
-            },
-            {
-              "label": "Throttled callback",
-              "to": "framework/vue/examples/throttled-callback"
             },
             {
               "label": "useThrottledState",
@@ -3816,10 +3540,6 @@
               "to": "framework/svelte/examples/asyncThrottle"
             },
             {
-              "label": "Throttled callback",
-              "to": "framework/svelte/examples/throttled-callback"
-            },
-            {
               "label": "createThrottledSignal",
               "to": "framework/svelte/examples/createThrottledSignal"
             },
@@ -3849,10 +3569,6 @@
               "to": "framework/lit/examples/asyncThrottle"
             },
             {
-              "label": "Throttled callback",
-              "to": "framework/lit/examples/throttled-callback"
-            },
-            {
               "label": "createThrottledState",
               "to": "framework/lit/examples/createThrottledState"
             },
@@ -3880,10 +3596,6 @@
             {
               "label": "asyncThrottle",
               "to": "framework/alpine/examples/asyncThrottle"
-            },
-            {
-              "label": "Throttled callback",
-              "to": "framework/alpine/examples/throttled-callback"
             },
             {
               "label": "createThrottledState",
@@ -4071,10 +3783,6 @@
               "to": "framework/angular/examples/injectRateLimiter"
             },
             {
-              "label": "Rate limited callback",
-              "to": "framework/angular/examples/rate-limited-callback"
-            },
-            {
               "label": "injectRateLimitedSignal",
               "to": "framework/angular/examples/injectRateLimitedSignal"
             },
@@ -4108,10 +3816,6 @@
               "to": "framework/vue/examples/asyncRateLimit"
             },
             {
-              "label": "Rate limited callback",
-              "to": "framework/vue/examples/rate-limited-callback"
-            },
-            {
               "label": "useRateLimitedState",
               "to": "framework/vue/examples/useRateLimitedState"
             },
@@ -4139,10 +3843,6 @@
             {
               "label": "asyncRateLimit",
               "to": "framework/svelte/examples/asyncRateLimit"
-            },
-            {
-              "label": "Rate limited callback",
-              "to": "framework/svelte/examples/rate-limited-callback"
             },
             {
               "label": "createRateLimitedSignal",
@@ -4174,10 +3874,6 @@
               "to": "framework/lit/examples/asyncRateLimit"
             },
             {
-              "label": "Rate limited callback",
-              "to": "framework/lit/examples/rate-limited-callback"
-            },
-            {
               "label": "createRateLimitedState",
               "to": "framework/lit/examples/createRateLimitedState"
             },
@@ -4205,10 +3901,6 @@
             {
               "label": "asyncRateLimit",
               "to": "framework/alpine/examples/asyncRateLimit"
-            },
-            {
-              "label": "Rate limited callback",
-              "to": "framework/alpine/examples/rate-limited-callback"
             },
             {
               "label": "createRateLimitedState",
@@ -4661,16 +4353,8 @@
               "to": "framework/angular/examples/injectBatcher"
             },
             {
-              "label": "Batched callback",
-              "to": "framework/angular/examples/batched-callback"
-            },
-            {
               "label": "injectAsyncBatcher",
               "to": "framework/angular/examples/injectAsyncBatcher"
-            },
-            {
-              "label": "Async batched callback",
-              "to": "framework/angular/examples/async-batched-callback"
             }
           ]
         },
@@ -4692,14 +4376,6 @@
             {
               "label": "asyncBatch",
               "to": "framework/vue/examples/asyncBatch"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/vue/examples/batched-callback"
-            },
-            {
-              "label": "Async batched callback",
-              "to": "framework/vue/examples/async-batched-callback"
             }
           ]
         },
@@ -4721,14 +4397,6 @@
             {
               "label": "asyncBatch",
               "to": "framework/svelte/examples/asyncBatch"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/svelte/examples/batched-callback"
-            },
-            {
-              "label": "Async batched callback",
-              "to": "framework/svelte/examples/async-batched-callback"
             }
           ]
         },
@@ -4750,14 +4418,6 @@
             {
               "label": "asyncBatch",
               "to": "framework/lit/examples/asyncBatch"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/lit/examples/batched-callback"
-            },
-            {
-              "label": "Async batched callback",
-              "to": "framework/lit/examples/async-batched-callback"
             }
           ]
         },
@@ -4779,14 +4439,6 @@
             {
               "label": "asyncBatch",
               "to": "framework/alpine/examples/asyncBatch"
-            },
-            {
-              "label": "Batched callback",
-              "to": "framework/alpine/examples/batched-callback"
-            },
-            {
-              "label": "Async batched callback",
-              "to": "framework/alpine/examples/async-batched-callback"
             }
           ]
         },

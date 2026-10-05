@@ -4,6 +4,52 @@ import { expect, test } from '../../../../../tests/e2e/helpers/fixtures'
 import { startExampleServer } from '../../../../../tests/e2e/helpers/startExampleServer'
 import { expectMatchingExampleLayout } from '../../../../../tests/e2e/helpers/parity'
 
+test('layout comparison tolerates subpixel positioning across frameworks', async ({
+  page,
+  context,
+}) => {
+  const baseline = await context.newPage()
+  try {
+    await baseline.setContent(
+      '<div id="root"><div><button>Validate</button></div></div>',
+    )
+    await page.setContent(
+      '<div id="app"><div><button style="position: relative; left: 0.75px">Validate</button></div></div>',
+    )
+    await expectMatchingExampleLayout(page, baseline)
+  } finally {
+    await baseline.close()
+  }
+})
+
+for (const [difference, button] of [
+  [
+    'larger offsets',
+    '<button style="position: relative; left: 1.25px">Validate</button>',
+  ],
+  ['text', '<button>Different</button>'],
+  ['styles', '<button style="color: red">Validate</button>'],
+  ['missing elements', ''],
+]) {
+  test(`layout comparison still rejects ${difference}`, async ({
+    page,
+    context,
+  }) => {
+    const baseline = await context.newPage()
+    try {
+      await baseline.setContent(
+        '<div id="root"><div><button>Validate</button></div></div>',
+      )
+      await page.setContent(`<div id="app"><div>${button}</div></div>`)
+      await expect(
+        expectMatchingExampleLayout(page, baseline),
+      ).rejects.toThrow()
+    } finally {
+      await baseline.close()
+    }
+  })
+}
+
 test('matches React layout and styles at desktop and phone widths', async ({
   page,
   exampleUrl,
