@@ -12,7 +12,7 @@ import { injectThrottledValue } from '../src/throttler/injectThrottledValue'
 import { injectQueuedValue } from '../src/queuer/injectQueuedValue'
 import { injectQueuedSignal } from '../src/queuer/injectQueuedSignal'
 import { injectAsyncQueuedSignal } from '../src/async-queuer/injectAsyncQueuedSignal'
-import { injectDebouncedCallback } from '../src/debouncer/injectDebouncedCallback'
+import { injectDebouncer } from '../src/debouncer/injectDebouncer'
 import { injectDebouncedSignal } from '../src/debouncer/injectDebouncedSignal'
 import { injectThrottledSignal } from '../src/throttler/injectThrottledSignal'
 import { injectRateLimitedSignal } from '../src/rate-limiter/injectRateLimitedSignal'
@@ -106,7 +106,7 @@ it.each(['factory', 'getters'] as const)(
     class Helpers {
       wait = input.required<number>()
       options = createOptions(this.wait)
-      debounced = injectDebouncedCallback(callback, this.options)
+      debounced = injectDebouncer(callback, this.options)
       queued = injectQueuedSignal(callback, this.options)
       asyncQueued = injectAsyncQueuedSignal(
         (value: string) => Promise.resolve(callback(value)),
@@ -121,7 +121,7 @@ it.each(['factory', 'getters'] as const)(
     const fixture = TestBed.createComponent(Helpers)
     fixture.componentRef.setInput('wait', 100)
     fixture.detectChanges()
-    fixture.componentInstance.debounced('debounced')
+    fixture.componentInstance.debounced.maybeExecute('debounced')
     fixture.componentInstance.queued.addItem('queued')
     fixture.componentInstance.asyncQueued.addItem('asyncQueued')
     expect(fixture.componentInstance.queued.queuer.options.wait).toBe(100)

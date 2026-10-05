@@ -47,22 +47,18 @@ Choose another utility when:
 
 ## Choose an API
 
-- `injectDebouncedCallback` for a debounced handler
 - `injectDebouncedSignal` or `injectDebouncedValue` for delayed signals
 - `injectDebouncer` for lifecycle methods and selected state
 
-Use the callback API for event handlers, the state or value API for delayed UI state, and the instance API when you need `cancel()`, `flush()`, selected state, or dynamic options.
+Use the instance's `maybeExecute` method for event handlers, and state or value helpers for delayed UI state. Keep the instance for cancellation, flushing, selected state, and dynamic options.
 
 ## Angular example
 
 ```ts
-import {
-  injectDebouncedCallback,
-  injectDebouncer,
-} from '@tanstack/angular-pacer'
+import { injectDebouncer } from '@tanstack/angular-pacer'
 
 export class SearchComponent {
-  readonly search = injectDebouncedCallback(runSearch, { wait: 300 })
+  readonly search = injectDebouncer(runSearch, { wait: 300 })
   readonly saver = injectDebouncer(saveDraft, { wait: 500 }, (state) => ({
     isPending: state.isPending,
   }))

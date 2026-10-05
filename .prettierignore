@@ -12,3 +12,6 @@ pnpm-lock.yaml
 
 test-results
 playwright-report
+
+# Native Ember browser test output
+**/dist-tests/

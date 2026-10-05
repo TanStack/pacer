@@ -16,8 +16,23 @@
       "ignoreDependencies": ["csstype"]
     },
     ".": {
-      "entry": ["tests/e2e/helpers/fixtures.ts"],
-      "ignoreDependencies": ["@angular/cli"]
+      "entry": ["tests/e2e/helpers/*.ts"]
+    },
+    "packages/ember-pacer": {
+      "entry": [
+        "testem.cjs",
+        "tests/test-helper.ts",
+        "tests/integration/*.gts"
+      ],
+      "ignoreDependencies": [
+        "@ember/component",
+        "@ember/destroyable",
+        "@ember/reactive",
+        "@ember/runloop",
+        "@ember/routing",
+        "@embroider/shared-internals",
+        "@glint/tsserver-plugin"
+      ]
     }
   }
 }

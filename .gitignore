@@ -65,3 +65,6 @@ vite.config.ts.timestamp-*
 # Playwright
 test-results/
 playwright-report/
+
+# Native Ember browser test output
+**/dist-tests/

@@ -62,6 +62,60 @@
               "to": "framework/angular/adapter"
             }
           ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "Vue Adapter",
+              "to": "framework/vue/adapter"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "Svelte Adapter",
+              "to": "framework/svelte/adapter"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "Lit Adapter",
+              "to": "framework/lit/adapter"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "Alpine Adapter",
+              "to": "framework/alpine/adapter"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "Ember Adapter",
+              "to": "framework/ember/adapter"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "Octane Adapter",
+              "to": "framework/octane/adapter"
+            }
+          ]
         }
       ]
     },
@@ -322,6 +376,300 @@
               "to": "framework/angular/guides/async-retrying"
             }
           ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/vue/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/vue/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/vue/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/vue/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/vue/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/vue/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/vue/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/vue/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/vue/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/vue/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/vue/guides/async-retrying"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/svelte/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/svelte/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/svelte/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/svelte/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/svelte/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/svelte/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/svelte/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/svelte/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/svelte/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/svelte/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/svelte/guides/async-retrying"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/lit/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/lit/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/lit/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/lit/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/lit/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/lit/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/lit/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/lit/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/lit/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/lit/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/lit/guides/async-retrying"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/alpine/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/alpine/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/alpine/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/alpine/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/alpine/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/alpine/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/alpine/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/alpine/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/alpine/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/alpine/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/alpine/guides/async-retrying"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/ember/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/ember/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/ember/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/ember/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/ember/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/ember/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/ember/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/ember/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/ember/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/ember/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/ember/guides/async-retrying"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "Debouncing Guide",
+              "to": "framework/octane/guides/debouncing"
+            },
+            {
+              "label": "Throttling Guide",
+              "to": "framework/octane/guides/throttling"
+            },
+            {
+              "label": "Rate Limiting Guide",
+              "to": "framework/octane/guides/rate-limiting"
+            },
+            {
+              "label": "Queuing Guide",
+              "to": "framework/octane/guides/queuing"
+            },
+            {
+              "label": "Batching Guide",
+              "to": "framework/octane/guides/batching"
+            },
+            {
+              "label": "Async Debouncing Guide",
+              "to": "framework/octane/guides/async-debouncing"
+            },
+            {
+              "label": "Async Throttling Guide",
+              "to": "framework/octane/guides/async-throttling"
+            },
+            {
+              "label": "Async Rate Limiting Guide",
+              "to": "framework/octane/guides/async-rate-limiting"
+            },
+            {
+              "label": "Async Queuing Guide",
+              "to": "framework/octane/guides/async-queuing"
+            },
+            {
+              "label": "Async Batching Guide",
+              "to": "framework/octane/guides/async-batching"
+            },
+            {
+              "label": "Async Retrying Guide",
+              "to": "framework/octane/guides/async-retrying"
+            }
+          ]
         }
       ]
     },
@@ -367,6 +715,60 @@
             {
               "label": "Angular inject API",
               "to": "framework/angular/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "Vue API",
+              "to": "framework/vue/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "Svelte API",
+              "to": "framework/svelte/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "Lit API",
+              "to": "framework/lit/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "Alpine API",
+              "to": "framework/alpine/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "Ember API",
+              "to": "framework/ember/reference/index"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "Octane API",
+              "to": "framework/octane/reference/index"
             }
           ]
         }
@@ -562,10 +964,6 @@
               "to": "framework/angular/reference/functions/injectDebouncer"
             },
             {
-              "label": "injectDebouncedCallback",
-              "to": "framework/angular/reference/functions/injectDebouncedCallback"
-            },
-            {
               "label": "injectDebouncedSignal",
               "to": "framework/angular/reference/functions/injectDebouncedSignal"
             },
@@ -576,10 +974,276 @@
             {
               "label": "injectAsyncDebouncer",
               "to": "framework/angular/reference/functions/injectAsyncDebouncer"
+            }
+          ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useAsyncDebouncer",
+              "to": "framework/vue/reference/functions/useAsyncDebouncer"
             },
             {
-              "label": "injectAsyncDebouncedCallback",
-              "to": "framework/angular/reference/functions/injectAsyncDebouncedCallback"
+              "label": "useDebouncedState",
+              "to": "framework/vue/reference/functions/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/vue/reference/functions/useDebouncedValue"
+            },
+            {
+              "label": "useDebouncer",
+              "to": "framework/vue/reference/functions/useDebouncer"
+            },
+            {
+              "label": "VueAsyncDebouncer",
+              "to": "framework/vue/reference/interfaces/VueAsyncDebouncer"
+            },
+            {
+              "label": "VueAsyncDebouncerOptions",
+              "to": "framework/vue/reference/interfaces/VueAsyncDebouncerOptions"
+            },
+            {
+              "label": "VueDebouncer",
+              "to": "framework/vue/reference/interfaces/VueDebouncer"
+            },
+            {
+              "label": "VueDebouncerOptions",
+              "to": "framework/vue/reference/interfaces/VueDebouncerOptions"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createAsyncDebouncer",
+              "to": "framework/svelte/reference/functions/createAsyncDebouncer"
+            },
+            {
+              "label": "createDebouncedSignal",
+              "to": "framework/svelte/reference/functions/createDebouncedSignal"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/svelte/reference/functions/createDebouncedValue"
+            },
+            {
+              "label": "createDebouncer",
+              "to": "framework/svelte/reference/functions/createDebouncer"
+            },
+            {
+              "label": "SvelteAsyncDebouncer",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncDebouncer"
+            },
+            {
+              "label": "SvelteAsyncDebouncerOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncDebouncerOptions"
+            },
+            {
+              "label": "SvelteDebouncer",
+              "to": "framework/svelte/reference/interfaces/SvelteDebouncer"
+            },
+            {
+              "label": "SvelteDebouncerOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteDebouncerOptions"
+            },
+            {
+              "label": "createDebouncedSignal",
+              "to": "framework/svelte/examples/createDebouncedSignal"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/svelte/examples/createDebouncedValue"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "AsyncDebouncerController",
+              "to": "framework/lit/reference/classes/AsyncDebouncerController"
+            },
+            {
+              "label": "DebouncerController",
+              "to": "framework/lit/reference/classes/DebouncerController"
+            },
+            {
+              "label": "createAsyncDebouncer",
+              "to": "framework/lit/reference/functions/createAsyncDebouncer"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/lit/reference/functions/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/lit/reference/functions/createDebouncedValue"
+            },
+            {
+              "label": "createDebouncer",
+              "to": "framework/lit/reference/functions/createDebouncer"
+            },
+            {
+              "label": "LitAsyncDebouncer",
+              "to": "framework/lit/reference/interfaces/LitAsyncDebouncer"
+            },
+            {
+              "label": "LitAsyncDebouncerOptions",
+              "to": "framework/lit/reference/interfaces/LitAsyncDebouncerOptions"
+            },
+            {
+              "label": "LitDebouncer",
+              "to": "framework/lit/reference/interfaces/LitDebouncer"
+            },
+            {
+              "label": "LitDebouncerOptions",
+              "to": "framework/lit/reference/interfaces/LitDebouncerOptions"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/lit/examples/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/lit/examples/createDebouncedValue"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createAsyncDebouncer",
+              "to": "framework/alpine/reference/functions/createAsyncDebouncer"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/alpine/reference/functions/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/alpine/reference/functions/createDebouncedValue"
+            },
+            {
+              "label": "createDebouncer",
+              "to": "framework/alpine/reference/functions/createDebouncer"
+            },
+            {
+              "label": "AlpineAsyncDebouncer",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncDebouncer"
+            },
+            {
+              "label": "AlpineAsyncDebouncerOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncDebouncerOptions"
+            },
+            {
+              "label": "AlpineDebouncer",
+              "to": "framework/alpine/reference/interfaces/AlpineDebouncer"
+            },
+            {
+              "label": "AlpineDebouncerOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineDebouncerOptions"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/alpine/examples/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/alpine/examples/createDebouncedValue"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "UseAsyncDebouncer",
+              "to": "framework/ember/reference/classes/UseAsyncDebouncer"
+            },
+            {
+              "label": "UseDebouncedState",
+              "to": "framework/ember/reference/classes/UseDebouncedState"
+            },
+            {
+              "label": "UseDebouncedValue",
+              "to": "framework/ember/reference/classes/UseDebouncedValue"
+            },
+            {
+              "label": "UseDebouncer",
+              "to": "framework/ember/reference/classes/UseDebouncer"
+            },
+            {
+              "label": "EmberAsyncDebouncer",
+              "to": "framework/ember/reference/interfaces/EmberAsyncDebouncer"
+            },
+            {
+              "label": "EmberAsyncDebouncerOptions",
+              "to": "framework/ember/reference/interfaces/EmberAsyncDebouncerOptions"
+            },
+            {
+              "label": "EmberDebouncedState",
+              "to": "framework/ember/reference/interfaces/EmberDebouncedState"
+            },
+            {
+              "label": "EmberDebouncedValue",
+              "to": "framework/ember/reference/interfaces/EmberDebouncedValue"
+            },
+            {
+              "label": "EmberDebouncer",
+              "to": "framework/ember/reference/interfaces/EmberDebouncer"
+            },
+            {
+              "label": "EmberDebouncerOptions",
+              "to": "framework/ember/reference/interfaces/EmberDebouncerOptions"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/octane/reference/functions/useAsyncDebouncedCallback"
+            },
+            {
+              "label": "useAsyncDebouncer",
+              "to": "framework/octane/reference/functions/useAsyncDebouncer"
+            },
+            {
+              "label": "useDebouncedCallback",
+              "to": "framework/octane/reference/functions/useDebouncedCallback"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/octane/reference/functions/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/octane/reference/functions/useDebouncedValue"
+            },
+            {
+              "label": "useDebouncer",
+              "to": "framework/octane/reference/functions/useDebouncer"
+            },
+            {
+              "label": "OctaneAsyncDebouncer",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncDebouncer"
+            },
+            {
+              "label": "OctaneAsyncDebouncerOptions",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncDebouncerOptions"
+            },
+            {
+              "label": "OctaneDebouncer",
+              "to": "framework/octane/reference/interfaces/OctaneDebouncer"
+            },
+            {
+              "label": "OctaneDebouncerOptions",
+              "to": "framework/octane/reference/interfaces/OctaneDebouncerOptions"
             }
           ]
         }
@@ -775,10 +1439,6 @@
               "to": "framework/angular/reference/functions/injectThrottler"
             },
             {
-              "label": "injectThrottledCallback",
-              "to": "framework/angular/reference/functions/injectThrottledCallback"
-            },
-            {
               "label": "injectThrottledSignal",
               "to": "framework/angular/reference/functions/injectThrottledSignal"
             },
@@ -789,10 +1449,276 @@
             {
               "label": "injectAsyncThrottler",
               "to": "framework/angular/reference/functions/injectAsyncThrottler"
+            }
+          ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useAsyncThrottler",
+              "to": "framework/vue/reference/functions/useAsyncThrottler"
             },
             {
-              "label": "injectAsyncThrottledCallback",
-              "to": "framework/angular/reference/functions/injectAsyncThrottledCallback"
+              "label": "useThrottledState",
+              "to": "framework/vue/reference/functions/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/vue/reference/functions/useThrottledValue"
+            },
+            {
+              "label": "useThrottler",
+              "to": "framework/vue/reference/functions/useThrottler"
+            },
+            {
+              "label": "VueAsyncThrottler",
+              "to": "framework/vue/reference/interfaces/VueAsyncThrottler"
+            },
+            {
+              "label": "VueAsyncThrottlerOptions",
+              "to": "framework/vue/reference/interfaces/VueAsyncThrottlerOptions"
+            },
+            {
+              "label": "VueThrottler",
+              "to": "framework/vue/reference/interfaces/VueThrottler"
+            },
+            {
+              "label": "VueThrottlerOptions",
+              "to": "framework/vue/reference/interfaces/VueThrottlerOptions"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createAsyncThrottler",
+              "to": "framework/svelte/reference/functions/createAsyncThrottler"
+            },
+            {
+              "label": "createThrottledSignal",
+              "to": "framework/svelte/reference/functions/createThrottledSignal"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/svelte/reference/functions/createThrottledValue"
+            },
+            {
+              "label": "createThrottler",
+              "to": "framework/svelte/reference/functions/createThrottler"
+            },
+            {
+              "label": "SvelteAsyncThrottler",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncThrottler"
+            },
+            {
+              "label": "SvelteAsyncThrottlerOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncThrottlerOptions"
+            },
+            {
+              "label": "SvelteThrottler",
+              "to": "framework/svelte/reference/interfaces/SvelteThrottler"
+            },
+            {
+              "label": "SvelteThrottlerOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteThrottlerOptions"
+            },
+            {
+              "label": "createThrottledSignal",
+              "to": "framework/svelte/examples/createThrottledSignal"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/svelte/examples/createThrottledValue"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "AsyncThrottlerController",
+              "to": "framework/lit/reference/classes/AsyncThrottlerController"
+            },
+            {
+              "label": "ThrottlerController",
+              "to": "framework/lit/reference/classes/ThrottlerController"
+            },
+            {
+              "label": "createAsyncThrottler",
+              "to": "framework/lit/reference/functions/createAsyncThrottler"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/lit/reference/functions/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/lit/reference/functions/createThrottledValue"
+            },
+            {
+              "label": "createThrottler",
+              "to": "framework/lit/reference/functions/createThrottler"
+            },
+            {
+              "label": "LitAsyncThrottler",
+              "to": "framework/lit/reference/interfaces/LitAsyncThrottler"
+            },
+            {
+              "label": "LitAsyncThrottlerOptions",
+              "to": "framework/lit/reference/interfaces/LitAsyncThrottlerOptions"
+            },
+            {
+              "label": "LitThrottler",
+              "to": "framework/lit/reference/interfaces/LitThrottler"
+            },
+            {
+              "label": "LitThrottlerOptions",
+              "to": "framework/lit/reference/interfaces/LitThrottlerOptions"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/lit/examples/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/lit/examples/createThrottledValue"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createAsyncThrottler",
+              "to": "framework/alpine/reference/functions/createAsyncThrottler"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/alpine/reference/functions/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/alpine/reference/functions/createThrottledValue"
+            },
+            {
+              "label": "createThrottler",
+              "to": "framework/alpine/reference/functions/createThrottler"
+            },
+            {
+              "label": "AlpineAsyncThrottler",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncThrottler"
+            },
+            {
+              "label": "AlpineAsyncThrottlerOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncThrottlerOptions"
+            },
+            {
+              "label": "AlpineThrottler",
+              "to": "framework/alpine/reference/interfaces/AlpineThrottler"
+            },
+            {
+              "label": "AlpineThrottlerOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineThrottlerOptions"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/alpine/examples/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/alpine/examples/createThrottledValue"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "UseAsyncThrottler",
+              "to": "framework/ember/reference/classes/UseAsyncThrottler"
+            },
+            {
+              "label": "UseThrottledState",
+              "to": "framework/ember/reference/classes/UseThrottledState"
+            },
+            {
+              "label": "UseThrottledValue",
+              "to": "framework/ember/reference/classes/UseThrottledValue"
+            },
+            {
+              "label": "UseThrottler",
+              "to": "framework/ember/reference/classes/UseThrottler"
+            },
+            {
+              "label": "EmberAsyncThrottler",
+              "to": "framework/ember/reference/interfaces/EmberAsyncThrottler"
+            },
+            {
+              "label": "EmberAsyncThrottlerOptions",
+              "to": "framework/ember/reference/interfaces/EmberAsyncThrottlerOptions"
+            },
+            {
+              "label": "EmberThrottledState",
+              "to": "framework/ember/reference/interfaces/EmberThrottledState"
+            },
+            {
+              "label": "EmberThrottledValue",
+              "to": "framework/ember/reference/interfaces/EmberThrottledValue"
+            },
+            {
+              "label": "EmberThrottler",
+              "to": "framework/ember/reference/interfaces/EmberThrottler"
+            },
+            {
+              "label": "EmberThrottlerOptions",
+              "to": "framework/ember/reference/interfaces/EmberThrottlerOptions"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useAsyncThrottledCallback",
+              "to": "framework/octane/reference/functions/useAsyncThrottledCallback"
+            },
+            {
+              "label": "useAsyncThrottler",
+              "to": "framework/octane/reference/functions/useAsyncThrottler"
+            },
+            {
+              "label": "useThrottledCallback",
+              "to": "framework/octane/reference/functions/useThrottledCallback"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/octane/reference/functions/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/octane/reference/functions/useThrottledValue"
+            },
+            {
+              "label": "useThrottler",
+              "to": "framework/octane/reference/functions/useThrottler"
+            },
+            {
+              "label": "OctaneAsyncThrottler",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncThrottler"
+            },
+            {
+              "label": "OctaneAsyncThrottlerOptions",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncThrottlerOptions"
+            },
+            {
+              "label": "OctaneThrottler",
+              "to": "framework/octane/reference/interfaces/OctaneThrottler"
+            },
+            {
+              "label": "OctaneThrottlerOptions",
+              "to": "framework/octane/reference/interfaces/OctaneThrottlerOptions"
             }
           ]
         }
@@ -964,10 +1890,6 @@
               "to": "framework/angular/reference/functions/injectRateLimiter"
             },
             {
-              "label": "injectRateLimitedCallback",
-              "to": "framework/angular/reference/functions/injectRateLimitedCallback"
-            },
-            {
               "label": "injectRateLimitedSignal",
               "to": "framework/angular/reference/functions/injectRateLimitedSignal"
             },
@@ -978,10 +1900,276 @@
             {
               "label": "injectAsyncRateLimiter",
               "to": "framework/angular/reference/functions/injectAsyncRateLimiter"
+            }
+          ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/vue/reference/functions/useAsyncRateLimiter"
             },
             {
-              "label": "injectAsyncRateLimitedCallback",
-              "to": "framework/angular/reference/functions/injectAsyncRateLimitedCallback"
+              "label": "useRateLimitedState",
+              "to": "framework/vue/reference/functions/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/vue/reference/functions/useRateLimitedValue"
+            },
+            {
+              "label": "useRateLimiter",
+              "to": "framework/vue/reference/functions/useRateLimiter"
+            },
+            {
+              "label": "VueAsyncRateLimiter",
+              "to": "framework/vue/reference/interfaces/VueAsyncRateLimiter"
+            },
+            {
+              "label": "VueAsyncRateLimiterOptions",
+              "to": "framework/vue/reference/interfaces/VueAsyncRateLimiterOptions"
+            },
+            {
+              "label": "VueRateLimiter",
+              "to": "framework/vue/reference/interfaces/VueRateLimiter"
+            },
+            {
+              "label": "VueRateLimiterOptions",
+              "to": "framework/vue/reference/interfaces/VueRateLimiterOptions"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createAsyncRateLimiter",
+              "to": "framework/svelte/reference/functions/createAsyncRateLimiter"
+            },
+            {
+              "label": "createRateLimitedSignal",
+              "to": "framework/svelte/reference/functions/createRateLimitedSignal"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/svelte/reference/functions/createRateLimitedValue"
+            },
+            {
+              "label": "createRateLimiter",
+              "to": "framework/svelte/reference/functions/createRateLimiter"
+            },
+            {
+              "label": "SvelteAsyncRateLimiter",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncRateLimiter"
+            },
+            {
+              "label": "SvelteAsyncRateLimiterOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncRateLimiterOptions"
+            },
+            {
+              "label": "SvelteRateLimiter",
+              "to": "framework/svelte/reference/interfaces/SvelteRateLimiter"
+            },
+            {
+              "label": "SvelteRateLimiterOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteRateLimiterOptions"
+            },
+            {
+              "label": "createRateLimitedSignal",
+              "to": "framework/svelte/examples/createRateLimitedSignal"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/svelte/examples/createRateLimitedValue"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "AsyncRateLimiterController",
+              "to": "framework/lit/reference/classes/AsyncRateLimiterController"
+            },
+            {
+              "label": "RateLimiterController",
+              "to": "framework/lit/reference/classes/RateLimiterController"
+            },
+            {
+              "label": "createAsyncRateLimiter",
+              "to": "framework/lit/reference/functions/createAsyncRateLimiter"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/lit/reference/functions/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/lit/reference/functions/createRateLimitedValue"
+            },
+            {
+              "label": "createRateLimiter",
+              "to": "framework/lit/reference/functions/createRateLimiter"
+            },
+            {
+              "label": "LitAsyncRateLimiter",
+              "to": "framework/lit/reference/interfaces/LitAsyncRateLimiter"
+            },
+            {
+              "label": "LitAsyncRateLimiterOptions",
+              "to": "framework/lit/reference/interfaces/LitAsyncRateLimiterOptions"
+            },
+            {
+              "label": "LitRateLimiter",
+              "to": "framework/lit/reference/interfaces/LitRateLimiter"
+            },
+            {
+              "label": "LitRateLimiterOptions",
+              "to": "framework/lit/reference/interfaces/LitRateLimiterOptions"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/lit/examples/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/lit/examples/createRateLimitedValue"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createAsyncRateLimiter",
+              "to": "framework/alpine/reference/functions/createAsyncRateLimiter"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/alpine/reference/functions/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/alpine/reference/functions/createRateLimitedValue"
+            },
+            {
+              "label": "createRateLimiter",
+              "to": "framework/alpine/reference/functions/createRateLimiter"
+            },
+            {
+              "label": "AlpineAsyncRateLimiter",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncRateLimiter"
+            },
+            {
+              "label": "AlpineAsyncRateLimiterOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncRateLimiterOptions"
+            },
+            {
+              "label": "AlpineRateLimiter",
+              "to": "framework/alpine/reference/interfaces/AlpineRateLimiter"
+            },
+            {
+              "label": "AlpineRateLimiterOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineRateLimiterOptions"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/alpine/examples/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/alpine/examples/createRateLimitedValue"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "UseAsyncRateLimiter",
+              "to": "framework/ember/reference/classes/UseAsyncRateLimiter"
+            },
+            {
+              "label": "UseRateLimitedState",
+              "to": "framework/ember/reference/classes/UseRateLimitedState"
+            },
+            {
+              "label": "UseRateLimitedValue",
+              "to": "framework/ember/reference/classes/UseRateLimitedValue"
+            },
+            {
+              "label": "UseRateLimiter",
+              "to": "framework/ember/reference/classes/UseRateLimiter"
+            },
+            {
+              "label": "EmberAsyncRateLimiter",
+              "to": "framework/ember/reference/interfaces/EmberAsyncRateLimiter"
+            },
+            {
+              "label": "EmberAsyncRateLimiterOptions",
+              "to": "framework/ember/reference/interfaces/EmberAsyncRateLimiterOptions"
+            },
+            {
+              "label": "EmberRateLimitedState",
+              "to": "framework/ember/reference/interfaces/EmberRateLimitedState"
+            },
+            {
+              "label": "EmberRateLimitedValue",
+              "to": "framework/ember/reference/interfaces/EmberRateLimitedValue"
+            },
+            {
+              "label": "EmberRateLimiter",
+              "to": "framework/ember/reference/interfaces/EmberRateLimiter"
+            },
+            {
+              "label": "EmberRateLimiterOptions",
+              "to": "framework/ember/reference/interfaces/EmberRateLimiterOptions"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useAsyncRateLimitedCallback",
+              "to": "framework/octane/reference/functions/useAsyncRateLimitedCallback"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/octane/reference/functions/useAsyncRateLimiter"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/octane/reference/functions/useRateLimitedCallback"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/octane/reference/functions/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/octane/reference/functions/useRateLimitedValue"
+            },
+            {
+              "label": "useRateLimiter",
+              "to": "framework/octane/reference/functions/useRateLimiter"
+            },
+            {
+              "label": "OctaneAsyncRateLimiter",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncRateLimiter"
+            },
+            {
+              "label": "OctaneAsyncRateLimiterOptions",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncRateLimiterOptions"
+            },
+            {
+              "label": "OctaneRateLimiter",
+              "to": "framework/octane/reference/interfaces/OctaneRateLimiter"
+            },
+            {
+              "label": "OctaneRateLimiterOptions",
+              "to": "framework/octane/reference/interfaces/OctaneRateLimiterOptions"
             }
           ]
         }
@@ -1181,6 +2369,300 @@
               "to": "framework/angular/reference/functions/injectAsyncQueuedSignal"
             }
           ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/vue/reference/functions/useAsyncQueuedState"
+            },
+            {
+              "label": "useAsyncQueuer",
+              "to": "framework/vue/reference/functions/useAsyncQueuer"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/vue/reference/functions/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/vue/reference/functions/useQueuedValue"
+            },
+            {
+              "label": "useQueuer",
+              "to": "framework/vue/reference/functions/useQueuer"
+            },
+            {
+              "label": "VueAsyncQueuer",
+              "to": "framework/vue/reference/interfaces/VueAsyncQueuer"
+            },
+            {
+              "label": "VueAsyncQueuerOptions",
+              "to": "framework/vue/reference/interfaces/VueAsyncQueuerOptions"
+            },
+            {
+              "label": "VueQueuer",
+              "to": "framework/vue/reference/interfaces/VueQueuer"
+            },
+            {
+              "label": "VueQueuerOptions",
+              "to": "framework/vue/reference/interfaces/VueQueuerOptions"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createAsyncQueuedSignal",
+              "to": "framework/svelte/reference/functions/createAsyncQueuedSignal"
+            },
+            {
+              "label": "createAsyncQueuer",
+              "to": "framework/svelte/reference/functions/createAsyncQueuer"
+            },
+            {
+              "label": "createQueuedSignal",
+              "to": "framework/svelte/reference/functions/createQueuedSignal"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/svelte/reference/functions/createQueuedValue"
+            },
+            {
+              "label": "createQueuer",
+              "to": "framework/svelte/reference/functions/createQueuer"
+            },
+            {
+              "label": "SvelteAsyncQueuer",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncQueuer"
+            },
+            {
+              "label": "SvelteAsyncQueuerOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncQueuerOptions"
+            },
+            {
+              "label": "SvelteQueuer",
+              "to": "framework/svelte/reference/interfaces/SvelteQueuer"
+            },
+            {
+              "label": "SvelteQueuerOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteQueuerOptions"
+            },
+            {
+              "label": "createQueuedSignal",
+              "to": "framework/svelte/examples/createQueuedSignal"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/svelte/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedSignal",
+              "to": "framework/svelte/examples/createAsyncQueuedSignal"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "AsyncQueuerController",
+              "to": "framework/lit/reference/classes/AsyncQueuerController"
+            },
+            {
+              "label": "QueuerController",
+              "to": "framework/lit/reference/classes/QueuerController"
+            },
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/lit/reference/functions/createAsyncQueuedState"
+            },
+            {
+              "label": "createAsyncQueuer",
+              "to": "framework/lit/reference/functions/createAsyncQueuer"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/lit/reference/functions/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/lit/reference/functions/createQueuedValue"
+            },
+            {
+              "label": "createQueuer",
+              "to": "framework/lit/reference/functions/createQueuer"
+            },
+            {
+              "label": "LitAsyncQueuer",
+              "to": "framework/lit/reference/interfaces/LitAsyncQueuer"
+            },
+            {
+              "label": "LitAsyncQueuerOptions",
+              "to": "framework/lit/reference/interfaces/LitAsyncQueuerOptions"
+            },
+            {
+              "label": "LitQueuer",
+              "to": "framework/lit/reference/interfaces/LitQueuer"
+            },
+            {
+              "label": "LitQueuerOptions",
+              "to": "framework/lit/reference/interfaces/LitQueuerOptions"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/lit/examples/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/lit/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/lit/examples/createAsyncQueuedState"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/alpine/reference/functions/createAsyncQueuedState"
+            },
+            {
+              "label": "createAsyncQueuer",
+              "to": "framework/alpine/reference/functions/createAsyncQueuer"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/alpine/reference/functions/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/alpine/reference/functions/createQueuedValue"
+            },
+            {
+              "label": "createQueuer",
+              "to": "framework/alpine/reference/functions/createQueuer"
+            },
+            {
+              "label": "AlpineAsyncQueuer",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncQueuer"
+            },
+            {
+              "label": "AlpineAsyncQueuerOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncQueuerOptions"
+            },
+            {
+              "label": "AlpineQueuer",
+              "to": "framework/alpine/reference/interfaces/AlpineQueuer"
+            },
+            {
+              "label": "AlpineQueuerOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineQueuerOptions"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/alpine/examples/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/alpine/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/alpine/examples/createAsyncQueuedState"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "UseAsyncQueuedState",
+              "to": "framework/ember/reference/classes/UseAsyncQueuedState"
+            },
+            {
+              "label": "UseAsyncQueuer",
+              "to": "framework/ember/reference/classes/UseAsyncQueuer"
+            },
+            {
+              "label": "UseQueuedState",
+              "to": "framework/ember/reference/classes/UseQueuedState"
+            },
+            {
+              "label": "UseQueuedValue",
+              "to": "framework/ember/reference/classes/UseQueuedValue"
+            },
+            {
+              "label": "UseQueuer",
+              "to": "framework/ember/reference/classes/UseQueuer"
+            },
+            {
+              "label": "EmberAsyncQueuer",
+              "to": "framework/ember/reference/interfaces/EmberAsyncQueuer"
+            },
+            {
+              "label": "EmberAsyncQueuerOptions",
+              "to": "framework/ember/reference/interfaces/EmberAsyncQueuerOptions"
+            },
+            {
+              "label": "EmberQueuedValue",
+              "to": "framework/ember/reference/interfaces/EmberQueuedValue"
+            },
+            {
+              "label": "EmberQueuer",
+              "to": "framework/ember/reference/interfaces/EmberQueuer"
+            },
+            {
+              "label": "EmberQueuerOptions",
+              "to": "framework/ember/reference/interfaces/EmberQueuerOptions"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/octane/reference/functions/useAsyncQueuedState"
+            },
+            {
+              "label": "useAsyncQueuer",
+              "to": "framework/octane/reference/functions/useAsyncQueuer"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/octane/reference/functions/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/octane/reference/functions/useQueuedValue"
+            },
+            {
+              "label": "useQueuer",
+              "to": "framework/octane/reference/functions/useQueuer"
+            },
+            {
+              "label": "OctaneAsyncQueuer",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncQueuer"
+            },
+            {
+              "label": "OctaneAsyncQueuerOptions",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncQueuerOptions"
+            },
+            {
+              "label": "OctaneQueuer",
+              "to": "framework/octane/reference/interfaces/OctaneQueuer"
+            },
+            {
+              "label": "OctaneQueuerOptions",
+              "to": "framework/octane/reference/interfaces/OctaneQueuerOptions"
+            }
+          ]
         }
       ]
     },
@@ -1350,16 +2832,198 @@
               "to": "framework/angular/reference/functions/injectBatcher"
             },
             {
-              "label": "injectBatchedCallback",
-              "to": "framework/angular/reference/functions/injectBatchedCallback"
-            },
-            {
               "label": "injectAsyncBatcher",
               "to": "framework/angular/reference/functions/injectAsyncBatcher"
+            }
+          ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/vue/reference/functions/useAsyncBatcher"
             },
             {
-              "label": "injectAsyncBatchedCallback",
-              "to": "framework/angular/reference/functions/injectAsyncBatchedCallback"
+              "label": "useBatcher",
+              "to": "framework/vue/reference/functions/useBatcher"
+            },
+            {
+              "label": "VueAsyncBatcher",
+              "to": "framework/vue/reference/interfaces/VueAsyncBatcher"
+            },
+            {
+              "label": "VueAsyncBatcherOptions",
+              "to": "framework/vue/reference/interfaces/VueAsyncBatcherOptions"
+            },
+            {
+              "label": "VueBatcher",
+              "to": "framework/vue/reference/interfaces/VueBatcher"
+            },
+            {
+              "label": "VueBatcherOptions",
+              "to": "framework/vue/reference/interfaces/VueBatcherOptions"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/svelte/reference/functions/createAsyncBatcher"
+            },
+            {
+              "label": "createBatcher",
+              "to": "framework/svelte/reference/functions/createBatcher"
+            },
+            {
+              "label": "SvelteAsyncBatcher",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncBatcher"
+            },
+            {
+              "label": "SvelteAsyncBatcherOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteAsyncBatcherOptions"
+            },
+            {
+              "label": "SvelteBatcher",
+              "to": "framework/svelte/reference/interfaces/SvelteBatcher"
+            },
+            {
+              "label": "SvelteBatcherOptions",
+              "to": "framework/svelte/reference/interfaces/SvelteBatcherOptions"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "AsyncBatcherController",
+              "to": "framework/lit/reference/classes/AsyncBatcherController"
+            },
+            {
+              "label": "BatcherController",
+              "to": "framework/lit/reference/classes/BatcherController"
+            },
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/lit/reference/functions/createAsyncBatcher"
+            },
+            {
+              "label": "createBatcher",
+              "to": "framework/lit/reference/functions/createBatcher"
+            },
+            {
+              "label": "LitAsyncBatcher",
+              "to": "framework/lit/reference/interfaces/LitAsyncBatcher"
+            },
+            {
+              "label": "LitAsyncBatcherOptions",
+              "to": "framework/lit/reference/interfaces/LitAsyncBatcherOptions"
+            },
+            {
+              "label": "LitBatcher",
+              "to": "framework/lit/reference/interfaces/LitBatcher"
+            },
+            {
+              "label": "LitBatcherOptions",
+              "to": "framework/lit/reference/interfaces/LitBatcherOptions"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/alpine/reference/functions/createAsyncBatcher"
+            },
+            {
+              "label": "createBatcher",
+              "to": "framework/alpine/reference/functions/createBatcher"
+            },
+            {
+              "label": "AlpineAsyncBatcher",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncBatcher"
+            },
+            {
+              "label": "AlpineAsyncBatcherOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineAsyncBatcherOptions"
+            },
+            {
+              "label": "AlpineBatcher",
+              "to": "framework/alpine/reference/interfaces/AlpineBatcher"
+            },
+            {
+              "label": "AlpineBatcherOptions",
+              "to": "framework/alpine/reference/interfaces/AlpineBatcherOptions"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "UseAsyncBatcher",
+              "to": "framework/ember/reference/classes/UseAsyncBatcher"
+            },
+            {
+              "label": "UseBatcher",
+              "to": "framework/ember/reference/classes/UseBatcher"
+            },
+            {
+              "label": "EmberAsyncBatcher",
+              "to": "framework/ember/reference/interfaces/EmberAsyncBatcher"
+            },
+            {
+              "label": "EmberAsyncBatcherOptions",
+              "to": "framework/ember/reference/interfaces/EmberAsyncBatcherOptions"
+            },
+            {
+              "label": "EmberBatcher",
+              "to": "framework/ember/reference/interfaces/EmberBatcher"
+            },
+            {
+              "label": "EmberBatcherOptions",
+              "to": "framework/ember/reference/interfaces/EmberBatcherOptions"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/octane/reference/functions/useAsyncBatchedCallback"
+            },
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/octane/reference/functions/useAsyncBatcher"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/octane/reference/functions/useBatchedCallback"
+            },
+            {
+              "label": "useBatcher",
+              "to": "framework/octane/reference/functions/useBatcher"
+            },
+            {
+              "label": "OctaneAsyncBatcher",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncBatcher"
+            },
+            {
+              "label": "OctaneAsyncBatcherOptions",
+              "to": "framework/octane/reference/interfaces/OctaneAsyncBatcherOptions"
+            },
+            {
+              "label": "OctaneBatcher",
+              "to": "framework/octane/reference/interfaces/OctaneBatcher"
+            },
+            {
+              "label": "OctaneBatcherOptions",
+              "to": "framework/octane/reference/interfaces/OctaneBatcherOptions"
             }
           ]
         }
@@ -1501,10 +3165,6 @@
               "to": "framework/angular/examples/injectDebouncer"
             },
             {
-              "label": "injectDebouncedCallback",
-              "to": "framework/angular/examples/injectDebouncedCallback"
-            },
-            {
               "label": "injectDebouncedSignal",
               "to": "framework/angular/examples/injectDebouncedSignal"
             },
@@ -1515,10 +3175,172 @@
             {
               "label": "injectAsyncDebouncer",
               "to": "framework/angular/examples/injectAsyncDebouncer"
+            }
+          ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useDebouncer",
+              "to": "framework/vue/examples/useDebouncer"
             },
             {
-              "label": "injectAsyncDebouncedCallback",
-              "to": "framework/angular/examples/injectAsyncDebouncedCallback"
+              "label": "useAsyncDebouncer",
+              "to": "framework/vue/examples/useAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/vue/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/vue/examples/asyncDebounce"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/vue/examples/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/vue/examples/useDebouncedValue"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createDebouncer",
+              "to": "framework/svelte/examples/createDebouncer"
+            },
+            {
+              "label": "createAsyncDebouncer",
+              "to": "framework/svelte/examples/createAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/svelte/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/svelte/examples/asyncDebounce"
+            },
+            {
+              "label": "createDebouncedSignal",
+              "to": "framework/svelte/examples/createDebouncedSignal"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/svelte/examples/createDebouncedValue"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "createDebouncer",
+              "to": "framework/lit/examples/createDebouncer"
+            },
+            {
+              "label": "createAsyncDebouncer",
+              "to": "framework/lit/examples/createAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/lit/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/lit/examples/asyncDebounce"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/lit/examples/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/lit/examples/createDebouncedValue"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createDebouncer",
+              "to": "framework/alpine/examples/createDebouncer"
+            },
+            {
+              "label": "createAsyncDebouncer",
+              "to": "framework/alpine/examples/createAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/alpine/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/alpine/examples/asyncDebounce"
+            },
+            {
+              "label": "createDebouncedState",
+              "to": "framework/alpine/examples/createDebouncedState"
+            },
+            {
+              "label": "createDebouncedValue",
+              "to": "framework/alpine/examples/createDebouncedValue"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "useDebouncer",
+              "to": "framework/ember/examples/useDebouncer"
+            },
+            {
+              "label": "useAsyncDebouncer",
+              "to": "framework/ember/examples/useAsyncDebouncer"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useDebouncer",
+              "to": "framework/octane/examples/useDebouncer"
+            },
+            {
+              "label": "useAsyncDebouncer",
+              "to": "framework/octane/examples/useAsyncDebouncer"
+            },
+            {
+              "label": "debounce",
+              "to": "framework/octane/examples/debounce"
+            },
+            {
+              "label": "asyncDebounce",
+              "to": "framework/octane/examples/asyncDebounce"
+            },
+            {
+              "label": "useDebouncedCallback",
+              "to": "framework/octane/examples/useDebouncedCallback"
+            },
+            {
+              "label": "useDebouncedState",
+              "to": "framework/octane/examples/useDebouncedState"
+            },
+            {
+              "label": "useDebouncedValue",
+              "to": "framework/octane/examples/useDebouncedValue"
+            },
+            {
+              "label": "useAsyncDebouncedCallback",
+              "to": "framework/octane/examples/useAsyncDebouncedCallback"
             }
           ]
         }
@@ -1656,10 +3478,6 @@
               "to": "framework/angular/examples/injectThrottler"
             },
             {
-              "label": "injectThrottledCallback",
-              "to": "framework/angular/examples/injectThrottledCallback"
-            },
-            {
               "label": "injectThrottledSignal",
               "to": "framework/angular/examples/injectThrottledSignal"
             },
@@ -1670,10 +3488,168 @@
             {
               "label": "injectAsyncThrottler",
               "to": "framework/angular/examples/injectAsyncThrottler"
+            }
+          ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useThrottler",
+              "to": "framework/vue/examples/useThrottler"
             },
             {
-              "label": "injectAsyncThrottledCallback",
-              "to": "framework/angular/examples/injectAsyncThrottledCallback"
+              "label": "useAsyncThrottler",
+              "to": "framework/vue/examples/useAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/vue/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/vue/examples/asyncThrottle"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/vue/examples/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/vue/examples/useThrottledValue"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createThrottler",
+              "to": "framework/svelte/examples/createThrottler"
+            },
+            {
+              "label": "createAsyncThrottler",
+              "to": "framework/svelte/examples/createAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/svelte/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/svelte/examples/asyncThrottle"
+            },
+            {
+              "label": "createThrottledSignal",
+              "to": "framework/svelte/examples/createThrottledSignal"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/svelte/examples/createThrottledValue"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "createThrottler",
+              "to": "framework/lit/examples/createThrottler"
+            },
+            {
+              "label": "createAsyncThrottler",
+              "to": "framework/lit/examples/createAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/lit/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/lit/examples/asyncThrottle"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/lit/examples/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/lit/examples/createThrottledValue"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createThrottler",
+              "to": "framework/alpine/examples/createThrottler"
+            },
+            {
+              "label": "createAsyncThrottler",
+              "to": "framework/alpine/examples/createAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/alpine/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/alpine/examples/asyncThrottle"
+            },
+            {
+              "label": "createThrottledState",
+              "to": "framework/alpine/examples/createThrottledState"
+            },
+            {
+              "label": "createThrottledValue",
+              "to": "framework/alpine/examples/createThrottledValue"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "useThrottler",
+              "to": "framework/ember/examples/useThrottler"
+            },
+            {
+              "label": "useAsyncThrottler",
+              "to": "framework/ember/examples/useAsyncThrottler"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useThrottler",
+              "to": "framework/octane/examples/useThrottler"
+            },
+            {
+              "label": "useAsyncThrottler",
+              "to": "framework/octane/examples/useAsyncThrottler"
+            },
+            {
+              "label": "throttle",
+              "to": "framework/octane/examples/throttle"
+            },
+            {
+              "label": "asyncThrottle",
+              "to": "framework/octane/examples/asyncThrottle"
+            },
+            {
+              "label": "useThrottledCallback",
+              "to": "framework/octane/examples/useThrottledCallback"
+            },
+            {
+              "label": "useThrottledState",
+              "to": "framework/octane/examples/useThrottledState"
+            },
+            {
+              "label": "useThrottledValue",
+              "to": "framework/octane/examples/useThrottledValue"
             }
           ]
         }
@@ -1807,10 +3783,6 @@
               "to": "framework/angular/examples/injectRateLimiter"
             },
             {
-              "label": "injectRateLimitedCallback",
-              "to": "framework/angular/examples/injectRateLimitedCallback"
-            },
-            {
               "label": "injectRateLimitedSignal",
               "to": "framework/angular/examples/injectRateLimitedSignal"
             },
@@ -1821,6 +3793,168 @@
             {
               "label": "injectAsyncRateLimiter",
               "to": "framework/angular/examples/injectAsyncRateLimiter"
+            }
+          ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useRateLimiter",
+              "to": "framework/vue/examples/useRateLimiter"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/vue/examples/useAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/vue/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/vue/examples/asyncRateLimit"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/vue/examples/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/vue/examples/useRateLimitedValue"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createRateLimiter",
+              "to": "framework/svelte/examples/createRateLimiter"
+            },
+            {
+              "label": "createAsyncRateLimiter",
+              "to": "framework/svelte/examples/createAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/svelte/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/svelte/examples/asyncRateLimit"
+            },
+            {
+              "label": "createRateLimitedSignal",
+              "to": "framework/svelte/examples/createRateLimitedSignal"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/svelte/examples/createRateLimitedValue"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "createRateLimiter",
+              "to": "framework/lit/examples/createRateLimiter"
+            },
+            {
+              "label": "createAsyncRateLimiter",
+              "to": "framework/lit/examples/createAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/lit/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/lit/examples/asyncRateLimit"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/lit/examples/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/lit/examples/createRateLimitedValue"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createRateLimiter",
+              "to": "framework/alpine/examples/createRateLimiter"
+            },
+            {
+              "label": "createAsyncRateLimiter",
+              "to": "framework/alpine/examples/createAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/alpine/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/alpine/examples/asyncRateLimit"
+            },
+            {
+              "label": "createRateLimitedState",
+              "to": "framework/alpine/examples/createRateLimitedState"
+            },
+            {
+              "label": "createRateLimitedValue",
+              "to": "framework/alpine/examples/createRateLimitedValue"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "useRateLimiter",
+              "to": "framework/ember/examples/useRateLimiter"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/ember/examples/useAsyncRateLimiter"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useRateLimiter",
+              "to": "framework/octane/examples/useRateLimiter"
+            },
+            {
+              "label": "useAsyncRateLimiter",
+              "to": "framework/octane/examples/useAsyncRateLimiter"
+            },
+            {
+              "label": "rateLimit",
+              "to": "framework/octane/examples/rateLimit"
+            },
+            {
+              "label": "asyncRateLimit",
+              "to": "framework/octane/examples/asyncRateLimit"
+            },
+            {
+              "label": "useRateLimitedCallback",
+              "to": "framework/octane/examples/useRateLimitedCallback"
+            },
+            {
+              "label": "useRateLimitedState",
+              "to": "framework/octane/examples/useRateLimitedState"
+            },
+            {
+              "label": "useRateLimitedValue",
+              "to": "framework/octane/examples/useRateLimitedValue"
             }
           ]
         }
@@ -1950,6 +4084,164 @@
               "to": "framework/angular/examples/injectAsyncQueuedSignal"
             }
           ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useQueuer",
+              "to": "framework/vue/examples/useQueuer"
+            },
+            {
+              "label": "useAsyncQueuer",
+              "to": "framework/vue/examples/useAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/vue/examples/queue"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/vue/examples/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/vue/examples/useQueuedValue"
+            },
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/vue/examples/useAsyncQueuedState"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createQueuer",
+              "to": "framework/svelte/examples/createQueuer"
+            },
+            {
+              "label": "createAsyncQueuer",
+              "to": "framework/svelte/examples/createAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/svelte/examples/queue"
+            },
+            {
+              "label": "createQueuedSignal",
+              "to": "framework/svelte/examples/createQueuedSignal"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/svelte/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedSignal",
+              "to": "framework/svelte/examples/createAsyncQueuedSignal"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "createQueuer",
+              "to": "framework/lit/examples/createQueuer"
+            },
+            {
+              "label": "createAsyncQueuer",
+              "to": "framework/lit/examples/createAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/lit/examples/queue"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/lit/examples/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/lit/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/lit/examples/createAsyncQueuedState"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createQueuer",
+              "to": "framework/alpine/examples/createQueuer"
+            },
+            {
+              "label": "createAsyncQueuer",
+              "to": "framework/alpine/examples/createAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/alpine/examples/queue"
+            },
+            {
+              "label": "createQueuedState",
+              "to": "framework/alpine/examples/createQueuedState"
+            },
+            {
+              "label": "createQueuedValue",
+              "to": "framework/alpine/examples/createQueuedValue"
+            },
+            {
+              "label": "createAsyncQueuedState",
+              "to": "framework/alpine/examples/createAsyncQueuedState"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "useQueuer",
+              "to": "framework/ember/examples/useQueuer"
+            },
+            {
+              "label": "useAsyncQueuer",
+              "to": "framework/ember/examples/useAsyncQueuer"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useQueuer",
+              "to": "framework/octane/examples/useQueuer"
+            },
+            {
+              "label": "useAsyncQueuer",
+              "to": "framework/octane/examples/useAsyncQueuer"
+            },
+            {
+              "label": "queue",
+              "to": "framework/octane/examples/queue"
+            },
+            {
+              "label": "useQueuedState",
+              "to": "framework/octane/examples/useQueuedState"
+            },
+            {
+              "label": "useQueuedValue",
+              "to": "framework/octane/examples/useQueuedValue"
+            },
+            {
+              "label": "useAsyncQueuedState",
+              "to": "framework/octane/examples/useAsyncQueuedState"
+            }
+          ]
         }
       ]
     },
@@ -2061,16 +4353,134 @@
               "to": "framework/angular/examples/injectBatcher"
             },
             {
-              "label": "injectBatchedCallback",
-              "to": "framework/angular/examples/injectBatchedCallback"
-            },
-            {
               "label": "injectAsyncBatcher",
               "to": "framework/angular/examples/injectAsyncBatcher"
+            }
+          ]
+        },
+        {
+          "label": "vue",
+          "children": [
+            {
+              "label": "useBatcher",
+              "to": "framework/vue/examples/useBatcher"
             },
             {
-              "label": "injectAsyncBatchedCallback",
-              "to": "framework/angular/examples/injectAsyncBatchedCallback"
+              "label": "useAsyncBatcher",
+              "to": "framework/vue/examples/useAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/vue/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/vue/examples/asyncBatch"
+            }
+          ]
+        },
+        {
+          "label": "svelte",
+          "children": [
+            {
+              "label": "createBatcher",
+              "to": "framework/svelte/examples/createBatcher"
+            },
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/svelte/examples/createAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/svelte/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/svelte/examples/asyncBatch"
+            }
+          ]
+        },
+        {
+          "label": "lit",
+          "children": [
+            {
+              "label": "createBatcher",
+              "to": "framework/lit/examples/createBatcher"
+            },
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/lit/examples/createAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/lit/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/lit/examples/asyncBatch"
+            }
+          ]
+        },
+        {
+          "label": "alpine",
+          "children": [
+            {
+              "label": "createBatcher",
+              "to": "framework/alpine/examples/createBatcher"
+            },
+            {
+              "label": "createAsyncBatcher",
+              "to": "framework/alpine/examples/createAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/alpine/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/alpine/examples/asyncBatch"
+            }
+          ]
+        },
+        {
+          "label": "ember",
+          "children": [
+            {
+              "label": "useBatcher",
+              "to": "framework/ember/examples/useBatcher"
+            },
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/ember/examples/useAsyncBatcher"
+            }
+          ]
+        },
+        {
+          "label": "octane",
+          "children": [
+            {
+              "label": "useBatcher",
+              "to": "framework/octane/examples/useBatcher"
+            },
+            {
+              "label": "useAsyncBatcher",
+              "to": "framework/octane/examples/useAsyncBatcher"
+            },
+            {
+              "label": "batch",
+              "to": "framework/octane/examples/batch"
+            },
+            {
+              "label": "asyncBatch",
+              "to": "framework/octane/examples/asyncBatch"
+            },
+            {
+              "label": "useBatchedCallback",
+              "to": "framework/octane/examples/useBatchedCallback"
+            },
+            {
+              "label": "useAsyncBatchedCallback",
+              "to": "framework/octane/examples/useAsyncBatchedCallback"
             }
           ]
         }

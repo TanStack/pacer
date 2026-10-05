@@ -4,7 +4,18 @@ import { readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 
 const root = path.resolve(import.meta.dirname, '..')
-const examples = ['react', 'preact', 'solid', 'angular'].flatMap((framework) =>
+const examples = [
+  'react',
+  'preact',
+  'solid',
+  'angular',
+  'vue',
+  'svelte',
+  'lit',
+  'alpine',
+  'ember',
+  'octane',
+].flatMap((framework) =>
   readdirSync(path.join(root, 'examples', framework), { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => `${framework}/${entry.name}`),
@@ -17,6 +28,8 @@ const result = spawnSync(
   {
     cwd: root,
     encoding: 'utf8',
+    // The full framework matrix exceeds spawnSync's default 1 MiB output limit.
+    maxBuffer: 16 * 1024 * 1024,
     env: { ...process.env, PLAYWRIGHT_TEST_DIR: '' },
   },
 )

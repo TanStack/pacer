@@ -1,0 +1,22 @@
+{
+  "name": "@tanstack/pacer-example-lit-query-queued-prefetch",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port=3005",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:types": "tsc",
+    "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
+  },
+  "dependencies": {
+    "@tanstack/lit-pacer": "workspace:*",
+    "@tanstack/lit-query": "^0.2.26",
+    "@tanstack/query-core": "^5.104.1",
+    "@tanstack/query-devtools": "^5.104.1",
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "vite": "^8.3.2"
+  }
+}

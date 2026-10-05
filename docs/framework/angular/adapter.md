@@ -242,3 +242,20 @@ const debounced = injectDebouncedValue(
 ```
 
 The fourth argument distinguishes this form from `injectDebouncedValue(query, optionsFactory, selector)`. Object options still support the existing three-argument form with an initial value.
+
+## Event handlers
+
+Use `injectDebouncer`, `injectThrottler`, or `injectRateLimiter` and call `maybeExecute()` from the event handler. For batching, use `injectBatcher` and call `addItem()`. Async utilities use the same method names.
+
+Store the utility instance in a field when options read required inputs. Accessing a method during field initialization can initialize the utility before Angular binds those inputs.
+
+In a component:
+
+```ts
+readonly wait = input.required<number>()
+readonly debouncer = injectDebouncer(saveDraft, () => ({ wait: this.wait() }))
+
+save(draft: string) {
+  this.debouncer.maybeExecute(draft)
+}
+```

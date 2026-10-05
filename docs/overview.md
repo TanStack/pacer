@@ -48,13 +48,13 @@ Many of the ideas (and code) for TanStack Pacer are not new. In fact, many of th
   - Works alongside whatever state management you already use
   - Some utilities, like rate limiting and queuing, can persist state to local or session storage
 - **Convenient Hooks**
-  - Pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuedState` cut down on boilerplate
+  - Framework adapters provide lifecycle-owned utilities and state/value helpers. React, Preact, and Octane also provide callback-only hooks.
   - Several layers of abstraction, from a bare callback to a full instance API
 - **Type Safety**
   - Your functions are always called with the correct argument types
   - Generic utilities that adapt to your own types
 - **Framework Adapters**
-  - React, Preact, Solid, and Angular
+  - React, Preact, Solid, Angular, Vue, Svelte, Lit, Alpine, Ember, and Octane
 - **Tree Shaking**
   - Tree-shaking works by default, and each utility also has its own deep import, so a library can pull in one utility without inflating its bundle-phobia report
 

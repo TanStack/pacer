@@ -74,3 +74,5 @@ Packages target ES2022 and require Node.js 20 or newer. They publish ESM and `.d
 `pnpm test` runs the workspace checks, builds, strict publint, packed-file validation, and the existing core size budget. Use the repository’s newer Node.js version for development and CI; the published package runtime minimum is separate.
 
 Package changes require a changeset. Use a minor release for this build migration, including the devtools packages; do not accidentally request a major release.
+
+The Octane adapter follows Octane’s Node.js minimum of 22.22.2. The Ember adapter also publishes `addon-main.cjs`, the metadata shim required by Ember build tooling. All adapter runtime exports remain ESM.

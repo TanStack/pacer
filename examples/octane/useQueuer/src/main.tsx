@@ -1,0 +1,275 @@
+import { createRoot, useLayoutEffect } from 'octane'
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { useState } from 'octane'
+import { useQueuer } from '@tanstack/octane-pacer/queuer'
+import { PacerProvider } from '@tanstack/octane-pacer/provider'
+
+function App1() {
+  function processItem(item: number) {
+    console.log('processing item', item)
+  }
+  const queuer = useQueuer(
+    processItem,
+    {
+      key: 'Add Number Queue',
+      initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      maxSize: 25, // optional, defaults to Infinity
+      started: false, // optional, defaults to true
+      wait: 1000, // wait 1 second between processing items - wait is optional!
+    },
+    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
+  return (
+    <div>
+      <h1>TanStack Pacer useQueuer Example 1</h1>
+      <queuer.Subscribe
+        selector={(state) => ({
+          size: state.size,
+          isFull: state.isFull,
+          isEmpty: state.isEmpty,
+          isIdle: state.isIdle,
+          isRunning: state.isRunning,
+          status: state.status,
+          executionCount: state.executionCount,
+          items: state.items,
+        })}
+      >
+        {({
+          size,
+          isFull,
+          isEmpty,
+          isIdle,
+          isRunning,
+          status,
+          executionCount,
+          items,
+        }) => (
+          <>
+            <div>Queue Size: {size}</div>
+            <div>Queue Max Size: {25}</div>
+            <div>Queue Full: {isFull ? 'Yes' : 'No'}</div>
+            <div>Queue Peek: {queuer.peekNextItem()}</div>
+            <div>Queue Empty: {isEmpty ? 'Yes' : 'No'}</div>
+            <div>Queue Idle: {isIdle ? 'Yes' : 'No'}</div>
+            <div>Queuer Status: {status}</div>
+            <div>Items Processed: {executionCount}</div>
+            <div>Queue Items: {items.join(', ')}</div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '8px',
+                maxWidth: '600px',
+                margin: '16px 0',
+              }}
+            >
+              <button
+                onClick={() => {
+                  const nextNumber = items.length
+                    ? items[items.length - 1]! + 1
+                    : 1
+                  queuer.addItem(nextNumber)
+                }}
+                disabled={isFull}
+              >
+                Add Number
+              </button>
+              <button
+                disabled={isEmpty}
+                onClick={() => {
+                  const item = queuer.execute()
+                  console.log('getNextItem item', item)
+                }}
+              >
+                Process Next
+              </button>
+              <button onClick={() => queuer.clear()} disabled={isEmpty}>
+                Clear Queue
+              </button>
+              <button onClick={() => queuer.reset()} disabled={isEmpty}>
+                Reset Queue
+              </button>
+              <button onClick={() => queuer.start()} disabled={isRunning}>
+                Start Processing
+              </button>
+              <button onClick={() => queuer.stop()} disabled={!isRunning}>
+                Stop Processing
+              </button>
+              <button onClick={() => queuer.flush()} disabled={isEmpty}>
+                Flush Queue
+              </button>
+            </div>
+          </>
+        )}
+      </queuer.Subscribe>
+      <queuer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </queuer.Subscribe>
+    </div>
+  )
+}
+
+function App2() {
+  const [currentValue, setCurrentValue] = useState(50)
+  const [queuedValue, setQueuedValue] = useState(50)
+  const [submittedCount, setSubmittedCount] = useState(1)
+  function processItem(item: number) {
+    setQueuedValue(item)
+  }
+  const queuer = useQueuer(
+    processItem,
+    {
+      key: 'Range Queue',
+      maxSize: 100,
+      initialItems: [currentValue],
+      wait: 100,
+    },
+    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
+  function handleRangeChange(e: Event) {
+    const newValue = parseInt((e.target as HTMLInputElement).value, 10)
+    setCurrentValue(newValue)
+    setSubmittedCount((c) => c + 1)
+    queuer.addItem(newValue)
+  }
+  return (
+    <div>
+      <h1>TanStack Pacer useQueuer Example 2</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          {'Current Range:'}
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onInput={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          {'Queued Range (Readonly):'}
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={queuedValue}
+            disabled
+            style={{ width: '100%' }}
+          />
+          <span>{queuedValue}</span>
+        </label>
+      </div>
+      <table>
+        <tbody>
+          <queuer.Subscribe
+            selector={(state) => ({
+              size: state.size,
+              isFull: state.isFull,
+              isEmpty: state.isEmpty,
+              isIdle: state.isIdle,
+              isRunning: state.isRunning,
+              executionCount: state.executionCount,
+            })}
+          >
+            {({ size, isFull, isEmpty, isIdle, isRunning, executionCount }) => (
+              <>
+                <tr>
+                  <td>Queue Size:</td>
+                  <td>{size}</td>
+                </tr>
+                <tr>
+                  <td>Queue Full:</td>
+                  <td>{isFull ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Queue Empty:</td>
+                  <td>{isEmpty ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Queue Idle:</td>
+                  <td>{isIdle ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Queuer Status:</td>
+                  <td>{isRunning ? 'Running' : 'Stopped'}</td>
+                </tr>
+                <tr>
+                  <td>Values Submitted:</td>
+                  <td>{submittedCount}</td>
+                </tr>
+                <tr>
+                  <td>Items Processed:</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>Pending Items:</td>
+                  <td>{size}</td>
+                </tr>
+              </>
+            )}
+          </queuer.Subscribe>
+        </tbody>
+      </table>
+      <div style={{ color: '#666', fontSize: '0.9em' }}>
+        <p>Queued with 100ms wait time</p>
+      </div>
+      <div>
+        <button onClick={() => queuer.flush()}>Flush Queue</button>
+      </div>
+      <queuer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ marginTop: '20px' }}>
+            {JSON.stringify(state, null, 2)}
+          </pre>
+        )}
+      </queuer.Subscribe>
+    </div>
+  )
+}
+
+function PacerExample() {
+  useLayoutEffect(() => {
+    if (!import.meta.env.DEV) return
+    const target = document.createElement('div')
+    document.body.append(target)
+    const host = new TanStackDevtoolsCore({ plugins: [pacerDevtoolsPlugin()] })
+    host.mount(target)
+    return () => {
+      host.unmount()
+      target.remove()
+    }
+  }, [])
+  // Keep Solid's document-level devtools delegation outside Octane's application events.
+  return (
+    <div
+      onClick={(event) => event.stopPropagation()}
+      onInput={(event) => event.stopPropagation()}
+    >
+      <PacerProvider
+      // defaultOptions={{
+      //   queuer: {
+      //     maxSize: 50,
+      //   },
+      // }}
+      >
+        <div>
+          <App1 />
+          <hr />
+          <App2 />
+        </div>
+      </PacerProvider>
+    </div>
+  )
+}
+createRoot(document.getElementById('app')!).render(PacerExample)

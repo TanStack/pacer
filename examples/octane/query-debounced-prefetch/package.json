@@ -1,0 +1,23 @@
+{
+  "name": "@tanstack/pacer-example-octane-query-debounced-prefetch",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port=3005",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:types": "tsrx-tsc --noEmit",
+    "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
+  },
+  "dependencies": {
+    "@tanstack/octane-pacer": "workspace:*",
+    "@tanstack/pacer": "workspace:*",
+    "@tanstack/query-core": "^5.104.1",
+    "@tanstack/query-devtools": "^5.104.1",
+    "octane": "0.1.36"
+  },
+  "devDependencies": {
+    "@tsrx/typescript-plugin": "^0.6.1",
+    "vite": "^8.3.2"
+  }
+}
