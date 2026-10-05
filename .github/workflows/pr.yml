@@ -38,7 +38,8 @@ jobs:
   e2e:
     name: Example E2E
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # A full run covers 379 example projects with two browser workers.
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -54,7 +55,7 @@ jobs:
       - name: Install Chromium
         run: pnpm run test:e2e:install --with-deps
       - name: Test affected examples
-        run: pnpm run test:e2e:affected
+        run: pnpm run test:e2e:affected --output-style=stream
       - name: Upload failure artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
