@@ -32,10 +32,12 @@ async function readLayout(
           padding: style.padding,
           margin: style.margin,
           radius: style.borderRadius,
-          x: Math.round(rect.left + window.scrollX),
-          y: Math.round(rect.top + window.scrollY),
-          width: Math.round(rect.width),
-          height: Math.round(rect.height),
+          geometry: {
+            x: rect.left + window.scrollX,
+            y: rect.top + window.scrollY,
+            width: rect.width,
+            height: rect.height,
+          },
         }
       }),
     names,
@@ -68,9 +70,24 @@ export async function expectMatchingExampleLayout(
   ]) {
     await page.setViewportSize(viewport)
     await baseline.setViewportSize(viewport)
-    expect(
-      await readLayout(page, rootSelector, names),
-      `Layout at ${viewport.width}px`,
-    ).toEqual(await readLayout(baseline, baselineRoot, names))
+    const actual = await readLayout(page, rootSelector, names)
+    const expected = await readLayout(baseline, baselineRoot, names)
+    const label = `Layout at ${viewport.width}px`
+    expect(actual, label).toHaveLength(expected.length)
+    for (let index = 0; index < expected.length; index++) {
+      const { geometry: actualGeometry, ...actualAppearance } = actual[index]!
+      const { geometry: expectedGeometry, ...expectedAppearance } =
+        expected[index]!
+      const elementLabel = `${label}, element ${index} (${expectedAppearance.tag})`
+      expect(actualAppearance, elementLabel).toEqual(expectedAppearance)
+      // Fractional text metrics can straddle an integer rounding boundary.
+      // Allow one CSS pixel in geometry while keeping text and styles exact.
+      for (const dimension of ['x', 'y', 'width', 'height'] as const) {
+        expect(
+          Math.abs(actualGeometry[dimension] - expectedGeometry[dimension]),
+          `${elementLabel}, ${dimension}`,
+        ).toBeLessThanOrEqual(1)
+      }
+    }
   }
 }
