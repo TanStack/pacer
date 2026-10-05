@@ -1,12 +1,54 @@
-<h1>TanStack Pacer - injectThrottler</h1>
-
-<p>Click rapidly. "Instant" updates every click; "Throttled" updates at most once per second.</p>
-
-<button (click)="increment()">Increment</button>
-
-<p>Instant: {{ instant() }}</p>
-<p>Throttled: {{ throttled() }}</p>
-
-<p>Status: {{ throttler.state().status }}</p>
-<p>Pending: {{ throttler.state().isPending }}</p>
-<p>Executions: {{ throttler.state().executionCount }}</p>
+<h1>TanStack Pacer injectThrottler Example</h1>
+<section aria-labelledby="count-title">
+  <h2 id="count-title">Counter</h2>
+  <button type="button" (click)="increment()">Increment</button>
+  <p>Instant Count: {{ instantCount() }}</p>
+  <p>Throttled Count: {{ controlledCount() }}</p>
+  <p>Executions: {{ countRunner.state().executionCount }}</p>
+  <p>Pending: {{ countRunner.state().isPending }}</p>
+  <button type="button" (click)="countRunner.flush()">Flush</button>
+  <pre>{{ countRunner.state() | json }}</pre>
+</section>
+<section aria-labelledby="search-title">
+  <h2 id="search-title">Search</h2>
+  <p>Enabled when the search contains more than 2 characters.</p>
+  <label
+    >Search
+    <input
+      type="search"
+      [value]="search()"
+      (input)="onSearch($any($event.target).value)"
+      placeholder="Type to search..."
+  /></label>
+  <p>Instant Search: {{ search() }}</p>
+  <p>Throttled Search: {{ controlledSearch() }}</p>
+  <p>Executions: {{ searchRunner.state().executionCount }}</p>
+  <p>Pending: {{ searchRunner.state().isPending }}</p>
+  <button type="button" (click)="searchRunner.flush()">Flush</button>
+  <pre>{{ searchRunner.state() | json }}</pre>
+</section>
+<section aria-labelledby="range-title">
+  <h2 id="range-title">Range</h2>
+  <label
+    >Current Range
+    <input
+      type="range"
+      min="0"
+      max="100"
+      [value]="currentValue()"
+      (input)="onRange($any($event.target).valueAsNumber)"
+  /></label>
+  <p>Current Value: {{ currentValue() }}</p>
+  <label
+    >Throttled Range <input type="range" min="0" max="100" [value]="controlledValue()" disabled
+  /></label>
+  <p>Throttled Value: {{ controlledValue() }}</p>
+  <p>Executions: {{ rangeRunner.state().executionCount }}</p>
+  <p>Pending: {{ rangeRunner.state().isPending }}</p>
+  <p>Instant Executions: {{ instantExecutions() }}</p>
+  <p>Saved Executions: {{ instantExecutions() - rangeRunner.state().executionCount }}</p>
+  <p>Reduction: {{ reduction() }}%</p>
+  <button type="button" (click)="rangeRunner.flush()">Flush</button>
+  <pre>{{ rangeRunner.state() | json }}</pre>
+  <p>Throttled with a 250 ms wait.</p>
+</section>

@@ -1,5 +1,6 @@
 import { effect } from '@angular/core'
 import { injectDebouncedSignal } from './injectDebouncedSignal'
+import type { AngularPacerOptions } from '../types'
 import type { DebouncedSignal } from './injectDebouncedSignal'
 import type { Signal } from '@angular/core'
 import type {
@@ -76,7 +77,7 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  */
 export function injectDebouncedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialOptions: DebouncerOptions<Setter<TValue>>,
+  initialOptions: AngularPacerOptions<DebouncerOptions<Setter<TValue>>>,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): DebouncedSignal<TValue, TSelected>
 export function injectDebouncedValue<TValue, TSelected = {}>(
@@ -87,9 +88,16 @@ export function injectDebouncedValue<TValue, TSelected = {}>(
 ): DebouncedSignal<TValue, TSelected>
 export function injectDebouncedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialValueOrOptions: TValue | DebouncerOptions<Setter<TValue>>,
+  initialValue: TValue,
+  initialOptions: () => DebouncerOptions<Setter<TValue>>,
+  selector: ((state: DebouncerState<Setter<TValue>>) => TSelected) | undefined,
+): DebouncedSignal<TValue, TSelected>
+export function injectDebouncedValue<TValue, TSelected = {}>(
+  value: Signal<TValue>,
+  initialValueOrOptions:
+    TValue | AngularPacerOptions<DebouncerOptions<Setter<TValue>>>,
   initialOptionsOrSelector?:
-    | DebouncerOptions<Setter<TValue>>
+    | AngularPacerOptions<DebouncerOptions<Setter<TValue>>>
     | ((state: DebouncerState<Setter<TValue>>) => TSelected),
   maybeSelector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): DebouncedSignal<TValue, TSelected> {
@@ -97,14 +105,18 @@ export function injectDebouncedValue<TValue, TSelected = {}>(
 
   const hasInitialValue =
     (initialOptionsOrSelector !== undefined && !hasSelector) ||
-    maybeSelector !== undefined
+    arguments.length >= 4
 
   const initialValue = hasInitialValue
     ? (initialValueOrOptions as TValue)
     : (undefined as unknown as TValue)
   const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as DebouncerOptions<Setter<TValue>>)
-    : (initialValueOrOptions as DebouncerOptions<Setter<TValue>>)
+    ? (initialOptionsOrSelector as AngularPacerOptions<
+        DebouncerOptions<Setter<TValue>>
+      >)
+    : (initialValueOrOptions as AngularPacerOptions<
+        DebouncerOptions<Setter<TValue>>
+      >)
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as

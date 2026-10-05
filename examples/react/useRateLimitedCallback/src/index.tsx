@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useRateLimitedCallback } from '@tanstack/react-pacer/rate-limiter'
 
@@ -6,6 +6,7 @@ function App1() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
   const [rateLimitedCount, setRateLimitedCount] = useState(0)
 
   // Create rateLimited setter function - Stable reference provided by useRateLimitedCallback
@@ -13,7 +14,7 @@ function App1() {
     limit: 5,
     window: 5000,
     windowType: windowType,
-    enabled: () => instantCount > 2,
+    enabled: () => instantCountRef.current > 2,
     onReject: (rateLimiter) => {
       console.log(
         `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
@@ -22,12 +23,9 @@ function App1() {
   })
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      rateLimitedSetCount(newInstantCount) // rateLimited state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    rateLimitedSetCount(nextCount)
   }
 
   return (
@@ -77,6 +75,7 @@ function App1() {
 function App2() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [searchText, setSearchText] = useState('')
+  const searchTextRef = useRef('')
   const [rateLimitedSearchText, setRateLimitedSearchText] = useState('')
 
   // Create rateLimited setter function - Stable reference provided by useRateLimitedCallback
@@ -86,7 +85,7 @@ function App2() {
       limit: 5,
       window: 5000,
       windowType: windowType,
-      enabled: () => searchText.length > 2,
+      enabled: () => searchTextRef.current.length > 2,
       onReject: (rateLimiter) => {
         console.log(
           `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
@@ -97,6 +96,7 @@ function App2() {
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
+    searchTextRef.current = newValue
     setSearchText(newValue)
     rateLimitedSetSearch(newValue)
   }
@@ -222,7 +222,7 @@ function App3() {
             min="0"
             max="100"
             value={limitedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{limitedValue}</span>

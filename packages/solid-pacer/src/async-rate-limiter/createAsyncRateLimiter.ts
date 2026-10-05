@@ -1,7 +1,9 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -25,6 +27,12 @@ export interface SolidAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 > extends Omit<AsyncRateLimiter<TFn>, 'store'> {
+  options: AsyncRateLimiter<TFn>['options'] &
+    SolidAsyncRateLimiterOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<SolidAsyncRateLimiterOptions<TFn, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the rate limiter state.
    *
@@ -222,18 +230,21 @@ export function createAsyncRateLimiter<
   TSelected = {},
 >(
   fn: TFn,
-  options: SolidAsyncRateLimiterOptions<TFn, TSelected>,
+  options: SolidPacerOptions<SolidAsyncRateLimiterOptions<TFn, TSelected>>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncRateLimiter<TFn, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().asyncRateLimiter,
-    ...options,
-  } as SolidAsyncRateLimiterOptions<TFn, TSelected>
-  const asyncRateLimiter = new AsyncRateLimiter<TFn>(
-    fn,
-    mergedOptions,
+  const mergedOptions = createPacerOptions<
+    SolidAsyncRateLimiterOptions<TFn, TSelected>
+  >(options, () => useDefaultPacerOptions().asyncRateLimiter)
+  const asyncRateLimiter = untrack(
+    () => new AsyncRateLimiter<TFn>(fn, mergedOptions()),
   ) as unknown as SolidAsyncRateLimiter<TFn, TSelected>
+
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncRateLimiter.setOptions(latest))
+  })
 
   asyncRateLimiter.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncRateLimiterState<TFn>) => TSelected
@@ -254,16 +265,25 @@ export function createAsyncRateLimiter<
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncRateLimiter)
+      const onUnmount = asyncRateLimiter.options.onUnmount
+      if (onUnmount) {
+        onUnmount(result)
       } else {
         asyncRateLimiter.abort()
       }
     })
   })
 
-  return {
+  const result = {
     ...asyncRateLimiter,
+    get options() {
+      return asyncRateLimiter.options
+    },
+    set options(value) {
+      asyncRateLimiter.options = value
+    },
     state,
   } as SolidAsyncRateLimiter<TFn, TSelected>
+
+  return result
 }

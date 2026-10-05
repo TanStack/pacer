@@ -313,7 +313,7 @@ function ComparisonApp() {
                       min="0"
                       max="100"
                       value={utility.value}
-                      readOnly
+                      disabled
                       style={{
                         width: '100%',
                         margin: '2px 0',

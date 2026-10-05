@@ -6,7 +6,8 @@
     "dev": "vite --port=3005",
     "build": "vite build",
     "preview": "vite preview",
-    "test:types": "tsc"
+    "test:types": "tsc",
+    "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
   },
   "dependencies": {
     "@tanstack/preact-devtools": "^0.10.13",
@@ -16,7 +17,7 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.6",
-    "vite": "^8.3.1"
+    "vite": "^8.3.2"
   },
   "browserslist": {
     "production": [

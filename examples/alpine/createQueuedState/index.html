@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine createQueuedState</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="counter">
+          <h1>TanStack Pacer createQueuedState Example 1</h1>
+          <div>Queue Size: <span x-text="(queuer.state.size)"></span></div>
+          <div>Queue Max Size: <span x-text="(25)"></span></div>
+          <div>
+            Queue Full:
+            <span x-text="(queuer.state.isFull ? 'Yes' : 'No')"></span>
+          </div>
+          <div>Queue Peek: <span x-text="(queuer.state.items[0])"></span></div>
+          <div>
+            Queue Empty:
+            <span x-text="(queuer.state.isEmpty ? 'Yes' : 'No')"></span>
+          </div>
+          <div>
+            Queue Idle:
+            <span x-text="(queuer.state.isIdle ? 'Yes' : 'No')"></span>
+          </div>
+          <div>Queuer Status: <span x-text="(queuer.state.status)"></span></div>
+          <div>
+            Items Processed:
+            <span x-text="(queuer.state.executionCount)"></span>
+          </div>
+          <div>
+            Queue Items: <span x-text="(queueItems().join(', '))"></span>
+          </div>
+          <div
+            :style="({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '8px',
+    maxWidth: '600px',
+    margin: '16px 0',
+})"
+          >
+            <button
+              @click="((() => {
+    const nextNumber = queueItems().length
+        ? queueItems()[queueItems().length - 1] + 1
+        : 1;
+    addItem(nextNumber);
+}))($event)"
+              :disabled="(queuer.state.isFull)"
+            >
+              Add Number</button
+            ><button
+              :disabled="(queuer.state.isEmpty)"
+              @click="((() => {
+    queuer.execute();
+}))($event)"
+            >
+              Process Next</button
+            ><button
+              @click="((() => queuer.clear()))($event)"
+              :disabled="(queuer.state.isEmpty)"
+            >
+              Clear Queue</button
+            ><button
+              @click="((() => queuer.reset()))($event)"
+              :disabled="(queuer.state.isEmpty)"
+            >
+              Reset Queue</button
+            ><button
+              @click="((() => queuer.start()))($event)"
+              :disabled="(queuer.state.isRunning)"
+            >
+              Start Processing</button
+            ><button
+              @click="((() => queuer.stop()))($event)"
+              :disabled="(!queuer.state.isRunning)"
+            >
+              Stop Processing
+            </button>
+          </div>
+          <pre
+            :style="({ marginTop: '20px' })"
+            x-text="(JSON.stringify(queuer.state, null, 2))"
+          ></pre>
+        </div>
+        <hr />
+        <div x-data="search">
+          <h1>TanStack Pacer createQueuedState Example 2</h1>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Current Range:<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(currentValue)"
+                @input="((handleRangeChange))($event)"
+                :style="({ width: '100%' })" /><span
+                x-text="(currentValue)"
+              ></span
+            ></label>
+          </div>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Queued Range (Readonly):<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(queuedValue)"
+                disabled
+                :style="({ width: '100%' })" /><span
+                x-text="(queuedValue)"
+              ></span
+            ></label>
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Queue Size:</td>
+                <td x-text="(queuer.state.size)"></td>
+              </tr>
+              <tr>
+                <td>Queue Full:</td>
+                <td x-text="(queuer.state.isFull ? 'Yes' : 'No')"></td>
+              </tr>
+              <tr>
+                <td>Queue Empty:</td>
+                <td x-text="(queuer.state.isEmpty ? 'Yes' : 'No')"></td>
+              </tr>
+              <tr>
+                <td>Queue Idle:</td>
+                <td x-text="(queuer.state.isIdle ? 'Yes' : 'No')"></td>
+              </tr>
+              <tr>
+                <td>Queuer Status:</td>
+                <td x-text="(queuer.state.status)"></td>
+              </tr>
+              <tr>
+                <td>Values Submitted:</td>
+                <td x-text="(submittedCount)"></td>
+              </tr>
+              <tr>
+                <td>Items Processed:</td>
+                <td x-text="(queuer.state.executionCount)"></td>
+              </tr>
+              <tr>
+                <td>Pending Items:</td>
+                <td x-text="(queuer.state.size)"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div :style="({ color: '#666', fontSize: '0.9em' })">
+            <p>Queued with 100ms wait time</p>
+          </div>
+          <pre
+            :style="({ marginTop: '20px' })"
+            x-text="(JSON.stringify(queuer.state, null, 2))"
+          ></pre>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

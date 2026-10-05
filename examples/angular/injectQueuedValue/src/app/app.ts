@@ -1,35 +1,28 @@
 import { Component, signal } from '@angular/core'
+import { JsonPipe } from '@angular/common'
 import { injectQueuedValue } from '@tanstack/angular-pacer'
 import { InputApp } from './inputapp'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  styleUrl: './app.css',
-  imports: [InputApp],
+  imports: [JsonPipe, InputApp],
 })
 export class App {
-  protected readonly source = signal('')
-
-  // A queued value: changes are applied in-order, with an optional delay between items.
-  // `value()` is the current processed value, and `items()` exposes the pending queue.
-  protected readonly queued = injectQueuedValue(this.source, { wait: 500 }, (state) => ({
-    items: state.items,
-  }))
-
-  protected onInput(value: string): void {
-    // Updating `source` automatically enqueues the latest value (via injectQueuedValue's internal effect)
-    this.source.set(value)
-  }
-
-  protected enqueueRandom(): void {
-    // You can also enqueue values directly without touching `source`
-    this.queued.addItem(Math.random().toFixed(4))
-  }
-
-  protected clear(): void {
-    this.source.set('')
-    // If you only want the queued output to change (without changing source), you could do:
-    // this.queued.addItem('');
+  readonly source = signal('')
+  readonly currentValue = signal(50)
+  readonly instantExecutions = signal(1)
+  readonly queued = injectQueuedValue(this.source, '', { maxSize: 25, wait: 500 }, (state) => state)
+  readonly queuer = this.queued.queuer
+  readonly rangeQueued = injectQueuedValue(
+    this.currentValue,
+    50,
+    { maxSize: 100, wait: 100 },
+    (state) => state,
+  )
+  readonly rangeQueue = this.rangeQueued.queuer
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
   }
 }

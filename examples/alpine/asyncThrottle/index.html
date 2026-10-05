@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine asyncThrottle</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="demo">
+          <h1>TanStack Pacer asyncThrottle Example</h1>
+          <div>
+            <input
+              type="search"
+              :value="(searchText)"
+              @input="(((e) => {
+    const newValue = e.target.value;
+    searchText = newValue;
+    throttledSetSearch(newValue);
+}))($event)"
+              placeholder="Type to search..."
+              :style="({ width: '100%' })"
+            /><template x-if="(loading)"><div>Loading...</div></template>
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Instant Search:</td>
+                <td x-text="(searchText)"></td>
+              </tr>
+              <tr>
+                <td>Throttled Search:</td>
+                <td x-text="(throttledSearchText)"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <h3>Search Results:</h3>
+            <ul>
+              <template x-for="(result, i) in (searchResults)" :key="i"
+                ><li x-text="(result)"></li
+              ></template>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

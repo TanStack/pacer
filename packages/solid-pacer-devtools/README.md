@@ -85,14 +85,14 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
   - Easily integrate with your own state management library of choice
   - Persist state to local or session storage for some utilities like rate limiting and queuing
 - **Convenient Hooks**
-  - Reduce boilerplate code with pre-built hooks like `useDebouncedCallback`, `useThrottledValue`, and `useQueuedState`, and more.
+  - Framework adapters provide lifecycle-owned utilities and state/value helpers. React, Preact, and Octane also provide callback-only hooks.
   - Multiple layers of abstraction to choose from depending on your use case.
   - Works with each framework's default state management solutions, or with whatever custom state management library that you prefer.
 - **Type Safety**
   - Full type safety with TypeScript that makes sure that your functions will always be called with the correct arguments
   - Generics for flexible and reusable utilities
 - **Framework Adapters**
-  - React, Solid, and more
+  - React, Preact, Solid, Angular, Vue, Svelte, Lit, Alpine, Ember, and Octane
 - **Tree Shaking**
   - We, of course, get tree-shaking right for your applications by default, but we also provide extra deep imports for each utility, making it easier to embed these utilities into your libraries without increasing the bundle-phobia reports of your library.
 
@@ -107,6 +107,12 @@ A lightweight timing and scheduling library for debouncing, throttling, rate lim
 > - [**Preact Pacer**](https://tanstack.com/pacer/latest/docs/framework/preact)
 > - [**Solid Pacer**](https://tanstack.com/pacer/latest/docs/framework/solid)
 > - [**Angular Pacer**](https://tanstack.com/pacer/latest/docs/framework/angular)
+> - [**Vue Pacer**](https://tanstack.com/pacer/latest/docs/framework/vue)
+> - [**Svelte Pacer**](https://tanstack.com/pacer/latest/docs/framework/svelte)
+> - [**Lit Pacer**](https://tanstack.com/pacer/latest/docs/framework/lit)
+> - [**Alpine Pacer**](https://tanstack.com/pacer/latest/docs/framework/alpine)
+> - [**Ember Pacer**](https://tanstack.com/pacer/latest/docs/framework/ember)
+> - [**Octane Pacer**](https://tanstack.com/pacer/latest/docs/framework/octane)
 > - Svelte Pacer - needs a contributor!
 > - Vue Pacer - needs a contributor!
 

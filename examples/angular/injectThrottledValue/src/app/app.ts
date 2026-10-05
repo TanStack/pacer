@@ -1,40 +1,51 @@
 import { Component, signal } from '@angular/core'
+import { JsonPipe } from '@angular/common'
 import { injectThrottledValue } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
+  imports: [JsonPipe],
 })
 export class App {
-  // Immediate input
-  protected readonly instantInput = signal('')
-
-  // Throttled value (500ms) + throttler state
-  protected readonly throttled = injectThrottledValue(
-    this.instantInput,
-    { wait: 500 },
-    (state) => ({
-      isPending: state.isPending,
-    }),
+  readonly instantCount = signal(0)
+  readonly search = signal('')
+  readonly currentValue = signal(50)
+  readonly instantExecutions = signal(1)
+  readonly controlledCount = injectThrottledValue(
+    this.instantCount,
+    0,
+    () => ({ wait: 1000 }),
+    (state) => state,
   )
-  protected readonly throttler = this.throttled.throttler
-
-  protected onInput(e: Event): void {
-    const v = (e.target as HTMLInputElement).value
-    this.instantInput.set(v)
+  readonly countRunner = this.controlledCount.throttler
+  readonly controlledSearch = injectThrottledValue(
+    this.search,
+    '',
+    () => ({ wait: 1000 }),
+    (state) => state,
+  )
+  readonly searchRunner = this.controlledSearch.throttler
+  readonly controlledValue = injectThrottledValue(
+    this.currentValue,
+    50,
+    () => ({ wait: 250 }),
+    (state) => state,
+  )
+  readonly rangeRunner = this.controlledValue.throttler
+  increment(): void {
+    const next = this.instantCount() + 1
+    this.instantCount.set(next)
   }
-
-  protected clear(): void {
-    this.instantInput.set('')
+  onSearch(value: string): void {
+    this.search.set(value)
   }
-
-  protected hammerInput(): void {
-    for (let i = 0; i < 12; i++) {
-      this.instantInput.set(`${Date.now()}-${i}`)
-    }
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
   }
-
-  protected cancelPending(): void {
-    this.throttler.cancel()
+  reduction(): number {
+    const count = this.instantExecutions()
+    return count ? Math.round(((count - this.rangeRunner.state().executionCount) / count) * 100) : 0
   }
 }

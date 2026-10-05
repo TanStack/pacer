@@ -1,0 +1,2041 @@
+{
+  "baseline": "examples/react; use Solid for native reactive implementation patterns",
+  "requirements": [
+    "same scenarios, controls, labels, defaults, markup, and styles",
+    "native framework state and lifecycle ownership",
+    "equivalent behavioral assertions",
+    "TanStack Devtools host integration",
+    "rendered desktop and narrow viewport comparison"
+  ],
+  "examples": {
+    "asyncBatch": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "asyncDebounce": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "asyncRateLimit": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "asyncRetry": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "asyncThrottle": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "batch": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "debounce": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "queue": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "rateLimit": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "react-query-debounced-prefetch": {
+      "vue": {
+        "status": "verified",
+        "example": "vue-query-debounced-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "published Query adapter"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "example": "svelte-query-debounced-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "published Query adapter"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "example": "lit-query-debounced-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "published Query adapter"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "example": "query-debounced-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "Query Core observers subscribe and clean up in the native framework lifecycle"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "example": "query-debounced-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "Query Core observers subscribe and clean up in the native framework lifecycle"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "example": "query-debounced-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "Query Core observers subscribe and clean up in the native framework lifecycle"
+        ]
+      }
+    },
+    "react-query-queued-prefetch": {
+      "vue": {
+        "status": "verified",
+        "example": "vue-query-queued-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "published Query adapter"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "example": "svelte-query-queued-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "published Query adapter"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "example": "lit-query-queued-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "published Query adapter"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "example": "query-queued-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "Query Core observers subscribe and clean up in the native framework lifecycle"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "example": "query-queued-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "Query Core observers subscribe and clean up in the native framework lifecycle"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "example": "query-queued-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "Query Core observers subscribe and clean up in the native framework lifecycle"
+        ]
+      }
+    },
+    "react-query-throttled-prefetch": {
+      "vue": {
+        "status": "verified",
+        "example": "vue-query-throttled-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "published Query adapter"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "example": "svelte-query-throttled-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "published Query adapter"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "example": "lit-query-throttled-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "published Query adapter"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "example": "query-throttled-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "Query Core observers subscribe and clean up in the native framework lifecycle"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "example": "query-throttled-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "Query Core observers subscribe and clean up in the native framework lifecycle"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "example": "query-throttled-prefetch",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "mocked fetches verify scheduling and reuse of cached detail",
+          "post-list computed styles and bounds match React at 1280px and 390px",
+          "native framework type checks pass",
+          "Query Core observers subscribe and clean up in the native framework lifecycle"
+        ]
+      }
+    },
+    "throttle": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useAsyncBatchedCallback": {
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useAsyncBatcher": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      }
+    },
+    "useAsyncDebouncedCallback": {
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useAsyncDebouncer": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      }
+    },
+    "useAsyncQueuedState": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useAsyncQueuer": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      }
+    },
+    "useAsyncRateLimiter": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      }
+    },
+    "useAsyncThrottledCallback": {
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useAsyncThrottler": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      }
+    },
+    "useBatchedCallback": {
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useBatcher": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      }
+    },
+    "useDebouncedCallback": {
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useDebouncedState": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useDebouncedValue": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useDebouncer": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "React counter, search, range, flush, and cancellation assertions",
+          "real TanStack Devtools host opens, receives utility state, and reopens",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework template type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "React counter, search, range, flush, and cancellation assertions",
+          "real TanStack Devtools host opens, receives utility state, and reopens",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework template type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "React counter, search, range, flush, and cancellation assertions",
+          "real TanStack Devtools host opens, receives utility state, and reopens",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework template type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "React counter, search, range, flush, and cancellation assertions",
+          "real TanStack Devtools host opens, receives utility state, and reopens",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework template type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "React counter, search, range, flush, and cancellation assertions",
+          "real TanStack Devtools host opens, receives utility state, and reopens",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework template type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "React counter, search, range, flush, and cancellation assertions",
+          "real TanStack Devtools host opens, receives utility state, and reopens",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework template type check"
+        ]
+      }
+    },
+    "useQueuedState": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useQueuedValue": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useQueuer": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      }
+    },
+    "useRateLimitedCallback": {
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useRateLimitedState": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useRateLimitedValue": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useRateLimiter": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      }
+    },
+    "useThrottledCallback": {
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useThrottledState": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useThrottledValue": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native framework TypeScript checks pass",
+          "additional rate-limit readout and queue peek checks cover reactive method results"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px with synchronized clocks",
+          "native TypeScript checks pass",
+          "native lifecycle owns utility initialization and cleanup"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Ember TypeScript checks pass",
+          "template helpers own utility initialization and cleanup"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React behavior assertions pass in native framework browser tests",
+          "computed styles and bounds match React at 1280px and 390px",
+          "native Octane TypeScript checks pass",
+          "official TanStack Devtools host used where the React example includes devtools"
+        ]
+      }
+    },
+    "useThrottler": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "ported React scenario behavior tests",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "Pacer plugin mounts in TanStack Devtools, receives live state, and reopens",
+          "native example type check"
+        ]
+      }
+    },
+    "util-comparison": {
+      "vue": {
+        "status": "verified",
+        "evidence": [
+          "five browser checks cover all utilities, flush controls, pending/synced colors, rejection counts and tooltip",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework type check passes",
+          "TanStack Devtools host mounts the Pacer plugin"
+        ]
+      },
+      "svelte": {
+        "status": "verified",
+        "evidence": [
+          "five browser checks cover all utilities, flush controls, pending/synced colors, rejection counts and tooltip",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework type check passes",
+          "TanStack Devtools host mounts the Pacer plugin"
+        ]
+      },
+      "lit": {
+        "status": "verified",
+        "evidence": [
+          "five browser checks cover all utilities, flush controls, pending/synced colors, rejection counts and tooltip",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework type check passes",
+          "TanStack Devtools host mounts the Pacer plugin"
+        ]
+      },
+      "alpine": {
+        "status": "verified",
+        "evidence": [
+          "five browser checks cover all utilities, flush controls, pending/synced colors, rejection counts and tooltip",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework type check passes",
+          "TanStack Devtools host mounts the Pacer plugin"
+        ]
+      },
+      "ember": {
+        "status": "verified",
+        "evidence": [
+          "five browser checks cover all utilities, flush controls, pending/synced colors, rejection counts and tooltip",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework type check passes",
+          "TanStack Devtools host mounts the Pacer plugin"
+        ]
+      },
+      "octane": {
+        "status": "verified",
+        "evidence": [
+          "five browser checks cover all utilities, flush controls, pending/synced colors, rejection counts and tooltip",
+          "computed styles and layout bounds match React at 1280px and 390px",
+          "native framework type check passes",
+          "TanStack Devtools host mounts the Pacer plugin"
+        ]
+      }
+    }
+  },
+  "adapters": {
+    "vue": {
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
+      "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
+      "provider-defaults": "verified: native provider tests cover reactive defaults, retained utility identity, and local overrides",
+      "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
+      "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
+      "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
+      "reactive-selection": "verified: selection.test.ts"
+    },
+    "svelte": {
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
+      "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
+      "provider-defaults": "verified: native provider tests cover reactive defaults, retained utility identity, and local overrides",
+      "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
+      "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
+      "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
+      "reactive-selection": "verified: selection.test.ts"
+    },
+    "lit": {
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
+      "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
+      "provider-defaults": "implemented and tested: subtree inheritance across shadow roots, reactive updates, local overrides, and reconnection",
+      "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests; host disconnection and reconnection preserve the utility and restore subscriptions",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
+      "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
+      "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
+      "reactive-selection": "verified: selection.test.ts"
+    },
+    "alpine": {
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
+      "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
+      "provider-defaults": "verified: native provider tests cover reactive defaults, retained utility identity, and local overrides",
+      "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
+      "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
+      "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
+      "reactive-selection": "verified: selection.test.ts"
+    },
+    "ember": {
+      "api-contracts": "verified: native instance, state, and value APIs cover equivalent scheduling capabilities; event handlers use instance methods",
+      "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
+      "provider-defaults": "verified: native provider tests cover reactive defaults, retained utility identity, and local overrides",
+      "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests; native queue initialization tests cover post-render callbacks and restored state precedence",
+      "helper-semantics": "native instance methods and state/value/queue helpers preserve lifecycle and scheduling behavior",
+      "jsdoc": "instance and state/value helper documentation with native examples and generated references",
+      "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
+      "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
+      "reactive-selection": "verified: tests/integration/reactive-selection.test.gts in native Ember browser suite"
+    },
+    "octane": {
+      "api-contracts": "verified: all 27 React utility and convenience APIs have native equivalents; constructor and helper tests cover stable instances, reactive options, state, and queue return shapes",
+      "child-subscriptions": "verified: native child selection and destruction tests; child lifetime is independent of the owning utility",
+      "provider-defaults": "verified: native provider tests cover reactive defaults, retained utility identity, and local overrides",
+      "cleanup": "verified: constructor disposal, child subscription teardown, and pending callback cancellation tests",
+      "helper-semantics": "verified: native callback/state/value/queue helper tests and matching browser scenarios for every React helper example",
+      "jsdoc": "all constructors and callback/state/value helpers expanded with native examples; references regenerated",
+      "guides": "reviewed: all 11 guides, native adapter overview, provider and child subscription recipes, return shapes, lifecycle ownership, and runtime imports",
+      "devtools": "verified in all 10 constructor examples; native mount and cleanup recipes documented",
+      "reactive-selection": "verified: selection.test.ts"
+    }
+  }
+}

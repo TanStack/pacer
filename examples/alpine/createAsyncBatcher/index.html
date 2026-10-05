@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer useAsyncBatcher Example</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="demo">
+          <h1>TanStack Pacer createAsyncBatcher Example</h1>
+          <div>
+            <h3>Batch Status</h3>
+            <div>
+              Current Batch Size:
+              <span x-text="(asyncBatcher.state.size)"></span>
+            </div>
+            <div>Max Batch Size: 5</div>
+            <div>
+              Is Executing:
+              <span
+                x-text="(asyncBatcher.state.isExecuting ? 'Yes' : 'No')"
+              ></span>
+            </div>
+            <div>
+              Status: <span x-text="(asyncBatcher.state.status)"></span>
+            </div>
+            <div>
+              Successful Batches:
+              <span x-text="(asyncBatcher.state.successCount)"></span>
+            </div>
+            <div>
+              Failed Batches:
+              <span x-text="(asyncBatcher.state.errorCount)"></span>
+            </div>
+            <div>
+              Total Items Processed:
+              <span x-text="(asyncBatcher.state.totalItemsProcessed)"></span>
+            </div>
+          </div>
+          <div>
+            <h3>Current Batch Items</h3>
+            <div style="min-height: 100px">
+              <template x-if="(asyncBatcher.state.items.length === 0)"
+                ><em>No items in current batch</em></template
+              ><template x-if="!((asyncBatcher.state.items.length === 0))"
+                ><template
+                  x-for="(item, index) in (asyncBatcher.state.items)"
+                  :key="index"
+                  ><div
+                    x-text="`${index + 1}: ${item.value} (added at ${new Date(item.timestamp).toLocaleTimeString()})`"
+                  ></div></template
+              ></template>
+            </div>
+          </div>
+          <div>
+            <h3>Controls</h3>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                max-width: 600px;
+              "
+            >
+              <button @click="((() => addItem(false)))($event)">
+                Add Regular Item</button
+              ><button @click="((() => addItem(true)))($event)">
+                Add Urgent Item (Processes Immediately)</button
+              ><button
+                :disabled="(asyncBatcher.state.size === 0 || asyncBatcher.state.isExecuting)"
+                @click="((executeCurrentBatch))($event)"
+              >
+                Process Current Batch Now</button
+              ><button
+                @click="((() => asyncBatcher.clear()))($event)"
+                :disabled="(asyncBatcher.state.size === 0 || asyncBatcher.state.isExecuting)"
+              >
+                Clear Current Batch
+              </button>
+            </div>
+          </div>
+          <div>
+            <h3>
+              Processed Batches (<span x-text="(processedBatches.length)"></span
+              >)
+            </h3>
+            <div>
+              <template x-if="(processedBatches.length === 0)"
+                ><em>No batches processed yet</em></template
+              ><template x-if="!((processedBatches.length === 0))"
+                ><template
+                  x-for="(batch, index) in (processedBatches)"
+                  :key="index"
+                  ><div>
+                    <strong>Batch <span x-text="(index + 1)"></span></strong>
+                    (processed at<span x-text="(' ')"></span
+                    ><span
+                      x-text="(new Date(batch.timestamp).toLocaleTimeString())"
+                    ></span
+                    >)
+                    <div x-text="(batch.result)"></div></div></template
+              ></template>
+            </div>
+          </div>
+          <template x-if="(errors.length > 0)"
+            ><div>
+              <h3>Errors (<span x-text="(errors.length)"></span>)</h3>
+              <div>
+                <template x-for="(error, index) in (errors)" :key="index"
+                  ><div x-text="(error)"></div
+                ></template>
+              </div>
+              <button @click="((() => (errors = [])))($event)">
+                Clear Errors
+              </button>
+            </div></template
+          >
+          <pre
+            style="margin-top: 20px"
+            x-text="(JSON.stringify(asyncBatcher.state, null, 2))"
+          ></pre>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

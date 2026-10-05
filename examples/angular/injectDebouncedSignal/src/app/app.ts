@@ -1,36 +1,56 @@
 import { Component, signal } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
+import { JsonPipe } from '@angular/common'
 import { injectDebouncedSignal } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  imports: [JsonPipe],
 })
 export class App {
-  protected readonly instantValue = signal('')
-
-  protected readonly debounced = injectDebouncedSignal('', { wait: 500 }, (state) => ({
-    isPending: state.isPending,
-  }))
-
-  protected onInput(event: Event): void {
-    const target = event.target as HTMLInputElement
-    const value = target.value
-
-    this.instantValue.set(value)
-    this.debounced.set(value)
+  readonly instantCount = signal(0)
+  readonly search = signal('')
+  readonly currentValue = signal(50)
+  readonly instantExecutions = signal(0)
+  readonly controlledCount = injectDebouncedSignal(
+    0,
+    () => ({ wait: 500 }),
+    (state) => state,
+  )
+  readonly countRunner = this.controlledCount.debouncer
+  readonly controlledSearch = injectDebouncedSignal(
+    '',
+    () => {
+      // Update options when the signal changes so disabling cancels pending work.
+      // The callback reads the current event value before the next effect runs.
+      this.search()
+      return { wait: 500, enabled: () => this.search().length > 2 }
+    },
+    (state) => state,
+  )
+  readonly searchRunner = this.controlledSearch.debouncer
+  readonly controlledValue = injectDebouncedSignal(
+    50,
+    () => ({ wait: 250 }),
+    (state) => state,
+  )
+  readonly rangeRunner = this.controlledValue.debouncer
+  increment(): void {
+    const next = this.instantCount() + 1
+    this.instantCount.set(next)
+    this.controlledCount.set(next)
   }
-
-  protected clear(): void {
-    this.instantValue.set('')
-    this.debounced.debouncer.cancel()
-    this.debounced.set('')
-    this.debounced.debouncer.flush()
+  onSearch(value: string): void {
+    this.search.set(value)
+    this.controlledSearch.set(value)
   }
-
-  protected cancelPending(): void {
-    this.debounced.debouncer.cancel()
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
+    this.controlledValue.set(value)
+  }
+  reduction(): number {
+    const count = this.instantExecutions()
+    return count ? Math.round(((count - this.rangeRunner.state().executionCount) / count) * 100) : 0
   }
 }

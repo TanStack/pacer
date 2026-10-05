@@ -1,76 +1,63 @@
-import { Component } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
-import { injectQueuer } from '@tanstack/angular-pacer'
+import { Component, signal } from '@angular/core'
+import { queue } from '@tanstack/angular-pacer'
 
-@Component({
-  selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css',
-})
+@Component({ selector: 'app-root', templateUrl: './app.html' })
 export class App {
-  protected readonly processedItems: Array<string> = []
-
-  // Queuer example - processes items one at a time with a 1 second delay
-  protected readonly queuer = injectQueuer<
-    string,
-    {
-      items: Array<string>
-      size: number
-      status: string
-      executionCount: number
-      isEmpty: boolean
-      isFull: boolean
-      isRunning: boolean
-    }
-  >(
+  readonly source = signal('')
+  readonly currentValue = signal(50)
+  readonly rangeValue = signal(50)
+  readonly instantExecutions = signal(0)
+  readonly numberItems = signal<Array<number>>([])
+  readonly textItems = signal<Array<string>>([])
+  readonly rangeItems = signal<Array<number>>([])
+  readonly numberProcessed = signal(0)
+  readonly textProcessed = signal(0)
+  readonly rangeProcessed = signal(0)
+  readonly queuedText = signal('')
+  private readonly numberRunner = queue<number>(
     (item) => {
-      console.log('Processing item:', item)
-      this.processedItems.push(item)
+      console.log('Processed', item)
     },
     {
-      started: false,
-      wait: 1000, // Wait 1 second between processing items
-      maxSize: 10,
+      maxSize: 25,
+      wait: 1000,
+      onItemsChange: (queuer) => this.numberItems.set(queuer.peekAllItems()),
+      onExecute: (_item, queuer) => this.numberProcessed.set(queuer.store.state.executionCount),
     },
-    (state) => ({
-      items: state.items,
-      size: state.size,
-      status: state.status,
-      executionCount: state.executionCount,
-      isEmpty: state.isEmpty,
-      isFull: state.isFull,
-      isRunning: state.isRunning,
-    }),
   )
-
-  protected addItem(item: string): void {
-    if (!this.queuer.state().isFull) {
-      this.queuer.addItem(item)
-    }
+  private readonly textRunner = queue<string>(
+    (item) => {
+      this.queuedText.set(item)
+    },
+    {
+      maxSize: 100,
+      wait: 500,
+      onItemsChange: (queuer) => this.textItems.set(queuer.peekAllItems()),
+      onExecute: (_item, queuer) => this.textProcessed.set(queuer.store.state.executionCount),
+    },
+  )
+  private readonly rangeRunner = queue<number>(
+    (item) => {
+      this.rangeValue.set(item)
+    },
+    {
+      maxSize: 100,
+      wait: 100,
+      onItemsChange: (queuer) => this.rangeItems.set(queuer.peekAllItems()),
+      onExecute: (_item, queuer) => this.rangeProcessed.set(queuer.store.state.executionCount),
+    },
+  )
+  addNumber(): void {
+    const items = this.numberItems()
+    this.numberRunner(items.length ? items[items.length - 1]! + 1 : 1)
   }
-
-  protected processNext(): void {
-    const item = this.queuer.getNextItem()
-    if (item !== undefined) {
-      console.log('Manually processed item:', item)
-    }
+  onSearch(value: string): void {
+    this.source.set(value)
+    this.textRunner(value)
   }
-
-  protected startProcessing(): void {
-    this.queuer.start()
-  }
-
-  protected stopProcessing(): void {
-    this.queuer.stop()
-  }
-
-  protected clearQueue(): void {
-    this.queuer.clear()
-  }
-
-  protected resetQueue(): void {
-    this.queuer.reset()
-    this.processedItems.length = 0
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
+    this.rangeRunner(value)
   }
 }

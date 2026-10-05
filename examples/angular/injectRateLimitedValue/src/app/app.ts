@@ -1,86 +1,72 @@
 import { Component, signal } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
+import { JsonPipe } from '@angular/common'
 import { injectRateLimitedValue } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  imports: [JsonPipe],
 })
 export class App {
-  protected readonly windowType = signal<'fixed' | 'sliding'>('fixed')
-
-  // This is the "source" value that changes immediately on every click
-  protected readonly instantCount = signal(0)
-
-  // We'll display the rate-limited version of `instantCount` in the UI
-  protected readonly limitedCount = signal(0)
-
-  protected readonly executionHistory: Array<{
-    timestamp: string
-    count: number
-    rejected: boolean
-  }> = []
-
-  // Rate-limited value: allows 5 updates per 5 seconds
-  protected readonly rateLimited = injectRateLimitedValue<
-    number,
-    {
-      executionCount: number
-      rejectionCount: number
-      executionTimes: Array<number>
-    }
-  >(
+  readonly instantCount = signal(0)
+  readonly search = signal('')
+  readonly currentValue = signal(50)
+  readonly instantExecutions = signal(1)
+  readonly countWindow = signal<'fixed' | 'sliding'>('fixed')
+  readonly searchWindow = signal<'fixed' | 'sliding'>('fixed')
+  readonly rangeWindow = signal<'fixed' | 'sliding'>('fixed')
+  readonly controlledCount = injectRateLimitedValue(
     this.instantCount,
-    {
+    0,
+    () => ({
       limit: 5,
-      window: 5000, // 5 seconds
-      windowType: this.windowType(),
-      onReject: () => {
-        // The value update was rejected; log the attempted value
-        this.executionHistory.push({
-          timestamp: new Date().toLocaleTimeString(),
-          count: this.instantCount(),
-          rejected: true,
-        })
-      },
-    },
-    (state) => ({
-      executionCount: state.executionCount,
-      rejectionCount: state.rejectionCount,
-      executionTimes: state.executionTimes,
+      window: 5000,
+      windowType: this.countWindow(),
+      onReject: (limiter) =>
+        console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
     }),
+    (state) => state,
   )
-
-  // Convenience accessors for the template (matches the old names)
-  protected readonly rateLimiter = this.rateLimited.rateLimiter
-  protected readonly rateLimitedCount = this.rateLimited
-
-  protected increment(): void {
-    // Update instant count immediately; rateLimited value tracks it automatically
-    this.instantCount.update((c) => c + 1)
-
-    // If the update was accepted, reflect the latest rate-limited value + log it
-    // (Rejected updates are logged via `onReject`)
-    this.limitedCount.set(this.rateLimitedCount())
-    this.executionHistory.push({
-      timestamp: new Date().toLocaleTimeString(),
-      count: this.rateLimitedCount(),
-      rejected: false,
-    })
+  readonly countRunner = this.controlledCount.rateLimiter
+  readonly controlledSearch = injectRateLimitedValue(
+    this.search,
+    '',
+    () => ({
+      limit: 5,
+      window: 5000,
+      windowType: this.searchWindow(),
+      onReject: (limiter) =>
+        console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
+    }),
+    (state) => state,
+  )
+  readonly searchRunner = this.controlledSearch.rateLimiter
+  readonly controlledValue = injectRateLimitedValue(
+    this.currentValue,
+    50,
+    () => ({
+      limit: 20,
+      window: 2000,
+      windowType: this.rangeWindow(),
+      onReject: (limiter) =>
+        console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
+    }),
+    (state) => state,
+  )
+  readonly rangeRunner = this.controlledValue.rateLimiter
+  increment(): void {
+    const next = this.instantCount() + 1
+    this.instantCount.set(next)
   }
-
-  protected reset(): void {
-    this.rateLimiter.reset()
-    this.instantCount.set(0)
-    this.limitedCount.set(0)
-    this.executionHistory.length = 0
+  onSearch(value: string): void {
+    this.search.set(value)
   }
-
-  protected setWindowType(type: 'fixed' | 'sliding'): void {
-    this.windowType.set(type)
-    // Note: windowType change requires recreating the rate limiter in a real app.
-    // For this example, we just update the signal.
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
+  }
+  reduction(): number {
+    const count = this.instantExecutions()
+    return count ? Math.round(((count - this.rangeRunner.state().executionCount) / count) * 100) : 0
   }
 }

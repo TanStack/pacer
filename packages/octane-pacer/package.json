@@ -1,0 +1,80 @@
+{
+  "name": "@tanstack/octane-pacer",
+  "version": "0.1.0",
+  "description": "Octane adapter for TanStack Pacer",
+  "author": "Tanner Linsley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanStack/pacer.git",
+    "directory": "packages/octane-pacer"
+  },
+  "homepage": "https://tanstack.com/pacer",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/tannerlinsley"
+  },
+  "keywords": [
+    "octane",
+    "debounce",
+    "throttle",
+    "rate-limit",
+    "queue",
+    "async"
+  ],
+  "scripts": {
+    "clean": "premove ./build ./dist",
+    "lint:fix": "eslint ./src --fix",
+    "test:eslint": "eslint ./src",
+    "test:lib": "vitest --passWithNoTests",
+    "test:lib:dev": "pnpm test:lib --watch",
+    "test:types": "tsrx-tsc --noEmit",
+    "build": "tsdown",
+    "test:build": "publint --strict && node ../../scripts/verify-package.ts"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./async-batcher": "./dist/async-batcher/index.js",
+    "./async-debouncer": "./dist/async-debouncer/index.js",
+    "./async-queuer": "./dist/async-queuer/index.js",
+    "./async-rate-limiter": "./dist/async-rate-limiter/index.js",
+    "./async-throttler": "./dist/async-throttler/index.js",
+    "./batcher": "./dist/batcher/index.js",
+    "./debouncer": "./dist/debouncer/index.js",
+    "./provider": "./dist/provider/index.js",
+    "./queuer": "./dist/queuer/index.js",
+    "./rate-limiter": "./dist/rate-limiter/index.js",
+    "./throttler": "./dist/throttler/index.js",
+    "./types": "./dist/types/index.js",
+    "./utils": "./dist/utils/index.js",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.22.2"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@tanstack/octane-store": "^0.12.3",
+    "@tanstack/pacer": "workspace:*"
+  },
+  "devDependencies": {
+    "@tsrx/typescript-plugin": "^0.6.1",
+    "octane": "0.1.36",
+    "vite": "^8.3.2"
+  },
+  "peerDependencies": {
+    "octane": ">=0.1.36 <0.2.0"
+  },
+  "octane": {
+    "hookSlots": {
+      "manual": [
+        "dist"
+      ]
+    }
+  }
+}

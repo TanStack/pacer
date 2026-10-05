@@ -3,7 +3,7 @@ id: SolidBatcherOptions
 title: SolidBatcherOptions
 ---
 
-Defined in: [batcher/createBatcher.ts:9](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L9)
+Defined in: [batcher/createBatcher.ts:11](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L11)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [batcher/createBatcher.ts:9](https://github.com/TanStack/pacer/blob/
 optional onUnmount?: (batcher) => void;
 ```
 
-Defined in: [batcher/createBatcher.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L17)
+Defined in: [batcher/createBatcher.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/batcher/createBatcher.ts#L19)
 
 Optional callback invoked when the owning component unmounts. Receives the batcher instance.
 When provided, replaces the default cleanup (cancel); use it to call flush(), reset(), cancel(), add logging, etc.

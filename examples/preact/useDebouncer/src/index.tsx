@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import { render } from 'preact'
 import type { JSX } from 'preact'
 import { useDebouncer } from '@tanstack/preact-pacer/debouncer'
@@ -7,25 +7,26 @@ import { PacerProvider } from '@tanstack/preact-pacer/provider'
 function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
   const [debouncedCount, setDebouncedCount] = useState(0)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const debouncer = useDebouncer(setDebouncedCount, {
-    wait: 800,
-    enabled: () => instantCount > 2, // optional, defaults to true
-    // leading: true, // optional, defaults to false
-  })
-  // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => ({ status: state.status, executionCount: state.executionCount }),
+  const debouncer = useDebouncer(
+    setDebouncedCount,
+    {
+      wait: 800,
+      enabled: () => instantCountRef.current > 2, // optional, defaults to true
+      // leading: true, // optional, defaults to false
+    },
+    // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => ({ status: state.status, executionCount: state.executionCount }),
+  )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      debouncer.maybeExecute(newInstantCount) // debounced state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    debouncer.maybeExecute(nextCount)
   }
 
   return (
@@ -89,19 +90,24 @@ function App1() {
 
 function App2() {
   const [searchText, setSearchText] = useState('')
+  const searchTextRef = useRef('')
   const [debouncedSearchText, setDebouncedSearchText] = useState('')
 
   // Lower-level useDebouncer hook - requires you to manage your own state
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const setSearchDebouncer = useDebouncer(setDebouncedSearchText, {
-    wait: 500,
-    enabled: () => searchText.length > 2, // optional, defaults to true
-  })
-  // Alternative to setSearchDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => ({ isPending: state.isPending, executionCount: state.executionCount }),
+  const setSearchDebouncer = useDebouncer(
+    setDebouncedSearchText,
+    {
+      wait: 500,
+      enabled: () => searchTextRef.current.length > 2, // optional, defaults to true
+    },
+    // Alternative to setSearchDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => ({ isPending: state.isPending, executionCount: state.executionCount }),
+  )
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
+    searchTextRef.current = newValue
     setSearchText(newValue)
     setSearchDebouncer.maybeExecute(newValue)
   }
@@ -173,14 +179,20 @@ function App3() {
   const [currentValue, setCurrentValue] = useState(50)
   const [debouncedValue, setDebouncedValue] = useState(50)
   const [instantExecutionCount, setInstantExecutionCount] = useState(0)
+  const [wait, setWait] = useState(250)
+  const [enabled, setEnabled] = useState(true)
 
   // Lower-level useDebouncer hook - requires you to manage your own state
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const setValueDebouncer = useDebouncer(setDebouncedValue, {
-    wait: 250,
-  })
-  // Alternative to setValueDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => ({ isPending: state.isPending, executionCount: state.executionCount }),
+  const setValueDebouncer = useDebouncer(
+    setDebouncedValue,
+    {
+      wait,
+      enabled,
+    },
+    // Alternative to setValueDebouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => ({ isPending: state.isPending, executionCount: state.executionCount }),
+  )
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
@@ -192,6 +204,32 @@ function App3() {
   return (
     <div>
       <h1>TanStack Pacer useDebouncer Example 3</h1>
+      <fieldset>
+        <legend>Reactive options</legend>
+        <label>
+          Delay: {wait} ms
+          <input
+            type="range"
+            min="0"
+            max="1500"
+            step="50"
+            value={wait}
+            onInput={(event) => setWait(event.currentTarget.valueAsNumber)}
+          />
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={enabled}
+            onInput={(event) => setEnabled(event.currentTarget.checked)}
+          />
+          Enabled
+        </label>
+        <p>
+          Changing the delay affects the next scheduled call. Disabling cancels
+          pending work.
+        </p>
+      </fieldset>
       <div style={{ marginBottom: '20px' }}>
         <label>
           Current Range:
@@ -214,7 +252,7 @@ function App3() {
             min="0"
             max="100"
             value={debouncedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{debouncedValue}</span>
@@ -265,7 +303,7 @@ function App3() {
         </tbody>
       </table>
       <div style={{ color: '#666', fontSize: '0.9em' }}>
-        <p>Debounced to 250ms wait time</p>
+        <p>Debounced to {wait}ms wait time</p>
       </div>
       <div>
         <button onClick={() => setValueDebouncer.flush()}>Flush</button>

@@ -9,3 +9,9 @@
 pnpm-lock.yaml
 
 .angular
+
+test-results
+playwright-report
+
+# Native Ember browser test output
+**/dist-tests/

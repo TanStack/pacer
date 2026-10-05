@@ -11,7 +11,9 @@ function App1() {
     instantCount(),
     {
       wait: 1000,
-      // enabled: () => instantCount() > 2, // optional, defaults to true
+      // get enabled() {
+      //   return instantCount() > 2
+      // },
     },
     // Alternative to throttler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
     // (state) => ({
@@ -20,12 +22,9 @@ function App1() {
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setThrottledCount(newInstantCount) // throttled state update
-      return newInstantCount // instant state update
-    })
+    const newInstantCount = instantCount() + 1
+    setInstantCount(newInstantCount)
+    setThrottledCount(newInstantCount) // throttled state update
   }
 
   return (
@@ -65,13 +64,15 @@ function App1() {
 function App2() {
   const [instantSearch, setInstantSearch] = createSignal('')
 
-  // higher-level hook that uses React.createSignal with the state setter automatically throttled
+  // higher-level hook that uses Solid.createSignal with the state setter automatically throttled
   const [throttledSearch, setThrottledSearch, throttler] =
     createThrottledSignal(
       instantSearch(),
       {
         wait: 1000,
-        // enabled: () => instantSearch().length > 2, // optional, defaults to true
+        // get enabled() {
+        //   return instantSearch().length > 2
+        // },
       },
       // Alternative to throttler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
       // (state) => ({
@@ -176,7 +177,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue()}</span>
@@ -185,7 +186,7 @@ function App3() {
       <table>
         <tbody>
           <tr>
-            <td>Instant Executions:</td>
+            <td>Instant Execution Count:</td>
             <td>{instantExecutionCount()}</td>
           </tr>
           <throttler.Subscribe
@@ -196,24 +197,21 @@ function App3() {
             {(state) => (
               <>
                 <tr>
-                  <td>Throttled Executions:</td>
+                  <td>Throttled Execution Count:</td>
                   <td>{state().executionCount}</td>
                 </tr>
                 <tr>
                   <td>Saved Executions:</td>
-                  <td>{instantExecutionCount() - state().executionCount}</td>
-                </tr>
-                <tr>
-                  <td>% Reduction:</td>
                   <td>
-                    {instantExecutionCount() === 0
-                      ? '0'
-                      : Math.round(
+                    {instantExecutionCount() - state().executionCount} (
+                    {instantExecutionCount() > 0
+                      ? (
                           ((instantExecutionCount() - state().executionCount) /
                             instantExecutionCount()) *
-                            100,
-                        )}
-                    %
+                          100
+                        ).toFixed(2)
+                      : 0}
+                    % Reduction in execution calls)
                   </td>
                 </tr>
               </>
@@ -222,7 +220,7 @@ function App3() {
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
-        <p>Throttled with 250ms wait time</p>
+        <p>Throttled to 1 update per 250ms</p>
       </div>
     </div>
   )

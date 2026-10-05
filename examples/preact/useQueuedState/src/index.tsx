@@ -9,15 +9,16 @@ function App1() {
     console.log('processing item', item)
   }
 
-  // Note: useQueuedState requires items in selector, but we'll use Subscribe for reactive rendering
-  const [queueItems, addItem, queuer] = useQueuedState(processItem, {
-    maxSize: 25,
-    initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    started: false,
-    wait: 1000, // wait 1 second between processing items - wait is optional!
-    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-    // (state) => state,
-  })
+  const [queueItems, addItem, queuer] = useQueuedState(
+    processItem,
+    {
+      maxSize: 25,
+      initialItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      started: false,
+      wait: 1000, // wait 1 second between processing items - wait is optional!
+    },
+    (state) => ({ items: state.items }),
+  )
 
   return (
     <div>
@@ -110,7 +111,7 @@ function App1() {
 function App2() {
   const [currentValue, setCurrentValue] = useState(50)
   const [queuedValue, setQueuedValue] = useState(50)
-  const [instantExecutionCount, setInstantExecutionCount] = useState(0)
+  const [submittedCount, setSubmittedCount] = useState(0)
 
   // Queuer that processes a single value with delays
   const [, addItem, queuer] = useQueuedState(
@@ -121,15 +122,15 @@ function App2() {
       maxSize: 100,
       started: true,
       wait: 100,
-      // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-      // (state) => state,
     },
+    // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
   )
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
     setCurrentValue(newValue)
-    setInstantExecutionCount((c) => c + 1)
+    setSubmittedCount((c) => c + 1)
     addItem(newValue)
   }
 
@@ -158,7 +159,7 @@ function App2() {
             min="0"
             max="100"
             value={queuedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{queuedValue}</span>
@@ -199,29 +200,16 @@ function App2() {
                   <td>{status}</td>
                 </tr>
                 <tr>
-                  <td>Instant Executions:</td>
-                  <td>{instantExecutionCount}</td>
+                  <td>Values Submitted:</td>
+                  <td>{submittedCount}</td>
                 </tr>
                 <tr>
                   <td>Items Processed:</td>
                   <td>{executionCount}</td>
                 </tr>
                 <tr>
-                  <td>Saved Executions:</td>
-                  <td>{instantExecutionCount - executionCount}</td>
-                </tr>
-                <tr>
-                  <td>% Reduction:</td>
-                  <td>
-                    {instantExecutionCount === 0
-                      ? '0'
-                      : Math.round(
-                          ((instantExecutionCount - executionCount) /
-                            instantExecutionCount) *
-                            100,
-                        )}
-                    %
-                  </td>
+                  <td>Pending Items:</td>
+                  <td>{size}</td>
                 </tr>
               </>
             )}

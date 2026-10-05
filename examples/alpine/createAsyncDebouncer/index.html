@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer Example</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="lifecycle" @keydown.document="toggleMounted($event)">
+          <template x-if="mounted"
+            ><div>
+              <div x-data="demo">
+                <h1>TanStack Pacer createAsyncDebouncer Example</h1>
+                <div>
+                  <input
+                    autofocus
+                    type="search"
+                    :value="(searchTerm)"
+                    @input="((onSearchChange))($event)"
+                    placeholder="Type to search..."
+                    style="width: 100%"
+                    autocomplete="new-password"
+                  />
+                </div>
+                <div style="margin-top: 10px">
+                  <button @click="((() => asyncDebouncer.flush()))($event)">
+                    Flush
+                  </button>
+                </div>
+                <div>
+                  <p>
+                    API calls made:
+                    <span x-text="(asyncDebouncer.state.successCount)"></span>
+                  </p>
+                  <template x-if="(results.length > 0)"
+                    ><ul>
+                      <template x-for="(item, index) in (results)" :key="index"
+                        ><li x-text="(item.title)"></li
+                      ></template></ul></template
+                  ><template x-if="(asyncDebouncer.state.isPending)"
+                    ><p>Pending...</p></template
+                  ><template x-if="(asyncDebouncer.state.isExecuting)"
+                    ><p>Executing...</p></template
+                  >
+                </div>
+                <pre
+                  style="margin-top: 20px"
+                  x-text="(JSON.stringify(asyncDebouncer.state, null, 2))"
+                ></pre>
+              </div></div
+          ></template>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

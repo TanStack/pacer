@@ -314,7 +314,7 @@ function ComparisonApp() {
                       min="0"
                       max="100"
                       value={utility.value}
-                      readOnly
+                      disabled
                       style={{
                         width: '100%',
                         margin: '2px 0',
@@ -445,18 +445,9 @@ function ComparisonApp() {
           ))}
         </div>
       </div>
-      <TanStackDevtools
-        eventBusConfig={{
-          debug: false,
-        }}
-        plugins={[pacerDevtoolsPlugin()]}
-      />
     </div>
   )
 }
-
-const root = document.getElementById('root')!
-render(<ComparisonApp />, root)
 
 // Warning icon SVG
 const WarningIcon = ({ size = 16 }: { size?: number }) => (
@@ -489,4 +480,16 @@ const SuccessIcon = ({ size = 16 }: { size?: number }) => (
     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
     <polyline points="22,4 12,14.01 9,11.01" />
   </svg>
+)
+
+const root = document.getElementById('root')!
+render(
+  <>
+    <ComparisonApp />
+    <TanStackDevtools
+      eventBusConfig={{ debug: false }}
+      plugins={[pacerDevtoolsPlugin()]}
+    />
+  </>,
+  root,
 )

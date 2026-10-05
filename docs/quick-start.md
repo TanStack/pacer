@@ -87,3 +87,14 @@ import { PacerProvider } from '@tanstack/react-pacer'
 ### Devtools
 
 Each framework adapter has an official TanStack Devtools integration. See the [Devtools](./devtools.md) page for setup instructions.
+
+## More framework adapters
+
+Each adapter owns cleanup through its framework lifecycle. See its guide for the native API and selected-state access:
+
+- [Vue](./framework/vue/adapter.md)
+- [Svelte](./framework/svelte/adapter.md)
+- [Lit](./framework/lit/adapter.md)
+- [Alpine](./framework/alpine/adapter.md)
+- [Ember](./framework/ember/adapter.md)
+- [Octane](./framework/octane/adapter.md)

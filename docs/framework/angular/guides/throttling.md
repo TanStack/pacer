@@ -44,27 +44,23 @@ Choose another utility when:
 
 ## Choose an API
 
-- `injectThrottledCallback` for a throttled handler
 - `injectThrottledSignal` or `injectThrottledValue` for throttled signals
 - `injectThrottler` for lifecycle methods and selected state
 
-Use the callback API for event handlers, the state or value API for rate-controlled UI state, and the instance API for lifecycle methods and timing state.
+Use instance methods for event handlers, and state or value helpers for rate-controlled UI state.
 
 ## Angular example
 
 ```ts
-import {
-  injectThrottledCallback,
-  injectThrottledSignal,
-} from '@tanstack/angular-pacer'
+import { injectThrottler, injectThrottledSignal } from '@tanstack/angular-pacer'
 
 export class ScrollComponent {
-  readonly report = injectThrottledCallback(sendPosition, { wait: 250 })
+  readonly report = injectThrottler(sendPosition, { wait: 250 })
   readonly displayedPosition = injectThrottledSignal(0, { wait: 100 })
 
   update(position: number) {
     this.displayedPosition.set(position)
-    this.report(position)
+    this.report.maybeExecute(position)
   }
 }
 ```

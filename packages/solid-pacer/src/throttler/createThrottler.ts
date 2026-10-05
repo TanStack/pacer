@@ -1,7 +1,9 @@
 import { Throttler } from '@tanstack/pacer/throttler'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
@@ -25,6 +27,9 @@ export interface SolidThrottler<
   TFn extends AnyFunction,
   TSelected = {},
 > extends Omit<Throttler<TFn>, 'store'> {
+  options: Throttler<TFn>['options'] & SolidThrottlerOptions<TFn, TSelected>
+  setOptions: (options: Partial<SolidThrottlerOptions<TFn, TSelected>>) => void
+
   /**
    * A Solid component that allows you to subscribe to the throttler state.
    *
@@ -156,17 +161,20 @@ export interface SolidThrottler<
  */
 export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
   fn: TFn,
-  options: SolidThrottlerOptions<TFn, TSelected>,
+  options: SolidPacerOptions<SolidThrottlerOptions<TFn, TSelected>>,
   selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
 ): SolidThrottler<TFn, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().throttler,
-    ...options,
-  } as SolidThrottlerOptions<TFn, TSelected>
-  const asyncThrottler = new Throttler<TFn>(
-    fn,
-    mergedOptions,
+  const mergedOptions = createPacerOptions<
+    SolidThrottlerOptions<TFn, TSelected>
+  >(options, () => useDefaultPacerOptions().throttler)
+  const asyncThrottler = untrack(
+    () => new Throttler<TFn>(fn, mergedOptions()),
   ) as unknown as SolidThrottler<TFn, TSelected>
+
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncThrottler.setOptions(latest))
+  })
 
   asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: ThrottlerState<TFn>) => TSelected
@@ -187,16 +195,25 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncThrottler)
+      const onUnmount = asyncThrottler.options.onUnmount
+      if (onUnmount) {
+        onUnmount(result)
       } else {
         asyncThrottler.cancel()
       }
     })
   })
 
-  return {
+  const result = {
     ...asyncThrottler,
+    get options() {
+      return asyncThrottler.options
+    },
+    set options(value) {
+      asyncThrottler.options = value
+    },
     state,
   } as SolidThrottler<TFn, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

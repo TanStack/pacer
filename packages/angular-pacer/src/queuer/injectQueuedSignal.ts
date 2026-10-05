@@ -1,5 +1,6 @@
 import { computed } from '@angular/core'
 import { injectQueuer } from './injectQueuer'
+import type { AngularPacerOptions } from '../types'
 import type { AngularQueuer } from './injectQueuer'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
@@ -48,7 +49,7 @@ export function injectQueuedSignal<
   >,
 >(
   fn: (item: TValue) => void,
-  options: QueuerOptions<TValue> = {},
+  options: AngularPacerOptions<QueuerOptions<TValue>> = {},
   selector: (state: QueuerState<TValue>) => TSelected = (state) =>
     ({ items: state.items }) as TSelected,
 ): QueuedSignal<TValue, TSelected> {
@@ -57,7 +58,8 @@ export function injectQueuedSignal<
   const items = computed(() => queuer.state().items as Array<TValue>)
 
   const queued = Object.assign(items, {
-    addItem: queuer.addItem.bind(queuer),
+    addItem: (...args: Parameters<typeof queuer.addItem>) =>
+      queuer.addItem(...args),
     queuer,
   }) as QueuedSignal<TValue, TSelected>
 

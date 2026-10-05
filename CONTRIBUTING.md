@@ -51,6 +51,7 @@ Before proceeding with development, ensure you match one of the following criter
   - Build/watch for changes with `pnpm build`/`pnpm dev`
 - Document your changes in the appropriate documentation website markdown pages
 - Run `pnpm test` to ensure all tests pass before committing
+- For framework example changes, run `pnpm test:e2e`. Install Chromium once with `pnpm test:e2e:install`. See the [example e2e instructions](./tests/e2e/README.md) for individual examples and debugging.
 - To run package tests together from the repository root, build the packages with `pnpm build:all`, then run `pnpm exec vitest run`. Use `--project @tanstack/pacer` to select one package. `pnpm test:projects` checks project discovery without running the tests.
 - Every change that affects a published package must include a changeset. Create the changelog entry with `pnpm changeset`; documentation, CI, and development-only changes do not require one.
 - Commit your work and open a pull request
@@ -73,3 +74,5 @@ Packages target ES2022 and require Node.js 20 or newer. They publish ESM and `.d
 `pnpm test` runs the workspace checks, builds, strict publint, packed-file validation, and the existing core size budget. Use the repository’s newer Node.js version for development and CI; the published package runtime minimum is separate.
 
 Package changes require a changeset. Use a minor release for this build migration, including the devtools packages; do not accidentally request a major release.
+
+The Octane adapter follows Octane’s Node.js minimum of 22.22.2. The Ember adapter also publishes `addon-main.cjs`, the metadata shim required by Ember build tooling. All adapter runtime exports remain ESM.

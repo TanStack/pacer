@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer Example</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="demo">
+          <h1>TanStack Pacer createBatcher Example 1</h1>
+          <div>Batch Size: <span x-text="(batcher.state.size)"></span></div>
+          <div>Batch Max Size: <span x-text="(5)"></span></div>
+          <div>
+            Batch Items: <span x-text="(batcher.state.items.join(', '))"></span>
+          </div>
+          <div>
+            Batches Processed:
+            <span x-text="(batcher.state.executionCount)"></span>
+          </div>
+          <div>
+            Items Processed:
+            <span x-text="(batcher.state.totalItemsProcessed)"></span>
+          </div>
+          <div>
+            Processed Batches:<span x-text="(' ')"></span
+            ><template x-for="(b, i) in (processedBatches)" :key="i"
+              ><span
+                ><span>[<span x-text="(b.join(', '))"></span>]</span>,<span
+                  x-text="(' ')"
+                ></span></span
+            ></template>
+          </div>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 8px;
+              max-width: 600px;
+              margin: 16px 0;
+            "
+          >
+            <button
+              @click="((() => {
+    const nextNumber = batcher.state.items.length
+        ? batcher.state.items[batcher.state.items.length - 1] + 1
+        : 1;
+    batcher.addItem(nextNumber);
+}))($event)"
+            >
+              Add Number</button
+            ><button
+              :disabled="(batcher.state.size === 0)"
+              @click="((() => {
+    batcher.flush();
+}))($event)"
+            >
+              Flush Current Batch
+            </button>
+          </div>
+          <pre
+            style="margin-top: 20px"
+            x-text="(JSON.stringify(batcher.state, null, 2))"
+          ></pre>
+        </div>
+        <hr />
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -12,12 +12,15 @@ function App1() {
 
   // highest-level hook that watches an instant local state value and returns a throttled value
   // optionally, grab the throttler from the last index of the returned array
-  const [throttledCount] = useThrottledValue(instantCount, {
-    wait: 1000,
-    // enabled: () => instantCount > 2, // optional, defaults to true
+  const [throttledCount] = useThrottledValue(
+    instantCount,
+    {
+      wait: 1000,
+      // enabled: () => instantCount > 2, // optional, defaults to true
+    },
     // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
-  })
+  )
 
   return (
     <div>
@@ -45,12 +48,15 @@ function App2() {
   const [instantSearch, setInstantSearch] = useState('')
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledSearch] = useThrottledValue(instantSearch, {
-    wait: 1000,
-    // enabled: instantSearch.length > 2, // optional, defaults to true
+  const [throttledSearch] = useThrottledValue(
+    instantSearch,
+    {
+      wait: 1000,
+      // enabled: instantSearch.length > 2, // optional, defaults to true
+    },
     // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
-  })
+  )
 
   function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     setInstantSearch(e.currentTarget.value)
@@ -86,20 +92,23 @@ function App2() {
 }
 
 function App3() {
-  const [instantExecutionCount, setInstantExecutionCount] = useState(0)
+  const [submittedCount, setSubmittedCount] = useState(1)
   const [currentValue, setCurrentValue] = useState(50)
 
   // highest-level hook that watches an instant local state value and returns a throttled value
-  const [throttledValue, throttler] = useThrottledValue(currentValue, {
-    wait: 250,
+  const [throttledValue, throttler] = useThrottledValue(
+    currentValue,
+    {
+      wait: 250,
+    },
     // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
-  })
+  )
 
   function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
     setCurrentValue(newValue)
-    setInstantExecutionCount((c) => c + 1)
+    setSubmittedCount((c) => c + 1)
   }
 
   return (
@@ -127,7 +136,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue}</span>
@@ -141,8 +150,8 @@ function App3() {
             {({ executionCount }) => (
               <>
                 <tr>
-                  <td>Instant Execution Count:</td>
-                  <td>{instantExecutionCount}</td>
+                  <td>Values Submitted:</td>
+                  <td>{submittedCount}</td>
                 </tr>
                 <tr>
                   <td>Throttled Execution Count:</td>
@@ -151,11 +160,10 @@ function App3() {
                 <tr>
                   <td>Saved Executions:</td>
                   <td>
-                    {instantExecutionCount - executionCount} (
-                    {instantExecutionCount > 0
+                    {submittedCount - executionCount} (
+                    {submittedCount > 0
                       ? (
-                          ((instantExecutionCount - executionCount) /
-                            instantExecutionCount) *
+                          ((submittedCount - executionCount) / submittedCount) *
                           100
                         ).toFixed(2)
                       : 0}

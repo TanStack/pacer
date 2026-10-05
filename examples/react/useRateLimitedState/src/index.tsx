@@ -1,16 +1,17 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useRateLimitedState } from '@tanstack/react-pacer/rate-limiter'
 
 function App1() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const [limitedCount, setLimitedCount, rateLimiter] = useRateLimitedState(
     instantCount,
     {
-      // enabled: () => instantCount > 2, // optional, defaults to true
+      // enabled: () => instantCountRef.current > 2, // optional, defaults to true
       limit: 5,
       window: 5000,
       windowType: windowType,
@@ -25,12 +26,9 @@ function App1() {
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setLimitedCount(newInstantCount) // rate-limited state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    setLimitedCount(nextCount)
   }
 
   return (
@@ -110,12 +108,13 @@ function App1() {
 function App2() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')
   const [instantSearch, setInstantSearch] = useState('')
+  const instantSearchRef = useRef('')
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const [limitedSearch, setLimitedSearch, rateLimiter] = useRateLimitedState(
     instantSearch,
     {
-      // enabled: instantSearch.length > 2, // optional, defaults to true
+      // enabled: () => instantSearchRef.current.length > 2, // optional, defaults to true
       limit: 5,
       window: 5000,
       windowType: windowType,
@@ -131,6 +130,7 @@ function App2() {
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
+    instantSearchRef.current = newValue
     setInstantSearch(newValue)
     setLimitedSearch(newValue)
   }
@@ -294,7 +294,7 @@ function App3() {
             min="0"
             max="100"
             value={limitedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{limitedValue}</span>

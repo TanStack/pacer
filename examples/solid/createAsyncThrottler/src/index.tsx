@@ -1,3 +1,4 @@
+import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncThrottler } from '@tanstack/solid-pacer/async-throttler'
@@ -79,6 +80,9 @@ function App() {
           autocomplete="new-password"
         />
       </div>
+      <div style={{ 'margin-top': '10px' }}>
+        <button onClick={() => setSearchAsyncThrottler.flush()}>Flush</button>
+      </div>
       {error() && <div>Error: {error()?.message}</div>}
       <div>
         <setSearchAsyncThrottler.Subscribe
@@ -91,7 +95,11 @@ function App() {
           {(state) => (
             <>
               <p>API calls made: {state().successCount}</p>
-              <For each={results()}>{(item) => <li>{item.title}</li>}</For>
+              {results().length > 0 && (
+                <ul>
+                  <For each={results()}>{(item) => <li>{item.title}</li>}</For>
+                </ul>
+              )}
               {state().isPending ? (
                 <p>Pending...</p>
               ) : state().isExecuting ? (
@@ -112,4 +120,11 @@ function App() {
   )
 }
 
-render(() => <App />, document.getElementById('root')!)
+render(
+  () => (
+    <PacerProvider>
+      <App />
+    </PacerProvider>
+  ),
+  document.getElementById('root')!,
+)

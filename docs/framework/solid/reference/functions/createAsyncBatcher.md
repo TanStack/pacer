@@ -10,7 +10,7 @@ function createAsyncBatcher<TValue, TSelected>(
 selector?): SolidAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: [async-batcher/createAsyncBatcher.ts:187](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L187)
+Defined in: [async-batcher/createAsyncBatcher.ts:195](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-batcher/createAsyncBatcher.ts#L195)
 
 Creates a Solid-compatible AsyncBatcher instance for managing asynchronous batches of items, exposing Solid signals for all stateful properties.
 
@@ -159,7 +159,7 @@ const { items, isExecuting } = asyncBatcher.state();
 
 ### options?
 
-[`SolidAsyncBatcherOptions`](../interfaces/SolidAsyncBatcherOptions.md)\<`TValue`, `TSelected`\> = `{}`
+[`SolidPacerOptions`](../type-aliases/SolidPacerOptions.md)\<[`SolidAsyncBatcherOptions`](../interfaces/SolidAsyncBatcherOptions.md)\<`TValue`, `TSelected`\>\> = `{}`
 
 ### selector?
 

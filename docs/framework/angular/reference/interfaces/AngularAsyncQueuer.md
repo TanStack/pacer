@@ -3,11 +3,11 @@ id: AngularAsyncQueuer
 title: AngularAsyncQueuer
 ---
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L24)
+Defined in: [async-queuer/injectAsyncQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L26)
 
 ## Extends
 
-- `Omit`\<`AsyncQueuer`\<`TValue`\>, `"store"`\>
+- `Omit`\<`AsyncQueuer`\<`TValue`\>, `"store"` \| `"options"` \| `"setOptions"`\>
 
 ## Type Parameters
 
@@ -22,13 +22,43 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:24](https://github.com/TanStack/p
 
 ## Properties
 
+### options
+
+```ts
+options: AsyncQueuerOptions<TValue> & AngularAsyncQueuerOptions<TValue, TSelected>;
+```
+
+Defined in: [async-queuer/injectAsyncQueuer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L30)
+
+***
+
+### setOptions
+
+```ts
+setOptions: (options) => void;
+```
+
+Defined in: [async-queuer/injectAsyncQueuer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L32)
+
+#### Parameters
+
+##### options
+
+`Partial`\<[`AngularAsyncQueuerOptions`](AngularAsyncQueuerOptions.md)\<`TValue`, `TSelected`\>\>
+
+#### Returns
+
+`void`
+
+***
+
 ### state
 
 ```ts
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L33)
+Defined in: [async-queuer/injectAsyncQueuer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L40)
 
 Reactive state signal that will be updated when the async queuer state changes
 
@@ -42,7 +72,7 @@ Use this instead of `queuer.store.state`
 readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L38)
+Defined in: [async-queuer/injectAsyncQueuer.ts:45](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L45)
 
 #### Deprecated
 

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine rateLimit</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="counter">
+          <h1>TanStack Pacer rateLimit Example 1</h1>
+          <div
+            :style="({ display: 'grid', gap: '0.5rem', marginBottom: '1rem' })"
+          >
+            <label
+              ><input
+                type="radio"
+                name="windowType"
+                value="fixed"
+                :checked="(windowType === 'fixed')"
+                @input="((() => (windowType = 'fixed')))($event)"
+              />Fixed Window</label
+            ><label
+              ><input
+                type="radio"
+                name="windowType"
+                value="sliding"
+                :checked="(windowType === 'sliding')"
+                @input="((() => (windowType = 'sliding')))($event)"
+              />Sliding Window</label
+            >
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Instant Count:</td>
+                <td x-text="(instantCount)"></td>
+              </tr>
+              <tr>
+                <td>Rate Limited Count:</td>
+                <td x-text="(rateLimitedCount)"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div><button @click="((increment))($event)">Increment</button></div>
+        </div>
+        <hr />
+        <div x-data="search">
+          <h1>TanStack Pacer rateLimit Example 2</h1>
+          <div
+            :style="({ display: 'grid', gap: '0.5rem', marginBottom: '1rem' })"
+          >
+            <label
+              ><input
+                type="radio"
+                name="windowType2"
+                value="fixed"
+                :checked="(windowType === 'fixed')"
+                @input="((() => (windowType = 'fixed')))($event)"
+              />Fixed Window</label
+            ><label
+              ><input
+                type="radio"
+                name="windowType2"
+                value="sliding"
+                :checked="(windowType === 'sliding')"
+                @input="((() => (windowType = 'sliding')))($event)"
+              />Sliding Window</label
+            >
+          </div>
+          <div>
+            <input
+              type="search"
+              :value="(text)"
+              @input="((handleTextChange))($event)"
+              placeholder="Type text (rate limited to 5 updates per 5 seconds)..."
+              :style="({ width: '100%' })"
+            />
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Instant Text:</td>
+                <td x-text="(text)"></td>
+              </tr>
+              <tr>
+                <td>Rate Limited Text:</td>
+                <td x-text="(rateLimitedText)"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <div x-data="range">
+          <h1>TanStack Pacer rateLimit Example 3</h1>
+          <div
+            :style="({ display: 'grid', gap: '0.5rem', marginBottom: '1rem' })"
+          >
+            <label
+              ><input
+                type="radio"
+                name="windowType3"
+                value="fixed"
+                :checked="(windowType === 'fixed')"
+                @input="((() => (windowType = 'fixed')))($event)"
+              />Fixed Window</label
+            ><label
+              ><input
+                type="radio"
+                name="windowType3"
+                value="sliding"
+                :checked="(windowType === 'sliding')"
+                @input="((() => (windowType = 'sliding')))($event)"
+              />Sliding Window</label
+            >
+          </div>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Current Range:<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(currentValue)"
+                @input="((handleRangeChange))($event)"
+                :style="({ width: '100%' })" /><span
+                x-text="(currentValue)"
+              ></span
+            ></label>
+          </div>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Rate Limited Range (Readonly):<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(rateLimitedValue)"
+                disabled
+                :style="({ width: '100%' })" /><span
+                x-text="(rateLimitedValue)"
+              ></span
+            ></label>
+          </div>
+          <div :style="({ color: '#666', fontSize: '0.9em' })">
+            <p>Rate limited to 30 updates per 2000ms window</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

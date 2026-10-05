@@ -8,6 +8,12 @@ import unusedImports from 'eslint-plugin-unused-imports'
 const config = [
   ...tanstackConfig,
   {
+    files: ['tests/e2e/**/*.ts', 'examples/*/*/tests/e2e/**/*.{ts,mts}'],
+    languageOptions: {
+      parserOptions: { project: './tests/e2e/tsconfig.json' },
+    },
+  },
+  {
     name: 'tanstack/temp',
     plugins: {
       'unused-imports': unusedImports,

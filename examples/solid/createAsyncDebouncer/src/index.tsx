@@ -1,4 +1,5 @@
-import { For, createSignal } from 'solid-js'
+import { PacerProvider } from '@tanstack/solid-pacer/provider'
+import { For, Show, createSignal, onCleanup } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncDebouncer } from '@tanstack/solid-pacer/async-debouncer'
 
@@ -9,7 +10,7 @@ interface SearchResult {
 
 // Simulate API call with fake data
 const fakeApi = async (term: string): Promise<Array<SearchResult>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 1500)) // Simulate network delay
   return [
     { id: 1, title: `${term} result ${Math.floor(Math.random() * 100)}` },
     { id: 2, title: `${term} result ${Math.floor(Math.random() * 100)}` },
@@ -42,6 +43,10 @@ function App() {
     {
       // leading: true, // optional leading execution
       wait: 500, // Wait 500ms between API calls
+      asyncRetryerOptions: {
+        maxAttempts: 3,
+        maxExecutionTime: 3000,
+      },
       onError: (error) => {
         // optional error handler
         console.error('Search failed:', error)
@@ -77,9 +82,11 @@ function App() {
           autocomplete="new-password"
         />
       </div>
+      <div style={{ 'margin-top': '10px' }}>
+        <button onClick={() => asyncDebouncer.flush()}>Flush</button>
+      </div>
       <asyncDebouncer.Subscribe
         selector={(state) => ({
-          errorCount: state.errorCount,
           successCount: state.successCount,
           isExecuting: state.isExecuting,
           isPending: state.isPending,
@@ -87,7 +94,6 @@ function App() {
       >
         {(state) => (
           <>
-            {state().errorCount > 0 && <div>Errors: {state().errorCount}</div>}
             <div>
               <p>API calls made: {state().successCount}</p>
               {results().length > 0 && (
@@ -112,4 +118,20 @@ function App() {
   )
 }
 
-render(() => <App />, document.getElementById('root')!)
+function Root() {
+  const [mounted, setMounted] = createSignal(true)
+  const toggle = (event: KeyboardEvent) => {
+    if (event.shiftKey && event.key === 'Enter') setMounted((value) => !value)
+  }
+  document.addEventListener('keydown', toggle)
+  onCleanup(() => document.removeEventListener('keydown', toggle))
+  return (
+    <PacerProvider>
+      <Show when={mounted()}>
+        <App />
+      </Show>
+    </PacerProvider>
+  )
+}
+
+render(() => <Root />, document.getElementById('root')!)
