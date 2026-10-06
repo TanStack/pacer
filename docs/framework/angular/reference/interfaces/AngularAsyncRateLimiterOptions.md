@@ -3,7 +3,7 @@ id: AngularAsyncRateLimiterOptions
 title: AngularAsyncRateLimiterOptions
 ---
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L15)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:23](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L23)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:15](https://github.com
 optional onUnmount?: (rateLimiter) => void;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L23)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:31](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L31)
 
 Optional callback invoked when the component is destroyed. Receives the rate limiter instance.
 When provided, replaces the default cleanup (abort).

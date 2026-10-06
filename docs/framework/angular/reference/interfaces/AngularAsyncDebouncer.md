@@ -3,11 +3,17 @@ id: AngularAsyncDebouncer
 title: AngularAsyncDebouncer
 ---
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L27)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:35](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L35)
 
 ## Extends
 
-- `Omit`\<`AsyncDebouncer`\<`TFn`\>, `"store"` \| `"options"` \| `"setOptions"`\>
+- `Pick`\<`AsyncDebouncer`\<`TFn`\>,
+  \| `"maybeExecute"`
+  \| `"flush"`
+  \| `"getAbortSignal"`
+  \| `"abort"`
+  \| `"cancel"`
+  \| `"reset"`\>
 
 ## Type Parameters
 
@@ -22,13 +28,43 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:27](https://github.com/TanS
 
 ## Properties
 
+### asyncRetryers
+
+```ts
+readonly asyncRetryers: Signal<Map<number, AsyncRetryer<TFn>>>;
+```
+
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L54)
+
+***
+
+### fn
+
+```ts
+readonly fn: Signal<TFn>;
+```
+
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:43](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L43)
+
+***
+
+### key
+
+```ts
+readonly key: Signal<string | undefined>;
+```
+
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:42](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L42)
+
+***
+
 ### options
 
 ```ts
-options: AsyncDebouncerOptions<TFn> & AngularAsyncDebouncerOptions<TFn, TSelected>;
+readonly options: Signal<AsyncDebouncerOptions<TFn> & AngularAsyncDebouncerOptions<TFn, TSelected>>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L31)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:44](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L44)
 
 ***
 
@@ -38,7 +74,7 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:31](https://github.com/TanS
 setOptions: (options) => void;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L33)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:51](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L51)
 
 #### Parameters
 
@@ -58,23 +94,16 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:33](https://github.com/TanS
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:41](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L41)
-
-Reactive state signal that will be updated when the async debouncer state changes
-
-Use this instead of `debouncer.store.state`
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:50](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L50)
 
 ***
 
-### ~~store~~
+### store
 
 ```ts
-readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
+readonly store: Signal<Store<Readonly<AsyncDebouncerState<TFn>>, never>>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L46)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:49](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L49)
 
-#### Deprecated
-
-Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-The state on the store object is not reactive in Angular signals.
+Core store access; use state() for reactive selected state.

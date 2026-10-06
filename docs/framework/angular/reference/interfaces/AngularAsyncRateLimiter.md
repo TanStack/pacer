@@ -3,11 +3,17 @@ id: AngularAsyncRateLimiter
 title: AngularAsyncRateLimiter
 ---
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L26)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:34](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L34)
 
 ## Extends
 
-- `Omit`\<`AsyncRateLimiter`\<`TFn`\>, `"store"` \| `"options"` \| `"setOptions"`\>
+- `Pick`\<`AsyncRateLimiter`\<`TFn`\>,
+  \| `"maybeExecute"`
+  \| `"getRemainingInWindow"`
+  \| `"getMsUntilNextWindow"`
+  \| `"getAbortSignal"`
+  \| `"abort"`
+  \| `"reset"`\>
 
 ## Type Parameters
 
@@ -22,13 +28,43 @@ Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:26](https://github.com
 
 ## Properties
 
+### asyncRetryers
+
+```ts
+readonly asyncRetryers: Signal<Map<number, AsyncRetryer<TFn>>>;
+```
+
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:58](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L58)
+
+***
+
+### fn
+
+```ts
+readonly fn: Signal<TFn>;
+```
+
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:47](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L47)
+
+***
+
+### key
+
+```ts
+readonly key: Signal<string | undefined>;
+```
+
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:46](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L46)
+
+***
+
 ### options
 
 ```ts
-options: AsyncRateLimiterOptions<TFn> & AngularAsyncRateLimiterOptions<TFn, TSelected>;
+readonly options: Signal<AsyncRateLimiterOptions<TFn> & AngularAsyncRateLimiterOptions<TFn, TSelected>>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:30](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L30)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:48](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L48)
 
 ***
 
@@ -38,7 +74,7 @@ Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:30](https://github.com
 setOptions: (options) => void;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L32)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:55](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L55)
 
 #### Parameters
 
@@ -58,23 +94,16 @@ Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:32](https://github.com
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L40)
-
-Reactive state signal that will be updated when the async rate limiter state changes
-
-Use this instead of `rateLimiter.store.state`
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L54)
 
 ***
 
-### ~~store~~
+### store
 
 ```ts
-readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>;
+readonly store: Signal<Store<Readonly<AsyncRateLimiterState<TFn>>, never>>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:45](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L45)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L53)
 
-#### Deprecated
-
-Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-The state on the store object is not reactive in Angular signals.
+Core store access; use state() for reactive selected state.

@@ -15,14 +15,12 @@ export class App {
   readonly instantExecutions = signal(1)
   readonly controlledCount = injectDebouncedValue(
     this.instantCount,
-    0,
     () => ({ wait: 500 }),
     (state) => state,
   )
   readonly countRunner = this.controlledCount.debouncer
   readonly controlledSearch = injectDebouncedValue(
     this.search,
-    '',
     () => {
       // Update options when the signal changes so disabling cancels pending work.
       // The callback reads the current event value before the next effect runs.
@@ -34,7 +32,6 @@ export class App {
   readonly searchRunner = this.controlledSearch.debouncer
   readonly controlledValue = injectDebouncedValue(
     this.currentValue,
-    50,
     () => ({ wait: 250 }),
     (state) => state,
   )

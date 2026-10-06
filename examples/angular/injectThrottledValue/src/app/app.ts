@@ -14,21 +14,18 @@ export class App {
   readonly instantExecutions = signal(1)
   readonly controlledCount = injectThrottledValue(
     this.instantCount,
-    0,
     () => ({ wait: 1000 }),
     (state) => state,
   )
   readonly countRunner = this.controlledCount.throttler
   readonly controlledSearch = injectThrottledValue(
     this.search,
-    '',
     () => ({ wait: 1000 }),
     (state) => state,
   )
   readonly searchRunner = this.controlledSearch.throttler
   readonly controlledValue = injectThrottledValue(
     this.currentValue,
-    50,
     () => ({ wait: 250 }),
     (state) => state,
   )

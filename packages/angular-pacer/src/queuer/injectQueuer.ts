@@ -1,11 +1,19 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import {
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
 import { Queuer } from '@tanstack/pacer/queuer'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
+import { shallow } from '@tanstack/angular-store'
+import { injectOutsideZone } from '../utils/injectOutsideZone'
+import { injectPendingTask } from '../utils/injectPendingTask'
+import { injectExternalStore } from '../utils/injectExternalStore'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
 export interface AngularQueuerOptions<
@@ -19,25 +27,31 @@ export interface AngularQueuerOptions<
   onUnmount?: (queuer: AngularQueuer<TValue, TSelected>) => void
 }
 
-export interface AngularQueuer<TValue, TSelected = {}> extends Omit<
+export interface AngularQueuer<TValue, TSelected = {}> extends Pick<
   Queuer<TValue>,
-  'store' | 'options' | 'setOptions'
+  | 'addItem'
+  | 'getNextItem'
+  | 'execute'
+  | 'flush'
+  | 'flushAsBatch'
+  | 'peekNextItem'
+  | 'peekAllItems'
+  | 'start'
+  | 'stop'
+  | 'clear'
+  | 'reset'
 > {
-  options: Queuer<TValue>['options'] & AngularQueuerOptions<TValue, TSelected>
+  readonly key: Signal<Queuer<TValue>['key']>
+  readonly fn: Signal<Queuer<TValue>['fn']>
+  readonly options: Signal<
+    Queuer<TValue>['options'] & AngularQueuerOptions<TValue, TSelected>
+  >
+  /** Core store access; use state() for reactive selected state. */
+  readonly store: Signal<Queuer<TValue>['store']>
+  readonly state: Signal<Readonly<TSelected>>
   setOptions: (
     options: Partial<AngularQueuerOptions<TValue, TSelected>>,
   ) => void
-  /**
-   * Reactive state signal that will be updated when the queuer state changes
-   *
-   * Use this instead of `queuer.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<QueuerState<TValue>>>
 }
 
 /**
@@ -55,13 +69,12 @@ export interface AngularQueuer<TValue, TSelected = {}> extends Omit<
  * The `selector` parameter allows you to specify which state changes will trigger signal updates,
  * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * By default, the selected state is an empty object. Provide a selector to expose
+ * reactive state fields. The adapter observes core work separately for Angular stability.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
+ * // Default selected state is an empty object
  * const queue = injectQueuer(
  *   (item) => console.log('Processing:', item),
  *   { started: true, wait: 1000 }
@@ -93,46 +106,179 @@ export interface AngularQueuer<TValue, TSelected = {}> extends Omit<
  * });
  * ```
  */
+export function injectQueuer<TValue, TSelected>(
+  fn: (item: TValue) => void,
+  options: AngularPacerOptions<AngularQueuerOptions<TValue, TSelected>>,
+  selector: (state: QueuerState<TValue>) => TSelected,
+): AngularQueuer<TValue, TSelected>
+export function injectQueuer<TValue>(
+  fn: (item: TValue) => void,
+  options?: AngularPacerOptions<AngularQueuerOptions<TValue, {}>>,
+  selector?: undefined,
+): AngularQueuer<TValue, {}>
 export function injectQueuer<TValue, TSelected = {}>(
   fn: (item: TValue) => void,
-  options: AngularPacerOptions<AngularQueuerOptions<TValue, TSelected>> = {},
-  selector: (state: QueuerState<TValue>) => TSelected = () => ({}) as TSelected,
-): AngularQueuer<TValue, TSelected> {
-  return injectReactiveOptions<
-    AngularQueuerOptions<TValue, TSelected>,
-    AngularQueuer<TValue, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'queuer',
-    (mergedOptions, getPublicInstance) => {
-      const queuer = new Queuer<TValue>(fn, mergedOptions)
-      const state = injectSelector(queuer.store, selector)
-
-      const result = {
-        ...queuer,
-        get options() {
-          return queuer.options
-        },
-        set options(value) {
-          queuer.options = value
-        },
-        state,
-      } as AngularQueuer<TValue, TSelected>
-
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          queuer.options as AngularQueuerOptions<TValue, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          queuer.stop()
-        }
-      })
-
-      return result
-    },
+  options?: AngularPacerOptions<AngularQueuerOptions<TValue, TSelected | {}>>,
+  selector?: (state: QueuerState<TValue>) => TSelected,
+): AngularQueuer<TValue, TSelected | {}>
+export function injectQueuer<TValue, TSelected = {}>(
+  fn: (item: TValue) => void,
+  options?: AngularPacerOptions<AngularQueuerOptions<TValue, TSelected | {}>>,
+  selector?: (state: QueuerState<TValue>) => TSelected,
+): AngularQueuer<TValue, TSelected | {}> {
+  const owner = inject(DestroyRef)
+  const defaults = injectPacerOptions()
+  const outsideZone = injectOutsideZone()
+  const pending = injectPendingTask()
+  const resolvedOptions = linkedSignal<
+    AngularQueuerOptions<TValue, TSelected | {}>
+  >(() => ({
+    ...defaults.queuer,
+    ...(typeof options === 'function' ? options() : options),
+  }))
+  const instance = computed(() =>
+    untracked(() =>
+      outsideZone(() => {
+        const initialOptions = resolvedOptions()
+        const value = new Queuer<TValue>(fn, {
+          ...initialOptions,
+          // Defer callbacks and processing to the owned startup boundary.
+          initialItems: [],
+          initialState: {
+            ...initialOptions.initialState,
+            isRunning: false,
+            pendingTick: false,
+          },
+        })
+        // Expose the actual configuration, rather than inert-construction settings.
+        value.options.initialItems = initialOptions.initialItems ?? []
+        value.options.initialState = initialOptions.initialState
+        return { value, initialOptions }
+      }),
+    ),
   )
+
+  // The effect owns normal disposal; an early operation temporarily owns its resource.
+  let effectOwnsInstance = false
+  let unregisterEarlyCleanup: (() => void) | undefined
+  let initialized = false
+  const cleanup = (current: Queuer<TValue>) => {
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
+    if (onUnmount) onUnmount(result)
+    else {
+      current.stop()
+    }
+  }
+
+  function run(): void
+  function run<T>(operation: (current: Queuer<TValue>) => T): T
+  function run<T>(operation?: (current: Queuer<TValue>) => T): T | undefined {
+    return outsideZone(() =>
+      untracked(() => {
+        const latest = resolvedOptions()
+        const current = instance().value
+        current.setOptions(latest)
+        if (!effectOwnsInstance && !unregisterEarlyCleanup) {
+          unregisterEarlyCleanup = owner.onDestroy(() =>
+            outsideZone(() => untracked(() => cleanup(current))),
+          )
+        }
+        try {
+          if (!initialized) {
+            initialized = true
+            const initialOptions = instance().initialOptions
+            if (
+              instance().initialOptions.initialState?.isRunning ??
+              instance().initialOptions.started ??
+              true
+            )
+              current.start()
+            if (!initialOptions.initialState?.items) {
+              const items = initialOptions.initialItems ?? []
+              for (const [index, item] of items.entries()) {
+                current.addItem(
+                  item,
+                  initialOptions.addItemsTo ?? 'back',
+                  index === items.length - 1,
+                )
+              }
+            }
+          }
+          return operation?.(current)
+        } finally {
+          pending.set(
+            current.store.state.isRunning &&
+              current.store.state.items.length > 0,
+          )
+        }
+      }),
+    )
+  }
+
+  // Read only identity here: option changes must not dispose the stable instance.
+  effect((onCleanup) => {
+    const current = instance().value
+    effectOwnsInstance = true
+    unregisterEarlyCleanup?.()
+    unregisterEarlyCleanup = undefined
+    onCleanup(() => outsideZone(() => untracked(() => cleanup(current))))
+    run()
+  })
+
+  effect(() => {
+    const current = instance().value
+    const latest = resolvedOptions()
+    outsideZone(() =>
+      untracked(() => {
+        current.setOptions(latest)
+      }),
+    )
+  })
+
+  const snapshot = injectExternalStore(() => {
+    const current = instance().value
+    return {
+      getSnapshot: () => current.store.state,
+      subscribe: (notify) => {
+        const { unsubscribe } = current.store.subscribe(notify)
+        return unsubscribe
+      },
+    }
+  })
+
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
+  effect(() => pending.set(snapshot().isRunning && snapshot().items.length > 0))
+
+  const result: AngularQueuer<TValue, TSelected | {}> = {
+    key: computed(() => instance().value.key),
+    fn: computed(() => fn),
+    options: computed(() => {
+      const latest = resolvedOptions()
+      return { ...instance().value.options, ...latest }
+    }),
+    store: computed(() => instance().value.store),
+    state,
+    setOptions: (update) =>
+      untracked(() => {
+        resolvedOptions.update((previous) => ({ ...previous, ...update }))
+        run()
+      }),
+    addItem: (...args) => run((current) => current.addItem(...args)),
+    getNextItem: (...args) => run((current) => current.getNextItem(...args)),
+    execute: (...args) => run((current) => current.execute(...args)),
+    flush: (...args) => run((current) => current.flush(...args)),
+    flushAsBatch: (...args) => run((current) => current.flushAsBatch(...args)),
+    peekNextItem: (...args) => run((current) => current.peekNextItem(...args)),
+    peekAllItems: (...args) => run((current) => current.peekAllItems(...args)),
+    start: (...args) => run((current) => current.start(...args)),
+    stop: (...args) => run((current) => current.stop(...args)),
+    clear: (...args) => run((current) => current.clear(...args)),
+    reset: (...args) => run((current) => current.reset(...args)),
+  }
+  return result
 }

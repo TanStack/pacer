@@ -1,16 +1,16 @@
 import { signal } from '@angular/core'
 import { injectThrottler } from './injectThrottler'
+import type { Signal } from '@angular/core'
 import type { AngularPacerOptions } from '../types'
-import type { AngularThrottler } from './injectThrottler'
 import type {
-  ThrottlerOptions,
-  ThrottlerState,
-} from '@tanstack/pacer/throttler'
+  AngularThrottler,
+  AngularThrottlerOptions,
+} from './injectThrottler'
+import type { ThrottlerState } from '@tanstack/pacer/throttler'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
-export interface ThrottledSignal<TValue, TSelected = {}> {
-  (): TValue
+export type ThrottledSignal<TValue, TSelected = {}> = Signal<TValue> & {
   set: Setter<TValue>
   throttler: AngularThrottler<Setter<TValue>, TSelected>
 }
@@ -34,9 +34,8 @@ export interface ThrottledSignal<TValue, TSelected = {}> {
  * The `selector` parameter allows you to specify which throttler state changes will trigger signal updates,
  * optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * By default, the selected state is an empty object. Provide a selector to expose
+ * reactive state fields. The adapter observes core work separately for Angular stability.
  *
  * Available throttler state properties:
  * - `executionCount`: Number of function executions that have been completed
@@ -60,11 +59,34 @@ export interface ThrottledSignal<TValue, TSelected = {}> {
  * console.log(throttledScrollY.throttler.state().isPending)
  * ```
  */
+export function injectThrottledSignal<TValue, TSelected>(
+  value: TValue,
+  initialOptions: AngularPacerOptions<
+    AngularThrottlerOptions<Setter<NoInfer<TValue>>, NoInfer<TSelected>>
+  >,
+  selector: (state: ThrottlerState<Setter<TValue>>) => TSelected,
+): ThrottledSignal<TValue, TSelected>
+export function injectThrottledSignal<TValue>(
+  value: TValue,
+  initialOptions: AngularPacerOptions<
+    AngularThrottlerOptions<Setter<NoInfer<TValue>>, {}>
+  >,
+  selector?: undefined,
+): ThrottledSignal<TValue, {}>
 export function injectThrottledSignal<TValue, TSelected = {}>(
   value: TValue,
-  initialOptions: AngularPacerOptions<ThrottlerOptions<Setter<TValue>>>,
+  initialOptions: AngularPacerOptions<
+    AngularThrottlerOptions<Setter<NoInfer<TValue>>, NoInfer<TSelected> | {}>
+  >,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
-): ThrottledSignal<TValue, TSelected> {
+): ThrottledSignal<TValue, TSelected | {}>
+export function injectThrottledSignal<TValue, TSelected = {}>(
+  value: TValue,
+  initialOptions: AngularPacerOptions<
+    AngularThrottlerOptions<Setter<NoInfer<TValue>>, NoInfer<TSelected> | {}>
+  >,
+  selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
+): ThrottledSignal<TValue, TSelected | {}> {
   const throttledValue = signal<TValue>(value)
 
   const throttler = injectThrottler(
@@ -85,10 +107,10 @@ export function injectThrottledSignal<TValue, TSelected = {}>(
     throttler.maybeExecute(newValue)
   }
 
-  const throttled = Object.assign(() => throttledValue(), {
+  const throttled = Object.assign(throttledValue.asReadonly(), {
     set,
     throttler,
-  }) as ThrottledSignal<TValue, TSelected>
+  })
 
   return throttled
 }

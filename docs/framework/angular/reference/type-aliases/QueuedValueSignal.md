@@ -7,7 +7,7 @@ title: QueuedValueSignal
 type QueuedValueSignal<TValue, TSelected> = Signal<TValue> & object;
 ```
 
-Defined in: [queuer/injectQueuedValue.ts:9](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L9)
+Defined in: [queuer/injectQueuedValue.ts:9](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L9)
 
 A processed value signal with methods for adding and controlling queued values.
 

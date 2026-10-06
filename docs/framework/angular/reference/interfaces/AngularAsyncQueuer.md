@@ -3,11 +3,26 @@ id: AngularAsyncQueuer
 title: AngularAsyncQueuer
 ---
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L26)
+Defined in: [async-queuer/injectAsyncQueuer.ts:34](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L34)
 
 ## Extends
 
-- `Omit`\<`AsyncQueuer`\<`TValue`\>, `"store"` \| `"options"` \| `"setOptions"`\>
+- `Pick`\<`AsyncQueuer`\<`TValue`\>,
+  \| `"addItem"`
+  \| `"getNextItem"`
+  \| `"execute"`
+  \| `"flush"`
+  \| `"flushAsBatch"`
+  \| `"peekNextItem"`
+  \| `"peekAllItems"`
+  \| `"peekActiveItems"`
+  \| `"peekPendingItems"`
+  \| `"start"`
+  \| `"stop"`
+  \| `"clear"`
+  \| `"getAbortSignal"`
+  \| `"abort"`
+  \| `"reset"`\>
 
 ## Type Parameters
 
@@ -22,13 +37,43 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:26](https://github.com/TanStack/p
 
 ## Properties
 
+### asyncRetryers
+
+```ts
+readonly asyncRetryers: Signal<Map<number, AsyncRetryer<(item) => Promise<any>>>>;
+```
+
+Defined in: [async-queuer/injectAsyncQueuer.ts:64](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L64)
+
+***
+
+### fn
+
+```ts
+readonly fn: Signal<(item) => Promise<any>>;
+```
+
+Defined in: [async-queuer/injectAsyncQueuer.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L53)
+
+***
+
+### key
+
+```ts
+readonly key: Signal<string | undefined>;
+```
+
+Defined in: [async-queuer/injectAsyncQueuer.ts:52](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L52)
+
+***
+
 ### options
 
 ```ts
-options: AsyncQueuerOptions<TValue> & AngularAsyncQueuerOptions<TValue, TSelected>;
+readonly options: Signal<AsyncQueuerOptions<TValue> & AngularAsyncQueuerOptions<TValue, TSelected>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L30)
+Defined in: [async-queuer/injectAsyncQueuer.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L54)
 
 ***
 
@@ -38,7 +83,7 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:30](https://github.com/TanStack/p
 setOptions: (options) => void;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L32)
+Defined in: [async-queuer/injectAsyncQueuer.ts:61](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L61)
 
 #### Parameters
 
@@ -58,23 +103,16 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:32](https://github.com/TanStack/p
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L40)
-
-Reactive state signal that will be updated when the async queuer state changes
-
-Use this instead of `queuer.store.state`
+Defined in: [async-queuer/injectAsyncQueuer.ts:60](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L60)
 
 ***
 
-### ~~store~~
+### store
 
 ```ts
-readonly store: Store<Readonly<AsyncQueuerState<TValue>>>;
+readonly store: Signal<Store<Readonly<AsyncQueuerState<TValue>>, never>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:45](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L45)
+Defined in: [async-queuer/injectAsyncQueuer.ts:59](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L59)
 
-#### Deprecated
-
-Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
-The state on the store object is not reactive in Angular signals.
+Core store access; use state() for reactive selected state.

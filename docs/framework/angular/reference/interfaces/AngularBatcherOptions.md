@@ -3,7 +3,7 @@ id: AngularBatcherOptions
 title: AngularBatcherOptions
 ---
 
-Defined in: [batcher/injectBatcher.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L11)
+Defined in: [batcher/injectBatcher.ts:19](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L19)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [batcher/injectBatcher.ts:11](https://github.com/TanStack/pacer/blob
 optional onUnmount?: (batcher) => void;
 ```
 
-Defined in: [batcher/injectBatcher.ts:19](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L19)
+Defined in: [batcher/injectBatcher.ts:27](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L27)
 
 Optional callback invoked when the component is destroyed. Receives the batcher instance.
 When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.

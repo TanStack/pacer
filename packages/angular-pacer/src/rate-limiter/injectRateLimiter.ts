@@ -1,11 +1,18 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import {
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
+import { shallow } from '@tanstack/angular-store'
+import { injectOutsideZone } from '../utils/injectOutsideZone'
+import { injectExternalStore } from '../utils/injectExternalStore'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   RateLimiterOptions,
@@ -25,23 +32,21 @@ export interface AngularRateLimiterOptions<
 export interface AngularRateLimiter<
   TFn extends AnyFunction,
   TSelected = {},
-> extends Omit<RateLimiter<TFn>, 'store' | 'options' | 'setOptions'> {
-  options: RateLimiter<TFn>['options'] &
-    AngularRateLimiterOptions<TFn, TSelected>
+> extends Pick<
+  RateLimiter<TFn>,
+  'maybeExecute' | 'getRemainingInWindow' | 'getMsUntilNextWindow' | 'reset'
+> {
+  readonly key: Signal<RateLimiter<TFn>['key']>
+  readonly fn: Signal<RateLimiter<TFn>['fn']>
+  readonly options: Signal<
+    RateLimiter<TFn>['options'] & AngularRateLimiterOptions<TFn, TSelected>
+  >
+  /** Core store access; use state() for reactive selected state. */
+  readonly store: Signal<RateLimiter<TFn>['store']>
+  readonly state: Signal<Readonly<TSelected>>
   setOptions: (
     options: Partial<AngularRateLimiterOptions<TFn, TSelected>>,
   ) => void
-  /**
-   * Reactive state signal that will be updated when the rate limiter state changes
-   *
-   * Use this instead of `rateLimiter.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<RateLimiterState>>
 }
 
 /**
@@ -71,9 +76,8 @@ export interface AngularRateLimiter<
  * The `selector` parameter allows you to specify which state changes will trigger signal updates,
  * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * By default, the selected state is an empty object. Provide a selector to expose
+ * reactive state fields. The adapter observes core work separately for Angular stability.
  *
  * Available state properties:
  * - `executionCount`: Number of function executions that have been completed
@@ -86,7 +90,7 @@ export interface AngularRateLimiter<
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
+ * // Default selected state is an empty object
  * const rateLimiter = injectRateLimiter(apiCall, {
  *   limit: 5,
  *   window: 60000,
@@ -118,44 +122,127 @@ export interface AngularRateLimiter<
  * const { executionCount, rejectionCount } = rateLimiter.state();
  * ```
  */
-export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
+export function injectRateLimiter<TFn extends AnyFunction, TSelected>(
   fn: TFn,
   options: AngularPacerOptions<AngularRateLimiterOptions<TFn, TSelected>>,
-  selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
-): AngularRateLimiter<TFn, TSelected> {
-  return injectReactiveOptions<
-    AngularRateLimiterOptions<TFn, TSelected>,
-    AngularRateLimiter<TFn, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'rateLimiter',
-    (mergedOptions, getPublicInstance) => {
-      const rateLimiter = new RateLimiter<TFn>(fn, mergedOptions)
-      const state = injectSelector(rateLimiter.store, selector)
-
-      const result = {
-        ...rateLimiter,
-        get options() {
-          return rateLimiter.options
-        },
-        set options(value) {
-          rateLimiter.options = value
-        },
-        state,
-      } as AngularRateLimiter<TFn, TSelected>
-
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          rateLimiter.options as AngularRateLimiterOptions<TFn, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        }
-      })
-
-      return result
-    },
+  selector: (state: RateLimiterState) => TSelected,
+): AngularRateLimiter<TFn, TSelected>
+export function injectRateLimiter<TFn extends AnyFunction>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularRateLimiterOptions<TFn, {}>>,
+  selector?: undefined,
+): AngularRateLimiter<TFn, {}>
+export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularRateLimiterOptions<TFn, TSelected | {}>>,
+  selector?: (state: RateLimiterState) => TSelected,
+): AngularRateLimiter<TFn, TSelected | {}>
+export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularRateLimiterOptions<TFn, TSelected | {}>>,
+  selector?: (state: RateLimiterState) => TSelected,
+): AngularRateLimiter<TFn, TSelected | {}> {
+  const owner = inject(DestroyRef)
+  const defaults = injectPacerOptions()
+  const outsideZone = injectOutsideZone()
+  const resolvedOptions = linkedSignal<
+    AngularRateLimiterOptions<TFn, TSelected | {}>
+  >(() => ({
+    ...defaults.rateLimiter,
+    ...(typeof options === 'function' ? options() : options),
+  }))
+  const instance = computed(() =>
+    untracked(() =>
+      outsideZone(() => {
+        const initialOptions = resolvedOptions()
+        return new RateLimiter<TFn>(fn, initialOptions)
+      }),
+    ),
   )
+
+  // The effect owns normal disposal; an early operation temporarily owns its resource.
+  let effectOwnsInstance = false
+  let unregisterEarlyCleanup: (() => void) | undefined
+  const cleanup = (current: RateLimiter<TFn>) => {
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
+    if (onUnmount) onUnmount(result)
+  }
+
+  function run(): void
+  function run<T>(operation: (current: RateLimiter<TFn>) => T): T
+  function run<T>(operation?: (current: RateLimiter<TFn>) => T): T | undefined {
+    return outsideZone(() =>
+      untracked(() => {
+        const latest = resolvedOptions()
+        const current = instance()
+        if (!effectOwnsInstance && !unregisterEarlyCleanup) {
+          unregisterEarlyCleanup = owner.onDestroy(() =>
+            outsideZone(() => untracked(() => cleanup(current))),
+          )
+        }
+        current.setOptions(latest)
+        return operation?.(current)
+      }),
+    )
+  }
+
+  // Read only identity here: option changes must not dispose the stable instance.
+  effect((onCleanup) => {
+    const current = instance()
+    effectOwnsInstance = true
+    unregisterEarlyCleanup?.()
+    unregisterEarlyCleanup = undefined
+    onCleanup(() => outsideZone(() => untracked(() => cleanup(current))))
+  })
+
+  effect(() => {
+    const current = instance()
+    const latest = resolvedOptions()
+    outsideZone(() =>
+      untracked(() => {
+        current.setOptions(latest)
+      }),
+    )
+  })
+
+  const snapshot = injectExternalStore(() => {
+    const current = instance()
+    return {
+      getSnapshot: () => current.store.state,
+      subscribe: (notify) => {
+        const { unsubscribe } = current.store.subscribe(notify)
+        return unsubscribe
+      },
+    }
+  })
+
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
+
+  const result: AngularRateLimiter<TFn, TSelected | {}> = {
+    key: computed(() => instance().key),
+    fn: computed(() => fn),
+    options: computed(() => {
+      const latest = resolvedOptions()
+      return { ...instance().options, ...latest }
+    }),
+    store: computed(() => instance().store),
+    state,
+    setOptions: (update) =>
+      untracked(() => {
+        resolvedOptions.update((previous) => ({ ...previous, ...update }))
+        run()
+      }),
+    maybeExecute: (...args) => run((current) => current.maybeExecute(...args)),
+    getRemainingInWindow: (...args) =>
+      run((current) => current.getRemainingInWindow(...args)),
+    getMsUntilNextWindow: (...args) =>
+      run((current) => current.getMsUntilNextWindow(...args)),
+    reset: (...args) => run((current) => current.reset(...args)),
+  }
+  return result
 }

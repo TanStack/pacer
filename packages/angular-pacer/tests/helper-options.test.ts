@@ -27,7 +27,7 @@ afterEach(() => {
 })
 
 it.each(['factory', 'getters'] as const)(
-  'accepts %s options in each value helper with an explicit initial value',
+  'accepts %s options in each value helper',
   (mode) => {
     const wait = signal(100),
       source = signal('source')
@@ -44,32 +44,28 @@ it.each(['factory', 'getters'] as const)(
     const helpers = TestBed.runInInjectionContext(() =>
       mode === 'factory'
         ? [
-            injectDebouncedValue(source, 'initial', () => options, undefined)
-              .debouncer,
-            injectThrottledValue(source, 'initial', () => options, undefined)
-              .throttler,
-            injectRateLimitedValue(source, 'initial', () => options, undefined)
-              .rateLimiter,
-            injectQueuedValue(source, 'initial', () => options, undefined)
-              .queuer,
+            injectDebouncedValue(source, () => options).debouncer,
+            injectThrottledValue(source, () => options).throttler,
+            injectRateLimitedValue(source, () => options).rateLimiter,
+            injectQueuedValue(source, () => options).queuer,
           ]
         : [
-            injectDebouncedValue(source, 'initial', options).debouncer,
-            injectThrottledValue(source, 'initial', options).throttler,
-            injectRateLimitedValue(source, 'initial', options).rateLimiter,
-            injectQueuedValue(source, 'initial', options).queuer,
+            injectDebouncedValue(source, options).debouncer,
+            injectThrottledValue(source, options).throttler,
+            injectRateLimitedValue(source, options).rateLimiter,
+            injectQueuedValue(source, options).queuer,
           ],
     )
     TestBed.tick()
     for (const helper of helpers)
-      expect(helper.options).toMatchObject(
-        'window' in helper.options ? { window: 100 } : { wait: 100 },
+      expect(helper.options()).toMatchObject(
+        'window' in helper.options() ? { window: 100 } : { wait: 100 },
       )
     wait.set(200)
     TestBed.tick()
     for (const helper of helpers)
-      expect(helper.options).toMatchObject(
-        'window' in helper.options ? { window: 200 } : { wait: 200 },
+      expect(helper.options()).toMatchObject(
+        'window' in helper.options() ? { window: 200 } : { wait: 200 },
       )
   },
 )
@@ -84,7 +80,7 @@ it('keeps factory options and selector arguments distinct', () => {
     ),
   )
   TestBed.tick()
-  expect(helper.debouncer.options.wait).toBe(100)
+  expect(helper.debouncer.options().wait).toBe(100)
   expect(helper.debouncer.state().pending).toBe(true)
   vi.advanceTimersByTime(100)
   expect(helper()).toBe('value')
@@ -124,8 +120,10 @@ it.each(['factory', 'getters'] as const)(
     fixture.componentInstance.debounced.maybeExecute('debounced')
     fixture.componentInstance.queued.addItem('queued')
     fixture.componentInstance.asyncQueued.addItem('asyncQueued')
-    expect(fixture.componentInstance.queued.queuer.options.wait).toBe(100)
-    expect(fixture.componentInstance.asyncQueued.queuer.options.wait).toBe(100)
+    expect(fixture.componentInstance.queued.queuer.options().wait).toBe(100)
+    expect(fixture.componentInstance.asyncQueued.queuer.options().wait).toBe(
+      100,
+    )
     vi.advanceTimersByTime(100)
     expect(callback).toHaveBeenCalledExactlyOnceWith('debounced')
   },
@@ -151,8 +149,8 @@ it('updates getter options in each managed signal helper', () => {
   wait.set(200)
   TestBed.tick()
   for (const helper of helpers) {
-    expect(helper.options).toMatchObject(
-      'window' in helper.options ? { window: 200 } : { wait: 200 },
+    expect(helper.options()).toMatchObject(
+      'window' in helper.options() ? { window: 200 } : { wait: 200 },
     )
   }
 })

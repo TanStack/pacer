@@ -79,6 +79,6 @@ describe('example behavior', () => {
     app.countWindow.set('sliding')
     TestBed.tick()
     expect(app.countRunner).toBe(runner)
-    expect(runner.options.windowType).toBe('sliding')
+    expect(runner.options().windowType).toBe('sliding')
   })
 })

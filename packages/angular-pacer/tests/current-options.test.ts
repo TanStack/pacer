@@ -1,0 +1,67 @@
+import './helpers/angular'
+import { signal } from '@angular/core'
+import { TestBed } from '@angular/core/testing'
+import { expect, it, vi } from 'vitest'
+import { injectRateLimiter } from '../src/rate-limiter/injectRateLimiter'
+import { injectDebouncer } from '../src/debouncer/injectDebouncer'
+
+it('applies current factory options before an operation, without waiting for effects', () => {
+  const limit = signal(1),
+    execute = vi.fn()
+  const utility = TestBed.runInInjectionContext(() =>
+    injectRateLimiter(execute, () => ({ limit: limit(), window: 60_000 })),
+  )
+  TestBed.tick()
+  expect(utility.maybeExecute()).toBe(true)
+  limit.set(2)
+  expect(utility.maybeExecute()).toBe(true)
+  expect(execute).toHaveBeenCalledTimes(2)
+})
+
+it('uses the current enabled option before a leading execution', () => {
+  const enabled = signal(true),
+    execute = vi.fn()
+  const utility = TestBed.runInInjectionContext(() =>
+    injectDebouncer(execute, () => ({
+      wait: 100,
+      leading: true,
+      enabled: enabled(),
+    })),
+  )
+  TestBed.tick()
+  enabled.set(false)
+  utility.maybeExecute()
+  expect(execute).not.toHaveBeenCalled()
+})
+
+it('preserves manual partial updates until supplied options change', () => {
+  const wait = signal(100)
+  const utility = TestBed.runInInjectionContext(() =>
+    injectDebouncer(
+      () => {},
+      () => ({ wait: wait(), leading: false }),
+    ),
+  )
+  utility.setOptions({ leading: true })
+  TestBed.tick()
+  expect(utility.options().leading).toBe(true)
+  utility.cancel()
+  expect(utility.options().leading).toBe(true)
+  wait.set(200)
+  utility.cancel()
+  expect(utility.options()).toMatchObject({ wait: 200, leading: false })
+})
+
+it('updates options after an early core read and before the first effect', () => {
+  const wait = signal(100)
+  const utility = TestBed.runInInjectionContext(() =>
+    injectDebouncer(
+      () => {},
+      () => ({ wait: wait() }),
+    ),
+  )
+  expect(utility.options().wait).toBe(100)
+  wait.set(200)
+  utility.cancel()
+  expect(utility.options().wait).toBe(200)
+})

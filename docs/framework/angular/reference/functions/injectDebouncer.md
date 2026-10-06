@@ -3,14 +3,16 @@ id: injectDebouncer
 title: injectDebouncer
 ---
 
+## Call Signature
+
 ```ts
 function injectDebouncer<TFn, TSelected>(
    fn,
    options,
-selector?): AngularDebouncer<TFn, TSelected>;
+selector): AngularDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:115](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L115)
+Defined in: [debouncer/injectDebouncer.ts:121](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L121)
 
 An Angular function that creates and manages a Debouncer instance.
 
@@ -31,9 +33,8 @@ The function uses TanStack Store for state management and wraps it with Angular 
 The `selector` parameter allows you to specify which state changes will trigger signal updates,
 optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
 
-**By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary updates and gives you
-full control over when your component tracks state changes.
+By default, the selected state is an empty object. Provide a selector to expose
+reactive state fields. The adapter observes core work separately for Angular stability.
 
 Available state properties:
 - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -54,39 +55,259 @@ const debouncer = injectDebouncer(fn, {
 });
 ```
 
-## Type Parameters
+### Type Parameters
 
-### TFn
+#### TFn
 
 `TFn` *extends* `AnyFunction`
 
-### TSelected
+#### TSelected
+
+`TSelected`
+
+### Parameters
+
+#### fn
+
+`TFn`
+
+#### options
+
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`TFn`, `TSelected`\>\>
+
+#### selector
+
+(`state`) => `TSelected`
+
+### Returns
+
+[`AngularDebouncer`](../interfaces/AngularDebouncer.md)\<`TFn`, `TSelected`\>
+
+### Example
+
+```ts
+// Default selected state is an empty object
+const debouncer = injectDebouncer(
+  (query: string) => fetchSearchResults(query),
+  { wait: 500 }
+);
+
+// Opt-in to track isPending changes (optimized for loading states)
+const debouncer = injectDebouncer(
+  (query: string) => fetchSearchResults(query),
+  { wait: 500 },
+  (state) => ({ isPending: state.isPending })
+);
+
+// In an event handler
+const handleChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  debouncer.maybeExecute(target.value);
+};
+
+// Access the selected state (will be empty object {} unless selector provided)
+const { isPending } = debouncer.state();
+```
+
+## Call Signature
+
+```ts
+function injectDebouncer<TFn>(
+   fn,
+   options,
+   selector?): AngularDebouncer<TFn, {
+}>;
+```
+
+Defined in: [debouncer/injectDebouncer.ts:126](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L126)
+
+An Angular function that creates and manages a Debouncer instance.
+
+This is a lower-level function that provides direct access to the Debouncer's functionality.
+This allows you to integrate it with any state management solution you prefer.
+
+This function provides debouncing functionality to limit how often a function can be called,
+waiting for a specified delay before executing the latest call. This is useful for handling
+frequent events like window resizing, scroll events, or real-time search inputs.
+
+The debouncer will only execute the function after the specified wait time has elapsed
+since the last call. If the function is called again before the wait time expires, the
+timer resets and starts waiting again.
+
+## State Management and Selector
+
+The function uses TanStack Store for state management and wraps it with Angular signals.
+The `selector` parameter allows you to specify which state changes will trigger signal updates,
+optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+
+By default, the selected state is an empty object. Provide a selector to expose
+reactive state fields. The adapter observes core work separately for Angular stability.
+
+Available state properties:
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge
+- `executionCount`: Number of function executions that have been completed
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `status`: Current execution status ('disabled' | 'idle' | 'pending')
+
+## Cleanup on Destroy
+
+By default, the function cancels any pending execution when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```ts
+const debouncer = injectDebouncer(fn, {
+  wait: 500,
+  onUnmount: (d) => d.flush()
+});
+```
+
+### Type Parameters
+
+#### TFn
+
+`TFn` *extends* `AnyFunction`
+
+### Parameters
+
+#### fn
+
+`TFn`
+
+#### options
+
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`TFn`, \{
+\}\>\>
+
+#### selector?
+
+`undefined`
+
+### Returns
+
+[`AngularDebouncer`](../interfaces/AngularDebouncer.md)\<`TFn`, \{
+\}\>
+
+### Example
+
+```ts
+// Default selected state is an empty object
+const debouncer = injectDebouncer(
+  (query: string) => fetchSearchResults(query),
+  { wait: 500 }
+);
+
+// Opt-in to track isPending changes (optimized for loading states)
+const debouncer = injectDebouncer(
+  (query: string) => fetchSearchResults(query),
+  { wait: 500 },
+  (state) => ({ isPending: state.isPending })
+);
+
+// In an event handler
+const handleChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  debouncer.maybeExecute(target.value);
+};
+
+// Access the selected state (will be empty object {} unless selector provided)
+const { isPending } = debouncer.state();
+```
+
+## Call Signature
+
+```ts
+function injectDebouncer<TFn, TSelected>(
+   fn,
+   options,
+   selector?): AngularDebouncer<TFn,
+  | {
+}
+| TSelected>;
+```
+
+Defined in: [debouncer/injectDebouncer.ts:131](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L131)
+
+An Angular function that creates and manages a Debouncer instance.
+
+This is a lower-level function that provides direct access to the Debouncer's functionality.
+This allows you to integrate it with any state management solution you prefer.
+
+This function provides debouncing functionality to limit how often a function can be called,
+waiting for a specified delay before executing the latest call. This is useful for handling
+frequent events like window resizing, scroll events, or real-time search inputs.
+
+The debouncer will only execute the function after the specified wait time has elapsed
+since the last call. If the function is called again before the wait time expires, the
+timer resets and starts waiting again.
+
+## State Management and Selector
+
+The function uses TanStack Store for state management and wraps it with Angular signals.
+The `selector` parameter allows you to specify which state changes will trigger signal updates,
+optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+
+By default, the selected state is an empty object. Provide a selector to expose
+reactive state fields. The adapter observes core work separately for Angular stability.
+
+Available state properties:
+- `canLeadingExecute`: Whether the debouncer can execute on the leading edge
+- `executionCount`: Number of function executions that have been completed
+- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
+- `lastArgs`: The arguments from the most recent call to maybeExecute
+- `status`: Current execution status ('disabled' | 'idle' | 'pending')
+
+## Cleanup on Destroy
+
+By default, the function cancels any pending execution when the component is destroyed.
+Use the `onUnmount` option to customize this. For example, to flush pending work instead:
+
+```ts
+const debouncer = injectDebouncer(fn, {
+  wait: 500,
+  onUnmount: (d) => d.flush()
+});
+```
+
+### Type Parameters
+
+#### TFn
+
+`TFn` *extends* `AnyFunction`
+
+#### TSelected
 
 `TSelected` = \{
 \}
 
-## Parameters
+### Parameters
 
-### fn
+#### fn
 
 `TFn`
 
-### options
+#### options
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`TFn`, `TSelected`\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`TFn`,
+  \| \{
+\}
+  \| `TSelected`\>\>
 
-### selector?
+#### selector?
 
 (`state`) => `TSelected`
 
-## Returns
+### Returns
 
-[`AngularDebouncer`](../interfaces/AngularDebouncer.md)\<`TFn`, `TSelected`\>
+[`AngularDebouncer`](../interfaces/AngularDebouncer.md)\<`TFn`,
+  \| \{
+\}
+  \| `TSelected`\>
 
-## Example
+### Example
 
 ```ts
-// Default behavior - no reactive state subscriptions
+// Default selected state is an empty object
 const debouncer = injectDebouncer(
   (query: string) => fetchSearchResults(query),
   { wait: 500 }

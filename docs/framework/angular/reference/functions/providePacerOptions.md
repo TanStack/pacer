@@ -7,7 +7,7 @@ title: providePacerOptions
 function providePacerOptions(options): Provider;
 ```
 
-Defined in: [provider/pacer-provider.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/pacer-provider.ts#L33)
+Defined in: [provider/pacer-provider.ts:33](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/provider/pacer-provider.ts#L33)
 
 Provides default options for all Pacer utilities in the Angular application.
 Use this function when configuring your Angular application to set default options
