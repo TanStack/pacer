@@ -61,7 +61,7 @@ Available throttler state properties:
 
 #### initialOptions
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`ThrottlerOptions`\<`Setter`\<`NoInfer`\<`TValue`\>\>\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`Setter`\<`NoInfer`\<`TValue`\>\>, `NoInfer`\<`TSelected`\>\>\>
 
 #### selector
 
@@ -141,7 +141,8 @@ Available throttler state properties:
 
 #### initialOptions
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`ThrottlerOptions`\<`Setter`\<`NoInfer`\<`TValue`\>\>\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`Setter`\<`NoInfer`\<`TValue`\>\>, \{
+\}\>\>
 
 #### selector?
 
@@ -229,7 +230,10 @@ Available throttler state properties:
 
 #### initialOptions
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`ThrottlerOptions`\<`Setter`\<`NoInfer`\<`TValue`\>\>\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`Setter`\<`NoInfer`\<`TValue`\>\>,
+  \| \{
+\}
+  \| `NoInfer`\<`TSelected`\>\>\>
 
 #### selector?
 

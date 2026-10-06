@@ -3,7 +3,7 @@ id: AngularAsyncDebouncer
 title: AngularAsyncDebouncer
 ---
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:34](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L34)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:35](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L35)
 
 ## Extends
 
@@ -34,7 +34,7 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:34](https://github.com/benj
 readonly asyncRetryers: Signal<Map<number, AsyncRetryer<TFn>>>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L53)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L54)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:53](https://github.com/benj
 readonly fn: Signal<TFn>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:42](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L42)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:43](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L43)
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:42](https://github.com/benj
 readonly key: Signal<string | undefined>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:41](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L41)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:42](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L42)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:41](https://github.com/benj
 readonly options: Signal<AsyncDebouncerOptions<TFn> & AngularAsyncDebouncerOptions<TFn, TSelected>>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:43](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L43)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:44](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L44)
 
 ***
 
@@ -74,7 +74,7 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:43](https://github.com/benj
 setOptions: (options) => void;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:50](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L50)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:51](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L51)
 
 #### Parameters
 
@@ -94,7 +94,7 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:50](https://github.com/benj
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:49](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L49)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:50](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L50)
 
 ***
 
@@ -104,6 +104,6 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:49](https://github.com/benj
 readonly store: Signal<Store<Readonly<AsyncDebouncerState<TFn>>, never>>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:48](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L48)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:49](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L49)
 
 Core store access; use state() for reactive selected state.

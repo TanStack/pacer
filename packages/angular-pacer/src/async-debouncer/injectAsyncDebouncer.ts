@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
+import { shallow } from '@tanstack/angular-store'
 import { injectOutsideZone } from '../utils/injectOutsideZone'
 import { injectPendingTask } from '../utils/injectPendingTask'
 import { injectExternalStore } from '../utils/injectExternalStore'
@@ -163,7 +164,9 @@ export function injectAsyncDebouncer<
   const defaults = injectPacerOptions()
   const outsideZone = injectOutsideZone()
   const pending = injectPendingTask()
-  const resolvedOptions = linkedSignal(() => ({
+  const resolvedOptions = linkedSignal<
+    AngularAsyncDebouncerOptions<TFn, TSelected | {}>
+  >(() => ({
     ...defaults.asyncDebouncer,
     ...(typeof options === 'function' ? options() : options),
   }))
@@ -184,9 +187,10 @@ export function injectAsyncDebouncer<
   let effectOwnsInstance = false
   let unregisterEarlyCleanup: (() => void) | undefined
   const cleanup = (current: AsyncDebouncer<TFn>) => {
-    const onUnmount = (
-      current.options as AngularAsyncDebouncerOptions<TFn, TSelected | {}>
-    ).onUnmount
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
     if (onUnmount) onUnmount(result)
     else {
       current.cancel()
@@ -251,7 +255,9 @@ export function injectAsyncDebouncer<
   })
 
   // The retryer map also covers automatic retry waits; displayed flags may reset.
-  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
   effect(() =>
     pending.set(snapshot().isPending || instance().asyncRetryers.size > 0),
   )

@@ -3,7 +3,7 @@ id: AngularAsyncQueuer
 title: AngularAsyncQueuer
 ---
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:33](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L33)
+Defined in: [async-queuer/injectAsyncQueuer.ts:34](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L34)
 
 ## Extends
 
@@ -43,7 +43,7 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:33](https://github.com/benjavicen
 readonly asyncRetryers: Signal<Map<number, AsyncRetryer<(item) => Promise<any>>>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:63](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L63)
+Defined in: [async-queuer/injectAsyncQueuer.ts:64](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L64)
 
 ***
 
@@ -53,7 +53,7 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:63](https://github.com/benjavicen
 readonly fn: Signal<(item) => Promise<any>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:52](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L52)
+Defined in: [async-queuer/injectAsyncQueuer.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L53)
 
 ***
 
@@ -63,7 +63,7 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:52](https://github.com/benjavicen
 readonly key: Signal<string | undefined>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:51](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L51)
+Defined in: [async-queuer/injectAsyncQueuer.ts:52](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L52)
 
 ***
 
@@ -73,7 +73,7 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:51](https://github.com/benjavicen
 readonly options: Signal<AsyncQueuerOptions<TValue> & AngularAsyncQueuerOptions<TValue, TSelected>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L53)
+Defined in: [async-queuer/injectAsyncQueuer.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L54)
 
 ***
 
@@ -83,7 +83,7 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:53](https://github.com/benjavicen
 setOptions: (options) => void;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:60](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L60)
+Defined in: [async-queuer/injectAsyncQueuer.ts:61](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L61)
 
 #### Parameters
 
@@ -103,7 +103,7 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:60](https://github.com/benjavicen
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:59](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L59)
+Defined in: [async-queuer/injectAsyncQueuer.ts:60](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L60)
 
 ***
 
@@ -113,6 +113,6 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:59](https://github.com/benjavicen
 readonly store: Signal<Store<Readonly<AsyncQueuerState<TValue>>, never>>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:58](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L58)
+Defined in: [async-queuer/injectAsyncQueuer.ts:59](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L59)
 
 Core store access; use state() for reactive selected state.

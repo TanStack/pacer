@@ -12,7 +12,7 @@ function injectQueuer<TValue, TSelected>(
 selector): AngularQueuer<TValue, TSelected>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:108](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L108)
+Defined in: [queuer/injectQueuer.ts:109](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L109)
 
 An Angular function that creates and manages a Queuer instance.
 
@@ -104,7 +104,7 @@ function injectQueuer<TValue>(
 }>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:113](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L113)
+Defined in: [queuer/injectQueuer.ts:114](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L114)
 
 An Angular function that creates and manages a Queuer instance.
 
@@ -196,7 +196,7 @@ function injectQueuer<TValue, TSelected>(
 | TSelected>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:118](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L118)
+Defined in: [queuer/injectQueuer.ts:119](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L119)
 
 An Angular function that creates and manages a Queuer instance.
 

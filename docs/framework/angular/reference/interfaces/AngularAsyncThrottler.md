@@ -3,7 +3,7 @@ id: AngularAsyncThrottler
 title: AngularAsyncThrottler
 ---
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:34](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L34)
+Defined in: [async-throttler/injectAsyncThrottler.ts:35](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L35)
 
 ## Extends
 
@@ -34,7 +34,7 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:34](https://github.com/benj
 readonly asyncRetryers: Signal<Map<number, AsyncRetryer<TFn>>>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L53)
+Defined in: [async-throttler/injectAsyncThrottler.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L54)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:53](https://github.com/benj
 readonly fn: Signal<TFn>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:42](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L42)
+Defined in: [async-throttler/injectAsyncThrottler.ts:43](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L43)
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:42](https://github.com/benj
 readonly key: Signal<string | undefined>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:41](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L41)
+Defined in: [async-throttler/injectAsyncThrottler.ts:42](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L42)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:41](https://github.com/benj
 readonly options: Signal<AsyncThrottlerOptions<TFn> & AngularAsyncThrottlerOptions<TFn, TSelected>>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:43](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L43)
+Defined in: [async-throttler/injectAsyncThrottler.ts:44](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L44)
 
 ***
 
@@ -74,7 +74,7 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:43](https://github.com/benj
 setOptions: (options) => void;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:50](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L50)
+Defined in: [async-throttler/injectAsyncThrottler.ts:51](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L51)
 
 #### Parameters
 
@@ -94,7 +94,7 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:50](https://github.com/benj
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:49](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L49)
+Defined in: [async-throttler/injectAsyncThrottler.ts:50](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L50)
 
 ***
 
@@ -104,6 +104,6 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:49](https://github.com/benj
 readonly store: Signal<Store<Readonly<AsyncThrottlerState<TFn>>, never>>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:48](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L48)
+Defined in: [async-throttler/injectAsyncThrottler.ts:49](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L49)
 
 Core store access; use state() for reactive selected state.

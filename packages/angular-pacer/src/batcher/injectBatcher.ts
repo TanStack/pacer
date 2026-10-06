@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core'
 import { Batcher } from '@tanstack/pacer/batcher'
+import { shallow } from '@tanstack/angular-store'
 import { injectOutsideZone } from '../utils/injectOutsideZone'
 import { injectPendingTask } from '../utils/injectPendingTask'
 import { injectExternalStore } from '../utils/injectExternalStore'
@@ -114,7 +115,9 @@ export function injectBatcher<TValue, TSelected = {}>(
   const defaults = injectPacerOptions()
   const outsideZone = injectOutsideZone()
   const pending = injectPendingTask()
-  const resolvedOptions = linkedSignal(() => ({
+  const resolvedOptions = linkedSignal<
+    AngularBatcherOptions<TValue, TSelected | {}>
+  >(() => ({
     ...defaults.batcher,
     ...(typeof options === 'function' ? options() : options),
   }))
@@ -131,9 +134,10 @@ export function injectBatcher<TValue, TSelected = {}>(
   let effectOwnsInstance = false
   let unregisterEarlyCleanup: (() => void) | undefined
   const cleanup = (current: Batcher<TValue>) => {
-    const onUnmount = (
-      current.options as AngularBatcherOptions<TValue, TSelected | {}>
-    ).onUnmount
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
     if (onUnmount) onUnmount(result)
     else {
       current.cancel()
@@ -192,7 +196,9 @@ export function injectBatcher<TValue, TSelected = {}>(
     }
   })
 
-  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
   effect(() => pending.set(snapshot().isPending))
 
   const result: AngularBatcher<TValue, TSelected | {}> = {

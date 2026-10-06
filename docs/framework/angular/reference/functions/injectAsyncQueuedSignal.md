@@ -43,7 +43,7 @@ The function returns a callable object:
 
 #### options
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`AsyncQueuerOptions`\<`TValue`\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`, `NoInfer`\<`TSelected`\>\>\>
 
 #### selector
 
@@ -88,7 +88,7 @@ function injectAsyncQueuedSignal<TValue>(
 selector?): AsyncQueuedSignal<TValue, Pick<AsyncQueuerState<TValue>, "items">>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuedSignal.ts:63](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L63)
+Defined in: [async-queuer/injectAsyncQueuedSignal.ts:65](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L65)
 
 An Angular function that creates an async queuer with managed state, combining Angular's signals with async queuing functionality.
 This function provides both the current queue state and queue control methods.
@@ -115,7 +115,7 @@ The function returns a callable object:
 
 #### options?
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`AsyncQueuerOptions`\<`TValue`\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`, `Pick`\<`AsyncQueuerState`\<`TValue`\>, `"items"`\>\>\>
 
 #### selector?
 
@@ -160,7 +160,7 @@ function injectAsyncQueuedSignal<TValue, TSelected>(
 selector?): AsyncQueuedSignal<TValue, TSelected | Pick<AsyncQueuerState<TValue>, "items">>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuedSignal.ts:68](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L68)
+Defined in: [async-queuer/injectAsyncQueuedSignal.ts:72](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedSignal.ts#L72)
 
 An Angular function that creates an async queuer with managed state, combining Angular's signals with async queuing functionality.
 This function provides both the current queue state and queue control methods.
@@ -191,7 +191,9 @@ The function returns a callable object:
 
 #### options?
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`AsyncQueuerOptions`\<`TValue`\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`,
+  \| `Pick`\<`AsyncQueuerState`\<`TValue`\>, `"items"`\>
+  \| `NoInfer`\<`TSelected`\>\>\>
 
 #### selector?
 

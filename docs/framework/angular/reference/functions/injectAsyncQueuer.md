@@ -12,7 +12,7 @@ function injectAsyncQueuer<TValue, TSelected>(
 selector): AngularAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:120](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L120)
+Defined in: [async-queuer/injectAsyncQueuer.ts:121](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L121)
 
 An Angular function that creates and manages an AsyncQueuer instance.
 
@@ -106,7 +106,7 @@ function injectAsyncQueuer<TValue>(
 }>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:125](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L125)
+Defined in: [async-queuer/injectAsyncQueuer.ts:126](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L126)
 
 An Angular function that creates and manages an AsyncQueuer instance.
 
@@ -200,7 +200,7 @@ function injectAsyncQueuer<TValue, TSelected>(
 | TSelected>;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:130](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L130)
+Defined in: [async-queuer/injectAsyncQueuer.ts:131](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L131)
 
 An Angular function that creates and manages an AsyncQueuer instance.
 

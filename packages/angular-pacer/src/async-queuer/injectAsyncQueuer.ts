@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
+import { shallow } from '@tanstack/angular-store'
 import { injectOutsideZone } from '../utils/injectOutsideZone'
 import { injectPendingTask } from '../utils/injectPendingTask'
 import { injectExternalStore } from '../utils/injectExternalStore'
@@ -145,7 +146,9 @@ export function injectAsyncQueuer<TValue, TSelected = {}>(
   const defaults = injectPacerOptions()
   const outsideZone = injectOutsideZone()
   const pending = injectPendingTask()
-  const resolvedOptions = linkedSignal(() => ({
+  const resolvedOptions = linkedSignal<
+    AngularAsyncQueuerOptions<TValue, TSelected | {}>
+  >(() => ({
     ...defaults.asyncQueuer,
     ...(typeof options === 'function' ? options() : options),
   }))
@@ -180,9 +183,10 @@ export function injectAsyncQueuer<TValue, TSelected = {}>(
   let unregisterEarlyCleanup: (() => void) | undefined
   let initialized = false
   const cleanup = (current: AsyncQueuer<TValue>) => {
-    const onUnmount = (
-      current.options as AngularAsyncQueuerOptions<TValue, TSelected | {}>
-    ).onUnmount
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
     if (onUnmount) onUnmount(result)
     else {
       current.stop()
@@ -217,9 +221,9 @@ export function injectAsyncQueuer<TValue, TSelected = {}>(
               current.start()
             if (!initialOptions.initialState?.items) {
               const items = initialOptions.initialItems ?? []
-              for (let index = 0; index < items.length; index++) {
+              for (const [index, item] of items.entries()) {
                 current.addItem(
-                  items[index],
+                  item,
                   initialOptions.addItemsTo ?? 'back',
                   index === items.length - 1,
                 )
@@ -270,7 +274,9 @@ export function injectAsyncQueuer<TValue, TSelected = {}>(
   })
 
   // The retryer map also covers automatic retry waits; displayed flags may reset.
-  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
   effect(() =>
     pending.set(
       (snapshot().isRunning && snapshot().items.length > 0) ||

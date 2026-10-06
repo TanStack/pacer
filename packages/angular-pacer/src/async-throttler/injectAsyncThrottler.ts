@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
+import { shallow } from '@tanstack/angular-store'
 import { injectOutsideZone } from '../utils/injectOutsideZone'
 import { injectPendingTask } from '../utils/injectPendingTask'
 import { injectExternalStore } from '../utils/injectExternalStore'
@@ -142,7 +143,9 @@ export function injectAsyncThrottler<
   const defaults = injectPacerOptions()
   const outsideZone = injectOutsideZone()
   const pending = injectPendingTask()
-  const resolvedOptions = linkedSignal(() => ({
+  const resolvedOptions = linkedSignal<
+    AngularAsyncThrottlerOptions<TFn, TSelected | {}>
+  >(() => ({
     ...defaults.asyncThrottler,
     ...(typeof options === 'function' ? options() : options),
   }))
@@ -163,9 +166,10 @@ export function injectAsyncThrottler<
   let effectOwnsInstance = false
   let unregisterEarlyCleanup: (() => void) | undefined
   const cleanup = (current: AsyncThrottler<TFn>) => {
-    const onUnmount = (
-      current.options as AngularAsyncThrottlerOptions<TFn, TSelected | {}>
-    ).onUnmount
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
     if (onUnmount) onUnmount(result)
     else {
       current.cancel()
@@ -230,7 +234,9 @@ export function injectAsyncThrottler<
   })
 
   // The retryer map also covers automatic retry waits; displayed flags may reset.
-  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
   effect(() =>
     pending.set(snapshot().isPending || instance().asyncRetryers.size > 0),
   )

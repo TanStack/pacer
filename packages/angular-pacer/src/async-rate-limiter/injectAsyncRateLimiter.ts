@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
+import { shallow } from '@tanstack/angular-store'
 import { injectOutsideZone } from '../utils/injectOutsideZone'
 import { injectPendingTask } from '../utils/injectPendingTask'
 import { injectExternalStore } from '../utils/injectExternalStore'
@@ -132,7 +133,9 @@ export function injectAsyncRateLimiter<
   const defaults = injectPacerOptions()
   const outsideZone = injectOutsideZone()
   const pending = injectPendingTask()
-  const resolvedOptions = linkedSignal(() => ({
+  const resolvedOptions = linkedSignal<
+    AngularAsyncRateLimiterOptions<TFn, TSelected | {}>
+  >(() => ({
     ...defaults.asyncRateLimiter,
     ...(typeof options === 'function' ? options() : options),
   }))
@@ -153,9 +156,10 @@ export function injectAsyncRateLimiter<
   let effectOwnsInstance = false
   let unregisterEarlyCleanup: (() => void) | undefined
   const cleanup = (current: AsyncRateLimiter<TFn>) => {
-    const onUnmount = (
-      current.options as AngularAsyncRateLimiterOptions<TFn, TSelected | {}>
-    ).onUnmount
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
     if (onUnmount) onUnmount(result)
     else {
       current.abort()
@@ -217,7 +221,9 @@ export function injectAsyncRateLimiter<
   })
 
   // The retryer map also covers automatic retry waits; displayed flags may reset.
-  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
   effect(() => {
     snapshot()
     pending.set(instance().asyncRetryers.size > 0)

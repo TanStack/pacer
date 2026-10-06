@@ -12,7 +12,7 @@ function injectRateLimiter<TFn, TSelected>(
 selector): AngularRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:124](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L124)
+Defined in: [rate-limiter/injectRateLimiter.ts:125](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L125)
 
 An Angular function that creates and manages a RateLimiter instance.
 
@@ -125,7 +125,7 @@ function injectRateLimiter<TFn>(
 }>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:129](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L129)
+Defined in: [rate-limiter/injectRateLimiter.ts:130](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L130)
 
 An Angular function that creates and manages a RateLimiter instance.
 
@@ -238,7 +238,7 @@ function injectRateLimiter<TFn, TSelected>(
 | TSelected>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:134](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L134)
+Defined in: [rate-limiter/injectRateLimiter.ts:135](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L135)
 
 An Angular function that creates and manages a RateLimiter instance.
 

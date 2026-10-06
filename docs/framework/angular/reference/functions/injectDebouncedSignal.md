@@ -61,7 +61,7 @@ Available debouncer state properties:
 
 #### initialOptions
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`DebouncerOptions`\<`Setter`\<`NoInfer`\<`TValue`\>\>\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`Setter`\<`NoInfer`\<`TValue`\>\>, `NoInfer`\<`TSelected`\>\>\>
 
 #### selector
 
@@ -141,7 +141,8 @@ Available debouncer state properties:
 
 #### initialOptions
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`DebouncerOptions`\<`Setter`\<`NoInfer`\<`TValue`\>\>\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`Setter`\<`NoInfer`\<`TValue`\>\>, \{
+\}\>\>
 
 #### selector?
 
@@ -229,7 +230,10 @@ Available debouncer state properties:
 
 #### initialOptions
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`DebouncerOptions`\<`Setter`\<`NoInfer`\<`TValue`\>\>\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<`Setter`\<`NoInfer`\<`TValue`\>\>,
+  \| \{
+\}
+  \| `NoInfer`\<`TSelected`\>\>\>
 
 #### selector?
 

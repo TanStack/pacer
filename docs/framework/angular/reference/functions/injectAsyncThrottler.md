@@ -12,7 +12,7 @@ function injectAsyncThrottler<TFn, TSelected>(
 selector): AngularAsyncThrottler<TFn, TSelected>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:111](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L111)
+Defined in: [async-throttler/injectAsyncThrottler.ts:112](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L112)
 
 An Angular function that creates and manages an AsyncThrottler instance.
 
@@ -107,7 +107,7 @@ function injectAsyncThrottler<TFn>(
 }>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:116](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L116)
+Defined in: [async-throttler/injectAsyncThrottler.ts:117](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L117)
 
 An Angular function that creates and manages an AsyncThrottler instance.
 
@@ -202,7 +202,7 @@ function injectAsyncThrottler<TFn, TSelected>(
 | TSelected>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:121](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L121)
+Defined in: [async-throttler/injectAsyncThrottler.ts:122](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L122)
 
 An Angular function that creates and manages an AsyncThrottler instance.
 

@@ -12,7 +12,7 @@ function injectThrottler<TFn, TSelected>(
 selector): AngularThrottler<TFn, TSelected>;
 ```
 
-Defined in: [throttler/injectThrottler.ts:115](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L115)
+Defined in: [throttler/injectThrottler.ts:116](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L116)
 
 An Angular function that creates and manages a Throttler instance.
 
@@ -117,7 +117,7 @@ function injectThrottler<TFn>(
 }>;
 ```
 
-Defined in: [throttler/injectThrottler.ts:120](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L120)
+Defined in: [throttler/injectThrottler.ts:121](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L121)
 
 An Angular function that creates and manages a Throttler instance.
 
@@ -222,7 +222,7 @@ function injectThrottler<TFn, TSelected>(
 | TSelected>;
 ```
 
-Defined in: [throttler/injectThrottler.ts:125](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L125)
+Defined in: [throttler/injectThrottler.ts:126](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L126)
 
 An Angular function that creates and manages a Throttler instance.
 

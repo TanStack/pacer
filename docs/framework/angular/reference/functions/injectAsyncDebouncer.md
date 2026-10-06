@@ -12,7 +12,7 @@ function injectAsyncDebouncer<TFn, TSelected>(
 selector): AngularAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:132](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L132)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:133](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L133)
 
 An Angular function that creates and manages an AsyncDebouncer instance.
 
@@ -128,7 +128,7 @@ function injectAsyncDebouncer<TFn>(
 }>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:137](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L137)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:138](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L138)
 
 An Angular function that creates and manages an AsyncDebouncer instance.
 
@@ -244,7 +244,7 @@ function injectAsyncDebouncer<TFn, TSelected>(
 | TSelected>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:142](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L142)
+Defined in: [async-debouncer/injectAsyncDebouncer.ts:143](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L143)
 
 An Angular function that creates and manages an AsyncDebouncer instance.
 

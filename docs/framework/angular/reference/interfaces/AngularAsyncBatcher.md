@@ -3,7 +3,7 @@ id: AngularAsyncBatcher
 title: AngularAsyncBatcher
 ---
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:33](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L33)
+Defined in: [async-batcher/injectAsyncBatcher.ts:34](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L34)
 
 ## Extends
 
@@ -37,7 +37,7 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:33](https://github.com/benjavic
 readonly asyncRetryers: Signal<Map<number, AsyncRetryer<(items) => Promise<any>>>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:57](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L57)
+Defined in: [async-batcher/injectAsyncBatcher.ts:58](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L58)
 
 ***
 
@@ -47,7 +47,7 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:57](https://github.com/benjavic
 readonly fn: Signal<(items) => Promise<any>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:46](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L46)
+Defined in: [async-batcher/injectAsyncBatcher.ts:47](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L47)
 
 ***
 
@@ -57,7 +57,7 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:46](https://github.com/benjavic
 readonly key: Signal<string | undefined>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:45](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L45)
+Defined in: [async-batcher/injectAsyncBatcher.ts:46](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L46)
 
 ***
 
@@ -79,7 +79,7 @@ readonly options: Signal<Omit<Required<AsyncBatcherOptions<TValue>>,
 | "onItemsChange">> & AngularAsyncBatcherOptions<TValue, TSelected>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:47](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L47)
+Defined in: [async-batcher/injectAsyncBatcher.ts:48](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L48)
 
 ***
 
@@ -89,7 +89,7 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:47](https://github.com/benjavic
 setOptions: (options) => void;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L54)
+Defined in: [async-batcher/injectAsyncBatcher.ts:55](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L55)
 
 #### Parameters
 
@@ -109,7 +109,7 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:54](https://github.com/benjavic
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L53)
+Defined in: [async-batcher/injectAsyncBatcher.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L54)
 
 ***
 
@@ -119,6 +119,6 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:53](https://github.com/benjavic
 readonly store: Signal<Store<Readonly<AsyncBatcherState<TValue>>, never>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:52](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L52)
+Defined in: [async-batcher/injectAsyncBatcher.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L53)
 
 Core store access; use state() for reactive selected state.

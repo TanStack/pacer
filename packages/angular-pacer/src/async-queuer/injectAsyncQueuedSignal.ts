@@ -2,11 +2,11 @@ import { computed } from '@angular/core'
 import { injectAsyncQueuer } from './injectAsyncQueuer'
 import type { Signal } from '@angular/core'
 import type { AngularPacerOptions } from '../types'
-import type { AngularAsyncQueuer } from './injectAsyncQueuer'
 import type {
-  AsyncQueuerOptions,
-  AsyncQueuerState,
-} from '@tanstack/pacer/async-queuer'
+  AngularAsyncQueuer,
+  AngularAsyncQueuerOptions,
+} from './injectAsyncQueuer'
+import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
 
 export type AsyncQueuedSignal<TValue, TSelected = {}> = Signal<
   Array<TValue>
@@ -57,12 +57,16 @@ export function injectAsyncQueuedSignal<
   TSelected extends Pick<AsyncQueuerState<TValue>, 'items'>,
 >(
   fn: (value: TValue) => Promise<any>,
-  options: AngularPacerOptions<AsyncQueuerOptions<TValue>>,
+  options: AngularPacerOptions<
+    AngularAsyncQueuerOptions<TValue, NoInfer<TSelected>>
+  >,
   selector: (state: AsyncQueuerState<TValue>) => TSelected,
 ): AsyncQueuedSignal<TValue, TSelected>
 export function injectAsyncQueuedSignal<TValue>(
   fn: (value: TValue) => Promise<any>,
-  options?: AngularPacerOptions<AsyncQueuerOptions<TValue>>,
+  options?: AngularPacerOptions<
+    AngularAsyncQueuerOptions<TValue, Pick<AsyncQueuerState<TValue>, 'items'>>
+  >,
   selector?: undefined,
 ): AsyncQueuedSignal<TValue, Pick<AsyncQueuerState<TValue>, 'items'>>
 export function injectAsyncQueuedSignal<
@@ -73,7 +77,12 @@ export function injectAsyncQueuedSignal<
   >,
 >(
   fn: (value: TValue) => Promise<any>,
-  options?: AngularPacerOptions<AsyncQueuerOptions<TValue>>,
+  options?: AngularPacerOptions<
+    AngularAsyncQueuerOptions<
+      TValue,
+      NoInfer<TSelected> | Pick<AsyncQueuerState<TValue>, 'items'>
+    >
+  >,
   selector?: (state: AsyncQueuerState<TValue>) => TSelected,
 ): AsyncQueuedSignal<
   TValue,
@@ -87,7 +96,12 @@ export function injectAsyncQueuedSignal<
   >,
 >(
   fn: (value: TValue) => Promise<any>,
-  options?: AngularPacerOptions<AsyncQueuerOptions<TValue>>,
+  options?: AngularPacerOptions<
+    AngularAsyncQueuerOptions<
+      TValue,
+      NoInfer<TSelected> | Pick<AsyncQueuerState<TValue>, 'items'>
+    >
+  >,
   selector?: (state: AsyncQueuerState<TValue>) => TSelected,
 ): AsyncQueuedSignal<
   TValue,

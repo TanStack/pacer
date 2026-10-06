@@ -2,11 +2,11 @@ import { signal } from '@angular/core'
 import { injectDebouncer } from './injectDebouncer'
 import type { Signal } from '@angular/core'
 import type { AngularPacerOptions } from '../types'
-import type { AngularDebouncer } from './injectDebouncer'
 import type {
-  DebouncerOptions,
-  DebouncerState,
-} from '@tanstack/pacer/debouncer'
+  AngularDebouncer,
+  AngularDebouncerOptions,
+} from './injectDebouncer'
+import type { DebouncerState } from '@tanstack/pacer/debouncer'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
@@ -62,28 +62,28 @@ export type DebouncedSignal<TValue, TSelected = {}> = Signal<TValue> & {
 export function injectDebouncedSignal<TValue, TSelected>(
   value: TValue,
   initialOptions: AngularPacerOptions<
-    DebouncerOptions<Setter<NoInfer<TValue>>>
+    AngularDebouncerOptions<Setter<NoInfer<TValue>>, NoInfer<TSelected>>
   >,
   selector: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): DebouncedSignal<TValue, TSelected>
 export function injectDebouncedSignal<TValue>(
   value: TValue,
   initialOptions: AngularPacerOptions<
-    DebouncerOptions<Setter<NoInfer<TValue>>>
+    AngularDebouncerOptions<Setter<NoInfer<TValue>>, {}>
   >,
   selector?: undefined,
 ): DebouncedSignal<TValue, {}>
 export function injectDebouncedSignal<TValue, TSelected = {}>(
   value: TValue,
   initialOptions: AngularPacerOptions<
-    DebouncerOptions<Setter<NoInfer<TValue>>>
+    AngularDebouncerOptions<Setter<NoInfer<TValue>>, NoInfer<TSelected> | {}>
   >,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): DebouncedSignal<TValue, TSelected | {}>
 export function injectDebouncedSignal<TValue, TSelected = {}>(
   value: TValue,
   initialOptions: AngularPacerOptions<
-    DebouncerOptions<Setter<NoInfer<TValue>>>
+    AngularDebouncerOptions<Setter<NoInfer<TValue>>, NoInfer<TSelected> | {}>
   >,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): DebouncedSignal<TValue, TSelected | {}> {

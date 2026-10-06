@@ -12,7 +12,7 @@ function injectAsyncRateLimiter<TFn, TSelected>(
 selector): AngularAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:101](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L101)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:102](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L102)
 
 An Angular function that creates and manages an AsyncRateLimiter instance.
 
@@ -93,7 +93,7 @@ function injectAsyncRateLimiter<TFn>(
 }>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:106](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L106)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:107](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L107)
 
 An Angular function that creates and manages an AsyncRateLimiter instance.
 
@@ -174,7 +174,7 @@ function injectAsyncRateLimiter<TFn, TSelected>(
 | TSelected>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:111](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L111)
+Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:112](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L112)
 
 An Angular function that creates and manages an AsyncRateLimiter instance.
 

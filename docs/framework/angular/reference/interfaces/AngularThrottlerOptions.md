@@ -3,7 +3,7 @@ id: AngularThrottlerOptions
 title: AngularThrottlerOptions
 ---
 
-Defined in: [throttler/injectThrottler.ts:22](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L22)
+Defined in: [throttler/injectThrottler.ts:23](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L23)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [throttler/injectThrottler.ts:22](https://github.com/benjavicente/pa
 optional onUnmount?: (throttler) => void;
 ```
 
-Defined in: [throttler/injectThrottler.ts:30](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L30)
+Defined in: [throttler/injectThrottler.ts:31](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L31)
 
 Optional callback invoked when the component is destroyed. Receives the throttler instance.
 When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.

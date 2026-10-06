@@ -53,7 +53,7 @@ reactive state fields. The adapter observes core work separately for Angular sta
 
 #### initialOptions
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`RateLimiterOptions`\<`Setter`\<`NoInfer`\<`TValue`\>\>\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<`Setter`\<`NoInfer`\<`TValue`\>\>, `NoInfer`\<`TSelected`\>\>\>
 
 #### selector
 
@@ -128,7 +128,8 @@ reactive state fields. The adapter observes core work separately for Angular sta
 
 #### initialOptions
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`RateLimiterOptions`\<`Setter`\<`NoInfer`\<`TValue`\>\>\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<`Setter`\<`NoInfer`\<`TValue`\>\>, \{
+\}\>\>
 
 #### selector?
 
@@ -211,7 +212,10 @@ reactive state fields. The adapter observes core work separately for Angular sta
 
 #### initialOptions
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`RateLimiterOptions`\<`Setter`\<`NoInfer`\<`TValue`\>\>\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<`Setter`\<`NoInfer`\<`TValue`\>\>,
+  \| \{
+\}
+  \| `NoInfer`\<`TSelected`\>\>\>
 
 #### selector?
 

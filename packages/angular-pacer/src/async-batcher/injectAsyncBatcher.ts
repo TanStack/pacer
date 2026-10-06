@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
+import { shallow } from '@tanstack/angular-store'
 import { injectOutsideZone } from '../utils/injectOutsideZone'
 import { injectPendingTask } from '../utils/injectPendingTask'
 import { injectExternalStore } from '../utils/injectExternalStore'
@@ -139,7 +140,9 @@ export function injectAsyncBatcher<TValue, TSelected = {}>(
   const defaults = injectPacerOptions()
   const outsideZone = injectOutsideZone()
   const pending = injectPendingTask()
-  const resolvedOptions = linkedSignal(() => ({
+  const resolvedOptions = linkedSignal<
+    AngularAsyncBatcherOptions<TValue, TSelected | {}>
+  >(() => ({
     ...defaults.asyncBatcher,
     ...(typeof options === 'function' ? options() : options),
   }))
@@ -160,9 +163,10 @@ export function injectAsyncBatcher<TValue, TSelected = {}>(
   let effectOwnsInstance = false
   let unregisterEarlyCleanup: (() => void) | undefined
   const cleanup = (current: AsyncBatcher<TValue>) => {
-    const onUnmount = (
-      current.options as AngularAsyncBatcherOptions<TValue, TSelected | {}>
-    ).onUnmount
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
     if (onUnmount) onUnmount(result)
     else {
       current.cancel()
@@ -227,7 +231,9 @@ export function injectAsyncBatcher<TValue, TSelected = {}>(
   })
 
   // The retryer map also covers automatic retry waits; displayed flags may reset.
-  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
   effect(() =>
     pending.set(snapshot().isPending || instance().asyncRetryers.size > 0),
   )

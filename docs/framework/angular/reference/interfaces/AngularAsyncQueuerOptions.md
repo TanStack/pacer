@@ -3,7 +3,7 @@ id: AngularAsyncQueuerOptions
 title: AngularAsyncQueuerOptions
 ---
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:21](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L21)
+Defined in: [async-queuer/injectAsyncQueuer.ts:22](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L22)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:21](https://github.com/benjavicen
 optional onUnmount?: (queuer) => void;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:30](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L30)
+Defined in: [async-queuer/injectAsyncQueuer.ts:31](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L31)
 
 Optional callback invoked when the component is destroyed. Receives the queuer instance.
 When provided, replaces the default cleanup (stop + abort); use it to call flush(), stop(), add logging, etc.

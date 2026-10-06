@@ -2,8 +2,8 @@ import { computed } from '@angular/core'
 import { injectQueuer } from './injectQueuer'
 import type { Signal } from '@angular/core'
 import type { AngularPacerOptions } from '../types'
-import type { AngularQueuer } from './injectQueuer'
-import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
+import type { QueuerState } from '@tanstack/pacer/queuer'
 
 export type QueuedSignal<TValue, TSelected = {}> = Signal<Array<TValue>> & {
   addItem: AngularQueuer<TValue, TSelected>['addItem']
@@ -46,12 +46,16 @@ export function injectQueuedSignal<
   TSelected extends Pick<QueuerState<TValue>, 'items'>,
 >(
   fn: (item: TValue) => void,
-  options: AngularPacerOptions<QueuerOptions<TValue>>,
+  options: AngularPacerOptions<
+    AngularQueuerOptions<TValue, NoInfer<TSelected>>
+  >,
   selector: (state: QueuerState<TValue>) => TSelected,
 ): QueuedSignal<TValue, TSelected>
 export function injectQueuedSignal<TValue>(
   fn: (item: TValue) => void,
-  options?: AngularPacerOptions<QueuerOptions<TValue>>,
+  options?: AngularPacerOptions<
+    AngularQueuerOptions<TValue, Pick<QueuerState<TValue>, 'items'>>
+  >,
   selector?: undefined,
 ): QueuedSignal<TValue, Pick<QueuerState<TValue>, 'items'>>
 export function injectQueuedSignal<
@@ -62,7 +66,12 @@ export function injectQueuedSignal<
   >,
 >(
   fn: (item: TValue) => void,
-  options?: AngularPacerOptions<QueuerOptions<TValue>>,
+  options?: AngularPacerOptions<
+    AngularQueuerOptions<
+      TValue,
+      NoInfer<TSelected> | Pick<QueuerState<TValue>, 'items'>
+    >
+  >,
   selector?: (state: QueuerState<TValue>) => TSelected,
 ): QueuedSignal<TValue, TSelected | Pick<QueuerState<TValue>, 'items'>>
 export function injectQueuedSignal<
@@ -73,7 +82,12 @@ export function injectQueuedSignal<
   >,
 >(
   fn: (item: TValue) => void,
-  options?: AngularPacerOptions<QueuerOptions<TValue>>,
+  options?: AngularPacerOptions<
+    AngularQueuerOptions<
+      TValue,
+      NoInfer<TSelected> | Pick<QueuerState<TValue>, 'items'>
+    >
+  >,
   selector?: (state: QueuerState<TValue>) => TSelected,
 ): QueuedSignal<TValue, TSelected | Pick<QueuerState<TValue>, 'items'>> {
   const queuer = injectQueuer(fn, options ?? {}, (state) =>

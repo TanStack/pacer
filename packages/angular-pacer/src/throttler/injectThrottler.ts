@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core'
 import { Throttler } from '@tanstack/pacer/throttler'
+import { shallow } from '@tanstack/angular-store'
 import { injectOutsideZone } from '../utils/injectOutsideZone'
 import { injectPendingTask } from '../utils/injectPendingTask'
 import { injectExternalStore } from '../utils/injectExternalStore'
@@ -136,7 +137,9 @@ export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
   const defaults = injectPacerOptions()
   const outsideZone = injectOutsideZone()
   const pending = injectPendingTask()
-  const resolvedOptions = linkedSignal(() => ({
+  const resolvedOptions = linkedSignal<
+    AngularThrottlerOptions<TFn, TSelected | {}>
+  >(() => ({
     ...defaults.throttler,
     ...(typeof options === 'function' ? options() : options),
   }))
@@ -153,9 +156,10 @@ export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
   let effectOwnsInstance = false
   let unregisterEarlyCleanup: (() => void) | undefined
   const cleanup = (current: Throttler<TFn>) => {
-    const onUnmount = (
-      current.options as AngularThrottlerOptions<TFn, TSelected | {}>
-    ).onUnmount
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
     if (onUnmount) onUnmount(result)
     else {
       current.cancel()
@@ -214,7 +218,9 @@ export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
     }
   })
 
-  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
   effect(() => pending.set(snapshot().isPending))
 
   const result: AngularThrottler<TFn, TSelected | {}> = {

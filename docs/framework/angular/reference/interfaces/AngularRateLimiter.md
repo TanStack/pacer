@@ -3,7 +3,7 @@ id: AngularRateLimiter
 title: AngularRateLimiter
 ---
 
-Defined in: [rate-limiter/injectRateLimiter.ts:31](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L31)
+Defined in: [rate-limiter/injectRateLimiter.ts:32](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L32)
 
 ## Extends
 
@@ -32,7 +32,7 @@ Defined in: [rate-limiter/injectRateLimiter.ts:31](https://github.com/benjavicen
 readonly fn: Signal<TFn>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:39](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L39)
+Defined in: [rate-limiter/injectRateLimiter.ts:40](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L40)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [rate-limiter/injectRateLimiter.ts:39](https://github.com/benjavicen
 readonly key: Signal<string | undefined>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:38](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L38)
+Defined in: [rate-limiter/injectRateLimiter.ts:39](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L39)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [rate-limiter/injectRateLimiter.ts:38](https://github.com/benjavicen
 readonly options: Signal<RateLimiterOptions<TFn> & AngularRateLimiterOptions<TFn, TSelected>>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:40](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L40)
+Defined in: [rate-limiter/injectRateLimiter.ts:41](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L41)
 
 ***
 
@@ -62,7 +62,7 @@ Defined in: [rate-limiter/injectRateLimiter.ts:40](https://github.com/benjavicen
 setOptions: (options) => void;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:46](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L46)
+Defined in: [rate-limiter/injectRateLimiter.ts:47](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L47)
 
 #### Parameters
 
@@ -82,7 +82,7 @@ Defined in: [rate-limiter/injectRateLimiter.ts:46](https://github.com/benjavicen
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:45](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L45)
+Defined in: [rate-limiter/injectRateLimiter.ts:46](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L46)
 
 ***
 
@@ -92,6 +92,6 @@ Defined in: [rate-limiter/injectRateLimiter.ts:45](https://github.com/benjavicen
 readonly store: Signal<Store<Readonly<RateLimiterState>, never>>;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:44](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L44)
+Defined in: [rate-limiter/injectRateLimiter.ts:45](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L45)
 
 Core store access; use state() for reactive selected state.

@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core'
 import { Debouncer } from '@tanstack/pacer/debouncer'
+import { shallow } from '@tanstack/angular-store'
 import { injectOutsideZone } from '../utils/injectOutsideZone'
 import { injectPendingTask } from '../utils/injectPendingTask'
 import { injectExternalStore } from '../utils/injectExternalStore'
@@ -33,7 +34,10 @@ export interface AngularDebouncerOptions<
 export interface AngularDebouncer<
   TFn extends AnyFunction,
   TSelected = {},
-> extends Pick<Debouncer<TFn>, 'maybeExecute' | 'flush' | 'cancel' | 'reset'> {
+> extends Pick<
+  Debouncer<TFn>,
+  'maybeExecute' | 'flush' | 'cancel' | 'reset' | 'getIsScheduled'
+> {
   readonly key: Signal<Debouncer<TFn>['key']>
   readonly fn: Signal<Debouncer<TFn>['fn']>
   readonly options: Signal<
@@ -138,7 +142,9 @@ export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
   const defaults = injectPacerOptions()
   const outsideZone = injectOutsideZone()
   const pending = injectPendingTask()
-  const resolvedOptions = linkedSignal(() => ({
+  const resolvedOptions = linkedSignal<
+    AngularDebouncerOptions<TFn, TSelected | {}>
+  >(() => ({
     ...defaults.debouncer,
     ...(typeof options === 'function' ? options() : options),
   }))
@@ -155,9 +161,10 @@ export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
   let effectOwnsInstance = false
   let unregisterEarlyCleanup: (() => void) | undefined
   const cleanup = (current: Debouncer<TFn>) => {
-    const onUnmount = (
-      current.options as AngularDebouncerOptions<TFn, TSelected | {}>
-    ).onUnmount
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
     if (onUnmount) onUnmount(result)
     else {
       current.cancel()
@@ -180,7 +187,7 @@ export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
         try {
           return operation?.(current)
         } finally {
-          pending.set(current.store.state.isPending)
+          pending.set(current.getIsScheduled())
         }
       }),
     )
@@ -201,6 +208,7 @@ export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
     outsideZone(() =>
       untracked(() => {
         current.setOptions(latest)
+        pending.set(current.getIsScheduled())
       }),
     )
   })
@@ -216,8 +224,13 @@ export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
     }
   })
 
-  const state = computed(() => (selector ? selector(snapshot()) : {}))
-  effect(() => pending.set(snapshot().isPending))
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
+  effect(() => {
+    snapshot()
+    pending.set(instance().getIsScheduled())
+  })
 
   const result: AngularDebouncer<TFn, TSelected | {}> = {
     key: computed(() => instance().key),
@@ -237,6 +250,7 @@ export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
     flush: (...args) => run((current) => current.flush(...args)),
     cancel: (...args) => run((current) => current.cancel(...args)),
     reset: (...args) => run((current) => current.reset(...args)),
+    getIsScheduled: () => run((current) => current.getIsScheduled()),
   }
   return result
 }

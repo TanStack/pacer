@@ -12,7 +12,7 @@ function injectDebouncer<TFn, TSelected>(
 selector): AngularDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:117](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L117)
+Defined in: [debouncer/injectDebouncer.ts:121](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L121)
 
 An Angular function that creates and manages a Debouncer instance.
 
@@ -119,7 +119,7 @@ function injectDebouncer<TFn>(
 }>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:122](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L122)
+Defined in: [debouncer/injectDebouncer.ts:126](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L126)
 
 An Angular function that creates and manages a Debouncer instance.
 
@@ -226,7 +226,7 @@ function injectDebouncer<TFn, TSelected>(
 | TSelected>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:127](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L127)
+Defined in: [debouncer/injectDebouncer.ts:131](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L131)
 
 An Angular function that creates and manages a Debouncer instance.
 

@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
+import { shallow } from '@tanstack/angular-store'
 import { injectOutsideZone } from '../utils/injectOutsideZone'
 import { injectExternalStore } from '../utils/injectExternalStore'
 import { injectPacerOptions } from '../provider/pacer-context'
@@ -144,7 +145,9 @@ export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   const owner = inject(DestroyRef)
   const defaults = injectPacerOptions()
   const outsideZone = injectOutsideZone()
-  const resolvedOptions = linkedSignal(() => ({
+  const resolvedOptions = linkedSignal<
+    AngularRateLimiterOptions<TFn, TSelected | {}>
+  >(() => ({
     ...defaults.rateLimiter,
     ...(typeof options === 'function' ? options() : options),
   }))
@@ -161,9 +164,10 @@ export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
   let effectOwnsInstance = false
   let unregisterEarlyCleanup: (() => void) | undefined
   const cleanup = (current: RateLimiter<TFn>) => {
-    const onUnmount = (
-      current.options as AngularRateLimiterOptions<TFn, TSelected | {}>
-    ).onUnmount
+    const onUnmount = {
+      ...current.options,
+      ...resolvedOptions(),
+    }.onUnmount
     if (onUnmount) onUnmount(result)
   }
 
@@ -215,7 +219,9 @@ export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
     }
   })
 
-  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  const state = computed(() => (selector ? selector(snapshot()) : {}), {
+    equal: shallow,
+  })
 
   const result: AngularRateLimiter<TFn, TSelected | {}> = {
     key: computed(() => instance().key),

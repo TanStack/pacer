@@ -3,7 +3,7 @@ id: AngularQueuer
 title: AngularQueuer
 ---
 
-Defined in: [queuer/injectQueuer.ts:29](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L29)
+Defined in: [queuer/injectQueuer.ts:30](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L30)
 
 ## Extends
 
@@ -39,7 +39,7 @@ Defined in: [queuer/injectQueuer.ts:29](https://github.com/benjavicente/pacer/bl
 readonly fn: Signal<(item) => void>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:44](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L44)
+Defined in: [queuer/injectQueuer.ts:45](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L45)
 
 ***
 
@@ -49,7 +49,7 @@ Defined in: [queuer/injectQueuer.ts:44](https://github.com/benjavicente/pacer/bl
 readonly key: Signal<string | undefined>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:43](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L43)
+Defined in: [queuer/injectQueuer.ts:44](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L44)
 
 ***
 
@@ -59,7 +59,7 @@ Defined in: [queuer/injectQueuer.ts:43](https://github.com/benjavicente/pacer/bl
 readonly options: Signal<QueuerOptions<TValue> & AngularQueuerOptions<TValue, TSelected>>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:45](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L45)
+Defined in: [queuer/injectQueuer.ts:46](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L46)
 
 ***
 
@@ -69,7 +69,7 @@ Defined in: [queuer/injectQueuer.ts:45](https://github.com/benjavicente/pacer/bl
 setOptions: (options) => void;
 ```
 
-Defined in: [queuer/injectQueuer.ts:51](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L51)
+Defined in: [queuer/injectQueuer.ts:52](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L52)
 
 #### Parameters
 
@@ -89,7 +89,7 @@ Defined in: [queuer/injectQueuer.ts:51](https://github.com/benjavicente/pacer/bl
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:50](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L50)
+Defined in: [queuer/injectQueuer.ts:51](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L51)
 
 ***
 
@@ -99,6 +99,6 @@ Defined in: [queuer/injectQueuer.ts:50](https://github.com/benjavicente/pacer/bl
 readonly store: Signal<Store<Readonly<QueuerState<TValue>>, never>>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:49](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L49)
+Defined in: [queuer/injectQueuer.ts:50](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L50)
 
 Core store access; use state() for reactive selected state.

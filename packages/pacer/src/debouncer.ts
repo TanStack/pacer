@@ -146,6 +146,7 @@ export class Debouncer<TFn extends AnyFunction> {
   key: string | undefined
   options: DebouncerOptions<TFn>
   #timeoutId: ReturnType<typeof setTimeout> | undefined
+  #scheduledArgs: Parameters<TFn> | undefined
 
   constructor(
     public fn: TFn,
@@ -239,25 +240,54 @@ export class Debouncer<TFn extends AnyFunction> {
       this.#setState({ isPending: true, lastArgs: args })
     }
 
-    // Clear any existing timeout
-    if (this.#timeoutId) clearTimeout(this.#timeoutId)
+    this.#clearTimeout()
 
-    // Set new timeout that will reset canLeadingExecute and execute trailing only if enabled and did not execute leading
-    this.#timeoutId = setTimeout(() => {
-      this.#setState({ canLeadingExecute: true })
-      if (this.options.trailing && !_didLeadingExecute) {
-        this.#execute(...args)
-      }
-    }, this.#getWait())
+    // Keep actual timer ownership separate from resettable display state.
+    try {
+      this.#timeoutId = setTimeout(() => {
+        this.#timeoutId = undefined
+        this.#scheduledArgs = undefined
+        try {
+          this.#setState({ canLeadingExecute: true })
+          if (this.options.trailing && !_didLeadingExecute) {
+            this.#execute(...args)
+          }
+        } finally {
+          // A callback may have scheduled a new execution before this one finished.
+          const isPending = this.getIsScheduled()
+          this.#setState({
+            isPending,
+            lastArgs: isPending ? this.#scheduledArgs : undefined,
+          })
+        }
+      }, this.#getWait())
+      this.#scheduledArgs = _didLeadingExecute ? undefined : args
+    } catch (error) {
+      this.#setState({ isPending: false, lastArgs: undefined })
+      throw error
+    }
+  }
+
+  /**
+   * Whether an owned timer can still execute on the trailing edge.
+   * Excludes leading-only cooldowns and survives reset(), which resets displayed state.
+   */
+  getIsScheduled = (): boolean => {
+    return (
+      this.#timeoutId !== undefined &&
+      this.#scheduledArgs !== undefined &&
+      !!this.options.trailing
+    )
   }
 
   #execute = (...args: Parameters<TFn>): void => {
     if (!this.#getEnabled()) return undefined
     this.fn(...args) // EXECUTE!
+    const isPending = this.getIsScheduled()
     this.#setState({
       executionCount: this.store.state.executionCount + 1,
-      isPending: false,
-      lastArgs: undefined,
+      isPending,
+      lastArgs: isPending ? this.#scheduledArgs : undefined,
     })
     this.options.onExecute?.(args, this)
   }
@@ -268,15 +298,24 @@ export class Debouncer<TFn extends AnyFunction> {
   flush = (): void => {
     if (this.store.state.isPending && this.store.state.lastArgs) {
       this.#clearTimeout() // clear any pending timeout
-      this.#execute(...this.store.state.lastArgs) // execute immediately
+      try {
+        this.#execute(...this.store.state.lastArgs) // execute immediately
+      } finally {
+        const isPending = this.getIsScheduled()
+        this.#setState({
+          isPending,
+          lastArgs: isPending ? this.#scheduledArgs : undefined,
+        })
+      }
     }
   }
 
   #clearTimeout = (): void => {
-    if (this.#timeoutId) {
+    if (this.#timeoutId !== undefined) {
       clearTimeout(this.#timeoutId)
       this.#timeoutId = undefined
     }
+    this.#scheduledArgs = undefined
   }
 
   /**

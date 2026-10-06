@@ -43,7 +43,7 @@ The function returns a callable object:
 
 #### options
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`QueuerOptions`\<`TValue`\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `NoInfer`\<`TSelected`\>\>\>
 
 #### selector
 
@@ -82,7 +82,7 @@ function injectQueuedSignal<TValue>(
 selector?): QueuedSignal<TValue, Pick<QueuerState<TValue>, "items">>;
 ```
 
-Defined in: [queuer/injectQueuedSignal.ts:52](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L52)
+Defined in: [queuer/injectQueuedSignal.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L54)
 
 An Angular function that creates a queuer with managed state, combining Angular's signals with queuing functionality.
 This function provides both the current queue state and queue control methods.
@@ -109,7 +109,7 @@ The function returns a callable object:
 
 #### options?
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`QueuerOptions`\<`TValue`\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>\>\>
 
 #### selector?
 
@@ -148,7 +148,7 @@ function injectQueuedSignal<TValue, TSelected>(
 selector?): QueuedSignal<TValue, TSelected | Pick<QueuerState<TValue>, "items">>;
 ```
 
-Defined in: [queuer/injectQueuedSignal.ts:57](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L57)
+Defined in: [queuer/injectQueuedSignal.ts:61](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L61)
 
 An Angular function that creates a queuer with managed state, combining Angular's signals with queuing functionality.
 This function provides both the current queue state and queue control methods.
@@ -179,7 +179,7 @@ The function returns a callable object:
 
 #### options?
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`QueuerOptions`\<`TValue`\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> \| `NoInfer`\<`TSelected`\>\>\>
 
 #### selector?
 

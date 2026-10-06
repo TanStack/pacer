@@ -2,11 +2,11 @@ import { signal } from '@angular/core'
 import { injectThrottler } from './injectThrottler'
 import type { Signal } from '@angular/core'
 import type { AngularPacerOptions } from '../types'
-import type { AngularThrottler } from './injectThrottler'
 import type {
-  ThrottlerOptions,
-  ThrottlerState,
-} from '@tanstack/pacer/throttler'
+  AngularThrottler,
+  AngularThrottlerOptions,
+} from './injectThrottler'
+import type { ThrottlerState } from '@tanstack/pacer/throttler'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
@@ -62,28 +62,28 @@ export type ThrottledSignal<TValue, TSelected = {}> = Signal<TValue> & {
 export function injectThrottledSignal<TValue, TSelected>(
   value: TValue,
   initialOptions: AngularPacerOptions<
-    ThrottlerOptions<Setter<NoInfer<TValue>>>
+    AngularThrottlerOptions<Setter<NoInfer<TValue>>, NoInfer<TSelected>>
   >,
   selector: (state: ThrottlerState<Setter<TValue>>) => TSelected,
 ): ThrottledSignal<TValue, TSelected>
 export function injectThrottledSignal<TValue>(
   value: TValue,
   initialOptions: AngularPacerOptions<
-    ThrottlerOptions<Setter<NoInfer<TValue>>>
+    AngularThrottlerOptions<Setter<NoInfer<TValue>>, {}>
   >,
   selector?: undefined,
 ): ThrottledSignal<TValue, {}>
 export function injectThrottledSignal<TValue, TSelected = {}>(
   value: TValue,
   initialOptions: AngularPacerOptions<
-    ThrottlerOptions<Setter<NoInfer<TValue>>>
+    AngularThrottlerOptions<Setter<NoInfer<TValue>>, NoInfer<TSelected> | {}>
   >,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
 ): ThrottledSignal<TValue, TSelected | {}>
 export function injectThrottledSignal<TValue, TSelected = {}>(
   value: TValue,
   initialOptions: AngularPacerOptions<
-    ThrottlerOptions<Setter<NoInfer<TValue>>>
+    AngularThrottlerOptions<Setter<NoInfer<TValue>>, NoInfer<TSelected> | {}>
   >,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
 ): ThrottledSignal<TValue, TSelected | {}> {
