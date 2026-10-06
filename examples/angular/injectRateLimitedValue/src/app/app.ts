@@ -17,7 +17,6 @@ export class App {
   readonly rangeWindow = signal<'fixed' | 'sliding'>('fixed')
   readonly controlledCount = injectRateLimitedValue(
     this.instantCount,
-    0,
     () => ({
       limit: 5,
       window: 5000,
@@ -30,7 +29,6 @@ export class App {
   readonly countRunner = this.controlledCount.rateLimiter
   readonly controlledSearch = injectRateLimitedValue(
     this.search,
-    '',
     () => ({
       limit: 5,
       window: 5000,
@@ -43,7 +41,6 @@ export class App {
   readonly searchRunner = this.controlledSearch.rateLimiter
   readonly controlledValue = injectRateLimitedValue(
     this.currentValue,
-    50,
     () => ({
       limit: 20,
       window: 2000,

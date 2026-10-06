@@ -80,24 +80,11 @@ readonly queued = injectQueuedValue(this.source, { wait: 500 })
 
 Construction does not read the source. Angular's effect reads it after inputs are bound and enqueues the latest value. Each later effect run enqueues the latest observed source value. Several source writes before an effect runs are coalesced; use `queued.addItem` for every value that must enter the queue individually.
 
-Before processing begins, `queued()` reads the initial source value. Reading it before a required input is bound throws Angular's required-input error. Supply an explicit initial value if the output must be readable earlier:
+Before processing begins, `queued()` reads the initial source value. Reading it before a required input is bound throws Angular's required-input error. The value helper accepts `(source, options, selector?)`, matching the other value helpers; use a managed signal helper for manual initialization.
 
 ```ts
-const text = injectQueuedValue(source, '')
-const object = injectQueuedValue(objectSource, { label: 'Loading' }, {})
-const callback = injectQueuedValue(callbackSource, () => 'Loading', {})
+const queued = injectQueuedValue(source, () => ({ wait: wait() }))
 ```
-
-Two-argument primitive initial values, including `0`, `false`, `''`, and `null`, are supported. Object and function initial values require a third options object, such as `{}`. A function in the options position is an options factory.
-
-Pass a fourth selector argument, which can be `undefined`, when an explicit initial value uses factory or undefined options:
-
-```ts
-const queued = injectQueuedValue(source, '', () => ({ wait: wait() }), undefined)
-const initialObject = injectQueuedValue(objectSource, { label: 'Loading' }, undefined, undefined)
-```
-
-`injectQueuedValue(source, options, undefined)` keeps the options-only meaning. An explicit `undefined` initial value requires an options object or a fourth argument.
 
 ### Migrate from the previous return shape
 

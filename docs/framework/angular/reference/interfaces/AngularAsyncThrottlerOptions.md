@@ -3,7 +3,7 @@ id: AngularAsyncThrottlerOptions
 title: AngularAsyncThrottlerOptions
 ---
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L15)
+Defined in: [async-throttler/injectAsyncThrottler.ts:22](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L22)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:15](https://github.com/TanS
 optional onUnmount?: (throttler) => void;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L24)
+Defined in: [async-throttler/injectAsyncThrottler.ts:31](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L31)
 
 Optional callback invoked when the component is destroyed. Receives the throttler instance.
 When provided, replaces the default cleanup (cancel + abort); use it to call flush(), cancel(), add logging, etc.

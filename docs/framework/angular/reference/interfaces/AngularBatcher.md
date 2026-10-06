@@ -3,11 +3,11 @@ id: AngularBatcher
 title: AngularBatcher
 ---
 
-Defined in: [batcher/injectBatcher.ts:22](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L22)
+Defined in: [batcher/injectBatcher.ts:29](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L29)
 
 ## Extends
 
-- `Omit`\<`Batcher`\<`TValue`\>, `"store"` \| `"options"` \| `"setOptions"`\>
+- `Pick`\<`Batcher`\<`TValue`\>, `"addItem"` \| `"flush"` \| `"peekAllItems"` \| `"clear"` \| `"cancel"` \| `"reset"`\>
 
 ## Type Parameters
 
@@ -22,13 +22,33 @@ Defined in: [batcher/injectBatcher.ts:22](https://github.com/TanStack/pacer/blob
 
 ## Properties
 
+### fn
+
+```ts
+readonly fn: Signal<(items) => void>;
+```
+
+Defined in: [batcher/injectBatcher.ts:34](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L34)
+
+***
+
+### key
+
+```ts
+readonly key: Signal<string | undefined>;
+```
+
+Defined in: [batcher/injectBatcher.ts:33](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L33)
+
+***
+
 ### options
 
 ```ts
-options: Omit<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute"> & Partial<Pick<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute">> & AngularBatcherOptions<TValue, TSelected>;
+readonly options: Signal<Omit<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute"> & Partial<Pick<Required<BatcherOptions<TValue>>, "initialState" | "key" | "onItemsChange" | "onExecute">> & AngularBatcherOptions<TValue, TSelected>>;
 ```
 
-Defined in: [batcher/injectBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L26)
+Defined in: [batcher/injectBatcher.ts:35](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L35)
 
 ***
 
@@ -38,7 +58,7 @@ Defined in: [batcher/injectBatcher.ts:26](https://github.com/TanStack/pacer/blob
 setOptions: (options) => void;
 ```
 
-Defined in: [batcher/injectBatcher.ts:27](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L27)
+Defined in: [batcher/injectBatcher.ts:41](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L41)
 
 #### Parameters
 
@@ -58,23 +78,16 @@ Defined in: [batcher/injectBatcher.ts:27](https://github.com/TanStack/pacer/blob
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [batcher/injectBatcher.ts:35](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L35)
-
-Reactive state signal that will be updated when the batcher state changes
-
-Use this instead of `batcher.store.state`
+Defined in: [batcher/injectBatcher.ts:40](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L40)
 
 ***
 
-### ~~store~~
+### store
 
 ```ts
-readonly store: Store<Readonly<BatcherState<TValue>>>;
+readonly store: Signal<Store<Readonly<BatcherState<TValue>>, never>>;
 ```
 
-Defined in: [batcher/injectBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L40)
+Defined in: [batcher/injectBatcher.ts:39](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L39)
 
-#### Deprecated
-
-Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
-The state on the store object is not reactive in Angular signals.
+Core store access; use state() for reactive selected state.

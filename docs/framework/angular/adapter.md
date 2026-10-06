@@ -11,6 +11,8 @@ If you are using TanStack Pacer in an Angular application, we recommend using th
 npm install @tanstack/angular-pacer
 ```
 
+Angular 19 or newer is required, including matching `@angular/core` and `@angular/common` versions.
+
 ## Angular inject API
 
 See the [Angular inject API Reference](./reference/index.md) for the full list of inject functions (injectDebouncer, injectThrottler, injectRateLimiter, injectQueuer, injectBatcher, and their async and callback variants).
@@ -81,7 +83,7 @@ export const appConfig: ApplicationConfig = {
 
 The third argument to each inject function is a state selector. It determines which slice of state is exposed on the returned object's `state()` signal, so only relevant changes trigger template updates.
 
-**By default, if you omit the selector, `state()` is not populated.** Pass a selector to opt in to reactive state.
+**By default, if you omit the selector, `state()` returns an empty object.** Pass a selector to expose reactive state. An optional selector produces a union with the default selection; omitted selectors cannot promise arbitrary selected fields. The adapter observes the core separately to account for scheduled work in Angular stability.
 
 ```ts
 // No selector: state() is not populated
@@ -172,7 +174,7 @@ import { injectRateLimiter } from '@tanstack/angular-pacer'
   `,
 })
 export class ApiComponent {
-  protected readonly rateLimiter = injectRateLimiter<string, { rejectionCount: number }>(
+  protected readonly rateLimiter = injectRateLimiter<(data: string) => Promise<Response>, { rejectionCount: number }>(
     (data) =>
       fetch('/api/endpoint', {
         method: 'POST',
@@ -220,34 +222,31 @@ readonly search = injectDebouncer(
 )
 ```
 
-Getter-based options and factories defer initialization until Angular's first effect, after component inputs are bound, or until you first access the returned utility. Accessing the utility before a required input is available throws Angular's required-input error. Destroying the component before initialization does not read those options or create a utility. Plain objects without getters initialize eagerly when their provider defaults also contain no getters.
+All options defer initialization until Angular's first effect, after component inputs are bound, or until you first read state or invoke an operation. Aliasing `state` or a method does not evaluate options. Reading state or invoking an operation before a required input is available throws Angular's required-input error. Destroying the component before initialization does not read those options or create a utility.
 
-Later signal changes update the same utility through `setOptions` during change detection. Provider defaults are read during option tracking, and local options override them. This contract applies to synchronous and asynchronous inject functions and their callback, signal, and value helpers.
+Later signal changes update the same utility through `setOptions` during change detection. Operations also apply current options immediately, even before change detection runs. Synchronous state reads use the last applied core options; reading state does not write options. Provider defaults are read during option tracking, and local options override them. This contract applies to synchronous and asynchronous inject functions and their callback, signal, and value helpers.
 
 Reading a signal before passing the options, such as `{ wait: wait() }`, produces a snapshot. Assigning to an ordinary object property does not trigger an update. Use a getter or factory for reactive values. Option reads are shallow: build nested configurations inside a getter or factory when they depend on signals. Callbacks and function-valued core options remain functions. Getters and factories should read signals and return options without side effects.
 
-Updates preserve the utility, store, queued items, and pending work. Changing `wait` does not reschedule an existing timer. Setting `enabled` to `false` still applies the utility's normal cancellation behavior. Construction options such as `key`, `initialState`, and `initialItems` apply only when the utility is created. Use `start()` and `stop()` to change running queues.
+Updates preserve the utility, store, queued items, and pending work. Changing `wait` does not reschedule an existing timer. Setting `enabled` to `false` still applies the utility's normal cancellation behavior. Construction options such as `key`, `initialState`, and `initialItems` apply once. Queue item insertion and automatic processing begin in the owning effect or first operation; reading a queue ref does not invoke callbacks. Use `start()` and `stop()` to change running queues.
 
-Updates follow `setOptions` merge semantics. If a factory omits a previously supplied field, the provider default replaces it when one exists; otherwise, its previous value remains. Return `undefined` explicitly to clear an optional field. For example, `onUnmount: undefined` restores default cleanup. Disposal uses the latest `onUnmount` callback. The utility's `options` property exposes its current core options, including manual `setOptions` updates.
+Updates follow `setOptions` merge semantics. If a factory omits a previously supplied field, the provider default replaces it when one exists; otherwise, its previous value remains. Return `undefined` explicitly to clear an optional field. For example, `onUnmount: undefined` restores default cleanup. Disposal uses the latest `onUnmount` callback. The `options()` signal exposes merged current options, including manual `setOptions` updates. Supplied option changes replace explicit overrides; fields omitted from those updates still follow the core's merge semantics.
 
-For a value helper with an explicit initial value and factory options, pass a fourth argument for the selector. Pass `undefined` when no selector is needed:
+## Readonly core fields
+
+Utilities expose `options`, `key`, `fn`, and `store` as readonly Angular signals. Read them with `options()`, `key()`, `fn()`, and `store()`. Use `state()` for reactive store state and `setOptions()` for explicit configuration updates. Direct assignment to core fields is no longer supported. The options signal combines core defaults with current supplied options without writing the core during a read.
 
 ```ts
-const debounced = injectDebouncedValue(
-  query,
-  '',
-  () => ({ wait: wait() }),
-  undefined,
-)
+const debouncer = injectDebouncer(save, () => ({ wait: wait() }))
+console.log(debouncer.options().wait)
+debouncer.setOptions({ leading: true })
 ```
-
-The fourth argument distinguishes this form from `injectDebouncedValue(query, optionsFactory, selector)`. Object options still support the existing three-argument form with an initial value.
 
 ## Event handlers
 
 Use `injectDebouncer`, `injectThrottler`, or `injectRateLimiter` and call `maybeExecute()` from the event handler. For batching, use `injectBatcher` and call `addItem()`. Async utilities use the same method names.
 
-Store the utility instance in a field when options read required inputs. Accessing a method during field initialization can initialize the utility before Angular binds those inputs.
+You can alias methods and state signals during field initialization, including when options read required inputs. Invoke operations after those inputs are bound.
 
 In a component:
 
@@ -259,3 +258,10 @@ save(draft: string) {
   this.debouncer.maybeExecute(draft)
 }
 ```
+
+
+## Value signals and stability
+
+Managed signal helpers return real Angular signals, so they compose with `computed`, `isSignal`, and other value helpers. Value helpers use the sibling `(source, options, selector?)` signature. They read the source lazily for the first value; subsequent source changes pass through the Pacer utility. Use a managed signal helper such as `injectThrottledSignal(initialValue, options)` when you need an explicit initial value and manual updates.
+
+Core operations run outside Angular's zone and without tracking incidental signal reads in user callbacks. State selectors remain tracked. Scheduled callbacks and asynchronous executions register pending tasks, so `ApplicationRef.whenStable()` and server rendering wait for their results. Idle utilities and rate-limit cooldown timers do not block stability. Stopping a queue releases its scheduled-work task; executions already in progress remain owned until they settle. Resetting displayed state does not release unfinished executions. Destruction releases the owner's tasks and uses the existing default cleanup or your `onUnmount` callback. An effect owns normal instance disposal. Work started before that effect runs has temporary cleanup registered at the operation boundary; ownership transfers when the effect initializes.

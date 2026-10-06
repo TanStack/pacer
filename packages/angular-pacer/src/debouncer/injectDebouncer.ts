@@ -1,11 +1,18 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import {
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
+import { injectOutsideZone } from '../utils/injectOutsideZone'
+import { injectPendingTask } from '../utils/injectPendingTask'
+import { injectExternalStore } from '../utils/injectExternalStore'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   DebouncerOptions,
@@ -26,22 +33,18 @@ export interface AngularDebouncerOptions<
 export interface AngularDebouncer<
   TFn extends AnyFunction,
   TSelected = {},
-> extends Omit<Debouncer<TFn>, 'store' | 'options' | 'setOptions'> {
-  options: Debouncer<TFn>['options'] & AngularDebouncerOptions<TFn, TSelected>
+> extends Pick<Debouncer<TFn>, 'maybeExecute' | 'flush' | 'cancel' | 'reset'> {
+  readonly key: Signal<Debouncer<TFn>['key']>
+  readonly fn: Signal<Debouncer<TFn>['fn']>
+  readonly options: Signal<
+    Debouncer<TFn>['options'] & AngularDebouncerOptions<TFn, TSelected>
+  >
+  /** Core store access; use state() for reactive selected state. */
+  readonly store: Signal<Debouncer<TFn>['store']>
+  readonly state: Signal<Readonly<TSelected>>
   setOptions: (
     options: Partial<AngularDebouncerOptions<TFn, TSelected>>,
   ) => void
-  /**
-   * Reactive state signal that will be updated when the debouncer state changes
-   *
-   * Use this instead of `debouncer.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<DebouncerState<TFn>>>
 }
 
 /**
@@ -64,9 +67,8 @@ export interface AngularDebouncer<
  * The `selector` parameter allows you to specify which state changes will trigger signal updates,
  * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * By default, the selected state is an empty object. Provide a selector to expose
+ * reactive state fields. The adapter observes core work separately for Angular stability.
  *
  * Available state properties:
  * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -89,7 +91,7 @@ export interface AngularDebouncer<
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
+ * // Default selected state is an empty object
  * const debouncer = injectDebouncer(
  *   (query: string) => fetchSearchResults(query),
  *   { wait: 500 }
@@ -112,46 +114,129 @@ export interface AngularDebouncer<
  * const { isPending } = debouncer.state();
  * ```
  */
-export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
+export function injectDebouncer<TFn extends AnyFunction, TSelected>(
   fn: TFn,
   options: AngularPacerOptions<AngularDebouncerOptions<TFn, TSelected>>,
-  selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
-): AngularDebouncer<TFn, TSelected> {
-  return injectReactiveOptions<
-    AngularDebouncerOptions<TFn, TSelected>,
-    AngularDebouncer<TFn, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'debouncer',
-    (mergedOptions, getPublicInstance) => {
-      const debouncer = new Debouncer<TFn>(fn, mergedOptions)
-      const state = injectSelector(debouncer.store, selector)
-
-      const result = {
-        ...debouncer,
-        get options() {
-          return debouncer.options
-        },
-        set options(value) {
-          debouncer.options = value
-        },
-        state,
-      } as AngularDebouncer<TFn, TSelected>
-
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          debouncer.options as AngularDebouncerOptions<TFn, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          debouncer.cancel()
-        }
-      })
-
-      return result
-    },
+  selector: (state: DebouncerState<TFn>) => TSelected,
+): AngularDebouncer<TFn, TSelected>
+export function injectDebouncer<TFn extends AnyFunction>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularDebouncerOptions<TFn, {}>>,
+  selector?: undefined,
+): AngularDebouncer<TFn, {}>
+export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularDebouncerOptions<TFn, TSelected | {}>>,
+  selector?: (state: DebouncerState<TFn>) => TSelected,
+): AngularDebouncer<TFn, TSelected | {}>
+export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularDebouncerOptions<TFn, TSelected | {}>>,
+  selector?: (state: DebouncerState<TFn>) => TSelected,
+): AngularDebouncer<TFn, TSelected | {}> {
+  const owner = inject(DestroyRef)
+  const defaults = injectPacerOptions()
+  const outsideZone = injectOutsideZone()
+  const pending = injectPendingTask()
+  const resolvedOptions = linkedSignal(() => ({
+    ...defaults.debouncer,
+    ...(typeof options === 'function' ? options() : options),
+  }))
+  const instance = computed(() =>
+    untracked(() =>
+      outsideZone(() => {
+        const initialOptions = resolvedOptions()
+        return new Debouncer<TFn>(fn, initialOptions)
+      }),
+    ),
   )
+
+  // The effect owns normal disposal; an early operation temporarily owns its resource.
+  let effectOwnsInstance = false
+  let unregisterEarlyCleanup: (() => void) | undefined
+  const cleanup = (current: Debouncer<TFn>) => {
+    const onUnmount = (
+      current.options as AngularDebouncerOptions<TFn, TSelected | {}>
+    ).onUnmount
+    if (onUnmount) onUnmount(result)
+    else {
+      current.cancel()
+    }
+  }
+
+  function run(): void
+  function run<T>(operation: (current: Debouncer<TFn>) => T): T
+  function run<T>(operation?: (current: Debouncer<TFn>) => T): T | undefined {
+    return outsideZone(() =>
+      untracked(() => {
+        const latest = resolvedOptions()
+        const current = instance()
+        if (!effectOwnsInstance && !unregisterEarlyCleanup) {
+          unregisterEarlyCleanup = owner.onDestroy(() =>
+            outsideZone(() => untracked(() => cleanup(current))),
+          )
+        }
+        current.setOptions(latest)
+        try {
+          return operation?.(current)
+        } finally {
+          pending.set(current.store.state.isPending)
+        }
+      }),
+    )
+  }
+
+  // Read only identity here: option changes must not dispose the stable instance.
+  effect((onCleanup) => {
+    const current = instance()
+    effectOwnsInstance = true
+    unregisterEarlyCleanup?.()
+    unregisterEarlyCleanup = undefined
+    onCleanup(() => outsideZone(() => untracked(() => cleanup(current))))
+  })
+
+  effect(() => {
+    const current = instance()
+    const latest = resolvedOptions()
+    outsideZone(() =>
+      untracked(() => {
+        current.setOptions(latest)
+      }),
+    )
+  })
+
+  const snapshot = injectExternalStore(() => {
+    const current = instance()
+    return {
+      getSnapshot: () => current.store.state,
+      subscribe: (notify) => {
+        const { unsubscribe } = current.store.subscribe(notify)
+        return unsubscribe
+      },
+    }
+  })
+
+  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  effect(() => pending.set(snapshot().isPending))
+
+  const result: AngularDebouncer<TFn, TSelected | {}> = {
+    key: computed(() => instance().key),
+    fn: computed(() => fn),
+    options: computed(() => {
+      const latest = resolvedOptions()
+      return { ...instance().options, ...latest }
+    }),
+    store: computed(() => instance().store),
+    state,
+    setOptions: (update) =>
+      untracked(() => {
+        resolvedOptions.update((previous) => ({ ...previous, ...update }))
+        run()
+      }),
+    maybeExecute: (...args) => run((current) => current.maybeExecute(...args)),
+    flush: (...args) => run((current) => current.flush(...args)),
+    cancel: (...args) => run((current) => current.cancel(...args)),
+    reset: (...args) => run((current) => current.reset(...args)),
+  }
+  return result
 }

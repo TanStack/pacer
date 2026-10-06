@@ -3,14 +3,16 @@ id: injectQueuedSignal
 title: injectQueuedSignal
 ---
 
+## Call Signature
+
 ```ts
 function injectQueuedSignal<TValue, TSelected>(
    fn,
-   options?,
-selector?): QueuedSignal<TValue, TSelected>;
+   options,
+selector): QueuedSignal<TValue, TSelected>;
 ```
 
-Defined in: [queuer/injectQueuedSignal.ts:44](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L44)
+Defined in: [queuer/injectQueuedSignal.ts:44](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L44)
 
 An Angular function that creates a queuer with managed state, combining Angular's signals with queuing functionality.
 This function provides both the current queue state and queue control methods.
@@ -23,35 +25,171 @@ The function returns a callable object:
 - `queued.addItem(...)`: Add an item to the queue
 - `queued.queue`: The queuer instance with additional control methods
 
-## Type Parameters
+### Type Parameters
 
-### TValue
+#### TValue
 
 `TValue`
 
-### TSelected
+#### TSelected
 
-`TSelected` *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>
+`TSelected` *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>
 
-## Parameters
+### Parameters
 
-### fn
+#### fn
 
 (`item`) => `void`
 
-### options?
+#### options
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`QueuerOptions`\<`TValue`\>\> = `{}`
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`QueuerOptions`\<`TValue`\>\>
 
-### selector?
+#### selector
 
 (`state`) => `TSelected`
 
-## Returns
+### Returns
 
-[`QueuedSignal`](../interfaces/QueuedSignal.md)\<`TValue`, `TSelected`\>
+[`QueuedSignal`](../type-aliases/QueuedSignal.md)\<`TValue`, `TSelected`\>
 
-## Example
+### Example
+
+```ts
+// Default behavior - track items
+const queued = injectQueuedSignal(
+  (item) => console.log('Processing:', item),
+  { started: true, wait: 1000 }
+);
+
+// Add items
+queued.addItem('task1');
+
+// Access items
+console.log(queued()); // ['task1']
+
+// Control the queue
+queued.queuer.start();
+queued.queuer.stop();
+```
+
+## Call Signature
+
+```ts
+function injectQueuedSignal<TValue>(
+   fn,
+   options?,
+selector?): QueuedSignal<TValue, Pick<QueuerState<TValue>, "items">>;
+```
+
+Defined in: [queuer/injectQueuedSignal.ts:52](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L52)
+
+An Angular function that creates a queuer with managed state, combining Angular's signals with queuing functionality.
+This function provides both the current queue state and queue control methods.
+
+The queue state is automatically updated whenever items are added, removed, or reordered in the queue.
+All queue operations are reflected in the state array returned by the function.
+
+The function returns a callable object:
+- `queued()`: Get the current queue items as an array
+- `queued.addItem(...)`: Add an item to the queue
+- `queued.queue`: The queuer instance with additional control methods
+
+### Type Parameters
+
+#### TValue
+
+`TValue`
+
+### Parameters
+
+#### fn
+
+(`item`) => `void`
+
+#### options?
+
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`QueuerOptions`\<`TValue`\>\>
+
+#### selector?
+
+`undefined`
+
+### Returns
+
+[`QueuedSignal`](../type-aliases/QueuedSignal.md)\<`TValue`, `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>\>
+
+### Example
+
+```ts
+// Default behavior - track items
+const queued = injectQueuedSignal(
+  (item) => console.log('Processing:', item),
+  { started: true, wait: 1000 }
+);
+
+// Add items
+queued.addItem('task1');
+
+// Access items
+console.log(queued()); // ['task1']
+
+// Control the queue
+queued.queuer.start();
+queued.queuer.stop();
+```
+
+## Call Signature
+
+```ts
+function injectQueuedSignal<TValue, TSelected>(
+   fn,
+   options?,
+selector?): QueuedSignal<TValue, TSelected | Pick<QueuerState<TValue>, "items">>;
+```
+
+Defined in: [queuer/injectQueuedSignal.ts:57](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L57)
+
+An Angular function that creates a queuer with managed state, combining Angular's signals with queuing functionality.
+This function provides both the current queue state and queue control methods.
+
+The queue state is automatically updated whenever items are added, removed, or reordered in the queue.
+All queue operations are reflected in the state array returned by the function.
+
+The function returns a callable object:
+- `queued()`: Get the current queue items as an array
+- `queued.addItem(...)`: Add an item to the queue
+- `queued.queue`: The queuer instance with additional control methods
+
+### Type Parameters
+
+#### TValue
+
+`TValue`
+
+#### TSelected
+
+`TSelected` *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>
+
+### Parameters
+
+#### fn
+
+(`item`) => `void`
+
+#### options?
+
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`QueuerOptions`\<`TValue`\>\>
+
+#### selector?
+
+(`state`) => `TSelected`
+
+### Returns
+
+[`QueuedSignal`](../type-aliases/QueuedSignal.md)\<`TValue`, `TSelected` \| `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>\>
+
+### Example
 
 ```ts
 // Default behavior - track items

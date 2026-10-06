@@ -35,3 +35,19 @@ it('defers required source inputs until reading the returned value', () => {
   expect(fixture.componentInstance.throttled()).toBe('bound')
   expect(fixture.componentInstance.limited()).toBe('bound')
 })
+
+it('preserves undefined and function-valued source data', () => {
+  const fn = () => 'function value'
+  TestBed.runInInjectionContext(() => {
+    const fallback = injectDebouncedValue(
+      signal<string | undefined>(undefined),
+      { wait: 100 },
+    )
+    expect(fallback()).toBeUndefined()
+    const source = signal(fn)
+    const value = injectThrottledValue(source, { wait: 100 })
+    expect(value()).toBe(fn)
+    TestBed.tick()
+    expect(value()).toBe(fn)
+  })
+})

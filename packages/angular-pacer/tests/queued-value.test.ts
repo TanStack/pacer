@@ -50,74 +50,39 @@ it('constructs before required source inputs are bound', () => {
   expect(fixture.componentInstance.queued()).toBe('bound')
 })
 
-it('recognizes a two-argument primitive initial value without reading the source', () => {
-  const queued = TestBed.runInInjectionContext(() =>
-    injectQueuedValue(input.required<string>(), 'fallback'),
-  )
-  expect(queued()).toBe('fallback')
-})
-
-it.each([0, false, '', null, 0n, Symbol('initial')])(
-  'preserves the primitive fallback %s',
+it.each([0, false, '', null, undefined, 0n, Symbol('initial')])(
+  'preserves the initial source value %s',
   (initial) => {
     const queued = TestBed.runInInjectionContext(() =>
-      injectQueuedValue(input.required<typeof initial>(), initial),
+      injectQueuedValue(signal(initial)),
     )
     expect(queued()).toBe(initial)
   },
 )
 
-it('supports object and function initial values with explicit options', () => {
-  const initialObject = { label: 'fallback' }
-  const initialFunction = vi.fn(() => 'fallback')
+it('preserves object and function source values as data', () => {
+  const object = { label: 'initial' }
+  const fn = vi.fn(() => 'initial')
   const [objectValue, functionValue] = TestBed.runInInjectionContext(() => [
-    injectQueuedValue(
-      input.required<typeof initialObject>(),
-      initialObject,
-      {},
-    ),
-    injectQueuedValue(
-      input.required<typeof initialFunction>(),
-      initialFunction,
-      {},
-    ),
+    injectQueuedValue(signal(object)),
+    injectQueuedValue(signal(fn)),
   ])
-  expect(objectValue()).toBe(initialObject)
-  expect(functionValue()).toBe(initialFunction)
-  expect(initialFunction).not.toHaveBeenCalled()
-})
-
-it('distinguishes options with an undefined selector from explicit initial values', () => {
-  const source = signal({ label: 'source' })
-  const fallback = { label: 'fallback' }
-  const [optionsOnly, explicitFallback, explicitUndefined] =
-    TestBed.runInInjectionContext(() => [
-      injectQueuedValue(source, { started: false }, undefined),
-      injectQueuedValue(source, fallback, undefined, undefined),
-      injectQueuedValue(
-        signal<string | undefined>('source'),
-        undefined,
-        {},
-        undefined,
-      ),
-    ])
-  expect(optionsOnly()).toBe(source())
-  expect(optionsOnly.queuer.options.started).toBe(false)
-  expect(explicitFallback()).toBe(fallback)
-  expect(explicitUndefined()).toBeUndefined()
+  expect(objectValue()).toBe(object)
+  expect(functionValue()).toBe(fn)
+  TestBed.tick()
+  expect(functionValue()).toBe(fn)
+  expect(fn).not.toHaveBeenCalled()
 })
 
 it('preserves selectors and processes manual values in queue order', () => {
   const source = signal('source')
   const queued = TestBed.runInInjectionContext(() =>
-    injectQueuedValue(
-      source,
-      'fallback',
-      { started: false, wait: 100 },
-      (state) => ({ items: state.items, size: state.size }),
-    ),
+    injectQueuedValue(source, { started: false, wait: 100 }, (state) => ({
+      items: state.items,
+      size: state.size,
+    })),
   )
-  expect(queued()).toBe('fallback')
+  expect(queued()).toBe('source')
   TestBed.tick()
   queued.addItem('manual')
   expect(queued.queuer.state().size).toBe(2)
@@ -161,12 +126,6 @@ it('supports required source and option inputs across the supported forms', () =
       wait: this.wait(),
       started: false,
     }))
-    explicitFactory = injectQueuedValue(
-      this.source,
-      'fallback',
-      () => ({ wait: this.wait(), started: false }),
-      undefined,
-    )
   }
   for (const property of ['source', 'wait']) {
     Input({ required: true, isSignal: true } as Parameters<typeof Input>[0])(
@@ -176,15 +135,11 @@ it('supports required source and option inputs across the supported forms', () =
   }
   Component({ standalone: true, template: '' })(RequiredInputs)
   const fixture = TestBed.createComponent(RequiredInputs)
-  expect(fixture.componentInstance.explicitFactory()).toBe('fallback')
   fixture.componentRef.setInput('source', 'bound')
   fixture.componentRef.setInput('wait', 100)
   fixture.detectChanges()
   expect(fixture.componentInstance.defaultOptions()).toBe('bound')
   expect(fixture.componentInstance.factoryOptions()).toBe('bound')
-  expect(fixture.componentInstance.explicitFactory()).toBe('fallback')
-  fixture.componentInstance.explicitFactory.queuer.flush()
-  expect(fixture.componentInstance.explicitFactory()).toBe('bound')
 })
 
 it('stops pending work when its injection context is destroyed', () => {

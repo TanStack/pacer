@@ -1,5 +1,6 @@
 import { computed } from '@angular/core'
 import { injectAsyncQueuer } from './injectAsyncQueuer'
+import type { Signal } from '@angular/core'
 import type { AngularPacerOptions } from '../types'
 import type { AngularAsyncQueuer } from './injectAsyncQueuer'
 import type {
@@ -7,8 +8,9 @@ import type {
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 
-export interface AsyncQueuedSignal<TValue, TSelected = {}> {
-  (): Array<TValue>
+export type AsyncQueuedSignal<TValue, TSelected = {}> = Signal<
+  Array<TValue>
+> & {
   addItem: AngularAsyncQueuer<TValue, TSelected>['addItem']
   queuer: AngularAsyncQueuer<TValue, TSelected>
 }
@@ -52,25 +54,56 @@ export interface AsyncQueuedSignal<TValue, TSelected = {}> {
  */
 export function injectAsyncQueuedSignal<
   TValue,
+  TSelected extends Pick<AsyncQueuerState<TValue>, 'items'>,
+>(
+  fn: (value: TValue) => Promise<any>,
+  options: AngularPacerOptions<AsyncQueuerOptions<TValue>>,
+  selector: (state: AsyncQueuerState<TValue>) => TSelected,
+): AsyncQueuedSignal<TValue, TSelected>
+export function injectAsyncQueuedSignal<TValue>(
+  fn: (value: TValue) => Promise<any>,
+  options?: AngularPacerOptions<AsyncQueuerOptions<TValue>>,
+  selector?: undefined,
+): AsyncQueuedSignal<TValue, Pick<AsyncQueuerState<TValue>, 'items'>>
+export function injectAsyncQueuedSignal<
+  TValue,
   TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
     AsyncQueuerState<TValue>,
     'items'
   >,
 >(
   fn: (value: TValue) => Promise<any>,
-  options: AngularPacerOptions<AsyncQueuerOptions<TValue>> = {},
-  selector: (state: AsyncQueuerState<TValue>) => TSelected = (state) =>
-    ({ items: state.items }) as TSelected,
-): AsyncQueuedSignal<TValue, TSelected> {
-  const queuer = injectAsyncQueuer(fn, options, selector)
+  options?: AngularPacerOptions<AsyncQueuerOptions<TValue>>,
+  selector?: (state: AsyncQueuerState<TValue>) => TSelected,
+): AsyncQueuedSignal<
+  TValue,
+  TSelected | Pick<AsyncQueuerState<TValue>, 'items'>
+>
+export function injectAsyncQueuedSignal<
+  TValue,
+  TSelected extends Pick<AsyncQueuerState<TValue>, 'items'> = Pick<
+    AsyncQueuerState<TValue>,
+    'items'
+  >,
+>(
+  fn: (value: TValue) => Promise<any>,
+  options?: AngularPacerOptions<AsyncQueuerOptions<TValue>>,
+  selector?: (state: AsyncQueuerState<TValue>) => TSelected,
+): AsyncQueuedSignal<
+  TValue,
+  TSelected | Pick<AsyncQueuerState<TValue>, 'items'>
+> {
+  const queuer = injectAsyncQueuer(fn, options ?? {}, (state) =>
+    selector ? selector(state) : { items: state.items },
+  )
 
-  const items = computed(() => queuer.state().items as Array<TValue>)
+  const items = computed(() => queuer.state().items)
 
   const queued = Object.assign(items, {
     addItem: (...args: Parameters<typeof queuer.addItem>) =>
       queuer.addItem(...args),
     queuer,
-  }) as AsyncQueuedSignal<TValue, TSelected>
+  })
 
   return queued
 }

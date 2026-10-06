@@ -1,11 +1,18 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import {
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
 import { Batcher } from '@tanstack/pacer/batcher'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
+import { injectOutsideZone } from '../utils/injectOutsideZone'
+import { injectPendingTask } from '../utils/injectPendingTask'
+import { injectExternalStore } from '../utils/injectExternalStore'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
 export interface AngularBatcherOptions<
@@ -19,25 +26,21 @@ export interface AngularBatcherOptions<
   onUnmount?: (batcher: AngularBatcher<TValue, TSelected>) => void
 }
 
-export interface AngularBatcher<TValue, TSelected = {}> extends Omit<
+export interface AngularBatcher<TValue, TSelected = {}> extends Pick<
   Batcher<TValue>,
-  'store' | 'options' | 'setOptions'
+  'addItem' | 'flush' | 'peekAllItems' | 'clear' | 'cancel' | 'reset'
 > {
-  options: Batcher<TValue>['options'] & AngularBatcherOptions<TValue, TSelected>
+  readonly key: Signal<Batcher<TValue>['key']>
+  readonly fn: Signal<Batcher<TValue>['fn']>
+  readonly options: Signal<
+    Batcher<TValue>['options'] & AngularBatcherOptions<TValue, TSelected>
+  >
+  /** Core store access; use state() for reactive selected state. */
+  readonly store: Signal<Batcher<TValue>['store']>
+  readonly state: Signal<Readonly<TSelected>>
   setOptions: (
     options: Partial<AngularBatcherOptions<TValue, TSelected>>,
   ) => void
-  /**
-   * Reactive state signal that will be updated when the batcher state changes
-   *
-   * Use this instead of `batcher.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<BatcherState<TValue>>>
 }
 
 /**
@@ -57,9 +60,8 @@ export interface AngularBatcher<TValue, TSelected = {}> extends Omit<
  * The `selector` parameter allows you to specify which state changes will trigger signal updates,
  * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * By default, the selected state is an empty object. Provide a selector to expose
+ * reactive state fields. The adapter observes core work separately for Angular stability.
  *
  * ## Cleanup on Destroy
  *
@@ -75,7 +77,7 @@ export interface AngularBatcher<TValue, TSelected = {}> extends Omit<
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
+ * // Default selected state is an empty object
  * const batcher = injectBatcher(
  *   (items) => console.log('Processing batch:', items),
  *   { maxSize: 5, wait: 2000 }
@@ -88,47 +90,131 @@ export interface AngularBatcher<TValue, TSelected = {}> extends Omit<
  * const { items, isPending } = batcher.state();
  * ```
  */
+export function injectBatcher<TValue, TSelected>(
+  fn: (items: Array<TValue>) => void,
+  options: AngularPacerOptions<AngularBatcherOptions<TValue, TSelected>>,
+  selector: (state: BatcherState<TValue>) => TSelected,
+): AngularBatcher<TValue, TSelected>
+export function injectBatcher<TValue>(
+  fn: (items: Array<TValue>) => void,
+  options?: AngularPacerOptions<AngularBatcherOptions<TValue, {}>>,
+  selector?: undefined,
+): AngularBatcher<TValue, {}>
 export function injectBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
-  options: AngularPacerOptions<AngularBatcherOptions<TValue, TSelected>> = {},
-  selector: (state: BatcherState<TValue>) => TSelected = () =>
-    ({}) as TSelected,
-): AngularBatcher<TValue, TSelected> {
-  return injectReactiveOptions<
-    AngularBatcherOptions<TValue, TSelected>,
-    AngularBatcher<TValue, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'batcher',
-    (mergedOptions, getPublicInstance) => {
-      const batcher = new Batcher<TValue>(fn, mergedOptions)
-      const state = injectSelector(batcher.store, selector)
-
-      const result = {
-        ...batcher,
-        get options() {
-          return batcher.options
-        },
-        set options(value) {
-          batcher.options = value
-        },
-        state,
-      } as AngularBatcher<TValue, TSelected>
-
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          batcher.options as AngularBatcherOptions<TValue, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          batcher.cancel()
-        }
-      })
-
-      return result
-    },
+  options?: AngularPacerOptions<AngularBatcherOptions<TValue, TSelected | {}>>,
+  selector?: (state: BatcherState<TValue>) => TSelected,
+): AngularBatcher<TValue, TSelected | {}>
+export function injectBatcher<TValue, TSelected = {}>(
+  fn: (items: Array<TValue>) => void,
+  options?: AngularPacerOptions<AngularBatcherOptions<TValue, TSelected | {}>>,
+  selector?: (state: BatcherState<TValue>) => TSelected,
+): AngularBatcher<TValue, TSelected | {}> {
+  const owner = inject(DestroyRef)
+  const defaults = injectPacerOptions()
+  const outsideZone = injectOutsideZone()
+  const pending = injectPendingTask()
+  const resolvedOptions = linkedSignal(() => ({
+    ...defaults.batcher,
+    ...(typeof options === 'function' ? options() : options),
+  }))
+  const instance = computed(() =>
+    untracked(() =>
+      outsideZone(() => {
+        const initialOptions = resolvedOptions()
+        return new Batcher<TValue>(fn, initialOptions)
+      }),
+    ),
   )
+
+  // The effect owns normal disposal; an early operation temporarily owns its resource.
+  let effectOwnsInstance = false
+  let unregisterEarlyCleanup: (() => void) | undefined
+  const cleanup = (current: Batcher<TValue>) => {
+    const onUnmount = (
+      current.options as AngularBatcherOptions<TValue, TSelected | {}>
+    ).onUnmount
+    if (onUnmount) onUnmount(result)
+    else {
+      current.cancel()
+    }
+  }
+
+  function run(): void
+  function run<T>(operation: (current: Batcher<TValue>) => T): T
+  function run<T>(operation?: (current: Batcher<TValue>) => T): T | undefined {
+    return outsideZone(() =>
+      untracked(() => {
+        const latest = resolvedOptions()
+        const current = instance()
+        if (!effectOwnsInstance && !unregisterEarlyCleanup) {
+          unregisterEarlyCleanup = owner.onDestroy(() =>
+            outsideZone(() => untracked(() => cleanup(current))),
+          )
+        }
+        current.setOptions(latest)
+        try {
+          return operation?.(current)
+        } finally {
+          pending.set(current.store.state.isPending)
+        }
+      }),
+    )
+  }
+
+  // Read only identity here: option changes must not dispose the stable instance.
+  effect((onCleanup) => {
+    const current = instance()
+    effectOwnsInstance = true
+    unregisterEarlyCleanup?.()
+    unregisterEarlyCleanup = undefined
+    onCleanup(() => outsideZone(() => untracked(() => cleanup(current))))
+  })
+
+  effect(() => {
+    const current = instance()
+    const latest = resolvedOptions()
+    outsideZone(() =>
+      untracked(() => {
+        current.setOptions(latest)
+      }),
+    )
+  })
+
+  const snapshot = injectExternalStore(() => {
+    const current = instance()
+    return {
+      getSnapshot: () => current.store.state,
+      subscribe: (notify) => {
+        const { unsubscribe } = current.store.subscribe(notify)
+        return unsubscribe
+      },
+    }
+  })
+
+  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  effect(() => pending.set(snapshot().isPending))
+
+  const result: AngularBatcher<TValue, TSelected | {}> = {
+    key: computed(() => instance().key),
+    fn: computed(() => fn),
+    options: computed(() => {
+      const latest = resolvedOptions()
+      return { ...instance().options, ...latest }
+    }),
+    store: computed(() => instance().store),
+    state,
+    setOptions: (update) =>
+      untracked(() => {
+        resolvedOptions.update((previous) => ({ ...previous, ...update }))
+        run()
+      }),
+    addItem: (...args) => run((current) => current.addItem(...args)),
+    flush: (...args) => run((current) => current.flush(...args)),
+    peekAllItems: (...args) => run((current) => current.peekAllItems(...args)),
+    clear: (...args) => run((current) => current.clear(...args)),
+    cancel: (...args) => run((current) => current.cancel(...args)),
+    reset: (...args) => run((current) => current.reset(...args)),
+  }
+  return result
 }

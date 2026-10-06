@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core'
-import { injectDebouncedValue } from '@tanstack/angular-pacer'
+import { Component, input } from '@angular/core';
+import { injectDebouncedValue } from '@tanstack/angular-pacer';
 
 @Component({
   selector: 'app-input',
@@ -7,21 +7,15 @@ import { injectDebouncedValue } from '@tanstack/angular-pacer'
   template: `
     <h2>Required input</h2>
     <div>value: {{ value() }}</div>
-    <div>debounced (no initial): {{ debouncedWithoutInitial() }}</div>
-    <div>debounced (with initial): {{ debouncedWithInitial() }}</div>
+    <div>debounced: {{ debouncedWithoutInitial() }}</div>
   `,
 })
 export class InputApp {
-  readonly value = input.required<string>()
+  readonly value = input.required<string>();
 
   // Required inputs are unavailable during field initialization.
-  // This signature avoids reading the input eagerly, so the initial value is undefined.
+  // The helper initializes lazily from the source after Angular binds it.
   readonly debouncedWithoutInitial = injectDebouncedValue(this.value, {
     wait: 500,
-  })
-
-  // Provide an initial value to avoid an undefined first read.
-  readonly debouncedWithInitial = injectDebouncedValue(this.value, '', {
-    wait: 500,
-  })
+  });
 }

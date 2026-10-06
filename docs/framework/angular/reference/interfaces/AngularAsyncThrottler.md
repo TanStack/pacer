@@ -3,11 +3,17 @@ id: AngularAsyncThrottler
 title: AngularAsyncThrottler
 ---
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:27](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L27)
+Defined in: [async-throttler/injectAsyncThrottler.ts:34](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L34)
 
 ## Extends
 
-- `Omit`\<`AsyncThrottler`\<`TFn`\>, `"store"` \| `"options"` \| `"setOptions"`\>
+- `Pick`\<`AsyncThrottler`\<`TFn`\>,
+  \| `"maybeExecute"`
+  \| `"flush"`
+  \| `"getAbortSignal"`
+  \| `"abort"`
+  \| `"cancel"`
+  \| `"reset"`\>
 
 ## Type Parameters
 
@@ -22,13 +28,43 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:27](https://github.com/TanS
 
 ## Properties
 
+### asyncRetryers
+
+```ts
+readonly asyncRetryers: Signal<Map<number, AsyncRetryer<TFn>>>;
+```
+
+Defined in: [async-throttler/injectAsyncThrottler.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L53)
+
+***
+
+### fn
+
+```ts
+readonly fn: Signal<TFn>;
+```
+
+Defined in: [async-throttler/injectAsyncThrottler.ts:42](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L42)
+
+***
+
+### key
+
+```ts
+readonly key: Signal<string | undefined>;
+```
+
+Defined in: [async-throttler/injectAsyncThrottler.ts:41](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L41)
+
+***
+
 ### options
 
 ```ts
-options: AsyncThrottlerOptions<TFn> & AngularAsyncThrottlerOptions<TFn, TSelected>;
+readonly options: Signal<AsyncThrottlerOptions<TFn> & AngularAsyncThrottlerOptions<TFn, TSelected>>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:31](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L31)
+Defined in: [async-throttler/injectAsyncThrottler.ts:43](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L43)
 
 ***
 
@@ -38,7 +74,7 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:31](https://github.com/TanS
 setOptions: (options) => void;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L33)
+Defined in: [async-throttler/injectAsyncThrottler.ts:50](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L50)
 
 #### Parameters
 
@@ -58,23 +94,16 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:33](https://github.com/TanS
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L41)
-
-Reactive state signal that will be updated when the async throttler state changes
-
-Use this instead of `throttler.store.state`
+Defined in: [async-throttler/injectAsyncThrottler.ts:49](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L49)
 
 ***
 
-### ~~store~~
+### store
 
 ```ts
-readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>;
+readonly store: Signal<Store<Readonly<AsyncThrottlerState<TFn>>, never>>;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:46](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L46)
+Defined in: [async-throttler/injectAsyncThrottler.ts:48](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L48)
 
-#### Deprecated
-
-Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-The state on the store object is not reactive in Angular signals.
+Core store access; use state() for reactive selected state.

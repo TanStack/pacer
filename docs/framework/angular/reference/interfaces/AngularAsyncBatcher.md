@@ -3,11 +3,20 @@ id: AngularAsyncBatcher
 title: AngularAsyncBatcher
 ---
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L26)
+Defined in: [async-batcher/injectAsyncBatcher.ts:33](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L33)
 
 ## Extends
 
-- `Omit`\<`AsyncBatcher`\<`TValue`\>, `"store"` \| `"options"` \| `"setOptions"`\>
+- `Pick`\<`AsyncBatcher`\<`TValue`\>,
+  \| `"addItem"`
+  \| `"flush"`
+  \| `"peekAllItems"`
+  \| `"peekFailedItems"`
+  \| `"clear"`
+  \| `"getAbortSignal"`
+  \| `"abort"`
+  \| `"cancel"`
+  \| `"reset"`\>
 
 ## Type Parameters
 
@@ -22,10 +31,40 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:26](https://github.com/TanStack
 
 ## Properties
 
+### asyncRetryers
+
+```ts
+readonly asyncRetryers: Signal<Map<number, AsyncRetryer<(items) => Promise<any>>>>;
+```
+
+Defined in: [async-batcher/injectAsyncBatcher.ts:57](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L57)
+
+***
+
+### fn
+
+```ts
+readonly fn: Signal<(items) => Promise<any>>;
+```
+
+Defined in: [async-batcher/injectAsyncBatcher.ts:46](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L46)
+
+***
+
+### key
+
+```ts
+readonly key: Signal<string | undefined>;
+```
+
+Defined in: [async-batcher/injectAsyncBatcher.ts:45](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L45)
+
+***
+
 ### options
 
 ```ts
-options: Omit<Required<AsyncBatcherOptions<TValue>>,
+readonly options: Signal<Omit<Required<AsyncBatcherOptions<TValue>>,
   | "initialState"
   | "key"
   | "onError"
@@ -37,10 +76,10 @@ options: Omit<Required<AsyncBatcherOptions<TValue>>,
   | "onError"
   | "onSettled"
   | "onSuccess"
-| "onItemsChange">> & AngularAsyncBatcherOptions<TValue, TSelected>;
+| "onItemsChange">> & AngularAsyncBatcherOptions<TValue, TSelected>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:30](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L30)
+Defined in: [async-batcher/injectAsyncBatcher.ts:47](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L47)
 
 ***
 
@@ -50,7 +89,7 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:30](https://github.com/TanStack
 setOptions: (options) => void;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:32](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L32)
+Defined in: [async-batcher/injectAsyncBatcher.ts:54](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L54)
 
 #### Parameters
 
@@ -70,23 +109,16 @@ Defined in: [async-batcher/injectAsyncBatcher.ts:32](https://github.com/TanStack
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L40)
-
-Reactive state signal that will be updated when the async batcher state changes
-
-Use this instead of `batcher.store.state`
+Defined in: [async-batcher/injectAsyncBatcher.ts:53](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L53)
 
 ***
 
-### ~~store~~
+### store
 
 ```ts
-readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
+readonly store: Signal<Store<Readonly<AsyncBatcherState<TValue>>, never>>;
 ```
 
-Defined in: [async-batcher/injectAsyncBatcher.ts:45](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L45)
+Defined in: [async-batcher/injectAsyncBatcher.ts:52](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts#L52)
 
-#### Deprecated
-
-Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
-The state on the store object is not reactive in Angular signals.
+Core store access; use state() for reactive selected state.

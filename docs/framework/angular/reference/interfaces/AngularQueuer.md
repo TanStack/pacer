@@ -3,11 +3,22 @@ id: AngularQueuer
 title: AngularQueuer
 ---
 
-Defined in: [queuer/injectQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L22)
+Defined in: [queuer/injectQueuer.ts:29](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L29)
 
 ## Extends
 
-- `Omit`\<`Queuer`\<`TValue`\>, `"store"` \| `"options"` \| `"setOptions"`\>
+- `Pick`\<`Queuer`\<`TValue`\>,
+  \| `"addItem"`
+  \| `"getNextItem"`
+  \| `"execute"`
+  \| `"flush"`
+  \| `"flushAsBatch"`
+  \| `"peekNextItem"`
+  \| `"peekAllItems"`
+  \| `"start"`
+  \| `"stop"`
+  \| `"clear"`
+  \| `"reset"`\>
 
 ## Type Parameters
 
@@ -22,13 +33,33 @@ Defined in: [queuer/injectQueuer.ts:22](https://github.com/TanStack/pacer/blob/m
 
 ## Properties
 
+### fn
+
+```ts
+readonly fn: Signal<(item) => void>;
+```
+
+Defined in: [queuer/injectQueuer.ts:44](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L44)
+
+***
+
+### key
+
+```ts
+readonly key: Signal<string | undefined>;
+```
+
+Defined in: [queuer/injectQueuer.ts:43](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L43)
+
+***
+
 ### options
 
 ```ts
-options: QueuerOptions<TValue> & AngularQueuerOptions<TValue, TSelected>;
+readonly options: Signal<QueuerOptions<TValue> & AngularQueuerOptions<TValue, TSelected>>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L26)
+Defined in: [queuer/injectQueuer.ts:45](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L45)
 
 ***
 
@@ -38,7 +69,7 @@ Defined in: [queuer/injectQueuer.ts:26](https://github.com/TanStack/pacer/blob/m
 setOptions: (options) => void;
 ```
 
-Defined in: [queuer/injectQueuer.ts:27](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L27)
+Defined in: [queuer/injectQueuer.ts:51](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L51)
 
 #### Parameters
 
@@ -58,23 +89,16 @@ Defined in: [queuer/injectQueuer.ts:27](https://github.com/TanStack/pacer/blob/m
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:35](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L35)
-
-Reactive state signal that will be updated when the queuer state changes
-
-Use this instead of `queuer.store.state`
+Defined in: [queuer/injectQueuer.ts:50](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L50)
 
 ***
 
-### ~~store~~
+### store
 
 ```ts
-readonly store: Store<Readonly<QueuerState<TValue>>>;
+readonly store: Signal<Store<Readonly<QueuerState<TValue>>, never>>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L40)
+Defined in: [queuer/injectQueuer.ts:49](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L49)
 
-#### Deprecated
-
-Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
-The state on the store object is not reactive in Angular signals.
+Core store access; use state() for reactive selected state.

@@ -1,11 +1,18 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import {
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
 import { Throttler } from '@tanstack/pacer/throttler'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
+import { injectOutsideZone } from '../utils/injectOutsideZone'
+import { injectPendingTask } from '../utils/injectPendingTask'
+import { injectExternalStore } from '../utils/injectExternalStore'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   ThrottlerOptions,
@@ -26,22 +33,18 @@ export interface AngularThrottlerOptions<
 export interface AngularThrottler<
   TFn extends AnyFunction,
   TSelected = {},
-> extends Omit<Throttler<TFn>, 'store' | 'options' | 'setOptions'> {
-  options: Throttler<TFn>['options'] & AngularThrottlerOptions<TFn, TSelected>
+> extends Pick<Throttler<TFn>, 'maybeExecute' | 'flush' | 'cancel' | 'reset'> {
+  readonly key: Signal<Throttler<TFn>['key']>
+  readonly fn: Signal<Throttler<TFn>['fn']>
+  readonly options: Signal<
+    Throttler<TFn>['options'] & AngularThrottlerOptions<TFn, TSelected>
+  >
+  /** Core store access; use state() for reactive selected state. */
+  readonly store: Signal<Throttler<TFn>['store']>
+  readonly state: Signal<Readonly<TSelected>>
   setOptions: (
     options: Partial<AngularThrottlerOptions<TFn, TSelected>>,
   ) => void
-  /**
-   * Reactive state signal that will be updated when the throttler state changes
-   *
-   * Use this instead of `throttler.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<ThrottlerState<TFn>>>
 }
 
 /**
@@ -62,9 +65,8 @@ export interface AngularThrottler<
  * The `selector` parameter allows you to specify which state changes will trigger signal updates,
  * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * By default, the selected state is an empty object. Provide a selector to expose
+ * reactive state fields. The adapter observes core work separately for Angular stability.
  *
  * Available state properties:
  * - `executionCount`: Number of function executions that have been completed
@@ -88,7 +90,7 @@ export interface AngularThrottler<
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
+ * // Default selected state is an empty object
  * const throttler = injectThrottler(
  *   (scrollY: number) => updateScrollPosition(scrollY),
  *   { wait: 100 }
@@ -110,46 +112,129 @@ export interface AngularThrottler<
  * const { isPending } = throttler.state();
  * ```
  */
-export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
+export function injectThrottler<TFn extends AnyFunction, TSelected>(
   fn: TFn,
   options: AngularPacerOptions<AngularThrottlerOptions<TFn, TSelected>>,
-  selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
-): AngularThrottler<TFn, TSelected> {
-  return injectReactiveOptions<
-    AngularThrottlerOptions<TFn, TSelected>,
-    AngularThrottler<TFn, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'throttler',
-    (mergedOptions, getPublicInstance) => {
-      const throttler = new Throttler<TFn>(fn, mergedOptions)
-      const state = injectSelector(throttler.store, selector)
-
-      const result = {
-        ...throttler,
-        get options() {
-          return throttler.options
-        },
-        set options(value) {
-          throttler.options = value
-        },
-        state,
-      } as AngularThrottler<TFn, TSelected>
-
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          throttler.options as AngularThrottlerOptions<TFn, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          throttler.cancel()
-        }
-      })
-
-      return result
-    },
+  selector: (state: ThrottlerState<TFn>) => TSelected,
+): AngularThrottler<TFn, TSelected>
+export function injectThrottler<TFn extends AnyFunction>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularThrottlerOptions<TFn, {}>>,
+  selector?: undefined,
+): AngularThrottler<TFn, {}>
+export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularThrottlerOptions<TFn, TSelected | {}>>,
+  selector?: (state: ThrottlerState<TFn>) => TSelected,
+): AngularThrottler<TFn, TSelected | {}>
+export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularThrottlerOptions<TFn, TSelected | {}>>,
+  selector?: (state: ThrottlerState<TFn>) => TSelected,
+): AngularThrottler<TFn, TSelected | {}> {
+  const owner = inject(DestroyRef)
+  const defaults = injectPacerOptions()
+  const outsideZone = injectOutsideZone()
+  const pending = injectPendingTask()
+  const resolvedOptions = linkedSignal(() => ({
+    ...defaults.throttler,
+    ...(typeof options === 'function' ? options() : options),
+  }))
+  const instance = computed(() =>
+    untracked(() =>
+      outsideZone(() => {
+        const initialOptions = resolvedOptions()
+        return new Throttler<TFn>(fn, initialOptions)
+      }),
+    ),
   )
+
+  // The effect owns normal disposal; an early operation temporarily owns its resource.
+  let effectOwnsInstance = false
+  let unregisterEarlyCleanup: (() => void) | undefined
+  const cleanup = (current: Throttler<TFn>) => {
+    const onUnmount = (
+      current.options as AngularThrottlerOptions<TFn, TSelected | {}>
+    ).onUnmount
+    if (onUnmount) onUnmount(result)
+    else {
+      current.cancel()
+    }
+  }
+
+  function run(): void
+  function run<T>(operation: (current: Throttler<TFn>) => T): T
+  function run<T>(operation?: (current: Throttler<TFn>) => T): T | undefined {
+    return outsideZone(() =>
+      untracked(() => {
+        const latest = resolvedOptions()
+        const current = instance()
+        if (!effectOwnsInstance && !unregisterEarlyCleanup) {
+          unregisterEarlyCleanup = owner.onDestroy(() =>
+            outsideZone(() => untracked(() => cleanup(current))),
+          )
+        }
+        current.setOptions(latest)
+        try {
+          return operation?.(current)
+        } finally {
+          pending.set(current.store.state.isPending)
+        }
+      }),
+    )
+  }
+
+  // Read only identity here: option changes must not dispose the stable instance.
+  effect((onCleanup) => {
+    const current = instance()
+    effectOwnsInstance = true
+    unregisterEarlyCleanup?.()
+    unregisterEarlyCleanup = undefined
+    onCleanup(() => outsideZone(() => untracked(() => cleanup(current))))
+  })
+
+  effect(() => {
+    const current = instance()
+    const latest = resolvedOptions()
+    outsideZone(() =>
+      untracked(() => {
+        current.setOptions(latest)
+      }),
+    )
+  })
+
+  const snapshot = injectExternalStore(() => {
+    const current = instance()
+    return {
+      getSnapshot: () => current.store.state,
+      subscribe: (notify) => {
+        const { unsubscribe } = current.store.subscribe(notify)
+        return unsubscribe
+      },
+    }
+  })
+
+  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  effect(() => pending.set(snapshot().isPending))
+
+  const result: AngularThrottler<TFn, TSelected | {}> = {
+    key: computed(() => instance().key),
+    fn: computed(() => fn),
+    options: computed(() => {
+      const latest = resolvedOptions()
+      return { ...instance().options, ...latest }
+    }),
+    store: computed(() => instance().store),
+    state,
+    setOptions: (update) =>
+      untracked(() => {
+        resolvedOptions.update((previous) => ({ ...previous, ...update }))
+        run()
+      }),
+    maybeExecute: (...args) => run((current) => current.maybeExecute(...args)),
+    flush: (...args) => run((current) => current.flush(...args)),
+    cancel: (...args) => run((current) => current.cancel(...args)),
+    reset: (...args) => run((current) => current.reset(...args)),
+  }
+  return result
 }

@@ -33,13 +33,13 @@ it('updates options without replacing the rate limiter or its store', () => {
     ),
   )
   TestBed.tick()
-  const store = limiter.store
+  const store = limiter.store()
   expect(limiter.maybeExecute()).toBe(true)
   expect(limiter.maybeExecute()).toBe(false)
   limit.set(2)
   TestBed.tick()
-  expect(limiter.store).toBe(store)
-  expect(limiter.options.limit).toBe(2)
+  expect(limiter.store()).toBe(store)
+  expect(limiter.options().limit).toBe(2)
   expect(limiter.maybeExecute()).toBe(true)
 })
 
@@ -58,13 +58,13 @@ it('reads required options inputs after Angular binds them', () => {
   )
   Component({ standalone: true, template: '' })(RequiredOptions)
   const fixture = TestBed.createComponent(RequiredOptions)
-  expect(() => fixture.componentInstance.limiter.options).toThrow(/NG0950/)
+  expect(() => fixture.componentInstance.limiter.options()).toThrow(/NG0950/)
   fixture.componentRef.setInput('limit', 2)
   fixture.detectChanges()
-  expect(fixture.componentInstance.limiter.options.limit).toBe(2)
+  expect(fixture.componentInstance.limiter.options().limit).toBe(2)
   fixture.componentRef.setInput('limit', 3)
   fixture.detectChanges()
-  expect(fixture.componentInstance.limiter.options.limit).toBe(3)
+  expect(fixture.componentInstance.limiter.options().limit).toBe(3)
 })
 
 beforeEach(() => vi.useFakeTimers())
@@ -149,13 +149,13 @@ for (const entry of cases) {
     )
     TestBed.tick()
     const initial = utility,
-      store = utility.store
-    expect(utility.options).toMatchObject({ wait: 1, limit: 1, maxSize: 1 })
+      store = utility.store()
+    expect(utility.options()).toMatchObject({ wait: 1, limit: 1, maxSize: 1 })
     value.set(2)
     TestBed.tick()
     expect(utility).toBe(initial)
-    expect(utility.store).toBe(store)
-    expect(utility.options).toMatchObject({ wait: 2, limit: 2, maxSize: 2 })
+    expect(utility.store()).toBe(store)
+    expect(utility.options()).toMatchObject({ wait: 2, limit: 2, maxSize: 2 })
     expect(first).not.toHaveBeenCalled()
     TestBed.resetTestingModule()
     expect(first).not.toHaveBeenCalled()
@@ -174,9 +174,7 @@ it('does not evaluate a factory when its component is destroyed before initializ
   expect(options).not.toHaveBeenCalled()
   TestBed.resetTestingModule()
   expect(options).not.toHaveBeenCalled()
-  expect(() => utility.options).toThrow(
-    'after its injection context is destroyed',
-  )
+  expect(options).not.toHaveBeenCalled()
 })
 
 it('keeps bound methods and property writes working on the stable facade', () => {
@@ -186,9 +184,8 @@ it('keeps bound methods and property writes working on the stable facade', () =>
   )
   TestBed.tick()
   const execute = utility.maybeExecute.bind(utility)
-  utility.key = 'new-key'
-  utility.options = { ...utility.options, limit: 2 }
-  expect(utility.key).toBe('new-key')
+  utility.setOptions({ limit: 2 })
+  expect(utility.key()).toBeUndefined()
   expect(execute()).toBe(true)
   expect(execute()).toBe(true)
   expect(execute()).toBe(false)
@@ -203,7 +200,7 @@ it('keeps object options eager and cancels pending work on destroy', () => {
   const utility = TestBed.runInInjectionContext(() =>
     injectDebouncer(callback, options),
   )
-  expect(utility.options.wait).toBe(100)
+  expect(utility.options().wait).toBe(100)
   expect(Object.getPrototypeOf(utility)).toBe(Object.prototype)
   expect(utility).not.toBeInstanceOf(Debouncer)
   utility.maybeExecute()
@@ -269,14 +266,14 @@ it('merges provider defaults on each factory update', () => {
     ),
   )
   TestBed.tick()
-  expect(utility.options).toMatchObject({
+  expect(utility.options()).toMatchObject({
     wait: 100,
     leading: false,
     trailing: false,
   })
   wait.set(200)
   TestBed.tick()
-  expect(utility.options).toMatchObject({
+  expect(utility.options()).toMatchObject({
     wait: 200,
     leading: true,
     trailing: false,
@@ -299,14 +296,14 @@ it('applies initial state once and updates execution callbacks', () => {
     ),
   )
   TestBed.tick()
-  expect(utility.store.state.executionCount).toBe(5)
+  expect(utility.store().state.executionCount).toBe(5)
   utility.maybeExecute()
   expect(first).toHaveBeenCalledOnce()
   version.set(2)
   TestBed.tick()
-  expect(utility.store.state.executionCount).toBe(6)
+  expect(utility.store().state.executionCount).toBe(6)
   utility.maybeExecute()
-  expect(utility.store.state.executionCount).toBe(7)
+  expect(utility.store().state.executionCount).toBe(7)
   expect(first).toHaveBeenCalledOnce()
   expect(latest).toHaveBeenCalledOnce()
 })
@@ -333,12 +330,12 @@ for (const entry of cases) {
     }
     const utility = TestBed.runInInjectionContext(() => entry.create(options))
     TestBed.tick()
-    const store = utility.store
-    expect(utility.options).toMatchObject({ wait: 1, limit: 1, maxSize: 1 })
+    const store = utility.store()
+    expect(utility.options()).toMatchObject({ wait: 1, limit: 1, maxSize: 1 })
     value.set(2)
     TestBed.tick()
-    expect(utility.store).toBe(store)
-    expect(utility.options).toMatchObject({ wait: 2, limit: 2, maxSize: 2 })
+    expect(utility.store()).toBe(store)
+    expect(utility.options()).toMatchObject({ wait: 2, limit: 2, maxSize: 2 })
     expect(first).not.toHaveBeenCalled()
     expect(latest).not.toHaveBeenCalled()
     TestBed.resetTestingModule()
@@ -375,19 +372,19 @@ for (const source of ['fields', 'utility'] as const) {
     )
     expect(read).not.toHaveBeenCalled()
     TestBed.tick()
-    expect(utility.options.leading).toBe(true)
+    expect(utility.options().leading).toBe(true)
     utility.maybeExecute()
     expect(callback).toHaveBeenCalledOnce()
     leading.set(false)
     TestBed.tick()
-    expect(utility.options.leading).toBe(false)
+    expect(utility.options().leading).toBe(false)
   })
 }
 
 it('defers getter reads until required inputs are bound and recovers after an early read', () => {
   class RequiredOptions {
     limit = input.required<number>()
-    limiter: ReturnType<typeof injectRateLimiter>
+    limiter: ReturnType<typeof injectRateLimiter<() => void>>
     constructor() {
       const limit = this.limit
       this.limiter = injectRateLimiter(() => {}, {
@@ -404,13 +401,13 @@ it('defers getter reads until required inputs are bound and recovers after an ea
   )
   Component({ standalone: true, template: '' })(RequiredOptions)
   const fixture = TestBed.createComponent(RequiredOptions)
-  expect(() => fixture.componentInstance.limiter.options).toThrow(/NG0950/)
+  expect(() => fixture.componentInstance.limiter.options()).toThrow(/NG0950/)
   fixture.componentRef.setInput('limit', 2)
   fixture.detectChanges()
-  expect(fixture.componentInstance.limiter.options.limit).toBe(2)
+  expect(fixture.componentInstance.limiter.options().limit).toBe(2)
   fixture.componentRef.setInput('limit', 3)
   fixture.detectChanges()
-  expect(fixture.componentInstance.limiter.options.limit).toBe(3)
+  expect(fixture.componentInstance.limiter.options().limit).toBe(3)
 })
 
 for (const entry of cases) {
@@ -454,23 +451,23 @@ it('retains omitted options, applies provider fallbacks, and clears explicit und
     ),
   )
   TestBed.tick()
-  expect(utility.options.leading).toBe(true)
+  expect(utility.options().leading).toBe(true)
   phase.set(1)
   TestBed.tick()
-  expect(utility.options.leading).toBe(false)
-  expect(utility.options.onExecute).toBe(execute)
-  expect(utility.options.onUnmount).toBe(cleanup)
+  expect(utility.options().leading).toBe(false)
+  expect(utility.options().onExecute).toBe(execute)
+  expect(utility.options().onUnmount).toBe(cleanup)
   phase.set(2)
   TestBed.tick()
-  expect(utility.options.onExecute).toBeUndefined()
-  expect(utility.options.onUnmount).toBeUndefined()
+  expect(utility.options().onExecute).toBeUndefined()
+  expect(utility.options().onUnmount).toBeUndefined()
   TestBed.resetTestingModule()
   expect(cleanup).not.toHaveBeenCalled()
 })
 
 it('does not evaluate getters when destroyed before initialization', () => {
   const read = vi.fn(() => 100)
-  const utility = TestBed.runInInjectionContext(() =>
+  TestBed.runInInjectionContext(() =>
     injectDebouncer(() => {}, {
       get wait() {
         return read()
@@ -480,9 +477,7 @@ it('does not evaluate getters when destroyed before initialization', () => {
   expect(read).not.toHaveBeenCalled()
   TestBed.resetTestingModule()
   expect(read).not.toHaveBeenCalled()
-  expect(() => utility.options).toThrow(
-    'after its injection context is destroyed',
-  )
+  expect(read).not.toHaveBeenCalled()
   expect(read).not.toHaveBeenCalled()
 })
 
@@ -508,7 +503,7 @@ for (const source of ['fields', 'utility'] as const) {
     })
     class RequiredDefaults {
       leading = input.required<boolean>()
-      utility: ReturnType<typeof injectDebouncer>
+      utility: ReturnType<typeof injectDebouncer<() => void>>
       constructor() {
         required = this.leading
         this.utility = injectDebouncer(() => {}, { wait: 100 })
@@ -522,10 +517,10 @@ for (const source of ['fields', 'utility'] as const) {
     const fixture = TestBed.createComponent(RequiredDefaults)
     fixture.componentRef.setInput('leading', true)
     fixture.detectChanges()
-    expect(fixture.componentInstance.utility.options.leading).toBe(true)
+    expect(fixture.componentInstance.utility.options().leading).toBe(true)
     fixture.componentRef.setInput('leading', false)
     fixture.detectChanges()
-    expect(fixture.componentInstance.utility.options.leading).toBe(false)
+    expect(fixture.componentInstance.utility.options().leading).toBe(false)
   })
 }
 
@@ -544,8 +539,8 @@ it('tracks option reads without subscribing to function-valued core reads', () =
     }),
   )
   TestBed.tick()
-  expect(utility.options.enabled).toBe(enabled)
-  expect(utility.options.onExecute).toBe(onExecute)
+  expect(utility.options().enabled).toBe(enabled)
+  expect(utility.options().onExecute).toBe(onExecute)
   expect(onExecute).not.toHaveBeenCalled()
   const calls = enabled.mock.calls.length
   incidental.set(false)
@@ -554,25 +549,22 @@ it('tracks option reads without subscribing to function-valued core reads', () =
   wait.set(200)
   TestBed.tick()
   expect(enabled.mock.calls.length).toBeGreaterThan(calls)
-  expect(utility.options.wait).toBe(200)
+  expect(utility.options().wait).toBe(200)
 })
 
-it('constructs data-only options eagerly and outside the caller tracking context', () => {
+it('keeps callback-valued options outside the consumer tracking context', () => {
   const incidental = signal(true),
     calls = vi.fn()
-  let utility!: ReturnType<typeof injectDebouncer>
-  TestBed.runInInjectionContext(() =>
+  TestBed.runInInjectionContext(() => {
+    const utility = injectDebouncer(() => {}, {
+      wait: 100,
+      enabled: () => incidental(),
+    })
     effect(() => {
       calls()
-      utility = TestBed.runInInjectionContext(() =>
-        injectDebouncer(() => {}, {
-          wait: 100,
-          enabled: () => incidental(),
-        }),
-      )
-      expect(utility.options.wait).toBe(100)
-    }),
-  )
+      expect(utility.options().wait).toBe(100)
+    })
+  })
   TestBed.tick()
   incidental.set(false)
   TestBed.tick()
@@ -593,9 +585,9 @@ it('cancels pending work when an enabled getter becomes false after the effect r
   TestBed.tick()
   utility.maybeExecute()
   enabled.set(false)
-  expect(utility.store.state.isPending).toBe(true)
+  expect(utility.store().state.isPending).toBe(true)
   TestBed.tick()
-  expect(utility.store.state.isPending).toBe(false)
+  expect(utility.store().state.isPending).toBe(false)
   vi.advanceTimersByTime(100)
   expect(callback).not.toHaveBeenCalled()
 })
@@ -620,13 +612,13 @@ it('consumes queue initialization options once when getters update', () => {
     }),
   )
   TestBed.tick()
-  const store = utility.store
+  const store = utility.store()
   expect(utility.peekAllItems()).toEqual(['item-1'])
   version.set(2)
   TestBed.tick()
-  expect(utility.store).toBe(store)
+  expect(utility.store()).toBe(store)
   expect(utility.peekAllItems()).toEqual(['item-1'])
-  expect(utility.store.state).toMatchObject({
+  expect(utility.store().state).toMatchObject({
     isRunning: false,
     executionCount: 1,
   })
@@ -650,7 +642,7 @@ it('types manual option updates with the selected adapter state', () => {
     expect(received.state().pending).toBe(false)
   })
   utility.setOptions({ onUnmount: cleanup })
-  expect(utility.options.onUnmount).toBe(cleanup)
+  expect(utility.options().onUnmount).toBe(cleanup)
   TestBed.resetTestingModule()
   expect(cleanup).toHaveBeenCalledOnce()
 })
@@ -675,14 +667,14 @@ it.each([false, true])(
       })),
     )
     TestBed.tick()
-    expect(utility.options.onUnmount).toBe(localCleanup)
+    expect(utility.options().onUnmount).toBe(localCleanup)
     phase.set('fallback')
     TestBed.tick()
-    expect(utility.options.onUnmount).toBe(providerCleanup)
+    expect(utility.options().onUnmount).toBe(providerCleanup)
     if (clear) {
       phase.set('clear')
       TestBed.tick()
-      expect(utility.options.onUnmount).toBeUndefined()
+      expect(utility.options().onUnmount).toBeUndefined()
       utility.maybeExecute()
     }
     TestBed.resetTestingModule()

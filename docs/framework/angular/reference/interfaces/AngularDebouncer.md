@@ -3,11 +3,11 @@ id: AngularDebouncer
 title: AngularDebouncer
 ---
 
-Defined in: [debouncer/injectDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L26)
+Defined in: [debouncer/injectDebouncer.ts:33](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L33)
 
 ## Extends
 
-- `Omit`\<`Debouncer`\<`TFn`\>, `"store"` \| `"options"` \| `"setOptions"`\>
+- `Pick`\<`Debouncer`\<`TFn`\>, `"maybeExecute"` \| `"flush"` \| `"cancel"` \| `"reset"`\>
 
 ## Type Parameters
 
@@ -22,13 +22,33 @@ Defined in: [debouncer/injectDebouncer.ts:26](https://github.com/TanStack/pacer/
 
 ## Properties
 
+### fn
+
+```ts
+readonly fn: Signal<TFn>;
+```
+
+Defined in: [debouncer/injectDebouncer.ts:38](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L38)
+
+***
+
+### key
+
+```ts
+readonly key: Signal<string | undefined>;
+```
+
+Defined in: [debouncer/injectDebouncer.ts:37](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L37)
+
+***
+
 ### options
 
 ```ts
-options: DebouncerOptions<TFn> & AngularDebouncerOptions<TFn, TSelected>;
+readonly options: Signal<DebouncerOptions<TFn> & AngularDebouncerOptions<TFn, TSelected>>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L30)
+Defined in: [debouncer/injectDebouncer.ts:39](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L39)
 
 ***
 
@@ -38,7 +58,7 @@ Defined in: [debouncer/injectDebouncer.ts:30](https://github.com/TanStack/pacer/
 setOptions: (options) => void;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:31](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L31)
+Defined in: [debouncer/injectDebouncer.ts:45](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L45)
 
 #### Parameters
 
@@ -58,23 +78,16 @@ Defined in: [debouncer/injectDebouncer.ts:31](https://github.com/TanStack/pacer/
 readonly state: Signal<Readonly<TSelected>>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:39](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L39)
-
-Reactive state signal that will be updated when the debouncer state changes
-
-Use this instead of `debouncer.store.state`
+Defined in: [debouncer/injectDebouncer.ts:44](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L44)
 
 ***
 
-### ~~store~~
+### store
 
 ```ts
-readonly store: Store<Readonly<DebouncerState<TFn>>>;
+readonly store: Signal<Store<Readonly<DebouncerState<TFn>>, never>>;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:44](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L44)
+Defined in: [debouncer/injectDebouncer.ts:43](https://github.com/benjavicente/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L43)
 
-#### Deprecated
-
-Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-The state on the store object is not reactive in Angular signals.
+Core store access; use state() for reactive selected state.

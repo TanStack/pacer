@@ -1,5 +1,6 @@
 import { signal } from '@angular/core'
 import { injectDebouncer } from './injectDebouncer'
+import type { Signal } from '@angular/core'
 import type { AngularPacerOptions } from '../types'
 import type { AngularDebouncer } from './injectDebouncer'
 import type {
@@ -9,8 +10,7 @@ import type {
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
 
-export interface DebouncedSignal<TValue, TSelected = {}> {
-  (): TValue
+export type DebouncedSignal<TValue, TSelected = {}> = Signal<TValue> & {
   set: Setter<TValue>
   debouncer: AngularDebouncer<Setter<TValue>, TSelected>
 }
@@ -35,10 +35,8 @@ export interface DebouncedSignal<TValue, TSelected = {}> {
  * The `selector` parameter allows you to specify which debouncer state changes will trigger signal updates,
  * optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes. Only when you provide a selector will
- * the reactive system track the selected state values.
+ * By default, the selected state is an empty object. Provide a selector to expose
+ * reactive state fields. The adapter observes core work separately for Angular stability.
  *
  * Available debouncer state properties:
  * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -61,11 +59,34 @@ export interface DebouncedSignal<TValue, TSelected = {}> {
  * console.log(debouncedQuery.debouncer.state().isPending)
  * ```
  */
+export function injectDebouncedSignal<TValue, TSelected>(
+  value: TValue,
+  initialOptions: AngularPacerOptions<
+    DebouncerOptions<Setter<NoInfer<TValue>>>
+  >,
+  selector: (state: DebouncerState<Setter<TValue>>) => TSelected,
+): DebouncedSignal<TValue, TSelected>
+export function injectDebouncedSignal<TValue>(
+  value: TValue,
+  initialOptions: AngularPacerOptions<
+    DebouncerOptions<Setter<NoInfer<TValue>>>
+  >,
+  selector?: undefined,
+): DebouncedSignal<TValue, {}>
 export function injectDebouncedSignal<TValue, TSelected = {}>(
   value: TValue,
-  initialOptions: AngularPacerOptions<DebouncerOptions<Setter<TValue>>>,
+  initialOptions: AngularPacerOptions<
+    DebouncerOptions<Setter<NoInfer<TValue>>>
+  >,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
-): DebouncedSignal<TValue, TSelected> {
+): DebouncedSignal<TValue, TSelected | {}>
+export function injectDebouncedSignal<TValue, TSelected = {}>(
+  value: TValue,
+  initialOptions: AngularPacerOptions<
+    DebouncerOptions<Setter<NoInfer<TValue>>>
+  >,
+  selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
+): DebouncedSignal<TValue, TSelected | {}> {
   const debouncedValue = signal<TValue>(value)
 
   const debouncer = injectDebouncer(
@@ -86,10 +107,10 @@ export function injectDebouncedSignal<TValue, TSelected = {}>(
     debouncer.maybeExecute(newValue)
   }
 
-  const debounced = Object.assign(() => debouncedValue(), {
+  const debounced = Object.assign(debouncedValue.asReadonly(), {
     set,
     debouncer,
-  }) as DebouncedSignal<TValue, TSelected>
+  })
 
   return debounced
 }

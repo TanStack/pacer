@@ -1,14 +1,11 @@
-import { effect } from '@angular/core'
-import { injectRateLimitedSignal } from './injectRateLimitedSignal'
+import { effect, linkedSignal, untracked } from '@angular/core'
+import { injectRateLimiter } from './injectRateLimiter'
 import type { AngularPacerOptions } from '../types'
 import type { RateLimitedSignal } from './injectRateLimitedSignal'
-import type { Signal } from '@angular/core'
-import type {
-  RateLimiterOptions,
-  RateLimiterState,
-} from '@tanstack/pacer/rate-limiter'
+import type { AngularRateLimiterOptions } from './injectRateLimiter'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 
-type Setter<T> = (value: T | ((prev: T) => T)) => void
+type Setter<T> = (value: T | ((previous: T) => T)) => void
 
 /**
  * An Angular function that creates a rate-limited value that updates at most a certain number of times within a time window.
@@ -28,13 +25,12 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * The `selector` parameter allows you to specify which rate limiter state changes will trigger signal updates,
  * optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * By default, the selected state is an empty object. Provide a selector to expose
+ * reactive state fields. The adapter observes core work separately for Angular stability.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
+ * // Default selected state is an empty object
  * const value = signal(0)
  * const rateLimited = injectRateLimitedValue(value, {
  *   limit: 5,
@@ -48,63 +44,55 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  * })
  * ```
  */
+export function injectRateLimitedValue<TValue, TSelected>(
+  value: () => TValue,
+  options: AngularPacerOptions<
+    AngularRateLimiterOptions<Setter<TValue>, TSelected>
+  >,
+  selector: (state: RateLimiterState) => TSelected,
+): RateLimitedSignal<TValue, TSelected>
+export function injectRateLimitedValue<TValue>(
+  value: () => TValue,
+  options: AngularPacerOptions<AngularRateLimiterOptions<Setter<TValue>, {}>>,
+  selector?: undefined,
+): RateLimitedSignal<TValue, {}>
 export function injectRateLimitedValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialOptions: AngularPacerOptions<RateLimiterOptions<Setter<TValue>>>,
+  value: () => TValue,
+  options: AngularPacerOptions<
+    AngularRateLimiterOptions<Setter<TValue>, TSelected | {}>
+  >,
   selector?: (state: RateLimiterState) => TSelected,
-): RateLimitedSignal<TValue, TSelected>
+): RateLimitedSignal<TValue, TSelected | {}>
 export function injectRateLimitedValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialValue: TValue,
-  initialOptions: RateLimiterOptions<Setter<TValue>>,
+  value: () => TValue,
+  options: AngularPacerOptions<
+    AngularRateLimiterOptions<Setter<TValue>, TSelected | {}>
+  >,
   selector?: (state: RateLimiterState) => TSelected,
-): RateLimitedSignal<TValue, TSelected>
-export function injectRateLimitedValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialValue: TValue,
-  initialOptions: () => RateLimiterOptions<Setter<TValue>>,
-  selector: ((state: RateLimiterState) => TSelected) | undefined,
-): RateLimitedSignal<TValue, TSelected>
-export function injectRateLimitedValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialValueOrOptions:
-    TValue | AngularPacerOptions<RateLimiterOptions<Setter<TValue>>>,
-  initialOptionsOrSelector?:
-    | AngularPacerOptions<RateLimiterOptions<Setter<TValue>>>
-    | ((state: RateLimiterState) => TSelected),
-  maybeSelector?: (state: RateLimiterState) => TSelected,
-): RateLimitedSignal<TValue, TSelected> {
-  const hasSelector = typeof initialOptionsOrSelector === 'function'
-
-  const hasInitialValue =
-    (initialOptionsOrSelector !== undefined && !hasSelector) ||
-    arguments.length >= 4
-
-  const initialValue = hasInitialValue
-    ? (initialValueOrOptions as TValue)
-    : (undefined as unknown as TValue)
-  const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as AngularPacerOptions<
-        RateLimiterOptions<Setter<TValue>>
-      >)
-    : (initialValueOrOptions as AngularPacerOptions<
-        RateLimiterOptions<Setter<TValue>>
-      >)
-  const selector = hasInitialValue
-    ? maybeSelector
-    : (initialOptionsOrSelector as
-        ((state: RateLimiterState) => TSelected) | undefined)
-
-  const rateLimited = injectRateLimitedSignal(
-    initialValue,
-    initialOptions,
+): RateLimitedSignal<TValue, TSelected | {}> {
+  // Initialize from the source once, lazily, after required inputs can be bound.
+  const currentValue = linkedSignal<TValue, TValue>({
+    source: value,
+    computation: (initial, previous) => (previous ? previous.value : initial),
+  })
+  const rateLimiter = injectRateLimiter(
+    (next: TValue | ((previous: TValue) => TValue)) => {
+      if (typeof next === 'function')
+        currentValue.update(next as (previous: TValue) => TValue)
+      else currentValue.set(next)
+    },
+    options,
     selector,
   )
 
   effect(() => {
     const latest = value()
-    rateLimited.set(latest)
+    untracked(() => rateLimiter.maybeExecute(() => latest))
   })
 
-  return rateLimited
+  return Object.assign(currentValue.asReadonly(), {
+    set: (next: TValue | ((previous: TValue) => TValue)) =>
+      rateLimiter.maybeExecute(next),
+    rateLimiter,
+  })
 }

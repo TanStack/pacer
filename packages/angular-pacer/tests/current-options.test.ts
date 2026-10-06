@@ -33,3 +33,35 @@ it('uses the current enabled option before a leading execution', () => {
   utility.maybeExecute()
   expect(execute).not.toHaveBeenCalled()
 })
+
+it('preserves manual partial updates until supplied options change', () => {
+  const wait = signal(100)
+  const utility = TestBed.runInInjectionContext(() =>
+    injectDebouncer(
+      () => {},
+      () => ({ wait: wait(), leading: false }),
+    ),
+  )
+  utility.setOptions({ leading: true })
+  TestBed.tick()
+  expect(utility.options().leading).toBe(true)
+  utility.cancel()
+  expect(utility.options().leading).toBe(true)
+  wait.set(200)
+  utility.cancel()
+  expect(utility.options()).toMatchObject({ wait: 200, leading: false })
+})
+
+it('updates options after an early core read and before the first effect', () => {
+  const wait = signal(100)
+  const utility = TestBed.runInInjectionContext(() =>
+    injectDebouncer(
+      () => {},
+      () => ({ wait: wait() }),
+    ),
+  )
+  expect(utility.options().wait).toBe(100)
+  wait.set(200)
+  utility.cancel()
+  expect(utility.options().wait).toBe(200)
+})

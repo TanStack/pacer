@@ -1,11 +1,18 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import {
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
+import { injectOutsideZone } from '../utils/injectOutsideZone'
+import { injectPendingTask } from '../utils/injectPendingTask'
+import { injectExternalStore } from '../utils/injectExternalStore'
 import { injectPacerOptions } from '../provider/pacer-context'
 import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncDebouncerOptions,
@@ -27,23 +34,23 @@ export interface AngularAsyncDebouncerOptions<
 export interface AngularAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = {},
-> extends Omit<AsyncDebouncer<TFn>, 'store' | 'options' | 'setOptions'> {
-  options: AsyncDebouncer<TFn>['options'] &
-    AngularAsyncDebouncerOptions<TFn, TSelected>
+> extends Pick<
+  AsyncDebouncer<TFn>,
+  'maybeExecute' | 'flush' | 'getAbortSignal' | 'abort' | 'cancel' | 'reset'
+> {
+  readonly key: Signal<AsyncDebouncer<TFn>['key']>
+  readonly fn: Signal<AsyncDebouncer<TFn>['fn']>
+  readonly options: Signal<
+    AsyncDebouncer<TFn>['options'] &
+      AngularAsyncDebouncerOptions<TFn, TSelected>
+  >
+  /** Core store access; use state() for reactive selected state. */
+  readonly store: Signal<AsyncDebouncer<TFn>['store']>
+  readonly state: Signal<Readonly<TSelected>>
   setOptions: (
     options: Partial<AngularAsyncDebouncerOptions<TFn, TSelected>>,
   ) => void
-  /**
-   * Reactive state signal that will be updated when the async debouncer state changes
-   *
-   * Use this instead of `debouncer.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>
+  readonly asyncRetryers: Signal<AsyncDebouncer<TFn>['asyncRetryers']>
 }
 
 /**
@@ -65,9 +72,8 @@ export interface AngularAsyncDebouncer<
  * The `selector` parameter allows you to specify which state changes will trigger signal updates,
  * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * By default, the selected state is an empty object. Provide a selector to expose
+ * reactive state fields. The adapter observes core work separately for Angular stability.
  *
  * Available state properties:
  * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
@@ -96,7 +102,7 @@ export interface AngularAsyncDebouncer<
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
+ * // Default selected state is an empty object
  * const debouncer = injectAsyncDebouncer(
  *   async (query: string) => {
  *     const response = await fetch(`/api/search?q=${query}`);
@@ -123,51 +129,163 @@ export interface AngularAsyncDebouncer<
  * const { isExecuting, errorCount } = debouncer.state();
  * ```
  */
+export function injectAsyncDebouncer<TFn extends AnyAsyncFunction, TSelected>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularAsyncDebouncerOptions<TFn, TSelected>>,
+  selector: (state: AsyncDebouncerState<TFn>) => TSelected,
+): AngularAsyncDebouncer<TFn, TSelected>
+export function injectAsyncDebouncer<TFn extends AnyAsyncFunction>(
+  fn: TFn,
+  options: AngularPacerOptions<AngularAsyncDebouncerOptions<TFn, {}>>,
+  selector?: undefined,
+): AngularAsyncDebouncer<TFn, {}>
 export function injectAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 >(
   fn: TFn,
-  options: AngularPacerOptions<AngularAsyncDebouncerOptions<TFn, TSelected>>,
-  selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
-    ({}) as TSelected,
-): AngularAsyncDebouncer<TFn, TSelected> {
-  return injectReactiveOptions<
-    AngularAsyncDebouncerOptions<TFn, TSelected>,
-    AngularAsyncDebouncer<TFn, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'asyncDebouncer',
-    (mergedOptions, getPublicInstance) => {
-      const debouncer = new AsyncDebouncer<TFn>(fn, mergedOptions)
-      const state = injectSelector(debouncer.store, selector)
-
-      const result = {
-        ...debouncer,
-        get options() {
-          return debouncer.options
-        },
-        set options(value) {
-          debouncer.options = value
-        },
-        state,
-      } as AngularAsyncDebouncer<TFn, TSelected>
-
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          debouncer.options as AngularAsyncDebouncerOptions<TFn, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          debouncer.cancel()
-          debouncer.abort()
-        }
-      })
-
-      return result
-    },
+  options: AngularPacerOptions<
+    AngularAsyncDebouncerOptions<TFn, TSelected | {}>
+  >,
+  selector?: (state: AsyncDebouncerState<TFn>) => TSelected,
+): AngularAsyncDebouncer<TFn, TSelected | {}>
+export function injectAsyncDebouncer<
+  TFn extends AnyAsyncFunction,
+  TSelected = {},
+>(
+  fn: TFn,
+  options: AngularPacerOptions<
+    AngularAsyncDebouncerOptions<TFn, TSelected | {}>
+  >,
+  selector?: (state: AsyncDebouncerState<TFn>) => TSelected,
+): AngularAsyncDebouncer<TFn, TSelected | {}> {
+  const owner = inject(DestroyRef)
+  const defaults = injectPacerOptions()
+  const outsideZone = injectOutsideZone()
+  const pending = injectPendingTask()
+  const resolvedOptions = linkedSignal(() => ({
+    ...defaults.asyncDebouncer,
+    ...(typeof options === 'function' ? options() : options),
+  }))
+  // A callback can outlive a superseded operation promise or an abort/reset.
+  const instance = computed(() =>
+    untracked(() =>
+      outsideZone(() => {
+        const initialOptions = resolvedOptions()
+        return new AsyncDebouncer<TFn>(
+          ((...args: Parameters<TFn>) => pending.run(() => fn(...args))) as TFn,
+          initialOptions,
+        )
+      }),
+    ),
   )
+
+  // The effect owns normal disposal; an early operation temporarily owns its resource.
+  let effectOwnsInstance = false
+  let unregisterEarlyCleanup: (() => void) | undefined
+  const cleanup = (current: AsyncDebouncer<TFn>) => {
+    const onUnmount = (
+      current.options as AngularAsyncDebouncerOptions<TFn, TSelected | {}>
+    ).onUnmount
+    if (onUnmount) onUnmount(result)
+    else {
+      current.cancel()
+      current.abort()
+    }
+  }
+
+  function run(): void
+  function run<T>(operation: (current: AsyncDebouncer<TFn>) => T): T
+  function run<T>(
+    operation?: (current: AsyncDebouncer<TFn>) => T,
+  ): T | undefined {
+    return outsideZone(() =>
+      untracked(() => {
+        const latest = resolvedOptions()
+        const current = instance()
+        if (!effectOwnsInstance && !unregisterEarlyCleanup) {
+          unregisterEarlyCleanup = owner.onDestroy(() =>
+            outsideZone(() => untracked(() => cleanup(current))),
+          )
+        }
+        current.setOptions(latest)
+        try {
+          return operation?.(current)
+        } finally {
+          pending.set(
+            current.store.state.isPending || current.asyncRetryers.size > 0,
+          )
+        }
+      }),
+    )
+  }
+
+  // Read only identity here: option changes must not dispose the stable instance.
+  effect((onCleanup) => {
+    const current = instance()
+    effectOwnsInstance = true
+    unregisterEarlyCleanup?.()
+    unregisterEarlyCleanup = undefined
+    onCleanup(() => outsideZone(() => untracked(() => cleanup(current))))
+  })
+
+  effect(() => {
+    const current = instance()
+    const latest = resolvedOptions()
+    outsideZone(() =>
+      untracked(() => {
+        current.setOptions(latest)
+      }),
+    )
+  })
+
+  const snapshot = injectExternalStore(() => {
+    const current = instance()
+    return {
+      getSnapshot: () => current.store.state,
+      subscribe: (notify) => {
+        const { unsubscribe } = current.store.subscribe(notify)
+        return unsubscribe
+      },
+    }
+  })
+
+  // The retryer map also covers automatic retry waits; displayed flags may reset.
+  const state = computed(() => (selector ? selector(snapshot()) : {}))
+  effect(() =>
+    pending.set(snapshot().isPending || instance().asyncRetryers.size > 0),
+  )
+
+  const result: AngularAsyncDebouncer<TFn, TSelected | {}> = {
+    key: computed(() => instance().key),
+    fn: computed(() => fn),
+    options: computed(() => {
+      const latest = resolvedOptions()
+      return { ...instance().options, ...latest }
+    }),
+    store: computed(() => instance().store),
+    state,
+    asyncRetryers: computed(
+      () => {
+        snapshot()
+        return instance().asyncRetryers
+      },
+      { equal: () => false },
+    ),
+    setOptions: (update) =>
+      untracked(() => {
+        resolvedOptions.update((previous) => ({ ...previous, ...update }))
+        run()
+      }),
+    maybeExecute: (...args) =>
+      run((current) => pending.run(() => current.maybeExecute(...args))),
+    flush: (...args) =>
+      run((current) => pending.run(() => current.flush(...args))),
+    getAbortSignal: (...args) =>
+      run((current) => current.getAbortSignal(...args)),
+    abort: (...args) => run((current) => current.abort(...args)),
+    cancel: (...args) => run((current) => current.cancel(...args)),
+    reset: (...args) => run((current) => current.reset(...args)),
+  }
+  return result
 }
