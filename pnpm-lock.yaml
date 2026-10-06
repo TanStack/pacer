@@ -10363,6 +10363,9 @@ importers:
 
   packages/angular-pacer:
     dependencies:
+      '@angular/common':
+        specifier: '>=19.0.0'
+        version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2)
       '@tanstack/angular-store':
         specifier: ^0.11.2
         version: 0.11.2(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
