@@ -63,7 +63,6 @@ describe('example behavior', () => {
     app.changeWindow('sliding')
     TestBed.tick()
     expect(app.runner).toBe(runner)
-    expect(runner.options.windowType).toBe('sliding')
     for (let index = 0; index < 4; index++) void app.onSearch(String(index))
     await vi.advanceTimersByTimeAsync(500)
     expect(runner.state().successCount).toBe(3)

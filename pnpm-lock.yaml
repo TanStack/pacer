@@ -1520,7 +1520,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectAsyncQueuedSignal:
+  examples/angular/injectAsyncQueuer:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1
@@ -1575,7 +1575,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectAsyncQueuer:
+  examples/angular/injectAsyncQueuerItems:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1
@@ -1795,7 +1795,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectDebouncedSignal:
+  examples/angular/injectDebouncedComputed:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1
@@ -1850,7 +1850,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectDebouncedValue:
+  examples/angular/injectDebouncedSignal:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1
@@ -1960,7 +1960,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectQueuedSignal:
+  examples/angular/injectQueuedComputed:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1
@@ -2015,7 +2015,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectQueuedValue:
+  examples/angular/injectQueuedSignal:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1
@@ -2125,7 +2125,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectRateLimitedSignal:
+  examples/angular/injectQueuerItems:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1
@@ -2180,7 +2180,62 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectRateLimitedValue:
+  examples/angular/injectRateLimitedComputed:
+    dependencies:
+      '@angular/common':
+        specifier: ^22.2.1
+        version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/compiler':
+        specifier: ^22.2.1
+        version: 22.2.1
+      '@angular/core':
+        specifier: ^22.2.1
+        version: 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)
+      '@angular/forms':
+        specifier: ^22.2.1
+        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
+      '@angular/platform-browser':
+        specifier: ^22.2.1
+        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))
+      '@angular/router':
+        specifier: ^22.2.1
+        version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(rxjs@7.8.2)
+      '@tanstack/angular-devtools':
+        specifier: ^0.0.12
+        version: 0.0.12(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(csstype@3.2.3)(solid-js@1.9.15)
+      '@tanstack/angular-pacer':
+        specifier: workspace:*
+        version: link:../../../packages/angular-pacer
+      '@tanstack/angular-pacer-devtools':
+        specifier: workspace:*
+        version: link:../../../packages/angular-pacer-devtools
+      rxjs:
+        specifier: ~7.8.2
+        version: 7.8.2
+      tslib:
+        specifier: ^2.8.1
+        version: 2.8.1
+    devDependencies:
+      '@angular/build':
+        specifier: ^22.2.1
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+      '@angular/cli':
+        specifier: ^22.2.1
+        version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
+      '@angular/compiler-cli':
+        specifier: ^22.2.1
+        version: 22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3)
+      jsdom:
+        specifier: ^30.1.1
+        version: 30.1.1(@noble/hashes@2.4.0)
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
+      vitest:
+        specifier: ^5.0.3
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+
+  examples/angular/injectRateLimitedSignal:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1
@@ -2290,7 +2345,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectThrottledSignal:
+  examples/angular/injectThrottledComputed:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1
@@ -2345,7 +2400,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  examples/angular/injectThrottledValue:
+  examples/angular/injectThrottledSignal:
     dependencies:
       '@angular/common':
         specifier: ^22.2.1

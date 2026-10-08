@@ -9,8 +9,9 @@ test.beforeEach(async ({ page, exampleUrl }) => {
       exact: true,
     }),
   ).toBeVisible()
-  // Let Angular bootstrap before pausing timers; runFor also advances render frames.
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 100))
+  // Pause after bootstrap with enough margin for the browser round trip on busy hosts.
+  // runFor below also advances Angular render frames.
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 10_000))
 })
 
 test('renders the stopped queue with ten seeded tasks', async ({ page }) => {

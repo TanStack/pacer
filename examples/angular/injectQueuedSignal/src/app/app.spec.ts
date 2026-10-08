@@ -1,53 +1,55 @@
-import { vi } from 'vitest'
-import { TestBed } from '@angular/core/testing'
-import { App } from './app'
+import { vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-    }).compileComponents()
-  })
+    }).compileComponents();
+  });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(App)
-    const app = fixture.componentInstance
-    expect(app).toBeTruthy()
-  })
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
 
   it('should render title', async () => {
-    const fixture = TestBed.createComponent(App)
-    await fixture.whenStable()
-    const compiled = fixture.nativeElement as HTMLElement
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain(
       'TanStack Pacer injectQueuedSignal Example',
-    )
-  })
-})
+    );
+  });
+});
 
 // Exercise the real adapter and component with a deterministic clock.
 describe('example behavior', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [App] }).compileComponents()
-  })
+    await TestBed.configureTestingModule({ imports: [App] }).compileComponents();
+  });
   afterEach(() => {
-    TestBed.resetTestingModule()
-    vi.clearAllTimers()
-    vi.useRealTimers()
-    vi.restoreAllMocks()
-  })
-  it('processes a stopped preloaded queue and displays pending items', async () => {
-    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] })
-    const fixture = TestBed.createComponent(App)
-    const app = fixture.componentInstance
-    fixture.detectChanges()
-    TestBed.tick()
-    expect(app.numberQueue.state().items).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    expect(app.numberQueue.state().isRunning).toBe(false)
-    app.numberQueue.execute()
-    expect(app.numberQueue.state().executionCount).toBe(1)
-    expect(app.numberQueue.state().items).toEqual([2, 3, 4, 5, 6, 7, 8, 9, 10])
-    app.numberQueue.clear()
-    expect(app.numberQueue.state().isEmpty).toBe(true)
-  })
-})
+    TestBed.resetTestingModule();
+    vi.clearAllTimers();
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+  it('publishes a processed scalar and keeps pending values in queue state', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    fixture.detectChanges();
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(1000);
+    app.queuer.stop();
+    app.onSearch('angular');
+    TestBed.tick();
+    expect(app.queued()).toBe('');
+    expect(app.queuer.state().size).toBe(1);
+    app.queuer.execute();
+    expect(app.queued()).toBe('angular');
+    expect(app.queuer.state().size).toBe(0);
+  });
+});

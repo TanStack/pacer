@@ -1,0 +1,24 @@
+<h1>TanStack Pacer injectAsyncQueuerItems Example</h1>
+<p>Pending Tasks: {{ queue().length }}</p>
+<p>Items Processed: {{ processed().length }}</p>
+<label
+  >Concurrency:
+  <input
+    type="number"
+    min="1"
+    [value]="concurrency()"
+    (input)="setConcurrency($any($event.target).value)"
+/></label>
+<h2>Queue Items</h2>
+<ol>
+  @for (item of queue(); track $index) {
+    <li>{{ item }}</li>
+  }
+</ol>
+<button (click)="add()" [disabled]="queue().length >= 25">Add Async Task</button>
+<button (click)="runner.getNextItem()">Get Next Item</button>
+<button (click)="runner.clear()" [disabled]="queue().length === 0">Clear Queue</button>
+<button (click)="start()" [disabled]="running()">Start Processing</button>
+<button (click)="stop()" [disabled]="!running()">Stop Processing</button>
+
+<p>Completed values: {{ processed().join(', ') }}</p>

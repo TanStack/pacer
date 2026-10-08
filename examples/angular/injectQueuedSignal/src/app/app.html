@@ -1,33 +1,36 @@
 <h1>TanStack Pacer injectQueuedSignal Example</h1>
 <section>
-  <h2>Number queue</h2>
-  <button type="button" (click)="addNumber()" [disabled]="numberQueue.state().isFull">
-    Add Number
-  </button>
-  <p>Queue Size: {{ numberQueue.state().size }}</p>
-  <p>Queue Full: {{ numberQueue.state().isFull }}</p>
-  <p>Queue Empty: {{ numberQueue.state().isEmpty }}</p>
-  <p>Queue Idle: {{ numberQueue.state().isIdle }}</p>
-  <p>Status: {{ numberQueue.state().status }}</p>
-  <p>Items Processed: {{ numberQueue.state().executionCount }}</p>
-  <p>Queue Items: {{ queued().join(", ") }}</p>
-  <p>Queue Peek: {{ numberQueue.peekNextItem() ?? "None" }}</p>
-  <button type="button" (click)="numberQueue.execute()" [disabled]="numberQueue.state().isEmpty">
+  <h2>Queued search value</h2>
+  <label
+    >Search
+    <input
+      type="search"
+      [value]="source()"
+      (input)="onSearch($any($event.target).value)"
+      placeholder="Enter search term..."
+  /></label>
+  <p>Current Value: {{ queued() }}</p>
+  <p>Queue Size: {{ queuer.state().size }}</p>
+  <p>Queue Full: {{ queuer.state().isFull }}</p>
+  <p>Queue Empty: {{ queuer.state().isEmpty }}</p>
+  <p>Queue Idle: {{ queuer.state().isIdle }}</p>
+  <p>Status: {{ queuer.state().status }}</p>
+  <p>Items Processed: {{ queuer.state().executionCount }}</p>
+  <button type="button" (click)="queuer.execute()" [disabled]="queuer.state().isEmpty">
     Process Next
   </button>
-  <button type="button" (click)="numberQueue.clear()" [disabled]="numberQueue.state().isEmpty">
+  <button type="button" (click)="queuer.clear()" [disabled]="queuer.state().isEmpty">
     Clear Queue
   </button>
-  <button type="button" (click)="numberQueue.reset()" [disabled]="numberQueue.state().isEmpty">
+  <button type="button" (click)="queuer.reset()" [disabled]="queuer.state().isEmpty">
     Reset Queue
   </button>
-  <button type="button" (click)="numberQueue.start()" [disabled]="numberQueue.state().isRunning">
+  <button type="button" (click)="queuer.start()" [disabled]="queuer.state().isRunning">
     Start Processing
   </button>
-  <button type="button" (click)="numberQueue.stop()" [disabled]="!numberQueue.state().isRunning">
+  <button type="button" (click)="queuer.stop()" [disabled]="!queuer.state().isRunning">
     Stop Processing
   </button>
-  <pre>{{ numberQueue.state() | json }}</pre>
 </section>
 <section>
   <h2>Queued range</h2>
@@ -42,9 +45,9 @@
   /></label>
   <p>Instant Value: {{ currentValue() }}</p>
   <label
-    >Queued Range <input type="range" min="0" max="100" [value]="rangeValue()" disabled
+    >Queued Range <input type="range" min="0" max="100" [value]="rangeQueued()" disabled
   /></label>
-  <p>Queued Value: {{ rangeValue() }}</p>
+  <p>Queued Value: {{ rangeQueued() }}</p>
   <p>Values Submitted: {{ instantExecutions() }}</p>
   <p>Pending Items: {{ rangeQueue.state().size }}</p>
   <p>Queue Full: {{ rangeQueue.state().isFull }}</p>
@@ -52,7 +55,4 @@
   <p>Queue Idle: {{ rangeQueue.state().isIdle }}</p>
   <p>Status: {{ rangeQueue.state().status }}</p>
   <p>Items Processed: {{ rangeQueue.state().executionCount }}</p>
-  <p>Queue Items: {{ rangeQueued().join(", ") }}</p>
-  <p>Queue Peek: {{ rangeQueue.peekNextItem() ?? "None" }}</p>
-  <pre>{{ rangeQueue.state() | json }}</pre>
 </section>
