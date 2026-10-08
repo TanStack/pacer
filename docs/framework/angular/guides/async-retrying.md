@@ -8,12 +8,12 @@ Retrying runs an async operation again after it fails. It can make transient fai
 > [!NOTE]
 > `AsyncRetryer` is an alpha API and may change before 1.0. Its current design also supports the retry behavior inside Pacer's other async utilities.
 
-Retrying is the exception among these framework guides: TanStack Pacer does not provide an Angular-specific retry primitive. Use `asyncRetry` and `AsyncRetryer` from `@tanstack/pacer` and connect long-lived instances to the Angular lifecycle.
+Retrying is the exception among these framework guides: TanStack Pacer does not provide an Angular-specific retry primitive. Use `asyncRetry` and `AsyncRetryer` re-exported from `@tanstack/angular-pacer` and connect long-lived instances to the Angular lifecycle.
 
-Install the core package when using these APIs directly:
+Install the Angular adapter to use these re-exported APIs:
 
 ```sh
-npm install @tanstack/pacer
+npm install @tanstack/angular-pacer
 ```
 
 If TanStack Query already owns the request, use its retry support so one system controls request state and cancellation.
@@ -47,7 +47,7 @@ Also consider whether repeating the operation is idempotent. Reads are commonly 
 `asyncRetry` creates one retryer and returns its bound execution function:
 
 ```ts
-import { asyncRetry } from '@tanstack/pacer'
+import { asyncRetry } from '@tanstack/angular-pacer'
 
 const loadUserWithRetry = asyncRetry(loadUser, {
   maxAttempts: 3,
@@ -68,7 +68,7 @@ The defaults are three total attempts, exponential backoff from 1000 millisecond
 The returned function can be reused sequentially. It owns one `AsyncRetryer`, so starting a new call while an earlier call is active aborts the earlier retry flow. When calls may overlap, create a retryer per call or use another utility that manages concurrency:
 
 ```ts
-import { AsyncRetryer } from '@tanstack/pacer'
+import { AsyncRetryer } from '@tanstack/angular-pacer'
 
 async function loadOneUser(id: string) {
   const retryer = new AsyncRetryer(loadUser, { maxAttempts: 3 })
@@ -80,7 +80,7 @@ async function loadOneUser(id: string) {
 
 ```ts
 import { DestroyRef, inject } from '@angular/core'
-import { AsyncRetryer } from '@tanstack/pacer'
+import { AsyncRetryer } from '@tanstack/angular-pacer'
 
 export class UserComponent {
   private readonly destroyRef = inject(DestroyRef)
