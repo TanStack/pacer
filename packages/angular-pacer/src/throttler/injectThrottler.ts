@@ -1,155 +1,156 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import { computed, effect, untracked } from '@angular/core'
 import { Throttler } from '@tanstack/pacer/throttler'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
-import { injectPacerOptions } from '../provider/pacer-context'
-import type { AngularPacerOptions } from '../types'
+import { shallow } from '@tanstack/store'
+import { injectPacerOptions } from '../provider/providePacerOptions'
+import { toAccessorSignal } from '../utils/maybeAccessor'
+import { injectForwardMethods } from '../utils/injectForwardMethods'
+import { injectLazy } from '../utils/injectLazy'
+import { injectSelector } from '../utils/injectSelector'
+import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
+import type { ReadonlySelected } from '../utils/readonlySelected'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
-import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
+  AnyFunction,
   ThrottlerOptions,
   ThrottlerState,
-} from '@tanstack/pacer/throttler'
+} from '@tanstack/pacer'
+import type { MethodKeys } from '../utils/injectForwardMethods'
 
+/**
+ * Options for {@link injectThrottler}, including core configuration and Angular cleanup.
+ */
 export interface AngularThrottlerOptions<
   TFn extends AnyFunction,
-  TSelected = {},
 > extends ThrottlerOptions<TFn> {
   /**
-   * Optional callback invoked when the component is destroyed. Receives the throttler instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   * Called when the owning injection context is destroyed. Receives the core instance.
+   * Providing this callback replaces the default cleanup (cancel pending execution).
    */
-  onUnmount?: (throttler: AngularThrottler<TFn, TSelected>) => void
+  onUnmount?: (core: Throttler<TFn>) => void
 }
 
+const throttlerMethods = [
+  'maybeExecute',
+  'flush',
+  'cancel',
+  'reset',
+] as const satisfies ReadonlyArray<MethodKeys<Throttler<AnyFunction>>>
+
+type ThrottlerMethod = (typeof throttlerMethods)[number]
+
+/**
+ * An Angular Throttler ref with stable core methods and readonly selected state.
+ * Read `state()` to observe the selector result; without a selector it returns `{}`.
+ */
 export interface AngularThrottler<
   TFn extends AnyFunction,
   TSelected = {},
-> extends Omit<Throttler<TFn>, 'store' | 'options' | 'setOptions'> {
-  options: Throttler<TFn>['options'] & AngularThrottlerOptions<TFn, TSelected>
-  setOptions: (
-    options: Partial<AngularThrottlerOptions<TFn, TSelected>>,
-  ) => void
-  /**
-   * Reactive state signal that will be updated when the throttler state changes
-   *
-   * Use this instead of `throttler.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<ThrottlerState<TFn>>>
+> extends Pick<Throttler<TFn>, ThrottlerMethod> {
+  /** The readonly selector result. Returns an empty object when no selector is supplied. */
+  readonly state: Signal<ReadonlySelected<TSelected>>
 }
 
 /**
- * An Angular function that creates and manages a Throttler instance.
+ * Creates and manages an Angular Throttler in the current injection context.
  *
- * This is a lower-level function that provides direct access to the Throttler's functionality.
- * This allows you to integrate it with any state management solution you prefer.
+ * Limits executions to the configured interval, with leading and trailing calls. Later calls replace the pending trailing arguments without restarting the interval.
  *
- * This function provides throttling functionality to limit how often a function can be called,
- * ensuring it executes at most once within a specified time window.
+ * ## Options and state
  *
- * The throttler will execute the function immediately (if leading is enabled) and then
- * prevent further executions until the wait period has elapsed.
+ * Accepts static options or an options factory. Factories are read lazily, and signal
+ * dependencies update the existing core instance. Local options override provider defaults.
+ * Methods apply current options before executing and run outside Angular's zone.
  *
- * ## State Management and Selector
+ * Pass a selector to expose reactive core state through `state()`. Without a selector,
+ * `state()` returns `{}`; operations remain available on the ref.
  *
- * The function uses TanStack Store for state management and wraps it with Angular signals.
- * The `selector` parameter allows you to specify which state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+ * ## Cleanup
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * The default cleanup is to cancel pending execution. Set `onUnmount` to replace it.
  *
- * Available state properties:
- * - `executionCount`: Number of function executions that have been completed
- * - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
- * - `lastArgs`: The arguments from the most recent call to maybeExecute
- * - `lastExecutionTime`: Timestamp of the last execution
- * - `nextExecutionTime`: Timestamp of the next allowed execution
- * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
- *
- * ## Cleanup on Destroy
- *
- * By default, the function cancels any pending execution when the component is destroyed.
- * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
- *
- * ```ts
- * const throttler = injectThrottler(fn, {
- *   wait: 100,
- *   onUnmount: (t) => t.flush()
- * });
- * ```
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive factory returning them.
+ * @returns A ref containing stable methods and a readonly selected-state signal.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const throttler = injectThrottler(
- *   (scrollY: number) => updateScrollPosition(scrollY),
- *   { wait: 100 }
- * );
- *
- * // Opt-in to track isPending changes (optimized for loading states)
- * const throttler = injectThrottler(
- *   (scrollY: number) => updateScrollPosition(scrollY),
- *   { wait: 100 },
- *   (state) => ({ isPending: state.isPending })
- * );
- *
- * // In an event handler
- * window.addEventListener('scroll', () => {
- *   throttler.maybeExecute(window.scrollY);
- * });
- *
- * // Access the selected state (will be empty object {} unless selector provided)
- * const { isPending } = throttler.state();
+ * // In a component or service injection context.
+ * const utility = injectThrottler(
+ *   (value: number) => console.log(value),
+ *   () => ({ wait: 100 }),
+ *   (state) => state.isPending,
+ * )
+ * utility.maybeExecute(42)
+ * console.log(utility.state())
  * ```
  */
-export function injectThrottler<TFn extends AnyFunction, TSelected = {}>(
+export function injectThrottler<TFn extends AnyFunction>(
   fn: TFn,
-  options: AngularPacerOptions<AngularThrottlerOptions<TFn, TSelected>>,
-  selector: (state: ThrottlerState<TFn>) => TSelected = () => ({}) as TSelected,
-): AngularThrottler<TFn, TSelected> {
-  return injectReactiveOptions<
-    AngularThrottlerOptions<TFn, TSelected>,
-    AngularThrottler<TFn, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'throttler',
-    (mergedOptions, getPublicInstance) => {
-      const throttler = new Throttler<TFn>(fn, mergedOptions)
-      const state = injectSelector(throttler.store, selector)
+  options: MaybeAccessor<AngularThrottlerOptions<TFn>>,
+): AngularThrottler<TFn>
+/**
+ * Creates an Angular Throttler with a reactive selector result.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive options factory.
+ * @param selector Selects the state exposed by the returned `state` signal.
+ * @returns The utility ref with the selected state.
+ */
+export function injectThrottler<TFn extends AnyFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularThrottlerOptions<TFn>>,
+  selector: (state: ThrottlerState<TFn>) => TSelected,
+): AngularThrottler<TFn, TSelected>
+export function injectThrottler<TFn extends AnyFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularThrottlerOptions<TFn>>,
+  selector: (state: ThrottlerState<TFn>) => TSelected | {} = () => ({}),
+): AngularThrottler<TFn, TSelected | {}> {
+  const baseOptions = injectPacerOptions()
+  const optionsSignal = toAccessorSignal(options)
+  const mergedOptions = computed<AngularThrottlerOptions<TFn>>(() => ({
+    ...baseOptions.throttler,
+    ...optionsSignal(),
+  }))
 
-      const result = {
-        ...throttler,
-        get options() {
-          return throttler.options
-        },
-        set options(value) {
-          throttler.options = value
-        },
-        state,
-      } as AngularThrottler<TFn, TSelected>
+  const throttlerSignal = injectLazy(
+    () => new Throttler<TFn>(fn, mergedOptions()),
+  )
 
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          throttler.options as AngularThrottlerOptions<TFn, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          throttler.cancel()
-        }
-      })
-
-      return result
+  const methods = injectForwardMethods(
+    throttlerSignal,
+    throttlerMethods,
+    (core) => {
+      core.setOptions(mergedOptions())
     },
   )
+
+  effect(() => {
+    const opts = mergedOptions()
+    untracked(() => throttlerSignal().setOptions(opts))
+  })
+
+  effect((onCleanup) => {
+    const core = throttlerSignal()
+    onCleanup(() => {
+      const opts = untracked(mergedOptions)
+      if (opts.onUnmount) {
+        opts.onUnmount(core)
+      } else {
+        core.cancel()
+      }
+    })
+  })
+
+  const hasPendingTasks = injectSelector(
+    () => throttlerSignal().store,
+    (state) => state.isPending,
+  )
+  injectPendingTasksLifecycle(hasPendingTasks)
+
+  const state = injectSelector(() => throttlerSignal().store, selector, {
+    compare: shallow,
+  })
+
+  return { state, ...methods }
 }

@@ -123,13 +123,15 @@ search.reset()
 
 ## Configuration
 
-`wait` and `enabled` may be values or functions that receive the debouncer instance. `setOptions()` merges new options into the current configuration.
+`wait` and `enabled` may be values or functions that receive the debouncer instance. Use an options function for reactive configuration.
 
 ```ts
-search.setOptions({
-  enabled: (debouncer) => debouncer.store.state.errorCount < 3,
-  wait: (debouncer) => (debouncer.store.state.successCount === 0 ? 200 : 500),
-})
+import { signal } from '@angular/core'
+
+const wait = signal(500)
+const search = injectAsyncDebouncer(searchApi, () => ({ wait: wait() }))
+
+wait.set(250)
 ```
 
 Changing `wait` does not reschedule an existing timeout. The new value applies when later work is scheduled.
@@ -142,7 +144,7 @@ The adapter cancels pending work and aborts active work when its owner is destro
 
 ## Reactive state
 
-The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in an Angular injection context, usually as a component or service field initializer and select only fields used by the view:
+Pass a selector to expose the state used by your view through `state()`. Without a selector, `state()` returns `{}`:
 
 ```ts
 const debouncer = injectAsyncDebouncer(
@@ -162,7 +164,7 @@ console.log(
 )
 ```
 
-Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+Option callbacks receive the core utility instance. Read the selected `state()` signal in templates.
 
 To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
 

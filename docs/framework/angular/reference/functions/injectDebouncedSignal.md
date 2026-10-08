@@ -3,86 +3,97 @@ id: injectDebouncedSignal
 title: injectDebouncedSignal
 ---
 
+## Call Signature
+
 ```ts
-function injectDebouncedSignal<TValue, TSelected>(
-   value,
-   initialOptions,
-selector?): DebouncedSignal<TValue, TSelected>;
+function injectDebouncedSignal<TValue>(initialValue, options): AngularDebouncerSignal<TValue>;
 ```
 
-Defined in: [debouncer/injectDebouncedSignal.ts:64](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L64)
+Defined in: packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:49
 
-An Angular function that creates a debounced state signal, combining Angular's signal with debouncing functionality.
-This function provides both the current debounced value and methods to update it.
+Creates an Angular debounced editable signal.
 
-The state value is only updated after the specified wait time has elapsed since the last update attempt.
-If another update is attempted before the wait time expires, the timer resets and starts waiting again.
-This is useful for handling frequent state updates that should be throttled, like search input values
-or window resize dimensions.
+The initial value is available synchronously. `set` and `update` debounce writes: a newer write restarts the delay and replaces the pending write. An updater runs against the committed value when the delay expires.
 
-The function returns a callable object:
-- `debounced()`: Get the current debounced value
-- `debounced.set(...)`: Set or update the debounced value (debounced via maybeExecute)
-- `debounced.debouncer`: The debouncer instance with additional control methods and state signals
+The returned value is a real Angular signal with the underlying utility exposed
+on `debouncer`. Options accept a static object or reactive factory and follow
+[injectDebouncer](injectDebouncer.md) lifecycle and provider behavior.
 
-## State Management and Selector
+### Type Parameters
 
-The function uses TanStack Store for reactive state management via the underlying debouncer instance.
-The `selector` parameter allows you to specify which debouncer state changes will trigger signal updates,
-optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
-
-**By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary updates and gives you
-full control over when your component tracks state changes. Only when you provide a selector will
-the reactive system track the selected state values.
-
-Available debouncer state properties:
-- `canLeadingExecute`: Whether the debouncer can execute on the leading edge
-- `executionCount`: Number of function executions that have been completed
-- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
-- `lastArgs`: The arguments from the most recent call to maybeExecute
-- `status`: Current execution status ('disabled' | 'idle' | 'pending')
-
-## Type Parameters
-
-### TValue
+#### TValue
 
 `TValue`
 
-### TSelected
+### Parameters
 
-`TSelected` = \{
-\}
+#### initialValue
 
-## Parameters
+`MaybeAccessor`\<`TValue`\>
 
-### value
+The initial committed value.
+
+#### options
+
+`MaybeAccessor`\<[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<(`callback`) => `void`\>\>
+
+Core options or a reactive options factory.
+
+### Returns
+
+[`AngularDebouncerSignal`](../interfaces/AngularDebouncerSignal.md)\<`TValue`\>
+
+The value signal with `set`, `update`, and a `debouncer` attribute.
+
+### Example
+
+```ts
+// In a component or service injection context.
+const value = injectDebouncedSignal(0, { wait: 250 })
+value.set(10)
+value.update(previous => previous + 1)
+console.log(value())
+```
+
+## Call Signature
+
+```ts
+function injectDebouncedSignal<TValue, TSelected>(
+   initialValue,
+   options,
+selector): AngularDebouncerSignal<TValue, TSelected>;
+```
+
+Defined in: packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:59
+
+Creates the value signal with selected state on its attached utility ref.
+
+### Type Parameters
+
+#### TValue
 
 `TValue`
 
-### initialOptions
+#### TSelected
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`DebouncerOptions`\<`Setter`\<`TValue`\>\>\>
+`TSelected`
 
-### selector?
+### Parameters
+
+#### initialValue
+
+`MaybeAccessor`\<`TValue`\>
+
+#### options
+
+`MaybeAccessor`\<[`AngularDebouncerOptions`](../interfaces/AngularDebouncerOptions.md)\<(`callback`) => `void`\>\>
+
+#### selector
 
 (`state`) => `TSelected`
 
-## Returns
+Selects reactive state exposed on the attached utility ref.
 
-[`DebouncedSignal`](../interfaces/DebouncedSignal.md)\<`TValue`, `TSelected`\>
+### Returns
 
-## Example
-
-```ts
-const debouncedQuery = injectDebouncedSignal('', { wait: 500 })
-
-// Get value
-console.log(debouncedQuery())
-
-// Set/update value (debounced)
-debouncedQuery.set('hello')
-
-// Access debouncer
-console.log(debouncedQuery.debouncer.state().isPending)
-```
+[`AngularDebouncerSignal`](../interfaces/AngularDebouncerSignal.md)\<`TValue`, `TSelected`\>

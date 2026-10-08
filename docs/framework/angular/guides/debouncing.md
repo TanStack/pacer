@@ -47,7 +47,7 @@ Choose another utility when:
 
 ## Choose an API
 
-- `injectDebouncedSignal` or `injectDebouncedValue` for delayed signals
+- `injectDebouncedSignal` or `injectDebouncedComputed` for delayed signals
 - `injectDebouncer` for lifecycle methods and selected state
 
 Use the instance's `maybeExecute` method for event handlers, and state or value helpers for delayed UI state. Keep the instance for cancellation, flushing, selected state, and dynamic options.
@@ -135,30 +135,32 @@ debouncer.reset()
 
 ## Configuring behavior at runtime
 
-Use `setOptions()` to change options after construction:
+Use an options function to read reactive configuration:
 
 ```ts
-debouncer.setOptions({
-  wait: 1000,
-  leading: true,
-  trailing: false,
-})
+import { signal } from '@angular/core'
+
+const options = signal({ wait: 500, leading: false, trailing: true })
+const debouncer = injectDebouncer(saveDraft, options)
+
+options.set({ wait: 1000, leading: true, trailing: false })
 ```
 
 A new `wait` value applies when the next call schedules a timeout. It does not reschedule a timeout that is already pending. Calling `maybeExecute()` again clears the old timeout and schedules a new one using the current options.
 
 ### Enabling and disabling
 
-Set `enabled` to `false` to prevent execution. Disabling a debouncer through `setOptions()` also cancels its pending call.
+Set `enabled` to `false` to prevent execution. Disabling a debouncer also cancels its pending call.
 
 ```ts
-const debouncer = injectDebouncer(saveDraft, {
+const enabled = signal(false)
+const debouncer = injectDebouncer(saveDraft, () => ({
   wait: 500,
-  enabled: false,
-})
+  enabled: enabled(),
+}))
 
 debouncer.maybeExecute('ignored')
-debouncer.setOptions({ enabled: true })
+enabled.set(true)
 debouncer.maybeExecute('saved')
 ```
 
@@ -191,7 +193,7 @@ The adapter cancels pending work when its owner is destroyed. Providing `onUnmou
 
 ## Reactive state
 
-The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in an Angular injection context, usually as a component or service field initializer and select only fields used by the view:
+Pass a selector to expose the state used by your view through `state()`. Without a selector, `state()` returns `{}`:
 
 ```ts
 const debouncer = injectDebouncer(saveDraft, { wait: 500 }, (state) => ({
@@ -202,7 +204,7 @@ const debouncer = injectDebouncer(saveDraft, { wait: 500 }, (state) => ({
 console.log(debouncer.state().isPending, debouncer.state().executionCount)
 ```
 
-Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+Option callbacks receive the core utility instance. Read the selected `state()` signal in templates.
 
 To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
 

@@ -1,89 +1,86 @@
-import { signal } from '@angular/core'
+import { linkedSignal } from '@angular/core'
+import { toAccessorSignal } from '../utils/maybeAccessor'
 import { injectRateLimiter } from './injectRateLimiter'
-import type { AngularPacerOptions } from '../types'
-import type { AngularRateLimiter } from './injectRateLimiter'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type {
-  RateLimiterOptions,
-  RateLimiterState,
-} from '@tanstack/pacer/rate-limiter'
-
-type Setter<T> = (value: T | ((prev: T) => T)) => void
-
-export interface RateLimitedSignal<TValue, TSelected = {}> {
-  (): TValue
-  set: Setter<TValue>
-  rateLimiter: AngularRateLimiter<Setter<TValue>, TSelected>
-}
+  AngularRateLimiter,
+  AngularRateLimiterOptions,
+} from './injectRateLimiter'
+import type { Signal } from '@angular/core'
 
 /**
- * An Angular function that creates a rate-limited state signal, combining Angular's signal with rate limiting functionality.
- * This function provides both the current rate-limited value and methods to update it.
+ * A readonly Angular value signal with paced `set`/`update` methods.
+ * The `rateLimiter` attribute exposes the underlying RateLimiter methods.
+ */
+export interface AngularRateLimiterSignal<
+  TValue,
+  TSelected = {},
+> extends Signal<TValue> {
+  /** Replaces the value immediately if the rate limit permits; rejected writes are discarded. */
+  set: (value: TValue) => void
+  /** Runs the updater with the current committed value when the write executes. */
+  update: (updateFn: (previous: TValue) => TValue) => void
+  /** The underlying Angular RateLimiter ref for controlling execution. */
+  rateLimiter: AngularRateLimiter<(callback: () => void) => void, TSelected>
+}
+/**
+ * Creates an Angular ratelimited editable signal.
  *
- * Rate limiting is a simple "hard limit" approach - it allows all updates until the limit is reached, then blocks
- * subsequent updates until the window resets. Unlike throttling or debouncing, it does not attempt to space out
- * or intelligently collapse updates.
+ * The initial value is available synchronously. `set` and `update` share the execution limit. Accepted writes apply immediately; rejected writes and their updater callbacks are discarded, not replayed later.
  *
- * The function returns a callable object:
- * - `rateLimited()`: Get the current rate-limited value
- * - `rateLimited.set(...)`: Set or update the rate-limited value (rate-limited via maybeExecute)
- * - `rateLimited.rateLimiter`: The rate limiter instance with additional control methods and state signals
+ * The returned value is a real Angular signal with the underlying utility exposed
+ * on `rateLimiter`. Options accept a static object or reactive factory and follow
+ * {@link injectRateLimiter} lifecycle and provider behavior.
  *
- * ## State Management and Selector
- *
- * The function uses TanStack Store for reactive state management via the underlying rate limiter instance.
- * The `selector` parameter allows you to specify which rate limiter state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
- *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * @param initialValue The initial committed value.
+ * @param options Core options or a reactive options factory.
+ * @returns The value signal with `set`, `update`, and a `rateLimiter` attribute.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const rateLimited = injectRateLimitedSignal(0, {
- *   limit: 5,
- *   window: 60000,
- *   windowType: 'sliding'
- * });
- *
- * // Opt-in to reactive updates when limit state changes
- * const rateLimited = injectRateLimitedSignal(
- *   0,
- *   { limit: 5, window: 60000 },
- *   (state) => ({ rejectionCount: state.rejectionCount })
- * );
+ * // In a component or service injection context.
+ * const value = injectRateLimitedSignal(0, { limit: 5, window: 1000 })
+ * value.set(10)
+ * value.update(previous => previous + 1)
+ * console.log(value())
  * ```
  */
-export function injectRateLimitedSignal<TValue, TSelected = {}>(
-  value: TValue,
-  initialOptions: AngularPacerOptions<RateLimiterOptions<Setter<TValue>>>,
+export function injectRateLimitedSignal<TValue>(
+  initialValue: MaybeAccessor<TValue>,
+  options: MaybeAccessor<
+    AngularRateLimiterOptions<(callback: () => void) => void>
+  >,
+): AngularRateLimiterSignal<TValue>
+/**
+ * Creates the value signal with selected state on its attached utility ref.
+ * @param selector Selects reactive state exposed on the attached utility ref.
+ */
+export function injectRateLimitedSignal<TValue, TSelected>(
+  initialValue: MaybeAccessor<TValue>,
+  options: MaybeAccessor<
+    AngularRateLimiterOptions<(callback: () => void) => void>
+  >,
+  selector: (state: RateLimiterState) => TSelected,
+): AngularRateLimiterSignal<TValue, TSelected>
+export function injectRateLimitedSignal<TValue, TSelected>(
+  initialValue: MaybeAccessor<TValue>,
+  options: MaybeAccessor<
+    AngularRateLimiterOptions<(callback: () => void) => void>
+  >,
   selector?: (state: RateLimiterState) => TSelected,
-): RateLimitedSignal<TValue, TSelected> {
-  const rateLimitedValue = signal<TValue>(value)
-
+): AngularRateLimiterSignal<TValue, TSelected | {}> {
+  const rateLimitedSignal = linkedSignal(toAccessorSignal(initialValue))
   const rateLimiter = injectRateLimiter(
-    (newValue: TValue | ((prev: TValue) => TValue)) => {
-      if (typeof newValue === 'function') {
-        rateLimitedValue.update(newValue as (prev: TValue) => TValue)
-      } else {
-        rateLimitedValue.set(newValue)
-      }
-    },
-    initialOptions,
-    selector,
+    (callback: () => void) => callback(),
+    options,
+    (state) => (selector ? selector(state) : {}),
   )
-
-  const set: Setter<TValue> = (
-    newValue: TValue | ((prev: TValue) => TValue),
-  ) => {
-    rateLimiter.maybeExecute(newValue)
-  }
-
-  const rateLimited = Object.assign(() => rateLimitedValue(), {
-    set,
+  return Object.assign(rateLimitedSignal.asReadonly(), {
+    set: (value: TValue) =>
+      rateLimiter.maybeExecute(() => rateLimitedSignal.set(value)),
+    update: (updateFn: (prev: TValue) => TValue) =>
+      rateLimiter.maybeExecute(() => rateLimitedSignal.update(updateFn)),
     rateLimiter,
-  }) as RateLimitedSignal<TValue, TSelected>
-
-  return rateLimited
+  })
 }

@@ -3,117 +3,115 @@ id: injectAsyncDebouncer
 title: injectAsyncDebouncer
 ---
 
+## Call Signature
+
+```ts
+function injectAsyncDebouncer<TFn>(fn, options): AngularAsyncDebouncer<TFn>;
+```
+
+Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:90
+
+Creates and manages an Angular AsyncDebouncer in the current injection context.
+
+Waits until calls stop for the configured delay, then runs the latest asynchronous callback.
+
+## Options and state
+
+Accepts static options or an options factory. Factories are read lazily, and signal
+dependencies update the existing core instance. Local options override provider defaults.
+Methods apply current options before executing and run outside Angular's zone.
+
+Pass a selector to expose reactive core state through `state()`. Without a selector,
+`state()` returns `{}`; operations remain available on the ref.
+
+## Cleanup
+
+The default cleanup is to cancel pending execution and abort running work. Set `onUnmount` to replace it.
+
+### Type Parameters
+
+#### TFn
+
+`TFn` *extends* `AnyAsyncFunction`
+
+### Parameters
+
+#### fn
+
+`TFn`
+
+The callback invoked by the core utility.
+
+#### options
+
+`MaybeAccessor`\<[`AngularAsyncDebouncerOptions`](../interfaces/AngularAsyncDebouncerOptions.md)\<`TFn`\>\>
+
+Core options or a reactive factory returning them.
+
+### Returns
+
+[`AngularAsyncDebouncer`](../interfaces/AngularAsyncDebouncer.md)\<`TFn`\>
+
+A ref containing stable methods and a readonly selected-state signal.
+
+### Example
+
+```ts
+// In a component or service injection context.
+const utility = injectAsyncDebouncer(
+  (query: string) => Promise.resolve(query),
+  () => ({ wait: 250 }),
+  (state) => state.isPending,
+)
+utility.maybeExecute('search')
+console.log(utility.state())
+```
+
+## Call Signature
+
 ```ts
 function injectAsyncDebouncer<TFn, TSelected>(
    fn,
    options,
-selector?): AngularAsyncDebouncer<TFn, TSelected>;
+selector): AngularAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:126](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L126)
+Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:101
 
-An Angular function that creates and manages an AsyncDebouncer instance.
+Creates an Angular AsyncDebouncer with a reactive selector result.
 
-This is a lower-level function that provides direct access to the AsyncDebouncer's functionality.
-This allows you to integrate it with any state management solution you prefer.
+### Type Parameters
 
-This function provides async debouncing functionality with promise support, error handling,
-retry capabilities, and abort support.
-
-The debouncer will only execute the function after the specified wait time has elapsed
-since the last call. If the function is called again before the wait time expires, the
-timer resets and starts waiting again.
-
-## State Management and Selector
-
-The function uses TanStack Store for state management and wraps it with Angular signals.
-The `selector` parameter allows you to specify which state changes will trigger signal updates,
-optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
-
-**By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary updates and gives you
-full control over when your component tracks state changes.
-
-Available state properties:
-- `canLeadingExecute`: Whether the debouncer can execute on the leading edge
-- `errorCount`: Number of function executions that have resulted in errors
-- `isExecuting`: Whether the debounced function is currently executing asynchronously
-- `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
-- `lastArgs`: The arguments from the most recent call to maybeExecute
-- `lastResult`: The result from the most recent successful function execution
-- `settleCount`: Number of function executions that have completed (either successfully or with errors)
-- `status`: Current execution status ('disabled' | 'idle' | 'pending' | 'executing' | 'settled')
-- `successCount`: Number of function executions that have completed successfully
-
-## Cleanup on Destroy
-
-By default, the function cancels any pending execution and aborts in-flight work when the component is destroyed.
-Use the `onUnmount` option to customize this. For example, to flush pending work instead:
-
-```ts
-const debouncer = injectAsyncDebouncer(fn, {
-  wait: 500,
-  onUnmount: (d) => d.flush()
-});
-```
-
-When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
-
-## Type Parameters
-
-### TFn
+#### TFn
 
 `TFn` *extends* `AnyAsyncFunction`
 
-### TSelected
+#### TSelected
 
-`TSelected` = \{
-\}
+`TSelected`
 
-## Parameters
+### Parameters
 
-### fn
+#### fn
 
 `TFn`
 
-### options
+The callback invoked by the core utility.
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularAsyncDebouncerOptions`](../interfaces/AngularAsyncDebouncerOptions.md)\<`TFn`, `TSelected`\>\>
+#### options
 
-### selector?
+`MaybeAccessor`\<[`AngularAsyncDebouncerOptions`](../interfaces/AngularAsyncDebouncerOptions.md)\<`TFn`\>\>
+
+Core options or a reactive options factory.
+
+#### selector
 
 (`state`) => `TSelected`
 
-## Returns
+Selects the state exposed by the returned `state` signal.
+
+### Returns
 
 [`AngularAsyncDebouncer`](../interfaces/AngularAsyncDebouncer.md)\<`TFn`, `TSelected`\>
 
-## Example
-
-```ts
-// Default behavior - no reactive state subscriptions
-const debouncer = injectAsyncDebouncer(
-  async (query: string) => {
-    const response = await fetch(`/api/search?q=${query}`);
-    return response.json();
-  },
-  { wait: 500 }
-);
-
-// Opt-in to track isExecuting changes (optimized for loading states)
-const debouncer = injectAsyncDebouncer(
-  async (query: string) => fetchSearchResults(query),
-  { wait: 500 },
-  (state) => ({ isExecuting: state.isExecuting, isPending: state.isPending })
-);
-
-// In an event handler
-const handleChange = async (e: Event) => {
-  const target = e.target as HTMLInputElement;
-  const result = await debouncer.maybeExecute(target.value);
-  console.log('Search results:', result);
-};
-
-// Access the selected state
-const { isExecuting, errorCount } = debouncer.state();
-```
+The utility ref with the selected state.

@@ -3,7 +3,9 @@ id: AngularThrottlerOptions
 title: AngularThrottlerOptions
 ---
 
-Defined in: [throttler/injectThrottler.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L15)
+Defined in: packages/angular-pacer/src/throttler/injectThrottler.ts:23
+
+Options for [injectThrottler](../functions/injectThrottler.md), including core configuration and Angular cleanup.
 
 ## Extends
 
@@ -15,29 +17,24 @@ Defined in: [throttler/injectThrottler.ts:15](https://github.com/TanStack/pacer/
 
 `TFn` *extends* `AnyFunction`
 
-### TSelected
-
-`TSelected` = \{
-\}
-
 ## Properties
 
 ### onUnmount?
 
 ```ts
-optional onUnmount?: (throttler) => void;
+optional onUnmount?: (core) => void;
 ```
 
-Defined in: [throttler/injectThrottler.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L23)
+Defined in: packages/angular-pacer/src/throttler/injectThrottler.ts:30
 
-Optional callback invoked when the component is destroyed. Receives the throttler instance.
-When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+Called when the owning injection context is destroyed. Receives the core instance.
+Providing this callback replaces the default cleanup (cancel pending execution).
 
 #### Parameters
 
-##### throttler
+##### core
 
-[`AngularThrottler`](AngularThrottler.md)\<`TFn`, `TSelected`\>
+`Throttler`\<`TFn`\>
 
 #### Returns
 

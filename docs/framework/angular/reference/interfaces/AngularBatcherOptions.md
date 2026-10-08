@@ -3,7 +3,9 @@ id: AngularBatcherOptions
 title: AngularBatcherOptions
 ---
 
-Defined in: [batcher/injectBatcher.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L11)
+Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:19
+
+Options for [injectBatcher](../functions/injectBatcher.md), including core configuration and Angular cleanup.
 
 ## Extends
 
@@ -15,29 +17,24 @@ Defined in: [batcher/injectBatcher.ts:11](https://github.com/TanStack/pacer/blob
 
 `TValue`
 
-### TSelected
-
-`TSelected` = \{
-\}
-
 ## Properties
 
 ### onUnmount?
 
 ```ts
-optional onUnmount?: (batcher) => void;
+optional onUnmount?: (core) => void;
 ```
 
-Defined in: [batcher/injectBatcher.ts:19](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/batcher/injectBatcher.ts#L19)
+Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:24
 
-Optional callback invoked when the component is destroyed. Receives the batcher instance.
-When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+Called when the owning injection context is destroyed. Receives the core instance.
+Providing this callback replaces the default cleanup (cancel pending batches).
 
 #### Parameters
 
-##### batcher
+##### core
 
-[`AngularBatcher`](AngularBatcher.md)\<`TValue`, `TSelected`\>
+`Batcher`\<`TValue`\>
 
 #### Returns
 

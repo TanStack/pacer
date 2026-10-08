@@ -3,85 +3,97 @@ id: injectThrottledSignal
 title: injectThrottledSignal
 ---
 
+## Call Signature
+
 ```ts
-function injectThrottledSignal<TValue, TSelected>(
-   value,
-   initialOptions,
-selector?): ThrottledSignal<TValue, TSelected>;
+function injectThrottledSignal<TValue>(initialValue, options): AngularThrottlerSignal<TValue>;
 ```
 
-Defined in: [throttler/injectThrottledSignal.ts:63](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L63)
+Defined in: packages/angular-pacer/src/throttler/injectThrottledSignal.ts:49
 
-An Angular function that creates a throttled state signal, combining Angular's signal with throttling functionality.
-This function provides both the current throttled value and methods to update it.
+Creates an Angular throttled editable signal.
 
-The state value is updated at most once within the specified wait time.
-This is useful for handling frequent state updates that should be rate-limited, like scroll positions
-or mouse movements.
+The initial value is available synchronously. `set` and `update` share a throttler. Leading writes may apply immediately; subsequent writes replace the pending trailing write without extending its deadline. An updater runs against the committed value when executed.
 
-The function returns a callable object:
-- `throttled()`: Get the current throttled value
-- `throttled.set(...)`: Set or update the throttled value (throttled via maybeExecute)
-- `throttled.throttler`: The throttler instance with additional control methods and state signals
+The returned value is a real Angular signal with the underlying utility exposed
+on `throttler`. Options accept a static object or reactive factory and follow
+[injectThrottler](injectThrottler.md) lifecycle and provider behavior.
 
-## State Management and Selector
+### Type Parameters
 
-The function uses TanStack Store for reactive state management via the underlying throttler instance.
-The `selector` parameter allows you to specify which throttler state changes will trigger signal updates,
-optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
-
-**By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary updates and gives you
-full control over when your component tracks state changes.
-
-Available throttler state properties:
-- `executionCount`: Number of function executions that have been completed
-- `isPending`: Whether the throttler is waiting for the timeout to trigger execution
-- `lastArgs`: The arguments from the most recent call to maybeExecute
-- `lastExecutionTime`: Timestamp of the last execution
-- `nextExecutionTime`: Timestamp of the next allowed execution
-- `status`: Current execution status ('disabled' | 'idle' | 'pending')
-
-## Type Parameters
-
-### TValue
+#### TValue
 
 `TValue`
 
-### TSelected
+### Parameters
 
-`TSelected` = \{
-\}
+#### initialValue
 
-## Parameters
+`MaybeAccessor`\<`TValue`\>
 
-### value
+The initial committed value.
+
+#### options
+
+`MaybeAccessor`\<[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<(`callback`) => `void`\>\>
+
+Core options or a reactive options factory.
+
+### Returns
+
+[`AngularThrottlerSignal`](../interfaces/AngularThrottlerSignal.md)\<`TValue`\>
+
+The value signal with `set`, `update`, and a `throttler` attribute.
+
+### Example
+
+```ts
+// In a component or service injection context.
+const value = injectThrottledSignal(0, { wait: 250 })
+value.set(10)
+value.update(previous => previous + 1)
+console.log(value())
+```
+
+## Call Signature
+
+```ts
+function injectThrottledSignal<TValue, TSelected>(
+   initialValue,
+   options,
+selector): AngularThrottlerSignal<TValue, TSelected>;
+```
+
+Defined in: packages/angular-pacer/src/throttler/injectThrottledSignal.ts:59
+
+Creates the value signal with selected state on its attached utility ref.
+
+### Type Parameters
+
+#### TValue
 
 `TValue`
 
-### initialOptions
+#### TSelected
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`ThrottlerOptions`\<`Setter`\<`TValue`\>\>\>
+`TSelected`
 
-### selector?
+### Parameters
+
+#### initialValue
+
+`MaybeAccessor`\<`TValue`\>
+
+#### options
+
+`MaybeAccessor`\<[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<(`callback`) => `void`\>\>
+
+#### selector
 
 (`state`) => `TSelected`
 
-## Returns
+Selects reactive state exposed on the attached utility ref.
 
-[`ThrottledSignal`](../interfaces/ThrottledSignal.md)\<`TValue`, `TSelected`\>
+### Returns
 
-## Example
-
-```ts
-const throttledScrollY = injectThrottledSignal(0, { wait: 100 })
-
-// Get value
-console.log(throttledScrollY())
-
-// Set/update value (throttled)
-throttledScrollY.set(window.scrollY)
-
-// Access throttler
-console.log(throttledScrollY.throttler.state().isPending)
-```
+[`AngularThrottlerSignal`](../interfaces/AngularThrottlerSignal.md)\<`TValue`, `TSelected`\>

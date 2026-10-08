@@ -1,5 +1,5 @@
 export * from '@tanstack/pacer/debouncer'
 
+export * from './injectDebouncedComputed'
 export * from './injectDebouncedSignal'
-export * from './injectDebouncedValue'
 export * from './injectDebouncer'

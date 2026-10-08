@@ -3,7 +3,9 @@ id: AngularAsyncDebouncerOptions
 title: AngularAsyncDebouncerOptions
 ---
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L15)
+Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:23
+
+Options for [injectAsyncDebouncer](../functions/injectAsyncDebouncer.md), including core configuration and Angular cleanup.
 
 ## Extends
 
@@ -15,30 +17,24 @@ Defined in: [async-debouncer/injectAsyncDebouncer.ts:15](https://github.com/TanS
 
 `TFn` *extends* `AnyAsyncFunction`
 
-### TSelected
-
-`TSelected` = \{
-\}
-
 ## Properties
 
 ### onUnmount?
 
 ```ts
-optional onUnmount?: (debouncer) => void;
+optional onUnmount?: (core) => void;
 ```
 
-Defined in: [async-debouncer/injectAsyncDebouncer.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L24)
+Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:30
 
-Optional callback invoked when the component is destroyed. Receives the debouncer instance.
-When provided, replaces the default cleanup (cancel + abort); use it to call flush(), cancel(), add logging, etc.
-When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+Called when the owning injection context is destroyed. Receives the core instance.
+Providing this callback replaces the default cleanup (cancel pending execution and abort running work).
 
 #### Parameters
 
-##### debouncer
+##### core
 
-[`AngularAsyncDebouncer`](AngularAsyncDebouncer.md)\<`TFn`, `TSelected`\>
+`AsyncDebouncer`\<`TFn`\>
 
 #### Returns
 

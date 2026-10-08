@@ -3,7 +3,9 @@ id: AngularQueuerOptions
 title: AngularQueuerOptions
 ---
 
-Defined in: [queuer/injectQueuer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L11)
+Defined in: packages/angular-pacer/src/queuer/injectQueuer.ts:19
+
+Options for [injectQueuer](../functions/injectQueuer.md), including core configuration and Angular cleanup.
 
 ## Extends
 
@@ -15,29 +17,24 @@ Defined in: [queuer/injectQueuer.ts:11](https://github.com/TanStack/pacer/blob/m
 
 `TValue`
 
-### TSelected
-
-`TSelected` = \{
-\}
-
 ## Properties
 
 ### onUnmount?
 
 ```ts
-optional onUnmount?: (queuer) => void;
+optional onUnmount?: (core) => void;
 ```
 
-Defined in: [queuer/injectQueuer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L19)
+Defined in: packages/angular-pacer/src/queuer/injectQueuer.ts:24
 
-Optional callback invoked when the component is destroyed. Receives the queuer instance.
-When provided, replaces the default cleanup (stop); use it to call flush(), stop(), add logging, etc.
+Called when the owning injection context is destroyed. Receives the core instance.
+Providing this callback replaces the default cleanup (stop automatic processing).
 
 #### Parameters
 
-##### queuer
+##### core
 
-[`AngularQueuer`](AngularQueuer.md)\<`TValue`, `TSelected`\>
+`Queuer`\<`TValue`\>
 
 #### Returns
 

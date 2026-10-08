@@ -7,42 +7,34 @@ title: providePacerOptions
 function providePacerOptions(options): Provider;
 ```
 
-Defined in: [provider/pacer-provider.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/pacer-provider.ts#L33)
+Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:67
 
-Provides default options for all Pacer utilities in the Angular application.
-Use this function when configuring your Angular application to set default options
-that will be used by all Pacer utilities throughout your app.
+Provides scoped defaults for Angular Pacer utilities.
+
+Place this provider in application, route, or component providers. The nearest
+provider supplies the defaults; local utility options take precedence. A nested
+provider replaces the outer defaults rather than merging scopes.
 
 ## Parameters
 
 ### options
 
-`PacerProviderOptions`
+[`PacerProviderOptions`](../interfaces/PacerProviderOptions.md)
+
+Partial default options grouped by utility.
 
 ## Returns
 
 `Provider`
 
+An Angular provider for the supplied defaults.
+
 ## Example
 
 ```ts
-// In your app.config.ts (standalone)
-export const appConfig: ApplicationConfig = {
+const appConfig = {
   providers: [
-    providePacerOptions({
-      debouncer: { wait: 300 },
-      throttler: { wait: 100 },
-    }),
+    providePacerOptions({ debouncer: { wait: 250 } }),
   ],
-};
-
-// Or in NgModule (module-based)
-@NgModule({
-  providers: [
-    providePacerOptions({
-      debouncer: { wait: 300 },
-    }),
-  ],
-})
-export class AppModule {}
+}
 ```

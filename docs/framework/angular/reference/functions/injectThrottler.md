@@ -3,106 +3,115 @@ id: injectThrottler
 title: injectThrottler
 ---
 
+## Call Signature
+
+```ts
+function injectThrottler<TFn>(fn, options): AngularThrottler<TFn>;
+```
+
+Defined in: packages/angular-pacer/src/throttler/injectThrottler.ts:88
+
+Creates and manages an Angular Throttler in the current injection context.
+
+Limits executions to the configured interval, with leading and trailing calls. Later calls replace the pending trailing arguments without restarting the interval.
+
+## Options and state
+
+Accepts static options or an options factory. Factories are read lazily, and signal
+dependencies update the existing core instance. Local options override provider defaults.
+Methods apply current options before executing and run outside Angular's zone.
+
+Pass a selector to expose reactive core state through `state()`. Without a selector,
+`state()` returns `{}`; operations remain available on the ref.
+
+## Cleanup
+
+The default cleanup is to cancel pending execution. Set `onUnmount` to replace it.
+
+### Type Parameters
+
+#### TFn
+
+`TFn` *extends* `AnyFunction`
+
+### Parameters
+
+#### fn
+
+`TFn`
+
+The callback invoked by the core utility.
+
+#### options
+
+`MaybeAccessor`\<[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`TFn`\>\>
+
+Core options or a reactive factory returning them.
+
+### Returns
+
+[`AngularThrottler`](../interfaces/AngularThrottler.md)\<`TFn`\>
+
+A ref containing stable methods and a readonly selected-state signal.
+
+### Example
+
+```ts
+// In a component or service injection context.
+const utility = injectThrottler(
+  (value: number) => console.log(value),
+  () => ({ wait: 100 }),
+  (state) => state.isPending,
+)
+utility.maybeExecute(42)
+console.log(utility.state())
+```
+
+## Call Signature
+
 ```ts
 function injectThrottler<TFn, TSelected>(
    fn,
    options,
-selector?): AngularThrottler<TFn, TSelected>;
+selector): AngularThrottler<TFn, TSelected>;
 ```
 
-Defined in: [throttler/injectThrottler.ts:113](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottler.ts#L113)
+Defined in: packages/angular-pacer/src/throttler/injectThrottler.ts:99
 
-An Angular function that creates and manages a Throttler instance.
+Creates an Angular Throttler with a reactive selector result.
 
-This is a lower-level function that provides direct access to the Throttler's functionality.
-This allows you to integrate it with any state management solution you prefer.
+### Type Parameters
 
-This function provides throttling functionality to limit how often a function can be called,
-ensuring it executes at most once within a specified time window.
-
-The throttler will execute the function immediately (if leading is enabled) and then
-prevent further executions until the wait period has elapsed.
-
-## State Management and Selector
-
-The function uses TanStack Store for state management and wraps it with Angular signals.
-The `selector` parameter allows you to specify which state changes will trigger signal updates,
-optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
-
-**By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary updates and gives you
-full control over when your component tracks state changes.
-
-Available state properties:
-- `executionCount`: Number of function executions that have been completed
-- `isPending`: Whether the throttler is waiting for the timeout to trigger execution
-- `lastArgs`: The arguments from the most recent call to maybeExecute
-- `lastExecutionTime`: Timestamp of the last execution
-- `nextExecutionTime`: Timestamp of the next allowed execution
-- `status`: Current execution status ('disabled' | 'idle' | 'pending')
-
-## Cleanup on Destroy
-
-By default, the function cancels any pending execution when the component is destroyed.
-Use the `onUnmount` option to customize this. For example, to flush pending work instead:
-
-```ts
-const throttler = injectThrottler(fn, {
-  wait: 100,
-  onUnmount: (t) => t.flush()
-});
-```
-
-## Type Parameters
-
-### TFn
+#### TFn
 
 `TFn` *extends* `AnyFunction`
 
-### TSelected
+#### TSelected
 
-`TSelected` = \{
-\}
+`TSelected`
 
-## Parameters
+### Parameters
 
-### fn
+#### fn
 
 `TFn`
 
-### options
+The callback invoked by the core utility.
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`TFn`, `TSelected`\>\>
+#### options
 
-### selector?
+`MaybeAccessor`\<[`AngularThrottlerOptions`](../interfaces/AngularThrottlerOptions.md)\<`TFn`\>\>
+
+Core options or a reactive options factory.
+
+#### selector
 
 (`state`) => `TSelected`
 
-## Returns
+Selects the state exposed by the returned `state` signal.
+
+### Returns
 
 [`AngularThrottler`](../interfaces/AngularThrottler.md)\<`TFn`, `TSelected`\>
 
-## Example
-
-```ts
-// Default behavior - no reactive state subscriptions
-const throttler = injectThrottler(
-  (scrollY: number) => updateScrollPosition(scrollY),
-  { wait: 100 }
-);
-
-// Opt-in to track isPending changes (optimized for loading states)
-const throttler = injectThrottler(
-  (scrollY: number) => updateScrollPosition(scrollY),
-  { wait: 100 },
-  (state) => ({ isPending: state.isPending })
-);
-
-// In an event handler
-window.addEventListener('scroll', () => {
-  throttler.maybeExecute(window.scrollY);
-});
-
-// Access the selected state (will be empty object {} unless selector provided)
-const { isPending } = throttler.state();
-```
+The utility ref with the selected state.

@@ -3,7 +3,9 @@ id: AngularRateLimiterOptions
 title: AngularRateLimiterOptions
 ---
 
-Defined in: [rate-limiter/injectRateLimiter.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L15)
+Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:22
+
+Options for [injectRateLimiter](../functions/injectRateLimiter.md), including core configuration and Angular cleanup.
 
 ## Extends
 
@@ -15,28 +17,24 @@ Defined in: [rate-limiter/injectRateLimiter.ts:15](https://github.com/TanStack/p
 
 `TFn` *extends* `AnyFunction`
 
-### TSelected
-
-`TSelected` = \{
-\}
-
 ## Properties
 
 ### onUnmount?
 
 ```ts
-optional onUnmount?: (rateLimiter) => void;
+optional onUnmount?: (core) => void;
 ```
 
-Defined in: [rate-limiter/injectRateLimiter.ts:22](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L22)
+Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:29
 
-Optional callback invoked when the component is destroyed. Receives the rate limiter instance.
+Called when the owning injection context is destroyed. Receives the core instance.
+Providing this callback replaces the default cleanup (reset the limiter).
 
 #### Parameters
 
-##### rateLimiter
+##### core
 
-[`AngularRateLimiter`](AngularRateLimiter.md)\<`TFn`, `TSelected`\>
+`RateLimiter`\<`TFn`\>
 
 #### Returns
 

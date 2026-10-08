@@ -3,95 +3,115 @@ id: injectAsyncQueuer
 title: injectAsyncQueuer
 ---
 
-```ts
-function injectAsyncQueuer<TValue, TSelected>(
-   fn,
-   options?,
-selector?): AngularAsyncQueuer<TValue, TSelected>;
-```
-
-Defined in: [async-queuer/injectAsyncQueuer.ts:103](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L103)
-
-An Angular function that creates and manages an AsyncQueuer instance.
-
-This is a lower-level function that provides direct access to the AsyncQueuer's functionality.
-This allows you to integrate it with any state management solution you prefer.
-
-The AsyncQueuer processes items asynchronously with support for concurrent execution,
-promise-based processing, error handling, retry capabilities, and abort support.
-
-## State Management and Selector
-
-The function uses TanStack Store for state management and wraps it with Angular signals.
-The `selector` parameter allows you to specify which state changes will trigger signal updates,
-optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
-
-**By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary updates and gives you
-full control over when your component tracks state changes.
-
-## Cleanup on Destroy
-
-By default, the function stops the queuer and aborts in-flight work when the component is destroyed.
-Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+## Call Signature
 
 ```ts
-const queuer = injectAsyncQueuer(fn, {
-  concurrency: 2,
-  onUnmount: (q) => q.flush()
-});
+function injectAsyncQueuer<TValue>(fn, options?): AngularAsyncQueuer<TValue>;
 ```
 
-When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:95
 
-## Type Parameters
+Creates and manages an Angular AsyncQueuer in the current injection context.
 
-### TValue
+Processes queued items asynchronously with configurable pacing and concurrency.
+
+## Options and state
+
+Accepts static options or an options factory. Factories are read lazily, and signal
+dependencies update the existing core instance. Local options override provider defaults.
+Methods apply current options before executing and run outside Angular's zone.
+
+Pass a selector to expose reactive core state through `state()`. Without a selector,
+`state()` returns `{}`; operations remain available on the ref.
+
+## Cleanup
+
+The default cleanup is to stop automatic processing and abort running work. Set `onUnmount` to replace it.
+
+### Type Parameters
+
+#### TValue
 
 `TValue`
 
-### TSelected
+### Parameters
 
-`TSelected` = \{
-\}
+#### fn
 
-## Parameters
+(`item`) => `Promise`\<`any`\>
 
-### fn
+The callback invoked by the core utility.
 
-(`value`) => `Promise`\<`any`\>
+#### options?
 
-### options?
+`MaybeAccessor`\<[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`\>\>
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`, `TSelected`\>\> = `{}`
+Core options or a reactive factory returning them.
 
-### selector?
+### Returns
+
+[`AngularAsyncQueuer`](../interfaces/AngularAsyncQueuer.md)\<`TValue`\>
+
+A ref containing stable methods and a readonly selected-state signal.
+
+### Example
+
+```ts
+// In a component or service injection context.
+const utility = injectAsyncQueuer(
+  (item: string) => Promise.resolve(item),
+  () => ({ wait: 100, concurrency: 2 }),
+  (state) => state.items,
+)
+utility.addItem('job')
+console.log(utility.state())
+```
+
+## Call Signature
+
+```ts
+function injectAsyncQueuer<TValue, TSelected>(
+   fn,
+   options,
+selector): AngularAsyncQueuer<TValue, TSelected>;
+```
+
+Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:106
+
+Creates an Angular AsyncQueuer with a reactive selector result.
+
+### Type Parameters
+
+#### TValue
+
+`TValue`
+
+#### TSelected
+
+`TSelected`
+
+### Parameters
+
+#### fn
+
+(`item`) => `Promise`\<`any`\>
+
+The callback invoked by the core utility.
+
+#### options
+
+`MaybeAccessor`\<[`AngularAsyncQueuerOptions`](../interfaces/AngularAsyncQueuerOptions.md)\<`TValue`\>\>
+
+Core options or a reactive options factory.
+
+#### selector
 
 (`state`) => `TSelected`
 
-## Returns
+Selects the state exposed by the returned `state` signal.
+
+### Returns
 
 [`AngularAsyncQueuer`](../interfaces/AngularAsyncQueuer.md)\<`TValue`, `TSelected`\>
 
-## Example
-
-```ts
-// Default behavior - no reactive state subscriptions
-const queuer = injectAsyncQueuer(
-  async (item: Data) => {
-    const response = await fetch('/api/process', {
-      method: 'POST',
-      body: JSON.stringify(item)
-    });
-    return response.json();
-  },
-  { concurrency: 2, wait: 1000 }
-);
-
-// Add items
-queuer.addItem(data1);
-queuer.addItem(data2);
-
-// Access the selected state
-const { items, isExecuting } = queuer.state();
-```
+The utility ref with the selected state.
