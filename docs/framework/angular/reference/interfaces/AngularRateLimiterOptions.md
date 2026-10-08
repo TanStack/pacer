@@ -3,7 +3,7 @@ id: AngularRateLimiterOptions
 title: AngularRateLimiterOptions
 ---
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:22
+Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:25
 
 Options for [injectRateLimiter](../functions/injectRateLimiter.md), including core configuration and Angular cleanup.
 
@@ -25,7 +25,7 @@ Options for [injectRateLimiter](../functions/injectRateLimiter.md), including co
 optional onUnmount?: (core) => void;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:29
+Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:32
 
 Called when the owning injection context is destroyed. Receives the core instance.
 Providing this callback replaces the default cleanup (reset the limiter).

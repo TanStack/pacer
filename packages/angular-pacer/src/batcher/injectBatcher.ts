@@ -3,7 +3,10 @@ import { Batcher } from '@tanstack/pacer/batcher'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
@@ -11,7 +14,7 @@ import type { ReadonlySelected } from '../utils/readonlySelected'
 import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectBatcher}, including core configuration and Angular cleanup.
@@ -24,14 +27,18 @@ export interface AngularBatcherOptions<TValue> extends BatcherOptions<TValue> {
   onUnmount?: (core: Batcher<TValue>) => void
 }
 
-const batcherMethods = [
-  'addItem',
-  'flush',
-  'peekAllItems',
-  'clear',
-  'cancel',
-  'reset',
-] as const satisfies ReadonlyArray<MethodKeys<Batcher<unknown>>>
+const batcherMethodMap = {
+  fn: false,
+  setOptions: false,
+  addItem: true,
+  flush: true,
+  peekAllItems: true,
+  clear: true,
+  cancel: true,
+  reset: true,
+} satisfies MethodMap<Batcher<unknown>>
+
+const batcherMethods = methodNames(batcherMethodMap)
 
 type BatcherMethod = (typeof batcherMethods)[number]
 

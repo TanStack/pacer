@@ -3,7 +3,10 @@ import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
@@ -15,7 +18,7 @@ import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
 } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectAsyncRateLimiter}, including core configuration and Angular cleanup.
@@ -30,16 +33,18 @@ export interface AngularAsyncRateLimiterOptions<
   onUnmount?: (core: AsyncRateLimiter<TFn>) => void
 }
 
-const asyncRateLimiterMethods = [
-  'maybeExecute',
-  'getRemainingInWindow',
-  'getMsUntilNextWindow',
-  'abort',
-  'reset',
-  'getAbortSignal',
-] as const satisfies ReadonlyArray<
-  MethodKeys<AsyncRateLimiter<AnyAsyncFunction>>
->
+const asyncRateLimiterMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  getRemainingInWindow: true,
+  getMsUntilNextWindow: true,
+  abort: true,
+  reset: true,
+  getAbortSignal: true,
+} satisfies MethodMap<AsyncRateLimiter<AnyAsyncFunction>>
+
+const asyncRateLimiterMethods = methodNames(asyncRateLimiterMethodMap)
 
 type AsyncRateLimiterMethod = (typeof asyncRateLimiterMethods)[number]
 

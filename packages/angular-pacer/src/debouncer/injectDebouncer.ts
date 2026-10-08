@@ -3,7 +3,10 @@ import { Debouncer } from '@tanstack/pacer/debouncer'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
@@ -15,7 +18,7 @@ import type {
   DebouncerOptions,
   DebouncerState,
 } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectDebouncer}, including core configuration and Angular cleanup.
@@ -30,12 +33,16 @@ export interface AngularDebouncerOptions<
   onUnmount?: (core: Debouncer<TFn>) => void
 }
 
-const debouncerMethods = [
-  'maybeExecute',
-  'flush',
-  'cancel',
-  'reset',
-] as const satisfies ReadonlyArray<MethodKeys<Debouncer<AnyFunction>>>
+const debouncerMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  flush: true,
+  cancel: true,
+  reset: true,
+} satisfies MethodMap<Debouncer<AnyFunction>>
+
+const debouncerMethods = methodNames(debouncerMethodMap)
 
 type DebouncerMethod = (typeof debouncerMethods)[number]
 

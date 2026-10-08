@@ -3,7 +3,7 @@ id: AngularBatcherOptions
 title: AngularBatcherOptions
 ---
 
-Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:19
+Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:22
 
 Options for [injectBatcher](../functions/injectBatcher.md), including core configuration and Angular cleanup.
 
@@ -25,7 +25,7 @@ Options for [injectBatcher](../functions/injectBatcher.md), including core confi
 optional onUnmount?: (core) => void;
 ```
 
-Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:24
+Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:27
 
 Called when the owning injection context is destroyed. Receives the core instance.
 Providing this callback replaces the default cleanup (cancel pending batches).

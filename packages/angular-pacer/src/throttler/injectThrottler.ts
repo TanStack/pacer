@@ -3,7 +3,10 @@ import { Throttler } from '@tanstack/pacer/throttler'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
@@ -15,7 +18,7 @@ import type {
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectThrottler}, including core configuration and Angular cleanup.
@@ -30,12 +33,16 @@ export interface AngularThrottlerOptions<
   onUnmount?: (core: Throttler<TFn>) => void
 }
 
-const throttlerMethods = [
-  'maybeExecute',
-  'flush',
-  'cancel',
-  'reset',
-] as const satisfies ReadonlyArray<MethodKeys<Throttler<AnyFunction>>>
+const throttlerMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  flush: true,
+  cancel: true,
+  reset: true,
+} satisfies MethodMap<Throttler<AnyFunction>>
+
+const throttlerMethods = methodNames(throttlerMethodMap)
 
 type ThrottlerMethod = (typeof throttlerMethods)[number]
 

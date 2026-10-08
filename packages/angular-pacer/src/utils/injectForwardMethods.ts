@@ -6,6 +6,21 @@ export type MethodKeys<T> = {
   [K in keyof T]-?: T[K] extends (...args: Array<never>) => unknown ? K : never
 }[keyof T]
 
+/** Every callable core member must be explicitly forwarded or excluded. */
+export type MethodMap<T> = Record<MethodKeys<T>, boolean>
+
+type IncludedMethodKeys<T> = {
+  [K in keyof T]-?: T[K] extends true ? K : never
+}[keyof T]
+
+export function methodNames<const T extends Record<string, boolean>>(
+  methods: T,
+): Array<IncludedMethodKeys<T>> {
+  return Object.keys(methods).filter((key) => methods[key]) as Array<
+    IncludedMethodKeys<T>
+  >
+}
+
 export function injectForwardMethods<
   TSource,
   TMethods extends MethodKeys<TSource>,

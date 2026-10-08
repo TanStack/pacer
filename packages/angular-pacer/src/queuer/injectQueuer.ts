@@ -3,7 +3,10 @@ import { Queuer } from '@tanstack/pacer/queuer'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
@@ -11,7 +14,7 @@ import type { ReadonlySelected } from '../utils/readonlySelected'
 import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectQueuer}, including core configuration and Angular cleanup.
@@ -24,19 +27,23 @@ export interface AngularQueuerOptions<TValue> extends QueuerOptions<TValue> {
   onUnmount?: (core: Queuer<TValue>) => void
 }
 
-const queuerMethods = [
-  'addItem',
-  'getNextItem',
-  'execute',
-  'flush',
-  'flushAsBatch',
-  'peekNextItem',
-  'peekAllItems',
-  'start',
-  'stop',
-  'clear',
-  'reset',
-] as const satisfies ReadonlyArray<MethodKeys<Queuer<unknown>>>
+const queuerMethodMap = {
+  fn: false,
+  setOptions: false,
+  addItem: true,
+  getNextItem: true,
+  execute: true,
+  flush: true,
+  flushAsBatch: true,
+  peekNextItem: true,
+  peekAllItems: true,
+  start: true,
+  stop: true,
+  clear: true,
+  reset: true,
+} satisfies MethodMap<Queuer<unknown>>
+
+const queuerMethods = methodNames(queuerMethodMap)
 
 type QueuerMethod = (typeof queuerMethods)[number]
 

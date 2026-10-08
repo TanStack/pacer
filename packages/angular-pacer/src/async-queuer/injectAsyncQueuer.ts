@@ -3,7 +3,10 @@ import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
@@ -11,7 +14,7 @@ import type { ReadonlySelected } from '../utils/readonlySelected'
 import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
 import type { AsyncQueuerOptions, AsyncQueuerState } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectAsyncQueuer}, including core configuration and Angular cleanup.
@@ -26,23 +29,27 @@ export interface AngularAsyncQueuerOptions<
   onUnmount?: (core: AsyncQueuer<TValue>) => void
 }
 
-const asyncQueuerMethods = [
-  'addItem',
-  'getNextItem',
-  'execute',
-  'flush',
-  'flushAsBatch',
-  'peekNextItem',
-  'peekAllItems',
-  'peekActiveItems',
-  'peekPendingItems',
-  'start',
-  'stop',
-  'clear',
-  'abort',
-  'reset',
-  'getAbortSignal',
-] as const satisfies ReadonlyArray<MethodKeys<AsyncQueuer<unknown>>>
+const asyncQueuerMethodMap = {
+  fn: false,
+  setOptions: false,
+  addItem: true,
+  getNextItem: true,
+  execute: true,
+  flush: true,
+  flushAsBatch: true,
+  peekNextItem: true,
+  peekAllItems: true,
+  peekActiveItems: true,
+  peekPendingItems: true,
+  start: true,
+  stop: true,
+  clear: true,
+  abort: true,
+  reset: true,
+  getAbortSignal: true,
+} satisfies MethodMap<AsyncQueuer<unknown>>
+
+const asyncQueuerMethods = methodNames(asyncQueuerMethodMap)
 
 type AsyncQueuerMethod = (typeof asyncQueuerMethods)[number]
 

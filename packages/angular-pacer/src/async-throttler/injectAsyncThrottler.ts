@@ -3,7 +3,10 @@ import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
@@ -15,7 +18,7 @@ import type {
   AsyncThrottlerOptions,
   AsyncThrottlerState,
 } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectAsyncThrottler}, including core configuration and Angular cleanup.
@@ -30,14 +33,18 @@ export interface AngularAsyncThrottlerOptions<
   onUnmount?: (core: AsyncThrottler<TFn>) => void
 }
 
-const asyncThrottlerMethods = [
-  'maybeExecute',
-  'flush',
-  'cancel',
-  'abort',
-  'reset',
-  'getAbortSignal',
-] as const satisfies ReadonlyArray<MethodKeys<AsyncThrottler<AnyAsyncFunction>>>
+const asyncThrottlerMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  flush: true,
+  cancel: true,
+  abort: true,
+  reset: true,
+  getAbortSignal: true,
+} satisfies MethodMap<AsyncThrottler<AnyAsyncFunction>>
+
+const asyncThrottlerMethods = methodNames(asyncThrottlerMethodMap)
 
 type AsyncThrottlerMethod = (typeof asyncThrottlerMethods)[number]
 

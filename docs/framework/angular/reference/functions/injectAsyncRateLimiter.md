@@ -9,7 +9,7 @@ title: injectAsyncRateLimiter
 function injectAsyncRateLimiter<TFn>(fn, options): AngularAsyncRateLimiter<TFn>;
 ```
 
-Defined in: packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:92
+Defined in: packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:97
 
 Creates and manages an Angular AsyncRateLimiter in the current injection context.
 
@@ -76,7 +76,7 @@ function injectAsyncRateLimiter<TFn, TSelected>(
 selector): AngularAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:103
+Defined in: packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:108
 
 Creates an Angular AsyncRateLimiter with a reactive selector result.
 

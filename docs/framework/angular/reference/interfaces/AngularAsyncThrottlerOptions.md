@@ -3,7 +3,7 @@ id: AngularAsyncThrottlerOptions
 title: AngularAsyncThrottlerOptions
 ---
 
-Defined in: packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts:23
+Defined in: packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts:26
 
 Options for [injectAsyncThrottler](../functions/injectAsyncThrottler.md), including core configuration and Angular cleanup.
 
@@ -25,7 +25,7 @@ Options for [injectAsyncThrottler](../functions/injectAsyncThrottler.md), includ
 optional onUnmount?: (core) => void;
 ```
 
-Defined in: packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts:30
+Defined in: packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts:33
 
 Called when the owning injection context is destroyed. Receives the core instance.
 Providing this callback replaces the default cleanup (cancel pending execution and abort running work).

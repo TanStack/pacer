@@ -3,7 +3,7 @@ id: AngularAsyncQueuerOptions
 title: AngularAsyncQueuerOptions
 ---
 
-Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:19
+Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:22
 
 Options for [injectAsyncQueuer](../functions/injectAsyncQueuer.md), including core configuration and Angular cleanup.
 
@@ -25,7 +25,7 @@ Options for [injectAsyncQueuer](../functions/injectAsyncQueuer.md), including co
 optional onUnmount?: (core) => void;
 ```
 
-Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:26
+Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:29
 
 Called when the owning injection context is destroyed. Receives the core instance.
 Providing this callback replaces the default cleanup (stop automatic processing and abort running work).

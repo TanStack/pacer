@@ -3,7 +3,7 @@ id: AngularAsyncBatcher
 title: AngularAsyncBatcher
 ---
 
-Defined in: packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts:47
+Defined in: packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts:54
 
 An Angular AsyncBatcher ref with stable core methods and readonly selected state.
 Read `state()` to observe the selector result; without a selector it returns `{}`.
@@ -31,6 +31,6 @@ Read `state()` to observe the selector result; without a selector it returns `{}
 readonly state: Signal<ReadonlySelected<TSelected>>;
 ```
 
-Defined in: packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts:54
+Defined in: packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts:61
 
 Reactive state that will be updated when the batcher state changes

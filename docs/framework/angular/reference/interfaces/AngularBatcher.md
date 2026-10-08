@@ -3,7 +3,7 @@ id: AngularBatcher
 title: AngularBatcher
 ---
 
-Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:42
+Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:49
 
 An Angular Batcher ref with stable core methods and readonly selected state.
 Read `state()` to observe the selector result; without a selector it returns `{}`.
@@ -31,6 +31,6 @@ Read `state()` to observe the selector result; without a selector it returns `{}
 readonly state: Signal<ReadonlySelected<TSelected>>;
 ```
 
-Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:47
+Defined in: packages/angular-pacer/src/batcher/injectBatcher.ts:54
 
 The readonly selector result. Returns an empty object when no selector is supplied.

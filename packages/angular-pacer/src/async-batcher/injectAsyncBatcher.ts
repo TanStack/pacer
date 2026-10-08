@@ -3,7 +3,10 @@ import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
@@ -11,7 +14,7 @@ import type { ReadonlySelected } from '../utils/readonlySelected'
 import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
 import type { AsyncBatcherOptions, AsyncBatcherState } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectAsyncBatcher}, including core configuration and Angular cleanup.
@@ -26,17 +29,21 @@ export interface AngularAsyncBatcherOptions<
   onUnmount?: (batcher: AsyncBatcher<TValue>) => void
 }
 
-const asyncBatcherMethods = [
-  'addItem',
-  'flush',
-  'clear',
-  'abort',
-  'cancel',
-  'reset',
-  'getAbortSignal',
-  'peekAllItems',
-  'peekFailedItems',
-] as const satisfies ReadonlyArray<MethodKeys<AsyncBatcher<unknown>>>
+const asyncBatcherMethodMap = {
+  fn: false,
+  setOptions: false,
+  addItem: true,
+  flush: true,
+  clear: true,
+  abort: true,
+  cancel: true,
+  reset: true,
+  getAbortSignal: true,
+  peekAllItems: true,
+  peekFailedItems: true,
+} satisfies MethodMap<AsyncBatcher<unknown>>
+
+const asyncBatcherMethods = methodNames(asyncBatcherMethodMap)
 
 type AsyncBatcherMethod = (typeof asyncBatcherMethods)[number]
 

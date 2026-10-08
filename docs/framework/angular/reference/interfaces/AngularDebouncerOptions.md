@@ -3,7 +3,7 @@ id: AngularDebouncerOptions
 title: AngularDebouncerOptions
 ---
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncer.ts:23
+Defined in: packages/angular-pacer/src/debouncer/injectDebouncer.ts:26
 
 Options for [injectDebouncer](../functions/injectDebouncer.md), including core configuration and Angular cleanup.
 
@@ -25,7 +25,7 @@ Options for [injectDebouncer](../functions/injectDebouncer.md), including core c
 optional onUnmount?: (core) => void;
 ```
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncer.ts:30
+Defined in: packages/angular-pacer/src/debouncer/injectDebouncer.ts:33
 
 Called when the owning injection context is destroyed. Receives the core instance.
 Providing this callback replaces the default cleanup (cancel pending execution).

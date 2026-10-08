@@ -3,7 +3,7 @@ id: AngularAsyncDebouncer
 title: AngularAsyncDebouncer
 ---
 
-Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:48
+Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:55
 
 An Angular AsyncDebouncer ref with stable core methods and readonly selected state.
 Read `state()` to observe the selector result; without a selector it returns `{}`.
@@ -31,6 +31,6 @@ Read `state()` to observe the selector result; without a selector it returns `{}
 readonly state: Signal<ReadonlySelected<TSelected>>;
 ```
 
-Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:53
+Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:60
 
 The readonly selector result. Returns an empty object when no selector is supplied.

@@ -9,7 +9,7 @@ title: injectAsyncBatcher
 function injectAsyncBatcher<TValue>(fn, options?): AngularAsyncBatcher<TValue>;
 ```
 
-Defined in: packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts:91
+Defined in: packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts:98
 
 Creates and manages an Angular AsyncBatcher in the current injection context.
 
@@ -76,7 +76,7 @@ function injectAsyncBatcher<TValue, TSelected>(
 selector): AngularAsyncBatcher<TValue, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts:102
+Defined in: packages/angular-pacer/src/async-batcher/injectAsyncBatcher.ts:109
 
 Creates an Angular AsyncBatcher with a reactive selector result.
 

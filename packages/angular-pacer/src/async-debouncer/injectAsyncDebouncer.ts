@@ -3,7 +3,10 @@ import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
@@ -15,7 +18,7 @@ import type {
   AsyncDebouncerOptions,
   AsyncDebouncerState,
 } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectAsyncDebouncer}, including core configuration and Angular cleanup.
@@ -30,14 +33,18 @@ export interface AngularAsyncDebouncerOptions<
   onUnmount?: (core: AsyncDebouncer<TFn>) => void
 }
 
-const asyncDebouncerMethods = [
-  'maybeExecute',
-  'flush',
-  'cancel',
-  'abort',
-  'reset',
-  'getAbortSignal',
-] as const satisfies ReadonlyArray<MethodKeys<AsyncDebouncer<AnyAsyncFunction>>>
+const asyncDebouncerMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  flush: true,
+  cancel: true,
+  abort: true,
+  reset: true,
+  getAbortSignal: true,
+} satisfies MethodMap<AsyncDebouncer<AnyAsyncFunction>>
+
+const asyncDebouncerMethods = methodNames(asyncDebouncerMethodMap)
 
 type AsyncDebouncerMethod = (typeof asyncDebouncerMethods)[number]
 

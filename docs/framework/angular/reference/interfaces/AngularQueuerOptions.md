@@ -3,7 +3,7 @@ id: AngularQueuerOptions
 title: AngularQueuerOptions
 ---
 
-Defined in: packages/angular-pacer/src/queuer/injectQueuer.ts:19
+Defined in: packages/angular-pacer/src/queuer/injectQueuer.ts:22
 
 Options for [injectQueuer](../functions/injectQueuer.md), including core configuration and Angular cleanup.
 
@@ -25,7 +25,7 @@ Options for [injectQueuer](../functions/injectQueuer.md), including core configu
 optional onUnmount?: (core) => void;
 ```
 
-Defined in: packages/angular-pacer/src/queuer/injectQueuer.ts:24
+Defined in: packages/angular-pacer/src/queuer/injectQueuer.ts:27
 
 Called when the owning injection context is destroyed. Receives the core instance.
 Providing this callback replaces the default cleanup (stop automatic processing).

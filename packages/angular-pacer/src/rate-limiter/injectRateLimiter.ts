@@ -3,7 +3,10 @@ import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
 import { toAccessorSignal } from '../utils/maybeAccessor'
-import { injectForwardMethods } from '../utils/injectForwardMethods'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
 import { injectSelector } from '../utils/injectSelector'
 import type { ReadonlySelected } from '../utils/readonlySelected'
@@ -14,7 +17,7 @@ import type {
   RateLimiterOptions,
   RateLimiterState,
 } from '@tanstack/pacer'
-import type { MethodKeys } from '../utils/injectForwardMethods'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
 /**
  * Options for {@link injectRateLimiter}, including core configuration and Angular cleanup.
@@ -29,12 +32,16 @@ export interface AngularRateLimiterOptions<
   onUnmount?: (core: RateLimiter<TFn>) => void
 }
 
-const rateLimiterMethods = [
-  'maybeExecute',
-  'getRemainingInWindow',
-  'getMsUntilNextWindow',
-  'reset',
-] as const satisfies ReadonlyArray<MethodKeys<RateLimiter<AnyFunction>>>
+const rateLimiterMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  getRemainingInWindow: true,
+  getMsUntilNextWindow: true,
+  reset: true,
+} satisfies MethodMap<RateLimiter<AnyFunction>>
+
+const rateLimiterMethods = methodNames(rateLimiterMethodMap)
 
 type RateLimiterMethod = (typeof rateLimiterMethods)[number]
 
