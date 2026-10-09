@@ -3,7 +3,7 @@ title: TanStack Pacer Angular Adapter
 id: adapter
 ---
 
-If you are using TanStack Pacer in an Angular application, we recommend using the Angular Adapter. The Angular Adapter provides inject functions that wrap the core Pacer utilities and integrate with Angular's dependency injection and signals. If you need to use the core Pacer classes or functions directly, the Angular Adapter also re-exports everything from the core package.
+In an Angular application, use the Angular Adapter. Its inject functions wrap the core Pacer utilities with Angular signals and lifecycle cleanup. Angular 20 and up are supported, including all Angular LTS versions.
 
 ## Installation
 
@@ -11,55 +11,65 @@ If you are using TanStack Pacer in an Angular application, we recommend using th
 npm install @tanstack/angular-pacer
 ```
 
-## Angular inject API
+The Angular adapter also re-exports the core Pacer utilities:
 
-See the [Angular inject API Reference](./reference/index.md) for the full list of inject functions (injectDebouncer, injectThrottler, injectRateLimiter, injectQueuer, injectBatcher, and their async and callback variants).
+```ts
+import { debounce, Debouncer } from '@tanstack/angular-pacer'
+```
+
+Feature entry points also export their corresponding core utilities alongside the Angular APIs:
+
+```ts
+import { Debouncer, injectDebouncer } from '@tanstack/angular-pacer/debouncer'
+```
+
+## Angular inject functions
+
+See the [Angular API Reference](./reference/index.md) for the available utilities, including debouncing, throttling, rate limiting, queuing, and batching.
 
 ## Basic usage
 
-Inject a Pacer utility in your component or service. Each inject function returns an object that exposes methods and a reactive `state()` signal when you pass a selector.
+Create the utility in a component or service injection context, then call its methods from event handlers.
 
 ```ts
 import { Component, signal } from '@angular/core'
 import { injectDebouncer } from '@tanstack/angular-pacer'
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-search',
   template: `
-    <input [value]="query()" (input)="onInput($event)" placeholder="Search..." />
-    <p>Pending: {{ debouncer.state().isPending }}</p>
-    <p>Debounced: {{ debounced() }}</p>
+    <input #query (input)="debouncer.maybeExecute(query.value)" />
+    <p>{{ result() }}</p>
   `,
 })
-export class App {
-  protected readonly query = signal('')
-  protected readonly debounced = signal('')
-
-  protected readonly debouncer = injectDebouncer(
-    (q: string) => {
-      this.debounced.set(q)
-    },
-    { wait: 500 },
-    (state) => ({ isPending: state.isPending }),
+export class SearchComponent {
+  readonly result = signal('')
+  readonly debouncer = injectDebouncer(
+    (query: string) => this.result.set(query),
+    { wait: 300 },
   )
-
-  protected onInput(event: Event): void {
-    const value = (event.target as HTMLInputElement).value
-    this.query.set(value)
-    this.debouncer.maybeExecute(value)
-  }
 }
 ```
 
-You can also import core Pacer APIs re-exported from the adapter.
+For editable values, use `injectDebouncedSignal`, `injectThrottledSignal`, `injectRateLimitedSignal`, or `injectQueuedSignal`. They return an Angular signal with `set`, `update`, and an attached utility ref. The corresponding `Computed` helpers observe a source signal or accessor. `injectQueuerItems` and `injectAsyncQueuerItems` expose pending queue items with a `queuer` attribute and an `addItem` shortcut.
+
+## Options
+
+Options can be an object or a function that returns an object. Use a function to read signals or component inputs reactively:
 
 ```ts
-import { debounce, Debouncer } from '@tanstack/angular-pacer'
+readonly wait = signal(300)
+readonly debouncer = injectDebouncer(
+  (query: string) => this.result.set(query),
+  () => ({ wait: this.wait() }),
+)
 ```
+
+Passing `{ wait: this.wait() }` instead uses the value at the time of the call.
 
 ## Provider
 
-Use `providePacerOptions` in your application config to set default options for all Pacer utilities in the app. Options passed to individual inject functions override these defaults.
+Use `providePacerOptions` to supply defaults at the application, route, or component level. Options passed to an individual utility override these defaults.
 
 ```ts
 import { ApplicationConfig } from '@angular/core'
@@ -69,33 +79,44 @@ export const appConfig: ApplicationConfig = {
   providers: [
     providePacerOptions({
       debouncer: { wait: 300 },
-      throttler: { wait: 100 },
       asyncQueuer: { concurrency: 2 },
-      rateLimiter: { limit: 5, window: 60000 },
     }),
   ],
 }
 ```
 
+Continue to pass the required options, such as `wait`, or `limit` and `window`, when creating a utility.
+
 ## State selector
 
-The third argument to each inject function is a state selector. It determines which slice of state is exposed on the returned object's `state()` signal, so only relevant changes trigger template updates.
-
-**By default, if you omit the selector, `state()` is not populated.** Pass a selector to opt in to reactive state.
+The third argument selects the state exposed by `state()`. Without a selector, `state()` returns an empty object.
 
 ```ts
-// No selector: state() is not populated
-const debouncer = injectDebouncer(fn, { wait: 500 })
-
-// With selector: state() is a signal of the selected slice
-const debouncer = injectDebouncer(
-  fn,
-  { wait: 500 },
+readonly debouncer = injectDebouncer(
+  (query: string) => this.result.set(query),
+  { wait: 300 },
   (state) => ({ isPending: state.isPending }),
 )
 ```
 
-For more on state and options per utility, see the guides (e.g. [Debouncing Guide](./guides/debouncing.md), [Rate Limiting Guide](./guides/rate-limiting.md)).
+Computed, signal, and items helpers also accept a selector as their third argument. The selected state is available on their attached utility ref, independently of the returned value or items signal.
+
+```ts
+readonly queued = injectQueuerItems(
+  (job: string) => console.log(job),
+  { started: false },
+  (state) => ({ size: state.size }),
+)
+// queued.addItem('job'); queued.queuer.state().size
+```
+
+Read the selected state in the template:
+
+```html
+<p>Pending: {{ debouncer.state().isPending }}</p>
+```
+
+For available state fields and options, see the individual guides, such as [Debouncing](./guides/debouncing.md) and [Rate Limiting](./guides/rate-limiting.md).
 
 ## Examples
 
@@ -130,7 +151,7 @@ export class SearchComponent {
 ### Async Queuer
 
 ```ts
-import { Component, signal } from '@angular/core'
+import { Component } from '@angular/core'
 import { injectAsyncQueuer } from '@tanstack/angular-pacer'
 
 @Component({
@@ -172,8 +193,8 @@ import { injectRateLimiter } from '@tanstack/angular-pacer'
   `,
 })
 export class ApiComponent {
-  protected readonly rateLimiter = injectRateLimiter<string, { rejectionCount: number }>(
-    (data) =>
+  protected readonly rateLimiter = injectRateLimiter(
+    (data: string) =>
       fetch('/api/endpoint', {
         method: 'POST',
         body: JSON.stringify({ data }),
@@ -192,70 +213,30 @@ export class ApiComponent {
 }
 ```
 
-## Reactive options
+## Testing
 
-Use property getters or an options factory to read Angular signals:
-
-```ts
-const wait = signal(300)
-const debouncer = injectDebouncer(save, {
-  get wait() {
-    return wait()
-  },
-})
-
-wait.set(600)
-```
-
-Factories also work with required component inputs:
+The adapter integrates with Angular's pending tasks so `fixture.whenStable()` waits for scheduled and asynchronous Pacer work. Wait for stability before checking the rendered result:
 
 ```ts
-import { input } from '@angular/core'
-import { injectDebouncer } from '@tanstack/angular-pacer'
+import { Component } from '@angular/core'
+import { TestBed } from '@angular/core/testing'
+import { injectDebouncedSignal } from '@tanstack/angular-pacer'
 
-readonly wait = input.required<number>()
-readonly search = injectDebouncer(
-  (query: string) => this.fetchResults(query),
-  () => ({ wait: this.wait() }),
-)
-```
-
-Getter-based options and factories defer initialization until Angular's first effect, after component inputs are bound, or until you first access the returned utility. Accessing the utility before a required input is available throws Angular's required-input error. Destroying the component before initialization does not read those options or create a utility. Plain objects without getters initialize eagerly when their provider defaults also contain no getters.
-
-Later signal changes update the same utility through `setOptions` during change detection. Provider defaults are read during option tracking, and local options override them. This contract applies to synchronous and asynchronous inject functions and their callback, signal, and value helpers.
-
-Reading a signal before passing the options, such as `{ wait: wait() }`, produces a snapshot. Assigning to an ordinary object property does not trigger an update. Use a getter or factory for reactive values. Option reads are shallow: build nested configurations inside a getter or factory when they depend on signals. Callbacks and function-valued core options remain functions. Getters and factories should read signals and return options without side effects.
-
-Updates preserve the utility, store, queued items, and pending work. Changing `wait` does not reschedule an existing timer. Setting `enabled` to `false` still applies the utility's normal cancellation behavior. Construction options such as `key`, `initialState`, and `initialItems` apply only when the utility is created. Use `start()` and `stop()` to change running queues.
-
-Updates follow `setOptions` merge semantics. If a factory omits a previously supplied field, the provider default replaces it when one exists; otherwise, its previous value remains. Return `undefined` explicitly to clear an optional field. For example, `onUnmount: undefined` restores default cleanup. Disposal uses the latest `onUnmount` callback. The utility's `options` property exposes its current core options, including manual `setOptions` updates.
-
-For a value helper with an explicit initial value and factory options, pass a fourth argument for the selector. Pass `undefined` when no selector is needed:
-
-```ts
-const debounced = injectDebouncedValue(
-  query,
-  '',
-  () => ({ wait: wait() }),
-  undefined,
-)
-```
-
-The fourth argument distinguishes this form from `injectDebouncedValue(query, optionsFactory, selector)`. Object options still support the existing three-argument form with an initial value.
-
-## Event handlers
-
-Use `injectDebouncer`, `injectThrottler`, or `injectRateLimiter` and call `maybeExecute()` from the event handler. For batching, use `injectBatcher` and call `addItem()`. Async utilities use the same method names.
-
-Store the utility instance in a field when options read required inputs. Accessing a method during field initialization can initialize the utility before Angular binds those inputs.
-
-In a component:
-
-```ts
-readonly wait = input.required<number>()
-readonly debouncer = injectDebouncer(saveDraft, () => ({ wait: this.wait() }))
-
-save(draft: string) {
-  this.debouncer.maybeExecute(draft)
+@Component({ template: '<p>{{ value() }}</p>' })
+class ExampleComponent {
+  readonly value = injectDebouncedSignal('initial', { wait: 50 })
 }
+
+it('renders the debounced value', async () => {
+  const fixture = TestBed.createComponent(ExampleComponent)
+  fixture.detectChanges()
+
+  fixture.componentInstance.value.set('updated')
+  fixture.detectChanges()
+  await fixture.whenStable()
+
+  expect(fixture.nativeElement.textContent).toContain('updated')
+})
 ```
+
+This example uses real timers. When using fake timers, advance them to complete the scheduled work before awaiting stability.

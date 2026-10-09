@@ -3,11 +3,14 @@ id: AngularAsyncRateLimiter
 title: AngularAsyncRateLimiter
 ---
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L26)
+Defined in: [packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:55](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L55)
+
+An Angular AsyncRateLimiter ref with stable core methods and readonly selected state.
+Read `state()` to observe the selector result; without a selector it returns `{}`.
 
 ## Extends
 
-- `Omit`\<`AsyncRateLimiter`\<`TFn`\>, `"store"` \| `"options"` \| `"setOptions"`\>
+- `Pick`\<`AsyncRateLimiter`\<`TFn`\>, `AsyncRateLimiterMethod`\>
 
 ## Type Parameters
 
@@ -22,59 +25,12 @@ Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:26](https://github.com
 
 ## Properties
 
-### options
-
-```ts
-options: AsyncRateLimiterOptions<TFn> & AngularAsyncRateLimiterOptions<TFn, TSelected>;
-```
-
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:30](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L30)
-
-***
-
-### setOptions
-
-```ts
-setOptions: (options) => void;
-```
-
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L32)
-
-#### Parameters
-
-##### options
-
-`Partial`\<[`AngularAsyncRateLimiterOptions`](AngularAsyncRateLimiterOptions.md)\<`TFn`, `TSelected`\>\>
-
-#### Returns
-
-`void`
-
-***
-
 ### state
 
 ```ts
-readonly state: Signal<Readonly<TSelected>>;
+readonly state: Signal<ReadonlySelected<TSelected>>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:40](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L40)
+Defined in: [packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:60](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L60)
 
-Reactive state signal that will be updated when the async rate limiter state changes
-
-Use this instead of `rateLimiter.store.state`
-
-***
-
-### ~~store~~
-
-```ts
-readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>;
-```
-
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:45](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L45)
-
-#### Deprecated
-
-Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-The state on the store object is not reactive in Angular signals.
+The readonly selector result. Returns an empty object when no selector is supplied.

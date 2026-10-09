@@ -3,82 +3,115 @@ id: injectAsyncRateLimiter
 title: injectAsyncRateLimiter
 ---
 
+## Call Signature
+
+```ts
+function injectAsyncRateLimiter<TFn>(fn, options): AngularAsyncRateLimiter<TFn>;
+```
+
+Defined in: [packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:97](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L97)
+
+Creates and manages an Angular AsyncRateLimiter in the current injection context.
+
+Allows asynchronous calls up to the configured limit within a fixed or sliding window. Calls beyond the limit are rejected rather than queued.
+
+## Options and state
+
+Accepts static options or an options factory. Factories are read lazily, and signal
+dependencies update the existing core instance. Local options override provider defaults.
+Methods apply current options before executing and run outside Angular's zone.
+
+Pass a selector to expose reactive core state through `state()`. Without a selector,
+`state()` returns `{}`; operations remain available on the ref.
+
+## Cleanup
+
+The default cleanup is to abort running work. Set `onUnmount` to replace it.
+
+### Type Parameters
+
+#### TFn
+
+`TFn` *extends* `AnyAsyncFunction`
+
+### Parameters
+
+#### fn
+
+`TFn`
+
+The callback invoked by the core utility.
+
+#### options
+
+`MaybeAccessor`\<[`AngularAsyncRateLimiterOptions`](../interfaces/AngularAsyncRateLimiterOptions.md)\<`TFn`\>\>
+
+Core options or a reactive factory returning them.
+
+### Returns
+
+[`AngularAsyncRateLimiter`](../interfaces/AngularAsyncRateLimiter.md)\<`TFn`\>
+
+A ref containing stable methods and a readonly selected-state signal.
+
+### Example
+
+```ts
+// In a component or service injection context.
+const utility = injectAsyncRateLimiter(
+  (query: string) => Promise.resolve(query),
+  () => ({ limit: 5, window: 1000 }),
+  (state) => state.isExecuting,
+)
+utility.maybeExecute('search')
+console.log(utility.state())
+```
+
+## Call Signature
+
 ```ts
 function injectAsyncRateLimiter<TFn, TSelected>(
    fn,
    options,
-selector?): AngularAsyncRateLimiter<TFn, TSelected>;
+selector): AngularAsyncRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:90](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L90)
+Defined in: [packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:108](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L108)
 
-An Angular function that creates and manages an AsyncRateLimiter instance.
+Creates an Angular AsyncRateLimiter with a reactive selector result.
 
-This is a lower-level function that provides direct access to the AsyncRateLimiter's functionality.
-This allows you to integrate it with any state management solution you prefer.
+### Type Parameters
 
-This function provides async rate limiting functionality with promise support, error handling,
-retry capabilities, and abort support.
-
-## State Management and Selector
-
-The function uses TanStack Store for state management and wraps it with Angular signals.
-The `selector` parameter allows you to specify which state changes will trigger signal updates,
-optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
-
-**By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary updates and gives you
-full control over when your component tracks state changes.
-
-## Cleanup on Destroy
-
-By default, the function aborts in-flight work when the component is destroyed.
-Use the `onUnmount` option to customize this.
-
-## Type Parameters
-
-### TFn
+#### TFn
 
 `TFn` *extends* `AnyAsyncFunction`
 
-### TSelected
+#### TSelected
 
-`TSelected` = \{
-\}
+`TSelected`
 
-## Parameters
+### Parameters
 
-### fn
+#### fn
 
 `TFn`
 
-### options
+The callback invoked by the core utility.
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularAsyncRateLimiterOptions`](../interfaces/AngularAsyncRateLimiterOptions.md)\<`TFn`, `TSelected`\>\>
+#### options
 
-### selector?
+`MaybeAccessor`\<[`AngularAsyncRateLimiterOptions`](../interfaces/AngularAsyncRateLimiterOptions.md)\<`TFn`\>\>
+
+Core options or a reactive options factory.
+
+#### selector
 
 (`state`) => `TSelected`
 
-## Returns
+Selects the state exposed by the returned `state` signal.
+
+### Returns
 
 [`AngularAsyncRateLimiter`](../interfaces/AngularAsyncRateLimiter.md)\<`TFn`, `TSelected`\>
 
-## Example
-
-```ts
-// Default behavior - no reactive state subscriptions
-const rateLimiter = injectAsyncRateLimiter(
-  async (id: string) => {
-    const response = await fetch(`/api/data/${id}`);
-    return response.json();
-  },
-  { limit: 5, window: 60000, windowType: 'sliding' }
-);
-
-// In an event handler
-const handleRequest = async (id: string) => {
-  const result = await rateLimiter.maybeExecute(id);
-  console.log('Result:', result);
-};
-```
+The utility ref with the selected state.

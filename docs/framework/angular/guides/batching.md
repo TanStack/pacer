@@ -148,13 +148,15 @@ batcher.reset()
 
 ## Configuring and observing batches
 
-Use `setOptions()` to update future trigger behavior:
+Use an options function to read reactive configuration:
 
 ```ts
-batcher.setOptions({
-  maxSize: 20,
-  wait: 500,
-})
+import { signal } from '@angular/core'
+
+const options = signal({ maxSize: 10, wait: 100 })
+const batcher = injectBatcher(processBatch, options)
+
+options.set({ maxSize: 20, wait: 500 })
 ```
 
 Changing `wait` does not reschedule an existing timer. The next `addItem()` call replaces that timer using the current value.
@@ -190,7 +192,7 @@ The adapter cancels the pending wait timer while retaining collected items when 
 
 ## Reactive state
 
-The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in an Angular injection context, usually as a component or service field initializer and select only fields used by the view:
+Pass a selector to expose the state used by your view through `state()`. Without a selector, `state()` returns `{}`:
 
 ```ts
 const batcher = injectBatcher(
@@ -205,7 +207,7 @@ const batcher = injectBatcher(
 console.log(batcher.state().size, batcher.state().isPending)
 ```
 
-Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+Option callbacks receive the core utility instance. Read the selected `state()` signal in templates.
 
 To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
 

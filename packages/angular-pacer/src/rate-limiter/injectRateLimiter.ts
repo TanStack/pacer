@@ -1,161 +1,154 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import { computed, effect, untracked } from '@angular/core'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
-import { injectPacerOptions } from '../provider/pacer-context'
-import type { AngularPacerOptions } from '../types'
+import { shallow } from '@tanstack/store'
+import { injectPacerOptions } from '../provider/providePacerOptions'
+import { toAccessorSignal } from '../utils/maybeAccessor'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
+import { injectLazy } from '../utils/injectLazy'
+import { injectSelector } from '../utils/injectSelector'
+import type { ReadonlySelected } from '../utils/readonlySelected'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
-import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
+  AnyFunction,
   RateLimiterOptions,
   RateLimiterState,
-} from '@tanstack/pacer/rate-limiter'
+} from '@tanstack/pacer'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
+/**
+ * Options for {@link injectRateLimiter}, including core configuration and Angular cleanup.
+ */
 export interface AngularRateLimiterOptions<
   TFn extends AnyFunction,
-  TSelected = {},
 > extends RateLimiterOptions<TFn> {
   /**
-   * Optional callback invoked when the component is destroyed. Receives the rate limiter instance.
+   * Called when the owning injection context is destroyed. Receives the core instance.
+   * There is no default cleanup; use this callback for custom teardown.
    */
-  onUnmount?: (rateLimiter: AngularRateLimiter<TFn, TSelected>) => void
+  onUnmount?: (core: RateLimiter<TFn>) => void
 }
 
+const rateLimiterMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  getRemainingInWindow: true,
+  getMsUntilNextWindow: true,
+  reset: true,
+} satisfies MethodMap<RateLimiter<AnyFunction>>
+
+const rateLimiterMethods = methodNames(rateLimiterMethodMap)
+
+type RateLimiterMethod = (typeof rateLimiterMethods)[number]
+
+/**
+ * An Angular RateLimiter ref with stable core methods and readonly selected state.
+ * Read `state()` to observe the selector result; without a selector it returns `{}`.
+ */
 export interface AngularRateLimiter<
   TFn extends AnyFunction,
   TSelected = {},
-> extends Omit<RateLimiter<TFn>, 'store' | 'options' | 'setOptions'> {
-  options: RateLimiter<TFn>['options'] &
-    AngularRateLimiterOptions<TFn, TSelected>
-  setOptions: (
-    options: Partial<AngularRateLimiterOptions<TFn, TSelected>>,
-  ) => void
-  /**
-   * Reactive state signal that will be updated when the rate limiter state changes
-   *
-   * Use this instead of `rateLimiter.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<RateLimiterState>>
+> extends Pick<RateLimiter<TFn>, RateLimiterMethod> {
+  /** The readonly selector result. Returns an empty object when no selector is supplied. */
+  readonly state: Signal<ReadonlySelected<TSelected>>
 }
 
 /**
- * An Angular function that creates and manages a RateLimiter instance.
+ * Creates and manages an Angular RateLimiter in the current injection context.
  *
- * This is a lower-level function that provides direct access to the RateLimiter's functionality.
- * This allows you to integrate it with any state management solution you prefer.
+ * Allows calls up to the configured limit within a fixed or sliding window. Calls beyond the limit are rejected rather than queued.
  *
- * Rate limiting is a simple "hard limit" approach that allows executions until a maximum count is reached within
- * a time window, then blocks all subsequent calls until the window resets. Unlike throttling or debouncing,
- * it does not attempt to space out or collapse executions intelligently.
+ * ## Options and state
  *
- * The rate limiter supports two types of windows:
- * - 'fixed': A strict window that resets after the window period. All executions within the window count
- *   towards the limit, and the window resets completely after the period.
- * - 'sliding': A rolling window that allows executions as old ones expire. This provides a more
- *   consistent rate of execution over time.
+ * Accepts static options or an options factory. Factories are read lazily, and signal
+ * dependencies update the existing core instance. Local options override provider defaults.
+ * Methods apply current options before executing and run outside Angular's zone.
  *
- * For smoother execution patterns:
- * - Use throttling when you want consistent spacing between executions (e.g. UI updates)
- * - Use debouncing when you want to collapse rapid-fire events (e.g. search input)
- * - Use rate limiting only when you need to enforce hard limits (e.g. API rate limits)
+ * Pass a selector to expose reactive core state through `state()`. Without a selector,
+ * `state()` returns `{}`; operations remain available on the ref.
  *
- * ## State Management and Selector
+ * ## Cleanup
  *
- * The function uses TanStack Store for state management and wraps it with Angular signals.
- * The `selector` parameter allows you to specify which state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+ * There is no default cleanup. Set `onUnmount` to customize cleanup.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
- *
- * Available state properties:
- * - `executionCount`: Number of function executions that have been completed
- * - `executionTimes`: Array of timestamps when executions occurred for rate limiting calculations
- * - `rejectionCount`: Number of function executions that have been rejected due to rate limiting
- *
- * ## Cleanup on Destroy
- *
- * Use the `onUnmount` option to run a callback when the component is destroyed.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive factory returning them.
+ * @returns A ref containing stable methods and a readonly selected-state signal.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const rateLimiter = injectRateLimiter(apiCall, {
- *   limit: 5,
- *   window: 60000,
- *   windowType: 'sliding',
- * });
- *
- * // Opt-in to track execution count changes
- * const rateLimiter = injectRateLimiter(
- *   apiCall,
- *   {
- *     limit: 5,
- *     window: 60000,
- *     windowType: 'sliding',
- *   },
- *   (state) => ({ executionCount: state.executionCount })
- * );
- *
- * // Monitor rate limit status
- * const handleClick = () => {
- *   const remaining = rateLimiter.getRemainingInWindow();
- *   if (remaining > 0) {
- *     rateLimiter.maybeExecute(data);
- *   } else {
- *     showRateLimitWarning();
- *   }
- * };
- *
- * // Access the selected state (will be empty object {} unless selector provided)
- * const { executionCount, rejectionCount } = rateLimiter.state();
+ * // In a component or service injection context.
+ * const utility = injectRateLimiter(
+ *   (query: string) => console.log(query),
+ *   () => ({ limit: 5, window: 1000 }),
+ *   (state) => state.executionCount,
+ * )
+ * utility.maybeExecute('search')
+ * console.log(utility.state())
  * ```
  */
-export function injectRateLimiter<TFn extends AnyFunction, TSelected = {}>(
+export function injectRateLimiter<TFn extends AnyFunction>(
   fn: TFn,
-  options: AngularPacerOptions<AngularRateLimiterOptions<TFn, TSelected>>,
-  selector: (state: RateLimiterState) => TSelected = () => ({}) as TSelected,
-): AngularRateLimiter<TFn, TSelected> {
-  return injectReactiveOptions<
-    AngularRateLimiterOptions<TFn, TSelected>,
-    AngularRateLimiter<TFn, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'rateLimiter',
-    (mergedOptions, getPublicInstance) => {
-      const rateLimiter = new RateLimiter<TFn>(fn, mergedOptions)
-      const state = injectSelector(rateLimiter.store, selector)
+  options: MaybeAccessor<AngularRateLimiterOptions<TFn>>,
+): AngularRateLimiter<TFn>
+/**
+ * Creates an Angular RateLimiter with a reactive selector result.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive options factory.
+ * @param selector Selects the state exposed by the returned `state` signal.
+ * @returns The utility ref with the selected state.
+ */
+export function injectRateLimiter<TFn extends AnyFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularRateLimiterOptions<TFn>>,
+  selector: (state: RateLimiterState) => TSelected,
+): AngularRateLimiter<TFn, TSelected>
+export function injectRateLimiter<TFn extends AnyFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularRateLimiterOptions<TFn>>,
+  selector: (state: RateLimiterState) => TSelected | {} = () => ({}),
+): AngularRateLimiter<TFn, TSelected | {}> {
+  const baseOptions = injectPacerOptions()
+  const optionsSignal = toAccessorSignal(options)
+  const mergedOptions = computed<AngularRateLimiterOptions<TFn>>(() => ({
+    ...baseOptions.rateLimiter,
+    ...optionsSignal(),
+  }))
 
-      const result = {
-        ...rateLimiter,
-        get options() {
-          return rateLimiter.options
-        },
-        set options(value) {
-          rateLimiter.options = value
-        },
-        state,
-      } as AngularRateLimiter<TFn, TSelected>
+  const rateLimiterSignal = injectLazy(
+    () => new RateLimiter<TFn>(fn, mergedOptions()),
+  )
 
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          rateLimiter.options as AngularRateLimiterOptions<TFn, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        }
-      })
-
-      return result
+  const methods = injectForwardMethods(
+    rateLimiterSignal,
+    rateLimiterMethods,
+    (core) => {
+      core.setOptions(mergedOptions())
     },
   )
+
+  effect(() => {
+    const opts = mergedOptions()
+    untracked(() => rateLimiterSignal().setOptions(opts))
+  })
+
+  effect((onCleanup) => {
+    const core = rateLimiterSignal()
+    onCleanup(() => {
+      const opts = untracked(mergedOptions)
+      if (opts.onUnmount) {
+        opts.onUnmount(core)
+      }
+    })
+  })
+
+  const state = injectSelector(() => rateLimiterSignal().store, selector, {
+    compare: shallow,
+  })
+
+  return { state, ...methods }
 }

@@ -54,16 +54,4 @@ describe('example behavior', () => {
     expect(app.controlledSearch()).toBe('angular')
     expect(app.controlledValue()).toBe(73)
   })
-  it('changes the window type on the same limiter', async () => {
-    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] })
-    const fixture = TestBed.createComponent(App)
-    const app = fixture.componentInstance
-    fixture.detectChanges()
-    TestBed.tick()
-    const runner = app.countRunner
-    app.countWindow.set('sliding')
-    TestBed.tick()
-    expect(app.countRunner).toBe(runner)
-    expect(runner.options.windowType).toBe('sliding')
-  })
 })

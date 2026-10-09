@@ -81,7 +81,7 @@ Use a sliding window when capacity should return gradually rather than all at on
 
 ## Choose an API
 
-- `injectRateLimitedSignal` or `injectRateLimitedValue` for signals
+- `injectRateLimitedSignal` or `injectRateLimitedComputed` for signals
 - `injectRateLimiter` for capacity helpers and selected state
 
 Call `maybeExecute()` for quota-controlled operations. Use state or value helpers for UI updates, and the instance for capacity helpers and rejection state.
@@ -143,13 +143,15 @@ Both helpers use the current `limit`, `window`, `windowType`, and execution hist
 limiter.reset()
 ```
 
-Use `setOptions()` to update the configuration:
+Use an options function to read reactive configuration:
 
 ```ts
-limiter.setOptions({
-  limit: 10,
-  window: 30_000,
-})
+import { signal } from '@angular/core'
+
+const options = signal({ limit: 5, window: 60_000 })
+const limiter = injectRateLimiter(sendEvent, options)
+
+options.set({ limit: 10, window: 30_000 })
 ```
 
 Changing options does not erase existing execution history. Call `reset()` when the new configuration should begin with a fresh window.
@@ -190,7 +192,7 @@ The adapter has no default operation cleanup because a synchronous limiter has n
 
 ## Reactive state
 
-The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in an Angular injection context, usually as a component or service field initializer and select only fields used by the view:
+Pass a selector to expose the state used by your view through `state()`. Without a selector, `state()` returns `{}`:
 
 ```ts
 const limiter = injectRateLimiter(
@@ -205,7 +207,7 @@ const limiter = injectRateLimiter(
 console.log(limiter.state().isExceeded, limiter.state().rejectionCount)
 ```
 
-Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+Option callbacks receive the core utility instance. Read the selected `state()` signal in templates.
 
 To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
 

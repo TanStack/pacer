@@ -3,7 +3,9 @@ id: AngularDebouncerOptions
 title: AngularDebouncerOptions
 ---
 
-Defined in: [debouncer/injectDebouncer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L15)
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L26)
+
+Options for [injectDebouncer](../functions/injectDebouncer.md), including core configuration and Angular cleanup.
 
 ## Extends
 
@@ -13,31 +15,26 @@ Defined in: [debouncer/injectDebouncer.ts:15](https://github.com/TanStack/pacer/
 
 ### TFn
 
-`TFn` *extends* `AnyFunction`
-
-### TSelected
-
-`TSelected` = \{
-\}
+`TFn` *extends* `AnyFunction` = `AnyFunction`
 
 ## Properties
 
 ### onUnmount?
 
 ```ts
-optional onUnmount?: (debouncer) => void;
+optional onUnmount?: (core) => void;
 ```
 
-Defined in: [debouncer/injectDebouncer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L23)
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncer.ts#L33)
 
-Optional callback invoked when the component is destroyed. Receives the debouncer instance.
-When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+Called when the owning injection context is destroyed. Receives the core instance.
+Providing this callback replaces the default cleanup (cancel pending execution).
 
 #### Parameters
 
-##### debouncer
+##### core
 
-[`AngularDebouncer`](AngularDebouncer.md)\<`TFn`, `TSelected`\>
+`Debouncer`\<`TFn`\>
 
 #### Returns
 

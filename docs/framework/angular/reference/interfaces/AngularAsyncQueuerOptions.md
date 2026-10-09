@@ -3,7 +3,9 @@ id: AngularAsyncQueuerOptions
 title: AngularAsyncQueuerOptions
 ---
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:14](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L14)
+Defined in: [packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:22](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L22)
+
+Options for [injectAsyncQueuer](../functions/injectAsyncQueuer.md), including core configuration and Angular cleanup.
 
 ## Extends
 
@@ -15,30 +17,24 @@ Defined in: [async-queuer/injectAsyncQueuer.ts:14](https://github.com/TanStack/p
 
 `TValue`
 
-### TSelected
-
-`TSelected` = \{
-\}
-
 ## Properties
 
 ### onUnmount?
 
 ```ts
-optional onUnmount?: (queuer) => void;
+optional onUnmount?: (core) => void;
 ```
 
-Defined in: [async-queuer/injectAsyncQueuer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L23)
+Defined in: [packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L29)
 
-Optional callback invoked when the component is destroyed. Receives the queuer instance.
-When provided, replaces the default cleanup (stop + abort); use it to call flush(), stop(), add logging, etc.
-When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+Called when the owning injection context is destroyed. Receives the core instance.
+Providing this callback replaces the default cleanup (stop automatic processing and abort running work).
 
 #### Parameters
 
-##### queuer
+##### core
 
-[`AngularAsyncQueuer`](AngularAsyncQueuer.md)\<`TValue`, `TSelected`\>
+`AsyncQueuer`\<`TValue`\>
 
 #### Returns
 

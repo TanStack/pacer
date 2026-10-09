@@ -1,136 +1,165 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import { computed, effect, untracked } from '@angular/core'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
-import { injectPacerOptions } from '../provider/pacer-context'
-import type { AngularPacerOptions } from '../types'
+import { shallow } from '@tanstack/store'
+import { injectPacerOptions } from '../provider/providePacerOptions'
+import { toAccessorSignal } from '../utils/maybeAccessor'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
+import { injectLazy } from '../utils/injectLazy'
+import { injectSelector } from '../utils/injectSelector'
+import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
+import type { ReadonlySelected } from '../utils/readonlySelected'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
+  AnyAsyncFunction,
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
-} from '@tanstack/pacer/async-rate-limiter'
+} from '@tanstack/pacer'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
+/**
+ * Options for {@link injectAsyncRateLimiter}, including core configuration and Angular cleanup.
+ */
 export interface AngularAsyncRateLimiterOptions<
   TFn extends AnyAsyncFunction,
-  TSelected = {},
 > extends AsyncRateLimiterOptions<TFn> {
   /**
-   * Optional callback invoked when the component is destroyed. Receives the rate limiter instance.
-   * When provided, replaces the default cleanup (abort).
+   * Called when the owning injection context is destroyed. Receives the core instance.
+   * Providing this callback replaces the default cleanup (abort running work).
    */
-  onUnmount?: (rateLimiter: AngularAsyncRateLimiter<TFn, TSelected>) => void
+  onUnmount?: (core: AsyncRateLimiter<TFn>) => void
 }
 
+const asyncRateLimiterMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  getRemainingInWindow: true,
+  getMsUntilNextWindow: true,
+  abort: true,
+  reset: true,
+  getAbortSignal: true,
+} satisfies MethodMap<AsyncRateLimiter<AnyAsyncFunction>>
+
+const asyncRateLimiterMethods = methodNames(asyncRateLimiterMethodMap)
+
+type AsyncRateLimiterMethod = (typeof asyncRateLimiterMethods)[number]
+
+/**
+ * An Angular AsyncRateLimiter ref with stable core methods and readonly selected state.
+ * Read `state()` to observe the selector result; without a selector it returns `{}`.
+ */
 export interface AngularAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TSelected = {},
-> extends Omit<AsyncRateLimiter<TFn>, 'store' | 'options' | 'setOptions'> {
-  options: AsyncRateLimiter<TFn>['options'] &
-    AngularAsyncRateLimiterOptions<TFn, TSelected>
-  setOptions: (
-    options: Partial<AngularAsyncRateLimiterOptions<TFn, TSelected>>,
-  ) => void
-  /**
-   * Reactive state signal that will be updated when the async rate limiter state changes
-   *
-   * Use this instead of `rateLimiter.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `rateLimiter.state` instead of `rateLimiter.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>
+> extends Pick<AsyncRateLimiter<TFn>, AsyncRateLimiterMethod> {
+  /** The readonly selector result. Returns an empty object when no selector is supplied. */
+  readonly state: Signal<ReadonlySelected<TSelected>>
 }
 
 /**
- * An Angular function that creates and manages an AsyncRateLimiter instance.
+ * Creates and manages an Angular AsyncRateLimiter in the current injection context.
  *
- * This is a lower-level function that provides direct access to the AsyncRateLimiter's functionality.
- * This allows you to integrate it with any state management solution you prefer.
+ * Allows asynchronous calls up to the configured limit within a fixed or sliding window. Calls beyond the limit are rejected rather than queued.
  *
- * This function provides async rate limiting functionality with promise support, error handling,
- * retry capabilities, and abort support.
+ * ## Options and state
  *
- * ## State Management and Selector
+ * Accepts static options or an options factory. Factories are read lazily, and signal
+ * dependencies update the existing core instance. Local options override provider defaults.
+ * Methods apply current options before executing and run outside Angular's zone.
  *
- * The function uses TanStack Store for state management and wraps it with Angular signals.
- * The `selector` parameter allows you to specify which state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+ * Pass a selector to expose reactive core state through `state()`. Without a selector,
+ * `state()` returns `{}`; operations remain available on the ref.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * ## Cleanup
  *
- * ## Cleanup on Destroy
+ * The default cleanup is to abort running work. Set `onUnmount` to replace it.
  *
- * By default, the function aborts in-flight work when the component is destroyed.
- * Use the `onUnmount` option to customize this.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive factory returning them.
+ * @returns A ref containing stable methods and a readonly selected-state signal.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const rateLimiter = injectAsyncRateLimiter(
- *   async (id: string) => {
- *     const response = await fetch(`/api/data/${id}`);
- *     return response.json();
- *   },
- *   { limit: 5, window: 60000, windowType: 'sliding' }
- * );
- *
- * // In an event handler
- * const handleRequest = async (id: string) => {
- *   const result = await rateLimiter.maybeExecute(id);
- *   console.log('Result:', result);
- * };
+ * // In a component or service injection context.
+ * const utility = injectAsyncRateLimiter(
+ *   (query: string) => Promise.resolve(query),
+ *   () => ({ limit: 5, window: 1000 }),
+ *   (state) => state.isExecuting,
+ * )
+ * utility.maybeExecute('search')
+ * console.log(utility.state())
  * ```
  */
-export function injectAsyncRateLimiter<
-  TFn extends AnyAsyncFunction,
-  TSelected = {},
->(
+export function injectAsyncRateLimiter<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AngularPacerOptions<AngularAsyncRateLimiterOptions<TFn, TSelected>>,
-  selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
-    ({}) as TSelected,
-): AngularAsyncRateLimiter<TFn, TSelected> {
-  return injectReactiveOptions<
-    AngularAsyncRateLimiterOptions<TFn, TSelected>,
-    AngularAsyncRateLimiter<TFn, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'asyncRateLimiter',
-    (mergedOptions, getPublicInstance) => {
-      const rateLimiter = new AsyncRateLimiter<TFn>(fn, mergedOptions)
-      const state = injectSelector(rateLimiter.store, selector)
+  options: MaybeAccessor<AngularAsyncRateLimiterOptions<TFn>>,
+): AngularAsyncRateLimiter<TFn>
+/**
+ * Creates an Angular AsyncRateLimiter with a reactive selector result.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive options factory.
+ * @param selector Selects the state exposed by the returned `state` signal.
+ * @returns The utility ref with the selected state.
+ */
+export function injectAsyncRateLimiter<TFn extends AnyAsyncFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularAsyncRateLimiterOptions<TFn>>,
+  selector: (state: AsyncRateLimiterState<TFn>) => TSelected,
+): AngularAsyncRateLimiter<TFn, TSelected>
+export function injectAsyncRateLimiter<TFn extends AnyAsyncFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularAsyncRateLimiterOptions<TFn>>,
+  selector: (state: AsyncRateLimiterState<TFn>) => TSelected | {} = () => ({}),
+): AngularAsyncRateLimiter<TFn, TSelected | {}> {
+  const baseOptions = injectPacerOptions()
+  const optionsSignal = toAccessorSignal(options)
+  const mergedOptions = computed<AngularAsyncRateLimiterOptions<TFn>>(() => ({
+    ...baseOptions.asyncRateLimiter,
+    ...optionsSignal(),
+  }))
 
-      const result = {
-        ...rateLimiter,
-        get options() {
-          return rateLimiter.options
-        },
-        set options(value) {
-          rateLimiter.options = value
-        },
-        state,
-      } as AngularAsyncRateLimiter<TFn, TSelected>
+  const asyncRateLimiterSignal = injectLazy(
+    () => new AsyncRateLimiter<TFn>(fn, mergedOptions()),
+  )
 
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          rateLimiter.options as AngularAsyncRateLimiterOptions<TFn, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          rateLimiter.abort()
-        }
-      })
-
-      return result
+  const methods = injectForwardMethods(
+    asyncRateLimiterSignal,
+    asyncRateLimiterMethods,
+    (core) => {
+      core.setOptions(mergedOptions())
     },
   )
+
+  effect(() => {
+    const opts = mergedOptions()
+    untracked(() => asyncRateLimiterSignal().setOptions(opts))
+  })
+
+  effect((onCleanup) => {
+    const core = asyncRateLimiterSignal()
+    onCleanup(() => {
+      const opts = untracked(mergedOptions)
+      if (opts.onUnmount) {
+        opts.onUnmount(core)
+      } else {
+        core.abort()
+      }
+    })
+  })
+
+  const hasPendingTasks = injectSelector(
+    () => asyncRateLimiterSignal().store,
+    (state) => state.isExecuting,
+  )
+  injectPendingTasksLifecycle(hasPendingTasks)
+
+  const state = injectSelector(() => asyncRateLimiterSignal().store, selector, {
+    compare: shallow,
+  })
+
+  return { state, ...methods }
 }

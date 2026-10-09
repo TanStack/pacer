@@ -3,7 +3,9 @@ id: AngularAsyncThrottlerOptions
 title: AngularAsyncThrottlerOptions
 ---
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L15)
+Defined in: [packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L26)
+
+Options for [injectAsyncThrottler](../functions/injectAsyncThrottler.md), including core configuration and Angular cleanup.
 
 ## Extends
 
@@ -15,30 +17,24 @@ Defined in: [async-throttler/injectAsyncThrottler.ts:15](https://github.com/TanS
 
 `TFn` *extends* `AnyAsyncFunction`
 
-### TSelected
-
-`TSelected` = \{
-\}
-
 ## Properties
 
 ### onUnmount?
 
 ```ts
-optional onUnmount?: (throttler) => void;
+optional onUnmount?: (core) => void;
 ```
 
-Defined in: [async-throttler/injectAsyncThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L24)
+Defined in: [packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-throttler/injectAsyncThrottler.ts#L33)
 
-Optional callback invoked when the component is destroyed. Receives the throttler instance.
-When provided, replaces the default cleanup (cancel + abort); use it to call flush(), cancel(), add logging, etc.
-When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+Called when the owning injection context is destroyed. Receives the core instance.
+Providing this callback replaces the default cleanup (cancel pending execution and abort running work).
 
 #### Parameters
 
-##### throttler
+##### core
 
-[`AngularAsyncThrottler`](AngularAsyncThrottler.md)\<`TFn`, `TSelected`\>
+`AsyncThrottler`\<`TFn`\>
 
 #### Returns
 

@@ -1,149 +1,171 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import { computed, effect, untracked } from '@angular/core'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
-import { injectPacerOptions } from '../provider/pacer-context'
-import type { AngularPacerOptions } from '../types'
+import { shallow } from '@tanstack/store'
+import { injectPacerOptions } from '../provider/providePacerOptions'
+import { toAccessorSignal } from '../utils/maybeAccessor'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
+import { injectLazy } from '../utils/injectLazy'
+import { injectSelector } from '../utils/injectSelector'
+import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
+import type { ReadonlySelected } from '../utils/readonlySelected'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
-import type {
-  AsyncQueuerOptions,
-  AsyncQueuerState,
-} from '@tanstack/pacer/async-queuer'
+import type { AsyncQueuerOptions, AsyncQueuerState } from '@tanstack/pacer'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
+/**
+ * Options for {@link injectAsyncQueuer}, including core configuration and Angular cleanup.
+ */
 export interface AngularAsyncQueuerOptions<
   TValue,
-  TSelected = {},
 > extends AsyncQueuerOptions<TValue> {
   /**
-   * Optional callback invoked when the component is destroyed. Receives the queuer instance.
-   * When provided, replaces the default cleanup (stop + abort); use it to call flush(), stop(), add logging, etc.
-   * When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+   * Called when the owning injection context is destroyed. Receives the core instance.
+   * Providing this callback replaces the default cleanup (stop automatic processing and abort running work).
    */
-  onUnmount?: (queuer: AngularAsyncQueuer<TValue, TSelected>) => void
+  onUnmount?: (core: AsyncQueuer<TValue>) => void
 }
 
-export interface AngularAsyncQueuer<TValue, TSelected = {}> extends Omit<
+const asyncQueuerMethodMap = {
+  fn: false,
+  setOptions: false,
+  addItem: true,
+  getNextItem: true,
+  execute: true,
+  flush: true,
+  flushAsBatch: true,
+  peekNextItem: true,
+  peekAllItems: true,
+  peekActiveItems: true,
+  peekPendingItems: true,
+  start: true,
+  stop: true,
+  clear: true,
+  abort: true,
+  reset: true,
+  getAbortSignal: true,
+} satisfies MethodMap<AsyncQueuer<unknown>>
+
+const asyncQueuerMethods = methodNames(asyncQueuerMethodMap)
+
+type AsyncQueuerMethod = (typeof asyncQueuerMethods)[number]
+
+/**
+ * An Angular AsyncQueuer ref with stable core methods and readonly selected state.
+ * Read `state()` to observe the selector result; without a selector it returns `{}`.
+ */
+export interface AngularAsyncQueuer<TValue, TSelected = {}> extends Pick<
   AsyncQueuer<TValue>,
-  'store' | 'options' | 'setOptions'
+  AsyncQueuerMethod
 > {
-  options: AsyncQueuer<TValue>['options'] &
-    AngularAsyncQueuerOptions<TValue, TSelected>
-  setOptions: (
-    options: Partial<AngularAsyncQueuerOptions<TValue, TSelected>>,
-  ) => void
-  /**
-   * Reactive state signal that will be updated when the async queuer state changes
-   *
-   * Use this instead of `queuer.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<AsyncQueuerState<TValue>>>
+  /** The readonly selector result. Returns an empty object when no selector is supplied. */
+  readonly state: Signal<ReadonlySelected<TSelected>>
 }
 
 /**
- * An Angular function that creates and manages an AsyncQueuer instance.
+ * Creates and manages an Angular AsyncQueuer in the current injection context.
  *
- * This is a lower-level function that provides direct access to the AsyncQueuer's functionality.
- * This allows you to integrate it with any state management solution you prefer.
+ * Processes queued items asynchronously with configurable pacing and concurrency.
  *
- * The AsyncQueuer processes items asynchronously with support for concurrent execution,
- * promise-based processing, error handling, retry capabilities, and abort support.
+ * ## Options and state
  *
- * ## State Management and Selector
+ * Accepts static options or an options factory. Factories are read lazily, and signal
+ * dependencies update the existing core instance. Local options override provider defaults.
+ * Methods apply current options before executing and run outside Angular's zone.
  *
- * The function uses TanStack Store for state management and wraps it with Angular signals.
- * The `selector` parameter allows you to specify which state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+ * Pass a selector to expose reactive core state through `state()`. Without a selector,
+ * `state()` returns `{}`; operations remain available on the ref.
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * ## Cleanup
  *
- * ## Cleanup on Destroy
+ * The default cleanup is to stop automatic processing and abort running work. Set `onUnmount` to replace it.
  *
- * By default, the function stops the queuer and aborts in-flight work when the component is destroyed.
- * Use the `onUnmount` option to customize this. For example, to flush pending items instead:
- *
- * ```ts
- * const queuer = injectAsyncQueuer(fn, {
- *   concurrency: 2,
- *   onUnmount: (q) => q.flush()
- * });
- * ```
- *
- * When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive factory returning them.
+ * @returns A ref containing stable methods and a readonly selected-state signal.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const queuer = injectAsyncQueuer(
- *   async (item: Data) => {
- *     const response = await fetch('/api/process', {
- *       method: 'POST',
- *       body: JSON.stringify(item)
- *     });
- *     return response.json();
- *   },
- *   { concurrency: 2, wait: 1000 }
- * );
- *
- * // Add items
- * queuer.addItem(data1);
- * queuer.addItem(data2);
- *
- * // Access the selected state
- * const { items, isExecuting } = queuer.state();
+ * // In a component or service injection context.
+ * const utility = injectAsyncQueuer(
+ *   (item: string) => Promise.resolve(item),
+ *   () => ({ wait: 100, concurrency: 2 }),
+ *   (state) => state.items,
+ * )
+ * utility.addItem('job')
+ * console.log(utility.state())
  * ```
  */
-export function injectAsyncQueuer<TValue, TSelected = {}>(
-  fn: (value: TValue) => Promise<any>,
-  options: AngularPacerOptions<
-    AngularAsyncQueuerOptions<TValue, TSelected>
-  > = {},
-  selector: (state: AsyncQueuerState<TValue>) => TSelected = () =>
-    ({}) as TSelected,
-): AngularAsyncQueuer<TValue, TSelected> {
-  return injectReactiveOptions<
-    AngularAsyncQueuerOptions<TValue, TSelected>,
-    AngularAsyncQueuer<TValue, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'asyncQueuer',
-    (mergedOptions, getPublicInstance) => {
-      const queuer = new AsyncQueuer<TValue>(fn, mergedOptions)
-      const state = injectSelector(queuer.store, selector)
+export function injectAsyncQueuer<TValue>(
+  fn: (item: TValue) => Promise<any>,
+  options?: MaybeAccessor<AngularAsyncQueuerOptions<TValue>>,
+): AngularAsyncQueuer<TValue>
+/**
+ * Creates an Angular AsyncQueuer with a reactive selector result.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive options factory.
+ * @param selector Selects the state exposed by the returned `state` signal.
+ * @returns The utility ref with the selected state.
+ */
+export function injectAsyncQueuer<TValue, TSelected>(
+  fn: (item: TValue) => Promise<any>,
+  options: MaybeAccessor<AngularAsyncQueuerOptions<TValue>>,
+  selector: (state: AsyncQueuerState<TValue>) => TSelected,
+): AngularAsyncQueuer<TValue, TSelected>
+export function injectAsyncQueuer<TValue, TSelected>(
+  fn: (item: TValue) => Promise<any>,
+  options: MaybeAccessor<AngularAsyncQueuerOptions<TValue>> = {},
+  selector: (state: AsyncQueuerState<TValue>) => TSelected | {} = () => ({}),
+): AngularAsyncQueuer<TValue, TSelected | {}> {
+  const baseOptions = injectPacerOptions()
+  const optionsSignal = toAccessorSignal(options)
+  const mergedOptions = computed(() => ({
+    ...baseOptions.asyncQueuer,
+    ...optionsSignal(),
+  }))
 
-      const result = {
-        ...queuer,
-        get options() {
-          return queuer.options
-        },
-        set options(value) {
-          queuer.options = value
-        },
-        state,
-      } as AngularAsyncQueuer<TValue, TSelected>
+  const asyncQueuerSignal = injectLazy(
+    () => new AsyncQueuer<TValue>(fn, mergedOptions()),
+  )
 
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          queuer.options as AngularAsyncQueuerOptions<TValue, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          queuer.stop()
-          queuer.abort()
-        }
-      })
-
-      return result
+  const methods = injectForwardMethods(
+    asyncQueuerSignal,
+    asyncQueuerMethods,
+    (core) => {
+      core.setOptions(mergedOptions())
     },
   )
+
+  effect(() => {
+    const opts = mergedOptions()
+    untracked(() => asyncQueuerSignal().setOptions(opts))
+  })
+
+  effect((onCleanup) => {
+    const core = asyncQueuerSignal()
+    onCleanup(() => {
+      const opts = untracked(mergedOptions)
+      if (opts.onUnmount) {
+        opts.onUnmount(core)
+      } else {
+        core.stop()
+        core.abort()
+      }
+    })
+  })
+
+  const hasPendingTasks = injectSelector(
+    () => asyncQueuerSignal().store,
+    (state) => state.isExecuting || (state.isRunning && state.pendingTick),
+  )
+  injectPendingTasksLifecycle(hasPendingTasks)
+
+  const state = injectSelector(() => asyncQueuerSignal().store, selector, {
+    compare: shallow,
+  })
+
+  return { state, ...methods }
 }

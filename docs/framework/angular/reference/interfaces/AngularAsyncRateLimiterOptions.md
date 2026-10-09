@@ -3,7 +3,9 @@ id: AngularAsyncRateLimiterOptions
 title: AngularAsyncRateLimiterOptions
 ---
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L15)
+Defined in: [packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L26)
+
+Options for [injectAsyncRateLimiter](../functions/injectAsyncRateLimiter.md), including core configuration and Angular cleanup.
 
 ## Extends
 
@@ -15,29 +17,24 @@ Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:15](https://github.com
 
 `TFn` *extends* `AnyAsyncFunction`
 
-### TSelected
-
-`TSelected` = \{
-\}
-
 ## Properties
 
 ### onUnmount?
 
 ```ts
-optional onUnmount?: (rateLimiter) => void;
+optional onUnmount?: (core) => void;
 ```
 
-Defined in: [async-rate-limiter/injectAsyncRateLimiter.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L23)
+Defined in: [packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L33)
 
-Optional callback invoked when the component is destroyed. Receives the rate limiter instance.
-When provided, replaces the default cleanup (abort).
+Called when the owning injection context is destroyed. Receives the core instance.
+Providing this callback replaces the default cleanup (abort running work).
 
 #### Parameters
 
-##### rateLimiter
+##### core
 
-[`AngularAsyncRateLimiter`](AngularAsyncRateLimiter.md)\<`TFn`, `TSelected`\>
+`AsyncRateLimiter`\<`TFn`\>
 
 #### Returns
 

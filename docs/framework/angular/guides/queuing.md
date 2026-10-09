@@ -43,21 +43,20 @@ Choose another utility when:
 
 ## Choose an API
 
-- `injectQueuedSignal` or `injectQueuedValue` for queue-driven signals
+- `injectQueuedComputed` to queue observed source values
+- `injectQueuedSignal` to queue individual `set` and `update` operations
+- `injectQueuerItems` for a signal of pending queue items
 - `injectQueuer` for direct queue lifecycle and ordering control
 
-Use the queued state or value API when queue contents drive the UI. Use the instance API for ordering, capacity, expiration, pause, resume, flush, and manual processing.
+Use the items helper when queue contents drive the UI. Use the instance API for ordering, capacity, expiration, pause, resume, flush, and manual processing.
 
 ## Angular example
 
 ```ts
-import { injectQueuedSignal } from '@tanstack/angular-pacer'
+import { injectQueuerItems } from '@tanstack/angular-pacer'
 
 export class JobQueueComponent {
-  readonly queued = injectQueuedSignal(processJob, { wait: 500 }, (state) => ({
-    items: state.items,
-    isRunning: state.isRunning,
-  }))
+  readonly queued = injectQueuerItems(processJob, { wait: 500 })
 
   add() {
     this.queued.addItem(nextJob())
@@ -69,39 +68,42 @@ The focused snippets later in this guide use `injectQueuer` and assume they run 
 
 Pass `initialItems` when work is already available at creation time. The queue applies its normal insertion and capacity rules, and automatic processing can begin immediately unless `started: false` is set.
 
-## Queue a source signal
+## Reading pending items
 
-`injectQueuedValue` returns a `QueuedValueSignal`: `queued()` reads the most recently processed value, `queued.addItem(value)` enqueues a value, and `queued.queuer` exposes the queue controls. Its default selector exposes pending items at `queued.queuer.state().items`.
-
-```ts
-readonly source = input.required<string>()
-readonly queued = injectQueuedValue(this.source, { wait: 500 })
-```
-
-Construction does not read the source. Angular's effect reads it after inputs are bound and enqueues the latest value. Each later effect run enqueues the latest observed source value. Several source writes before an effect runs are coalesced; use `queued.addItem` for every value that must enter the queue individually.
-
-Before processing begins, `queued()` reads the initial source value. Reading it before a required input is bound throws Angular's required-input error. Supply an explicit initial value if the output must be readable earlier:
+`queued()` returns the waiting items as a readonly array. Use the `addItem` shortcut to enqueue items and `queued.queuer` to control processing:
 
 ```ts
-const text = injectQueuedValue(source, '')
-const object = injectQueuedValue(objectSource, { label: 'Loading' }, {})
-const callback = injectQueuedValue(callbackSource, () => 'Loading', {})
+const queued = injectQueuerItems(processItem, { started: false })
+queued.addItem('first')
+queued.addItem('second')
+console.log(queued()) // ['first', 'second']
+queued.queuer.start()
 ```
 
-Two-argument primitive initial values, including `0`, `false`, `''`, and `null`, are supported. Object and function initial values require a third options object, such as `{}`. A function in the options position is an options factory.
+Pass a third-argument selector to expose counters or running state through `queued.queuer.state()`. The items signal still returns the waiting items.
 
-Pass a fourth selector argument, which can be `undefined`, when an explicit initial value uses factory or undefined options:
+## Queued values
+
+`injectQueuedComputed` returns the last processed source value. It queues the initial value and subsequent values observed by Angular effects. Multiple source writes before an effect runs are observed as one change.
 
 ```ts
-const queued = injectQueuedValue(source, '', () => ({ wait: wait() }), undefined)
-const initialObject = injectQueuedValue(objectSource, { label: 'Loading' }, undefined, undefined)
+const source = signal('')
+const queued = injectQueuedComputed(source, { wait: 500 })
+source.set('next')
+console.log(queued()) // Last processed value.
 ```
 
-`injectQueuedValue(source, options, undefined)` keeps the options-only meaning. An explicit `undefined` initial value requires an options object or a fourth argument.
+`injectQueuedSignal` returns an editable signal whose accepted writes are queued individually. Each updater runs against the value at processing time:
 
-### Migrate from the previous return shape
+```ts
+const count = injectQueuedSignal(0, { started: false })
+count.set(1)
+count.update((previous) => previous + 2)
+count.queuer.flush()
+console.log(count()) // 3
+```
 
-Earlier versions returned the pending-items array from `queued()`. It now returns the processed scalar value. Replace `queued().length` with `queued.queuer.state().items.length` using the default selector, or use `injectQueuedSignal` when the queue contents are the desired signal value. Custom selectors must include `items` to access that list.
+Both helpers accept a selector for their attached `queuer.state()`. The editable helper queues callbacks, so its item-dependent options receive callbacks rather than the displayed value.
 
 ## Ordering items
 
@@ -271,11 +273,15 @@ queuer.reset()
 
 ## Configuring and observing the queue
 
-Use `setOptions()` to update future behavior. Changing `started` through `setOptions()` does not call `start()` or `stop()`.
+Use an options function to read reactive configuration:
 
 ```ts
-queuer.setOptions({ wait: 250, maxSize: 20 })
-queuer.start()
+import { signal } from '@angular/core'
+
+const options = signal({ wait: 500, maxSize: 10 })
+const queuer = injectQueuer(processItem, options)
+
+options.set({ wait: 250, maxSize: 20 })
 ```
 
 The `wait` option may be a function that receives the queuer instance:
@@ -299,7 +305,7 @@ The adapter stops automatic processing when its owner is destroyed. Providing `o
 
 ## Reactive state
 
-The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in an Angular injection context, usually as a component or service field initializer and select only fields used by the view:
+Pass a selector to expose the state used by your view through `state()`. Without a selector, `state()` returns `{}`:
 
 ```ts
 const queuer = injectQueuer(processItem, { wait: 250 }, (state) => ({
@@ -310,7 +316,7 @@ const queuer = injectQueuer(processItem, { wait: 250 }, (state) => ({
 console.log(queuer.state().size, queuer.state().isRunning)
 ```
 
-Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+Option callbacks receive the core utility instance. Read the selected `state()` signal in templates.
 
 `initialState` can restore selected queue state that your app has persisted. If it includes `items`, they take precedence over `initialItems`; `initialState.isRunning` likewise takes precedence over `started`. Restore only durable fields. Pending timers are not restored.
 

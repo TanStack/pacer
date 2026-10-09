@@ -1,41 +1,25 @@
 import { Component, signal } from '@angular/core'
-import { JsonPipe } from '@angular/common'
 import { injectQueuedSignal } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  imports: [JsonPipe],
 })
 export class App {
+  readonly source = signal('')
   readonly currentValue = signal(50)
-  readonly rangeValue = signal(50)
   readonly instantExecutions = signal(0)
-  readonly processed = signal<Array<number>>([])
-  readonly queued = injectQueuedSignal(
-    (item: number) => this.processed.update((items) => [...items, item]),
-    {
-      maxSize: 25,
-      initialItems: Array.from({ length: 10 }, (_, index) => index + 1),
-      started: false,
-      wait: 1000,
-    },
-    (state) => state,
-  )
-  readonly numberQueue = this.queued.queuer
-  readonly rangeQueued = injectQueuedSignal(
-    (item: number) => this.rangeValue.set(item),
-    { maxSize: 100, wait: 100 },
-    (state) => state,
-  )
+  readonly queued = injectQueuedSignal('', { maxSize: 25, wait: 500 }, (state) => state)
+  readonly queuer = this.queued.queuer
+  readonly rangeQueued = injectQueuedSignal(50, { maxSize: 100, wait: 100 }, (state) => state)
   readonly rangeQueue = this.rangeQueued.queuer
-  addNumber(): void {
-    const items = this.numberQueue.peekAllItems()
-    this.numberQueue.addItem(items.length ? items[items.length - 1]! + 1 : 1)
+  onSearch(value: string): void {
+    this.source.set(value)
+    this.queued.set(value)
   }
   onRange(value: number): void {
     this.currentValue.set(value)
+    this.rangeQueued.set(value)
     this.instantExecutions.update((count) => count + 1)
-    this.rangeQueue.addItem(value)
   }
 }

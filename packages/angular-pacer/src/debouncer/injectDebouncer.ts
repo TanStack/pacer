@@ -1,157 +1,163 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import { computed, effect, untracked } from '@angular/core'
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
-import { injectPacerOptions } from '../provider/pacer-context'
-import type { AngularPacerOptions } from '../types'
+import { shallow } from '@tanstack/store'
+import { injectPacerOptions } from '../provider/providePacerOptions'
+import { toAccessorSignal } from '../utils/maybeAccessor'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
+import { injectLazy } from '../utils/injectLazy'
+import { injectSelector } from '../utils/injectSelector'
+import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
+import type { ReadonlySelected } from '../utils/readonlySelected'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
-import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
+  AnyFunction,
   DebouncerOptions,
   DebouncerState,
-} from '@tanstack/pacer/debouncer'
+} from '@tanstack/pacer'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
+/**
+ * Options for {@link injectDebouncer}, including core configuration and Angular cleanup.
+ */
 export interface AngularDebouncerOptions<
-  TFn extends AnyFunction,
-  TSelected = {},
+  TFn extends AnyFunction = AnyFunction,
 > extends DebouncerOptions<TFn> {
   /**
-   * Optional callback invoked when the component is destroyed. Receives the debouncer instance.
-   * When provided, replaces the default cleanup (cancel); use it to call flush(), cancel(), add logging, etc.
+   * Called when the owning injection context is destroyed. Receives the core instance.
+   * Providing this callback replaces the default cleanup (cancel pending execution).
    */
-  onUnmount?: (debouncer: AngularDebouncer<TFn, TSelected>) => void
+  onUnmount?: (core: Debouncer<TFn>) => void
 }
 
+const debouncerMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  flush: true,
+  cancel: true,
+  reset: true,
+} satisfies MethodMap<Debouncer<AnyFunction>>
+
+const debouncerMethods = methodNames(debouncerMethodMap)
+
+type DebouncerMethod = (typeof debouncerMethods)[number]
+
+/**
+ * An Angular Debouncer ref with stable core methods and readonly selected state.
+ * Read `state()` to observe the selector result; without a selector it returns `{}`.
+ */
 export interface AngularDebouncer<
-  TFn extends AnyFunction,
+  TFn extends AnyFunction = AnyFunction,
   TSelected = {},
-> extends Omit<Debouncer<TFn>, 'store' | 'options' | 'setOptions'> {
-  options: Debouncer<TFn>['options'] & AngularDebouncerOptions<TFn, TSelected>
-  setOptions: (
-    options: Partial<AngularDebouncerOptions<TFn, TSelected>>,
-  ) => void
-  /**
-   * Reactive state signal that will be updated when the debouncer state changes
-   *
-   * Use this instead of `debouncer.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `debouncer.state` instead of `debouncer.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<DebouncerState<TFn>>>
+> extends Pick<Debouncer<TFn>, DebouncerMethod> {
+  /** The readonly selector result. Returns an empty object when no selector is supplied. */
+  readonly state: Signal<ReadonlySelected<TSelected>>
 }
 
 /**
- * An Angular function that creates and manages a Debouncer instance.
+ * Creates and manages an Angular Debouncer in the current injection context.
  *
- * This is a lower-level function that provides direct access to the Debouncer's functionality.
- * This allows you to integrate it with any state management solution you prefer.
+ * Waits until calls stop for the configured delay, then runs the latest callback. Each new call restarts the delay.
  *
- * This function provides debouncing functionality to limit how often a function can be called,
- * waiting for a specified delay before executing the latest call. This is useful for handling
- * frequent events like window resizing, scroll events, or real-time search inputs.
+ * ## Options and state
  *
- * The debouncer will only execute the function after the specified wait time has elapsed
- * since the last call. If the function is called again before the wait time expires, the
- * timer resets and starts waiting again.
+ * Accepts static options or an options factory. Factories are read lazily, and signal
+ * dependencies update the existing core instance. Local options override provider defaults.
+ * Methods apply current options before executing and run outside Angular's zone.
  *
- * ## State Management and Selector
+ * Pass a selector to expose reactive core state through `state()`. Without a selector,
+ * `state()` returns `{}`; operations remain available on the ref.
  *
- * The function uses TanStack Store for state management and wraps it with Angular signals.
- * The `selector` parameter allows you to specify which state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+ * ## Cleanup
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * The default cleanup is to cancel pending execution. Set `onUnmount` to replace it.
  *
- * Available state properties:
- * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
- * - `executionCount`: Number of function executions that have been completed
- * - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
- * - `lastArgs`: The arguments from the most recent call to maybeExecute
- * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
- *
- * ## Cleanup on Destroy
- *
- * By default, the function cancels any pending execution when the component is destroyed.
- * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
- *
- * ```ts
- * const debouncer = injectDebouncer(fn, {
- *   wait: 500,
- *   onUnmount: (d) => d.flush()
- * });
- * ```
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive factory returning them.
+ * @returns A ref containing stable methods and a readonly selected-state signal.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const debouncer = injectDebouncer(
- *   (query: string) => fetchSearchResults(query),
- *   { wait: 500 }
- * );
- *
- * // Opt-in to track isPending changes (optimized for loading states)
- * const debouncer = injectDebouncer(
- *   (query: string) => fetchSearchResults(query),
- *   { wait: 500 },
- *   (state) => ({ isPending: state.isPending })
- * );
- *
- * // In an event handler
- * const handleChange = (e: Event) => {
- *   const target = e.target as HTMLInputElement
- *   debouncer.maybeExecute(target.value);
- * };
- *
- * // Access the selected state (will be empty object {} unless selector provided)
- * const { isPending } = debouncer.state();
+ * // In a component or service injection context.
+ * const utility = injectDebouncer(
+ *   (query: string) => console.log(query),
+ *   () => ({ wait: 250 }),
+ *   (state) => state.isPending,
+ * )
+ * utility.maybeExecute('search')
+ * console.log(utility.state())
  * ```
  */
-export function injectDebouncer<TFn extends AnyFunction, TSelected = {}>(
+export function injectDebouncer<TFn extends AnyFunction>(
   fn: TFn,
-  options: AngularPacerOptions<AngularDebouncerOptions<TFn, TSelected>>,
-  selector: (state: DebouncerState<TFn>) => TSelected = () => ({}) as TSelected,
-): AngularDebouncer<TFn, TSelected> {
-  return injectReactiveOptions<
-    AngularDebouncerOptions<TFn, TSelected>,
-    AngularDebouncer<TFn, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'debouncer',
-    (mergedOptions, getPublicInstance) => {
-      const debouncer = new Debouncer<TFn>(fn, mergedOptions)
-      const state = injectSelector(debouncer.store, selector)
+  options: MaybeAccessor<AngularDebouncerOptions<TFn>>,
+): AngularDebouncer<TFn>
+/**
+ * Creates an Angular Debouncer with a reactive selector result.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive options factory.
+ * @param selector Selects the state exposed by the returned `state` signal.
+ * @returns The utility ref with the selected state.
+ */
+export function injectDebouncer<TFn extends AnyFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularDebouncerOptions<TFn>>,
+  selector: (state: DebouncerState<TFn>) => TSelected,
+): AngularDebouncer<TFn, TSelected>
+export function injectDebouncer<TFn extends AnyFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularDebouncerOptions<TFn>>,
+  selector: (state: DebouncerState<TFn>) => TSelected | {} = () => ({}),
+): AngularDebouncer<TFn, TSelected | {}> {
+  const baseOptions = injectPacerOptions()
+  const optionsSignal = toAccessorSignal(options)
+  const mergedOptions = computed<AngularDebouncerOptions<TFn>>(() => ({
+    ...baseOptions.debouncer,
+    ...optionsSignal(),
+  }))
 
-      const result = {
-        ...debouncer,
-        get options() {
-          return debouncer.options
-        },
-        set options(value) {
-          debouncer.options = value
-        },
-        state,
-      } as AngularDebouncer<TFn, TSelected>
+  const debouncerSignal = injectLazy(
+    () => new Debouncer<TFn>(fn, mergedOptions()),
+  )
 
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          debouncer.options as AngularDebouncerOptions<TFn, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          debouncer.cancel()
-        }
-      })
-
-      return result
+  const methods = injectForwardMethods(
+    debouncerSignal,
+    debouncerMethods,
+    (core) => {
+      core.setOptions(mergedOptions())
     },
   )
+
+  effect(() => {
+    const opts = mergedOptions()
+    untracked(() => debouncerSignal().setOptions(opts))
+  })
+
+  effect((onCleanup) => {
+    const core = debouncerSignal()
+    onCleanup(() => {
+      const opts = untracked(mergedOptions)
+      if (opts.onUnmount) {
+        opts.onUnmount(core)
+      } else {
+        core.cancel()
+      }
+    })
+  })
+
+  const hasPendingTasks = injectSelector(
+    () => debouncerSignal().store,
+    (state) => state.isPending,
+  )
+  injectPendingTasksLifecycle(hasPendingTasks)
+
+  const state = injectSelector(() => debouncerSignal().store, selector, {
+    compare: shallow,
+  })
+
+  return { state, ...methods }
 }

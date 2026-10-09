@@ -3,80 +3,97 @@ id: injectRateLimitedSignal
 title: injectRateLimitedSignal
 ---
 
+## Call Signature
+
 ```ts
-function injectRateLimitedSignal<TValue, TSelected>(
-   value,
-   initialOptions,
-selector?): RateLimitedSignal<TValue, TSelected>;
+function injectRateLimitedSignal<TValue>(initialValue, options): AngularRateLimiterSignal<TValue>;
 ```
 
-Defined in: [rate-limiter/injectRateLimitedSignal.ts:58](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L58)
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:49](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L49)
 
-An Angular function that creates a rate-limited state signal, combining Angular's signal with rate limiting functionality.
-This function provides both the current rate-limited value and methods to update it.
+Creates an Angular ratelimited editable signal.
 
-Rate limiting is a simple "hard limit" approach - it allows all updates until the limit is reached, then blocks
-subsequent updates until the window resets. Unlike throttling or debouncing, it does not attempt to space out
-or intelligently collapse updates.
+The initial value is available synchronously. `set` and `update` share the execution limit. Accepted writes apply immediately; rejected writes and their updater callbacks are discarded, not replayed later.
 
-The function returns a callable object:
-- `rateLimited()`: Get the current rate-limited value
-- `rateLimited.set(...)`: Set or update the rate-limited value (rate-limited via maybeExecute)
-- `rateLimited.rateLimiter`: The rate limiter instance with additional control methods and state signals
+The returned value is a real Angular signal with the underlying utility exposed
+on `rateLimiter`. Options accept a static object or reactive factory and follow
+[injectRateLimiter](injectRateLimiter.md) lifecycle and provider behavior.
 
-## State Management and Selector
+### Type Parameters
 
-The function uses TanStack Store for reactive state management via the underlying rate limiter instance.
-The `selector` parameter allows you to specify which rate limiter state changes will trigger signal updates,
-optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
-
-**By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary updates and gives you
-full control over when your component tracks state changes.
-
-## Type Parameters
-
-### TValue
+#### TValue
 
 `TValue`
 
-### TSelected
+### Parameters
 
-`TSelected` = \{
-\}
+#### initialValue
 
-## Parameters
+`MaybeAccessor`\<`TValue`\>
 
-### value
+The initial committed value.
+
+#### options
+
+`MaybeAccessor`\<[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<(`callback`) => `void`\>\>
+
+Core options or a reactive options factory.
+
+### Returns
+
+[`AngularRateLimiterSignal`](../interfaces/AngularRateLimiterSignal.md)\<`TValue`\>
+
+The value signal with `set`, `update`, and a `rateLimiter` attribute.
+
+### Example
+
+```ts
+// In a component or service injection context.
+const value = injectRateLimitedSignal(0, { limit: 5, window: 1000 })
+value.set(10)
+value.update(previous => previous + 1)
+console.log(value())
+```
+
+## Call Signature
+
+```ts
+function injectRateLimitedSignal<TValue, TSelected>(
+   initialValue,
+   options,
+selector): AngularRateLimiterSignal<TValue, TSelected>;
+```
+
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:59](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L59)
+
+Creates the value signal with selected state on its attached utility ref.
+
+### Type Parameters
+
+#### TValue
 
 `TValue`
 
-### initialOptions
+#### TSelected
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`RateLimiterOptions`\<`Setter`\<`TValue`\>\>\>
+`TSelected`
 
-### selector?
+### Parameters
+
+#### initialValue
+
+`MaybeAccessor`\<`TValue`\>
+
+#### options
+
+`MaybeAccessor`\<[`AngularRateLimiterOptions`](../interfaces/AngularRateLimiterOptions.md)\<(`callback`) => `void`\>\>
+
+#### selector
 
 (`state`) => `TSelected`
 
-## Returns
+Selects reactive state exposed on the attached utility ref.
 
-[`RateLimitedSignal`](../interfaces/RateLimitedSignal.md)\<`TValue`, `TSelected`\>
+### Returns
 
-## Example
-
-```ts
-// Default behavior - no reactive state subscriptions
-const rateLimited = injectRateLimitedSignal(0, {
-  limit: 5,
-  window: 60000,
-  windowType: 'sliding'
-});
-
-// Opt-in to reactive updates when limit state changes
-const rateLimited = injectRateLimitedSignal(
-  0,
-  { limit: 5, window: 60000 },
-  (state) => ({ rejectionCount: state.rejectionCount })
-);
-```
+[`AngularRateLimiterSignal`](../interfaces/AngularRateLimiterSignal.md)\<`TValue`, `TSelected`\>

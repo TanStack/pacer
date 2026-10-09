@@ -1,5 +1,6 @@
 export * from '@tanstack/pacer/queuer'
 
-export * from './injectQueuedSignal'
-export * from './injectQueuedValue'
+export * from './injectQueuedItems'
 export * from './injectQueuer'
+export * from './injectQueuedComputed'
+export * from './injectQueuedSignal'

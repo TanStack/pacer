@@ -8,7 +8,13 @@ Retrying runs an async operation again after it fails. It can make transient fai
 > [!NOTE]
 > `AsyncRetryer` is an alpha API and may change before 1.0. Its current design also supports the retry behavior inside Pacer's other async utilities.
 
-Retrying is the exception among these framework guides: TanStack Pacer does not provide an Angular-specific retry primitive. The adapter re-exports the public `asyncRetry` function and `AsyncRetryer` class, so this guide uses those APIs and connects long-lived instances to the Angular lifecycle.
+Retrying is the exception among these framework guides: TanStack Pacer does not provide an Angular-specific retry primitive. Use `asyncRetry` and `AsyncRetryer` re-exported from `@tanstack/angular-pacer` and connect long-lived instances to the Angular lifecycle.
+
+Install the Angular adapter to use these re-exported APIs:
+
+```sh
+npm install @tanstack/angular-pacer
+```
 
 If TanStack Query already owns the request, use its retry support so one system controls request state and cancellation.
 

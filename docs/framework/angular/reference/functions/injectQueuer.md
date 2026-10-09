@@ -3,93 +3,115 @@ id: injectQueuer
 title: injectQueuer
 ---
 
+## Call Signature
+
 ```ts
-function injectQueuer<TValue, TSelected>(
-   fn,
-   options?,
-selector?): AngularQueuer<TValue, TSelected>;
+function injectQueuer<TValue>(fn, options?): AngularQueuer<TValue>;
 ```
 
-Defined in: [queuer/injectQueuer.ts:96](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L96)
+Defined in: [packages/angular-pacer/src/queuer/injectQueuer.ts:96](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L96)
 
-An Angular function that creates and manages a Queuer instance.
+Creates and manages an Angular Queuer in the current injection context.
 
-This is a lower-level function that provides direct access to the Queuer's functionality.
-This allows you to integrate it with any state management solution you prefer.
+Processes queued items in order with configurable pacing, capacity, and priority.
 
-The Queuer processes items synchronously in order, with optional delays between processing each item.
-The queuer includes an internal tick mechanism that can be started and stopped, making it useful as a scheduler.
+## Options and state
 
-## State Management and Selector
+Accepts static options or an options factory. Factories are read lazily, and signal
+dependencies update the existing core instance. Local options override provider defaults.
+Methods apply current options before executing and run outside Angular's zone.
 
-The function uses TanStack Store for state management and wraps it with Angular signals.
-The `selector` parameter allows you to specify which state changes will trigger signal updates,
-optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+Pass a selector to expose reactive core state through `state()`. Without a selector,
+`state()` returns `{}`; operations remain available on the ref.
 
-**By default, there will be no reactive state subscriptions** and you must opt-in to state
-tracking by providing a selector function. This prevents unnecessary updates and gives you
-full control over when your component tracks state changes.
+## Cleanup
 
-## Type Parameters
+The default cleanup is to stop automatic processing. Set `onUnmount` to replace it.
 
-### TValue
+### Type Parameters
+
+#### TValue
 
 `TValue`
 
-### TSelected
+### Parameters
 
-`TSelected` = \{
-\}
-
-## Parameters
-
-### fn
+#### fn
 
 (`item`) => `void`
 
-### options?
+The callback invoked by the core utility.
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\>\> = `{}`
+#### options?
 
-### selector?
+`MaybeAccessor`\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`\>\>
+
+Core options or a reactive factory returning them.
+
+### Returns
+
+[`AngularQueuer`](../interfaces/AngularQueuer.md)\<`TValue`\>
+
+A ref containing stable methods and a readonly selected-state signal.
+
+### Example
+
+```ts
+// In a component or service injection context.
+const utility = injectQueuer(
+  (item: string) => console.log(item),
+  () => ({ wait: 100 }),
+  (state) => state.items,
+)
+utility.addItem('job')
+console.log(utility.state())
+```
+
+## Call Signature
+
+```ts
+function injectQueuer<TValue, TSelected>(
+   fn,
+   options,
+selector): AngularQueuer<TValue, TSelected>;
+```
+
+Defined in: [packages/angular-pacer/src/queuer/injectQueuer.ts:107](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuer.ts#L107)
+
+Creates an Angular Queuer with a reactive selector result.
+
+### Type Parameters
+
+#### TValue
+
+`TValue`
+
+#### TSelected
+
+`TSelected`
+
+### Parameters
+
+#### fn
+
+(`item`) => `void`
+
+The callback invoked by the core utility.
+
+#### options
+
+`MaybeAccessor`\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`\>\>
+
+Core options or a reactive options factory.
+
+#### selector
 
 (`state`) => `TSelected`
 
-## Returns
+Selects the state exposed by the returned `state` signal.
+
+### Returns
 
 [`AngularQueuer`](../interfaces/AngularQueuer.md)\<`TValue`, `TSelected`\>
 
-## Example
-
-```ts
-// Default behavior - no reactive state subscriptions
-const queue = injectQueuer(
-  (item) => console.log('Processing:', item),
-  { started: true, wait: 1000 }
-);
-
-// Opt-in to track queue contents changes
-const queue = injectQueuer(
-  (item) => console.log('Processing:', item),
-  { started: true, wait: 1000 },
-  (state) => ({ items: state.items, size: state.size })
-);
-
-// Add items
-queue.addItem('task1');
-
-// Access the selected state
-const { items, isRunning } = queue.state();
-```
-
-## Cleanup on Destroy
-
-By default, the function stops the queuer when the component is destroyed.
-Use the `onUnmount` option to customize this. For example, to flush pending items instead:
-
-```ts
-const queue = injectQueuer(fn, {
-  started: true,
-  onUnmount: (q) => q.flush()
-});
-```
+The utility ref with the selected state.

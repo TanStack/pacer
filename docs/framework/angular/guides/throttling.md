@@ -44,7 +44,7 @@ Choose another utility when:
 
 ## Choose an API
 
-- `injectThrottledSignal` or `injectThrottledValue` for throttled signals
+- `injectThrottledSignal` or `injectThrottledComputed` for throttled signals
 - `injectThrottler` for lifecycle methods and selected state
 
 Use instance methods for event handlers, and state or value helpers for rate-controlled UI state.
@@ -124,13 +124,15 @@ throttler.reset()
 
 ## Configuring behavior at runtime
 
-Use `setOptions()` to update options after construction:
+Use an options function to read reactive configuration:
 
 ```ts
-throttler.setOptions({
-  wait: 250,
-  trailing: false,
-})
+import { signal } from '@angular/core'
+
+const options = signal({ wait: 100, trailing: true })
+const throttler = injectThrottler(updateProgress, options)
+
+options.set({ wait: 250, trailing: false })
 ```
 
 A changed `wait` value does not reschedule an existing trailing timeout. It applies to later scheduling and executions.
@@ -144,7 +146,7 @@ const throttler = injectThrottler(updateProgress, {
 })
 ```
 
-Disabling a throttler through `setOptions()` cancels a pending trailing execution.
+Disabling a throttler cancels a pending trailing execution.
 
 ### Observing executions
 
@@ -166,7 +168,7 @@ The adapter cancels pending work when its owner is destroyed. Providing `onUnmou
 
 ## Reactive state
 
-The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in an Angular injection context, usually as a component or service field initializer and select only fields used by the view:
+Pass a selector to expose the state used by your view through `state()`. Without a selector, `state()` returns `{}`:
 
 ```ts
 const throttler = injectThrottler(updateProgress, { wait: 100 }, (state) => ({
@@ -177,7 +179,7 @@ const throttler = injectThrottler(updateProgress, { wait: 100 }, (state) => ({
 console.log(throttler.state().isPending, throttler.state().executionCount)
 ```
 
-Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+Option callbacks receive the core utility instance. Read the selected `state()` signal in templates.
 
 To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers are not restored.
 

@@ -1,152 +1,166 @@
-import { DestroyRef, inject } from '@angular/core'
-import { injectSelector } from '@tanstack/angular-store'
+import { computed, effect, untracked } from '@angular/core'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
-import { injectReactiveOptions } from '../utils/injectReactiveOptions'
-import { injectPacerOptions } from '../provider/pacer-context'
-import type { AngularPacerOptions } from '../types'
+import { shallow } from '@tanstack/store'
+import { injectPacerOptions } from '../provider/providePacerOptions'
+import { toAccessorSignal } from '../utils/maybeAccessor'
+import {
+  injectForwardMethods,
+  methodNames,
+} from '../utils/injectForwardMethods'
+import { injectLazy } from '../utils/injectLazy'
+import { injectSelector } from '../utils/injectSelector'
+import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
+import type { ReadonlySelected } from '../utils/readonlySelected'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { Signal } from '@angular/core'
-import type { Store } from '@tanstack/angular-store'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
+  AnyAsyncFunction,
   AsyncThrottlerOptions,
   AsyncThrottlerState,
-} from '@tanstack/pacer/async-throttler'
+} from '@tanstack/pacer'
+import type { MethodMap } from '../utils/injectForwardMethods'
 
+/**
+ * Options for {@link injectAsyncThrottler}, including core configuration and Angular cleanup.
+ */
 export interface AngularAsyncThrottlerOptions<
   TFn extends AnyAsyncFunction,
-  TSelected = {},
 > extends AsyncThrottlerOptions<TFn> {
   /**
-   * Optional callback invoked when the component is destroyed. Receives the throttler instance.
-   * When provided, replaces the default cleanup (cancel + abort); use it to call flush(), cancel(), add logging, etc.
-   * When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+   * Called when the owning injection context is destroyed. Receives the core instance.
+   * Providing this callback replaces the default cleanup (cancel pending execution and abort running work).
    */
-  onUnmount?: (throttler: AngularAsyncThrottler<TFn, TSelected>) => void
+  onUnmount?: (core: AsyncThrottler<TFn>) => void
 }
 
+const asyncThrottlerMethodMap = {
+  fn: false,
+  setOptions: false,
+  maybeExecute: true,
+  flush: true,
+  cancel: true,
+  abort: true,
+  reset: true,
+  getAbortSignal: true,
+} satisfies MethodMap<AsyncThrottler<AnyAsyncFunction>>
+
+const asyncThrottlerMethods = methodNames(asyncThrottlerMethodMap)
+
+type AsyncThrottlerMethod = (typeof asyncThrottlerMethods)[number]
+
+/**
+ * An Angular AsyncThrottler ref with stable core methods and readonly selected state.
+ * Read `state()` to observe the selector result; without a selector it returns `{}`.
+ */
 export interface AngularAsyncThrottler<
   TFn extends AnyAsyncFunction,
   TSelected = {},
-> extends Omit<AsyncThrottler<TFn>, 'store' | 'options' | 'setOptions'> {
-  options: AsyncThrottler<TFn>['options'] &
-    AngularAsyncThrottlerOptions<TFn, TSelected>
-  setOptions: (
-    options: Partial<AngularAsyncThrottlerOptions<TFn, TSelected>>,
-  ) => void
-  /**
-   * Reactive state signal that will be updated when the async throttler state changes
-   *
-   * Use this instead of `throttler.store.state`
-   */
-  readonly state: Signal<Readonly<TSelected>>
-  /**
-   * @deprecated Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
-   * The state on the store object is not reactive in Angular signals.
-   */
-  readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>
+> extends Pick<AsyncThrottler<TFn>, AsyncThrottlerMethod> {
+  /** The readonly selector result. Returns an empty object when no selector is supplied. */
+  readonly state: Signal<ReadonlySelected<TSelected>>
 }
 
 /**
- * An Angular function that creates and manages an AsyncThrottler instance.
+ * Creates and manages an Angular AsyncThrottler in the current injection context.
  *
- * This is a lower-level function that provides direct access to the AsyncThrottler's functionality.
- * This allows you to integrate it with any state management solution you prefer.
+ * Limits asynchronous executions to the configured interval, with leading and trailing calls. Later calls replace the pending trailing arguments without restarting the interval.
  *
- * This function provides async throttling functionality with promise support, error handling,
- * retry capabilities, and abort support.
+ * ## Options and state
  *
- * The throttler will execute the function at most once within the specified wait time.
+ * Accepts static options or an options factory. Factories are read lazily, and signal
+ * dependencies update the existing core instance. Local options override provider defaults.
+ * Methods apply current options before executing and run outside Angular's zone.
  *
- * ## State Management and Selector
+ * Pass a selector to expose reactive core state through `state()`. Without a selector,
+ * `state()` returns `{}`; operations remain available on the ref.
  *
- * The function uses TanStack Store for state management and wraps it with Angular signals.
- * The `selector` parameter allows you to specify which state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary updates when irrelevant state changes occur.
+ * ## Cleanup
  *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
+ * The default cleanup is to cancel pending execution and abort running work. Set `onUnmount` to replace it.
  *
- * ## Cleanup on Destroy
- *
- * By default, the function cancels any pending execution and aborts in-flight work when the component is destroyed.
- * Use the `onUnmount` option to customize this. For example, to flush pending work instead:
- *
- * ```ts
- * const throttler = injectAsyncThrottler(fn, {
- *   wait: 1000,
- *   onUnmount: (t) => t.flush()
- * });
- * ```
- *
- * When using onUnmount with flush, guard your callbacks since the component may already be destroyed.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive factory returning them.
+ * @returns A ref containing stable methods and a readonly selected-state signal.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const throttler = injectAsyncThrottler(
- *   async (data: Data) => {
- *     const response = await fetch('/api/update', {
- *       method: 'POST',
- *       body: JSON.stringify(data)
- *     });
- *     return response.json();
- *   },
- *   { wait: 1000 }
- * );
- *
- * // In an event handler
- * const handleUpdate = async (data: Data) => {
- *   const result = await throttler.maybeExecute(data);
- *   console.log('Update result:', result);
- * };
+ * // In a component or service injection context.
+ * const utility = injectAsyncThrottler(
+ *   (value: number) => Promise.resolve(value),
+ *   () => ({ wait: 100 }),
+ *   (state) => state.isPending,
+ * )
+ * utility.maybeExecute(42)
+ * console.log(utility.state())
  * ```
  */
-export function injectAsyncThrottler<
-  TFn extends AnyAsyncFunction,
-  TSelected = {},
->(
+export function injectAsyncThrottler<TFn extends AnyAsyncFunction>(
   fn: TFn,
-  options: AngularPacerOptions<AngularAsyncThrottlerOptions<TFn, TSelected>>,
-  selector: (state: AsyncThrottlerState<TFn>) => TSelected = () =>
-    ({}) as TSelected,
-): AngularAsyncThrottler<TFn, TSelected> {
-  return injectReactiveOptions<
-    AngularAsyncThrottlerOptions<TFn, TSelected>,
-    AngularAsyncThrottler<TFn, TSelected>
-  >(
-    options,
-    injectPacerOptions(),
-    'asyncThrottler',
-    (mergedOptions, getPublicInstance) => {
-      const throttler = new AsyncThrottler<TFn>(fn, mergedOptions)
-      const state = injectSelector(throttler.store, selector)
+  options: MaybeAccessor<AngularAsyncThrottlerOptions<TFn>>,
+): AngularAsyncThrottler<TFn>
+/**
+ * Creates an Angular AsyncThrottler with a reactive selector result.
+ * @param fn The callback invoked by the core utility.
+ * @param options Core options or a reactive options factory.
+ * @param selector Selects the state exposed by the returned `state` signal.
+ * @returns The utility ref with the selected state.
+ */
+export function injectAsyncThrottler<TFn extends AnyAsyncFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularAsyncThrottlerOptions<TFn>>,
+  selector: (state: AsyncThrottlerState<TFn>) => TSelected,
+): AngularAsyncThrottler<TFn, TSelected>
+export function injectAsyncThrottler<TFn extends AnyAsyncFunction, TSelected>(
+  fn: TFn,
+  options: MaybeAccessor<AngularAsyncThrottlerOptions<TFn>>,
+  selector: (state: AsyncThrottlerState<TFn>) => TSelected | {} = () => ({}),
+): AngularAsyncThrottler<TFn, TSelected | {}> {
+  const baseOptions = injectPacerOptions()
+  const optionsSignal = toAccessorSignal(options)
+  const mergedOptions = computed<AngularAsyncThrottlerOptions<TFn>>(() => ({
+    ...baseOptions.asyncThrottler,
+    ...optionsSignal(),
+  }))
 
-      const result = {
-        ...throttler,
-        get options() {
-          return throttler.options
-        },
-        set options(value) {
-          throttler.options = value
-        },
-        state,
-      } as AngularAsyncThrottler<TFn, TSelected>
+  const asyncThrottlerSignal = injectLazy(
+    () => new AsyncThrottler<TFn>(fn, mergedOptions()),
+  )
 
-      const destroyRef = inject(DestroyRef, { optional: true })
-      destroyRef?.onDestroy(() => {
-        const onUnmount = (
-          throttler.options as AngularAsyncThrottlerOptions<TFn, TSelected>
-        ).onUnmount
-        if (onUnmount) {
-          onUnmount(getPublicInstance())
-        } else {
-          throttler.cancel()
-          throttler.abort()
-        }
-      })
-
-      return result
+  const methods = injectForwardMethods(
+    asyncThrottlerSignal,
+    asyncThrottlerMethods,
+    (core) => {
+      core.setOptions(mergedOptions())
     },
   )
+
+  effect(() => {
+    const opts = mergedOptions()
+    untracked(() => asyncThrottlerSignal().setOptions(opts))
+  })
+
+  effect((onCleanup) => {
+    const core = asyncThrottlerSignal()
+    onCleanup(() => {
+      const opts = untracked(mergedOptions)
+      if (opts.onUnmount) {
+        opts.onUnmount(core)
+      } else {
+        core.cancel()
+        core.abort()
+      }
+    })
+  })
+
+  const hasPendingTasks = injectSelector(
+    () => asyncThrottlerSignal().store,
+    (state) => state.isPending || state.isExecuting,
+  )
+  injectPendingTasksLifecycle(hasPendingTasks)
+
+  const state = injectSelector(() => asyncThrottlerSignal().store, selector, {
+    compare: shallow,
+  })
+
+  return { state, ...methods }
 }
