@@ -3,7 +3,7 @@ id: AngularRateLimiterSignal
 title: AngularRateLimiterSignal
 ---
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:16
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:16](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L16)
 
 A readonly Angular value signal with paced `set`/`update` methods.
 The `rateLimiter` attribute exposes the underlying RateLimiter methods.
@@ -27,7 +27,7 @@ The `rateLimiter` attribute exposes the underlying RateLimiter methods.
 AngularRateLimiterSignal(): TValue;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:16
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:16](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L16)
 
 A readonly Angular value signal with paced `set`/`update` methods.
 The `rateLimiter` attribute exposes the underlying RateLimiter methods.
@@ -60,7 +60,7 @@ Signal.[SIGNAL]
 rateLimiter: AngularRateLimiter<(callback) => void, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:25
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:25](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L25)
 
 The underlying Angular RateLimiter ref for controlling execution.
 
@@ -72,7 +72,7 @@ The underlying Angular RateLimiter ref for controlling execution.
 set: (value) => void;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:21
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:21](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L21)
 
 Replaces the value immediately if the rate limit permits; rejected writes are discarded.
 
@@ -94,7 +94,7 @@ Replaces the value immediately if the rate limit permits; rejected writes are di
 update: (updateFn) => void;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:23
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L23)
 
 Runs the updater with the current committed value when the write executes.
 

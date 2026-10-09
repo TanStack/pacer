@@ -9,7 +9,7 @@ title: injectThrottledComputed
 function injectThrottledComputed<TValue>(source, options): AngularThrottlerComputed<TValue>;
 ```
 
-Defined in: packages/angular-pacer/src/throttler/injectThrottledComputed.ts:44
+Defined in: [packages/angular-pacer/src/throttler/injectThrottledComputed.ts:44](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledComputed.ts#L44)
 
 Creates an Angular throttled view of a source signal.
 
@@ -64,7 +64,7 @@ function injectThrottledComputed<TValue, TSelected>(
 selector): AngularThrottlerComputed<TValue, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/throttler/injectThrottledComputed.ts:52
+Defined in: [packages/angular-pacer/src/throttler/injectThrottledComputed.ts:52](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledComputed.ts#L52)
 
 Creates the value signal with selected state on its attached utility ref.
 

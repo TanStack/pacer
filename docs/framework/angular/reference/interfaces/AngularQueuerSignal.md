@@ -3,7 +3,7 @@ id: AngularQueuerSignal
 title: AngularQueuerSignal
 ---
 
-Defined in: packages/angular-pacer/src/queuer/injectQueuedSignal.ts:10
+Defined in: [packages/angular-pacer/src/queuer/injectQueuedSignal.ts:10](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L10)
 
 A processed-value signal with its underlying queue controls.
 
@@ -26,7 +26,7 @@ A processed-value signal with its underlying queue controls.
 AngularQueuerSignal(): TValue;
 ```
 
-Defined in: packages/angular-pacer/src/queuer/injectQueuedSignal.ts:10
+Defined in: [packages/angular-pacer/src/queuer/injectQueuedSignal.ts:10](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L10)
 
 A processed-value signal with its underlying queue controls.
 
@@ -58,7 +58,7 @@ Signal.[SIGNAL]
 queuer: AngularQueuer<() => void, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/queuer/injectQueuedSignal.ts:19
+Defined in: [packages/angular-pacer/src/queuer/injectQueuedSignal.ts:19](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L19)
 
 The underlying Angular Queuer ref and its selected state.
 
@@ -70,7 +70,7 @@ The underlying Angular Queuer ref and its selected state.
 set: (value) => void;
 ```
 
-Defined in: packages/angular-pacer/src/queuer/injectQueuedSignal.ts:15
+Defined in: [packages/angular-pacer/src/queuer/injectQueuedSignal.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L15)
 
 Enqueues a replacement value.
 
@@ -92,7 +92,7 @@ Enqueues a replacement value.
 update: (updater) => void;
 ```
 
-Defined in: packages/angular-pacer/src/queuer/injectQueuedSignal.ts:17
+Defined in: [packages/angular-pacer/src/queuer/injectQueuedSignal.ts:17](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedSignal.ts#L17)
 
 Enqueues an updater evaluated against the committed value when processed.
 

@@ -3,7 +3,7 @@ id: AngularDebouncerComputed
 title: AngularDebouncerComputed
 ---
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncedComputed.ts:15
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncedComputed.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedComputed.ts#L15)
 
 A readonly Angular value signal with its underlying utility ref.
 The `debouncer` attribute exposes the underlying Debouncer methods.
@@ -27,7 +27,7 @@ The `debouncer` attribute exposes the underlying Debouncer methods.
 AngularDebouncerComputed(): TValue;
 ```
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncedComputed.ts:15
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncedComputed.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedComputed.ts#L15)
 
 A readonly Angular value signal with its underlying utility ref.
 The `debouncer` attribute exposes the underlying Debouncer methods.
@@ -60,6 +60,6 @@ Signal.[SIGNAL]
 debouncer: AngularDebouncer<(value) => void, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncedComputed.ts:20
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncedComputed.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedComputed.ts#L20)
 
 The underlying Angular Debouncer ref for controlling execution.

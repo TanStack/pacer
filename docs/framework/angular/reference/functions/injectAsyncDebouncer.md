@@ -9,7 +9,7 @@ title: injectAsyncDebouncer
 function injectAsyncDebouncer<TFn>(fn, options): AngularAsyncDebouncer<TFn>;
 ```
 
-Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:97
+Defined in: [packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:97](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L97)
 
 Creates and manages an Angular AsyncDebouncer in the current injection context.
 
@@ -76,7 +76,7 @@ function injectAsyncDebouncer<TFn, TSelected>(
 selector): AngularAsyncDebouncer<TFn, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:108
+Defined in: [packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts:108](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-debouncer/injectAsyncDebouncer.ts#L108)
 
 Creates an Angular AsyncDebouncer with a reactive selector result.
 

@@ -1,7 +1,7 @@
-import { Component, signal } from '@angular/core';
-import { JsonPipe } from '@angular/common';
-import { injectQueuedComputed } from '@tanstack/angular-pacer';
-import { InputApp } from './inputapp';
+import { Component, signal } from '@angular/core'
+import { JsonPipe } from '@angular/common'
+import { injectQueuedComputed } from '@tanstack/angular-pacer'
+import { InputApp } from './inputapp'
 
 @Component({
   selector: 'app-root',
@@ -9,22 +9,22 @@ import { InputApp } from './inputapp';
   imports: [JsonPipe, InputApp],
 })
 export class App {
-  readonly source = signal('');
-  readonly currentValue = signal(50);
-  readonly instantExecutions = signal(1);
-  readonly queued = injectQueuedComputed(this.source, { maxSize: 25, wait: 500 }, (state) => state);
-  readonly queuer = this.queued.queuer;
+  readonly source = signal('')
+  readonly currentValue = signal(50)
+  readonly instantExecutions = signal(1)
+  readonly queued = injectQueuedComputed(this.source, { maxSize: 25, wait: 500 }, (state) => state)
+  readonly queuer = this.queued.queuer
   readonly rangeQueued = injectQueuedComputed(
     this.currentValue,
     { maxSize: 100, wait: 100 },
     (state) => state,
-  );
-  readonly rangeQueue = this.rangeQueued.queuer;
+  )
+  readonly rangeQueue = this.rangeQueued.queuer
   onSearch(value: string): void {
-    this.source.set(value);
+    this.source.set(value)
   }
   onRange(value: number): void {
-    this.currentValue.set(value);
-    this.instantExecutions.update((count) => count + 1);
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
   }
 }

@@ -3,7 +3,7 @@ id: AngularThrottlerSignal
 title: AngularThrottlerSignal
 ---
 
-Defined in: packages/angular-pacer/src/throttler/injectThrottledSignal.ts:16
+Defined in: [packages/angular-pacer/src/throttler/injectThrottledSignal.ts:16](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L16)
 
 A readonly Angular value signal with paced `set`/`update` methods.
 The `throttler` attribute exposes the underlying Throttler methods.
@@ -27,7 +27,7 @@ The `throttler` attribute exposes the underlying Throttler methods.
 AngularThrottlerSignal(): TValue;
 ```
 
-Defined in: packages/angular-pacer/src/throttler/injectThrottledSignal.ts:16
+Defined in: [packages/angular-pacer/src/throttler/injectThrottledSignal.ts:16](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L16)
 
 A readonly Angular value signal with paced `set`/`update` methods.
 The `throttler` attribute exposes the underlying Throttler methods.
@@ -60,7 +60,7 @@ Signal.[SIGNAL]
 set: (value) => void;
 ```
 
-Defined in: packages/angular-pacer/src/throttler/injectThrottledSignal.ts:21
+Defined in: [packages/angular-pacer/src/throttler/injectThrottledSignal.ts:21](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L21)
 
 Schedules the replacement value according to leading and trailing throttling options.
 
@@ -82,7 +82,7 @@ Schedules the replacement value according to leading and trailing throttling opt
 throttler: AngularThrottler<(callback) => void, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/throttler/injectThrottledSignal.ts:25
+Defined in: [packages/angular-pacer/src/throttler/injectThrottledSignal.ts:25](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L25)
 
 The underlying Angular Throttler ref for controlling execution.
 
@@ -94,7 +94,7 @@ The underlying Angular Throttler ref for controlling execution.
 update: (updateFn) => void;
 ```
 
-Defined in: packages/angular-pacer/src/throttler/injectThrottledSignal.ts:23
+Defined in: [packages/angular-pacer/src/throttler/injectThrottledSignal.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L23)
 
 Runs the updater with the current committed value when the write executes.
 

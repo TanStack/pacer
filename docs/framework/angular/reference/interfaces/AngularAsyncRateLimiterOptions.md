@@ -3,7 +3,7 @@ id: AngularAsyncRateLimiterOptions
 title: AngularAsyncRateLimiterOptions
 ---
 
-Defined in: packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:26
+Defined in: [packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L26)
 
 Options for [injectAsyncRateLimiter](../functions/injectAsyncRateLimiter.md), including core configuration and Angular cleanup.
 
@@ -25,7 +25,7 @@ Options for [injectAsyncRateLimiter](../functions/injectAsyncRateLimiter.md), in
 optional onUnmount?: (core) => void;
 ```
 
-Defined in: packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:33
+Defined in: [packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:33](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts#L33)
 
 Called when the owning injection context is destroyed. Receives the core instance.
 Providing this callback replaces the default cleanup (abort running work).

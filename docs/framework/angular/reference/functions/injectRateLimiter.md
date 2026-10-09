@@ -9,7 +9,7 @@ title: injectRateLimiter
 function injectRateLimiter<TFn>(fn, options): AngularRateLimiter<TFn>;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:94
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:94](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L94)
 
 Creates and manages an Angular RateLimiter in the current injection context.
 
@@ -76,7 +76,7 @@ function injectRateLimiter<TFn, TSelected>(
 selector): AngularRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:105
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts:105](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimiter.ts#L105)
 
 Creates an Angular RateLimiter with a reactive selector result.
 

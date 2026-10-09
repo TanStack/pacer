@@ -9,7 +9,7 @@ title: injectRateLimitedComputed
 function injectRateLimitedComputed<TValue>(source, options): AngularRateLimiterComputed<TValue>;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:44
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:44](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts#L44)
 
 Creates an Angular ratelimited view of a source signal.
 
@@ -64,7 +64,7 @@ function injectRateLimitedComputed<TValue, TSelected>(
 selector): AngularRateLimiterComputed<TValue, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:52
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:52](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts#L52)
 
 Creates the value signal with selected state on its attached utility ref.
 

@@ -9,7 +9,7 @@ title: injectAsyncQueuer
 function injectAsyncQueuer<TValue>(fn, options?): AngularAsyncQueuer<TValue>;
 ```
 
-Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:102
+Defined in: [packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:102](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L102)
 
 Creates and manages an Angular AsyncQueuer in the current injection context.
 
@@ -76,7 +76,7 @@ function injectAsyncQueuer<TValue, TSelected>(
 selector): AngularAsyncQueuer<TValue, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:113
+Defined in: [packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts:113](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuer.ts#L113)
 
 Creates an Angular AsyncQueuer with a reactive selector result.
 

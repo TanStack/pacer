@@ -9,7 +9,7 @@ title: injectAsyncQueuerItems
 function injectAsyncQueuerItems<TValue>(fn, options?): AngularAsyncQueuerItems<TValue>;
 ```
 
-Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuedItems.ts:51
+Defined in: [packages/angular-pacer/src/async-queuer/injectAsyncQueuedItems.ts:51](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedItems.ts#L51)
 
 Creates a readonly Angular signal of pending asynchronous queue items.
 
@@ -68,7 +68,7 @@ function injectAsyncQueuerItems<TValue, TSelected>(
 selector): AngularAsyncQueuerItems<TValue, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/async-queuer/injectAsyncQueuedItems.ts:59
+Defined in: [packages/angular-pacer/src/async-queuer/injectAsyncQueuedItems.ts:59](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/async-queuer/injectAsyncQueuedItems.ts#L59)
 
 Creates the items signal with selected state on its attached queuer.
 

@@ -9,7 +9,7 @@ title: injectQueuerItems
 function injectQueuerItems<TValue>(fn, options?): AngularQueuerItems<TValue>;
 ```
 
-Defined in: packages/angular-pacer/src/queuer/injectQueuedItems.ts:48
+Defined in: [packages/angular-pacer/src/queuer/injectQueuedItems.ts:48](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedItems.ts#L48)
 
 Creates a readonly Angular signal of pending queue items.
 
@@ -68,7 +68,7 @@ function injectQueuerItems<TValue, TSelected>(
 selector): AngularQueuerItems<TValue, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/queuer/injectQueuedItems.ts:56
+Defined in: [packages/angular-pacer/src/queuer/injectQueuedItems.ts:56](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedItems.ts#L56)
 
 Creates the items signal with selected state on its attached queuer.
 

@@ -3,7 +3,7 @@ id: AngularRateLimiterComputed
 title: AngularRateLimiterComputed
 ---
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:15
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts#L15)
 
 A readonly Angular value signal with its underlying utility ref.
 The `rateLimiter` attribute exposes the underlying RateLimiter methods.
@@ -27,7 +27,7 @@ The `rateLimiter` attribute exposes the underlying RateLimiter methods.
 AngularRateLimiterComputed(): TValue;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:15
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts#L15)
 
 A readonly Angular value signal with its underlying utility ref.
 The `rateLimiter` attribute exposes the underlying RateLimiter methods.
@@ -60,6 +60,6 @@ Signal.[SIGNAL]
 rateLimiter: AngularRateLimiter<(value) => void, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:20
+Defined in: [packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedComputed.ts#L20)
 
 The underlying Angular RateLimiter ref for controlling execution.

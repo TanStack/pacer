@@ -5,13 +5,13 @@
     "types": ["vitest/globals", "node"],
     "noEmit": false,
     "declaration": false,
-    "useDefineForClassFields": false,
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictTemplates": true,
     "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
+    "strictInputAccessModifiers": true
   },
   "include": ["tests/**/*.ts", "test-setup.ts", "src/**/*.ts"],
-  "exclude": [],
+  "exclude": []
 }

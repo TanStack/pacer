@@ -3,7 +3,7 @@ id: AngularDebouncerSignal
 title: AngularDebouncerSignal
 ---
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:16
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:16](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L16)
 
 A readonly Angular value signal with paced `set`/`update` methods.
 The `debouncer` attribute exposes the underlying Debouncer methods.
@@ -27,7 +27,7 @@ The `debouncer` attribute exposes the underlying Debouncer methods.
 AngularDebouncerSignal(): TValue;
 ```
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:16
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:16](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L16)
 
 A readonly Angular value signal with paced `set`/`update` methods.
 The `debouncer` attribute exposes the underlying Debouncer methods.
@@ -60,7 +60,7 @@ Signal.[SIGNAL]
 debouncer: AngularDebouncer<(callback) => void, TSelected>;
 ```
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:25
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:25](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L25)
 
 The underlying Angular Debouncer ref for controlling execution.
 
@@ -72,7 +72,7 @@ The underlying Angular Debouncer ref for controlling execution.
 set: (value) => void;
 ```
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:21
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:21](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L21)
 
 Schedules the replacement value after the debounce delay.
 
@@ -94,7 +94,7 @@ Schedules the replacement value after the debounce delay.
 update: (updateFn) => void;
 ```
 
-Defined in: packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:23
+Defined in: [packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts:23](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/debouncer/injectDebouncedSignal.ts#L23)
 
 Runs the updater with the current committed value when the write executes.
 

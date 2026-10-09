@@ -7,7 +7,7 @@ title: providePacerOptions
 function providePacerOptions(options): Provider;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:67
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:67](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L67)
 
 Provides scoped defaults for Angular Pacer utilities.
 

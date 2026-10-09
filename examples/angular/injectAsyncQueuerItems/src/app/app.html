@@ -12,7 +12,7 @@
 <h2>Queue Items</h2>
 <ol>
   @for (item of queue(); track $index) {
-    <li>{{ item }}</li>
+  <li>{{ item }}</li>
   }
 </ol>
 <button (click)="add()" [disabled]="queue().length >= 25">Add Async Task</button>

@@ -3,7 +3,7 @@ id: PacerProviderOptions
 title: PacerProviderOptions
 ---
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:18
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:18](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L18)
 
 Scoped default options for synchronous and asynchronous Pacer adapters.
 Local utility options override these defaults.
@@ -16,7 +16,7 @@ Local utility options override these defaults.
 optional asyncBatcher?: Partial<AngularAsyncBatcherOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:20
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:20](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L20)
 
 Default options for [injectAsyncBatcher](../functions/injectAsyncBatcher.md).
 
@@ -28,7 +28,7 @@ Default options for [injectAsyncBatcher](../functions/injectAsyncBatcher.md).
 optional asyncDebouncer?: Partial<AngularAsyncDebouncerOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:22
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:22](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L22)
 
 Default options for [injectAsyncDebouncer](../functions/injectAsyncDebouncer.md).
 
@@ -40,7 +40,7 @@ Default options for [injectAsyncDebouncer](../functions/injectAsyncDebouncer.md)
 optional asyncQueuer?: Partial<AngularAsyncQueuerOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:24
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:24](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L24)
 
 Default options for [injectAsyncQueuer](../functions/injectAsyncQueuer.md).
 
@@ -52,7 +52,7 @@ Default options for [injectAsyncQueuer](../functions/injectAsyncQueuer.md).
 optional asyncRateLimiter?: Partial<AngularAsyncRateLimiterOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:26
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:26](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L26)
 
 Default options for [injectAsyncRateLimiter](../functions/injectAsyncRateLimiter.md).
 
@@ -64,7 +64,7 @@ Default options for [injectAsyncRateLimiter](../functions/injectAsyncRateLimiter
 optional asyncThrottler?: Partial<AngularAsyncThrottlerOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:28
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:28](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L28)
 
 Default options for [injectAsyncThrottler](../functions/injectAsyncThrottler.md).
 
@@ -76,7 +76,7 @@ Default options for [injectAsyncThrottler](../functions/injectAsyncThrottler.md)
 optional batcher?: Partial<AngularBatcherOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:30
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:30](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L30)
 
 Default options for [injectBatcher](../functions/injectBatcher.md).
 
@@ -88,7 +88,7 @@ Default options for [injectBatcher](../functions/injectBatcher.md).
 optional debouncer?: Partial<AngularDebouncerOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:32
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:32](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L32)
 
 Default options for [injectDebouncer](../functions/injectDebouncer.md).
 
@@ -100,7 +100,7 @@ Default options for [injectDebouncer](../functions/injectDebouncer.md).
 optional queuer?: Partial<AngularQueuerOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:34
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:34](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L34)
 
 Default options for [injectQueuer](../functions/injectQueuer.md).
 
@@ -112,7 +112,7 @@ Default options for [injectQueuer](../functions/injectQueuer.md).
 optional rateLimiter?: Partial<AngularRateLimiterOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:36
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:36](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L36)
 
 Default options for [injectRateLimiter](../functions/injectRateLimiter.md).
 
@@ -124,6 +124,6 @@ Default options for [injectRateLimiter](../functions/injectRateLimiter.md).
 optional throttler?: Partial<AngularThrottlerOptions<any>>;
 ```
 
-Defined in: packages/angular-pacer/src/provider/providePacerOptions.ts:38
+Defined in: [packages/angular-pacer/src/provider/providePacerOptions.ts:38](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/provider/providePacerOptions.ts#L38)
 
 Default options for [injectThrottler](../functions/injectThrottler.md).

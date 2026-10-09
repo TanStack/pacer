@@ -1,6 +1,6 @@
 // @ts-check
 
-import rootConfig from '../../../eslint.config.js';
+import rootConfig from '../../../eslint.config.js'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -12,4 +12,4 @@ export default [
       },
     },
   },
-];
+]
