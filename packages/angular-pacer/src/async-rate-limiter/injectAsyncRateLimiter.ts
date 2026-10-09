@@ -28,7 +28,7 @@ export interface AngularAsyncRateLimiterOptions<
 > extends AsyncRateLimiterOptions<TFn> {
   /**
    * Called when the owning injection context is destroyed. Receives the core instance.
-   * Providing this callback replaces the default cleanup (abort running work and reset the limiter).
+   * Providing this callback replaces the default cleanup (abort running work).
    */
   onUnmount?: (core: AsyncRateLimiter<TFn>) => void
 }
@@ -76,7 +76,7 @@ export interface AngularAsyncRateLimiter<
  *
  * ## Cleanup
  *
- * The default cleanup is to abort running work and reset the limiter. Set `onUnmount` to replace it.
+ * The default cleanup is to abort running work. Set `onUnmount` to replace it.
  *
  * @param fn The callback invoked by the core utility.
  * @param options Core options or a reactive factory returning them.
@@ -147,7 +147,6 @@ export function injectAsyncRateLimiter<TFn extends AnyAsyncFunction, TSelected>(
         opts.onUnmount(core)
       } else {
         core.abort()
-        core.reset()
       }
     })
   })

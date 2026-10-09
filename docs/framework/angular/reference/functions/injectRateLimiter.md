@@ -26,7 +26,7 @@ Pass a selector to expose reactive core state through `state()`. Without a selec
 
 ## Cleanup
 
-The default cleanup is to reset the limiter. Set `onUnmount` to replace it.
+There is no default cleanup. Set `onUnmount` to customize cleanup.
 
 ### Type Parameters
 

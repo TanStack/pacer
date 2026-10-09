@@ -55,6 +55,28 @@ describe('operations and selected state', () => {
 })
 
 describe('cleanup', () => {
+  it('aborts active work on owner destruction', async () => {
+    vi.useFakeTimers()
+    const execution = Promise.withResolvers<string>()
+    const utility = TestBed.runInInjectionContext(() =>
+      injectAsyncRateLimiter(() => execution.promise, {
+        limit: 2,
+        window: 1000,
+      }),
+    )
+    TestBed.tick()
+    const pending = utility.maybeExecute()
+    const abortSignal = utility.getAbortSignal()
+    expect(abortSignal).not.toBeNull()
+    expect(abortSignal?.aborted).toBe(false)
+
+    TestBed.resetTestingModule()
+
+    expect(abortSignal?.aborted).toBe(true)
+    execution.resolve('finished')
+    await pending
+  })
+
   it('uses the latest cleanup callback without waiting for the options effect', () => {
     const oldCleanup = vi.fn()
     const latestCleanup = vi.fn()

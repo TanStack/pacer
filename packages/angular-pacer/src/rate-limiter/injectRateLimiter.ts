@@ -27,7 +27,7 @@ export interface AngularRateLimiterOptions<
 > extends RateLimiterOptions<TFn> {
   /**
    * Called when the owning injection context is destroyed. Receives the core instance.
-   * Providing this callback replaces the default cleanup (reset the limiter).
+   * There is no default cleanup; use this callback for custom teardown.
    */
   onUnmount?: (core: RateLimiter<TFn>) => void
 }
@@ -73,7 +73,7 @@ export interface AngularRateLimiter<
  *
  * ## Cleanup
  *
- * The default cleanup is to reset the limiter. Set `onUnmount` to replace it.
+ * There is no default cleanup. Set `onUnmount` to customize cleanup.
  *
  * @param fn The callback invoked by the core utility.
  * @param options Core options or a reactive factory returning them.
@@ -142,8 +142,6 @@ export function injectRateLimiter<TFn extends AnyFunction, TSelected>(
       const opts = untracked(mergedOptions)
       if (opts.onUnmount) {
         opts.onUnmount(core)
-      } else {
-        core.reset()
       }
     })
   })

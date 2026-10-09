@@ -28,7 +28,7 @@ optional onUnmount?: (core) => void;
 Defined in: packages/angular-pacer/src/async-rate-limiter/injectAsyncRateLimiter.ts:33
 
 Called when the owning injection context is destroyed. Receives the core instance.
-Providing this callback replaces the default cleanup (abort running work and reset the limiter).
+Providing this callback replaces the default cleanup (abort running work).
 
 #### Parameters
 

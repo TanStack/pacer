@@ -26,7 +26,7 @@ Pass a selector to expose reactive core state through `state()`. Without a selec
 
 ## Cleanup
 
-The default cleanup is to abort running work and reset the limiter. Set `onUnmount` to replace it.
+The default cleanup is to abort running work. Set `onUnmount` to replace it.
 
 ### Type Parameters
 
