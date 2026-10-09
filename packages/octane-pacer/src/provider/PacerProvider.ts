@@ -33,7 +33,7 @@ export function PacerProvider({
   children,
   defaultOptions = {},
 }: PacerProviderProps) {
-  return createElement(PacerContext.Provider, {
+  return createElement(PacerContext, {
     value: defaultOptions,
     children,
   })
