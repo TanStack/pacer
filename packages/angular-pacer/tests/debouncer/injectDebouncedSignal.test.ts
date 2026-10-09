@@ -110,3 +110,16 @@ it('passes selected state through to the attached utility', () => {
   expect(value()).toBe('updated')
   expect(value.debouncer.state().count).toBe(before + 1)
 })
+
+it('preserves a function-valued initial value supplied through a factory', () => {
+  const fn = (n: number) => n + 1
+  const value = TestBed.runInInjectionContext(() =>
+    injectDebouncedSignal<typeof fn>(() => fn, { wait: 10 }),
+  )
+  expectTypeOf(value()).toEqualTypeOf<typeof fn>()
+  expect(value()).toBe(fn)
+  expect(value()(2)).toBe(3)
+
+  // @ts-expect-error Function values must be wrapped to distinguish them from accessors.
+  void (() => injectDebouncedSignal<typeof fn>(fn, { wait: 10 }))
+})

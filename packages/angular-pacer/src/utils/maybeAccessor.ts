@@ -1,6 +1,8 @@
 import { computed } from '@angular/core'
 
-export type MaybeAccessor<T> = T | (() => T)
+type NonCallable<T> = T extends (...args: Array<never>) => unknown ? never : T
+
+export type MaybeAccessor<T> = NonCallable<T> | (() => T)
 
 function isAccessor<T>(value: MaybeAccessor<T>): value is () => T {
   return typeof value === 'function'
