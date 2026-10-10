@@ -1,5 +1,11 @@
 # @tanstack/preact-pacer
 
+## 0.24.2
+
+### Patch Changes
+
+- [#286](https://github.com/TanStack/pacer/pull/286) [`e8f82a3`](https://github.com/TanStack/pacer/commit/e8f82a3cb537c01a8e596caaed5e6c3636bc9ab3) - Require `@tanstack/preact-store` `^0.13.5`, the first version whose `preact` peer range allows Preact 11.
+
 ## 0.24.1
 
 ### Patch Changes
