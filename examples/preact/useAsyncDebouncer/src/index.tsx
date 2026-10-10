@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { render } from 'preact'
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { useAsyncDebouncer } from '@tanstack/preact-pacer/async-debouncer'
 import { PacerProvider } from '@tanstack/preact-pacer/provider'
 
@@ -63,7 +63,7 @@ function App() {
   const handleSearchDebounced = asyncDebouncer.maybeExecute
 
   // instant event handler that calls both the instant local state setter and the debounced function
-  async function onSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  async function onSearchChange(e: TargetedEvent<HTMLInputElement>) {
     const newTerm = e.currentTarget.value
     setSearchTerm(newTerm)
     const result = await handleSearchDebounced(newTerm) // optionally await result if you need to

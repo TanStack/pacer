@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { render } from 'preact'
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { useAsyncThrottler } from '@tanstack/preact-pacer/async-throttler'
 import { PacerProvider } from '@tanstack/preact-pacer/provider'
 
@@ -64,7 +64,7 @@ function App() {
   const handleSearchThrottled = setSearchAsyncThrottler.maybeExecute
 
   // instant event handler that calls both the instant local state setter and the throttled function
-  async function onSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  async function onSearchChange(e: TargetedEvent<HTMLInputElement>) {
     const newTerm = e.currentTarget.value
     setSearchTerm(newTerm)
     const result = await handleSearchThrottled(newTerm) // optionally await if you need to
