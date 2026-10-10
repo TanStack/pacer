@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@tanstack/pacer": "workspace:*",
-    "@tanstack/preact-store": "^0.13.4"
+    "@tanstack/preact-store": "^0.13.5"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.6",
