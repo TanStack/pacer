@@ -256,4 +256,4 @@ To restore selected state that your app has persisted, pass a partial snapshot t
 - `lastArgs`: The arguments recorded by the most recent trailing-enabled call. Check `isPending` before treating them as pending work.
 - `status`: `'disabled'`, `'idle'`, or `'pending'`.
 
-See the [Svelte API reference](../reference/index.md) for adapter signatures and the [adapter guide](../adapter.md) for provider and helper return shapes.
+See the [Svelte API reference](../reference/index.md) for adapter signatures and the [quick start](../quick-start.md) for default options and helper return values.

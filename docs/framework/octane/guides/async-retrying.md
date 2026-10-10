@@ -252,6 +252,6 @@ For exact signatures, see the [`asyncRetry` function reference](../../../referen
 
 ## Related docs
 
-- [Octane adapter](../adapter.md)
+- [Octane quick start](../quick-start.md)
 - [Choose a Pacer utility](../../../guides/which-pacer-utility-should-i-choose.md)
 - [Select another framework](../../../guides/async-retrying.md)

@@ -14,10 +14,6 @@
           "to": "overview"
         },
         {
-          "label": "Quick Start",
-          "to": "quick-start"
-        },
-        {
           "label": "Installation",
           "to": "installation"
         },
@@ -31,8 +27,8 @@
           "label": "react",
           "children": [
             {
-              "label": "React Adapter",
-              "to": "framework/react/adapter"
+              "label": "Quick Start",
+              "to": "framework/react/quick-start"
             }
           ]
         },
@@ -40,8 +36,8 @@
           "label": "solid",
           "children": [
             {
-              "label": "Solid Adapter",
-              "to": "framework/solid/adapter"
+              "label": "Quick Start",
+              "to": "framework/solid/quick-start"
             }
           ]
         },
@@ -49,8 +45,8 @@
           "label": "preact",
           "children": [
             {
-              "label": "Preact Adapter",
-              "to": "framework/preact/adapter"
+              "label": "Quick Start",
+              "to": "framework/preact/quick-start"
             }
           ]
         },
@@ -58,8 +54,8 @@
           "label": "angular",
           "children": [
             {
-              "label": "Angular Adapter",
-              "to": "framework/angular/adapter"
+              "label": "Quick Start",
+              "to": "framework/angular/quick-start"
             }
           ]
         },
@@ -67,8 +63,8 @@
           "label": "vue",
           "children": [
             {
-              "label": "Vue Adapter",
-              "to": "framework/vue/adapter"
+              "label": "Quick Start",
+              "to": "framework/vue/quick-start"
             }
           ]
         },
@@ -76,8 +72,8 @@
           "label": "svelte",
           "children": [
             {
-              "label": "Svelte Adapter",
-              "to": "framework/svelte/adapter"
+              "label": "Quick Start",
+              "to": "framework/svelte/quick-start"
             }
           ]
         },
@@ -85,8 +81,8 @@
           "label": "lit",
           "children": [
             {
-              "label": "Lit Adapter",
-              "to": "framework/lit/adapter"
+              "label": "Quick Start",
+              "to": "framework/lit/quick-start"
             }
           ]
         },
@@ -94,8 +90,8 @@
           "label": "alpine",
           "children": [
             {
-              "label": "Alpine Adapter",
-              "to": "framework/alpine/adapter"
+              "label": "Quick Start",
+              "to": "framework/alpine/quick-start"
             }
           ]
         },
@@ -103,8 +99,8 @@
           "label": "ember",
           "children": [
             {
-              "label": "Ember Adapter",
-              "to": "framework/ember/adapter"
+              "label": "Quick Start",
+              "to": "framework/ember/quick-start"
             }
           ]
         },
@@ -112,8 +108,17 @@
           "label": "octane",
           "children": [
             {
-              "label": "Octane Adapter",
-              "to": "framework/octane/adapter"
+              "label": "Quick Start",
+              "to": "framework/octane/quick-start"
+            }
+          ]
+        },
+        {
+          "label": "vanilla",
+          "children": [
+            {
+              "label": "Quick Start",
+              "to": "framework/vanilla/quick-start"
             }
           ]
         }
