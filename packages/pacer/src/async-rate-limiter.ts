@@ -249,6 +249,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   key: string | undefined
   options: AsyncRateLimiterOptions<TFn>
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
+  #activeRetryers = new Set<AsyncRetryer<TFn>>()
   #timeoutIds: Set<ReturnType<typeof setTimeout>> = new Set()
 
   constructor(
@@ -391,13 +392,13 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       executionTimes,
     })
 
+    const currentAsyncRetryer = new AsyncRetryer(
+      this.fn,
+      this.options.asyncRetryerOptions,
+    )
+    this.#activeRetryers.add(currentAsyncRetryer)
+    this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
     try {
-      // Create a new AsyncRetryer for this execution to avoid cancelling concurrent executions
-      const currentAsyncRetryer = new AsyncRetryer(
-        this.fn,
-        this.options.asyncRetryerOptions,
-      )
-      this.asyncRetryers.set(currentMaybeExecute, currentAsyncRetryer)
       const result = await currentAsyncRetryer.execute(...args) // EXECUTE!
       this.#setCleanupTimeout(now)
       this.#setState({
@@ -414,10 +415,12 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
         throw error
       }
     } finally {
-      this.asyncRetryers.delete(currentMaybeExecute) // dispose retryer
+      if (this.asyncRetryers.get(currentMaybeExecute) === currentAsyncRetryer) {
+        this.asyncRetryers.delete(currentMaybeExecute)
+      }
+      this.#activeRetryers.delete(currentAsyncRetryer)
       this.#setState({
-        // other executions may still be in flight within the window
-        isExecuting: this.asyncRetryers.size > 0,
+        isExecuting: this.#activeRetryers.size > 0,
         settleCount: this.store.state.settleCount + 1,
       })
       this.options.onSettled?.(args, this)
@@ -509,7 +512,9 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
 
   /**
    * Returns the AbortSignal for a specific execution.
-   * If no maybeExecuteCount is provided, returns the signal for the most recent execution.
+   * If no maybeExecuteCount is provided, returns the signal for the latest active execution.
+   * Capture the signal before awaiting work, since another execution may start meanwhile.
+   * Explicit counts refer to executions started since the most recent reset().
    * Returns null if no execution is found or not currently executing.
    *
    * @param maybeExecuteCount - Optional specific execution to get signal for
@@ -528,8 +533,10 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    * ```
    */
   getAbortSignal = (maybeExecuteCount?: number): AbortSignal | null => {
-    const count = maybeExecuteCount ?? this.store.state.maybeExecuteCount
-    const retryer = this.asyncRetryers.get(count)
+    const retryer =
+      maybeExecuteCount === undefined
+        ? [...this.#activeRetryers].pop()
+        : this.asyncRetryers.get(maybeExecuteCount)
     return retryer?.getAbortSignal() ?? null
   }
 
@@ -538,7 +545,8 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
    * Does NOT clear out the execution times or reset the rate limiter.
    */
   abort = (): void => {
-    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.#activeRetryers.forEach((retryer) => retryer.abort())
+    this.#activeRetryers.clear()
     this.asyncRetryers.clear()
     this.#setState({
       isExecuting: false,
@@ -546,12 +554,18 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
   }
 
   /**
-   * Resets the rate limiter state
+   * Resets counters and the rate-limit window without aborting active executions.
+   * Active executions remain abortable and keep isExecuting true until they settle.
+   * Explicit execution count lookups start over after reset().
    */
   reset = (): void => {
-    this.#setState(getDefaultAsyncRateLimiterState())
+    this.asyncRetryers.clear()
+    this.#setState({
+      ...getDefaultAsyncRateLimiterState<TFn>(),
+      isExecuting: this.#activeRetryers.size > 0,
+    })
     this.#clearTimeouts()
-    this.asyncRetryers.forEach((retryer) => retryer.reset())
+    this.#activeRetryers.forEach((retryer) => retryer.reset())
   }
 }
 
