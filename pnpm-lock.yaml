@@ -6641,12 +6641,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6657,12 +6657,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6673,12 +6673,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6689,12 +6689,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6705,12 +6705,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6721,12 +6721,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6737,12 +6737,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6751,7 +6751,7 @@ importers:
     dependencies:
       '@tanstack/preact-devtools':
         specifier: ^0.10.13
-        version: 0.10.13(csstype@3.2.3)(preact@10.29.8)(solid-js@1.9.15)
+        version: 0.10.13(csstype@3.2.3)(preact@11.0.1)(solid-js@1.9.15)
       '@tanstack/preact-pacer':
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
@@ -6759,12 +6759,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer-devtools
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6775,12 +6775,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6791,12 +6791,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6807,12 +6807,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6823,12 +6823,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6839,12 +6839,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6855,12 +6855,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6871,12 +6871,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6887,12 +6887,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6903,12 +6903,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6919,12 +6919,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6935,12 +6935,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6951,12 +6951,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6967,12 +6967,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6983,12 +6983,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -6999,12 +6999,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7015,12 +7015,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7031,12 +7031,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7047,12 +7047,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7063,12 +7063,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7077,7 +7077,7 @@ importers:
     dependencies:
       '@tanstack/preact-devtools':
         specifier: ^0.10.13
-        version: 0.10.13(csstype@3.2.3)(preact@10.29.8)(solid-js@1.9.15)
+        version: 0.10.13(csstype@3.2.3)(preact@11.0.1)(solid-js@1.9.15)
       '@tanstack/preact-pacer':
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
@@ -7085,12 +7085,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer-devtools
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7101,12 +7101,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7117,12 +7117,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7133,12 +7133,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7149,12 +7149,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7165,12 +7165,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7181,12 +7181,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7197,12 +7197,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7213,12 +7213,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -7227,7 +7227,7 @@ importers:
     dependencies:
       '@tanstack/preact-devtools':
         specifier: ^0.10.13
-        version: 0.10.13(csstype@3.2.3)(preact@10.29.8)(solid-js@1.9.15)
+        version: 0.10.13(csstype@3.2.3)(preact@11.0.1)(solid-js@1.9.15)
       '@tanstack/preact-pacer':
         specifier: workspace:*
         version: link:../../../packages/preact-pacer
@@ -7235,12 +7235,12 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/preact-pacer-devtools
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       vite:
         specifier: ^8.3.2
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
@@ -10695,39 +10695,39 @@ importers:
         version: link:../pacer
       '@tanstack/preact-store':
         specifier: ^0.13.5
-        version: 0.13.5(preact@10.29.8)
+        version: 0.13.5(preact@11.0.1)
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       eslint-plugin-react-hooks:
         specifier: ^7.1.1
         version: 7.1.1(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
 
   packages/preact-pacer-devtools:
     dependencies:
       '@tanstack/devtools-utils':
         specifier: ^0.7.0
-        version: 0.7.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@types/react@19.2.18)(preact@10.29.8)(react@19.2.8)(solid-js@1.9.14)(svelte@5.55.1(@typescript-eslint/types@8.66.0))(vue@3.5.43(typescript@6.0.3))
+        version: 0.7.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@types/react@19.2.18)(preact@11.0.1)(react@19.2.8)(solid-js@1.9.14)(svelte@5.55.1(@typescript-eslint/types@8.66.0))(vue@3.5.43(typescript@6.0.3))
       '@tanstack/pacer-devtools':
         specifier: workspace:*
         version: link:../pacer-devtools
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.6
-        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       '@testing-library/preact':
         specifier: ^3.2.4
-        version: 3.2.4(preact@10.29.8)
+        version: 3.2.4(preact@11.0.1)
       csstype:
         specifier: ^3.2.3
         version: 3.2.3
       preact:
-        specifier: ^10.29.8
-        version: 10.29.8
+        specifier: ^11.0.1
+        version: 11.0.1
 
   packages/react-pacer:
     dependencies:
@@ -18272,6 +18272,14 @@ packages:
       preact-render-to-string:
         optional: true
 
+  preact@11.0.1:
+    resolution: {integrity: sha512-TNNwEq++jYNHy747LziCjPRVgEwnLSOIOAw/oYcjI3Tdnubx2EXtt76I0an8PATvUWtx/DX1kFIg1eFN+O/fkw==}
+    peerDependencies:
+      preact-render-to-string: '>=6.7.0'
+    peerDependenciesMeta:
+      preact-render-to-string:
+        optional: true
+
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -22905,12 +22913,12 @@ snapshots:
 
   '@pnpm/deps.graph-sequencer@1100.0.1': {}
 
-  '@preact/preset-vite@2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@10.29.8)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))':
+  '@preact/preset-vite@2.10.6(@babel/core@7.29.7(supports-color@7.2.0))(preact@11.0.1)(rollup@4.60.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
       '@babel/plugin-transform-react-jsx': 7.28.6(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
       '@babel/plugin-transform-react-jsx-development': 7.27.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
-      '@prefresh/vite': 2.4.12(preact@10.29.8)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+      '@prefresh/vite': 2.4.12(preact@11.0.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       '@rollup/pluginutils': 5.3.0(rollup@4.60.1)
       babel-plugin-transform-hook-names: 1.0.2(@babel/core@7.29.7(supports-color@7.2.0))
       debug: 4.4.3(supports-color@7.2.0)
@@ -22926,20 +22934,20 @@ snapshots:
 
   '@prefresh/babel-plugin@0.5.3': {}
 
-  '@prefresh/core@1.5.9(preact@10.29.8)':
+  '@prefresh/core@1.5.9(preact@11.0.1)':
     dependencies:
-      preact: 10.29.8
+      preact: 11.0.1
 
   '@prefresh/utils@1.2.1': {}
 
-  '@prefresh/vite@2.4.12(preact@10.29.8)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))':
+  '@prefresh/vite@2.4.12(preact@11.0.1)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))':
     dependencies:
       '@babel/core': 7.29.0(supports-color@7.2.0)
       '@prefresh/babel-plugin': 0.5.3
-      '@prefresh/core': 1.5.9(preact@10.29.8)
+      '@prefresh/core': 1.5.9(preact@11.0.1)
       '@prefresh/utils': 1.2.1
       '@rollup/pluginutils': 4.2.1
-      preact: 10.29.8
+      preact: 11.0.1
       vite: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
     transitivePeerDependencies:
       - supports-color
@@ -23406,16 +23414,6 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/devtools-utils@0.7.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@types/react@19.2.18)(preact@10.29.8)(react@19.2.8)(solid-js@1.9.14)(svelte@5.55.1(@typescript-eslint/types@8.66.0))(vue@3.5.43(typescript@6.0.3))':
-    optionalDependencies:
-      '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
-      '@types/react': 19.2.18
-      preact: 10.29.8
-      react: 19.2.8
-      solid-js: 1.9.14
-      svelte: 5.55.1(@typescript-eslint/types@8.66.0)
-      vue: 3.5.43(typescript@6.0.3)
-
   '@tanstack/devtools-utils@0.7.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@types/react@19.2.18)(preact@10.29.8)(react@19.2.8)(solid-js@1.9.15)(svelte@5.55.1(@typescript-eslint/types@8.66.0))(vue@3.5.43(typescript@6.0.3))':
     optionalDependencies:
       '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
@@ -23423,6 +23421,16 @@ snapshots:
       preact: 10.29.8
       react: 19.2.8
       solid-js: 1.9.15
+      svelte: 5.55.1(@typescript-eslint/types@8.66.0)
+      vue: 3.5.43(typescript@6.0.3)
+
+  '@tanstack/devtools-utils@0.7.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@types/react@19.2.18)(preact@11.0.1)(react@19.2.8)(solid-js@1.9.14)(svelte@5.55.1(@typescript-eslint/types@8.66.0))(vue@3.5.43(typescript@6.0.3))':
+    optionalDependencies:
+      '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
+      '@types/react': 19.2.18
+      preact: 11.0.1
+      react: 19.2.8
+      solid-js: 1.9.14
       svelte: 5.55.1(@typescript-eslint/types@8.66.0)
       vue: 3.5.43(typescript@6.0.3)
 
@@ -23495,20 +23503,20 @@ snapshots:
       '@tanstack/store': 0.11.2
       octane: 0.12.1(@tsrx/oxc@0.20.0(svelte@5.57.1(@typescript-eslint/types@8.66.0)))(@typescript-eslint/types@8.66.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0))
 
-  '@tanstack/preact-devtools@0.10.13(csstype@3.2.3)(preact@10.29.8)(solid-js@1.9.15)':
+  '@tanstack/preact-devtools@0.10.13(csstype@3.2.3)(preact@11.0.1)(solid-js@1.9.15)':
     dependencies:
       '@tanstack/devtools': 0.15.0(csstype@3.2.3)(solid-js@1.9.15)
-      preact: 10.29.8
+      preact: 11.0.1
     transitivePeerDependencies:
       - bufferutil
       - csstype
       - solid-js
       - utf-8-validate
 
-  '@tanstack/preact-store@0.13.5(preact@10.29.8)':
+  '@tanstack/preact-store@0.13.5(preact@11.0.1)':
     dependencies:
       '@tanstack/store': 0.11.2
-      preact: 10.29.8
+      preact: 11.0.1
 
   '@tanstack/query-core@5.104.1': {}
 
@@ -23693,10 +23701,10 @@ snapshots:
       vitest: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
     optional: true
 
-  '@testing-library/preact@3.2.4(preact@10.29.8)':
+  '@testing-library/preact@3.2.4(preact@11.0.1)':
     dependencies:
       '@testing-library/dom': 8.20.1
-      preact: 10.29.8
+      preact: 11.0.1
 
   '@tsrx/core@0.5.3(@typescript-eslint/types@8.66.0)':
     dependencies:
@@ -27833,7 +27841,10 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  preact@10.29.8: {}
+  preact@10.29.8:
+    optional: true
+
+  preact@11.0.1: {}
 
   prelude-ls@1.2.1: {}
 
