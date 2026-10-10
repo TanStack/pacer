@@ -99,7 +99,11 @@ export class LiteDebouncer<TFn extends AnyFunction> {
       this.options.onExecute?.(args, this)
     }
 
-    this.lastArgs = args
+    // Only store args that were not already handled by the leading edge,
+    // so a later flush or trailing execution cannot re-execute them
+    if (!didLeadingExecute) {
+      this.lastArgs = args
+    }
 
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
