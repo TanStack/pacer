@@ -48,3 +48,7 @@ allowBuilds:
   msgpackr-extract: false # optional dep of @angular/build
 
 minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  # octane adapter upgrade: published less than 24 hours ago
+  - octane@0.12.1
+  - '@tanstack/octane-store@0.13.0'

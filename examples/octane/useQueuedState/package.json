@@ -12,9 +12,10 @@
   "dependencies": {
     "@tanstack/octane-pacer": "workspace:*",
     "@tanstack/pacer": "workspace:*",
-    "octane": "0.1.36"
+    "octane": "0.12.1"
   },
   "devDependencies": {
+    "@tsrx/oxc": "0.20.0",
     "@tsrx/typescript-plugin": "^0.6.1",
     "vite": "^8.3.2"
   }
