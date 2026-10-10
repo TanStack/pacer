@@ -64,11 +64,18 @@ See the [devtools](./devtools) page for setup and usage.
 
 <!-- ::end:framework -->
 
-Framework guides cover lifecycle ownership, reactive options, selected state, and helper return values:
+## Next steps
 
-- [Vue](./framework/vue/adapter.md)
-- [Svelte](./framework/svelte/adapter.md)
-- [Lit](./framework/lit/adapter.md)
-- [Alpine](./framework/alpine/adapter.md)
-- [Ember](./framework/ember/adapter.md)
-- [Octane](./framework/octane/adapter.md)
+Your framework's quick start walks through a first debouncer, then covers selected state, reactive options, async work, default options, and cleanup:
+
+- [React](./framework/react/quick-start.md)
+- [Preact](./framework/preact/quick-start.md)
+- [Solid](./framework/solid/quick-start.md)
+- [Angular](./framework/angular/quick-start.md)
+- [Vue](./framework/vue/quick-start.md)
+- [Svelte](./framework/svelte/quick-start.md)
+- [Lit](./framework/lit/quick-start.md)
+- [Alpine](./framework/alpine/quick-start.md)
+- [Ember](./framework/ember/quick-start.md)
+- [Octane](./framework/octane/quick-start.md)
+- [Vanilla JavaScript](./framework/vanilla/quick-start.md)
