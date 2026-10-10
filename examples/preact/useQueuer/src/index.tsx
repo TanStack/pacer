@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { render } from 'preact'
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { useQueuer } from '@tanstack/preact-pacer/queuer'
 import { PacerProvider } from '@tanstack/preact-pacer/provider'
 import { pacerDevtoolsPlugin } from '@tanstack/preact-pacer-devtools'
@@ -142,7 +142,7 @@ function App2() {
     // (state) => state,
   )
 
-  function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  function handleRangeChange(e: TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
     setCurrentValue(newValue)
     setSubmittedCount((c) => c + 1)

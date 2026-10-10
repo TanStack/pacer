@@ -1,6 +1,6 @@
 import { useRef, useState } from 'preact/hooks'
 import { render } from 'preact'
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { useRateLimitedState } from '@tanstack/preact-pacer/rate-limiter'
 
 function App1() {
@@ -129,7 +129,7 @@ function App2() {
     // (state) => state,
   )
 
-  function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  function handleSearchChange(e: TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
     instantSearchRef.current = newValue
     setInstantSearch(newValue)
@@ -241,7 +241,7 @@ function App3() {
     // (state) => state,
   )
 
-  function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  function handleRangeChange(e: TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
     setCurrentValue(newValue)
     setInstantExecutionCount((c) => c + 1)
