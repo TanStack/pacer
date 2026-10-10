@@ -1,5 +1,11 @@
 # @tanstack/octane-pacer
 
+## 0.3.0
+
+### Minor Changes
+
+- [#284](https://github.com/TanStack/pacer/pull/284) [`d9f04ff`](https://github.com/TanStack/pacer/commit/d9f04ff53c3ba866345a934f0f697532d509f683) - Require octane `>=0.12.0` and depend on `@tanstack/octane-store` `^0.13.0`. `PacerProvider` now renders the context itself as the provider, since octane removed `Context.Provider`.
+
 ## 0.2.0
 
 ### Minor Changes
