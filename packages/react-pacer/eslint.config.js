@@ -3,10 +3,10 @@
 import pluginReact from '@eslint-react/eslint-plugin'
 import pluginReactCompiler from 'eslint-plugin-react-compiler'
 import pluginReactHooks from 'eslint-plugin-react-hooks'
+import { defineConfig } from 'eslint/config'
 import rootConfig from '../../eslint.config.js'
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+export default defineConfig([
   ...rootConfig,
   {
     files: ['**/*.{ts,tsx}'],
@@ -30,4 +30,4 @@ export default [
       // 'react-compiler/react-compiler': 'off',
     },
   },
-]
+])

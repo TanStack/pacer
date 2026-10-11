@@ -1,9 +1,9 @@
 // @ts-check
 
+import { defineConfig } from 'eslint/config'
 import rootConfig from '../../eslint.config.js'
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+export default defineConfig([
   ...rootConfig,
   {
     files: ['**/*.{ts,tsx}'],
@@ -16,4 +16,4 @@ export default [
     files: ['**/__tests__/**'],
     rules: {},
   },
-]
+])
