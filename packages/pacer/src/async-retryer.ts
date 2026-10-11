@@ -1,5 +1,7 @@
 import { Store } from '@tanstack/store'
+import { executeWithOutcome } from './async-retryer-execution'
 import { parseFunctionOrValue } from './utils'
+import type { AsyncExecutionOutcome } from './async-retryer-execution'
 import type { AnyAsyncFunction } from './types'
 
 export interface AsyncRetryerState<TFn extends AnyAsyncFunction> {
@@ -419,8 +421,29 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
   execute = async (
     ...args: Parameters<TFn>
   ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
+    const outcome = await this.#executeWithOutcome(args, false)
+    if (outcome.status === 'error' && outcome.shouldThrow) {
+      throw outcome.error
+    }
+    return outcome.status === 'success' ? outcome.result : undefined
+  };
+
+  /**
+   * @internal
+   * @hidden
+   */
+  [executeWithOutcome] = (
+    ...args: Parameters<TFn>
+  ): Promise<AsyncExecutionOutcome<Awaited<ReturnType<TFn>>>> => {
+    return this.#executeWithOutcome(args, true)
+  }
+
+  #executeWithOutcome = async (
+    args: Parameters<TFn>,
+    cancelRejectedExecutions: boolean,
+  ): Promise<AsyncExecutionOutcome<Awaited<ReturnType<TFn>>>> => {
     if (!this.#getEnabled()) {
-      return undefined
+      return { status: 'disabled' }
     }
 
     // Cancel any existing execution
@@ -428,7 +451,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 
     const startTime = Date.now()
     let lastError: Error | undefined
-    let result: Awaited<ReturnType<TFn>> | undefined
+    let result: Awaited<ReturnType<TFn>>
 
     this.#abortController = new AbortController()
     const signal = this.#abortController.signal
@@ -455,7 +478,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
 
       try {
         if (signal.aborted) {
-          return undefined
+          return { status: 'aborted' }
         }
 
         // Check if total execution time has been exceeded
@@ -466,7 +489,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         ) {
           this.options.onTotalExecutionTimeout?.(this)
           this.abort('total-timeout')
-          return undefined
+          return { status: 'aborted' }
         }
 
         // Execute with individual timeout if specified
@@ -501,7 +524,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
         // Check if cancelled during execution
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (signal.aborted) {
-          return undefined
+          return { status: 'aborted' }
         }
 
         const totalTime = Date.now() - startTime
@@ -514,20 +537,33 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
           lastResult: result,
         })
 
-        this.options.onSuccess?.(result as Awaited<ReturnType<TFn>>, args, this)
+        this.options.onSuccess?.(result, args, this)
 
-        return result
+        return { status: 'success', result }
       } catch (error) {
-        // Treat abort as a non-error cancellation outcome
+        // Parent utilities distinguish cancellation from final failure. Keep
+        // standalone execute() rejection and callback behavior unchanged.
         if (
-          error &&
-          typeof error === 'object' &&
-          'name' in error &&
-          (error as Error).name === 'AbortError'
+          (cancelRejectedExecutions && signal.aborted) ||
+          (error &&
+            typeof error === 'object' &&
+            'name' in error &&
+            (error as Error).name === 'AbortError')
         ) {
-          return undefined
+          return { status: 'aborted' }
         }
-        lastError = error instanceof Error ? error : new Error(String(error))
+        lastError =
+          error instanceof Error
+            ? error
+            : new Error(
+                typeof error === 'object' &&
+                  error !== null &&
+                  'message' in error &&
+                  typeof error.message === 'string'
+                  ? error.message
+                  : String(error),
+                { cause: error },
+              )
         this.#setState({ lastError })
 
         // Call onError for every error (including during retries)
@@ -553,7 +589,7 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
               signal.addEventListener('abort', onAbort)
             })
             if (signal.aborted) {
-              return undefined
+              return { status: 'aborted' }
             }
           }
         }
@@ -572,14 +608,13 @@ export class AsyncRetryer<TFn extends AnyAsyncFunction> {
     this.options.onLastError?.(lastError as Error, this)
     this.options.onSettled?.(args, this)
 
-    if (
-      (this.options.throwOnError === 'last' && isLastAttempt) ||
-      this.options.throwOnError === true
-    ) {
-      throw lastError
+    return {
+      status: 'error',
+      error: lastError,
+      shouldThrow:
+        (this.options.throwOnError === 'last' && isLastAttempt) ||
+        this.options.throwOnError === true,
     }
-
-    return undefined
   }
 
   /**
