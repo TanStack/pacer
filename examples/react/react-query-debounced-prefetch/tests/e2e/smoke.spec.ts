@@ -1,3 +1,4 @@
+import { expectPacerDevtools } from '../../../../../tests/e2e/helpers/devtools'
 import { expect, test } from '../../../../../tests/e2e/helpers/fixtures'
 import type { Page } from '@playwright/test'
 
@@ -75,4 +76,67 @@ test('prefetches only the final hover and reuses its cached detail', async ({
   await expect(page.getByText('Beta content', { exact: true })).toBeVisible()
   await page.clock.runFor(1100)
   expect(requestedPosts).toEqual([2])
+})
+
+test('cancels the pending prefetch when the pointer leaves the list', async ({
+  page,
+  exampleUrl,
+}) => {
+  const requestedPosts = await openExample(page, exampleUrl)
+  await page.getByRole('link', { name: 'Alpha post', exact: true }).hover()
+  await page.clock.runFor(50)
+  await page.getByRole('heading', { name: 'Posts', exact: true }).hover()
+  await page.clock.runFor(1100)
+  expect(requestedPosts).toEqual([])
+})
+
+test('refreshes a stale post when it is hovered again', async ({
+  page,
+  exampleUrl,
+}) => {
+  const requestedPosts = await openExample(page, exampleUrl)
+  const beta = page.getByRole('link', { name: 'Beta post', exact: true })
+  await beta.hover()
+  await page.clock.runFor(100)
+  await page.clock.runFor(1000)
+  await expect.poll(() => requestedPosts).toEqual([2])
+
+  // Hovering again while the post is fresh reuses the cache.
+  await page.getByRole('heading', { name: 'Posts', exact: true }).hover()
+  await beta.hover()
+  await page.clock.runFor(1100)
+  expect(requestedPosts).toEqual([2])
+
+  // After the 10s staleTime, the next hover refetches it.
+  await page.getByRole('heading', { name: 'Posts', exact: true }).hover()
+  await page.clock.runFor(10_000)
+  await beta.hover()
+  await page.clock.runFor(100)
+  await page.clock.runFor(1000)
+  await expect.poll(() => requestedPosts).toEqual([2, 2])
+})
+
+test('shows the prefetcher in the Pacer devtools next to the Query panel', async ({
+  page,
+  exampleUrl,
+}) => {
+  await openExample(page, exampleUrl)
+  const titles = ['Alpha post', 'Beta post']
+  let hovered = 0
+  await expectPacerDevtools(
+    page,
+    async () => {
+      // Hover a different post each time so the debounced prefetcher updates.
+      const title = titles[hovered++ % titles.length]!
+      await page.getByRole('link', { name: title, exact: true }).hover()
+      await page.clock.runFor(1)
+    },
+    'Post Prefetch Debouncer',
+  )
+  await page
+    .getByRole('button', { name: 'TanStack Query', exact: true })
+    .click()
+  await expect(
+    page.getByRole('button', { name: 'Query key ["posts"]', exact: true }),
+  ).toBeVisible()
 })

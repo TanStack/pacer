@@ -7478,9 +7478,15 @@ importers:
 
   examples/react/react-query-debounced-prefetch:
     dependencies:
+      '@tanstack/react-devtools':
+        specifier: 0.10.13
+        version: 0.10.13(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(csstype@3.2.3)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(solid-js@1.9.15)
       '@tanstack/react-pacer':
         specifier: workspace:*
         version: link:../../../packages/react-pacer
+      '@tanstack/react-pacer-devtools':
+        specifier: workspace:*
+        version: link:../../../packages/react-pacer-devtools
       '@tanstack/react-query':
         specifier: ^5.104.1
         version: 5.104.1(react@19.3.0)
@@ -7509,9 +7515,15 @@ importers:
 
   examples/react/react-query-queued-prefetch:
     dependencies:
+      '@tanstack/react-devtools':
+        specifier: 0.10.13
+        version: 0.10.13(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(csstype@3.2.3)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(solid-js@1.9.15)
       '@tanstack/react-pacer':
         specifier: workspace:*
         version: link:../../../packages/react-pacer
+      '@tanstack/react-pacer-devtools':
+        specifier: workspace:*
+        version: link:../../../packages/react-pacer-devtools
       '@tanstack/react-query':
         specifier: ^5.104.1
         version: 5.104.1(react@19.3.0)
@@ -7540,9 +7552,15 @@ importers:
 
   examples/react/react-query-throttled-prefetch:
     dependencies:
+      '@tanstack/react-devtools':
+        specifier: 0.10.13
+        version: 0.10.13(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(csstype@3.2.3)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(solid-js@1.9.15)
       '@tanstack/react-pacer':
         specifier: workspace:*
         version: link:../../../packages/react-pacer
+      '@tanstack/react-pacer-devtools':
+        specifier: workspace:*
+        version: link:../../../packages/react-pacer-devtools
       '@tanstack/react-query':
         specifier: ^5.104.1
         version: 5.104.1(react@19.3.0)
