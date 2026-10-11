@@ -2,11 +2,11 @@
 
 import tsParser from '@typescript-eslint/parser'
 import pluginSvelte from 'eslint-plugin-svelte'
+import { defineConfig } from 'eslint/config'
 import rootConfig from '../../eslint.config.js'
 import svelteConfig from './svelte.config.js'
 
-/** @type {import('eslint').Linter.Config[]} */
-const config = [
+const config = defineConfig([
   ...rootConfig,
   ...pluginSvelte.configs['recommended'],
   {
@@ -26,6 +26,6 @@ const config = [
       'svelte/valid-compile': 'off',
     },
   },
-]
+])
 
 export default config

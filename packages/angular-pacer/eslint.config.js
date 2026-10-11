@@ -1,6 +1,6 @@
 // @ts-check
 
+import { defineConfig } from 'eslint/config'
 import rootConfig from '../../eslint.config.js'
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [...rootConfig]
+export default defineConfig([...rootConfig])
