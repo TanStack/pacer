@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'preact/hooks'
 import { render } from 'preact'
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { rateLimit } from '@tanstack/preact-pacer/rate-limiter'
 
 function App1() {
@@ -97,7 +97,7 @@ function App2() {
     [windowType],
   )
 
-  function handleTextChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  function handleTextChange(e: TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
     setText(newValue)
     rateLimitedSetText(newValue)
@@ -134,7 +134,7 @@ function App2() {
           type="search"
           value={text}
           onInput={handleTextChange}
-          placeholder="Type text (rate limited to 3 updates per 5 seconds)..."
+          placeholder="Type text (rate limited to 5 updates per 5 seconds)..."
           style={{ width: '100%' }}
         />
       </div>
@@ -174,7 +174,7 @@ function App3() {
     [windowType],
   )
 
-  function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  function handleRangeChange(e: TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
     setCurrentValue(newValue)
     rateLimitedSetValue(newValue)
@@ -227,7 +227,7 @@ function App3() {
             min="0"
             max="100"
             value={rateLimitedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{rateLimitedValue}</span>

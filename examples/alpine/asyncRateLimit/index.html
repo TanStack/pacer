@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine asyncRateLimit</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="demo">
+          <h1>TanStack Pacer asyncRateLimit Example</h1>
+          <div
+            :style="({ display: 'grid', gap: '0.5rem', marginBottom: '1rem' })"
+          >
+            <label
+              ><input
+                type="radio"
+                name="windowType"
+                value="fixed"
+                :checked="(windowType === 'fixed')"
+                @input="((() => (windowType = 'fixed')))($event)"
+              />Fixed Window</label
+            ><label
+              ><input
+                type="radio"
+                name="windowType"
+                value="sliding"
+                :checked="(windowType === 'sliding')"
+                @input="((() => (windowType = 'sliding')))($event)"
+              />Sliding Window</label
+            >
+          </div>
+          <div>
+            <input
+              type="search"
+              :value="(searchText)"
+              @input="(((e) => {
+    const newValue = e.target.value;
+    searchText = newValue;
+    rateLimitedSetSearch(newValue);
+}))($event)"
+              placeholder="Type to search..."
+              :style="({ width: '100%' })"
+            /><template x-if="(loading)"><div>Loading...</div></template>
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Instant Search:</td>
+                <td x-text="(searchText)"></td>
+              </tr>
+              <tr>
+                <td>Rate Limited Search:</td>
+                <td x-text="(rateLimitedSearchText)"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <h3>Search Results:</h3>
+            <ul>
+              <template x-for="(result, i) in (searchResults)" :key="i"
+                ><li x-text="(result)"></li
+              ></template>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

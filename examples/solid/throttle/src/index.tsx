@@ -13,12 +13,9 @@ function App1() {
   })
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      throttledSetCount(newInstantCount) // throttled state update
-      return newInstantCount // instant state update
-    })
+    const newInstantCount = instantCount() + 1
+    setInstantCount(newInstantCount)
+    throttledSetCount(newInstantCount) // throttled state update
   }
 
   return (
@@ -131,7 +128,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue()}</span>

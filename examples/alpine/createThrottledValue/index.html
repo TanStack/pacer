@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine createThrottledValue</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="counter">
+          <h1>TanStack Pacer createThrottledValue Example 1</h1>
+          <table>
+            <tbody>
+              <tr>
+                <td>Instant Count:</td>
+                <td x-text="(instantCount)"></td>
+              </tr>
+              <tr>
+                <td>Throttled Count:</td>
+                <td x-text="(throttledCount())"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div><button @click="((increment))($event)">Increment</button></div>
+        </div>
+        <hr />
+        <div x-data="search">
+          <h1>TanStack Pacer createThrottledValue Example 2</h1>
+          <div>
+            <input
+              type="search"
+              :value="(instantSearch)"
+              @input="((handleSearchChange))($event)"
+              placeholder="Type to search..."
+              :style="({ width: '100%' })"
+            />
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Instant Search:</td>
+                <td x-text="(instantSearch)"></td>
+              </tr>
+              <tr>
+                <td>Throttled Search:</td>
+                <td x-text="(throttledSearch())"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <div x-data="range">
+          <h1>TanStack Pacer createThrottledValue Example 3</h1>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Current Range:<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(currentValue)"
+                @input="((handleRangeChange))($event)"
+                :style="({ width: '100%' })" /><span
+                x-text="(currentValue)"
+              ></span
+            ></label>
+          </div>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Throttled Range (Readonly):<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(throttledValue())"
+                disabled
+                :style="({ width: '100%' })" /><span
+                x-text="(throttledValue())"
+              ></span
+            ></label>
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Values Submitted:</td>
+                <td x-text="(submittedCount)"></td>
+              </tr>
+              <tr>
+                <td>Throttled Execution Count:</td>
+                <td x-text="(throttler.state.executionCount)"></td>
+              </tr>
+              <tr>
+                <td>Saved Executions:</td>
+                <td>
+                  <span
+                    x-text="(submittedCount - throttler.state.executionCount)"
+                  ></span>
+                  (<span
+                    x-text="(submittedCount > 0
+    ? (((submittedCount - throttler.state.executionCount) / submittedCount) *
+        100).toFixed(2)
+    : 0)"
+                  ></span
+                  >% Reduction in execution calls)
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div :style="({ color: '#666', fontSize: '0.9em' })">
+            <p>Throttled to 1 update per 250ms</p>
+          </div>
+          <pre
+            :style="({ marginTop: '20px' })"
+          ><span x-text="(JSON.stringify(throttler.state, null, 2))"></span></pre>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

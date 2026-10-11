@@ -48,7 +48,7 @@ function App1() {
             <div>Queue Size: {state().size}</div>
             <div>Queue Max Size: {25}</div>
             <div>Queue Full: {state().isFull ? 'Yes' : 'No'}</div>
-            <div>Queue Peek: {queuer.peekNextItem()}</div>
+            <div>Queue Peek: {queueItems()[0]}</div>
             <div>Queue Empty: {state().isEmpty ? 'Yes' : 'No'}</div>
             <div>Queue Idle: {state().isIdle ? 'Yes' : 'No'}</div>
             <div>Queuer Status: {state().status}</div>
@@ -116,21 +116,26 @@ function App1() {
           )}
         </queuer.Subscribe>
       </div>
-      <pre style={{ 'margin-top': '20px' }}>
-        {JSON.stringify(queuer.store.state, null, 2)}
-      </pre>
+      <queuer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state(), null, 2)}
+          </pre>
+        )}
+      </queuer.Subscribe>
     </div>
   )
 }
 
 function App2() {
   const [currentValue, setCurrentValue] = createSignal(50)
-  const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
+  const [queuedValue, setQueuedValue] = createSignal(50)
+  const [submittedCount, setSubmittedCount] = createSignal(0)
 
   // Queuer that processes a single value with delays
   const [, addItem, queuer] = createQueuedSignal(
-    (_item: number) => {
-      // This will update automatically through the queue
+    (item: number) => {
+      setQueuedValue(item)
     },
     {
       maxSize: 100,
@@ -154,7 +159,7 @@ function App2() {
     const target = e.target as HTMLInputElement
     const newValue = parseInt(target.value, 10)
     setCurrentValue(newValue)
-    setInstantExecutionCount((c) => c + 1)
+    setSubmittedCount((c) => c + 1)
     addItem(newValue)
   }
 
@@ -175,11 +180,25 @@ function App2() {
           <span>{currentValue()}</span>
         </label>
       </div>
+      <div style={{ 'margin-bottom': '20px' }}>
+        <label>
+          Queued Range (Readonly):
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={queuedValue()}
+            disabled
+            style={{ width: '100%' }}
+          />
+          <span>{queuedValue()}</span>
+        </label>
+      </div>
       <table>
         <tbody>
           <tr>
-            <td>Instant Executions:</td>
-            <td>{instantExecutionCount()}</td>
+            <td>Values Submitted:</td>
+            <td>{submittedCount()}</td>
           </tr>
           <queuer.Subscribe
             selector={(state) => ({
@@ -218,21 +237,8 @@ function App2() {
                   <td>{state().executionCount}</td>
                 </tr>
                 <tr>
-                  <td>Saved Executions:</td>
-                  <td>{instantExecutionCount() - state().executionCount}</td>
-                </tr>
-                <tr>
-                  <td>% Reduction:</td>
-                  <td>
-                    {instantExecutionCount() === 0
-                      ? '0'
-                      : Math.round(
-                          ((instantExecutionCount() - state().executionCount) /
-                            instantExecutionCount()) *
-                            100,
-                        )}
-                    %
-                  </td>
+                  <td>Pending Items:</td>
+                  <td>{state().size}</td>
                 </tr>
               </>
             )}
@@ -242,9 +248,13 @@ function App2() {
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
         <p>Queued with 100ms wait time</p>
       </div>
-      <pre style={{ 'margin-top': '20px' }}>
-        {JSON.stringify(queuer.store.state, null, 2)}
-      </pre>
+      <queuer.Subscribe selector={(state) => state}>
+        {(state) => (
+          <pre style={{ 'margin-top': '20px' }}>
+            {JSON.stringify(state(), null, 2)}
+          </pre>
+        )}
+      </queuer.Subscribe>
     </div>
   )
 }

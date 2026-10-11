@@ -9,7 +9,6 @@ Use it when a throttled operation returns a value you need, can reject, or needs
 
 ## Choose an API
 
-- `injectAsyncThrottledCallback` for a Promise-returning handler
 - `injectAsyncThrottler` for lifecycle methods and selected state
 
 ## Angular example

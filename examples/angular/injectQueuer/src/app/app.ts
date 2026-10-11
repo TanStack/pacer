@@ -1,60 +1,39 @@
 import { Component, signal } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
+import { JsonPipe } from '@angular/common'
 import { injectQueuer } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.html',
+  imports: [JsonPipe],
 })
 export class App {
-  protected readonly input = signal('')
-  protected readonly processedCount = signal(0)
-  protected readonly lastProcessed = signal('')
-
-  protected readonly queue = injectQueuer<
-    string,
-    { items: Array<string>; size: number; isRunning: boolean }
-  >(
-    (item) => {
-      this.lastProcessed.set(item)
-      this.processedCount.update((c) => c + 1)
-    },
+  readonly currentValue = signal(50)
+  readonly rangeValue = signal(50)
+  readonly instantExecutions = signal(1)
+  readonly processed = signal<Array<number>>([])
+  readonly numberQueue = injectQueuer(
+    (item: number) => this.processed.update((items) => [...items, item]),
     {
+      maxSize: 25,
+      initialItems: Array.from({ length: 10 }, (_, index) => index + 1),
       started: false,
-      wait: 500,
+      wait: 1000,
     },
-    (state) => ({
-      items: state.items,
-      size: state.size,
-      isRunning: state.isRunning,
-    }),
+    (state) => state,
   )
-
-  protected onInput(value: string): void {
-    this.input.set(value)
+  readonly rangeQueue = injectQueuer(
+    (item: number) => this.rangeValue.set(item),
+    { maxSize: 100, wait: 100, initialItems: [50] },
+    (state) => state,
+  )
+  addNumber(): void {
+    const items = this.numberQueue.peekAllItems()
+    this.numberQueue.addItem(items.length ? items[items.length - 1]! + 1 : 1)
   }
-
-  protected add(): void {
-    const value = this.input().trim()
-    if (!value) return
-    this.queue.addItem(value)
-    this.input.set('')
-  }
-
-  protected start(): void {
-    this.queue.start()
-  }
-
-  protected stop(): void {
-    this.queue.stop()
-  }
-
-  protected reset(): void {
-    this.input.set('')
-    this.processedCount.set(0)
-    this.lastProcessed.set('')
-    this.queue.reset()
-    this.queue.stop()
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
+    this.rangeQueue.addItem(value)
   }
 }

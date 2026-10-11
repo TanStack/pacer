@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@tanstack/pacer": ["../pacer/src"],
+      "@tanstack/pacer/types": ["../pacer/src/types.ts"]
+    },
+    "rootDir": ".."
+  },
+  "include": ["src"]
+}

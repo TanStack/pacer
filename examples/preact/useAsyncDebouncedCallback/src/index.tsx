@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { render } from 'preact'
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { useAsyncDebouncedCallback } from '@tanstack/preact-pacer/async-debouncer'
 
 interface SearchResult {
@@ -59,7 +59,7 @@ function App1() {
     },
   )
 
-  async function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  async function handleSearchChange(e: TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
     setSearchTerm(newValue)
 
@@ -217,7 +217,7 @@ function App3() {
     },
   )
 
-  function handleEmailChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  function handleEmailChange(e: TargetedEvent<HTMLInputElement>) {
     const newEmail = e.currentTarget.value
     setEmail(newEmail)
     debouncedValidateEmail(newEmail)

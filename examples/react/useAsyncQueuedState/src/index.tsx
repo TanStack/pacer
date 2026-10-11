@@ -39,8 +39,7 @@ function App() {
         ) // optionally, handle errors here instead of your own try/catch
       },
     },
-    // Alternative to asyncQueuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-    // (state) => state,
+    (state) => ({ items: state.items }),
   )
 
   return (

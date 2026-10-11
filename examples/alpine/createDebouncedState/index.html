@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine createDebouncedState</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="counter">
+          <h1>TanStack Pacer createDebouncedState Example 1</h1>
+          <table>
+            <tbody>
+              <tr>
+                <td>Is Pending:</td>
+                <td x-text="(debouncer.state.isPending.toString())"></td>
+              </tr>
+              <tr>
+                <td>Execution Count:</td>
+                <td x-text="(debouncer.state.executionCount)"></td>
+              </tr>
+              <tr>
+                <td :colspan="(2)"><hr /></td>
+              </tr>
+              <tr>
+                <td>Instant Count:</td>
+                <td x-text="(instantCount)"></td>
+              </tr>
+              <tr>
+                <td>Debounced Count:</td>
+                <td x-text="(debouncedCount())"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div><button @click="((increment))($event)">Increment</button></div>
+          <pre
+            :style="({ marginTop: '20px' })"
+            x-text="(JSON.stringify(debouncer.state, null, 2))"
+          ></pre>
+        </div>
+        <hr />
+        <div x-data="search">
+          <h1>TanStack Pacer createDebouncedState Example 2</h1>
+          <div>
+            <input
+              type="search"
+              :value="(instantSearch)"
+              @input="((handleSearchChange))($event)"
+              placeholder="Type to search..."
+              :style="({ width: '100%' })"
+            />
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Is Pending:</td>
+                <td x-text="(debouncer.state.isPending.toString())"></td>
+              </tr>
+              <tr>
+                <td>Execution Count:</td>
+                <td x-text="(debouncer.state.executionCount)"></td>
+              </tr>
+              <tr>
+                <td :colspan="(2)"><hr /></td>
+              </tr>
+              <tr>
+                <td>Instant Search:</td>
+                <td x-text="(instantSearch)"></td>
+              </tr>
+              <tr>
+                <td>Debounced Search:</td>
+                <td x-text="(debouncedSearch())"></td>
+              </tr>
+            </tbody>
+          </table>
+          <pre
+            :style="({ marginTop: '20px' })"
+            x-text="(JSON.stringify(debouncer.state, null, 2))"
+          ></pre>
+        </div>
+        <hr />
+        <div x-data="range">
+          <h1>TanStack Pacer createDebouncedState Example 3</h1>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Current Range:<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(currentValue)"
+                @input="((handleRangeChange))($event)"
+                :style="({ width: '100%' })" /><span
+                x-text="(currentValue)"
+              ></span
+            ></label>
+          </div>
+          <div :style="({ marginBottom: '20px' })">
+            <label
+              >Debounced Range (Readonly):<input
+                type="range"
+                min="0"
+                max="100"
+                :value="(debouncedValue())"
+                disabled
+                :style="({ width: '100%' })" /><span
+                x-text="(debouncedValue())"
+              ></span
+            ></label>
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>Is Pending:</td>
+                <td x-text="(debouncer.state.isPending.toString())"></td>
+              </tr>
+              <tr>
+                <td>Instant Executions:</td>
+                <td x-text="(instantExecutionCount)"></td>
+              </tr>
+              <tr>
+                <td>Debounced Executions:</td>
+                <td x-text="(debouncer.state.executionCount)"></td>
+              </tr>
+              <tr>
+                <td>Saved Executions:</td>
+                <td
+                  x-text="(instantExecutionCount - debouncer.state.executionCount)"
+                ></td>
+              </tr>
+              <tr>
+                <td>% Reduction:</td>
+                <td>
+                  <template x-if="(instantExecutionCount === 0)"
+                    ><span x-text="('0')"></span></template
+                  ><template x-if="!((instantExecutionCount === 0))"
+                    ><span
+                      x-text="(Math.round(((instantExecutionCount - debouncer.state.executionCount) /
+    instantExecutionCount) *
+    100))"
+                    ></span></template
+                  >%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div :style="({ color: '#666', fontSize: '0.9em' })">
+            <p>Debounced to 250ms wait time</p>
+          </div>
+          <pre
+            :style="({ marginTop: '20px' })"
+            x-text="(JSON.stringify(debouncer.state, null, 2))"
+          ></pre>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

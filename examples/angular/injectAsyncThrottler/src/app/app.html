@@ -1,29 +1,26 @@
-<h1>injectAsyncThrottler example</h1>
+<h1>TanStack Pacer injectAsyncThrottler Example</h1>
 
-<p>
-  Click "Run" rapidly. The underlying async function will run at most once per second (<code
-    >wait: 1000</code
-  >).
-</p>
-
-<label>
-  Query
-  <input
-    [value]="query()"
-    (input)="query.set($any($event.target).value)"
-    placeholder="type something"
-  />
-</label>
-
-<div>
-  <button (click)="run()">Run</button>
-  <button (click)="reset()">Reset</button>
-</div>
-
-<p>Last event: {{ lastEvent() }}</p>
-<p>Last value: {{ lastValue() }}</p>
-
-<h2>Throttler state</h2>
-<pre>{{ throttler.state() }}</pre>
-
-<router-outlet />
+<p>1000ms wait, 500ms simulated network delay.</p>
+<input
+  type="search"
+  [value]="searchTerm()"
+  (input)="onSearch($any($event.target).value)"
+  placeholder="Type to search..."
+  autocomplete="new-password"
+/>
+@if (loading()) {
+<p>Loading...</p>
+} @if (error()) {
+<p role="alert">Error: {{ error() }}</p>
+}
+<p>API calls made: {{ runner.state().successCount }}</p>
+<p>Is executing: {{ runner.state().isExecuting }}</p>
+<button (click)="runner.flush()">Flush</button>
+<p>Pending: {{ runner.state().isPending }}</p>
+<pre>{{ runner.state() | json }}</pre>
+<h2>Search Results</h2>
+<ul>
+  @for (result of results(); track $index) {
+  <li>{{ result }}</li>
+  }
+</ul>

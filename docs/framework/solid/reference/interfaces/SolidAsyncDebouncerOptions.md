@@ -3,7 +3,7 @@ id: SolidAsyncDebouncerOptions
 title: SolidAsyncDebouncerOptions
 ---
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L13)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:15](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L15)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:13](https://github.com/TanS
 optional onUnmount?: (debouncer) => void;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L21)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L23)
 
 Optional callback invoked when the owning component unmounts. Receives the debouncer instance.
 When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.

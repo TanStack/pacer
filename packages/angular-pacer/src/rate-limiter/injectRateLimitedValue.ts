@@ -1,5 +1,6 @@
 import { effect } from '@angular/core'
 import { injectRateLimitedSignal } from './injectRateLimitedSignal'
+import type { AngularPacerOptions } from '../types'
 import type { RateLimitedSignal } from './injectRateLimitedSignal'
 import type { Signal } from '@angular/core'
 import type {
@@ -49,7 +50,7 @@ type Setter<T> = (value: T | ((prev: T) => T)) => void
  */
 export function injectRateLimitedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialOptions: RateLimiterOptions<Setter<TValue>>,
+  initialOptions: AngularPacerOptions<RateLimiterOptions<Setter<TValue>>>,
   selector?: (state: RateLimiterState) => TSelected,
 ): RateLimitedSignal<TValue, TSelected>
 export function injectRateLimitedValue<TValue, TSelected = {}>(
@@ -60,9 +61,16 @@ export function injectRateLimitedValue<TValue, TSelected = {}>(
 ): RateLimitedSignal<TValue, TSelected>
 export function injectRateLimitedValue<TValue, TSelected = {}>(
   value: Signal<TValue>,
-  initialValueOrOptions: TValue | RateLimiterOptions<Setter<TValue>>,
+  initialValue: TValue,
+  initialOptions: () => RateLimiterOptions<Setter<TValue>>,
+  selector: ((state: RateLimiterState) => TSelected) | undefined,
+): RateLimitedSignal<TValue, TSelected>
+export function injectRateLimitedValue<TValue, TSelected = {}>(
+  value: Signal<TValue>,
+  initialValueOrOptions:
+    TValue | AngularPacerOptions<RateLimiterOptions<Setter<TValue>>>,
   initialOptionsOrSelector?:
-    | RateLimiterOptions<Setter<TValue>>
+    | AngularPacerOptions<RateLimiterOptions<Setter<TValue>>>
     | ((state: RateLimiterState) => TSelected),
   maybeSelector?: (state: RateLimiterState) => TSelected,
 ): RateLimitedSignal<TValue, TSelected> {
@@ -70,14 +78,18 @@ export function injectRateLimitedValue<TValue, TSelected = {}>(
 
   const hasInitialValue =
     (initialOptionsOrSelector !== undefined && !hasSelector) ||
-    maybeSelector !== undefined
+    arguments.length >= 4
 
   const initialValue = hasInitialValue
     ? (initialValueOrOptions as TValue)
     : (undefined as unknown as TValue)
   const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as RateLimiterOptions<Setter<TValue>>)
-    : (initialValueOrOptions as RateLimiterOptions<Setter<TValue>>)
+    ? (initialOptionsOrSelector as AngularPacerOptions<
+        RateLimiterOptions<Setter<TValue>>
+      >)
+    : (initialValueOrOptions as AngularPacerOptions<
+        RateLimiterOptions<Setter<TValue>>
+      >)
   const selector = hasInitialValue
     ? maybeSelector
     : (initialOptionsOrSelector as

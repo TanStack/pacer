@@ -93,7 +93,7 @@ function App2() {
 
 function App3() {
   const [currentValue, setCurrentValue] = useState(50)
-  const [instantExecutionCount, setInstantExecutionCount] = useState(0)
+  const [submittedCount, setSubmittedCount] = useState(1)
 
   // highest-level hook that watches an instant local state value and returns a debounced value
   const [debouncedValue, debouncer] = useDebouncedValue(
@@ -108,7 +108,7 @@ function App3() {
   function handleRangeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseInt(e.target.value, 10)
     setCurrentValue(newValue)
-    setInstantExecutionCount((c) => c + 1)
+    setSubmittedCount((c) => c + 1)
   }
 
   return (
@@ -136,7 +136,7 @@ function App3() {
             min="0"
             max="100"
             value={debouncedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{debouncedValue}</span>
@@ -157,8 +157,8 @@ function App3() {
                   <td>{isPending.toString()}</td>
                 </tr>
                 <tr>
-                  <td>Instant Executions:</td>
-                  <td>{instantExecutionCount}</td>
+                  <td>Values Submitted:</td>
+                  <td>{submittedCount}</td>
                 </tr>
                 <tr>
                   <td>Debounced Executions:</td>
@@ -166,16 +166,15 @@ function App3() {
                 </tr>
                 <tr>
                   <td>Saved Executions:</td>
-                  <td>{instantExecutionCount - executionCount}</td>
+                  <td>{submittedCount - executionCount}</td>
                 </tr>
                 <tr>
                   <td>% Reduction:</td>
                   <td>
-                    {instantExecutionCount === 0
+                    {submittedCount === 0
                       ? '0'
                       : Math.round(
-                          ((instantExecutionCount - executionCount) /
-                            instantExecutionCount) *
+                          ((submittedCount - executionCount) / submittedCount) *
                             100,
                         )}
                     %

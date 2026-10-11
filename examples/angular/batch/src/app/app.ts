@@ -1,46 +1,23 @@
-import { Component } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
-import { injectBatcher } from '@tanstack/angular-pacer'
+import { Component, signal } from '@angular/core'
+import { batch } from '@tanstack/angular-pacer'
 
-@Component({
-  selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css',
-})
+@Component({ selector: 'app-root', templateUrl: './app.html' })
 export class App {
-  // Batcher example
-  protected readonly batcher = injectBatcher<
-    string,
-    { items: Array<string>; size: number; isPending: boolean }
-  >(
-    (items) => {
-      console.log('Processing batch:', items)
-      this.processedBatches.push({
-        timestamp: new Date().toLocaleTimeString(),
-        items: [...items],
-        count: items.length,
-      })
+  readonly processedBatches = signal<Array<Array<number>>>([])
+  readonly pendingItems = signal<Array<number>>([])
+  readonly runner = batch(
+    (items: Array<number>) => {
+      this.processedBatches.update((batches) => [...batches, items])
     },
-    { maxSize: 3, wait: 2000 },
-    (state) => ({
-      items: state.items,
-      size: state.size,
-      isPending: state.isPending,
-    }),
+    {
+      maxSize: 5,
+      wait: 3000,
+      getShouldExecute: (items) => items.includes(42),
+      onItemsChange: (batcher) => this.pendingItems.set(batcher.peekAllItems()),
+    },
   )
-
-  protected readonly processedBatches: Array<{
-    timestamp: string
-    items: Array<string>
-    count: number
-  }> = []
-
-  protected addToBatch(item: string): void {
-    this.batcher.addItem(item)
-  }
-
-  protected flushBatch(): void {
-    this.batcher.flush()
+  add(): void {
+    const items = this.pendingItems()
+    this.runner(items.length ? items[items.length - 1]! + 1 : 1)
   }
 }

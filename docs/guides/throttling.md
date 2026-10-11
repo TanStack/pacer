@@ -12,5 +12,11 @@ Throttling limits how often work runs while calls continue. Choose your framewor
 - [Preact](../framework/preact/guides/throttling.md)
 - [Solid](../framework/solid/guides/throttling.md)
 - [Angular](../framework/angular/guides/throttling.md)
+- [Vue](../framework/vue/guides/throttling.md)
+- [Svelte](../framework/svelte/guides/throttling.md)
+- [Lit](../framework/lit/guides/throttling.md)
+- [Alpine](../framework/alpine/guides/throttling.md)
+- [Ember](../framework/ember/guides/throttling.md)
+- [Octane](../framework/octane/guides/throttling.md)
 
 Not sure which operation fits your use case? Start with [Which Pacer Utility Should I Choose?](./which-pacer-utility-should-i-choose.md).

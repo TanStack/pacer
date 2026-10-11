@@ -3,7 +3,7 @@ id: SolidQueuerOptions
 title: SolidQueuerOptions
 ---
 
-Defined in: [queuer/createQueuer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L9)
+Defined in: [queuer/createQueuer.ts:11](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L11)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [queuer/createQueuer.ts:9](https://github.com/TanStack/pacer/blob/ma
 optional onUnmount?: (queuer) => void;
 ```
 
-Defined in: [queuer/createQueuer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L17)
+Defined in: [queuer/createQueuer.ts:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/queuer/createQueuer.ts#L19)
 
 Optional callback invoked when the owning component unmounts. Receives the queuer instance.
 When provided, replaces the default cleanup (stop); use it to call flush(), flushAsBatch(), stop(), add logging, etc.

@@ -1,5 +1,6 @@
 import { signal } from '@angular/core'
 import { injectThrottler } from './injectThrottler'
+import type { AngularPacerOptions } from '../types'
 import type { AngularThrottler } from './injectThrottler'
 import type {
   ThrottlerOptions,
@@ -61,7 +62,7 @@ export interface ThrottledSignal<TValue, TSelected = {}> {
  */
 export function injectThrottledSignal<TValue, TSelected = {}>(
   value: TValue,
-  initialOptions: ThrottlerOptions<Setter<TValue>>,
+  initialOptions: AngularPacerOptions<ThrottlerOptions<Setter<TValue>>>,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
 ): ThrottledSignal<TValue, TSelected> {
   const throttledValue = signal<TValue>(value)

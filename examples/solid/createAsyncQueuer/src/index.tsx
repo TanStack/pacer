@@ -1,3 +1,4 @@
+import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncQueuer } from '@tanstack/solid-pacer/async-queuer'
@@ -21,7 +22,9 @@ function App() {
     {
       maxSize: 25,
       initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
-      concurrency: () => concurrency(), // Process 2 items concurrently
+      get concurrency() {
+        return concurrency()
+      }, // Concurrency starts at 2 and updates with the input
       started: false,
       wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
       onReject: (item, queuer) => {
@@ -31,9 +34,10 @@ function App() {
           queuer.store.state.rejectionCount,
         )
       },
-      onError: (error, _item, queuer) => {
+      onError: (error, item, queuer) => {
         console.error(
           'Error processing item',
+          item,
           error,
           queuer.store.state.errorCount,
         ) // optionally, handle errors here instead of your own try/catch
@@ -122,7 +126,9 @@ function App() {
               <button onClick={() => queuer.clear()} disabled={state().isEmpty}>
                 Clear Queue
               </button>
-              <br />
+              <button onClick={() => queuer.flush()} disabled={state().isEmpty}>
+                Flush Queue
+              </button>
               <button
                 onClick={() => queuer.start()}
                 disabled={state().isRunning}
@@ -135,6 +141,7 @@ function App() {
               >
                 Stop Processing
               </button>
+              <button onClick={() => queuer.reset()}>Reset Queue</button>
             </div>
           </>
         )}
@@ -150,4 +157,11 @@ function App() {
   )
 }
 
-render(() => <App />, document.getElementById('root')!)
+render(
+  () => (
+    <PacerProvider>
+      <App />
+    </PacerProvider>
+  ),
+  document.getElementById('root')!,
+)

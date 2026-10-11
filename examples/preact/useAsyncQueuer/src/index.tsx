@@ -17,30 +17,33 @@ function App() {
   }
 
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const asyncQueuer = useAsyncQueuer(processItem, {
-    // your function to queue/process items
-    maxSize: 25,
-    initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
-    concurrency, // Process 2 items concurrently
-    started: false,
-    wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
-    onReject: (item, asyncQueuer) => {
-      console.log(
-        'Queue is full, rejecting item',
-        item,
-        asyncQueuer.store.state.rejectionCount,
-      )
+  const asyncQueuer = useAsyncQueuer(
+    processItem,
+    {
+      // your function to queue/process items
+      maxSize: 25,
+      initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
+      concurrency, // Process 2 items concurrently
+      started: false,
+      wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
+      onReject: (item, asyncQueuer) => {
+        console.log(
+          'Queue is full, rejecting item',
+          item,
+          asyncQueuer.store.state.rejectionCount,
+        )
+      },
+      onError: (error, item: Item, asyncQueuer) => {
+        console.error(
+          `Error processing item: ${item}`,
+          error,
+          asyncQueuer.store.state.errorCount,
+        ) // optionally, handle errors here instead of your own try/catch
+      },
     },
-    onError: (error, item: Item, asyncQueuer) => {
-      console.error(
-        `Error processing item: ${item}`,
-        error,
-        asyncQueuer.store.state.errorCount,
-      ) // optionally, handle errors here instead of your own try/catch
-    },
-  })
-  // Alternative to asyncQueuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+    // Alternative to asyncQueuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   return (
     <div>

@@ -133,7 +133,7 @@ function App2() {
           type="search"
           value={text}
           onChange={handleTextChange}
-          placeholder="Type text (rate limited to 3 updates per 5 seconds)..."
+          placeholder="Type text (rate limited to 5 updates per 5 seconds)..."
           style={{ width: '100%' }}
         />
       </div>
@@ -226,7 +226,7 @@ function App3() {
             min="0"
             max="100"
             value={rateLimitedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{rateLimitedValue}</span>

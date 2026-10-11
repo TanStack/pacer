@@ -10,7 +10,7 @@ function injectRateLimitedSignal<TValue, TSelected>(
 selector?): RateLimitedSignal<TValue, TSelected>;
 ```
 
-Defined in: [rate-limiter/injectRateLimitedSignal.ts:57](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L57)
+Defined in: [rate-limiter/injectRateLimitedSignal.ts:58](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/rate-limiter/injectRateLimitedSignal.ts#L58)
 
 An Angular function that creates a rate-limited state signal, combining Angular's signal with rate limiting functionality.
 This function provides both the current rate-limited value and methods to update it.
@@ -53,7 +53,7 @@ full control over when your component tracks state changes.
 
 ### initialOptions
 
-`RateLimiterOptions`\<`Setter`\<`TValue`\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`RateLimiterOptions`\<`Setter`\<`TValue`\>\>\>
 
 ### selector?
 

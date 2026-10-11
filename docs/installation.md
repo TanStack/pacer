@@ -3,7 +3,7 @@ title: Installation
 id: installation
 ---
 
-Pacer packages are ESM-only, target ES2022, and require Node.js 20 or newer when running in Node.js. Use ESM imports or dynamic `import()` when consuming them.
+Pacer packages are ESM-only, target ES2022, and require Node.js 20 or newer when running in Node.js. The Octane adapter requires Node.js 22.22.2 or newer. Ember includes a CommonJS addon metadata shim for its build tooling; its runtime entry points are ESM. Use ESM imports or dynamic `import()` when consuming them.
 
 Install the adapter for your framework with your preferred package manager:
 
@@ -12,6 +12,13 @@ Install the adapter for your framework with your preferred package manager:
 react: @tanstack/react-pacer
 solid: @tanstack/solid-pacer
 angular: @tanstack/angular-pacer
+preact: @tanstack/preact-pacer
+vue: @tanstack/vue-pacer
+svelte: @tanstack/svelte-pacer
+lit: @tanstack/lit-pacer
+alpine: @tanstack/alpine-pacer
+ember: @tanstack/ember-pacer
+octane: @tanstack/octane-pacer
 
 <!-- ::end:tabs -->
 
@@ -56,3 +63,19 @@ See the [devtools](./devtools) page for setup and usage.
 See the [devtools](./devtools) page for setup and usage.
 
 <!-- ::end:framework -->
+
+## Next steps
+
+Your framework's quick start walks through a first debouncer, then covers selected state, reactive options, async work, default options, and cleanup:
+
+- [React](./framework/react/quick-start.md)
+- [Preact](./framework/preact/quick-start.md)
+- [Solid](./framework/solid/quick-start.md)
+- [Angular](./framework/angular/quick-start.md)
+- [Vue](./framework/vue/quick-start.md)
+- [Svelte](./framework/svelte/quick-start.md)
+- [Lit](./framework/lit/quick-start.md)
+- [Alpine](./framework/alpine/quick-start.md)
+- [Ember](./framework/ember/quick-start.md)
+- [Octane](./framework/octane/quick-start.md)
+- [Vanilla JavaScript](./framework/vanilla/quick-start.md)

@@ -9,7 +9,6 @@ Use it when accepted operations return values you need, can reject, or need retr
 
 ## Choose an API
 
-- `injectAsyncRateLimitedCallback` for a quota-controlled handler
 - `injectAsyncRateLimiter` for capacity helpers and selected state
 
 ## Angular example

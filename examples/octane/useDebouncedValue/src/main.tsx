@@ -1,0 +1,211 @@
+import { useState } from 'octane'
+import { createRoot } from 'octane'
+import { useDebouncedValue } from '@tanstack/octane-pacer/debouncer'
+
+function App1() {
+  const [instantCount, setInstantCount] = useState(0)
+
+  function increment() {
+    setInstantCount((c) => c + 1)
+  }
+
+  // highest-level hook that watches an instant local state value and returns a debounced value
+  const [debouncedCount] = useDebouncedValue(
+    instantCount,
+    {
+      wait: 500,
+      // enabled: () => instantCount > 2, // optional, defaults to true
+      // leading: true, // optional, defaults to false
+    },
+    // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
+
+  return (
+    <div>
+      <h1>{'TanStack Pacer useDebouncedValue Example 1'}</h1>
+      <table>
+        <tbody>
+          <tr>
+            <td>{'Instant Count:'}</td>
+            <td>{instantCount}</td>
+          </tr>
+          <tr>
+            <td>{'Debounced Count:'}</td>
+            <td>{debouncedCount}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <button onClick={increment}>{'Increment'}</button>
+      </div>
+    </div>
+  )
+}
+
+function App2() {
+  const [instantSearch, setInstantSearch] = useState('')
+
+  // highest-level hook that watches an instant local state value and returns a debounced value
+  // optionally, grab the debouncer from the last index of the returned array
+  const [debouncedSearch] = useDebouncedValue(
+    instantSearch,
+    {
+      wait: 500,
+      enabled: instantSearch.length > 2, // optional, defaults to true
+    },
+    // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
+
+  function handleSearchChange(e: Event & { currentTarget: HTMLInputElement }) {
+    setInstantSearch(e.currentTarget.value)
+  }
+
+  return (
+    <div>
+      <h1>{'TanStack Pacer useDebouncedValue Example 2'}</h1>
+      <div>
+        <input
+          autoFocus
+          type="search"
+          value={instantSearch}
+          onInput={handleSearchChange}
+          placeholder="Type to search..."
+          style={{ width: '100%' }}
+        />
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>{'Instant Search:'}</td>
+            <td>{instantSearch}</td>
+          </tr>
+          <tr>
+            <td>{'Debounced Search:'}</td>
+            <td>{debouncedSearch}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function App3() {
+  const [currentValue, setCurrentValue] = useState(50)
+  const [submittedCount, setSubmittedCount] = useState(1)
+
+  // highest-level hook that watches an instant local state value and returns a debounced value
+  const [debouncedValue, debouncer] = useDebouncedValue(
+    currentValue,
+    {
+      wait: 250,
+    },
+    // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
+
+  function handleRangeChange(e: Event & { currentTarget: HTMLInputElement }) {
+    const newValue = parseInt(e.currentTarget.value, 10)
+    setCurrentValue(newValue)
+    setSubmittedCount((c) => c + 1)
+  }
+
+  return (
+    <div>
+      <h1>{'TanStack Pacer useDebouncedValue Example 3'}</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          {'Current Range:'}
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={currentValue}
+            onInput={handleRangeChange}
+            style={{ width: '100%' }}
+          />
+          <span>{currentValue}</span>
+        </label>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          {'Debounced Range (Readonly):'}
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={debouncedValue}
+            disabled
+            style={{ width: '100%' }}
+          />
+          <span>{debouncedValue}</span>
+        </label>
+      </div>
+      <debouncer.Subscribe
+        selector={(state) => ({
+          isPending: state.isPending,
+          executionCount: state.executionCount,
+        })}
+      >
+        {({ isPending, executionCount }) => (
+          <>
+            <table>
+              <tbody>
+                <tr>
+                  <td>{'Is Pending:'}</td>
+                  <td>{isPending.toString()}</td>
+                </tr>
+                <tr>
+                  <td>{'Values Submitted:'}</td>
+                  <td>{submittedCount}</td>
+                </tr>
+                <tr>
+                  <td>{'Debounced Executions:'}</td>
+                  <td>{executionCount}</td>
+                </tr>
+                <tr>
+                  <td>{'Saved Executions:'}</td>
+                  <td>{submittedCount - executionCount}</td>
+                </tr>
+                <tr>
+                  <td>{'% Reduction:'}</td>
+                  <td>
+                    {submittedCount === 0
+                      ? '0'
+                      : Math.round(
+                          ((submittedCount - executionCount) / submittedCount) *
+                            100,
+                        )}
+                    {'%'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div style={{ color: '#666', fontSize: '0.9em' }}>
+              <p>{'Debounced to 250ms wait time'}</p>
+            </div>
+          </>
+        )}
+      </debouncer.Subscribe>
+      <pre style={{ marginTop: '20px' }}>
+        <debouncer.Subscribe selector={(state) => state}>
+          {(state) => JSON.stringify(state, null, 2)}
+        </debouncer.Subscribe>
+      </pre>
+    </div>
+  )
+}
+
+function PacerExample() {
+  return (
+    <div>
+      <App1 />
+      <hr />
+      <App2 />
+      <hr />
+      <App3 />
+    </div>
+  )
+}
+createRoot(document.getElementById('app')!).render(PacerExample)

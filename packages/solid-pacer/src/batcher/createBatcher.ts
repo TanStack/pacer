@@ -1,7 +1,9 @@
 import { Batcher } from '@tanstack/pacer/batcher'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
@@ -21,6 +23,9 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
   Batcher<TValue>,
   'store'
 > {
+  options: Batcher<TValue>['options'] & SolidBatcherOptions<TValue, TSelected>
+  setOptions: (options: Partial<SolidBatcherOptions<TValue, TSelected>>) => void
+
   /**
    * A Solid component that allows you to subscribe to the batcher state.
    *
@@ -153,18 +158,21 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function createBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => void,
-  options: SolidBatcherOptions<TValue, TSelected> = {},
+  options: SolidPacerOptions<SolidBatcherOptions<TValue, TSelected>> = {},
   selector: (state: BatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidBatcher<TValue, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().batcher,
-    ...options,
-  } as SolidBatcherOptions<TValue, TSelected>
-  const batcher = new Batcher(fn, mergedOptions) as unknown as SolidBatcher<
-    TValue,
-    TSelected
-  >
+  const mergedOptions = createPacerOptions<
+    SolidBatcherOptions<TValue, TSelected>
+  >(options, () => useDefaultPacerOptions().batcher)
+  const batcher = untrack(
+    () => new Batcher(fn, mergedOptions()),
+  ) as unknown as SolidBatcher<TValue, TSelected>
+
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => batcher.setOptions(latest))
+  })
 
   batcher.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: BatcherState<TValue>) => TSelected
@@ -183,16 +191,25 @@ export function createBatcher<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(batcher)
+      const onUnmount = batcher.options.onUnmount
+      if (onUnmount) {
+        onUnmount(result)
       } else {
         batcher.cancel()
       }
     })
   })
 
-  return {
+  const result = {
     ...batcher,
+    get options() {
+      return batcher.options
+    },
+    set options(value) {
+      batcher.options = value
+    },
     state,
   } as SolidBatcher<TValue, TSelected>
+
+  return result
 }

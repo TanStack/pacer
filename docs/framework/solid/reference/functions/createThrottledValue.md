@@ -10,7 +10,7 @@ function createThrottledValue<TValue, TSelected>(
    selector?): [Accessor<TValue>, SolidThrottler<Setter<TValue>, TSelected>];
 ```
 
-Defined in: [throttler/createThrottledValue.ts:64](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottledValue.ts#L64)
+Defined in: [throttler/createThrottledValue.ts:65](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/throttler/createThrottledValue.ts#L65)
 
 A high-level Solid hook that creates a throttled version of a value that updates at most once within a specified time window.
 This hook uses Solid's createSignal internally to manage the throttled state.
@@ -65,7 +65,7 @@ Available throttler state properties:
 
 ### initialOptions
 
-[`SolidThrottlerOptions`](../interfaces/SolidThrottlerOptions.md)\<`Setter`\<`TValue`\>, `TSelected`\>
+[`SolidPacerOptions`](../type-aliases/SolidPacerOptions.md)\<[`SolidThrottlerOptions`](../interfaces/SolidThrottlerOptions.md)\<`Setter`\<`TValue`\>, `TSelected`\>\>
 
 ### selector?
 

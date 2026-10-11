@@ -1,4 +1,5 @@
 import { createQueuer } from './createQueuer'
+import type { SolidPacerOptions } from '../types'
 import type { SolidQueuer, SolidQueuerOptions } from './createQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
 
@@ -124,7 +125,7 @@ export function createQueuedSignal<
   >,
 >(
   fn: (item: TValue) => void,
-  options: SolidQueuerOptions<TValue, TSelected> = {},
+  options: SolidPacerOptions<SolidQueuerOptions<TValue, TSelected>> = {},
   selector: (state: QueuerState<TValue>) => TSelected = (state) =>
     ({ items: state.items }) as TSelected,
 ): [

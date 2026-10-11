@@ -1,31 +1,27 @@
 import { createContext, useContext } from 'solid-js'
 import type { JSX } from 'solid-js'
-import type {
-  AnyAsyncFunction,
-  AnyFunction,
-  AsyncBatcherOptions,
-  AsyncDebouncerOptions,
-  AsyncQueuerOptions,
-  AsyncRateLimiterOptions,
-  AsyncThrottlerOptions,
-  BatcherOptions,
-  DebouncerOptions,
-  QueuerOptions,
-  RateLimiterOptions,
-  ThrottlerOptions,
-} from '@tanstack/pacer'
+import type { SolidAsyncBatcherOptions } from '../async-batcher/createAsyncBatcher'
+import type { SolidAsyncDebouncerOptions } from '../async-debouncer/createAsyncDebouncer'
+import type { SolidAsyncQueuerOptions } from '../async-queuer/createAsyncQueuer'
+import type { SolidAsyncRateLimiterOptions } from '../async-rate-limiter/createAsyncRateLimiter'
+import type { SolidAsyncThrottlerOptions } from '../async-throttler/createAsyncThrottler'
+import type { SolidBatcherOptions } from '../batcher/createBatcher'
+import type { SolidDebouncerOptions } from '../debouncer/createDebouncer'
+import type { SolidQueuerOptions } from '../queuer/createQueuer'
+import type { SolidRateLimiterOptions } from '../rate-limiter/createRateLimiter'
+import type { SolidThrottlerOptions } from '../throttler/createThrottler'
 
 export interface PacerProviderOptions {
-  asyncBatcher?: Partial<AsyncBatcherOptions<any>>
-  asyncDebouncer?: Partial<AsyncDebouncerOptions<AnyAsyncFunction>>
-  asyncQueuer?: Partial<AsyncQueuerOptions<any>>
-  asyncRateLimiter?: Partial<AsyncRateLimiterOptions<AnyAsyncFunction>>
-  asyncThrottler?: Partial<AsyncThrottlerOptions<AnyAsyncFunction>>
-  batcher?: Partial<BatcherOptions<any>>
-  debouncer?: Partial<DebouncerOptions<AnyFunction>>
-  queuer?: Partial<QueuerOptions<any>>
-  rateLimiter?: Partial<RateLimiterOptions<AnyFunction>>
-  throttler?: Partial<ThrottlerOptions<AnyFunction>>
+  asyncBatcher?: Partial<SolidAsyncBatcherOptions<any, any>>
+  asyncDebouncer?: Partial<SolidAsyncDebouncerOptions<any, any>>
+  asyncQueuer?: Partial<SolidAsyncQueuerOptions<any, any>>
+  asyncRateLimiter?: Partial<SolidAsyncRateLimiterOptions<any, any>>
+  asyncThrottler?: Partial<SolidAsyncThrottlerOptions<any, any>>
+  batcher?: Partial<SolidBatcherOptions<any, any>>
+  debouncer?: Partial<SolidDebouncerOptions<any, any>>
+  queuer?: Partial<SolidQueuerOptions<any, any>>
+  rateLimiter?: Partial<SolidRateLimiterOptions<any, any>>
+  throttler?: Partial<SolidThrottlerOptions<any, any>>
 }
 
 interface PacerContextValue {
@@ -43,7 +39,9 @@ const DEFAULT_OPTIONS: PacerProviderOptions = {}
 
 export function PacerProvider(props: PacerProviderProps) {
   const contextValue: PacerContextValue = {
-    defaultOptions: props.defaultOptions ?? DEFAULT_OPTIONS,
+    get defaultOptions() {
+      return props.defaultOptions ?? DEFAULT_OPTIONS
+    },
   }
 
   return (

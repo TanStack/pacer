@@ -3,104 +3,104 @@ id: PacerProviderOptions
 title: PacerProviderOptions
 ---
 
-Defined in: [provider/PacerProvider.tsx:18](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L18)
+Defined in: [provider/PacerProvider.tsx:14](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L14)
 
 ## Properties
 
 ### asyncBatcher?
 
 ```ts
-optional asyncBatcher?: Partial<AsyncBatcherOptions<any>>;
+optional asyncBatcher?: Partial<SolidAsyncBatcherOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L19)
+Defined in: [provider/PacerProvider.tsx:15](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L15)
 
 ***
 
 ### asyncDebouncer?
 
 ```ts
-optional asyncDebouncer?: Partial<AsyncDebouncerOptions<AnyAsyncFunction>>;
+optional asyncDebouncer?: Partial<SolidAsyncDebouncerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L20)
+Defined in: [provider/PacerProvider.tsx:16](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L16)
 
 ***
 
 ### asyncQueuer?
 
 ```ts
-optional asyncQueuer?: Partial<AsyncQueuerOptions<any>>;
+optional asyncQueuer?: Partial<SolidAsyncQueuerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L21)
+Defined in: [provider/PacerProvider.tsx:17](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L17)
 
 ***
 
 ### asyncRateLimiter?
 
 ```ts
-optional asyncRateLimiter?: Partial<AsyncRateLimiterOptions<AnyAsyncFunction>>;
+optional asyncRateLimiter?: Partial<SolidAsyncRateLimiterOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L22)
+Defined in: [provider/PacerProvider.tsx:18](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L18)
 
 ***
 
 ### asyncThrottler?
 
 ```ts
-optional asyncThrottler?: Partial<AsyncThrottlerOptions<AnyAsyncFunction>>;
+optional asyncThrottler?: Partial<SolidAsyncThrottlerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L23)
+Defined in: [provider/PacerProvider.tsx:19](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L19)
 
 ***
 
 ### batcher?
 
 ```ts
-optional batcher?: Partial<BatcherOptions<any>>;
+optional batcher?: Partial<SolidBatcherOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L24)
+Defined in: [provider/PacerProvider.tsx:20](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L20)
 
 ***
 
 ### debouncer?
 
 ```ts
-optional debouncer?: Partial<DebouncerOptions<AnyFunction>>;
+optional debouncer?: Partial<SolidDebouncerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:25](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L25)
+Defined in: [provider/PacerProvider.tsx:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L21)
 
 ***
 
 ### queuer?
 
 ```ts
-optional queuer?: Partial<QueuerOptions<any>>;
+optional queuer?: Partial<SolidQueuerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L26)
+Defined in: [provider/PacerProvider.tsx:22](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L22)
 
 ***
 
 ### rateLimiter?
 
 ```ts
-optional rateLimiter?: Partial<RateLimiterOptions<AnyFunction>>;
+optional rateLimiter?: Partial<SolidRateLimiterOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:27](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L27)
+Defined in: [provider/PacerProvider.tsx:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L23)
 
 ***
 
 ### throttler?
 
 ```ts
-optional throttler?: Partial<ThrottlerOptions<AnyFunction>>;
+optional throttler?: Partial<SolidThrottlerOptions<any, any>>;
 ```
 
-Defined in: [provider/PacerProvider.tsx:28](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L28)
+Defined in: [provider/PacerProvider.tsx:24](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L24)

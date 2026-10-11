@@ -58,6 +58,66 @@ await generateReferenceDocs({
       outputDir: resolve(__dirname, '../docs/framework/angular/reference'),
       exclude: ['packages/pacer/**/*'],
     },
+    {
+      name: 'vue-pacer',
+      entryPoints: [resolve(__dirname, '../packages/vue-pacer/src/index.ts')],
+      tsconfig: resolve(__dirname, '../packages/vue-pacer/tsconfig.docs.json'),
+      outputDir: resolve(__dirname, '../docs/framework/vue/reference'),
+      exclude: ['packages/pacer/**/*'],
+    },
+    {
+      name: 'svelte-pacer',
+      entryPoints: [
+        resolve(__dirname, '../packages/svelte-pacer/src/index.ts'),
+      ],
+      tsconfig: resolve(
+        __dirname,
+        '../packages/svelte-pacer/tsconfig.docs.json',
+      ),
+      outputDir: resolve(__dirname, '../docs/framework/svelte/reference'),
+      exclude: ['packages/pacer/**/*'],
+    },
+    {
+      name: 'lit-pacer',
+      entryPoints: [resolve(__dirname, '../packages/lit-pacer/src/index.ts')],
+      tsconfig: resolve(__dirname, '../packages/lit-pacer/tsconfig.docs.json'),
+      outputDir: resolve(__dirname, '../docs/framework/lit/reference'),
+      exclude: ['packages/pacer/**/*'],
+    },
+    {
+      name: 'alpine-pacer',
+      entryPoints: [
+        resolve(__dirname, '../packages/alpine-pacer/src/index.ts'),
+      ],
+      tsconfig: resolve(
+        __dirname,
+        '../packages/alpine-pacer/tsconfig.docs.json',
+      ),
+      outputDir: resolve(__dirname, '../docs/framework/alpine/reference'),
+      exclude: ['packages/pacer/**/*'],
+    },
+    {
+      name: 'ember-pacer',
+      entryPoints: [resolve(__dirname, '../packages/ember-pacer/src/index.ts')],
+      tsconfig: resolve(
+        __dirname,
+        '../packages/ember-pacer/tsconfig.docs.json',
+      ),
+      outputDir: resolve(__dirname, '../docs/framework/ember/reference'),
+      exclude: ['packages/pacer/**/*'],
+    },
+    {
+      name: 'octane-pacer',
+      entryPoints: [
+        resolve(__dirname, '../packages/octane-pacer/src/index.ts'),
+      ],
+      tsconfig: resolve(
+        __dirname,
+        '../packages/octane-pacer/tsconfig.docs.json',
+      ),
+      outputDir: resolve(__dirname, '../docs/framework/octane/reference'),
+      exclude: ['packages/pacer/**/*'],
+    },
   ],
 })
 
@@ -70,7 +130,8 @@ for (const file of await glob('docs/**/reference/**/*.md')) {
     .split('\n')
     .map((line) => {
       if (line.startsWith('```')) inCodeBlock = !inCodeBlock
-      return inCodeBlock ? line.trimEnd() : line
+      // A single trailing space is never a Markdown hard break.
+      return inCodeBlock || /[^ ] $/.test(line) ? line.trimEnd() : line
     })
     .join('\n')
   if (cleaned !== markdown) await writeFile(file, cleaned)

@@ -1,4 +1,4 @@
-import { For, createSignal } from 'solid-js'
+import { For, createMemo, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { asyncRateLimit } from '@tanstack/solid-pacer/async-rate-limiter'
 
@@ -19,28 +19,30 @@ function SearchApp() {
     ]
   }
 
-  const rateLimitedSetSearch = asyncRateLimit(
-    async (value: string) => {
-      try {
-        setLoading(true)
-        setRateLimitedSearchText(value)
-        const results = await simulateSearch(value)
-        setSearchResults(results)
-      } catch (err) {
-        setSearchResults([])
-      } finally {
-        setLoading(false)
-      }
-    },
-    {
-      limit: 5,
-      window: 5000,
-      windowType: windowType(),
-      onReject: (_args, rateLimiter) =>
-        console.log(
-          `Rate limit exceeded: ${rateLimiter.getMsUntilNextWindow()}ms until next window`,
-        ),
-    },
+  const rateLimitedSetSearch = createMemo(() =>
+    asyncRateLimit(
+      async (value: string) => {
+        try {
+          setLoading(true)
+          setRateLimitedSearchText(value)
+          const results = await simulateSearch(value)
+          setSearchResults(results)
+        } catch (err) {
+          setSearchResults([])
+        } finally {
+          setLoading(false)
+        }
+      },
+      {
+        limit: 5,
+        window: 5000,
+        windowType: windowType(),
+        onReject: (_args, rateLimiter) =>
+          console.log(
+            `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
+          ),
+      },
+    ),
   )
 
   return (
@@ -77,7 +79,7 @@ function SearchApp() {
             const target = e.target as HTMLInputElement
             const newValue = target.value
             setSearchText(newValue)
-            rateLimitedSetSearch(newValue)
+            rateLimitedSetSearch()(newValue)
           }}
           placeholder="Type to search..."
           style={{ width: '100%' }}

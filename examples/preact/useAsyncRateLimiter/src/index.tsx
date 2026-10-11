@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import { render } from 'preact'
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { useAsyncRateLimiter } from '@tanstack/preact-pacer/async-rate-limiter'
 import { PacerProvider } from '@tanstack/preact-pacer/provider'
 
@@ -41,24 +41,27 @@ function App() {
 
   // hook that gives you an async rate limiter instance
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const setSearchAsyncRateLimiter = useAsyncRateLimiter(handleSearch, {
-    windowType: windowType,
-    limit: 3, // Maximum 2 requests
-    window: 3000, // per 1 second
-    onReject: (_args, rateLimiter) => {
-      console.log(
-        `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
-      )
+  const setSearchAsyncRateLimiter = useAsyncRateLimiter(
+    handleSearch,
+    {
+      windowType: windowType,
+      limit: 3, // Maximum 3 requests
+      window: 3000, // per 3 seconds
+      onReject: (_args, rateLimiter) => {
+        console.log(
+          `Rate limit reached. Try again in ${rateLimiter.getMsUntilNextWindow()}ms`,
+        )
+      },
+      onError: (error) => {
+        // optional error handler
+        console.error('Search failed:', error)
+        setError(error as Error)
+        setResults([])
+      },
     },
-    onError: (error) => {
-      // optional error handler
-      console.error('Search failed:', error)
-      setError(error as Error)
-      setResults([])
-    },
-  })
-  // Alternative to setSearchAsyncRateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+    // Alternative to setSearchAsyncRateLimiter.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   // get and name our rate limited function
   const handleSearchRateLimited = setSearchAsyncRateLimiter.maybeExecute
@@ -72,7 +75,7 @@ function App() {
   }, [])
 
   // instant event handler that calls both the instant local state setter and the rate limited function
-  async function onSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  async function onSearchChange(e: TargetedEvent<HTMLInputElement>) {
     const newTerm = e.currentTarget.value
     setSearchTerm(newTerm)
     await handleSearchRateLimited(newTerm) // optionally await if you need to

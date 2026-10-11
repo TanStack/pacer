@@ -11,7 +11,9 @@ function App1() {
     instantCount(),
     {
       wait: 500,
-      // enabled: () => instantCount() > 2, // optional, defaults to true
+      // get enabled() {
+      //   return instantCount() > 2
+      // },
       // leading: true, // optional, defaults to false
     },
     // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
@@ -21,12 +23,9 @@ function App1() {
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setDebouncedCount(newInstantCount) // debounced state update
-      return newInstantCount // instant state update
-    })
+    const newInstantCount = instantCount() + 1
+    setInstantCount(newInstantCount)
+    setDebouncedCount(newInstantCount) // debounced state update
   }
 
   return (
@@ -36,14 +35,21 @@ function App1() {
         <tbody>
           <debouncer.Subscribe
             selector={(state) => ({
+              isPending: state.isPending,
               executionCount: state.executionCount,
             })}
           >
             {(state) => (
-              <tr>
-                <td>Execution Count:</td>
-                <td>{state().executionCount}</td>
-              </tr>
+              <>
+                <tr>
+                  <td>Is Pending:</td>
+                  <td>{state().isPending ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+              </>
             )}
           </debouncer.Subscribe>
           <tr>
@@ -77,6 +83,9 @@ function App2() {
       instantSearch(),
       {
         wait: 500,
+        get enabled() {
+          return instantSearch().length > 2
+        },
       },
       // Alternative to debouncer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
       // (state) => ({
@@ -108,14 +117,21 @@ function App2() {
         <tbody>
           <debouncer.Subscribe
             selector={(state) => ({
+              isPending: state.isPending,
               executionCount: state.executionCount,
             })}
           >
             {(state) => (
-              <tr>
-                <td>Execution Count:</td>
-                <td>{state().executionCount}</td>
-              </tr>
+              <>
+                <tr>
+                  <td>Is Pending:</td>
+                  <td>{state().isPending ? 'Yes' : 'No'}</td>
+                </tr>
+                <tr>
+                  <td>Execution Count:</td>
+                  <td>{state().executionCount}</td>
+                </tr>
+              </>
             )}
           </debouncer.Subscribe>
           <tr>
@@ -186,7 +202,7 @@ function App3() {
             min="0"
             max="100"
             value={debouncedValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{debouncedValue()}</span>
@@ -200,11 +216,16 @@ function App3() {
           </tr>
           <debouncer.Subscribe
             selector={(state) => ({
+              isPending: state.isPending,
               executionCount: state.executionCount,
             })}
           >
             {(state) => (
               <>
+                <tr>
+                  <td>Is Pending:</td>
+                  <td>{state().isPending ? 'Yes' : 'No'}</td>
+                </tr>
                 <tr>
                   <td>Debounced Executions:</td>
                   <td>{state().executionCount}</td>
@@ -232,7 +253,7 @@ function App3() {
         </tbody>
       </table>
       <div style={{ color: '#666', 'font-size': '0.9em' }}>
-        <p>Debounced with 250ms wait time</p>
+        <p>Debounced to 250ms wait time</p>
       </div>
     </div>
   )

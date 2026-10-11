@@ -39,16 +39,19 @@ function PostList({
     number | null
   >(null)
 
-  const [queuedHoveredPostId] = useQueuedValue(currentHoveredPostId, {
-    addItemsTo: 'front', // newest hovered link is top priority
-    wait: 100, // adjust this value to see the difference
-    expirationDuration: 500, // If a link was hovered over 500ms ago, and still hasn't been prefetched, remove it from the queue
-    onExpire: (item) => {
-      console.log('expired', item)
+  const [queuedHoveredPostId] = useQueuedValue(
+    currentHoveredPostId,
+    {
+      addItemsTo: 'front', // newest hovered link is top priority
+      wait: 100, // adjust this value to see the difference
+      expirationDuration: 500, // If a link was hovered over 500ms ago, and still hasn't been prefetched, remove it from the queue
+      onExpire: (item) => {
+        console.log('expired', item)
+      },
     },
     // Alternative to queuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
-  })
+  )
 
   useEffect(() => {
     if (queuedHoveredPostId) {

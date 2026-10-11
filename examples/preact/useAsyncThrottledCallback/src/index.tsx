@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { render } from 'preact'
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { useAsyncThrottledCallback } from '@tanstack/preact-pacer/async-throttler'
 
 interface SearchResult {
@@ -59,7 +59,7 @@ function App1() {
     },
   )
 
-  async function handleSearchChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  async function handleSearchChange(e: TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
     setSearchTerm(newValue)
 
@@ -204,7 +204,7 @@ function App3() {
     },
   )
 
-  function handleScroll(e: JSX.TargetedEvent<HTMLDivElement>) {
+  function handleScroll(e: TargetedEvent<HTMLDivElement>) {
     const position = e.currentTarget.scrollTop
     setScrollPosition(position)
     throttledSave(position)

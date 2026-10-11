@@ -1,0 +1,23 @@
+{
+  "name": "@tanstack/pacer-example-svelte-async-batch",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port=3005",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:types": "svelte-check --tsconfig ./tsconfig.json",
+    "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
+  },
+  "dependencies": {
+    "@tanstack/svelte-devtools": "^0.1.7",
+    "@tanstack/svelte-pacer": "workspace:*",
+    "@tanstack/svelte-pacer-devtools": "workspace:*",
+    "svelte": "^5.57.1"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "svelte-check": "^4.7.6",
+    "vite": "^8.3.2"
+  }
+}

@@ -1,7 +1,9 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type {
@@ -24,6 +26,12 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
   'store'
 > {
+  options: AsyncBatcher<TValue>['options'] &
+    SolidAsyncBatcherOptions<TValue, TSelected>
+  setOptions: (
+    options: Partial<SolidAsyncBatcherOptions<TValue, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the batcher state.
    *
@@ -186,18 +194,21 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function createAsyncBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => Promise<any>,
-  options: SolidAsyncBatcherOptions<TValue, TSelected> = {},
+  options: SolidPacerOptions<SolidAsyncBatcherOptions<TValue, TSelected>> = {},
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncBatcher<TValue, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().asyncBatcher,
-    ...options,
-  } as SolidAsyncBatcherOptions<TValue, TSelected>
-  const asyncBatcher = new AsyncBatcher<TValue>(
-    fn,
-    mergedOptions,
+  const mergedOptions = createPacerOptions<
+    SolidAsyncBatcherOptions<TValue, TSelected>
+  >(options, () => useDefaultPacerOptions().asyncBatcher)
+  const asyncBatcher = untrack(
+    () => new AsyncBatcher<TValue>(fn, mergedOptions()),
   ) as unknown as SolidAsyncBatcher<TValue, TSelected>
+
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncBatcher.setOptions(latest))
+  })
 
   asyncBatcher.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncBatcherState<TValue>) => TSelected
@@ -216,8 +227,9 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncBatcher)
+      const onUnmount = asyncBatcher.options.onUnmount
+      if (onUnmount) {
+        onUnmount(result)
       } else {
         asyncBatcher.cancel()
         asyncBatcher.abort()
@@ -225,8 +237,16 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
     })
   })
 
-  return {
+  const result = {
     ...asyncBatcher,
+    get options() {
+      return asyncBatcher.options
+    },
+    set options(value) {
+      asyncBatcher.options = value
+    },
     state,
   } as SolidAsyncBatcher<TValue, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

@@ -1,3 +1,4 @@
+import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createAsyncBatcher } from '@tanstack/solid-pacer/async-batcher'
@@ -16,7 +17,6 @@ function App() {
     Array<{ items: Array<Item>; result: string; timestamp: number }>
   >([])
   const [errors, setErrors] = createSignal<Array<string>>([])
-  const [shouldFail, setShouldFail] = createSignal(false)
 
   // The async function that will process a batch of items
   async function processBatch(items: Array<Item>): Promise<string> {
@@ -26,9 +26,7 @@ function App() {
     await new Promise((resolve) => setTimeout(resolve, fakeProcessingTime))
 
     // Simulate occasional failures for demo purposes
-    if (shouldFail() && Math.random() < 0.3) {
-      throw new Error(`Processing failed for batch with ${items.length} items`)
-    }
+    // throw new Error(`Processing failed for batch with ${items.length} items`)
 
     // Return a result from the batch processing
     const result = `Processed ${items.length} items: ${items.map((item) => item.value).join(', ')}`
@@ -45,7 +43,7 @@ function App() {
     processBatch,
     {
       maxSize: 5, // Process in batches of 5 (if reached before wait time)
-      wait: 2000, // Wait up to 2 seconds before processing a batch
+      wait: 4000, // Wait up to 4 seconds before processing a batch
       getShouldExecute: (items) =>
         items.some((item) => item.value.includes('urgent')), // Process immediately if any item is marked urgent
       throwOnError: false, // Don't throw errors, handle them via onError
@@ -174,17 +172,6 @@ function App() {
       </batcher.Subscribe>
 
       <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={shouldFail()}
-            onChange={(e) => setShouldFail(e.currentTarget.checked)}
-          />{' '}
-          Simulate random failures (30% chance)
-        </label>
-      </div>
-
-      <div>
         <h3>Processed Batches ({processedBatches().length})</h3>
         <div>
           {processedBatches().length === 0 ? (
@@ -207,13 +194,7 @@ function App() {
         <div>
           <h3>Errors ({errors().length})</h3>
           <div>
-            <For each={errors()}>
-              {(error, index) => (
-                <div>
-                  {index() + 1}: {error}
-                </div>
-              )}
-            </For>
+            <For each={errors()}>{(error) => <div>{error}</div>}</For>
           </div>
           <button onClick={() => setErrors([])}>Clear Errors</button>
         </div>
@@ -221,7 +202,7 @@ function App() {
       <batcher.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </batcher.Subscribe>
@@ -229,4 +210,11 @@ function App() {
   )
 }
 
-render(() => <App />, document.getElementById('root')!)
+render(
+  () => (
+    <PacerProvider>
+      <App />
+    </PacerProvider>
+  ),
+  document.getElementById('root')!,
+)

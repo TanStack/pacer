@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TanStack Pacer Utilities Comparison</title>
+  </head>
+  <body>
+    <div id="app" x-data="devtools">
+      <div>
+        <div
+          x-data="demo"
+          :style="({
+    padding: '12px',
+    fontFamily: 'system-ui, sans-serif',
+    maxWidth: '100%',
+})"
+        >
+          <h1 :style="({ fontSize: '1.5em', marginBottom: '15px' })">
+            TanStack Pacer Utilities Comparison
+          </h1>
+          <div :style="({ marginBottom: '20px' })">
+            <h2 :style="({ fontSize: '1.2em', marginBottom: '10px' })">
+              Instant Slider (Move this slider to see the utilities in action)
+            </h2>
+            <div :style="({ marginBottom: '15px' })">
+              <label
+                ><strong
+                  >Current Value: <span x-text="(currentValue)"></span></strong
+                ><input
+                  max="100"
+                  min="0"
+                  @input="((handleRangeChange))($event)"
+                  :style="({ width: '100%', margin: '8px 0' })"
+                  type="range"
+                  :value="(currentValue)"
+              /></label>
+            </div>
+            <div :style="({ marginBottom: '15px' })">
+              <strong>Total Interactions:</strong><span x-text="(' ')"></span
+              ><span x-text="(instantExecutionCount)"></span>
+            </div>
+          </div>
+          <div
+            :style="({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+    gap: '10px',
+    marginBottom: '30px',
+})"
+          >
+            <template x-for="(utility, index) in (utilityMetadata)" :key="index"
+              ><div
+                :style="({
+    border: `2px solid ${utility.color}`,
+    borderRadius: '6px',
+    padding: '10px',
+    backgroundColor: getSyncStatus(utility.value, utility.name, utility.util.state)
+        .isPending
+        ? 'rgba(254, 249, 195, 0.4)' // yellowish if pending
+        : getSyncStatus(utility.value, utility.name, utility.util.state).isOutOfSync
+            ? 'rgba(254, 226, 226, 0.4)' // reddish if out of sync
+            : 'rgba(209, 250, 229, 0.4)', // greenish if synced
+    transition: 'background-color 0.2s ease',
+})"
+              >
+                <h3
+                  :style="({
+    color: utility.color,
+    margin: '0 0 8px 0',
+    fontSize: '1.1em',
+})"
+                  x-text="(utility.name)"
+                ></h3>
+                <p
+                  :style="({
+    fontSize: '0.85em',
+    color: '#666',
+    margin: '0 0 12px 0',
+    lineHeight: '1.4',
+})"
+                  x-text="(utility.description)"
+                ></p>
+                <div :style="({ marginBottom: '12px' })">
+                  <div :style="({ marginBottom: '4px' })">
+                    <strong :style="({ fontSize: '0.9em' })"
+                      >Value: <span x-text="(utility.value)"></span
+                    ></strong>
+                  </div>
+                  <div :style="({ marginBottom: '6px' })">
+                    <template
+                      x-if="(getSyncStatus(utility.value, utility.name, utility.util.state)
+    .isOutOfSync)"
+                      ><span
+                        :style="({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '3px',
+    color: getSyncStatus(utility.value, utility.name, utility.util.state)
+        .isPending
+        ? '#f59e0b'
+        : '#ef4444',
+    fontSize: '0.8em',
+    cursor: getSyncStatus(utility.value, utility.name, utility.util.state)
+        .tooltip
+        ? 'help'
+        : 'default',
+})"
+                        :title="(getSyncStatus(utility.value, utility.name, utility.util.state).tooltip)"
+                      >
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          style="display: inline-block; vertical-align: middle"
+                        >
+                          <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                          />
+                          <line x1="12" y1="9" x2="12" y2="13" />
+                          <line x1="12" y1="17" x2="12.01" y2="17" />
+                        </svg>
+                        <span
+                          x-text="(getSyncStatus(utility.value, utility.name, utility.util.state)
+    .statusText)"
+                        ></span></span></template
+                    ><template
+                      x-if="!((getSyncStatus(utility.value, utility.name, utility.util.state)
+    .isOutOfSync))"
+                      ><span
+                        :style="({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '3px',
+    color: '#10b981',
+    fontSize: '0.8em',
+})"
+                      >
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          style="display: inline-block; vertical-align: middle"
+                        >
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                          <polyline points="22,4 12,14.01 9,11.01" />
+                        </svg>
+                        <span
+                          x-text="(getSyncStatus(utility.value, utility.name, utility.util.state)
+    .statusText)"
+                        ></span></span
+                    ></template>
+                  </div>
+                  <input
+                    @click="((explainReadonly))($event)"
+                    type="range"
+                    min="0"
+                    max="100"
+                    :value="(utility.value)"
+                    disabled
+                    :style="({
+    width: '100%',
+    margin: '2px 0',
+    accentColor: utility.color,
+})"
+                  />
+                </div>
+                <div
+                  :style="({
+    fontSize: '0.8em',
+    marginBottom: '12px',
+    lineHeight: '1.3',
+})"
+                >
+                  <div>
+                    <strong>Executions:</strong><span x-text="(' ')"></span
+                    ><span x-text="(utility.util.state.executionCount)"></span>
+                  </div>
+                  <div>
+                    <strong>Reduction:</strong><span x-text="(' ')"></span
+                    ><template x-if="(instantExecutionCount === 0)"
+                      ><span x-text="('0')"></span></template
+                    ><template x-if="!((instantExecutionCount === 0))"
+                      ><span
+                        x-text="(Math.round(((instantExecutionCount - utility.util.state.executionCount) /
+    instantExecutionCount) *
+    100))"
+                      ></span></template
+                    >%
+                  </div>
+                  <template x-if="(utility.name === 'Rate Limiter')"
+                    ><div>
+                      <strong>Rejections:</strong><span x-text="(' ')"></span
+                      ><span
+                        x-text="(utility.util.state.rejectionCount)"
+                      ></span></div></template
+                  ><template x-if="(utility.name === 'Queuer')"
+                    ><div>
+                      <strong>Queue Size:</strong><span x-text="(' ')"></span
+                      ><span
+                        x-text="(utility.util.state.size)"
+                      ></span></div></template
+                  ><template x-if="(utility.name === 'Batcher')"
+                    ><span
+                      ><div>
+                        <strong>Batch Size:</strong><span x-text="(' ')"></span
+                        ><span x-text="(utility.util.state.size)"></span>
+                      </div>
+                      <div>
+                        <strong>Items Processed:</strong
+                        ><span x-text="(' ')"></span
+                        ><span
+                          x-text="(utility.util.state.totalItemsProcessed)"
+                        ></span></div></span
+                  ></template>
+                  <div>
+                    <strong>Status:</strong><span x-text="(' ')"></span
+                    ><span x-text="(utility.util.state.status)"></span>
+                  </div>
+                </div>
+                <template
+                  x-if="('flush' in utility &amp;&amp;
+    typeof utility.flush === 'function')"
+                  ><button
+                    @click="((utility.flush))($event)"
+                    :style="({
+    backgroundColor: utility.color,
+    color: 'white',
+    border: 'none',
+    padding: '6px 12px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '0.85em',
+    width: '100%',
+})"
+                  >
+                    Flush
+                  </button></template
+                >
+              </div></template
+            >
+          </div>
+          <div :style="({ marginTop: '20px' })">
+            <h2 :style="({ fontSize: '1.2em', marginBottom: '10px' })">
+              Detailed States
+            </h2>
+            <div
+              :style="({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+    gap: '8px',
+})"
+            >
+              <template
+                x-for="(utility, index) in (utilityMetadata)"
+                :key="index"
+                ><div>
+                  <h4
+                    :style="({
+    color: utility.color,
+    margin: '0 0 5px 0',
+    fontSize: '0.9em',
+})"
+                  >
+                    <span x-text="(utility.name)"></span> State
+                  </h4>
+                  <pre
+                    :style="({
+    fontSize: '0.7em',
+    backgroundColor: '#f5f5f5',
+    padding: '8px',
+    borderRadius: '4px',
+    overflow: 'auto',
+    maxHeight: '500px',
+    margin: 0,
+})"
+                    x-text="(JSON.stringify(utility.util.state, null, 2))"
+                  ></pre></div
+              ></template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

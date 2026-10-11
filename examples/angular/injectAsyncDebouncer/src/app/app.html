@@ -1,28 +1,26 @@
-<h1>TanStack Pacer - Async Debouncer</h1>
+<h1>TanStack Pacer injectAsyncDebouncer Example</h1>
 
-<p>Type to trigger a debounced async "search". Only the last value after the wait runs.</p>
-
-<label>
-  Query
-  <input [value]="query()" (input)="onQueryInput($event.target.value)" />
-</label>
-
-<button type="button" (click)="clear()">Clear</button>
-
-<p>Latest executed query: {{ executedQuery() || '(none yet)' }}</p>
-
-<p>Status: {{ debouncer.state().status }}</p>
-<p>Pending: {{ debouncer.state().isPending }}</p>
-<p>Executing: {{ debouncer.state().isExecuting }}</p>
-<p>Error count: {{ debouncer.state().errorCount }}</p>
-
-<h2>Results</h2>
-@if (results().length === 0) {
-<p>(no results)</p>
-} @else {
+<p>500ms wait, 1500ms simulated network delay.</p>
+<input
+  type="search"
+  [value]="searchTerm()"
+  (input)="onSearch($any($event.target).value)"
+  placeholder="Type to search..."
+  autocomplete="new-password"
+/>
+@if (loading()) {
+<p>Loading...</p>
+} @if (error()) {
+<p role="alert">Error: {{ error() }}</p>
+}
+<p>API calls made: {{ runner.state().successCount }}</p>
+<p>Is executing: {{ runner.state().isExecuting }}</p>
+<button (click)="runner.flush()">Flush</button>
+<p>Pending: {{ runner.state().isPending }}</p>
+<pre>{{ runner.state() | json }}</pre>
+<h2>Search Results</h2>
 <ul>
-  @for (item of results(); track item) {
-  <li>{{ item }}</li>
+  @for (result of results(); track $index) {
+  <li>{{ result }}</li>
   }
 </ul>
-}

@@ -1,19 +1,30 @@
-import { Component } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
-import { injectDebouncedSignal } from '@tanstack/angular-pacer'
+import { Component, signal } from '@angular/core'
+import { debounce } from '@tanstack/angular-pacer'
 
-@Component({
-  selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-})
+@Component({ selector: 'app-root', templateUrl: './app.html', imports: [] })
 export class App {
-  // Debouncer example
-  protected readonly debounced = injectDebouncedSignal<string, { isPending: boolean }>(
-    '',
-    { wait: 500 },
-    (state) => ({ isPending: state.isPending }),
-  )
-  protected readonly searchTerm = this.debounced
-  protected readonly setSearchTerm = this.debounced.set
+  readonly instantCount = signal(0)
+  readonly search = signal('')
+  readonly currentValue = signal(50)
+  readonly controlledCount = signal(0)
+  readonly controlledSearch = signal('')
+  readonly controlledValue = signal(50)
+  readonly countRunner = debounce((value: number) => this.controlledCount.set(value), { wait: 500 })
+  readonly searchRunner = debounce((value: string) => this.controlledSearch.set(value), {
+    wait: 500,
+  })
+  readonly rangeRunner = debounce((value: number) => this.controlledValue.set(value), { wait: 250 })
+  increment(): void {
+    const next = this.instantCount() + 1
+    this.instantCount.set(next)
+    this.countRunner(next)
+  }
+  onSearch(value: string): void {
+    this.search.set(value)
+    this.searchRunner(value)
+  }
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.rangeRunner(value)
+  }
 }

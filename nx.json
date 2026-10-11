@@ -67,6 +67,26 @@
         "^production",
         "{workspaceRoot}/scripts/verify-package.ts"
       ]
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/playwright.config.ts",
+        "{workspaceRoot}/tests/e2e/**/*"
+      ],
+      "cache": true
+    },
+    "test:e2e:types": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "{workspaceRoot}/tests/e2e/**/*",
+        "{workspaceRoot}/examples/*/*/tests/e2e/**/*",
+        "{workspaceRoot}/examples/*/*/package.json"
+      ],
+      "cache": true
     }
   },
   "analytics": true

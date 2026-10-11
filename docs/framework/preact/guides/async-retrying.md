@@ -252,6 +252,6 @@ For exact signatures, see the [`asyncRetry` function reference](../../../referen
 
 ## Related docs
 
-- [Preact adapter](../adapter.md)
+- [Preact quick start](../quick-start.md)
 - [Choose a Pacer utility](../../../guides/which-pacer-utility-should-i-choose.md)
 - [Select another framework](../../../guides/async-retrying.md)

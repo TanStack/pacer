@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   rateLimiterOptions,
@@ -16,13 +16,14 @@ function App1() {
 
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0) // not rate-limited
+  const instantCountRef = useRef(0)
   const [limitedCount, setLimitedCount] = useState(0) // rate-limited
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const rateLimiter = useRateLimiter(
     setLimitedCount,
     {
-      // enabled: () => instantCount > 2,
+      // enabled: () => instantCountRef.current > 2,
       ...commonRateLimiterOptions,
       windowType: windowType,
       onReject: (rateLimiter) =>
@@ -36,12 +37,9 @@ function App1() {
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newCount = c + 1 // common new value for both
-      rateLimiter.maybeExecute(newCount) // rate-limited state update
-      return newCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    rateLimiter.maybeExecute(nextCount)
   }
 
   return (
@@ -130,13 +128,14 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = useState('')
+  const instantSearchRef = useRef('')
   const [limitedSearch, setLimitedSearch] = useState('')
 
   // Using useRateLimiter with a rate limit of 5 executions per 5 seconds
   const rateLimiter = useRateLimiter(
     setLimitedSearch,
     {
-      enabled: instantSearch.length > 2, // optional, defaults to true
+      enabled: () => instantSearchRef.current.length > 2, // optional, defaults to true
       ...commonRateLimiterOptions,
       // windowType: 'sliding', // default is 'fixed'
       onReject: (rateLimiter) =>
@@ -151,6 +150,7 @@ function App2() {
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
+    instantSearchRef.current = newValue
     setInstantSearch(newValue)
     rateLimiter.maybeExecute(newValue)
   }
@@ -201,6 +201,7 @@ function App2() {
                 </tr>
                 <tr>
                   <td>Instant Search:</td>
+                  <td>{instantSearch}</td>
                 </tr>
                 <tr>
                   <td>Rate Limited Search:</td>
@@ -278,7 +279,7 @@ function App3() {
             min="0"
             max="100"
             value={limitedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{limitedValue}</span>

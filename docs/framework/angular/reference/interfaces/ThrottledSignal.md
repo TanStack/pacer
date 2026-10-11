@@ -3,7 +3,7 @@ id: ThrottledSignal
 title: ThrottledSignal
 ---
 
-Defined in: [throttler/injectThrottledSignal.ts:11](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L11)
+Defined in: [throttler/injectThrottledSignal.ts:12](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L12)
 
 ## Type Parameters
 
@@ -20,7 +20,7 @@ Defined in: [throttler/injectThrottledSignal.ts:11](https://github.com/TanStack/
 ThrottledSignal(): TValue;
 ```
 
-Defined in: [throttler/injectThrottledSignal.ts:12](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L12)
+Defined in: [throttler/injectThrottledSignal.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L13)
 
 ## Returns
 
@@ -34,7 +34,7 @@ Defined in: [throttler/injectThrottledSignal.ts:12](https://github.com/TanStack/
 set: Setter<TValue>;
 ```
 
-Defined in: [throttler/injectThrottledSignal.ts:13](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L13)
+Defined in: [throttler/injectThrottledSignal.ts:14](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L14)
 
 ***
 
@@ -44,4 +44,4 @@ Defined in: [throttler/injectThrottledSignal.ts:13](https://github.com/TanStack/
 throttler: AngularThrottler<Setter<TValue>, TSelected>;
 ```
 
-Defined in: [throttler/injectThrottledSignal.ts:14](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L14)
+Defined in: [throttler/injectThrottledSignal.ts:15](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L15)

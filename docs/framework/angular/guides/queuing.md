@@ -69,6 +69,40 @@ The focused snippets later in this guide use `injectQueuer` and assume they run 
 
 Pass `initialItems` when work is already available at creation time. The queue applies its normal insertion and capacity rules, and automatic processing can begin immediately unless `started: false` is set.
 
+## Queue a source signal
+
+`injectQueuedValue` returns a `QueuedValueSignal`: `queued()` reads the most recently processed value, `queued.addItem(value)` enqueues a value, and `queued.queuer` exposes the queue controls. Its default selector exposes pending items at `queued.queuer.state().items`.
+
+```ts
+readonly source = input.required<string>()
+readonly queued = injectQueuedValue(this.source, { wait: 500 })
+```
+
+Construction does not read the source. Angular's effect reads it after inputs are bound and enqueues the latest value. Each later effect run enqueues the latest observed source value. Several source writes before an effect runs are coalesced; use `queued.addItem` for every value that must enter the queue individually.
+
+Before processing begins, `queued()` reads the initial source value. Reading it before a required input is bound throws Angular's required-input error. Supply an explicit initial value if the output must be readable earlier:
+
+```ts
+const text = injectQueuedValue(source, '')
+const object = injectQueuedValue(objectSource, { label: 'Loading' }, {})
+const callback = injectQueuedValue(callbackSource, () => 'Loading', {})
+```
+
+Two-argument primitive initial values, including `0`, `false`, `''`, and `null`, are supported. Object and function initial values require a third options object, such as `{}`. A function in the options position is an options factory.
+
+Pass a fourth selector argument, which can be `undefined`, when an explicit initial value uses factory or undefined options:
+
+```ts
+const queued = injectQueuedValue(source, '', () => ({ wait: wait() }), undefined)
+const initialObject = injectQueuedValue(objectSource, { label: 'Loading' }, undefined, undefined)
+```
+
+`injectQueuedValue(source, options, undefined)` keeps the options-only meaning. An explicit `undefined` initial value requires an options object or a fourth argument.
+
+### Migrate from the previous return shape
+
+Earlier versions returned the pending-items array from `queued()`. It now returns the processed scalar value. Replace `queued().length` with `queued.queuer.state().items.length` using the default selector, or use `injectQueuedSignal` when the queue contents are the desired signal value. Custom selectors must include `items` to access that list.
+
 ## Ordering items
 
 Automatic processing uses `addItemsTo` to choose where new items enter and `getItemsFrom` to choose where items leave.

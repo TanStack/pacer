@@ -1,51 +1,48 @@
 import { Component, signal } from '@angular/core'
+import { JsonPipe } from '@angular/common'
 import { injectAsyncDebouncer } from '@tanstack/angular-pacer'
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  imports: [JsonPipe],
 })
 export class App {
-  protected readonly query = signal('')
-  protected readonly executedQuery = signal('')
-  protected readonly results = signal<Array<string>>([])
-
-  protected readonly debouncer = injectAsyncDebouncer(
-    async (q: string) => {
-      await sleep(300)
-      const trimmed = q.trim()
-      if (!trimmed) return []
-
-      return [`${trimmed} result 1`, `${trimmed} result 2`, `${trimmed} result 3`]
-    },
-    { wait: 400 },
-    (state) => ({
-      status: state.status,
-      isPending: state.isPending,
-      isExecuting: state.isExecuting,
-      errorCount: state.errorCount,
+  readonly searchTerm = signal('')
+  readonly results = signal<Array<string>>([])
+  readonly loading = signal(false)
+  readonly error = signal('')
+  readonly runner = injectAsyncDebouncer(
+    (term: string) => this.search(term),
+    () => ({
+      wait: 500,
+      onError: (error) => {
+        this.error.set(error.message)
+        this.results.set([])
+      },
+      asyncRetryerOptions: { maxAttempts: 3, maxExecutionTime: 3000 },
     }),
+    (state) => state,
   )
 
-  protected async onQueryInput(value: string): Promise<void> {
-    this.query.set(value)
-
-    const next = await this.debouncer.maybeExecute(value)
-    if (next !== undefined) {
-      this.executedQuery.set(value)
-      this.results.set(next)
+  private async search(term: string): Promise<Array<string> | undefined> {
+    if (!term) {
+      this.results.set([])
+      return
+    }
+    this.loading.set(true)
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+      const results = [1, 2, 3].map((id) => `Result ${id} for ${term}`)
+      this.results.set(results)
+      this.error.set('')
+      return results
+    } finally {
+      this.loading.set(false)
     }
   }
-
-  protected clear(): void {
-    this.query.set('')
-    this.executedQuery.set('')
-    this.results.set([])
-    this.debouncer.reset()
+  async onSearch(value: string): Promise<void> {
+    this.searchTerm.set(value)
+    await this.runner.maybeExecute(value)
   }
 }

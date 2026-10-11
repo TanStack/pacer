@@ -40,7 +40,7 @@ function App1() {
         {({ size, executionCount, totalItemsProcessed }) => (
           <>
             <div>Batch Size: {size}</div>
-            <div>Batch Max Size: {3}</div>
+            <div>Batch Max Size: {5}</div>
             <div>Batch Items: {batcher.peekAllItems().join(', ')}</div>
             <div>Batches Processed: {executionCount}</div>
             <div>Items Processed: {totalItemsProcessed}</div>

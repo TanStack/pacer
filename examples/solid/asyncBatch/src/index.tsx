@@ -183,13 +183,7 @@ function App() {
         <div>
           <h3>Errors ({errors().length})</h3>
           <div>
-            <For each={errors()}>
-              {(error, index) => (
-                <div>
-                  {index() + 1}: {error}
-                </div>
-              )}
-            </For>
+            <For each={errors()}>{(error) => <div>{error}</div>}</For>
           </div>
           <button onClick={() => setErrors([])}>Clear Errors</button>
         </div>

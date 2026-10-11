@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useThrottler } from '@tanstack/react-pacer/throttler'
 import { PacerProvider } from '@tanstack/react-pacer/provider'
@@ -6,6 +6,7 @@ import { PacerProvider } from '@tanstack/react-pacer/provider'
 function App1() {
   // Use your state management library of choice
   const [instantCount, setInstantCount] = useState(0)
+  const instantCountRef = useRef(0)
   const [throttledCount, setThrottledCount] = useState(0)
 
   // Lower-level useThrottler hook - requires you to manage your own state
@@ -15,19 +16,16 @@ function App1() {
       wait: 1000,
       // leading: true, // default
       // trailing: true, // default
-      // enabled: () => instantCount > 2,
+      // enabled: () => instantCountRef.current > 2,
     },
     // Alternative to setCountThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setCountThrottler.maybeExecute(newInstantCount) // throttled state update
-      return newInstantCount // instant state update
-    })
+    const nextCount = ++instantCountRef.current
+    setInstantCount(nextCount)
+    setCountThrottler.maybeExecute(nextCount)
   }
 
   return (
@@ -79,6 +77,7 @@ function App1() {
 
 function App2() {
   const [instantSearch, setInstantSearch] = useState('')
+  const instantSearchRef = useRef('')
   const [throttledSearch, setThrottledSearch] = useState('')
 
   // Lower-level useThrottler hook - requires you to manage your own state
@@ -86,7 +85,7 @@ function App2() {
     setThrottledSearch,
     {
       wait: 1000,
-      enabled: instantSearch.length > 2,
+      enabled: () => instantSearchRef.current.length > 2,
     },
     // Alternative to setSearchThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
@@ -94,6 +93,7 @@ function App2() {
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
+    instantSearchRef.current = newValue
     setInstantSearch(newValue)
     setSearchThrottler.maybeExecute(newValue)
   }
@@ -202,7 +202,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue}</span>

@@ -12,5 +12,11 @@ Async debouncing adds Promise results, error handling, retries, and abort suppor
 - [Preact](../framework/preact/guides/async-debouncing.md)
 - [Solid](../framework/solid/guides/async-debouncing.md)
 - [Angular](../framework/angular/guides/async-debouncing.md)
+- [Vue](../framework/vue/guides/async-debouncing.md)
+- [Svelte](../framework/svelte/guides/async-debouncing.md)
+- [Lit](../framework/lit/guides/async-debouncing.md)
+- [Alpine](../framework/alpine/guides/async-debouncing.md)
+- [Ember](../framework/ember/guides/async-debouncing.md)
+- [Octane](../framework/octane/guides/async-debouncing.md)
 
 Not sure which operation fits your use case? Start with [Which Pacer Utility Should I Choose?](./which-pacer-utility-should-i-choose.md).

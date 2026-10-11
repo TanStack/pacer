@@ -1,7 +1,9 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, onCleanup } from 'solid-js'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
 import type {
@@ -25,6 +27,12 @@ export interface SolidAsyncDebouncer<
   TFn extends AnyAsyncFunction,
   TSelected = {},
 > extends Omit<AsyncDebouncer<TFn>, 'store'> {
+  options: AsyncDebouncer<TFn>['options'] &
+    SolidAsyncDebouncerOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<SolidAsyncDebouncerOptions<TFn, TSelected>>,
+  ) => void
+
   /**
    * A Solid component that allows you to subscribe to the debouncer state.
    *
@@ -176,18 +184,21 @@ export function createAsyncDebouncer<
   TSelected = {},
 >(
   fn: TFn,
-  options: SolidAsyncDebouncerOptions<TFn, TSelected>,
+  options: SolidPacerOptions<SolidAsyncDebouncerOptions<TFn, TSelected>>,
   selector: (state: AsyncDebouncerState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): SolidAsyncDebouncer<TFn, TSelected> {
-  const mergedOptions = {
-    ...useDefaultPacerOptions().asyncDebouncer,
-    ...options,
-  } as SolidAsyncDebouncerOptions<TFn, TSelected>
-  const asyncDebouncer = new AsyncDebouncer<TFn>(
-    fn,
-    mergedOptions,
+  const mergedOptions = createPacerOptions<
+    SolidAsyncDebouncerOptions<TFn, TSelected>
+  >(options, () => useDefaultPacerOptions().asyncDebouncer)
+  const asyncDebouncer = untrack(
+    () => new AsyncDebouncer<TFn>(fn, mergedOptions()),
   ) as unknown as SolidAsyncDebouncer<TFn, TSelected>
+
+  createRenderEffect(() => {
+    const latest = mergedOptions()
+    untrack(() => asyncDebouncer.setOptions(latest))
+  })
 
   asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncDebouncerState<TFn>) => TSelected
@@ -208,8 +219,9 @@ export function createAsyncDebouncer<
 
   createEffect(() => {
     onCleanup(() => {
-      if (mergedOptions.onUnmount) {
-        mergedOptions.onUnmount(asyncDebouncer)
+      const onUnmount = asyncDebouncer.options.onUnmount
+      if (onUnmount) {
+        onUnmount(result)
       } else {
         asyncDebouncer.cancel()
         asyncDebouncer.abort()
@@ -217,8 +229,16 @@ export function createAsyncDebouncer<
     })
   })
 
-  return {
+  const result = {
     ...asyncDebouncer,
+    get options() {
+      return asyncDebouncer.options
+    },
+    set options(value) {
+      asyncDebouncer.options = value
+    },
     state,
   } as SolidAsyncDebouncer<TFn, TSelected> // omit `store` in favor of `state`
+
+  return result
 }

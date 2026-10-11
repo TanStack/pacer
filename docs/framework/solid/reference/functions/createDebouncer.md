@@ -10,7 +10,7 @@ function createDebouncer<TFn, TSelected>(
 selector?): SolidDebouncer<TFn, TSelected>;
 ```
 
-Defined in: [debouncer/createDebouncer.ts:156](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L156)
+Defined in: [debouncer/createDebouncer.ts:161](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/debouncer/createDebouncer.ts#L161)
 
 A Solid hook that creates and manages a Debouncer instance.
 
@@ -85,7 +85,7 @@ const debouncer = createDebouncer(fn, {
 
 ### options
 
-[`SolidDebouncerOptions`](../interfaces/SolidDebouncerOptions.md)\<`TFn`, `TSelected`\>
+[`SolidPacerOptions`](../type-aliases/SolidPacerOptions.md)\<[`SolidDebouncerOptions`](../interfaces/SolidDebouncerOptions.md)\<`TFn`, `TSelected`\>\>
 
 ### selector?
 

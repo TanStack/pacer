@@ -1,79 +1,72 @@
 import { Component, signal } from '@angular/core'
+import { JsonPipe } from '@angular/common'
 import { injectRateLimitedSignal } from '@tanstack/angular-pacer'
-import type { RateLimitedSignal } from '@tanstack/angular-pacer'
-
-type SelectedState = {
-  executionCount: number
-  rejectionCount: number
-}
-
-type RateLimitedSetter = (value: number | ((prev: number) => number)) => void
-
-type RateLimiterHandle = {
-  reset: () => void
-  state: () => Readonly<SelectedState>
-  getRemainingInWindow: () => number
-}
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   templateUrl: './app.html',
+  imports: [JsonPipe],
 })
 export class App {
-  readonly rawValue = signal(0)
-  readonly limitedValue: RateLimitedSignal<number, SelectedState>
-  private readonly setLimitedValue: RateLimitedSetter
-  readonly rateLimiter: RateLimiterHandle
-
-  constructor() {
-    const limitedValue = injectRateLimitedSignal<number, SelectedState>(
-      0,
-      {
-        limit: 3,
-        window: 3000,
-        windowType: 'sliding',
-      },
-      (state) => ({
-        executionCount: state.executionCount,
-        rejectionCount: state.rejectionCount,
-      }),
-    )
-
-    this.limitedValue = limitedValue
-    this.setLimitedValue = limitedValue.set
-
-    const rateLimiter = limitedValue.rateLimiter
-    this.rateLimiter = {
-      reset: rateLimiter.reset.bind(rateLimiter),
-      state: rateLimiter.state,
-      getRemainingInWindow: rateLimiter.getRemainingInWindow.bind(rateLimiter),
-    }
-  }
-
+  readonly instantCount = signal(0)
+  readonly search = signal('')
+  readonly currentValue = signal(50)
+  readonly instantExecutions = signal(0)
+  readonly countWindow = signal<'fixed' | 'sliding'>('fixed')
+  readonly searchWindow = signal<'fixed' | 'sliding'>('fixed')
+  readonly rangeWindow = signal<'fixed' | 'sliding'>('fixed')
+  readonly controlledCount = injectRateLimitedSignal(
+    0,
+    () => ({
+      limit: 5,
+      window: 5000,
+      windowType: this.countWindow(),
+      onReject: (limiter) =>
+        console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
+    }),
+    (state) => state,
+  )
+  readonly countRunner = this.controlledCount.rateLimiter
+  readonly controlledSearch = injectRateLimitedSignal(
+    '',
+    () => ({
+      limit: 5,
+      window: 5000,
+      windowType: this.searchWindow(),
+      onReject: (limiter) =>
+        console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
+    }),
+    (state) => state,
+  )
+  readonly searchRunner = this.controlledSearch.rateLimiter
+  readonly controlledValue = injectRateLimitedSignal(
+    50,
+    () => ({
+      limit: 20,
+      window: 2000,
+      windowType: this.rangeWindow(),
+      onReject: (limiter) =>
+        console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
+    }),
+    (state) => state,
+  )
+  readonly rangeRunner = this.controlledValue.rateLimiter
   increment(): void {
-    this.rawValue.update((current) => {
-      const next = current + 1
-      this.setLimitedValue(next)
-      return next
-    })
+    const next = this.instantCount() + 1
+    this.instantCount.set(next)
+    this.controlledCount.set(next)
   }
-
-  reset(): void {
-    this.rateLimiter.reset()
-    this.rawValue.set(0)
-    this.setLimitedValue(0)
+  onSearch(value: string): void {
+    this.search.set(value)
+    this.controlledSearch.set(value)
   }
-
-  get executionCount(): number {
-    return this.rateLimiter.state().executionCount
+  onRange(value: number): void {
+    this.currentValue.set(value)
+    this.instantExecutions.update((count) => count + 1)
+    this.controlledValue.set(value)
   }
-
-  get rejectionCount(): number {
-    return this.rateLimiter.state().rejectionCount
-  }
-
-  get remainingInWindow(): number {
-    return this.rateLimiter.getRemainingInWindow()
+  reduction(): number {
+    const count = this.instantExecutions()
+    return count ? Math.round(((count - this.rangeRunner.state().executionCount) / count) * 100) : 0
   }
 }

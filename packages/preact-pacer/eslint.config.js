@@ -1,10 +1,10 @@
 // @ts-check
 
 import pluginReactHooks from 'eslint-plugin-react-hooks'
+import { defineConfig } from 'eslint/config'
 import rootConfig from '../../eslint.config.js'
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+export default defineConfig([
   ...rootConfig,
   {
     plugins: {
@@ -15,4 +15,4 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
     },
   },
-]
+])

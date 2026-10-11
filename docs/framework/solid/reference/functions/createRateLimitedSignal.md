@@ -10,7 +10,7 @@ function createRateLimitedSignal<TValue, TSelected>(
    selector?): [Accessor<TValue>, Setter<TValue>, SolidRateLimiter<Setter<TValue>, TSelected>];
 ```
 
-Defined in: [rate-limiter/createRateLimitedSignal.ts:96](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L96)
+Defined in: [rate-limiter/createRateLimitedSignal.ts:97](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimitedSignal.ts#L97)
 
 A Solid hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.
 This hook combines Solid's createSignal with rate limiting functionality to provide controlled state updates.
@@ -79,7 +79,7 @@ Use `getRemainingInWindow()` and `getMsUntilNextWindow()` for current window cap
 
 ### initialOptions
 
-[`SolidRateLimiterOptions`](../interfaces/SolidRateLimiterOptions.md)\<`Setter`\<`TValue`\>, `TSelected`\>
+[`SolidPacerOptions`](../type-aliases/SolidPacerOptions.md)\<[`SolidRateLimiterOptions`](../interfaces/SolidRateLimiterOptions.md)\<`Setter`\<`TValue`\>, `TSelected`\>\>
 
 ### selector?
 

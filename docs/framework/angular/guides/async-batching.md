@@ -29,7 +29,6 @@ Both `maxSize` and `wait` default to `Infinity`, so configure at least one trigg
 
 ## Choose an API
 
-- `injectAsyncBatchedCallback` for adding items
 - `injectAsyncBatcher` for flush, failed items, and selected state
 
 ## Angular example

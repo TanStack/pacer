@@ -7,7 +7,7 @@ title: PacerProvider
 function PacerProvider(props): Element;
 ```
 
-Defined in: [provider/PacerProvider.tsx:44](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L44)
+Defined in: [provider/PacerProvider.tsx:40](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/provider/PacerProvider.tsx#L40)
 
 ## Parameters
 

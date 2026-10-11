@@ -40,34 +40,40 @@ function App() {
   }
 
   // No selector needed - we'll use Subscribe HOC to subscribe to state in the component tree
-  const asyncBatcher = useAsyncBatcher(processBatch, {
-    maxSize: 5, // Process in batches of 5 (if reached before wait time)
-    wait: 4000, // Wait up to 4 seconds before processing a batch
-    getShouldExecute: (items) =>
-      items.some((item) => item.value.includes('urgent')), // Process immediately if any item is marked urgent
-    throwOnError: false, // Don't throw errors, handle them via onError
-    onSuccess: (result, batch, batcher) => {
-      console.log('Batch succeeded:', result)
-      console.log('Processed batch:', batch)
-      console.log('Total successful batches:', batcher.store.state.successCount)
+  const asyncBatcher = useAsyncBatcher(
+    processBatch,
+    {
+      maxSize: 5, // Process in batches of 5 (if reached before wait time)
+      wait: 4000, // Wait up to 4 seconds before processing a batch
+      getShouldExecute: (items) =>
+        items.some((item) => item.value.includes('urgent')), // Process immediately if any item is marked urgent
+      throwOnError: false, // Don't throw errors, handle them via onError
+      onSuccess: (result, batch, batcher) => {
+        console.log('Batch succeeded:', result)
+        console.log('Processed batch:', batch)
+        console.log(
+          'Total successful batches:',
+          batcher.store.state.successCount,
+        )
+      },
+      onError: (error: any, _batcher) => {
+        console.error('Batch failed:', error)
+        setErrors((prev) => [
+          ...prev,
+          `Error: ${error} (${new Date().toLocaleTimeString()})`,
+        ])
+      },
+      onSettled: (batch, batcher) => {
+        console.log('Batch settled:', batch)
+        console.log(
+          'Total processed items:',
+          batcher.store.state.totalItemsProcessed,
+        )
+      },
     },
-    onError: (error: any, _batcher) => {
-      console.error('Batch failed:', error)
-      setErrors((prev) => [
-        ...prev,
-        `Error: ${error} (${new Date().toLocaleTimeString()})`,
-      ])
-    },
-    onSettled: (batch, batcher) => {
-      console.log('Batch settled:', batch)
-      console.log(
-        'Total processed items:',
-        batcher.store.state.totalItemsProcessed,
-      )
-    },
-  })
-  // Alternative to asyncBatcher.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-  // (state) => state,
+    // Alternative to asyncBatcher.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // (state) => state,
+  )
 
   const addItem = (isUrgent = false) => {
     const nextId = Date.now()

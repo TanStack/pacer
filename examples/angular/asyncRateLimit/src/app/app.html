@@ -1,28 +1,42 @@
-<div style="padding: 24px; max-width: 480px; margin: 0 auto">
-  <h1>Async rate limiter</h1>
-  <p>3 executions per 5 seconds (sliding window).</p>
-
-  <div style="display: flex; gap: 12px; margin: 16px 0">
-    <button (click)="attempt(Math.random())">Attempt</button>
-    <button type="button" (click)="reset()">Reset</button>
-  </div>
-
-  <section>
-    <h2>Status</h2>
-    <p>Allowed: {{ rateLimiter.state().executionTimes.length }}</p>
-    <p>Blocked: {{ rateLimiter.state().rejectionCount }}</p>
-  </section>
-
-  <section>
-    <h2>Events</h2>
-    @if (logs().length === 0) {
-    <p>No events yet. Press Attempt to generate entries.</p>
-    } @else {
-    <ul>
-      @for (entry of logs(); track $index) {
-      <li>{{ entry }}</li>
-      }
-    </ul>
-    }
-  </section>
-</div>
+<h1>TanStack Pacer asyncRateLimit Example</h1>
+<fieldset>
+  <legend>Window type</legend>
+  <label
+    ><input
+      type="radio"
+      name="windowType"
+      [checked]="windowType() === 'fixed'"
+      (change)="changeWindow('fixed')"
+    />
+    Fixed Window</label
+  ><label
+    ><input
+      type="radio"
+      name="windowType"
+      [checked]="windowType() === 'sliding'"
+      (change)="changeWindow('sliding')"
+    />
+    Sliding Window</label
+  >
+</fieldset>
+<p>5 requests per 5000ms.</p>
+<input
+  type="search"
+  [value]="searchTerm()"
+  (input)="onSearch($any($event.target).value)"
+  placeholder="Type to search..."
+  autocomplete="new-password"
+/>
+@if (loading()) {
+<p>Loading...</p>
+} @if (error()) {
+<p role="alert">Error: {{ error() }}</p>
+}
+<p>Instant Search: {{ searchTerm() }}</p>
+<p>Rate Limited Search: {{ executedTerm() }}</p>
+<h2>Search Results</h2>
+<ul>
+  @for (result of results(); track $index) {
+  <li>{{ result }}</li>
+  }
+</ul>

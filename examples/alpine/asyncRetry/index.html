@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine asyncRetry</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div
+          x-data="demo"
+          :style="({ padding: '20px', maxWidth: '1200px', margin: '0 auto' })"
+        >
+          <h1>TanStack Pacer asyncRetry Example</h1>
+          <p>
+            Demonstrates the asyncRetry utility function with configurable
+            backoff strategies, timeouts, jitter, and error handling.
+          </p>
+          <div
+            :style="({
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '20px',
+    marginTop: '20px',
+})"
+          >
+            <div>
+              <h3>Configuration</h3>
+              <div :style="({ marginBottom: '10px' })">
+                <label :style="({ display: 'block', marginBottom: '5px' })"
+                  >Scenario:</label
+                ><select
+                  :value="(scenario)"
+                  @input="(((e) => (scenario = e.target
+    .value)))($event)"
+                  :style="({ padding: '5px', width: '100%' })"
+                  :disabled="(isLoading)"
+                >
+                  <option value="default">Default (Exponential Backoff)</option>
+                  <option value="timeout">With Timeouts</option>
+                  <option value="jitter">With Jitter (30%)</option>
+                  <option value="linear">Linear Backoff</option>
+                </select>
+              </div>
+              <div :style="({ marginBottom: '10px' })">
+                <label :style="({ display: 'block', marginBottom: '5px' })"
+                  >User ID:</label
+                ><input
+                  type="text"
+                  :value="(userId)"
+                  @input="(((e) => (userId = e.target.value)))($event)"
+                  placeholder="Enter user ID..."
+                  :style="({ padding: '5px', width: '100%' })"
+                  :disabled="(isLoading)"
+                />
+              </div>
+              <div
+                :style="({
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '10px',
+})"
+              >
+                <button
+                  @click="((onFetchUser))($event)"
+                  :disabled="(isLoading)"
+                  :style="({ padding: '10px' })"
+                  x-text="(isLoading ? 'Fetching...' : 'Fetch User')"
+                ></button
+                ><button
+                  @click="((onReset))($event)"
+                  :style="({ padding: '10px' })"
+                >
+                  Reset
+                </button>
+              </div>
+              <div
+                :style="({
+    marginTop: '20px',
+    padding: '15px',
+    backgroundColor: '#f5f5f5',
+    borderRadius: '5px',
+})"
+              >
+                <h4>Current Options:</h4>
+                <pre
+                  :style="({ fontSize: '12px', margin: 0 })"
+                  x-text="((() => {
+    const opts = getOptions();
+    return JSON.stringify({
+        maxAttempts: opts.maxAttempts,
+        backoff: opts.backoff,
+        baseWait: opts.baseWait,
+        jitter: opts.jitter,
+        maxExecutionTime: 'maxExecutionTime' in opts
+            ? opts.maxExecutionTime
+            : Infinity,
+        maxTotalExecutionTime: 'maxTotalExecutionTime' in opts
+            ? opts.maxTotalExecutionTime
+            : Infinity,
+    }, null, 2);
+})())"
+                ></pre>
+              </div>
+            </div>
+            <div>
+              <h3>State</h3>
+              <div
+                :style="({
+    padding: '15px',
+    backgroundColor: '#f5f5f5',
+    borderRadius: '5px',
+})"
+              >
+                <div :style="({ marginBottom: '10px' })">
+                  <strong>Status:</strong><span x-text="(' ')"></span
+                  ><span
+                    :style="({
+    padding: '2px 8px',
+    borderRadius: '3px',
+    backgroundColor: isLoading
+        ? currentAttempt > 1
+            ? '#ff8c00'
+            : '#ffd700'
+        : '#90ee90',
+})"
+                    x-text="(isLoading
+    ? currentAttempt > 1
+        ? 'retrying'
+        : 'executing'
+    : 'idle')"
+                  ></span>
+                </div>
+                <template x-if="(currentAttempt > 0)"
+                  ><p>
+                    <strong>Current Attempt:</strong>
+                    <span x-text="(currentAttempt)"></span> /<span
+                      x-text="(' ')"
+                    ></span
+                    ><span
+                      x-text="((() => {
+    const opts = getOptions();
+    return opts.maxAttempts;
+})())"
+                    ></span></p></template
+                ><template x-if="(displayedError)"
+                  ><div
+                    :style="({
+    marginTop: '10px',
+    padding: '10px',
+    backgroundColor: '#ffe6e6',
+    borderRadius: '5px',
+    color: '#d32f2f',
+})"
+                  >
+                    <strong>Error:</strong><br /><span
+                      x-text="(displayedError)"
+                    ></span></div
+                ></template>
+              </div>
+              <template x-if="(userData)"
+                ><div
+                  :style="({
+    marginTop: '20px',
+    padding: '15px',
+    backgroundColor: '#e6f7ff',
+    borderRadius: '5px',
+})"
+                >
+                  <h4>User Data:</h4>
+                  <p>
+                    <strong>ID:</strong> <span x-text="(userData.id)"></span>
+                  </p>
+                  <p>
+                    <strong>Name:</strong>
+                    <span x-text="(userData.name)"></span>
+                  </p>
+                  <p>
+                    <strong>Email:</strong>
+                    <span x-text="(userData.email)"></span>
+                  </p></div
+              ></template>
+            </div>
+          </div>
+          <div :style="({ marginTop: '20px' })">
+            <h3>Activity Log</h3>
+            <div
+              :style="({
+    padding: '15px',
+    backgroundColor: '#f5f5f5',
+    borderRadius: '5px',
+    maxHeight: '200px',
+    overflowY: 'auto',
+    fontFamily: 'monospace',
+    fontSize: '12px',
+})"
+            >
+              <template x-if="(logs.length === 0)"
+                ><div :style="({ color: '#999' })">
+                  No activity yet
+                </div></template
+              ><template x-if="!((logs.length === 0))"
+                ><template x-for="(log, i) in (logs)" :key="i"
+                  ><div
+                    :style="({ marginBottom: '5px' })"
+                    x-text="(log)"
+                  ></div></template
+              ></template>
+            </div>
+          </div>
+          <div
+            :style="({
+    marginTop: '20px',
+    padding: '15px',
+    backgroundColor: '#fff3cd',
+    borderRadius: '5px',
+    fontSize: '14px',
+})"
+          >
+            <strong>Note:</strong> This example uses the <code>asyncRetry</code
+            ><span x-text="(' ')"></span>utility function, which creates a
+            retry-enabled version of your async function. Each call to the
+            retry-enabled function creates a fresh retry context.
+          </div>
+          <div
+            :style="({
+    marginTop: '20px',
+    padding: '15px',
+    backgroundColor: '#e3f2fd',
+    borderRadius: '5px',
+    fontSize: '12px',
+})"
+          >
+            <strong>Key Features:</strong>
+            <ul :style="({ marginTop: '10px', marginBottom: 0 })">
+              <li>
+                <strong>Exponential Backoff:</strong> Wait time doubles with
+                each retry (1s, 2s, 4s, ...)
+              </li>
+              <li>
+                <strong>Linear Backoff:</strong> Wait time increases linearly
+                (1s, 2s, 3s, ...)
+              </li>
+              <li>
+                <strong>Jitter:</strong> Adds randomness to prevent thundering
+                herd problems
+              </li>
+              <li>
+                <strong>Timeouts:</strong> Control individual and total
+                execution time
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

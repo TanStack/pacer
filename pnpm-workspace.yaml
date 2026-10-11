@@ -4,13 +4,26 @@ preferWorkspacePackages: true
 blockExoticSubdeps: true
 trustPolicy: 'no-downgrade'
 trustPolicyExclude:
+  - chokidar@4.0.3 # Ember build tooling; same pinned exception as Hotkeys.
   - semver@6.3.1
+  - semver@5.7.2 # Legacy Ember tooling; same pinned exception as Hotkeys.
 
 packages:
   - 'examples/**/*'
   - 'packages/*'
 
 overrides:
+  '@tanstack/vue-pacer-devtools': 'workspace:*'
+  '@tanstack/svelte-pacer-devtools': 'workspace:*'
+  '@tanstack/angular-pacer-devtools': 'workspace:*'
+  '@tanstack/octane-pacer': 'workspace:*'
+  '@tanstack/ember-pacer': 'workspace:*'
+  '@nullvoxpopuli/ember-build-tooling-utils>@babel/core': '^7.29.7'
+  '@nullvoxpopuli/ember-vite>@babel/core': '^7.29.7'
+  '@tanstack/lit-pacer': 'workspace:*'
+  '@tanstack/alpine-pacer': 'workspace:*'
+  '@tanstack/vue-pacer': 'workspace:*'
+  '@tanstack/svelte-pacer': 'workspace:*'
   '@tanstack/angular-pacer': 'workspace:*'
   '@tanstack/pacer': 'workspace:*'
   '@tanstack/pacer-devtools': 'workspace:*'
@@ -23,6 +36,7 @@ overrides:
   '@tanstack/solid-pacer-devtools': 'workspace:*'
 
 allowBuilds:
+  vue-demi: true
   # root dependency
   nx: true
   unrs-resolver: false # not directly required for build
@@ -34,3 +48,9 @@ allowBuilds:
   msgpackr-extract: false # optional dep of @angular/build
 
 minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  # octane adapter upgrade: published less than 24 hours ago
+  - octane@0.12.1
+  - '@tanstack/octane-store@0.13.0'
+  # Preact 11 peer support: published less than 24 hours ago
+  - '@tanstack/preact-store@0.13.5'

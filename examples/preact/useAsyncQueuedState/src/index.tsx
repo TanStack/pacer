@@ -16,31 +16,32 @@ function App() {
     console.log(`Processed ${item}`)
   }
 
-  // Note: useAsyncQueuedState requires items in selector, but we'll use Subscribe for reactive rendering
-  const [queueItems, asyncQueuer] = useAsyncQueuedState(processItem, {
-    // your function to queue/process items
-    maxSize: 25,
-    initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
-    concurrency, // Process 2 items concurrently
-    started: false,
-    wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
-    onReject: (item: Item, asyncQueuer) => {
-      console.log(
-        'Queue is full, rejecting item',
-        item,
-        asyncQueuer.store.state.rejectionCount,
-      )
+  const [queueItems, asyncQueuer] = useAsyncQueuedState(
+    processItem,
+    {
+      // your function to queue/process items
+      maxSize: 25,
+      initialItems: Array.from({ length: 10 }, (_, i) => i + 1),
+      concurrency, // Process 2 items concurrently
+      started: false,
+      wait: 100, // for demo purposes - usually you would not want extra wait time if you are also throttling with concurrency
+      onReject: (item: Item, asyncQueuer) => {
+        console.log(
+          'Queue is full, rejecting item',
+          item,
+          asyncQueuer.store.state.rejectionCount,
+        )
+      },
+      onError: (error, item: Item, asyncQueuer) => {
+        console.error(
+          `Error processing item: ${item}`,
+          error,
+          asyncQueuer.store.state.errorCount,
+        ) // optionally, handle errors here instead of your own try/catch
+      },
     },
-    onError: (error, item: Item, asyncQueuer) => {
-      console.error(
-        `Error processing item: ${item}`,
-        error,
-        asyncQueuer.store.state.errorCount,
-      ) // optionally, handle errors here instead of your own try/catch
-    },
-    // Alternative to asyncQueuer.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
-    // (state) => state,
-  })
+    (state) => ({ items: state.items }),
+  )
 
   return (
     <div>
@@ -54,6 +55,7 @@ function App() {
           status: state.status,
           successCount: state.successCount,
           rejectionCount: state.rejectionCount,
+          activeItems: state.activeItems,
           items: state.items,
           isRunning: state.isRunning,
         })}
@@ -66,6 +68,7 @@ function App() {
           status,
           successCount,
           rejectionCount,
+          activeItems,
           isRunning,
         }) => (
           <>
@@ -78,8 +81,8 @@ function App() {
             <div>Queuer Status: {status}</div>
             <div>Items Processed: {successCount}</div>
             <div>Items Rejected: {rejectionCount}</div>
-            <div>Active Tasks: {asyncQueuer.peekActiveItems().length}</div>
-            <div>Pending Tasks: {asyncQueuer.peekPendingItems().length}</div>
+            <div>Active Tasks: {activeItems.length}</div>
+            <div>Pending Tasks: {queueItems.length}</div>
             <div>
               Concurrency:{' '}
               <input

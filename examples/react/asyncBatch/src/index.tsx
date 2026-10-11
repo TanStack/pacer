@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { asyncBatch } from '@tanstack/react-pacer/async-batcher'
 
@@ -18,6 +18,8 @@ function App() {
   const [pendingItems, setPendingItems] = useState<Array<Item>>([])
   const [isProcessing, setIsProcessing] = useState(false)
   const [shouldFail, setShouldFail] = useState(false)
+  const shouldFailRef = useRef(shouldFail)
+  shouldFailRef.current = shouldFail
   const [successCount, setSuccessCount] = useState(0)
   const [errorCount, setErrorCount] = useState(0)
 
@@ -32,7 +34,7 @@ function App() {
         await new Promise((resolve) => setTimeout(resolve, fakeProcessingTime))
 
         // Simulate occasional failures for demo purposes
-        if (shouldFail && Math.random() < 0.3) {
+        if (shouldFailRef.current && Math.random() < 0.3) {
           throw new Error(
             `Processing failed for batch with ${items.length} items`,
           )
@@ -62,11 +64,11 @@ function App() {
         setIsProcessing(false)
       }
     },
-    [shouldFail],
+    [],
   )
 
-  // Create the async batcher function using useCallback
-  const addToBatch = useCallback(
+  // Keep one batcher while the processing callback reads the current failure flag.
+  const [addToBatch] = useState(() =>
     asyncBatch<Item>(processBatch, {
       maxSize: 5,
       wait: 3000,
@@ -97,7 +99,6 @@ function App() {
         )
       },
     }),
-    [], // must be memoized to avoid re-creating the batcher on every render (consider using useAsyncBatcher instead in react)
   )
 
   const addItem = (isUrgent = false) => {

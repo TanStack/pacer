@@ -12,7 +12,14 @@ function App1() {
     {
       limit: 5,
       window: 5000,
-      windowType: windowType(),
+      get windowType() {
+        return windowType()
+      },
+      onReject: (rateLimiter) =>
+        console.log(
+          'Rejected by rate limiter',
+          rateLimiter.getMsUntilNextWindow(),
+        ),
     },
     // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
     // (state) => ({
@@ -22,17 +29,14 @@ function App1() {
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setLimitedCount(() => newInstantCount) // rate-limited state update
-      return newInstantCount // instant state update
-    })
+    const newInstantCount = instantCount() + 1
+    setInstantCount(newInstantCount)
+    setLimitedCount(newInstantCount) // rate-limited state update
   }
 
   return (
     <div>
-      <h1>TanStack Pacer createRateLimitedState Example 1</h1>
+      <h1>TanStack Pacer createRateLimitedSignal Example 1</h1>
       <div style={{ display: 'grid', gap: '0.5rem', 'margin-bottom': '1rem' }}>
         <label>
           <input
@@ -96,7 +100,7 @@ function App1() {
       <rateLimiter.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </rateLimiter.Subscribe>
@@ -115,7 +119,14 @@ function App2() {
       {
         limit: 5,
         window: 5000,
-        windowType: windowType(),
+        get windowType() {
+          return windowType()
+        },
+        onReject: (rateLimiter) =>
+          console.log(
+            'Rejected by rate limiter',
+            rateLimiter.getMsUntilNextWindow(),
+          ),
       },
       // Alternative to rateLimiter.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
       // (state) => ({
@@ -127,13 +138,13 @@ function App2() {
   function handleSearchChange(e: Event) {
     const target = e.target as HTMLInputElement
     const newValue = target.value
-    setInstantSearch(() => newValue)
-    setLimitedSearch(() => newValue)
+    setInstantSearch(newValue)
+    setLimitedSearch(newValue)
   }
 
   return (
     <div>
-      <h1>TanStack Pacer createRateLimitedState Example 2</h1>
+      <h1>TanStack Pacer createRateLimitedSignal Example 2</h1>
       <div style={{ display: 'grid', gap: '0.5rem', 'margin-bottom': '1rem' }}>
         <label>
           <input
@@ -206,7 +217,7 @@ function App2() {
       <rateLimiter.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </rateLimiter.Subscribe>
@@ -219,13 +230,15 @@ function App3() {
   const [currentValue, setCurrentValue] = createSignal(50)
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
 
-  // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
+  // Using createRateLimiter with a rate limit of 20 executions per 2 seconds
   const [limitedValue, setLimitedValue, rateLimiter] = createRateLimitedSignal(
     currentValue(),
     {
       limit: 20,
       window: 2000,
-      windowType: windowType(),
+      get windowType() {
+        return windowType()
+      },
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -294,7 +307,7 @@ function App3() {
             min="0"
             max="100"
             value={limitedValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{limitedValue()}</span>
@@ -310,17 +323,31 @@ function App3() {
             selector={(state) => ({
               executionCount: state.executionCount,
               rejectionCount: state.rejectionCount,
+              remainingInWindow: rateLimiter.getRemainingInWindow(),
+              msUntilNextWindow: rateLimiter.getMsUntilNextWindow(),
             })}
           >
             {(state) => (
               <>
                 <tr>
-                  <td>Rate Limited Executions:</td>
+                  <td>Execution Count:</td>
                   <td>{state().executionCount}</td>
                 </tr>
                 <tr>
-                  <td>Rejected Executions:</td>
+                  <td>Rejection Count:</td>
                   <td>{state().rejectionCount}</td>
+                </tr>
+                <tr>
+                  <td>Remaining in Window:</td>
+                  <td>{state().remainingInWindow}</td>
+                </tr>
+                <tr>
+                  <td>Ms Until Next Window:</td>
+                  <td>{state().msUntilNextWindow}</td>
+                </tr>
+                <tr>
+                  <td>Saved Executions:</td>
+                  <td>{instantExecutionCount() - state().executionCount}</td>
                 </tr>
                 <tr>
                   <td>% Reduction:</td>
@@ -346,7 +373,7 @@ function App3() {
       <rateLimiter.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </rateLimiter.Subscribe>

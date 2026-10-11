@@ -9,16 +9,15 @@ Use async debouncing when the debounced operation returns a value you need, can 
 
 ## Choose an API
 
-- `injectAsyncDebouncedCallback` for a Promise-returning handler
 - `injectAsyncDebouncer` for lifecycle methods and selected state
 
 ## Angular example
 
 ```ts
-import { injectAsyncDebouncedCallback } from '@tanstack/angular-pacer'
+import { injectAsyncDebouncer } from '@tanstack/angular-pacer'
 
 export class SearchComponent {
-  readonly search = injectAsyncDebouncedCallback(fetchSearchResults, {
+  readonly search = injectAsyncDebouncer(fetchSearchResults, {
     wait: 300,
     onError: reportError,
   })

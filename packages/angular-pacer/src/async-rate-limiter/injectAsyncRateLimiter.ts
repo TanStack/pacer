@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
@@ -24,7 +26,12 @@ export interface AngularAsyncRateLimiterOptions<
 export interface AngularAsyncRateLimiter<
   TFn extends AnyAsyncFunction,
   TSelected = {},
-> extends Omit<AsyncRateLimiter<TFn>, 'store'> {
+> extends Omit<AsyncRateLimiter<TFn>, 'store' | 'options' | 'setOptions'> {
+  options: AsyncRateLimiter<TFn>['options'] &
+    AngularAsyncRateLimiterOptions<TFn, TSelected>
+  setOptions: (
+    options: Partial<AngularAsyncRateLimiterOptions<TFn, TSelected>>,
+  ) => void
   /**
    * Reactive state signal that will be updated when the async rate limiter state changes
    *
@@ -85,31 +92,45 @@ export function injectAsyncRateLimiter<
   TSelected = {},
 >(
   fn: TFn,
-  options: AngularAsyncRateLimiterOptions<TFn, TSelected>,
+  options: AngularPacerOptions<AngularAsyncRateLimiterOptions<TFn, TSelected>>,
   selector: (state: AsyncRateLimiterState<TFn>) => TSelected = () =>
     ({}) as TSelected,
 ): AngularAsyncRateLimiter<TFn, TSelected> {
-  const mergedOptions = {
-    ...injectPacerOptions().asyncRateLimiter,
-    ...options,
-  } as AngularAsyncRateLimiterOptions<TFn, TSelected>
+  return injectReactiveOptions<
+    AngularAsyncRateLimiterOptions<TFn, TSelected>,
+    AngularAsyncRateLimiter<TFn, TSelected>
+  >(
+    options,
+    injectPacerOptions(),
+    'asyncRateLimiter',
+    (mergedOptions, getPublicInstance) => {
+      const rateLimiter = new AsyncRateLimiter<TFn>(fn, mergedOptions)
+      const state = injectSelector(rateLimiter.store, selector)
 
-  const rateLimiter = new AsyncRateLimiter<TFn>(fn, mergedOptions)
-  const state = injectSelector(rateLimiter.store, selector)
+      const result = {
+        ...rateLimiter,
+        get options() {
+          return rateLimiter.options
+        },
+        set options(value) {
+          rateLimiter.options = value
+        },
+        state,
+      } as AngularAsyncRateLimiter<TFn, TSelected>
 
-  const result = {
-    ...rateLimiter,
-    state,
-  } as AngularAsyncRateLimiter<TFn, TSelected>
+      const destroyRef = inject(DestroyRef, { optional: true })
+      destroyRef?.onDestroy(() => {
+        const onUnmount = (
+          rateLimiter.options as AngularAsyncRateLimiterOptions<TFn, TSelected>
+        ).onUnmount
+        if (onUnmount) {
+          onUnmount(getPublicInstance())
+        } else {
+          rateLimiter.abort()
+        }
+      })
 
-  const destroyRef = inject(DestroyRef, { optional: true })
-  destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
-    } else {
-      rateLimiter.abort()
-    }
-  })
-
-  return result
+      return result
+    },
+  )
 }

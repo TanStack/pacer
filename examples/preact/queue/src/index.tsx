@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'preact/hooks'
 import { render } from 'preact'
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { queue } from '@tanstack/preact-pacer/queuer'
+import { pacerDevtoolsPlugin } from '@tanstack/preact-pacer-devtools'
+import { TanStackDevtools } from '@tanstack/preact-devtools'
 
 function App1() {
   const [queueItems, setQueueItems] = useState<Array<number>>([])
@@ -19,6 +21,8 @@ function App1() {
       wait: 1000,
       onItemsChange: (queue) => {
         setQueueItems(queue.peekAllItems())
+      },
+      onExecute: (_item, queue) => {
         setProcessedCount(queue.store.state.executionCount)
       },
     }),
@@ -77,13 +81,15 @@ function App2() {
       wait: 500,
       onItemsChange: (queue) => {
         setQueueItems(queue.peekAllItems())
+      },
+      onExecute: (_item, queue) => {
         setProcessedCount(queue.store.state.executionCount)
       },
     }),
     [],
   )
 
-  function handleInputChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  function handleInputChange(e: TargetedEvent<HTMLInputElement>) {
     const newValue = e.currentTarget.value
     setInputText(newValue)
     queueTextChange(newValue)
@@ -144,13 +150,15 @@ function App3() {
       wait: 100,
       onItemsChange: (queue) => {
         setQueueItems(queue.peekAllItems())
+      },
+      onExecute: (_item, queue) => {
         setProcessedCount(queue.store.state.executionCount)
       },
     }),
     [],
   )
 
-  function handleRangeChange(e: JSX.TargetedEvent<HTMLInputElement>) {
+  function handleRangeChange(e: TargetedEvent<HTMLInputElement>) {
     const newValue = parseInt(e.currentTarget.value, 10)
     setCurrentValue(newValue)
     queueValue(newValue)
@@ -181,7 +189,7 @@ function App3() {
             min="0"
             max="100"
             value={queuedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{queuedValue}</span>
@@ -215,6 +223,10 @@ render(
     <App2 />
     <hr />
     <App3 />
+    <TanStackDevtools
+      eventBusConfig={{ debug: false }}
+      plugins={[pacerDevtoolsPlugin()]}
+    />
   </div>,
   root,
 )

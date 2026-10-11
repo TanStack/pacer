@@ -246,6 +246,6 @@ For exact signatures, see the [`asyncRetry` function reference](../../../referen
 
 ## Related docs
 
-- [Solid adapter](../adapter.md)
+- [Solid quick start](../quick-start.md)
 - [Choose a Pacer utility](../../../guides/which-pacer-utility-should-i-choose.md)
 - [Select another framework](../../../guides/async-retrying.md)

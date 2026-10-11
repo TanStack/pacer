@@ -128,21 +128,25 @@ function App() {
         )}
       </asyncBatcher.Subscribe>
 
-      <div>
-        <h3>Current Batch Items</h3>
-        <div style={{ minHeight: '100px' }}>
-          {asyncBatcher.peekAllItems().length === 0 ? (
-            <em>No items in current batch</em>
-          ) : (
-            asyncBatcher.peekAllItems().map((item, index) => (
-              <div key={item.id}>
-                {index + 1}: {item.value} (added at{' '}
-                {new Date(item.timestamp).toLocaleTimeString()})
-              </div>
-            ))
-          )}
-        </div>
-      </div>
+      <asyncBatcher.Subscribe selector={(state) => ({ items: state.items })}>
+        {({ items }) => (
+          <div>
+            <h3>Current Batch Items</h3>
+            <div style={{ minHeight: '100px' }}>
+              {items.length === 0 ? (
+                <em>No items in current batch</em>
+              ) : (
+                items.map((item, index) => (
+                  <div key={item.id}>
+                    {index + 1}: {item.value} (added at{' '}
+                    {new Date(item.timestamp).toLocaleTimeString()})
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+      </asyncBatcher.Subscribe>
 
       <div>
         <h3>Controls</h3>

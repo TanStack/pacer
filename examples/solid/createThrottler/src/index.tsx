@@ -1,3 +1,4 @@
+import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import { createThrottler } from '@tanstack/solid-pacer/throttler'
@@ -14,19 +15,18 @@ function App1() {
       wait: 1000,
       // leading: true, // default
       // trailing: true, // default
-      // enabled: () => instantCount() > 2,
+      // get enabled() {
+      //   return instantCount() > 2
+      // },
     },
     // Alternative to setCountThrottler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
     // (state) => state,
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      setCountThrottler.maybeExecute(newInstantCount) // throttled state update
-      return newInstantCount // instant state update
-    })
+    const newInstantCount = instantCount() + 1
+    setInstantCount(newInstantCount)
+    setCountThrottler.maybeExecute(newInstantCount) // throttled state update
   }
 
   return (
@@ -68,7 +68,7 @@ function App1() {
       <setCountThrottler.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </setCountThrottler.Subscribe>
@@ -85,9 +85,11 @@ function App2() {
     setThrottledSearch,
     {
       wait: 1000,
-      enabled: instantSearch().length > 2,
+      get enabled() {
+        return instantSearch().length > 2
+      },
     },
-    // Alternative to setSearchThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // Alternative to setSearchThrottler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
     // (state) => state,
   )
 
@@ -141,7 +143,7 @@ function App2() {
       <setSearchThrottler.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </setSearchThrottler.Subscribe>
@@ -162,7 +164,7 @@ function App3() {
       // leading: true, // default
       // trailing: true, // default
     },
-    // Alternative to setValueThrottler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // Alternative to setValueThrottler.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
     // (state) => state,
   )
 
@@ -199,7 +201,7 @@ function App3() {
             min="0"
             max="100"
             value={throttledValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{throttledValue()}</span>
@@ -248,7 +250,7 @@ function App3() {
       <setValueThrottler.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </setValueThrottler.Subscribe>
@@ -258,13 +260,15 @@ function App3() {
 
 render(
   () => (
-    <div>
-      <App1 />
-      <hr />
-      <App2 />
-      <hr />
-      <App3 />
-    </div>
+    <PacerProvider>
+      <div>
+        <App1 />
+        <hr />
+        <App2 />
+        <hr />
+        <App3 />
+      </div>
+    </PacerProvider>
   ),
   document.getElementById('root')!,
 )

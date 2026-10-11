@@ -44,3 +44,5 @@ export * from './rate-limiter/createRateLimitedValue'
 export * from './throttler/createThrottledSignal'
 export * from './throttler/createThrottledValue'
 export * from './throttler/createThrottler'
+
+export type { SolidPacerOptions } from './types'

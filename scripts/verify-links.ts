@@ -11,6 +11,32 @@ const errors: Array<{
   reason: string
 }> = []
 
+interface DocsMenuItem {
+  to?: string
+  children?: Array<DocsMenuItem>
+  frameworks?: Array<DocsMenuItem>
+}
+
+function verifyConfigLinks() {
+  const file = 'docs/config.json'
+  const config: { sections: Array<DocsMenuItem> } = JSON.parse(
+    readFileSync(file, 'utf-8'),
+  )
+  let count = 0
+
+  function visit(item: DocsMenuItem) {
+    if (item.to && isRelativeLink(item.to)) {
+      count++
+      relativeLinkExists(item.to, file)
+    }
+    item.children?.forEach(visit)
+    item.frameworks?.forEach(visit)
+  }
+
+  config.sections.forEach(visit)
+  console.log(`Checked ${count} docs config links`)
+}
+
 function isRelativeLink(link: string) {
   return (
     !link.startsWith('/') &&
@@ -86,6 +112,7 @@ function relativeLinkExists(link: string, file: string): boolean {
 }
 
 async function verifyMarkdownLinks() {
+  verifyConfigLinks()
   // Find all markdown files in docs directory
   const markdownFiles = await glob('docs/**/*.md', {
     ignore: ['**/node_modules/**'],

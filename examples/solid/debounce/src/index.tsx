@@ -14,12 +14,9 @@ function App1() {
   })
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newInstantCount = c + 1 // common new value for both
-      debouncedSetCount(newInstantCount) // debounced state update
-      return newInstantCount // instant state update
-    })
+    const newInstantCount = instantCount() + 1
+    setInstantCount(newInstantCount)
+    debouncedSetCount(newInstantCount) // debounced state update
   }
 
   return (
@@ -110,7 +107,7 @@ function App3() {
       <h1>TanStack Pacer debounce Example 3</h1>
       <div style={{ 'margin-bottom': '20px' }}>
         <label>
-          Current Range:
+          Instant Range:
           <input
             type="range"
             min="0"
@@ -130,14 +127,11 @@ function App3() {
             min="0"
             max="100"
             value={debouncedValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{debouncedValue()}</span>
         </label>
-      </div>
-      <div style={{ color: '#666', 'font-size': '0.9em' }}>
-        <p>Debounced with 250ms wait time</p>
       </div>
     </div>
   )

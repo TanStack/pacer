@@ -1,52 +1,47 @@
 import { Component, signal } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
+import { JsonPipe } from '@angular/common'
 import { injectAsyncThrottler } from '@tanstack/angular-pacer'
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  imports: [JsonPipe],
 })
 export class App {
-  protected readonly query = signal('hello')
-  protected readonly lastEvent = signal<'executed' | 'throttled' | 'error' | null>(null)
-  protected readonly lastValue = signal<string | null>(null)
-
-  protected readonly throttler = injectAsyncThrottler(
-    async (q: string) => {
-      await sleep(600)
-      return `Response for "${q}" @ ${new Date().toLocaleTimeString()}`
-    },
-    { wait: 1000 },
+  readonly searchTerm = signal('')
+  readonly results = signal<Array<string>>([])
+  readonly loading = signal(false)
+  readonly error = signal('')
+  readonly runner = injectAsyncThrottler(
+    (term: string) => this.search(term),
+    () => ({
+      wait: 1000,
+      onError: (error) => {
+        this.error.set(error.message)
+        this.results.set([])
+      },
+    }),
     (state) => state,
   )
 
-  protected async run(): Promise<void> {
-    this.lastEvent.set(null)
+  private async search(term: string): Promise<Array<string> | undefined> {
+    if (!term) {
+      this.results.set([])
+      return
+    }
+    this.loading.set(true)
     try {
-      const result = await this.throttler.maybeExecute(this.query())
-
-      if (result === undefined) {
-        this.lastEvent.set('throttled')
-        return
-      }
-
-      this.lastEvent.set('executed')
-      this.lastValue.set(String(result))
-    } catch (err) {
-      this.lastEvent.set('error')
-      this.lastValue.set(err instanceof Error ? err.message : String(err))
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      const results = [1, 2, 3].map((id) => `Result ${id} for ${term}`)
+      this.results.set(results)
+      this.error.set('')
+      return results
+    } finally {
+      this.loading.set(false)
     }
   }
-
-  protected reset(): void {
-    this.throttler.reset()
-    this.lastEvent.set(null)
-    this.lastValue.set(null)
+  async onSearch(value: string): Promise<void> {
+    this.searchTerm.set(value)
+    await this.runner.maybeExecute(value)
   }
 }

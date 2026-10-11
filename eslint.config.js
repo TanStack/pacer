@@ -3,10 +3,16 @@
 // @ts-ignore Needed due to moduleResolution Node vs Bundler
 import { tanstackConfig } from '@tanstack/eslint-config'
 import unusedImports from 'eslint-plugin-unused-imports'
+import { defineConfig } from 'eslint/config'
 
-/** @type {import('eslint').Linter.Config[]} */
-const config = [
+const config = defineConfig([
   ...tanstackConfig,
+  {
+    files: ['tests/e2e/**/*.ts', 'examples/*/*/tests/e2e/**/*.{ts,mts}'],
+    languageOptions: {
+      parserOptions: { project: './tests/e2e/tsconfig.json' },
+    },
+  },
   {
     name: 'tanstack/temp',
     plugins: {
@@ -20,6 +26,6 @@ const config = [
       'pnpm/json-enforce-catalog': 'off',
     },
   },
-]
+])
 
 export default config

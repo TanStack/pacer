@@ -1,7 +1,9 @@
 import { DestroyRef, inject } from '@angular/core'
 import { injectSelector } from '@tanstack/angular-store'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
+import { injectReactiveOptions } from '../utils/injectReactiveOptions'
 import { injectPacerOptions } from '../provider/pacer-context'
+import type { AngularPacerOptions } from '../types'
 import type { Signal } from '@angular/core'
 import type { Store } from '@tanstack/angular-store'
 import type {
@@ -23,8 +25,13 @@ export interface AngularAsyncBatcherOptions<
 
 export interface AngularAsyncBatcher<TValue, TSelected = {}> extends Omit<
   AsyncBatcher<TValue>,
-  'store'
+  'store' | 'options' | 'setOptions'
 > {
+  options: AsyncBatcher<TValue>['options'] &
+    AngularAsyncBatcherOptions<TValue, TSelected>
+  setOptions: (
+    options: Partial<AngularAsyncBatcherOptions<TValue, TSelected>>,
+  ) => void
   /**
    * Reactive state signal that will be updated when the async batcher state changes
    *
@@ -95,32 +102,48 @@ export interface AngularAsyncBatcher<TValue, TSelected = {}> extends Omit<
  */
 export function injectAsyncBatcher<TValue, TSelected = {}>(
   fn: (items: Array<TValue>) => Promise<any>,
-  options: AngularAsyncBatcherOptions<TValue, TSelected> = {},
+  options: AngularPacerOptions<
+    AngularAsyncBatcherOptions<TValue, TSelected>
+  > = {},
   selector: (state: AsyncBatcherState<TValue>) => TSelected = () =>
     ({}) as TSelected,
 ): AngularAsyncBatcher<TValue, TSelected> {
-  const mergedOptions = {
-    ...injectPacerOptions().asyncBatcher,
-    ...options,
-  } as AngularAsyncBatcherOptions<TValue, TSelected>
+  return injectReactiveOptions<
+    AngularAsyncBatcherOptions<TValue, TSelected>,
+    AngularAsyncBatcher<TValue, TSelected>
+  >(
+    options,
+    injectPacerOptions(),
+    'asyncBatcher',
+    (mergedOptions, getPublicInstance) => {
+      const batcher = new AsyncBatcher<TValue>(fn, mergedOptions)
+      const state = injectSelector(batcher.store, selector)
 
-  const batcher = new AsyncBatcher<TValue>(fn, mergedOptions)
-  const state = injectSelector(batcher.store, selector)
+      const result = {
+        ...batcher,
+        get options() {
+          return batcher.options
+        },
+        set options(value) {
+          batcher.options = value
+        },
+        state,
+      } as AngularAsyncBatcher<TValue, TSelected>
 
-  const result = {
-    ...batcher,
-    state,
-  } as AngularAsyncBatcher<TValue, TSelected>
+      const destroyRef = inject(DestroyRef, { optional: true })
+      destroyRef?.onDestroy(() => {
+        const onUnmount = (
+          batcher.options as AngularAsyncBatcherOptions<TValue, TSelected>
+        ).onUnmount
+        if (onUnmount) {
+          onUnmount(getPublicInstance())
+        } else {
+          batcher.cancel()
+          batcher.abort()
+        }
+      })
 
-  const destroyRef = inject(DestroyRef, { optional: true })
-  destroyRef?.onDestroy(() => {
-    if (mergedOptions.onUnmount) {
-      mergedOptions.onUnmount(result)
-    } else {
-      batcher.cancel()
-      batcher.abort()
-    }
-  })
-
-  return result
+      return result
+    },
+  )
 }

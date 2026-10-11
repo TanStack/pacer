@@ -1,6 +1,12 @@
+import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { createRateLimiter } from '@tanstack/solid-pacer/rate-limiter'
+import {
+  createRateLimiter,
+  rateLimiterOptions,
+} from '@tanstack/solid-pacer/rate-limiter'
+
+const commonRateLimiterOptions = rateLimiterOptions({ limit: 5, window: 5000 })
 
 function App1() {
   const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
@@ -12,9 +18,10 @@ function App1() {
   const rateLimiter = createRateLimiter(
     setLimitedCount,
     {
-      limit: 5,
-      window: 5000,
-      windowType: windowType(),
+      ...commonRateLimiterOptions,
+      get windowType() {
+        return windowType()
+      },
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -26,12 +33,9 @@ function App1() {
   )
 
   function increment() {
-    // this pattern helps avoid common bugs with stale closures and state
-    setInstantCount((c) => {
-      const newCount = c + 1 // common new value for both
-      rateLimiter.maybeExecute(newCount) // rate-limited state update
-      return newCount // instant state update
-    })
+    const newCount = instantCount() + 1
+    setInstantCount(newCount)
+    rateLimiter.maybeExecute(newCount) // rate-limited state update
   }
 
   return (
@@ -65,6 +69,8 @@ function App1() {
             selector={(state) => ({
               executionCount: state.executionCount,
               rejectionCount: state.rejectionCount,
+              remainingInWindow: rateLimiter.getRemainingInWindow(),
+              msUntilNextWindow: rateLimiter.getMsUntilNextWindow(),
             })}
           >
             {(state) => (
@@ -79,11 +85,11 @@ function App1() {
                 </tr>
                 <tr>
                   <td>Remaining in Window:</td>
-                  <td>{rateLimiter.getRemainingInWindow()}</td>
+                  <td>{state().remainingInWindow}</td>
                 </tr>
                 <tr>
                   <td>Ms Until Next Window:</td>
-                  <td>{rateLimiter.getMsUntilNextWindow()}</td>
+                  <td>{state().msUntilNextWindow}</td>
                 </tr>
                 <tr>
                   <td colSpan={2}>
@@ -110,7 +116,7 @@ function App1() {
       <rateLimiter.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </rateLimiter.Subscribe>
@@ -119,7 +125,6 @@ function App1() {
 }
 
 function App2() {
-  const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
   const [instantSearch, setInstantSearch] = createSignal('')
   const [limitedSearch, setLimitedSearch] = createSignal('')
 
@@ -127,10 +132,10 @@ function App2() {
   const rateLimiter = createRateLimiter(
     setLimitedSearch,
     {
-      enabled: instantSearch().length > 2, // optional, defaults to true
-      limit: 5,
-      window: 5000,
-      windowType: windowType(),
+      get enabled() {
+        return instantSearch().length > 2
+      }, // optional, defaults to true
+      ...commonRateLimiterOptions,
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -151,28 +156,6 @@ function App2() {
   return (
     <div>
       <h1>TanStack Pacer createRateLimiter Example 2</h1>
-      <div style={{ display: 'grid', gap: '0.5rem', 'margin-bottom': '1rem' }}>
-        <label>
-          <input
-            type="radio"
-            name="windowType2"
-            value="fixed"
-            checked={windowType() === 'fixed'}
-            onChange={() => setWindowType('fixed')}
-          />
-          Fixed Window
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="windowType2"
-            value="sliding"
-            checked={windowType() === 'sliding'}
-            onChange={() => setWindowType('sliding')}
-          />
-          Sliding Window
-        </label>
-      </div>
       <div>
         <input
           autofocus
@@ -189,6 +172,8 @@ function App2() {
             selector={(state) => ({
               executionCount: state.executionCount,
               rejectionCount: state.rejectionCount,
+              remainingInWindow: rateLimiter.getRemainingInWindow(),
+              msUntilNextWindow: rateLimiter.getMsUntilNextWindow(),
             })}
           >
             {(state) => (
@@ -203,11 +188,11 @@ function App2() {
                 </tr>
                 <tr>
                   <td>Remaining in Window:</td>
-                  <td>{rateLimiter.getRemainingInWindow()}</td>
+                  <td>{state().remainingInWindow}</td>
                 </tr>
                 <tr>
                   <td>Ms Until Next Window:</td>
-                  <td>{rateLimiter.getMsUntilNextWindow()}</td>
+                  <td>{state().msUntilNextWindow}</td>
                 </tr>
                 <tr>
                   <td colSpan={2}>
@@ -216,6 +201,7 @@ function App2() {
                 </tr>
                 <tr>
                   <td>Instant Search:</td>
+                  <td>{instantSearch()}</td>
                 </tr>
                 <tr>
                   <td>Rate Limited Search:</td>
@@ -232,7 +218,7 @@ function App2() {
       <rateLimiter.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </rateLimiter.Subscribe>
@@ -241,18 +227,16 @@ function App2() {
 }
 
 function App3() {
-  const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
   const [currentValue, setCurrentValue] = createSignal(50)
   const [limitedValue, setLimitedValue] = createSignal(50)
   const [instantExecutionCount, setInstantExecutionCount] = createSignal(0)
 
-  // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
+  // Using createRateLimiter with a rate limit of 20 executions per 2 seconds
   const rateLimiter = createRateLimiter(
     setLimitedValue,
     {
       limit: 20,
       window: 2000,
-      windowType: windowType(),
       onReject: (rateLimiter) =>
         console.log(
           'Rejected by rate limiter',
@@ -274,28 +258,6 @@ function App3() {
   return (
     <div>
       <h1>TanStack Pacer createRateLimiter Example 3</h1>
-      <div style={{ display: 'grid', gap: '0.5rem', 'margin-bottom': '1rem' }}>
-        <label>
-          <input
-            type="radio"
-            name="windowType3"
-            value="fixed"
-            checked={windowType() === 'fixed'}
-            onChange={() => setWindowType('fixed')}
-          />
-          Fixed Window
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="windowType3"
-            value="sliding"
-            checked={windowType() === 'sliding'}
-            onChange={() => setWindowType('sliding')}
-          />
-          Sliding Window
-        </label>
-      </div>
       <div style={{ 'margin-bottom': '20px' }}>
         <label>
           Current Range:
@@ -318,7 +280,7 @@ function App3() {
             min="0"
             max="100"
             value={limitedValue()}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{limitedValue()}</span>
@@ -330,6 +292,8 @@ function App3() {
             selector={(state) => ({
               executionCount: state.executionCount,
               rejectionCount: state.rejectionCount,
+              remainingInWindow: rateLimiter.getRemainingInWindow(),
+              msUntilNextWindow: rateLimiter.getMsUntilNextWindow(),
             })}
           >
             {(state) => (
@@ -344,11 +308,11 @@ function App3() {
                 </tr>
                 <tr>
                   <td>Remaining in Window:</td>
-                  <td>{rateLimiter.getRemainingInWindow()}</td>
+                  <td>{state().remainingInWindow}</td>
                 </tr>
                 <tr>
                   <td>Ms Until Next Window:</td>
-                  <td>{rateLimiter.getMsUntilNextWindow()}</td>
+                  <td>{state().msUntilNextWindow}</td>
                 </tr>
                 <tr>
                   <td>Instant Executions:</td>
@@ -382,7 +346,7 @@ function App3() {
       <rateLimiter.Subscribe selector={(state) => state}>
         {(state) => (
           <pre style={{ 'margin-top': '20px' }}>
-            {JSON.stringify(state, null, 2)}
+            {JSON.stringify(state(), null, 2)}
           </pre>
         )}
       </rateLimiter.Subscribe>
@@ -392,13 +356,15 @@ function App3() {
 
 render(
   () => (
-    <div>
-      <App1 />
-      <hr />
-      <App2 />
-      <hr />
-      <App3 />
-    </div>
+    <PacerProvider>
+      <div>
+        <App1 />
+        <hr />
+        <App2 />
+        <hr />
+        <App3 />
+      </div>
+    </PacerProvider>
   ),
   document.getElementById('root')!,
 )

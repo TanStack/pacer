@@ -1,27 +1,13 @@
-<h1>TanStack Pacer - injectBatcher (Angular)</h1>
-
-<label>
-  Item
-  <input [value]="input()" (input)="onInput($any($event.target).value ?? '')" />
-</label>
-
-<div>
-  <button type="button" (click)="add()">Add</button>
-  <button type="button" (click)="flush()">Flush</button>
-  <button type="button" (click)="reset()">Reset</button>
-</div>
-
-<h2>Queue</h2>
-<div>queuedCount: {{ queuedCount() }}</div>
-<div>items: {{ batcher.state().items.join(', ') }}</div>
-
-<h2>Last batch</h2>
-<div>{{ lastBatch().join(', ') }}</div>
-
-<h2>State</h2>
-<div>status: {{ batcher.state().status }}</div>
-<div>isPending: {{ batcher.state().isPending }}</div>
-<div>execution Count: {{ batcher.state().executionCount }}</div>
-<div>processedCount: {{ processedCount() }}</div>
-
-<router-outlet />
+<h1>TanStack Pacer injectBatcher Example</h1>
+<p>Batch Size: {{ pendingItems().length }} / 5</p>
+<p>Process after 3000ms, at 5 items, or when the batch includes 42.</p>
+<p>Batch Items: {{ pendingItems().join(', ') }}</p>
+<button (click)="add()">Add Number</button>
+<button (click)="runner.flush()" [disabled]="runner.state().size === 0">Flush Current Batch</button>
+<p>Batches Processed: {{ runner.state().executionCount }}</p>
+<p>Items Processed: {{ runner.state().totalItemsProcessed }}</p>
+<h2>Processed Batches</h2>
+@for (items of processedBatches(); track $index) {
+<p>[{{ items.join(', ') }}]</p>
+}
+<pre>{{ runner.state() | json }}</pre>

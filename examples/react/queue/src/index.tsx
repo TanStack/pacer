@@ -20,6 +20,8 @@ function App1() {
       wait: 1000,
       onItemsChange: (queue) => {
         setQueueItems(queue.peekAllItems())
+      },
+      onExecute: (_item, queue) => {
         setProcessedCount(queue.store.state.executionCount)
       },
     }),
@@ -78,6 +80,8 @@ function App2() {
       wait: 500,
       onItemsChange: (queue) => {
         setQueueItems(queue.peekAllItems())
+      },
+      onExecute: (_item, queue) => {
         setProcessedCount(queue.store.state.executionCount)
       },
     }),
@@ -144,6 +148,8 @@ function App3() {
       wait: 100,
       onItemsChange: (queue) => {
         setQueueItems(queue.peekAllItems())
+      },
+      onExecute: (_item, queue) => {
         setProcessedCount(queue.store.state.executionCount)
       },
     }),
@@ -181,7 +187,7 @@ function App3() {
             min="0"
             max="100"
             value={queuedValue}
-            readOnly
+            disabled
             style={{ width: '100%' }}
           />
           <span>{queuedValue}</span>

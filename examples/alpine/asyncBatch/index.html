@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/emblem-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>TanStack Pacer | Alpine asyncBatch</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="app" x-data="devtools">
+      <div>
+        <div x-data="demo">
+          <h1>TanStack Pacer asyncBatch Example</h1>
+          <div>
+            <h3>Batch Status</h3>
+            <div>
+              Pending Items: <span x-text="(pendingItems.length)"></span>
+            </div>
+            <div>Max Batch Size: 5</div>
+            <div>
+              Is Processing:
+              <span x-text="(isProcessing ? 'Yes' : 'No')"></span>
+            </div>
+            <div>Successful Batches: <span x-text="(successCount)"></span></div>
+            <div>Failed Batches: <span x-text="(errorCount)"></span></div>
+          </div>
+          <div>
+            <h3>Current Pending Items</h3>
+            <div :style="({ minHeight: '100px' })">
+              <template x-if="(pendingItems.length === 0)"
+                ><em>No items pending</em></template
+              ><template x-if="!((pendingItems.length === 0))"
+                ><template x-for="(item, index) in (pendingItems)" :key="index"
+                  ><div>
+                    <span x-text="(index + 1)"></span>:
+                    <span x-text="(item.value)"></span> (added at<span
+                      x-text="(' ')"
+                    ></span
+                    ><span
+                      x-text="(new Date(item.timestamp).toLocaleTimeString())"
+                    ></span
+                    >)
+                  </div></template
+                ></template
+              >
+            </div>
+          </div>
+          <div>
+            <h3>Controls</h3>
+            <div
+              :style="({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '8px',
+    maxWidth: '600px',
+})"
+            >
+              <button @click="((() => addItem(false)))($event)">
+                Add Regular Item</button
+              ><button @click="((() => addItem(true)))($event)">
+                Add Urgent Item (Processes Immediately)
+              </button>
+            </div>
+            <div>
+              <label
+                ><input
+                  type="checkbox"
+                  :checked="(shouldFail)"
+                  @input="(((e) => (shouldFail = e.target.checked)))($event)"
+                /><span x-text="(' ')"></span>Simulate random failures (30%
+                chance)</label
+              >
+            </div>
+          </div>
+          <div>
+            <h3>
+              Processed Batches (<span x-text="(processedBatches.length)"></span
+              >)
+            </h3>
+            <div>
+              <template x-if="(processedBatches.length === 0)"
+                ><em>No batches processed yet</em></template
+              ><template x-if="!((processedBatches.length === 0))"
+                ><template
+                  x-for="(batch, index) in (processedBatches)"
+                  :key="index"
+                  ><div>
+                    <strong>Batch <span x-text="(index + 1)"></span></strong>
+                    (processed at<span x-text="(' ')"></span
+                    ><span
+                      x-text="(new Date(batch.timestamp).toLocaleTimeString())"
+                    ></span
+                    >)
+                    <div x-text="(batch.result)"></div></div></template
+              ></template>
+            </div>
+          </div>
+          <template x-if="(errors.length > 0)"
+            ><div>
+              <h3>Errors (<span x-text="(errors.length)"></span>)</h3>
+              <div>
+                <template x-for="(error, index) in (errors)" :key="index"
+                  ><div x-text="(error)"></div
+                ></template>
+              </div>
+              <button @click="((() => (errors = [])))($event)">
+                Clear Errors
+              </button>
+            </div></template
+          >
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

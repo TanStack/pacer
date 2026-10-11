@@ -1,5 +1,6 @@
 import { computed } from '@angular/core'
 import { injectAsyncQueuer } from './injectAsyncQueuer'
+import type { AngularPacerOptions } from '../types'
 import type { AngularAsyncQueuer } from './injectAsyncQueuer'
 import type {
   AsyncQueuerOptions,
@@ -57,7 +58,7 @@ export function injectAsyncQueuedSignal<
   >,
 >(
   fn: (value: TValue) => Promise<any>,
-  options: AsyncQueuerOptions<TValue> = {},
+  options: AngularPacerOptions<AsyncQueuerOptions<TValue>> = {},
   selector: (state: AsyncQueuerState<TValue>) => TSelected = (state) =>
     ({ items: state.items }) as TSelected,
 ): AsyncQueuedSignal<TValue, TSelected> {
@@ -66,7 +67,8 @@ export function injectAsyncQueuedSignal<
   const items = computed(() => queuer.state().items as Array<TValue>)
 
   const queued = Object.assign(items, {
-    addItem: queuer.addItem.bind(queuer),
+    addItem: (...args: Parameters<typeof queuer.addItem>) =>
+      queuer.addItem(...args),
     queuer,
   }) as AsyncQueuedSignal<TValue, TSelected>
 

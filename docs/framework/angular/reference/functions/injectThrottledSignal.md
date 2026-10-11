@@ -10,7 +10,7 @@ function injectThrottledSignal<TValue, TSelected>(
 selector?): ThrottledSignal<TValue, TSelected>;
 ```
 
-Defined in: [throttler/injectThrottledSignal.ts:62](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L62)
+Defined in: [throttler/injectThrottledSignal.ts:63](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/throttler/injectThrottledSignal.ts#L63)
 
 An Angular function that creates a throttled state signal, combining Angular's signal with throttling functionality.
 This function provides both the current throttled value and methods to update it.
@@ -61,7 +61,7 @@ Available throttler state properties:
 
 ### initialOptions
 
-`ThrottlerOptions`\<`Setter`\<`TValue`\>\>
+[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<`ThrottlerOptions`\<`Setter`\<`TValue`\>\>\>
 
 ### selector?
 
