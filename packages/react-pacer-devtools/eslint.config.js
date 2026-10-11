@@ -24,10 +24,4 @@ export default defineConfig([
       'react-hooks/rules-of-hooks': 'error',
     },
   },
-  {
-    files: ['**/__tests__/**'],
-    rules: {
-      // 'react-compiler/react-compiler': 'off',
-    },
-  },
 ])
