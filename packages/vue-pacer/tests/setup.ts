@@ -1,4 +1,5 @@
 import { effectScope, ref } from 'vue'
+
 export function setup<T>(create: () => T) {
   const scope = effectScope()
   const result = scope.run(create)!

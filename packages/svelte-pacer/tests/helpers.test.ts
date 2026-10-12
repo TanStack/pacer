@@ -1,14 +1,16 @@
-import { createThrottledValue, createRateLimitedValue } from '../src'
-import { createAsyncQueuedSignal } from '../src'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import {
-  createDebouncer,
+  createAsyncQueuedSignal,
   createDebouncedSignal,
   createDebouncedValue,
+  createDebouncer,
   createQueuedSignal,
   createQueuedValue,
+  createRateLimitedValue,
+  createThrottledValue,
 } from '../src'
-import { setup, source, flush } from './setup'
+import { flush, setup, source } from './setup'
+
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
 it('debounces callbacks and cancels pending work on disposal', async () => {
@@ -111,8 +113,9 @@ it('returns the async queue as the second tuple entry', async () => {
     destroy,
   } = setup(() =>
     createAsyncQueuedSignal(
-      async (item: string) => {
+      (item: string) => {
         calls.push(item)
+        return Promise.resolve()
       },
       { started: false },
     ),

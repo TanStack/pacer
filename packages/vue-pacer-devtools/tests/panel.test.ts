@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createApp, h, nextTick, reactive } from 'vue'
-import type { App, Component } from 'vue'
 import {
   PacerDevtoolsPanel,
   PacerDevtoolsPanelNoOp,
 } from '../src/VuePacerDevtools'
+import type { App, Component } from 'vue'
+
 const core = vi.hoisted(() => ({ mount: vi.fn(), unmount: vi.fn() }))
 vi.mock('@tanstack/pacer-devtools/production', () => ({
   PacerDevtoolsCore: class {

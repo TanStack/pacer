@@ -1,8 +1,8 @@
-import type { Signal, WritableSignal } from '@angular/core'
 import { isSignal, signal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
 import { expect, expectTypeOf, it, vi } from 'vitest'
 import { injectDebouncedSignal } from '../../src/debouncer/injectDebouncedSignal'
+import type { Signal, WritableSignal } from '@angular/core'
 
 it('returns an Angular signal with the debouncer as an attribute', () => {
   const value = TestBed.runInInjectionContext(() =>

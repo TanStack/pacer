@@ -1,8 +1,8 @@
-import type { Signal, WritableSignal } from '@angular/core'
 import { isSignal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
 import { expect, expectTypeOf, it, vi } from 'vitest'
 import { injectRateLimitedSignal } from '../../src/rate-limiter/injectRateLimitedSignal'
+import type { Signal, WritableSignal } from '@angular/core'
 
 it('returns an Angular signal with a callable rateLimiter attribute', () => {
   const value = TestBed.runInInjectionContext(() =>

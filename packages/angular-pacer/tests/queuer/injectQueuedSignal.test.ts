@@ -1,8 +1,8 @@
-import type { Signal, WritableSignal } from '@angular/core'
 import { isSignal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
 import { expect, expectTypeOf, it, vi } from 'vitest'
 import { injectQueuedSignal } from '../../src/queuer/injectQueuedSignal'
+import type { Signal, WritableSignal } from '@angular/core'
 
 it('returns an editable Angular signal with selected queue state', () => {
   const value = TestBed.runInInjectionContext(() =>

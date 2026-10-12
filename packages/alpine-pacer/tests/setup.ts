@@ -2,6 +2,7 @@ import Alpine from 'alpinejs'
 import { vi } from 'vitest'
 import { createScope } from '../src/provider/PacerProvider'
 import type { PacerScope } from '../src/provider/PacerProvider'
+
 export function setup<T>(create: (owner: PacerScope) => T) {
   const scope = createScope()
   const result = create(scope)

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createAsyncRateLimiter } from '../src/async-rate-limiter/createAsyncRateLimiter'
-import { setup, source, flush } from './setup'
+import { flush, setup, source } from './setup'
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
@@ -67,8 +67,9 @@ it('executes through the adapter with the core scheduling semantics', async () =
   const calls: Array<string | Array<string>> = []
   const { result: utility, destroy } = setup(() =>
     createAsyncRateLimiter(
-      async (value: string) => {
+      (value: string) => {
         calls.push(value)
+        return Promise.resolve()
       },
       { limit: 1, window: 100 },
     ),

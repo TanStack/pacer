@@ -1,8 +1,8 @@
-import type { Signal, WritableSignal } from '@angular/core'
 import { isSignal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
 import { expect, expectTypeOf, it, vi } from 'vitest'
 import { injectThrottledSignal } from '../../src/throttler/injectThrottledSignal'
+import type { Signal, WritableSignal } from '@angular/core'
 
 it('returns an Angular signal with a callable throttler attribute', () => {
   const value = TestBed.runInInjectionContext(() =>

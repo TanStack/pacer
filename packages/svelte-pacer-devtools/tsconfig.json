@@ -5,9 +5,7 @@
     "src/**/*.ts",
     "src/**/*.svelte",
     "src/**/*.svelte.ts",
-    "svelte.config.js",
-    "vitest.config.ts",
-    "tests"
-  ],
-  "exclude": ["eslint.config.js"]
+    "tests",
+    "*.config.*"
+  ]
 }

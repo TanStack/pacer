@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createAsyncThrottler } from '../src/async-throttler/createAsyncThrottler'
-import { setup, source, flush } from './setup'
+import { flush, setup, source } from './setup'
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
@@ -70,8 +70,9 @@ it('executes through the adapter with the core scheduling semantics', async () =
   const { result: utility, destroy } = setup((owner) =>
     createAsyncThrottler(
       owner,
-      async (value: string) => {
+      (value: string) => {
         calls.push(value)
+        return Promise.resolve()
       },
       { wait: 100, leading: false },
     ),
