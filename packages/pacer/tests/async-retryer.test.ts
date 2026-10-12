@@ -91,9 +91,9 @@ describe('AsyncRetryer', () => {
     })
 
     it('should update execution time and timestamp', async () => {
-      const mockFn = vi.fn().mockImplementation(async () => {
+      const mockFn = vi.fn().mockImplementation(() => {
         vi.advanceTimersByTime(100)
-        return 'success'
+        return Promise.resolve('success')
       })
       const retryer = new AsyncRetryer(mockFn)
 
@@ -392,9 +392,9 @@ describe('AsyncRetryer', () => {
 
   describe('State Management', () => {
     it('should track execution state correctly', async () => {
-      const mockFn = vi.fn().mockImplementation(async () => {
+      const mockFn = vi.fn().mockImplementation(() => {
         vi.advanceTimersByTime(50)
-        return 'success'
+        return Promise.resolve('success')
       })
       const retryer = new AsyncRetryer(mockFn)
 
@@ -474,9 +474,9 @@ describe('AsyncRetryer', () => {
     })
 
     it('should call onAbort when manually aborted', async () => {
-      const mockFn = vi.fn().mockImplementation(async () => {
+      const mockFn = vi.fn().mockImplementation(() => {
         vi.advanceTimersByTime(1000)
-        return 'success'
+        return Promise.resolve('success')
       })
       const onAbort = vi.fn()
       const retryer = new AsyncRetryer(mockFn, { onAbort })
@@ -514,9 +514,9 @@ describe('AsyncRetryer', () => {
     })
 
     it('should call onTotalExecutionTimeout and onAbort when maxTotalExecutionTime is exceeded', async () => {
-      const mockFn = vi.fn().mockImplementation(async () => {
+      const mockFn = vi.fn().mockImplementation(() => {
         vi.advanceTimersByTime(2000)
-        return 'success'
+        return Promise.resolve('success')
       })
       const onTotalExecutionTimeout = vi.fn()
       const onAbort = vi.fn()
@@ -541,10 +541,10 @@ describe('AsyncRetryer', () => {
     })
 
     it('should call onExecutionTimeout and onAbort when maxExecutionTime is exceeded', async () => {
-      const mockFn = vi.fn().mockImplementation(async () => {
+      const mockFn = vi.fn().mockImplementation(() => {
         // Simulate a long-running operation using fake timers
         vi.advanceTimersByTime(2000)
-        return 'success'
+        return Promise.resolve('success')
       })
       const onExecutionTimeout = vi.fn()
       const onAbort = vi.fn()
@@ -1048,9 +1048,9 @@ describe('AsyncRetryer', () => {
 
   describe('Complex Integration Scenarios', () => {
     it('should handle cancellation during execution', async () => {
-      const mockFn = vi.fn().mockImplementation(async () => {
+      const mockFn = vi.fn().mockImplementation(() => {
         vi.advanceTimersByTime(2000)
-        return 'success'
+        return Promise.resolve('success')
       })
       const retryer = new AsyncRetryer(mockFn, {
         maxExecutionTime: 1000,
@@ -1135,8 +1135,8 @@ describe('asyncRetry utility function', () => {
 
   describe('getAbortSignal', () => {
     it('should be available as an instance method', () => {
-      const retryer = new AsyncRetryer(async () => {
-        return 'result'
+      const retryer = new AsyncRetryer(() => {
+        return Promise.resolve('result')
       })
 
       expect(typeof retryer.getAbortSignal).toBe('function')
@@ -1147,9 +1147,10 @@ describe('asyncRetry utility function', () => {
 
 describe('AsyncRetryer devtools registration', () => {
   it('should not register with the devtools registry even when keyed', async () => {
-    const retryer = new AsyncRetryer(async (value: string) => value, {
-      key: 'my-retryer',
-    })
+    const retryer = new AsyncRetryer(
+      (value: string) => Promise.resolve(value),
+      { key: 'my-retryer' },
+    )
 
     expect(retryer.key).toBe('my-retryer')
 

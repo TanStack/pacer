@@ -755,8 +755,8 @@ describe('asyncBatch', () => {
   describe('getAbortSignal', () => {
     it('should be available as an instance method', () => {
       const batcher = new AsyncBatcher(
-        async (items) => {
-          return items
+        (items) => {
+          return Promise.resolve(items)
         },
         { maxSize: 10, wait: 100 },
       )

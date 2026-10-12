@@ -778,9 +778,9 @@ describe('AsyncQueuer', () => {
     it('should wait the specified time between processing items', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         {
           wait: 100,
@@ -809,9 +809,9 @@ describe('AsyncQueuer', () => {
     it('should respect dynamic wait function', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         {
           wait: (queuer) => (queuer.store.state.items.length > 1 ? 100 : 50),
@@ -1066,8 +1066,8 @@ describe('AsyncQueuer', () => {
   describe('lastResult bug investigation', () => {
     it('should preserve lastResult from execute() and not overwrite with item', async () => {
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
-          return `processed-${item}`
+        (item) => {
+          return Promise.resolve(`processed-${item}`)
         },
         { started: false },
       )
@@ -1085,8 +1085,8 @@ describe('AsyncQueuer', () => {
   describe('getAbortSignal', () => {
     it('should be available as an instance method', () => {
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
-          return item
+        (item) => {
+          return Promise.resolve(item)
         },
         { started: false },
       )
@@ -1100,9 +1100,9 @@ describe('AsyncQueuer', () => {
     it('should process items with falsy values (0, "", false)', async () => {
       const processed: Array<any> = []
       const asyncQueuer = new AsyncQueuer<any>(
-        async (item) => {
+        (item) => {
           processed.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { started: false },
       )
@@ -1121,9 +1121,9 @@ describe('AsyncQueuer', () => {
     it('should accept and process null items without throwing', async () => {
       const processed: Array<any> = []
       const asyncQueuer = new AsyncQueuer<any>(
-        async (item) => {
+        (item) => {
           processed.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { started: false },
       )
@@ -1141,9 +1141,9 @@ describe('AsyncQueuer', () => {
       const onReject = vi.fn()
       const processed: Array<any> = []
       const asyncQueuer = new AsyncQueuer<any>(
-        async (item) => {
+        (item) => {
           processed.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { started: false, onReject },
       )
@@ -1165,9 +1165,9 @@ describe('AsyncQueuer', () => {
     it('should interleave falsy items with truthy items in order', async () => {
       const processed: Array<any> = []
       const asyncQueuer = new AsyncQueuer<any>(
-        async (item) => {
+        (item) => {
           processed.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { started: false },
       )
@@ -1189,9 +1189,9 @@ describe('AsyncQueuer', () => {
     it('should respect wait when addItem is called during the wait window', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { wait: 100, concurrency: 1, started: false },
       )
@@ -1216,9 +1216,9 @@ describe('AsyncQueuer', () => {
     it('should respect wait with concurrency > 1 and mid-wait addItem', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { wait: 100, concurrency: 2, started: false },
       )
@@ -1241,10 +1241,10 @@ describe('AsyncQueuer', () => {
     it('should continue processing queued items after a task error (throwOnError default)', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
-          if (item === 'bad') throw new Error('boom')
+        (item) => {
+          if (item === 'bad') return Promise.reject(new Error('boom'))
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { started: false }, // no onError → throwOnError defaults to true
       )
@@ -1262,10 +1262,10 @@ describe('AsyncQueuer', () => {
     it('should continue the wait chain after a task error when wait > 0', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
-          if (item === 'bad') throw new Error('boom')
+        (item) => {
+          if (item === 'bad') return Promise.reject(new Error('boom'))
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { wait: 100, started: false },
       )
@@ -1288,9 +1288,9 @@ describe('AsyncQueuer', () => {
     it('should continue processing new items added after flush() during a wait window', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { wait: 100, started: false },
       )
@@ -1311,9 +1311,9 @@ describe('AsyncQueuer', () => {
     it('should resume correctly after stop then start during a wait window', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { wait: 100, started: false },
       )
@@ -1337,9 +1337,10 @@ describe('AsyncQueuer', () => {
 
   describe('internal retryer devtools registration', () => {
     it('should not register internal retryers when the queuer has no key', async () => {
-      const asyncQueuer = new AsyncQueuer<number>(async (item) => item * 2, {
-        started: false,
-      })
+      const asyncQueuer = new AsyncQueuer<number>(
+        (item) => Promise.resolve(item * 2),
+        { started: false },
+      )
 
       asyncQueuer.addItem(1)
       asyncQueuer.addItem(2)
@@ -1352,10 +1353,10 @@ describe('AsyncQueuer', () => {
     })
 
     it('should not register per-execution internal retryers when the queuer has a key', async () => {
-      const asyncQueuer = new AsyncQueuer<number>(async (item) => item * 2, {
-        started: false,
-        key: 'my-queuer',
-      })
+      const asyncQueuer = new AsyncQueuer<number>(
+        (item) => Promise.resolve(item * 2),
+        { started: false, key: 'my-queuer' },
+      )
 
       asyncQueuer.addItem(1)
       asyncQueuer.start()
@@ -1371,10 +1372,10 @@ describe('AsyncQueuer', () => {
     it('should continue processing after flush() rejects during a wait window', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
-          if (item === 'bad') throw new Error('boom')
+        (item) => {
+          if (item === 'bad') return Promise.reject(new Error('boom'))
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { wait: 100, started: false },
       )
@@ -1397,10 +1398,10 @@ describe('AsyncQueuer', () => {
     it('should flush remaining items even when an earlier flushed item rejects', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
-          if (item === 'bad') throw new Error('boom')
+        (item) => {
+          if (item === 'bad') return Promise.reject(new Error('boom'))
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { started: false },
       )
@@ -1420,9 +1421,9 @@ describe('AsyncQueuer', () => {
     it('should process items remaining after a partial flush with wait > 0', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { wait: 100, started: false },
       )
@@ -1444,9 +1445,9 @@ describe('AsyncQueuer', () => {
     it('should continue processing after flushAsBatch() rejects', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { wait: 100, started: false },
       )
@@ -1457,8 +1458,8 @@ describe('AsyncQueuer', () => {
 
       await vi.advanceTimersByTimeAsync(0)
       await expect(
-        asyncQueuer.flushAsBatch(async () => {
-          throw new Error('batch boom')
+        asyncQueuer.flushAsBatch(() => {
+          return Promise.reject(new Error('batch boom'))
         }),
       ).rejects.toThrow('batch boom')
 
@@ -1471,9 +1472,9 @@ describe('AsyncQueuer', () => {
       const batches: Array<Array<string>> = []
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { wait: 100, started: false },
       )
@@ -1503,9 +1504,9 @@ describe('AsyncQueuer', () => {
     it('should not restart processing when flushing a stopped queuer', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
-        async (item) => {
+        (item) => {
           results.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { started: false },
       )
@@ -1625,9 +1626,9 @@ describe('AsyncQueuer', () => {
     it('should process duplicate falsy items with concurrency > 1', async () => {
       const processed: Array<any> = []
       const asyncQueuer = new AsyncQueuer<any>(
-        async (item) => {
+        (item) => {
           processed.push(item)
-          return item
+          return Promise.resolve(item)
         },
         { concurrency: 3, started: false },
       )
