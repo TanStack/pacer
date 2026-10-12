@@ -67,8 +67,9 @@ it('executes through the adapter with the core scheduling semantics', async () =
   const calls: Array<string | Array<string>> = []
   const { result: utility, destroy } = setup(() =>
     useAsyncDebouncer(
-      async (value: string) => {
+      (value: string) => {
         calls.push(value)
+        return Promise.resolve()
       },
       { wait: 100 },
     ),

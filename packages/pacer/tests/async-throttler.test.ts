@@ -997,8 +997,8 @@ describe('AsyncThrottler', () => {
   describe('getAbortSignal', () => {
     it('should be available as an instance method', () => {
       const throttler = new AsyncThrottler(
-        async () => {
-          return 'result'
+        () => {
+          return Promise.resolve('result')
         },
         { wait: 100 },
       )
@@ -1018,19 +1018,20 @@ describe('AsyncThrottler internal retryer devtools registration', () => {
   })
 
   it('should not register internal retryers with or without a key', async () => {
-    const throttler = new AsyncThrottler(async (value: string) => value, {
-      wait: 100,
-    })
+    const throttler = new AsyncThrottler(
+      (value: string) => Promise.resolve(value),
+      { wait: 100 },
+    )
 
     throttler.maybeExecute('test')
     await vi.advanceTimersByTimeAsync(100)
 
     expect(getPacerDevtoolsInstance('undefined-retryer-1')).toBeUndefined()
 
-    const keyedThrottler = new AsyncThrottler(async (value: string) => value, {
-      wait: 100,
-      key: 'my-throttler',
-    })
+    const keyedThrottler = new AsyncThrottler(
+      (value: string) => Promise.resolve(value),
+      { wait: 100, key: 'my-throttler' },
+    )
 
     keyedThrottler.maybeExecute('test')
     await vi.advanceTimersByTimeAsync(100)
@@ -1041,9 +1042,10 @@ describe('AsyncThrottler internal retryer devtools registration', () => {
 
 describe('AsyncThrottler return type inference', () => {
   it('should resolve to the awaited return type, not a nested promise', () => {
-    const throttler = new AsyncThrottler(async (value: string) => value, {
-      wait: 100,
-    })
+    const throttler = new AsyncThrottler(
+      (value: string) => Promise.resolve(value),
+      { wait: 100 },
+    )
     expectTypeOf(throttler.maybeExecute).returns.toEqualTypeOf<
       Promise<string | undefined>
     >()

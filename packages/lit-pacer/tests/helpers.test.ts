@@ -115,8 +115,9 @@ it('returns the async queue as the second tuple entry', async () => {
   } = setup((owner) =>
     createAsyncQueuedState(
       owner,
-      async (item: string) => {
+      (item: string) => {
         calls.push(item)
+        return Promise.resolve()
       },
       { started: false },
     ),

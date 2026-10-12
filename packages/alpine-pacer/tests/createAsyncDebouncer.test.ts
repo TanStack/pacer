@@ -70,8 +70,9 @@ it('executes through the adapter with the core scheduling semantics', async () =
   const { result: utility, destroy } = setup((owner) =>
     createAsyncDebouncer(
       owner,
-      async (value: string) => {
+      (value: string) => {
         calls.push(value)
+        return Promise.resolve()
       },
       { wait: 100 },
     ),
