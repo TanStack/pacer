@@ -25,7 +25,7 @@
   "scripts": {
     "clean": "premove ./build ./dist",
     "lint:fix": "eslint ./src --fix",
-    "test:eslint": "eslint ./src",
+    "test:eslint": "eslint ./src ./tests",
     "test:lib": "vitest",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",

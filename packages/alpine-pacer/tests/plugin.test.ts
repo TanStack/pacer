@@ -1,6 +1,7 @@
 import { expect, it, vi } from 'vitest'
 import Alpine from 'alpinejs'
 import { pacerPlugin } from '../src'
+
 it('owns magic-created callbacks until the Alpine element is destroyed', async () => {
   vi.useFakeTimers()
   Alpine.plugin(pacerPlugin)
@@ -15,7 +16,7 @@ it('owns magic-created callbacks until the Alpine element is destroyed', async (
   try {
     Alpine.evaluate(element, 'callback("committed")')
     await vi.advanceTimersByTimeAsync(10)
-    const calls = Alpine.evaluate(element, 'calls') as Array<string>
+    const calls = Alpine.evaluate(element, 'calls')
     expect(calls).toEqual(['committed'])
     Alpine.evaluate(element, 'callback("discarded")')
     Alpine.destroyTree(element)

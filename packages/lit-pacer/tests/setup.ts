@@ -1,5 +1,6 @@
 import { LitElement } from 'lit'
 import type { ReactiveControllerHost } from 'lit'
+
 let nextId = 0
 const hosts = new Set<LitElement>()
 export function setup<T>(create: (owner: ReactiveControllerHost) => T): {

@@ -1,8 +1,8 @@
 import { flushSync, mount, unmount } from 'svelte'
 import { expect, it, vi } from 'vitest'
 import Fixture from './Subscribe.svelte'
-import type { DebouncerState, SvelteDebouncer } from '../src'
 import { source } from './source.svelte'
+import type { DebouncerState, SvelteDebouncer } from '../src'
 
 it('owns child subscriptions and skips unrelated selected state updates', async () => {
   let utility!: SvelteDebouncer<() => void>

@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest'
-import { pacerDevtoolsPlugin, pacerDevtoolsNoOpPlugin } from '../src/plugin'
+import { pacerDevtoolsNoOpPlugin, pacerDevtoolsPlugin } from '../src/plugin'
 
 const instances = vi.hoisted(
   () =>

@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest'
-import { createRoot, flushSync, drainPassiveEffects } from 'octane'
+import { createRoot, drainPassiveEffects, flushSync } from 'octane'
 import { Fixture, capture } from './Provider.tsrx'
+
 it('applies changing provider defaults without replacing instances or local overrides', () => {
   const target = document.createElement('div')
   document.body.append(target)
