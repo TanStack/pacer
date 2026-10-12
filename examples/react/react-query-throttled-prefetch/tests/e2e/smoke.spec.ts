@@ -30,12 +30,16 @@ async function openExample(page: Page, exampleUrl: string) {
     'https://jsonplaceholder.typicode.com/posts',
   )
   await page.goto(exampleUrl)
+  // Let frameworks that run effects after a paint, such as Preact, catch up.
+  await page.clock.runFor(17)
   await (await listResponse).finished()
   // Flush Query's notification scheduled after the mocked fetch resolves.
   await page.clock.runFor(1)
   await expect(
     page.getByRole('link', { name: 'Alpha post', exact: true }),
   ).toBeVisible()
+  // Let frameworks that run effects after a paint, such as Preact, catch up.
+  await page.clock.runFor(17)
   return requestedPosts
 }
 

@@ -10,9 +10,11 @@
     "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
   },
   "dependencies": {
+    "@tanstack/vue-devtools": "^0.2.27",
     "@tanstack/vue-pacer": "workspace:*",
-    "@tanstack/vue-query": "^5.104.1",
-    "@tanstack/vue-query-devtools": "^6.3.1",
+    "@tanstack/vue-pacer-devtools": "workspace:*",
+    "@tanstack/vue-query": "^5.104.2",
+    "@tanstack/vue-query-devtools": "^6.3.2",
     "vue": "^3.5.43"
   },
   "devDependencies": {

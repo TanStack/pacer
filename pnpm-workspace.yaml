@@ -54,3 +54,16 @@ minimumReleaseAgeExclude:
   - '@tanstack/octane-store@0.13.0'
   # Preact 11 peer support: published less than 24 hours ago
   - '@tanstack/preact-store@0.13.5'
+  # Preact 11 peer support in Query and devtools: published less than 24 hours ago
+  - '@tanstack/query-core@5.104.2'
+  - '@tanstack/query-devtools@5.104.2'
+  - '@tanstack/react-query@5.104.2'
+  - '@tanstack/react-query-devtools@5.104.2'
+  - '@tanstack/vue-query@5.104.2'
+  - '@tanstack/vue-query-devtools@6.3.2'
+  - '@tanstack/svelte-query@6.3.2'
+  - '@tanstack/lit-query@0.2.27'
+  - '@tanstack/preact-query@5.104.2'
+  - '@tanstack/preact-query-devtools@5.104.2'
+  - '@tanstack/preact-devtools@0.10.14'
+  - '@tanstack/devtools-utils@0.7.1'
