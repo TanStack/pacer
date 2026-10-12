@@ -25,7 +25,7 @@
   "scripts": {
     "clean": "premove ./build ./dist",
     "lint:fix": "pnpm -w exec eslint \"$INIT_CWD/src\" --fix",
-    "test:eslint": "pnpm -w exec eslint \"$INIT_CWD/src\"",
+    "test:eslint": "pnpm -w exec eslint \"$INIT_CWD/src\" \"$INIT_CWD/tests\"",
     "test:lib": "vitest",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",

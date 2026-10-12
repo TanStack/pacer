@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { useQueuer } from '../src/queuer/useQueuer'
-import { setup, source, flush } from './setup'
+import { flush, setup, source } from './setup'
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())

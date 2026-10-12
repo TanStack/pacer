@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createAsyncThrottler } from '../src/async-throttler/createAsyncThrottler'
-import { setup, source, flush } from './setup'
+import { flush, setup, source } from './setup'
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())

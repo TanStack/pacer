@@ -1,9 +1,10 @@
 import { expect, it } from 'vitest'
-import { mount, unmount, flushSync } from 'svelte'
+import { flushSync, mount, unmount } from 'svelte'
 import { createDebouncer } from '../src'
-import type { SvelteDebouncer } from '../src'
 import { source } from './source.svelte'
 import ProviderHost from './ProviderHost.svelte'
+import type { SvelteDebouncer } from '../src'
+
 it('tracks provider defaults and preserves local overrides', async () => {
   const enabled = source(false)
   let inherited!: SvelteDebouncer<() => void>

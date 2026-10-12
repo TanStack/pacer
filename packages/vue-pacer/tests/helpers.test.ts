@@ -1,14 +1,16 @@
-import { useThrottledValue, useRateLimitedValue } from '../src'
-import { useAsyncQueuedState } from '../src'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import {
-  useDebouncer,
+  useAsyncQueuedState,
   useDebouncedState,
   useDebouncedValue,
+  useDebouncer,
   useQueuedState,
   useQueuedValue,
+  useRateLimitedValue,
+  useThrottledValue,
 } from '../src'
-import { setup, source, flush } from './setup'
+import { flush, setup, source } from './setup'
+
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
 it('debounces callbacks and cancels pending work on disposal', async () => {
