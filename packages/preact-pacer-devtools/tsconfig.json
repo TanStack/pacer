@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src", "vitest.config.ts", "tests"],
-  "exclude": ["eslint.config.js"],
+  "include": ["src", "tests", "*.config.*"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
