@@ -22,4 +22,8 @@
   }
 </script>
 
-<div class="tsqd-parent-container" style="height: 100%" {@attach mountPanel}></div>
+<div
+  class="tsqd-parent-container"
+  style="height: 100%"
+  {@attach mountPanel}
+></div>
