@@ -25,8 +25,6 @@ test('runs the leading counter call and the latest trailing call', async ({ page
     name: 'Increment',
     exact: true,
   })
-  // The initial source value runs on creation; let its throttle window expire.
-  await page.clock.runFor(1050)
   await increment.click()
   await page.clock.runFor(32)
   await expect(counter.getByText('Throttled Count: 1', { exact: true })).toBeVisible()

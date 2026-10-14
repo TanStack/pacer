@@ -6,32 +6,17 @@ title: injectQueuedValue
 ## Call Signature
 
 ```ts
-function injectQueuedValue<TValue, TSelected>(
-   value,
-   options?,
-selector?): QueuedValueSignal<TValue, TSelected>;
+function injectQueuedValue<TValue>(source, options?): AngularQueuerValue<TValue>;
 ```
 
-Defined in: [queuer/injectQueuedValue.ts:48](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L48)
+Defined in: [packages/angular-pacer/src/queuer/injectQueuedValue.ts:43](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L43)
 
-An Angular function that creates a queued value that processes state changes in order with an optional delay.
-This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.
+Creates an Angular queued view of a source accessor.
 
-The queued value will process changes in the order they are received, with optional delays between
-processing each change. This is useful for handling state updates that need to be processed
-in a specific order, like animations or sequential UI updates.
+The first read exposes the source value. An effect enqueues the initial value and each later value it observes; processing updates the returned value in queue order. Multiple source changes before an effect runs can collapse to the latest value.
 
-The returned signal provides the most recently processed value. Before the queue processes
-an item, it provides the explicit initial value or the source's initial value.
-Source reads are deferred until the signal is read or Angular runs its effect, so required
-inputs can be bound before their values are read.
-
-Use `queued.addItem(...)` to add a value and `queued.queuer` to control the queue.
-Pending items are available through `queued.queuer.state().items` with the default selector.
-
-Pass an options object as the third argument to supply an object or function as the initial
-value. When those options are undefined or a factory, pass a fourth selector argument
-(undefined is allowed) to distinguish the initial-value form from options plus a selector.
+Options accept an object or factory and follow [injectQueuer](injectQueuer.md) behavior.
+Pass a selector to expose reactive queue state on `queuer.state()`.
 
 ### Type Parameters
 
@@ -39,147 +24,47 @@ value. When those options are undefined or a factory, pass a fourth selector arg
 
 `TValue`
 
-#### TSelected
-
-`TSelected` *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>
-
 ### Parameters
 
-#### value
+#### source
 
-`Signal`\<`TValue`\>
+() => `TValue`
+
+The source signal or accessor to observe.
 
 #### options?
 
-[`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\>\>
+`MaybeAccessor`\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`\>\>
 
-#### selector?
-
-(`state`) => `TSelected`
+Core queue options or a reactive options factory.
 
 ### Returns
 
-[`QueuedValueSignal`](../type-aliases/QueuedValueSignal.md)\<`TValue`, `TSelected`\>
+[`AngularQueuerValue`](../interfaces/AngularQueuerValue.md)\<`TValue`\>
+
+The processed-value signal with its queuer attached.
 
 ### Example
 
 ```ts
-const initialValue = signal('initial')
-const queued = injectQueuedValue(initialValue, {
-  wait: 500,
-  started: true,
-})
-
-// Add changes to the queue
-queued.addItem('new value')
+// In a component or service injection context.
+const source = signal('initial')
+const value = injectQueuedValue(source, { wait: 100 })
+source.set('next')
 ```
 
 ## Call Signature
 
 ```ts
 function injectQueuedValue<TValue, TSelected>(
-   value,
-   initialValue,
-   options?,
-selector?): QueuedValueSignal<TValue, TSelected>;
-```
-
-Defined in: [queuer/injectQueuedValue.ts:59](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L59)
-
-An Angular function that creates a queued value that processes state changes in order with an optional delay.
-This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.
-
-The queued value will process changes in the order they are received, with optional delays between
-processing each change. This is useful for handling state updates that need to be processed
-in a specific order, like animations or sequential UI updates.
-
-The returned signal provides the most recently processed value. Before the queue processes
-an item, it provides the explicit initial value or the source's initial value.
-Source reads are deferred until the signal is read or Angular runs its effect, so required
-inputs can be bound before their values are read.
-
-Use `queued.addItem(...)` to add a value and `queued.queuer` to control the queue.
-Pending items are available through `queued.queuer.state().items` with the default selector.
-
-Pass an options object as the third argument to supply an object or function as the initial
-value. When those options are undefined or a factory, pass a fourth selector argument
-(undefined is allowed) to distinguish the initial-value form from options plus a selector.
-
-### Type Parameters
-
-#### TValue
-
-`TValue`
-
-#### TSelected
-
-`TSelected` *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>
-
-### Parameters
-
-#### value
-
-`Signal`\<`TValue`\>
-
-#### initialValue
-
-`Extract`\<`TValue`, `PrimitiveInitialValue`\>
-
-#### options?
-
-[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\>
-
-#### selector?
-
-(`state`) => `TSelected`
-
-### Returns
-
-[`QueuedValueSignal`](../type-aliases/QueuedValueSignal.md)\<`TValue`, `TSelected`\>
-
-### Example
-
-```ts
-const initialValue = signal('initial')
-const queued = injectQueuedValue(initialValue, {
-  wait: 500,
-  started: true,
-})
-
-// Add changes to the queue
-queued.addItem('new value')
-```
-
-## Call Signature
-
-```ts
-function injectQueuedValue<TValue, TSelected>(
-   value,
-   initialValue,
+   source,
    options,
-selector?): QueuedValueSignal<TValue, TSelected>;
+selector): AngularQueuerValue<TValue, TSelected>;
 ```
 
-Defined in: [queuer/injectQueuedValue.ts:71](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L71)
+Defined in: [packages/angular-pacer/src/queuer/injectQueuedValue.ts:51](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L51)
 
-An Angular function that creates a queued value that processes state changes in order with an optional delay.
-This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.
-
-The queued value will process changes in the order they are received, with optional delays between
-processing each change. This is useful for handling state updates that need to be processed
-in a specific order, like animations or sequential UI updates.
-
-The returned signal provides the most recently processed value. Before the queue processes
-an item, it provides the explicit initial value or the source's initial value.
-Source reads are deferred until the signal is read or Angular runs its effect, so required
-inputs can be bound before their values are read.
-
-Use `queued.addItem(...)` to add a value and `queued.queuer` to control the queue.
-Pending items are available through `queued.queuer.state().items` with the default selector.
-
-Pass an options object as the third argument to supply an object or function as the initial
-value. When those options are undefined or a factory, pass a fourth selector argument
-(undefined is allowed) to distinguish the initial-value form from options plus a selector.
+Creates the queued value signal with selected state on its attached queuer.
 
 ### Type Parameters
 
@@ -189,116 +74,24 @@ value. When those options are undefined or a factory, pass a fourth selector arg
 
 #### TSelected
 
-`TSelected` *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>
+`TSelected`
 
 ### Parameters
 
-#### value
+#### source
 
-`Signal`\<`TValue`\>
-
-#### initialValue
-
-`TValue`
+() => `TValue`
 
 #### options
 
-[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\>
-
-#### selector?
-
-(`state`) => `TSelected`
-
-### Returns
-
-[`QueuedValueSignal`](../type-aliases/QueuedValueSignal.md)\<`TValue`, `TSelected`\>
-
-### Example
-
-```ts
-const initialValue = signal('initial')
-const queued = injectQueuedValue(initialValue, {
-  wait: 500,
-  started: true,
-})
-
-// Add changes to the queue
-queued.addItem('new value')
-```
-
-## Call Signature
-
-```ts
-function injectQueuedValue<TValue, TSelected>(
-   value,
-   initialValue,
-   options,
-selector): QueuedValueSignal<TValue, TSelected>;
-```
-
-Defined in: [queuer/injectQueuedValue.ts:83](https://github.com/TanStack/pacer/blob/main/packages/angular-pacer/src/queuer/injectQueuedValue.ts#L83)
-
-An Angular function that creates a queued value that processes state changes in order with an optional delay.
-This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.
-
-The queued value will process changes in the order they are received, with optional delays between
-processing each change. This is useful for handling state updates that need to be processed
-in a specific order, like animations or sequential UI updates.
-
-The returned signal provides the most recently processed value. Before the queue processes
-an item, it provides the explicit initial value or the source's initial value.
-Source reads are deferred until the signal is read or Angular runs its effect, so required
-inputs can be bound before their values are read.
-
-Use `queued.addItem(...)` to add a value and `queued.queuer` to control the queue.
-Pending items are available through `queued.queuer.state().items` with the default selector.
-
-Pass an options object as the third argument to supply an object or function as the initial
-value. When those options are undefined or a factory, pass a fourth selector argument
-(undefined is allowed) to distinguish the initial-value form from options plus a selector.
-
-### Type Parameters
-
-#### TValue
-
-`TValue`
-
-#### TSelected
-
-`TSelected` *extends* `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\> = `Pick`\<`QueuerState`\<`TValue`\>, `"items"`\>
-
-### Parameters
-
-#### value
-
-`Signal`\<`TValue`\>
-
-#### initialValue
-
-`TValue`
-
-#### options
-
-  \| [`AngularPacerOptions`](../type-aliases/AngularPacerOptions.md)\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`, `TSelected`\>\>
-  \| `undefined`
+`MaybeAccessor`\<[`AngularQueuerOptions`](../interfaces/AngularQueuerOptions.md)\<`TValue`\>\>
 
 #### selector
 
-((`state`) => `TSelected`) \| `undefined`
+(`state`) => `TSelected`
+
+Selects reactive state exposed on the attached queuer.
 
 ### Returns
 
-[`QueuedValueSignal`](../type-aliases/QueuedValueSignal.md)\<`TValue`, `TSelected`\>
-
-### Example
-
-```ts
-const initialValue = signal('initial')
-const queued = injectQueuedValue(initialValue, {
-  wait: 500,
-  started: true,
-})
-
-// Add changes to the queue
-queued.addItem('new value')
-```
+[`AngularQueuerValue`](../interfaces/AngularQueuerValue.md)\<`TValue`, `TSelected`\>

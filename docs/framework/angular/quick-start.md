@@ -7,6 +7,8 @@ redirectFrom:
 
 TanStack Pacer controls when your functions run. The Angular adapter, `@tanstack/angular-pacer`, wraps each Pacer utility in an `inject*` function. Call it in an injection context, such as a component field initializer. The utility cleans up when the component is destroyed and exposes the state you select as a signal.
 
+Angular 20 and up are supported, including all Angular LTS versions.
+
 This page starts with a debounced search input, then covers the patterns most apps need next.
 
 ## Installation
@@ -16,6 +18,12 @@ npm install @tanstack/angular-pacer
 ```
 
 The adapter re-exports everything from `@tanstack/pacer`, so you do not need to install the core package. See [Installation](../../installation.md) for other package managers.
+
+Feature entry points also export their corresponding core utilities alongside the Angular APIs:
+
+```ts
+import { Debouncer, injectDebouncer } from '@tanstack/angular-pacer/debouncer'
+```
 
 ## Your first debouncer
 
@@ -52,7 +60,11 @@ Every utility comes in several shapes. They share one engine and differ in what 
 | ----------------------- | ------------------------------------------------------------ | ------------------------------------------------------------- |
 | `injectDebouncedValue`  | A signal of the debounced value, with a `debouncer` property | You already have a signal and want a lagging copy             |
 | `injectDebouncedSignal` | A signal with a debounced `set` and a `debouncer` property   | You want `signal()` with a debounced setter                   |
-| `injectDebouncer`       | The debouncer instance                                       | You need `maybeExecute`, `flush`, `cancel`, or reactive state |
+| `injectDebouncer`       | A ref with methods and selected state                                       | You need `maybeExecute`, `flush`, `cancel`, or reactive state |
+
+Editable helpers return an Angular `WritableSignal` with paced `set` and `update` methods, a live `asReadonly()` view, and an attached utility ref. `set` accepts a replacement value; `update` accepts an updater that runs against the committed value when the paced write executes. This applies to `injectDebouncedSignal`, `injectThrottledSignal`, `injectRateLimitedSignal`, and `injectQueuedSignal`.
+
+The corresponding `Value` helpers observe a source signal or accessor. `injectQueuerItems` and `injectAsyncQueuerItems` expose pending queue items with a `queuer` attribute and an `addItem` shortcut.
 
 The other utilities follow the same naming pattern:
 
@@ -70,7 +82,7 @@ Not sure which utility you need? Read [Which Pacer Utility Should I Choose?](../
 
 ### Control the debouncer directly
 
-`injectDebouncer` returns the instance. Call `maybeExecute` from your event handler, and use `flush` or `cancel` when the user acts before the timer fires.
+`injectDebouncer` returns a ref with stable methods and selected state. Call `maybeExecute` from your event handler, and use `flush` or `cancel` when the user acts before the timer fires.
 
 ```ts
 import { Component, signal } from '@angular/core'
@@ -108,6 +120,8 @@ export class DraftEditorComponent {
 
 The third argument is a selector. `saver.state` is a signal, so call `saver.state()` to read it. Without a selector, it returns `{}` and never changes. Select only the fields your template reads, so other state changes do not trigger change detection.
 
+Value, signal, and items helpers also accept a selector as their third argument. Their selected state is available on the attached utility ref.
+
 Each utility's guide lists the state fields it exposes.
 
 ### Make options reactive
@@ -129,9 +143,7 @@ export class SearchComponent {
 }
 ```
 
-Property getters such as `get wait() { return this.wait() }` work too. Writing `{ wait: this.wait() }` without the factory or getter reads the signal once and never updates.
-
-With a factory or getters, the adapter waits to create the utility until Angular binds the component inputs. When a signal changes, the adapter updates the same utility. Pending work and state survive. A changed `wait` applies to the next call. It does not reschedule a timer that is already running. Setting `enabled` to `false` cancels pending work. `key`, `initialState`, and `initialItems` apply only when the utility is created.
+Passing `{ wait: this.wait() }` instead uses the value at the time of the call.
 
 ### Run async work
 
@@ -255,6 +267,8 @@ export const appConfig: ApplicationConfig = {
 }
 ```
 
+You can also pass a factory to `providePacerOptions`; it runs in the provider injection context and can call `inject()`. Continue to pass required options, such as `wait`, or `limit` and `window`, when creating a utility.
+
 To share options between specific utilities instead, define them once with an option helper. Helpers such as `debouncerOptions` return the object you pass in, typed for that utility:
 
 ```ts
@@ -276,6 +290,34 @@ readonly saver = injectDebouncer(saveDraft, {
   onUnmount: (debouncer) => debouncer.flush(),
 })
 ```
+
+## Testing
+
+The adapter integrates with Angular's pending tasks so `fixture.whenStable()` waits for scheduled and asynchronous Pacer work. Wait for stability before checking the rendered result:
+
+```ts
+import { Component } from '@angular/core'
+import { TestBed } from '@angular/core/testing'
+import { injectDebouncedSignal } from '@tanstack/angular-pacer'
+
+@Component({ template: '<p>{{ value() }}</p>' })
+class ExampleComponent {
+  readonly value = injectDebouncedSignal('initial', { wait: 50 })
+}
+
+it('renders the debounced value', async () => {
+  const fixture = TestBed.createComponent(ExampleComponent)
+  fixture.detectChanges()
+
+  fixture.componentInstance.value.set('updated')
+  fixture.detectChanges()
+  await fixture.whenStable()
+
+  expect(fixture.nativeElement.textContent).toContain('updated')
+})
+```
+
+This example uses real timers. When using fake timers, advance them to complete the scheduled work before awaiting stability.
 
 ## Set up devtools
 

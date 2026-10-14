@@ -4,9 +4,6 @@
   <button type="button" (click)="increment()">Increment</button>
   <p>Instant Count: {{ instantCount() }}</p>
   <p>Debounced Count: {{ controlledCount() }}</p>
-  <p>Executions: {{ countRunner.state().executionCount }}</p>
-  <p>Pending: {{ countRunner.state().isPending }}</p>
-  <pre>{{ countRunner.state() | json }}</pre>
 </section>
 <section aria-labelledby="search-title">
   <h2 id="search-title">Search</h2>
@@ -21,9 +18,6 @@
   /></label>
   <p>Instant Search: {{ search() }}</p>
   <p>Debounced Search: {{ controlledSearch() }}</p>
-  <p>Executions: {{ searchRunner.state().executionCount }}</p>
-  <p>Pending: {{ searchRunner.state().isPending }}</p>
-  <pre>{{ searchRunner.state() | json }}</pre>
 </section>
 <section aria-labelledby="range-title">
   <h2 id="range-title">Range</h2>
@@ -41,11 +35,6 @@
     >Debounced Range <input type="range" min="0" max="100" [value]="controlledValue()" disabled
   /></label>
   <p>Debounced Value: {{ controlledValue() }}</p>
-  <p>Executions: {{ rangeRunner.state().executionCount }}</p>
-  <p>Pending: {{ rangeRunner.state().isPending }}</p>
   <p>Instant Executions: {{ instantExecutions() }}</p>
-  <p>Saved Executions: {{ instantExecutions() - rangeRunner.state().executionCount }}</p>
-  <p>Reduction: {{ reduction() }}%</p>
-  <pre>{{ rangeRunner.state() | json }}</pre>
   <p>Debounced with a 250 ms wait.</p>
 </section>

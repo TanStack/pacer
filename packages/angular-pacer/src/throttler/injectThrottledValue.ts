@@ -1,133 +1,93 @@
-import { effect } from '@angular/core'
-import { injectThrottledSignal } from './injectThrottledSignal'
-import type { AngularPacerOptions } from '../types'
-import type { ThrottledSignal } from './injectThrottledSignal'
-import type { Signal } from '@angular/core'
+import {
+  assertInInjectionContext,
+  computed,
+  effect,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
+import { injectThrottler } from './injectThrottler'
+import type { ThrottlerState } from '@tanstack/pacer/throttler'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type {
-  ThrottlerOptions,
-  ThrottlerState,
-} from '@tanstack/pacer/throttler'
-
-type Setter<T> = (value: T | ((prev: T) => T)) => void
+  AngularThrottler,
+  AngularThrottlerOptions,
+} from './injectThrottler'
+import type { Signal } from '@angular/core'
 
 /**
- * An Angular function that creates a throttled value that updates at most once within a specified time window.
- * Unlike injectThrottledSignal, this function automatically tracks changes to the input signal
- * and updates the throttled value accordingly.
+ * A readonly Angular value signal with its underlying utility ref.
+ * The `throttler` attribute exposes the underlying Throttler methods.
+ */
+export interface AngularThrottlerValue<
+  TValue,
+  TSelected = {},
+> extends Signal<TValue> {
+  /** The underlying Angular Throttler ref for controlling execution. */
+  throttler: AngularThrottler<(value: TValue) => void, TSelected>
+}
+/**
+ * Creates an Angular throttled view of a source signal.
  *
- * The throttled value will update at most once within the specified wait time, regardless of
- * how frequently the input value changes.
+ * The initial source value is available on first read. The unchanged initial value does not enter the throttler. An effect passes subsequent source changes to the throttler; later changes replace the pending trailing value without restarting the interval.
  *
- * This is useful for deriving throttled values from signals that change frequently,
- * like scroll positions or mouse coordinates, where you want to limit how often downstream effects
- * or calculations occur.
+ * The returned value is a real Angular signal with the underlying utility exposed
+ * on `throttler`. Options accept a static object or reactive factory and follow
+ * {@link injectThrottler} lifecycle and provider behavior.
  *
- * The function returns a throttled signal object containing:
- * - A Signal that provides the current throttled value
- * - The throttler instance with control methods
- *
- * ## State Management and Selector
- *
- * The function uses TanStack Store for reactive state management via the underlying throttler instance.
- * The `selector` parameter allows you to specify which throttler state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
- *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
- *
- * Available throttler state properties:
- * - `executionCount`: Number of function executions that have been completed
- * - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
- * - `lastArgs`: The arguments from the most recent call to maybeExecute
- * - `lastExecutionTime`: Timestamp of the last execution
- * - `nextExecutionTime`: Timestamp of the next allowed execution
- * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+ * @param source The source signal or accessor whose changes are observed.
+ * @param options Core options or a reactive options factory.
+ * @returns The value signal with a `throttler` attribute.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const scrollY = signal(0)
- * const throttledScrollY = injectThrottledValue(scrollY, {
- *   wait: 100, // Update at most once per 100ms
- * })
- *
- * // Opt-in to reactive updates when pending state changes
- * const throttledScrollYWithState = injectThrottledValue(
- *   scrollY,
- *   { wait: 100 },
- *   (state) => ({ isPending: state.isPending }),
- * )
- *
- * // Read the throttled signal value
- * effect(() => {
- *   updateUI(throttledScrollY())
- * })
- *
- * // Access throttler state via the returned object's state() signal
- * console.log('Is pending:', throttledScrollYWithState.state().isPending)
- *
- * // Control the throttler
- * throttledScrollY.cancel() // Cancel any pending updates
+ * // In a component or service injection context.
+ * const source = signal('initial')
+ * const value = injectThrottledValue(source, { wait: 250 })
+ * source.set('updated')
+ * console.log(value())
  * ```
  */
-export function injectThrottledValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialOptions: AngularPacerOptions<ThrottlerOptions<Setter<TValue>>>,
-  selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
-): ThrottledSignal<TValue, TSelected>
-export function injectThrottledValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialValue: TValue,
-  initialOptions: ThrottlerOptions<Setter<TValue>>,
-  selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
-): ThrottledSignal<TValue, TSelected>
-export function injectThrottledValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialValue: TValue,
-  initialOptions: () => ThrottlerOptions<Setter<TValue>>,
-  selector: ((state: ThrottlerState<Setter<TValue>>) => TSelected) | undefined,
-): ThrottledSignal<TValue, TSelected>
-export function injectThrottledValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialValueOrOptions:
-    TValue | AngularPacerOptions<ThrottlerOptions<Setter<TValue>>>,
-  initialOptionsOrSelector?:
-    | AngularPacerOptions<ThrottlerOptions<Setter<TValue>>>
-    | ((state: ThrottlerState<Setter<TValue>>) => TSelected),
-  maybeSelector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
-): ThrottledSignal<TValue, TSelected> {
-  const hasSelector = typeof initialOptionsOrSelector === 'function'
+export function injectThrottledValue<TValue>(
+  source: () => TValue,
+  options: MaybeAccessor<AngularThrottlerOptions<(value: TValue) => void>>,
+): AngularThrottlerValue<TValue>
+/**
+ * Creates the value signal with selected state on its attached utility ref.
+ * @param selector Selects reactive state exposed on the attached utility ref.
+ */
+export function injectThrottledValue<TValue, TSelected>(
+  source: () => TValue,
+  options: MaybeAccessor<AngularThrottlerOptions<(value: TValue) => void>>,
+  selector: (state: ThrottlerState<(value: TValue) => void>) => TSelected,
+): AngularThrottlerValue<TValue, TSelected>
+export function injectThrottledValue<TValue, TSelected>(
+  source: () => TValue,
+  options: MaybeAccessor<AngularThrottlerOptions<(value: TValue) => void>>,
+  selector?: (state: ThrottlerState<(value: TValue) => void>) => TSelected,
+): AngularThrottlerValue<TValue, TSelected | {}> {
+  if (typeof ngDevMode === 'undefined' || ngDevMode) {
+    assertInInjectionContext(injectThrottledValue)
+  }
 
-  const hasInitialValue =
-    (initialOptionsOrSelector !== undefined && !hasSelector) ||
-    arguments.length >= 4
-
-  const initialValue = hasInitialValue
-    ? (initialValueOrOptions as TValue)
-    : (undefined as unknown as TValue)
-  const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as AngularPacerOptions<
-        ThrottlerOptions<Setter<TValue>>
-      >)
-    : (initialValueOrOptions as AngularPacerOptions<
-        ThrottlerOptions<Setter<TValue>>
-      >)
-  const selector = hasInitialValue
-    ? maybeSelector
-    : (initialOptionsOrSelector as
-        ((state: ThrottlerState<Setter<TValue>>) => TSelected) | undefined)
-
-  const throttledValue = injectThrottledSignal(
-    initialValue,
-    initialOptions,
-    selector,
+  const select = (state: ThrottlerState<(value: TValue) => void>) =>
+    selector ? selector(state) : {}
+  const sourceValue = computed(source)
+  const throttledSignal = linkedSignal(() => untracked(sourceValue))
+  const throttler = injectThrottler(
+    (value: TValue) => throttledSignal.set(value),
+    options,
+    select,
   )
-
+  let initialized = false
   effect(() => {
-    const latest = value()
-    throttledValue.set(latest)
+    const value = sourceValue()
+    if (!initialized) {
+      initialized = true
+      if (Object.is(untracked(throttledSignal), value)) return
+    }
+    throttler.maybeExecute(value)
   })
-
-  return throttledValue
+  return Object.assign(throttledSignal.asReadonly(), {
+    throttler,
+  })
 }

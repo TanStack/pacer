@@ -25,8 +25,6 @@ test('rejects calls above the window limit and accepts a new window', async ({ p
     name: 'Increment',
     exact: true,
   })
-  // The initial source value consumes a slot; start these inputs in a fresh window.
-  await page.clock.runFor(5050)
   for (let i = 0; i < 6; i++) {
     await increment.click()
     // Value helpers submit changes from Angular effects, once per rendered value.

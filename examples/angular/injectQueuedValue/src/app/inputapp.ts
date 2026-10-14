@@ -1,26 +1,22 @@
-import { Component, input } from '@angular/core'
-import { injectQueuedValue } from '@tanstack/angular-pacer'
+import { Component, input, signal } from '@angular/core'
+import { injectQueuerItems } from '@tanstack/angular-pacer'
 
 @Component({
   selector: 'app-input',
-  standalone: true,
   template: `
-    <h1>Required input</h1>
+    <h2>Required input</h2>
     <p>value: {{ value() }}</p>
-    <p>Value (queued): {{ queued() }}</p>
-    <p>Queue length: {{ queued.queuer.state().items.length }}</p>
+    <p>Value (queued): {{ processed() }}</p>
+    <p>Queue length: {{ queued().length }}</p>
+    <button (click)="queued.queuer.addItem(value())">Enqueue input</button>
     <button (click)="enqueueRandom()">Enqueue random</button>
   `,
 })
 export class InputApp {
   readonly value = input.required<string>()
-
-  protected readonly queued = injectQueuedValue(this.value, { wait: 500 }, (state) => ({
-    items: state.items,
-  }))
-
-  protected enqueueRandom(): void {
-    // You can also enqueue values directly without touching `value`
-    this.queued.addItem(Math.random().toFixed(4))
+  readonly processed = signal('')
+  readonly queued = injectQueuerItems((value: string) => this.processed.set(value), { wait: 500 })
+  enqueueRandom(): void {
+    this.queued.queuer.addItem(Math.random().toFixed(4))
   }
 }

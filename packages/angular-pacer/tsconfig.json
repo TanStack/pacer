@@ -1,7 +1,9 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "experimentalDecorators": true
   },
-  "include": ["src", "tests", "*.config.*"]
+  "include": ["src", "tests", "*.config.*", "test-setup.ts"],
+  "exclude": ["eslint.config.js"]
 }

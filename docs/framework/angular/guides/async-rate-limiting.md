@@ -132,13 +132,15 @@ Resetting restores capacity immediately. Only do this when starting a genuinely 
 
 ## Configuration
 
-`enabled`, `limit`, and `window` may be values or functions that receive the limiter instance. `setOptions()` merges new options into the current configuration.
+`enabled`, `limit`, and `window` may be values or functions that receive the limiter instance. Use an options function for reactive configuration.
 
 ```ts
-limiter.setOptions({
-  enabled: (limiter) => limiter.store.state.errorCount < 3,
-  limit: (limiter) => (limiter.store.state.rejectionCount > 10 ? 2 : 5),
-})
+import { signal } from '@angular/core'
+
+const limit = signal(5)
+const limiter = injectAsyncRateLimiter(sendRequest, () => ({ limit: limit(), window: 60_000 }))
+
+limit.set(10)
 ```
 
 Changing `limit`, `window`, or `windowType` does not erase existing execution history. Call `reset()` if a new configuration should begin with a fresh window. A disabled limiter does not execute the function or consume capacity; its calls resolve with `undefined`.
@@ -151,7 +153,7 @@ The adapter aborts active work when its owner is destroyed. Providing `onUnmount
 
 ## Reactive state
 
-The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in an Angular injection context, usually as a component or service field initializer and select only fields used by the view:
+Pass a selector to expose the state used by your view through `state()`. Without a selector, `state()` returns `{}`:
 
 ```ts
 const limiter = injectAsyncRateLimiter(
@@ -171,7 +173,7 @@ console.log(
 )
 ```
 
-Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+Option callbacks receive the core utility instance. Read the selected `state()` signal in templates.
 
 To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
 

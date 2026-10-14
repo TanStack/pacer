@@ -6,7 +6,7 @@
     <input
       type="search"
       [value]="source()"
-      (input)="source.set($any($event.target).value)"
+      (input)="onSearch($any($event.target).value)"
       placeholder="Enter search term..."
   /></label>
   <p>Current Value: {{ queued() }}</p>
@@ -16,8 +16,8 @@
   <p>Queue Idle: {{ queuer.state().isIdle }}</p>
   <p>Status: {{ queuer.state().status }}</p>
   <p>Items Processed: {{ queuer.state().executionCount }}</p>
-  <p>Queue Items: {{ queuer.state().items.join(", ") }}</p>
-  <p>Queue Peek: {{ queuer.peekNextItem() ?? "None" }}</p>
+  <p>Queue Items: {{ queuer.state().items.join(', ') }}</p>
+  <p>Queue Peek: {{ queuer.peekNextItem() ?? 'None' }}</p>
   <button type="button" (click)="queuer.execute()" [disabled]="queuer.state().isEmpty">
     Process Next
   </button>
@@ -58,8 +58,8 @@
   <p>Queue Idle: {{ rangeQueue.state().isIdle }}</p>
   <p>Status: {{ rangeQueue.state().status }}</p>
   <p>Items Processed: {{ rangeQueue.state().executionCount }}</p>
-  <p>Queue Items: {{ rangeQueue.state().items.join(", ") }}</p>
-  <p>Queue Peek: {{ rangeQueue.peekNextItem() ?? "None" }}</p>
+  <p>Queue Items: {{ rangeQueue.state().items.join(', ') }}</p>
+  <p>Queue Peek: {{ rangeQueue.peekNextItem() ?? 'None' }}</p>
   <pre>{{ rangeQueue.state() | json }}</pre>
 </section>
 <hr />

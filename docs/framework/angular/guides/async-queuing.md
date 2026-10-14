@@ -26,26 +26,19 @@ The queue controls start order. With concurrency greater than `1`, completion or
 
 ## Choose an API
 
-- `injectAsyncQueuedSignal` for reactive pending items
+- `injectAsyncQueuerItems` for reactive pending items
 - `injectAsyncQueuer` for concurrency, ordering, and lifecycle control
 
 ## Angular example
 
 ```ts
-import { injectAsyncQueuedSignal } from '@tanstack/angular-pacer'
+import { injectAsyncQueuerItems } from '@tanstack/angular-pacer'
 
 export class UploadComponent {
-  readonly queued = injectAsyncQueuedSignal(
-    uploadFile,
-    { concurrency: 2 },
-    (state) => ({
-      items: state.items,
-      activeItems: state.activeItems,
-    }),
-  )
+  readonly queued = injectAsyncQueuerItems(uploadFile, { concurrency: 2 })
 
   add() {
-    this.queued.addItem(nextFile())
+    this.queued.queuer.addItem(nextFile())
   }
 }
 ```
@@ -184,7 +177,7 @@ The adapter stops automatic processing and aborts active work when its owner is 
 
 ## Configuration and reactive state
 
-The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in an Angular injection context, usually as a component or service field initializer and select only fields used by the view:
+Pass a selector to expose the state used by your view through `state()`. Without a selector, `state()` returns `{}`:
 
 ```ts
 const queue = injectAsyncQueuer(processJob, { concurrency: 2 }, (state) => ({
@@ -196,9 +189,9 @@ const queue = injectAsyncQueuer(processJob, { concurrency: 2 }, (state) => ({
 console.log(queue.state().size, queue.state().activeItems, queue.state().status)
 ```
 
-Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+Option callbacks receive the core utility instance. Read the selected `state()` signal in templates.
 
-`concurrency` and `wait` may be values or functions that receive the queue instance. `setOptions()` merges new options, and `asyncQueuerOptions()` creates reusable, type-checked option objects.
+`concurrency` and `wait` may be values or functions that receive the queue instance. `asyncQueuerOptions()` creates reusable, type-checked option objects.
 
 `initialState` can restore selected queue state that your app has persisted. If it includes `items`, they take precedence over `initialItems`; `initialState.isRunning` likewise takes precedence over `started`. Restore only durable fields. Pending timers and active executions are not restored.
 

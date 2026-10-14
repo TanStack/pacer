@@ -12,15 +12,17 @@ export class App {
   readonly source = signal('')
   readonly currentValue = signal(50)
   readonly instantExecutions = signal(1)
-  readonly queued = injectQueuedValue(this.source, '', { maxSize: 25, wait: 500 }, (state) => state)
+  readonly queued = injectQueuedValue(this.source, { maxSize: 25, wait: 500 }, (state) => state)
   readonly queuer = this.queued.queuer
   readonly rangeQueued = injectQueuedValue(
     this.currentValue,
-    50,
     { maxSize: 100, wait: 100 },
     (state) => state,
   )
   readonly rangeQueue = this.rangeQueued.queuer
+  onSearch(value: string): void {
+    this.source.set(value)
+  }
   onRange(value: number): void {
     this.currentValue.set(value)
     this.instantExecutions.update((count) => count + 1)
