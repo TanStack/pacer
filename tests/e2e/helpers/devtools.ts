@@ -6,12 +6,24 @@ export async function expectPacerDevtools(
   page: Page,
   trigger: () => Promise<void>,
   utilityKey: string,
+  {
+    openFromPluginStrip = false,
+  }: {
+    /** Open the Pacer panel by hand when the host ignores `defaultOpen`. */
+    openFromPluginStrip?: boolean
+  } = {},
 ) {
   // Keep example controls visible above the open dock.
   await page.setViewportSize({ width: 1280, height: 1000 })
   await page
     .getByRole('button', { name: 'Open TanStack Devtools', exact: true })
     .click()
+  if (openFromPluginStrip) {
+    await page
+      .getByRole('navigation', { name: 'Plugin panels' })
+      .getByRole('button', { name: 'TanStack Pacer', exact: true })
+      .click()
+  }
   const panel = page.locator('[id^="plugin-container-tanstack-pacer-"]')
   await expect(panel).toHaveCount(1)
   await expect(panel.getByText('TanStack Pacer', { exact: true })).toBeVisible()

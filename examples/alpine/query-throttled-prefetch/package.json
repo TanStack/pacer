@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@tanstack/alpine-pacer": "workspace:*",
-    "@tanstack/query-core": "^5.104.1",
-    "@tanstack/query-devtools": "^5.104.1",
+    "@tanstack/query-core": "^5.104.2",
+    "@tanstack/query-devtools": "^5.104.2",
     "alpinejs": "^3.17.4"
   },
   "devDependencies": {

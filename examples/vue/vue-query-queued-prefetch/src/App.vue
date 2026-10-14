@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { useQueryClient, useQuery } from '@tanstack/vue-query'
-import { ref, watch, computed } from 'vue'
-import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
-import { useQueuedValue } from '@tanstack/vue-pacer'
+import { computed, ref } from 'vue'
+import { queryOptions, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { VueQueryDevtoolsPanel } from '@tanstack/vue-query-devtools'
+import { TanStackDevtools } from '@tanstack/vue-devtools'
+import { useAsyncQueuer } from '@tanstack/vue-pacer'
+import { pacerDevtoolsPlugin } from '@tanstack/vue-pacer-devtools'
 
 interface Post {
   id: number
@@ -10,55 +12,82 @@ interface Post {
   body: string
 }
 
+async function fetchJson<TData>(url: string, signal: AbortSignal) {
+  const response = await fetch(url, { signal })
+  // fetch only rejects on network errors, so turn 4xx/5xx into query errors
+  if (!response.ok) throw new Error(`Request failed: ${response.status}`)
+  return response.json() as Promise<TData>
+}
+
+const postsQueryOptions = queryOptions({
+  queryKey: ['posts'],
+  queryFn: ({ signal }) =>
+    fetchJson<Array<Post>>(
+      'https://jsonplaceholder.typicode.com/posts',
+      signal,
+    ),
+})
+
+// Share one options object between the prefetch and `useQuery` so the key and
+// fetcher can never drift apart
+const postQueryOptions = (postId: number) =>
+  queryOptions({
+    queryKey: ['post', postId],
+    queryFn: async ({ signal }) => {
+      await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate a slow response
+      return fetchJson<Post>(
+        `https://jsonplaceholder.typicode.com/posts/${postId}`,
+        signal,
+      )
+    },
+  })
+
 const queryClient = useQueryClient()
-
-async function fetchPosts(): Promise<Array<Post>> {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts')
-  return response.json()
-}
-
-async function fetchPost(id: number): Promise<Post> {
-  await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate a slow response.
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${id}`,
-  )
-  return response.json()
-}
-
-const dev = import.meta.env.DEV
 const selectedPostId = ref<number | null>(null)
 
-const { data: posts, isLoading: isPostsLoading } = useQuery({
-  queryKey: ['posts'],
-  queryFn: fetchPosts,
-})
-const currentHoveredPostId = ref<number | null>(null)
-const [scheduledHoveredPostId] = useQueuedValue(
-  () => currentHoveredPostId.value,
+const posts = useQuery(postsQueryOptions)
+
+// Each hovered post is queued, and the queue runs at most 2 prefetches at a
+// time so a fast sweep across the list can't flood the server.
+const prefetchQueuer = useAsyncQueuer(
+  // `query` fetches only when the cached post is missing or stale, so cached
+  // posts leave the queue immediately. The queuer catches a failed prefetch;
+  // the post detail will retry and show the error.
+  (postId: number) => queryClient.query(postQueryOptions(postId)),
   {
-    addItemsTo: 'front', // Newest hovered link is top priority.
-    wait: 100,
-    expirationDuration: 500, // Drop links that have waited too long to be prefetched.
-    onExpire: (item) => console.log('expired', item),
+    key: 'Post Prefetch Queue', // identifies this queuer in the Pacer devtools
+    concurrency: 2, // at most 2 prefetches in flight
+    addItemsTo: 'front', // newest hovered post is top priority
+    expirationDuration: 1000, // drop posts still waiting 1s after they were hovered
+    onExpire: (postId) => {
+      console.log('expired', postId)
+    },
   },
 )
 
-// Prefetch when Pacer commits the hovered post id.
-watch(scheduledHoveredPostId, (id) => {
-  if (id)
-    void queryClient.ensureQueryData({
-      queryKey: ['post', id],
-      queryFn: () => fetchPost(id),
-    })
-})
+function handleMouseEnter(postId: number) {
+  // skip posts that are already waiting or being prefetched
+  if (prefetchQueuer.peekAllItems().includes(postId)) return
+  prefetchQueuer.addItem(postId)
+}
 
-const { data: post, isLoading: isPostLoading } = useQuery(
+const post = useQuery(
   computed(() => ({
-    queryKey: ['post', selectedPostId.value],
+    ...postQueryOptions(selectedPostId.value ?? 0),
     enabled: selectedPostId.value !== null,
-    queryFn: () => fetchPost(selectedPostId.value!),
   })),
 )
+
+const dev = import.meta.env.DEV
+// Open the Pacer and Query panels as tabs to watch prefetches land
+const plugins = [
+  { ...pacerDevtoolsPlugin(), defaultOpen: true },
+  {
+    name: 'TanStack Query',
+    component: VueQueryDevtoolsPanel,
+    defaultOpen: true,
+  },
+]
 </script>
 
 <template>
@@ -66,37 +95,60 @@ const { data: post, isLoading: isPostLoading } = useQuery(
     <h1>TanStack Pacer/Query Queued Prefetch Example</h1>
     <p>Hover over a post title to queue up its prefetch</p>
     <p>
-      This example shows how to queue up prefetch requests when the user hovers
-      over a post, processing them in order with a delay between each.
+      Every hovered post joins a queue that runs at most 2 prefetches at once,
+      so sweeping across the list never floods the server. The most recently
+      hovered post goes first, and posts still waiting after 1 second are
+      dropped because you have probably moved on.
     </p>
     <p>
-      The queued query key is processed after a delay to avoid overwhelming the
-      server with too many requests at once.
+      Prefetched posts stay fresh for 10 seconds. Hovering a post after that
+      refreshes it in the background.
     </p>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
-      <div v-if="isPostsLoading">Loading posts...</div>
+      <div v-if="posts.isPending.value">Loading posts...</div>
+      <div v-else-if="posts.isError.value">Could not load posts.</div>
       <div v-else>
         <h2>Posts</h2>
+        <!-- Only this line updates when the queue changes -->
+        <prefetchQueuer.Subscribe
+          :selector="
+            (state) => ({
+              prefetching: state.activeItems,
+              queued: state.items,
+            })
+          "
+          v-slot="{ prefetching, queued }"
+        >
+          <p>
+            Prefetching: {{ prefetching.join(', ') || 'none' }} | Queued:
+            {{ queued.join(', ') || 'none' }}
+          </p>
+        </prefetchQueuer.Subscribe>
         <ul style="margin: 0; padding: 0">
-          <li v-for="post in posts" :key="post.id" style="margin: 2px 0">
+          <li
+            v-for="item in posts.data.value"
+            :key="item.id"
+            style="margin: 2px 0"
+          >
             <a
-              :href="`#post-${post.id}`"
-              @mouseenter="currentHoveredPostId = post.id"
-              @click="selectedPostId = post.id"
+              :href="`#post-${item.id}`"
+              @mouseenter="handleMouseEnter(item.id)"
+              @click="selectedPostId = item.id"
               style="display: block; padding: 4px; cursor: pointer"
-              >{{ post.title }}</a
+              >{{ item.title }}</a
             >
           </li>
         </ul>
       </div>
-      <template v-if="selectedPostId"
-        ><div v-if="isPostLoading">Loading post...</div>
+      <template v-if="selectedPostId !== null">
+        <div v-if="post.isPending.value">Loading post...</div>
+        <div v-else-if="post.isError.value">Could not load post.</div>
         <div v-else>
-          <h3>{{ post?.title }}</h3>
-          <p>{{ post?.body }}</p>
-        </div></template
-      >
+          <h3>{{ post.data.value?.title }}</h3>
+          <p>{{ post.data.value?.body }}</p>
+        </div>
+      </template>
     </div>
   </div>
-  <VueQueryDevtools v-if="dev" :initial-is-open="false" />
+  <TanStackDevtools v-if="dev" :plugins="plugins" />
 </template>
