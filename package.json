@@ -89,7 +89,8 @@
     "tsdown": "^0.23.0",
     "typescript": "6.0.3",
     "vite": "^8.3.2",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.3",
+    "zone.js": "~0.16.3"
   },
   "volta": {
     "node": "24.21.0"

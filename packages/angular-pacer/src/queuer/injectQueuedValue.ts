@@ -1,162 +1,78 @@
-import { computed, effect, signal, untracked } from '@angular/core'
-import { injectQueuedSignal } from './injectQueuedSignal'
-import type { AngularPacerOptions } from '../types'
-import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
+import {
+  assertInInjectionContext,
+  computed,
+  effect,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
+import { injectQueuer } from './injectQueuer'
 import type { Signal } from '@angular/core'
 import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
+import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
 
-/** A processed value signal with methods for adding and controlling queued values. */
-export type QueuedValueSignal<TValue, TSelected = {}> = Signal<TValue> & {
-  addItem: AngularQueuer<TValue, TSelected>['addItem']
+/** A processed-value signal with its underlying queue controls. */
+export interface AngularQueuerValue<
+  TValue,
+  TSelected = {},
+> extends Signal<TValue> {
+  /** The underlying Angular Queuer ref and its selected state. */
   queuer: AngularQueuer<TValue, TSelected>
 }
 
-type PrimitiveInitialValue = string | number | boolean | bigint | symbol | null
-
 /**
- * An Angular function that creates a queued value that processes state changes in order with an optional delay.
- * This function uses injectQueuedSignal internally to manage a queue of state changes and apply them sequentially.
+ * Creates an Angular queued view of a source accessor.
  *
- * The queued value will process changes in the order they are received, with optional delays between
- * processing each change. This is useful for handling state updates that need to be processed
- * in a specific order, like animations or sequential UI updates.
+ * The first read exposes the source value. An effect enqueues the initial value and each later value it observes; processing updates the returned value in queue order. Multiple source changes before an effect runs can collapse to the latest value.
  *
- * The returned signal provides the most recently processed value. Before the queue processes
- * an item, it provides the explicit initial value or the source's initial value.
- * Source reads are deferred until the signal is read or Angular runs its effect, so required
- * inputs can be bound before their values are read.
+ * Options accept an object or factory and follow {@link injectQueuer} behavior.
+ * Pass a selector to expose reactive queue state on `queuer.state()`.
  *
- * Use `queued.addItem(...)` to add a value and `queued.queuer` to control the queue.
- * Pending items are available through `queued.queuer.state().items` with the default selector.
- *
- * Pass an options object as the third argument to supply an object or function as the initial
- * value. When those options are undefined or a factory, pass a fourth selector argument
- * (undefined is allowed) to distinguish the initial-value form from options plus a selector.
+ * @param source The source signal or accessor to observe.
+ * @param options Core queue options or a reactive options factory.
+ * @returns The processed-value signal with its queuer attached.
  *
  * @example
  * ```ts
- * const initialValue = signal('initial')
- * const queued = injectQueuedValue(initialValue, {
- *   wait: 500,
- *   started: true,
- * })
- *
- * // Add changes to the queue
- * queued.addItem('new value')
+ * // In a component or service injection context.
+ * const source = signal('initial')
+ * const value = injectQueuedValue(source, { wait: 100 })
+ * source.set('next')
  * ```
  */
-export function injectQueuedValue<
-  TValue,
-  TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
-    QueuerState<TValue>,
-    'items'
-  >,
->(
-  value: Signal<TValue>,
-  options?: AngularPacerOptions<AngularQueuerOptions<TValue, TSelected>>,
+export function injectQueuedValue<TValue>(
+  source: () => TValue,
+  options?: MaybeAccessor<AngularQueuerOptions<TValue>>,
+): AngularQueuerValue<TValue>
+/**
+ * Creates the queued value signal with selected state on its attached queuer.
+ * @param selector Selects reactive state exposed on the attached queuer.
+ */
+export function injectQueuedValue<TValue, TSelected>(
+  source: () => TValue,
+  options: MaybeAccessor<AngularQueuerOptions<TValue>>,
+  selector: (state: QueuerState<TValue>) => TSelected,
+): AngularQueuerValue<TValue, TSelected>
+export function injectQueuedValue<TValue, TSelected>(
+  source: () => TValue,
+  options: MaybeAccessor<AngularQueuerOptions<TValue>> = {},
   selector?: (state: QueuerState<TValue>) => TSelected,
-): QueuedValueSignal<TValue, TSelected>
-export function injectQueuedValue<
-  TValue,
-  TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
-    QueuerState<TValue>,
-    'items'
-  >,
->(
-  value: Signal<TValue>,
-  initialValue: Extract<TValue, PrimitiveInitialValue>,
-  options?: AngularQueuerOptions<TValue, TSelected>,
-  selector?: (state: QueuerState<TValue>) => TSelected,
-): QueuedValueSignal<TValue, TSelected>
-export function injectQueuedValue<
-  TValue,
-  TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
-    QueuerState<TValue>,
-    'items'
-  >,
->(
-  value: Signal<TValue>,
-  initialValue: TValue,
-  options: AngularQueuerOptions<TValue, TSelected>,
-  selector?: (state: QueuerState<TValue>) => TSelected,
-): QueuedValueSignal<TValue, TSelected>
-export function injectQueuedValue<
-  TValue,
-  TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
-    QueuerState<TValue>,
-    'items'
-  >,
->(
-  value: Signal<TValue>,
-  initialValue: TValue,
-  options:
-    AngularPacerOptions<AngularQueuerOptions<TValue, TSelected>> | undefined,
-  selector: ((state: QueuerState<TValue>) => TSelected) | undefined,
-): QueuedValueSignal<TValue, TSelected>
-export function injectQueuedValue<
-  TValue,
-  TSelected extends Pick<QueuerState<TValue>, 'items'> = Pick<
-    QueuerState<TValue>,
-    'items'
-  >,
->(
-  value: Signal<TValue>,
-  initialValueOrOptions?:
-    TValue | AngularPacerOptions<AngularQueuerOptions<TValue, TSelected>>,
-  initialOptionsOrSelector?:
-    | AngularPacerOptions<AngularQueuerOptions<TValue, TSelected>>
-    | ((state: QueuerState<TValue>) => TSelected),
-  maybeSelector?: (state: QueuerState<TValue>) => TSelected,
-): QueuedValueSignal<TValue, TSelected> {
-  const hasPrimitiveInitialValue =
-    initialValueOrOptions === null ||
-    (initialValueOrOptions !== undefined &&
-      typeof initialValueOrOptions !== 'object' &&
-      typeof initialValueOrOptions !== 'function')
-  const hasInitialValue =
-    hasPrimitiveInitialValue ||
-    (initialOptionsOrSelector !== undefined &&
-      typeof initialOptionsOrSelector !== 'function') ||
-    arguments.length >= 4
-  const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as AngularPacerOptions<
-        AngularQueuerOptions<TValue, TSelected>
-      >)
-    : (initialValueOrOptions as AngularPacerOptions<
-        AngularQueuerOptions<TValue, TSelected>
-      >)
-  const selector = hasInitialValue
-    ? maybeSelector
-    : (initialOptionsOrSelector as
-        ((state: QueuerState<TValue>) => TSelected) | undefined)
+): AngularQueuerValue<TValue, TSelected | {}> {
+  if (typeof ngDevMode === 'undefined' || ngDevMode) {
+    assertInInjectionContext(injectQueuedValue)
+  }
 
-  // Wrap values so an explicit undefined remains distinct from uninitialized state.
-  const processed = signal<{ value: TValue } | undefined>(
-    hasInitialValue ? { value: initialValueOrOptions as TValue } : undefined,
+  const select = (state: QueuerState<TValue>) =>
+    selector ? selector(state) : {}
+  const computedSource = computed(source)
+  const queuedSignal = linkedSignal(() => untracked(computedSource))
+  const queuer = injectQueuer(
+    (value: TValue) => queuedSignal.set(value),
+    options,
+    select,
   )
-  const queuedValue = computed(() => {
-    const current = processed()
-    return current ? current.value : value()
-  })
-
-  const queued = injectQueuedSignal(
-    (item) => {
-      processed.set({ value: item })
-    },
-    initialOptions,
-    selector,
-  )
-
   effect(() => {
-    const nextValue = value()
-    untracked(() => {
-      if (!processed()) processed.set({ value: nextValue })
-      queued.addItem(nextValue)
-    })
+    queuer.addItem(computedSource())
   })
-
-  return Object.assign(queuedValue, {
-    addItem: queued.addItem,
-    queuer: queued.queuer,
-  })
+  return Object.assign(queuedSignal.asReadonly(), { queuer })
 }

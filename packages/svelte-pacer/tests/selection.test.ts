@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import { createDebouncer } from '../src'
-import { setup, source, flush } from './setup'
+import { flush, setup, source } from './setup'
 
 it('refreshes a selection when its reactive inputs change without a store update', async () => {
   const offset = source(1)

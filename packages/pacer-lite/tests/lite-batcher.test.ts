@@ -163,7 +163,7 @@ describe('LiteBatcher', () => {
   describe('Custom Condition Batching', () => {
     it('should process immediately when getShouldExecute returns true', () => {
       const mockFn = vi.fn()
-      const getShouldExecute = vi.fn((items: any[]) => items.length >= 2)
+      const getShouldExecute = vi.fn((items: Array<any>) => items.length >= 2)
       const batcher = new LiteBatcher(mockFn, {
         getShouldExecute,
         started: false,
@@ -191,7 +191,7 @@ describe('LiteBatcher', () => {
 
     it('should combine with other triggers', () => {
       const mockFn = vi.fn()
-      const getShouldExecute = vi.fn((items: any[]) =>
+      const getShouldExecute = vi.fn((items: Array<any>) =>
         items.some((item) => item.urgent),
       )
       const batcher = new LiteBatcher(mockFn, {
@@ -710,7 +710,7 @@ describe('liteBatch helper function', () => {
     it('should work with custom conditions', () => {
       const mockFn = vi.fn()
       const batchFn = liteBatch(mockFn, {
-        getShouldExecute: (items: any[]) =>
+        getShouldExecute: (items: Array<any>) =>
           items.some((item) => item.priority === 'high'),
         started: false,
       })
@@ -732,7 +732,8 @@ describe('liteBatch helper function', () => {
       const batchFn = liteBatch(mockFn, {
         maxSize: 5,
         wait: 1000,
-        getShouldExecute: (items: any[]) => items.some((item) => item.urgent),
+        getShouldExecute: (items: Array<any>) =>
+          items.some((item) => item.urgent),
         started: false,
       })
 
@@ -828,7 +829,8 @@ describe('liteBatch helper function', () => {
       const onExecute = vi.fn()
       const onItemsChange = vi.fn()
       const batchFn = liteBatch(mockFn, {
-        getShouldExecute: (items: any[]) => items.some((item) => item.urgent),
+        getShouldExecute: (items: Array<any>) =>
+          items.some((item) => item.urgent),
         started: false,
         onExecute,
         onItemsChange,

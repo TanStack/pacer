@@ -1,0 +1,43 @@
+<h1>TanStack Pacer injectQueuerItems Example</h1>
+<section>
+  <h2>Number queue</h2>
+  <button type="button" (click)="addNumber()" [disabled]="queued().length >= 25">Add Number</button>
+  <p>Queue Size: {{ queued().length }}</p>
+  <p>Queue Full: {{ queued().length >= 25 }}</p>
+  <p>Queue Empty: {{ queued().length === 0 }}</p>
+  <p>Items Processed: {{ processed().length }}</p>
+  <p>Queue Items: {{ queued().join(', ') }}</p>
+  <p>Queue Peek: {{ numberQueue.peekNextItem() ?? 'None' }}</p>
+  <button type="button" (click)="numberQueue.execute()" [disabled]="queued().length === 0">
+    Process Next
+  </button>
+  <button type="button" (click)="numberQueue.clear()" [disabled]="queued().length === 0">
+    Clear Queue
+  </button>
+  <button type="button" (click)="numberQueue.reset()" [disabled]="queued().length === 0">
+    Reset Queue
+  </button>
+  <button type="button" (click)="numberQueue.start()">Start Processing</button>
+  <button type="button" (click)="numberQueue.stop()">Stop Processing</button>
+</section>
+<section>
+  <h2>Queued range</h2>
+  <label
+    >Current Range
+    <input
+      type="range"
+      min="0"
+      max="100"
+      [value]="currentValue()"
+      (input)="onRange($any($event.target).valueAsNumber)"
+  /></label>
+  <p>Instant Value: {{ currentValue() }}</p>
+  <label
+    >Queued Range <input type="range" min="0" max="100" [value]="rangeValue()" disabled
+  /></label>
+  <p>Queued Value: {{ rangeValue() }}</p>
+  <p>Values Submitted: {{ instantExecutions() }}</p>
+  <p>Pending Items: {{ rangeQueued().length }}</p>
+  <p>Queue Items: {{ rangeQueued().join(', ') }}</p>
+  <p>Queue Peek: {{ rangeQueue.peekNextItem() ?? 'None' }}</p>
+</section>

@@ -22,12 +22,6 @@
   <button type="button" (click)="increment()">Increment</button>
   <p>Instant Count: {{ instantCount() }}</p>
   <p>Rate Limited Count: {{ controlledCount() }}</p>
-  <p>Executions: {{ countRunner.state().executionCount }}</p>
-  <p>Rejections: {{ countRunner.state().rejectionCount }}</p>
-  <p>Remaining in Window: {{ countRunner.getRemainingInWindow() }}</p>
-  <p>Ms Until Next Window: {{ countRunner.getMsUntilNextWindow() }}</p>
-  <button type="button" (click)="countRunner.reset()">Reset</button>
-  <pre>{{ countRunner.state() | json }}</pre>
 </section>
 <section aria-labelledby="search-title">
   <h2 id="search-title">Search</h2>
@@ -59,12 +53,6 @@
   /></label>
   <p>Instant Search: {{ search() }}</p>
   <p>Rate Limited Search: {{ controlledSearch() }}</p>
-  <p>Executions: {{ searchRunner.state().executionCount }}</p>
-  <p>Rejections: {{ searchRunner.state().rejectionCount }}</p>
-  <p>Remaining in Window: {{ searchRunner.getRemainingInWindow() }}</p>
-  <p>Ms Until Next Window: {{ searchRunner.getMsUntilNextWindow() }}</p>
-  <button type="button" (click)="searchRunner.reset()">Reset</button>
-  <pre>{{ searchRunner.state() | json }}</pre>
 </section>
 <section aria-labelledby="range-title">
   <h2 id="range-title">Range</h2>
@@ -100,14 +88,6 @@
     >Rate Limited Range <input type="range" min="0" max="100" [value]="controlledValue()" disabled
   /></label>
   <p>Rate Limited Value: {{ controlledValue() }}</p>
-  <p>Executions: {{ rangeRunner.state().executionCount }}</p>
-  <p>Rejections: {{ rangeRunner.state().rejectionCount }}</p>
-  <p>Remaining in Window: {{ rangeRunner.getRemainingInWindow() }}</p>
-  <p>Ms Until Next Window: {{ rangeRunner.getMsUntilNextWindow() }}</p>
   <p>Instant Executions: {{ instantExecutions() }}</p>
-  <p>Saved Executions: {{ instantExecutions() - rangeRunner.state().executionCount }}</p>
-  <p>Reduction: {{ reduction() }}%</p>
-  <button type="button" (click)="rangeRunner.reset()">Reset</button>
-  <pre>{{ rangeRunner.state() | json }}</pre>
   <p>Rate limited to 20 updates per 2 seconds.</p>
 </section>

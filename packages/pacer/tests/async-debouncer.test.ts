@@ -1358,8 +1358,8 @@ describe('asyncDebounce helper function', () => {
   describe('getAbortSignal', () => {
     it('should be available as an instance method', () => {
       const debouncer = new AsyncDebouncer(
-        async () => {
-          return 'result'
+        () => {
+          return Promise.resolve('result')
         },
         { wait: 300 },
       )
@@ -1379,9 +1379,10 @@ describe('AsyncDebouncer internal retryer devtools registration', () => {
   })
 
   it('should not register internal retryers when the debouncer has no key', async () => {
-    const debouncer = new AsyncDebouncer(async (value: string) => value, {
-      wait: 100,
-    })
+    const debouncer = new AsyncDebouncer(
+      (value: string) => Promise.resolve(value),
+      { wait: 100 },
+    )
 
     debouncer.maybeExecute('test')
     await vi.advanceTimersByTimeAsync(100)
@@ -1391,10 +1392,10 @@ describe('AsyncDebouncer internal retryer devtools registration', () => {
   })
 
   it('should not register per-execution internal retryers when the debouncer has a key', async () => {
-    const debouncer = new AsyncDebouncer(async (value: string) => value, {
-      wait: 100,
-      key: 'my-debouncer',
-    })
+    const debouncer = new AsyncDebouncer(
+      (value: string) => Promise.resolve(value),
+      { wait: 100, key: 'my-debouncer' },
+    )
 
     debouncer.maybeExecute('test')
     await vi.advanceTimersByTimeAsync(100)
@@ -1406,9 +1407,10 @@ describe('AsyncDebouncer internal retryer devtools registration', () => {
 
 describe('AsyncDebouncer return type inference', () => {
   it('should resolve to the awaited return type, not a nested promise', () => {
-    const debouncer = new AsyncDebouncer(async (value: string) => value, {
-      wait: 100,
-    })
+    const debouncer = new AsyncDebouncer(
+      (value: string) => Promise.resolve(value),
+      { wait: 100 },
+    )
     expectTypeOf(debouncer.maybeExecute).returns.toEqualTypeOf<
       Promise<string | undefined>
     >()
@@ -1419,7 +1421,7 @@ describe('AsyncDebouncer return type inference', () => {
       string | undefined
     >()
 
-    const debounced = asyncDebounce(async (value: string) => value, {
+    const debounced = asyncDebounce((value: string) => Promise.resolve(value), {
       wait: 100,
     })
     expectTypeOf(debounced).returns.toEqualTypeOf<Promise<string | undefined>>()

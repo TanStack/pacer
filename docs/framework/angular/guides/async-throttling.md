@@ -126,16 +126,18 @@ saver.reset()
 
 ## Configuration
 
-`wait` and `enabled` may be values or functions that receive the throttler instance. `setOptions()` merges new options into the existing configuration.
+`wait` and `enabled` may be values or functions that receive the throttler instance. Use an options function for reactive configuration.
 
 ```ts
-saver.setOptions({
-  enabled: (throttler) => throttler.store.state.errorCount < 3,
-  wait: (throttler) => (throttler.store.state.successCount < 10 ? 500 : 1000),
-})
+import { signal } from '@angular/core'
+
+const wait = signal(1000)
+const saver = injectAsyncThrottler(savePositionToServer, () => ({ wait: wait() }))
+
+wait.set(250)
 ```
 
-A changed `wait` value does not reschedule existing trailing work. It applies to later scheduling and executions. Disabling the throttler through `setOptions()` cancels pending trailing work.
+A changed `wait` value does not reschedule existing trailing work. It applies to later scheduling and executions. Disabling the throttler cancels pending trailing work.
 
 Use `asyncThrottlerOptions()` to define reusable, type-checked option objects.
 
@@ -145,7 +147,7 @@ The adapter cancels pending work and aborts active work when its owner is destro
 
 ## Reactive state
 
-The adapter subscribes only to the state returned by the selector argument. Without a selector, the adapter state is empty. Create the utility in an Angular injection context, usually as a component or service field initializer and select only fields used by the view:
+Pass a selector to expose the state used by your view through `state()`. Without a selector, `state()` returns `{}`:
 
 ```ts
 const throttler = injectAsyncThrottler(
@@ -165,7 +167,7 @@ console.log(
 )
 ```
 
-Option functions and lifecycle callbacks receive the underlying public utility instance. The `.store.state` reads inside those callbacks in the examples above are supported. Rendering code should read the selected adapter state shown here.
+Option callbacks receive the core utility instance. Read the selected `state()` signal in templates.
 
 To restore selected state that your app has persisted, pass a partial snapshot through `initialState`. It is merged with the defaults. Restore only durable fields. Pending timers and active executions are not restored.
 

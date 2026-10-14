@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { useAsyncBatcher } from '../src/async-batcher/useAsyncBatcher'
-import { setup, source, flush } from './setup'
+import { flush, setup, source } from './setup'
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
@@ -67,8 +67,9 @@ it('executes through the adapter with the core scheduling semantics', async () =
   const calls: Array<string | Array<string>> = []
   const { result: utility, destroy } = setup(() =>
     useAsyncBatcher(
-      async (value: Array<string>) => {
+      (value: Array<string>) => {
         calls.push(value)
+        return Promise.resolve()
       },
       { wait: 100, maxSize: 2 },
     ),

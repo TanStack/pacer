@@ -47,7 +47,6 @@ describe('example behavior', () => {
     app.setConcurrency('3')
     TestBed.tick()
     expect(app.queue).toBe(queue)
-    expect(queue.options.concurrency).toBe(3)
     expect(queue.state().items).toHaveLength(10)
     queue.start()
     await vi.advanceTimersByTimeAsync(350)

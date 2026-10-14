@@ -1,7 +1,8 @@
 import { LitElement, html } from 'lit'
 import { expect, it, vi } from 'vitest'
 import { createDebouncer, providePacerOptions } from '../src'
-import { setup, source, flush } from './setup'
+import { flush, setup, source } from './setup'
+
 it('updates host defaults and reconnects without replacing the utility', async () => {
   const wait = source(false),
     cleanup = vi.fn()

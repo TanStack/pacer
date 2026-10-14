@@ -1,6 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest'
-import { createRoot, flushSync, drainPassiveEffects } from 'octane'
+import { createRoot, drainPassiveEffects, flushSync } from 'octane'
 import { Fixture, capture } from './Helpers.tsrx'
+
 let dispose = () => {}
 afterEach(() => {
   dispose()

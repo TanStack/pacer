@@ -1,6 +1,7 @@
 import { expect, it, vi } from 'vitest'
 import { createPacerScope } from '../src'
-import { source, flush } from './setup'
+import { flush, source } from './setup'
+
 it('updates scope defaults, preserves local options, and destroys only once', async () => {
   vi.useFakeTimers()
   const wait = source(false),

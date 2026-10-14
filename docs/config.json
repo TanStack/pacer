@@ -2354,20 +2354,24 @@
               "to": "framework/angular/reference/functions/injectQueuer"
             },
             {
-              "label": "injectQueuedSignal",
-              "to": "framework/angular/reference/functions/injectQueuedSignal"
+              "label": "injectQueuerItems",
+              "to": "framework/angular/reference/functions/injectQueuerItems"
             },
             {
               "label": "injectQueuedValue",
               "to": "framework/angular/reference/functions/injectQueuedValue"
             },
             {
+              "label": "injectQueuedSignal",
+              "to": "framework/angular/reference/functions/injectQueuedSignal"
+            },
+            {
               "label": "injectAsyncQueuer",
               "to": "framework/angular/reference/functions/injectAsyncQueuer"
             },
             {
-              "label": "injectAsyncQueuedSignal",
-              "to": "framework/angular/reference/functions/injectAsyncQueuedSignal"
+              "label": "injectAsyncQueuerItems",
+              "to": "framework/angular/reference/functions/injectAsyncQueuerItems"
             }
           ]
         },
@@ -4069,20 +4073,24 @@
               "to": "framework/angular/examples/injectQueuer"
             },
             {
-              "label": "injectQueuedSignal",
-              "to": "framework/angular/examples/injectQueuedSignal"
+              "label": "injectQueuerItems",
+              "to": "framework/angular/examples/injectQueuerItems"
             },
             {
               "label": "injectQueuedValue",
               "to": "framework/angular/examples/injectQueuedValue"
             },
             {
+              "label": "injectQueuedSignal",
+              "to": "framework/angular/examples/injectQueuedSignal"
+            },
+            {
               "label": "injectAsyncQueuer",
               "to": "framework/angular/examples/injectAsyncQueuer"
             },
             {
-              "label": "injectAsyncQueuedSignal",
-              "to": "framework/angular/examples/injectAsyncQueuedSignal"
+              "label": "injectAsyncQueuerItems",
+              "to": "framework/angular/examples/injectAsyncQueuerItems"
             }
           ]
         },

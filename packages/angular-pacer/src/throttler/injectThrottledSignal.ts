@@ -1,94 +1,110 @@
-import { signal } from '@angular/core'
+import {
+  assertInInjectionContext,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
+import { toAccessorSignal } from '../utils/maybeAccessor'
 import { injectThrottler } from './injectThrottler'
-import type { AngularPacerOptions } from '../types'
-import type { AngularThrottler } from './injectThrottler'
+import type { ThrottlerState } from '@tanstack/pacer/throttler'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
+import type { SignalWrite } from '../utils/internalTypes'
 import type {
-  ThrottlerOptions,
-  ThrottlerState,
-} from '@tanstack/pacer/throttler'
-
-type Setter<T> = (value: T | ((prev: T) => T)) => void
-
-export interface ThrottledSignal<TValue, TSelected = {}> {
-  (): TValue
-  set: Setter<TValue>
-  throttler: AngularThrottler<Setter<TValue>, TSelected>
-}
+  AngularThrottler,
+  AngularThrottlerOptions,
+} from './injectThrottler'
+import type { WritableSignal } from '@angular/core'
 
 /**
- * An Angular function that creates a throttled state signal, combining Angular's signal with throttling functionality.
- * This function provides both the current throttled value and methods to update it.
+ * An Angular writable signal whose `set` and `update` writes are throttled.
+ * Leading writes may execute immediately; later writes replace the pending
+ * trailing write without extending its deadline. Updaters receive the committed
+ * value when executed. `asReadonly()` exposes a live readonly view.
+ * The `throttler` attribute controls execution.
+ */
+export interface AngularThrottlerSignal<
+  TValue,
+  TSelected = {},
+> extends WritableSignal<TValue> {
+  /** The underlying Angular Throttler ref for controlling execution. */
+  throttler: AngularThrottler<(value: SignalWrite<TValue>) => void, TSelected>
+}
+/**
+ * Creates an Angular throttled editable signal.
  *
- * The state value is updated at most once within the specified wait time.
- * This is useful for handling frequent state updates that should be rate-limited, like scroll positions
- * or mouse movements.
+ * The initial value is available synchronously. `set` and `update` share a throttler. Leading writes may apply immediately; subsequent writes replace the pending trailing write without extending its deadline. An updater runs against the committed value when executed.
  *
- * The function returns a callable object:
- * - `throttled()`: Get the current throttled value
- * - `throttled.set(...)`: Set or update the throttled value (throttled via maybeExecute)
- * - `throttled.throttler`: The throttler instance with additional control methods and state signals
+ * The returned value is a real Angular writable signal with the underlying utility exposed
+ * on `throttler`. Options accept a static object or reactive factory and follow
+ * {@link injectThrottler} lifecycle and provider behavior.
  *
- * ## State Management and Selector
- *
- * The function uses TanStack Store for reactive state management via the underlying throttler instance.
- * The `selector` parameter allows you to specify which throttler state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
- *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes.
- *
- * Available throttler state properties:
- * - `executionCount`: Number of function executions that have been completed
- * - `isPending`: Whether the throttler is waiting for the timeout to trigger execution
- * - `lastArgs`: The arguments from the most recent call to maybeExecute
- * - `lastExecutionTime`: Timestamp of the last execution
- * - `nextExecutionTime`: Timestamp of the next allowed execution
- * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
+ * @param initialValue The initial committed value.
+ * @param options Core options or a reactive options factory.
+ * @returns The writable signal with `set`, `update`, `asReadonly`, and a `throttler` attribute.
  *
  * @example
  * ```ts
- * const throttledScrollY = injectThrottledSignal(0, { wait: 100 })
- *
- * // Get value
- * console.log(throttledScrollY())
- *
- * // Set/update value (throttled)
- * throttledScrollY.set(window.scrollY)
- *
- * // Access throttler
- * console.log(throttledScrollY.throttler.state().isPending)
+ * // In a component or service injection context.
+ * const value = injectThrottledSignal(0, { wait: 250 })
+ * value.set(10)
+ * value.update(previous => previous + 1)
+ * console.log(value())
  * ```
  */
-export function injectThrottledSignal<TValue, TSelected = {}>(
-  value: TValue,
-  initialOptions: AngularPacerOptions<ThrottlerOptions<Setter<TValue>>>,
-  selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
-): ThrottledSignal<TValue, TSelected> {
-  const throttledValue = signal<TValue>(value)
-
-  const throttler = injectThrottler(
-    (newValue: TValue | ((prev: TValue) => TValue)) => {
-      if (typeof newValue === 'function') {
-        throttledValue.update(newValue as (prev: TValue) => TValue)
-      } else {
-        throttledValue.set(newValue)
-      }
-    },
-    initialOptions,
-    selector,
-  )
-
-  const set: Setter<TValue> = (
-    newValue: TValue | ((prev: TValue) => TValue),
-  ) => {
-    throttler.maybeExecute(newValue)
+export function injectThrottledSignal<TValue>(
+  initialValue: MaybeAccessor<TValue>,
+  options: MaybeAccessor<
+    AngularThrottlerOptions<(value: SignalWrite<TValue>) => void>
+  >,
+): AngularThrottlerSignal<TValue>
+/**
+ * Creates the value signal with selected state on its attached utility ref.
+ * @param selector Selects reactive state exposed on the attached utility ref.
+ */
+export function injectThrottledSignal<TValue, TSelected>(
+  initialValue: MaybeAccessor<TValue>,
+  options: MaybeAccessor<
+    AngularThrottlerOptions<(value: SignalWrite<TValue>) => void>
+  >,
+  selector: (
+    state: ThrottlerState<(value: SignalWrite<TValue>) => void>,
+  ) => TSelected,
+): AngularThrottlerSignal<TValue, TSelected>
+export function injectThrottledSignal<TValue, TSelected>(
+  initialValue: MaybeAccessor<TValue>,
+  options: MaybeAccessor<
+    AngularThrottlerOptions<(value: SignalWrite<TValue>) => void>
+  >,
+  selector?: (
+    state: ThrottlerState<(value: SignalWrite<TValue>) => void>,
+  ) => TSelected,
+): AngularThrottlerSignal<TValue, TSelected | {}> {
+  if (typeof ngDevMode === 'undefined' || ngDevMode) {
+    assertInInjectionContext(injectThrottledSignal)
   }
 
-  const throttled = Object.assign(() => throttledValue(), {
-    set,
+  const initialValueSignal = toAccessorSignal(initialValue)
+  const throttledSignal = linkedSignal(() => untracked(initialValueSignal))
+  const commitValue = throttledSignal.set
+  const throttler = injectThrottler(
+    (value: SignalWrite<TValue>) => {
+      commitValue(
+        typeof value === 'function'
+          ? (value as (previous: TValue) => TValue)(throttledSignal())
+          : value,
+      )
+    },
+    options,
+    (state) => (selector ? selector(state) : {}),
+  )
+  return Object.assign(throttledSignal, {
+    set: (value: TValue) =>
+      throttler.maybeExecute(
+        (typeof value === 'function'
+          ? () => value
+          : value) as SignalWrite<TValue>,
+      ),
+    update: (updateFn: (prev: TValue) => TValue) =>
+      throttler.maybeExecute(updateFn),
     throttler,
-  }) as ThrottledSignal<TValue, TSelected>
-
-  return throttled
+  })
 }

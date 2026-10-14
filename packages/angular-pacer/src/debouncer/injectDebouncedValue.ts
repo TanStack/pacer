@@ -1,137 +1,93 @@
-import { effect } from '@angular/core'
-import { injectDebouncedSignal } from './injectDebouncedSignal'
-import type { AngularPacerOptions } from '../types'
-import type { DebouncedSignal } from './injectDebouncedSignal'
-import type { Signal } from '@angular/core'
+import {
+  assertInInjectionContext,
+  computed,
+  effect,
+  linkedSignal,
+  untracked,
+} from '@angular/core'
+import { injectDebouncer } from './injectDebouncer'
+import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type {
-  DebouncerOptions,
-  DebouncerState,
-} from '@tanstack/pacer/debouncer'
-
-type Setter<T> = (value: T | ((prev: T) => T)) => void
+  AngularDebouncer,
+  AngularDebouncerOptions,
+} from './injectDebouncer'
+import type { Signal } from '@angular/core'
 
 /**
- * An Angular function that creates a debounced value that updates only after a specified delay.
- * Unlike injectDebouncedSignal, this function automatically tracks changes to the input signal
- * and updates the debounced value accordingly.
+ * A readonly Angular value signal with its underlying utility ref.
+ * The `debouncer` attribute exposes the underlying Debouncer methods.
+ */
+export interface AngularDebouncerValue<
+  TValue,
+  TSelected = {},
+> extends Signal<TValue> {
+  /** The underlying Angular Debouncer ref for controlling execution. */
+  debouncer: AngularDebouncer<(value: TValue) => void, TSelected>
+}
+/**
+ * Creates an Angular debounced view of a source signal.
  *
- * The debounced value will only update after the specified wait time has elapsed since
- * the last change to the input value. If the input value changes again before the wait
- * time expires, the timer resets and starts waiting again.
+ * The initial source value is available on first read. Source changes are observed by an effect and applied after the debounce delay; newer changes restart the delay.
  *
- * This is useful for deriving debounced values from signals that change frequently,
- * like search queries or form inputs, where you want to limit how often downstream effects
- * or calculations occur.
+ * The returned value is a real Angular signal with the underlying utility exposed
+ * on `debouncer`. Options accept a static object or reactive factory and follow
+ * {@link injectDebouncer} lifecycle and provider behavior.
  *
- * The function returns a tuple containing:
- * - A Signal that provides the current debounced value
- * - The debouncer instance with control methods
- *
- * ## State Management and Selector
- *
- * The function uses TanStack Store for reactive state management via the underlying debouncer instance.
- * The `selector` parameter allows you to specify which debouncer state changes will trigger signal updates,
- * optimizing performance by preventing unnecessary subscriptions when irrelevant state changes occur.
- *
- * **By default, there will be no reactive state subscriptions** and you must opt-in to state
- * tracking by providing a selector function. This prevents unnecessary updates and gives you
- * full control over when your component tracks state changes. Only when you provide a selector will
- * the reactive system track the selected state values.
- *
- * Available debouncer state properties:
- * - `canLeadingExecute`: Whether the debouncer can execute on the leading edge
- * - `executionCount`: Number of function executions that have been completed
- * - `isPending`: Whether the debouncer is waiting for the timeout to trigger execution
- * - `lastArgs`: The arguments from the most recent call to maybeExecute
- * - `status`: Current execution status ('disabled' | 'idle' | 'pending')
- *
+ * @param signalToDebounce The source signal or accessor whose changes are observed.
+ * @param options Core options or a reactive options factory.
+ * @returns The value signal with a `debouncer` attribute.
  *
  * @example
  * ```ts
- * // Default behavior - no reactive state subscriptions
- * const searchQuery = signal('')
- * const debounced = injectDebouncedValue(searchQuery, {
- *   wait: 500, // Wait 500ms after last change
- * })
- *
- * // Opt-in to reactive updates when pending state changes (optimized for loading indicators)
- * const debouncedWithPending = injectDebouncedValue(
- *   searchQuery,
- *   { wait: 500 },
- *   (state) => ({ isPending: state.isPending }),
- * )
- *
- * // Debounced value will update 500ms after searchQuery stops changing
- * effect(() => {
- *   fetchSearchResults(debounced())
- * })
- *
- * // Access selected debouncer state via signals (only if you provided a selector)
- * effect(() => {
- *   console.log('Is pending:', debouncedWithPending.state().isPending)
- * })
- *
- * // Control the debouncer
- * debounced.cancel() // Cancel any pending updates
+ * // In a component or service injection context.
+ * const source = signal('initial')
+ * const value = injectDebouncedValue(source, { wait: 250 })
+ * source.set('updated')
+ * console.log(value())
  * ```
  */
-export function injectDebouncedValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialOptions: AngularPacerOptions<DebouncerOptions<Setter<TValue>>>,
-  selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
-): DebouncedSignal<TValue, TSelected>
-export function injectDebouncedValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialValue: TValue,
-  initialOptions: DebouncerOptions<Setter<TValue>>,
-  selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
-): DebouncedSignal<TValue, TSelected>
-export function injectDebouncedValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialValue: TValue,
-  initialOptions: () => DebouncerOptions<Setter<TValue>>,
-  selector: ((state: DebouncerState<Setter<TValue>>) => TSelected) | undefined,
-): DebouncedSignal<TValue, TSelected>
-export function injectDebouncedValue<TValue, TSelected = {}>(
-  value: Signal<TValue>,
-  initialValueOrOptions:
-    TValue | AngularPacerOptions<DebouncerOptions<Setter<TValue>>>,
-  initialOptionsOrSelector?:
-    | AngularPacerOptions<DebouncerOptions<Setter<TValue>>>
-    | ((state: DebouncerState<Setter<TValue>>) => TSelected),
-  maybeSelector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
-): DebouncedSignal<TValue, TSelected> {
-  const hasSelector = typeof initialOptionsOrSelector === 'function'
+export function injectDebouncedValue<TValue>(
+  signalToDebounce: () => TValue,
+  options: MaybeAccessor<AngularDebouncerOptions<(value: TValue) => void>>,
+): AngularDebouncerValue<TValue>
+/**
+ * Creates the value signal with selected state on its attached utility ref.
+ * @param selector Selects reactive state exposed on the attached utility ref.
+ */
+export function injectDebouncedValue<TValue, TSelected>(
+  signalToDebounce: () => TValue,
+  options: MaybeAccessor<AngularDebouncerOptions<(value: TValue) => void>>,
+  selector: (state: DebouncerState<(value: TValue) => void>) => TSelected,
+): AngularDebouncerValue<TValue, TSelected>
+export function injectDebouncedValue<TValue, TSelected>(
+  signalToDebounce: () => TValue,
+  options: MaybeAccessor<AngularDebouncerOptions<(value: TValue) => void>>,
+  selector?: (state: DebouncerState<(value: TValue) => void>) => TSelected,
+): AngularDebouncerValue<TValue, TSelected | {}> {
+  if (typeof ngDevMode === 'undefined' || ngDevMode) {
+    assertInInjectionContext(injectDebouncedValue)
+  }
 
-  const hasInitialValue =
-    (initialOptionsOrSelector !== undefined && !hasSelector) ||
-    arguments.length >= 4
-
-  const initialValue = hasInitialValue
-    ? (initialValueOrOptions as TValue)
-    : (undefined as unknown as TValue)
-  const initialOptions = hasInitialValue
-    ? (initialOptionsOrSelector as AngularPacerOptions<
-        DebouncerOptions<Setter<TValue>>
-      >)
-    : (initialValueOrOptions as AngularPacerOptions<
-        DebouncerOptions<Setter<TValue>>
-      >)
-  const selector = hasInitialValue
-    ? maybeSelector
-    : (initialOptionsOrSelector as
-        ((state: DebouncerState<Setter<TValue>>) => TSelected) | undefined)
-
-  const debounced = injectDebouncedSignal(
-    initialValue,
-    initialOptions,
-    selector,
+  const select = (state: DebouncerState<(value: TValue) => void>) =>
+    selector ? selector(state) : {}
+  const sourceValue = computed(signalToDebounce)
+  const debouncedSignal = linkedSignal(() => untracked(sourceValue))
+  const debouncer = injectDebouncer(
+    (value: TValue) => debouncedSignal.set(value),
+    options,
+    select,
   )
-
+  let initialized = false
   effect(() => {
-    const latest = value()
-    debounced.set(latest)
+    const value = sourceValue()
+    if (!initialized) {
+      initialized = true
+      if (Object.is(untracked(debouncedSignal), value)) return
+    }
+    debouncer.maybeExecute(value)
   })
-
-  return debounced
+  return Object.assign(debouncedSignal.asReadonly(), {
+    debouncer,
+  })
 }

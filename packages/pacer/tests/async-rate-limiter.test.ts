@@ -774,8 +774,8 @@ describe('asyncRateLimit', () => {
   describe('getAbortSignal', () => {
     it('should be available as an instance method', () => {
       const rateLimiter = new AsyncRateLimiter(
-        async () => {
-          return 'result'
+        () => {
+          return Promise.resolve('result')
         },
         { limit: 5, window: 1000 },
       )
@@ -795,17 +795,17 @@ describe('AsyncRateLimiter internal retryer devtools registration', () => {
   })
 
   it('should not register internal retryers with or without a key', async () => {
-    const rateLimiter = new AsyncRateLimiter(async (value: string) => value, {
-      limit: 5,
-      window: 1000,
-    })
+    const rateLimiter = new AsyncRateLimiter(
+      (value: string) => Promise.resolve(value),
+      { limit: 5, window: 1000 },
+    )
 
     await rateLimiter.maybeExecute('test')
 
     expect(getPacerDevtoolsInstance('undefined-retryer-1')).toBeUndefined()
 
     const keyedRateLimiter = new AsyncRateLimiter(
-      async (value: string) => value,
+      (value: string) => Promise.resolve(value),
       { limit: 5, window: 1000, key: 'my-rate-limiter' },
     )
 
@@ -854,10 +854,10 @@ describe('AsyncRateLimiter concurrent execution state', () => {
 
 describe('AsyncRateLimiter return type inference', () => {
   it('should resolve to the awaited return type, not a nested promise', () => {
-    const rateLimiter = new AsyncRateLimiter(async (value: string) => value, {
-      limit: 5,
-      window: 1000,
-    })
+    const rateLimiter = new AsyncRateLimiter(
+      (value: string) => Promise.resolve(value),
+      { limit: 5, window: 1000 },
+    )
     expectTypeOf(rateLimiter.maybeExecute).returns.toEqualTypeOf<
       Promise<string | undefined>
     >()
@@ -865,10 +865,10 @@ describe('AsyncRateLimiter return type inference', () => {
       string | undefined
     >()
 
-    const rateLimited = asyncRateLimit(async (value: string) => value, {
-      limit: 5,
-      window: 1000,
-    })
+    const rateLimited = asyncRateLimit(
+      (value: string) => Promise.resolve(value),
+      { limit: 5, window: 1000 },
+    )
     expectTypeOf(rateLimited).returns.toEqualTypeOf<
       Promise<string | undefined>
     >()

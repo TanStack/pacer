@@ -1,6 +1,6 @@
 import { expect, it, vi } from 'vitest'
 import { createDebouncer } from '../src'
-import { setup, flush } from './setup'
+import { flush, setup } from './setup'
 
 it('subscribes a child host without owning or cancelling its parent utility', async () => {
   const parent = setup((host) =>
