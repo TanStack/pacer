@@ -697,10 +697,13 @@ describe('AsyncThrottler', () => {
         await expect(throttler.maybeExecute('first')).rejects.toThrow(
           'flush error',
         ) // Leading execution will throw
-        throttler.maybeExecute('second') // This will be pending
+        const pending = expect(
+          throttler.maybeExecute('second'),
+        ).rejects.toThrow('flush error')
         expect(throttler.store.state.isPending).toBe(true)
 
         await expect(throttler.flush()).rejects.toThrow('flush error')
+        await pending
         expect(throttler.store.state.errorCount).toBe(2) // One from leading, one from flush
         expect(throttler.store.state.isPending).toBe(false)
       })
