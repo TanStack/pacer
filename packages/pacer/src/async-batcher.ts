@@ -153,8 +153,8 @@ export interface AsyncBatcherOptions<TValue> {
    */
   throwOnError?: boolean
   /**
-   * Maximum time in milliseconds to wait before processing a batch.
-   * If the wait duration has elapsed, the batch will be processed.
+   * Time in milliseconds to wait after the most recently added item before processing a batch.
+   * Each `addItem` call restarts the timer, so the batch is processed once no new item has been added for this long.
    * If not provided, the batch will not be triggered by a timeout.
    * @default Infinity
    */
@@ -257,8 +257,8 @@ const defaultOptions: AsyncBatcherOptionsWithOptionalCallbacks<any> = {
  *
  * batcher.addItem(1);
  * batcher.addItem(2);
- * // After 2 seconds or when 5 items are added, whichever comes first,
- * // the batch will be processed and the result will be available
+ * // 2 seconds after the last item is added, or as soon as 5 items are added,
+ * // whichever comes first, the batch will be processed and the result will be available
  * // batcher.execute() // manually trigger a batch
  * ```
  */
@@ -541,7 +541,7 @@ export class AsyncBatcher<TValue> {
  *
  * Configuration Options:
  * - `maxSize`: Maximum number of items per batch (default: Infinity)
- * - `wait`: Time to wait before processing batch (default: Infinity)
+ * - `wait`: Time to wait after the last added item before processing batch (default: Infinity)
  * - `getShouldExecute`: Custom logic to trigger batch processing
  * - `asyncRetryerOptions`: Configure retry behavior for batch executions
  * - `started`: Whether to start processing immediately (default: true)

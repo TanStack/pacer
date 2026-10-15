@@ -39,8 +39,8 @@ const batcher = new Batcher<number>(
 
 batcher.addItem(1);
 batcher.addItem(2);
-// After 2 seconds or when 5 items are added, whichever comes first,
-// the batch will be processed
+// 2 seconds after the last item is added, or as soon as 5 items are added,
+// whichever comes first, the batch will be processed
 // batcher.flush() // manually trigger a batch
 ```
 
