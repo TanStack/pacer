@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Setup Tools
-        uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
+        uses: TanStack/config/.github/setup@466151b2d479656b38942cd84a0a3dce29d48de3
       - name: Get base and head commits for `nx affected`
         uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
         with:
@@ -47,7 +47,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Setup Tools
-        uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
+        uses: TanStack/config/.github/setup@466151b2d479656b38942cd84a0a3dce29d48de3
       - name: Get base and head commits for `nx affected`
         uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
         with:
@@ -74,7 +74,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Setup Tools
-        uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
+        uses: TanStack/config/.github/setup@466151b2d479656b38942cd84a0a3dce29d48de3
       - name: Build Packages
         run: pnpm run build:all
       - name: Publish Previews
@@ -104,6 +104,6 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup Tools
-        uses: TanStack/config/.github/setup@e4b48f16568324f76f467aa4c2aac2f05db632c3
+        uses: TanStack/config/.github/setup@466151b2d479656b38942cd84a0a3dce29d48de3
       - name: Changeset Preview
-        uses: TanStack/config/.github/changeset-preview@e4b48f16568324f76f467aa4c2aac2f05db632c3
+        uses: TanStack/config/.github/changeset-preview@466151b2d479656b38942cd84a0a3dce29d48de3
