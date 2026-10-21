@@ -28,7 +28,7 @@ Batching is a technique for grouping multiple operations together to be processe
 
 Configuration Options:
 - `maxSize`: Maximum number of items per batch (default: Infinity)
-- `wait`: Time to wait before processing batch (default: Infinity)
+- `wait`: Time to wait after the last added item before processing batch (default: Infinity)
 - `getShouldExecute`: Custom logic to trigger batch processing
 - `asyncRetryerOptions`: Configure retry behavior for batch executions
 - `started`: Whether to start processing immediately (default: true)

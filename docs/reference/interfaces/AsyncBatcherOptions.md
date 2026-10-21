@@ -247,8 +247,8 @@ optional wait?: number | ((asyncBatcher) => number);
 
 Defined in: [async-batcher.ts:161](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L161)
 
-Maximum time in milliseconds to wait before processing a batch.
-If the wait duration has elapsed, the batch will be processed.
+Time in milliseconds to wait after the most recently added item before processing a batch.
+Each `addItem` call restarts the timer, so the batch is processed once no new item has been added for this long.
 If not provided, the batch will not be triggered by a timeout.
 
 #### Default
