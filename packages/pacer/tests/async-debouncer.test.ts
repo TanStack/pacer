@@ -237,6 +237,59 @@ describe('AsyncDebouncer', () => {
       expect(mockFn).toHaveBeenLastCalledWith('fifth')
       await promise5
     })
+
+    it.each([60, 100, 140])(
+      'should execute a call made at %ims while the previous execution is running',
+      async (secondCallAt) => {
+        const mockFn = vi.fn(async (n: number) => {
+          await new Promise((resolve) => setTimeout(resolve, 100))
+          return n
+        })
+        const debouncer = new AsyncDebouncer(mockFn, { wait: 50 })
+
+        const promise1 = debouncer.maybeExecute(1)
+        await vi.advanceTimersByTimeAsync(secondCallAt)
+        const promise2 = debouncer.maybeExecute(2)
+        await vi.advanceTimersByTimeAsync(400)
+
+        expect(mockFn.mock.calls).toEqual([[1], [2]])
+        await expect(promise1).resolves.toBe(1)
+        await expect(promise2).resolves.toBe(2)
+      },
+    )
+
+    it('should stay executing until all overlapping executions settle', async () => {
+      const mockFn = vi.fn(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+      })
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 50 })
+
+      debouncer.maybeExecute() // runs 50-150ms
+      await vi.advanceTimersByTimeAsync(60)
+      debouncer.maybeExecute() // runs 110-210ms
+      await vi.advanceTimersByTimeAsync(100)
+      expect(debouncer.store.state.isExecuting).toBe(true)
+
+      await vi.advanceTimersByTimeAsync(50)
+      expect(debouncer.store.state.isExecuting).toBe(false)
+    })
+
+    it('should not be pending while the trailing execution runs', async () => {
+      const mockFn = vi.fn(async (n: number) => {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        return n
+      })
+      const debouncer = new AsyncDebouncer(mockFn, { wait: 50 })
+
+      debouncer.maybeExecute(1) // runs 50-150ms
+      await vi.advanceTimersByTimeAsync(60)
+      expect(debouncer.store.state.isPending).toBe(false)
+      expect(debouncer.store.state.status).toBe('executing')
+
+      await expect(debouncer.flush()).resolves.toBeUndefined()
+      await vi.advanceTimersByTimeAsync(300)
+      expect(mockFn.mock.calls).toEqual([[1]])
+    })
   })
 
   describe('Promise Handling', () => {

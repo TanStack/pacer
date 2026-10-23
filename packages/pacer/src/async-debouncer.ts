@@ -326,7 +326,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
 
     // Handle leading execution
     if (this.options.leading && this.store.state.canLeadingExecute) {
-      this.#setState({ canLeadingExecute: false })
+      this.#setState({ canLeadingExecute: false, lastArgs: undefined })
       await this.#execute(...args)
       return this.store.state.lastResult
     }
@@ -341,10 +341,16 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
         this.#resolvePreviousPromise = resolve
         // this.#rejectPreviousPromise = reject
         this.#timeoutId = setTimeout(async () => {
+          // A call made during this execution must not resolve this promise early
+          this.#resolvePreviousPromise = null
+          const { lastArgs } = this.store.state
+          this.#setState({ isPending: false, lastArgs: undefined })
+          let result = this.store.state.lastResult
+
           // Execute trailing if enabled
-          if (this.options.trailing && this.store.state.lastArgs) {
+          if (this.options.trailing && lastArgs) {
             try {
-              await this.#execute(...this.store.state.lastArgs)
+              result = await this.#execute(...lastArgs)
             } catch (error) {
               reject(error)
             }
@@ -352,8 +358,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
 
           // Reset state and resolve
           this.#setState({ canLeadingExecute: true })
-          this.#resolvePreviousPromise = null
-          resolve(this.store.state.lastResult)
+          resolve(result)
         }, this.#getWait())
       },
     )
@@ -389,9 +394,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     } finally {
       this.asyncRetryers.delete(currentMaybeExecuteCount) // dispose retryer
       this.#setState({
-        isExecuting: false,
-        isPending: false,
-        lastArgs: undefined,
+        isExecuting: this.asyncRetryers.size > 0,
         settleCount: this.store.state.settleCount + 1,
       })
       this.options.onSettled?.(args, this)
