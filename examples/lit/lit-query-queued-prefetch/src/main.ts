@@ -1,12 +1,16 @@
 import {
   QueryClient,
-  createQueryController,
   QueryClientProvider,
+  createQueryController,
   onlineManager,
+  queryOptions,
 } from '@tanstack/lit-query'
 import { LitElement, html, nothing } from 'lit'
-import { createQueuedValue } from '@tanstack/lit-pacer'
-import { TanstackQueryDevtools } from '@tanstack/query-devtools'
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { TanstackQueryDevtoolsPanel } from '@tanstack/query-devtools'
+import { createAsyncQueuer } from '@tanstack/lit-pacer'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import type { TanStackDevtoolsPlugin } from '@tanstack/devtools'
 
 interface Post {
   id: number
@@ -18,66 +22,90 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 10_000 } },
 })
 
-async function fetchPosts(): Promise<Array<Post>> {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts')
-  return response.json()
+async function fetchJson<TData>(url: string, signal: AbortSignal) {
+  const response = await fetch(url, { signal })
+  // fetch only rejects on network errors, so turn 4xx/5xx into query errors
+  if (!response.ok) throw new Error(`Request failed: ${response.status}`)
+  return response.json() as Promise<TData>
 }
 
-async function fetchPost(id: number): Promise<Post> {
-  await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate a slow response.
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${id}`,
-  )
-  return response.json()
-}
+const postsQueryOptions = queryOptions({
+  queryKey: ['posts'],
+  queryFn: ({ signal }) =>
+    fetchJson<Array<Post>>(
+      'https://jsonplaceholder.typicode.com/posts',
+      signal,
+    ),
+})
+
+// Share one options object between the prefetch and the query controller so
+// the key and fetcher can never drift apart
+const postQueryOptions = (postId: number) =>
+  queryOptions({
+    queryKey: ['post', postId],
+    queryFn: async ({ signal }) => {
+      await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate a slow response
+      return fetchJson<Post>(
+        `https://jsonplaceholder.typicode.com/posts/${postId}`,
+        signal,
+      )
+    },
+  })
 
 export class PostList extends LitElement {
-  static properties = {
-    currentHoveredPostId: { state: true },
-    onSelect: { attribute: false },
-  }
+  static properties = { onSelect: { attribute: false } }
   onSelect: (id: number) => void = () => {}
-  currentHoveredPostId: number | null = null
-  private posts = createQueryController(this, {
-    queryKey: ['posts'],
-    queryFn: fetchPosts,
-  })
-  private scheduled = createQueuedValue(this, () => this.currentHoveredPostId, {
-    addItemsTo: 'front', // Newest hovered link is top priority.
-    wait: 100,
-    expirationDuration: 500, // Drop links that have waited too long to be prefetched.
-    onExpire: (item) => console.log('expired', item),
-  })
-  private previousHoveredPostId: number | null = null
+  private posts = createQueryController(this, postsQueryOptions)
+
+  // Each hovered post is queued, and the queue runs at most 2 prefetches at a
+  // time so a fast sweep across the list can't flood the server.
+  private prefetchQueuer = createAsyncQueuer(
+    this,
+    // `query` fetches only when the cached post is missing or stale, so cached
+    // posts leave the queue immediately. The queuer catches a failed prefetch;
+    // the post detail will retry and show the error.
+    (postId: number) => queryClient.query(postQueryOptions(postId)),
+    {
+      key: 'Post Prefetch Queue', // identifies this queuer in the Pacer devtools
+      concurrency: 2, // at most 2 prefetches in flight
+      addItemsTo: 'front', // newest hovered post is top priority
+      expirationDuration: 1000, // drop posts still waiting 1s after they were hovered
+      onExpire: (postId) => {
+        console.log('expired', postId)
+      },
+    },
+    // Re-render when the queue changes to show its status
+    (state) => ({ prefetching: state.activeItems, queued: state.items }),
+  )
+
+  private handleMouseEnter(postId: number) {
+    // skip posts that are already waiting or being prefetched
+    if (this.prefetchQueuer.peekAllItems().includes(postId)) return
+    this.prefetchQueuer.addItem(postId)
+  }
 
   override createRenderRoot() {
     return this
   }
 
-  override updated() {
-    // Prefetch when Pacer commits the hovered post id.
-    const id = this.scheduled[0]()
-    if (id && id !== this.previousHoveredPostId) {
-      this.previousHoveredPostId = id
-      void queryClient.ensureQueryData({
-        queryKey: ['post', id],
-        queryFn: () => fetchPost(id),
-      })
-    }
-  }
-
   override render() {
     const posts = this.posts()
-    if (posts.isLoading) return html`<div>Loading posts...</div>`
+    if (posts.isPending) return html`<div>Loading posts...</div>`
+    if (posts.isError) return html`<div>Could not load posts.</div>`
+    const { prefetching, queued } = this.prefetchQueuer.state
     return html`<div>
       <h2>Posts</h2>
+      <p>
+        Prefetching: ${prefetching.join(', ') || 'none'} | Queued:
+        ${queued.join(', ') || 'none'}
+      </p>
       <ul style="margin: 0; padding: 0">
-        ${posts.data?.map(
+        ${posts.data.map(
           (post) =>
             html`<li style="margin: 2px 0">
               <a
                 href=${`#post-${post.id}`}
-                @mouseenter=${() => (this.currentHoveredPostId = post.id)}
+                @mouseenter=${() => this.handleMouseEnter(post.id)}
                 @click=${() => this.onSelect(post.id)}
                 style="display: block; padding: 4px; cursor: pointer"
                 >${post.title}</a
@@ -94,23 +122,51 @@ export class PostDetail extends LitElement {
   static properties = { postId: { type: Number } }
   postId = 0
   private post = createQueryController(this, () => ({
-    queryKey: ['post', this.postId],
-    queryFn: () => fetchPost(this.postId),
+    ...postQueryOptions(this.postId),
+    // The controller can run before Lit sets the post id
     enabled: this.postId > 0,
   }))
+
   override createRenderRoot() {
     return this
   }
+
   override render() {
     const post = this.post()
-    if (post.isLoading) return html`<div>Loading post...</div>`
+    if (post.isPending) return html`<div>Loading post...</div>`
+    if (post.isError) return html`<div>Could not load post.</div>`
     return html`<div>
-      <h3>${post.data?.title}</h3>
-      <p>${post.data?.body}</p>
+      <h3>${post.data.title}</h3>
+      <p>${post.data.body}</p>
     </div>`
   }
 }
 customElements.define('pacer-post-detail', PostDetail)
+
+// Mount the core Query panel into the TanStack Devtools plugin container
+function queryDevtoolsPlugin(client: QueryClient): TanStackDevtoolsPlugin {
+  let panel: TanstackQueryDevtoolsPanel | undefined
+  return {
+    name: 'TanStack Query',
+    defaultOpen: true,
+    render: (element, { theme }) => {
+      if (!panel) {
+        panel = new TanstackQueryDevtoolsPanel({
+          client,
+          queryFlavor: 'Lit Query',
+          version: '5',
+          onlineManager,
+        })
+        panel.mount(element)
+      }
+      panel.setTheme(theme)
+    },
+    destroy: () => {
+      panel?.unmount()
+      panel = undefined
+    },
+  }
+}
 
 class Example extends LitElement {
   static properties = { selectedPostId: { state: true } }
@@ -118,25 +174,28 @@ class Example extends LitElement {
   selectPost = (id: number) => {
     this.selectedPostId = id
   }
-  private devtools?: TanstackQueryDevtools
+  private devtools?: TanStackDevtoolsCore
   private target?: HTMLDivElement
+
   override createRenderRoot() {
     return this
   }
+
   override connectedCallback() {
     super.connectedCallback()
     if (!import.meta.env.DEV) return
     this.target = document.createElement('div')
     document.body.append(this.target)
-    this.devtools = new TanstackQueryDevtools({
-      client: queryClient,
-      onlineManager,
-      queryFlavor: 'Lit Query',
-      version: '5',
-      initialIsOpen: false,
+    // Open the Pacer and Query panels as tabs to watch prefetches land
+    this.devtools = new TanStackDevtoolsCore({
+      plugins: [
+        { ...pacerDevtoolsPlugin(), defaultOpen: true },
+        queryDevtoolsPlugin(queryClient),
+      ],
     })
     this.devtools.mount(this.target)
   }
+
   override disconnectedCallback() {
     this.devtools?.unmount()
     this.target?.remove()
@@ -144,6 +203,7 @@ class Example extends LitElement {
     this.target = undefined
     super.disconnectedCallback()
   }
+
   override render() {
     return html`<div
       class="App"
@@ -152,16 +212,24 @@ class Example extends LitElement {
       <h1>TanStack Pacer/Query Queued Prefetch Example</h1>
       <p>Hover over a post title to queue up its prefetch</p>
       <p>
-        This example shows how to queue up prefetch requests when the user
-        hovers over a post, processing them in order with a delay between each.
+        Every hovered post joins a queue that runs at most 2 prefetches at once,
+        so sweeping across the list never floods the server. The most recently
+        hovered post goes first, and posts still waiting after 1 second are
+        dropped because you have probably moved on.
       </p>
       <p>
-        The queued query key is processed after a delay to avoid overwhelming
-        the server with too many requests at once.
+        Prefetched posts stay fresh for 10 seconds. Hovering a post after that
+        refreshes it in the background.
       </p>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
         <pacer-post-list .onSelect=${this.selectPost}></pacer-post-list>
-        ${this.selectedPostId ? html`<pacer-post-detail .postId=${this.selectedPostId}></pacer-post-detail>` : nothing}
+        ${
+          this.selectedPostId !== null
+            ? html`<pacer-post-detail
+                .postId=${this.selectedPostId}
+              ></pacer-post-detail>`
+            : nothing
+        }
       </div>
     </div>`
   }

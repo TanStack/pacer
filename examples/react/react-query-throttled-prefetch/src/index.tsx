@@ -1,79 +1,93 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   QueryClient,
   QueryClientProvider,
+  noop,
+  queryOptions,
   useQuery,
+  useQueryClient,
 } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { useThrottledValue } from '@tanstack/react-pacer'
+import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
+import { TanStackDevtools } from '@tanstack/react-devtools'
+import { useThrottler } from '@tanstack/react-pacer'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
 
-// Fetch all posts
-const fetchPosts = async () => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts')
-  return response.json()
+interface Post {
+  id: number
+  title: string
+  body: string
 }
 
-// Fetch a single post
-const fetchPost = async (id: number) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate a slow response
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${id}`,
-  )
-  return response.json()
+async function fetchJson<TData>(url: string, signal: AbortSignal) {
+  const response = await fetch(url, { signal })
+  // fetch only rejects on network errors, so turn 4xx/5xx into query errors
+  if (!response.ok) throw new Error(`Request failed: ${response.status}`)
+  return response.json() as Promise<TData>
 }
+
+const postsQueryOptions = queryOptions({
+  queryKey: ['posts'],
+  queryFn: ({ signal }) =>
+    fetchJson<Array<Post>>(
+      'https://jsonplaceholder.typicode.com/posts',
+      signal,
+    ),
+})
+
+// Share one options object between the prefetch and `useQuery` so the key and
+// fetcher can never drift apart
+const postQueryOptions = (postId: number) =>
+  queryOptions({
+    queryKey: ['post', postId],
+    queryFn: async ({ signal }) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate a slow response
+      return fetchJson<Post>(
+        `https://jsonplaceholder.typicode.com/posts/${postId}`,
+        signal,
+      )
+    },
+  })
 
 function PostList({
   setSelectedPostId,
 }: {
   setSelectedPostId: (id: number) => void
 }) {
-  // Simple query that fetches all posts
-  const { data: posts, isLoading } = useQuery({
-    queryKey: ['posts'],
-    queryFn: fetchPosts,
-  })
+  const queryClient = useQueryClient()
+  const { data: posts, isPending, isError } = useQuery(postsQueryOptions)
 
-  // keep track of the hovered post id that could be prefetched
-  const [currentHoveredPostId, setCurrentHoveredPostId] = React.useState<
-    number | null
-  >(null)
-
-  // throttle the hovered post id to avoid excessive prefetches
-  const [throttledHoveredPostId] = useThrottledValue(
-    currentHoveredPostId,
+  // Throttle the prefetch itself rather than a hovered-id state value, so
+  // hovering never re-renders the list. While the pointer moves, at most one
+  // post is prefetched per window, and the last hovered post is always
+  // prefetched on the trailing edge.
+  const prefetcher = useThrottler(
+    (postId: number) => {
+      // `query` fetches only when the cached post is missing or stale. A failed
+      // prefetch is ignored here; `PostDetail` will retry and show the error.
+      queryClient.query(postQueryOptions(postId)).catch(noop)
+    },
     {
+      key: 'Post Prefetch Throttler', // identifies this throttler in the Pacer devtools
       wait: 100, // adjust this value to see the difference
     },
-    // Alternative to throttler.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
+    // Alternative to prefetcher.Subscribe: pass a selector as 3rd arg to cause re-renders and subscribe to state
     // (state) => state,
   )
 
-  // perform the prefetch when the throttled hovered post id changes
-  useEffect(() => {
-    if (throttledHoveredPostId) {
-      queryClient.ensureQueryData({
-        queryKey: ['post', throttledHoveredPostId],
-        queryFn: () => fetchPost(throttledHoveredPostId),
-      })
-    }
-  }, [throttledHoveredPostId])
-
-  const handleMouseEnter = (postId: number) => {
-    setCurrentHoveredPostId(postId) // update the hovered post id
-  }
-
-  if (isLoading) return <div>Loading posts...</div>
+  if (isPending) return <div>Loading posts...</div>
+  if (isError) return <div>Could not load posts.</div>
 
   return (
     <div>
       <h2>Posts</h2>
-      <ul style={{ margin: 0, padding: 0 }}>
-        {posts?.map((post: { id: number; title: string }) => (
+      {/* Leaving the list cancels the pending trailing prefetch */}
+      <ul style={{ margin: 0, padding: 0 }} onMouseLeave={prefetcher.cancel}>
+        {posts.map((post) => (
           <li key={post.id} style={{ margin: '2px 0' }}>
             <a
               href={`#post-${post.id}`}
-              onMouseEnter={() => handleMouseEnter(post.id)}
+              onMouseEnter={() => prefetcher.maybeExecute(post.id)}
               onClick={() => setSelectedPostId(post.id)}
               style={{ display: 'block', padding: '4px', cursor: 'pointer' }}
             >
@@ -87,17 +101,15 @@ function PostList({
 }
 
 function PostDetail({ postId }: { postId: number }) {
-  const { data: post, isLoading } = useQuery({
-    queryKey: ['post', postId],
-    queryFn: () => fetchPost(postId),
-  })
+  const { data: post, isPending, isError } = useQuery(postQueryOptions(postId))
 
-  if (isLoading) return <div>Loading post...</div>
+  if (isPending) return <div>Loading post...</div>
+  if (isError) return <div>Could not load post.</div>
 
   return (
     <div>
-      <h3>{post?.title}</h3>
-      <p>{post?.body}</p>
+      <h3>{post.title}</h3>
+      <p>{post.body}</p>
     </div>
   )
 }
@@ -115,18 +127,20 @@ function App() {
       <h1>TanStack Pacer/Query Throttled Prefetch Example</h1>
       <p>Hover over a post title to prefetch its content</p>
       <p>
-        This example shows how to prefetch a query when the user hovers over a
-        post.
+        The prefetch is throttled, so it runs at most once every 100ms while the
+        pointer moves, plus once for the post you end on. Sweeping across the
+        list warms some of the posts you pass over. Use the debounced example
+        instead if you only want the post the pointer rests on.
       </p>
       <p>
-        The throttled query key is created after a throttle to avoid excessive
-        prefetches.
+        Prefetched posts stay fresh for 10 seconds. Hovering a post after that
+        refreshes it in the background.
       </p>
       <div
         style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}
       >
         <PostList setSelectedPostId={setSelectedPostId} />
-        {selectedPostId && <PostDetail postId={selectedPostId} />}
+        {selectedPostId !== null && <PostDetail postId={selectedPostId} />}
       </div>
     </div>
   )
@@ -144,6 +158,16 @@ const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <QueryClientProvider client={queryClient}>
     <App />
-    <ReactQueryDevtools initialIsOpen={false} />
+    {/* Open the Pacer and Query panels as tabs to watch prefetches land */}
+    <TanStackDevtools
+      plugins={[
+        { ...pacerDevtoolsPlugin(), defaultOpen: true },
+        {
+          name: 'TanStack Query',
+          render: <ReactQueryDevtoolsPanel />,
+          defaultOpen: true,
+        },
+      ]}
+    />
   </QueryClientProvider>,
 )

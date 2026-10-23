@@ -1,3 +1,4 @@
+import { expectPacerDevtools } from '../../../../../tests/e2e/helpers/devtools'
 import { expect, test } from '../../../../../tests/e2e/helpers/fixtures'
 import type { Page } from '@playwright/test'
 
@@ -29,12 +30,16 @@ async function openExample(page: Page, exampleUrl: string) {
     'https://jsonplaceholder.typicode.com/posts',
   )
   await page.goto(exampleUrl)
+  // Let frameworks that run effects after a paint, such as Preact, catch up.
+  await page.clock.runFor(17)
   await (await listResponse).finished()
   // Flush Query's notification scheduled after the mocked fetch resolves.
   await page.clock.runFor(1)
   await expect(
     page.getByRole('link', { name: 'Alpha post', exact: true }),
   ).toBeVisible()
+  // Let frameworks that run effects after a paint, such as Preact, catch up.
+  await page.clock.runFor(17)
   return requestedPosts
 }
 
@@ -59,8 +64,6 @@ test('prefetches the leading and latest trailing hover', async ({
   exampleUrl,
 }) => {
   const requestedPosts = await openExample(page, exampleUrl)
-  // Let the initial null value's throttle window finish.
-  await page.clock.runFor(100)
   await page.getByRole('link', { name: 'Alpha post', exact: true }).hover()
   await page.clock.runFor(1)
   await page.getByRole('link', { name: 'Beta post', exact: true }).hover()
@@ -76,4 +79,46 @@ test('prefetches the leading and latest trailing hover', async ({
   await expect(page.getByText('Gamma content', { exact: true })).toBeVisible()
   await page.clock.runFor(1100)
   expect(requestedPosts).toEqual([1, 3])
+})
+
+test('cancels the trailing prefetch when the pointer leaves the list', async ({
+  page,
+  exampleUrl,
+}) => {
+  const requestedPosts = await openExample(page, exampleUrl)
+  await page.getByRole('link', { name: 'Alpha post', exact: true }).hover()
+  await page.clock.runFor(1)
+  await page.getByRole('link', { name: 'Beta post', exact: true }).hover()
+  await page.clock.runFor(1)
+  await page.getByRole('heading', { name: 'Posts', exact: true }).hover()
+  await page.clock.runFor(100)
+  await page.clock.runFor(1000)
+  await expect.poll(() => requestedPosts).toEqual([1])
+  await page.clock.runFor(1100)
+  expect(requestedPosts).toEqual([1])
+})
+
+test('shows the prefetcher in the Pacer devtools next to the Query panel', async ({
+  page,
+  exampleUrl,
+}) => {
+  await openExample(page, exampleUrl)
+  const titles = ['Alpha post', 'Beta post']
+  let hovered = 0
+  await expectPacerDevtools(
+    page,
+    async () => {
+      // Hover a different post each time so the throttled prefetcher updates.
+      const title = titles[hovered++ % titles.length]!
+      await page.getByRole('link', { name: title, exact: true }).hover()
+      await page.clock.runFor(1)
+    },
+    'Post Prefetch Throttler',
+  )
+  await page
+    .getByRole('button', { name: 'TanStack Query', exact: true })
+    .click()
+  await expect(
+    page.getByRole('button', { name: 'Query key ["posts"]', exact: true }),
+  ).toBeVisible()
 })
