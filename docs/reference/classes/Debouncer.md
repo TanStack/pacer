@@ -115,7 +115,7 @@ Defined in: [debouncer.ts:143](https://github.com/TanStack/pacer/blob/main/packa
 cancel(): void;
 ```
 
-Defined in: [debouncer.ts:285](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L285)
+Defined in: [debouncer.ts:287](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L287)
 
 Cancels any pending execution
 
@@ -131,7 +131,7 @@ Cancels any pending execution
 flush(): void;
 ```
 
-Defined in: [debouncer.ts:268](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L268)
+Defined in: [debouncer.ts:270](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L270)
 
 Processes the current pending execution immediately
 
@@ -170,7 +170,7 @@ If a call is already in progress, it will be queued
 reset(): void;
 ```
 
-Defined in: [debouncer.ts:296](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L296)
+Defined in: [debouncer.ts:298](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/debouncer.ts#L298)
 
 Resets the debouncer state to its default values
 
