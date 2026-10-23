@@ -22,6 +22,8 @@ pending queue                 active work, concurrency: 2
 
 `concurrency` limits automatically scheduled active items. Its default is `1`. With `wait: 0`, a free slot is filled after an item settles. With a positive `wait`, the queue waits that long after a settled item before checking for more work.
 
+An item added while another task is active can start immediately when a concurrency slot is free and no wait timer is armed. Adding an item while a wait timer is armed preserves that delay.
+
 The queue controls start order. With concurrency greater than `1`, completion order depends on the work itself.
 
 ## Quick start
@@ -179,11 +181,13 @@ const queue = new AsyncQueuer(
 queue.abort()
 ```
 
-When multiple executions overlap, pass an `executionCount` to `getAbortSignal()` when you need a specific execution's signal.
+`getAbortSignal()` returns the latest active execution's signal. Capture it before awaiting work. When multiple executions overlap, pass an `executionCount` to select a specific execution started since the latest reset.
 
 ### Resetting safely
 
-`reset()` restores default state, including an empty pending queue and a running status. It does not clear the queue's wait timers or guarantee that active underlying work stops. Use explicit lifecycle methods first:
+`reset()` clears pending items and counters and restores a running status. Active executions continue, remain abortable, and keep their concurrency slots until they settle. Their completions contribute to the reset outcome counters. Existing wait timers retain their delays.
+
+Explicit `getAbortSignal(executionCount)` lookups start over after reset. Previously captured signals remain valid, and the default lookup still reaches the latest active execution from before reset. Use explicit lifecycle methods first when you need to stop and abort work:
 
 ```ts
 queue.stop()

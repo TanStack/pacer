@@ -172,7 +172,11 @@ When executions overlap, pass an `executionCount` to `getAbortSignal()` when you
 
 ### Resetting safely
 
-`reset()` restores default state, but it does not clear a scheduled timer or guarantee that active underlying work stops. Use the lifecycle methods first when a complete cleanup is required:
+`reset()` resets counters and collected items. Active batches continue, remain abortable, and keep `isExecuting` true until they settle. Their completions contribute to the new outcome counters. A reset does not clear a scheduled timer.
+
+Explicit `getAbortSignal(executionCount)` lookups refer to batches started since the latest reset. Capture a signal before resetting if you need to retain a specific older batch's signal. Calling `getAbortSignal()` without a count returns the latest active batch's signal, including a batch started before reset.
+
+Use the lifecycle methods first when a complete cleanup is required:
 
 ```ts
 batcher.cancel()

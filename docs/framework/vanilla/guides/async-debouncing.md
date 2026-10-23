@@ -59,6 +59,8 @@ Promise B ───────────────────────�
 
 The replaced call resolves immediately with the debouncer's current `lastResult`, which is often `undefined` before the first successful execution. It does not wait for the newer call. Treat the Promise returned by the latest call as the owner of the pending result.
 
+Once a trailing execution starts, a newer call schedules separate work. The running caller keeps its own Promise and result. Completing that execution does not discard the newer pending arguments. `isExecuting` remains true while any execution is active.
+
 If you need every invocation to execute and produce its own result, use an [Async Queue](./async-queuing.md) instead.
 
 ## Leading and trailing execution
@@ -131,7 +133,11 @@ search.abort()
 
 Calling `abort()` without using the signal stops retry management but cannot force an arbitrary Promise to stop.
 
+`getAbortSignal()` returns the signal for the latest active execution. A newer call that is still waiting does not replace that signal. Capture the signal before the first `await`, or pass the execution's `maybeExecuteCount` to select it explicitly.
+
 ### Resetting safely
+
+Active executions remain abortable across `reset()` and keep `isExecuting` true until they settle. Their completions contribute to the reset outcome counters. Explicit `getAbortSignal(maybeExecuteCount)` lookups start over after reset; previously captured signals remain valid. The default lookup still includes active executions started before reset.
 
 `reset()` restores default state, but it does not clear a scheduled trailing timeout or guarantee that active work stops. Use the lifecycle methods first when you need a complete cleanup:
 

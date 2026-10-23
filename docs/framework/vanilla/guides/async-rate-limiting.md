@@ -136,7 +136,11 @@ When several executions overlap, `getAbortSignal()` without an argument refers t
 
 ### Resetting
 
-`reset()` clears the rate-limit timestamps and restores default state. It does not guarantee that active underlying work stops, so abort first when a full cleanup is required:
+`reset()` clears counters and the rate-limit timestamps. Active executions continue, remain abortable, and keep `isExecuting` true until they settle. Their completions contribute to the reset outcome counters.
+
+Explicit `getAbortSignal(maybeExecuteCount)` lookups start over after reset. Previously captured signals remain valid. Calling `getAbortSignal()` without a count returns the latest active execution's signal, including an execution started before reset. A newer rejected call does not replace that signal. Capture a signal before awaiting work when you need to retain it for a specific execution.
+
+Abort first when a full cleanup is required:
 
 ```ts
 limiter.abort()
