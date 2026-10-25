@@ -14,8 +14,12 @@ type PacerDevtoolsPanelComponent = (
 
 function resolvePanelProps(props?: PacerDevtoolsSolidInit): DevtoolsPanelProps {
   return {
-    theme: props?.theme ?? 'dark',
-    devtoolsOpen: props?.devtoolsOpen ?? false,
+    get theme() {
+      return props?.theme ?? 'dark'
+    },
+    get devtoolsOpen() {
+      return props?.devtoolsOpen ?? false
+    },
   }
 }
 
