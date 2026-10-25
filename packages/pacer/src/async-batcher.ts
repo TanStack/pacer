@@ -416,7 +416,7 @@ export class AsyncBatcher<TValue> {
     } finally {
       this.asyncRetryers.delete(currentExecutionCount) // dispose retryer
       this.#setState({
-        isExecuting: false,
+        isExecuting: this.asyncRetryers.size > 0,
         settleCount: this.store.state.settleCount + 1,
       })
       this.options.onSettled?.(batch, this)
