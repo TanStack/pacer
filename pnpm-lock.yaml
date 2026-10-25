@@ -237,7 +237,7 @@ importers:
         version: 0.3.4(typescript@6.0.3)
       '@testing-library/jest-dom':
         specifier: ^7.0.1
-        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))
+        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))
       '@tsrx/prettier-plugin':
         specifier: ^0.6.1
         version: 0.6.1(@typescript-eslint/types@8.66.0)(prettier@3.9.9)
@@ -251,8 +251,8 @@ importers:
         specifier: ^4.4.1
         version: 4.4.1(@typescript-eslint/eslint-plugin@8.58.0(@typescript-eslint/parser@8.58.0(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))
       happy-dom:
-        specifier: ^20.14.5
-        version: 20.14.5
+        specifier: ^21.0.0
+        version: 21.0.4
       knip:
         specifier: ^6.39.0
         version: 6.39.0
@@ -297,7 +297,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
       zone.js:
         specifier: ~0.16.3
         version: 0.16.3
@@ -1066,7 +1066,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1081,7 +1081,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/asyncDebounce:
     dependencies:
@@ -1121,7 +1121,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1136,7 +1136,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/asyncRateLimit:
     dependencies:
@@ -1176,7 +1176,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1191,7 +1191,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/asyncRetry:
     dependencies:
@@ -1231,7 +1231,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1246,7 +1246,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/asyncThrottle:
     dependencies:
@@ -1286,7 +1286,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1301,7 +1301,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/batch:
     dependencies:
@@ -1341,7 +1341,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1356,7 +1356,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/debounce:
     dependencies:
@@ -1396,7 +1396,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1411,7 +1411,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectAsyncBatcher:
     dependencies:
@@ -1451,7 +1451,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1466,7 +1466,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectAsyncDebouncer:
     dependencies:
@@ -1506,7 +1506,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1521,7 +1521,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectAsyncQueuer:
     dependencies:
@@ -1561,7 +1561,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1576,7 +1576,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectAsyncQueuerItems:
     dependencies:
@@ -1616,7 +1616,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1631,7 +1631,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectAsyncRateLimiter:
     dependencies:
@@ -1671,7 +1671,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1686,7 +1686,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectAsyncThrottler:
     dependencies:
@@ -1726,7 +1726,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1741,7 +1741,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectBatcher:
     dependencies:
@@ -1781,7 +1781,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1796,7 +1796,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectDebouncedSignal:
     dependencies:
@@ -1836,7 +1836,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1851,7 +1851,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectDebouncedValue:
     dependencies:
@@ -1891,7 +1891,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1906,7 +1906,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
 
   examples/angular/injectDebouncer:
     dependencies:
@@ -1946,7 +1946,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -1961,7 +1961,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectQueuedSignal:
     dependencies:
@@ -2001,7 +2001,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2016,7 +2016,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectQueuedValue:
     dependencies:
@@ -2056,7 +2056,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2071,7 +2071,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
 
   examples/angular/injectQueuer:
     dependencies:
@@ -2111,7 +2111,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2126,7 +2126,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectQueuerItems:
     dependencies:
@@ -2166,7 +2166,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2181,7 +2181,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectRateLimitedSignal:
     dependencies:
@@ -2221,7 +2221,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2236,7 +2236,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectRateLimitedValue:
     dependencies:
@@ -2276,7 +2276,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2291,7 +2291,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
 
   examples/angular/injectRateLimiter:
     dependencies:
@@ -2331,7 +2331,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2346,7 +2346,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectThrottledSignal:
     dependencies:
@@ -2386,7 +2386,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2401,7 +2401,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/injectThrottledValue:
     dependencies:
@@ -2441,7 +2441,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2456,7 +2456,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
 
   examples/angular/injectThrottler:
     dependencies:
@@ -2496,7 +2496,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2511,7 +2511,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/queue:
     dependencies:
@@ -2551,7 +2551,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2566,7 +2566,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/rateLimit:
     dependencies:
@@ -2606,7 +2606,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2621,7 +2621,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/angular/throttle:
     dependencies:
@@ -2661,7 +2661,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.2.1
         version: 22.2.1(@types/node@26.6.4)(chokidar@5.0.0)
@@ -2676,7 +2676,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^5.0.3
-        version: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/ember/asyncBatch:
     dependencies:
@@ -8353,7 +8353,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/asyncDebounce:
     dependencies:
@@ -8369,7 +8369,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/asyncRateLimit:
     dependencies:
@@ -8385,7 +8385,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/asyncThrottle:
     dependencies:
@@ -8401,7 +8401,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/batch:
     dependencies:
@@ -8417,7 +8417,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createAsyncBatcher:
     dependencies:
@@ -8433,7 +8433,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createAsyncDebouncer:
     dependencies:
@@ -8449,7 +8449,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createAsyncQueuer:
     dependencies:
@@ -8465,7 +8465,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createAsyncRateLimiter:
     dependencies:
@@ -8481,7 +8481,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createAsyncThrottler:
     dependencies:
@@ -8497,7 +8497,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createBatcher:
     dependencies:
@@ -8513,7 +8513,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createDebouncedSignal:
     dependencies:
@@ -8529,7 +8529,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createDebouncedValue:
     dependencies:
@@ -8545,7 +8545,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createDebouncer:
     dependencies:
@@ -8561,7 +8561,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createQueuedSignal:
     dependencies:
@@ -8583,7 +8583,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createQueuer:
     dependencies:
@@ -8605,7 +8605,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createRateLimitedSignal:
     dependencies:
@@ -8621,7 +8621,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createRateLimitedValue:
     dependencies:
@@ -8637,7 +8637,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createRateLimiter:
     dependencies:
@@ -8653,7 +8653,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createThrottledSignal:
     dependencies:
@@ -8669,7 +8669,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createThrottledValue:
     dependencies:
@@ -8685,7 +8685,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/createThrottler:
     dependencies:
@@ -8701,7 +8701,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/debounce:
     dependencies:
@@ -8717,7 +8717,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/queue:
     dependencies:
@@ -8739,7 +8739,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/rateLimit:
     dependencies:
@@ -8755,7 +8755,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/solid/throttle:
     dependencies:
@@ -8771,7 +8771,7 @@ importers:
         version: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   examples/svelte/asyncBatch:
     dependencies:
@@ -10550,10 +10550,10 @@ importers:
     devDependencies:
       '@analogjs/vite-plugin-angular':
         specifier: ^2.8.0
-        version: 2.8.0(@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1))(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.2)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
+        version: 2.8.0(@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1))(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.2)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
       '@angular/build':
         specifier: ^22.2.1
-        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
+        version: 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
       '@angular/common':
         specifier: ^22.2.1
         version: 22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2)
@@ -10762,7 +10762,7 @@ importers:
         version: 0.23.0(@volar/typescript@2.4.28(typescript@6.0.3))(@vue/language-core@3.3.12)(oxc-resolver@11.24.2)(publint@0.3.25)(typescript@6.0.3)(vue-tsc@3.3.12(typescript@6.0.3))
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   packages/pacer-lite:
     devDependencies:
@@ -10893,7 +10893,7 @@ importers:
         version: 1.9.15
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   packages/solid-pacer-devtools:
     dependencies:
@@ -10912,7 +10912,7 @@ importers:
         version: 3.2.3
       vite-plugin-solid:
         specifier: ^2.11.14
-        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+        version: 2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
   packages/svelte-pacer:
     dependencies:
@@ -10994,7 +10994,7 @@ importers:
         version: 6.0.9(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.43(typescript@6.0.3))
       eslint-plugin-vue:
         specifier: ^10.11.1
-        version: 10.11.1(@typescript-eslint/parser@8.58.0(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(vue-eslint-parser@10.4.1(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1))
+        version: 10.11.1(@typescript-eslint/parser@8.58.0(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(vue-eslint-parser@10.4.1(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1))
       vue:
         specifier: ^3.5.43
         version: 3.5.43(typescript@6.0.3)
@@ -15315,133 +15315,157 @@ packages:
     resolution: {integrity: sha512-Oc2KInVkPfUjEB4PeV6X0NvIoyYTzDe/WmqFrTwBqKs6YKnz4A7XwWQvJTb7M0rLz9a6WgpUUiiS5QKaCi4O/g==}
     cpu: [arm64]
     os: [android]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-darwin-arm64@0.10.2':
     resolution: {integrity: sha512-3H7eNPIHJndUJXZ4QUGBPq1zC6RGcUZfm7bymJes+/N7wTVWUn1bxZ9JcozYHpkWQNm9f23G8YWbaHD9aYH72A==}
     cpu: [arm64]
     os: [darwin]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-darwin-x64@0.10.2':
     resolution: {integrity: sha512-AJOUpR2s3LF9AWiiub/Uyc/UoXNTWcq8hK3cVI6fUSXtwh34dG21J6hRuNlO6JVJFTo4o3ScVvZOrh/YFfUEAA==}
     cpu: [x64]
     os: [darwin]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-freebsd-x64@0.10.2':
     resolution: {integrity: sha512-ms7DcZu87u5CiK/wMwvpKAvAmtaqKjCQIXNweMLypG6qbuiaOMQf1jpbB5+j46xBcgCovo8TQMcv0bCQLKIL9w==}
     cpu: [x64]
     os: [freebsd]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm-gnu@0.10.2':
     resolution: {integrity: sha512-xJDpYAsKV5+eaiBhTYl05fvT6sst4PsCeuIFMRu9b0/WCSrNQPfCDtAQ5/MS6xNpsdujdZEPR+gmfWk3ZG5i3A==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm-musl@0.10.2':
     resolution: {integrity: sha512-qfTkgd7AEx61l4K9VtXWCGTxc/fmXJ4ZheDz3i+/AAJUtg4sa0bPrc0VBxPggB/rayR8Z3+JfrBItuyanBJJ9Q==}
     cpu: [arm]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm64-gnu@0.10.2':
     resolution: {integrity: sha512-4e6Mifm/4UdjtU3D8mATIrvgP+xEiH8xtQOjd0zpd72XKWT7ug3sdyhq2utkkZFP6BvYp7SgZrI+aR4VeIOHdw==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm64-musl@0.10.2':
     resolution: {integrity: sha512-RdsJrUfDYFVV3JOmWFUWwSu31fa1APn12xDeIKxgl/YWxrabwtxsDBNjF2561c7tmcbiewdCUvngqRs8AyGVLA==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-x64-gnu@0.10.2':
     resolution: {integrity: sha512-mVzWimEPPreaPyXIUvxsHoJzvO7ckZ5j0LgQFHz04zQIRwt9A9T2hA7K5/jYjJKkMxWG/U2VjhGNwVhtyU+uqg==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-x64-musl@0.10.2':
     resolution: {integrity: sha512-Y77fyISurmr2mvO1yeq3u+x/WJbACgPR4w+lzEVx30ViCxZzIGrZPRN1yEdZ9xUNPNsIO5thBHIdRNG+UGUG+Q==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-win32-arm64@0.10.2':
     resolution: {integrity: sha512-1+tGLyG0u5YYy0lev4ck7/0sd8xJ9SZde0dLut7qLDPZV5WVTV8x6OxNXUne/PGuHZyO1vK+txPQzzHOyXHGSw==}
     cpu: [arm64]
     os: [win32]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-win32-x64@0.10.2':
     resolution: {integrity: sha512-8a2SExRohRbwC0MY4VpOF0/RSckrJ2ASZqAor5/RYSJJaeadR93n10gZzcKT6pY9ukiSOIZCRKVRD2tH73T0qA==}
     cpu: [x64]
     os: [win32]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-parser/binding-android-arm64@0.10.2':
     resolution: {integrity: sha512-2VPBU9fRGRAQ2xPAvghnec3oou5Nrxm2Bezhf+13UMspAxQSkF/32r+ySKXSwIPA5/RivumDJDxAxc301Sgicw==}
     cpu: [arm64]
     os: [android]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-darwin-arm64@0.10.2':
     resolution: {integrity: sha512-LD+PMZE51tCYTOss5HBkm3/AE39MvcMDBfWJx7A4yDcjfNbAQDnHZKtzSOuqrswx+TQHY0ws5xn6+fWOwtmfBA==}
     cpu: [arm64]
     os: [darwin]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-darwin-x64@0.10.2':
     resolution: {integrity: sha512-mmZ8cND+AoIIMRERyMinlg5ApHxP23B9jH2B5wT7T+dliPa9rubLxneB/SUjFwyUjGaFnB5G7t4YvpfbO5zbkQ==}
     cpu: [x64]
     os: [darwin]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-freebsd-x64@0.10.2':
     resolution: {integrity: sha512-gVIjaaIddbRfAhHlC8N809wQWml7mxfSVnzaLtzGXObTeFTPAg/YVnQXt1UOhPM1ah5eG/8Y0RUlNpB4GVe7eQ==}
     cpu: [x64]
     os: [freebsd]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm-gnu@0.10.2':
     resolution: {integrity: sha512-q/XPPQQAPdlw05aPj30ygBhekmQryGOwxVraBgApjKK8yY1kNQgqq6XCYLF1WHSee+lhxclrTO7W0/bt7dR1GA==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm-musl@0.10.2':
     resolution: {integrity: sha512-A+Cb0I1hFF4wilTQpWs79k1aNnj4B2tkrHx3zsuUNF9BtVY2zPZ4yeQEM/zjXrS/qJlNMZVK9NrWJjwdpnTrfg==}
     cpu: [arm]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm64-gnu@0.10.2':
     resolution: {integrity: sha512-aGNSzqIqqphFwAdIFwVvKIyXD1Iy3CxrEJVIZAT87Ecyi4vCmmDD2v2l9h+Gd3/wSy3JZlOI792LJbKAjyy9rQ==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm64-musl@0.10.2':
     resolution: {integrity: sha512-Ddl1sF0rtuCXyHGSOV6dcmdx+ETv1iD+IVFqQuOjzkJZWclxJxdBWX6ZJMRtTiGqGUTbqLEKiTXxpR/Bvqk+2A==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-x64-gnu@0.10.2':
     resolution: {integrity: sha512-/nlcpR6IF5U+0m5L9wvAIXeQa2DT+BXuvqKDsTcOTlcc0B4dHNyqE5hTXsS4hAyimpy2ZK8A1zMNF5hTrjg2cg==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-x64-musl@0.10.2':
     resolution: {integrity: sha512-GX80dxTQD/M/OryyuxJcFzFENzry3cDFPvCFTyWogNWQH3fSHfMrNfpwpl1YzMos1eV9NygK5GSDG7VArQlb4w==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-win32-arm64@0.10.2':
     resolution: {integrity: sha512-agePQBV4VHewiGU0ACSjscZ/hJd283f9JfAF19Gf1rI5+wy5tTgx4GS36i0b3xim15AQ4RCpDRosEvhLZ4zAOw==}
     cpu: [arm64]
     os: [win32]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-win32-x64@0.10.2':
     resolution: {integrity: sha512-s8//CMpgL5+y1lvDCdyh1rwGI5+ytDJywFJRe1vnhI7n0j+caxshNucurikYLLVeQ2SYFex6aPrzgQxkabBQRA==}
     cpu: [x64]
     os: [win32]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-toolchain/types@0.10.2':
     resolution: {integrity: sha512-sSeo4SSSToiS+sSD+bwn/s94EEcaLJ7tG5LCp8gFYC1G5VzxzX7fqB6m9RU1yMD8KTpu6zdU/I1NlQf8hVBJ9Q==}
@@ -17063,8 +17087,8 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@20.14.5:
-    resolution: {integrity: sha512-x/RzkpWO40bTjIoT30iQtt64FLLmH/iRcUCN2X//bLx7H3ifkdfPXyqsro/OYtqzIAhiLMMA7mmiOR9C3NOKjQ==}
+  happy-dom@21.0.4:
+    resolution: {integrity: sha512-tFm+GaLBgo6o0awHnvHaNoraVo27qJ+2tZEtZ+cIa08hXbeitrxAJajLI05hsUy/2/YTKcUjQYzHe5mCcraLBw==}
     engines: {node: '>=20.0.0'}
 
   has-bigints@1.1.0:
@@ -19717,12 +19741,6 @@ packages:
       '@vue/composition-api':
         optional: true
 
-  vue-eslint-parser@10.4.0:
-    resolution: {integrity: sha512-Vxi9pJdbN3ZnVGLODVtZ7y4Y2kzAAE2Cm0CZ3ZDRvydVYxZ6VrnBhLikBsRS+dpwj4Jv4UCv21PTEwF5rQ9WXg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-
   vue-eslint-parser@10.4.1:
     resolution: {integrity: sha512-Gk6gRDj0n/fkRa3C3l0bBheoBckUq/Rs0F/TvMWIS6nzzx67amAViMe9CkNgsP2tXyQONvGiHQESHwFtZ3aYDA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -19983,14 +20001,14 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
 
-  ? '@analogjs/vite-plugin-angular@2.8.0(@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1))(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.2)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))'
+  ? '@analogjs/vite-plugin-angular@2.8.0(@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1))(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.2)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))'
   : dependencies:
       magic-string: 0.30.21
       obug: 2.2.1
       oxc-parser: 0.121.0(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.2)
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@angular/build': 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
+      '@angular/build': 22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)
       vite: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@emnapi/core'
@@ -20024,7 +20042,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)':
+  '@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.25)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2202.1(chokidar@5.0.0)
@@ -20064,7 +20082,7 @@ snapshots:
       lmdb: 3.5.6
       postcss: 8.5.25
       rollup: 4.60.1
-      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
     transitivePeerDependencies:
       - '@types/node'
       - '@vitejs/devtools'
@@ -20077,7 +20095,7 @@ snapshots:
       - tsx
       - yaml
 
-  '@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)':
+  '@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@7.2.0))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@7.2.0)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0)))(yaml@2.9.0)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2202.1(chokidar@5.0.0)
@@ -20117,7 +20135,7 @@ snapshots:
       lmdb: 3.5.6
       postcss: 8.5.28
       rollup: 4.60.1
-      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0))
+      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0))
     transitivePeerDependencies:
       - '@types/node'
       - '@vitejs/devtools'
@@ -20130,7 +20148,7 @@ snapshots:
       - tsx
       - yaml
 
-  '@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)':
+  '@angular/build@22.2.1(@angular/compiler-cli@22.2.1(@angular/compiler@22.2.1)(typescript@6.0.3))(@angular/compiler@22.2.1)(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@types/node@26.6.4)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(jiti@2.7.0)(postcss@8.5.28)(rollup@4.60.1)(supports-color@8.1.1)(terser@5.51.2)(tslib@2.8.1)(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)))(yaml@2.9.1)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2202.1(chokidar@5.0.0)
@@ -20170,7 +20188,7 @@ snapshots:
       lmdb: 3.5.6
       postcss: 8.5.28
       rollup: 4.60.1
-      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
+      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
     transitivePeerDependencies:
       - '@types/node'
       - '@vitejs/devtools'
@@ -23470,7 +23488,7 @@ snapshots:
       eslint-plugin-n: 17.24.0(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(typescript@6.0.3)
       globals: 17.4.0
       typescript-eslint: 8.58.0(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      vue-eslint-parser: 10.4.0(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      vue-eslint-parser: 10.4.1(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - '@typescript-eslint/utils'
       - eslint-import-resolver-node
@@ -23672,7 +23690,7 @@ snapshots:
       lz-string: 1.5.0
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))':
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))':
     dependencies:
       '@adobe/css-tools': 4.4.4
       '@testing-library/dom': 10.4.1
@@ -23682,9 +23700,9 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
     optionalDependencies:
-      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
 
-  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))':
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))':
     dependencies:
       '@adobe/css-tools': 4.4.4
       '@testing-library/dom': 10.4.1
@@ -23694,7 +23712,7 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
     optionalDependencies:
-      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
+      vitest: 5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
     optional: true
 
   '@testing-library/preact@3.2.4(preact@11.0.1)':
@@ -23935,6 +23953,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@typescript-eslint/parser@8.58.0(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)':
+    dependencies:
+      '@typescript-eslint/scope-manager': 8.58.0
+      '@typescript-eslint/types': 8.58.0
+      '@typescript-eslint/typescript-estree': 8.58.0(supports-color@8.1.1)(typescript@6.0.3)
+      '@typescript-eslint/visitor-keys': 8.58.0
+      debug: 4.4.3(supports-color@8.1.1)
+      eslint: 10.12.0(jiti@2.7.0)(supports-color@8.1.1)
+      typescript: 6.0.3
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
   '@typescript-eslint/parser@8.71.0(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.71.0
@@ -23968,6 +23999,16 @@ snapshots:
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
+
+  '@typescript-eslint/project-service@8.58.0(supports-color@8.1.1)(typescript@6.0.3)':
+    dependencies:
+      '@typescript-eslint/tsconfig-utils': 8.71.0(typescript@6.0.3)
+      '@typescript-eslint/types': 8.71.0
+      debug: 4.4.3(supports-color@8.1.1)
+      typescript: 6.0.3
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
 
   '@typescript-eslint/project-service@8.66.0(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
@@ -24092,6 +24133,22 @@ snapshots:
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
+
+  '@typescript-eslint/typescript-estree@8.58.0(supports-color@8.1.1)(typescript@6.0.3)':
+    dependencies:
+      '@typescript-eslint/project-service': 8.58.0(supports-color@8.1.1)(typescript@6.0.3)
+      '@typescript-eslint/tsconfig-utils': 8.58.0(typescript@6.0.3)
+      '@typescript-eslint/types': 8.58.0
+      '@typescript-eslint/visitor-keys': 8.58.0
+      debug: 4.4.3(supports-color@8.1.1)
+      minimatch: 10.2.6
+      semver: 7.8.5
+      tinyglobby: 0.2.17
+      ts-api-utils: 2.5.0(typescript@6.0.3)
+      typescript: 6.0.3
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
 
   '@typescript-eslint/typescript-estree@8.66.0(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
@@ -25992,7 +26049,7 @@ snapshots:
       '@stylistic/eslint-plugin': 5.10.0(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))
       '@typescript-eslint/parser': 8.71.0(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
 
-  eslint-plugin-vue@10.11.1(@typescript-eslint/parser@8.58.0(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(vue-eslint-parser@10.4.1(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)):
+  eslint-plugin-vue@10.11.1(@typescript-eslint/parser@8.58.0(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(vue-eslint-parser@10.4.1(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)):
     dependencies:
       '@eslint-community/eslint-utils': 4.10.1(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))
       eslint: 10.12.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -26003,7 +26060,7 @@ snapshots:
       vue-eslint-parser: 10.4.1(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)
       xml-name-validator: 5.0.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.58.0(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/parser': 8.58.0(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
 
   eslint-scope@8.4.0:
     dependencies:
@@ -26497,7 +26554,7 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@20.14.5:
+  happy-dom@21.0.4:
     dependencies:
       '@types/node': 26.6.4
       '@types/whatwg-mimetype': 3.0.2
@@ -29339,7 +29396,7 @@ snapshots:
 
   verkit@0.4.1: {}
 
-  vite-plugin-solid@2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
+  vite-plugin-solid@2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
       '@types/babel__core': 7.20.5
@@ -29350,11 +29407,11 @@ snapshots:
       vite: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vitefu: 1.1.2(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
     optionalDependencies:
-      '@testing-library/jest-dom': 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))
+      '@testing-library/jest-dom': 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-solid@2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
+  vite-plugin-solid@2.11.14(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))))(solid-js@1.9.15)(supports-color@7.2.0)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
       '@types/babel__core': 7.20.5
@@ -29365,7 +29422,7 @@ snapshots:
       vite: 8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)
       vitefu: 1.1.2(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
     optionalDependencies:
-      '@testing-library/jest-dom': 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))
+      '@testing-library/jest-dom': 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)))
     transitivePeerDependencies:
       - supports-color
 
@@ -29476,7 +29533,7 @@ snapshots:
     optionalDependencies:
       vite: 8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)
 
-  vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
+  vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.0.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.3(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
@@ -29494,12 +29551,12 @@ snapshots:
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 26.6.4
-      happy-dom: 20.14.5
+      happy-dom: 21.0.4
       jsdom: 30.0.1(@noble/hashes@2.4.0)
     transitivePeerDependencies:
       - msw
 
-  vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
+  vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.3(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
@@ -29517,13 +29574,13 @@ snapshots:
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 26.6.4
-      happy-dom: 20.14.5
+      happy-dom: 21.0.4
       jsdom: 30.1.1(@noble/hashes@2.4.0)
     transitivePeerDependencies:
       - msw
     optional: true
 
-  vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
+  vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.3(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.101.0)(terser@5.51.2)(yaml@2.9.0))
@@ -29541,12 +29598,12 @@ snapshots:
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 26.6.4
-      happy-dom: 20.14.5
+      happy-dom: 21.0.4
       jsdom: 30.1.2(@noble/hashes@2.4.0)
     transitivePeerDependencies:
       - msw
 
-  vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0)):
+  vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.3(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.0))
@@ -29564,12 +29621,12 @@ snapshots:
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 26.6.4
-      happy-dom: 20.14.5
+      happy-dom: 21.0.4
       jsdom: 30.1.2(@noble/hashes@2.4.0)
     transitivePeerDependencies:
       - msw
 
-  vitest@5.0.3(@types/node@26.6.4)(happy-dom@20.14.5)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)):
+  vitest@5.0.3(@types/node@26.6.4)(happy-dom@21.0.4)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.3(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
@@ -29587,7 +29644,7 @@ snapshots:
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 26.6.4
-      happy-dom: 20.14.5
+      happy-dom: 21.0.4
       jsdom: 30.1.2(@noble/hashes@2.4.0)
     transitivePeerDependencies:
       - msw
@@ -29673,7 +29730,7 @@ snapshots:
     dependencies:
       vue: 3.5.43(typescript@6.0.3)
 
-  vue-eslint-parser@10.4.0(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0):
+  vue-eslint-parser@10.4.1(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
       debug: 4.4.3(supports-color@7.2.0)
       eslint: 10.12.0(jiti@2.7.0)(supports-color@7.2.0)

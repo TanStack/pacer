@@ -74,7 +74,7 @@
     "@types/node": "^26.6.4",
     "eslint": "^10.12.0",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "happy-dom": "^20.14.5",
+    "happy-dom": "^21.0.0",
     "knip": "^6.39.0",
     "markdown-link-extractor": "^4.0.4",
     "nx": "^23.2.1",
