@@ -58,7 +58,7 @@
     "svelte": "^5.25.0"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.7.0",
+    "@tanstack/devtools-utils": "^0.7.1",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
