@@ -3,7 +3,7 @@ id: SolidAsyncDebouncer
 title: SolidAsyncDebouncer
 ---
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L26)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L32)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-debouncer/createAsyncDebouncer.ts:26](https://github.com/TanS
 options: AsyncDebouncerOptions<TFn> & SolidAsyncDebouncerOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:30](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L30)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:36](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L36)
 
 #### Overrides
 
@@ -44,7 +44,7 @@ Omit.options
 setOptions: (options) => void;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:32](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L32)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L38)
 
 Updates the async debouncer options
 
@@ -72,7 +72,7 @@ Omit.setOptions
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L58)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:64](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L64)
 
 Reactive state that will be updated when the debouncer state changes
 
@@ -86,7 +86,7 @@ Use this instead of `debouncer.store.state`
 readonly store: Store<Readonly<AsyncDebouncerState<TFn>>>;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:64](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L64)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:70](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L70)
 
 #### Deprecated
 
@@ -102,7 +102,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [async-debouncer/createAsyncDebouncer.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L49)
+Defined in: [async-debouncer/createAsyncDebouncer.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-debouncer/createAsyncDebouncer.ts#L55)
 
 A Solid component that allows you to subscribe to the debouncer state.
 

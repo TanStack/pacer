@@ -3,7 +3,7 @@ id: SolidAsyncThrottlerOptions
 title: SolidAsyncThrottlerOptions
 ---
 
-Defined in: [async-throttler/createAsyncThrottler.ts:15](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L15)
+Defined in: [async-throttler/createAsyncThrottler.ts:21](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L21)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-throttler/createAsyncThrottler.ts:15](https://github.com/TanS
 optional onUnmount?: (throttler) => void;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:23](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L23)
+Defined in: [async-throttler/createAsyncThrottler.ts:29](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L29)
 
 Optional callback invoked when the owning component unmounts. Receives the throttler instance.
 When provided, replaces the default cleanup (cancel + abort); use it to call flush(), reset(), cancel(), add logging, etc.
