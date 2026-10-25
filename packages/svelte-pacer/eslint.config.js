@@ -1,6 +1,31 @@
 // @ts-check
 
+import tsParser from '@typescript-eslint/parser'
+import pluginSvelte from 'eslint-plugin-svelte'
 import { defineConfig } from 'eslint/config'
 import rootConfig from '../../eslint.config.js'
+import svelteConfig from './svelte.config.js'
 
-export default defineConfig([...rootConfig])
+const config = defineConfig([
+  ...rootConfig,
+  ...pluginSvelte.configs['recommended'],
+  {
+    files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
+    languageOptions: {
+      parserOptions: {
+        parser: tsParser,
+        extraFileExtensions: ['.svelte'],
+        svelteConfig,
+      },
+    },
+  },
+  {
+    rules: {
+      'svelte/block-lang': ['error', { script: ['ts'] }],
+      'svelte/no-svelte-internal': 'error',
+      'svelte/valid-compile': 'off',
+    },
+  },
+])
+
+export default config

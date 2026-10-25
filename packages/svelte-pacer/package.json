@@ -121,6 +121,8 @@
   "devDependencies": {
     "@sveltejs/package": "^3.0.0",
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@typescript-eslint/parser": "^8.71.0",
+    "eslint-plugin-svelte": "^3.23.0",
     "svelte": "^5.57.1"
   },
   "peerDependencies": {
