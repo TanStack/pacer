@@ -1,6 +1,12 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import {
+  createEffect,
+  createMemo,
+  createRenderEffect,
+  onCleanup,
+  untrack,
+} from 'solid-js'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { SolidPacerOptions } from '../types'
@@ -214,13 +220,20 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
     selector: (state: AsyncBatcherState<TValue>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useSelector(asyncBatcher.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      asyncBatcher.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
+    return createMemo(() => {
+      const children = props.children
+      return typeof children === 'function'
+        ? untrack(() => children(selected))
+        : children
+    }) as unknown as JSX.Element
   }
 
   const state = useSelector(asyncBatcher.store, selector, { compare: shallow })

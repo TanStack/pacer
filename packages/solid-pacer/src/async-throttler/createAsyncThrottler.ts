@@ -1,4 +1,10 @@
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import {
+  createEffect,
+  createMemo,
+  createRenderEffect,
+  onCleanup,
+  untrack,
+} from 'solid-js'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { shallow, useSelector } from '@tanstack/solid-store'
 import { createPacerOptions } from '../utils/createPacerOptions'
@@ -202,13 +208,20 @@ export function createAsyncThrottler<
     selector: (state: AsyncThrottlerState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useSelector(asyncThrottler.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      asyncThrottler.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
+    return createMemo(() => {
+      const children = props.children
+      return typeof children === 'function'
+        ? untrack(() => children(selected))
+        : children
+    }) as unknown as JSX.Element
   }
 
   const state = useSelector(asyncThrottler.store, selector, {
