@@ -6,7 +6,7 @@ import { defineConfig } from 'eslint/config'
 import rootConfig from '../../eslint.config.js'
 import svelteConfig from './svelte.config.js'
 
-const config = defineConfig([
+export default defineConfig([
   ...rootConfig,
   ...pluginSvelte.configs['recommended'],
   {
@@ -27,5 +27,3 @@ const config = defineConfig([
     },
   },
 ])
-
-export default config
